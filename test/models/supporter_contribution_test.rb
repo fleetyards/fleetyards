@@ -7,8 +7,10 @@
 #  id                  :uuid             not null, primary key
 #  amount_cents        :integer          not null
 #  anonymous           :boolean          default(FALSE), not null
+#  claim_key           :string
 #  currency            :string           default("EUR"), not null
 #  ended_at            :date
+#  linked_via          :string
 #  name                :string
 #  note                :text
 #  payer_email         :string
@@ -27,6 +29,7 @@
 # Indexes
 #
 #  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
+#  index_supporter_contributions_on_linked_via              (linked_via) WHERE (linked_via IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_patreon_user_id         (patreon_user_id) WHERE (patreon_user_id IS NOT NULL)
 #  index_supporter_contributions_on_payer_email             (payer_email) WHERE (payer_email IS NOT NULL)
@@ -103,6 +106,67 @@ class SupporterContributionTest < ActiveSupport::TestCase
     create(:supporter_contribution, amount_cents: 9_999, started_at: Date.new(2026, 5, 28))
 
     assert_equal 1_500, SupporterContribution.monthly_total(Date.new(2026, 6, 15))
+  end
+
+  test "normalizes a claim key however it was typed" do
+    contribution = create(:supporter_contribution, claim_key: " fy7k2m9qxd ")
+
+    assert_equal "FY-7K2M-9QXD", contribution.claim_key
+  end
+
+  # The characters the alphabet leaves out are folded on the way in, so a key
+  # read off a screen and retyped still lands on its canonical form.
+  test "folds the ambiguous characters in a claim key" do
+    contribution = create(:supporter_contribution, claim_key: "FY-7KLM-9QXO")
+
+    assert_equal "FY-7K1M-9QX0", contribution.claim_key
+  end
+
+  # Left as entered rather than normalized away: silently blanking a typo is the
+  # failure a field of its own exists to avoid.
+  test "rejects a claim key that is not key-shaped" do
+    contribution = build(:supporter_contribution, claim_key: "FY-7K2M-9QX")
+
+    refute contribution.valid?
+    assert_includes contribution.errors[:claim_key], contribution.errors.generate_message(:claim_key, :invalid)
+  end
+
+  test "treats a blank claim key as absent" do
+    assert create(:supporter_contribution, claim_key: "  ").claim_key.nil?
+  end
+
+  test "#claim_key_for_linking falls back to a key written in the note" do
+    contribution = build(:supporter_contribution, note: "thanks! FY-7K2M-9QXD")
+
+    assert_equal "FY-7K2M-9QXD", contribution.claim_key_for_linking
+  end
+
+  test "#claim_key_for_linking prefers the field an admin filled in" do
+    contribution = build(:supporter_contribution, claim_key: "FY-ABCD-EFGH", note: "thanks! FY-7K2M-9QXD")
+
+    assert_equal "FY-ABCD-EFGH", contribution.claim_key_for_linking
+  end
+
+  test "records an unexplained link as manual" do
+    contribution = create(:supporter_contribution, user: create(:user))
+
+    assert_equal "manual", contribution.linked_via
+  end
+
+  test "keeps the rule when the link and the rule are written together" do
+    contribution = create(:supporter_contribution)
+    contribution.update!(user: create(:user), linked_via: :payer_email)
+
+    assert_equal "payer_email", contribution.reload.linked_via
+  end
+
+  test "clears the rule when the link is removed" do
+    contribution = create(:supporter_contribution)
+    contribution.update!(user: create(:user), linked_via: :claim_key)
+
+    contribution.update!(user: nil)
+
+    assert_nil contribution.reload.linked_via
   end
 
   test "source defaults to manual" do

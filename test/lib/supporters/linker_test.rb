@@ -114,6 +114,64 @@ module Supporters
       assert_equal linked, contribution.reload.user
     end
 
+    test "records which rule produced the link" do
+      connected = create(:user, confirmed_at: Time.current)
+      create(:omniauth_connection, user: connected, provider: :patreon, uid: "patreon-user-1")
+      patreon = create(:supporter_contribution, :patreon, patreon_user_id: "patreon-user-1")
+
+      keyed = create(:user, confirmed_at: Time.current)
+      by_key = create(:supporter_contribution, note: "thanks #{keyed.ensure_claim_key!}")
+
+      create(:user, email: "patron@example.test", confirmed_at: Time.current)
+      by_email = create(:supporter_contribution, payer_email: "patron@example.test")
+
+      Supporters::Linker.call(patreon)
+      Supporters::Linker.call(by_key)
+      Supporters::Linker.call(by_email)
+
+      assert_equal "patreon_account", patreon.reload.linked_via
+      assert_equal "claim_key", by_key.reload.linked_via
+      assert_equal "payer_email", by_email.reload.linked_via
+    end
+
+    test "names no rule when nothing resolved" do
+      contribution = create(:supporter_contribution, payer_email: "nobody@example.test")
+
+      assert_nil Supporters::Linker.call(contribution)
+      assert_nil contribution.reload.linked_via
+    end
+
+    test "links by the claim key field without one in the message" do
+      user = create(:user, confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, claim_key: user.ensure_claim_key!, note: "thanks")
+
+      assert_equal user, Supporters::Linker.call(contribution)
+      assert_equal "claim_key", contribution.reload.linked_via
+    end
+
+    # An admin reading a donation message decided what it says; the message
+    # itself is only a guess at the same thing.
+    test "the claim key field outranks one written in the message" do
+      field = create(:user, confirmed_at: Time.current)
+      message = create(:user, confirmed_at: Time.current)
+      contribution = create(:supporter_contribution,
+        claim_key: field.ensure_claim_key!,
+        note: "thanks #{message.ensure_claim_key!}")
+
+      assert_equal field, Supporters::Linker.call(contribution)
+    end
+
+    # The admin form's own rule, left where the linker can see it: a link nobody
+    # derived is an admin's choice, and it outranks every arm here.
+    test "leaves an admin's manual link and its rule alone" do
+      linked = create(:user, confirmed_at: Time.current)
+      other = create(:user, email: "other@example.test", confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, user: linked, payer_email: other.email)
+
+      assert_equal linked, Supporters::Linker.call(contribution)
+      assert_equal "manual", contribution.reload.linked_via
+    end
+
     test "is idempotent and finds a donor who registered after paying" do
       contribution = create(:supporter_contribution, payer_email: "later@example.test")
 

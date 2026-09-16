@@ -21,6 +21,8 @@ module Admin
             endedAt: {type: :string, format: :date},
             note: {type: :string},
             payerEmail: {type: :string},
+            claimKey: {type: :string},
+            linkedVia: ::Admin::V1::Schemas::Enums::SupporterContributionLinkedViaEnum,
             userId: {type: :string, format: :uuid},
             user: ::Admin::V1::Schemas::Users::Options::UserOption,
             createdAt: {type: :string, format: "date-time"},

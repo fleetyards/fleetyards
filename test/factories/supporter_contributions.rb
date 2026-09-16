@@ -7,8 +7,10 @@
 #  id                  :uuid             not null, primary key
 #  amount_cents        :integer          not null
 #  anonymous           :boolean          default(FALSE), not null
+#  claim_key           :string
 #  currency            :string           default("EUR"), not null
 #  ended_at            :date
+#  linked_via          :string
 #  name                :string
 #  note                :text
 #  payer_email         :string
@@ -27,6 +29,7 @@
 # Indexes
 #
 #  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
+#  index_supporter_contributions_on_linked_via              (linked_via) WHERE (linked_via IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_patreon_user_id         (patreon_user_id) WHERE (patreon_user_id IS NOT NULL)
 #  index_supporter_contributions_on_payer_email             (payer_email) WHERE (payer_email IS NOT NULL)

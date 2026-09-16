@@ -190,6 +190,54 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  test "POST /supporter-contributions resolves a claim key given in its own field" do
+    donor = create(:user, confirmed_at: Time.current)
+    key = donor.ensure_claim_key!
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, claimKey: key.downcase}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal key, parsed_body["claimKey"]
+      assert_equal donor.id, parsed_body["userId"]
+      assert_equal "claim_key", parsed_body["linkedVia"]
+    end
+  end
+
+  # Wrong length rather than wrong characters: SupporterClaimKey accepts a bare
+  # eight-character body, so any word that long is key-shaped by design.
+  test "POST /supporter-contributions rejects a claim key that is not key-shaped" do
+    sign_in @user
+
+    assert_api_response :post, 400,
+      body: {amountCents: 500, startedAt: Date.current.iso8601, claimKey: "FY-7K2M-9QX"}
+  end
+
+  # A key is worth keeping even when it matches nobody: the donor may not have
+  # registered yet, and the later re-run has nowhere else to read it from.
+  test "POST /supporter-contributions keeps a claim key matching no account" do
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, claimKey: "FY-7K2M-9QXD"}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal "FY-7K2M-9QXD", parsed_body["claimKey"]
+      refute parsed_body.key?("userId")
+      refute parsed_body.key?("linkedVia")
+    end
+  end
+
+  test "POST /supporter-contributions records an admin's own choice as manual" do
+    user = create(:user)
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, userId: user.id}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal "manual", parsed_body["linkedVia"]
+    end
+  end
+
   test "POST /supporter-contributions keeps the account an admin chose" do
     chosen = create(:user)
     create(:user, email: "donor@example.test", confirmed_at: Time.current)
@@ -270,6 +318,18 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
 
     assert_api_response :get, 200, params: {q: {"userIdNull" => true}} do
       assert_equal 2, parsed_body["items"].count
+    end
+  end
+
+  test "GET /supporter-contributions filters by linkedViaEq" do
+    create(:supporter_contribution, user: create(:user), linked_via: :claim_key)
+    create(:supporter_contribution, user: create(:user), linked_via: :payer_email)
+    create(:supporter_contribution)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"linkedViaEq" => "claim_key"}} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal "claim_key", parsed_body["items"].first["linkedVia"]
     end
   end
 
@@ -372,6 +432,41 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
              startedAt: contribution.started_at.iso8601,
              payerEmail: "right@example.test"} do
       assert_equal right.id, parsed_body["userId"]
+    end
+  end
+
+  # The form submits userId on every save, so an admin correcting the address
+  # without touching the account select still has to re-resolve.
+  test "PUT /supporter-contributions/:id re-resolves when userId is resubmitted unchanged" do
+    wrong = create(:user, email: "wrong@example.test", confirmed_at: Time.current)
+    right = create(:user, email: "right@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "wrong@example.test", user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "right@example.test",
+             userId: wrong.id} do
+      assert_equal right.id, parsed_body["userId"]
+      assert_equal "payer_email", parsed_body["linkedVia"]
+    end
+  end
+
+  test "PUT /supporter-contributions/:id re-resolves when the claim key is corrected" do
+    wrong = create(:user, confirmed_at: Time.current)
+    right = create(:user, confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, claim_key: wrong.ensure_claim_key!, user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             claimKey: right.ensure_claim_key!} do
+      assert_equal right.id, parsed_body["userId"]
+      assert_equal "claim_key", parsed_body["linkedVia"]
     end
   end
 

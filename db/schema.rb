@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1801,10 +1801,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_190000) do
   create_table "supporter_contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "amount_cents", null: false
     t.boolean "anonymous", default: false, null: false
+    t.string "claim_key"
     t.datetime "created_at", null: false
     t.string "currency", default: "EUR", null: false
     t.date "ended_at"
     t.string "kofi_transaction_id"
+    t.string "linked_via"
     t.string "name"
     t.text "note"
     t.string "patreon_member_id"
@@ -1818,6 +1820,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_190000) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["kofi_transaction_id"], name: "index_supporter_contributions_on_kofi_transaction_id", unique: true, where: "(kofi_transaction_id IS NOT NULL)"
+    t.index ["linked_via"], name: "index_supporter_contributions_on_linked_via", where: "(linked_via IS NOT NULL)"
     t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
     t.index ["patreon_user_id"], name: "index_supporter_contributions_on_patreon_user_id", where: "(patreon_user_id IS NOT NULL)"
     t.index ["payer_email"], name: "index_supporter_contributions_on_payer_email", where: "(payer_email IS NOT NULL)"
