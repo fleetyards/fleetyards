@@ -70,7 +70,8 @@ four times over, and no place to put the attempt count.
 
 ```
 announcements
-  title, body (markdown), social_body (optional, shorter), link, icon
+  title, body (markdown), link, icon
+  discord_parts (ordered messages), social_parts (ordered posts)
   status: draft | scheduled | publishing | published | failed
   publish_at, published_at, recipients_count
   notify_users, post_discord, post_bluesky, post_x  (booleans)
@@ -155,7 +156,8 @@ records `skipped` instead of raising.
 2. **Notification type** — `announcement` in `Notification::TYPES` + enum, `AnnouncementMailer`,
    MJML template, backend locales (7), `labels.notificationTypes` + settings group (7).
 3. **Delivery** — `Announcements::{Publish,FanOut,NotifyBatch,PostSocial,PublishScheduled}Job`,
-   `Announcements::SocialMessage`, `Discord::Announcement`, `Bsky::Post.configured?`,
+   `Announcements::SocialPosts`, `Announcements::DiscordMessages`,
+   `Discord::Announcement`, `Bsky::Post.configured?`,
    `XCom::Post`, job and lib tests.
 4. **Admin API** — `Admin::Api::V1::AnnouncementsController` (+ `publish`, `retry_delivery`),
    `Admin::AnnouncementPolicy`, the `announcements` privilege, routes, jbuilder views, OpenAPI
