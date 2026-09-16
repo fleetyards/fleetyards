@@ -112,7 +112,7 @@ describe("SupportContent", () => {
 
     expect(setBackRoute).toHaveBeenCalledWith({
       path: "/",
-      query: { support: "true" },
+      query: { modal: "support" },
       hash: "",
     });
   });

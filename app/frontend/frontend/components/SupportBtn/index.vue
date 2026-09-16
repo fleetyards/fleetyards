@@ -11,7 +11,7 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 
-import { useSupportModal } from "@/frontend/composables/useSupportModal";
+import { useModalQuery } from "@/frontend/composables/useModalQuery";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -26,7 +26,13 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { openSupportModal } = useSupportModal();
+const { openModal } = useModalQuery();
+
+// The address is what opens it, and writing to the address is a navigation --
+// nothing here waits for it.
+const openSupport = () => {
+  void openModal("support");
+};
 </script>
 
 <template>
@@ -37,7 +43,7 @@ const { openSupportModal } = useSupportModal();
     class="support-button"
     :size="size"
     :variant="variant"
-    @click="openSupportModal"
+    @click="openSupport"
   >
     <slot>{{ t("actions.supportUs") }}</slot>
   </Btn>

@@ -13,7 +13,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useSupportModal } from "@/frontend/composables/useSupportModal";
+import { useModalQuery } from "@/frontend/composables/useModalQuery";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const sessionStore = useSessionStore();
 const redirectBackStore = useRedirectBackStore();
-const { supportReturnRoute } = useSupportModal();
+const { modalRoute } = useModalQuery();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -118,7 +118,9 @@ const copyKey = () => {
 // The dismissal stays here rather than being handed in by each caller: on the
 // support page there is no modal open and nothing listens.
 const leaveForLogin = () => {
-  redirectBackStore.setBackRoute(supportReturnRoute(props.standalone));
+  redirectBackStore.setBackRoute(
+    props.standalone ? { name: "support" } : modalRoute("support"),
+  );
 
   comlink.emit("close-modal");
 };

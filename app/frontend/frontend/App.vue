@@ -42,9 +42,9 @@ import { useFlashNotifications } from "@/shared/composables/useFlashNotification
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import {
-  useSupportModal,
-  SUPPORT_QUERY_FLAG,
-} from "@/frontend/composables/useSupportModal";
+  useModalQuery,
+  MODAL_QUERY_PARAM,
+} from "@/frontend/composables/useModalQuery";
 
 useWebpCheck(true);
 
@@ -139,12 +139,17 @@ const route = useRoute();
 
 const comlink = useComlink();
 
-// A login started from the support modal comes back carrying the flag, and so
-// does a link somebody shares. The modal is the app's, so it is put back up
-// here rather than by whatever route the visitor happens to land on.
-const { openFromQuery: openSupportFromQuery } = useSupportModal();
+// The address names the modal that is open -- a link, a login coming back, or
+// a button that wrote it there. The modal is the app's, so it is put up here
+// rather than by whatever route the visitor happens to land on, and closing it
+// takes the name back out.
+const { openFromQuery: openModalFromQuery, clearModalQuery } = useModalQuery();
 
-watch(() => route.query[SUPPORT_QUERY_FLAG], openSupportFromQuery);
+const forgetClosedModal = () => {
+  void clearModalQuery();
+};
+
+watch(() => route.query[MODAL_QUERY_PARAM], openModalFromQuery);
 
 watch(
   () => route.name,
@@ -165,7 +170,7 @@ onMounted(async () => {
   await checkSessionReload();
   setNoScroll();
 
-  openSupportFromQuery();
+  openModalFromQuery();
 
   if (isAuthenticated.value) {
     await requestBrowserPermission();
@@ -375,7 +380,7 @@ const setLocale = (locale: string) => {
     </transition>
 
     <AppConfirm />
-    <AppModal />
+    <AppModal @modal-closed="forgetClosedModal" />
     <OffCanvas />
     <AppNotifications />
     <AppEnvironment :git-revision="appStore.gitRevision" />
