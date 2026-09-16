@@ -121,8 +121,12 @@ class FleetMembership < ApplicationRecord
   # together both pass it and the partial unique index rejects the loser. Give
   # the loser the validation error the sequential case already gets, rather
   # than a RecordNotUnique that reaches the client as a 500.
+  #
+  # The savepoint is what lets a caller wrap this in a transaction of its own:
+  # the violation aborts whichever transaction it happens in, so without one
+  # the rescue would hand back a connection whose next statement fails.
   def save_without_conflict
-    save
+    self.class.transaction(requires_new: true) { save }
   rescue ActiveRecord::RecordNotUnique
     errors.add(:user_id, :taken)
     false

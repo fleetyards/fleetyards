@@ -205,6 +205,22 @@ class FleetMembershipTest < ActiveSupport::TestCase
     assert_predicate membership, :persisted?
   end
 
+  test "#save_without_conflict leaves a caller's transaction usable" do
+    loser = @fleet.fleet_memberships.new(
+      user: @member_user,
+      fleet_role: @fleet.fleet_roles.ranked.last
+    )
+    loser.define_singleton_method(:valid?) { |*| true }
+
+    FleetMembership.transaction do
+      assert_not loser.save_without_conflict
+
+      # Without the savepoint the violation would have aborted this
+      # transaction, and reading from it here would raise.
+      assert_equal 1, FleetMembership.kept.where(fleet: @fleet, user: @member_user).count
+    end
+  end
+
   test "#save_without_conflict still reports an ordinary validation failure" do
     duplicate = @fleet.fleet_memberships.new(
       user: @member_user,
