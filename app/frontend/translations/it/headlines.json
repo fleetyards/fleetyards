@@ -92,7 +92,8 @@
           "index": "Utenti",
           "edit": "Modifica utente",
           "fleets": "Flotte",
-          "inventories": "Inventari"
+          "inventories": "Inventari",
+          "supporterContributions": "Contributi dei sostenitori"
         },
         "vehicles": {
           "index": "Veicoli",

@@ -92,7 +92,8 @@
           "index": "使用者",
           "edit": "編輯使用者",
           "fleets": "艦隊",
-          "inventories": "庫存"
+          "inventories": "庫存",
+          "supporterContributions": "支持者貢獻"
         },
         "vehicles": {
           "index": "載具",

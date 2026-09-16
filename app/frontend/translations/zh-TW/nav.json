@@ -221,7 +221,8 @@
           "index": "使用者",
           "edit": "編輯",
           "fleets": "艦隊",
-          "inventories": "庫存"
+          "inventories": "庫存",
+          "supporterContributions": "貢獻"
         },
         "fleets": {
           "index": "艦隊",

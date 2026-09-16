@@ -92,7 +92,8 @@
           "index": "用户",
           "edit": "编辑用户",
           "fleets": "舰队",
-          "inventories": "用户库存"
+          "inventories": "用户库存",
+          "supporterContributions": "支持者贡献"
         },
         "vehicles": {
           "index": "载具",

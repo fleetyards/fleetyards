@@ -227,7 +227,8 @@
           "inventories": "Inventarios del usuario",
           "inventory": "Inventario del usuario",
           "inventoryItem": "Entrada de inventario",
-          "fleets": "Flotas del usuario"
+          "fleets": "Flotas del usuario",
+          "supporterContributions": "Aportaciones del usuario"
         },
         "vehicles": {
           "index": "Vehículos",

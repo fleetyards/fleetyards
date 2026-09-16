@@ -24,12 +24,16 @@ type Props = {
   links?: TabNavLink[];
   authenticated: boolean;
   resourceAccess?: string[];
+  // Mirrors AccessCheck: the flag sits beside the privilege list rather than
+  // inside it, so a tab gated on one is only reachable by checking both.
+  superAdmin?: boolean;
   badges?: Record<string, number>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   links: undefined,
   resourceAccess: undefined,
+  superAdmin: false,
   badges: undefined,
 });
 
@@ -71,7 +75,10 @@ const filteredRoutes = computed(() => {
 
       return !r.meta?.needsAuthentication;
     })
-    .filter((r) => checkAccess(props.resourceAccess, r.meta?.access));
+    .filter(
+      (r) =>
+        props.superAdmin || checkAccess(props.resourceAccess, r.meta?.access),
+    );
 });
 
 const { isActive, activeRoute } = useActiveTab(filteredRoutes);
