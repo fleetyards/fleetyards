@@ -81,6 +81,41 @@ describe("SupporterStatus", () => {
     expect(rows[1].text()).toContain("Tier 2 until");
   });
 
+  // The projections and supporterUntil answer the same question from different
+  // models, so showing both puts two dates side by side that disagree.
+  it("drops the lapse date wherever the projection is shown", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        supporterUntil: isoDate(addDays(new Date(), 20)),
+        tierProjections: [{ tier: 2, expiresAt: "2026-11-16" }],
+      },
+    });
+
+    expect(wrapper.text()).not.toContain("Active until");
+    expect(wrapper.text()).not.toContain("Expires");
+    expect(wrapper.text()).toContain("Tier 2 until");
+  });
+
+  // The hidden supporterUntil is days away and the projection is months away,
+  // so tinting for the former would warn about a date nobody can see.
+  it("tints for the soonest date it actually shows", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        supporterUntil: isoDate(addDays(new Date(), 3)),
+        tierProjections: [
+          { tier: 1, expiresAt: isoDate(addMonths(new Date(), 10)) },
+          { tier: 2, expiresAt: isoDate(addMonths(new Date(), 2)) },
+        ],
+      },
+    });
+
+    expect(
+      wrapper.find("[data-test='supporter-status-pill']").classes(),
+    ).toEqual(expect.arrayContaining([expect.stringContaining("success")]));
+  });
+
   // Nothing is sustained by nothing, so the projection stays off a lapsed
   // account even when one is handed in.
   it("drops the projection when support is not live", async () => {

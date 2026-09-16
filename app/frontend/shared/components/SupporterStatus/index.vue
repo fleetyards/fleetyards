@@ -36,15 +36,30 @@ const { t, l } = useI18n();
 
 const EXPIRING_WITHIN_DAYS = 14;
 
+const projections = computed(() =>
+  props.supporter ? (props.tierProjections ?? []) : [],
+);
+
+// Whatever the reader can actually see. The tint has to answer for a date on the
+// screen, and where the projections are shown they are that date -- tinting for
+// a hidden `supporterUntil` puts an "expiring soon" amber next to a run of dates
+// months away.
+const runsOutOn = computed(() => {
+  if (projections.value.length) {
+    return projections.value
+      .map((projection) => projection.expiresAt)
+      .reduce((soonest, date) => (date < soonest ? date : soonest));
+  }
+
+  return props.supporterUntil;
+});
+
 const expiringSoon = computed(() => {
-  if (!props.supporterUntil) {
+  if (!runsOutOn.value) {
     return false;
   }
 
-  const days = differenceInCalendarDays(
-    parseISO(props.supporterUntil),
-    new Date(),
-  );
+  const days = differenceInCalendarDays(parseISO(runsOutOn.value), new Date());
 
   return days <= EXPIRING_WITHIN_DAYS;
 });
@@ -59,12 +74,12 @@ const variant = computed(() => {
     : PillVariantsEnum.SUCCESS;
 });
 
-const projections = computed(() =>
-  props.supporter ? (props.tierProjections ?? []) : [],
-);
-
+// Yields to the projections wherever they are shown: `supporterUntil` is the
+// calendar month's edge and they are a spend-down of the same money, so the two
+// give different dates for the same question and the pair reads as a
+// contradiction rather than as detail.
 const expiry = computed(() => {
-  if (!props.supporter) {
+  if (!props.supporter || projections.value.length) {
     return undefined;
   }
 
