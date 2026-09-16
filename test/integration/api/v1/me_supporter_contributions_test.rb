@@ -29,6 +29,10 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
     end
   end
 
@@ -61,6 +65,10 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
 
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -68,6 +76,8 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
+    Flipper.enable("fleet_subscriptions")
+
     @membership = create(:fleet_membership, :accepted)
     @supporter = @membership.user
     @fleet = @membership.fleet
@@ -171,6 +181,28 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
     assert_equal @fleet.id, @contribution.reload.fleet_id
+  end
+
+  # The premium work ships switched off, so until the transition is announced
+  # neither surface exists for anybody.
+  test "both endpoints are unavailable while the flag is off" do
+    Flipper.disable("fleet_subscriptions")
+    sign_in @supporter
+
+    assert_api_response :get, 403, api_path: COLLECTION_PATH
+
+    assert_api_response :put, 403, api_path: MEMBER_PATH,
+      path_params: {id: @contribution.id}, body: {fleetId: @fleet.id}
+
+    assert_nil @contribution.reload.fleet_id
+  end
+
+  # The flag check sits after the doorkeeper callbacks, so a signed-out caller
+  # is still told to authenticate rather than that the feature is missing.
+  test "a signed-out caller gets 401 rather than the feature gate" do
+    Flipper.disable("fleet_subscriptions")
+
+    assert_api_response :get, 401, api_path: COLLECTION_PATH
   end
 
   test "PUT /me/supporter/contributions/{id} is unauthorized when signed out" do

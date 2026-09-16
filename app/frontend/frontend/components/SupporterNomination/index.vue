@@ -8,6 +8,7 @@ export default {
 import { useQueryClient } from "@tanstack/vue-query";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -15,6 +16,7 @@ import {
   useMyFleets,
   useMySupporterContributions,
   useNominateFleetForSupporterContribution,
+  FeatureFlagName,
   type FilterOption,
   type MySupporterContribution,
 } from "@/services/fyApi";
@@ -24,7 +26,16 @@ const sessionStore = useSessionStore();
 const queryClient = useQueryClient();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const enabled = computed(() => sessionStore.isAuthenticated);
+const { isFeatureEnabled } = useFeatures();
+
+// Rollout, not entitlement: while the flag is off the whole surface is absent
+// and the endpoints behind it answer `forbidden`, so the premium work can sit
+// in production until the transition is announced.
+const enabled = computed(
+  () =>
+    sessionStore.isAuthenticated &&
+    isFeatureEnabled(FeatureFlagName.FLEET_SUBSCRIPTIONS),
+);
 
 // Only contributions already linked to this account come back, so a visitor
 // who has never donated -- or whose donation has not been matched yet -- sees

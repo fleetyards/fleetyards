@@ -9720,6 +9720,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/supporter/contributions/{id}":
     parameters:
     - name: id
@@ -9762,6 +9768,12 @@ paths:
                 "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -17037,6 +17049,7 @@ components:
       - fleet_logistics
       - fleet_mission_builder
       - fleet_starmap
+      - fleet_subscriptions
       - fleet_tours
       - fleet_worldmap
       - friends
@@ -17062,6 +17075,7 @@ components:
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_STARMAP
+      - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
       - FLEET_WORLDMAP
       - FRIENDS

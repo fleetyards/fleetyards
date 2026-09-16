@@ -27,6 +27,14 @@ vi.mock("@tanstack/vue-query", async (importOriginal) => ({
   useQueryClient: () => ({ invalidateQueries }),
 }));
 
+const featureEnabled = ref(true);
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: () => featureEnabled.value,
+  }),
+}));
+
 const authenticated = ref(true);
 
 vi.mock("@/frontend/stores/session", () => ({
@@ -54,6 +62,7 @@ describe("SupporterNomination", () => {
     contributions.value = [CONTRIBUTION];
     fleets.value = [FLEET];
     authenticated.value = true;
+    featureEnabled.value = true;
     nominate.mockClear();
     nominate.mockResolvedValue({});
     invalidateQueries.mockClear();
@@ -65,6 +74,16 @@ describe("SupporterNomination", () => {
   // yet, must not be shown a form asking them to pick a fleet.
   it("renders nothing without a linked contribution", async () => {
     contributions.value = [];
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+
+    expect(wrapper.find("[data-test='nomination']").exists()).toBe(false);
+  });
+
+  // The premium rollout ships switched off, so nothing about it is visible
+  // until the flag is turned on.
+  it("renders nothing while the feature flag is off", async () => {
+    featureEnabled.value = false;
 
     const wrapper = await mountWithDefaults(SupporterNomination);
 

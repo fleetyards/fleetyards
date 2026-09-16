@@ -20,6 +20,10 @@ module Api
           unless: :user_signed_in?,
           only: %i[update]
 
+        # After the doorkeeper callbacks, so an unauthenticated request still gets
+        # a 401 rather than being told the feature does not exist.
+        before_action :check_fleet_subscriptions_feature
+
         skip_verify_authorized only: %i[index update]
 
         def index
@@ -39,6 +43,13 @@ module Api
             render json: ValidationError.new("supporter_contributions.nominate",
               errors: @contribution.errors), status: :bad_request
           end
+        end
+
+        private def check_fleet_subscriptions_feature
+          return if feature_enabled?("fleet_subscriptions")
+
+          render json: {code: "forbidden", message: "This feature is not available"},
+            status: :forbidden
         end
 
         private def my_contributions
