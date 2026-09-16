@@ -8,6 +8,7 @@ export default {
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type UserPublic } from "@/services/fyApi";
 
@@ -53,7 +54,13 @@ const props = withDefaults(defineProps<Props>(), {
         variant="success"
         uppercase
       >
-        <i class="fa-duotone fa-heart" />
+        <SupporterBadge
+          v-if="props.user.supporterTier"
+          :tier="props.user.supporterTier"
+          :recurring="props.user.supporterRecurring"
+          :size="16"
+        />
+        <i v-else class="fa-duotone fa-heart" />
         {{ t("labels.supporter.badge") }}
       </Pill>
     </div>

@@ -184,6 +184,8 @@ const onSubmit = handleSubmit(async (values) => {
 
   <SupporterStatus
     :supporter="sessionStore.currentUser?.supporter"
+    :supporter-tier="sessionStore.currentUser?.supporterTier"
+    :supporter-recurring="sessionStore.currentUser?.supporterRecurring"
     :supporter-until="sessionStore.currentUser?.supporterUntil"
   />
 

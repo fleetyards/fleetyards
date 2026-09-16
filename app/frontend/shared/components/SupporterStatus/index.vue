@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
+import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { differenceInCalendarDays, parseISO } from "date-fns";
@@ -15,6 +16,8 @@ import { differenceInCalendarDays, parseISO } from "date-fns";
 // renders the same thing for both.
 interface Props {
   supporter?: boolean;
+  supporterTier?: number;
+  supporterRecurring?: boolean;
   // Absent while support does not lapse on a nameable date -- an open-ended
   // recurring pledge covers it, and only ending that would set one.
   supporterUntil?: string;
@@ -106,7 +109,14 @@ const expiry = computed(() => {
 <template>
   <div class="supporter-status" data-test="supporter-status">
     <Pill :variant="variant" data-test="supporter-status-pill">
+      <SupporterBadge
+        v-if="props.supporter && props.supporterTier"
+        :tier="props.supporterTier"
+        :recurring="props.supporterRecurring"
+        :size="16"
+      />
       <i
+        v-else
         :class="props.supporter ? 'fa-duotone fa-heart' : 'fa-light fa-heart'"
       />
       {{

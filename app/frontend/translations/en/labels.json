@@ -20,7 +20,9 @@
         "fleetTierOngoing": "Fleet tier while the pledge stands",
         "until": "Active until %{date}",
         "expiring": "Expires %{date}",
-        "ongoing": "Recurring, no end date"
+        "ongoing": "Recurring, no end date",
+        "tierBadge": "Tier %{tier} supporter",
+        "tierRecurring": "Tier %{tier} supporter, recurring"
       },
       "destroyedFleets": {
         "discarded": "Discarded",

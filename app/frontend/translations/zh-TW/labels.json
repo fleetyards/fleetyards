@@ -20,7 +20,9 @@
         "fleetTierOngoing": "訂閱持續期間享有艦隊等級",
         "until": "有效期至 %{date}",
         "expiring": "%{date} 到期",
-        "ongoing": "定期支持，無結束日期"
+        "ongoing": "定期支持，無結束日期",
+        "tierBadge": "第 %{tier} 級支持者",
+        "tierRecurring": "第 %{tier} 級支持者，定期"
       },
       "destroyedFleets": {
         "discarded": "已捨棄",

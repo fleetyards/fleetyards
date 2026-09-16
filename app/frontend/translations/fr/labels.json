@@ -20,7 +20,9 @@
         "fleetTierOngoing": "Niveau de flotte tant que l'abonnement dure",
         "until": "Actif jusqu'au %{date}",
         "expiring": "Expire le %{date}",
-        "ongoing": "Récurrent, sans date de fin"
+        "ongoing": "Récurrent, sans date de fin",
+        "tierBadge": "Soutien de niveau %{tier}",
+        "tierRecurring": "Soutien de niveau %{tier}, récurrent"
       },
       "destroyedFleets": {
         "discarded": "Écartée",

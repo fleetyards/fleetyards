@@ -104,6 +104,8 @@ const columns: BaseTableCol<SupporterContribution>[] = [
 
   <SupporterStatus
     :supporter="props.user.supporter"
+    :supporter-tier="props.user.supporterTier"
+    :supporter-recurring="props.user.supporterRecurring"
     :supporter-until="props.user.supporterUntil"
     :fleet-tier-until="props.user.fleetTierUntil"
     :fleet-tier-ongoing="props.user.fleetTierOngoing"

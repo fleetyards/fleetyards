@@ -31,6 +31,7 @@ module Admin
             hideOwner: {type: :boolean},
             supporter: {type: :boolean},
             supporterTier: {type: :integer},
+            supporterRecurring: {type: :boolean},
             supporterUntil: {type: :string, format: :date},
             fleetTierUntil: {type: :string, format: :date},
             fleetTierOngoing: {type: :boolean},
@@ -46,7 +47,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
-            supporter supporterTier fleetTierOngoing twoFactorRequired createdAt updatedAt
+            supporter supporterTier supporterRecurring fleetTierOngoing twoFactorRequired createdAt updatedAt
           ]
         })
       end

@@ -26837,6 +26837,8 @@ components:
           type: boolean
         supporterTier:
           type: integer
+        supporterRecurring:
+          type: boolean
         supporterUntil:
           type: string
           format: date
@@ -26886,6 +26888,7 @@ components:
       - tracking
       - supporter
       - supporterTier
+      - supporterRecurring
       - twoFactorRequired
       - resourceAccess
       - authConnections
@@ -27016,6 +27019,8 @@ components:
           type: boolean
         supporterTier:
           type: integer
+        supporterRecurring:
+          type: boolean
       additionalProperties: false
       required:
       - username
@@ -27023,6 +27028,8 @@ components:
       - publicHangarStats
       - publicWishlist
       - supporter
+      - supporterTier
+      - supporterRecurring
       title: UserPublic
     UserRef:
       type: object

@@ -22,10 +22,11 @@ module V1
           publicHangarStats: {type: :boolean},
           publicWishlist: {type: :boolean},
           supporter: {type: :boolean},
-          supporterTier: {type: :integer}
+          supporterTier: {type: :integer},
+          supporterRecurring: {type: :boolean}
         },
         additionalProperties: false,
-        required: %w[username publicHangarLoaners publicHangarStats publicWishlist supporter]
+        required: %w[username publicHangarLoaners publicHangarStats publicWishlist supporter supporterTier supporterRecurring]
       })
     end
   end
