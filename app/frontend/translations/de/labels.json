@@ -1820,8 +1820,8 @@
           "lastTested": "Zuletzt getestet %{time}",
           "noChannel": "Wähle mindestens einen Kanal.",
           "notifyUsersInfo": "Erreicht jeden bestätigten Account. E-Mail nur für alle, die sie eingeschaltet haben.",
-          "discordPartsInfo": "Leer gelassen wird der Text auf so viele Nachrichten verteilt, wie nötig sind. Mit Nachrichten bestimmst du, wo getrennt wird.",
-          "socialPartsInfo": "Leer gelassen entsteht ein Post aus Titel, Text und Link. Ab zwei wird daraus ein Thread, jeder Post antwortet auf den vorigen.",
+          "discordPartsInfo": "Leer gelassen wird der Text auf so viele Nachrichten verteilt, wie nötig sind — nichts wird abgeschnitten. Mit Nachrichten bestimmst du, wo getrennt wird.",
+          "socialPartsInfo": "Leer gelassen entsteht ein einzelner Post aus Titel, erstem Absatz und Link — auf die Länge gekürzt, nie als Thread. Ab zwei wird daraus ein Thread, jeder Post antwortet auf den vorigen.",
           "partPosition": "%{position} von %{total}"
         },
         "resourceAccess": {

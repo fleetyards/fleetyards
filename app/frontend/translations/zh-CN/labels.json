@@ -1820,8 +1820,8 @@
           "lastTested": "上次测试 %{time}",
           "noChannel": "至少选择一个渠道。",
           "notifyUsersInfo": "覆盖所有已验证账号。邮件仅发给已开启的人。",
-          "discordPartsInfo": "留空则正文会自动拆分成所需数量的消息。添加消息可自行决定断点位置。",
-          "socialPartsInfo": "留空则由标题、正文和链接组成一条帖子。两条及以上会组成一个话题串，后一条回复前一条。",
+          "discordPartsInfo": "留空则正文会自动拆分成所需数量的消息——不会被截断。添加消息可自行决定断点位置。",
+          "socialPartsInfo": "留空则只生成一条帖子，由标题、第一段和链接组成——超长会被截断，不会自动拆成话题串。两条及以上会组成话题串，后一条回复前一条。",
           "partPosition": "第 %{position} / %{total} 条"
         },
         "resourceAccess": {

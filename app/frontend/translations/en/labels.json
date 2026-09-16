@@ -1834,8 +1834,8 @@
           "lastTested": "Last tested %{time}",
           "noChannel": "Pick at least one channel.",
           "notifyUsersInfo": "Reaches every confirmed account. E-mail only for readers who turned it on.",
-          "discordPartsInfo": "Leave empty and the body is packed into as many messages as it takes. Add messages to choose where the break falls.",
-          "socialPartsInfo": "Leave empty for one post composed from the title, body and link. Two or more become a thread, each replying to the one before.",
+          "discordPartsInfo": "Leave empty and the body is split across as many messages as it takes — nothing is cut. Add messages to choose where the break falls.",
+          "socialPartsInfo": "Leave empty for one post composed from the title, the first paragraph and the link — trimmed to fit, never threaded. Two or more become a thread, each replying to the one before.",
           "partPosition": "%{position} of %{total}"
         },
         "resourceAccess": {

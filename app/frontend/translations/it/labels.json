@@ -1820,8 +1820,8 @@
           "lastTested": "Ultimo test %{time}",
           "noChannel": "Scegli almeno un canale.",
           "notifyUsersInfo": "Raggiunge ogni account confermato. L'e-mail solo a chi l'ha attivata.",
-          "discordPartsInfo": "Lasciato vuoto, il testo viene ripartito in quanti messaggi servono. Aggiungi messaggi per scegliere dove si interrompe.",
-          "socialPartsInfo": "Lasciato vuoto, viene composto un post da titolo, testo e link. Da due in su diventa un thread, ognuno in risposta al precedente.",
+          "discordPartsInfo": "Lasciato vuoto, il testo viene ripartito in quanti messaggi servono — non viene tagliato nulla. Aggiungi messaggi per scegliere dove si interrompe.",
+          "socialPartsInfo": "Lasciato vuoto, viene composto un solo post da titolo, primo paragrafo e link — tagliato per rientrare, mai in thread. Da due in su diventa un thread, ognuno in risposta al precedente.",
           "partPosition": "%{position} di %{total}"
         },
         "resourceAccess": {
