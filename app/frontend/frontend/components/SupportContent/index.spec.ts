@@ -10,6 +10,12 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useSupportersProgress: () => ({ data: ref(undefined) }),
 }));
 
+const setBackRoute = vi.fn();
+
+vi.mock("@/shared/stores/redirectBack", () => ({
+  useRedirectBackStore: () => ({ setBackRoute }),
+}));
+
 const authenticated = ref(true);
 
 vi.mock("@/frontend/stores/session", () => ({
@@ -37,10 +43,12 @@ describe("SupportContent", () => {
     claimKey.value = { key: "FY-7K2M-9QXD" };
     authenticated.value = true;
     writeText.mockClear();
+    setBackRoute.mockClear();
     Object.assign(navigator, { clipboard: { writeText } });
   });
 
-  const mount = () => mountWithDefaults(SupportContent, { plugins: [router] });
+  const mount = (props?: { standalone?: boolean }) =>
+    mountWithDefaults(SupportContent, { props, plugins: [router] });
 
   it("shows the key to a signed-in supporter", async () => {
     const wrapper = await mount();
@@ -81,6 +89,35 @@ describe("SupportContent", () => {
     expect(wrapper.find("[data-test='claim-key-signed-out']").exists()).toBe(
       false,
     );
+  });
+
+  // Claiming the key is why a signed-out visitor is sent to the login at all,
+  // so the login has to come back to where they were about to donate.
+  it("comes back to the page the modal was over after a login", async () => {
+    authenticated.value = false;
+    await router.push("/");
+
+    const wrapper = await mount();
+    await wrapper.find("[data-test='claim-key-signed-out']").trigger("click");
+
+    expect(setBackRoute).toHaveBeenCalledWith({
+      path: "/",
+      query: { support: "true" },
+      hash: "",
+    });
+  });
+
+  // The page shows this content without a modal, so there is nothing to ask for
+  // on the way back.
+  it("comes back to the support page itself after a login", async () => {
+    authenticated.value = false;
+
+    const wrapper = await mount({ standalone: true });
+    await wrapper.find("[data-test='claim-key-signed-out']").trigger("click");
+
+    expect(setBackRoute).toHaveBeenCalledWith({
+      name: "support",
+    });
   });
 
   // Ko-fi has no URL parameter to prefill a message with, so the key goes to

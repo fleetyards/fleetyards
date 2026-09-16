@@ -13,11 +13,25 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useSupportModal } from "@/frontend/composables/useSupportModal";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
+type Props = {
+  // The support page shows this content on its own. In the modal it is false,
+  // and the difference is only where a login has to come back to.
+  standalone?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  standalone: false,
+});
+
 const { t } = useI18n();
 const sessionStore = useSessionStore();
+const redirectBackStore = useRedirectBackStore();
+const { supportReturnRoute } = useSupportModal();
 const { displaySuccess } = useAppNotifications();
 const comlink = useComlink();
 
@@ -87,10 +101,15 @@ const copyKey = () => {
   );
 };
 
-// Inside the modal the login link has to dismiss it on the way out. On the
-// support page there is no modal open and nothing listens, which is why this
-// stays here rather than being handed in by the two callers.
+// Somebody sent to the login to claim a key came here to donate, so the login
+// brings them back to where they were: the page, or the page the modal was
+// over -- with the flag that puts the modal back up.
+//
+// The dismissal stays here rather than being handed in by each caller: on the
+// support page there is no modal open and nothing listens.
 const leaveForLogin = () => {
+  redirectBackStore.setBackRoute(supportReturnRoute(props.standalone));
+
   comlink.emit("close-modal");
 };
 </script>

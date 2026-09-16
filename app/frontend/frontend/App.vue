@@ -41,6 +41,10 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
+import {
+  useSupportModal,
+  SUPPORT_QUERY_FLAG,
+} from "@/frontend/composables/useSupportModal";
 
 useWebpCheck(true);
 
@@ -135,6 +139,18 @@ const route = useRoute();
 
 const comlink = useComlink();
 
+// A login started from the support modal comes back carrying the flag, and so
+// does a link somebody shares. The modal is the app's, so it is put back up
+// here rather than by whatever route the visitor happens to land on.
+const { openFromQuery: openSupportFromQuery } = useSupportModal();
+
+watch(
+  () => route.query[SUPPORT_QUERY_FLAG],
+  async () => {
+    await openSupportFromQuery();
+  },
+);
+
 watch(
   () => route.name,
   async () => {
@@ -153,6 +169,8 @@ const fleetUpdateComlink = ref();
 onMounted(async () => {
   await checkSessionReload();
   setNoScroll();
+
+  await openSupportFromQuery();
 
   if (isAuthenticated.value) {
     await requestBrowserPermission();
