@@ -1751,6 +1751,46 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/features/{id}/history":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    get:
+      summary: Feature Change History
+      tags:
+      - Features
+      operationId: adminFeatureHistory
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FeatureChangesList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/toggle-fleet-self-service":
     parameters:
     - name: id
@@ -11083,6 +11123,24 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FeatureActor"
+        fullyOnSince:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lastChangedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lastChangedBy:
+          type:
+          - string
+          - 'null'
+        lastChangedSource:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - name
@@ -11094,6 +11152,10 @@ components:
       - percentageOfTime
       - groups
       - actors
+      - fullyOnSince
+      - lastChangedAt
+      - lastChangedBy
+      - lastChangedSource
       title: Feature
     FeatureActor:
       type: object
@@ -11122,6 +11184,48 @@ components:
       - actor_type
       - actor_id
       title: FeatureActorInput
+    FeatureChange:
+      type: object
+      properties:
+        id:
+          type: string
+        operation:
+          type: string
+        gateName:
+          type:
+          - string
+          - 'null'
+        thing:
+          type:
+          - string
+          - 'null'
+        stateAfter:
+          type: string
+        source:
+          type: string
+        actor:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - operation
+      - gateName
+      - thing
+      - stateAfter
+      - source
+      - actor
+      - createdAt
+      title: FeatureChange
+    FeatureChangesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FeatureChange"
+      title: FeatureChangesList
     FeatureGroupInput:
       type: object
       properties:
@@ -16675,6 +16779,23 @@ components:
       - meta
       - items
       title: Videos
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -16704,23 +16825,6 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed

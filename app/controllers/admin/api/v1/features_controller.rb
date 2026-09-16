@@ -4,7 +4,11 @@ module Admin
   module Api
     module V1
       class FeaturesController < ::Admin::Api::BaseController
-        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_user_self_service toggle_fleet_self_service]
+        # A flag toggled in anger still has a readable history; nobody scrolls
+        # past this, and the page renders the list inline.
+        HISTORY_LIMIT = 50
+
+        before_action :set_feature, only: %i[show history enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_user_self_service toggle_fleet_self_service]
 
         def index
           authorize! with: ::Admin::FeaturePolicy
@@ -13,6 +17,16 @@ module Admin
         end
 
         def show
+        end
+
+        # The rollout as it happened, newest first. Nothing else can answer "how
+        # did this flag get here": flipper_gates keeps no history of its own, and
+        # a boolean enable deletes the actor rows that preceded it.
+        def history
+          @changes = FeatureFlagChange.for_feature(@feature.name)
+            .newest_first
+            .includes(:admin_user, :user)
+            .limit(HISTORY_LIMIT)
         end
 
         def enable
@@ -104,6 +118,18 @@ module Admin
 
           render :show
         end
+
+        # Loaded once per render rather than per row -- /admin/features lists
+        # every flag in the registry, and a call per flag would be ~50 queries on
+        # a page with no other reason to touch this table.
+        #
+        # Lazy on purpose: the mutating actions all `render :show`, and the
+        # summary has to describe the state they just wrote, not the one
+        # set_feature saw.
+        private def feature_summaries
+          @feature_summaries ||= FeatureFlagChange.summaries_for(@features&.map(&:name) || [@feature.name])
+        end
+        helper_method :feature_summaries
 
         private def set_feature
           feature_name = params[:id]

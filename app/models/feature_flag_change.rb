@@ -101,16 +101,47 @@ class FeatureFlagChange < ApplicationRecord
   end
 
   # When the flag last became on for everyone, or nil if it is not on now.
-  #
-  # The *start of the current run* rather than the newest `on` row: switching a
-  # flag on and then granting an extra actor writes a second `on` row, and the
-  # flag has been fully open since the first of them. A run is broken by any row
-  # that is not `on`, which is the off-and-on-again case `flipper_gates` gets
-  # wrong -- it reports the re-enable as though the flag had never been off.
   def self.fully_on_since(feature_name)
-    states = for_feature(feature_name).newest_first.pluck(:state_after, :created_at)
+    run_start(for_feature(feature_name).newest_first.pluck(:state_after, :created_at))
+  end
+
+  # The same answer for a whole page of flags, in one query rather than two per
+  # row. /admin/features renders every flag in the registry, so the per-flag
+  # version would be ~50 queries for a page that has no other reason to touch
+  # this table.
+  def self.summaries_for(feature_names)
+    names = feature_names.map(&:to_s)
+    by_feature = where(feature_name: names).newest_first.includes(:admin_user, :user).group_by(&:feature_name)
+
+    names.index_with do |name|
+      rows = by_feature[name] || []
+
+      Summary.new(
+        fully_on_since: run_start(rows.map { |row| [row.state_after, row.created_at] }),
+        last_change: rows.first
+      )
+    end
+  end
+
+  Summary = Data.define(:fully_on_since, :last_change)
+
+  # The start of the current unbroken run of `on`, given [state, time] pairs
+  # newest first.
+  #
+  # The start of the run rather than its newest row: switching a flag on and then
+  # granting an extra actor writes a second `on` row, and the flag has been fully
+  # open since the first of them. A run is broken by any row that is not `on`,
+  # which is the off-and-on-again case `flipper_gates` gets wrong -- it reports
+  # the re-enable as though the flag had never been off.
+  private_class_method def self.run_start(states)
     return unless states.first&.first == STATE_ON
 
     states.take_while { |state, _| state == STATE_ON }.last.last
+  end
+
+  # Who to name on the admin page. Nil for sync, console and the backfill, which
+  # is why the source is shown beside it rather than instead of it.
+  def actor_label
+    admin_user&.username || user&.username
   end
 end

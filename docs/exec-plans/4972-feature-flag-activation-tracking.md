@@ -132,15 +132,23 @@ value the row now holds. Every other gate is written once and the two are identi
 
 ### Phase 4 — reading it back
 
-1. `_feature.jbuilder` gains `fullyOnSince`, `lastChangedAt`, `lastChangedBy`.
-2. `Admin::V1::Schemas::Feature` gains the same three. It is `additionalProperties: false`
-   and hand-written, so the jbuilder change does nothing until this is edited too.
-3. `/admin/features` shows "on for everyone since …" per row, and a per-flag history panel
-   on the detail view — the rollout path (actors → percentage → boolean) is the part that is
-   unknowable today.
-4. `bin/feature-flags stale` — every non-`permanent` flag whose `fully_on_since` is older
-   than N days. This is the payoff: the command that would have produced #4960–#4969 without
-   anyone reading a gate table by hand.
+1. `_feature.jbuilder` gains `fullyOnSince`, `lastChangedAt`, `lastChangedBy` and
+   `lastChangedSource` — four rather than the three planned. `lastChangedBy` is null for
+   every change sync, the console and the backfill made, and without the source beside it
+   that reads as missing data rather than as "no person did this".
+2. `Admin::V1::Schemas::Feature` gains the same four, plus new `FeatureChange` /
+   `FeatureChangesList` components. It is `additionalProperties: false` and hand-written, so
+   the jbuilder change does nothing until this is edited too.
+3. `FeatureFlagChange.summaries_for` loads both answers for a whole page in one query, called
+   lazily from the controller: the mutating actions all `render :show`, and the summary has
+   to describe the state they just wrote rather than the one `set_feature` saw.
+4. `GET /admin/api/v1/features/:id/history` and a `FeatureHistory` component in the expanded
+   row — the rollout path (actors → percentage → boolean) is the part that is unknowable
+   today. Fetched per feature rather than with the list, since only the expanded one is read.
+5. `/admin/features` marks each fully open non-permanent flag with how long it has been open.
+6. `bin/feature-flags stale [DAYS]` — every non-`permanent` flag whose `fully_on_since` is
+   older than N days. This is the payoff: the command that would have produced #4960–#4969
+   without anyone reading a gate table by hand.
 
 ## Intent Verification
 
@@ -157,7 +165,8 @@ value the row now holds. Every other gate is written once and the two are identi
       today.
 - [x] **A pruned flag keeps its history.** `Synchronizer` removing a flag leaves its rows in
       place.
-- [ ] **The admin page shows the date** and the API schema check passes.
+- [x] **The admin page shows the date** and the API schema check passes.
+- [x] **`stale` names the flags that are ready to go** and skips the permanent ones.
 
 ## Key files
 
@@ -229,10 +238,21 @@ value the row now holds. Every other gate is written once and the two are identi
     `FeatureSetting#self_service=`, a column replaced by `self_service_user` /
     `self_service_fleet`. Production is unaffected, since it ran that migration when the
     column existed. Not touched here — it is its own fix.
+- **2026-09-16** Phase 4 built. 960 admin integration tests, 74 feature-flag tests and 12
+  frontend specs green; `lint:ts`, `lint:js` and `ruby-lint` clean.
+  - **"Is it open?" is asked of Flipper, "since when?" of the log.** `StaleReport` deliberately
+    does not decide openness from the change log: a gap in the log must not be able to hide an
+    open flag from the one report whose job is to notice them. The log answers only the
+    question Flipper cannot.
+  - An open flag with **no** recorded history is listed as "open since an unrecorded date"
+    rather than dropped, for the same reason.
+  - Regenerating the schema also rewrote `swagger/v1/schema.yaml` — purely the known macOS
+    reordering of `components.parameters` against `securitySchemes`, no content change.
+    Reverted; only `swagger/admin/v1/schema.yaml` belongs in this diff.
 
 ## Progress
 
 - [x] Phase 1 — the log
 - [x] Phase 2 — attribution
 - [x] Phase 3 — backfill
-- [ ] Phase 4 — reading it back
+- [x] Phase 4 — reading it back

@@ -46,6 +46,16 @@
         "stateOn": "Enabled",
         "stateOff": "Disabled",
         "stateConditional": "Conditional",
+        "openFor": "Open for %{days} days",
+        "historyEmpty": "Nothing recorded for this feature yet.",
+        "historyBy": "by %{actor}",
+        "sources": {
+          "admin": "Admin",
+          "self_service": "Self-service",
+          "sync": "Deploy",
+          "console": "Console",
+          "backfill": "Backfilled"
+        },
         "selfService": "Self-service",
         "actors": "Actors",
         "groups": "Groups",
