@@ -46,6 +46,19 @@ class FeatureFlagChange < ApplicationRecord
   SOURCE_BACKFILL = "backfill"
   SOURCES = [SOURCE_ADMIN, SOURCE_SELF_SERVICE, SOURCE_SYNC, SOURCE_CONSOLE, SOURCE_BACKFILL].freeze
 
+  # What `gate_name` holds, keyed by the column flipper_gates stores it under.
+  #
+  # Flipper names the actor and group gates in the singular but keys them in the
+  # plural, and the notification carries the name while the table carries the
+  # key -- so a row read out of flipper_gates and a row written by the
+  # subscriber would otherwise disagree about what the same gate is called.
+  # Derived rather than listed so a gate added by a future flipper cannot drift.
+  GATE_NAMES_BY_STORAGE_KEY = Flipper::Feature
+    .new(:_, Flipper::Adapters::Memory.new)
+    .gates
+    .to_h { |gate| [gate.key.to_s, gate.name.to_s] }
+    .freeze
+
   # Flipper's own three, stringified.
   STATE_ON = "on"
   STATE_OFF = "off"

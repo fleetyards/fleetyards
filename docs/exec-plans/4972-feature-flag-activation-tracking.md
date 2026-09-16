@@ -116,9 +116,19 @@ in the same place. Unset means `console`, which is the honest answer for a `bin/
 
 ### Phase 3 — backfill
 
-Data migration seeding one row per existing `flipper_gates` row from its `created_at`,
-`source: "backfill"`, no actor. It is a lower bound, not the truth — a flag toggled off and
-on backfills as though it had only ever been on once — and the migration comment says so.
+Data migration seeding one `add` row per `flipper_features` row and one `enable` row per
+surviving `flipper_gates` row, `source: "backfill"`, no actor. `state_after` is replayed
+cumulatively over the gates that existed at each step, so the final row always matches the
+flag's real state today.
+
+It is a lower bound, not the truth, and the migration comment says why it cannot be more:
+a boolean disable deletes the row, and a boolean *enable* runs `set(clear: true)` which
+deletes every actor and group row first — so the rollout that preceded a fully-open flag is
+already gone and no backfill can recover it.
+
+Timestamps come from `updated_at` rather than `created_at`: a percentage gate is updated in
+place, so its `created_at` is when a percentage was first set rather than when it took the
+value the row now holds. Every other gate is written once and the two are identical.
 
 ### Phase 4 — reading it back
 
@@ -203,10 +213,26 @@ on backfills as though it had only ever been on once — and the migration comme
     wrong-scope token then gets a 200. Both actors are now stored as procs and resolved in
     `FeatureFlagChange.record!`, which is what `set_paper_trail_whodunnit` has always done in
     these controllers — the proc there is load-bearing, not a style choice.
+- **2026-09-16** Phase 3 built, 66 related tests green, and smoke-tested against the real
+  24-flag registry in the worktree database.
+  - **`gate_name` meant two different things.** Flipper names the actor and group gates in
+    the singular (`actor`, `group`) but stores them plural (`actors`, `groups`), and the
+    notification carries the *name* while `flipper_gates` carries the *key* — so a backfilled
+    row and a live one would have disagreed about what the same gate is called, silently, for
+    the two gate types that matter most. `FeatureFlagChange::GATE_NAMES_BY_STORAGE_KEY` is
+    derived from Flipper's own gate objects rather than listed, so a gate added by a future
+    flipper cannot drift.
+  - **A percentage of 0 is the gate's default**, so the presence of the row is not enough to
+    call a flag conditional — `Flipper::Feature#state` would report it off.
+  - `bin/rails data:migrate` cannot complete on a *fresh* database, and has not been able to
+    since long before this branch: `db/data/20260309112027_create_feature_flags.rb` writes
+    `FeatureSetting#self_service=`, a column replaced by `self_service_user` /
+    `self_service_fleet`. Production is unaffected, since it ran that migration when the
+    column existed. Not touched here — it is its own fix.
 
 ## Progress
 
 - [x] Phase 1 — the log
 - [x] Phase 2 — attribution
-- [ ] Phase 3 — backfill
+- [x] Phase 3 — backfill
 - [ ] Phase 4 — reading it back
