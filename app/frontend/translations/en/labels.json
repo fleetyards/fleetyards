@@ -993,6 +993,7 @@
         "payerEmail": "Payer email",
         "claimKey": "Supporter token",
         "linkedVia": "Linked via",
+        "source": "Source",
         "note": "Internal note",
         "stats": {
           "total": "Total",

@@ -993,6 +993,7 @@
         "payerEmail": "付款人電子郵件",
         "claimKey": "支持者權杖",
         "linkedVia": "連結方式",
+        "source": "來源",
         "note": "內部備註",
         "stats": {
           "total": "總計",

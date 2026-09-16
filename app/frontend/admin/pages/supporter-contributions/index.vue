@@ -91,58 +91,58 @@ const {
   ...asyncStatus
 } = useSupporterContributions(supporterContributionsQueryParams);
 
+const { t, l } = useI18n();
+const { formatCents } = useCurrencyFormat();
+const { displayInfo } = useAppNotifications();
+
 const columns: BaseTableCol<SupporterContribution>[] = [
   {
     name: "name",
-    label: "Name",
+    label: t("labels.supporterContribution.name"),
     sortable: true,
   },
   {
     name: "amount",
-    label: "Amount",
+    label: t("labels.supporterContribution.amount"),
     sortable: false,
   },
   {
     name: "user",
-    label: "Account",
+    label: t("labels.supporterContribution.user"),
     mobile: false,
   },
   {
     name: "linkedVia",
-    label: "Linked via",
+    label: t("labels.supporterContribution.linkedVia"),
     mobile: false,
   },
   {
     name: "startedAt",
-    label: "Started at",
+    label: t("labels.supporterContribution.startedAt"),
     sortable: true,
   },
   {
     name: "endedAt",
-    label: "Ended at",
+    label: t("labels.supporterContribution.endedAt"),
     mobile: false,
     sortable: true,
   },
   {
     name: "recurring",
-    label: "Recurring",
+    label: t("labels.supporterContribution.recurring"),
     mobile: false,
   },
   {
     name: "anonymous",
-    label: "Anonymous",
+    label: t("labels.supporterContribution.anonymous"),
     mobile: false,
   },
   {
     name: "source",
-    label: "Source",
+    label: t("labels.supporterContribution.source"),
     mobile: false,
   },
 ];
-
-const { t, l } = useI18n();
-const { formatCents } = useCurrencyFormat();
-const { displayInfo } = useAppNotifications();
 
 const syncMutation = useSyncSupporterContributionsFromPatreon({
   mutation: {

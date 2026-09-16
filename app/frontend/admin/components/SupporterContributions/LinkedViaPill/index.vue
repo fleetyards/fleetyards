@@ -10,9 +10,9 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { SupporterContributionLinkedViaEnum } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   linkedVia?: SupporterContributionLinkedViaEnum;
-};
+}
 
 const props = defineProps<Props>();
 

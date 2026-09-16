@@ -121,8 +121,9 @@ test.describe("Admin Supporter Contribution links", () => {
     await expect(page).toHaveURL(/\/admin\/?$/);
   });
 
-  const row = (page: import("@playwright/test").Page, name: string) =>
-    page.locator("tbody .base-table-row").filter({ hasText: name });
+  function row(page: import("@playwright/test").Page, name: string) {
+    return page.locator("tbody .base-table-row").filter({ hasText: name });
+  }
 
   test("Names the rule that linked each contribution", async ({ page }) => {
     await page.goto("/admin/supporter-contributions/");

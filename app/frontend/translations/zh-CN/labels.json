@@ -993,6 +993,7 @@
         "payerEmail": "付款人邮箱",
         "claimKey": "支持者令牌",
         "linkedVia": "关联方式",
+        "source": "来源",
         "note": "内部备注",
         "stats": {
           "total": "总计",

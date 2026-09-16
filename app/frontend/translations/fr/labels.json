@@ -993,6 +993,7 @@
         "payerEmail": "E-mail du payeur",
         "claimKey": "Jeton de soutien",
         "linkedVia": "Lié via",
+        "source": "Source",
         "note": "Note interne",
         "stats": {
           "total": "Total",

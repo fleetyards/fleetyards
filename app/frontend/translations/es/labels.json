@@ -993,6 +993,7 @@
         "payerEmail": "Correo del pagador",
         "claimKey": "Token de patrocinador",
         "linkedVia": "Vinculada mediante",
+        "source": "Origen",
         "note": "Nota interna",
         "stats": {
           "total": "Total",

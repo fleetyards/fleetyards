@@ -993,6 +993,7 @@
         "payerEmail": "E-Mail des Zahlenden",
         "claimKey": "Unterstützer-Token",
         "linkedVia": "Verknüpft über",
+        "source": "Quelle",
         "note": "Interne Notiz",
         "stats": {
           "total": "Gesamt",
