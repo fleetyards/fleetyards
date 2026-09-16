@@ -7,8 +7,10 @@
 #  id                  :uuid             not null, primary key
 #  amount_cents        :integer          not null
 #  anonymous           :boolean          default(FALSE), not null
+#  claim_key           :string
 #  currency            :string           default("EUR"), not null
 #  ended_at            :date
+#  linked_via          :string
 #  name                :string
 #  note                :text
 #  payer_email         :string
@@ -27,6 +29,7 @@
 # Indexes
 #
 #  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
+#  index_supporter_contributions_on_linked_via              (linked_via) WHERE (linked_via IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_patreon_user_id         (patreon_user_id) WHERE (patreon_user_id IS NOT NULL)
 #  index_supporter_contributions_on_payer_email             (payer_email) WHERE (payer_email IS NOT NULL)
@@ -48,7 +51,7 @@ class SupporterContribution < ApplicationRecord
   has_paper_trail on: %i[update],
     only: %i[
       name amount_cents currency anonymous recurring
-      started_at ended_at note user_id payer_email
+      started_at ended_at note user_id payer_email claim_key
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -72,14 +75,25 @@ class SupporterContribution < ApplicationRecord
 
   enum :source, {manual: "manual", patreon: "patreon", kofi: "kofi"}, default: "manual"
 
+  # Which rule linked the row, in the order Supporters::Linker tries them. Null
+  # while nothing is linked; `manual` is the one nobody derives -- an admin
+  # naming the account outranks every rule, so it is recorded as its own answer
+  # rather than left blank.
+  LINK_RULES = %w[patreon_account claim_key payer_email manual].freeze
+
+  enum :linked_via, LINK_RULES.index_by(&:itself), prefix: :linked_via
+
   validates :amount_cents, presence: true, numericality: {greater_than: 0, only_integer: true}
   validates :currency, presence: true
   validates :started_at, presence: true
   validates :user, presence: true, if: :user_id?
+  validates :claim_key, format: {with: SupporterClaimKey::CANONICAL}, allow_nil: true
   validate :ended_at_after_started_at
 
   before_validation :force_anonymous_when_name_blank
   before_validation :normalize_payer_email
+  before_validation :normalize_claim_key
+  before_save :stamp_link_source
 
   scope :active_now, ->(date = Date.current) { active_in(date.beginning_of_month, date.end_of_month) }
 
@@ -99,11 +113,32 @@ class SupporterContribution < ApplicationRecord
     self.payer_email = payer_email&.strip&.downcase.presence
   end
 
+  # Anything key-shaped is stored in its canonical form, however it was typed.
+  # Anything else is left as entered so the format validation can reject it --
+  # normalising it to nil would turn a typo into silence, which is the failure
+  # a dedicated field exists to avoid.
+  private def normalize_claim_key
+    self.claim_key = claim_key.presence
+    return if claim_key.blank?
+
+    self.claim_key = SupporterClaimKey.normalize(claim_key) || claim_key.strip
+  end
+
+  # Supporters::Linker names the rule it used in the same write, so a link that
+  # arrives without one came from somewhere else -- an admin picking an account
+  # in the form, a console, a fixture -- and `manual` is what all of those are.
+  private def stamp_link_source
+    return unless will_save_change_to_user_id?
+    return if will_save_change_to_linked_via?
+
+    self.linked_via = user_id.present? ? "manual" : nil
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "name", "amount_cents", "currency", "anonymous", "recurring",
       "started_at", "ended_at", "note", "source", "patreon_member_id",
-      "kofi_transaction_id", "payer_email",
+      "kofi_transaction_id", "payer_email", "linked_via",
       "created_at", "updated_at", "id", "user_id"
     ]
   end
@@ -114,6 +149,12 @@ class SupporterContribution < ApplicationRecord
 
   def self.monthly_total(date = Date.current)
     active_now(date).sum(:amount_cents)
+  end
+
+  # The field an admin filled in wins over a key found in the donation message:
+  # the message is what the donor wrote, the field is what an admin read it as.
+  def claim_key_for_linking
+    claim_key.presence || SupporterClaimKey.extract(note)
   end
 
   def formatted_amount

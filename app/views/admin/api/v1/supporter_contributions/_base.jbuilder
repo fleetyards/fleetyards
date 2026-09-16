@@ -12,6 +12,8 @@ json.started_at supporter_contribution.started_at.iso8601
 json.ended_at supporter_contribution.ended_at&.iso8601 if supporter_contribution.ended_at.present?
 json.note supporter_contribution.note if supporter_contribution.note.present?
 json.payer_email supporter_contribution.payer_email if supporter_contribution.payer_email.present?
+json.claim_key supporter_contribution.claim_key if supporter_contribution.claim_key.present?
+json.linked_via supporter_contribution.linked_via if supporter_contribution.linked_via.present?
 
 if supporter_contribution.user.present?
   json.user_id supporter_contribution.user_id

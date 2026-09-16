@@ -990,6 +990,10 @@
         "recurring": "Recurring",
         "startedAt": "Started at",
         "endedAt": "Ended at",
+        "payerEmail": "Payer email",
+        "claimKey": "Supporter token",
+        "linkedVia": "Linked via",
+        "source": "Source",
         "note": "Internal note",
         "stats": {
           "total": "Total",
@@ -1552,6 +1556,7 @@
           "user": "Linked account",
           "linked": "Account link",
           "linkedOnly": "Linked",
+          "linkedVia": "Linked via",
           "unlinkedOnly": "Not linked"
         },
         "adminNotifications": {
@@ -1776,7 +1781,14 @@
         "supporterContributions": {
           "source": {
             "patreon": "Patreon",
+            "kofi": "Ko-fi",
             "manual": "Manual"
+          },
+          "linkedVia": {
+            "patreon_account": "Patreon account",
+            "claim_key": "Supporter token",
+            "payer_email": "Payer email",
+            "manual": "Set by an admin"
           }
         },
         "resourceAccess": {

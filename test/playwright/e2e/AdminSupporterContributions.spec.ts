@@ -18,7 +18,9 @@ test.describe("Admin Supporter Contributions", () => {
     await expect(page).toHaveURL(/\/admin\/?$/);
   });
 
-  test("Shows the current month beside the all-time totals", async ({ page }) => {
+  test("Shows the current month beside the all-time totals", async ({
+    page,
+  }) => {
     await page.goto("/admin/supporter-contributions/");
 
     const stats = page.getByTestId("supporter-contributions-stats");
@@ -81,21 +83,75 @@ test.describe("Admin Supporter Contributions", () => {
     // One column per month for the contributions, plus a spline for the goal.
     // Highcharts draws columns as paths, so counting `rect`s would only find
     // the legend swatch.
-    await expect(
-      chart.locator(".highcharts-column-series > path"),
-    ).toHaveCount(12);
+    await expect(chart.locator(".highcharts-column-series > path")).toHaveCount(
+      12,
+    );
     // A flat goal line has a zero-height box, so Playwright reads it as hidden.
     await expect(
       chart.locator(".highcharts-spline-series path.highcharts-graph").first(),
     ).toBeAttached();
 
     // Twelve months on the category axis, and money on the value axis.
-    await expect(chart.locator(".highcharts-xaxis-labels text")).toHaveCount(12);
+    await expect(chart.locator(".highcharts-xaxis-labels text")).toHaveCount(
+      12,
+    );
     await expect(
       chart.locator(".highcharts-yaxis-labels text").first(),
     ).toContainText("€");
 
-    await expect(chart.getByText("Contributions", { exact: true })).toBeVisible();
+    await expect(
+      chart.getByText("Contributions", { exact: true }),
+    ).toBeVisible();
     await expect(chart.getByText("Goal", { exact: true })).toBeVisible();
+  });
+});
+
+test.describe("Admin Supporter Contribution links", () => {
+  test.slow();
+
+  test.beforeEach(async ({ page }) => {
+    await app("clean");
+    await appScenario("admin_supporter_contribution_links");
+
+    await page.goto("/admin/login/");
+    await page.locator("input[name='login']").fill("admin_supporters");
+    await page.locator("input[name='password']").fill("password123");
+    await page.getByTestId("submit-login").click();
+
+    await expect(page).toHaveURL(/\/admin\/?$/);
+  });
+
+  function row(page: import("@playwright/test").Page, name: string) {
+    return page.locator("tbody .base-table-row").filter({ hasText: name });
+  }
+
+  test("Names the rule that linked each contribution", async ({ page }) => {
+    await page.goto("/admin/supporter-contributions/");
+
+    await expect(page.locator("tbody .base-table-row")).toHaveCount(4);
+
+    await expect(
+      row(page, "Token donor").getByTestId("linked-via-pill"),
+    ).toHaveText("Supporter token");
+    await expect(
+      row(page, "Mail donor").getByTestId("linked-via-pill"),
+    ).toHaveText("Payer email");
+    await expect(
+      row(page, "Hand linked donor").getByTestId("linked-via-pill"),
+    ).toHaveText("Set by an admin");
+
+    // Nothing linked it, so there is no rule to name.
+    await expect(
+      row(page, "Unlinked donor").getByTestId("linked-via-pill"),
+    ).toHaveCount(0);
+  });
+
+  test("Narrows the list to the contributions a token linked", async ({
+    page,
+  }) => {
+    await page.goto("/admin/supporter-contributions/?linkedViaEq=claim_key");
+
+    await expect(page.locator("tbody .base-table-row")).toHaveCount(1);
+    await expect(row(page, "Token donor")).toBeVisible();
   });
 });

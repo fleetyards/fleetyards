@@ -26,16 +26,28 @@ module Supporters
     def call
       return @contribution.user if @contribution.user_id.present?
 
-      user = by_connected_patreon_account || by_claim_key || by_verified_email
+      user, rule = resolve
       return if user.nil?
 
-      @contribution.update!(user: user)
+      # The rule goes down with the link, in the same write. Recomputing it
+      # later would be guesswork: a donor who put their key in the message and
+      # paid from their registered address matches two arms, and by then there
+      # is nothing left to say which one actually decided it.
+      @contribution.update!(user: user, linked_via: rule)
       user
     end
 
-    # First, because it is a deliberate act. A supporter who put their key in a
-    # donation meant that account, even if the payment carries an address
-    # belonging to someone else's.
+    # The user and the name of the arm that found them, in precedence order.
+    private def resolve
+      if (user = by_connected_patreon_account)
+        [user, :patreon_account]
+      elsif (user = by_claim_key)
+        [user, :claim_key]
+      elsif (user = by_verified_email)
+        [user, :payer_email]
+      end
+    end
+
     # First, because it is the only arm nobody asserts: the supporter proved
     # they hold the Patreon account by signing into it. A key can be mistyped
     # into the wrong payment and an address can be shared; this cannot.
@@ -50,8 +62,11 @@ module Supporters
       )
     end
 
+    # A deliberate act, so it outranks the address: a supporter who put their key
+    # in a donation meant that account, even if the payment carries an address
+    # belonging to someone else's.
     private def by_claim_key
-      User.find_by_claim_key(SupporterClaimKey.extract(@contribution.note))
+      User.find_by_claim_key(@contribution.claim_key_for_linking)
     end
 
     # Safe where a user-entered address would not be: neither side is a claim.

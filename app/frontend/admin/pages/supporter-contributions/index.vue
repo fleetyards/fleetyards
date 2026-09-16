@@ -17,6 +17,7 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import SupporterContributionActions from "@/admin/components/SupporterContributions/Actions/index.vue";
 import FilterForm from "@/admin/components/SupporterContributions/FilterForm/index.vue";
 import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
+import LinkedViaPill from "@/admin/components/SupporterContributions/LinkedViaPill/index.vue";
 import MonthlyChart from "@/admin/components/SupporterContributions/MonthlyChart/index.vue";
 import {
   useSupporterContributions,
@@ -90,53 +91,58 @@ const {
   ...asyncStatus
 } = useSupporterContributions(supporterContributionsQueryParams);
 
+const { t, l } = useI18n();
+const { formatCents } = useCurrencyFormat();
+const { displayInfo } = useAppNotifications();
+
 const columns: BaseTableCol<SupporterContribution>[] = [
   {
     name: "name",
-    label: "Name",
+    label: t("labels.supporterContribution.name"),
     sortable: true,
   },
   {
     name: "amount",
-    label: "Amount",
+    label: t("labels.supporterContribution.amount"),
     sortable: false,
   },
   {
     name: "user",
-    label: "Account",
+    label: t("labels.supporterContribution.user"),
+    mobile: false,
+  },
+  {
+    name: "linkedVia",
+    label: t("labels.supporterContribution.linkedVia"),
     mobile: false,
   },
   {
     name: "startedAt",
-    label: "Started at",
+    label: t("labels.supporterContribution.startedAt"),
     sortable: true,
   },
   {
     name: "endedAt",
-    label: "Ended at",
+    label: t("labels.supporterContribution.endedAt"),
     mobile: false,
     sortable: true,
   },
   {
     name: "recurring",
-    label: "Recurring",
+    label: t("labels.supporterContribution.recurring"),
     mobile: false,
   },
   {
     name: "anonymous",
-    label: "Anonymous",
+    label: t("labels.supporterContribution.anonymous"),
     mobile: false,
   },
   {
     name: "source",
-    label: "Source",
+    label: t("labels.supporterContribution.source"),
     mobile: false,
   },
 ];
-
-const { t, l } = useI18n();
-const { formatCents } = useCurrencyFormat();
-const { displayInfo } = useAppNotifications();
 
 const syncMutation = useSyncSupporterContributionsFromPatreon({
   mutation: {
@@ -253,6 +259,9 @@ const syncFromPatreon = () => {
           </router-link>
           <span v-else>—</span>
         </template>
+        <template #col-linkedVia="{ record }">
+          <LinkedViaPill :linked-via="record.linkedVia" />
+        </template>
         <template #col-startedAt="{ record }">
           {{ l(record.startedAt, "datetime.formats.short") }}
         </template>
@@ -273,6 +282,11 @@ const syncFromPatreon = () => {
             v-if="record.source === SupporterContributionSourceEnum.PATREON"
             class="fa-brands fa-patreon"
             :title="t('labels.admin.supporterContributions.source.patreon')"
+          />
+          <i
+            v-else-if="record.source === SupporterContributionSourceEnum.KOFI"
+            class="fa-duotone fa-mug-hot"
+            :title="t('labels.admin.supporterContributions.source.kofi')"
           />
           <span v-else>{{
             t("labels.admin.supporterContributions.source.manual")

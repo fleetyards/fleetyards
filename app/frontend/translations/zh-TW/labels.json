@@ -990,6 +990,10 @@
         "recurring": "定期",
         "startedAt": "開始於",
         "endedAt": "結束於",
+        "payerEmail": "付款人電子郵件",
+        "claimKey": "支持者權杖",
+        "linkedVia": "連結方式",
+        "source": "來源",
         "note": "內部備註",
         "stats": {
           "total": "總計",
@@ -1552,6 +1556,7 @@
           "user": "已連結帳戶",
           "linked": "帳戶連結",
           "linkedOnly": "已連結",
+          "linkedVia": "連結方式",
           "unlinkedOnly": "未連結"
         },
         "adminNotifications": {
@@ -1762,7 +1767,14 @@
         "supporterContributions": {
           "source": {
             "patreon": "Patreon",
+            "kofi": "Ko-fi",
             "manual": "手動"
+          },
+          "linkedVia": {
+            "patreon_account": "Patreon 帳戶",
+            "claim_key": "支持者權杖",
+            "payer_email": "付款人電子郵件",
+            "manual": "管理員設定"
           }
         },
         "resourceAccess": {

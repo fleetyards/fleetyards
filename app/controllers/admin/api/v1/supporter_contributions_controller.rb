@@ -98,18 +98,40 @@ module Admin
         # A hand-entered PayPal or Buy Me a Coffee payment resolves the same way a
         # webhook does.
         #
-        # Correcting the address re-resolves rather than keeping the old link:
-        # an admin editing payer_email is saying who paid, and leaving the
-        # entitlement with the previous account is the surprising answer. An
-        # admin who names a user in the same request outranks both -- that is an
-        # explicit choice, not a correction.
+        # Correcting either matching input re-resolves rather than keeping the
+        # old link: an admin editing payer_email or claim_key is saying who
+        # paid, and leaving the entitlement with the previous account is the
+        # surprising answer. An admin who moves the row to a different user in
+        # the same request outranks both -- that is an explicit choice, not a
+        # correction.
+        #
+        # Keyed on the user actually changing rather than on `user_id` being
+        # present in the params: the form submits it on every save, so its
+        # presence says nothing about whether anybody touched it.
         private def resolve_supporter
-          if @supporter_contribution.saved_change_to_payer_email? &&
-              !supporter_contribution_params.key?(:user_id)
-            @supporter_contribution.update!(user_id: nil)
-          end
+          return if unlinked_by_admin?
+
+          @supporter_contribution.update!(user_id: nil) if corrected_without_a_new_account?
 
           ::Supporters::Linker.call(@supporter_contribution)
+        end
+
+        # An admin who emptied the account select means it, so the row stays
+        # unlinked however well its address or key still matches. Checked before
+        # the correction below, which clears `user_id` itself and would
+        # otherwise be indistinguishable from this.
+        private def unlinked_by_admin?
+          @supporter_contribution.saved_change_to_user_id? &&
+            @supporter_contribution.user_id.nil?
+        end
+
+        private def corrected_without_a_new_account?
+          resolved_inputs_changed? && !@supporter_contribution.saved_change_to_user_id?
+        end
+
+        private def resolved_inputs_changed?
+          @supporter_contribution.saved_change_to_payer_email? ||
+            @supporter_contribution.saved_change_to_claim_key?
         end
 
         private def set_supporter_contribution
@@ -121,14 +143,15 @@ module Admin
         private def supporter_contribution_params
           @supporter_contribution_params ||= params.permit(
             :name, :amount_cents, :currency, :anonymous, :recurring,
-            :started_at, :ended_at, :note, :user_id, :payer_email
+            :started_at, :ended_at, :note, :user_id, :payer_email, :claim_key
           )
         end
 
         private def supporter_contribution_query_params
           @supporter_contribution_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq,
-            :started_at_gteq, :started_at_lteq, :ended_at_gteq, :ended_at_lteq,
+            :linked_via_eq, :started_at_gteq, :started_at_lteq,
+            :ended_at_gteq, :ended_at_lteq,
             :user_id_eq, :user_id_null, :user_username_cont,
             :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})

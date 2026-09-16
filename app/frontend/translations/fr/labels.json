@@ -990,6 +990,10 @@
         "recurring": "Récurrent",
         "startedAt": "Démarré le",
         "endedAt": "Terminé le",
+        "payerEmail": "E-mail du payeur",
+        "claimKey": "Jeton de soutien",
+        "linkedVia": "Lié via",
+        "source": "Source",
         "note": "Note interne",
         "stats": {
           "total": "Total",
@@ -1552,6 +1556,7 @@
           "user": "Compte lié",
           "linked": "Liaison au compte",
           "linkedOnly": "Liées",
+          "linkedVia": "Lié via",
           "unlinkedOnly": "Non liées"
         },
         "adminNotifications": {
@@ -1762,7 +1767,14 @@
         "supporterContributions": {
           "source": {
             "patreon": "Patreon",
+            "kofi": "Ko-fi",
             "manual": "Manuel"
+          },
+          "linkedVia": {
+            "patreon_account": "Compte Patreon",
+            "claim_key": "Jeton de soutien",
+            "payer_email": "E-mail du payeur",
+            "manual": "Défini par un admin"
           }
         },
         "resourceAccess": {

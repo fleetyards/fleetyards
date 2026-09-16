@@ -15647,6 +15647,10 @@ components:
           type: string
         payerEmail:
           type: string
+        claimKey:
+          type: string
+        linkedVia:
+          "$ref": "#/components/schemas/SupporterContributionLinkedViaEnum"
         userId:
           type: string
           format: uuid
@@ -15695,6 +15699,10 @@ components:
           type:
           - string
           - 'null'
+        claimKey:
+          type:
+          - string
+          - 'null'
         userId:
           type:
           - string
@@ -15705,6 +15713,19 @@ components:
       - amountCents
       - startedAt
       title: SupporterContributionInput
+    SupporterContributionLinkedViaEnum:
+      type: string
+      enum:
+      - patreon_account
+      - claim_key
+      - payer_email
+      - manual
+      x-enumNames:
+      - PATREON_ACCOUNT
+      - CLAIM_KEY
+      - PAYER_EMAIL
+      - MANUAL
+      title: SupporterContributionLinkedViaEnum
     SupporterContributionMonthlyStats:
       type: object
       properties:
@@ -15753,6 +15774,8 @@ components:
           type: boolean
         sourceEq:
           "$ref": "#/components/schemas/SupporterContributionSourceEnum"
+        linkedViaEq:
+          "$ref": "#/components/schemas/SupporterContributionLinkedViaEnum"
         startedAtGteq:
           type: string
           format: date

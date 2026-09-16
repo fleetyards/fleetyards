@@ -20,6 +20,10 @@ class SupporterClaimKey
   # donor message reading "for my fleet - FY7K2M9QXD thanks!" still resolves.
   PATTERN = /#{PREFIX}[-\s]?[#{ALPHABET}ILO]{#{GROUP_LENGTH}}[-\s]?[#{ALPHABET}ILO]{#{GROUP_LENGTH}}/i
 
+  # The stored form exactly -- anchored, separated, and free of the folded
+  # characters. What a column holding a key is allowed to contain.
+  CANONICAL = /\A#{PREFIX}(-[#{ALPHABET}]{#{GROUP_LENGTH}}){#{GROUPS}}\z/
+
   def self.generate
     groups = Array.new(GROUPS) do
       Array.new(GROUP_LENGTH) { ALPHABET[SecureRandom.random_number(ALPHABET.length)] }.join

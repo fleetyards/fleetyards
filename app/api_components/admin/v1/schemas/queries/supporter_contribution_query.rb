@@ -15,6 +15,7 @@ module Admin
               recurringEq: {type: :boolean},
               anonymousEq: {type: :boolean},
               sourceEq: ::Admin::V1::Schemas::Enums::SupporterContributionSourceEnum,
+              linkedViaEq: ::Admin::V1::Schemas::Enums::SupporterContributionLinkedViaEnum,
               startedAtGteq: {type: :string, format: :date},
               startedAtLteq: {type: :string, format: :date},
               endedAtGteq: {type: :string, format: :date},
