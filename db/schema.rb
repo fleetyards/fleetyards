@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2096,6 +2096,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
@@ -2164,6 +2165,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
+  add_foreign_key "task_forces", "vehicles", on_delete: :cascade
   add_foreign_key "tour_join_requests", "tours", on_delete: :cascade
   add_foreign_key "tour_join_requests", "users", column: "decided_by_id", on_delete: :nullify
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade

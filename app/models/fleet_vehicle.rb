@@ -15,6 +15,10 @@
 #  index_fleet_vehicles_on_fleet_id_and_vehicle_id  (fleet_id,vehicle_id) UNIQUE
 #  index_fleet_vehicles_on_vehicle_id               (vehicle_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (vehicle_id => vehicles.id) ON DELETE => cascade
+#
 class FleetVehicle < ApplicationRecord
   paginates_per 30
   max_paginates_per 240

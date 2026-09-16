@@ -15,6 +15,10 @@
 #  index_task_forces_on_hangar_group_id  (hangar_group_id)
 #  index_task_forces_on_vehicle_id       (vehicle_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (vehicle_id => vehicles.id) ON DELETE => cascade
+#
 class TaskForce < ApplicationRecord
   belongs_to :vehicle, touch: true
   belongs_to :hangar_group, touch: true
