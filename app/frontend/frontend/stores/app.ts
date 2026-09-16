@@ -50,7 +50,10 @@ export const useAppStore = defineStore("app", {
       this.$reset();
 
       if (hard) {
-        sessionStore.$reset();
+        // Through clearSession rather than $reset: dropping the session has to
+        // advance the epoch the store keys in-flight refreshes on, or a
+        // response still on its way repopulates currentUser behind this reset.
+        sessionStore.clearSession();
         navStore.$reset();
       }
 
