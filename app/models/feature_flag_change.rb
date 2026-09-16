@@ -84,6 +84,15 @@ class FeatureFlagChange < ApplicationRecord
   # Safe to read here -- Flipper's memoizable adapter expires its cache entry on
   # every write, and this runs after the write, so it is never the pre-write
   # value.
+  #
+  # It is a second read rather than an atomic one, so two writes to the *same*
+  # flag that overlap can each record the other's resulting state. Accepted: the
+  # only fix is to serialize the writes themselves, and this subscriber runs
+  # after the write precisely so that no call site has to know it exists. Flag
+  # changes are a handful a week from one or two admins, and the alternative --
+  # deriving the state from the operation -- is wrong every time rather than
+  # under a race, because `disable` leaves a flag `conditional` or `off`
+  # depending on gates this payload does not carry.
   def self.record!(payload)
     feature_name = payload[:feature_name].to_s
     thing = payload[:thing]

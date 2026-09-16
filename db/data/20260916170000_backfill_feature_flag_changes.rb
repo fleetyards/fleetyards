@@ -63,17 +63,27 @@ class BackfillFeatureFlagChanges < ActiveRecord::Migration[8.1]
     )
   end
 
-  # Flipper::Feature#state, applied to the gates that existed at each step.
-  #
-  # A percentage of 0 is the gate's default and leaves the flag off, which is why
-  # the row cannot simply be counted as present.
+  # Flipper::Feature#state, applied to the gates that existed at each step. It has
+  # to agree with the live rows, which record `feature.state` verbatim, so the two
+  # cases where that method is not simply "is any gate set" are reproduced here.
   private def state_for(gates)
-    return FeatureFlagChange::STATE_ON if gates.any? { |gate| gate.key == "boolean" && gate.value == "true" }
+    return FeatureFlagChange::STATE_ON if gates.any? { |gate| fully_open?(gate) }
     return FeatureFlagChange::STATE_CONDITIONAL if gates.any? { |gate| conditional?(gate) }
 
     FeatureFlagChange::STATE_OFF
   end
 
+  # `percentage_of_time` at 100 is on for everyone, and Flipper::Feature#state
+  # special-cases it alongside the boolean gate. `percentage_of_actors` at 100 is
+  # not special-cased there and stays conditional here to match.
+  private def fully_open?(gate)
+    return true if gate.key == "boolean" && gate.value == "true"
+
+    gate.key == "percentage_of_time" && gate.value.to_i == 100
+  end
+
+  # A percentage of 0 is the gate's default and leaves the flag off, which is why
+  # the row cannot simply be counted as present.
   private def conditional?(gate)
     return gate.value.to_i.positive? if gate.key.start_with?("percentage_of_")
 

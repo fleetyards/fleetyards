@@ -94,6 +94,42 @@ class BackfillFeatureFlagChangesTest < ActiveSupport::TestCase
     assert_equal "25", change.thing
   end
 
+  # Flipper::Feature#state special-cases this one alongside the boolean gate, so a
+  # backfilled row has to as well or it would disagree with the live rows the
+  # subscriber writes -- and fully_on_since would report the flag as not open.
+  test "a time rollout at 100 percent is on, not conditional" do
+    feature("all_the_time", created_at: 10.days.ago)
+    gate("all_the_time", "percentage_of_time", "100", at: 2.days.ago)
+
+    backfill
+
+    assert_equal FeatureFlagChange::STATE_ON,
+      FeatureFlagChange.for_feature("all_the_time").find_by(operation: "enable").state_after
+    assert_not_nil FeatureFlagChange.fully_on_since("all_the_time")
+  end
+
+  test "a time rollout below 100 percent stays conditional" do
+    feature("most_of_the_time", created_at: 10.days.ago)
+    gate("most_of_the_time", "percentage_of_time", "99", at: 2.days.ago)
+
+    backfill
+
+    assert_equal FeatureFlagChange::STATE_CONDITIONAL,
+      FeatureFlagChange.for_feature("most_of_the_time").find_by(operation: "enable").state_after
+  end
+
+  # Only percentage_of_time is special-cased in Flipper::Feature#state; an actor
+  # rollout at 100% is still conditional there.
+  test "an actor rollout at 100 percent stays conditional" do
+    feature("all_actors", created_at: 10.days.ago)
+    gate("all_actors", "percentage_of_actors", "100", at: 2.days.ago)
+
+    backfill
+
+    assert_equal FeatureFlagChange::STATE_CONDITIONAL,
+      FeatureFlagChange.for_feature("all_actors").find_by(operation: "enable").state_after
+  end
+
   test "running twice does not double the history" do
     feature("wide_open", created_at: 30.days.ago)
     gate("wide_open", "boolean", "true", at: 5.days.ago)
