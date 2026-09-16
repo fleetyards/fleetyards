@@ -44,25 +44,33 @@ const props = withDefaults(defineProps<Props>(), {
   <Heading size="hero" alignment="left" hero>
     <div class="flex justify-center items-center">
       <Avatar :avatar="props.user.avatar?.smallUrl" />
-      <span>
-        {{ t(props.headlineKey, { user: usernamePlural }) }}
-      </span>
-      <Pill
-        v-if="props.user.supporter"
-        v-tooltip="t('labels.supporter.tooltip')"
-        class="hangar-public-heading__supporter"
-        variant="success"
-        uppercase
-      >
+      <div class="hangar-public-heading__name">
+        <div class="hangar-public-heading__title">
+          <span>
+            {{ t(props.headlineKey, { user: usernamePlural }) }}
+          </span>
+          <Pill
+            v-if="props.user.supporter"
+            v-tooltip="t('labels.supporter.tooltip')"
+            class="hangar-public-heading__supporter"
+            variant="success"
+            uppercase
+          >
+            <i class="fa-duotone fa-heart" />
+            {{ t("labels.supporter.badge") }}
+          </Pill>
+        </div>
         <SupporterBadge
-          v-if="props.user.supporterTier || props.user.supporterRecurring"
+          v-if="
+            props.user.supporter &&
+            (props.user.supporterTier || props.user.supporterRecurring)
+          "
           :tier="props.user.supporterTier"
           :recurring="props.user.supporterRecurring"
-          :size="16"
+          :size="20"
+          class="hangar-public-heading__tier"
         />
-        <i v-else class="fa-duotone fa-heart" />
-        {{ t("labels.supporter.badge") }}
-      </Pill>
+      </div>
     </div>
   </Heading>
 </template>

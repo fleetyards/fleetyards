@@ -15,3 +15,21 @@
   font-size: 0.6em;
   vertical-align: middle;
 }
+
+.hangar-public-heading__name {
+  display: flex;
+  flex-direction: column;
+}
+
+.hangar-public-heading__title {
+  display: flex;
+  align-items: center;
+}
+
+/* On a line of its own rather than inside the pill: the insignia is full-colour
+   art and the pill is one flat tone, so at label size it read as a speck that
+   fought the wordmark instead of sitting with it. */
+.hangar-public-heading__tier {
+  margin-top: 4px;
+  line-height: 1;
+}
