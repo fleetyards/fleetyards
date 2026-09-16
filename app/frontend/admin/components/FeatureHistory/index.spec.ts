@@ -54,16 +54,21 @@ describe("FeatureHistory", () => {
 
     const wrapper = mountHistory();
 
-    expect(
-      wrapper.find('[data-test="feature-history-empty"]').exists(),
-    ).toBe(true);
+    expect(wrapper.find('[data-test="feature-history-empty"]').exists()).toBe(
+      true,
+    );
     expect(wrapper.findAll(ROW)).toHaveLength(0);
   });
 
   it("renders a row per change", () => {
     changes.value = [
       change({ id: "1" }),
-      change({ id: "2", operation: "enable", gateName: "actor", thing: "User;abc" }),
+      change({
+        id: "2",
+        operation: "enable",
+        gateName: "actor",
+        thing: "User;abc",
+      }),
     ];
 
     const wrapper = mountHistory();

@@ -149,7 +149,11 @@ describe("AdminFeaturesPage", () => {
   // to surface, so which rows carry it matters.
   it("marks a fully open flag with how long it has been open", async () => {
     features.value = [
-      feature({ name: "friends", state: "on", fullyOnSince: "2026-01-01T00:00:00Z" }),
+      feature({
+        name: "friends",
+        state: "on",
+        fullyOnSince: "2026-01-01T00:00:00Z",
+      }),
     ];
 
     const { wrapper } = await mountPage();

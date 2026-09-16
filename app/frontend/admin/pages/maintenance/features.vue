@@ -332,7 +332,11 @@ const hasSelectedActor = computed(() => {
             margin-right
             data-test="feature-open-for"
           >
-            {{ t("labels.features.openFor", { days: daysOpen(item.fullyOnSince) }) }}
+            {{
+              t("labels.features.openFor", {
+                days: daysOpen(item.fullyOnSince),
+              })
+            }}
           </BasePill>
         </template>
 
