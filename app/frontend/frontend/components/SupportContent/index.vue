@@ -18,11 +18,11 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
-type Props = {
+interface Props {
   // The support page shows this content on its own. In the modal it is false,
   // and the difference is only where a login has to come back to.
   standalone?: boolean;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   standalone: false,
@@ -32,7 +32,7 @@ const { t } = useI18n();
 const sessionStore = useSessionStore();
 const redirectBackStore = useRedirectBackStore();
 const { supportReturnRoute } = useSupportModal();
-const { displaySuccess } = useAppNotifications();
+const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
 // Reading generates the key, so it is here the moment somebody opens the modal
@@ -81,24 +81,34 @@ const platforms = [
 // The three platforms that carry a donor message copy the key on the way out,
 // so it is on the clipboard when the payment form asks for one. Ko-fi has no
 // URL parameter to prefill it with, so this is as close as it gets.
-//
-// Deliberately not awaited: the link opens in a new tab and awaiting first
-// would put the navigation outside the user gesture. Failure is silent by
-// design -- the clipboard is a convenience here, and the key is still visible
-// in the hint below.
 const copyKey = () => {
   if (!key.value) return;
 
+  const failed = () => {
+    displayAlert({
+      text: t("messages.account.supporterClaimKey.copy.failure"),
+    });
+  };
+
   // Not awaited: a platform link opens in a new tab, and awaiting first would
-  // put the navigation outside the user gesture that permits the write.
-  void navigator.clipboard?.writeText(key.value).then(
-    () => {
-      displaySuccess({
-        text: t("messages.account.supporterClaimKey.copy.success"),
-      });
-    },
-    () => {},
-  );
+  // put the navigation outside the user gesture that permits the write. Which
+  // is also why this cannot be the try/catch every other copy in the app is.
+  const written = navigator.clipboard?.writeText(key.value);
+
+  // Compared rather than tested for truth: a promise in a boolean conditional
+  // is the mistake the rule is there to catch, and this one is looking for the
+  // browser that has no clipboard to return one.
+  if (written === undefined) {
+    failed();
+
+    return;
+  }
+
+  void written.then(() => {
+    displaySuccess({
+      text: t("messages.account.supporterClaimKey.copy.success"),
+    });
+  }, failed);
 };
 
 // Somebody sent to the login to claim a key came here to donate, so the login

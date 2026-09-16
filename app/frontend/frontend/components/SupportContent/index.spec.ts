@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { createRouter, createMemoryHistory } from "vue-router";
+import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 
 const claimKey = ref<{ key: string | null } | undefined>(undefined);
@@ -8,6 +9,13 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useMySupporterClaimKey: () => ({ data: claimKey }),
   useSupportersProgress: () => ({ data: ref(undefined) }),
+}));
+
+const displaySuccess = vi.fn();
+const displayAlert = vi.fn();
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displaySuccess, displayAlert }),
 }));
 
 const setBackRoute = vi.fn();
@@ -44,6 +52,8 @@ describe("SupportContent", () => {
     authenticated.value = true;
     writeText.mockClear();
     setBackRoute.mockClear();
+    displaySuccess.mockClear();
+    displayAlert.mockClear();
     Object.assign(navigator, { clipboard: { writeText } });
   });
 
@@ -149,6 +159,30 @@ describe("SupportContent", () => {
     await wrapper.find("[data-test='support-patreon']").trigger("click");
 
     expect(writeText).not.toHaveBeenCalled();
+  });
+
+  // The key is in the field below, but only for somebody who thought to look:
+  // every other copy in the app says when it failed, and this one has carried
+  // the message for it all along.
+  it("says so when the clipboard refuses", async () => {
+    writeText.mockImplementationOnce(() => Promise.reject(new Error("nope")));
+
+    const wrapper = await mount();
+    await wrapper.find("[data-test='copy-claim-key']").trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalled();
+    expect(displaySuccess).not.toHaveBeenCalled();
+  });
+
+  it("says so when there is no clipboard at all", async () => {
+    Object.assign(navigator, { clipboard: undefined });
+
+    const wrapper = await mount();
+    await wrapper.find("[data-test='copy-claim-key']").trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalled();
   });
 
   it("copies nothing when signed out", async () => {

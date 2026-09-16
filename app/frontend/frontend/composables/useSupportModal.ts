@@ -7,8 +7,9 @@ export const SUPPORT_QUERY_FLAG = "support";
 
 // A repeated query parameter arrives as an array, and a bare `?support` as
 // null, so the flag is only the value that was actually asked for.
-const isFlagged = (value: unknown) =>
-  Array.isArray(value) ? value.includes("true") : value === "true";
+function isFlagged(value: unknown) {
+  return Array.isArray(value) ? value.includes("true") : value === "true";
+}
 
 export const useSupportModal = () => {
   const comlink = useComlink();
