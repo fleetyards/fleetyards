@@ -21,8 +21,9 @@
         "until": "有效期至 %{date}",
         "expiring": "%{date} 到期",
         "ongoing": "定期支持，无结束日期",
-        "tierBadge": "第 %{tier} 级支持者",
-        "tierRecurring": "第 %{tier} 级支持者，定期"
+        "tierShort": "第 %{tier} 级",
+        "tierShortRecurring": "第 %{tier} 级，定期",
+        "recurringShort": "定期"
       },
       "destroyedFleets": {
         "discarded": "已丢弃",

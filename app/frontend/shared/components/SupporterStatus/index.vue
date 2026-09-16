@@ -110,7 +110,9 @@ const expiry = computed(() => {
   <div class="supporter-status" data-test="supporter-status">
     <Pill :variant="variant" data-test="supporter-status-pill">
       <SupporterBadge
-        v-if="props.supporter && props.supporterTier"
+        v-if="
+          props.supporter && (props.supporterTier || props.supporterRecurring)
+        "
         :tier="props.supporterTier"
         :recurring="props.supporterRecurring"
         :size="16"

@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
         uppercase
       >
         <SupporterBadge
-          v-if="props.user.supporterTier"
+          v-if="props.user.supporterTier || props.user.supporterRecurring"
           :tier="props.user.supporterTier"
           :recurring="props.user.supporterRecurring"
           :size="16"

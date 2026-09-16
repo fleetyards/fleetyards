@@ -33,29 +33,45 @@ const INSIGNIA: Record<number, string> = {
   3: tier3,
 };
 
-// Tier 0 is everybody who gave nothing this month, so there is no insignia for
-// it and the badge renders nothing at all.
+// Tier 0 is everybody whose month did not reach a euro, so there is no insignia
+// for it.
 const insignia = computed(() => INSIGNIA[props.tier]);
 
-const label = computed(() =>
-  props.recurring
-    ? t("labels.supporter.tierRecurring", { tier: props.tier })
-    : t("labels.supporter.tierBadge", { tier: props.tier }),
-);
+// A standing pledge can sit below the first band -- a converted one that dipped,
+// which is the case the old Patreon floor existed to cover -- and the mark has
+// to survive that, so it does not depend on there being an insignia to hang it
+// on.
+const visible = computed(() => Boolean(insignia.value) || props.recurring);
+
+// Deliberately short, and deliberately without the word "supporter": every
+// caller puts this beside a visible "Supporter", and repeating it here has
+// assistive technology read "Tier 3 supporter, recurring Supporter".
+const label = computed(() => {
+  if (!insignia.value) {
+    return t("labels.supporter.recurringShort");
+  }
+
+  return props.recurring
+    ? t("labels.supporter.tierShortRecurring", { tier: props.tier })
+    : t("labels.supporter.tierShort", { tier: props.tier });
+});
 </script>
 
 <template>
   <span
-    v-if="insignia"
-    v-tooltip="label"
+    v-if="visible"
+    :aria-label="label"
+    role="img"
     class="supporter-badge"
     data-test="supporter-badge"
   >
     <img
+      v-if="insignia"
       :src="insignia"
       :width="props.size"
       :height="props.size"
-      :alt="label"
+      alt=""
+      aria-hidden="true"
       class="supporter-badge__insignia"
     />
     <i

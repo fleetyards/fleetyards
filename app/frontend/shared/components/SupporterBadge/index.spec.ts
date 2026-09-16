@@ -15,12 +15,26 @@ describe("SupporterBadge", () => {
     expect(new Set(sources).size).toBe(3);
   });
 
-  // Tier 0 is everybody who gave nothing this month, so there is nothing to
-  // pin on them.
-  it("renders nothing without a band", async () => {
+  // Tier 0 with nothing standing is everybody who gave nothing this month, so
+  // there is nothing to pin on them.
+  it("renders nothing without a band or a pledge", async () => {
     const wrapper = await mountWithDefaults(Component, { props: { tier: 0 } });
 
     expect(wrapper.find("[data-test='supporter-badge']").exists()).toBe(false);
+  });
+
+  // A converted pledge can dip below the first band -- the case the old Patreon
+  // floor covered -- and the mark has to outlive the insignia.
+  it("keeps the mark for a standing pledge below the first band", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { tier: 0, recurring: true },
+    });
+
+    expect(wrapper.find("[data-test='supporter-badge']").exists()).toBe(true);
+    expect(
+      wrapper.find("[data-test='supporter-badge-recurring']").exists(),
+    ).toBe(true);
+    expect(wrapper.find("img").exists()).toBe(false);
   });
 
   // The pairing: the insignia carries the band, a separate mark carries the
@@ -47,16 +61,25 @@ describe("SupporterBadge", () => {
   });
 
   // The same insignia means two different things depending on the mark, so the
-  // text alternative has to say which.
+  // accessible name has to say which.
   it("says in words whether the pledge stands", async () => {
     const once = await mountWithDefaults(Component, { props: { tier: 3 } });
     const standing = await mountWithDefaults(Component, {
       props: { tier: 3, recurring: true },
     });
 
-    expect(once.find("img").attributes("alt")).toBe("Tier 3 supporter");
-    expect(standing.find("img").attributes("alt")).toBe(
-      "Tier 3 supporter, recurring",
-    );
+    expect(once.attributes("aria-label")).toBe("Tier 3");
+    expect(standing.attributes("aria-label")).toBe("Tier 3, recurring");
+  });
+
+  // Every caller renders this beside a visible "Supporter", so repeating the
+  // word here has it announced twice.
+  it("keeps the word supporter out of its accessible name", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { tier: 2, recurring: true },
+    });
+
+    expect(wrapper.attributes("aria-label")).not.toContain("supporter");
+    expect(wrapper.find("img").attributes("alt")).toBe("");
   });
 });

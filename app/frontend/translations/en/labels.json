@@ -21,8 +21,9 @@
         "until": "Active until %{date}",
         "expiring": "Expires %{date}",
         "ongoing": "Recurring, no end date",
-        "tierBadge": "Tier %{tier} supporter",
-        "tierRecurring": "Tier %{tier} supporter, recurring"
+        "tierShort": "Tier %{tier}",
+        "tierShortRecurring": "Tier %{tier}, recurring",
+        "recurringShort": "Recurring"
       },
       "destroyedFleets": {
         "discarded": "Discarded",

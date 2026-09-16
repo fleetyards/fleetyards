@@ -21,8 +21,9 @@
         "until": "Aktiv bis %{date}",
         "expiring": "Läuft am %{date} ab",
         "ongoing": "Wiederkehrend, ohne Enddatum",
-        "tierBadge": "Unterstützer der Stufe %{tier}",
-        "tierRecurring": "Unterstützer der Stufe %{tier}, wiederkehrend"
+        "tierShort": "Stufe %{tier}",
+        "tierShortRecurring": "Stufe %{tier}, wiederkehrend",
+        "recurringShort": "Wiederkehrend"
       },
       "destroyedFleets": {
         "discarded": "Verworfen",

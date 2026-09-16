@@ -21,8 +21,9 @@
         "until": "Actif jusqu'au %{date}",
         "expiring": "Expire le %{date}",
         "ongoing": "Récurrent, sans date de fin",
-        "tierBadge": "Soutien de niveau %{tier}",
-        "tierRecurring": "Soutien de niveau %{tier}, récurrent"
+        "tierShort": "Niveau %{tier}",
+        "tierShortRecurring": "Niveau %{tier}, récurrent",
+        "recurringShort": "Récurrent"
       },
       "destroyedFleets": {
         "discarded": "Écartée",
