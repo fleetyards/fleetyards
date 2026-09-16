@@ -46,7 +46,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
-            supporter supporterTier twoFactorRequired createdAt updatedAt
+            supporter supporterTier fleetTierOngoing twoFactorRequired createdAt updatedAt
           ]
         })
       end

@@ -45,7 +45,11 @@ const fleetTierOngoing = computed(
 // screen, and where the fleet tier is shown it is that date -- tinting for a
 // hidden `supporterUntil` puts an "expiring soon" amber next to a date months
 // away.
-const runsOutOn = computed(() => fleetTier.value ?? props.supporterUntil);
+const runsOutOn = computed(() =>
+  fleetTierOngoing.value
+    ? undefined
+    : (fleetTier.value ?? props.supporterUntil),
+);
 
 // The fleet tier is a fixed date bought outright, so it can simply be behind
 // us -- an ended pledge that paid for eight months ran out on a day that has

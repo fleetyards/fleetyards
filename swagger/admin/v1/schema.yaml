@@ -16122,6 +16122,7 @@ components:
       - hideOwner
       - supporter
       - supporterTier
+      - fleetTierOngoing
       - twoFactorRequired
       - createdAt
       - updatedAt

@@ -175,4 +175,21 @@ describe("SupporterStatus", () => {
     );
     expect(wrapper.find("[data-test='fleet-tier-until']").exists()).toBe(false);
   });
+
+  // Nothing runs out while a pledge is paying, so the urgency tint has no date
+  // to answer for -- a leftover one must not amber a badge that reads ongoing.
+  it("does not warn while the pledge stands", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        fleetTierOngoing: true,
+        fleetTierUntil: isoDate(addDays(new Date(), -7)),
+        supporterUntil: isoDate(addDays(new Date(), 2)),
+      },
+    });
+
+    expect(
+      wrapper.find("[data-test='supporter-status-pill']").classes(),
+    ).toEqual(expect.arrayContaining([expect.stringContaining("success")]));
+  });
 });
