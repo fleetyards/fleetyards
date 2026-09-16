@@ -1,0 +1,5 @@
+---
+zh-CN:
+  announcements:
+    deliveries:
+      not_configured: "该渠道未配置凭据。"

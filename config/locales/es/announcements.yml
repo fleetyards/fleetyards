@@ -1,0 +1,5 @@
+---
+es:
+  announcements:
+    deliveries:
+      not_configured: "Este canal no tiene credenciales configuradas."

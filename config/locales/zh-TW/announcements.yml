@@ -1,0 +1,5 @@
+---
+zh-TW:
+  announcements:
+    deliveries:
+      not_configured: "該管道未設定憑證。"
