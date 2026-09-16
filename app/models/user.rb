@@ -620,6 +620,41 @@ class User < ApplicationRecord
     dates.max
   end
 
+  # How long what is already paid would sustain each tier, if it were spent down
+  # at that tier's monthly threshold: [{tier:, expires_at:}, ...], ascending.
+  #
+  # A projection for an admin to read, not a fact about the account. `supporter?`
+  # and `supporter_tier` still answer the calendar month and nothing here changes
+  # them, nor what `monthly_total` reports to the funding goal.
+  #
+  # Simplification worth knowing about while the spend-down model is being
+  # settled: several active contributions are summed and run from the earliest
+  # of them, rather than each extending the one before it.
+  def supporter_tier_projections
+    contributions = active_supporter_contributions
+    return [] if contributions.empty?
+
+    total = contributions.sum(&:amount_cents)
+    from = contributions.map(&:started_at).min
+
+    SUPPORTER_TIERS.sort.map do |tier, cents|
+      {tier: tier, expires_at: sustained_until(from, total, cents)}
+    end
+  end
+
+  # Whole months first, then the leftover as a share of the month it lands in --
+  # so a threshold that divides exactly lands on the same day of the month
+  # rather than on a 30-day approximation of it.
+  private def sustained_until(from, total_cents, tier_cents)
+    date = from + (total_cents / tier_cents).months
+    remainder = total_cents % tier_cents
+    return date if remainder.zero?
+
+    days_in_month = ((date + 1.month) - date).to_i
+
+    date + ((remainder.to_d / tier_cents) * days_in_month).round.days
+  end
+
   # Generated on first view rather than at sign-up, the way a fleet's calendar
   # feed token is: most accounts never donate, and an unused key is one more
   # secret to rotate for nothing.

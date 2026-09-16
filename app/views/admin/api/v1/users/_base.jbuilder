@@ -34,6 +34,11 @@ json.supporter_tier user.supporter_tier
 supporter_until = user.supporter_until
 json.supporter_until supporter_until.iso8601 if supporter_until.present?
 
+json.supporter_tier_projections user.supporter_tier_projections do |projection|
+  json.tier projection[:tier]
+  json.expires_at projection[:expires_at].iso8601
+end
+
 json.two_factor_required user.otp_required_for_login?
 unless user.otp_required_for_login?
   json.two_factor_qr_code_url qrcode_api_v1_otp_url

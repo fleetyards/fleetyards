@@ -15,7 +15,7 @@
         "badge": "支持者",
         "tooltip": "本月正在支持 FleetYards.net",
         "none": "非支持者",
-        "tier": "第 %{tier} 级",
+        "tierUntil": "第 %{tier} 级至 %{date}",
         "until": "有效期至 %{date}",
         "expiring": "%{date} 到期",
         "ongoing": "定期支持，无结束日期"

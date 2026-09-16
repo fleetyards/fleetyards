@@ -10,15 +10,24 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { differenceInCalendarDays, parseISO } from "date-fns";
 
+export interface SupporterTierProjection {
+  tier: number;
+  expiresAt: string;
+}
+
 // Spelled out as primitives rather than taking a user: the admin API and the
-// public one generate two unrelated User types for the same three fields, and
-// this renders the same thing for both.
+// public one generate two unrelated User types for the same fields, and this
+// renders the same thing for both.
 interface Props {
   supporter?: boolean;
-  supporterTier?: number;
   // Absent while support does not lapse on a nameable date -- an open-ended
   // recurring pledge covers it, and only ending that would set one.
   supporterUntil?: string;
+  // Admin only. How long what is already paid would sustain each tier, which is
+  // a projection for an admin to act on rather than something to put in front of
+  // the person it describes -- a supporter is shown that they are one, and the
+  // tier they end up holding is theirs to choose.
+  tierProjections?: SupporterTierProjection[];
 }
 
 const props = defineProps<Props>();
@@ -50,10 +59,8 @@ const variant = computed(() => {
     : PillVariantsEnum.SUCCESS;
 });
 
-// A tier of 0 is what everybody who is not a supporter has, so it says nothing
-// worth a line of its own.
-const tier = computed(() =>
-  props.supporter && props.supporterTier ? props.supporterTier : undefined,
+const projections = computed(() =>
+  props.supporter ? (props.tierProjections ?? []) : [],
 );
 
 const expiry = computed(() => {
@@ -84,13 +91,24 @@ const expiry = computed(() => {
           ? t("labels.supporter.badge")
           : t("labels.supporter.none")
       }}
-      <template v-if="tier">
-        · {{ t("labels.supporter.tier", { tier }) }}
-      </template>
     </Pill>
     <span v-if="expiry" class="supporter-status__expiry">
       {{ expiry }}
     </span>
+    <ul v-if="projections.length" class="supporter-status__tiers">
+      <li
+        v-for="projection in projections"
+        :key="projection.tier"
+        data-test="supporter-tier-projection"
+      >
+        {{
+          t("labels.supporter.tierUntil", {
+            tier: projection.tier,
+            date: l(projection.expiresAt, "datetime.formats.date"),
+          })
+        }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -104,6 +122,16 @@ const expiry = computed(() => {
 }
 
 .supporter-status__expiry {
+  color: var(--color-muted, #7a8288);
+}
+
+/* Basis of its own so the tier lines wrap under the badge rather than stretching
+   the row, which they do as soon as two of them sit beside a long expiry. */
+.supporter-status__tiers {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   color: var(--color-muted, #7a8288);
 }
 </style>

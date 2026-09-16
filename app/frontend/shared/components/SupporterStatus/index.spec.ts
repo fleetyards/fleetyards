@@ -16,13 +16,11 @@ describe("SupporterStatus", () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         supporter: true,
-        supporterTier: 1,
         supporterUntil: isoDate(addMonths(new Date(), 3)),
       },
     });
 
     expect(wrapper.text()).toContain("Supporter");
-    expect(wrapper.text()).toContain("Tier 1");
     expect(wrapper.text()).toContain("Active until");
   });
 
@@ -30,7 +28,7 @@ describe("SupporterStatus", () => {
   // would read as support that has already lapsed.
   it("says a pledge is ongoing when it carries no date", async () => {
     const wrapper = await mountWithDefaults(Component, {
-      props: { supporter: true, supporterTier: 2 },
+      props: { supporter: true },
     });
 
     expect(wrapper.text()).toContain("Recurring, no end date");
@@ -51,12 +49,50 @@ describe("SupporterStatus", () => {
     ).toEqual(expect.arrayContaining([expect.stringContaining("warning")]));
   });
 
-  // Tier 0 is what every non-supporter has, so it carries no information.
-  it("leaves a zero tier off", async () => {
+  // The projection is for an admin to act on. A supporter is told they are one;
+  // which tier they end up holding is theirs to choose.
+  it("leaves the tier projection out unless it is given", async () => {
     const wrapper = await mountWithDefaults(Component, {
-      props: { supporter: true, supporterTier: 0 },
+      props: { supporter: true },
     });
 
+    expect(
+      wrapper.find("[data-test='supporter-tier-projection']").exists(),
+    ).toBe(false);
     expect(wrapper.text()).not.toContain("Tier");
+  });
+
+  it("names the day each tier would stop being sustained", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        supporterUntil: isoDate(addDays(new Date(), 20)),
+        tierProjections: [
+          { tier: 1, expiresAt: "2027-07-16" },
+          { tier: 2, expiresAt: "2026-11-16" },
+        ],
+      },
+    });
+
+    const rows = wrapper.findAll("[data-test='supporter-tier-projection']");
+
+    expect(rows).toHaveLength(2);
+    expect(rows[0].text()).toContain("Tier 1 until");
+    expect(rows[1].text()).toContain("Tier 2 until");
+  });
+
+  // Nothing is sustained by nothing, so the projection stays off a lapsed
+  // account even when one is handed in.
+  it("drops the projection when support is not live", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: false,
+        tierProjections: [{ tier: 2, expiresAt: "2026-11-16" }],
+      },
+    });
+
+    expect(
+      wrapper.find("[data-test='supporter-tier-projection']").exists(),
+    ).toBe(false);
   });
 });

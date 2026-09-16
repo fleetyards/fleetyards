@@ -15,7 +15,7 @@
         "badge": "Soutien",
         "tooltip": "Soutient FleetYards.net ce mois-ci",
         "none": "Pas un soutien",
-        "tier": "Niveau %{tier}",
+        "tierUntil": "Niveau %{tier} jusqu'au %{date}",
         "until": "Actif jusqu'au %{date}",
         "expiring": "Expire le %{date}",
         "ongoing": "Récurrent, sans date de fin"
