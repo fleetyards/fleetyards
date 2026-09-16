@@ -1,5 +1,14 @@
 ---
 it:
   announcements:
+    channels:
+      in_app: "In-app"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
     deliveries:
       not_configured: "Questo canale non ha credenziali configurate."
+    preview:
+      title: "TEST — %{title}"
+      channels: "Andrebbe a: %{channels}"
+      social_heading: "**%{channel}** (%{count}/%{limit} caratteri)"

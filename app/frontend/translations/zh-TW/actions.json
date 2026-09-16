@@ -3,6 +3,7 @@
     "actions": {
       "selectAll": "全選",
       "announcements": {
+        "sendTest": "發送測試",
         "publish": "發送",
         "retry": "重試"
       },

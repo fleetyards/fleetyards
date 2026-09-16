@@ -1,5 +1,14 @@
 ---
 de:
   announcements:
+    channels:
+      in_app: "In-App"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
     deliveries:
       not_configured: "Für diesen Kanal sind keine Zugangsdaten hinterlegt."
+    preview:
+      title: "TEST — %{title}"
+      channels: "Ginge an: %{channels}"
+      social_heading: "**%{channel}** (%{count}/%{limit} Zeichen)"

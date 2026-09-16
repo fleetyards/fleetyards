@@ -38,7 +38,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 const router = useRouter();
 const { extend } = useBreadCrumbs();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -222,6 +222,19 @@ const handleCancel = async () => {
         <p v-if="noChannel" class="announcement-form__warning">
           {{ t("labels.admin.announcements.noChannel") }}
         </p>
+        <p
+          v-else-if="props.announcement.lastTestedAt"
+          class="announcement-form__hint"
+        >
+          {{
+            t("labels.admin.announcements.lastTested", {
+              time: l(
+                props.announcement.lastTestedAt,
+                "datetime.formats.short",
+              ),
+            })
+          }}
+        </p>
         <FormToggle
           v-model="schedule"
           name="schedule"
@@ -257,6 +270,11 @@ const handleCancel = async () => {
 <style lang="scss" scoped>
 .announcement-form__warning {
   color: $danger;
+  margin: 0 0 16px;
+}
+
+.announcement-form__hint {
+  color: $gray-lighter;
   margin: 0 0 16px;
 }
 </style>

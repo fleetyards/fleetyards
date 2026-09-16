@@ -149,6 +149,8 @@
         "destroyed": "Annonce supprimée.",
         "createFailed": "L'annonce n'a pas pu être créée.",
         "updateFailed": "L'annonce n'a pas pu être mise à jour.",
+        "testSent": "Test envoyé sur le canal Discord d'administration.",
+        "testFailed": "Le test n'a pas pu être envoyé.",
         "published": "L'annonce est en route.",
         "publishFailed": "L'annonce n'a pas pu être envoyée.",
         "retryQueued": "Envoi remis en file.",

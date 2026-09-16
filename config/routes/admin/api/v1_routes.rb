@@ -187,6 +187,7 @@ v1_admin_api_routes = lambda do
   resources :announcements, only: %i[index show create update destroy] do
     member do
       put :publish
+      put "send-test", to: "announcements#send_test", as: :send_test
       put "deliveries/:channel/retry", to: "announcements#retry_delivery", as: :retry_delivery
     end
   end

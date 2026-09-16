@@ -1,5 +1,14 @@
 ---
 zh-CN:
   announcements:
+    channels:
+      in_app: "应用内"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
     deliveries:
       not_configured: "该渠道未配置凭据。"
+    preview:
+      title: "测试 — %{title}"
+      channels: "将发送至：%{channels}"
+      social_heading: "**%{channel}**（%{count}/%{limit} 个字符）"

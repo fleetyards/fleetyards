@@ -1,5 +1,14 @@
 ---
 fr:
   announcements:
+    channels:
+      in_app: "Dans l'app"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
     deliveries:
       not_configured: "Aucun identifiant n'est configuré pour ce canal."
+    preview:
+      title: "TEST — %{title}"
+      channels: "Serait envoyée à : %{channels}"
+      social_heading: "**%{channel}** (%{count}/%{limit} caractères)"

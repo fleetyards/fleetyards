@@ -3,6 +3,7 @@
     "actions": {
       "selectAll": "Tout sélectionner",
       "announcements": {
+        "sendTest": "Envoyer un test",
         "publish": "Envoyer",
         "retry": "Réessayer"
       },

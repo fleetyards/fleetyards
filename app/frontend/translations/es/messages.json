@@ -149,6 +149,8 @@
         "destroyed": "Anuncio eliminado.",
         "createFailed": "No se ha podido crear el anuncio.",
         "updateFailed": "No se ha podido actualizar el anuncio.",
+        "testSent": "Prueba enviada al canal de Discord de administración.",
+        "testFailed": "No se ha podido enviar la prueba.",
         "published": "El anuncio va en camino.",
         "publishFailed": "No se ha podido enviar el anuncio.",
         "retryQueued": "Envío puesto en cola de nuevo.",

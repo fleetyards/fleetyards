@@ -24,6 +24,7 @@ module Admin
             postBluesky: {type: :boolean},
             postX: {type: :boolean},
             publishable: {type: :boolean},
+            lastTestedAt: {type: :string, format: "date-time"},
             author: {type: :string},
             deliveries: {type: :array, items: ::Admin::V1::Schemas::AnnouncementDelivery},
             createdAt: {type: :string, format: "date-time"},

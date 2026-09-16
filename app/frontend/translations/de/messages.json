@@ -149,6 +149,8 @@
         "destroyed": "Ankündigung gelöscht.",
         "createFailed": "Ankündigung konnte nicht erstellt werden.",
         "updateFailed": "Ankündigung konnte nicht aktualisiert werden.",
+        "testSent": "Test an den Admin-Discord-Kanal gesendet.",
+        "testFailed": "Test konnte nicht gesendet werden.",
         "published": "Ankündigung ist unterwegs.",
         "publishFailed": "Ankündigung konnte nicht gesendet werden.",
         "retryQueued": "Zustellung erneut eingereiht.",

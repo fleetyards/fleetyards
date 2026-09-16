@@ -2,6 +2,39 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: announcements
+#
+#  id               :uuid             not null, primary key
+#  body             :text             not null
+#  icon             :string
+#  last_tested_at   :datetime
+#  link             :string
+#  notify_users     :boolean          default(TRUE), not null
+#  post_bluesky     :boolean          default(FALSE), not null
+#  post_discord     :boolean          default(FALSE), not null
+#  post_x           :boolean          default(FALSE), not null
+#  publish_at       :datetime
+#  published_at     :datetime
+#  recipients_count :integer
+#  social_body      :text
+#  status           :string           default("draft"), not null
+#  title            :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  admin_user_id    :uuid
+#
+# Indexes
+#
+#  index_announcements_on_publish_at    (publish_at) WHERE ((status)::text = 'scheduled'::text)
+#  index_announcements_on_published_at  (published_at)
+#  index_announcements_on_status        (status)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (admin_user_id => admin_users.id)
+#
 class AnnouncementTest < ActiveSupport::TestCase
   test "requires a title and a body" do
     refute Announcement.new(body: "x").valid?

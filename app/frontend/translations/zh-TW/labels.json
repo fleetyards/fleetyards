@@ -1816,6 +1816,7 @@
             "skipped": "已略過",
             "failed": "失敗"
           },
+          "lastTested": "上次測試 %{time}",
           "noChannel": "至少選擇一個管道。",
           "notifyUsersInfo": "涵蓋所有已驗證帳號。電子郵件僅寄給已開啟的人。",
           "socialBodyInfo": "用於 X 與 Bluesky。留空則取內文的第一段。"

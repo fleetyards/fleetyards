@@ -149,6 +149,8 @@
         "destroyed": "Annuncio eliminato.",
         "createFailed": "Impossibile creare l'annuncio.",
         "updateFailed": "Impossibile aggiornare l'annuncio.",
+        "testSent": "Test inviato al canale Discord di amministrazione.",
+        "testFailed": "Impossibile inviare il test.",
         "published": "L'annuncio è in viaggio.",
         "publishFailed": "Impossibile inviare l'annuncio.",
         "retryQueued": "Consegna rimessa in coda.",

@@ -159,6 +159,8 @@
         "destroyed": "Announcement deleted.",
         "createFailed": "Could not create announcement.",
         "updateFailed": "Could not update announcement.",
+        "testSent": "Test sent to the admin Discord channel.",
+        "testFailed": "Could not send the test.",
         "published": "Announcement is on its way.",
         "publishFailed": "Could not send announcement.",
         "retryQueued": "Delivery queued again.",

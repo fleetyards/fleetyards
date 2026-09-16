@@ -1830,6 +1830,7 @@
             "skipped": "Skipped",
             "failed": "Failed"
           },
+          "lastTested": "Last tested %{time}",
           "noChannel": "Pick at least one channel.",
           "notifyUsersInfo": "Reaches every confirmed account. E-mail only for readers who turned it on.",
           "socialBodyInfo": "Used for X and Bluesky. Falls back to the first paragraph of the body."

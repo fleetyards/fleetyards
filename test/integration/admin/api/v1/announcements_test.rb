@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "openapi_helper"
+require "discord/announcement_preview"
 
 class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
   include OpenapiRuby::Adapters::Minitest::DSL
@@ -143,6 +144,36 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
 
     put("Publish Announcement") do
       operationId "publishAnnouncement"
+      tags "Announcements"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Announcement
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/announcements/{id}/send-test" do
+    parameter name: "id", in: :path, description: "Announcement id", schema: {type: :string, format: :uuid}
+
+    put("Send Announcement Test") do
+      operationId "sendAnnouncementTest"
       tags "Announcements"
       produces "application/json"
 
@@ -374,6 +405,58 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :put, 403, api_path: "/announcements/{id}/publish", path_params: {id: create(:announcement).id}
+  end
+
+  test "PUT /announcements/:id/send-test queues the dry run without touching the announcement" do
+    announcement = create(:announcement, :social)
+    sign_in @admin_user
+    ::Discord::AnnouncementPreview.stubs(:configured?).returns(true)
+
+    Announcements::SendTestJob.expects(:perform_async).with(announcement.id).once
+
+    assert_api_response :put, 200, api_path: "/announcements/{id}/send-test", path_params: {id: announcement.id} do
+      assert_equal "draft", parsed_body["status"]
+      assert_empty parsed_body["deliveries"]
+    end
+  end
+
+  test "PUT /announcements/:id/send-test is offered on an announcement that already went out" do
+    announcement = create(:announcement, :published)
+    sign_in @admin_user
+    ::Discord::AnnouncementPreview.stubs(:configured?).returns(true)
+
+    Announcements::SendTestJob.expects(:perform_async).once
+
+    assert_api_response :put, 200, api_path: "/announcements/{id}/send-test", path_params: {id: announcement.id}
+  end
+
+  test "PUT /announcements/:id/send-test says so when the admin channel has no webhook" do
+    announcement = create(:announcement)
+    sign_in @admin_user
+    ::Discord::AnnouncementPreview.stubs(:configured?).returns(false)
+
+    Announcements::SendTestJob.expects(:perform_async).never
+
+    assert_api_response :put, 400, api_path: "/announcements/{id}/send-test", path_params: {id: announcement.id} do
+      assert_equal "validation_error.announcement.test_not_configured", parsed_body["code"]
+    end
+  end
+
+  test "PUT /announcements/:id/send-test returns 404 for a missing id" do
+    sign_in @admin_user
+    ::Discord::AnnouncementPreview.stubs(:configured?).returns(true)
+
+    assert_api_response :put, 404, api_path: "/announcements/{id}/send-test", path_params: {id: SecureRandom.uuid}
+  end
+
+  test "PUT /announcements/:id/send-test returns 401 when not signed in" do
+    assert_api_response :put, 401, api_path: "/announcements/{id}/send-test", path_params: {id: create(:announcement).id}
+  end
+
+  test "PUT /announcements/:id/send-test returns 403 for an admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :put, 403, api_path: "/announcements/{id}/send-test", path_params: {id: create(:announcement).id}
   end
 
   test "PUT /announcements/:id/deliveries/:channel/retry re-queues a failed post" do

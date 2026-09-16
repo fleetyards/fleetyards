@@ -149,6 +149,8 @@
         "destroyed": "公告已刪除。",
         "createFailed": "無法建立公告。",
         "updateFailed": "無法更新公告。",
+        "testSent": "測試已發送到管理員 Discord 頻道。",
+        "testFailed": "無法發送測試。",
         "published": "公告已開始發送。",
         "publishFailed": "無法發送公告。",
         "retryQueued": "投遞已重新排入佇列。",

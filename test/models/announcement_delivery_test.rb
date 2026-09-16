@@ -2,6 +2,29 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: announcement_deliveries
+#
+#  id              :uuid             not null, primary key
+#  attempts        :integer          default(0), not null
+#  channel         :string           not null
+#  delivered_at    :datetime
+#  error           :text
+#  status          :string           default("pending"), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  announcement_id :uuid             not null
+#  external_id     :string
+#
+# Indexes
+#
+#  index_announcement_deliveries_on_announcement_id_and_channel  (announcement_id,channel) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (announcement_id => announcements.id) ON DELETE => cascade
+#
 class AnnouncementDeliveryTest < ActiveSupport::TestCase
   setup do
     @announcement = create(:announcement)

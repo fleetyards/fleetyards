@@ -1,5 +1,14 @@
 ---
 zh-TW:
   announcements:
+    channels:
+      in_app: "應用內"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
     deliveries:
       not_configured: "該管道未設定憑證。"
+    preview:
+      title: "測試 — %{title}"
+      channels: "將發送至：%{channels}"
+      social_heading: "**%{channel}**（%{count}/%{limit} 個字元）"

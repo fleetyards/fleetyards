@@ -1816,6 +1816,7 @@
             "skipped": "Übersprungen",
             "failed": "Fehlgeschlagen"
           },
+          "lastTested": "Zuletzt getestet %{time}",
           "noChannel": "Wähle mindestens einen Kanal.",
           "notifyUsersInfo": "Erreicht jeden bestätigten Account. E-Mail nur für alle, die sie eingeschaltet haben.",
           "socialBodyInfo": "Wird für X und Bluesky genutzt. Sonst gilt der erste Absatz des Texts."

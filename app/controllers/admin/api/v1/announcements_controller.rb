@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require "discord/announcement_preview"
+
 module Admin
   module Api
     module V1
       class AnnouncementsController < ::Admin::Api::BaseController
-        before_action :set_announcement, only: %i[show update destroy publish retry_delivery]
+        before_action :set_announcement, only: %i[show update destroy publish send_test retry_delivery]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.announcement"))
@@ -62,6 +64,18 @@ module Admin
           return render json: ValidationError.new("announcement.already_published"), status: :bad_request unless @announcement.publishable?
 
           ::Announcements::PublishJob.perform_async(@announcement.id)
+
+          render :show
+        end
+
+        # The dry run. Goes to the admin Discord channel and nowhere else, and
+        # leaves the announcement exactly as it was -- an announcement cannot
+        # be recalled, so the one thing worth having beforehand is a look at
+        # the real composed output somewhere private.
+        def send_test
+          return render json: ValidationError.new("announcement.test_not_configured"), status: :bad_request unless ::Discord::AnnouncementPreview.configured?
+
+          ::Announcements::SendTestJob.perform_async(@announcement.id)
 
           render :show
         end

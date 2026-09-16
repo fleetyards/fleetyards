@@ -11,6 +11,7 @@ import {
   getAnnouncementsQueryKey,
   useDestroyAnnouncement,
   usePublishAnnouncement,
+  useSendAnnouncementTest,
 } from "@/services/fyAdminApi";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -46,6 +47,42 @@ const destroyMutation = useDestroyAnnouncement({
   mutation: { onSettled: invalidate },
 });
 
+const sendTestMutation = useSendAnnouncementTest({
+  mutation: { onSettled: invalidate },
+});
+
+// No confirm: the dry run goes to the admin Discord channel and nowhere a
+// reader can see, which is the whole reason it exists.
+const sendTest = async () => {
+  await sendTestMutation
+    .mutateAsync({ id: props.announcement.id })
+    .then(() => {
+      displaySuccess({ text: t("messages.announcement.testSent") });
+    })
+    .catch(() => {
+      displayAlert({ text: t("messages.announcement.testFailed") });
+    });
+};
+
+/*
+ * An announcement cannot be recalled once it is out, so the confirm names the
+ * channels it is about to reach rather than asking "are you sure?" about an
+ * unnamed action.
+ */
+const channelSummary = computed(() =>
+  [
+    props.announcement.notifyUsers &&
+      t("labels.admin.announcements.channels.in_app"),
+    props.announcement.postDiscord &&
+      t("labels.admin.announcements.channels.discord"),
+    props.announcement.postBluesky &&
+      t("labels.admin.announcements.channels.bluesky"),
+    props.announcement.postX && t("labels.admin.announcements.channels.x"),
+  ]
+    .filter(Boolean)
+    .join(", "),
+);
+
 const publish = () => {
   displayConfirm({
     text: t("messages.confirm.announcement.publish", {
@@ -76,6 +113,14 @@ const destroy = () => {
 </script>
 
 <template>
+  <Btn
+    v-tooltip="!withLabels && t('actions.announcements.sendTest')"
+    data-test="announcement-send-test"
+    @click="sendTest"
+  >
+    <i class="fa-duotone fa-flask" />
+    <span v-if="withLabels">{{ t("actions.announcements.sendTest") }}</span>
+  </Btn>
   <Btn
     v-if="props.announcement.publishable"
     v-tooltip="!withLabels && t('actions.announcements.publish')"

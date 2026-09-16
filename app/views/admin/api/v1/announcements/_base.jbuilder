@@ -15,6 +15,7 @@ json.post_discord announcement.post_discord
 json.post_bluesky announcement.post_bluesky
 json.post_x announcement.post_x
 json.publishable announcement.publishable?
+json.last_tested_at announcement.last_tested_at.utc.iso8601 if announcement.last_tested_at.present?
 json.author announcement.admin_user&.username if announcement.admin_user.present?
 
 json.deliveries do

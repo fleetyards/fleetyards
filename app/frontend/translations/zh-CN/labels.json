@@ -1816,6 +1816,7 @@
             "skipped": "已跳过",
             "failed": "失败"
           },
+          "lastTested": "上次测试 %{time}",
           "noChannel": "至少选择一个渠道。",
           "notifyUsersInfo": "覆盖所有已验证账号。邮件仅发给已开启的人。",
           "socialBodyInfo": "用于 X 和 Bluesky。留空则取正文的第一段。"

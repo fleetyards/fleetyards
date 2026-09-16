@@ -491,6 +491,51 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/announcements/{id}/send-test":
+    parameters:
+    - name: id
+      in: path
+      description: Announcement id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Send Announcement Test
+      tags:
+      - Announcements
+      operationId: sendAnnouncementTest
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/cargo-holds":
     get:
       summary: Cargo Holds list
@@ -9347,6 +9392,9 @@ components:
           type: boolean
         publishable:
           type: boolean
+        lastTestedAt:
+          type: string
+          format: date-time
         author:
           type: string
         deliveries:

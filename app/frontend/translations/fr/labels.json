@@ -1816,6 +1816,7 @@
             "skipped": "Ignoré",
             "failed": "Échec"
           },
+          "lastTested": "Dernier test %{time}",
           "noChannel": "Choisissez au moins un canal.",
           "notifyUsersInfo": "Touche chaque compte confirmé. L'e-mail part uniquement aux lecteurs qui l'ont activé.",
           "socialBodyInfo": "Utilisé pour X et Bluesky. À défaut, le premier paragraphe du contenu."
