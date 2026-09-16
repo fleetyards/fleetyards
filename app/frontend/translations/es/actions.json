@@ -3,6 +3,10 @@
     "actions": {
       "selectAll": "Seleccionar todo",
       "announcements": {
+        "addPart": "Añadir",
+        "removePart": "Quitar",
+        "movePartUp": "Subir",
+        "movePartDown": "Bajar",
         "sendTest": "Enviar prueba",
         "publish": "Enviar",
         "retry": "Reintentar"

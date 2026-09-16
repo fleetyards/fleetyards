@@ -976,7 +976,8 @@
       "announcement": {
         "title": "Titre",
         "body": "Contenu",
-        "socialBody": "Message social",
+        "discordParts": "Messages Discord",
+        "socialParts": "Messages sociaux",
         "link": "Lien",
         "notifyUsers": "Notification dans l'app",
         "postDiscord": "Canal Discord des mises à jour",
@@ -1819,7 +1820,9 @@
           "lastTested": "Dernier test %{time}",
           "noChannel": "Choisissez au moins un canal.",
           "notifyUsersInfo": "Touche chaque compte confirmé. L'e-mail part uniquement aux lecteurs qui l'ont activé.",
-          "socialBodyInfo": "Utilisé pour X et Bluesky. À défaut, le premier paragraphe du contenu."
+          "discordPartsInfo": "Laissé vide, le contenu est réparti sur autant de messages qu'il faut. Ajoutez des messages pour choisir où se fait la coupure.",
+          "socialPartsInfo": "Laissé vide, un seul message est composé à partir du titre, du contenu et du lien. À partir de deux, c'est un fil, chacun répondant au précédent.",
+          "partPosition": "%{position} sur %{total}"
         },
         "resourceAccess": {
           "title": "Accès aux ressources",

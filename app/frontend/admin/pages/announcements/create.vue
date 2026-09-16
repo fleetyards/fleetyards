@@ -21,6 +21,7 @@ import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import AnnouncementChannelFields from "@/admin/components/Announcements/ChannelFields/index.vue";
+import AnnouncementPartsEditor from "@/admin/components/Announcements/PartsEditor/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -34,7 +35,6 @@ const queryClient = useQueryClient();
 type FormValues = {
   title: string;
   body: string;
-  socialBody?: string;
   link?: string;
   publishAt?: string;
   notifyUsers: boolean;
@@ -58,7 +58,6 @@ const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
   initialValues: {
     title: "",
     body: "",
-    socialBody: undefined,
     link: undefined,
     publishAt: undefined,
     notifyUsers: true,
@@ -71,7 +70,6 @@ const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
 
 const [title, titleProps] = defineField("title");
 const [body, bodyProps] = defineField("body");
-const [socialBody, socialBodyProps] = defineField("socialBody");
 const [link, linkProps] = defineField("link");
 const [publishAt, publishAtProps] = defineField("publishAt");
 const [notifyUsers] = defineField("notifyUsers");
@@ -89,6 +87,13 @@ const noChannel = computed(
 
 // The schedule switch is not a form field, so meta.dirty does not see it.
 const scheduleDirty = computed(() => schedule.value);
+
+const discordParts = ref<string[]>([]);
+const socialParts = ref<string[]>([]);
+
+const partsDirty = computed(
+  () => discordParts.value.length > 0 || socialParts.value.length > 0,
+);
 
 const submitting = ref(false);
 
@@ -113,7 +118,8 @@ const onSubmit = handleSubmit(async (formValues) => {
   const payload: AnnouncementInput = {
     title: formValues.title,
     body: formValues.body,
-    socialBody: formValues.socialBody || undefined,
+    discordParts: discordParts.value,
+    socialParts: socialParts.value,
     link: formValues.link || undefined,
     status: schedule.value
       ? AnnouncementInputStatusEnum.SCHEDULED
@@ -174,18 +180,30 @@ const handleCancel = async () => {
           translation-key="announcement.body"
           name="body"
         />
-        <FormTextarea
-          v-model="socialBody"
-          v-bind="socialBodyProps"
-          translation-key="announcement.socialBody"
-          name="socialBody"
-          :info="t('labels.admin.announcements.socialBodyInfo')"
-        />
         <FormInput
           v-model="link"
           v-bind="linkProps"
           translation-key="announcement.link"
           name="link"
+        />
+
+        <AnnouncementPartsEditor
+          v-model="discordParts"
+          name="discord-parts"
+          :label="t('labels.announcement.discordParts')"
+          :hint="t('labels.admin.announcements.discordPartsInfo')"
+          :limits="[{ label: 'Discord', limit: 2000 }]"
+        />
+
+        <AnnouncementPartsEditor
+          v-model="socialParts"
+          name="social-parts"
+          :label="t('labels.announcement.socialParts')"
+          :hint="t('labels.admin.announcements.socialPartsInfo')"
+          :limits="[
+            { label: 'X', limit: 280, weighted: true },
+            { label: 'Bluesky', limit: 300 },
+          ]"
         />
       </div>
       <div class="col-12 col-md-5">
@@ -215,7 +233,7 @@ const handleCancel = async () => {
     <FormActions
       :submitting="submitting"
       form-id="admin-announcement-create-form"
-      :dirty="meta.dirty || meta.touched || scheduleDirty"
+      :dirty="meta.dirty || meta.touched || scheduleDirty || partsDirty"
       @cancel="handleCancel"
     />
   </form>

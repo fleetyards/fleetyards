@@ -30,10 +30,43 @@ module Discord
       announcement = build(:announcement, :social, :with_link, title: "T", body: "The whole story.")
       preview = Discord::AnnouncementPreview.new(announcement:)
 
-      bluesky = Announcements::SocialMessage.call(announcement, limit: ::Bsky::Post::MAX_LENGTH)
+      bluesky = Announcements::SocialPosts.call(announcement, limit: ::Bsky::Post::MAX_LENGTH).sole
 
       assert_includes preview.message, bluesky.lines.first.strip
       assert_includes preview.message, "#{bluesky.length}/#{::Bsky::Post::MAX_LENGTH}"
+    end
+
+    # Where a thread breaks and what each post costs is the whole question a
+    # dry run answers.
+    test "quotes every post of a thread with its own position and count" do
+      announcement = build(:announcement, :social, social_parts: ["First post", "Second post"])
+      message = Discord::AnnouncementPreview.new(announcement:).message
+
+      assert_includes message, "> First post"
+      assert_includes message, "> Second post"
+      assert_includes message, "1/2"
+      assert_includes message, "2/2"
+    end
+
+    test "quotes every Discord message an announcement would post" do
+      announcement = build(:announcement, :social, discord_parts: ["Message one", "Message two"])
+      message = Discord::AnnouncementPreview.new(announcement:).message
+
+      assert_includes message, "> Message one"
+      assert_includes message, "> Message two"
+    end
+
+    # X bills a URL at 23 characters, so the same string costs differently on
+    # the two platforms -- which is exactly what an author needs to see.
+    test "counts an X post the way X does" do
+      link = "https://fleetyards.net/a/rather/long/path/to/somewhere"
+      announcement = build(:announcement, post_x: true, social_parts: ["Read on #{link}"])
+
+      message = Discord::AnnouncementPreview.new(announcement:).message
+      expected = ::XCom::Post.weighted_length("Read on #{link}")
+
+      assert_includes message, "#{expected}/#{::XCom::Post::MAX_LENGTH}"
+      refute_equal expected, "Read on #{link}".length
     end
 
     test "leaves out a channel the announcement did not ask for" do

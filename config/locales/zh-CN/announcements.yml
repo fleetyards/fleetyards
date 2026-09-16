@@ -11,4 +11,5 @@ zh-CN:
     preview:
       title: "测试 — %{title}"
       channels: "将发送至：%{channels}"
+      part_heading: "**%{channel} %{position}/%{total}**（%{count}/%{limit} 个字符）"
       social_heading: "**%{channel}**（%{count}/%{limit} 个字符）"

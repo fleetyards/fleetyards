@@ -218,6 +218,10 @@ fr:
       models:
         announcement:
           attributes:
+            discord_parts:
+              part_too_long: "le message %{position} fait %{length} caractères, la limite est de %{count}"
+            social_parts:
+              part_too_long: "le message %{position} fait %{length} caractères, la limite est de %{count}"
             base:
               no_channels: "doit avoir au moins un canal"
         fleet_alliance:

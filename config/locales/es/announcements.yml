@@ -11,4 +11,5 @@ es:
     preview:
       title: "PRUEBA — %{title}"
       channels: "Se enviaría a: %{channels}"
+      part_heading: "**%{channel} %{position}/%{total}** (%{count}/%{limit} caracteres)"
       social_heading: "**%{channel}** (%{count}/%{limit} caracteres)"

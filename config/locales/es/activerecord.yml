@@ -218,6 +218,10 @@ es:
       models:
         announcement:
           attributes:
+            discord_parts:
+              part_too_long: "la publicación %{position} tiene %{length} caracteres, el límite es %{count}"
+            social_parts:
+              part_too_long: "la publicación %{position} tiene %{length} caracteres, el límite es %{count}"
             base:
               no_channels: "necesita al menos un canal"
         fleet_alliance:

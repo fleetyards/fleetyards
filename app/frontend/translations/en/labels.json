@@ -976,7 +976,8 @@
       "announcement": {
         "title": "Title",
         "body": "Body",
-        "socialBody": "Social post",
+        "discordParts": "Discord messages",
+        "socialParts": "Social posts",
         "link": "Link",
         "notifyUsers": "In-app notification",
         "postDiscord": "Discord updates channel",
@@ -1833,7 +1834,9 @@
           "lastTested": "Last tested %{time}",
           "noChannel": "Pick at least one channel.",
           "notifyUsersInfo": "Reaches every confirmed account. E-mail only for readers who turned it on.",
-          "socialBodyInfo": "Used for X and Bluesky. Falls back to the first paragraph of the body."
+          "discordPartsInfo": "Leave empty and the body is packed into as many messages as it takes. Add messages to choose where the break falls.",
+          "socialPartsInfo": "Leave empty for one post composed from the title, body and link. Two or more become a thread, each replying to the one before.",
+          "partPosition": "%{position} of %{total}"
         },
         "resourceAccess": {
           "title": "Resource Access",

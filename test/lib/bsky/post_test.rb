@@ -38,8 +38,40 @@ module Bsky
           headers: {"Content-Type" => "application/json"}
         )
 
-      assert_equal uri, Bsky::Post.new.create("Hello")
+      post = Bsky::Post.new.create("Hello")
+
+      assert_equal uri, post.uri
+      assert_equal "cid", post.cid
       assert_requested request
+    end
+
+    # bskyrb's own helper points root and parent at the same post, which turns
+    # a three-post thread into two threads of two.
+    test "#create keeps the thread root while the parent moves along" do
+      root = Bsky::Post::Record.new("at://root", "root-cid")
+      parent = Bsky::Post::Record.new("at://second", "second-cid")
+
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://third", cid: "third-cid"}.to_json, headers: {"Content-Type" => "application/json"})
+
+      Bsky::Post.new.create("Third", root:, parent:)
+
+      assert_requested(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord") { |request|
+        reply = JSON.parse(request.body).dig("record", "reply")
+
+        reply["root"]["uri"] == "at://root" && reply["parent"]["uri"] == "at://second"
+      }
+    end
+
+    test "#create writes no reply for the first post of a thread" do
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+
+      Bsky::Post.new.create("First")
+
+      assert_requested(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord") { |request|
+        !JSON.parse(request.body)["record"].key?("reply")
+      }
     end
 
     test "#create raises when Bluesky rejects the post" do

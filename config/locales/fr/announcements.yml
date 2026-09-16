@@ -11,4 +11,5 @@ fr:
     preview:
       title: "TEST — %{title}"
       channels: "Serait envoyée à : %{channels}"
+      part_heading: "**%{channel} %{position}/%{total}** (%{count}/%{limit} caractères)"
       social_heading: "**%{channel}** (%{count}/%{limit} caractères)"

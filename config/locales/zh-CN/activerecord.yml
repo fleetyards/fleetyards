@@ -218,6 +218,10 @@ zh-CN:
       models:
         announcement:
           attributes:
+            discord_parts:
+              part_too_long: "第 %{position} 条为 %{length} 个字符，上限为 %{count}"
+            social_parts:
+              part_too_long: "第 %{position} 条为 %{length} 个字符，上限为 %{count}"
             base:
               no_channels: "至少需要一个渠道"
         fleet_alliance:

@@ -8,6 +8,7 @@ require "test_helper"
 #
 #  id               :uuid             not null, primary key
 #  body             :text             not null
+#  discord_parts    :text             default([]), not null, is an Array
 #  icon             :string
 #  last_tested_at   :datetime
 #  link             :string
@@ -18,7 +19,7 @@ require "test_helper"
 #  publish_at       :datetime
 #  published_at     :datetime
 #  recipients_count :integer
-#  social_body      :text
+#  social_parts     :text             default([]), not null, is an Array
 #  status           :string           default("draft"), not null
 #  title            :string           not null
 #  created_at       :datetime         not null
@@ -61,9 +62,39 @@ class AnnouncementTest < ActiveSupport::TestCase
     assert announcement.valid?
   end
 
-  test "social_body is capped at the shortest platform limit" do
-    refute build(:announcement, social_body: "x" * 281).valid?
-    assert build(:announcement, social_body: "x" * 280).valid?
+  # Bluesky's 300 rather than X's 280: a post can be legal on one and not the
+  # other, and each client trims to its own limit on the way out.
+  test "each social part is capped at the looser platform limit" do
+    refute build(:announcement, social_parts: ["ok", "x" * 301]).valid?
+    assert build(:announcement, social_parts: ["ok", "x" * 300]).valid?
+  end
+
+  test "the error names which part is too long" do
+    announcement = build(:announcement, social_parts: ["ok", "x" * 301])
+    announcement.valid?
+
+    assert_includes announcement.errors.full_messages.join, "post 2"
+  end
+
+  test "each Discord part is capped at a Discord message" do
+    refute build(:announcement, discord_parts: ["x" * 2_001]).valid?
+    assert build(:announcement, discord_parts: ["x" * 2_000]).valid?
+  end
+
+  # A repeatable field leaves empty rows behind when one is removed from the
+  # middle, and an empty post is not a post.
+  test "blank parts are dropped rather than posted" do
+    announcement = create(:announcement, social_parts: ["One", "  ", "", "Two"], discord_parts: [""])
+
+    assert_equal %w[One Two], announcement.social_parts
+    assert_empty announcement.discord_parts
+  end
+
+  test "#authored_social? and #threaded? follow the parts" do
+    refute build(:announcement).authored_social?
+    refute build(:announcement, social_parts: ["One"]).threaded?
+    assert build(:announcement, social_parts: ["One"]).authored_social?
+    assert build(:announcement, social_parts: ["One", "Two"]).threaded?
   end
 
   test "gets a default icon" do

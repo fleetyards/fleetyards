@@ -976,7 +976,8 @@
       "announcement": {
         "title": "Titolo",
         "body": "Testo",
-        "socialBody": "Post social",
+        "discordParts": "Messaggi Discord",
+        "socialParts": "Post social",
         "link": "Link",
         "notifyUsers": "Notifica in-app",
         "postDiscord": "Canale aggiornamenti Discord",
@@ -1819,7 +1820,9 @@
           "lastTested": "Ultimo test %{time}",
           "noChannel": "Scegli almeno un canale.",
           "notifyUsersInfo": "Raggiunge ogni account confermato. L'e-mail solo a chi l'ha attivata.",
-          "socialBodyInfo": "Usato per X e Bluesky. In mancanza vale il primo paragrafo del testo."
+          "discordPartsInfo": "Lasciato vuoto, il testo viene ripartito in quanti messaggi servono. Aggiungi messaggi per scegliere dove si interrompe.",
+          "socialPartsInfo": "Lasciato vuoto, viene composto un post da titolo, testo e link. Da due in su diventa un thread, ognuno in risposta al precedente.",
+          "partPosition": "%{position} di %{total}"
         },
         "resourceAccess": {
           "title": "Accesso alle risorse",

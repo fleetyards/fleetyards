@@ -12,7 +12,8 @@ module Admin
             id: {type: :string, format: :uuid},
             title: {type: :string},
             body: {type: :string},
-            socialBody: {type: :string},
+            discordParts: {type: :array, items: {type: :string}},
+            socialParts: {type: :array, items: {type: :string}},
             link: {type: :string},
             icon: {type: :string},
             status: ::Admin::V1::Schemas::Enums::AnnouncementStatusEnum,
@@ -33,7 +34,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             id title body icon status notifyUsers postDiscord postBluesky postX
-            publishable deliveries createdAt updatedAt
+            publishable deliveries discordParts socialParts createdAt updatedAt
           ]
         })
       end

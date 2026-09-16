@@ -11,4 +11,5 @@ zh-TW:
     preview:
       title: "測試 — %{title}"
       channels: "將發送至：%{channels}"
+      part_heading: "**%{channel} %{position}/%{total}**（%{count}/%{limit} 個字元）"
       social_heading: "**%{channel}**（%{count}/%{limit} 個字元）"

@@ -6,6 +6,7 @@
 #
 #  id               :uuid             not null, primary key
 #  body             :text             not null
+#  discord_parts    :text             default([]), not null, is an Array
 #  icon             :string
 #  last_tested_at   :datetime
 #  link             :string
@@ -16,7 +17,7 @@
 #  publish_at       :datetime
 #  published_at     :datetime
 #  recipients_count :integer
-#  social_body      :text
+#  social_parts     :text             default([]), not null, is an Array
 #  status           :string           default("draft"), not null
 #  title            :string           not null
 #  created_at       :datetime         not null
@@ -57,6 +58,12 @@ class Announcement < ApplicationRecord
 
   DEFAULT_ICON = "fa-duotone fa-bullhorn"
 
+  # The longest a single post or message may be. Bluesky allows 300 graphemes
+  # and X 280, so a social part is measured against the looser of the two and
+  # each client trims to its own limit on the way out.
+  SOCIAL_PART_LIMIT = 300
+  DISCORD_PART_LIMIT = 2_000
+
   # Sendable once, and again after a failure. A published announcement is not
   # re-sendable -- readers already have it -- and one that is mid-flight has a
   # job already doing the work.
@@ -64,11 +71,16 @@ class Announcement < ApplicationRecord
 
   validates :title, presence: true, length: {maximum: 255}
   validates :body, presence: true
-  validates :social_body, length: {maximum: 280}, allow_blank: true
+  # Bluesky's 300, not X's 280: a post can be legal on one and not the other,
+  # and the composer trims per platform. This is the outer bound that catches
+  # copy nobody measured at all.
+  validates :social_parts, announcement_part_length: {maximum: SOCIAL_PART_LIMIT}
+  validates :discord_parts, announcement_part_length: {maximum: DISCORD_PART_LIMIT}
   validate :publish_at_required_when_scheduled
   validate :at_least_one_channel
 
   before_validation :default_icon, on: :create
+  before_validation :compact_parts
 
   # The notifications stay -- readers have them in their inbox and they carry
   # their own title, body and link -- but they stop pointing at a row that is
@@ -113,6 +125,22 @@ class Announcement < ApplicationRecord
     PUBLISHABLE_STATUSES.include?(status)
   end
 
+  # Whether the author wrote the channel's copy themselves. When they did it is
+  # posted verbatim -- title, link and all are theirs to place; when they did
+  # not, the composers build it from title, body and link the way a one-line
+  # announcement wants.
+  def authored_discord?
+    discord_parts.present?
+  end
+
+  def authored_social?
+    social_parts.present?
+  end
+
+  def threaded?
+    social_parts.size > 1
+  end
+
   def delivery_for(channel)
     deliveries.find_or_initialize_by(channel: channel.to_s)
   end
@@ -132,6 +160,13 @@ class Announcement < ApplicationRecord
     Notification.where(record_type: "Announcement", record_id: id)
       .update_all(record_type: nil, record_id: nil, updated_at: Time.current)
     # rubocop:enable Rails/SkipsModelValidations
+  end
+
+  # A repeatable field leaves empty rows behind when an author removes one from
+  # the middle, and an empty post is not a post.
+  private def compact_parts
+    self.discord_parts = Array(discord_parts).map { |part| part.to_s.strip }.compact_blank
+    self.social_parts = Array(social_parts).map { |part| part.to_s.strip }.compact_blank
   end
 
   private def default_icon

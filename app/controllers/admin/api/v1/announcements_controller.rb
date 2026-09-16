@@ -115,8 +115,9 @@ module Admin
 
         private def announcement_params
           @announcement_params ||= params.permit(
-            :title, :body, :social_body, :link, :icon, :status, :publish_at,
-            :notify_users, :post_discord, :post_bluesky, :post_x
+            :title, :body, :link, :icon, :status, :publish_at,
+            :notify_users, :post_discord, :post_bluesky, :post_x,
+            discord_parts: [], social_parts: []
           ).tap do |permitted|
             # Letting a form set `publishing`, `published` or `failed` would
             # leave an announcement that says it was sent and never was.

@@ -104,11 +104,39 @@ parent cannot say "Discord posted, X failed".
 `config/sidekiq_schedule.yml`. Not a per-announcement `perform_at`, because an admin editing
 or deleting a scheduled announcement would leave an orphaned job that still fires.
 
-### Social message composition
+### Composition, per channel
 
-`Announcements::SocialMessage` builds the post text for a given character limit — 300 for
-Bluesky, 280 for X — from `social_body` when set, otherwise the first paragraph of `body` with
-markdown stripped, plus the absolute link. Truncation happens on the body, never on the link.
+Both composers return an **ordered list**, not a string.
+
+`Announcements::SocialPosts` builds the posts for a given character limit — 300 for Bluesky,
+280 for X. `Announcements::DiscordMessages` builds the messages for a 2,000-character channel.
+
+When the author wrote `social_parts` / `discord_parts` they are posted verbatim and in order:
+where a thread breaks, and which post carries the link, are editorial decisions, and a composer
+that re-wrapped them would move a boundary somebody chose. Without them, social falls back to
+one composed post (title, first paragraph, link) and Discord packs the body into as many
+messages as it takes, on paragraph boundaries.
+
+Truncation is the fallback of last resort and never touches the link: a cut URL is not a link,
+and the body is the part a reader can lose without losing the way to the rest.
+
+**This replaced a single truncated message per channel**, which was wrong for anything longer
+than a short announcement. The Fleet Ops beta copy (#4978) is two Discord messages (3,524
+characters) and a two-post thread; under the original design Discord lost everything past 1,800
+characters and the second social post was never posted at all. What that dropped was the
+supporter-features line and the personal-inventories carve-out — the D15 copy constraint from
+`premium-fleet-features.md`, which is the one piece a later migration to a billing provider
+cannot undo, because it is what the customer was told they were doing.
+
+Threading on the platforms:
+
+- **X** — every post after the first names the one before it via `reply.in_reply_to_tweet_id`.
+- **Bluesky** — a reply names both its `parent` and the thread's `root`. bskyrb's own
+  `create_post_or_reply` sets them to the same post, which is right for the second post and
+  wrong for every one after it, so the record is built here instead.
+- **Discord** — sequential webhook executes, in order.
+
+The delivery's `external_id` records the **first** post, which is what addresses a thread.
 
 ### X.com client
 
@@ -123,6 +151,7 @@ records `skipped` instead of raising.
 ## Phases
 
 1. **Data model** — migration, `Announcement`, `AnnouncementDelivery`, factories, model tests.
+   Extended afterwards with `discord_parts` / `social_parts` (see *Composition, per channel*).
 2. **Notification type** — `announcement` in `Notification::TYPES` + enum, `AnnouncementMailer`,
    MJML template, backend locales (7), `labels.notificationTypes` + settings group (7).
 3. **Delivery** — `Announcements::{Publish,FanOut,NotifyBatch,PostSocial,PublishScheduled}Job`,

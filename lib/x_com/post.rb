@@ -19,11 +19,18 @@ module XCom
   class Post
     ENDPOINT = "https://api.twitter.com/2/tweets"
 
-    # X counts a URL as 23 characters whatever its real length, but only for
-    # URLs it wraps through t.co. Everything under the cap survives untouched,
-    # so the composer works in plain characters and never relies on the
-    # discount.
     MAX_LENGTH = 280
+
+    # X bills every URL at 23 characters whatever its real length, because it
+    # wraps them through t.co. A post that reads as over the limit in plain
+    # characters can therefore be fine, which is why the copy in
+    # docs/announcements carries two different counts for the same text.
+    URL_WEIGHT = 23
+    URL_PATTERN = %r{https?://\S+}
+
+    def self.weighted_length(text)
+      text.to_s.gsub(URL_PATTERN) { "x" * URL_WEIGHT }.length
+    end
 
     class Error < StandardError
       attr_reader :status, :body
@@ -47,11 +54,14 @@ module XCom
       [api_key, api_secret, access_token, access_token_secret].all?(&:present?)
     end
 
-    # Returns the id of the created post.
-    def create(message)
+    # Returns the id of the created post. `reply_to` makes it a reply, which is
+    # all a thread is on X: every post after the first names the one before it.
+    def create(message, reply_to: nil)
       raise Error.new(0, "missing credentials") unless self.class.configured?
 
-      body = {text: message}.to_json
+      payload = {text: message}
+      payload[:reply] = {in_reply_to_tweet_id: reply_to} if reply_to.present?
+      body = payload.to_json
       response = connection.post(ENDPOINT) do |request|
         request.headers["Authorization"] = authorization_header
         request.headers["Content-Type"] = "application/json"

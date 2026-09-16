@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -160,6 +160,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_170000) do
     t.uuid "admin_user_id"
     t.text "body", null: false
     t.datetime "created_at", null: false
+    t.text "discord_parts", default: [], null: false, array: true
     t.string "icon"
     t.datetime "last_tested_at"
     t.string "link"
@@ -170,7 +171,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_170000) do
     t.datetime "publish_at"
     t.datetime "published_at"
     t.integer "recipients_count"
-    t.text "social_body"
+    t.text "social_parts", default: [], null: false, array: true
     t.string "status", default: "draft", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false

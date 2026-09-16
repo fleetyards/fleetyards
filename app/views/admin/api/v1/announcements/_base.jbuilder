@@ -3,7 +3,8 @@
 json.id announcement.id
 json.title announcement.title
 json.body announcement.body
-json.social_body announcement.social_body if announcement.social_body.present?
+json.discord_parts announcement.discord_parts
+json.social_parts announcement.social_parts
 json.link announcement.link if announcement.link.present?
 json.icon announcement.icon
 json.status announcement.status

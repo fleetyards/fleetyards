@@ -2,6 +2,7 @@
 
 require "test_helper"
 require "discord/announcement"
+require "ostruct"
 
 module Discord
   class AnnouncementTest < ActiveSupport::TestCase
@@ -10,14 +11,29 @@ module Discord
       webhook = Discord::Announcement.new(announcement:)
 
       assert_equal "Contracts", webhook.title
-      assert_equal "Fleets can post **jobs** now.", webhook.message
-      assert_equal "https://#{Rails.configuration.app.domain}/fleets/", webhook.url
+      assert_includes webhook.message, "Fleets can post **jobs** now."
+      assert_includes webhook.message, "https://#{Rails.configuration.app.domain}/fleets/"
     end
 
-    test "truncates a body that would blow Discord's message cap" do
-      announcement = build(:announcement, body: "x" * 3_000)
+    test "posts every message of a two-message announcement, in order" do
+      announcement = build(
+        :announcement,
+        discord_parts: ["## Fleet Ops is in public beta", "**How to switch them on**"]
+      )
+      Rails.application.credentials.stubs(:discord_updates_endpoint).returns("https://discord.test/updates")
 
-      assert_equal Discord::Announcement::MAX_MESSAGE_LENGTH, Discord::Announcement.new(announcement:).message.length
+      posted = []
+      client = Object.new
+      client.define_singleton_method(:execute) do |&block|
+        builder = OpenStruct.new
+        block.call(builder)
+        posted << builder.content
+      end
+      Discordrb::Webhooks::Client.stubs(:new).returns(client)
+
+      Discord::Announcement.new(announcement:).run
+
+      assert_equal ["## Fleet Ops is in public beta", "**How to switch them on**"], posted
     end
 
     test "#run is a no-op without an updates endpoint" do

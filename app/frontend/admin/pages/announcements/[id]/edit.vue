@@ -24,6 +24,7 @@ import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import AnnouncementChannelFields from "@/admin/components/Announcements/ChannelFields/index.vue";
+import AnnouncementPartsEditor from "@/admin/components/Announcements/PartsEditor/index.vue";
 import AnnouncementDeliveries from "@/admin/components/Announcements/Deliveries/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -47,7 +48,6 @@ const queryClient = useQueryClient();
 type FormValues = {
   title: string;
   body: string;
-  socialBody?: string;
   link?: string;
   publishAt?: string;
   notifyUsers: boolean;
@@ -73,7 +73,6 @@ const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
   initialValues: {
     title: props.announcement.title,
     body: props.announcement.body,
-    socialBody: props.announcement.socialBody,
     link: props.announcement.link,
     publishAt: props.announcement.publishAt,
     notifyUsers: props.announcement.notifyUsers,
@@ -86,7 +85,6 @@ const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
 
 const [title, titleProps] = defineField("title");
 const [body, bodyProps] = defineField("body");
-const [socialBody, socialBodyProps] = defineField("socialBody");
 const [link, linkProps] = defineField("link");
 const [publishAt, publishAtProps] = defineField("publishAt");
 const [notifyUsers] = defineField("notifyUsers");
@@ -106,6 +104,17 @@ const noChannel = computed(
 const scheduledInitially =
   props.announcement.status === AnnouncementStatusEnum.SCHEDULED;
 const scheduleDirty = computed(() => schedule.value !== scheduledInitially);
+
+const discordParts = ref<string[]>([...props.announcement.discordParts]);
+const socialParts = ref<string[]>([...props.announcement.socialParts]);
+
+const partsDirty = computed(
+  () =>
+    JSON.stringify(discordParts.value) !==
+      JSON.stringify(props.announcement.discordParts) ||
+    JSON.stringify(socialParts.value) !==
+      JSON.stringify(props.announcement.socialParts),
+);
 
 const submitting = ref(false);
 
@@ -133,7 +142,8 @@ const onSubmit = handleSubmit(async (formValues) => {
   const payload: AnnouncementInput = {
     title: formValues.title,
     body: formValues.body,
-    socialBody: formValues.socialBody || undefined,
+    discordParts: discordParts.value,
+    socialParts: socialParts.value,
     link: formValues.link || undefined,
     status: schedule.value
       ? AnnouncementInputStatusEnum.SCHEDULED
@@ -198,18 +208,30 @@ const handleCancel = async () => {
           translation-key="announcement.body"
           name="body"
         />
-        <FormTextarea
-          v-model="socialBody"
-          v-bind="socialBodyProps"
-          translation-key="announcement.socialBody"
-          name="socialBody"
-          :info="t('labels.admin.announcements.socialBodyInfo')"
-        />
         <FormInput
           v-model="link"
           v-bind="linkProps"
           translation-key="announcement.link"
           name="link"
+        />
+
+        <AnnouncementPartsEditor
+          v-model="discordParts"
+          name="discord-parts"
+          :label="t('labels.announcement.discordParts')"
+          :hint="t('labels.admin.announcements.discordPartsInfo')"
+          :limits="[{ label: 'Discord', limit: 2000 }]"
+        />
+
+        <AnnouncementPartsEditor
+          v-model="socialParts"
+          name="social-parts"
+          :label="t('labels.announcement.socialParts')"
+          :hint="t('labels.admin.announcements.socialPartsInfo')"
+          :limits="[
+            { label: 'X', limit: 280, weighted: true },
+            { label: 'Bluesky', limit: 300 },
+          ]"
         />
       </div>
       <div class="col-12 col-md-5">
@@ -261,7 +283,7 @@ const handleCancel = async () => {
     <FormActions
       :submitting="submitting"
       form-id="admin-announcement-edit-form"
-      :dirty="meta.dirty || meta.touched || scheduleDirty"
+      :dirty="meta.dirty || meta.touched || scheduleDirty || partsDirty"
       @cancel="handleCancel"
     />
   </form>

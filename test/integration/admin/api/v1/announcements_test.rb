@@ -248,6 +248,35 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The Fleet Ops beta copy is two Discord messages and a two-post thread, and
+  # both lists have to survive the round trip in the order they were written.
+  test "POST /announcements keeps the ordered Discord messages and social thread" do
+    sign_in @admin_user
+
+    body = {
+      title: "Fleet Ops",
+      body: "Four new tools for running a fleet.",
+      discordParts: ["## Fleet Ops is in public beta", "**How to switch them on**"],
+      socialParts: ["Fleet Ops is in public beta 🚀", "Free in beta, then supporter features."],
+      postDiscord: true,
+      postX: true
+    }
+
+    assert_api_response :post, 201, body: body do
+      assert_equal ["## Fleet Ops is in public beta", "**How to switch them on**"], parsed_body["discordParts"]
+      assert_equal 2, parsed_body["socialParts"].size
+      assert_equal "Fleet Ops is in public beta 🚀", parsed_body["socialParts"].first
+    end
+  end
+
+  test "POST /announcements refuses a social post past the platform limit" do
+    sign_in @admin_user
+
+    assert_api_response :post, 400, body: {title: "x", body: "y", socialParts: ["z" * 301]} do
+      assert_equal "validation_error.announcement.create", parsed_body["code"]
+    end
+  end
+
   test "POST /announcements rejects an announcement with no channel" do
     sign_in @admin_user
 

@@ -11,4 +11,5 @@ en:
     preview:
       title: "TEST — %{title}"
       channels: "Would go to: %{channels}"
+      part_heading: "**%{channel} %{position}/%{total}** (%{count}/%{limit} characters)"
       social_heading: "**%{channel}** (%{count}/%{limit} characters)"

@@ -113,7 +113,6 @@
       "announcement": {
         "title": "发生了什么？",
         "body": "支持 Markdown。第一段会用于社交平台的帖子。",
-        "socialBody": "可选，最多 280 个字符",
         "link": "/fleets/"
       },
       "fundingGoal": {

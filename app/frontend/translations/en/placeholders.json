@@ -113,7 +113,6 @@
       "announcement": {
         "title": "What happened?",
         "body": "Markdown. The first paragraph is what the social posts use.",
-        "socialBody": "Optional, up to 280 characters",
         "link": "/fleets/"
       },
       "fundingGoal": {

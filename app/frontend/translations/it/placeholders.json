@@ -113,7 +113,6 @@
       "announcement": {
         "title": "Cosa è successo?",
         "body": "Markdown. Il primo paragrafo è quello che usano i post social.",
-        "socialBody": "Facoltativo, massimo 280 caratteri",
         "link": "/fleets/"
       },
       "fundingGoal": {

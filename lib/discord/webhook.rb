@@ -20,13 +20,23 @@ module Discord
       @url = get_url
     end
 
+    # Posted one execute at a time and in order, because an announcement is not
+    # always one message: Discord caps a message at 2000 characters, and a
+    # launch that runs past it is two messages whose order is the whole point.
+    # A subclass with one message overrides nothing.
     def run
       return if @webhook_endpoint.blank?
 
-      client.execute do |builder|
-        builder.content = content
-        builder.allowed_mentions = allowed_mentions if allowed_mentions
+      contents.compact_blank.map do |body|
+        client.execute do |builder|
+          builder.content = body
+          builder.allowed_mentions = allowed_mentions if allowed_mentions
+        end
       end
+    end
+
+    private def contents
+      [content]
     end
 
     private def get_webhook_endpoint

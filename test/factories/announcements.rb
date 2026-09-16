@@ -6,6 +6,7 @@
 #
 #  id               :uuid             not null, primary key
 #  body             :text             not null
+#  discord_parts    :text             default([]), not null, is an Array
 #  icon             :string
 #  last_tested_at   :datetime
 #  link             :string
@@ -16,7 +17,7 @@
 #  publish_at       :datetime
 #  published_at     :datetime
 #  recipients_count :integer
-#  social_body      :text
+#  social_parts     :text             default([]), not null, is an Array
 #  status           :string           default("draft"), not null
 #  title            :string           not null
 #  created_at       :datetime         not null

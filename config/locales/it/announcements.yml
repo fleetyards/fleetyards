@@ -11,4 +11,5 @@ it:
     preview:
       title: "TEST — %{title}"
       channels: "Andrebbe a: %{channels}"
+      part_heading: "**%{channel} %{position}/%{total}** (%{count}/%{limit} caratteri)"
       social_heading: "**%{channel}** (%{count}/%{limit} caratteri)"

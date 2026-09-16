@@ -3,6 +3,10 @@
     "actions": {
       "selectAll": "全選",
       "announcements": {
+        "addPart": "新增",
+        "removePart": "移除",
+        "movePartUp": "上移",
+        "movePartDown": "下移",
         "sendTest": "發送測試",
         "publish": "發送",
         "retry": "重試"

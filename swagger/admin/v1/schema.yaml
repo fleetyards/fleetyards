@@ -9366,8 +9366,14 @@ components:
           type: string
         body:
           type: string
-        socialBody:
-          type: string
+        discordParts:
+          type: array
+          items:
+            type: string
+        socialParts:
+          type: array
+          items:
+            type: string
         link:
           type: string
         icon:
@@ -9420,6 +9426,8 @@ components:
       - postX
       - publishable
       - deliveries
+      - discordParts
+      - socialParts
       - createdAt
       - updatedAt
       title: Announcement
@@ -9478,8 +9486,14 @@ components:
           type: string
         body:
           type: string
-        socialBody:
-          type: string
+        discordParts:
+          type: array
+          items:
+            type: string
+        socialParts:
+          type: array
+          items:
+            type: string
         link:
           type: string
         icon:

@@ -43,20 +43,51 @@ module Announcements
       end
     end
 
+    # The id recorded is the first post's, which is what addresses a thread:
+    # every reply hangs off it, so it is the one link that opens the whole
+    # thing.
     private def post(announcement, channel)
       case channel.to_s
       when "discord"
         ::Discord::Announcement.new(announcement:).run
         nil
       when "bluesky"
-        ::Bsky::Post.new.create(
-          Announcements::SocialMessage.call(announcement, limit: ::Bsky::Post::MAX_LENGTH)
-        )
+        post_bluesky_thread(announcement)
       when "x"
-        ::XCom::Post.new.create(
-          Announcements::SocialMessage.call(announcement, limit: ::XCom::Post::MAX_LENGTH)
-        )
+        post_x_thread(announcement)
       end
+    end
+
+    # Serial, and it has to be: each post names the one before it, so there is
+    # nothing to parallelise. A failure partway leaves the posts already made
+    # standing -- they cannot be unsent -- which is why the delivery records
+    # the error and a human decides what to do rather than a retry re-running
+    # the whole thread.
+    private def post_bluesky_thread(announcement)
+      client = ::Bsky::Post.new
+      root = nil
+      parent = nil
+
+      Announcements::SocialPosts.call(announcement, limit: ::Bsky::Post::MAX_LENGTH).each do |text|
+        created = client.create(text, root:, parent:)
+        root ||= created
+        parent = created
+      end
+
+      root&.uri
+    end
+
+    private def post_x_thread(announcement)
+      client = ::XCom::Post.new
+      first = nil
+      previous = nil
+
+      Announcements::SocialPosts.call(announcement, limit: ::XCom::Post::MAX_LENGTH).each do |text|
+        previous = client.create(text, reply_to: previous)
+        first ||= previous
+      end
+
+      first
     end
   end
 end

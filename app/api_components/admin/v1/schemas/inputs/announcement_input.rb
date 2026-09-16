@@ -12,7 +12,8 @@ module Admin
             properties: {
               title: {type: :string},
               body: {type: :string},
-              socialBody: {type: :string},
+              discordParts: {type: :array, items: {type: :string}},
+              socialParts: {type: :array, items: {type: :string}},
               link: {type: :string},
               icon: {type: :string},
               status: ::Admin::V1::Schemas::Enums::AnnouncementInputStatusEnum,

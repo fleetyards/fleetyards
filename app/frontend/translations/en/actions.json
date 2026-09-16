@@ -3,6 +3,10 @@
     "actions": {
       "selectAll": "Select all",
       "announcements": {
+        "addPart": "Add",
+        "removePart": "Remove",
+        "movePartUp": "Move up",
+        "movePartDown": "Move down",
         "sendTest": "Send test",
         "publish": "Send",
         "retry": "Retry"

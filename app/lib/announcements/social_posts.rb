@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 module Announcements
-  # Builds the text of a social post for a given character limit.
+  # The ordered posts one announcement makes on a social platform. One entry is
+  # a single post; two or more are a thread, each replying to the one before.
   #
-  # One composer for both platforms rather than one each, because the only
-  # thing that differs between an X post and a Bluesky post is the number.
-  class SocialMessage
+  # When the author wrote the parts they are posted verbatim -- where the break
+  # falls, and which post carries the link, are editorial decisions, and a
+  # composer that re-wraps them would move the boundary somebody chose. When
+  # they did not, this falls back to the one composed post a short announcement
+  # wants: title, first paragraph, link.
+  class SocialPosts
     ELLIPSIS = "…"
 
     def initialize(announcement, limit:)
@@ -14,10 +18,23 @@ module Announcements
     end
 
     def self.call(announcement, limit:)
-      new(announcement, limit:).to_s
+      new(announcement, limit:).to_a
     end
 
-    def to_s
+    def to_a
+      return authored if @announcement.authored_social?
+
+      [composed].compact_blank
+    end
+
+    # Trimmed rather than trusted, even though the model validates each part:
+    # the model's bound is Bluesky's 300 and X stops at 280, so a post that is
+    # legal on one platform can arrive here too long for the other.
+    private def authored
+      @announcement.social_parts.map { |part| truncate(part, @limit) }
+    end
+
+    private def composed
       [headline, link].compact_blank.join("\n\n")
     end
 
@@ -26,10 +43,7 @@ module Announcements
     private def headline
       return nil if body_budget <= 0
 
-      text = [@announcement.title, body].compact_blank.join("\n\n")
-      return text if text.length <= body_budget
-
-      text[0, body_budget - 1].rstrip + ELLIPSIS
+      truncate([@announcement.title, body].compact_blank.join("\n\n"), body_budget)
     end
 
     private def body_budget
@@ -39,13 +53,17 @@ module Announcements
     end
 
     private def body
-      return @announcement.social_body if @announcement.social_body.present?
-
       self.class.plain_text(@announcement.body).split("\n\n").first
     end
 
     private def link
       @announcement.absolute_link
+    end
+
+    private def truncate(text, limit)
+      return text if text.length <= limit
+
+      text[0, limit - 1].rstrip + ELLIPSIS
     end
 
     # Markdown as words. A social post has no renderer behind it, so the

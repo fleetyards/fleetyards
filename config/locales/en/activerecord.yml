@@ -219,6 +219,10 @@ en:
       models:
         announcement:
           attributes:
+            discord_parts:
+              part_too_long: "post %{position} is %{length} characters, the limit is %{count}"
+            social_parts:
+              part_too_long: "post %{position} is %{length} characters, the limit is %{count}"
             base:
               no_channels: "needs at least one channel"
         fleet_alliance:

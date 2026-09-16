@@ -976,7 +976,8 @@
       "announcement": {
         "title": "Título",
         "body": "Cuerpo",
-        "socialBody": "Publicación social",
+        "discordParts": "Mensajes de Discord",
+        "socialParts": "Publicaciones sociales",
         "link": "Enlace",
         "notifyUsers": "Notificación en la app",
         "postDiscord": "Canal de novedades de Discord",
@@ -1819,7 +1820,9 @@
           "lastTested": "Última prueba %{time}",
           "noChannel": "Seleccione al menos un canal.",
           "notifyUsersInfo": "Llega a todas las cuentas confirmadas. El correo solo a quien lo haya activado.",
-          "socialBodyInfo": "Se usa para X y Bluesky. Si falta, se toma el primer párrafo del cuerpo."
+          "discordPartsInfo": "Si se deja vacío, el cuerpo se reparte en tantos mensajes como haga falta. Añada mensajes para elegir dónde se corta.",
+          "socialPartsInfo": "Si se deja vacío, se compone una publicación con el título, el cuerpo y el enlace. Dos o más forman un hilo, cada una respondiendo a la anterior.",
+          "partPosition": "%{position} de %{total}"
         },
         "resourceAccess": {
           "title": "Acceso a recursos",

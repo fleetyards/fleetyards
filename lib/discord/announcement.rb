@@ -6,10 +6,6 @@ require "discord/webhook"
 module Discord
   # An admin-written announcement, posted to the updates channel.
   class Announcement < ::Discord::Webhook
-    # Discord's own cap is 2000 for the whole message; the title and the link
-    # take the rest.
-    MAX_MESSAGE_LENGTH = 1_800
-
     def self.configured?
       Rails.application.credentials.discord_updates_endpoint.present?
     end
@@ -22,15 +18,25 @@ module Discord
       announcement.title
     end
 
-    # The full body rather than the social one: Discord has 2000 characters to
-    # play with and renders markdown, so the post that goes there is the
-    # announcement itself, not the 280-character version of it written for X.
+    # Kept for the preview, which quotes the first message. The posting path
+    # goes through `contents`.
     private def get_message
-      announcement.body.to_s.truncate(MAX_MESSAGE_LENGTH)
+      messages.first
+    end
+
+    # The composer has already placed the title and the link -- in the author's
+    # own parts when they wrote them, and around the packed body when they did
+    # not -- so there is nothing left for the base class to wrap around it.
+    private def contents
+      messages
+    end
+
+    private def messages
+      @messages ||= Announcements::DiscordMessages.call(announcement)
     end
 
     private def get_url
-      announcement.absolute_link
+      nil
     end
   end
 end

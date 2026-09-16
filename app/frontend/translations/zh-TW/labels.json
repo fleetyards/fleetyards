@@ -976,7 +976,8 @@
       "announcement": {
         "title": "標題",
         "body": "內文",
-        "socialBody": "社群貼文",
+        "discordParts": "Discord 訊息",
+        "socialParts": "社群貼文",
         "link": "連結",
         "notifyUsers": "應用內通知",
         "postDiscord": "Discord 更新頻道",
@@ -1819,7 +1820,9 @@
           "lastTested": "上次測試 %{time}",
           "noChannel": "至少選擇一個管道。",
           "notifyUsersInfo": "涵蓋所有已驗證帳號。電子郵件僅寄給已開啟的人。",
-          "socialBodyInfo": "用於 X 與 Bluesky。留空則取內文的第一段。"
+          "discordPartsInfo": "留空則內文會自動拆分成所需數量的訊息。新增訊息可自行決定斷點位置。",
+          "socialPartsInfo": "留空則由標題、內文與連結組成一則貼文。兩則以上會組成討論串，後一則回覆前一則。",
+          "partPosition": "第 %{position} / %{total} 則"
         },
         "resourceAccess": {
           "title": "資源存取權",

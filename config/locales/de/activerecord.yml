@@ -218,6 +218,10 @@ de:
       models:
         announcement:
           attributes:
+            discord_parts:
+              part_too_long: "Beitrag %{position} hat %{length} Zeichen, erlaubt sind %{count}"
+            social_parts:
+              part_too_long: "Beitrag %{position} hat %{length} Zeichen, erlaubt sind %{count}"
             base:
               no_channels: "braucht mindestens einen Kanal"
         fleet_alliance:

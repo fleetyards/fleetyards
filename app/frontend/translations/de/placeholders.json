@@ -113,7 +113,6 @@
       "announcement": {
         "title": "Was ist passiert?",
         "body": "Markdown. Der erste Absatz landet in den Social-Posts.",
-        "socialBody": "Optional, maximal 280 Zeichen",
         "link": "/fleets/"
       },
       "fundingGoal": {
