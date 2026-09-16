@@ -1859,6 +1859,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.datetime "created_at", null: false
     t.string "currency", default: "EUR", null: false
     t.date "ended_at"
+    t.uuid "fleet_id"
     t.string "kofi_transaction_id"
     t.string "linked_via"
     t.string "name"
@@ -1873,6 +1874,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.date "started_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
+    t.index ["fleet_id"], name: "index_supporter_contributions_on_fleet_id", where: "(fleet_id IS NOT NULL)"
     t.index ["kofi_transaction_id"], name: "index_supporter_contributions_on_kofi_transaction_id", unique: true, where: "(kofi_transaction_id IS NOT NULL)"
     t.index ["linked_via"], name: "index_supporter_contributions_on_linked_via", where: "(linked_via IS NOT NULL)"
     t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
@@ -2222,6 +2224,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
   add_foreign_key "payout_transfers", "users", column: "confirmed_by_id"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
+  add_foreign_key "supporter_contributions", "fleets"
   add_foreign_key "supporter_contributions", "users"
   add_foreign_key "task_forces", "vehicles", on_delete: :cascade
   add_foreign_key "tour_join_requests", "tours", on_delete: :cascade

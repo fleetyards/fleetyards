@@ -21,6 +21,7 @@
 #  started_at          :date             not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  fleet_id            :uuid
 #  kofi_transaction_id :string
 #  patreon_member_id   :string
 #  patreon_user_id     :string
@@ -28,6 +29,7 @@
 #
 # Indexes
 #
+#  index_supporter_contributions_on_fleet_id                (fleet_id) WHERE (fleet_id IS NOT NULL)
 #  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
 #  index_supporter_contributions_on_linked_via              (linked_via) WHERE (linked_via IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
@@ -39,6 +41,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class SupporterContribution < ApplicationRecord
@@ -51,7 +54,7 @@ class SupporterContribution < ApplicationRecord
   has_paper_trail on: %i[update],
     only: %i[
       name amount_cents currency anonymous recurring
-      started_at ended_at note user_id payer_email claim_key source
+      started_at ended_at note user_id payer_email claim_key source fleet_id
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -63,6 +66,15 @@ class SupporterContribution < ApplicationRecord
 
   # Touch so a linked account's cached public profile picks the badge up.
   belongs_to :user, optional: true, touch: true
+
+  # Which fleet this contribution is *for*, chosen by the supporter who made it.
+  #
+  # Deliberately a field rather than something derived from the roster: the
+  # obvious alternative -- any accepted admin of the fleet is a supporter --
+  # fails in both directions. Somebody who admins five fleets would upgrade all
+  # five, and a fleet would lose what it had the day an admin who was never the
+  # payer left. Sponsorship is a fact about the money, not about the roster.
+  belongs_to :fleet, optional: true
 
   DEFAULT_SORTING_PARAMS = "started_at desc"
   ALLOWED_SORTING_PARAMS = [
@@ -97,6 +109,7 @@ class SupporterContribution < ApplicationRecord
   validates :user, presence: true, if: :user_id?
   validates :claim_key, format: {with: SupporterClaimKey::CANONICAL}, allow_nil: true
   validate :ended_at_after_started_at
+  validate :nominated_fleet_is_the_payers_own
 
   before_validation :force_anonymous_when_name_blank
   before_validation :normalize_payer_email
@@ -147,12 +160,12 @@ class SupporterContribution < ApplicationRecord
       "name", "amount_cents", "currency", "anonymous", "recurring",
       "started_at", "ended_at", "note", "source", "patreon_member_id",
       "kofi_transaction_id", "payer_email", "linked_via",
-      "created_at", "updated_at", "id", "user_id"
+      "created_at", "updated_at", "id", "user_id", "fleet_id"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["user"]
+    ["user", "fleet"]
   end
 
   def self.monthly_total(date = Date.current)
@@ -210,6 +223,29 @@ class SupporterContribution < ApplicationRecord
     return if anonymous?
 
     user&.username if user&.public_hangar?
+  end
+
+  # A nomination says what *this* money is for, so it needs a payer to have said
+  # it and a fleet that payer actually belongs to. Without the first there is
+  # nobody whose choice it is; without the second a contribution could be
+  # pointed at a fleet its payer has nothing to do with.
+  #
+  # Checked only while the nomination or the link is being changed. A supporter
+  # who later leaves the fleet leaves a stale nomination behind, and that must
+  # not make every subsequent write to the row fail -- reconciliation is where a
+  # nomination that stopped qualifying gets answered, not validation.
+  private def nominated_fleet_is_the_payers_own
+    return if fleet_id.blank?
+    return unless will_save_change_to_fleet_id? || will_save_change_to_user_id?
+
+    if user_id.blank?
+      errors.add(:fleet, :requires_a_linked_supporter)
+      return
+    end
+
+    return if user.fleet_memberships.kept.accepted.exists?(fleet_id:)
+
+    errors.add(:fleet, :not_a_fleet_of_the_supporter)
   end
 
   private def ended_at_after_started_at

@@ -21,6 +21,7 @@
 #  started_at          :date             not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  fleet_id            :uuid
 #  kofi_transaction_id :string
 #  patreon_member_id   :string
 #  patreon_user_id     :string
@@ -28,6 +29,7 @@
 #
 # Indexes
 #
+#  index_supporter_contributions_on_fleet_id                (fleet_id) WHERE (fleet_id IS NOT NULL)
 #  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
 #  index_supporter_contributions_on_linked_via              (linked_via) WHERE (linked_via IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
@@ -39,6 +41,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (user_id => users.id)
 #
 FactoryBot.define do
