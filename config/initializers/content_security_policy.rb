@@ -93,7 +93,12 @@ Rails.application.configure do
       "https://accounts.google.com",
       "https://bsky.social",
       "https://citizenid.space",
-      "https://citizenid.dev"
+      "https://citizenid.dev",
+      # Chrome checks form-action against every hop of the redirect chain, not
+      # just the URL the form names -- so a provider's authorize host belongs
+      # here even though the form posts to our own /users/auth/:provider. The
+      # host is the one OmniAuth::Strategies::Patreon names.
+      "https://www.patreon.com"
     ]
 
     policy.default_src :none
