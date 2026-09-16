@@ -110,6 +110,12 @@
         "code": "Code",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Que s'est-il passé ?",
+        "body": "Markdown. Le premier paragraphe sert aux messages sociaux.",
+        "socialBody": "Facultatif, 280 caractères maximum",
+        "link": "/fleets/"
+      },
       "fundingGoal": {
         "title": "Coûts serveur, Domaine, Discord...",
         "description": "Contexte facultatif affiché publiquement",

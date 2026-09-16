@@ -34,6 +34,8 @@ de:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Leihschiff-Upload erfolgreich.
     record_not_found:
+      announcement: Keine Ankündigung gefunden
+      announcement_delivery: Keine Ankündigungs-Zustellung gefunden
       base: Kein Eintrag gefunden
       fleet: Keine Flotte gefunden
       fleet_membership: Kein Flottenmitglied gefunden

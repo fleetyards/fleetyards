@@ -973,6 +973,18 @@
         "iconOverridden": "圖示（已覆寫）",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "標題",
+        "body": "內文",
+        "socialBody": "社群貼文",
+        "link": "連結",
+        "notifyUsers": "應用內通知",
+        "postDiscord": "Discord 更新頻道",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "定時發送",
+        "publishAt": "發送時間"
+      },
       "fundingGoal": {
         "title": "標題",
         "description": "描述",
@@ -1777,6 +1789,30 @@
             "manual": "管理員設定"
           }
         },
+        "announcements": {
+          "statuses": {
+            "draft": "草稿",
+            "scheduled": "已排程",
+            "publishing": "發送中",
+            "published": "已發送",
+            "failed": "失敗"
+          },
+          "channels": {
+            "in_app": "應用內",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "待處理",
+            "succeeded": "已發送",
+            "skipped": "已略過",
+            "failed": "失敗"
+          },
+          "noChannel": "至少選擇一個管道。",
+          "notifyUsersInfo": "涵蓋所有已驗證帳號。電子郵件僅寄給已開啟的人。",
+          "socialBodyInfo": "用於 X 與 Bluesky。留空則取內文的第一段。"
+        },
         "resourceAccess": {
           "title": "資源存取權",
           "groups": {
@@ -1795,6 +1831,7 @@
             "users": "使用者",
             "supporters": "支持者",
             "admins": "管理員",
+            "announcements": "公告",
             "oauth_applications": "OAuth 應用程式",
             "maintenance": "維護",
             "imports": "匯入",

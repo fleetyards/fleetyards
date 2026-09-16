@@ -2,6 +2,10 @@
   "zh-CN": {
     "actions": {
       "selectAll": "全选",
+      "announcements": {
+        "publish": "发送",
+        "retry": "重试"
+      },
       "admin": {
         "dashboard": {
           "reloadModels": "重新加载模型",

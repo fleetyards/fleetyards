@@ -253,6 +253,11 @@
           "rsiApiStatus": "RSI API 状态",
           "buildCompare": "版本对比"
         },
+        "announcements": {
+          "index": "公告",
+          "new": "新建公告",
+          "edit": "编辑公告"
+        },
         "supporterContributions": {
           "index": "支持者贡献",
           "new": "新建支持者贡献",

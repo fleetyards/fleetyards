@@ -77,6 +77,12 @@
             "index": "Modifica produttore"
           }
         },
+        "announcements": {
+          "index": "Annunci",
+          "new": "Nuovo annuncio",
+          "edit": "Modifica annuncio",
+          "deliveries": "Consegna"
+        },
         "supporterContributions": {
           "index": "Contributi dei sostenitori",
           "new": "Nuovo contributo",

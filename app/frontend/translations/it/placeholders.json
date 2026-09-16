@@ -110,6 +110,12 @@
         "code": "Codice",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Cosa è successo?",
+        "body": "Markdown. Il primo paragrafo è quello che usano i post social.",
+        "socialBody": "Facoltativo, massimo 280 caratteri",
+        "link": "/fleets/"
+      },
       "fundingGoal": {
         "title": "Costi server, Dominio, Discord...",
         "description": "Contesto facoltativo mostrato pubblicamente",

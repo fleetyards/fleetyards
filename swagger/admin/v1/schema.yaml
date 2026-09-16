@@ -201,6 +201,296 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/announcements":
+    post:
+      summary: Create Announcement
+      tags:
+      - Announcements
+      operationId: createAnnouncement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AnnouncementInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Announcements list
+      tags:
+      - Announcements
+      operationId: announcements
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/AnnouncementQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcements"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/announcements/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Announcement id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Announcement Detail
+      tags:
+      - Announcements
+      operationId: announcement
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Announcement
+      tags:
+      - Announcements
+      operationId: updateAnnouncement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AnnouncementInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Announcement
+      tags:
+      - Announcements
+      operationId: destroyAnnouncement
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/announcements/{id}/deliveries/{channel}/retry":
+    parameters:
+    - name: id
+      in: path
+      description: Announcement id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: channel
+      in: path
+      description: Delivery channel
+      schema:
+        "$ref": "#/components/schemas/AnnouncementChannelEnum"
+      required: true
+    put:
+      summary: Retry Announcement Delivery
+      tags:
+      - Announcements
+      operationId: retryAnnouncementDelivery
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/announcements/{id}/publish":
+    parameters:
+    - name: id
+      in: path
+      description: Announcement id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Publish Announcement
+      tags:
+      - Announcements
+      operationId: publishAnnouncement
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Announcement"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/cargo-holds":
     get:
       summary: Cargo Holds list
@@ -8965,6 +9255,7 @@ components:
       - users
       - supporters
       - admins
+      - announcements
       - oauth_applications
       - maintenance
       - imports
@@ -8996,6 +9287,7 @@ components:
       - USERS
       - SUPPORTERS
       - ADMINS
+      - ANNOUNCEMENTS
       - OAUTH_APPLICATIONS
       - MAINTENANCE
       - IMPORTS
@@ -9019,6 +9311,230 @@ components:
       - meta
       - items
       title: AdminUsers
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type: string
+        socialBody:
+          type: string
+        link:
+          type: string
+        icon:
+          type: string
+        status:
+          "$ref": "#/components/schemas/AnnouncementStatusEnum"
+        publishAt:
+          type: string
+          format: date-time
+        publishedAt:
+          type: string
+          format: date-time
+        recipientsCount:
+          type: integer
+        notifyUsers:
+          type: boolean
+        postDiscord:
+          type: boolean
+        postBluesky:
+          type: boolean
+        postX:
+          type: boolean
+        publishable:
+          type: boolean
+        author:
+          type: string
+        deliveries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AnnouncementDelivery"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - body
+      - icon
+      - status
+      - notifyUsers
+      - postDiscord
+      - postBluesky
+      - postX
+      - publishable
+      - deliveries
+      - createdAt
+      - updatedAt
+      title: Announcement
+    AnnouncementChannelEnum:
+      type: string
+      enum:
+      - in_app
+      - discord
+      - bluesky
+      - x
+      x-enumNames:
+      - IN_APP
+      - DISCORD
+      - BLUESKY
+      - X
+      title: AnnouncementChannelEnum
+    AnnouncementDelivery:
+      type: object
+      properties:
+        channel:
+          "$ref": "#/components/schemas/AnnouncementChannelEnum"
+        status:
+          "$ref": "#/components/schemas/AnnouncementDeliveryStatusEnum"
+        externalId:
+          type: string
+        error:
+          type: string
+        deliveredAt:
+          type: string
+          format: date-time
+        attempts:
+          type: integer
+      additionalProperties: false
+      required:
+      - channel
+      - status
+      - attempts
+      title: AnnouncementDelivery
+    AnnouncementDeliveryStatusEnum:
+      type: string
+      enum:
+      - pending
+      - succeeded
+      - skipped
+      - failed
+      x-enumNames:
+      - PENDING
+      - SUCCEEDED
+      - SKIPPED
+      - FAILED
+      title: AnnouncementDeliveryStatusEnum
+    AnnouncementInput:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        socialBody:
+          type: string
+          nullable: true
+        link:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+        status:
+          "$ref": "#/components/schemas/AnnouncementInputStatusEnum"
+        publishAt:
+          type: string
+          format: date-time
+          nullable: true
+        notifyUsers:
+          type: boolean
+        postDiscord:
+          type: boolean
+        postBluesky:
+          type: boolean
+        postX:
+          type: boolean
+      additionalProperties: false
+      required:
+      - title
+      - body
+      title: AnnouncementInput
+    AnnouncementInputStatusEnum:
+      type: string
+      enum:
+      - draft
+      - scheduled
+      x-enumNames:
+      - DRAFT
+      - SCHEDULED
+      title: AnnouncementInputStatusEnum
+    AnnouncementQuery:
+      type: object
+      properties:
+        searchCont:
+          type: string
+        statusEq:
+          "$ref": "#/components/schemas/AnnouncementStatusEnum"
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/AnnouncementSortEnum"
+          - "$ref": "#/components/schemas/AnnouncementSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/AnnouncementSortEnum"
+          - "$ref": "#/components/schemas/AnnouncementSortEnum"
+      additionalProperties: false
+      example: {}
+      title: AnnouncementQuery
+    AnnouncementSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      - publishedAt asc
+      - publishedAt desc
+      - title asc
+      - title desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - PUBLISHED_AT_ASC
+      - PUBLISHED_AT_DESC
+      - TITLE_ASC
+      - TITLE_DESC
+      title: AnnouncementSortEnum
+    AnnouncementStatusEnum:
+      type: string
+      enum:
+      - draft
+      - scheduled
+      - publishing
+      - published
+      - failed
+      x-enumNames:
+      - DRAFT
+      - SCHEDULED
+      - PUBLISHING
+      - PUBLISHED
+      - FAILED
+      title: AnnouncementStatusEnum
+    Announcements:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Announcement"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Announcements
     BarChartStats:
       type: object
       properties:

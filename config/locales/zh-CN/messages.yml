@@ -31,6 +31,8 @@ zh-CN:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: 借用船上传成功。
     record_not_found:
+      announcement: 未找到公告
+      announcement_delivery: 未找到公告投递
       base: 未找到条目
       fleet: 未找到舰队
       fleet_membership: 未找到舰队成员

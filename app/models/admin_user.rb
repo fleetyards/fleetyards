@@ -58,7 +58,7 @@ class AdminUser < ApplicationRecord
       manufacturers vehicles images
     ],
     community: %w[fleets users supporters],
-    system: %w[admins oauth_applications maintenance imports features workers pghero rsi-api-status stats]
+    system: %w[admins announcements oauth_applications maintenance imports features workers pghero rsi-api-status stats]
   }.freeze
 
   AVAILABLE_PRIVILEGES = RESOURCE_ACCESS.values.flatten.freeze

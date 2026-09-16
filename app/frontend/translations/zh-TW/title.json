@@ -211,6 +211,11 @@
             "index": "編輯製造商"
           }
         },
+        "announcements": {
+          "index": "公告",
+          "new": "新增公告",
+          "edit": "編輯公告"
+        },
         "supporterContributions": {
           "index": "支持者貢獻",
           "new": "新增支持者貢獻",

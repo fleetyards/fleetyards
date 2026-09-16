@@ -973,6 +973,18 @@
         "iconOverridden": "图标（已覆盖）",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "标题",
+        "body": "正文",
+        "socialBody": "社交平台文案",
+        "link": "链接",
+        "notifyUsers": "应用内通知",
+        "postDiscord": "Discord 更新频道",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "定时发送",
+        "publishAt": "发送时间"
+      },
       "fundingGoal": {
         "title": "标题",
         "description": "描述",
@@ -1777,6 +1789,30 @@
             "manual": "管理员设置"
           }
         },
+        "announcements": {
+          "statuses": {
+            "draft": "草稿",
+            "scheduled": "已排期",
+            "publishing": "发送中",
+            "published": "已发送",
+            "failed": "失败"
+          },
+          "channels": {
+            "in_app": "应用内",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "待处理",
+            "succeeded": "已发送",
+            "skipped": "已跳过",
+            "failed": "失败"
+          },
+          "noChannel": "至少选择一个渠道。",
+          "notifyUsersInfo": "覆盖所有已验证账号。邮件仅发给已开启的人。",
+          "socialBodyInfo": "用于 X 和 Bluesky。留空则取正文的第一段。"
+        },
         "resourceAccess": {
           "title": "资源权限",
           "groups": {
@@ -1795,6 +1831,7 @@
             "users": "用户",
             "supporters": "支持者",
             "admins": "管理员",
+            "announcements": "公告",
             "oauth_applications": "OAuth 应用",
             "maintenance": "维护",
             "imports": "导入",

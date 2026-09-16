@@ -143,6 +143,17 @@
         "importPaintsStarted": "Lackierungs-Import gestartet. Du wirst benachrichtigt, sobald er abgeschlossen ist.",
         "dimensionsDrifted": "Diese Maße weichen von den Spieldateien ab."
       },
+      "announcement": {
+        "created": "Ankündigung erstellt.",
+        "updated": "Ankündigung aktualisiert.",
+        "destroyed": "Ankündigung gelöscht.",
+        "createFailed": "Ankündigung konnte nicht erstellt werden.",
+        "updateFailed": "Ankündigung konnte nicht aktualisiert werden.",
+        "published": "Ankündigung ist unterwegs.",
+        "publishFailed": "Ankündigung konnte nicht gesendet werden.",
+        "retryQueued": "Zustellung erneut eingereiht.",
+        "retryFailed": "Zustellung konnte nicht wiederholt werden."
+      },
       "fundingGoal": {
         "created": "Finanzierungsziel angelegt.",
         "updated": "Finanzierungsziel aktualisiert.",
@@ -382,6 +393,10 @@
         },
         "manufacturer": {
           "destroy": "Bist du sicher, dass du diesen Hersteller löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "announcement": {
+          "publish": "Diese Ankündigung an %{channels} senden? Das lässt sich nicht zurücknehmen.",
+          "destroy": "Willst du diese Ankündigung wirklich löschen? Das lässt sich nicht rückgängig machen."
         },
         "fundingGoal": {
           "destroy": "Bist du sicher, dass du dieses Finanzierungsziel löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."

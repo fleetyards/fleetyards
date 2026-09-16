@@ -973,6 +973,18 @@
         "iconOverridden": "Icon (overridden)",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Title",
+        "body": "Body",
+        "socialBody": "Social post",
+        "link": "Link",
+        "notifyUsers": "In-app notification",
+        "postDiscord": "Discord updates channel",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "Schedule",
+        "publishAt": "Send at"
+      },
       "fundingGoal": {
         "title": "Title",
         "description": "Description",
@@ -1791,6 +1803,30 @@
             "manual": "Set by an admin"
           }
         },
+        "announcements": {
+          "statuses": {
+            "draft": "Draft",
+            "scheduled": "Scheduled",
+            "publishing": "Sending",
+            "published": "Sent",
+            "failed": "Failed"
+          },
+          "channels": {
+            "in_app": "In-app",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "Pending",
+            "succeeded": "Sent",
+            "skipped": "Skipped",
+            "failed": "Failed"
+          },
+          "noChannel": "Pick at least one channel.",
+          "notifyUsersInfo": "Reaches every confirmed account. E-mail only for readers who turned it on.",
+          "socialBodyInfo": "Used for X and Bluesky. Falls back to the first paragraph of the body."
+        },
         "resourceAccess": {
           "title": "Resource Access",
           "groups": {
@@ -1809,6 +1845,7 @@
             "users": "Users",
             "supporters": "Supporters",
             "admins": "Admins",
+            "announcements": "Announcements",
             "oauth_applications": "OAuth Applications",
             "maintenance": "Maintenance",
             "imports": "Imports",

@@ -143,6 +143,17 @@
         "importPaintsStarted": "涂装导入已开始。完成后将通知您。",
         "dimensionsDrifted": "这些尺寸与游戏文件不一致。"
       },
+      "announcement": {
+        "created": "公告已创建。",
+        "updated": "公告已更新。",
+        "destroyed": "公告已删除。",
+        "createFailed": "无法创建公告。",
+        "updateFailed": "无法更新公告。",
+        "published": "公告已开始发送。",
+        "publishFailed": "无法发送公告。",
+        "retryQueued": "投递已重新排队。",
+        "retryFailed": "无法重试此次投递。"
+      },
       "fundingGoal": {
         "created": "筹款目标已创建。",
         "updated": "筹款目标已更新。",
@@ -382,6 +393,10 @@
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "announcement": {
+          "publish": "确定要把这条公告发送到 %{channels} 吗？发送后无法撤回。",
+          "destroy": "确定要删除这条公告吗？该操作无法撤销。"
         },
         "fundingGoal": {
           "destroy": "确定要删除此筹款目标吗? 此操作无法撤销。"

@@ -143,6 +143,17 @@
         "importPaintsStarted": "Import des peintures démarré. Vous serez notifié lorsqu'il sera terminé.",
         "dimensionsDrifted": "Ces dimensions diffèrent des fichiers de jeu."
       },
+      "announcement": {
+        "created": "Annonce créée.",
+        "updated": "Annonce mise à jour.",
+        "destroyed": "Annonce supprimée.",
+        "createFailed": "L'annonce n'a pas pu être créée.",
+        "updateFailed": "L'annonce n'a pas pu être mise à jour.",
+        "published": "L'annonce est en route.",
+        "publishFailed": "L'annonce n'a pas pu être envoyée.",
+        "retryQueued": "Envoi remis en file.",
+        "retryFailed": "Cet envoi n'a pas pu être relancé."
+      },
       "fundingGoal": {
         "created": "Objectif de financement créé.",
         "updated": "Objectif de financement mis à jour.",
@@ -382,6 +393,10 @@
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "announcement": {
+          "publish": "Envoyer cette annonce à %{channels} ? C'est irréversible.",
+          "destroy": "Veux-tu vraiment supprimer cette annonce ? Cette action est irréversible."
         },
         "fundingGoal": {
           "destroy": "Êtes-vous sûr de vouloir supprimer cet objectif de financement ? Cette action est irréversible."

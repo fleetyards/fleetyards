@@ -253,6 +253,11 @@
           "rsiApiStatus": "RSI-API-Status",
           "buildCompare": "Build-Vergleich"
         },
+        "announcements": {
+          "index": "Ankündigungen",
+          "new": "Neue Ankündigung",
+          "edit": "Ankündigung bearbeiten"
+        },
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",
           "new": "Neuer Beitrag",

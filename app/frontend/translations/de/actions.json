@@ -2,6 +2,10 @@
   "de": {
     "actions": {
       "selectAll": "Alle auswählen",
+      "announcements": {
+        "publish": "Senden",
+        "retry": "Wiederholen"
+      },
       "admin": {
         "dashboard": {
           "reloadModels": "Modelle neu laden",

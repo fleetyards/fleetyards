@@ -1,6 +1,12 @@
 ---
 zh-TW:
   validation_error:
+    announcement:
+      create: "無法建立公告。"
+      update: "無法更新公告。"
+      destroy: "無法移除公告。"
+      already_published: "該公告已經發送。"
+      delivery_not_retryable: "只有失敗或略過的投遞才能重試。"
     relationships:
       create: "無法發送請求。"
       destroy: "無法移除請求。"
