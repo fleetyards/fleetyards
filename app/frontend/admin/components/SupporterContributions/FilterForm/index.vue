@@ -12,7 +12,10 @@ import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type SupporterContributionQuery } from "@/services/fyAdminApi";
+import {
+  type SupporterContributionQuery,
+  SupporterContributionLinkedViaEnum,
+} from "@/services/fyAdminApi";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 
@@ -33,6 +36,13 @@ const linkedOptions = [
   },
 ];
 
+const linkedViaOptions = Object.values(SupporterContributionLinkedViaEnum).map(
+  (rule) => ({
+    label: t(`labels.admin.supporterContributions.linkedVia.${rule}`),
+    value: rule,
+  }),
+);
+
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
@@ -42,6 +52,7 @@ const prefillFormValues = () => {
     startedAtLteq: filters.value.startedAtLteq,
     userIdEq: filters.value.userIdEq,
     userIdNull: filters.value.userIdNull,
+    linkedViaEq: filters.value.linkedViaEq,
   };
 };
 
@@ -112,6 +123,14 @@ watch(
       :reset-label="t('labels.all')"
       :options="linkedOptions"
       name="userIdNull"
+    />
+
+    <RadioList
+      v-model="form.linkedViaEq"
+      :label="t('labels.filters.supporterContributions.linkedVia')"
+      :reset-label="t('labels.all')"
+      :options="linkedViaOptions"
+      name="linkedViaEq"
     />
 
     <FormDatePicker

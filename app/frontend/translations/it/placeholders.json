@@ -124,6 +124,8 @@
         "currency": "EUR",
         "startedAt": "2026-01-01",
         "endedAt": "2026-12-31",
+        "payerEmail": "donor@example.com",
+        "claimKey": "FY-7K2M-9QXD",
         "note": "Nota interna facoltativa"
       },
       "component": {

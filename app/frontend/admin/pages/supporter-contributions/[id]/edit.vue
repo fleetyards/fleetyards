@@ -22,6 +22,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
+import LinkedViaPill from "@/admin/components/SupporterContributions/LinkedViaPill/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { toCents } from "@/shared/utils/currencyHelpers";
@@ -47,6 +48,8 @@ type FormValues = {
   recurring: boolean;
   anonymous: boolean;
   note?: string;
+  payerEmail?: string;
+  claimKey?: string;
   currency?: string;
   userId?: string;
 };
@@ -59,6 +62,8 @@ const initialValues = ref<FormValues>({
   recurring: props.supporterContribution.recurring,
   anonymous: props.supporterContribution.anonymous,
   note: props.supporterContribution.note,
+  payerEmail: props.supporterContribution.payerEmail,
+  claimKey: props.supporterContribution.claimKey,
   currency: props.supporterContribution.currency,
   userId: props.supporterContribution.userId,
 });
@@ -80,6 +85,8 @@ const [endedAt, endedAtProps] = defineField("endedAt");
 const [recurring, recurringProps] = defineField("recurring");
 const [anonymous, anonymousProps] = defineField("anonymous");
 const [note, noteProps] = defineField("note");
+const [payerEmail, payerEmailProps] = defineField("payerEmail");
+const [claimKey, claimKeyProps] = defineField("claimKey");
 const [userId, userIdProps] = defineField("userId");
 
 const submitting = ref(false);
@@ -112,6 +119,8 @@ const onSubmit = handleSubmit(async (values) => {
     recurring: values.recurring,
     anonymous: values.anonymous,
     note: values.note || undefined,
+    payerEmail: values.payerEmail || null,
+    claimKey: values.claimKey || null,
     currency: values.currency,
     userId: values.userId || null,
   };
@@ -202,6 +211,25 @@ const handleCancel = async () => {
           value-attr="id"
           name="userId"
         />
+        <div class="linked-via">
+          <span class="linked-via__label">
+            {{ t("labels.supporterContribution.linkedVia") }}
+          </span>
+          <LinkedViaPill :linked-via="props.supporterContribution.linkedVia" />
+        </div>
+        <FormInput
+          v-model="payerEmail"
+          v-bind="payerEmailProps"
+          :type="InputTypesEnum.EMAIL"
+          translation-key="supporterContribution.payerEmail"
+          name="payerEmail"
+        />
+        <FormInput
+          v-model="claimKey"
+          v-bind="claimKeyProps"
+          translation-key="supporterContribution.claimKey"
+          name="claimKey"
+        />
         <FormTextarea
           v-model="note"
           v-bind="noteProps"
@@ -218,3 +246,18 @@ const handleCancel = async () => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+/* Reuses the field label rhythm so the read-only row sits in the same column as
+   the inputs around it rather than reading as loose text between them. */
+.linked-via {
+  margin-bottom: 1rem;
+}
+
+.linked-via__label {
+  display: block;
+  margin-bottom: var(--field-label-gap, 5px);
+  line-height: var(--field-label-line, 1.5rem);
+  color: var(--color-muted, #7a8288);
+}
+</style>

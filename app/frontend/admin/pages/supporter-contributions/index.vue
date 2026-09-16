@@ -17,6 +17,7 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import SupporterContributionActions from "@/admin/components/SupporterContributions/Actions/index.vue";
 import FilterForm from "@/admin/components/SupporterContributions/FilterForm/index.vue";
 import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
+import LinkedViaPill from "@/admin/components/SupporterContributions/LinkedViaPill/index.vue";
 import MonthlyChart from "@/admin/components/SupporterContributions/MonthlyChart/index.vue";
 import {
   useSupporterContributions,
@@ -104,6 +105,11 @@ const columns: BaseTableCol<SupporterContribution>[] = [
   {
     name: "user",
     label: "Account",
+    mobile: false,
+  },
+  {
+    name: "linkedVia",
+    label: "Linked via",
     mobile: false,
   },
   {
@@ -252,6 +258,9 @@ const syncFromPatreon = () => {
             {{ record.user.username }}
           </router-link>
           <span v-else>—</span>
+        </template>
+        <template #col-linkedVia="{ record }">
+          <LinkedViaPill :linked-via="record.linkedVia" />
         </template>
         <template #col-startedAt="{ record }">
           {{ l(record.startedAt, "datetime.formats.short") }}

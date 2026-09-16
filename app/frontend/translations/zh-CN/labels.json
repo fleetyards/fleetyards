@@ -990,6 +990,9 @@
         "recurring": "周期性",
         "startedAt": "开始于",
         "endedAt": "结束于",
+        "payerEmail": "付款人邮箱",
+        "claimKey": "支持者令牌",
+        "linkedVia": "关联方式",
         "note": "内部备注",
         "stats": {
           "total": "总计",
@@ -1552,6 +1555,7 @@
           "user": "关联账户",
           "linked": "账户关联",
           "linkedOnly": "已关联",
+          "linkedVia": "关联方式",
           "unlinkedOnly": "未关联"
         },
         "adminNotifications": {
@@ -1764,6 +1768,12 @@
             "patreon": "Patreon",
             "kofi": "Ko-fi",
             "manual": "手动"
+          },
+          "linkedVia": {
+            "patreon_account": "Patreon 账户",
+            "claim_key": "支持者令牌",
+            "payer_email": "付款人邮箱",
+            "manual": "管理员设置"
           }
         },
         "resourceAccess": {

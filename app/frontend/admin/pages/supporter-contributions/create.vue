@@ -40,6 +40,8 @@ type FormValues = {
   recurring: boolean;
   anonymous: boolean;
   note?: string;
+  payerEmail?: string;
+  claimKey?: string;
   userId?: string;
 };
 
@@ -68,6 +70,8 @@ const [endedAt, endedAtProps] = defineField("endedAt");
 const [recurring, recurringProps] = defineField("recurring");
 const [anonymous, anonymousProps] = defineField("anonymous");
 const [note, noteProps] = defineField("note");
+const [payerEmail, payerEmailProps] = defineField("payerEmail");
+const [claimKey, claimKeyProps] = defineField("claimKey");
 const [userId, userIdProps] = defineField("userId");
 
 const submitting = ref(false);
@@ -93,6 +97,8 @@ const onSubmit = handleSubmit(async (values) => {
     recurring: values.recurring,
     anonymous: values.anonymous,
     note: values.note || undefined,
+    payerEmail: values.payerEmail || undefined,
+    claimKey: values.claimKey || undefined,
     userId: values.userId || undefined,
   };
 
@@ -177,6 +183,19 @@ const handleCancel = async () => {
           :multiple="false"
           value-attr="id"
           name="userId"
+        />
+        <FormInput
+          v-model="payerEmail"
+          v-bind="payerEmailProps"
+          :type="InputTypesEnum.EMAIL"
+          translation-key="supporterContribution.payerEmail"
+          name="payerEmail"
+        />
+        <FormInput
+          v-model="claimKey"
+          v-bind="claimKeyProps"
+          translation-key="supporterContribution.claimKey"
+          name="claimKey"
         />
         <FormTextarea
           v-model="note"

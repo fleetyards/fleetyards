@@ -990,6 +990,9 @@
         "recurring": "Recurrente",
         "startedAt": "Iniciada el",
         "endedAt": "Finalizada el",
+        "payerEmail": "Correo del pagador",
+        "claimKey": "Token de patrocinador",
+        "linkedVia": "Vinculada mediante",
         "note": "Nota interna",
         "stats": {
           "total": "Total",
@@ -1552,6 +1555,7 @@
           "user": "Cuenta vinculada",
           "linked": "Vínculo de cuenta",
           "linkedOnly": "Vinculada",
+          "linkedVia": "Vinculada mediante",
           "unlinkedOnly": "Sin vincular"
         },
         "adminNotifications": {
@@ -1764,6 +1768,12 @@
             "patreon": "Patreon",
             "kofi": "Ko-fi",
             "manual": "Manual"
+          },
+          "linkedVia": {
+            "patreon_account": "Cuenta de Patreon",
+            "claim_key": "Token de patrocinador",
+            "payer_email": "Correo del pagador",
+            "manual": "Establecida por un admin"
           }
         },
         "resourceAccess": {
