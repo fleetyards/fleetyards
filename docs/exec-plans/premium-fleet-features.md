@@ -637,19 +637,11 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
 
 - **Flipper as the entitlement layer.** D1 and D3, recorded here because it was the first design and
   the reasons it was dropped are the reasons not to reach for it again.
-- **Patreon OAuth as a seventh provider — a follow-up, and wanted.** Not dropped: the D5 email match
-  only links a patron whose Patreon address *is* their Fleetyards one, and the D6 key cannot reach us
-  through Patreon at all, so a patron whose addresses differ has no self-service path today. OAuth is
-  the answer, and specifically **not** a user-entered "my Patreon email" field: an address somebody
-  types is an assertion, and it would let anyone claim a stranger's contribution — and, once this plan
-  lands, their entitlement. What makes the email match safe is that neither side is asserted.
-
-  Most of it is already here. `Patreon::Client#normalize` resolves the included user record and keeps
-  only its `vanity`, discarding the Patreon **user id** on every sync; stored beside
-  `patreon_member_id` it is an exact join key, and an OAuth connection's `uid` is that same id.
-  `OmniauthConnection`'s provider enum takes a seventh value, and `backfill_discord_member_roles` is
-  the link-on-connect precedent. Needs a redirect URI on the Patreon client and its id/secret in the
-  environment credentials — neither of which a code change can do.
+- **A user-entered "my Patreon email" field.** Still out, and permanently. An address somebody types is
+  an assertion, and it would let anyone claim a stranger's contribution — and, once this plan lands,
+  their entitlement. What makes the D5 email match safe is that neither side is asserted: the platform
+  verified the address for billing, Fleetyards verified it at confirmation. Patreon OAuth (#4917) is
+  what closed this gap instead, and it is no longer deferred — see the Discovery Log.
 - **PayPal and Buy Me a Coffee endpoints.** D7. Hand-entered with the key pasted from the payment note,
   which is the same resolution path and no new code, until either grows enough to argue otherwise.
 - **Taking payment in the app, and everything the tax authority will eventually want.** Patreon and
@@ -717,17 +709,39 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
   `Flipper.enabled?(flag, user, fleet)` returns true — so it would have worked for contracts alone. It
   was dropped for the four reasons in D1, and then D3 made it impossible rather than merely unwise.
 
+- **2026-09-16** Phases 0–3 in production, and one deferral closed early.
+
+  **The identity half is done.** `payer_email` and `Supporters::Linker` (#4915), the claim key and the
+  `/support` page (#4949, #4950), the Ko-fi webhook and `Kofi::PaymentImporter`, and `linked_via`
+  recording which rule made each link. `fleet_tours` is in the registry, so Phase 0's cleanup holds and
+  all four capabilities map one-to-one onto a flag.
+
+  **Patreon OAuth shipped (#4917), ahead of this plan rather than after it.** It was written up above
+  as a wanted follow-up, on the reasoning that a patron whose Patreon address is not their Fleetyards
+  one had no self-service path. That patron now has one, which removes the largest hole D5a left open
+  and makes the claim key the fallback it was always meant to be. The deferral it replaced — a
+  user-entered "my Patreon email" field — stays out permanently, for the reason it was always out: an
+  address somebody types is an assertion.
+
+  **Nothing is enforced, and nothing grants.** No `fleet_subscriptions` table, no `Subscriptions::`
+  namespace, no `fleet_id` on a contribution. D16's order is intact: the entitlement half is #4959, and
+  enforcement is still last and still gated on the readiness query rather than on a date.
+
 ## Progress
-- [ ] Phase 0 — Flag cleanup (independent, lands first)
-- [ ] Phase 1 — Patreon identity
-- [ ] Phase 2 — The claim key
-- [ ] Phase 3 — Ko-fi
-- [ ] Phase 4 — Nomination
-- [ ] Phase 5 — The subscription record
-- [ ] Phase 6 — Reconciliation
-- [ ] Phase 7 — Enforcement
-- [ ] Phase 8 — Comping early access
-- [ ] Phase 9 — Admin
-- [ ] Phase 10 — API and frontend
-- [ ] Phase 11 — Notifications
-- [ ] Phase 12 — Tests
+
+Phases 0–3 are shipped: the identity half — who paid — is answered. The entitlement half is tracked
+in #4959, and the phase order is fixed by D16 rather than by preference.
+
+- [x] Phase 0 — Flag cleanup (independent, lands first)
+- [x] Phase 1 — Identity by email (#4915, #4949)
+- [x] Phase 2 — The claim key (#4949, #4950)
+- [x] Phase 3 — Ko-fi
+- [ ] Phase 4 — Nomination (#4952)
+- [ ] Phase 5 — The subscription record (#4953)
+- [ ] Phase 6 — Reconciliation (#4954)
+- [ ] Phase 7 — Enforcement (#4957)
+- [ ] Phase 8 — The announcement, and grace for beta access (#4958)
+- [ ] Phase 9 — Admin (#4955)
+- [ ] Phase 10 — API and frontend (#4957)
+- [ ] Phase 11 — Notifications (#4956)
+- [ ] Phase 12 — Tests (per phase, not a phase of its own)
