@@ -65,7 +65,7 @@ module Api
           used_invite_token: invite_url.token
         )
 
-        if @membership.save
+        if @membership.save_without_conflict
           @membership.request!
           invite_url.reduce_limit
 
