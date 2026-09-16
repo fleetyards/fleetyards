@@ -98,6 +98,20 @@ module FeatureFlags
       assert_nil Current.source
     end
 
+    # Reporting the failure must not become the failure: this subscriber runs
+    # after Flipper has written the gate, so anything escaping here would report
+    # a mutation that succeeded as failed.
+    test "a failing write survives a failing error report" do
+      FeatureFlagChange.stubs(:record!).raises(ActiveRecord::StatementInvalid, "nope")
+      Appsignal.stubs(:report_error).raises(RuntimeError, "appsignal is down too")
+
+      with_flag_auditing do
+        Flipper.enable(:audited)
+
+        assert Flipper.enabled?(:audited)
+      end
+    end
+
     # An audit log able to break the toggle it is auditing would be worse than
     # no audit log.
     test "a failing write leaves the flag change itself successful" do

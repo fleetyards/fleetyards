@@ -78,9 +78,18 @@ when "sync"
   reporting_registry_errors { puts FeatureFlags::Synchronizer.new.call.to_console }
 
 when "stale"
+  # Parsed before Rails boots, and by hand: reporting_registry_errors only
+  # rescues an invalid registry, so `stale abc` would otherwise print a Ruby
+  # backtrace where every other command in this script prints a message.
+  days = begin
+    ARGV[1] ? Integer(ARGV[1]) : FeatureFlags::StaleReport::DEFAULT_THRESHOLD_DAYS
+  rescue ArgumentError, TypeError
+    warn "DAYS must be a whole number of days, got #{ARGV[1].inspect}"
+    exit 1
+  end
+
   boot_rails
   reporting_registry_errors do
-    days = ARGV[1] ? Integer(ARGV[1]) : FeatureFlags::StaleReport::DEFAULT_THRESHOLD_DAYS
     puts FeatureFlags::StaleReport.new(threshold_days: days).to_console
   end
 

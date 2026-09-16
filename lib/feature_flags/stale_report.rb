@@ -83,8 +83,12 @@ module FeatureFlags
       registry.fetch(name)&.permanent?
     end
 
+    # Only the permanent flags the open set actually dropped. Counting every
+    # permanent flag would inflate "skipped" with ones that were never open in
+    # the first place, and the line reads as "of the open flags, these many were
+    # left out".
     def permanent_count
-      flipper.features.count { |feature| permanent?(feature.name.to_s) }
+      flipper.features.count { |feature| feature.state == :on && permanent?(feature.name.to_s) }
     end
   end
 end

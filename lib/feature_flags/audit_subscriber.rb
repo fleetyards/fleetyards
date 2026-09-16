@@ -43,8 +43,18 @@ module FeatureFlags
     rescue => e
       # A flag that cannot be audited is still a flag that changed. An audit log
       # able to 500 the admin page would be worse than no audit log.
-      Rails.logger.error("[FeatureFlags::AuditSubscriber] #{payload[:feature_name]} #{payload[:operation]} failed: #{e.class}: #{e.message}")
-      Appsignal.report_error(e)
+      report(e, payload)
+    end
+
+    # Reporting the failure must not become the failure. ActiveSupport delivers
+    # this subscriber after Flipper has already written the gate, so an
+    # exception escaping here propagates to the caller and reports a mutation
+    # that succeeded as failed.
+    def self.report(error, payload)
+      Rails.logger.error("[FeatureFlags::AuditSubscriber] #{payload[:feature_name]} #{payload[:operation]} failed: #{error.class}: #{error.message}")
+      Appsignal.report_error(error)
+    rescue
+      nil
     end
   end
 end

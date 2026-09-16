@@ -109,6 +109,19 @@ module FeatureFlags
       assert_includes output, "1 of 2 fully open flags, 1 permanent flags skipped."
     end
 
+    # The line reads "of the open flags, these many were left out", so a
+    # permanent flag that was never open must not be counted as skipped.
+    test "to_console counts only the permanent flags the open set dropped" do
+      opened("old_news", 90)
+
+      output = report(
+        {"old_news" => :on, "oauth-github" => :on, "oauth-bluesky" => :conditional, "oauth-patreon" => :off},
+        {"old_news" => nil, "oauth-github" => true, "oauth-bluesky" => true, "oauth-patreon" => true}
+      ).to_console
+
+      assert_includes output, "1 of 1 fully open flags, 1 permanent flags skipped."
+    end
+
     test "to_console says so when nothing is stale" do
       assert_includes report({}, {}).to_console, "(none)"
     end

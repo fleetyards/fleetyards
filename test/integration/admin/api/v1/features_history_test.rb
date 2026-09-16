@@ -59,6 +59,23 @@ class Admin::Api::V1::FeaturesHistoryTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, path_params: {id: "NonExistentFeature"}
   end
 
+  # The one action that outlives its flag. Sync prunes the Flipper feature and
+  # every gate with it; feature_name is a plain string so these rows survive, and
+  # a 404 here would make that retention pointless.
+  test "GET /features/:id/history still serves a pruned feature's history" do
+    FeatureFlagChange.create!(
+      feature_name: "PrunedFeature",
+      operation: "remove",
+      state_after: FeatureFlagChange::STATE_OFF,
+      source: FeatureFlagChange::SOURCE_SYNC
+    )
+    assert_not Flipper.exist?("PrunedFeature")
+
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: "PrunedFeature"}
+  end
+
   test "GET /features/:id/history returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {id: "TestFeature"}
   end

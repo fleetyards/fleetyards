@@ -8,7 +8,7 @@ module Admin
         # past this, and the page renders the list inline.
         HISTORY_LIMIT = 50
 
-        before_action :set_feature, only: %i[show history enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_user_self_service toggle_fleet_self_service]
+        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_user_self_service toggle_fleet_self_service]
 
         def index
           authorize! with: ::Admin::FeaturePolicy
@@ -22,11 +22,23 @@ module Admin
         # The rollout as it happened, newest first. Nothing else can answer "how
         # did this flag get here": flipper_gates keeps no history of its own, and
         # a boolean enable deletes the actor rows that preceded it.
+        #
+        # The only action that does not go through `set_feature`, because it is
+        # the only one that still means something once the flag is gone: sync
+        # prunes the Flipper feature and every gate with it, and `feature_name`
+        # is a plain string precisely so these rows outlive that. Refusing to
+        # serve them would make the retention pointless.
         def history
-          @changes = FeatureFlagChange.for_feature(@feature.name)
+          authorize! with: ::Admin::FeaturePolicy
+
+          @changes = FeatureFlagChange.for_feature(params[:id])
             .newest_first
             .includes(:admin_user, :user)
             .limit(HISTORY_LIMIT)
+
+          # A name Flipper has never heard of and that left no rows is a typo,
+          # not a pruned flag.
+          not_found("Feature not found") if @changes.empty? && !flipper_knows?(params[:id])
         end
 
         def enable
@@ -131,11 +143,15 @@ module Admin
         end
         helper_method :feature_summaries
 
+        private def flipper_knows?(feature_name)
+          names = Flipper.features.map(&:name)
+
+          names.include?(feature_name.to_s) || names.include?(feature_name.to_sym)
+        end
+
         private def set_feature
           feature_name = params[:id]
-          unless Flipper.features.map(&:name).include?(feature_name.to_s) || Flipper.features.map(&:name).include?(feature_name.to_sym)
-            return not_found("Feature not found")
-          end
+          return not_found("Feature not found") unless flipper_knows?(feature_name)
 
           @feature = Flipper.feature(feature_name)
 
