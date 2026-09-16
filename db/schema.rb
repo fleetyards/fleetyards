@@ -789,7 +789,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_120000) do
     t.datetime "created_at", null: false
     t.uuid "fleet_id"
     t.datetime "updated_at", null: false
-    t.uuid "vehicle_id"
+    t.uuid "vehicle_id", null: false
     t.index ["fleet_id", "vehicle_id"], name: "index_fleet_vehicles_on_fleet_id_and_vehicle_id", unique: true
     t.index ["vehicle_id"], name: "index_fleet_vehicles_on_vehicle_id"
   end
@@ -1833,7 +1833,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_120000) do
     t.datetime "created_at", precision: nil, null: false
     t.uuid "hangar_group_id"
     t.datetime "updated_at", precision: nil, null: false
-    t.uuid "vehicle_id"
+    t.uuid "vehicle_id", null: false
     t.index ["hangar_group_id"], name: "index_task_forces_on_hangar_group_id"
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end

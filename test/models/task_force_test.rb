@@ -8,7 +8,7 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  hangar_group_id :uuid
-#  vehicle_id      :uuid
+#  vehicle_id      :uuid             not null
 #
 # Indexes
 #
