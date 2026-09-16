@@ -1470,7 +1470,7 @@
         },
         "supporterNomination": {
           "label": "Soutien à la flotte",
-          "hint": "Choisis la flotte que soutient un don. Ses membres bénéficient des fonctionnalités de flotte tant que le don est actif.",
+          "hint": "Choisissez la flotte que soutient un don. Ses membres bénéficient des fonctionnalités de flotte tant que le don est actif.",
           "fleet": "Flotte soutenue"
         },
         "supporterClaimKey": {

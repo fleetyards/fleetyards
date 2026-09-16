@@ -165,8 +165,8 @@
       },
       "supporterNomination": {
         "update": {
-          "success": "Flota actualizada.",
-          "failure": "No se ha podido actualizar la flota."
+          "success": "Flota apoyada actualizada.",
+          "failure": "No se ha podido actualizar la flota apoyada."
         }
       },
       "supporterContribution": {

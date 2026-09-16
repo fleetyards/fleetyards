@@ -19,7 +19,7 @@ import {
   type MySupporterContribution,
 } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 const sessionStore = useSessionStore();
 const queryClient = useQueryClient();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -99,7 +99,7 @@ const onSelect = async (
           {{ formatAmount(contribution) }}
         </span>
         <span class="supporter-nomination__date">
-          {{ contribution.startedAt }}
+          {{ l(contribution.startedAt, "datetime.formats.short") }}
         </span>
       </div>
 

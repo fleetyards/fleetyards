@@ -51,12 +51,17 @@ class SupporterContribution < ApplicationRecord
   # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
   # 4,830 equipment rows a week, and versioning those unconditionally would bury
   # the handful of real edits the way Fleet's touch versions already do.
+  #
+  # A signed-in `whodunnit` counts too, because a supporter nominating a fleet
+  # is a real edit to a field that decides entitlement -- "why did my fleet lose
+  # access" is answered by when the nomination changed. It widens nothing else:
+  # the importers and the Ko-fi webhook run with no whodunnit at all.
   has_paper_trail on: %i[update],
     only: %i[
       name amount_cents currency anonymous recurring
       started_at ended_at note user_id payer_email claim_key source fleet_id
     ],
-    if: ->(record) { record.author_id.present? },
+    if: ->(record) { record.author_id.present? || PaperTrail.request.whodunnit.present? },
     meta: {
       author_id: :author_id,
       reason: :update_reason,

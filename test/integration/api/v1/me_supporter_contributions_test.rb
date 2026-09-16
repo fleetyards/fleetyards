@@ -142,6 +142,23 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
     assert_nil theirs.reload.fleet_id
   end
 
+  # A nomination decides entitlement, so the change has to be answerable later.
+  # The supporter is the whodunnit; `author_id` stays the admin-only field.
+  test "PUT /me/supporter/contributions/{id} records who changed the nomination" do
+    sign_in @supporter
+
+    assert_difference -> { @contribution.versions.count }, 1 do
+      assert_api_response :put, 200, api_path: MEMBER_PATH,
+        path_params: {id: @contribution.id}, body: {fleetId: @fleet.id}
+    end
+
+    version = @contribution.reload.versions.last
+
+    assert_includes version.object_changes.keys, "fleet_id"
+    assert_equal [nil, @fleet.id], version.object_changes["fleet_id"]
+    assert_equal @supporter.id, version.whodunnit
+  end
+
   # The controller has no "leave it alone" branch, and this is why: the request
   # schema requires the key, so an omitted one never reaches it.
   test "PUT /me/supporter/contributions/{id} refuses a body with no fleetId" do
