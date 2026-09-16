@@ -90,11 +90,12 @@ module Maintenance
       assert_nil FleetVehicle.find_by(id: fleet_vehicle.id)
       assert_nil TaskForce.find_by(id: task_force.id)
 
-      standing = FleetVehicle.create!(fleet: create(:fleet), vehicle: create(:vehicle, user: @user))
+      standing = create(:vehicle, user: @user)
+      standing_fleet_vehicle = FleetVehicle.create!(fleet: create(:fleet), vehicle: standing)
+      standing_task_force = TaskForce.create!(vehicle: standing, hangar_group: create(:hangar_group, user: @user))
 
-      assert_raises ActiveRecord::NotNullViolation do
-        FleetVehicle.where(id: standing.id).update_all(vehicle_id: nil)
-      end
+      assert_rejects_a_null_vehicle FleetVehicle.where(id: standing_fleet_vehicle.id)
+      assert_rejects_a_null_vehicle TaskForce.where(id: standing_task_force.id)
     end
 
     test "#process drops every orphan, not just the first batch" do
@@ -113,6 +114,14 @@ module Maintenance
       Vehicle.where(id: parent.id).delete_all
 
       orphan
+    end
+
+    # A violation aborts the transaction the test runs inside, so the second
+    # table needs a savepoint of its own to have anything left to run against.
+    private def assert_rejects_a_null_vehicle(scope)
+      assert_raises ActiveRecord::NotNullViolation do
+        ActiveRecord::Base.transaction(requires_new: true) { scope.update_all(vehicle_id: nil) }
+      end
     end
 
     private def run_task(dry_run:)
