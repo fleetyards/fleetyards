@@ -262,6 +262,82 @@ class UserTest < ActiveSupport::TestCase
       assert_equal user, contribution.reload.user
     end
 
+    # The three supporter answers share one loaded set, and `reload` clears the
+    # association cache but not a plain ivar -- so the clearing is explicit.
+    test "reloading re-reads the contributions the answers are drawn from" do
+      refute @user.supporter?
+
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      refute @user.supporter?
+      assert @user.reload.supporter?
+    end
+
+    # The admin user list renders supporter status per row, so the preloaded
+    # path has to answer from memory -- otherwise a page of thirty users pays
+    # for thirty round trips that the preload was supposed to replace.
+    test "a preloaded association answers without asking the database again" do
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      user = User.includes(:supporter_contributions).find(@user.id)
+
+      queries = 0
+      subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+        queries += 1 unless /SCHEMA|TRANSACTION/.match?(payload[:name].to_s)
+      end
+
+      begin
+        assert user.supporter?
+        assert_equal 2, user.supporter_tier
+        assert_equal Date.current.end_of_month, user.supporter_until
+      ensure
+        ActiveSupport::Notifications.unsubscribe(subscriber)
+      end
+
+      assert_equal 0, queries
+    end
+
+    test "nothing active has no expiry to name" do
+      assert_nil @user.supporter_until
+    end
+
+    test "a one-off lapses at the end of the month it arrived in" do
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      assert_equal Date.current.end_of_month, @user.reload.supporter_until
+    end
+
+    test "an open-ended recurring pledge has no expiry to name" do
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert @user.reload.supporter?
+      assert_nil @user.supporter_until
+    end
+
+    # The month is the unit, so an end date part-way through one still covers the
+    # rest of it.
+    test "an ended recurring pledge lapses at the end of its final month" do
+      ends_on = Date.current.next_month.beginning_of_month + 4
+
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: ends_on)
+
+      assert_equal ends_on.end_of_month, @user.reload.supporter_until
+    end
+
+    # Support ends when the last contribution does, not when the first one runs
+    # out -- an extra one-off must never shorten a pledge that outlives it.
+    test "the latest active contribution sets the expiry" do
+      later = Date.current.next_month.end_of_month
+
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: later)
+
+      assert_equal later, @user.reload.supporter_until
+    end
+
     test "no contributions is tier zero" do
       assert_equal 0, @user.supporter_tier
     end

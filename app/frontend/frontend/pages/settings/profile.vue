@@ -13,6 +13,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import SupporterStatus from "@/shared/components/SupporterStatus/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useForm } from "vee-validate";
@@ -180,6 +181,12 @@ const onSubmit = handleSubmit(async (values) => {
   />
 
   <Heading hero>{{ t("headlines.settings.profile") }}</Heading>
+
+  <SupporterStatus
+    :supporter="sessionStore.currentUser?.supporter"
+    :supporter-tier="sessionStore.currentUser?.supporterTier"
+    :supporter-until="sessionStore.currentUser?.supporterUntil"
+  />
 
   <form id="settings-profile-form" @submit.prevent="onSubmit">
     <div class="row">

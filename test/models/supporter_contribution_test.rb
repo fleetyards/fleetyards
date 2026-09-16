@@ -241,4 +241,51 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_includes ids, imported.id
     refute_includes ids, elsewhere.id
   end
+
+  test "a one-off runs to the end of the month it arrived in" do
+    contribution = create(:supporter_contribution, started_at: Date.new(2026, 6, 10))
+
+    assert_equal Date.new(2026, 6, 30), contribution.active_until
+  end
+
+  test "an open-ended recurring pledge has no last day" do
+    contribution = create(:supporter_contribution, :recurring)
+
+    assert_nil contribution.active_until
+  end
+
+  # `active_in` matches a pledge ended mid-month for the whole of that month,
+  # so cover runs to the end of it. Answering the 5th while the row is still
+  # active would put a date already past beside a badge reading as live.
+  test "a pledge ended mid-month runs to the end of that month" do
+    contribution = create(
+      :supporter_contribution, :recurring,
+      started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 8, 5)
+    )
+
+    assert_equal Date.new(2026, 8, 31), contribution.active_until
+  end
+
+  # The scope and the predicate are the same rule written twice -- once in SQL
+  # for a query, once in Ruby for a preloaded association -- so they are held
+  # against each other rather than trusted to stay in step.
+  test "active_in? matches the scope over every shape of contribution" do
+    month_start = Date.new(2026, 8, 1)
+    month_end = Date.new(2026, 8, 31)
+
+    [
+      {recurring: false, started_at: Date.new(2026, 8, 10), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 7, 31), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 9, 1), ended_at: nil},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: nil},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 8, 5)},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 7, 31)},
+      {recurring: true, started_at: Date.new(2026, 9, 1), ended_at: nil}
+    ].each { |attrs| create(:supporter_contribution, **attrs) }
+
+    by_scope = SupporterContribution.active_in(month_start, month_end).pluck(:id).sort
+    in_ruby = SupporterContribution.all.select { |c| c.active_in?(month_start, month_end) }.map(&:id).sort
+
+    assert_equal by_scope, in_ruby
+  end
 end

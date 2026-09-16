@@ -165,6 +165,29 @@ class SupporterContribution < ApplicationRecord
     claim_key.presence || SupporterClaimKey.extract(note)
   end
 
+  # The last day this contribution still counts, or nil for an open-ended
+  # recurring pledge, which has no last day until somebody ends it.
+  #
+  # The month is the unit throughout -- `active_in` matches a pledge ended on
+  # the 5th for the whole of that month, and `monthly_total` counts it there --
+  # so cover runs to the end of the month, not to the date itself. Answering
+  # `ended_at` would have put a date already past next to a badge still reading
+  # as live.
+  def active_until
+    return ended_at&.end_of_month if recurring?
+
+    started_at.end_of_month
+  end
+
+  # The Ruby half of `active_in`, so a preloaded association can be filtered
+  # without asking the database again. It sits next to the scope because the
+  # two have to agree; `active_in_matches_the_scope` holds them to it.
+  def active_in?(month_start, month_end)
+    return started_at.between?(month_start, month_end) unless recurring?
+
+    started_at <= month_end && (ended_at.nil? || ended_at >= month_start)
+  end
+
   def formatted_amount
     format("%.2f %s", amount_cents.to_f / 100, currency)
   end

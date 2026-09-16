@@ -20,6 +20,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import SupporterStatus from "@/shared/components/SupporterStatus/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -117,6 +118,13 @@ const handleCancel = async () => {
 
 <template>
   <Heading hero>{{ t("headlines.admin.users.edit") }}</Heading>
+
+  <SupporterStatus
+    :supporter="props.user.supporter"
+    :supporter-tier="props.user.supporterTier"
+    :supporter-until="props.user.supporterUntil"
+  />
+
   <form @submit.prevent="onSubmit" id="admin-user-edit-form">
     <div class="row">
       <div class="col-12 col-md-6">

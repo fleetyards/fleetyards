@@ -16078,6 +16078,13 @@ components:
           type: string
         hideOwner:
           type: boolean
+        supporter:
+          type: boolean
+        supporterTier:
+          type: integer
+        supporterUntil:
+          type: string
+          format: date
         twoFactorRequired:
           type: boolean
         twoFactorQrCodeUrl:
@@ -16108,6 +16115,8 @@ components:
       - publicHangarLoaners
       - publicWishlist
       - hideOwner
+      - supporter
+      - supporterTier
       - twoFactorRequired
       - createdAt
       - updatedAt

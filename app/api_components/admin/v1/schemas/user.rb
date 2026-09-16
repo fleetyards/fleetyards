@@ -29,6 +29,9 @@ module Admin
             publicWishlist: {type: :boolean},
             publicWishlistUrl: {type: :string},
             hideOwner: {type: :boolean},
+            supporter: {type: :boolean},
+            supporterTier: {type: :integer},
+            supporterUntil: {type: :string, format: :date},
             twoFactorRequired: {type: :boolean},
             twoFactorQrCodeUrl: {type: :string},
             twoFactorProvisioningUrl: {type: :string},
@@ -41,7 +44,7 @@ module Admin
           additionalProperties: false,
           required: %w[
             username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
-            twoFactorRequired createdAt updatedAt
+            supporter supporterTier twoFactorRequired createdAt updatedAt
           ]
         })
       end

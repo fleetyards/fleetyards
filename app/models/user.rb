@@ -553,8 +553,39 @@ class User < ApplicationRecord
   # Anonymity says whether a contribution is *named* on the supporters page --
   # SupporterContribution#public_name is where it is answered -- not whether the
   # person behind it may be known to support at all.
+  # Loaded once because all three answers below are drawn from the same rows,
+  # and the admin user list renders them thirty to a page: separate queries per
+  # answer made that ninety round trips on a cold fragment cache.
+  #
+  # Safe to hold for the life of the instance: a contribution touches its user
+  # when it changes, so the next request builds a new one.
+  def active_supporter_contributions
+    @active_supporter_contributions ||= begin
+      today = Date.current
+
+      # A caller rendering a list preloads the association -- the admin user
+      # index does -- and filtering what is already in memory is what keeps
+      # that one query rather than one per row.
+      if supporter_contributions.loaded?
+        supporter_contributions.select do |contribution|
+          contribution.active_in?(today.beginning_of_month, today.end_of_month)
+        end
+      else
+        supporter_contributions.active_now(today).to_a
+      end
+    end
+  end
+
+  # `reload` clears the association cache but not a plain ivar, so without this
+  # a reloaded record keeps answering from the rows it read before.
+  def reload(*)
+    @active_supporter_contributions = nil
+
+    super
+  end
+
   def supporter?
-    supporter_contributions.active_now.exists?
+    active_supporter_contributions.any?
   end
 
   # 0 for everybody else, so callers can compare rather than branch on nil.
@@ -563,8 +594,8 @@ class User < ApplicationRecord
   # would otherwise need recalculating every time one is added, edited, ended
   # or linked -- with nothing to notice when a recalculation was missed.
   def supporter_tier
-    contributions = supporter_contributions.active_now
-    total = contributions.sum(:amount_cents)
+    contributions = active_supporter_contributions
+    total = contributions.sum(&:amount_cents)
 
     tier = SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
 
@@ -573,6 +604,20 @@ class User < ApplicationRecord
     return [tier, 2].max if contributions.any? { |c| c.patreon? && c.recurring? }
 
     tier
+  end
+
+  # The day the current run of support lapses, or nil when it does not lapse on
+  # a date anybody can name -- either because there is nothing active, or
+  # because an open-ended recurring pledge covers it and only ending that would
+  # set a date. Read it next to `supporter?`, which separates those two.
+  #
+  # The latest date across the active contributions rather than the earliest:
+  # support ends when the last of them does, not when the first one runs out.
+  def supporter_until
+    dates = active_supporter_contributions.map(&:active_until)
+    return if dates.empty? || dates.any?(&:nil?)
+
+    dates.max
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar

@@ -13,7 +13,12 @@
       },
       "supporter": {
         "badge": "Sostenitore",
-        "tooltip": "Sostiene FleetYards.net questo mese"
+        "tooltip": "Sostiene FleetYards.net questo mese",
+        "none": "Non è un sostenitore",
+        "tier": "Livello %{tier}",
+        "until": "Attivo fino al %{date}",
+        "expiring": "Scade il %{date}",
+        "ongoing": "Ricorrente, senza data di fine"
       },
       "destroyedFleets": {
         "discarded": "Scartata",

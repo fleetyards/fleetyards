@@ -13,7 +13,12 @@
       },
       "supporter": {
         "badge": "Unterstützer",
-        "tooltip": "Unterstützt FleetYards.net diesen Monat"
+        "tooltip": "Unterstützt FleetYards.net diesen Monat",
+        "none": "Kein Unterstützer",
+        "tier": "Stufe %{tier}",
+        "until": "Aktiv bis %{date}",
+        "expiring": "Läuft am %{date} ab",
+        "ongoing": "Wiederkehrend, ohne Enddatum"
       },
       "destroyedFleets": {
         "discarded": "Verworfen",
