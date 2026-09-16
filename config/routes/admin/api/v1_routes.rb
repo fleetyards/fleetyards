@@ -235,6 +235,7 @@ v1_admin_api_routes = lambda do
   # Flag lifecycle belongs to config/feature_flags.yml, so no create/destroy here.
   resources :features, only: %i[index show] do
     member do
+      get :history
       put :enable
       put :disable
       put "enable-actor", to: "features#enable_actor"

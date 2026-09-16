@@ -17,6 +17,10 @@ function feature(overrides: Partial<Feature> = {}): Feature {
     percentageOfTime: 0,
     groups: [],
     actors: [],
+    fullyOnSince: null,
+    lastChangedAt: null,
+    lastChangedBy: null,
+    lastChangedSource: null,
     ...overrides,
   };
 }
@@ -38,6 +42,7 @@ vi.mock("@/services/fyAdminApi", () => ({
   enableAdminFeaturePercentageOfTime: vi.fn(),
   toggleAdminFeatureUserSelfService: vi.fn(),
   toggleAdminFeatureFleetSelfService: vi.fn(),
+  useAdminFeatureHistory: () => ({ data: ref([]), isLoading: ref(false) }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -138,6 +143,47 @@ describe("AdminFeaturesPage", () => {
     const { wrapper } = await mountPage("nonsense");
 
     expect(namesOn(wrapper)).toHaveLength(3);
+  });
+
+  // The "how long has this been open" pill is the removal signal the page exists
+  // to surface, so which rows carry it matters.
+  it("marks a fully open flag with how long it has been open", async () => {
+    features.value = [
+      feature({
+        name: "friends",
+        state: "on",
+        fullyOnSince: "2026-01-01T00:00:00Z",
+      }),
+    ];
+
+    const { wrapper } = await mountPage();
+
+    expect(wrapper.find('[data-test="feature-open-for"]').exists()).toBe(true);
+  });
+
+  it("leaves a flag nothing has opened unmarked", async () => {
+    features.value = [feature({ name: "friends" })];
+
+    const { wrapper } = await mountPage();
+
+    expect(wrapper.find('[data-test="feature-open-for"]').exists()).toBe(false);
+  });
+
+  // Being open for a year is the point of a permanent flag, not a symptom -- the
+  // same reason bin/feature-flags stale skips them.
+  it("leaves a permanent flag unmarked however long it has been open", async () => {
+    features.value = [
+      feature({
+        name: "oauth-discord",
+        state: "on",
+        permanent: true,
+        fullyOnSince: "2024-01-01T00:00:00Z",
+      }),
+    ];
+
+    const { wrapper } = await mountPage();
+
+    expect(wrapper.find('[data-test="feature-open-for"]').exists()).toBe(false);
   });
 
   it("puts the chosen tab in the query and takes it out again", async () => {

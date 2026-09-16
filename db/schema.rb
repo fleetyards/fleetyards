@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -409,6 +409,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_120000) do
     t.string "to_currency", null: false
     t.datetime "updated_at", null: false
     t.index ["from_currency", "to_currency"], name: "index_exchange_rates_on_from_currency_and_to_currency", unique: true
+  end
+
+  create_table "feature_flag_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_user_id"
+    t.datetime "created_at", null: false
+    t.string "feature_name", null: false
+    t.string "gate_name"
+    t.string "operation", null: false
+    t.string "source", null: false
+    t.string "state_after", null: false
+    t.string "thing"
+    t.uuid "user_id"
+    t.index ["admin_user_id"], name: "index_feature_flag_changes_on_admin_user_id"
+    t.index ["feature_name", "created_at"], name: "index_feature_flag_changes_on_feature_name_and_created_at", order: { created_at: :desc }
+    t.index ["user_id"], name: "index_feature_flag_changes_on_user_id"
   end
 
   create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2056,6 +2071,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_120000) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
+  add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
+  add_foreign_key "feature_flag_changes", "users", on_delete: :nullify
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
   add_foreign_key "fleet_contract_assignments", "fleet_contracts", on_delete: :cascade

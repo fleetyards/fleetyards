@@ -10,6 +10,7 @@ COMMANDS = {
   "validate" => "Validate config/feature_flags.yml against the registry rules (no Rails, no database)",
   "plan" => "Show what `sync` would change, without touching Flipper",
   "sync" => "Reconcile Flipper with config/feature_flags.yml (adds + prunes)",
+  "stale" => "List non-permanent flags that have been on for everyone for N days (default 30)",
   "export" => "Print a YAML skeleton of the flags currently in Flipper"
 }.freeze
 
@@ -18,6 +19,9 @@ def usage
   puts ""
   puts "Commands:"
   COMMANDS.each { |cmd, desc| puts "  %-10s %s" % [cmd, desc] }
+  puts ""
+  puts "Arguments:"
+  puts "  stale [DAYS]                how many days open before a flag is listed"
   puts ""
   puts "Environment:"
   puts "  FEATURE_FLAGS_PRUNE=false   disable removal for a single `sync` run"
@@ -72,6 +76,22 @@ when "plan"
 when "sync"
   boot_rails
   reporting_registry_errors { puts FeatureFlags::Synchronizer.new.call.to_console }
+
+when "stale"
+  # Parsed before Rails boots, and by hand: reporting_registry_errors only
+  # rescues an invalid registry, so `stale abc` would otherwise print a Ruby
+  # backtrace where every other command in this script prints a message.
+  days = begin
+    ARGV[1] ? Integer(ARGV[1]) : FeatureFlags::StaleReport::DEFAULT_THRESHOLD_DAYS
+  rescue ArgumentError, TypeError
+    warn "DAYS must be a whole number of days, got #{ARGV[1].inspect}"
+    exit 1
+  end
+
+  boot_rails
+  reporting_registry_errors do
+    puts FeatureFlags::StaleReport.new(threshold_days: days).to_console
+  end
 
 when "export"
   boot_rails

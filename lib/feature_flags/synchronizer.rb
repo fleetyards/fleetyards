@@ -76,7 +76,17 @@ module FeatureFlags
 
     attr_reader :registry, :flipper, :prune, :dry_run
 
+    # Wrapped so FeatureFlags::AuditSubscriber credits the deploy rather than
+    # the console it would otherwise assume. A block rather than an assignment
+    # because `sync` also runs from a Rails console, where it must not leave its
+    # source behind for whatever the operator does next.
     def apply!(to_add, to_remove)
+      Current.with(source: FeatureFlagChange::SOURCE_SYNC) do
+        apply_within_source!(to_add, to_remove)
+      end
+    end
+
+    def apply_within_source!(to_add, to_remove)
       to_add.each { |name| flipper.add(name) }
 
       return unless prune

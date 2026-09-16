@@ -16,6 +16,7 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
+import FeatureHistory from "@/admin/components/FeatureHistory/index.vue";
 import FleetSelect from "@/admin/components/base/FleetSelect/index.vue";
 import {
   useAdminFeatures,
@@ -229,6 +230,16 @@ const onSaveEdit = () => {
   editableList.value?.finishEdit();
 };
 
+// Whole days open, which is what the removal decision is made on. The date
+// itself is in the history panel for anyone who wants it.
+const daysOpen = (fullyOnSince?: string | null) => {
+  if (!fullyOnSince) return null;
+
+  return Math.floor(
+    (Date.now() - new Date(fullyOnSince).getTime()) / (1000 * 60 * 60 * 24),
+  );
+};
+
 const stateVariant = (state: string): `${PillVariantsEnum}` => {
   switch (state) {
     case "on":
@@ -315,6 +326,17 @@ const hasSelectedActor = computed(() => {
           </BasePill>
           <BasePill v-if="item.actors.length > 0" margin-right>
             {{ item.actors.length }} {{ t("labels.features.actors") }}
+          </BasePill>
+          <BasePill
+            v-if="item.fullyOnSince && !item.permanent"
+            margin-right
+            data-test="feature-open-for"
+          >
+            {{
+              t("labels.features.openFor", {
+                days: daysOpen(item.fullyOnSince),
+              })
+            }}
           </BasePill>
         </template>
 
@@ -472,6 +494,11 @@ const hasSelectedActor = computed(() => {
                   {{ t("actions.addActor") }}
                 </Btn>
               </div>
+            </div>
+
+            <div class="edit-section" data-test="edit-section">
+              <h4>{{ t("headlines.admin.features.history") }}</h4>
+              <FeatureHistory :name="item.name" />
             </div>
           </div>
         </template>
