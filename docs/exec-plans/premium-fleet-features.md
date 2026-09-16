@@ -709,12 +709,20 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
   `Flipper.enabled?(flag, user, fleet)` returns true — so it would have worked for contracts alone. It
   was dropped for the four reasons in D1, and then D3 made it impossible rather than merely unwise.
 
-- **2026-09-16** Phases 0–3 in production, and one deferral closed early.
+- **2026-09-16** Phases 1–3 in production, Phase 0 half done, and one deferral closed early.
 
   **The identity half is done.** `payer_email` and `Supporters::Linker` (#4915), the claim key and the
   `/support` page (#4949, #4950), the Ko-fi webhook and `Kofi::PaymentImporter`, and `linked_via`
-  recording which rule made each link. `fleet_tours` is in the registry, so Phase 0's cleanup holds and
-  all four capabilities map one-to-one onto a flag.
+  recording which rule made each link.
+
+  **Phase 0 is not finished, and a first draft of this entry said it was.** `fleet_tours` exists and
+  gates a fleet's own tour list — `ToursController` asks for it beside `tour_payouts` on the
+  fleet-scoped paths — but the payout ledger on a fleet event does not. `PayoutLedgersController` and
+  the three controllers beside it still check `tour_payouts` alone, which is exactly the *"one flag,
+  two surfaces"* shape D3 exists
+  to remove: a fleet-scoped surface sharing a flag with the personal standalone tool. Step 2 of Phase 0
+  — moving those gate calls — is outstanding. It is a prerequisite for Phase 7 rather than part
+  of it, so tours has no single flag for enforcement to sit behind until it lands.
 
   **Patreon OAuth shipped (#4917), ahead of this plan rather than after it.** It was written up above
   as a wanted follow-up, on the reasoning that a patron whose Patreon address is not their Fleetyards
@@ -729,10 +737,11 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
 
 ## Progress
 
-Phases 0–3 are shipped: the identity half — who paid — is answered. The entitlement half is tracked
-in #4959, and the phase order is fixed by D16 rather than by preference.
+Phases 1–3 are shipped: the identity half — who paid — is answered. Phase 0 is half done, and the
+entitlement half is tracked in #4959. The phase order is fixed by D16 rather than by preference.
 
-- [x] Phase 0 — Flag cleanup (independent, lands first)
+- [ ] Phase 0 — Flag cleanup — `fleet_tours` exists; the fleet-event payout ledger is still on
+      `tour_payouts`
 - [x] Phase 1 — Identity by email (#4915, #4949)
 - [x] Phase 2 — The claim key (#4949, #4950)
 - [x] Phase 3 — Ko-fi
