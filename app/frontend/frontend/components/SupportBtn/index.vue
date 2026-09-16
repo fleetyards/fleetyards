@@ -11,7 +11,7 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 
-import { useComlink } from "@/shared/composables/useComlink";
+import { useModalQuery } from "@/frontend/composables/useModalQuery";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -26,13 +26,12 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const comlink = useComlink();
+const { openModal } = useModalQuery();
 
-const open = () => {
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/SupportBtn/Modal/index.vue"),
-    wide: true,
-  });
+// The address is what opens it, and writing to the address is a navigation --
+// nothing here waits for it.
+const openSupport = () => {
+  void openModal("support");
 };
 </script>
 
@@ -40,7 +39,12 @@ const open = () => {
   <!-- Slotted so the footer can keep its own label and heart without a second
        copy of the modal-opening logic; the default is what every other caller
        already showed. -->
-  <Btn class="support-button" :size="size" :variant="variant" @click="open">
+  <Btn
+    class="support-button"
+    :size="size"
+    :variant="variant"
+    @click="openSupport"
+  >
     <slot>{{ t("actions.supportUs") }}</slot>
   </Btn>
 </template>

@@ -14,7 +14,8 @@
 #
 # Indexes
 #
-#  index_omniauth_connections_on_user_id  (user_id)
+#  index_omniauth_connections_on_patreon_uid  (uid) UNIQUE WHERE (provider = 6)
+#  index_omniauth_connections_on_user_id      (user_id)
 #
 # Foreign Keys
 #

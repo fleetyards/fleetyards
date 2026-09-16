@@ -9,7 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
+import { useModalQuery } from "@/frontend/composables/useModalQuery";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { SupportPromptContext } from "@/shared/composables/useSupportPrompt";
 import { useNotificationsStore } from "@/shared/stores/notifications";
@@ -32,7 +32,8 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const comlink = useComlink();
+
+const { openModal } = useModalQuery();
 const { recordShown } = useSupportPrompt();
 const notificationsStore = useNotificationsStore();
 
@@ -51,10 +52,7 @@ const bodyKey = computed(() => `texts.supportHint.${props.context}`);
 
 const openSupportModal = (event: MouseEvent) => {
   event.stopPropagation();
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/SupportBtn/Modal/index.vue"),
-    wide: true,
-  });
+  void openModal("support");
   closeNotification();
   emit("dismiss");
 };

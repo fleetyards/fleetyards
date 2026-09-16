@@ -12,7 +12,6 @@ vi.mock("@/frontend/stores/session", () => ({
   useSessionStore: () => ({ isAuthenticated: false }),
 }));
 
-// Signed out, the content offers the login link, so the route has to exist.
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [
@@ -21,20 +20,19 @@ const router = createRouter({
   ],
 });
 
-import SupportModal from "./index.vue";
+import SupportPage from "./support.vue";
 
-// The platforms, the key and the copying are covered where they live, in
-// SupportContent. What is left here is the wrapping: the modal is one of two
-// places that content is shown, and the other is the support page.
-describe("SupportModal", () => {
-  it("shows the support content in a modal", async () => {
-    const wrapper = await mountWithDefaults(SupportModal, {
+// The page exists so a post can link somewhere; what it has to show is the
+// same thing the footer's modal shows.
+describe("SupportPage", () => {
+  it("shows the support content", async () => {
+    const wrapper = await mountWithDefaults(SupportPage, {
       plugins: [router],
     });
 
     expect(wrapper.findComponent({ name: "SupportContent" }).exists()).toBe(
       true,
     );
-    expect(wrapper.find("[data-test='support-paypal']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='support-kofi']").exists()).toBe(true);
   });
 });

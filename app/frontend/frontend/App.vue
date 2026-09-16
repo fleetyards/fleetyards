@@ -41,6 +41,10 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
+import {
+  useModalQuery,
+  MODAL_QUERY_PARAM,
+} from "@/frontend/composables/useModalQuery";
 
 useWebpCheck(true);
 
@@ -135,6 +139,18 @@ const route = useRoute();
 
 const comlink = useComlink();
 
+// The address names the modal that is open -- a link, a login coming back, or
+// a button that wrote it there. The modal is the app's, so it is put up here
+// rather than by whatever route the visitor happens to land on, and closing it
+// takes the name back out.
+const { openFromQuery: openModalFromQuery, clearModalQuery } = useModalQuery();
+
+const forgetClosedModal = () => {
+  void clearModalQuery();
+};
+
+watch(() => route.query[MODAL_QUERY_PARAM], openModalFromQuery);
+
 watch(
   () => route.name,
   async () => {
@@ -153,6 +169,8 @@ const fleetUpdateComlink = ref();
 onMounted(async () => {
   await checkSessionReload();
   setNoScroll();
+
+  openModalFromQuery();
 
   if (isAuthenticated.value) {
     await requestBrowserPermission();
@@ -362,7 +380,7 @@ const setLocale = (locale: string) => {
     </transition>
 
     <AppConfirm />
-    <AppModal />
+    <AppModal @modal-closed="forgetClosedModal" />
     <OffCanvas />
     <AppNotifications />
     <AppEnvironment :git-revision="appStore.gitRevision" />
