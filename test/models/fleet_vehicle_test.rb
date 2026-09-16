@@ -8,12 +8,16 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  fleet_id   :uuid
-#  vehicle_id :uuid
+#  vehicle_id :uuid             not null
 #
 # Indexes
 #
 #  index_fleet_vehicles_on_fleet_id_and_vehicle_id  (fleet_id,vehicle_id) UNIQUE
 #  index_fleet_vehicles_on_vehicle_id               (vehicle_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (vehicle_id => vehicles.id) ON DELETE => cascade
 #
 require "test_helper"
 
