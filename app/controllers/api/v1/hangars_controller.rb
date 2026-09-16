@@ -58,11 +58,7 @@ module Api
           authorized_scope(Vehicle.all).purchased.update_all(notify: false)
           # rubocop:enable Rails/SkipsModelValidations
 
-          vehicle_ids = authorized_scope(Vehicle.all).purchased.pluck(:id)
-
-          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-          Vehicle.where(id: vehicle_ids).delete_all
+          Vehicle.delete_with_dependents(authorized_scope(Vehicle.all).purchased.pluck(:id))
         end
       end
 
