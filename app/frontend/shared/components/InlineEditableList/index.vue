@@ -16,6 +16,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import { uniq as uniqArray } from "@/shared/utils/Array";
+import { Comment, Fragment, Text, type VNode } from "vue";
 
 type Props = {
   items: T[];
@@ -150,6 +151,36 @@ const headlineFor = (item: T) => {
   return typeof name === "string" && name.length ? name : undefined;
 };
 
+const slots = useSlots();
+
+// A slot that draws nothing for this record - a loaner whose model is gone -
+// leaves a `v-if` comment and whitespace behind, which the row would otherwise
+// keep a line's gap open above the fields for. So the vnodes are asked what
+// they came to rather than the slot being asked whether it exists.
+const rendersSomething = (nodes: VNode[]): boolean =>
+  nodes.some((node) => {
+    if (node.type === Comment) {
+      return false;
+    }
+
+    if (node.type === Text) {
+      return typeof node.children === "string"
+        ? node.children.trim().length > 0
+        : !!node.children;
+    }
+
+    if (node.type === Fragment) {
+      return rendersSomething((node.children ?? []) as VNode[]);
+    }
+
+    return true;
+  });
+
+const headlineVisible = (item: T) =>
+  slots.headline
+    ? rendersSomething(slots.headline({ item }))
+    : !!headlineFor(item);
+
 defineExpose({
   editingId,
   creating,
@@ -245,7 +276,7 @@ defineExpose({
       <template v-if="editingId === item.id">
         <div class="inline-editable-list__edit">
           <div
-            v-if="$slots.headline || headlineFor(item)"
+            v-if="headlineVisible(item)"
             class="inline-editable-list__headline"
             data-test="edit-headline"
           >

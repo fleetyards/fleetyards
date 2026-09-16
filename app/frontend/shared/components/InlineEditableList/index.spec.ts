@@ -98,6 +98,19 @@ describe("InlineEditableList", () => {
       );
     });
 
+    // A headline slot draws nothing for a record whose relation is gone - a
+    // loaner without its model - and an empty line still holds a gap open.
+    it("stays away where the slot draws nothing", async () => {
+      const wrapper = await mount(
+        { items: [{ id: "dock-1", name: "Forward Bay" }] },
+        { headline: '<span v-if="false">gone</span> ' },
+      );
+
+      await wrapper.find('[data-test="start-edit"]').trigger("click");
+
+      expect(wrapper.find('[data-test="edit-headline"]').exists()).toBe(false);
+    });
+
     // A record naming itself nothing readable gets no empty line above the
     // fields - a list of those passes a headline slot instead.
     it("stays away where the record has no name", async () => {
