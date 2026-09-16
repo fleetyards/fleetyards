@@ -64,7 +64,7 @@ module Api
 
         authorize! @member
 
-        if @member.save
+        if @member.save_without_conflict
           @member.invite!
           render :create, status: :created
         else
