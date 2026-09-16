@@ -16000,19 +16000,6 @@ components:
       - meta
       - items
       title: SupporterContributions
-    SupporterTierProjection:
-      type: object
-      properties:
-        tier:
-          type: integer
-        expiresAt:
-          type: string
-          format: date
-      additionalProperties: false
-      required:
-      - tier
-      - expiresAt
-      title: SupporterTierProjection
     ThrusterClassEnum:
       type: string
       enum:
@@ -16098,10 +16085,9 @@ components:
         supporterUntil:
           type: string
           format: date
-        supporterTierProjections:
-          type: array
-          items:
-            "$ref": "#/components/schemas/SupporterTierProjection"
+        fleetTierUntil:
+          type: string
+          format: date
         twoFactorRequired:
           type: boolean
         twoFactorQrCodeUrl:

@@ -15,7 +15,7 @@
         "badge": "Patrocinador",
         "tooltip": "Apoya a FleetYards.net este mes",
         "none": "No es colaborador",
-        "tierUntil": "Nivel %{tier} hasta el %{date}",
+        "fleetTierUntil": "Nivel de flota hasta el %{date}",
         "until": "Activo hasta el %{date}",
         "expiring": "Caduca el %{date}",
         "ongoing": "Recurrente, sin fecha de fin"

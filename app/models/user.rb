@@ -620,39 +620,46 @@ class User < ApplicationRecord
     dates.max
   end
 
-  # How long what is already paid would sustain each tier, if it were spent down
-  # at that tier's monthly threshold: [{tier:, expires_at:}, ...], ascending.
+  # What the fleet tier costs to hold for a month. There is one fleet tier -- it
+  # is held or it is not -- so the amount buys duration rather than a rung.
+  FLEET_TIER_MONTHLY_CENTS = 500
+
+  # The day the fleet tier would run out, spending what is already paid at
+  # `FLEET_TIER_MONTHLY_CENTS` a month. Nil when nothing is active.
   #
-  # A projection for an admin to read, not a fact about the account. `supporter?`
-  # and `supporter_tier` still answer the calendar month and nothing here changes
-  # them, nor what `monthly_total` reports to the funding goal.
+  # Unrelated to `supporter_tier`, which bands a single month's spend and says
+  # nothing about duration. The two were one calculation for a while and read as
+  # a contradiction; they answer different questions and are kept apart.
   #
-  # Simplification worth knowing about while the spend-down model is being
-  # settled: several active contributions are summed and run from the earliest
-  # of them, rather than each extending the one before it.
-  def supporter_tier_projections
+  # A projection for an admin to read, not yet a fact about the account: nothing
+  # here changes `supporter?`, `supporter_tier`, or what `monthly_total` reports
+  # to the funding goal.
+  #
+  # Simplification worth knowing about while the model is being settled: several
+  # active contributions are summed and run from the earliest of them, rather
+  # than each extending the one before it.
+  def fleet_tier_until
     contributions = active_supporter_contributions
-    return [] if contributions.empty?
+    return if contributions.empty?
 
-    total = contributions.sum(&:amount_cents)
-    from = contributions.map(&:started_at).min
-
-    SUPPORTER_TIERS.sort.map do |tier, cents|
-      {tier: tier, expires_at: sustained_until(from, total, cents)}
-    end
+    sustained_until(
+      contributions.map(&:started_at).min,
+      contributions.sum(&:amount_cents),
+      FLEET_TIER_MONTHLY_CENTS
+    )
   end
 
   # Whole months first, then the leftover as a share of the month it lands in --
-  # so a threshold that divides exactly lands on the same day of the month
-  # rather than on a 30-day approximation of it.
-  private def sustained_until(from, total_cents, tier_cents)
-    date = from + (total_cents / tier_cents).months
-    remainder = total_cents % tier_cents
+  # so a rate that divides exactly lands on the same day of the month rather
+  # than on a 30-day approximation of it.
+  private def sustained_until(from, total_cents, monthly_cents)
+    date = from + (total_cents / monthly_cents).months
+    remainder = total_cents % monthly_cents
     return date if remainder.zero?
 
     days_in_month = ((date + 1.month) - date).to_i
 
-    date + ((remainder.to_d / tier_cents) * days_in_month).round.days
+    date + ((remainder.to_d / monthly_cents) * days_in_month).round.days
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar

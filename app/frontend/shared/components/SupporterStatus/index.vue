@@ -10,11 +10,6 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { differenceInCalendarDays, parseISO } from "date-fns";
 
-export interface SupporterTierProjection {
-  tier: number;
-  expiresAt: string;
-}
-
 // Spelled out as primitives rather than taking a user: the admin API and the
 // public one generate two unrelated User types for the same fields, and this
 // renders the same thing for both.
@@ -23,11 +18,10 @@ interface Props {
   // Absent while support does not lapse on a nameable date -- an open-ended
   // recurring pledge covers it, and only ending that would set one.
   supporterUntil?: string;
-  // Admin only. How long what is already paid would sustain each tier, which is
-  // a projection for an admin to act on rather than something to put in front of
-  // the person it describes -- a supporter is shown that they are one, and the
-  // tier they end up holding is theirs to choose.
-  tierProjections?: SupporterTierProjection[];
+  // Admin only. The day the fleet tier this contribution funds would run out --
+  // a projection for an admin to act on, and a different question from whether
+  // support is live, which is what the donor is shown.
+  fleetTierUntil?: string;
 }
 
 const props = defineProps<Props>();
@@ -36,23 +30,15 @@ const { t, l } = useI18n();
 
 const EXPIRING_WITHIN_DAYS = 14;
 
-const projections = computed(() =>
-  props.supporter ? (props.tierProjections ?? []) : [],
+const fleetTier = computed(() =>
+  props.supporter ? props.fleetTierUntil : undefined,
 );
 
 // Whatever the reader can actually see. The tint has to answer for a date on the
-// screen, and where the projections are shown they are that date -- tinting for
-// a hidden `supporterUntil` puts an "expiring soon" amber next to a run of dates
-// months away.
-const runsOutOn = computed(() => {
-  if (projections.value.length) {
-    return projections.value
-      .map((projection) => projection.expiresAt)
-      .reduce((soonest, date) => (date < soonest ? date : soonest));
-  }
-
-  return props.supporterUntil;
-});
+// screen, and where the fleet tier is shown it is that date -- tinting for a
+// hidden `supporterUntil` puts an "expiring soon" amber next to a date months
+// away.
+const runsOutOn = computed(() => fleetTier.value ?? props.supporterUntil);
 
 const expiringSoon = computed(() => {
   if (!runsOutOn.value) {
@@ -74,12 +60,11 @@ const variant = computed(() => {
     : PillVariantsEnum.SUCCESS;
 });
 
-// Yields to the projections wherever they are shown: `supporterUntil` is the
-// calendar month's edge and they are a spend-down of the same money, so the two
-// give different dates for the same question and the pair reads as a
-// contradiction rather than as detail.
+// Yields to the fleet tier wherever that is shown: one is the calendar month's
+// edge and the other a spend-down of the same money, so the two give different
+// dates and the pair reads as a contradiction rather than as detail.
 const expiry = computed(() => {
-  if (!props.supporter || projections.value.length) {
+  if (!props.supporter || fleetTier.value) {
     return undefined;
   }
 
@@ -110,20 +95,17 @@ const expiry = computed(() => {
     <span v-if="expiry" class="supporter-status__expiry">
       {{ expiry }}
     </span>
-    <ul v-if="projections.length" class="supporter-status__tiers">
-      <li
-        v-for="projection in projections"
-        :key="projection.tier"
-        data-test="supporter-tier-projection"
-      >
-        {{
-          t("labels.supporter.tierUntil", {
-            tier: projection.tier,
-            date: l(projection.expiresAt, "datetime.formats.date"),
-          })
-        }}
-      </li>
-    </ul>
+    <span
+      v-if="fleetTier"
+      class="supporter-status__fleet-tier"
+      data-test="fleet-tier-until"
+    >
+      {{
+        t("labels.supporter.fleetTierUntil", {
+          date: l(fleetTier, "datetime.formats.date"),
+        })
+      }}
+    </span>
   </div>
 </template>
 
@@ -140,13 +122,7 @@ const expiry = computed(() => {
   color: var(--color-muted, #7a8288);
 }
 
-/* Basis of its own so the tier lines wrap under the badge rather than stretching
-   the row, which they do as soon as two of them sit beside a long expiry. */
-.supporter-status__tiers {
-  flex-basis: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.supporter-status__fleet-tier {
   color: var(--color-muted, #7a8288);
 }
 </style>

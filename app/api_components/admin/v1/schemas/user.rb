@@ -32,10 +32,7 @@ module Admin
             supporter: {type: :boolean},
             supporterTier: {type: :integer},
             supporterUntil: {type: :string, format: :date},
-            supporterTierProjections: {
-              type: :array,
-              items: ::Admin::V1::Schemas::SupporterTierProjection
-            },
+            fleetTierUntil: {type: :string, format: :date},
             twoFactorRequired: {type: :boolean},
             twoFactorQrCodeUrl: {type: :string},
             twoFactorProvisioningUrl: {type: :string},

@@ -105,7 +105,7 @@ const columns: BaseTableCol<SupporterContribution>[] = [
   <SupporterStatus
     :supporter="props.user.supporter"
     :supporter-until="props.user.supporterUntil"
-    :tier-projections="props.user.supporterTierProjections"
+    :fleet-tier-until="props.user.fleetTierUntil"
   />
 
   <FilteredList

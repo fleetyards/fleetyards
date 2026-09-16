@@ -122,7 +122,7 @@ const handleCancel = async () => {
   <SupporterStatus
     :supporter="props.user.supporter"
     :supporter-until="props.user.supporterUntil"
-    :tier-projections="props.user.supporterTierProjections"
+    :fleet-tier-until="props.user.fleetTierUntil"
   />
 
   <form @submit.prevent="onSubmit" id="admin-user-edit-form">

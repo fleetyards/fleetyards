@@ -297,39 +297,41 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 0, queries
     end
 
-    # The figure an admin is shown: ten euros is two months of the five euro tier
-    # and ten months of the one euro tier, counted from the day it was paid.
-    test "the projection says how long each tier would be sustained" do
+    # Ten euros at five a month is two months of the fleet tier, counted from the
+    # day it was paid.
+    test "the fleet tier runs for what the amount buys at five euros a month" do
       create(:supporter_contribution, user: @user,
         amount_cents: 1000, started_at: Date.new(2026, 9, 16))
 
       travel_to Date.new(2026, 9, 16) do
-        assert_equal(
-          [
-            {tier: 1, expires_at: Date.new(2027, 7, 16)},
-            {tier: 2, expires_at: Date.new(2026, 11, 16)}
-          ],
-          @user.reload.supporter_tier_projections
-        )
+        assert_equal Date.new(2026, 11, 16), @user.reload.fleet_tier_until
       end
     end
 
-    # A remainder is the share of the following month it buys, so a threshold
-    # that divides exactly still lands on the same day of the month.
-    test "the projection carries a part month as days" do
+    # A remainder is the share of the following month it buys, so a rate that
+    # divides exactly still lands on the same day of the month.
+    test "the fleet tier carries a part month as days" do
       create(:supporter_contribution, user: @user,
         amount_cents: 750, started_at: Date.new(2026, 9, 16))
 
       travel_to Date.new(2026, 9, 16) do
-        tier_two = @user.reload.supporter_tier_projections.find { |p| p[:tier] == 2 }
-
         # 16 Oct plus half of that month's 31 days, rounded.
-        assert_equal Date.new(2026, 11, 1), tier_two[:expires_at]
+        assert_equal Date.new(2026, 11, 1), @user.reload.fleet_tier_until
       end
     end
 
-    test "nothing active means nothing to project" do
-      assert_empty @user.supporter_tier_projections
+    # The band a month's spend falls in, and how long that money lasts, are two
+    # questions. Nothing here moves the tier.
+    test "the fleet tier does not disturb the supporter tier" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.current)
+
+      assert_equal 2, @user.reload.supporter_tier
+      assert_equal Date.current.end_of_month, @user.supporter_until
+    end
+
+    test "nothing active means no fleet tier" do
+      assert_nil @user.fleet_tier_until
     end
 
     test "nothing active has no expiry to name" do

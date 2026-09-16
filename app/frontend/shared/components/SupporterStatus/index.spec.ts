@@ -49,65 +49,51 @@ describe("SupporterStatus", () => {
     ).toEqual(expect.arrayContaining([expect.stringContaining("warning")]));
   });
 
-  // The projection is for an admin to act on. A supporter is told they are one;
-  // which tier they end up holding is theirs to choose.
-  it("leaves the tier projection out unless it is given", async () => {
+  // The fleet tier is for an admin to act on; the donor is told only that they
+  // are a supporter.
+  it("leaves the fleet tier out unless it is given", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { supporter: true },
     });
 
-    expect(
-      wrapper.find("[data-test='supporter-tier-projection']").exists(),
-    ).toBe(false);
+    expect(wrapper.find("[data-test='fleet-tier-until']").exists()).toBe(false);
     expect(wrapper.text()).not.toContain("Tier");
   });
 
-  it("names the day each tier would stop being sustained", async () => {
+  it("names the day the fleet tier would run out", async () => {
     const wrapper = await mountWithDefaults(Component, {
-      props: {
-        supporter: true,
-        supporterUntil: isoDate(addDays(new Date(), 20)),
-        tierProjections: [
-          { tier: 1, expiresAt: "2027-07-16" },
-          { tier: 2, expiresAt: "2026-11-16" },
-        ],
-      },
+      props: { supporter: true, fleetTierUntil: "2026-11-16" },
     });
 
-    const rows = wrapper.findAll("[data-test='supporter-tier-projection']");
-
-    expect(rows).toHaveLength(2);
-    expect(rows[0].text()).toContain("Tier 1 until");
-    expect(rows[1].text()).toContain("Tier 2 until");
+    expect(wrapper.find("[data-test='fleet-tier-until']").text()).toContain(
+      "Fleet tier until",
+    );
   });
 
-  // The projections and supporterUntil answer the same question from different
-  // models, so showing both puts two dates side by side that disagree.
-  it("drops the lapse date wherever the projection is shown", async () => {
+  // The fleet tier and supporterUntil answer different questions off the same
+  // money, so showing both puts two dates side by side that disagree.
+  it("drops the lapse date wherever the fleet tier is shown", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         supporter: true,
         supporterUntil: isoDate(addDays(new Date(), 20)),
-        tierProjections: [{ tier: 2, expiresAt: "2026-11-16" }],
+        fleetTierUntil: "2026-11-16",
       },
     });
 
     expect(wrapper.text()).not.toContain("Active until");
     expect(wrapper.text()).not.toContain("Expires");
-    expect(wrapper.text()).toContain("Tier 2 until");
+    expect(wrapper.text()).toContain("Fleet tier until");
   });
 
-  // The hidden supporterUntil is days away and the projection is months away,
-  // so tinting for the former would warn about a date nobody can see.
+  // The hidden supporterUntil is days away and the fleet tier is months away, so
+  // tinting for the former would warn about a date nobody can see.
   it("tints for the soonest date it actually shows", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         supporter: true,
         supporterUntil: isoDate(addDays(new Date(), 3)),
-        tierProjections: [
-          { tier: 1, expiresAt: isoDate(addMonths(new Date(), 10)) },
-          { tier: 2, expiresAt: isoDate(addMonths(new Date(), 2)) },
-        ],
+        fleetTierUntil: isoDate(addMonths(new Date(), 2)),
       },
     });
 
@@ -116,18 +102,16 @@ describe("SupporterStatus", () => {
     ).toEqual(expect.arrayContaining([expect.stringContaining("success")]));
   });
 
-  // Nothing is sustained by nothing, so the projection stays off a lapsed
-  // account even when one is handed in.
-  it("drops the projection when support is not live", async () => {
+  // Nothing is sustained by nothing, so the fleet tier stays off a lapsed
+  // account even when a date is handed in.
+  it("drops the fleet tier when support is not live", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         supporter: false,
-        tierProjections: [{ tier: 2, expiresAt: "2026-11-16" }],
+        fleetTierUntil: "2026-11-16",
       },
     });
 
-    expect(
-      wrapper.find("[data-test='supporter-tier-projection']").exists(),
-    ).toBe(false);
+    expect(wrapper.find("[data-test='fleet-tier-until']").exists()).toBe(false);
   });
 });
