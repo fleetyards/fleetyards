@@ -69,7 +69,12 @@ module Announcements
       # A URL is billed at a flat 23 characters whatever its real length,
       # because X wraps it through t.co.
       URL_LENGTH = 23
-      URL_PATTERN = %r{https?://\S+}
+
+      # Every character RFC 3986 allows in a URL, and nothing else. `\S+` ran
+      # on until whitespace, so CJK written straight after a link -- which
+      # needs no space before it -- was swallowed into the flat 23 instead of
+      # being counted at two apiece.
+      URL_PATTERN = %r{https?://[A-Za-z0-9\-._~:/?\#\[\]@!$&'()*+,;=%]+}
 
       # X's extractor stops before trailing punctuation, so a sentence-final
       # full stop is text at its own weight rather than free inside the 23.

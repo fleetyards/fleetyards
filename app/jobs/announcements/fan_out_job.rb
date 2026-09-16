@@ -11,14 +11,22 @@ module Announcements
       announcement = Announcement.find_by(id: announcement_id)
       return if announcement.blank?
 
-      # Counted and written before a single batch is queued, because that is
-      # what a batch compares its own progress against when it decides whether
-      # it was the last one. Written afterwards it would be nil for the batches
-      # that got there first.
-      announcement.update!(recipients_count: User.confirmed.count)
+      # One evaluation of the audience, not a count and then a walk. Two
+      # queries can disagree -- an account deleted between them leaves a
+      # recipients_count no batch can ever reach, and because the in-app
+      # delivery only settles when the notifications match it, it would sit
+      # pending for good.
+      #
+      # ~57k ids is a few megabytes in a job that is about to write 57k rows.
+      user_ids = User.confirmed.pluck(:id)
 
-      User.confirmed.in_batches(of: Announcement::FAN_OUT_BATCH_SIZE) do |batch|
-        Announcements::NotifyBatchJob.perform_async(announcement.id, batch.pluck(:id))
+      # Written before a single batch is queued: it is what a batch compares
+      # its own progress against, and it would be nil for whichever batch got
+      # there first.
+      announcement.update!(recipients_count: user_ids.size)
+
+      user_ids.each_slice(Announcement::FAN_OUT_BATCH_SIZE) do |batch|
+        Announcements::NotifyBatchJob.perform_async(announcement.id, batch)
       end
     end
   end

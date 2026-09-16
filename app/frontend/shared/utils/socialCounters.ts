@@ -21,7 +21,14 @@ const LIGHT_RANGES: [number, number][] = [
 ];
 
 const URL_LENGTH = 23;
-const URL_PATTERN = /https?:\/\/\S+/g;
+
+/*
+ * Every character RFC 3986 allows in a URL, and nothing else. `\S+` ran on
+ * until whitespace, so CJK written straight after a link — which needs no
+ * space before it — was swallowed into the flat 23 instead of being counted at
+ * two apiece.
+ */
+const URL_PATTERN = /https?:\/\/[A-Za-z0-9\-._~:/?#[\]@!$&'()*+,;=%]+/g;
 
 /*
  * X's extractor stops before trailing punctuation, so a sentence-final full

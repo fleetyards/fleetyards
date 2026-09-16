@@ -49,13 +49,19 @@ class AnnouncementDelivery < ApplicationRecord
     failed: "failed"
   }, prefix: true
 
-  # What a retry is offered on. A succeeded delivery has nothing to repeat and
-  # a pending one already has a job doing the work.
+  # What a retry is offered on. A succeeded delivery has nothing to repeat.
   RETRYABLE_STATUSES = %w[failed skipped].freeze
 
   validates :channel, uniqueness: {scope: :announcement_id}
 
+  # A pending in-app delivery is retryable too, which a pending social one is
+  # not: the fan-out is idempotent -- the recipient index makes a second run
+  # insert nothing and deliver nothing -- so the worst a re-run does is check
+  # completion again. That is the way out of a fan-out that stopped short,
+  # where a social retry would just post the thread twice.
   def retryable?
+    return true if status_pending? && channel_in_app?
+
     RETRYABLE_STATUSES.include?(status)
   end
 
@@ -78,6 +84,13 @@ class AnnouncementDelivery < ApplicationRecord
 
   def first_posted_part
     posted_parts.first
+  end
+
+  # What the conditional claim matches on. A pending in-app delivery is already
+  # pending, so the claim has to accept that status or the re-run is refused
+  # by the very statement meant to let it through.
+  def claimable_statuses
+    (status_pending? && channel_in_app?) ? RETRYABLE_STATUSES + ["pending"] : RETRYABLE_STATUSES
   end
 
   def succeed!(external_id: nil)

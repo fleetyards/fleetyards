@@ -90,8 +90,10 @@ module Admin
           # separate status check would put the same announcement on X twice.
           # It also has to be `pending` before the job is queued, or a fast
           # worker writes `succeeded` and this overwrites it.
+          return render json: ValidationError.new("announcement.delivery_not_retryable"), status: :bad_request unless delivery.retryable?
+
           claimed = AnnouncementDelivery
-            .where(id: delivery.id, status: AnnouncementDelivery::RETRYABLE_STATUSES)
+            .where(id: delivery.id, status: delivery.claimable_statuses)
             .update_all(status: "pending", error: nil, updated_at: Time.current)
 
           return render json: ValidationError.new("announcement.delivery_not_retryable"), status: :bad_request if claimed.zero?

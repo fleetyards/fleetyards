@@ -525,6 +525,29 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     assert_equal "pending", delivery.reload.status
   end
 
+  # A fan-out that stopped short leaves the in-app delivery pending, and the
+  # re-run is idempotent -- so it is offered, where a pending social delivery
+  # would just post the thread twice.
+  test "PUT /announcements/:id/deliveries/:channel/retry re-runs a fan-out still pending" do
+    announcement = create(:announcement, :published)
+    create(:announcement_delivery, announcement:, channel: "in_app", status: "pending")
+    sign_in @admin_user
+
+    Announcements::FanOutJob.expects(:perform_async).with(announcement.id).once
+
+    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "in_app"}
+  end
+
+  test "PUT /announcements/:id/deliveries/:channel/retry refuses a social delivery still pending" do
+    announcement = create(:announcement, :social, :published)
+    create(:announcement_delivery, announcement:, channel: "x", status: "pending")
+    sign_in @admin_user
+
+    Announcements::PostSocialJob.expects(:perform_async).never
+
+    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "x"}
+  end
+
   test "PUT /announcements/:id/deliveries/:channel/retry refuses a delivery that succeeded" do
     announcement = create(:announcement, :social, :published)
     create(:announcement_delivery, announcement:, channel: "x", status: "succeeded")

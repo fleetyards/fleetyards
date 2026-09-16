@@ -24,6 +24,14 @@ describe("socialCounters", () => {
       5 + 23 + 1,
       28,
     ],
+    // A URL ends at the first character RFC 3986 does not allow. CJK needs no
+    // space before it, so `\S+` swallowed it into the flat 23.
+    [
+      "CJK straight after a URL",
+      "https://fleetyards.net公告公告",
+      23 + 8,
+      22 + 4,
+    ],
     ["empty", "", 0, 0],
   ])("counts %s", (_name, text, x, bluesky) => {
     expect(xLength(text as string)).toBe(x);

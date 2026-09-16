@@ -33,6 +33,25 @@ module Announcements
       refute announcement.deliveries.exists?(status: "succeeded")
     end
 
+    # The count and the batches used to be two queries. An account leaving the
+    # scope between them left a recipients_count no batch could reach, and the
+    # in-app delivery settles only when the two match -- so it sat pending for
+    # good.
+    test "#perform counts the audience it actually queued" do
+      create_list(:user, 3)
+      announcement = create(:announcement)
+
+      queued = []
+      Announcements::NotifyBatchJob.stubs(:perform_async).with do |_id, ids|
+        queued.concat(ids)
+        true
+      end
+
+      Announcements::FanOutJob.new.perform(announcement.id)
+
+      assert_equal queued.size, announcement.reload.recipients_count
+    end
+
     test "#perform ignores a missing announcement" do
       Announcements::NotifyBatchJob.expects(:perform_async).never
 

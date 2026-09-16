@@ -60,6 +60,18 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
     assert_nil delivery.delivered_at
   end
 
+  # The fan-out is idempotent, so re-running one costs nothing and is the way
+  # out of a delivery that stopped short. Re-posting a thread is not.
+  test "a pending in-app delivery is retryable and a pending social one is not" do
+    in_app = create(:announcement_delivery, announcement: @announcement, channel: "in_app", status: "pending")
+    social = create(:announcement_delivery, announcement: @announcement, channel: "x", status: "pending")
+
+    assert in_app.retryable?
+    refute social.retryable?
+    assert_includes in_app.claimable_statuses, "pending"
+    refute_includes social.claimable_statuses, "pending"
+  end
+
   test "#skip! is distinct from a failure" do
     delivery = create(:announcement_delivery, announcement: @announcement)
 
