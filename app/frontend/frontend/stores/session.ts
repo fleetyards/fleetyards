@@ -46,6 +46,15 @@ export const useSessionStore = defineStore("session", {
     },
     async refreshUser() {
       await fetchMe().then((user) => {
+        // A response that arrives after the session was cleared -- a 401 on a
+        // parallel request, a sign out mid-flight -- must not put the user
+        // back. `authenticated` is what everything else reads, so a
+        // `currentUser` beside it saying otherwise is a state nothing recovers
+        // from.
+        if (!this.authenticated) {
+          return;
+        }
+
         this.currentUser = user;
       });
     },
@@ -86,5 +95,16 @@ export const useSessionStore = defineStore("session", {
   },
   persist: {
     pick: ["authenticated", "accessConfirmed", "currentUser"],
+    // `currentUser` is persisted so a reload of a signed-in session renders the
+    // account straight away rather than flashing a signed-out app. A session
+    // that ended anywhere but through this store's own logout leaves it behind,
+    // and a signed-out visitor then reads as that account -- on the login page
+    // that is every OAuth button rendered connected, so disabled, with no way
+    // back other than clearing site data.
+    afterHydrate: ({ store }) => {
+      if (!store.authenticated) {
+        store.currentUser = undefined;
+      }
+    },
   },
 });
