@@ -14,12 +14,19 @@ type Props = {
   name: string;
   label: string;
   hint?: string;
+  /*
+   * Passed explicitly because the name carries the row's index, so there is no
+   * fixed key for FormTextarea to look a placeholder up under -- and its
+   * fallback renders the missing-translation string straight into the box.
+   */
+  partPlaceholder?: string;
   /** Per-platform caps, drawn as a count under each part. */
   limits?: { label: string; limit: number; weighted?: boolean }[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hint: undefined,
+  partPlaceholder: undefined,
   limits: () => [],
 });
 
@@ -130,6 +137,8 @@ const update = (index: number, value: string) => {
       <FormTextarea
         :model-value="part"
         :name="`${props.name}-${index}`"
+        :placeholder="props.partPlaceholder"
+        :no-placeholder="!props.partPlaceholder"
         no-label
         @update:model-value="update(index, String($event ?? ''))"
       />

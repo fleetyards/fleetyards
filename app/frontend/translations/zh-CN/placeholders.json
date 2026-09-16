@@ -112,7 +112,9 @@
       },
       "announcement": {
         "title": "发生了什么？",
-        "body": "支持 Markdown。第一段会用于社交平台的帖子。",
+        "body": "支持 Markdown。会显示在收件箱和邮件中。",
+        "discordPart": "一条 Discord 消息，最多 2000 个字符",
+        "socialPart": "一条帖子 —— X 限 280，Bluesky 限 300",
         "link": "/fleets/"
       },
       "fundingGoal": {

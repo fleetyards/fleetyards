@@ -112,7 +112,9 @@
       },
       "announcement": {
         "title": "Cosa è successo?",
-        "body": "Markdown. Il primo paragrafo è quello che usano i post social.",
+        "body": "Markdown. Compare nella posta in arrivo e nell'e-mail.",
+        "discordPart": "Un messaggio Discord, fino a 2000 caratteri",
+        "socialPart": "Un post — 280 su X, 300 su Bluesky",
         "link": "/fleets/"
       },
       "fundingGoal": {

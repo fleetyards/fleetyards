@@ -220,6 +220,7 @@ const handleCancel = async () => {
           name="discord-parts"
           :label="t('labels.announcement.discordParts')"
           :hint="t('labels.admin.announcements.discordPartsInfo')"
+          :part-placeholder="t('placeholders.announcement.discordPart')"
           :limits="[{ label: 'Discord', limit: 2000 }]"
         />
 
@@ -228,6 +229,7 @@ const handleCancel = async () => {
           name="social-parts"
           :label="t('labels.announcement.socialParts')"
           :hint="t('labels.admin.announcements.socialPartsInfo')"
+          :part-placeholder="t('placeholders.announcement.socialPart')"
           :limits="[
             { label: 'X', limit: 280, weighted: true },
             { label: 'Bluesky', limit: 300 },
@@ -261,6 +263,7 @@ const handleCancel = async () => {
           v-model="schedule"
           name="schedule"
           translation-key="announcement.schedule"
+          no-placeholder
         />
         <FormDateTime
           v-if="schedule"

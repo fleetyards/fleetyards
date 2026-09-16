@@ -112,7 +112,9 @@
       },
       "announcement": {
         "title": "¿Qué ha pasado?",
-        "body": "Markdown. El primer párrafo es lo que usan las publicaciones sociales.",
+        "body": "Markdown. Se muestra en la bandeja y en el correo.",
+        "discordPart": "Un mensaje de Discord, hasta 2000 caracteres",
+        "socialPart": "Una publicación — 280 en X, 300 en Bluesky",
         "link": "/fleets/"
       },
       "fundingGoal": {

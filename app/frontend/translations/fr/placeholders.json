@@ -112,7 +112,9 @@
       },
       "announcement": {
         "title": "Que s'est-il passé ?",
-        "body": "Markdown. Le premier paragraphe sert aux messages sociaux.",
+        "body": "Markdown. Affiché dans la boîte de réception et dans l'e-mail.",
+        "discordPart": "Un message Discord, jusqu'à 2000 caractères",
+        "socialPart": "Un message — 280 sur X, 300 sur Bluesky",
         "link": "/fleets/"
       },
       "fundingGoal": {

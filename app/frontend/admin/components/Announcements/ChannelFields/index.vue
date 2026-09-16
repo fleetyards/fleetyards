@@ -25,6 +25,7 @@ const { t } = useI18n();
     v-model="notifyUsers"
     name="notifyUsers"
     translation-key="announcement.notifyUsers"
+    no-placeholder
     :info="t('labels.admin.announcements.notifyUsersInfo')"
     data-test="announcement-notify-users"
   />
@@ -32,18 +33,21 @@ const { t } = useI18n();
     v-model="postDiscord"
     name="postDiscord"
     translation-key="announcement.postDiscord"
+    no-placeholder
     data-test="announcement-post-discord"
   />
   <FormToggle
     v-model="postBluesky"
     name="postBluesky"
     translation-key="announcement.postBluesky"
+    no-placeholder
     data-test="announcement-post-bluesky"
   />
   <FormToggle
     v-model="postX"
     name="postX"
     translation-key="announcement.postX"
+    no-placeholder
     data-test="announcement-post-x"
   />
 </template>
