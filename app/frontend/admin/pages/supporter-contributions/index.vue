@@ -274,6 +274,11 @@ const syncFromPatreon = () => {
             class="fa-brands fa-patreon"
             :title="t('labels.admin.supporterContributions.source.patreon')"
           />
+          <i
+            v-else-if="record.source === SupporterContributionSourceEnum.KOFI"
+            class="fa-duotone fa-mug-hot"
+            :title="t('labels.admin.supporterContributions.source.kofi')"
+          />
           <span v-else>{{
             t("labels.admin.supporterContributions.source.manual")
           }}</span>
