@@ -142,6 +142,20 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
     assert_nil theirs.reload.fleet_id
   end
 
+  # The controller has no "leave it alone" branch, and this is why: the request
+  # schema requires the key, so an omitted one never reaches it.
+  test "PUT /me/supporter/contributions/{id} refuses a body with no fleetId" do
+    @contribution.update!(fleet: @fleet)
+    sign_in @supporter
+
+    put "/api/v1/me/supporter/contributions/#{@contribution.id}",
+      params: {}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+
+    assert_response :bad_request
+    assert_equal @fleet.id, @contribution.reload.fleet_id
+  end
+
   test "PUT /me/supporter/contributions/{id} is unauthorized when signed out" do
     assert_api_response :put, 401, api_path: MEMBER_PATH, path_params: {id: @contribution.id}, body: {fleetId: @fleet.id}
   end

@@ -45,11 +45,12 @@ module Api
           ::SupporterContribution.where(user_id: current_resource_owner.id)
         end
 
-        # `fetch` rather than `permit`, because an absent key and an explicit
-        # null mean different things here and `permit` cannot tell them apart:
-        # sending no key at all must not silently clear a nomination.
+        # `fleetId` is required by the request schema, so request validation
+        # answers an absent key with a 400 before anything here runs -- there is
+        # no "leave it alone" case to handle. An empty string is normalised to
+        # nil so clearing works whichever way a client spells it.
         private def nomination_params
-          {fleet_id: params.fetch(:fleet_id, @contribution.fleet_id)}
+          {fleet_id: params.permit(:fleet_id)[:fleet_id].presence}
         end
       end
     end
