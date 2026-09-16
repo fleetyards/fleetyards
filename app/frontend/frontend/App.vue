@@ -144,12 +144,7 @@ const comlink = useComlink();
 // here rather than by whatever route the visitor happens to land on.
 const { openFromQuery: openSupportFromQuery } = useSupportModal();
 
-watch(
-  () => route.query[SUPPORT_QUERY_FLAG],
-  async () => {
-    await openSupportFromQuery();
-  },
-);
+watch(() => route.query[SUPPORT_QUERY_FLAG], openSupportFromQuery);
 
 watch(
   () => route.name,
@@ -170,7 +165,7 @@ onMounted(async () => {
   await checkSessionReload();
   setNoScroll();
 
-  await openSupportFromQuery();
+  openSupportFromQuery();
 
   if (isAuthenticated.value) {
     await requestBrowserPermission();

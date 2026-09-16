@@ -35,36 +35,35 @@ describe("useSupportModal", () => {
     route.value = { path: "/hangar/", query: {}, hash: "" };
   });
 
-  it("opens the modal for a flagged address", async () => {
+  it("opens the modal for a flagged address", () => {
     route.value.query = { [SUPPORT_QUERY_FLAG]: "true" };
     const opened = onModalOpen();
 
-    await useSupportModal().openFromQuery();
+    useSupportModal().openFromQuery();
 
     expect(opened).toHaveBeenCalled();
   });
 
-  // Left in the address the flag would put the modal back up on every reload
-  // and on the way back through history.
-  it("takes the flag out of the address, keeping the rest", async () => {
+  // The address says what is open, so a reload and a copied link both land
+  // back on the modal rather than on the page behind it.
+  it("leaves the address as it found it", () => {
     route.value.query = { [SUPPORT_QUERY_FLAG]: "true", tab: "ships" };
 
-    await useSupportModal().openFromQuery();
+    useSupportModal().openFromQuery();
 
-    expect(replace).toHaveBeenCalledWith({
-      path: "/hangar/",
-      query: { tab: "ships" },
-      hash: "",
+    expect(replace).not.toHaveBeenCalled();
+    expect(route.value.query).toEqual({
+      [SUPPORT_QUERY_FLAG]: "true",
+      tab: "ships",
     });
   });
 
-  it("does nothing for an address without the flag", async () => {
+  it("does nothing for an address without the flag", () => {
     const opened = onModalOpen();
 
-    await useSupportModal().openFromQuery();
+    useSupportModal().openFromQuery();
 
     expect(opened).not.toHaveBeenCalled();
-    expect(replace).not.toHaveBeenCalled();
   });
 
   it("comes back to the page the modal was over", () => {

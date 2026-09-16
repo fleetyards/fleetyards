@@ -13,7 +13,6 @@ function isFlagged(value: unknown) {
 
 export const useSupportModal = () => {
   const comlink = useComlink();
-  const router = useRouter();
   const route = useRoute();
 
   const openSupportModal = () => {
@@ -24,16 +23,10 @@ export const useSupportModal = () => {
     });
   };
 
-  // The flag says open once; it is not state. Left in the address it would open
-  // the modal again on a reload and on the way back through history, so it is
-  // taken out of the URL before the modal goes up.
-  const openFromQuery = async () => {
+  // The flag stays in the address: it says what is open, so a reload, a
+  // bookmark and a copied link all land back on the same thing.
+  const openFromQuery = () => {
     if (!isFlagged(route.query[SUPPORT_QUERY_FLAG])) return;
-
-    const query = { ...route.query };
-    delete query[SUPPORT_QUERY_FLAG];
-
-    await router.replace({ path: route.path, query, hash: route.hash });
 
     openSupportModal();
   };
