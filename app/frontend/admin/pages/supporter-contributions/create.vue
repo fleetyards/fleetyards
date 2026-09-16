@@ -8,9 +8,11 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import {
+  type FilterOption,
   type SupporterContributionInput,
   useCreateSupporterContribution,
   getSupporterContributionsQueryKey,
+  SupporterContributionSourceEnum,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -19,6 +21,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -43,6 +46,7 @@ type FormValues = {
   payerEmail?: string;
   claimKey?: string;
   userId?: string;
+  source: SupporterContributionSourceEnum;
 };
 
 const validationSchema = {
@@ -56,6 +60,7 @@ const initialValues = ref<FormValues>({
   startedAt: todayIsoDateLocal(),
   recurring: false,
   anonymous: false,
+  source: SupporterContributionSourceEnum.OTHER,
 });
 
 const { defineField, handleSubmit, meta } = useForm<FormValues>({
@@ -73,6 +78,14 @@ const [note, noteProps] = defineField("note");
 const [payerEmail, payerEmailProps] = defineField("payerEmail");
 const [claimKey, claimKeyProps] = defineField("claimKey");
 const [userId, userIdProps] = defineField("userId");
+const [source, sourceProps] = defineField("source");
+
+const sourceOptions = computed<FilterOption[]>(() =>
+  Object.values(SupporterContributionSourceEnum).map((value) => ({
+    value,
+    label: t(`labels.admin.supporterContributions.source.${value}`),
+  })),
+);
 
 const submitting = ref(false);
 
@@ -100,6 +113,7 @@ const onSubmit = handleSubmit(async (values) => {
     payerEmail: values.payerEmail || undefined,
     claimKey: values.claimKey || undefined,
     userId: values.userId || undefined,
+    source: values.source,
   };
 
   await createMutation
@@ -183,6 +197,15 @@ const handleCancel = async () => {
           :multiple="false"
           value-attr="id"
           name="userId"
+        />
+        <BaseSelect
+          v-model="source"
+          v-bind="sourceProps"
+          :label="t('labels.supporterContribution.source')"
+          :no-label="false"
+          :options="sourceOptions"
+          :multiple="false"
+          name="source"
         />
         <FormInput
           v-model="payerEmail"

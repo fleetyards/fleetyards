@@ -1567,7 +1567,8 @@
           "linked": "账户关联",
           "linkedOnly": "已关联",
           "linkedVia": "关联方式",
-          "unlinkedOnly": "未关联"
+          "unlinkedOnly": "未关联",
+          "source": "来源"
         },
         "adminNotifications": {
           "search": "搜索"
@@ -1778,7 +1779,9 @@
           "source": {
             "patreon": "Patreon",
             "kofi": "Ko-fi",
-            "manual": "手动"
+            "buymeacoffee": "Buy me a coffee",
+            "paypal": "PayPal",
+            "other": "其他"
           },
           "linkedVia": {
             "patreon_account": "Patreon 账户",

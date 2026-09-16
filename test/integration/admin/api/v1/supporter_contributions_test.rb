@@ -238,6 +238,27 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  test "POST /supporter-contributions records the platform an admin named" do
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, source: "buymeacoffee"}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal "buymeacoffee", parsed_body["source"]
+    end
+  end
+
+  # An admin who states no platform is not claiming the money came from one.
+  test "POST /supporter-contributions defaults an unstated platform to other" do
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal "other", parsed_body["source"]
+    end
+  end
+
   test "POST /supporter-contributions keeps the account an admin chose" do
     chosen = create(:user)
     create(:user, email: "donor@example.test", confirmed_at: Time.current)
@@ -330,6 +351,18 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     assert_api_response :get, 200, params: {q: {"linkedViaEq" => "claim_key"}} do
       assert_equal 1, parsed_body["items"].count
       assert_equal "claim_key", parsed_body["items"].first["linkedVia"]
+    end
+  end
+
+  test "GET /supporter-contributions filters by sourceEq" do
+    create(:supporter_contribution, :paypal)
+    create(:supporter_contribution, :buymeacoffee)
+    create(:supporter_contribution)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"sourceEq" => "paypal"}} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal "paypal", parsed_body["items"].first["source"]
     end
   end
 

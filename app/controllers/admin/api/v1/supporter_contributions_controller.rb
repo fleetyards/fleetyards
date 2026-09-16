@@ -143,7 +143,8 @@ module Admin
         private def supporter_contribution_params
           @supporter_contribution_params ||= params.permit(
             :name, :amount_cents, :currency, :anonymous, :recurring,
-            :started_at, :ended_at, :note, :user_id, :payer_email, :claim_key
+            :started_at, :ended_at, :note, :user_id, :payer_email, :claim_key,
+            :source
           )
         end
 

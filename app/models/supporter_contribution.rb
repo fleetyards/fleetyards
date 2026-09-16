@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("manual"), not null
+#  source              :string           default("other"), not null
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -51,7 +51,7 @@ class SupporterContribution < ApplicationRecord
   has_paper_trail on: %i[update],
     only: %i[
       name amount_cents currency anonymous recurring
-      started_at ended_at note user_id payer_email claim_key
+      started_at ended_at note user_id payer_email claim_key source
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -73,7 +73,15 @@ class SupporterContribution < ApplicationRecord
     "createdAt asc", "createdAt desc"
   ]
 
-  enum :source, {manual: "manual", patreon: "patreon", kofi: "kofi"}, default: "manual"
+  # The platform the money arrived on. Patreon and Ko-fi are the two an importer
+  # writes; the rest only ever come from an admin, who is recording a payment
+  # that reached a platform we have no feed from. `other` is the answer for a
+  # platform not listed here and for a row nobody stated one for -- it does not
+  # mean "entered by hand", which a patreon_member_id or kofi_transaction_id
+  # answers on its own.
+  SOURCES = %w[patreon kofi buymeacoffee paypal other].freeze
+
+  enum :source, SOURCES.index_by(&:itself), default: "other"
 
   # Which rule linked the row, in the order Supporters::Linker tries them. Null
   # while nothing is linked; `manual` is the one nobody derives -- an admin

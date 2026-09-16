@@ -15791,6 +15791,8 @@ components:
           type: boolean
         recurring:
           type: boolean
+        source:
+          "$ref": "#/components/schemas/SupporterContributionSourceEnum"
         startedAt:
           type: string
           format: date
@@ -15942,13 +15944,17 @@ components:
     SupporterContributionSourceEnum:
       type: string
       enum:
-      - manual
       - patreon
       - kofi
+      - buymeacoffee
+      - paypal
+      - other
       x-enumNames:
-      - MANUAL
       - PATREON
       - KOFI
+      - BUYMEACOFFEE
+      - PAYPAL
+      - OTHER
       title: SupporterContributionSourceEnum
     SupporterContributionStats:
       type: object

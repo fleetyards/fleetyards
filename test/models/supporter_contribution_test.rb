@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("manual"), not null
+#  source              :string           default("other"), not null
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -169,9 +169,13 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_nil contribution.reload.linked_via
   end
 
-  test "source defaults to manual" do
-    assert_equal "manual", SupporterContribution.new.source
-    assert SupporterContribution.new.manual?
+  test "source defaults to other" do
+    assert_equal "other", SupporterContribution.new.source
+    assert SupporterContribution.new.other?
+  end
+
+  test "source names every platform a contribution can arrive on" do
+    assert_equal %w[patreon kofi buymeacoffee paypal other], SupporterContribution.sources.keys
   end
 
   test "rejects a user_id that points at no account" do
@@ -229,12 +233,12 @@ class SupporterContributionTest < ActiveSupport::TestCase
   end
 
   test "patreon scope and enum select source-tagged rows" do
-    manual = create(:supporter_contribution)
+    elsewhere = create(:supporter_contribution, source: "paypal")
     imported = create(:supporter_contribution, :patreon)
 
     assert imported.patreon?
     ids = SupporterContribution.patreon.pluck(:id)
     assert_includes ids, imported.id
-    refute_includes ids, manual.id
+    refute_includes ids, elsewhere.id
   end
 end

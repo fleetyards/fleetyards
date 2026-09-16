@@ -1567,7 +1567,8 @@
           "linked": "Liaison au compte",
           "linkedOnly": "Liées",
           "linkedVia": "Lié via",
-          "unlinkedOnly": "Non liées"
+          "unlinkedOnly": "Non liées",
+          "source": "Source"
         },
         "adminNotifications": {
           "search": "Rechercher"
@@ -1778,7 +1779,9 @@
           "source": {
             "patreon": "Patreon",
             "kofi": "Ko-fi",
-            "manual": "Manuel"
+            "buymeacoffee": "Buy me a coffee",
+            "paypal": "PayPal",
+            "other": "Autre"
           },
           "linkedVia": {
             "patreon_account": "Compte Patreon",

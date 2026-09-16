@@ -18,6 +18,7 @@ import SupporterContributionActions from "@/admin/components/SupporterContributi
 import FilterForm from "@/admin/components/SupporterContributions/FilterForm/index.vue";
 import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
 import LinkedViaPill from "@/admin/components/SupporterContributions/LinkedViaPill/index.vue";
+import SourcePill from "@/admin/components/SupporterContributions/SourcePill/index.vue";
 import MonthlyChart from "@/admin/components/SupporterContributions/MonthlyChart/index.vue";
 import {
   useSupporterContributions,
@@ -26,7 +27,6 @@ import {
   getSupporterContributionsQueryKey,
   type SupporterContribution,
   type SupporterContributionSortEnum,
-  SupporterContributionSourceEnum,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -278,19 +278,7 @@ const syncFromPatreon = () => {
           <i v-if="record.anonymous" class="fa-duotone fa-user-secret" />
         </template>
         <template #col-source="{ record }">
-          <i
-            v-if="record.source === SupporterContributionSourceEnum.PATREON"
-            class="fa-brands fa-patreon"
-            :title="t('labels.admin.supporterContributions.source.patreon')"
-          />
-          <i
-            v-else-if="record.source === SupporterContributionSourceEnum.KOFI"
-            class="fa-duotone fa-mug-hot"
-            :title="t('labels.admin.supporterContributions.source.kofi')"
-          />
-          <span v-else>{{
-            t("labels.admin.supporterContributions.source.manual")
-          }}</span>
+          <SourcePill :source="record.source" />
         </template>
         <template #actions="{ record }">
           <SupporterContributionActions :supporter-contribution="record" />
