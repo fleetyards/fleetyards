@@ -45,31 +45,25 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="flex justify-center items-center">
       <Avatar :avatar="props.user.avatar?.smallUrl" />
       <div class="hangar-public-heading__name">
-        <div class="hangar-public-heading__title">
-          <span>
-            {{ t(props.headlineKey, { user: usernamePlural }) }}
-          </span>
-          <Pill
-            v-if="props.user.supporter"
-            v-tooltip="t('labels.supporter.tooltip')"
-            class="hangar-public-heading__supporter"
-            variant="success"
-            uppercase
-          >
-            <i class="fa-duotone fa-heart" />
-            {{ t("labels.supporter.badge") }}
-          </Pill>
-        </div>
-        <SupporterBadge
-          v-if="
-            props.user.supporter &&
-            (props.user.supporterTier || props.user.supporterRecurring)
-          "
-          :tier="props.user.supporterTier"
-          :recurring="props.user.supporterRecurring"
-          :size="20"
-          class="hangar-public-heading__tier"
-        />
+        <span>
+          {{ t(props.headlineKey, { user: usernamePlural }) }}
+        </span>
+        <Pill
+          v-if="props.user.supporter"
+          v-tooltip="t('labels.supporter.tooltip')"
+          class="hangar-public-heading__supporter"
+          variant="success"
+          uppercase
+        >
+          <SupporterBadge
+            v-if="props.user.supporterTier || props.user.supporterRecurring"
+            :tier="props.user.supporterTier"
+            :recurring="props.user.supporterRecurring"
+            :size="24"
+          />
+          <i v-else class="fa-duotone fa-heart" />
+          {{ t("labels.supporter.badge") }}
+        </Pill>
       </div>
     </div>
   </Heading>
