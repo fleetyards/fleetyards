@@ -107,17 +107,17 @@ https://fleetyards.net/support
 
 ### Alternative — a single post instead of the thread
 
-*278 characters on X (limit 280), 277 on Bluesky (limit 300).*
+*279 characters on X (limit 280), 278 on Bluesky (limit 300).*
 
 ```
 Fleet Ops is in public beta 🚀
 
-📅 Events — signups, teams, ship slots
+📅 Events — signups & ship slots
 📦 Inventories — fleet stock + ledger
-📋 Contracts — haul/buy/craft jobs
+📋 Contracts — haul/buy/craft
 💰 Tours — income & costs, split fairly
 
 Free in beta, then supporter features.
-Your hangar & solo tours stay free.
+Your hangar, ship cargo & solo tours stay free.
 https://fleetyards.net
 ```
