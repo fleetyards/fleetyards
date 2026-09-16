@@ -173,6 +173,12 @@
         "createFailed": "Could not create funding goal.",
         "updateFailed": "Could not update funding goal."
       },
+      "supporterNomination": {
+        "update": {
+          "success": "Fleet updated.",
+          "failure": "Could not update the fleet."
+        }
+      },
       "supporterContribution": {
         "created": "Supporter contribution created.",
         "updated": "Supporter contribution updated.",

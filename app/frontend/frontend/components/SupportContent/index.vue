@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
+import SupporterNomination from "@/frontend/components/SupporterNomination/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
@@ -194,6 +195,8 @@ const leaveForLogin = () => {
       >
         {{ t("labels.account.supporterClaimKey.signedOut") }}
       </router-link>
+
+      <SupporterNomination />
     </div>
 
     <hr class="support-rule" />

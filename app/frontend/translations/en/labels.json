@@ -1468,6 +1468,11 @@
           "intro": "Generate a private link to add the events you've signed up for to your personal calendar app (Apple Calendar, Google Calendar, Outlook).",
           "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
         },
+        "supporterNomination": {
+          "label": "Fleet support",
+          "hint": "Pick the fleet a donation supports. Its members get the fleet features while the donation is active.",
+          "fleet": "Supported fleet"
+        },
         "supporterClaimKey": {
           "signedOut": "Please log in to get your personal supporter key.",
           "patreonNote": "matched by your email, no key needed",

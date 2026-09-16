@@ -163,6 +163,12 @@
         "createFailed": "No se pudo crear el objetivo de financiación.",
         "updateFailed": "No se pudo actualizar el objetivo de financiación."
       },
+      "supporterNomination": {
+        "update": {
+          "success": "Flota actualizada.",
+          "failure": "No se ha podido actualizar la flota."
+        }
+      },
       "supporterContribution": {
         "created": "Aportación de patrocinador creada.",
         "updated": "Aportación de patrocinador actualizada.",

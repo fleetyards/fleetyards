@@ -163,6 +163,12 @@
         "createFailed": "无法创建筹款目标。",
         "updateFailed": "无法更新筹款目标。"
       },
+      "supporterNomination": {
+        "update": {
+          "success": "舰队已更新。",
+          "failure": "无法更新舰队。"
+        }
+      },
       "supporterContribution": {
         "created": "支持者捐助已创建。",
         "updated": "支持者捐助已更新。",
