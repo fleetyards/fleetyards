@@ -26,7 +26,9 @@ const router = createRouter({
   ],
 });
 
-const mount = async (props: { carriedBy?: ModelExtendedCarriedByItem[] }) => {
+const mount = async (props: {
+  carriedBy?: ModelExtendedCarriedByItem[] | null;
+}) => {
   await router.push({ name: "home" });
   await router.isReady();
 
@@ -44,6 +46,12 @@ const mount = async (props: { carriedBy?: ModelExtendedCarriedByItem[] }) => {
 describe("ModelsCarriedByList", () => {
   it("renders nothing when the field is absent", async () => {
     const wrapper = await mount({});
+
+    expect(wrapper.find("#carried-by").exists()).toBe(false);
+  });
+
+  it("renders nothing when the field is null", async () => {
+    const wrapper = await mount({ carriedBy: null });
 
     expect(wrapper.find("#carried-by").exists()).toBe(false);
   });
