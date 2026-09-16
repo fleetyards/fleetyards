@@ -62,18 +62,33 @@ class AnnouncementTest < ActiveSupport::TestCase
     assert announcement.valid?
   end
 
-  # Bluesky's 300 rather than X's 280: a post can be legal on one and not the
-  # other, and each client trims to its own limit on the way out.
-  test "each social part is capped at the looser platform limit" do
-    refute build(:announcement, social_parts: ["ok", "x" * 301]).valid?
-    assert build(:announcement, social_parts: ["ok", "x" * 300]).valid?
+  # Each part is measured against the platforms the announcement actually
+  # selected, and measured the way each of them counts.
+  test "each social part is capped by the platforms it is going to" do
+    refute build(:announcement, :social, social_parts: ["ok", "x" * 281]).valid?
+    assert build(:announcement, post_bluesky: true, social_parts: ["ok", "x" * 300]).valid?
+    refute build(:announcement, post_bluesky: true, social_parts: ["x" * 301]).valid?
   end
 
-  test "the error names which part is too long" do
-    announcement = build(:announcement, social_parts: ["ok", "x" * 301])
+  # 200 CJK characters are 400 to X and 200 to Bluesky, so the same post is
+  # legal on one and refused on the other.
+  test "a part is measured the way each platform measures" do
+    assert build(:announcement, post_bluesky: true, social_parts: ["公" * 200]).valid?
+    refute build(:announcement, post_x: true, social_parts: ["公" * 200]).valid?
+  end
+
+  # A limit for a channel nobody selected is noise.
+  test "social parts are unmeasured when no social channel is selected" do
+    assert build(:announcement, notify_users: true, social_parts: ["x" * 500]).valid?
+  end
+
+  test "the error names the platform and which part is too long" do
+    announcement = build(:announcement, post_x: true, social_parts: ["ok", "x" * 281])
     announcement.valid?
 
-    assert_includes announcement.errors.full_messages.join, "post 2"
+    message = announcement.errors.full_messages.join
+    assert_includes message, "post 2"
+    assert_includes message, I18n.t("announcements.channels.x")
   end
 
   test "each Discord part is capped at a Discord message" do

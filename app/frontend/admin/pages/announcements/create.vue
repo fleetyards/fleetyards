@@ -193,7 +193,7 @@ const handleCancel = async () => {
           :label="t('labels.announcement.discordParts')"
           :hint="t('labels.admin.announcements.discordPartsInfo')"
           :part-placeholder="t('placeholders.announcement.discordPart')"
-          :limits="[{ label: 'Discord', limit: 2000 }]"
+          :limits="[{ label: 'Discord', limit: 2000, counter: 'bluesky' }]"
         />
 
         <AnnouncementPartsEditor
@@ -203,8 +203,8 @@ const handleCancel = async () => {
           :hint="t('labels.admin.announcements.socialPartsInfo')"
           :part-placeholder="t('placeholders.announcement.socialPart')"
           :limits="[
-            { label: 'X', limit: 280, weighted: true },
-            { label: 'Bluesky', limit: 300 },
+            { label: 'X', limit: 280, counter: 'x' },
+            { label: 'Bluesky', limit: 300, counter: 'bluesky' },
           ]"
         />
       </div>

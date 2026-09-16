@@ -21,15 +21,12 @@ module XCom
 
     MAX_LENGTH = 280
 
-    # X bills every URL at 23 characters whatever its real length, because it
-    # wraps them through t.co. A post that reads as over the limit in plain
-    # characters can therefore be fine, which is why the copy in
-    # docs/announcements carries two different counts for the same text.
-    URL_WEIGHT = 23
-    URL_PATTERN = %r{https?://\S+}
-
+    # How X counts: weighted codepoints, emoji as one unit of two, and a URL
+    # billed at a flat 23 whatever its real length. Announcements::Platform is
+    # where those rules live, because the editor and the preview need the same
+    # answer.
     def self.weighted_length(text)
-      text.to_s.gsub(URL_PATTERN) { "x" * URL_WEIGHT }.length
+      ::Announcements::Platform::X.length(text)
     end
 
     class Error < StandardError

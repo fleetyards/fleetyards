@@ -58,11 +58,7 @@ class Announcement < ApplicationRecord
 
   DEFAULT_ICON = "fa-duotone fa-bullhorn"
 
-  # The longest a single post or message may be. Bluesky allows 300 graphemes
-  # and X 280, so a social part is measured against the looser of the two and
-  # each client trims to its own limit on the way out.
-  SOCIAL_PART_LIMIT = 300
-  DISCORD_PART_LIMIT = 2_000
+  DISCORD_PART_LIMIT = Announcements::Platform::DISCORD.limit
 
   # Sendable once, and again after a failure. A published announcement is not
   # re-sendable -- readers already have it -- and one that is mid-flight has a
@@ -71,11 +67,12 @@ class Announcement < ApplicationRecord
 
   validates :title, presence: true, length: {maximum: 255}
   validates :body, presence: true
-  # Bluesky's 300, not X's 280: a post can be legal on one and not the other,
-  # and the composer trims per platform. This is the outer bound that catches
-  # copy nobody measured at all.
-  validates :social_parts, announcement_part_length: {maximum: SOCIAL_PART_LIMIT}
-  validates :discord_parts, announcement_part_length: {maximum: DISCORD_PART_LIMIT}
+  # Measured against the platforms this announcement actually selected, and
+  # measured the way each of them counts. A post can be legal on Bluesky and
+  # too long for X, so the author is told at save rather than having their copy
+  # quietly trimmed on the way out.
+  validates :social_parts, announcement_part_length: {platforms: %i[x bluesky]}
+  validates :discord_parts, announcement_part_length: {platform: Announcements::Platform::DISCORD}
   validate :publish_at_required_when_scheduled
   validate :at_least_one_channel
 

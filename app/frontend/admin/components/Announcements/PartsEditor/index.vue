@@ -10,6 +10,8 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
+import { blueskyLength, xLength } from "@/shared/utils/socialCounters";
+
 type Props = {
   name: string;
   label: string;
@@ -21,7 +23,7 @@ type Props = {
    */
   partPlaceholder?: string;
   /** Per-platform caps, drawn as a count under each part. */
-  limits?: { label: string; limit: number; weighted?: boolean }[];
+  limits?: { label: string; limit: number; counter?: "x" | "bluesky" }[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,21 +36,8 @@ const parts = defineModel<string[]>({ required: true });
 
 const { t } = useI18n();
 
-/*
- * X bills every URL at 23 characters whatever its real length, because it
- * wraps them through t.co. Counting plain characters would tell an author a
- * post is over when it is not — which is why the copy in docs/announcements
- * carries two different counts for the same text.
- */
-const URL_WEIGHT = 23;
-const URL_PATTERN = /https?:\/\/\S+/g;
-
-function weightedLength(text: string) {
-  return text.replace(URL_PATTERN, "x".repeat(URL_WEIGHT)).length;
-}
-
-function countFor(text: string, weighted: boolean) {
-  return weighted ? weightedLength(text) : [...text].length;
+function countFor(text: string, counter?: "x" | "bluesky") {
+  return counter === "x" ? xLength(text) : blueskyLength(text);
 }
 
 const add = () => {
@@ -149,12 +138,12 @@ const update = (index: number, value: string) => {
           :key="counter.label"
           :class="{
             'parts-editor__count--over':
-              countFor(part, !!counter.weighted) > counter.limit,
+              countFor(part, counter.counter) > counter.limit,
           }"
           class="parts-editor__count"
         >
           {{ counter.label }}
-          {{ countFor(part, !!counter.weighted) }}/{{ counter.limit }}
+          {{ countFor(part, counter.counter) }}/{{ counter.limit }}
         </span>
       </p>
     </div>

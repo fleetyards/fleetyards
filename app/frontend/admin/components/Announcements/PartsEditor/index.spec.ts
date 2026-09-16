@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
 const limits = [
-  { label: "X", limit: 280, weighted: true },
-  { label: "Bluesky", limit: 300 },
+  { label: "X", limit: 280, counter: "x" as const },
+  { label: "Bluesky", limit: 300, counter: "bluesky" as const },
 ];
 
 describe("AnnouncementPartsEditor", () => {

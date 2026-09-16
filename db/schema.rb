@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -151,6 +151,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_180000) do
     t.datetime "delivered_at"
     t.text "error"
     t.string "external_id"
+    t.jsonb "posted_parts", default: [], null: false
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
     t.index ["announcement_id", "channel"], name: "index_announcement_deliveries_on_announcement_id_and_channel", unique: true

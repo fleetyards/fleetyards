@@ -4,34 +4,29 @@ module Announcements
   # The ordered posts one announcement makes on a social platform. One entry is
   # a single post; two or more are a thread, each replying to the one before.
   #
-  # When the author wrote the parts they are posted verbatim -- where the break
-  # falls, and which post carries the link, are editorial decisions, and a
-  # composer that re-wraps them would move the boundary somebody chose. When
-  # they did not, this falls back to the one composed post a short announcement
-  # wants: title, first paragraph, link.
+  # Authored parts come back **unchanged**. Where the break falls and which post
+  # carries the link are editorial decisions, and trimming one on the way out
+  # would silently rewrite copy somebody measured -- the model validates each
+  # part against the platforms the announcement selected, so an over-long post
+  # is refused at save rather than cut at post.
+  #
+  # Without parts this falls back to the one composed post a short announcement
+  # wants: title, first paragraph, link. That one is trimmed, because nobody
+  # wrote it to a limit.
   class SocialPosts
-    ELLIPSIS = "…"
-
-    def initialize(announcement, limit:)
+    def initialize(announcement, platform:)
       @announcement = announcement
-      @limit = limit
+      @platform = platform
     end
 
-    def self.call(announcement, limit:)
-      new(announcement, limit:).to_a
+    def self.call(announcement, platform:)
+      new(announcement, platform:).to_a
     end
 
     def to_a
-      return authored if @announcement.authored_social?
+      return @announcement.social_parts if @announcement.authored_social?
 
       [composed].compact_blank
-    end
-
-    # Trimmed rather than trusted, even though the model validates each part:
-    # the model's bound is Bluesky's 300 and X stops at 280, so a post that is
-    # legal on one platform can arrive here too long for the other.
-    private def authored
-      @announcement.social_parts.map { |part| truncate(part, @limit) }
     end
 
     private def composed
@@ -43,13 +38,13 @@ module Announcements
     private def headline
       return nil if body_budget <= 0
 
-      truncate([@announcement.title, body].compact_blank.join("\n\n"), body_budget)
+      @platform.truncate([@announcement.title, body].compact_blank.join("\n\n"), to: body_budget)
     end
 
     private def body_budget
-      return @limit if link.blank?
+      return @platform.limit if link.blank?
 
-      @limit - link.length - 2
+      @platform.limit - @platform.length(link) - 2
     end
 
     private def body
@@ -58,12 +53,6 @@ module Announcements
 
     private def link
       @announcement.absolute_link
-    end
-
-    private def truncate(text, limit)
-      return text if text.length <= limit
-
-      text[0, limit - 1].rstrip + ELLIPSIS
     end
 
     # Markdown as words. A social post has no renderer behind it, so the

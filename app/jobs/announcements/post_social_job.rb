@@ -11,6 +11,11 @@ module Announcements
   # nothing in the three APIs is idempotent, and a timeout that actually landed
   # would put the announcement out twice. A failed delivery is retried from the
   # admin instead, where a human can see whether the first one arrived.
+  #
+  # A thread is posted one call at a time, so a failure partway through leaves
+  # the posts already made standing. Each one is written to the delivery as it
+  # lands and the next attempt resumes from there -- which is what makes the
+  # admin's retry safe to press on a half-posted thread.
   class PostSocialJob < Announcements::BaseJob
     sidekiq_options retry: false, queue: "notifications"
 
@@ -27,8 +32,8 @@ module Announcements
         return
       end
 
-      external_id = post(announcement, channel)
-      delivery.succeed!(external_id:)
+      post(announcement, channel, delivery)
+      delivery.succeed!(external_id: external_id_for(channel, delivery))
     rescue => e
       Appsignal.report_error(e)
       delivery&.fail!(e.message)
@@ -46,48 +51,58 @@ module Announcements
     # The id recorded is the first post's, which is what addresses a thread:
     # every reply hangs off it, so it is the one link that opens the whole
     # thing.
-    private def post(announcement, channel)
+    private def external_id_for(channel, delivery)
+      first = delivery.first_posted_part
+      return nil if first.blank?
+
+      (channel.to_s == "x") ? first["id"] : first["uri"]
+    end
+
+    private def post(announcement, channel, delivery)
       case channel.to_s
-      when "discord"
-        ::Discord::Announcement.new(announcement:).run
-        nil
-      when "bluesky"
-        post_bluesky_thread(announcement)
-      when "x"
-        post_x_thread(announcement)
+      when "discord" then post_discord(announcement, delivery)
+      when "bluesky" then post_bluesky_thread(announcement, delivery)
+      when "x" then post_x_thread(announcement, delivery)
       end
     end
 
-    # Serial, and it has to be: each post names the one before it, so there is
-    # nothing to parallelise. A failure partway leaves the posts already made
-    # standing -- they cannot be unsent -- which is why the delivery records
-    # the error and a human decides what to do rather than a retry re-running
-    # the whole thread.
-    private def post_bluesky_thread(announcement)
-      client = ::Bsky::Post.new
-      root = nil
-      parent = nil
+    private def post_discord(announcement, delivery)
+      ::Discord::Announcement.new(announcement:, from: delivery.posted_count).run do |index|
+        delivery.record_part!({"index" => index})
+      end
+    end
 
-      Announcements::SocialPosts.call(announcement, limit: ::Bsky::Post::MAX_LENGTH).each do |text|
+    private def post_bluesky_thread(announcement, delivery)
+      client = ::Bsky::Post.new
+      root = reference(delivery.first_posted_part)
+      parent = reference(delivery.last_posted_part)
+
+      remaining(announcement, ::Announcements::Platform::BLUESKY, delivery).each do |text|
         created = client.create(text, root:, parent:)
+        delivery.record_part!({"uri" => created.uri, "cid" => created.cid})
         root ||= created
         parent = created
       end
-
-      root&.uri
     end
 
-    private def post_x_thread(announcement)
+    private def post_x_thread(announcement, delivery)
       client = ::XCom::Post.new
-      first = nil
-      previous = nil
+      previous = delivery.last_posted_part&.fetch("id", nil)
 
-      Announcements::SocialPosts.call(announcement, limit: ::XCom::Post::MAX_LENGTH).each do |text|
+      remaining(announcement, ::Announcements::Platform::X, delivery).each do |text|
         previous = client.create(text, reply_to: previous)
-        first ||= previous
+        delivery.record_part!({"id" => previous})
       end
+    end
 
-      first
+    private def remaining(announcement, platform, delivery)
+      Announcements::SocialPosts.call(announcement, platform:).drop(delivery.posted_count)
+    end
+
+    private def reference(part)
+      return nil if part.blank?
+
+      ::Bsky::Post::Record.new(part["uri"], part["cid"])
     end
   end
 end

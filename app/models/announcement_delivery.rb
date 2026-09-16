@@ -9,6 +9,7 @@
 #  channel         :string           not null
 #  delivered_at    :datetime
 #  error           :text
+#  posted_parts    :jsonb            not null
 #  status          :string           default("pending"), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -58,12 +59,39 @@ class AnnouncementDelivery < ApplicationRecord
     RETRYABLE_STATUSES.include?(status)
   end
 
+  # A part that landed, recorded the moment it does. The next attempt resumes
+  # from here rather than from the top -- none of the three platforms can
+  # unsend a post, so re-running a thread from the first part publishes it
+  # twice.
+  def record_part!(reference)
+    self.posted_parts = posted_parts + [reference.stringify_keys]
+    save!
+  end
+
+  def posted_count
+    posted_parts.size
+  end
+
+  def last_posted_part
+    posted_parts.last
+  end
+
+  def first_posted_part
+    posted_parts.first
+  end
+
   def succeed!(external_id: nil)
     update!(status: :succeeded, external_id:, error: nil, delivered_at: Time.current)
   end
 
   def fail!(message)
     update!(status: :failed, error: message.to_s.truncate(1_000), delivered_at: nil)
+  end
+
+  # A delivery that got some of its thread out and then stopped. Worth saying
+  # out loud in the admin, because a retry here continues rather than repeats.
+  def partial?
+    status_failed? && posted_parts.any?
   end
 
   def skip!(reason)

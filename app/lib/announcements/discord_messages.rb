@@ -22,24 +22,36 @@ module Announcements
       composed
     end
 
-    private def composed
-      first, *rest = pack(body)
-      return [] if first.blank?
+    private def platform
+      Platform::DISCORD
+    end
 
-      [[heading, first].compact_blank.join("\n"), *rest].tap do |messages|
-        messages[-1] = [messages.last, link].compact_blank.join("\n") if link.present?
-      end
+    # The heading rides on the first message and the link on the last, so each
+    # is packed against the room its own extras leave rather than a guess at
+    # what they might cost. A 255-character title is longer than any fixed
+    # reserve worth setting, and the message it headed would have gone over.
+    private def composed
+      chunks = pack(body, platform.limit - [overhead(heading), overhead(link)].max)
+      return [] if chunks.empty?
+
+      chunks[0] = [heading, chunks[0]].compact_blank.join("\n")
+      chunks[-1] = [chunks.last, link].compact_blank.join("\n")
+      chunks
+    end
+
+    private def overhead(extra)
+      return 0 if extra.blank?
+
+      platform.length(extra) + 1
     end
 
     # Paragraph by paragraph into messages that fit. A paragraph longer than
     # one message on its own is hard-split rather than dropped: losing a word
     # boundary is a cosmetic problem, losing the paragraph is not.
-    private def pack(text)
-      limit = Announcement::DISCORD_PART_LIMIT - RESERVED
-
+    private def pack(text, limit)
       text.to_s.split(/\n{2,}/).each_with_object([]) do |paragraph, messages|
-        paragraph.scan(/.{1,#{limit}}/m).each do |chunk|
-          if messages.last.present? && messages.last.length + chunk.length + 2 <= limit
+        split(paragraph, limit).each do |chunk|
+          if messages.last.present? && platform.length(messages.last) + platform.length(chunk) + 2 <= limit
             messages[-1] = "#{messages.last}\n\n#{chunk}"
           else
             messages << chunk
@@ -48,9 +60,11 @@ module Announcements
       end
     end
 
-    # Headroom for the heading on the first message and the link on the last,
-    # neither of which is in the packed body.
-    RESERVED = 200
+    private def split(paragraph, limit)
+      return [paragraph] if platform.length(paragraph) <= limit
+
+      paragraph.grapheme_clusters.each_slice(limit).map(&:join)
+    end
 
     private def heading
       "**#{@announcement.title}**"

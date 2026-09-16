@@ -272,7 +272,7 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
   test "POST /announcements refuses a social post past the platform limit" do
     sign_in @admin_user
 
-    assert_api_response :post, 400, body: {title: "x", body: "y", socialParts: ["z" * 301]} do
+    assert_api_response :post, 400, body: {title: "x", body: "y", postX: true, socialParts: ["z" * 281]} do
       assert_equal "validation_error.announcement.create", parsed_body["code"]
     end
   end

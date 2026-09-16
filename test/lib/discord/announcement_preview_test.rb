@@ -20,8 +20,8 @@ module Discord
       preview = Discord::AnnouncementPreview.new(announcement:)
 
       assert_equal I18n.t("announcements.preview.title", title: "Contracts"), preview.title
-      assert_includes preview.message, I18n.t("announcements.channels.in_app")
-      assert_includes preview.message, I18n.t("announcements.channels.bluesky")
+      assert_includes preview.send(:contents).join("\n"), I18n.t("announcements.channels.in_app")
+      assert_includes preview.send(:contents).join("\n"), I18n.t("announcements.channels.bluesky")
     end
 
     # The composed string, not the body it was built from: a truncated post is
@@ -30,17 +30,17 @@ module Discord
       announcement = build(:announcement, :social, :with_link, title: "T", body: "The whole story.")
       preview = Discord::AnnouncementPreview.new(announcement:)
 
-      bluesky = Announcements::SocialPosts.call(announcement, limit: ::Bsky::Post::MAX_LENGTH).sole
+      bluesky = Announcements::SocialPosts.call(announcement, platform: Announcements::Platform::BLUESKY).sole
 
-      assert_includes preview.message, bluesky.lines.first.strip
-      assert_includes preview.message, "#{bluesky.length}/#{::Bsky::Post::MAX_LENGTH}"
+      assert_includes preview.send(:contents).join("\n"), bluesky.lines.first.strip
+      assert_includes preview.send(:contents).join("\n"), "#{bluesky.length}/#{Announcements::Platform::BLUESKY.limit}"
     end
 
     # Where a thread breaks and what each post costs is the whole question a
     # dry run answers.
     test "quotes every post of a thread with its own position and count" do
       announcement = build(:announcement, :social, social_parts: ["First post", "Second post"])
-      message = Discord::AnnouncementPreview.new(announcement:).message
+      message = Discord::AnnouncementPreview.new(announcement:).send(:contents).join("\n")
 
       assert_includes message, "> First post"
       assert_includes message, "> Second post"
@@ -50,7 +50,7 @@ module Discord
 
     test "quotes every Discord message an announcement would post" do
       announcement = build(:announcement, :social, discord_parts: ["Message one", "Message two"])
-      message = Discord::AnnouncementPreview.new(announcement:).message
+      message = Discord::AnnouncementPreview.new(announcement:).send(:contents).join("\n")
 
       assert_includes message, "> Message one"
       assert_includes message, "> Message two"
@@ -62,19 +62,19 @@ module Discord
       link = "https://fleetyards.net/a/rather/long/path/to/somewhere"
       announcement = build(:announcement, post_x: true, social_parts: ["Read on #{link}"])
 
-      message = Discord::AnnouncementPreview.new(announcement:).message
+      message = Discord::AnnouncementPreview.new(announcement:).send(:contents).join("\n")
       expected = ::XCom::Post.weighted_length("Read on #{link}")
 
-      assert_includes message, "#{expected}/#{::XCom::Post::MAX_LENGTH}"
+      assert_includes message, "#{expected}/#{Announcements::Platform::X.limit}"
       refute_equal expected, "Read on #{link}".length
     end
 
     test "leaves out a channel the announcement did not ask for" do
       announcement = build(:announcement, post_bluesky: true)
-      message = Discord::AnnouncementPreview.new(announcement:).message
+      message = Discord::AnnouncementPreview.new(announcement:).send(:contents).join("\n")
 
-      assert_includes message, "/#{::Bsky::Post::MAX_LENGTH}"
-      refute_includes message, "/#{::XCom::Post::MAX_LENGTH}"
+      assert_includes message, "/#{Announcements::Platform::BLUESKY.limit}"
+      refute_includes message, "/#{Announcements::Platform::X.limit}"
     end
 
     test "is not configured without an admin webhook" do

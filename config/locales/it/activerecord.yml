@@ -219,9 +219,9 @@ it:
         announcement:
           attributes:
             discord_parts:
-              part_too_long: "il post %{position} ha %{length} caratteri, il limite è %{count}"
+              part_too_long: "il post %{position} su %{platform} ha %{length} caratteri, il limite è %{count}"
             social_parts:
-              part_too_long: "il post %{position} ha %{length} caratteri, il limite è %{count}"
+              part_too_long: "il post %{position} su %{platform} ha %{length} caratteri, il limite è %{count}"
             base:
               no_channels: "richiede almeno un canale"
         fleet_alliance:

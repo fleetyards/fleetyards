@@ -11,6 +11,7 @@ require "test_helper"
 #  channel         :string           not null
 #  delivered_at    :datetime
 #  error           :text
+#  posted_parts    :jsonb            not null
 #  status          :string           default("pending"), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

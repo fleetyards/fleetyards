@@ -27,58 +27,72 @@ module Discord
       I18n.t("announcements.preview.title", title: announcement.title)
     end
 
-    # One message, however many the real post would be: a dry run that spanned
-    # three messages in the admin channel would be harder to read than the
-    # thing it is previewing. The parent posts its composed messages one after
-    # another, so this puts the single preview back.
+    # Split across as many messages as the preview needs, never truncated. A
+    # dry run whose job is to show every part cannot be the one thing that
+    # drops the last of them -- and a long announcement's X posts sit at the
+    # bottom, which is exactly what a cut would take.
     private def contents
-      [content]
+      blocks = [
+        "**#{title}**",
+        I18n.t("announcements.preview.channels", channels: channel_list),
+        *discord_preview,
+        *social_preview(:bluesky),
+        *social_preview(:x)
+      ].compact_blank
+
+      pack(blocks)
     end
 
+    # Never mid-block, so a quoted post is not split down the middle. A single
+    # block past the cap is trimmed on its own -- it is a preview of copy the
+    # model already refused to save.
+    private def pack(blocks)
+      limit = ::Announcements::Platform::DISCORD.limit
+
+      blocks.each_with_object([]) do |block, messages|
+        block = ::Announcements::Platform::DISCORD.truncate(block, to: limit) if ::Announcements::Platform::DISCORD.length(block) > limit
+
+        if messages.last.present? && ::Announcements::Platform::DISCORD.length(messages.last) + ::Announcements::Platform::DISCORD.length(block) + 1 <= limit
+          messages[-1] = "#{messages.last}\n#{block}"
+        else
+          messages << block
+        end
+      end
+    end
+
+    # The parent builds this from the composed Discord messages; the preview
+    # quotes those itself, block by block.
     private def get_message
-      [
-        I18n.t("announcements.preview.channels", channels: channel_list),
-        "",
-        *discord_preview,
-        *social_preview(:bluesky, ::Bsky::Post::MAX_LENGTH),
-        *social_preview(:x, ::XCom::Post::MAX_LENGTH)
-      ].compact_blank.join("\n").truncate(::Announcement::DISCORD_PART_LIMIT - 200)
+      nil
     end
 
     private def discord_preview
       return [] unless announcement.post_discord?
 
-      messages.flat_map.with_index(1) do |message, position|
-        [
-          heading(
-            I18n.t("announcements.channels.discord"),
-            position, messages.size, message.length, ::Announcement::DISCORD_PART_LIMIT
-          ),
-          quote(message)
-        ]
-      end
+      preview_blocks(::Announcements::Platform::DISCORD, messages)
     end
 
-    private def social_preview(channel, limit)
+    # Counted the way each platform counts -- X weights CJK and emoji and
+    # discounts URLs, Bluesky counts graphemes -- because a number that does
+    # not match the platform's own is worse than no number.
+    private def social_preview(channel)
       return [] unless announcement.public_send(:"post_#{channel}")
 
-      posts = Announcements::SocialPosts.call(announcement, limit:)
+      platform = ::Announcements::Platform.for(channel)
 
-      posts.flat_map.with_index(1) do |post, position|
-        [
-          heading(
-            I18n.t("announcements.channels.#{channel}"),
-            position, posts.size, length_for(channel, post), limit
-          ),
-          quote(post)
-        ]
-      end
+      preview_blocks(platform, Announcements::SocialPosts.call(announcement, platform:))
     end
 
-    # X bills a URL at 23 characters whatever its real length, so the same
-    # string costs differently on the two platforms.
-    private def length_for(channel, post)
-      (channel == :x) ? ::XCom::Post.weighted_length(post) : post.length
+    private def preview_blocks(platform, parts)
+      parts.map.with_index(1) do |part, position|
+        [
+          heading(
+            I18n.t("announcements.channels.#{platform.key}"),
+            position, parts.size, platform.length(part), platform.limit
+          ),
+          quote(part)
+        ].join("\n")
+      end
     end
 
     private def heading(channel, position, total, count, limit)
