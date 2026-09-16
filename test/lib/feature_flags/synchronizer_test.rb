@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "support/flipper_audit_test_helpers"
 
 module FeatureFlags
   class SynchronizerTest < ActiveSupport::TestCase
@@ -28,6 +29,28 @@ module FeatureFlags
       def remove(name)
         @removed << name
         @existing.delete(name)
+      end
+    end
+
+    # Reads the attribution in force at the moment of each write, which is the
+    # only place it can be observed: the real subscriber is not listening to a
+    # fake Flipper.
+    class SourceRecordingFlipper < FakeFlipper
+      attr_reader :sources
+
+      def initialize(...)
+        super
+        @sources = []
+      end
+
+      def add(name)
+        @sources << Current.source
+        super
+      end
+
+      def remove(name)
+        @sources << Current.source
+        super
       end
     end
 
@@ -207,6 +230,41 @@ module FeatureFlags
       end
 
       with_prune_env("true") { assert Synchronizer.prune_default }
+    end
+
+    test "the deploy's own writes are credited to sync rather than to a console" do
+      flipper = SourceRecordingFlipper.new(["orphan"])
+
+      sync(registry: registry("brand_new"), flipper: flipper)
+
+      assert_equal [FeatureFlagChange::SOURCE_SYNC], flipper.sources.uniq
+    end
+
+    # `sync` also runs from a Rails console, where leaving the source set would
+    # credit whatever the operator does next to the deploy.
+    test "the source does not outlive the run" do
+      sync(registry: registry("brand_new"), flipper: FakeFlipper.new)
+
+      assert_nil Current.source
+    end
+
+    # The point of keeping feature_name a plain string: the flag is gone, and its
+    # history is the thing most worth having afterwards.
+    test "pruning a flag leaves its history behind" do
+      with_flag_auditing do
+        Flipper.add("orphan")
+        Flipper.enable("orphan")
+
+        sync(registry: registry("keeper"), flipper: Flipper)
+      end
+
+      operations = FeatureFlagChange.for_feature("orphan").order(:created_at).pluck(:operation, :source)
+
+      assert_equal [
+        ["add", FeatureFlagChange::SOURCE_CONSOLE],
+        ["enable", FeatureFlagChange::SOURCE_CONSOLE],
+        ["remove", FeatureFlagChange::SOURCE_SYNC]
+      ], operations
     end
 
     private def with_prune_env(value)

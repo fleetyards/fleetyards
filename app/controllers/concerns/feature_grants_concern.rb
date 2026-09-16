@@ -10,6 +10,23 @@
 module FeatureGrantsConcern
   extend ActiveSupport::Concern
 
+  included do
+    before_action :attribute_flag_changes_to_self_service
+  end
+
+  # The two controllers that read gates for a single actor are exactly the two
+  # that let that actor write them, so a flag change from either is a
+  # self-service toggle by definition.
+  #
+  # Set here rather than in Api::BaseController, where the admin side puts the
+  # equivalent: labelling every flag write that happens to pass through the
+  # public API as self-service would be a lie the first time one comes from
+  # somewhere else.
+  private def attribute_flag_changes_to_self_service
+    FeatureFlags::Current.source = FeatureFlagChange::SOURCE_SELF_SERVICE
+    FeatureFlags::Current.user = proc { current_resource_owner }
+  end
+
   # The actor's own gate — the one a self-service switch flips. Deliberately not
   # Flipper.enabled?, which a group gate or a percentage rollout satisfies too.
   def feature_actor_gate?(feature, actor)

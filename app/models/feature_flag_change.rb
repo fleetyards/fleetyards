@@ -82,8 +82,8 @@ class FeatureFlagChange < ApplicationRecord
       thing: thing.respond_to?(:value) ? thing.value.to_s : thing&.to_s,
       state_after: Flipper.feature(feature_name).state.to_s,
       source: FeatureFlags::Current.source || SOURCE_CONSOLE,
-      admin_user: FeatureFlags::Current.admin_user,
-      user: FeatureFlags::Current.user
+      admin_user: FeatureFlags::Current.resolved_admin_user,
+      user: FeatureFlags::Current.resolved_user
     )
   end
 

@@ -105,8 +105,14 @@ in the same place. Unset means `console`, which is the honest answer for a `bin/
 
 1. `Admin::Api::BaseController` sets `source: :admin` and the acting admin, beside
    `set_paper_trail_whodunnit`.
-2. `Api::BaseController` sets `source: :self_service` and `current_resource_owner`.
-3. `FeatureFlags::Synchronizer#apply!` wraps its adds and removes in `source: :sync`.
+2. `FeatureGrantsConcern` sets `source: :self_service` and the acting user — **not**
+   `Api::BaseController` as first planned. The concern is included by exactly the two
+   self-service controllers, and labelling every flag write that passes through the public
+   API as self-service would be a lie the first time one comes from somewhere else.
+3. Both actors are stored as procs and resolved at write time — see the discovery log.
+4. `FeatureFlags::Synchronizer#apply!` wraps its adds and removes in `Current.with(source:
+   :sync)`. A block rather than an assignment, because `sync` also runs from a console and
+   must not leave its source behind.
 
 ### Phase 3 — backfill
 
@@ -128,10 +134,9 @@ on backfills as though it had only ever been on once — and the migration comme
 
 ## Intent Verification
 
-- [ ] **Every write path logs.** An admin toggle, a self-service opt-in, a console
+- [x] **Every write path logs.** An admin toggle, a self-service opt-in, a console
       `Flipper.enable` and a `Synchronizer` prune each leave exactly one row, with the right
-      `source`. Phase 1 covers the console path and both gate shapes; the per-surface `source`
-      values arrive with Phase 2.
+      `source`.
 - [x] **`enabled?` logs nothing.** `feature_operation.flipper` fires on every
       `Flipper.enabled?` call on every request; the filter has to be the first line and the
       log must stay empty under read traffic.
@@ -140,7 +145,7 @@ on backfills as though it had only ever been on once — and the migration comme
       than no audit log.
 - [x] **`fully_on_since` survives an off/on cycle** — the case `flipper_gates` gets wrong
       today.
-- [ ] **A pruned flag keeps its history.** `Synchronizer` removing a flag leaves its rows in
+- [x] **A pruned flag keeps its history.** `Synchronizer` removing a flag leaves its rows in
       place.
 - [ ] **The admin page shows the date** and the API schema check passes.
 
@@ -187,10 +192,21 @@ on backfills as though it had only ever been on once — and the migration comme
     is published after the adapter call returns — so it is never the pre-write value. Checked
     in the gem rather than assumed, because a stale read here would silently record the wrong
     state forever.
+- **2026-09-16** Phase 2 built, 78 feature-controller tests and all 957 admin integration
+  tests green.
+  - **Eager attribution broke OAuth scope enforcement.** Setting
+    `FeatureFlags::Current.user = current_resource_owner` in a before_action turned three
+    `401`s into `200`s. `Api::BaseController#current_resource_owner` memoises into
+    `@current_user` — the same ivar Devise's `current_user` reads — so calling it before the
+    `doorkeeper_authorize!` callbacks makes `user_signed_in?` true, and the
+    `unless: :user_signed_in?` guard on those callbacks skips the scope check entirely. A
+    wrong-scope token then gets a 200. Both actors are now stored as procs and resolved in
+    `FeatureFlagChange.record!`, which is what `set_paper_trail_whodunnit` has always done in
+    these controllers — the proc there is load-bearing, not a style choice.
 
 ## Progress
 
 - [x] Phase 1 — the log
-- [ ] Phase 2 — attribution
+- [x] Phase 2 — attribution
 - [ ] Phase 3 — backfill
 - [ ] Phase 4 — reading it back

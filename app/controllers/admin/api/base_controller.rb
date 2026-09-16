@@ -18,6 +18,7 @@ module Admin
       before_action :set_locale
       before_action :authenticate_admin_user!
       before_action :set_paper_trail_whodunnit
+      before_action :attribute_flag_changes
 
       verify_authorized
 
@@ -37,6 +38,19 @@ module Admin
 
       private def set_paper_trail_whodunnit
         PaperTrail.request.whodunnit = proc { current_admin_user&.id }
+      end
+
+      # Who FeatureFlags::AuditSubscriber credits a flag change to. The
+      # subscriber sees only the flag and the gate, so the actor has to be put
+      # somewhere it can reach — the same problem, and the same answer, as the
+      # whodunnit above.
+      #
+      # Set for every admin request rather than only the features controller: a
+      # flag written from an admin session is an admin's doing wherever the
+      # write happens to live.
+      private def attribute_flag_changes
+        FeatureFlags::Current.source = FeatureFlagChange::SOURCE_ADMIN
+        FeatureFlags::Current.admin_user = proc { current_admin_user }
       end
 
       private def set_locale
