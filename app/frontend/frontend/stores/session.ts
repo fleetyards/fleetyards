@@ -15,6 +15,12 @@ interface SessionState {
   accessConfirmed?: string;
 }
 
+// Identifies the session a request was sent under, so a response can tell
+// whether the session that asked for it is still the one here. Deliberately not
+// store state: `$reset` would roll it back, and the session after a clear would
+// then carry the same number as the one before it.
+let sessionEpoch = 0;
+
 export const useSessionStore = defineStore("session", {
   state: (): SessionState => ({
     authenticated: false,
@@ -45,13 +51,15 @@ export const useSessionStore = defineStore("session", {
       });
     },
     async refreshUser() {
+      const epoch = sessionEpoch;
+
       await fetchMe().then((user) => {
-        // A response that arrives after the session was cleared -- a 401 on a
-        // parallel request, a sign out mid-flight -- must not put the user
-        // back. `authenticated` is what everything else reads, so a
-        // `currentUser` beside it saying otherwise is a state nothing recovers
-        // from.
-        if (!this.authenticated) {
+        // Whatever session this was sent under may be gone by now: a 401 on a
+        // parallel request cleared it, or somebody signed out and back in. The
+        // first leaves `currentUser` next to `authenticated: false`, a state
+        // nothing recovers from; the second would hand the account now signed
+        // in the profile, connections and access of the one before it.
+        if (epoch !== sessionEpoch) {
           return;
         }
 
@@ -59,10 +67,14 @@ export const useSessionStore = defineStore("session", {
       });
     },
     login(user: User) {
+      sessionEpoch += 1;
+
       this.authenticated = true;
       this.currentUser = user;
     },
     clearSession() {
+      sessionEpoch += 1;
+
       const hangarStore = useHangarStore();
       hangarStore.ships = [];
 

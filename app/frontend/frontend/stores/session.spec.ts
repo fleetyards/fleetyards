@@ -74,6 +74,33 @@ describe("session store", () => {
     expect(useSessionStore().currentUser?.username).toBe("marten");
   });
 
+  // Sign out and back in -- a shared machine, a second account -- while a
+  // refresh for the first account is still in flight. `authenticated` is true
+  // again by the time it answers, so the boolean alone cannot tell the two
+  // sessions apart: it would hand the account now signed in the profile,
+  // connections and access of the one before it.
+  it("does not hand a new session the account before it", async () => {
+    const store = useSessionStore();
+    store.login({
+      id: "a",
+      username: "marten",
+    } as Awaited<ReturnType<typeof me>>);
+
+    vi.mocked(me).mockImplementation(async () => {
+      store.clearSession();
+      store.login({
+        id: "b",
+        username: "gustav",
+      } as Awaited<ReturnType<typeof me>>);
+
+      return { id: "a", username: "marten" } as Awaited<ReturnType<typeof me>>;
+    });
+
+    await store.refreshUser();
+
+    expect(store.currentUser?.username).toBe("gustav");
+  });
+
   // A 401 on a parallel request clears the session while this one is in flight.
   it("does not put the user back after the session was cleared", async () => {
     const store = useSessionStore();
