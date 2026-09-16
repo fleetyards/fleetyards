@@ -148,7 +148,7 @@ const finishCreate = () => {
 const headlineFor = (item: T) => {
   const name = (item as { name?: unknown }).name;
 
-  return typeof name === "string" && name.length ? name : undefined;
+  return typeof name === "string" && name.trim().length ? name : undefined;
 };
 
 const slots = useSlots();

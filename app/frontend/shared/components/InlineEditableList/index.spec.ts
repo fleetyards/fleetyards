@@ -113,8 +113,11 @@ describe("InlineEditableList", () => {
 
     // A record naming itself nothing readable gets no empty line above the
     // fields - a list of those passes a headline slot instead.
-    it("stays away where the record has no name", async () => {
-      const wrapper = await mount({ items: [{ id: "dock-1" }] });
+    it.each([
+      ["no name at all", undefined],
+      ["a name of spaces", "   "],
+    ])("stays away where the record has %s", async (_label, name) => {
+      const wrapper = await mount({ items: [{ id: "dock-1", name }] });
 
       await wrapper.find('[data-test="start-edit"]').trigger("click");
 
