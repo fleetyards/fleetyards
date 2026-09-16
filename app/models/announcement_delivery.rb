@@ -48,7 +48,15 @@ class AnnouncementDelivery < ApplicationRecord
     failed: "failed"
   }, prefix: true
 
+  # What a retry is offered on. A succeeded delivery has nothing to repeat and
+  # a pending one already has a job doing the work.
+  RETRYABLE_STATUSES = %w[failed skipped].freeze
+
   validates :channel, uniqueness: {scope: :announcement_id}
+
+  def retryable?
+    RETRYABLE_STATUSES.include?(status)
+  end
 
   def succeed!(external_id: nil)
     update!(status: :succeeded, external_id:, error: nil, delivered_at: Time.current)

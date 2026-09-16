@@ -70,17 +70,25 @@ module Admin
           delivery = @announcement.deliveries.find_by(channel: params[:channel])
 
           return not_found(I18n.t("messages.record_not_found.announcement_delivery")) if delivery.blank?
-          return render json: ValidationError.new("announcement.delivery_not_retryable"), status: :bad_request unless delivery.status_failed? || delivery.status_skipped?
 
-          # Marked pending before the job is queued, not after: a fast worker
-          # would otherwise write `succeeded` and have it overwritten here.
-          delivery.update!(status: :pending, error: nil)
+          # Claimed in one statement rather than checked and then written.
+          # Posting is not idempotent, so two clicks that each passed a
+          # separate status check would put the same announcement on X twice.
+          # It also has to be `pending` before the job is queued, or a fast
+          # worker writes `succeeded` and this overwrites it.
+          claimed = AnnouncementDelivery
+            .where(id: delivery.id, status: AnnouncementDelivery::RETRYABLE_STATUSES)
+            .update_all(status: "pending", error: nil, updated_at: Time.current)
+
+          return render json: ValidationError.new("announcement.delivery_not_retryable"), status: :bad_request if claimed.zero?
 
           if delivery.channel_in_app?
             ::Announcements::FanOutJob.perform_async(@announcement.id)
           else
             ::Announcements::PostSocialJob.perform_async(@announcement.id, delivery.channel)
           end
+
+          @announcement.reload
 
           render :show
         end

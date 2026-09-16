@@ -7,6 +7,7 @@
 #  id               :uuid             not null, primary key
 #  body             :text             not null
 #  icon             :string
+#  last_tested_at   :datetime
 #  link             :string
 #  notify_users     :boolean          default(TRUE), not null
 #  post_bluesky     :boolean          default(FALSE), not null
@@ -56,6 +57,11 @@ class Announcement < ApplicationRecord
 
   DEFAULT_ICON = "fa-duotone fa-bullhorn"
 
+  # Sendable once, and again after a failure. A published announcement is not
+  # re-sendable -- readers already have it -- and one that is mid-flight has a
+  # job already doing the work.
+  PUBLISHABLE_STATUSES = %w[draft scheduled failed].freeze
+
   validates :title, presence: true, length: {maximum: 255}
   validates :body, presence: true
   validates :social_body, length: {maximum: 280}, allow_blank: true
@@ -103,11 +109,8 @@ class Announcement < ApplicationRecord
     (notify_users? ? [AnnouncementDelivery::IN_APP_CHANNEL] : []) + social_channels
   end
 
-  # Publishable once, and again after a failure. A published announcement is
-  # not re-sendable -- readers already have it, and a second fan-out would
-  # write every one of them a duplicate row.
   def publishable?
-    status_draft? || status_scheduled? || status_failed?
+    PUBLISHABLE_STATUSES.include?(status)
   end
 
   def delivery_for(channel)

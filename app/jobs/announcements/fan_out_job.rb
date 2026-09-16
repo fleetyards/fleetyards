@@ -11,21 +11,15 @@ module Announcements
       announcement = Announcement.find_by(id: announcement_id)
       return if announcement.blank?
 
-      count = 0
+      # Counted and written before a single batch is queued, because that is
+      # what a batch compares its own progress against when it decides whether
+      # it was the last one. Written afterwards it would be nil for the batches
+      # that got there first.
+      announcement.update!(recipients_count: User.confirmed.count)
 
       User.confirmed.in_batches(of: Announcement::FAN_OUT_BATCH_SIZE) do |batch|
-        user_ids = batch.pluck(:id)
-        count += user_ids.size
-
-        Announcements::NotifyBatchJob.perform_async(announcement.id, user_ids)
+        Announcements::NotifyBatchJob.perform_async(announcement.id, batch.pluck(:id))
       end
-
-      announcement.update!(recipients_count: count)
-
-      # Succeeded once every batch is queued. The batches report their own
-      # failures through Sidekiq; a delivery row that waited for all 58 of them
-      # would sit pending for as long as the slowest one.
-      announcement.delivery_for(AnnouncementDelivery::IN_APP_CHANNEL).succeed!
     end
   end
 end

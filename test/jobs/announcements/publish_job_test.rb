@@ -39,6 +39,17 @@ module Announcements
       Announcements::PublishJob.new.perform(announcement.id)
     end
 
+    # The admin button and the five-minute scheduler can reach the same
+    # announcement, and dispatching twice means two posts on X.
+    test "#perform only dispatches for the run that claims the announcement" do
+      announcement = create(:announcement, :social)
+
+      Announcements::PostSocialJob.stubs(:perform_async)
+      Announcements::FanOutJob.expects(:perform_async).once
+
+      2.times { Announcements::PublishJob.new.perform(announcement.id) }
+    end
+
     test "#perform ignores a missing announcement" do
       assert_nothing_raised { Announcements::PublishJob.new.perform(SecureRandom.uuid) }
     end

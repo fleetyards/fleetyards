@@ -400,6 +400,19 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: announcement.id, channel: "in_app"}
   end
 
+  test "PUT /announcements/:id/deliveries/:channel/retry claims the delivery so a second click is refused" do
+    announcement = create(:announcement, :social, :published)
+    delivery = create(:announcement_delivery, announcement:, channel: "x", status: "failed")
+    sign_in @admin_user
+
+    Announcements::PostSocialJob.expects(:perform_async).once
+
+    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "x"}
+    assert_api_response :put, 400, path_params: {id: announcement.id, channel: "x"}
+
+    assert_equal "pending", delivery.reload.status
+  end
+
   test "PUT /announcements/:id/deliveries/:channel/retry refuses a delivery that succeeded" do
     announcement = create(:announcement, :social, :published)
     create(:announcement_delivery, announcement:, channel: "x", status: "succeeded")

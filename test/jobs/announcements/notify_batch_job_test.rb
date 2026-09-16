@@ -69,6 +69,29 @@ module Announcements
       Announcements::NotifyBatchJob.new.perform(@announcement.id, [opted_in.id, opted_out.id])
     end
 
+    # A batch job retries, so the second run has to be a no-op: no second row,
+    # and -- the part that would actually be noticed -- no second mail.
+    test "#perform is idempotent across a retry" do
+      user = create(:user, last_active_at: 1.minute.ago)
+
+      UserNotificationsChannel.expects(:broadcast_to).once
+
+      2.times { Announcements::NotifyBatchJob.new.perform(@announcement.id, [user.id]) }
+
+      assert_equal 1, Notification.where(user:, notification_type: "announcement").count
+    end
+
+    test "#perform marks the in-app delivery succeeded once every reader has a row" do
+      users = create_list(:user, 2)
+      @announcement.update!(recipients_count: 2)
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [users.first.id])
+      refute @announcement.deliveries.exists?(channel: "in_app", status: "succeeded")
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [users.second.id])
+      assert @announcement.deliveries.exists?(channel: "in_app", status: "succeeded")
+    end
+
     test "#perform ignores an empty batch and a missing announcement" do
       assert_nothing_raised do
         Announcements::NotifyBatchJob.new.perform(@announcement.id, [])

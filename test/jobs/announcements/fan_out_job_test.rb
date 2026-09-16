@@ -19,7 +19,18 @@ module Announcements
 
       assert_equal User.confirmed.count, batched.size
       assert_equal User.confirmed.count, announcement.reload.recipients_count
-      assert announcement.delivery_for(:in_app).reload.status_succeeded?
+    end
+
+    # The batches decide that, once every reader has a row. Marking it here
+    # would call the fan-out finished the moment it was queued.
+    test "#perform does not mark the in-app delivery succeeded" do
+      create(:user)
+      announcement = create(:announcement)
+      Announcements::NotifyBatchJob.stubs(:perform_async)
+
+      Announcements::FanOutJob.new.perform(announcement.id)
+
+      refute announcement.deliveries.exists?(status: "succeeded")
     end
 
     test "#perform ignores a missing announcement" do

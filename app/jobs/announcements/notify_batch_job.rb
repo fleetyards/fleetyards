@@ -11,6 +11,9 @@ module Announcements
     # tab that is still open.
     BROADCAST_WINDOW = 15.minutes
 
+    # The partial unique index that makes a retry a no-op.
+    RECIPIENT_INDEX = :index_notifications_on_announcement_recipient
+
     def perform(announcement_id, user_ids)
       announcement = Announcement.find_by(id: announcement_id)
       return if announcement.blank?
@@ -42,9 +45,14 @@ module Announcements
         }
       end
 
-      notifications = Notification.insert_all!(rows, returning: %w[id user_id])
+      # `unique_by` makes this ON CONFLICT DO NOTHING against the announcement
+      # recipient index, and `returning` then names only the rows this run
+      # actually wrote. A retry after a partial failure therefore re-inserts
+      # nothing and, just as importantly, re-delivers nothing.
+      notifications = Notification.insert_all(rows, unique_by: RECIPIENT_INDEX, returning: %w[id user_id])
 
       deliver(notifications, preferences)
+      settle(announcement)
     end
 
     # Existing accounts have no row for a type added after they signed up --
@@ -59,6 +67,28 @@ module Announcements
         .to_h { |user_id, app, mail| [user_id, {app:, mail:}] }
 
       user_ids.index_with { |user_id| stored[user_id] || {app: defaults[:app], mail: defaults[:mail]} }
+    end
+
+    # The in-app delivery is done when every reader has a row, which each batch
+    # checks for itself rather than a counter tracking it. A count is the same
+    # answer however many times a batch runs; a counter a retried batch bumps
+    # twice would call the fan-out finished while a thousand readers still had
+    # nothing.
+    private def settle(announcement)
+      expected = announcement.recipients_count
+      return if expected.blank?
+
+      written = Notification.where(record_type: "Announcement", record_id: announcement.id).count
+      return if written < expected
+
+      delivery = announcement.delivery_for(AnnouncementDelivery::IN_APP_CHANNEL)
+      return if delivery.status_succeeded?
+
+      delivery.succeed!
+    rescue ActiveRecord::RecordNotUnique
+      # Two batches finished at the same moment and both went to write the row.
+      # The other one got there first, which is the answer this wanted anyway.
+      nil
     end
 
     private def deliver(notifications, preferences)

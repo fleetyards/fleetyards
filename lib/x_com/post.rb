@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "faraday"
-require "faraday/retry"
 require "openssl"
 require "base64"
 require "securerandom"
@@ -111,11 +110,19 @@ module XCom
       CGI.escape(value.to_s).gsub("+", "%20").gsub("%7E", "~")
     end
 
+    # Seconds. An unbounded request holds a Sidekiq worker for as long as X
+    # feels like taking.
+    TIMEOUT = 10
+    OPEN_TIMEOUT = 5
+
+    # No retry middleware, deliberately. Creating a post is not idempotent, and
+    # the OAuth header is signed once before the request is handed over -- so a
+    # replay carries a spent nonce and, worse, can publish a second copy of an
+    # announcement whose first attempt landed behind an ambiguous 5xx. A failed
+    # delivery is retried from the admin, where a human can see whether the
+    # first one arrived.
     private def connection
-      @connection ||= Faraday.new do |c|
-        c.request :retry, max: 2, interval: 1, backoff_factor: 2,
-          retry_statuses: [429, 500, 502, 503, 504],
-          methods: %i[post]
+      @connection ||= Faraday.new(request: {timeout: TIMEOUT, open_timeout: OPEN_TIMEOUT}) do |c|
         c.headers["User-Agent"] = "Fleetyards (https://fleetyards.net, 1.0)"
       end
     end
