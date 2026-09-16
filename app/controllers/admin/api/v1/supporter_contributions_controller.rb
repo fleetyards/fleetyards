@@ -109,11 +109,24 @@ module Admin
         # present in the params: the form submits it on every save, so its
         # presence says nothing about whether anybody touched it.
         private def resolve_supporter
-          if resolved_inputs_changed? && !@supporter_contribution.saved_change_to_user_id?
-            @supporter_contribution.update!(user_id: nil)
-          end
+          return if unlinked_by_admin?
+
+          @supporter_contribution.update!(user_id: nil) if corrected_without_a_new_account?
 
           ::Supporters::Linker.call(@supporter_contribution)
+        end
+
+        # An admin who emptied the account select means it, so the row stays
+        # unlinked however well its address or key still matches. Checked before
+        # the correction below, which clears `user_id` itself and would
+        # otherwise be indistinguishable from this.
+        private def unlinked_by_admin?
+          @supporter_contribution.saved_change_to_user_id? &&
+            @supporter_contribution.user_id.nil?
+        end
+
+        private def corrected_without_a_new_account?
+          resolved_inputs_changed? && !@supporter_contribution.saved_change_to_user_id?
         end
 
         private def resolved_inputs_changed?

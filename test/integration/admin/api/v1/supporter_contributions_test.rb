@@ -499,6 +499,61 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  # The address still matches, and the linker would happily resolve it again --
+  # but an admin who emptied the account select is saying the row does not
+  # belong to that account.
+  test "PUT /supporter-contributions/:id keeps a contribution an admin unlinked" do
+    donor = create(:user, email: "donor@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "donor@example.test", user: donor)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "donor@example.test",
+             userId: nil} do
+      refute parsed_body.key?("userId")
+      refute parsed_body.key?("linkedVia")
+      assert_nil contribution.reload.user_id
+    end
+  end
+
+  test "PUT /supporter-contributions/:id keeps a contribution unlinked against a matching token" do
+    donor = create(:user, confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, claim_key: donor.ensure_claim_key!, user: donor)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             claimKey: donor.claim_key,
+             userId: nil} do
+      refute parsed_body.key?("userId")
+      assert_nil contribution.reload.user_id
+    end
+  end
+
+  # Clearing the account and correcting the address in one request: the explicit
+  # choice wins, the same way it does when a user is named.
+  test "PUT /supporter-contributions/:id does not re-resolve a correction made while unlinking" do
+    wrong = create(:user, email: "wrong@example.test", confirmed_at: Time.current)
+    create(:user, email: "right@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "wrong@example.test", user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "right@example.test",
+             userId: nil} do
+      refute parsed_body.key?("userId")
+      assert_nil contribution.reload.user_id
+    end
+  end
+
   test "PUT /supporter-contributions/:id returns 404 for missing id" do
     sign_in @user
 
