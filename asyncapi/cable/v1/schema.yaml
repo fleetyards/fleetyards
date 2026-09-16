@@ -3110,6 +3110,7 @@ components:
       - fleet_contract_crew_requested
       - fleet_contract_crew_answered
       - fleet_contract_fulfilled
+      - announcement
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -3148,6 +3149,7 @@ components:
       - FLEET_CONTRACT_CREW_REQUESTED
       - FLEET_CONTRACT_CREW_ANSWERED
       - FLEET_CONTRACT_FULFILLED
+      - ANNOUNCEMENT
     PayoutLedger:
       type: object
       properties:

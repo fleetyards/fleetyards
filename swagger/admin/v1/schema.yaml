@@ -9432,19 +9432,15 @@ components:
           type: string
         socialBody:
           type: string
-          nullable: true
         link:
           type: string
-          nullable: true
         icon:
           type: string
-          nullable: true
         status:
           "$ref": "#/components/schemas/AnnouncementInputStatusEnum"
         publishAt:
           type: string
           format: date-time
-          nullable: true
         notifyUsers:
           type: boolean
         postDiscord:
