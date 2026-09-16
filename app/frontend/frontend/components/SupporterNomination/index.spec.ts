@@ -128,6 +128,26 @@ describe("SupporterNomination", () => {
     });
   });
 
+  // Without the guard the second call races the first, and the server applies
+  // whichever arrives last with no version check.
+  it("ignores a second selection while one is in flight", async () => {
+    // Never settles, so the first call is still in flight for the second.
+    nominate.mockImplementation(() => new Promise(() => {}));
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+    const select = wrapper.findComponent({ name: "BaseSelect" });
+
+    await select.vm.$emit("update:modelValue", "f-1");
+    await select.vm.$emit("update:modelValue", "");
+    await flushPromises();
+
+    expect(nominate).toHaveBeenCalledTimes(1);
+    expect(nominate).toHaveBeenCalledWith({
+      id: "c-1",
+      data: { fleetId: "f-1" },
+    });
+  });
+
   it("reports a failure instead of claiming success", async () => {
     nominate.mockRejectedValue(new Error("nope"));
 

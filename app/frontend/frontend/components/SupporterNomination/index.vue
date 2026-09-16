@@ -67,10 +67,22 @@ const formatAmount = (contribution: MySupporterContribution) =>
     currency: contribution.currency,
   }).format(contribution.amountCents / 100);
 
+// Two selections on one row can otherwise be in flight together, and the
+// server applies each as it arrives with no version check -- so an earlier
+// choice completing last would win. Per contribution rather than globally:
+// picking for one contribution must not freeze the others.
+const pending = ref<string[]>([]);
+
+const isPending = (id: string) => pending.value.includes(id);
+
 const onSelect = async (
   contribution: MySupporterContribution,
   fleetId: string | null,
 ) => {
+  if (isPending(contribution.id)) return;
+
+  pending.value = [...pending.value, contribution.id];
+
   try {
     await nominate({ id: contribution.id, data: { fleetId } });
 
@@ -85,6 +97,8 @@ const onSelect = async (
     displayAlert({
       text: t("messages.supporterNomination.update.failure"),
     });
+  } finally {
+    pending.value = pending.value.filter((id) => id !== contribution.id);
   }
 };
 </script>
@@ -119,6 +133,7 @@ const onSelect = async (
         :model-value="contribution.fleet?.id ?? null"
         :options="fleetOptions"
         :label="t('labels.account.supporterNomination.fleet')"
+        :disabled="isPending(contribution.id)"
         nullable
         no-label
         @update:model-value="

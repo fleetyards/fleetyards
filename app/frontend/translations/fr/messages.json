@@ -165,8 +165,8 @@
       },
       "supporterNomination": {
         "update": {
-          "success": "Flotte soutenue mise à jour.",
-          "failure": "La flotte soutenue n'a pas pu être mise à jour."
+          "success": "Sélection de la flotte mise à jour.",
+          "failure": "La sélection de la flotte n'a pas pu être mise à jour."
         }
       },
       "supporterContribution": {

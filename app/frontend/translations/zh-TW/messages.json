@@ -165,8 +165,8 @@
       },
       "supporterNomination": {
         "update": {
-          "success": "受支援的艦隊已更新。",
-          "failure": "無法更新受支援的艦隊。"
+          "success": "艦隊選擇已更新。",
+          "failure": "無法更新艦隊選擇。"
         }
       },
       "supporterContribution": {

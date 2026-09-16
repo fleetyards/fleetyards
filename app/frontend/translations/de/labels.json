@@ -1470,7 +1470,7 @@
         },
         "supporterNomination": {
           "label": "Flottenunterstützung",
-          "hint": "Wähle die Flotte, die eine Spende unterstützt. Ihre Mitglieder erhalten die Flotten-Funktionen, solange die Spende aktiv ist.",
+          "hint": "Wähle die Flotte, die deine Spende unterstützen soll. Deren Mitglieder erhalten die Flotten-Funktionen, solange die Spende aktiv ist.",
           "fleet": "Unterstützte Flotte"
         },
         "supporterClaimKey": {

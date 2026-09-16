@@ -175,8 +175,8 @@
       },
       "supporterNomination": {
         "update": {
-          "success": "Supported fleet updated.",
-          "failure": "Could not update the supported fleet."
+          "success": "Fleet selection updated.",
+          "failure": "Could not update the fleet selection."
         }
       },
       "supporterContribution": {

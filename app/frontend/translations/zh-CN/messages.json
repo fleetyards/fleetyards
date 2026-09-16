@@ -165,8 +165,8 @@
       },
       "supporterNomination": {
         "update": {
-          "success": "受支持的舰队已更新。",
-          "failure": "无法更新受支持的舰队。"
+          "success": "舰队选择已更新。",
+          "failure": "无法更新舰队选择。"
         }
       },
       "supporterContribution": {
