@@ -20,10 +20,14 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 import { type ModelExtendedCarriedByItem } from "@/services/fyApi";
 
 type Props = {
-  carriedBy: ModelExtendedCarriedByItem[];
+  // Absent rather than empty on a response that predates the field, so this
+  // defaults instead of trusting the schema's `required`.
+  carriedBy?: ModelExtendedCarriedByItem[];
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  carriedBy: () => [],
+});
 
 const { t } = useI18n();
 
