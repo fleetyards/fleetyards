@@ -1,10 +1,13 @@
 import { useComlink } from "@/shared/composables/useComlink";
 import type { AppModalOptions } from "@/shared/components/AppModal/types";
+import { MODAL_QUERY_PARAM } from "@/shared/utils/ModalQuery";
 
 // `?modal=<name>` is what opens a modal that belongs to no record: a login
 // comes back carrying one so the visitor lands where they left off, a link can
-// carry one on its own, and a button that opens one writes it.
-export const MODAL_QUERY_PARAM = "modal";
+// carry one on its own, and a button that opens one writes it. The name itself
+// is shared with the router, which leaves the scroll position alone when a
+// navigation does nothing but open or close one.
+export { MODAL_QUERY_PARAM };
 
 // The modals a URL is allowed to open. A modal belongs here when it needs
 // nothing but itself -- most of the app's modals are about a record and are

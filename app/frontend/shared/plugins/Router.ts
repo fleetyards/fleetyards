@@ -8,6 +8,7 @@ import {
 } from "vue-router";
 import { type LocationQuery } from "vue-router";
 import qs from "qs";
+import { sameApartFromModalQuery } from "@/shared/utils/ModalQuery";
 
 export type FyLocartionQueryValue = Record<
   string,
@@ -49,9 +50,15 @@ export const setupRouter = (options: FyRouterOptions) => {
     linkActiveClass: "active",
     linkExactActiveClass: "active-exact",
 
-    scrollBehavior: (to, _from, savedPosition) =>
+    scrollBehavior: (to, from, savedPosition) =>
       new Promise((resolve) => {
-        if (to.hash) {
+        // Opening or closing a query modal writes the address of the page the
+        // visitor is already on. Nothing under the modal moves, so neither
+        // does the scroll position -- checked before the hash, because that
+        // page may well have one and it was already scrolled to.
+        if (sameApartFromModalQuery(to, from)) {
+          resolve(false);
+        } else if (to.hash) {
           resolve({ el: to.hash, behavior: "smooth" });
         } else if (savedPosition) {
           resolve(savedPosition);
