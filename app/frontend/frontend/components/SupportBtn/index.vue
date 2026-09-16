@@ -14,7 +14,7 @@ import {
 import { useModalQuery } from "@/frontend/composables/useModalQuery";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   size?: `${BtnSizesEnum}`;
   variant?: `${BtnVariantsEnum}`;
   /**
@@ -23,7 +23,7 @@ type Props = {
    * own can be linked to and shared.
    */
   page?: boolean;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   size: undefined,
