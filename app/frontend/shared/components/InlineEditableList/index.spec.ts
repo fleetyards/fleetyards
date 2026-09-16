@@ -1,8 +1,14 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 
-type Item = { id: string; name: string };
+// The mobile branch hides the row's buttons behind a dropdown, which is
+// teleported out of the wrapper and leaves nothing to click.
+vi.mock("@/shared/composables/useMobile", () => ({
+  useMobile: () => false,
+}));
+
+type Item = { id: string; name?: string };
 
 // InlineEditableList is a generic SFC, which is not a plain constructor type;
 // this names the props and slots the tests use without reaching for `any`.
@@ -15,14 +21,17 @@ const ListComponent = Component as unknown as new (...args: unknown[]) => {
   $slots: Record<string, unknown>;
 };
 
-const mount = (props: {
-  items: Item[];
-  loading?: boolean;
-  skeletonRows?: number;
-}) =>
+const mount = (
+  props: {
+    items: Item[];
+    loading?: boolean;
+    skeletonRows?: number;
+  },
+  slots: Record<string, string> = {},
+) =>
   mountWithDefaults<typeof ListComponent>(ListComponent, {
     props,
-    slots: { display: "<span>dock</span>" },
+    slots: { display: "<span>dock</span>", ...slots },
   });
 
 const skeletonRows = (wrapper: Awaited<ReturnType<typeof mount>>) =>
@@ -51,5 +60,52 @@ describe("InlineEditableList", () => {
 
     expect(skeletonRows(wrapper)).toHaveLength(0);
     expect(wrapper.findAll('[data-test="list-group-item"]')).toHaveLength(1);
+  });
+
+  describe("the headline of an open row", () => {
+    // The fields replace the row's display, so without it there is nothing on
+    // screen saying which record they belong to.
+    it("names the record from its own name", async () => {
+      const wrapper = await mount({
+        items: [{ id: "dock-1", name: "Forward Bay" }],
+      });
+
+      await wrapper.find('[data-test="start-edit"]').trigger("click");
+
+      expect(wrapper.find('[data-test="edit-headline"]').text()).toBe(
+        "Forward Bay",
+      );
+    });
+
+    it("is closed again with the row", async () => {
+      const wrapper = await mount({
+        items: [{ id: "dock-1", name: "Forward Bay" }],
+      });
+
+      expect(wrapper.find('[data-test="edit-headline"]').exists()).toBe(false);
+    });
+
+    it("takes the slot over the item's own name", async () => {
+      const wrapper = await mount(
+        { items: [{ id: "dock-1", name: "Forward Bay" }] },
+        { headline: "<span>Hold #2</span>" },
+      );
+
+      await wrapper.find('[data-test="start-edit"]').trigger("click");
+
+      expect(wrapper.find('[data-test="edit-headline"]').text()).toBe(
+        "Hold #2",
+      );
+    });
+
+    // A record naming itself nothing readable gets no empty line above the
+    // fields - a list of those passes a headline slot instead.
+    it("stays away where the record has no name", async () => {
+      const wrapper = await mount({ items: [{ id: "dock-1" }] });
+
+      await wrapper.find('[data-test="start-edit"]').trigger("click");
+
+      expect(wrapper.find('[data-test="edit-headline"]').exists()).toBe(false);
+    });
   });
 });

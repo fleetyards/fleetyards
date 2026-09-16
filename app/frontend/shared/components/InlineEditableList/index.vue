@@ -140,6 +140,16 @@ const finishCreate = () => {
   creating.value = false;
 };
 
+// An open row hands its whole display over to the fields, and a column of
+// offsets or prices says nothing about which record they belong to. A list
+// whose item carries its name somewhere other than `name` - or carries one
+// nothing is gained by printing - passes a `headline` slot instead.
+const headlineFor = (item: T) => {
+  const name = (item as { name?: unknown }).name;
+
+  return typeof name === "string" && name.length ? name : undefined;
+};
+
 defineExpose({
   editingId,
   creating,
@@ -233,8 +243,17 @@ defineExpose({
         class="inline-editable-list__checkbox"
       />
       <template v-if="editingId === item.id">
-        <div class="inline-editable-list__form">
-          <slot name="edit" :item="item" />
+        <div class="inline-editable-list__edit">
+          <div
+            v-if="$slots.headline || headlineFor(item)"
+            class="inline-editable-list__headline"
+            data-test="edit-headline"
+          >
+            <slot name="headline" :item="item">{{ headlineFor(item) }}</slot>
+          </div>
+          <div class="inline-editable-list__form">
+            <slot name="edit" :item="item" />
+          </div>
         </div>
       </template>
       <template v-else>
@@ -300,6 +319,22 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+.inline-editable-list__edit {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.inline-editable-list__headline {
+  color: var(--color-lifted, #eee);
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .inline-editable-list__form {
   display: flex;
   gap: 8px;
