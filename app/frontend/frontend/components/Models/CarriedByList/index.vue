@@ -21,8 +21,10 @@ import { type ModelExtendedCarriedByItem } from "@/services/fyApi";
 
 type Props = {
   // Absent rather than empty on a response that predates the field, so this
-  // defaults instead of trusting the schema's `required`.
-  carriedBy?: ModelExtendedCarriedByItem[];
+  // defaults instead of trusting the schema's `required`. The default covers
+  // an omitted key; the template's `?.` covers an explicit null, which no
+  // default substitutes for.
+  carriedBy?: ModelExtendedCarriedByItem[] | null;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -51,7 +53,7 @@ const storeImage = (item: ModelExtendedCarriedByItem) => {
 </script>
 
 <template>
-  <template v-if="carriedBy.length">
+  <template v-if="carriedBy?.length">
     <hr />
     <div id="carried-by" class="row">
       <div class="col-12">
