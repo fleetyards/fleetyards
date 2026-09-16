@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -141,6 +141,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
     t.string "name", limit: 255
     t.string "slug", limit: 255
     t.datetime "updated_at", precision: nil
+  end
+
+  create_table "announcement_deliveries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "announcement_id", null: false
+    t.integer "attempts", default: 0, null: false
+    t.string "channel", null: false
+    t.datetime "created_at", null: false
+    t.datetime "delivered_at"
+    t.text "error"
+    t.string "external_id"
+    t.string "status", default: "pending", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_id", "channel"], name: "index_announcement_deliveries_on_announcement_id_and_channel", unique: true
+  end
+
+  create_table "announcements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_user_id"
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.string "icon"
+    t.string "link"
+    t.boolean "notify_users", default: true, null: false
+    t.boolean "post_bluesky", default: false, null: false
+    t.boolean "post_discord", default: false, null: false
+    t.boolean "post_x", default: false, null: false
+    t.datetime "publish_at"
+    t.datetime "published_at"
+    t.integer "recipients_count"
+    t.text "social_body"
+    t.string "status", default: "draft", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publish_at"], name: "index_announcements_on_publish_at", where: "((status)::text = 'scheduled'::text)"
+    t.index ["published_at"], name: "index_announcements_on_published_at", order: :desc
+    t.index ["status"], name: "index_announcements_on_status"
   end
 
   create_table "cargo_hold_container_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2052,6 +2087,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_090000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_notifications", "admin_users", on_delete: :cascade
+  add_foreign_key "announcement_deliveries", "announcements", on_delete: :cascade
+  add_foreign_key "announcements", "admin_users"
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade

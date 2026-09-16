@@ -216,6 +216,10 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        announcement:
+          attributes:
+            base:
+              no_channels: "至少需要一个渠道"
         fleet_alliance:
           attributes:
             base:

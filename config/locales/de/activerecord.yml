@@ -216,6 +216,10 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        announcement:
+          attributes:
+            base:
+              no_channels: "braucht mindestens einen Kanal"
         fleet_alliance:
           attributes:
             base:

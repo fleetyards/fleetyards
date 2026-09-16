@@ -1,0 +1,89 @@
+# frozen_string_literal: true
+
+require "test_helper"
+
+class AnnouncementTest < ActiveSupport::TestCase
+  test "requires a title and a body" do
+    refute Announcement.new(body: "x").valid?
+    refute Announcement.new(title: "x").valid?
+    assert Announcement.new(title: "x", body: "y").valid?
+  end
+
+  test "requires at least one channel" do
+    announcement = Announcement.new(title: "x", body: "y", notify_users: false)
+
+    refute announcement.valid?
+    assert_includes announcement.errors.attribute_names, :base
+
+    announcement.post_bluesky = true
+    assert announcement.valid?
+  end
+
+  test "a scheduled announcement needs a publish_at" do
+    announcement = build(:announcement, status: "scheduled")
+
+    refute announcement.valid?
+
+    announcement.publish_at = 1.hour.from_now
+    assert announcement.valid?
+  end
+
+  test "social_body is capped at the shortest platform limit" do
+    refute build(:announcement, social_body: "x" * 281).valid?
+    assert build(:announcement, social_body: "x" * 280).valid?
+  end
+
+  test "gets a default icon" do
+    assert_equal Announcement::DEFAULT_ICON, create(:announcement).icon
+  end
+
+  test "#channels lists in_app alongside the selected social channels" do
+    announcement = build(:announcement, :social)
+
+    assert_equal %i[in_app discord bluesky x], announcement.channels
+  end
+
+  test "#social_channels leaves out what was not selected" do
+    assert_equal %i[bluesky], build(:announcement, post_bluesky: true).social_channels
+  end
+
+  test "#publishable? covers draft, scheduled and failed but not published" do
+    assert build(:announcement).publishable?
+    assert build(:announcement, :scheduled).publishable?
+    assert build(:announcement, :failed).publishable?
+    refute build(:announcement, :published).publishable?
+    refute build(:announcement, status: "publishing").publishable?
+  end
+
+  test "#absolute_link resolves a path and leaves a url alone" do
+    assert_nil build(:announcement).absolute_link
+    assert_equal "https://example.com/x", build(:announcement, link: "https://example.com/x").absolute_link
+    assert_equal(
+      "https://#{Rails.configuration.app.domain}/fleets/",
+      build(:announcement, :with_link).absolute_link
+    )
+  end
+
+  test "destroying an announcement leaves its notifications without a dangling record" do
+    announcement = create(:announcement)
+    user = create(:user)
+    notification = Notification.notify!(
+      user:, type: :announcement, title: "t", body: "b", record: announcement
+    )
+
+    announcement.destroy!
+
+    notification.reload
+    assert_nil notification.record_id
+    assert_nil notification.record_type
+    assert_equal "t", notification.title
+  end
+
+  test ".due only returns scheduled announcements whose time has passed" do
+    due = create(:announcement, status: "scheduled", publish_at: 1.minute.ago)
+    create(:announcement, status: "scheduled", publish_at: 1.hour.from_now)
+    create(:announcement, :published)
+
+    assert_equal [due], Announcement.due.to_a
+  end
+end
