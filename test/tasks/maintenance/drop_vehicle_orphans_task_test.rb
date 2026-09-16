@@ -16,26 +16,28 @@ module Maintenance
     end
 
     test "#process leaves every row in place on a dry run" do
-      orphan_vehicle
-      orphan_fleet_vehicle
-      orphan_task_force
+      orphan = orphan_vehicle
+      FleetVehicle.create!(fleet: create(:fleet), vehicle: orphan)
+      TaskForce.create!(vehicle: orphan, hangar_group: create(:hangar_group, user: @user))
 
       assert_no_difference [-> { Vehicle.count }, -> { FleetVehicle.count }, -> { TaskForce.count }] do
         run_task(dry_run: true)
       end
     end
 
+    # The join-table lines report 0 orphaned and always will: #4946 constrained
+    # both columns. What they still count is the rows an orphaned vehicle
+    # carries, which is the half of those numbers a run actually deletes.
     test "#process reports what it would do on a dry run" do
       orphan = orphan_vehicle
       FleetVehicle.create!(fleet: create(:fleet), vehicle: orphan)
-      orphan_fleet_vehicle
-      orphan_task_force
+      TaskForce.create!(vehicle: orphan, hangar_group: create(:hangar_group, user: @user))
 
       output = run_task(dry_run: true)
 
       assert_includes output, "vehicles: 1 orphaned of #{Vehicle.count}, 1 visible, across 1 users"
-      assert_includes output, "fleet_vehicles: 1 orphaned of #{FleetVehicle.count}, plus 1 carried by those vehicles"
-      assert_includes output, "task_forces: 1 orphaned of #{TaskForce.count}, plus 0 carried by those vehicles"
+      assert_includes output, "fleet_vehicles: 0 orphaned of #{FleetVehicle.count}, plus 1 carried by those vehicles"
+      assert_includes output, "task_forces: 0 orphaned of #{TaskForce.count}, plus 1 carried by those vehicles"
       assert_includes output, "dry run"
     end
 
@@ -59,16 +61,6 @@ module Maintenance
       assert_nil VehicleLoadout.find_by(id: loadout.id)
     end
 
-    test "#process drops join rows pointing at a vehicle that is gone" do
-      fleet_vehicle = orphan_fleet_vehicle
-      task_force = orphan_task_force
-
-      run_task(dry_run: false)
-
-      assert_nil FleetVehicle.find_by(id: fleet_vehicle.id)
-      assert_nil TaskForce.find_by(id: task_force.id)
-    end
-
     test "#process keeps the rows of a vehicle that still has its parent" do
       loaner_model = create(:model)
       parent_model = create(:model).tap { |model| model.loaners << loaner_model }
@@ -84,28 +76,33 @@ module Maintenance
       assert TaskForce.exists?(task_force.id)
     end
 
-    # `where.missing` is a left join tested for no match, which a row naming no
-    # vehicle at all satisfies too. It was not stranded by a delete, so it stays.
-    test "#process keeps a row that names no vehicle at all" do
-      fleet_vehicle = orphan_fleet_vehicle
-      task_force = orphan_task_force
-      FleetVehicle.where(id: fleet_vehicle.id).update_all(vehicle_id: nil)
-      TaskForce.where(id: task_force.id).update_all(vehicle_id: nil)
+    # Both states this task was written to find are unreachable since #4946: the
+    # delete takes the join row with it, and a row naming no vehicle at all is
+    # refused outright. The scopes stay because `vehicles.vehicle_id` carries no
+    # constraint, and that is the one they still find something in.
+    test "the join rows this task was written for cannot be created any more" do
+      vehicle = create(:vehicle, user: @user)
+      fleet_vehicle = FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)
+      task_force = TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
 
-      run_task(dry_run: false)
+      Vehicle.where(id: vehicle.id).delete_all
 
-      assert FleetVehicle.exists?(fleet_vehicle.id)
-      assert TaskForce.exists?(task_force.id)
+      assert_nil FleetVehicle.find_by(id: fleet_vehicle.id)
+      assert_nil TaskForce.find_by(id: task_force.id)
+
+      standing = FleetVehicle.create!(fleet: create(:fleet), vehicle: create(:vehicle, user: @user))
+
+      assert_raises ActiveRecord::NotNullViolation do
+        FleetVehicle.where(id: standing.id).update_all(vehicle_id: nil)
+      end
     end
 
     test "#process drops every orphan, not just the first batch" do
       3.times { orphan_vehicle }
-      3.times { orphan_fleet_vehicle }
 
       run_task(dry_run: false)
 
       assert_empty ::Maintenance::DropVehicleOrphansTask.orphaned_vehicles
-      assert_empty ::Maintenance::DropVehicleOrphansTask.orphaned_fleet_vehicles
     end
 
     # A loaner left standing by a bulk delete: the row is intact, the parent it
@@ -116,22 +113,6 @@ module Maintenance
       Vehicle.where(id: parent.id).delete_all
 
       orphan
-    end
-
-    private def orphan_fleet_vehicle
-      vehicle = create(:vehicle, user: @user)
-      fleet_vehicle = FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)
-      Vehicle.where(id: vehicle.id).delete_all
-
-      fleet_vehicle
-    end
-
-    private def orphan_task_force
-      vehicle = create(:vehicle, user: @user)
-      task_force = TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
-      Vehicle.where(id: vehicle.id).delete_all
-
-      task_force
     end
 
     private def run_task(dry_run:)
