@@ -16,6 +16,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import { uniq as uniqArray } from "@/shared/utils/Array";
+import { Comment, Fragment, Text, type VNode } from "vue";
 
 type Props = {
   items: T[];
@@ -140,6 +141,46 @@ const finishCreate = () => {
   creating.value = false;
 };
 
+// An open row hands its whole display over to the fields, and a column of
+// offsets or prices says nothing about which record they belong to. A list
+// whose item carries its name somewhere other than `name` - or carries one
+// nothing is gained by printing - passes a `headline` slot instead.
+const headlineFor = (item: T) => {
+  const name = (item as { name?: unknown }).name;
+
+  return typeof name === "string" && name.trim().length ? name : undefined;
+};
+
+const slots = useSlots();
+
+// A slot that draws nothing for this record - a loaner whose model is gone -
+// leaves a `v-if` comment and whitespace behind, which the row would otherwise
+// keep a line's gap open above the fields for. So the vnodes are asked what
+// they came to rather than the slot being asked whether it exists.
+const rendersSomething = (nodes: VNode[]): boolean =>
+  nodes.some((node) => {
+    if (node.type === Comment) {
+      return false;
+    }
+
+    if (node.type === Text) {
+      return typeof node.children === "string"
+        ? node.children.trim().length > 0
+        : !!node.children;
+    }
+
+    if (node.type === Fragment) {
+      return rendersSomething((node.children ?? []) as VNode[]);
+    }
+
+    return true;
+  });
+
+const headlineVisible = (item: T) =>
+  slots.headline
+    ? rendersSomething(slots.headline({ item }))
+    : !!headlineFor(item);
+
 defineExpose({
   editingId,
   creating,
@@ -233,8 +274,17 @@ defineExpose({
         class="inline-editable-list__checkbox"
       />
       <template v-if="editingId === item.id">
-        <div class="inline-editable-list__form">
-          <slot name="edit" :item="item" />
+        <div class="inline-editable-list__edit">
+          <div
+            v-if="headlineVisible(item)"
+            class="inline-editable-list__headline"
+            data-test="edit-headline"
+          >
+            <slot name="headline" :item="item">{{ headlineFor(item) }}</slot>
+          </div>
+          <div class="inline-editable-list__form">
+            <slot name="edit" :item="item" />
+          </div>
         </div>
       </template>
       <template v-else>
@@ -300,6 +350,22 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+.inline-editable-list__edit {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.inline-editable-list__headline {
+  color: var(--color-lifted, #eee);
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .inline-editable-list__form {
   display: flex;
   gap: 8px;

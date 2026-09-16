@@ -217,6 +217,10 @@ const onSaveCreate = async () => {
       </span>
     </template>
 
+    <template #headline="{ item }">
+      {{ item.name || item.dockTypeLabel }}
+    </template>
+
     <template #edit>
       <BaseSelect
         v-model="editForm.dockType"

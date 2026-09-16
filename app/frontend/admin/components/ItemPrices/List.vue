@@ -201,6 +201,10 @@ defineExpose({
       </template>
     </template>
 
+    <template #headline="{ item }">
+      {{ item.priceType }} @ {{ item.location }}
+    </template>
+
     <template #edit>
       <BaseSelect
         v-model="editForm.priceType"

@@ -99,6 +99,12 @@ test.describe("Admin Cargo Holds", () => {
       .getByTestId("start-edit");
     await editBtn.click();
 
+    // The fields replace the row, so the hold names itself above them. The
+    // scenario's first hold is cargo_front, which the list humanizes.
+    await expect(
+      page.getByTestId("list-group-item").first().getByTestId("edit-headline"),
+    ).toHaveText("Cargo Front");
+
     // Should show offset and rotation inputs
     await expect(page.locator('input[name="offsetX"]')).toBeVisible();
     await expect(page.locator('input[name="offsetY"]')).toBeVisible();

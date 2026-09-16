@@ -190,6 +190,10 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
       <a :href="item.url" target="_blank">{{ item.url }}</a>
     </template>
 
+    <template #headline="{ item }">
+      {{ item.url }}
+    </template>
+
     <template #edit>
       <BaseSelect
         v-model="editForm.videoType"

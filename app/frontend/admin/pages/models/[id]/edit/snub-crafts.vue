@@ -154,6 +154,10 @@ const onSaveCreate = async () => {
       <span v-if="item.snubCraft">{{ item.snubCraft.name }}</span>
     </template>
 
+    <template #headline="{ item }">
+      {{ item.snubCraft?.name }}
+    </template>
+
     <template #edit>
       <ModelSelect
         v-model="editForm.snubCraftId"

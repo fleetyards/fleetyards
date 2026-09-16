@@ -175,6 +175,10 @@ const onSaveCreate = async () => {
       </Btn>
     </template>
 
+    <template #headline="{ item }">
+      {{ item.loanerModel?.name }}
+    </template>
+
     <template #edit>
       <ModelSelect
         v-model="editForm.loanerModelId"

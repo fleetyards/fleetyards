@@ -180,6 +180,10 @@ const formatOffset = (hold: AdminCargoHold) => {
       </Btn>
     </template>
 
+    <template #headline="{ item }">
+      {{ item.name ? humanizeHoldName(item.name) : `Hold #${item.position}` }}
+    </template>
+
     <template #edit>
       <FormInput
         v-model="editForm.offsetX"
