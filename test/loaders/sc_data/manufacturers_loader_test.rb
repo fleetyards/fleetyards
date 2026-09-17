@@ -219,7 +219,11 @@ module ScData
           rsi_models_loader.all
         end
 
-        assert_difference -> { Manufacturer.count }, 93 do
+        # Counts the real parsed tree, so it moves when the parser's reach does.
+        # 93 until CC's Conversions started resolving: its name is declared
+        # `manufacturer_NameCCC,P`, which an exact lookup never matched, and the
+        # loader only creates a row for a record that has a name.
+        assert_difference -> { Manufacturer.count }, 94 do
           @loader.all
         end
 
