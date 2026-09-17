@@ -85,6 +85,17 @@ module ScData
     # which is why the change log it feeds has never needed the exclusion.
     PROSE_FACTS = %i[description].freeze
 
+    # `type_data` is a whole metrics tree, and it used to be excluded for free
+    # by the serialized check below. It is `jsonb` now, so it has to be named:
+    # the reason it was left out never depended on how it was stored. Measured
+    # on live 4.9.0 against 4.10.0, 420 components differed on it, each reading
+    # only as "something inside this changed".
+    #
+    # Named rather than excluding every structured column, which would also
+    # drop `EquipmentBuild#volume_dimensions` -- three numbers that a reader can
+    # act on, and that is compared today.
+    STRUCTURE_FACTS = %i[type_data].freeze
+
     # What a comparison looks at. `ModelBuild` names its own list because it was
     # tuned by hand for the change log; the others derive it, so a fact added to
     # `FACTS` is compared without anyone remembering to say so.
@@ -100,6 +111,7 @@ module ScData
       build_class::FACTS
         .reject { |fact| serialized?(build_class, fact) }
         .reject { |fact| PROSE_FACTS.include?(fact) }
+        .reject { |fact| STRUCTURE_FACTS.include?(fact) }
     end
 
     def self.serialized?(build_class, fact)

@@ -258,6 +258,57 @@ class ComponentTest < ActiveSupport::TestCase
     assert_equal "manned-turret-anvl-valkyrie-turret-top", second.reload.slug
   end
 
+  # A load saves every component it sees. Deriving the slug again costs two
+  # existence checks to land on the value already in the column, so a save that
+  # moves neither name nor sc_key skips it entirely.
+  test "a save that changes neither name nor sc_key spends no query on the slug" do
+    component = create(:component, name: "Manned Turret", sc_key: "aegs_idris_turret")
+
+    statements = statements_for { component.update!(description: "unchanged name") }
+
+    assert_empty statements.grep(/FROM "components" WHERE "components"\."(name|slug)"/)
+  end
+
+  test "a rename still re-derives the slug" do
+    component = create(:component, :without_build, name: "Old Name", sc_key: "behr_laser_s3")
+
+    component.update!(name: "New Name")
+
+    assert_equal "new-name", component.reload.slug
+  end
+
+  # `name` reads through to the build, so a correction has to reach the build to
+  # reach the slug. Writing the column alone leaves both the reader and the slug
+  # on the build's answer -- which is how this behaved before the slug was
+  # unique, and is why an admin correction goes through `update_with_facts`.
+  test "a correction that reaches the build catches the slug up on the next save" do
+    component = create(:component, name: "Old Name", version: ScData::Source.version)
+
+    # The build is written after the row is saved, so the slug is one save
+    # behind a rename -- true before this column was unique, and unchanged.
+    component.update_with_facts({name: "Corrected"})
+    assert_equal "Corrected", component.reload.name
+    assert_equal "old-name", component.slug
+
+    component.update!(description: "any later save")
+
+    assert_equal "corrected", component.reload.slug
+  end
+
+  # The incumbent's URL is the one people have already bookmarked, and a load
+  # saves every component it sees. Before the settled check, the arrival of a
+  # second "Manned Turret" rewrote the first one's bare slug to the suffixed
+  # form on its very next save.
+  test "an incumbent keeps its slug when a duplicate name arrives later" do
+    incumbent = create(:component, :without_build, name: "Manned Turret", sc_key: "aegs_idris_t1")
+    assert_equal "manned-turret", incumbent.slug
+
+    create(:component, :without_build, name: "Manned Turret", sc_key: "anvl_valk_t2")
+    incumbent.update!(description: "the next import saves it again")
+
+    assert_equal "manned-turret", incumbent.reload.slug
+  end
+
   test "a component with no name has no slug, so the index tolerates the 3048 of them" do
     first = create(:component, name: nil, sc_key: "htnk_nameless_one")
     second = create(:component, name: nil, sc_key: "htnk_nameless_two")
@@ -304,5 +355,17 @@ class ComponentTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotUnique) do
       second.update_column(:slug, first.slug)
     end
+  end
+
+  private def statements_for
+    statements = []
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+      statements << payload[:sql] unless payload[:name] == "SCHEMA"
+    end
+
+    yield
+    statements
+  ensure
+    ActiveSupport::Notifications.unsubscribe(subscriber)
   end
 end
