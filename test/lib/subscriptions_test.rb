@@ -44,26 +44,36 @@ class SubscriptionsTest < ActiveSupport::TestCase
     refute Subscriptions.qualifying?(contribution)
   end
 
-  # Minor units are not comparable across currencies: 500 HUF is about EUR 1.25.
-  test "an unpriced currency is converted rather than compared on its units" do
-    contribution = build(:supporter_contribution,
-      amount_cents: 125, source_amount_cents: 500, source_currency: "HUF")
-
-    refute Subscriptions.qualifying?(contribution)
-  end
-
-  test "an unpriced currency still qualifies once it converts above the figure" do
-    contribution = build(:supporter_contribution,
-      amount_cents: 600, source_amount_cents: 240_000, source_currency: "HUF")
-
-    assert Subscriptions.qualifying?(contribution)
-  end
-
   test "a contribution with no source currency falls back to the EUR figure" do
     contribution = build(:supporter_contribution,
       amount_cents: 500, source_amount_cents: nil, source_currency: nil)
 
     assert Subscriptions.qualifying?(contribution)
+  end
+
+  # An admin-entered row has no source pair, and its `amount_cents` is in
+  # whatever `currency` says -- reading it as EUR let CAD 5 clear a figure meant
+  # to be CAD 7.
+  test "a hand-entered row is judged in its own stated currency" do
+    below = build(:supporter_contribution, amount_cents: 500,
+      currency: "CAD", source_amount_cents: nil, source_currency: nil)
+    at_the_figure = build(:supporter_contribution, amount_cents: 700,
+      currency: "CAD", source_amount_cents: nil, source_currency: nil)
+
+    refute Subscriptions.qualifying?(below), "CAD 5 is not the CAD figure"
+    assert Subscriptions.qualifying?(at_the_figure)
+  end
+
+  # Imported rows always carry the source pair, and `amount_cents` is already
+  # normalised -- so an unpriced currency is compared EUR against EUR.
+  test "an imported row in an unpriced currency is compared on its EUR value" do
+    small = build(:supporter_contribution, amount_cents: 125,
+      source_amount_cents: 500, source_currency: "HUF", currency: "EUR")
+    large = build(:supporter_contribution, amount_cents: 600,
+      source_amount_cents: 240_000, source_currency: "HUF", currency: "EUR")
+
+    refute Subscriptions.qualifying?(small), "500 HUF is about EUR 1.25"
+    assert Subscriptions.qualifying?(large)
   end
 
   test "the figure is looked up per currency and falls back to EUR" do

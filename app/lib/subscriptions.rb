@@ -52,17 +52,35 @@ module Subscriptions
   # Whether it is active, and which fleet it names, are the reconciler's
   # questions rather than this one's.
   #
-  # Judged in the currency it was pledged in when that currency has a figure,
-  # so the same pledge always gives the same answer however the rate moved
-  # since. Anything else falls back to the normalised EUR amount, which is what
-  # keeps an unpriced currency from qualifying on its minor units alone.
+  # Judged on the amount in whatever currency that amount is actually in, so
+  # the same pledge gives the same answer however the rate moved since. The
+  # importers set the source pair and normalise `amount_cents` to EUR; an
+  # admin-entered row has no source pair, and its `amount_cents` is in whatever
+  # `currency` says -- which is not always EUR, and reading it as though it were
+  # let CAD 5 clear a figure meant to be CAD 7.
   def self.qualifying?(contribution)
-    currency = contribution.source_currency.to_s.upcase
+    amount, currency =
+      if priced?(contribution.source_currency)
+        # Priced: judge the pledge in the currency it was pledged in.
+        [contribution.source_amount_cents, contribution.source_currency]
+      elsif contribution.source_currency.present?
+        # Unpriced but imported, so `amount_cents` is the normalised EUR figure.
+        [contribution.amount_cents, FALLBACK_CURRENCY]
+      else
+        # Hand-entered: `amount_cents` is in whatever `currency` says.
+        [contribution.amount_cents, contribution.currency]
+      end
 
-    if QUALIFYING_AMOUNTS.key?(currency)
-      contribution.source_amount_cents.to_i >= QUALIFYING_AMOUNTS.fetch(currency)
-    else
-      contribution.amount_cents.to_i >= qualifying_amount_cents
-    end
+    amount.to_i >= qualifying_amount_cents(currency)
+  end
+
+  # A currency nobody has priced falls back to the EUR figure. For an imported
+  # row that is exact -- `amount_cents` is already normalised, so the comparison
+  # is EUR against EUR, and 500 HUF stays the EUR 1.25 it is worth. For a
+  # hand-entered row in an unpriced currency there is nothing to convert from,
+  # so the figure is the best available answer rather than a correct one; price
+  # the currency here if that ever stops being rare.
+  private_class_method def self.priced?(currency)
+    QUALIFYING_AMOUNTS.key?(currency.to_s.upcase)
   end
 end
