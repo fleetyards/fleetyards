@@ -1598,6 +1598,9 @@
           "linkedOnly": "已关联",
           "linkedVia": "关联方式",
           "unlinkedOnly": "未关联",
+          "sourceStated": "已注明平台",
+          "sourceStatedOnly": "已注明平台",
+          "sourceUnspecifiedOnly": "未注明平台",
           "source": "来源"
         },
         "adminNotifications": {

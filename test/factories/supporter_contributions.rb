@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("other"), not null
+#  source              :string
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null

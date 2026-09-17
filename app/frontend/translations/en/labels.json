@@ -1598,6 +1598,9 @@
           "linkedOnly": "Linked",
           "linkedVia": "Linked via",
           "unlinkedOnly": "Not linked",
+          "sourceStated": "Platform stated",
+          "sourceStatedOnly": "Platform stated",
+          "sourceUnspecifiedOnly": "Platform unspecified",
           "source": "Source"
         },
         "adminNotifications": {

@@ -1598,6 +1598,9 @@
           "linkedOnly": "Collegato",
           "linkedVia": "Collegato tramite",
           "unlinkedOnly": "Non collegato",
+          "sourceStated": "Piattaforma indicata",
+          "sourceStatedOnly": "Piattaforma indicata",
+          "sourceUnspecifiedOnly": "Piattaforma non indicata",
           "source": "Origine"
         },
         "adminNotifications": {

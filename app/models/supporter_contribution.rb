@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("other"), not null
+#  source              :string
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -92,13 +92,17 @@ class SupporterContribution < ApplicationRecord
 
   # The platform the money arrived on. Patreon and Ko-fi are the two an importer
   # writes; the rest only ever come from an admin, who is recording a payment
-  # that reached a platform we have no feed from. `other` is the answer for a
-  # platform not listed here and for a row nobody stated one for -- it does not
-  # mean "entered by hand", which a patreon_member_id or kofi_transaction_id
-  # answers on its own.
+  # that reached a platform we have no feed from. It does not mean "entered by
+  # hand", which a patreon_member_id or kofi_transaction_id answers on its own.
+  #
+  # Null is "nobody stated one", and it is deliberately not the same as `other`.
+  # `other` is a statement -- a platform, just not one of these -- and most rows
+  # without a source are not making it; they are rows nobody was asked about.
+  # Collapsing the two would lose the distinction permanently, because after the
+  # fact there is nothing to tell them apart by.
   SOURCES = %w[patreon kofi buymeacoffee paypal other].freeze
 
-  enum :source, SOURCES.index_by(&:itself), default: "other"
+  enum :source, SOURCES.index_by(&:itself)
 
   # Which rule linked the row, in the order Supporters::Linker tries them. Null
   # while nothing is linked; `manual` is the one nobody derives -- an admin

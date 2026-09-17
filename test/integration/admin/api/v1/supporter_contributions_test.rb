@@ -248,11 +248,23 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
-  # An admin who states no platform is not claiming the money came from one.
-  test "POST /supporter-contributions defaults an unstated platform to other" do
+  # An admin who states no platform is not claiming the money came from one --
+  # which is why the answer is null rather than `other`. `other` says "a
+  # platform, just not one of the named ones", and nobody said that here.
+  test "POST /supporter-contributions leaves an unstated platform unspecified" do
     sign_in @user
 
     body = {amountCents: 500, startedAt: Date.current.iso8601}
+
+    assert_api_response :post, 200, body: body do
+      assert_nil parsed_body["source"]
+    end
+  end
+
+  test "POST /supporter-contributions keeps other when an admin states it" do
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, source: "other"}
 
     assert_api_response :post, 200, body: body do
       assert_equal "other", parsed_body["source"]

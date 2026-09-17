@@ -15,7 +15,7 @@ module Admin
               currency: {type: :string},
               anonymous: {type: :boolean},
               recurring: {type: :boolean},
-              source: ::Admin::V1::Schemas::Enums::SupporterContributionSourceEnum,
+              source: ::Admin::V1::Schemas::Enums::NullableSupporterContributionSourceEnum,
               startedAt: {type: :string, format: :date},
               endedAt: {type: :string, format: :date},
               note: {type: :string},

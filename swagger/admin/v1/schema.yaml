@@ -15819,6 +15819,25 @@ components:
       - BACKPACK
       - 'NULL'
       title: NullableEquipmentSlotEnum
+    NullableSupporterContributionSourceEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - patreon
+      - kofi
+      - buymeacoffee
+      - paypal
+      - other
+      -
+      x-enumNames:
+      - PATREON
+      - KOFI
+      - BUYMEACOFFEE
+      - PAYPAL
+      - OTHER
+      - 'NULL'
+      title: NullableSupporterContributionSourceEnum
     OauthApplication:
       type: object
       properties:
@@ -16312,7 +16331,7 @@ components:
         recurring:
           type: boolean
         source:
-          "$ref": "#/components/schemas/SupporterContributionSourceEnum"
+          "$ref": "#/components/schemas/NullableSupporterContributionSourceEnum"
         patreonMemberId:
           type: string
         startedAt:
@@ -16366,7 +16385,7 @@ components:
         recurring:
           type: boolean
         source:
-          "$ref": "#/components/schemas/SupporterContributionSourceEnum"
+          "$ref": "#/components/schemas/NullableSupporterContributionSourceEnum"
         startedAt:
           type: string
           format: date
@@ -16454,6 +16473,8 @@ components:
           type: boolean
         sourceEq:
           "$ref": "#/components/schemas/SupporterContributionSourceEnum"
+        sourceNull:
+          type: boolean
         linkedViaEq:
           "$ref": "#/components/schemas/SupporterContributionLinkedViaEnum"
         startedAtGteq:

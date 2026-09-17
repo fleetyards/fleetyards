@@ -44,6 +44,18 @@ const linkedViaOptions = Object.values(SupporterContributionLinkedViaEnum).map(
   }),
 );
 
+// Same inversion as linkedOptions: "stated" means the column is *not* null.
+const sourceStatedOptions = [
+  {
+    label: t("labels.filters.supporterContributions.sourceStatedOnly"),
+    value: "false",
+  },
+  {
+    label: t("labels.filters.supporterContributions.sourceUnspecifiedOnly"),
+    value: "true",
+  },
+];
+
 const sourceOptions = Object.values(SupporterContributionSourceEnum).map(
   (source) => ({
     label: t(`labels.admin.supporterContributions.source.${source}`),
@@ -62,6 +74,7 @@ const prefillFormValues = () => {
     userIdNull: filters.value.userIdNull,
     linkedViaEq: filters.value.linkedViaEq,
     sourceEq: filters.value.sourceEq,
+    sourceNull: filters.value.sourceNull,
   };
 };
 
@@ -132,6 +145,14 @@ watch(
       :reset-label="t('labels.all')"
       :options="linkedOptions"
       name="userIdNull"
+    />
+
+    <RadioList
+      v-model="form.sourceNull"
+      :label="t('labels.filters.supporterContributions.sourceStated')"
+      :reset-label="t('labels.all')"
+      :options="sourceStatedOptions"
+      name="sourceNull"
     />
 
     <RadioList

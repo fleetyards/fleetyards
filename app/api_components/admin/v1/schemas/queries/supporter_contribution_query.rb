@@ -15,6 +15,11 @@ module Admin
               recurringEq: {type: :boolean},
               anonymousEq: {type: :boolean},
               sourceEq: ::Admin::V1::Schemas::Enums::SupporterContributionSourceEnum,
+              # Absence is its own predicate, the way userIdNull already is:
+              # ransack's `_eq` with nil builds `source = NULL`, which matches
+              # nothing, so a nullable enum here would be a filter that
+              # silently returns an empty list.
+              sourceNull: {type: :boolean},
               linkedViaEq: ::Admin::V1::Schemas::Enums::SupporterContributionLinkedViaEnum,
               startedAtGteq: {type: :string, format: :date},
               startedAtLteq: {type: :string, format: :date},

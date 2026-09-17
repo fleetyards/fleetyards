@@ -145,3 +145,13 @@ GET /admin_users/{id} added the new `announcements` enum value to the `resourceA
 PUT /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
 GET /resource-access-catalog added the new `announcements` enum value to the `items/privileges/items/` response property for the response status `200`
 POST /sessions added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /supporter-contributions the response property `items/items/source` became nullable for the status `200`
+POST /supporter-contributions the response property `source` became nullable for the status `200`
+DELETE /supporter-contributions/{id} the response property `source` became nullable for the status `200`
+GET /supporter-contributions/{id} the response property `source` became nullable for the status `200`
+PUT /supporter-contributions/{id} the response property `source` became nullable for the status `200`
+GET /supporter-contributions added the new `undefined` enum value to the `items/items/source` response property for the response status `200`
+POST /supporter-contributions added the new `undefined` enum value to the `source` response property for the response status `200`
+DELETE /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
+GET /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
+PUT /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`

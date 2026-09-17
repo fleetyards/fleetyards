@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1868,7 +1868,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_120000) do
     t.string "patreon_user_id"
     t.string "payer_email"
     t.boolean "recurring", default: false, null: false
-    t.string "source", default: "other", null: false
+    t.string "source"
     t.integer "source_amount_cents"
     t.string "source_currency"
     t.date "started_at", null: false
