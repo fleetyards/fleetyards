@@ -16951,8 +16951,6 @@ components:
     FeatureFlagName:
       type: string
       enum:
-      - discord_commands
-      - discord_fleet_commands
       - fleet_allies
       - fleet_contracts
       - fleet_logistics
@@ -16976,8 +16974,6 @@ components:
       - tools_travel_times
       - tour_payouts
       x-enumNames:
-      - DISCORD_COMMANDS
-      - DISCORD_FLEET_COMMANDS
       - FLEET_ALLIES
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS
