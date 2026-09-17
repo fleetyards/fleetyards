@@ -187,6 +187,8 @@ const handleCancel = async () => {
           name="link"
         />
 
+        <hr />
+
         <AnnouncementPartsEditor
           v-model="discordParts"
           name="discord-parts"
@@ -195,6 +197,8 @@ const handleCancel = async () => {
           :part-placeholder="t('placeholders.announcement.discordPart')"
           :limits="[{ label: 'Discord', limit: 2000, counter: 'discord' }]"
         />
+
+        <hr />
 
         <AnnouncementPartsEditor
           v-model="socialParts"
@@ -218,6 +222,8 @@ const handleCancel = async () => {
         <p v-if="noChannel" class="announcement-form__warning">
           {{ t("labels.admin.announcements.noChannel") }}
         </p>
+        <hr />
+
         <FormToggle
           v-model="schedule"
           name="schedule"

@@ -215,6 +215,8 @@ const handleCancel = async () => {
           name="link"
         />
 
+        <hr />
+
         <AnnouncementPartsEditor
           v-model="discordParts"
           name="discord-parts"
@@ -223,6 +225,8 @@ const handleCancel = async () => {
           :part-placeholder="t('placeholders.announcement.discordPart')"
           :limits="[{ label: 'Discord', limit: 2000, counter: 'discord' }]"
         />
+
+        <hr />
 
         <AnnouncementPartsEditor
           v-model="socialParts"
@@ -259,6 +263,8 @@ const handleCancel = async () => {
             })
           }}
         </p>
+        <hr />
+
         <FormToggle
           v-model="schedule"
           name="schedule"
@@ -272,6 +278,8 @@ const handleCancel = async () => {
           translation-key="announcement.publishAt"
           name="publishAt"
         />
+
+        <hr />
 
         <Panel v-if="props.announcement.deliveries.length">
           <PanelHeading>

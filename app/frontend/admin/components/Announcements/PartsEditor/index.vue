@@ -6,7 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnTonesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -130,6 +134,7 @@ const update = (index: number, value: string) => {
         </span>
         <Btn
           :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.BARE"
           :disabled="index === 0"
           :aria-label="t('actions.announcements.movePartUp')"
           data-test="parts-editor-up"
@@ -139,6 +144,7 @@ const update = (index: number, value: string) => {
         </Btn>
         <Btn
           :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.BARE"
           :disabled="index === parts.length - 1"
           :aria-label="t('actions.announcements.movePartDown')"
           data-test="parts-editor-down"
@@ -148,6 +154,7 @@ const update = (index: number, value: string) => {
         </Btn>
         <Btn
           :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.BARE"
           :tone="BtnTonesEnum.DANGER"
           :aria-label="t('actions.announcements.removePart')"
           data-test="parts-editor-remove"
