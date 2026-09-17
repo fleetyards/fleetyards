@@ -206,12 +206,27 @@ class Component < ApplicationRecord
 
   # Read through the build, falling back to the column. The column still answers
   # for a component no load has given a build -- an admin can create one by hand.
-  ComponentBuild::READ_THROUGH.each do |fact|
+  # `description` is handled on its own below -- defining it here and again
+  # afterwards would replace this reader rather than wrap it, and the column it
+  # then fell back to is the one the old normaliser mangled.
+  (ComponentBuild::READ_THROUGH - [:description]).each do |fact|
     define_method(fact) do
       value = facts&.public_send(fact)
 
       value.nil? ? super() : value
     end
+  end
+
+  # Reads through like the rest, then strips the metadata block the export
+  # prefixes the prose with -- "Item Type: Quantum Drive\nManufacturer: ...".
+  # Normalising only on save left every row loaded before that change still
+  # serving the preamble; doing it here fixes what is already stored too, and is
+  # idempotent for a value the save path has already cleaned.
+  def description
+    value = facts&.description
+    value = super if value.nil?
+
+    self.class.split_description(value).first
   end
 
   has_many :model_paints, dependent: :nullify

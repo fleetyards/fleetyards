@@ -357,6 +357,33 @@ class ComponentTest < ActiveSupport::TestCase
     end
   end
 
+  # The export prefixes the prose with a metadata block and escapes its newlines
+  # as a literal backslash-n. `description` reads through to the build, so
+  # normalising only on save left every row loaded earlier still serving it.
+  test "a description reads as prose, with the export's metadata block stripped" do
+    raw = 'Item Type: Quantum Drive\\nManufacturer: Wei-Tek\\nSize: 3\\n\\nAdvanced plating provides durability.'
+    component = create(:component, :without_build)
+    create(:component_build, component:, description: raw)
+
+    assert_equal "Advanced plating provides durability.", component.reload.description
+  end
+
+  # It ran every word together before -- `gsub(/[[:space:]]+/, "")` deleted the
+  # spaces along with the newlines.
+  test "a description keeps the spaces between its words" do
+    component = create(:component, :without_build)
+    create(:component_build, component:, description: "Two\nlines of prose.")
+
+    assert_equal "Two lines of prose.", component.reload.description
+  end
+
+  test "a description with no metadata block is left as it is" do
+    component = create(:component, :without_build)
+    create(:component_build, component:, description: "Tractor Beam")
+
+    assert_equal "Tractor Beam", component.reload.description
+  end
+
   private def statements_for
     statements = []
     subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
