@@ -150,7 +150,7 @@ module Admin
 
         private def supporter_contribution_query_params
           @supporter_contribution_query_params ||= params.permit(q: [
-            :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq,
+            :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq, :source_null,
             :linked_via_eq, :started_at_gteq, :started_at_lteq,
             :ended_at_gteq, :ended_at_lteq,
             :user_id_eq, :user_id_null, :user_username_cont,

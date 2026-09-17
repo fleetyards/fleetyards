@@ -261,6 +261,22 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  # A filter the controller does not permit is dropped before ransack sees it,
+  # so the list comes back unfiltered while the UI shows a filter applied.
+  test "GET /supporter-contributions can separate unspecified from other" do
+    unspecified = create(:supporter_contribution, name: "No platform stated")
+    stated = create(:supporter_contribution, name: "Stated as other", source: "other")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {sourceNull: true}} do
+      assert_equal [unspecified.id], parsed_body["items"].map { |row| row["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {sourceNull: false}} do
+      assert_equal [stated.id], parsed_body["items"].map { |row| row["id"] }
+    end
+  end
+
   test "POST /supporter-contributions keeps other when an admin states it" do
     sign_in @user
 
