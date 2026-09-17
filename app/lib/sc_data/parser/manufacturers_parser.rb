@@ -64,17 +64,29 @@ module ScData
         own_name_key = "manufacturer_Name#{code}"
         own_desc_key = "manufacturer_Desc#{code}"
 
+        # Resolved through the index like any other name, so a code whose own key
+        # the export declares with a ",P" marker still wins over the block --
+        # `manufacturer_NameCCC,P` is one. An exact lookup here would skip the
+        # precedence for exactly those codes and, for one that also points its
+        # block elsewhere, hand it the other company's name: the duplicate
+        # "Aegis Dynamics" this whole branch exists to prevent. No record in
+        # 4.10.1 is shaped that way, so this changes nothing today.
+        own_name = localize_name("@#{own_name_key}")
+
         # The block points somewhere else on purpose-looking-like-a-mistake only
         # when the export also defines this code's own name -- mxox.xml asks for
         # AEGS while `manufacturer_NameMXOX` sits right there. A code whose key
         # merely spells the company differently (GAM asking for GAMA) defines no
         # own key, so it is drift rather than a redirect and stays trusted.
-        redirected = translations.key?(own_name_key) && declared_name_key != "@#{own_name_key}"
+        #
+        # Compared normalized on both sides, or a record naming its own key in
+        # the export's spelling would read as pointing away from itself.
+        redirected = own_name.present? && !same_key?(declared_name_key, own_name_key)
 
         name = if override["name"].present?
           override["name"]
-        elsif translations.key?(own_name_key)
-          translations[own_name_key]
+        elsif own_name.present?
+          own_name
         else
           localize_name(declared_name_key)
         end
@@ -98,6 +110,13 @@ module ScData
         end
 
         [name, description]
+      end
+
+      # Two spellings of one localisation key: the `@` prefix, the case and the
+      # ",P" marker are all noise here, the same way the index treats them.
+      private def same_key?(one, other)
+        one.to_s.delete("@").sub(/,P\z/, "").downcase ==
+          other.to_s.delete("@").sub(/,P\z/, "").downcase
       end
 
       private def load_manufacturer_data
