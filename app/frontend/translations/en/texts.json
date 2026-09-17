@@ -21,7 +21,7 @@
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "forbidden": "Your clearance does not cover this area. If a feature is still being rolled out, you can switch it on yourself under Settings > Features once it is available to you.",
-      "subscriptionRequired": "This is one of the fleet features our supporters keep running, and this fleet has no active supporter subscription at the moment. A contribution from anyone in the fleet opens it up again for everybody here.",
+      "subscriptionRequired": "Contracts, events, logistics and tours are kept running by the people who support FleetYards. This fleet isn't covered right now — a contribution from a single member opens all four for the whole fleet.",
       "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
       "inviteInvalid": "This invite link is not valid. It may have been mistyped, it may have expired, or it may have already reached its limit of uses. Ask whoever invited you for a new link.",
       "accessDenied": "You are not authorized to view this page.",

@@ -21,7 +21,7 @@
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "forbidden": "Deine Freigabe deckt diesen Bereich nicht ab. Wird eine Funktion gerade erst ausgerollt, kannst du sie unter Einstellungen > Funktionen selbst aktivieren, sobald sie für dich verfügbar ist.",
-      "subscriptionRequired": "Diese Flotten-Funktion wird von unseren Unterstützern getragen, und diese Flotte hat derzeit kein aktives Unterstützer-Abo. Ein Beitrag von irgendwem aus der Flotte schaltet sie für alle hier wieder frei.",
+      "subscriptionRequired": "Aufträge, Events, Logistics und Touren werden von den Leuten getragen, die FleetYards unterstützen. Diese Flotte ist derzeit nicht abgedeckt — ein Beitrag von einem einzigen Mitglied schaltet alle vier für die ganze Flotte frei.",
       "featureNotReady": "Diese Funktion ist noch nicht fertig und wird bald verfügbar sein. Bleiben Sie dran!",
       "inviteInvalid": "Dieser Einladungslink ist nicht gültig. Möglicherweise wurde er falsch übertragen, er ist abgelaufen oder er hat sein Nutzungslimit erreicht. Bitte lass dir von der Person, die dich eingeladen hat, einen neuen Link geben.",
       "accessDenied": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",

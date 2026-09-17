@@ -21,7 +21,7 @@
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "forbidden": "你的權限不包含此區域。如果某項功能仍在灰度發布中，等它對你開放後，可以在「設定 > 功能」中自行開啟。",
-      "subscriptionRequired": "這項艦隊功能由支持 FleetYards 的人共同維持，而該艦隊目前沒有有效的支持者訂閱。艦隊中任何一位成員的捐助都會為所有人重新開啟它。",
+      "subscriptionRequired": "合約、活動、Logistics 和行程由支持 FleetYards 的人共同維持。該艦隊目前未在涵蓋範圍內 — 任何一位成員的捐助都會為整個艦隊開啟這四項功能。",
       "featureNotReady": "此功能尚未完成，即將推出。敬請期待！",
       "inviteInvalid": "此邀請連結無效。可能是輸入有誤、已過期，或已達到使用次數上限。請向邀請你的人索取新的連結。",
       "accessDenied": "您無權檢視此頁面。",
