@@ -153,8 +153,8 @@ module ScData
         assert_nil @parser.parse_manufacturer(record(nil))
       end
 
-      # Guards the shipped file rather than the mechanism: these four entries are
-      # what keeps the export's copy-pasted records out of the table.
+      # Guards the shipped file rather than the mechanism: these six entries are
+      # what keeps the export's copy-pasted and generic records out of the table.
       test "the shipped overrides name the records the export gets wrong" do
         overrides = ::ScData::Parser::ManufacturersParser.overrides
 
@@ -162,6 +162,8 @@ module ScData
         assert_equal "Preacher Armaments", overrides.dig("PRAR", "name")
         assert overrides.dig("TRAS", "skip")
         assert overrides.dig("GHEX", "skip")
+        assert overrides.dig("GEND", "skip")
+        assert overrides.dig("GENF", "skip")
       end
 
       # Seeds the memo `#overrides` fills from config, so a test names its own

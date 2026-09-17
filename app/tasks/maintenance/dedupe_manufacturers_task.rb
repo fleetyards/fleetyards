@@ -20,9 +20,16 @@ module Maintenance
       "FSKI" => "Firestorm Kinetics"
     }.freeze
 
-    # Placeholder records: copies of another manufacturer, logo included, that
-    # nothing in the export references. Dropped only while nothing points at them.
-    DROPPED_CODES = %w[TRAS GHEX].freeze
+    # Records that are not a company. TRAS and GHEX are copies of another
+    # manufacturer, logo included, that nothing in the export references; GEND
+    # and GENF are the generic maker a drink or a food carryable is filed under,
+    # and both name themselves "Consumable", so loading them would put one row by
+    # that name in the table holding both codes.
+    #
+    # Kept in step with the `skip: true` entries in the parser overrides -- a
+    # fresh import and a cleaned table have to agree about what a code is -- and
+    # dropped only while nothing points at them.
+    DROPPED_CODES = %w[TRAS GHEX GEND GENF].freeze
 
     # One company under two codes, read as `export code => the code that stays`.
     #

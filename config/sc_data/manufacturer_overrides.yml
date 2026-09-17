@@ -31,3 +31,14 @@ TRAS:
   skip: true
 GHEX:
   skip: true
+
+# The generic maker the export files a carryable under when it has no real one:
+# both name themselves "Consumable", so loading them mints a single manufacturer
+# by that name holding both codes. Their logos (GenericDrink_256.tif,
+# GenericFood_256.tif) say what they stand in for, but neither is a company, and
+# the 107 drink and 171 food records pointing at them are props and carryables
+# that no catalogue here scans -- so nothing loses its maker by dropping them.
+GEND:
+  skip: true
+GENF:
+  skip: true
