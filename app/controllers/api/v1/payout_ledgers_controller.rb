@@ -3,6 +3,8 @@
 module Api
   module V1
     class PayoutLedgersController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read", "user" },
         unless: :user_signed_in?,
@@ -14,6 +16,7 @@ module Api
       before_action :set_subject, only: %i[show_for_subject create]
       before_action :set_payout_ledger, only: %i[show balances settle reopen]
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
 
       # GET /fleets/:fleet_slug/events/:slug/payouts
       # GET /tours/:tour_slug/payouts
@@ -96,6 +99,13 @@ module Api
             authorize! fleet, to: :show?
             fleet.fleet_events.find_by!(slug: params[:fleet_event_slug])
           end
+      end
+
+      # Nil for a standalone tour's ledger, which is the personal tool and
+      # stays free. Resolved from the subject as well, because create runs
+      # before a ledger exists.
+      private def subscription_fleet
+        @payout_ledger&.fleet || subject_fleet
       end
 
       # `try` rather than a FleetEvent check: a tour organised from a fleet's

@@ -3,6 +3,8 @@
 module Api
   module V1
     class TourJoinRequestsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "user" },
         unless: :user_signed_in?,
@@ -13,6 +15,7 @@ module Api
 
       before_action :set_tour
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
       before_action :set_tour_join_request, only: %i[approve decline destroy]
 
       # Only the ones still waiting for an answer: a declined request is kept as
@@ -97,6 +100,11 @@ module Api
       # Asking onto a tour only exists on the fleet surface, so it wants both
       # flags -- tour_payouts for tours at all, fleet_tours for a fleet running
       # them as a fleet.
+      # nil for a standalone tour, which is the personal tool and stays free.
+      private def subscription_fleet
+        @tour&.fleet
+      end
+
       private def check_tour_payouts_feature
         actors = @tour&.fleet ? [@tour.fleet] : []
 

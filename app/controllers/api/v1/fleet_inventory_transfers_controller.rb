@@ -8,6 +8,8 @@ module Api
     # may act for it is `Inventories::TransferAuthorizer`'s question, asked
     # through `InventoryTransferPolicy` like everywhere else.
     class FleetInventoryTransfersController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       include InventoryTransferActions
 
       before_action :authenticate_user!, only: []
@@ -19,6 +21,8 @@ module Api
         only: %i[create accept decline cancel report]
 
       before_action :check_inventory_transfers_feature
+
+      before_action -> { require_fleet_subscription(:logistics) }
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
       before_action :set_inventory_transfer, only: %i[show accept decline cancel report]

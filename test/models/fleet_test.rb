@@ -231,4 +231,33 @@ class FleetTest < ActiveSupport::TestCase
     ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &block)
     count
   end
+  # A list of fleets renders `subscribed` for each, so the read has to answer
+  # from an eager-loaded association rather than querying per row.
+  test "subscribed? answers from a loaded association without querying" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:)
+    loaded = Fleet.includes(:fleet_subscriptions).find(fleet.id)
+
+    queries = count_queries { assert loaded.subscribed? }
+
+    assert_equal 0, queries, "expected no query, got #{queries}"
+  end
+
+  test "active_subscription does the same" do
+    fleet = create(:fleet)
+    subscription = create(:fleet_subscription, fleet:)
+    loaded = Fleet.includes(:fleet_subscriptions).find(fleet.id)
+
+    queries = count_queries { assert_equal subscription, loaded.active_subscription }
+
+    assert_equal 0, queries
+  end
+
+  test "a loaded association still answers false when nothing is active" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:, started_at: Date.current - 30, ended_at: Date.current - 1)
+    loaded = Fleet.includes(:fleet_subscriptions).find(fleet.id)
+
+    refute loaded.subscribed?
+  end
 end

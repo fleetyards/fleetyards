@@ -17756,6 +17756,8 @@ components:
           type: array
           items:
             type: string
+        subscribed:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -17774,6 +17776,7 @@ components:
       - alliesFleetStats
       - alliesFleetMembers
       - features
+      - subscribed
       - createdAt
       - updatedAt
       title: Fleet

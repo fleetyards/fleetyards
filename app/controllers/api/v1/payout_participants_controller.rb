@@ -4,6 +4,7 @@ module Api
   module V1
     class PayoutParticipantsController < ::Api::BaseController
       include PayoutLedgerScoped
+      include FleetSubscriptionConcern
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read", "user" },
@@ -15,6 +16,7 @@ module Api
 
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
       before_action :resolve_username, only: %i[create]
       before_action :set_payout_participant, only: %i[update destroy]
 

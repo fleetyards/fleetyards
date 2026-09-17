@@ -33,11 +33,15 @@ module V1
             contractCovers: ::V1::Schemas::Fleets::FleetContractCovers,
             myFleet: {type: :boolean},
             features: {type: :array, items: {type: :string}},
+            # Whether the fleet holds an entitlement today. Separate from
+            # `features`: that is what is rolled out here, this is what was
+            # bought, and the two are asked independently (D1).
+            subscribed: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers features createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers features subscribed createdAt updatedAt]
         })
       end
     end

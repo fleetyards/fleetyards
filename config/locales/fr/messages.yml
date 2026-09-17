@@ -35,6 +35,7 @@ fr:
       success: Téléchargement des prêts réussi.
     fleet_subscriptions:
       already_open: "Cette flotte a déjà un abonnement ouvert."
+    subscription_required: "Cette flotte n'a pas d'abonnement pour cette fonctionnalité."
     record_not_found:
       fleet_subscription: Aucun abonnement de flotte trouvé
       announcement: Aucune annonce trouvée

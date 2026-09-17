@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetEventAdminsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
@@ -13,6 +15,7 @@ module Api
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
+      before_action -> { require_fleet_subscription(:events) }
       before_action :set_event
       before_action :set_admin, only: %i[destroy]
 

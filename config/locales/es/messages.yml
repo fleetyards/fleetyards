@@ -34,6 +34,7 @@ es:
       success: Subida de préstamos exitosa.
     fleet_subscriptions:
       already_open: "Esta flota ya tiene una suscripción abierta."
+    subscription_required: "Esta flota no tiene una suscripción para esta función."
     record_not_found:
       fleet_subscription: No se ha encontrado la suscripción de flota
       announcement: No se encontró anuncio

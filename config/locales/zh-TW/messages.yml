@@ -32,6 +32,7 @@ zh-TW:
       success: 借用船上傳成功。
     fleet_subscriptions:
       already_open: "該艦隊已有一個開通中的訂閱。"
+    subscription_required: "該艦隊沒有此功能的訂閱。"
     record_not_found:
       fleet_subscription: 未找到艦隊訂閱
       announcement: 未找到公告

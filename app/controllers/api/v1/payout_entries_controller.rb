@@ -4,6 +4,7 @@ module Api
   module V1
     class PayoutEntriesController < ::Api::BaseController
       include PayoutLedgerScoped
+      include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:payout_entries) }, only: %i[index]
 
@@ -17,6 +18,7 @@ module Api
 
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
       before_action :set_payout_entry, only: %i[update destroy]
 
       def index

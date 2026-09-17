@@ -42,6 +42,12 @@ module PayoutLedgerScoped
     render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
   end
 
+  # Nil for a standalone tour's ledger, which is the personal tool and stays
+  # free -- the same split check_tour_payouts_feature makes above.
+  private def subscription_fleet
+    @payout_ledger&.fleet
+  end
+
   private def ledger_context
     {payout_ledger: @payout_ledger, fleet: @payout_ledger&.fleet}
   end

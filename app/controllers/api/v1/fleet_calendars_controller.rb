@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetCalendarsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
@@ -10,6 +12,7 @@ module Api
 
       before_action :set_fleet, only: %i[show]
       before_action :check_fleet_mission_builder_feature, only: %i[show]
+      before_action -> { require_fleet_subscription(:events) }, only: %i[show]
       skip_verify_authorized only: %i[ics]
 
       def show

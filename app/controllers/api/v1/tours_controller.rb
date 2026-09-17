@@ -3,6 +3,8 @@
 module Api
   module V1
     class ToursController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       after_action -> { pagination_header(:tours) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -16,6 +18,7 @@ module Api
       before_action :set_viewer
       before_action :set_fleet
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
       before_action :set_tour, only: %i[show update destroy settle reopen cancel rotate_invite]
 
       def index

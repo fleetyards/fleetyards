@@ -31,7 +31,9 @@ module Api
       def my
         authorize!
 
-        @fleets = authorized_scope(Fleet.all).accepted.all
+        # `subscribed` is on every fleet payload, and asking per fleet would be
+        # one query apiece down the list.
+        @fleets = authorized_scope(Fleet.all).accepted.includes(:fleet_subscriptions).all
       end
 
       def show
