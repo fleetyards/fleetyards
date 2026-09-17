@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -30,7 +29,10 @@ const CustomBody = defineComponent({
     h(MessageBody, null, { default: () => h("span", "custom") }),
 });
 
-const mountMessage = async (overrides: Partial<AppNotification> = {}) => {
+const mountMessage = async (
+  overrides: Partial<AppNotification> = {},
+  locale = "en",
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -43,6 +45,7 @@ const mountMessage = async (overrides: Partial<AppNotification> = {}) => {
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: { message: { ...message, ...overrides } },
+    initialState: { i18n: { locale } },
     plugins: [router],
   });
 
@@ -82,5 +85,13 @@ describe("AppNotificationsMessage", () => {
 
     expect(hideMessage).toHaveBeenCalledWith("message-id");
     expect(push).not.toHaveBeenCalled();
+  });
+
+  it("names the close button in the active locale", async () => {
+    const { wrapper } = await mountMessage({}, "de");
+
+    expect(
+      wrapper.get('[data-test="notification-close"]').attributes("aria-label"),
+    ).toBe("Schließen");
   });
 });
