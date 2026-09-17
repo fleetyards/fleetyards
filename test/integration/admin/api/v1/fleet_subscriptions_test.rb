@@ -461,4 +461,15 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
 
     assert_empty Notification.where(notification_type: "fleet_subscription_started")
   end
+
+  test "DELETE of a grant that had not started yet announces nothing" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    scheduled = create(:fleet_subscription, fleet:, started_at: Date.current + 7)
+    sign_in @user
+
+    assert_api_response :delete, 204, api_path: MEMBER_PATH, path_params: {id: scheduled.id}
+
+    assert_empty Notification.where(notification_type: "fleet_subscription_ended")
+  end
 end

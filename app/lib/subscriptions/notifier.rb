@@ -32,8 +32,12 @@ module Subscriptions
       is_open = subscription.persisted? && subscription.open?
       is_active = subscription.persisted? && subscription.active_on?
 
-      # Ending a grant is news whether it stops today or at a date named now.
-      return notifier.ended(cause:) if (was_open && !is_open) || (was_active && !is_active)
+      # Only a fleet that actually had the capabilities can lose them. Ending a
+      # grant that had not started yet takes nothing away, and telling its
+      # admins they lost the features would be plainly false -- they never had
+      # them. Guarded on `was_active` for that, then either kind of ending: one
+      # that stops today, or one that names a date from now on.
+      return notifier.ended(cause:) if was_active && (!is_open || !is_active)
 
       notifier.started if !was_active && is_active
     end

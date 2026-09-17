@@ -126,6 +126,26 @@ module Subscriptions
       assert_empty notifications_for(@admin, :fleet_subscription_started)
     end
 
+    # A fleet that never had the capabilities cannot lose them, and telling its
+    # admins otherwise is plainly false.
+    test "cancelling a grant that had not started yet announces nothing" do
+      scheduled = create(:fleet_subscription, fleet: another_fleet, started_at: Date.current + 7)
+      scheduled.destroy!
+
+      Notifier.announce(scheduled, was_open: true, was_active: false, cause: :manual)
+
+      assert_empty Notification.where(notification_type: "fleet_subscription_ended")
+    end
+
+    test "closing a grant that had not started yet announces nothing either" do
+      scheduled = create(:fleet_subscription, fleet: another_fleet, started_at: Date.current + 7)
+      scheduled.update!(ended_at: Date.current + 8)
+
+      Notifier.announce(scheduled, was_open: true, was_active: false, cause: :manual)
+
+      assert_empty Notification.where(notification_type: "fleet_subscription_ended")
+    end
+
     test "a grant ending today still announces that it ended" do
       @subscription.update!(started_at: Date.current - 10, ended_at: Date.current)
 
