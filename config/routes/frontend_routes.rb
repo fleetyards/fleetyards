@@ -13,6 +13,11 @@ namespace :frontend, **frontend_options do
     req.query_string.empty? ? "/compare/" : "/compare/?#{req.query_string}"
   }
 
+  # Meta tags for a shared link, the way a ship's page has them -- without this
+  # the card renders the generic site description rather than the component.
+  # No `og_image`: no component in the catalogue has one.
+  get "components/:slug", to: "base#component", as: :component
+
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos

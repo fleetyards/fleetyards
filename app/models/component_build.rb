@@ -114,6 +114,11 @@ class ComponentBuild < ApplicationRecord
   enum :tracking_signal,
     {infrared: 0, cross_section: 1, electromagnetic: 2}
 
+  # The reader prefers the build, so a raw description here reaches the API
+  # whatever the component's own column says -- which is how the export's
+  # "Item Type: ... Manufacturer: ..." preamble kept being served.
+  before_save :normalize_description
+
   validates :environment, presence: true
   validates :version, presence: true
   validates :component_id, uniqueness: {scope: [:environment, :version]}
@@ -139,5 +144,12 @@ class ComponentBuild < ApplicationRecord
       .sort_by { |_version, first_seen| first_seen }
       .last(keep)
       .map(&:first)
+  end
+
+  private def normalize_description
+    return if description.blank?
+
+    prose, = Component.split_description(description)
+    self.description = prose
   end
 end

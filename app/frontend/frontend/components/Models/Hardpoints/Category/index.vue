@@ -12,26 +12,7 @@ import { type Hardpoint } from "@/services/fyApi";
 import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 
-import radarIconUrl from "@/images/hardpoints/radar.svg";
-import computersIconUrl from "@/images/hardpoints/computers.svg";
-import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
-import coolersIconUrl from "@/images/hardpoints/coolers.svg";
-import shieldGeneratorsIconUrl from "@/images/hardpoints/shield_generators.svg";
-import fuelIntakesIconUrl from "@/images/hardpoints/fuel_intakes.svg";
-import fuelTanksIconUrl from "@/images/hardpoints/fuel_tanks.svg";
-import quantumDrivesIconUrl from "@/images/hardpoints/quantum_drives.svg";
-import jumpModulesIconUrl from "@/images/hardpoints/jump_modules.svg";
-import quantumFuelTanksIconUrl from "@/images/hardpoints/quantum_fuel_tanks.svg";
-import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
-import vtolThrustersIconUrl from "@/images/hardpoints/vtol_thrusters.svg";
-import retroThrustersIconUrl from "@/images/hardpoints/retro_thrusters.svg";
-import maneuveringThrustersIconUrl from "@/images/hardpoints/maneuvering_thrusters.svg";
-import weaponsIconUrl from "@/images/hardpoints/weapons.svg";
-import turretsIconUrl from "@/images/hardpoints/turrets.svg";
-import missilesIconUrl from "@/images/hardpoints/missiles.svg";
-import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
-import qedIconUrl from "@/images/hardpoints/qed.svg";
-import empIconUrl from "@/images/hardpoints/emp.svg";
+import { categorySvgIcons } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import {
   powerPlantContextKey,
   type PowerPlantContext,
@@ -73,35 +54,6 @@ const cargoGridsRoute = computed(() => ({
   name: "cargo-grids",
   query: { ship: modelSlug?.value },
 }));
-
-const icons = {
-  radar: radarIconUrl,
-  computers: computersIconUrl,
-  powerplant: powerPlantsIconUrl,
-  cooler: coolersIconUrl,
-  shieldgenerator: shieldGeneratorsIconUrl,
-  fuel_intakes: fuelIntakesIconUrl,
-  fueltanks: fuelTanksIconUrl,
-  external_fuel_tanks: fuelTanksIconUrl,
-  refuel_boom: fuelIntakesIconUrl,
-  quantumdrive: quantumDrivesIconUrl,
-  jump_modules: jumpModulesIconUrl,
-  jumpdrive: jumpModulesIconUrl,
-  quantum_fuel_tanks: quantumFuelTanksIconUrl,
-  main_thrusters: mainThrustersIconUrl,
-  vtol_thrusters: vtolThrustersIconUrl,
-  retro_thrusters: retroThrustersIconUrl,
-  maneuvering_thrusters: maneuveringThrustersIconUrl,
-  weapons: weaponsIconUrl,
-  weapon_mounts: weaponsIconUrl,
-  turret: turretsIconUrl,
-  missiles: missilesIconUrl,
-  missile_racks: missilesIconUrl,
-  utility: utilityItemsIconUrl,
-  utility_items: utilityItemsIconUrl,
-  quantumenforcementdevice: qedIconUrl,
-  emp: empIconUrl,
-};
 </script>
 
 <template>
@@ -157,7 +109,7 @@ const icons = {
       </span>
       <img
         v-else
-        :src="icons[category as keyof typeof icons]"
+        :src="categorySvgIcons[category as keyof typeof categorySvgIcons]"
         class="hardpoint-category__icon hardpoint-category__icon--img"
         :alt="`icon-${category}`"
       />

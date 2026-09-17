@@ -463,6 +463,11 @@
       },
       "fleet": {
         "contractCovers": "Contract covers"
+      },
+      "component": {
+        "identity": "Details",
+        "metrics": "Metrics",
+        "requiredTags": "Fits a port offering"
       }
     }
   }

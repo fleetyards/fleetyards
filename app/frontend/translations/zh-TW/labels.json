@@ -1131,7 +1131,12 @@
         "itemType": "物品類型",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "itemClass": "類別",
+        "category": "分類",
+        "subType": "子類型",
+        "retired": "已不在目前版本中",
+        "noMetrics": "該部件沒有記錄任何數據。"
       },
       "hardpoint": {
         "legend": {
@@ -1348,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "打撈填充站",
           "cargogrid": "貨物網格",
-          "seat": "座位"
+          "seat": "座位",
+          "thrusters": "推進器",
+          "bombcompartments": "炸彈艙"
         },
         "name": "名稱",
         "category": "分類",

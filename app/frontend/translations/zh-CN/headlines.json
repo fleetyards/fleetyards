@@ -461,6 +461,11 @@
       },
       "fleet": {
         "contractCovers": "合约封面图"
+      },
+      "component": {
+        "identity": "详情",
+        "metrics": "数据",
+        "requiredTags": "可装入具备以下标签的接口"
       }
     }
   }

@@ -167,7 +167,22 @@ const hardpointNames = computed(() => {
         <HardpointComponent>
           <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
             <template v-if="hardpoint.component && hardpoint.component.name">
-              {{ hardpoint.component.name }}
+              <!-- The catalogue link. Only when the component has a slug: one
+                   without a name never got one, and a link to nowhere is worse
+                   than plain text. -->
+              <router-link
+                v-if="hardpoint.component.slug"
+                :to="{
+                  name: 'component',
+                  params: { slug: hardpoint.component.slug },
+                }"
+                @click.stop
+              >
+                {{ hardpoint.component.name }}
+              </router-link>
+              <template v-else>
+                {{ hardpoint.component.name }}
+              </template>
               <span v-if="hardpoint.component.itemClass">
                 {{ hardpoint.component.itemClassLabel }}
                 {{ t("labels.component.grade") }}

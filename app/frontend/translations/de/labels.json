@@ -1131,7 +1131,12 @@
         "itemType": "Gegenstandstyp",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "itemClass": "Klasse",
+        "category": "Kategorie",
+        "subType": "Untertyp",
+        "retired": "Nicht mehr im aktuellen Build",
+        "noMetrics": "Für diese Komponente sind keine Werte hinterlegt."
       },
       "hardpoint": {
         "legend": {
@@ -1348,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Bergungsfüllstation",
           "cargogrid": "Frachtraster",
-          "seat": "Sitze"
+          "seat": "Sitze",
+          "thrusters": "Triebwerke",
+          "bombcompartments": "Bombenschächte"
         },
         "name": "Name",
         "category": "Kategorie",

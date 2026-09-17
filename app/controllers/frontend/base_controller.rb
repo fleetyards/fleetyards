@@ -44,6 +44,18 @@ module Frontend
       render_frontend
     end
 
+    def component
+      @component = Component.find_by(slug: params[:slug].to_s.downcase)
+
+      if @component.present?
+        @title = [@component.name, @component.manufacturer&.name].compact.join(" - ")
+        @description = @component.description
+        @og_type = "article"
+      end
+
+      render_frontend
+    end
+
     def model_images
       @model = model_record.first
       return if redirect_to_canonical_slug(@model)

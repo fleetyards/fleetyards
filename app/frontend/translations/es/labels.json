@@ -1131,7 +1131,12 @@
         "itemType": "Tipo de objeto",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "itemClass": "Clase",
+        "category": "Categoría",
+        "subType": "Subtipo",
+        "retired": "Ya no está en la compilación actual",
+        "noMetrics": "No hay métricas registradas para este componente."
       },
       "hardpoint": {
         "legend": {
@@ -1348,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Estación de llenado de salvamento",
           "cargogrid": "Grilla de carga",
-          "seat": "Asientos"
+          "seat": "Asientos",
+          "thrusters": "Propulsores",
+          "bombcompartments": "Compartimentos de bombas"
         },
         "name": "Nombre",
         "category": "Categoría",

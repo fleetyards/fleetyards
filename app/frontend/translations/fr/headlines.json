@@ -461,6 +461,11 @@
       },
       "fleet": {
         "contractCovers": "Visuels de contrat"
+      },
+      "component": {
+        "identity": "Détails",
+        "metrics": "Caractéristiques",
+        "requiredTags": "S'installe sur un port offrant"
       }
     }
   }
