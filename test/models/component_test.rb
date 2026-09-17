@@ -384,6 +384,47 @@ class ComponentTest < ActiveSupport::TestCase
     assert_equal "Tractor Beam", component.reload.description
   end
 
+  # The opening paragraph of an ordinary description is not a metadata block.
+  # Taking the first segment on faith discarded it, and the save callbacks then
+  # stored the truncation -- the text was gone for good.
+  test "a description with two paragraphs and no metadata keeps both" do
+    component = create(:component, :without_build)
+    create(
+      :component_build,
+      component:, description: 'First paragraph of real prose.\\n\\nSecond paragraph.'
+    )
+
+    assert_equal(
+      "First paragraph of real prose. Second paragraph.",
+      component.reload.description
+    )
+  end
+
+  # The export writes far more keys than the obvious five, and separates a key
+  # from its value with a non-breaking space often enough to matter.
+  test "a metadata block is recognised by its shape, not a list of known keys" do
+    component = create(:component, :without_build)
+    create(
+      :component_build,
+      component:,
+      description: "Capacity: 1.2 SCU\\nFull Strength Distance: 200 m\\nClass:\u00A0Competition\\n\\nThe prose."
+    )
+
+    assert_equal "The prose.", component.reload.description
+  end
+
+  # A paragraph that opens with a colon is prose, and runs longer than a value.
+  test "a long opening line that reads as a sentence is not a metadata block" do
+    component = create(:component, :without_build)
+    create(
+      :component_build,
+      component:,
+      description: 'Warning: do not operate this device inside an atmosphere under any circumstances.\\n\\nMore.'
+    )
+
+    assert_includes component.reload.description, "Warning: do not operate"
+  end
+
   private def statements_for
     statements = []
     subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|

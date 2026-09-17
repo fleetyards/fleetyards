@@ -465,11 +465,42 @@ class Component < ApplicationRecord
   def self.split_description(value)
     return [nil, nil] if value.blank?
 
-    prose, data = value.gsub("\\n", "\n").split("\n\n", 2).reverse
+    text = value.gsub("\\n", "\n")
+    head, rest = text.split("\n\n", 2)
+
+    # Only a head that is actually the export's block counts as one. Taking the
+    # first segment on faith discarded the opening paragraph of any ordinary
+    # multi-paragraph description -- and the save callbacks then stored the
+    # truncation, so the text was gone for good.
+    prose, data = metadata_block?(head) ? [rest, head] : [text, nil]
 
     # Runs of whitespace collapse to one space -- the export wraps a paragraph
     # across lines.
     [prose&.gsub(/\s+/, " ")&.strip.presence, data]
+  end
+
+  # A head is the export's block when every line reads as a short "Key: value"
+  # pair. Length is what separates one from prose: a metadata value is a size, a
+  # grade or a measurement, while a paragraph that happens to open with a colon
+  # ("Warning: do not ...") runs long.
+  #
+  # Keyed on shape rather than a list of known keys -- the blocks carry far more
+  # than "Item Type" and "Manufacturer" ("Capacity", "Max Angle", "Full Strength
+  # Distance"), and a list would publish every unlisted one as prose.
+  # `[[:space:]]` rather than `\s`: the export separates a key from its value
+  # with a non-breaking space often enough to matter -- "Class:\u00A0Competition"
+  # -- and `\s` does not match one, so the block failed on its last line and the
+  # whole thing published as prose.
+  METADATA_LINE = /\A[A-Z][A-Za-z ]{0,40}:[[:space:]]\S/
+  METADATA_LINE_MAX = 60
+
+  def self.metadata_block?(head)
+    return false if head.blank?
+
+    lines = head.split("\n").map(&:strip).reject(&:empty?)
+    return false if lines.empty?
+
+    lines.all? { |line| line.length <= METADATA_LINE_MAX && line.match?(METADATA_LINE) }
   end
 
   def extract_data_from_description
