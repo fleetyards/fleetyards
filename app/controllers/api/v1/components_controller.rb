@@ -87,9 +87,17 @@ module Api
         # not error, it would silently stop filtering, so a client asking for
         # nothing would suddenly receive everything. They go when the endpoints
         # feeding them do.
+        # A range per metric, so "shields over 5,000 HP" is a filter rather than
+        # something a client has to page through and sift itself. The ransackers
+        # these resolve against already exist -- they are what makes the metric
+        # sorts work -- so this is the schema and the allowlist catching up.
+        metric_predicates = Component::METRICS.keys.flat_map do |metric|
+          [:"#{metric.underscore}_gteq", :"#{metric.underscore}_lteq"]
+        end
+
         @components_query_params ||= params.permit(q: [
           :s, :sorts, :name_cont, :description_cont, :manufacturer_name_cont,
-          :current_version, :hidden_eq,
+          :current_version, :hidden_eq, *metric_predicates,
           sorts: [], id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [],
           component_class_in: [], category_in: [], component_sub_type_in: []
         ]).fetch(:q, {})
