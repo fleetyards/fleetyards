@@ -10,6 +10,75 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 paths:
+  "/blueprints":
+    get:
+      summary: Blueprints list
+      tags:
+      - Blueprints
+      operationId: blueprints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/BlueprintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Blueprints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/blueprints/{slug}":
+    get:
+      summary: Blueprint detail
+      tags:
+      - Blueprints
+      operationId: blueprint
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Blueprint"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -15622,6 +15691,287 @@ components:
       required:
       - meta
       title: BaseList
+    Blueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        craftTime:
+          type: integer
+          nullable: true
+        slotCount:
+          type: integer
+          nullable: true
+        retired:
+          type: boolean
+        sourceUnknown:
+          type: boolean
+        craftable:
+          type: object
+          nullable: true
+          properties:
+            type:
+              type: string
+              enum:
+              - Component
+              - Equipment
+              - Commodity
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+              nullable: true
+            slug:
+              type: string
+          additionalProperties: false
+          required:
+          - type
+          - id
+          - slug
+        costSlots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostSlot"
+        sources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSource"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - scKey
+      - scRef
+      - retired
+      - sourceUnknown
+      - createdAt
+      - updatedAt
+      title: Blueprint
+    BlueprintCostModifier:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        propertyKey:
+          type: string
+          nullable: true
+        unitFormat:
+          type: string
+          nullable: true
+        ramp:
+          type: string
+          enum:
+          - linear
+          - linear_integer_additive
+        startQuality:
+          type: integer
+          nullable: true
+        endQuality:
+          type: integer
+          nullable: true
+        modifierAtStart:
+          type: number
+          nullable: true
+        modifierAtEnd:
+          type: number
+          nullable: true
+      additionalProperties: false
+      required:
+      - ramp
+      title: BlueprintCostModifier
+    BlueprintCostOption:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - resource
+          - item
+        quantity:
+          type: number
+          nullable: true
+        minQuality:
+          type: integer
+          nullable: true
+        commodityKey:
+          type: string
+          nullable: true
+        commodity:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          additionalProperties: false
+          required:
+          - id
+          - name
+          - slug
+      additionalProperties: false
+      required:
+      - type
+      title: BlueprintCostOption
+    BlueprintCostSlot:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        scKey:
+          type: string
+          nullable: true
+        position:
+          type: integer
+        options:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostOption"
+        modifiers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostModifier"
+      additionalProperties: false
+      required:
+      - position
+      - options
+      - modifiers
+      title: BlueprintCostSlot
+    BlueprintQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        craftableTypeEq:
+          type: string
+          enum:
+          - Component
+          - Equipment
+          - Commodity
+        craftableTypeIn:
+          type: array
+          items:
+            type: string
+            enum:
+            - Component
+            - Equipment
+            - Commodity
+        craftableIdEq:
+          type: string
+          format: uuid
+        craftTimeLteq:
+          type: integer
+        craftTimeGteq:
+          type: integer
+        fromOrg:
+          type: string
+        consumingCommodity:
+          type: string
+        withKnownSource:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          type: string
+          enum:
+          - name asc
+          - name desc
+          - craftTime asc
+          - craftTime desc
+          - createdAt asc
+          - createdAt desc
+        sorts:
+          type: array
+          items:
+            type: string
+            enum:
+            - name asc
+            - name desc
+            - craftTime asc
+            - craftTime desc
+            - createdAt asc
+            - createdAt desc
+      additionalProperties: false
+      example: {}
+      title: BlueprintQuery
+    BlueprintSource:
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+          - contract
+          - scenario
+        orgName:
+          type: string
+          nullable: true
+        missionName:
+          type: string
+          nullable: true
+        minStanding:
+          type: string
+          nullable: true
+        maxStanding:
+          type: string
+          nullable: true
+        minPoints:
+          type: integer
+          nullable: true
+        poolKey:
+          type: string
+          nullable: true
+        poolGroup:
+          type: string
+          nullable: true
+      additionalProperties: false
+      required:
+      - kind
+      title: BlueprintSource
+    Blueprints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Blueprint"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Blueprints
     BoughtViaEnum:
       type: string
       enum:
@@ -17222,6 +17572,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - blueprints
       - components
       - fleet_allies
       - fleet_contracts
@@ -17243,6 +17594,7 @@ components:
       - ship_inventories
       - tour_payouts
       x-enumNames:
+      - BLUEPRINTS
       - COMPONENTS
       - FLEET_ALLIES
       - FLEET_CONTRACTS
@@ -28151,6 +28503,23 @@ components:
       items:
         type: string
       title: WishlistItemsList
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -28180,23 +28549,6 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed
