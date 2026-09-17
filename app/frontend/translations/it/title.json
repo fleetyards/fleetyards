@@ -326,7 +326,8 @@
           "notifications": "Notifiche - Test Visivi"
         }
       },
-      "notifications": "Notifiche"
+      "notifications": "Notifiche",
+      "component": "%{name}"
     }
   }
 }

@@ -1131,7 +1131,12 @@
         "itemType": "Gegenstandstyp",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "itemClass": "Klasse",
+        "category": "Kategorie",
+        "subType": "Untertyp",
+        "retired": "Nicht mehr im aktuellen Build",
+        "noMetrics": "Für diese Komponente sind keine Werte hinterlegt."
       },
       "hardpoint": {
         "legend": {

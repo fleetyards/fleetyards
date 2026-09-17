@@ -1,0 +1,29 @@
+.component-page {
+  &__manufacturer {
+    color: var(--color-lifted, #eee);
+    margin-bottom: 0.5rem;
+  }
+
+  &__description {
+    margin-bottom: 1.5rem;
+    max-width: 60ch;
+  }
+
+  // Label/value pairs in two columns, collapsing to a single stack on a narrow
+  // screen. A definition list rather than a table: there is one value per
+  // label, and nothing to sort.
+  &__stats {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.25rem 1.5rem;
+    margin: 0;
+
+    dt {
+      color: var(--color-lifted, #eee);
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+}

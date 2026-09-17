@@ -326,7 +326,8 @@
           "notifications": "通知 - 視覺測試"
         }
       },
-      "notifications": "通知"
+      "notifications": "通知",
+      "component": "%{name}"
     }
   }
 }

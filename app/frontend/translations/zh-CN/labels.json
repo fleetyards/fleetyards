@@ -1131,7 +1131,12 @@
         "itemType": "物品类型",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "itemClass": "类别",
+        "category": "分类",
+        "subType": "子类型",
+        "retired": "已不在当前版本中",
+        "noMetrics": "该部件没有记录任何数据。"
       },
       "hardpoint": {
         "legend": {

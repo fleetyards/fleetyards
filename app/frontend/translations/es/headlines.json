@@ -461,6 +461,11 @@
       },
       "fleet": {
         "contractCovers": "Portadas de contrato"
+      },
+      "component": {
+        "identity": "Detalles",
+        "metrics": "Métricas",
+        "requiredTags": "Encaja en un puerto con"
       }
     }
   }

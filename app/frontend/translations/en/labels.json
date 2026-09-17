@@ -1131,7 +1131,12 @@
         "itemType": "Item Type",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "itemClass": "Class",
+        "category": "Category",
+        "subType": "Sub Type",
+        "retired": "No longer in the current build",
+        "noMetrics": "No metrics are recorded for this component."
       },
       "hardpoint": {
         "legend": {

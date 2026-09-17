@@ -326,7 +326,8 @@
           "notifications": "Notifications - Visual Tests"
         }
       },
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "component": "%{name}"
     }
   }
 }
