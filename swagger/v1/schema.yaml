@@ -217,12 +217,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Component"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -17611,7 +17605,6 @@ components:
     FeatureFlagName:
       type: string
       enum:
-      - components
       - fleet_allies
       - fleet_contracts
       - fleet_logistics
@@ -17632,7 +17625,6 @@ components:
       - ship_inventories
       - tour_payouts
       x-enumNames:
-      - COMPONENTS
       - FLEET_ALLIES
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS

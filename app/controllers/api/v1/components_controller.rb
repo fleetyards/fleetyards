@@ -5,12 +5,6 @@ module Api
     class ComponentsController < ::Api::PublicBaseController
       skip_verify_authorized only: %i[index show weapons]
 
-      # The catalogue's own surface, gated while it is being built. Only `show`:
-      # `index` and `weapons` are established endpoints that answered long
-      # before this flag existed, and gating them would take away something
-      # clients already have.
-      before_action :check_components_feature, only: [:show]
-
       after_action -> { pagination_header(:components) }, only: [:index]
 
       # Variants of a gun that exist only inside the game files — level-of-detail
@@ -81,12 +75,6 @@ module Api
       # is redundant beside the inner join and free beside the fallback one.
       private def current_version
         components_query_params.fetch(:current_version, true)
-      end
-
-      private def check_components_feature
-        return if feature_enabled?("components")
-
-        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
 
       private def components_query_params
