@@ -921,6 +921,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_170000) do
     t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
   end
 
+  create_table "fleet_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "ended_at"
+    t.uuid "fleet_id", null: false
+    t.string "granted_via", default: "manual", null: false
+    t.text "note"
+    t.date "started_at", null: false
+    t.uuid "supporter_contribution_id"
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "started_at", "ended_at"], name: "idx_on_fleet_id_started_at_ended_at_8e188918c2"
+    t.index ["fleet_id"], name: "index_fleet_subscriptions_on_active_fleet", unique: true, where: "(ended_at IS NULL)"
+    t.index ["supporter_contribution_id"], name: "index_fleet_subscriptions_on_supporter_contribution_id", where: "(supporter_contribution_id IS NOT NULL)"
+  end
+
   create_table "fleet_vehicles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "fleet_id"
@@ -2246,6 +2260,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_170000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade
+  add_foreign_key "fleet_subscriptions", "supporter_contributions", on_delete: :nullify
   add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
