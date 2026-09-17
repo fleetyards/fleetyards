@@ -2,6 +2,15 @@
   "it": {
     "actions": {
       "selectAll": "Seleziona tutto",
+      "announcements": {
+        "addPart": "Aggiungi",
+        "removePart": "Rimuovi",
+        "movePartUp": "Sposta su",
+        "movePartDown": "Sposta giù",
+        "sendTest": "Invia test",
+        "publish": "Invia",
+        "retry": "Riprova"
+      },
       "admin": {
         "dashboard": {
           "reloadModels": "Ricarica modelli",

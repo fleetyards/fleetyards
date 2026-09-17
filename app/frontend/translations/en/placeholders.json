@@ -110,6 +110,13 @@
         "code": "Code",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "What happened?",
+        "body": "Markdown. Shown in the inbox and in the e-mail.",
+        "discordPart": "One message",
+        "socialPart": "One post",
+        "link": "/fleets/"
+      },
       "fundingGoal": {
         "title": "Server costs, Domain, Discord...",
         "description": "Optional context shown publicly",

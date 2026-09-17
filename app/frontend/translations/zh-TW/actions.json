@@ -2,6 +2,15 @@
   "zh-TW": {
     "actions": {
       "selectAll": "全選",
+      "announcements": {
+        "addPart": "新增",
+        "removePart": "移除",
+        "movePartUp": "上移",
+        "movePartDown": "下移",
+        "sendTest": "發送測試",
+        "publish": "發送",
+        "retry": "重試"
+      },
       "admin": {
         "dashboard": {
           "reloadModels": "重新載入模型",

@@ -1,6 +1,13 @@
 ---
 es:
   validation_error:
+    announcement:
+      create: No se ha podido crear el anuncio.
+      update: No se ha podido actualizar el anuncio.
+      destroy: No se ha podido eliminar el anuncio.
+      already_published: Este anuncio ya se ha enviado.
+      delivery_not_retryable: Solo se puede reintentar un envío fallido u omitido.
+      test_not_configured: "No se ha podido probar el anuncio: el canal de Discord de administración no tiene webhook configurado."
     relationships:
       create: "No se ha podido enviar la solicitud."
       destroy: "No se ha podido eliminar la solicitud."

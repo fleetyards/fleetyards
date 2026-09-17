@@ -21,6 +21,7 @@
 #
 # Indexes
 #
+#  index_notifications_on_announcement_recipient   (user_id,record_id) UNIQUE WHERE (((notification_type)::text = 'announcement'::text) AND (record_id IS NOT NULL))
 #  index_notifications_on_expires_at               (expires_at)
 #  index_notifications_on_notification_type        (notification_type)
 #  index_notifications_on_record                   (record_type,record_id)

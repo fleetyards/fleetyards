@@ -143,6 +143,19 @@
         "importPaintsStarted": "Importazione delle verniciature avviata. Riceverai una notifica al termine.",
         "dimensionsDrifted": "Queste dimensioni differiscono dai file di gioco."
       },
+      "announcement": {
+        "created": "Annuncio creato.",
+        "updated": "Annuncio aggiornato.",
+        "destroyed": "Annuncio eliminato.",
+        "createFailed": "Impossibile creare l'annuncio.",
+        "updateFailed": "Impossibile aggiornare l'annuncio.",
+        "testSent": "Test inviato al canale Discord di amministrazione.",
+        "testFailed": "Impossibile inviare il test.",
+        "published": "L'annuncio è in viaggio.",
+        "publishFailed": "Impossibile inviare l'annuncio.",
+        "retryQueued": "Consegna rimessa in coda.",
+        "retryFailed": "Impossibile riprovare questa consegna."
+      },
       "fundingGoal": {
         "created": "Obiettivo di finanziamento creato.",
         "updated": "Obiettivo di finanziamento aggiornato.",
@@ -382,6 +395,10 @@
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "announcement": {
+          "publish": "Inviare questo annuncio a %{channels}? Non si può annullare.",
+          "destroy": "Vuoi davvero eliminare questo annuncio? L'azione non è reversibile."
         },
         "fundingGoal": {
           "destroy": "Sei sicuro di voler eliminare questo obiettivo di finanziamento? Questa azione non può essere annullata."

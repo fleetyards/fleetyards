@@ -137,3 +137,11 @@ PUT /supporter-contributions/{id} added the new `kofi` enum value to the `source
 GET /supporter-contributions removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
 GET /supporter-contributions/per-month removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
 GET /supporter-contributions/stats removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
+GET /admin_users added the new `announcements` enum value to the `items/items/resourceAccess/items/` response property for the response status `200`
+POST /admin_users added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/me added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+DELETE /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+PUT /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /resource-access-catalog added the new `announcements` enum value to the `items/privileges/items/` response property for the response status `200`
+POST /sessions added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`

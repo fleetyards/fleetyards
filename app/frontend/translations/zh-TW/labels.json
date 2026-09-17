@@ -993,6 +993,19 @@
         "iconOverridden": "圖示（已覆寫）",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "標題",
+        "body": "內文",
+        "discordParts": "Discord 訊息",
+        "socialParts": "社群貼文",
+        "link": "連結",
+        "notifyUsers": "應用內通知",
+        "postDiscord": "Discord 更新頻道",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "定時發送",
+        "publishAt": "發送時間"
+      },
       "fundingGoal": {
         "title": "標題",
         "description": "描述",
@@ -1800,6 +1813,40 @@
             "manual": "管理員設定"
           }
         },
+        "announcements": {
+          "columns": {
+            "title": "標題",
+            "status": "狀態",
+            "deliveries": "管道",
+            "recipients": "接收人數",
+            "publishedAt": "發送時間"
+          },
+          "statuses": {
+            "draft": "草稿",
+            "scheduled": "已排程",
+            "publishing": "發送中",
+            "published": "已發送",
+            "failed": "失敗"
+          },
+          "channels": {
+            "in_app": "應用內",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "待處理",
+            "succeeded": "已發送",
+            "skipped": "已略過",
+            "failed": "失敗"
+          },
+          "lastTested": "上次測試 %{time}",
+          "noChannel": "至少選擇一個管道。",
+          "notifyUsersInfo": "僅已開啟的人收到郵件。",
+          "discordPartsInfo": "留空：自動拆分。",
+          "socialPartsInfo": "留空：一則貼文，超長截斷。兩則以上：討論串。",
+          "partPosition": "第 %{position} / %{total} 則"
+        },
         "resourceAccess": {
           "title": "資源存取權",
           "groups": {
@@ -1818,6 +1865,7 @@
             "users": "使用者",
             "supporters": "支持者",
             "admins": "管理員",
+            "announcements": "公告",
             "oauth_applications": "OAuth 應用程式",
             "maintenance": "維護",
             "imports": "匯入",
@@ -2097,6 +2145,7 @@
         },
         "groups": {
           "account": "帳戶與機庫",
+          "announcements": "公告",
           "fleetMembership": "艦隊成員資格",
           "fleetEvents": "艦隊活動",
           "logistics": "物流",
@@ -2104,6 +2153,7 @@
           "tours": "行程",
           "fleetContracts": "艦隊合約"
         },
+        "announcement": "公告",
         "hangar_create": "機庫已建立",
         "hangar_destroy": "機庫已移除",
         "hangar_sync_finished": "機庫同步完成",

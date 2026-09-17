@@ -184,6 +184,14 @@ v1_admin_api_routes = lambda do
     end
   end
 
+  resources :announcements, only: %i[index show create update destroy] do
+    member do
+      put :publish
+      put "send-test", to: "announcements#send_test", as: :send_test
+      put "deliveries/:channel/retry", to: "announcements#retry_delivery", as: :retry_delivery
+    end
+  end
+
   resources :funding_goals, path: "funding-goals", only: %i[index show create update destroy]
   resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do
     collection do

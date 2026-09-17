@@ -254,6 +254,11 @@
           "rsiApiStatus": "Stato API RSI",
           "buildCompare": "Confronto build"
         },
+        "announcements": {
+          "index": "Annunci",
+          "new": "Nuovo annuncio",
+          "edit": "Modifica annuncio"
+        },
         "supporterContributions": {
           "index": "Contributi dei sostenitori",
           "new": "Nuovo contributo",

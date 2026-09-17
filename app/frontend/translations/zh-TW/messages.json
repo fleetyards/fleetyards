@@ -143,6 +143,19 @@
         "importPaintsStarted": "塗裝匯入已開始。完成後會通知您。",
         "dimensionsDrifted": "這些尺寸與遊戲檔案不一致。"
       },
+      "announcement": {
+        "created": "公告已建立。",
+        "updated": "公告已更新。",
+        "destroyed": "公告已刪除。",
+        "createFailed": "無法建立公告。",
+        "updateFailed": "無法更新公告。",
+        "testSent": "測試已發送到管理員 Discord 頻道。",
+        "testFailed": "無法發送測試。",
+        "published": "公告已開始發送。",
+        "publishFailed": "無法發送公告。",
+        "retryQueued": "投遞已重新排入佇列。",
+        "retryFailed": "無法重試此次投遞。"
+      },
       "fundingGoal": {
         "created": "募資目標已建立。",
         "updated": "募資目標已更新。",
@@ -382,6 +395,10 @@
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "announcement": {
+          "publish": "確定要把這則公告發送到 %{channels} 嗎？發送後無法收回。",
+          "destroy": "確定要刪除這則公告嗎？此操作無法復原。"
         },
         "fundingGoal": {
           "destroy": "確定要刪除此募資目標嗎？此操作無法復原。"

@@ -216,6 +216,14 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        announcement:
+          attributes:
+            discord_parts:
+              part_too_long: "%{platform} 第 %{position} 則為 %{length} 個字元，上限為 %{count}"
+            social_parts:
+              part_too_long: "%{platform} 第 %{position} 則為 %{length} 個字元，上限為 %{count}"
+            base:
+              no_channels: "至少需要一個管道"
         fleet_alliance:
           attributes:
             base:

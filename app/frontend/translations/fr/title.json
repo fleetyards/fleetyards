@@ -211,6 +211,11 @@
             "index": "Éditer le Fabricant"
           }
         },
+        "announcements": {
+          "index": "Annonces",
+          "new": "Nouvelle annonce",
+          "edit": "Modifier l'annonce"
+        },
         "supporterContributions": {
           "index": "Contributions des soutiens",
           "new": "Nouvelle contribution de soutien",

@@ -110,6 +110,13 @@
         "code": "代碼",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "發生了什麼？",
+        "body": "支援 Markdown。會顯示在收件匣與郵件中。",
+        "discordPart": "一則訊息",
+        "socialPart": "一則貼文",
+        "link": "/fleets/"
+      },
       "fundingGoal": {
         "title": "伺服器費用、網域、Discord...",
         "description": "選填，會公開顯示的說明",

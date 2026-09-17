@@ -77,6 +77,12 @@
             "index": "Hersteller bearbeiten"
           }
         },
+        "announcements": {
+          "index": "Ankündigungen",
+          "new": "Neue Ankündigung",
+          "edit": "Ankündigung bearbeiten",
+          "deliveries": "Zustellung"
+        },
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",
           "new": "Neuer Beitrag",

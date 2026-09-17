@@ -1,6 +1,13 @@
 ---
 it:
   validation_error:
+    announcement:
+      create: Impossibile creare l'annuncio.
+      update: Impossibile aggiornare l'annuncio.
+      destroy: Impossibile rimuovere l'annuncio.
+      already_published: Questo annuncio è già stato inviato.
+      delivery_not_retryable: È possibile riprovare solo una consegna fallita o saltata.
+      test_not_configured: "Impossibile testare l'annuncio: il canale Discord di amministrazione non ha un webhook configurato."
     relationships:
       create: "Impossibile inviare la richiesta."
       destroy: "Impossibile rimuovere la richiesta."

@@ -11,6 +11,7 @@ import { routes as oauthApplicationsRoutes } from "@/admin/pages/oauth-applicati
 import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
 import { routes as usersRoutes } from "@/admin/pages/users/routes";
 import { routes as supporterContributionsRoutes } from "@/admin/pages/supporter-contributions/routes";
+import { routes as announcementsRoutes } from "@/admin/pages/announcements/routes";
 import { RouteRecordRaw } from "vue-router";
 
 /*
@@ -184,6 +185,18 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-hand-holding-heart",
       access: ["supporters"],
+    },
+  },
+  {
+    path: "/announcements/",
+    component: () => import("@/admin/pages/announcements.vue"),
+    children: announcementsRoutes,
+    redirect: { name: announcementsRoutes[0].name },
+    meta: {
+      title: "admin.announcements.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-bullhorn",
+      access: ["announcements"],
     },
   },
   {

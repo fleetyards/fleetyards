@@ -1,6 +1,8 @@
 ---
 de:
   mailer:
+    announcement:
+      action: "Mehr erfahren"
     account:
       action: Kontoeinstellungen verwalten
     admin:

@@ -1,0 +1,18 @@
+---
+zh-TW:
+  announcements:
+    channels:
+      in_app: "應用內"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
+    discord:
+      first: "%{position}/%{total}"
+      continued: "↳ %{position}/%{total}"
+    deliveries:
+      not_configured: "該管道未設定憑證。"
+    preview:
+      title: "測試 — %{title}"
+      channels: "將發送至：%{channels}"
+      part_heading: "**%{channel} %{position}/%{total}**（%{count}/%{limit} 個字元）"
+      social_heading: "**%{channel}**（%{count}/%{limit} 個字元）"

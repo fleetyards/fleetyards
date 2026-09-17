@@ -110,6 +110,13 @@
         "code": "Code",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Que s'est-il passé ?",
+        "body": "Markdown. Affiché dans la boîte de réception et dans l'e-mail.",
+        "discordPart": "Un message",
+        "socialPart": "Un message",
+        "link": "/fleets/"
+      },
       "fundingGoal": {
         "title": "Coûts serveur, Domaine, Discord...",
         "description": "Contexte facultatif affiché publiquement",

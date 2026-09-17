@@ -1,6 +1,8 @@
 ---
 es:
   mailer:
+    announcement:
+      action: "Leer más"
     account:
       action: Administrar configuración de cuenta
     admin:

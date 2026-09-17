@@ -211,6 +211,11 @@
             "index": "Edit Manufacturer"
           }
         },
+        "announcements": {
+          "index": "Announcements",
+          "new": "New Announcement",
+          "edit": "Edit Announcement"
+        },
         "supporterContributions": {
           "index": "Supporter Contributions",
           "new": "New Supporter Contribution",

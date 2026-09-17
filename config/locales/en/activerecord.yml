@@ -217,6 +217,14 @@ en:
         inventory_goods_in_transit: "cannot be deleted while a transfer it sent is still waiting to be answered"
         position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
       models:
+        announcement:
+          attributes:
+            discord_parts:
+              part_too_long: "%{platform} post %{position} is %{length} characters, the limit is %{count}"
+            social_parts:
+              part_too_long: "%{platform} post %{position} is %{length} characters, the limit is %{count}"
+            base:
+              no_channels: "needs at least one channel"
         fleet_alliance:
           attributes:
             base:

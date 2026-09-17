@@ -216,6 +216,14 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        announcement:
+          attributes:
+            discord_parts:
+              part_too_long: "il post %{position} su %{platform} ha %{length} caratteri, il limite è %{count}"
+            social_parts:
+              part_too_long: "il post %{position} su %{platform} ha %{length} caratteri, il limite è %{count}"
+            base:
+              no_channels: "richiede almeno un canale"
         fleet_alliance:
           attributes:
             base:

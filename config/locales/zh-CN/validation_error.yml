@@ -1,6 +1,13 @@
 ---
 zh-CN:
   validation_error:
+    announcement:
+      create: "无法创建公告。"
+      update: "无法更新公告。"
+      destroy: "无法移除公告。"
+      already_published: "该公告已经发送。"
+      delivery_not_retryable: "只有失败或跳过的投递才能重试。"
+      test_not_configured: "无法测试公告：管理员 Discord 频道未配置 webhook。"
     relationships:
       create: "无法发送请求。"
       destroy: "无法移除请求。"

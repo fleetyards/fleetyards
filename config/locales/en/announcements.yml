@@ -1,0 +1,18 @@
+---
+en:
+  announcements:
+    channels:
+      in_app: "In-app"
+      discord: "Discord"
+      bluesky: "Bluesky"
+      x: "X.com"
+    discord:
+      first: "%{position}/%{total}"
+      continued: "↳ %{position}/%{total}"
+    deliveries:
+      not_configured: "This channel has no credentials configured."
+    preview:
+      title: "TEST — %{title}"
+      channels: "Would go to: %{channels}"
+      part_heading: "**%{channel} %{position}/%{total}** (%{count}/%{limit} characters)"
+      social_heading: "**%{channel}** (%{count}/%{limit} characters)"

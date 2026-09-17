@@ -34,6 +34,8 @@ fr:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Téléchargement des prêts réussi.
     record_not_found:
+      announcement: Aucune annonce trouvée
+      announcement_delivery: Aucun envoi d'annonce trouvé
       base: Aucune entrée trouvée
       fleet: Aucune flotte trouvée
       fleet_membership: Aucun membre de flotte trouvé

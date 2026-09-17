@@ -993,6 +993,19 @@
         "iconOverridden": "Icon (overridden)",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Title",
+        "body": "Body",
+        "discordParts": "Discord messages",
+        "socialParts": "Social posts",
+        "link": "Link",
+        "notifyUsers": "In-app notification",
+        "postDiscord": "Discord updates channel",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "Schedule",
+        "publishAt": "Send at"
+      },
       "fundingGoal": {
         "title": "Title",
         "description": "Description",
@@ -1814,6 +1827,40 @@
             "manual": "Set by an admin"
           }
         },
+        "announcements": {
+          "columns": {
+            "title": "Title",
+            "status": "Status",
+            "deliveries": "Channels",
+            "recipients": "Recipients",
+            "publishedAt": "Sent"
+          },
+          "statuses": {
+            "draft": "Draft",
+            "scheduled": "Scheduled",
+            "publishing": "Sending",
+            "published": "Sent",
+            "failed": "Failed"
+          },
+          "channels": {
+            "in_app": "In-app",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "Pending",
+            "succeeded": "Sent",
+            "skipped": "Skipped",
+            "failed": "Failed"
+          },
+          "lastTested": "Last tested %{time}",
+          "noChannel": "Pick at least one channel.",
+          "notifyUsersInfo": "E-mail only if they opted in.",
+          "discordPartsInfo": "Empty: split automatically.",
+          "socialPartsInfo": "Empty: one post, trimmed. Two or more: a thread.",
+          "partPosition": "%{position} of %{total}"
+        },
         "resourceAccess": {
           "title": "Resource Access",
           "groups": {
@@ -1832,6 +1879,7 @@
             "users": "Users",
             "supporters": "Supporters",
             "admins": "Admins",
+            "announcements": "Announcements",
             "oauth_applications": "OAuth Applications",
             "maintenance": "Maintenance",
             "imports": "Imports",
@@ -2111,6 +2159,7 @@
         },
         "groups": {
           "account": "Account & hangar",
+          "announcements": "Announcements",
           "fleetMembership": "Fleet membership",
           "fleetEvents": "Fleet events",
           "logistics": "Logistics",
@@ -2118,6 +2167,7 @@
           "tours": "Tours",
           "fleetContracts": "Fleet contracts"
         },
+        "announcement": "Announcement",
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
         "hangar_sync_finished": "Hangar sync finished",

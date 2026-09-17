@@ -1,6 +1,8 @@
 ---
 fr:
   mailer:
+    announcement:
+      action: "En savoir plus"
     account:
       action: Gérer les paramètres du compte
     admin:

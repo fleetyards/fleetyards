@@ -153,6 +153,19 @@
         "importPaintsStarted": "Paint import started. You will be notified when it completes.",
         "dimensionsDrifted": "These dimensions differ from the game files."
       },
+      "announcement": {
+        "created": "Announcement created.",
+        "updated": "Announcement updated.",
+        "destroyed": "Announcement deleted.",
+        "createFailed": "Could not create announcement.",
+        "updateFailed": "Could not update announcement.",
+        "testSent": "Test sent to the admin Discord channel.",
+        "testFailed": "Could not send the test.",
+        "published": "Announcement is on its way.",
+        "publishFailed": "Could not send announcement.",
+        "retryQueued": "Delivery queued again.",
+        "retryFailed": "Could not retry this delivery."
+      },
       "fundingGoal": {
         "created": "Funding goal created.",
         "updated": "Funding goal updated.",
@@ -392,6 +405,10 @@
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "announcement": {
+          "publish": "Send this announcement to %{channels}? It cannot be recalled.",
+          "destroy": "Are you sure you want to delete this announcement? This action can't be reverted."
         },
         "fundingGoal": {
           "destroy": "Are you sure you want to delete this funding goal? This action can't be reverted."

@@ -993,6 +993,19 @@
         "iconOverridden": "Icona (sovrascritta)",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Titolo",
+        "body": "Testo",
+        "discordParts": "Messaggi Discord",
+        "socialParts": "Post social",
+        "link": "Link",
+        "notifyUsers": "Notifica in-app",
+        "postDiscord": "Canale aggiornamenti Discord",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "Pianifica",
+        "publishAt": "Invia il"
+      },
       "fundingGoal": {
         "title": "Titolo",
         "description": "Descrizione",
@@ -1800,6 +1813,40 @@
             "manual": "Impostato da un admin"
           }
         },
+        "announcements": {
+          "columns": {
+            "title": "Titolo",
+            "status": "Stato",
+            "deliveries": "Canali",
+            "recipients": "Destinatari",
+            "publishedAt": "Inviato"
+          },
+          "statuses": {
+            "draft": "Bozza",
+            "scheduled": "Pianificato",
+            "publishing": "In invio",
+            "published": "Inviato",
+            "failed": "Fallito"
+          },
+          "channels": {
+            "in_app": "In-app",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "In attesa",
+            "succeeded": "Inviato",
+            "skipped": "Saltato",
+            "failed": "Fallito"
+          },
+          "lastTested": "Ultimo test %{time}",
+          "noChannel": "Scegli almeno un canale.",
+          "notifyUsersInfo": "E-mail solo se attivata.",
+          "discordPartsInfo": "Vuoto: diviso automaticamente.",
+          "socialPartsInfo": "Vuoto: un post tagliato. Da due: un thread.",
+          "partPosition": "%{position} di %{total}"
+        },
         "resourceAccess": {
           "title": "Accesso alle risorse",
           "groups": {
@@ -1818,6 +1865,7 @@
             "users": "Utenti",
             "supporters": "Sostenitori",
             "admins": "Admin",
+            "announcements": "Annunci",
             "oauth_applications": "Applicazioni OAuth",
             "maintenance": "Manutenzione",
             "imports": "Importazioni",
@@ -2097,6 +2145,7 @@
         },
         "groups": {
           "account": "Account e hangar",
+          "announcements": "Annunci",
           "fleetMembership": "Iscrizione alla flotta",
           "fleetEvents": "Eventi della flotta",
           "logistics": "Logistica",
@@ -2104,6 +2153,7 @@
           "tours": "Spedizioni",
           "fleetContracts": "Contratti della flotta"
         },
+        "announcement": "Annuncio",
         "hangar_create": "Hangar creato",
         "hangar_destroy": "Hangar rimosso",
         "hangar_sync_finished": "Sincronizzazione hangar completata",

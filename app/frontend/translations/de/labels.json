@@ -993,6 +993,19 @@
         "iconOverridden": "Icon (überschrieben)",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "Titel",
+        "body": "Text",
+        "discordParts": "Discord-Nachrichten",
+        "socialParts": "Social-Posts",
+        "link": "Link",
+        "notifyUsers": "In-App-Benachrichtigung",
+        "postDiscord": "Discord-Updates-Kanal",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "Planen",
+        "publishAt": "Senden am"
+      },
       "fundingGoal": {
         "title": "Titel",
         "description": "Beschreibung",
@@ -1800,6 +1813,40 @@
             "manual": "Von einem Admin gesetzt"
           }
         },
+        "announcements": {
+          "columns": {
+            "title": "Titel",
+            "status": "Status",
+            "deliveries": "Kanäle",
+            "recipients": "Empfänger",
+            "publishedAt": "Gesendet"
+          },
+          "statuses": {
+            "draft": "Entwurf",
+            "scheduled": "Geplant",
+            "publishing": "Wird gesendet",
+            "published": "Gesendet",
+            "failed": "Fehlgeschlagen"
+          },
+          "channels": {
+            "in_app": "In-App",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "Ausstehend",
+            "succeeded": "Gesendet",
+            "skipped": "Übersprungen",
+            "failed": "Fehlgeschlagen"
+          },
+          "lastTested": "Zuletzt getestet %{time}",
+          "noChannel": "Wähle mindestens einen Kanal.",
+          "notifyUsersInfo": "E-Mail nur bei aktivierter Option.",
+          "discordPartsInfo": "Leer: wird automatisch aufgeteilt.",
+          "socialPartsInfo": "Leer: ein gekürzter Post. Ab zwei: ein Thread.",
+          "partPosition": "%{position} von %{total}"
+        },
         "resourceAccess": {
           "title": "Ressourcenzugriff",
           "groups": {
@@ -1818,6 +1865,7 @@
             "users": "Benutzer",
             "supporters": "Unterstützer",
             "admins": "Admins",
+            "announcements": "Ankündigungen",
             "oauth_applications": "OAuth-Anwendungen",
             "maintenance": "Wartung",
             "imports": "Importe",
@@ -2097,6 +2145,7 @@
         },
         "groups": {
           "account": "Konto & Hangar",
+          "announcements": "Ankündigungen",
           "fleetMembership": "Flottenmitgliedschaft",
           "fleetEvents": "Flotten-Events",
           "logistics": "Logistik",
@@ -2104,6 +2153,7 @@
           "tours": "Touren",
           "fleetContracts": "Flotten-Aufträge"
         },
+        "announcement": "Ankündigung",
         "hangar_create": "Hangar erstellt",
         "hangar_destroy": "Hangar entfernt",
         "hangar_sync_finished": "Hangar-Sync abgeschlossen",

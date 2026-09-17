@@ -1,0 +1,15 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= @notification.title %>
+</mj-text>
+
+<%# The body is markdown, the same text the in-app notification renders. %>
+<mj-text>
+  <%= render_markdown(@notification.body) %>
+</mj-text>
+
+<% if @announcement&.absolute_link.present? %>
+  <%= render "shared/mailer/btn",
+             href: @announcement.absolute_link,
+             label: I18n.t("mailer.announcement.action"),
+             tone: :primary %>
+<% end %>

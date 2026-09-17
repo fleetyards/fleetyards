@@ -63,6 +63,9 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_contract_crew_requested: "openContract",
   fleet_contract_crew_answered: "openContract",
   fleet_contract_fulfilled: "openContract",
+  // The one type whose link an admin writes by hand, so there is nothing more
+  // specific to promise than what the generic fallback already says.
+  announcement: "open",
 };
 
 const ACTION_ICONS: Record<string, string> = {

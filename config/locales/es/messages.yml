@@ -33,6 +33,8 @@ es:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Subida de préstamos exitosa.
     record_not_found:
+      announcement: No se encontró anuncio
+      announcement_delivery: No se encontró envío del anuncio
       base: No se encontró entrada
       fleet: No se encontró flota
       fleet_membership: No se encontró miembro de flota

@@ -110,6 +110,13 @@
         "code": "代码",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "发生了什么？",
+        "body": "支持 Markdown。会显示在收件箱和邮件中。",
+        "discordPart": "一条消息",
+        "socialPart": "一条帖子",
+        "link": "/fleets/"
+      },
       "fundingGoal": {
         "title": "服务器费用、域名、Discord...",
         "description": "可选说明，将公开显示",

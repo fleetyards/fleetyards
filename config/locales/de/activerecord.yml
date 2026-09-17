@@ -216,6 +216,14 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        announcement:
+          attributes:
+            discord_parts:
+              part_too_long: "%{platform}-Beitrag %{position} hat %{length} Zeichen, erlaubt sind %{count}"
+            social_parts:
+              part_too_long: "%{platform}-Beitrag %{position} hat %{length} Zeichen, erlaubt sind %{count}"
+            base:
+              no_channels: "braucht mindestens einen Kanal"
         fleet_alliance:
           attributes:
             base:

@@ -2,6 +2,15 @@
   "fr": {
     "actions": {
       "selectAll": "Tout sélectionner",
+      "announcements": {
+        "addPart": "Ajouter",
+        "removePart": "Retirer",
+        "movePartUp": "Monter",
+        "movePartDown": "Descendre",
+        "sendTest": "Envoyer un test",
+        "publish": "Envoyer",
+        "retry": "Réessayer"
+      },
       "admin": {
         "dashboard": {
           "reloadModels": "Recharger les modèles",

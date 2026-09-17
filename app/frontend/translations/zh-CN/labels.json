@@ -993,6 +993,19 @@
         "iconOverridden": "图标（已覆盖）",
         "scRef": "SC Ref"
       },
+      "announcement": {
+        "title": "标题",
+        "body": "正文",
+        "discordParts": "Discord 消息",
+        "socialParts": "社交平台帖子",
+        "link": "链接",
+        "notifyUsers": "应用内通知",
+        "postDiscord": "Discord 更新频道",
+        "postBluesky": "Bluesky",
+        "postX": "X.com",
+        "schedule": "定时发送",
+        "publishAt": "发送时间"
+      },
       "fundingGoal": {
         "title": "标题",
         "description": "描述",
@@ -1800,6 +1813,40 @@
             "manual": "管理员设置"
           }
         },
+        "announcements": {
+          "columns": {
+            "title": "标题",
+            "status": "状态",
+            "deliveries": "渠道",
+            "recipients": "接收人数",
+            "publishedAt": "发送时间"
+          },
+          "statuses": {
+            "draft": "草稿",
+            "scheduled": "已排期",
+            "publishing": "发送中",
+            "published": "已发送",
+            "failed": "失败"
+          },
+          "channels": {
+            "in_app": "应用内",
+            "discord": "Discord",
+            "bluesky": "Bluesky",
+            "x": "X.com"
+          },
+          "deliveryStatuses": {
+            "pending": "待处理",
+            "succeeded": "已发送",
+            "skipped": "已跳过",
+            "failed": "失败"
+          },
+          "lastTested": "上次测试 %{time}",
+          "noChannel": "至少选择一个渠道。",
+          "notifyUsersInfo": "仅已开启的人收到邮件。",
+          "discordPartsInfo": "留空：自动拆分。",
+          "socialPartsInfo": "留空：一条帖子，超长截断。两条以上：话题串。",
+          "partPosition": "第 %{position} / %{total} 条"
+        },
         "resourceAccess": {
           "title": "资源权限",
           "groups": {
@@ -1818,6 +1865,7 @@
             "users": "用户",
             "supporters": "支持者",
             "admins": "管理员",
+            "announcements": "公告",
             "oauth_applications": "OAuth 应用",
             "maintenance": "维护",
             "imports": "导入",
@@ -2097,6 +2145,7 @@
         },
         "groups": {
           "account": "账户与机库",
+          "announcements": "公告",
           "fleetMembership": "舰队成员资格",
           "fleetEvents": "舰队活动",
           "logistics": "物流",
@@ -2104,6 +2153,7 @@
           "tours": "行程",
           "fleetContracts": "舰队合约"
         },
+        "announcement": "公告",
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
         "hangar_sync_finished": "机库同步完成",

@@ -95,3 +95,7 @@ inventories_expire_transfers_job:
   class: 'Inventories::ExpireTransfersJob'
   queue: 'default'
   enabled: <%= Rails.env.production? %>
+announcements_publish_scheduled_job:
+  cron: '*/5 * * * *' # Every 5 Minutes
+  class: 'Announcements::PublishScheduledJob'
+  queue: 'notifications'

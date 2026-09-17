@@ -34,6 +34,8 @@ en:
       fleet_still_exists: A fleet with this id still exists and cannot be restored.
       fid_taken: Another fleet is already using this fleet's FID, so it cannot be restored.
     record_not_found:
+      announcement: No Announcement found
+      announcement_delivery: No Announcement Delivery found
       base: No Entry found
       fleet: No Fleet found
       fleet_membership: No Fleet Member found

@@ -479,6 +479,7 @@ GET /models/{slug}/variants added the new `Equipment` enum value to the `items/i
 GET /models/{slug}/variants added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/variants added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/variants the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /notification-preferences added the new `announcement` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_ally_request_accepted` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_ally_request_received` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_contract_claimed` enum value to the `items/notificationType` response property for the response status `200`
@@ -514,6 +515,7 @@ GET /notification-preferences added the new `inventory_transfer_received` enum v
 GET /notification-preferences added the new `inventory_transfer_resolved` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `tour_join_request_accepted` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `tour_join_request_received` enum value to the `items/notificationType` response property for the response status `200`
+GET /notifications added the new `announcement` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_ally_request_accepted` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_ally_request_received` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_contract_claimed` enum value to the `items/items/notificationType` response property for the response status `200`
@@ -1120,6 +1122,7 @@ PUT /hangar/inventories/{hangarInventorySlug}/items/{id} added the new `Equipmen
 PUT /hangar/inventories/{hangarInventorySlug}/items/{id} removed the required property `details` from the response with the `400` status
 PUT /hangar/inventories/{hangarInventorySlug}/items/{id} removed the required property `error` from the response with the `400` status
 PUT /hangar/inventories/{slug} removed the required property `itemCount` from the response with the `200` status
+PUT /notification-preferences/{id} added the new `announcement` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_ally_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_ally_request_received` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_contract_claimed` enum value to the `notificationType` response property for the response status `200`
@@ -1155,6 +1158,7 @@ PUT /notification-preferences/{id} added the new `inventory_transfer_received` e
 PUT /notification-preferences/{id} added the new `inventory_transfer_resolved` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `announcement` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/archive added the new `fleet_ally_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/archive added the new `fleet_ally_request_received` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/archive added the new `fleet_contract_claimed` enum value to the `notificationType` response property for the response status `200`
@@ -1169,6 +1173,7 @@ PUT /notifications/{id}/archive added the new `inventory_transfer_received` enum
 PUT /notifications/{id}/archive added the new `inventory_transfer_resolved` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/archive added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/archive added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `announcement` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_ally_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_ally_request_received` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_contract_claimed` enum value to the `notificationType` response property for the response status `200`
@@ -1205,6 +1210,7 @@ PUT /notifications/{id}/read added the new `inventory_transfer_received` enum va
 PUT /notifications/{id}/read added the new `inventory_transfer_resolved` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `announcement` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `fleet_ally_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `fleet_ally_request_received` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `fleet_contract_claimed` enum value to the `notificationType` response property for the response status `200`
@@ -1219,6 +1225,7 @@ PUT /notifications/{id}/unarchive added the new `inventory_transfer_received` en
 PUT /notifications/{id}/unarchive added the new `inventory_transfer_resolved` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `announcement` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_ally_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_ally_request_received` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_contract_claimed` enum value to the `notificationType` response property for the response status `200`

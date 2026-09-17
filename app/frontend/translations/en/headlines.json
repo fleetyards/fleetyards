@@ -79,6 +79,12 @@
             "index": "Edit Manufacturer"
           }
         },
+        "announcements": {
+          "index": "Announcements",
+          "new": "New Announcement",
+          "edit": "Edit Announcement",
+          "deliveries": "Delivery"
+        },
         "supporterContributions": {
           "index": "Supporter Contributions",
           "new": "New Supporter Contribution",
