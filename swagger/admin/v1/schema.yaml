@@ -10052,12 +10052,6 @@ components:
             type: string
         inventoryConsumption:
           "$ref": "#/components/schemas/ComponentInventoryConsumption"
-        ammunition:
-          "$ref": "#/components/schemas/ComponentAmmunition"
-        powerConnection:
-          "$ref": "#/components/schemas/ComponentPowerConnection"
-        heatConnection:
-          "$ref": "#/components/schemas/ComponentHeatConnection"
         grade:
           type: string
         gradeLabel:
@@ -10121,17 +10115,6 @@ components:
       - createdAt
       - updatedAt
       title: Component
-    ComponentAmmunition:
-      type: object
-      properties:
-        maxAmmoCount:
-          type: number
-        initialAmmoCount:
-          type: number
-        maxRestockCount:
-          type: number
-      additionalProperties: false
-      title: ComponentAmmunition
     ComponentAngularVelocity:
       type: object
       properties:
@@ -10269,17 +10252,17 @@ components:
           "$ref": "#/components/schemas/ComponentDamageRange"
       additionalProperties: false
       title: ComponentDamageTypeMap
-    ComponentHeatConnection:
+    ComponentDimensions:
       type: object
       properties:
-        thermalEnergyBase:
+        x:
           type: number
-        thermalEnergyDraw:
+        "y":
           type: number
-        coolingRate:
+        z:
           type: number
       additionalProperties: false
-      title: ComponentHeatConnection
+      title: ComponentDimensions
     ComponentInput:
       type: object
       properties:
@@ -10324,15 +10307,7 @@ components:
         microScu:
           type: number
         dimensions:
-          type: object
-          properties:
-            x:
-              type: number
-            "y":
-              type: number
-            z:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentDimensions"
       additionalProperties: false
       title: ComponentInventoryConsumption
     ComponentItemClassEnum:
@@ -10372,15 +10347,6 @@ components:
           type: number
       additionalProperties: false
       title: ComponentPingProperties
-    ComponentPowerConnection:
-      type: object
-      properties:
-        powerBase:
-          type: number
-        powerDraw:
-          type: number
-      additionalProperties: false
-      title: ComponentPowerConnection
     ComponentPowerPlant:
       type: object
       properties:

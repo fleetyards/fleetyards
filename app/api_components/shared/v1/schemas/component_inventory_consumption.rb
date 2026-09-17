@@ -11,15 +11,7 @@ module Shared
           type: :object,
           properties: {
             microScu: {type: :number},
-            dimensions: {
-              type: :object,
-              properties: {
-                x: {type: :number},
-                y: {type: :number},
-                z: {type: :number}
-              },
-              additionalProperties: false
-            }
+            dimensions: ::Shared::V1::Schemas::ComponentDimensions
           },
           additionalProperties: false
         })

@@ -29,9 +29,6 @@ module Shared
             requiredTags: {type: :array, items: {type: :string}},
 
             inventoryConsumption: ::Shared::V1::Schemas::ComponentInventoryConsumption,
-            ammunition: ::Shared::V1::Schemas::ComponentAmmunition,
-            powerConnection: ::Shared::V1::Schemas::ComponentPowerConnection,
-            heatConnection: ::Shared::V1::Schemas::ComponentHeatConnection,
 
             grade: {type: :string},
             gradeLabel: {type: :string},

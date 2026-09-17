@@ -130,4 +130,60 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
     end
   end
+  # The index overwrote whatever sort arrived with "name asc" until this
+  # branch, so none of the paths below had ever run.
+  test "GET /components sorts by name, both directions" do
+    create(:component, name: "Zeus Cannon")
+    create(:component, name: "Alpha Cannon")
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["name desc"]}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_equal names.sort.reverse, names
+    end
+  end
+
+  # `q[s]` is what a sortable list actually sends; ransack reads it directly, so
+  # a leftover would outrank the whitelisted `sorts`.
+  test "GET /components accepts the s parameter as well as sorts" do
+    create(:component, name: "Zeus Cannon")
+    create(:component, name: "Alpha Cannon")
+
+    assert_api_response :get, 200, params: {q: {"s" => "name desc"}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_equal names.sort.reverse, names
+    end
+  end
+
+  # The point of moving `type_data` to jsonb: a figure inside it can order the
+  # whole result set, not one page of it.
+  test "GET /components sorts on a metric inside typeData" do
+    create(:component, name: "Weak Shield", type_data: {"max_health" => 100})
+    create(:component, name: "Strong Shield", type_data: {"max_health" => 9000})
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["maxHealth desc"], "nameCont" => "Shield"}} do
+      assert_equal ["Strong Shield", "Weak Shield"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  # The sort list is an enum in the schema, so a value outside it is refused at
+  # the door with a 400 naming what is allowed -- rather than reaching ransack,
+  # which would raise on an unknown attribute, or being dropped silently.
+  test "GET /components refuses a sort it does not offer" do
+    # A plain request rather than `assert_api_response`: the 400 here is the
+    # schema validator's own, injected into every operation, and declaring it
+    # on this path would replace that injected response.
+    get "/api/v1/components", params: {q: {"sorts" => ["sneakyColumn desc"]}}
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["details"].to_s, "is not one of"
+  end
+
+  test "GET /components searches the description, not only the name" do
+    match = create(:component, name: "Nothing Obvious", description: "a quantum enforcement device")
+    create(:component, name: "Other", description: "something else")
+
+    assert_api_response :get, 200, params: {q: {"descriptionCont" => "enforcement"}} do
+      assert_equal [match.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
 end

@@ -3,16 +3,16 @@
 module Shared
   module V1
     module Schemas
-      # Carried by the 376 components that hold ammunition of their own.
-      class ComponentAmmunition
+      # The physical size of one item, in metres.
+      class ComponentDimensions
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            maxAmmoCount: {type: :number},
-            initialAmmoCount: {type: :number},
-            maxRestockCount: {type: :number}
+            x: {type: :number},
+            y: {type: :number},
+            z: {type: :number}
           },
           additionalProperties: false
         })
