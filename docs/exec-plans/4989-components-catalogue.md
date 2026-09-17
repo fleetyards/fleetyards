@@ -476,9 +476,33 @@ proper YAML, which is why the damage stops at `4.9.0-live.12344265` and never to
 **No live write path is affected**, and the migration converts the residue rather than leaving
 it. Nothing to fix beyond what Phase 1 already does.
 
+### Phase 2 corrections, found while building it
+
+Three of Phase 2's planned steps were wrong as written, and the code said so:
+
+1. **`availability` cannot move behind `extended`.** It is a `required` property in the
+   schema, so a list omitting it breaks every client — and gating it saves nothing, because
+   `item_prices_cache_key` already loads `item_prices` for every component to build the cache
+   key. Only `hardpoints` moves; it is optional and is the real per-row association hit.
+2. **The two dead filter endpoints are deprecated, not removed.** `oasdiff` confirms removing
+   a public path is `api-path-removed-without-deprecation`. Their query params stay permitted
+   as well: dropping a param does not error, it silently stops filtering, so a client asking
+   for nothing would suddenly receive everything. The catalogue simply will not offer them.
+3. **`tags` is held back from the payload.** The parser double-encodes it for every component
+   in the tree — `["[\"flightReady\"]"]`, 4,000 of 4,000 sampled — so publishing it would
+   ship visibly broken values. Filed as **#5002**; `required_tags` is clean and ships.
+
+Also learned: **ransack ignores a non-whitelisted attribute in silence.** The metric
+ransackers looked right and did nothing — a `max_health_gteq` filter returned all 8,740 rows
+and the sort produced no `ORDER BY` — until the names were added to `ransackable_attributes`.
+Only running it against real data showed it.
+
+And `size` is not offered as a sort: the column is a string holding `"10"` and `"12"` beside
+`"M"` and `"S"`, so ordering it puts 10 and 12 ahead of 2.
+
 ## Progress
 
 - [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
-- [ ] Phase 2 — The API (PR 2)
+- [x] Phase 2 — The API (PR 2)
 - [ ] Phase 3 — The metric renderer (PR 3)
 - [ ] Phase 4 — The pages (PR 4) — blocked on #4988's shell
