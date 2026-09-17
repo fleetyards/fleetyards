@@ -1,0 +1,460 @@
+# Components — a public catalogue with per-category metrics
+
+## Goal
+
+A public Components catalogue: 1,282 equippable components across 20 categories, each with
+its own stable URL, searchable and filterable, sortable on the metrics that matter, and a
+detail page that renders every figure we hold for that component's category — with every
+hardpoint on every ship page linking into it.
+
+## Context
+
+Resolves #4989.
+
+Components are the largest body of game data on the site with no public surface at all. The
+only way to see one today is to find a ship that happens to mount it, where a hardpoint row
+renders a name, a manufacturer and a size and stops. There is no `/components/`, no detail
+page, and no `show` action to build one on — `config/routes/api/components_routes.rb` is
+`resources :components, only: [:index]` plus a `weapons` collection route.
+
+Measured against `live 4.10.0-live.12519617`, the source `ScData::Source.current` resolves to.
+
+Related: #4988 (a public Blueprints catalogue). Both issues add the first public sc_data
+catalogue this site has ever had. #4988's D8 settles the shared shell; this plan consumes it
+rather than re-deciding it (D7 below).
+
+Every count in the issue body was re-measured against the local production dump. All of them
+hold except three, corrected in D1, D2 and D8 — and each correction changes the work.
+
+## Decisions
+
+Eleven decisions were open on the issue. Five were put to the user and are recorded with what
+was chosen; the rest are taken as the research settled them.
+
+### D1 — Named, with metrics, minus the per-ship structure
+
+**Chosen: `current_version` + `hidden = false` + name present + `type_data` present, minus the
+`seat`, `controller` and `fueltanks` categories. 1,282 rows.**
+
+One predicate, applied identically by the list and the detail page — otherwise a hardpoint
+links to a component the list refuses to show.
+
+The `type_data` predicate does the heavy lifting: it drops all 954 paints, which carry no
+`type_data` and already have a surface as ship paints. What it does **not** drop — and the
+issue assumed it would — is the per-ship structural furniture, which carries `type_data` and
+sailed through:
+
+| category | rows | what they are |
+|---|---|---|
+| `fueltanks` | 319 | `htnk_<ship>` / `qtnk_<ship>` — **every one is a per-ship internal tank**. There is no equippable fuel tank in this category at all. |
+| `seat` | 269 | cockpit displays, 248 of them named "TRGT. STATUS" |
+| `controller` | 226 | per-ship shield and power controllers, 139 named "SHIELDS" |
+
+814 rows, 39% of the 2,096 the predicate alone yields, and the same rows that produce the
+worst slug collisions (313 + 248 + 139 = 700 of 1,374). Excluding the three categories is a
+whole-category rule, not a name heuristic — verified: no equippable member hides in any of
+them.
+
+**What ships:**
+
+| category | rows | | category | rows |
+|---|---|---|---|---|
+| weapons | 303 | | thrusters | 15 |
+| countermeasures | 166 | | bombcompartments | 13 |
+| missile_racks | 142 | | refuel_boom | 8 |
+| turret | 124 | | lifesupport | 7 |
+| armor | 87 | | selfdestruct | 7 |
+| powerplant | 78 | | fuel_intakes | 5 |
+| cooler | 74 | | jumpdrive | 4 |
+| shieldgenerator | 66 | | quantumenforcementdevice | 4 |
+| radar | 61 | | module | 1 |
+| utility | 59 | | **total** | **1,282** |
+| quantumdrive | 58 | | | |
+
+1,152 of the 1,282 (90%) carry a manufacturer. All 1,282 carry an `sc_key`.
+
+**Known residual, not resolved here:** 112 of the 124 `turret` rows are per-ship "Manned
+Turret" entries — the same pattern as the three excluded categories, one layer down. They are
+left in because the category also holds real, mountable turrets, so excluding it wholesale
+would lose them. Whether the predicate grows a fourth exclusion or a narrower per-row rule is
+a call to make when the list is on screen and the noise is visible; it moves a constant, not
+the architecture.
+
+### D2 — A real unique slug, with a migration
+
+**Chosen: a unique slug, over `sc_key` or the UUID in the URL.**
+
+`slug` is unusable as it stands. It has **no index at all** — not even a non-unique one
+(`db/schema.rb:322-330` lists only `manufacturer_id`, `name`, `sc_key` unique, and `version`)
+— and `Component` inherits the bare `ApplicationRecord#update_slugs`, which is
+`self.slug = generate_slug(name)` with no disambiguation (`app/models/application_record.rb:70`).
+
+**The issue understates this badly.** Its worst case is `pc2-dual-s4-mount` shared by six rows.
+Measured against the visible current set, the real worst is **`internal-tank` shared by 313
+rows**, then `trgt-status` × 248, `remote-turret` × 143, `shields` × 139, `manned-turret` × 121.
+The issue's example only reproduces if you ignore `current_version` and `hidden` and look
+across every component ever loaded. "Worst is 6" reads as a nuisance; "worst is 313" is a
+structural collision, and it is what rules out keeping `slug` as-is.
+
+After D1's exclusions the picture improves but does not resolve:
+
+| | |
+|---|---|
+| catalogue rows | 1,282 |
+| in a colliding slug group | **625 (48.8%)** across 122 slug values |
+| worst remaining | `manned-turret` × 112, `joker-defcon-noise-launcher` × 48, `aegis-gladius-decoy-launcher` × 41 |
+| with no `sc_key` to disambiguate with | **0** |
+
+So `sc_key` disambiguates every catalogue row — but roughly half of all catalogue URLs will
+carry a suffix, which is a fact to design the slug format around rather than discover later.
+
+Rejected: **`sc_key` in the URL** — unique and indexed already, zero migration, but ugly
+(`behr_lasercannon_s3`), worthless for search, and blank on 1,404 components. Rejected: **the
+UUID** — free and total, and no public catalogue wants it.
+
+**The migration has a trap the catalogue set hides.** A unique index is table-wide, and the
+table holds 1,404 named rows with **no `sc_key`** — all of them outside the catalogue, all of
+them currently colliding freely. The index must therefore either be partial, or the backfill
+needs a fallback suffix for rows `sc_key` cannot disambiguate. Decide which before writing the
+migration; a plain `add_index unique: true` fails on the existing data.
+
+Reuse rather than reinvent: `Model` already carries `legacy_slug` plus
+`redirect_to_canonical_slug` issuing a 301 (`app/controllers/frontend/base_controller.rb:192-198`),
+which is the mechanism for keeping an old URL alive when a slug changes under a game patch.
+
+### D3 — One payload with an `extended:` flag
+
+The issue proposes a list payload and a detail payload. `Model` already solved this more
+cheaply and it is the pattern to copy: `_model.jbuilder` folds `extended` **into the cache
+key** and `_base.jbuilder` gates only the genuinely expensive parts behind it:
+
+```ruby
+json.cache! ["v1", model, ::ScData::Source.current, Manufacturer.artwork_version,
+             local_assigns.fetch(:extended, false)] do
+  json.partial!("api/v1/models/base", model:, extended: ...)
+end
+```
+
+The same record safely caches two shapes. For components the heavy parts to gate are
+`hardpoints` and `availability` — the two the `weapons` endpoint was built to escape, because
+"the full component serializer is far too heavy for ~200 rows" and a catalogue page is 1,282.
+
+Anything that depends on records other than this one goes **outside** the cached fragment, the
+way `show.jbuilder` appends `carried_by`.
+
+Also folded in here, because they are the same file: the payload gains `description`, `tags`,
+`required_tags`, `inventoryConsumption`, `ammunition` and the power/heat block. `tags` and
+`required_tags` decide which port an item fits, which is exactly what a catalogue visitor is
+asking. **The cache key must change or none of it is visible** — `_component.jbuilder` keys on
+`["v1", component, source, item_prices_cache_key, Manufacturer.artwork_version]`.
+
+### D4 — Reuse `useHardpointStats`; it is already the per-category renderer
+
+The issue frames D4 as thirteen renderers to write from scratch. Half of them already exist.
+`app/frontend/frontend/composables/useHardpointStats.ts` branches on category and emits an
+ordered, labelled `HardpointStat[]` for **one** component — weapons, shieldgenerator, cooler,
+powerplant, quantumdrive, jumpdrive, the four thruster categories, radar, countermeasures,
+armor, fuel_intakes, and tractor beams by a `tractorBeam` flag.
+
+Measured against D1's 20 categories: **10 are covered, 10 are not.**
+
+Better still, its 177 `labels.hardpoint.*` keys **already exist in all seven locales** and are
+genuinely translated (149 of 177 differ between `en` and `de`; the 28 that match are units and
+proper nouns). This removes what the issue called "the bulk of the translation work" — see D9.
+
+Three things it needs before a detail page can use it:
+
+1. **A category mapping.** It keys off `HardpointCategoryEnum`, the **slot** vocabulary, not
+   `Component#category`. The enum splits thrusters four ways (`main_`, `retro_`, `vtol_`,
+   `maneuvering_thrusters`) and adds `external_fuel_tanks` and `emp`. A component whose own
+   category is `thrusters` matches **no** branch. Without the mapping the thruster rows render
+   nothing.
+2. **Nine new branches.** These D1 categories have no renderer today and render nothing:
+
+   | category | rows | | category | rows |
+   |---|---|---|---|---|
+   | `missile_racks` | 142 | | `lifesupport` | 7 |
+   | `turret` | 124 | | `selfdestruct` | 7 |
+   | `utility` | 59 | | `quantumenforcementdevice` | 4 |
+   | `bombcompartments` | 13 | | `module` | 1 |
+   | `refuel_boom` | 8 | | | |
+
+   `missile_racks` and `turret` alone are 266 rows — 21% of the catalogue — so this is not a
+   tail of oddities. (`fueltanks` is excluded by D1, so no `capacity` branch is needed.)
+3. **The shared powered-item block.** `powerRanges`, `signatureEm`, `signatureIr`,
+   `powerConsumption` and `powerMinimumFraction` are carried by every powered category and are
+   rendered **nowhere today** — a grep for all five across the composable returns zero hits.
+   The acceptance criteria require this block explicitly, so it is new work.
+
+The ship-context couplings are not a problem: `quantumFuelTankSize`, `weaponPowerRatio` and
+`powerPlantContextKey` are all `inject(..., undefined)` behind guards, so off a ship page the
+ship-dependent figures simply drop out. Signature changes from `Hardpoint` to something a bare
+component satisfies — it reads only `hp.category`, `hp.component.typeData` and
+`hp.component.size`.
+
+### D5 — `type_data` becomes `jsonb`
+
+**Chosen: the column type changes, over promoting selected metrics to columns or shipping no
+metric sort.**
+
+Today `type_data` is `t.string` with `serialize … coder: YAML`. No SQL reaches inside it: no
+ransacker, no index, no `ORDER BY damage`. `ComponentBuild::FILTERABLE` excludes every
+serialised column deliberately — "nothing filters on a serialized structure". So a catalogue
+that cannot answer "shields sorted by max health" is the current ceiling, and D5 is the
+decision that lifts it.
+
+`jsonb` makes every metric filterable, sortable and GIN-indexable in one migration instead of
+one migration per metric. The codebase already runs 15 `jsonb` columns, including
+`hull_doors`, `hull_parts` and `signature_cross_section` on `models`/`model_builds` beside
+YAML-serialised neighbours — so this is a direction already taken, not a new one.
+
+**The migration does not backfill.** `20260811130000_change_signature_cross_section_to_jsonb.rb`
+is the precedent and it simply drops and re-adds:
+
+```ruby
+def up
+  remove_column :models, :signature_cross_section
+  add_column :models, :signature_cross_section, :jsonb
+end
+```
+
+That is sound here for the same reason: `type_data` is loader-owned, and a loader run
+repopulates it. It also means the change is cheap to reverse.
+
+**Two hazards to plan around:**
+
+- **A column drop breaks the running old release.** Pre-deploy migrates before the new
+  container boots, so between the migration and the boot the old code selects a column that no
+  longer exists. `type_data` is read on nearly every component query. Either the deploy takes
+  a brief window deliberately, or the change lands as add-new-column → backfill → switch reads
+  → drop-old across two deploys. **This is the single riskiest step in the plan** and it is
+  worth the two-deploy shape.
+- **Blast radius.** The column is read by the admin, the thirteen `anyOf` schemas under
+  `app/api_components/shared/v1/schemas/`, and eight-plus frontend composables. Nothing should
+  change behaviourally — `serialize` comes off and Rails hands back the same Hash — but every
+  one needs a test pass, and `ItemsLoader` writes it in two places, including the
+  `inventory_ref` path where a cargo container's `type_data` comes from a *different* item.
+
+Alongside it, two things that need no migration at all:
+
+- **Sorting is already built and switched off.** `Component::ALLOWED_SORTING_PARAMS` and
+  `DEFAULT_SORTING_PARAMS` exist and are dead only because `components_controller.rb:38`
+  overwrites `components_query_params["sorts"] = "name asc"` unconditionally. Replacing that
+  with `sorting_params(Component, …)` — the helper every other controller uses — restores
+  honest name and date sorting immediately.
+- **The text search is one predicate.** Only `name_cont` is permitted. `description` is
+  already `ransackable`, and `manufacturer` is already a ransackable association.
+
+### D6 — Current build by default; a retired component is reachable and says so
+
+`currentVersion` already defaults to true and the payload already carries `retired`. The
+catalogue lists the current build. A component that has left the build stays **reachable** by
+URL — a ship's older loadout points at it, and a dead link there is worse than a marked page —
+and renders an explicit "no longer in the current build" state rather than presenting stale
+figures as current.
+
+PTU is the same question one layer out and needs no new mechanism: the source is switchable,
+and every figure on these pages is relative to the selected source. The one trap already
+recorded: a persisted PTU choice is inert until `sources` answers, so the page must render
+against the resolved source, not the stored preference.
+
+### D7 — It lives in #4988's shared catalogue shell
+
+**Chosen: honour #4988's D8 and consume the shell it builds, over building it here.**
+
+#4988's plan records that the shared public catalogue section and its nav land on *its* branch
+with Blueprints as first tenant, and that #4989 rebases onto it. That decision stands.
+
+**The cost is real and should be stated plainly:** the shell does not exist yet. Only #4988's
+loader PR (#4998) is open, with three PRs behind it, and its Phase 4 is where the shell lands.
+This plan's Phase 4 is therefore blocked on that, and every squash merge in that stack forces
+a cascade of force-pushes down the branches below it.
+
+Phases 1–3 here are independent and can proceed in parallel — they are backend, migration and
+composable work that touches none of the shell.
+
+Route `meta` needs both namespaces: `nav.*` labels the tab and `title.*` the document. The
+detail page also wants a Rails-side route the way `get "ships/:slug"` has one, or a shared link
+renders the generic card instead of the component — a `components/:slug` frontend route plus a
+`Frontend::BaseController#component` action setting `@title`, `@description`, `@og_image` and
+prefetching the payload.
+
+### D8 — There are no images. The list must not pretend otherwise
+
+**The issue is wrong about this, and it changes the design.** It reports "869 of 3,435 have an
+icon" and asks the list to look deliberate at a 25% hit rate.
+
+Measured: **all 887 components carrying an icon are `paints`** — the single category D1
+excludes. Across the 1,282 rows that actually ship, there are **0 icons and 0 store images**.
+
+So the list is not a card grid with placeholders; it is typographic and metric-led — name,
+manufacturer, size, grade, class, and the one or two figures that matter for that category
+(exactly what `useHardpointStats` marks `primary`). This is a better list for the data anyway:
+a component is chosen on numbers, not on a picture. If component icons are rasterised later
+they are additive, not load-bearing.
+
+### D9 — Labels: much smaller than the issue estimates
+
+The issue budgets "a label for every metric key in D4" as the bulk of the work. **That half is
+already done** — 177 `labels.hardpoint.*` keys exist and are translated across all seven
+locales (D4).
+
+What is actually missing, measured from `config/locales/*/filter.yml`:
+
+| | en | de / es / fr / it / zh-CN / zh-TW |
+|---|---|---|
+| `filter.component.category.items.*` | 34 | **0** |
+| `filter.component.sub_type.items.*` | 3 (of ~39 live values) | **0** |
+| `filter.component.class.items.*` | 5 | 5 |
+
+The only filter vocabulary complete in all seven locales is `class` — backed by a **dead
+column that matches zero current rows**. Categories are English-only; sub-types are barely
+started.
+
+Roughly 204 category strings + ~270 sub-type strings, by hand, in seven locales, with no
+Crowdin in the loop. The `titleize` fallback is correct and is exactly what hides the gap —
+`I18n.t("filter.component.category.items.#{item}", default: item.titleize)` renders
+"Shieldgenerator" in German forever and never warns.
+
+Public `nav.components.*` and `title.components.*` are also new: the existing keys of those
+names are under the **admin** namespace.
+
+Scope note: only the ~20 categories D1 actually ships need labels for the catalogue, not all 34.
+
+### D10 — A history tab, on its own endpoints
+
+`ComponentBuild` is a row per build and the admin already has a history page.
+`/ships/:slug/history` is the public precedent and the shape to copy: it is a separate route
+under `meta: { customTitle: true }` calling **its own** queries (`useModelChanges`,
+`useModelPriceHistory`, …), each in its own `Panel` with an `Empty` fallback.
+
+That answers the question the issue says this decision gates: **the `show` endpoint returns one
+build.** History is a separate endpoint, so the detail payload stays small and the tab is
+additive rather than a precondition. It lands in Phase 4 and can slip without blocking the
+catalogue.
+
+### D11 — Behind a `components` feature flag
+
+A `components` entry in `config/feature_flags.yml` with a description, matching #4988's D9,
+read at both the nav entry and the routes. Flags are declared in the registry only — no
+`Flipper.add` or `FeatureSetting` data migration, which the next sync would prune.
+
+Expect it to redden every descendant of a stack until each is regenerated; that is the known
+cost of adding a flag, not a failure.
+
+## What changed
+
+### Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
+
+1. `type_data` → `jsonb` on `components` and `component_builds`, in the two-deploy shape D5
+   describes rather than a bare drop-and-add.
+2. Drop `serialize :type_data, coder: YAML` from `Component` and `ComponentBuild`.
+3. Slug migration: unique index, `sc_key`-derived disambiguating suffix, backfill, and a
+   fallback (or a partial index) for the 1,404 named rows with no `sc_key` — see D2's trap.
+4. `update_slugs` on `Component` gains collision handling, following `StockPosition`'s
+   suffixing pattern. `ItemsLoader` keeps it correct across a patch.
+5. Verify the thirteen `anyOf` schemas, the admin pages and the eight-plus composables read
+   an unchanged shape.
+
+### Phase 2 — The API (PR 2)
+
+1. `show` action + route, resolving by slug with a 301 to the canonical slug.
+2. The `extended:` flag on `_component.jbuilder` / `_base.jbuilder` (D3), `hardpoints` and
+   `availability` behind it, and the **cache key changed** so the new fields appear.
+3. New payload fields: `description`, `tags`, `required_tags`, `inventoryConsumption`,
+   `ammunition`, and the power/heat/signature block.
+4. Replace the hardcoded sort with `sorting_params(Component, …)`; widen the text search
+   beyond `name_cont`; add metric sorts now that `jsonb` allows them.
+5. **Retire the filters that match nothing.** `/filters/components/item-types` returns 26
+   hardcoded values and `/filters/components/classes` returns 3, and **zero current rows carry
+   either column**. Both, and the `item_type_in` / `component_class_in` index params, go — a
+   filter that silently returns nothing is worse than no filter.
+6. Drop `shop_commodities` from `ransackable_associations`; the association does not exist.
+7. Fix `class_filters`, which does `Component.all.map(&:component_class)` — a full scan of
+   8,740 rows — if anything of it survives (5).
+8. Document `manufacturerSlugIn` in `ComponentQuery`; the controller permits it and the schema
+   does not.
+9. `components` flag (D11), hand-written schema components, `./bin/generate-schema`, orval
+   regeneration, dev-server restart.
+
+### Phase 3 — The metric renderer (PR 3)
+
+1. Extract `useHardpointStats` so it takes a bare component, not a `Hardpoint` (D4).
+2. The `Component#category` → stat-vocabulary mapping, without which thrusters render nothing.
+3. Nine new category branches, and the shared powered-item block.
+4. Unit tests per category against real `type_data` shapes.
+
+### Phase 4 — The pages (PR 4) — **blocked on #4988's shell**
+
+1. `/components` list in the shared section (D7): search, category and sub-type filters, sort,
+   pagination, typographic rows with no imagery (D8).
+2. Detail page: every metric for the category, grouped and labelled, plus manufacturer, size,
+   grade, class, tags and required tags.
+3. A retired component marked rather than shown as current (D6).
+4. `components/:slug` Rails route + `Frontend::BaseController#component` for meta tags.
+5. Every hardpoint on every ship page links to the component — the payoff link, in
+   `Models/Hardpoints/BaseItem/index.vue` and its item variants.
+6. The history tab (D10).
+7. Category and sub-type labels in all seven locales, plus public `nav.*` / `title.*` (D9).
+
+## Intent Verification
+
+- [ ] **List** — `/components/` lists 1,282 components, paginated, with a text search and filters that all match rows
+- [ ] **No dead filters** — `item-types` and `classes` are gone; every offered filter can match something
+- [ ] **Honest sorting** — sorting covers the whole result set, metrics included, not one page of it
+- [ ] **Stable URLs** — every component the list shows has its own page at a unique slug, and an old slug 301s
+- [ ] **Every metric** — the detail page renders every figure for that component's category, grouped and labelled, including the power/heat/signature block
+- [ ] **Identity** — manufacturer, size, grade, class, tags and required tags shown where present
+- [ ] **Retired** — a component out of the current build is marked, not presented as current
+- [ ] **The payoff link** — every hardpoint on every ship page links to the component's page
+- [ ] **Seven locales** — category, sub-type and nav/title labels exist in all seven
+- [ ] **API** — a documented `show`, a list payload distinct from the detail payload, and a regenerated schema
+- [ ] **Flagged** — the whole surface behind the `components` flag
+
+## Key files
+
+| File | Role |
+|------|------|
+| `app/models/component.rb` | `with_facts`, ransackers, the dead sorting constants, `item_types`, the facet helpers |
+| `app/models/component_build.rb` | `FACTS`, `READ_THROUGH`, `FILTERABLE` — the build-fact contract |
+| `app/models/application_record.rb:70` | `generate_slug(name)`, no disambiguation — D2's root cause |
+| `app/controllers/api/v1/components_controller.rb:38` | The hardcoded sort that makes `ALLOWED_SORTING_PARAMS` dead |
+| `app/controllers/api/v1/filters/components_controller.rb` | The four filter endpoints; two must go |
+| `app/views/api/v1/components/_component.jbuilder` | The cache key that hides any new field |
+| `app/views/api/v1/models/_model.jbuilder` | The `extended:`-in-the-cache-key pattern to copy (D3) |
+| `app/lib/sc_data/loader/items_loader.rb:214` | The 32-category `hidden` allowlist; also writes `type_data` twice |
+| `app/api_components/shared/v1/schemas/component*.rb` | The thirteen `anyOf` `type_data` shapes |
+| `app/frontend/frontend/composables/useHardpointStats.ts` | The existing per-category renderer (D4) |
+| `app/frontend/translations/*/labels.json` | 177 metric labels, already in seven locales |
+| `config/locales/*/filter.yml` | Category/sub-type labels — English-only (D9) |
+| `app/frontend/frontend/components/Models/Hardpoints/BaseItem/index.vue` | Where the hardpoint link goes |
+| `config/routes/frontend_routes.rb:16` | `ships/:slug` — the meta-tag route to mirror |
+| `db/migrate/20260811130000_change_signature_cross_section_to_jsonb.rb` | The drop-and-re-add precedent (D5) |
+
+## Not in scope (deferred)
+
+- **Prices.** No component has one: `Uex::PriceSyncer::ITEM_TYPE = "Model"`, and `item_prices` carries no `Component` rows. `availability` stays two empty arrays. Pricing components is its own issue.
+- **Paints.** Excluded by D1 and already surfaced as ship paints. Listing them again under a second vocabulary is a deliberate non-goal.
+- **Component icons.** 0 of the catalogue set has one (D8), and component icons are vectors that are not rasterised the way other attachments are.
+- **The 112 "Manned Turret" rows.** Flagged in D1; a constant to revisit once the list is visible.
+- **The loader's `hidden` allowlist.** Untouched. The public predicate is narrower and independent, so a game patch adding a category still needs a human either way.
+- **`item_type` / `component_class` columns.** The public filters go (Phase 2); dropping the columns themselves is a separate cleanup, and the admin still reads them.
+
+## Discovery Log
+
+- **2026-09-17** Issue read, branch and worktree created. D1, D2, D5 and D7 resolved with the user; D1 refined a second time after measurement.
+- **2026-09-17** Re-measured every count in the issue against the local production dump at `live 4.10.0-live.12519617`. 8,740 / 7,274 / 5,936 / 3,435 / 2,096 / 954 paints / 3,598 mounted / 0 prices all confirmed exactly.
+- **2026-09-17** **D2 correction.** The issue's worst slug collision (`pc2-dual-s4-mount` × 6) only reproduces ignoring `current_version` and `hidden`. The real worst on the visible set is `internal-tank` × 313, then 248, 143, 139, 121 — a structural collision, not a nuisance.
+- **2026-09-17** **D1 correction.** The `type_data` predicate drops all 954 paints but **not** the per-ship structure: 319 fuel tanks, 269 seats, 226 controllers survive it, 39% of the set and 700 of the 1,374 colliding rows. Verified every `fueltanks` row is a per-ship `htnk_`/`qtnk_` tank — the exclusion is a whole-category rule, not a heuristic. Final set 1,282.
+- **2026-09-17** **D8 correction.** All 887 icon-carrying components are `paints`. The catalogue set has **0 icons and 0 store images** — the list cannot be image-led at all, against the issue's assumed 25%.
+- **2026-09-17** **D4 measured.** `useHardpointStats` already renders 10 of D1's 20 categories, and its 177 labels are already translated in all seven locales — so the issue's "bulk of the translation work" is done. But the other 10 render nothing, and two of them (`missile_racks` 142, `turret` 124) are 21% of the catalogue. Also needed: a `Component#category` → `HardpointCategoryEnum` mapping, without which thrusters match no branch, and the powered-item block, which a grep for all five of its keys shows is rendered nowhere.
+- **2026-09-17** **D3 shrunk.** `Model` already splits list and detail with an `extended:` flag folded into the cache key; no second payload needed.
+- **2026-09-17** **D5 halved.** Metric sorting needs `jsonb`, but name/date sorting needs only deleting one line — `ALLOWED_SORTING_PARAMS` exists and is dead because the controller overwrites `sorts`.
+- **2026-09-17** Confirmed #4988 has built no frontend yet (loader PR only), so the shell D7 depends on is three PRs away.
+
+## Progress
+
+- [ ] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
+- [ ] Phase 2 — The API (PR 2)
+- [ ] Phase 3 — The metric renderer (PR 3)
+- [ ] Phase 4 — The pages (PR 4) — blocked on #4988's shell
