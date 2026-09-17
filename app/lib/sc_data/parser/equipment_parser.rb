@@ -158,7 +158,7 @@ module ScData
 
         return if attach_def.blank?
 
-        name = translate(attach_def.dig("Localization", "Name"))
+        name = localize_name(attach_def.dig("Localization", "Name"))
 
         return if value_or_nil(name).blank?
 

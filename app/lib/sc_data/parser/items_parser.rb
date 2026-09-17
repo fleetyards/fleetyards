@@ -112,8 +112,8 @@ module ScData
           size: values.dig("Components", "SAttachableComponentParams", "AttachDef", "Size"),
           grade: values.dig("Components", "SAttachableComponentParams", "AttachDef", "Grade"),
           manufacturer_ref: value_or_nil(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Manufacturer")),
-          name: value_or_nil(translate(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Localization", "Name"))),
-          short_name: value_or_nil(translate(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Localization", "ShortName"))),
+          name: value_or_nil(localize_name(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Localization", "Name"))),
+          short_name: value_or_nil(localize_name(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Localization", "ShortName"))),
           description: value_or_nil(translate(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Localization", "Description"))),
           inventory_consumption: {
             micro_scu: values.dig("Components", "SAttachableComponentParams", "AttachDef", "inventoryOccupancyVolume", "SMicroCargoUnit", "microSCU").to_f,

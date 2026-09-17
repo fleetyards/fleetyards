@@ -9,6 +9,13 @@ module ScData
       # size a panel asks for, so it wins over the raster of the same icon.
       DRAWABLE_FORMATS = %w[svg png].freeze
 
+      # What the export writes over a name nobody has authored yet: "PH", "PH -
+      # hdh_boots_01_01_13", "PLACEHOLDER - SPV Jacket". Matched as a leading
+      # word so a real name is never caught by it -- "PH-13" keeps its name,
+      # and across the 7343 distinct names 4.10.1 resolves, these two markers
+      # only ever introduce a record the game has not finished.
+      PLACEHOLDER_NAME = /\A(ph|placeholder)(\s|\z)/i
+
       SCU_DIMENSIONS = 1.25
 
       CARGO_CONTAINER_DIMENSIONS = [
@@ -278,6 +285,26 @@ module ScData
         return if value.blank? || value == "@LOC_EMPTY"
 
         value.gsub('\\n', "\n").strip
+      end
+
+      # What a record's display name resolves to. `localize` answers the index
+      # and nothing else, so the fallback is what makes this a safe swap for
+      # `translate`: whatever that resolved, this still resolves, and the index
+      # only adds the keys it could not match. A record may also write the
+      # finished string where a key belongs, which `translate` passes on
+      # unchanged -- 4.10.1 does it once, for a mission Prospector that lives
+      # outside the folders any parser here scans.
+      #
+      # Names only. A description read this way would arrive with its "\n"
+      # markers already turned into newlines, which is a different string from
+      # the one the export writes and the one every parsed tree so far records
+      # -- 3019 of them, and `describe` parses the prose it returns.
+      private def localize_name(key)
+        name = localize(key) || translate(key)
+
+        return if PLACEHOLDER_NAME.match?(name.to_s)
+
+        name
       end
 
       private def load_ini_file(path)

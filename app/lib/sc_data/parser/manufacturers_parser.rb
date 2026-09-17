@@ -28,7 +28,7 @@ module ScData
           code:,
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
-          short_name: value_or_nil(translate(values.dig("Localization", "ShortName"))),
+          short_name: value_or_nil(localize_name(values.dig("Localization", "ShortName"))),
           description: value_or_nil(description),
           # Downcased to match the icon paths equipment and commodities record,
           # since whatever resolves one of them has to resolve all three.
@@ -76,7 +76,7 @@ module ScData
         elsif translations.key?(own_name_key)
           translations[own_name_key]
         else
-          translate(declared_name_key)
+          localize_name(declared_name_key)
         end
 
         # A block that named another manufacturer names their description too.
