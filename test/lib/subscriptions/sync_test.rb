@@ -193,5 +193,27 @@ module Subscriptions
       assert @fleet.fleet_subscriptions.sole.open?
       assert other_membership.fleet.fleet_subscriptions.sole.open?
     end
+
+    # Without serialization two runs interleave: one snapshots a nomination,
+    # a request clears it, and the first still opens a subscription nothing
+    # entitles. The unique index cannot catch that -- a stale decision is a
+    # well-formed row.
+    test "reconciliation happens under one lock" do
+      ActiveRecord::Base.expects(:with_advisory_lock).with(Sync::LOCK).once.yields
+
+      Sync.call
+    end
+
+    # A run that gave up on the lock would leave exactly the state it was
+    # enqueued to correct.
+    test "a second run waits rather than skipping" do
+      nominated
+
+      first = Sync.call
+      second = Sync.call
+
+      assert_equal 1, first[:opened].size
+      assert_empty second[:opened], "the second run saw the first's write"
+    end
   end
 end

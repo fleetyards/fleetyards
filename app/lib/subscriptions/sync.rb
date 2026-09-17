@@ -15,6 +15,8 @@ module Subscriptions
   # contributions point at it, and asking it that way is what makes a second run
   # write nothing.
   class Sync
+    LOCK = "subscriptions_sync"
+
     def self.call(date: Date.current)
       new(date:).call
     end
@@ -25,8 +27,20 @@ module Subscriptions
 
     # Opened and closed subscriptions, so a caller -- a job, a test, an admin
     # task -- can report what a run actually did rather than that it finished.
+    #
+    # Serialized, and every read happens inside the lock. Without it two runs
+    # interleave: one snapshots a nomination, a request clears it, and the first
+    # run then opens a subscription nothing entitles -- reproduced before this
+    # was added. The unique index cannot catch that, because a stale decision is
+    # still a well-formed row.
+    #
+    # It waits rather than skipping. A run that gave up would leave exactly the
+    # state it was enqueued to correct, and since every trigger enqueues one,
+    # waiting is what makes the system converge.
     def call
-      {opened: open_missing, closed: close_lapsed}
+      ActiveRecord::Base.with_advisory_lock(LOCK) do
+        {opened: open_missing, closed: close_lapsed}
+      end
     end
 
     private def open_missing
