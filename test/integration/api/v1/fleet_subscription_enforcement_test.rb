@@ -45,8 +45,8 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     surfaces.each do |capability, path|
       get path
 
-      refute_equal 403, response.status,
-        "#{capability} was refused although enforcement is not rolled out"
+      assert_response :success,
+        "#{capability} did not answer normally although enforcement is not rolled out"
     end
   end
 
@@ -71,7 +71,7 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     surfaces.each do |capability, path|
       get path
 
-      refute_equal 403, response.status, "#{capability} was refused for a subscribed fleet"
+      assert_response :success, "#{capability} was refused for a subscribed fleet"
     end
   end
 
@@ -109,7 +109,7 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
 
     get "/api/v1/tours/#{tour.slug}"
 
-    refute_equal 403, response.status, "the personal tour tool must not be paywalled"
+    assert_response :success, "the personal tour tool must not be paywalled"
   end
 
   test "a standalone tour's ledger stays free too" do
@@ -119,18 +119,18 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     create(:payout_participant, payout_ledger: ledger, user: @user)
     sign_in @user
 
-    get "/api/v1/payout-ledgers/#{ledger.id}/entries"
+    get "/api/v1/payouts/#{ledger.id}/entries"
 
-    refute_equal 403, response.status, "the personal ledger must not be paywalled"
+    assert_response :success, "the personal ledger must not be paywalled"
   end
 
   test "a member's own hangar inventory is untouched" do
     Flipper.enable("fleet_subscriptions")
     sign_in @user
 
-    get "/api/v1/hangar-inventories"
+    get "/api/v1/hangar/inventories"
 
-    refute_equal 403, response.status, "a personal inventory is not a fleet feature"
+    assert_response :success, "a personal inventory is not a fleet feature"
   end
 
   # An unsubscribed fleet is still a fleet.
@@ -143,7 +143,7 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
       "/api/v1/fleets/#{@fleet.slug}/vehicles"].each do |path|
       get path
 
-      refute_equal 403, response.status, "#{path} is free and must stay reachable"
+      assert_response :success, "#{path} is free and must stay reachable"
     end
   end
 
@@ -168,7 +168,7 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     assert_equal "subscription_required", body_code
 
     get "/api/v1/fleets/#{other.slug}/contracts"
-    refute_equal 403, response.status, "a fleet without the gate is not enforced yet"
+    assert_response :success, "a fleet without the gate is not enforced yet"
   end
 
   test "the refusal is translated in every locale" do
@@ -176,5 +176,78 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
       assert I18n.t(:"messages.subscription_required", locale:, default: nil, fallback: false),
         "no #{locale} translation"
     end
+  end
+
+  # Every one of these reached the concern with no fleet and skipped enforcement
+  # entirely, because the guard that keeps personal surfaces free treats a
+  # missing fleet as "nothing to enforce". They are the actions that load their
+  # fleet from something other than the path.
+  test "sorting event slots is enforced" do
+    Flipper.enable("fleet_subscriptions")
+    event = create(:fleet_event, :active, fleet: @fleet, created_by: @user)
+    team = create(:fleet_event_team, fleet_event: event)
+    sign_in @user
+
+    put "/api/v1/fleet-event-slots/sort",
+      params: {slottableType: "FleetEventTeam", slottableId: team.id, sorting: []}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+
+    assert_equal "subscription_required", body_code
+  end
+
+  test "sorting mission slots is enforced" do
+    Flipper.enable("fleet_subscriptions")
+    mission = create(:mission, fleet: @fleet, created_by: @user)
+    team = create(:mission_team, mission:)
+    sign_in @user
+
+    put "/api/v1/mission-slots/sort",
+      params: {slottableType: "MissionTeam", slottableId: team.id, sorting: []}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+
+    assert_equal "subscription_required", body_code
+  end
+
+  # A token already issued would otherwise serve the whole feed forever.
+  test "the calendar feed stops when the subscription lapses" do
+    Flipper.enable("fleet_subscriptions")
+    @fleet.ensure_calendar_feed_token!
+    token = @fleet.reload.calendar_feed_token
+
+    get "/api/v1/fleets/#{@fleet.slug}/events.ics", params: {token:}
+
+    assert_response :forbidden
+  end
+
+  test "the calendar feed works for a subscribed fleet" do
+    Flipper.enable("fleet_subscriptions")
+    subscribe!
+    @fleet.ensure_calendar_feed_token!
+    token = @fleet.reload.calendar_feed_token
+
+    get "/api/v1/fleets/#{@fleet.slug}/events.ics", params: {token:}
+
+    assert_response :success
+  end
+
+  test "a fleet inventory transfer is enforced" do
+    Flipper.enable("fleet_subscriptions")
+    Flipper.enable("inventory_transfers")
+    sign_in @user
+
+    get "/api/v1/fleets/#{@fleet.slug}/inventory-transfers"
+
+    assert_equal "subscription_required", body_code
+  end
+
+  test "a slug-addressed tour is enforced" do
+    Flipper.enable("fleet_subscriptions")
+    tour = create(:tour, fleet: @fleet, created_by: @user)
+    sign_in @user
+
+    get "/api/v1/tours/#{tour.slug}"
+
+    assert_equal "subscription_required", body_code,
+      "a fleet's tour carries no fleet in the path, and must still be enforced"
   end
 end

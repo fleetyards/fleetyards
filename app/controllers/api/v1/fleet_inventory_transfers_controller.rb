@@ -22,9 +22,9 @@ module Api
 
       before_action :check_inventory_transfers_feature
 
-      before_action -> { require_fleet_subscription(:logistics) }
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
+      before_action -> { require_fleet_subscription(:logistics) }
       before_action :set_inventory_transfer, only: %i[show accept decline cancel report]
 
       private def acting_party

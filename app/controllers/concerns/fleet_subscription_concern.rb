@@ -35,13 +35,22 @@ module FleetSubscriptionConcern
     fleet = subscription_fleet
     return if fleet.blank?
 
-    return unless enforcement_rolled_out?(fleet)
-    return if fleet.subscribed?
+    return unless fleet_subscription_missing?(fleet)
 
     render json: {
       code: "subscription_required",
       message: I18n.t("messages.subscription_required")
     }, status: :forbidden
+  end
+
+  # The same question without the JSON answer, for a surface that speaks
+  # something else -- the ICS feed renders plain text, and handing a calendar
+  # client a JSON error body would be worse than the refusal itself.
+  private def fleet_subscription_missing?(fleet)
+    return false if fleet.blank?
+    return false unless enforcement_rolled_out?(fleet)
+
+    !fleet.subscribed?
   end
 
   private def enforcement_rolled_out?(fleet)

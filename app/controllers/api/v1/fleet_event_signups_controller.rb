@@ -310,6 +310,12 @@ module Api
         @signup = FleetEventSignup.find(params[:id])
       end
 
+      # Mirrors the capability check below: most actions never load a fleet,
+      # only the slot or the signup the request is about.
+      private def subscription_fleet
+        @fleet || @slot&.fleet_event&.fleet || @signup&.fleet_event&.fleet
+      end
+
       private def check_fleet_mission_builder_feature
         # Reached four ways — via a slot, an event, or a signup — so the actor
         # comes off whichever record this action loaded.

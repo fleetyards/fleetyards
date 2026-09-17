@@ -87,9 +87,15 @@ module Api
         (@slottable.fleet_event_slots.maximum(:position) || -1) + 1
       end
 
-      # a slot hangs off its event, not off a slug.
+      # `sort` loads neither of the callbacks above -- it resolves the slottable
+      # inside the action -- so without the third arm every sort would reach the
+      # concern with no fleet and skip enforcement entirely. Non-raising, so a
+      # bad slottable still gets the action's own 404 rather than a different one.
       private def subscription_fleet
-        (@slottable || @slot)&.fleet_event&.fleet
+        slottable = @slottable || @slot ||
+          find_slottable(params[:slottable_type], params[:slottable_id])
+
+        slottable&.fleet_event&.fleet
       end
 
       private def check_fleet_mission_builder_feature

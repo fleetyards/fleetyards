@@ -57,6 +57,16 @@ module Api
           return
         end
 
+        # A token already issued would otherwise keep serving the whole event
+        # feed after the fleet's entitlement lapsed. Checked here rather than in
+        # a callback because the fleet is resolved from the path inside this
+        # action, and answered in plain text because a calendar client is what
+        # reads it.
+        if fleet_subscription_missing?(@fleet)
+          render plain: "Forbidden", status: :forbidden
+          return
+        end
+
         now = Time.current
         events = @fleet.fleet_events
           .includes(:fleet_event_occurrence_states)
