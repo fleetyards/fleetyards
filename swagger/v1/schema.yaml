@@ -28551,23 +28551,6 @@ components:
       items:
         type: string
       title: WishlistItemsList
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -28597,6 +28580,23 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed
