@@ -7,6 +7,28 @@ its own stable URL, searchable and filterable, sortable on the metrics that matt
 detail page that renders every figure we hold for that component's category — with every
 hardpoint on every ship page linking into it.
 
+## Status — paused, 2026-09-17
+
+**Parked until the Blueprints catalogue (#4988) is fully shipped.** Phase 4 was always blocked
+on the shared catalogue shell that #4988's D8 puts on its branch; the rest is parked with it so
+the two catalogues land in one navigation rather than two.
+
+| phase | PR | state |
+|---|---|---|
+| 1 — unique slug, `type_data` to `jsonb` | #5000 | **merged** |
+| 2 — the public API | #5003 | open, CI green (17/17) |
+| 3 — the metric renderer | #5006 | open, stacked on #5003 |
+| 4 — the pages | — | not started; needs #4988's shell |
+
+Also shipped on the way, independent of the stack: **#5007**, the parser fix for #5002 —
+`tags` was stored as the array's own inspect output for every component in the tree.
+
+**Picking this back up:** #5003 and #5006 are stacked, so rebase the leaf last, and expect a
+cascade of force-pushes per merge. Both will have drifted from `main`; re-run
+`bin/generate-schema` **and** `bin/generate-asyncapi`, then fix the `components.parameters`
+ordering by hand (see the tooling notes below). Phase 4 starts by rebasing onto whatever
+#4988 built.
+
 ## Context
 
 Resolves #4989.
@@ -560,7 +582,9 @@ only. The `tags` extraction is untouched and the parsed tree still holds `tags: 
 
 ## Progress
 
+**Paused after Phase 3 — see Status above.**
+
 - [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
 - [x] Phase 2 — The API (PR 2)
 - [x] Phase 3 — The metric renderer (PR 3)
-- [ ] Phase 4 — The pages (PR 4) — blocked on #4988's shell
+- [ ] Phase 4 — The pages (PR 4) — **parked** until #4988 ships its shell
