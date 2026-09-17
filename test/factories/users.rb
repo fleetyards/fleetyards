@@ -86,7 +86,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (supported_fleet_id => fleets.id)
+#  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 FactoryBot.define do
   factory :user do
