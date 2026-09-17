@@ -127,6 +127,23 @@ module ScData
       assert(check.problems.any? { |problem| problem.start_with?("items/broken.json: does not parse") })
     end
 
+    # Valid JSON that is not a record: every key it is asked for would be a
+    # method call on nil or an index into a list, and the check would raise
+    # rather than report.
+    test "#call reports a record that parses to something other than a record" do
+      write_tree
+      write("items/list.json", "[]")
+
+      assert_includes check.problems, "items/list.json: holds array, not a record"
+    end
+
+    test "#call reports a version.json that parses to something other than a record" do
+      write_tree
+      write("version.json", "null")
+
+      assert_includes check.problems, "version.json holds nilclass, not a record"
+    end
+
     # --- Artwork ----------------------------------------------------------
 
     test "#call passes a record whose icon is in the tree under the format the export ships" do
@@ -178,6 +195,16 @@ module ScData
       write("icons/ui/icons/cut_short.png", "")
 
       assert_includes check.problems, "icons/ui/icons/cut_short.png: empty file"
+    end
+
+    # Reported in full rather than capped here: what a reader sees is the
+    # caller's decision, and a tree with a hundred half-written files has to
+    # count as a hundred.
+    test "#call reports every file of no bytes" do
+      write_tree
+      12.times { |index| write("icons/ui/icons/cut_short_#{index}.png", "") }
+
+      assert_equal 12, check.problems.count { |problem| problem.end_with?("empty file") }
     end
 
     # --- The tree that is actually loaded ---------------------------------

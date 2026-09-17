@@ -104,6 +104,9 @@ module ScData
       return ["no version.json at #{file}"] unless file.file?
 
       data = JSON.parse(file.read)
+
+      return ["version.json holds #{data.class.name.downcase}, not a record"] unless data.is_a?(Hash)
+
       problems = []
 
       if data["environment"] != environment
@@ -134,6 +137,14 @@ module ScData
 
       files.each do |file|
         data = JSON.parse(File.read(file))
+
+        # Valid JSON that is not a record at all -- `null`, a bare list -- would
+        # otherwise take every key it is asked for as a method call and raise
+        # from inside a check whose whole job is to report rather than raise.
+        unless data.is_a?(Hash)
+          problems << "#{folder}/#{File.basename(file)}: holds #{data.class.name.downcase}, not a record"
+          next
+        end
 
         if data[catalogue.key].to_s.strip.empty?
           problems << "#{folder}/#{File.basename(file)}: no #{catalogue.key}"
@@ -179,7 +190,7 @@ module ScData
     private def empty_file_problems
       empty = Dir.glob(root.join("**", "*")).select { |path| File.file?(path) && File.empty?(path) }
 
-      empty.first(10).map { |path| "#{Pathname(path).relative_path_from(root)}: empty file" }
+      empty.map { |path| "#{Pathname(path).relative_path_from(root)}: empty file" }
     end
 
     private def expected_version
