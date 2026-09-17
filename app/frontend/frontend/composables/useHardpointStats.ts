@@ -699,6 +699,76 @@ export const useHardpointStats = (
       if (typeof fi.minimumRate === "number" && fi.minimumRate > 0) {
         result.push(fuelRate("fuelIntakes.minRate", fi.minimumRate));
       }
+    } else if (category === HardpointCategoryEnum.UTILITY) {
+      // 39 of the 71 utility components with data carry nothing but a
+      // capacity. The three that are tractor beams fall to the shape check
+      // above, which runs before any category branch.
+      const utility = typeData as Record<string, unknown>;
+      if (typeof utility.capacity === "number" && utility.capacity > 0) {
+        result.push(stat("utility.capacity", utility.capacity, "cargo", true));
+      }
+    } else if (category === HardpointCategoryEnum.SELFDESTRUCT) {
+      // Stored as strings in the export, so coerced rather than type-checked.
+      const sd = typeData as Record<string, unknown>;
+      const num = (value: unknown) => {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+      };
+
+      const damage = num(sd.damage);
+      if (damage)
+        result.push(stat("selfDestruct.damage", damage, "integer", true));
+
+      const radius = num(sd.radius);
+      if (radius) {
+        result.push({
+          label: t("labels.hardpoint.selfDestruct.radius"),
+          value: `${String(toNumber(radius, "integer"))} m`,
+        });
+      }
+
+      const time = num(sd.time);
+      if (time) {
+        result.push({
+          label: t("labels.hardpoint.selfDestruct.time"),
+          value: String(toNumber(time, "seconds")),
+        });
+      }
+    } else if (category === HardpointCategoryEnum.QUANTUMENFORCEMENTDEVICE) {
+      // The two settings blocks carry 17 keys between them. These four are the
+      // ones that say what the device does to somebody else's quantum drive;
+      // the rest describe its own charge curve.
+      const qed = typeData as Record<string, unknown>;
+      const jammer = (qed.jammerSettings ?? {}) as Record<string, unknown>;
+      const pulse = (qed.quantumInterdictionPulseSettings ?? {}) as Record<
+        string,
+        unknown
+      >;
+
+      if (typeof jammer.jammerRange === "number") {
+        result.push({
+          label: t("labels.hardpoint.quantumEnforcement.jammerRange"),
+          value: `${String(toNumber(jammer.jammerRange, "integer"))} m`,
+        });
+      }
+      if (typeof pulse.radiusMeters === "number") {
+        result.push({
+          label: t("labels.hardpoint.quantumEnforcement.pulseRadius"),
+          value: `${String(toNumber(pulse.radiusMeters, "integer"))} m`,
+        });
+      }
+      if (typeof pulse.chargeTimeSecs === "number") {
+        result.push({
+          label: t("labels.hardpoint.quantumEnforcement.chargeTime"),
+          value: String(toNumber(pulse.chargeTimeSecs, "seconds")),
+        });
+      }
+      if (typeof pulse.cooldownTimeSecs === "number") {
+        result.push({
+          label: t("labels.hardpoint.quantumEnforcement.cooldownTime"),
+          value: String(toNumber(pulse.cooldownTimeSecs, "seconds")),
+        });
+      }
     }
 
     const refuel = typeData as Record<string, unknown>;

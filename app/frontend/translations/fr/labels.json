@@ -1352,7 +1352,25 @@
         },
         "name": "Nom",
         "category": "Catégorie",
-        "source": "Source"
+        "source": "Source",
+        "powerConsumption": "Consommation d'énergie",
+        "powerMinimumFraction": "Consommation au repos",
+        "signatureEm": "Signature EM",
+        "signatureIr": "Signature IR",
+        "utility": {
+          "capacity": "Capacité"
+        },
+        "selfDestruct": {
+          "damage": "Dégâts",
+          "radius": "Rayon d'explosion",
+          "time": "Délai d'amorçage"
+        },
+        "quantumEnforcement": {
+          "jammerRange": "Portée du brouilleur",
+          "pulseRadius": "Rayon de l'impulsion",
+          "chargeTime": "Temps de charge",
+          "cooldownTime": "Temps de recharge"
+        }
       },
       "blank": {
         "propulsion": "Aucune propulsion présente",

@@ -1352,7 +1352,25 @@
         },
         "name": "Name",
         "category": "Category",
-        "source": "Source"
+        "source": "Source",
+        "powerConsumption": "Power Draw",
+        "powerMinimumFraction": "Idle Draw",
+        "signatureEm": "EM Signature",
+        "signatureIr": "IR Signature",
+        "utility": {
+          "capacity": "Capacity"
+        },
+        "selfDestruct": {
+          "damage": "Damage",
+          "radius": "Blast Radius",
+          "time": "Fuse Time"
+        },
+        "quantumEnforcement": {
+          "jammerRange": "Jammer Range",
+          "pulseRadius": "Pulse Radius",
+          "chargeTime": "Charge Time",
+          "cooldownTime": "Cooldown"
+        }
       },
       "blank": {
         "propulsion": "No Propulsion present",

@@ -1352,7 +1352,25 @@
         },
         "name": "名稱",
         "category": "分類",
-        "source": "來源"
+        "source": "來源",
+        "powerConsumption": "功率消耗",
+        "powerMinimumFraction": "待機功耗",
+        "signatureEm": "電磁訊號",
+        "signatureIr": "紅外線訊號",
+        "utility": {
+          "capacity": "容量"
+        },
+        "selfDestruct": {
+          "damage": "傷害",
+          "radius": "爆炸半徑",
+          "time": "引爆延時"
+        },
+        "quantumEnforcement": {
+          "jammerRange": "干擾範圍",
+          "pulseRadius": "脈衝半徑",
+          "chargeTime": "充能時間",
+          "cooldownTime": "冷卻時間"
+        }
       },
       "blank": {
         "propulsion": "沒有推進系統",
