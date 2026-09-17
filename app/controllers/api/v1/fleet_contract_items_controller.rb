@@ -6,12 +6,15 @@ module Api
     # contract costs -- `FleetContractItemPolicy` delegates rather than
     # re-deriving, so the two can never disagree.
     class FleetContractItemsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
 
       before_action :set_fleet
       before_action :check_fleet_contracts_feature
+      before_action -> { require_fleet_subscription(:contracts) }
       before_action :set_fleet_contract
       before_action :set_fleet_contract_item, only: %i[update destroy]
 

@@ -3,6 +3,8 @@
 module Api
   module V1
     class ToursController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       after_action -> { pagination_header(:tours) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -17,6 +19,7 @@ module Api
       before_action :set_fleet
       before_action :check_tour_payouts_feature
       before_action :set_tour, only: %i[show update destroy settle reopen cancel rotate_invite]
+      before_action -> { require_fleet_subscription(:tours) }
 
       def index
         authorize! with: TourPolicy, context: {fleet: @fleet}
@@ -280,6 +283,13 @@ module Api
       # fleet running them as a fleet -- its own list, its own page, members
       # asking onto them -- additionally wants fleet_tours, so switching that
       # one off closes the fleet surface without touching the standalone tool.
+      # `set_fleet` leaves this nil on the slug-addressed actions, which carry
+      # no fleet in the path -- the tour is what knows. Still nil for a
+      # standalone tour, which is the personal tool and stays free.
+      private def subscription_fleet
+        @fleet || @tour&.fleet
+      end
+
       private def check_tour_payouts_feature
         actors = [@fleet].compact
 

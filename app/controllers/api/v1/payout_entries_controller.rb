@@ -4,6 +4,7 @@ module Api
   module V1
     class PayoutEntriesController < ::Api::BaseController
       include PayoutLedgerScoped
+      include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:payout_entries) }, only: %i[index]
 
@@ -17,6 +18,7 @@ module Api
 
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
       before_action :set_payout_entry, only: %i[update destroy]
 
       def index
@@ -70,6 +72,14 @@ module Api
         else
           render json: ValidationError.new("payout_entries.destroy", errors: @payout_entry.errors), status: :bad_request
         end
+      end
+
+      # Defined here rather than left to PayoutLedgerScoped: both it and
+      # FleetSubscriptionConcern define this, and the concern is included last,
+      # so its `@fleet` default -- nil here -- would win the lookup and skip
+      # enforcement. A method on the class beats either module.
+      private def subscription_fleet
+        @payout_ledger&.fleet
       end
 
       private def payout_entry_params

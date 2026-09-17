@@ -3,6 +3,8 @@
 module Api
   module V1
     class MissionSlotsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
@@ -10,6 +12,7 @@ module Api
       before_action :set_slottable, only: %i[create]
       before_action :set_slot, only: %i[update destroy]
       before_action :check_fleet_mission_builder_feature
+      before_action -> { require_fleet_subscription(:events) }
 
       def create
         @slot = @slottable.mission_slots.new(slot_attrs)
@@ -82,6 +85,17 @@ module Api
 
       private def next_position
         (@slottable.mission_slots.maximum(:position) || -1) + 1
+      end
+
+      # `sort` loads neither of the callbacks above -- it resolves the slottable
+      # inside the action -- so without the third arm every sort would reach the
+      # concern with no fleet and skip enforcement entirely. Non-raising, so a
+      # bad slottable still gets the action's own 404 rather than a different one.
+      private def subscription_fleet
+        slottable = @slottable || @slot ||
+          find_slottable(params[:slottable_type], params[:slottable_id])
+
+        slottable&.mission&.fleet
       end
 
       private def check_fleet_mission_builder_feature

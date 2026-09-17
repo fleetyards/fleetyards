@@ -270,7 +270,14 @@ class Fleet < ApplicationRecord
     return @subscribed[date] if @subscribed&.key?(date)
 
     @subscribed ||= {}
-    @subscribed[date] = fleet_subscriptions.active_on(date).exists?
+    # An eager-loaded association answers without a query, which is what keeps a
+    # list of fleets from issuing one apiece. `exists?` would ignore the loaded
+    # records and go to the database anyway.
+    @subscribed[date] = if fleet_subscriptions.loaded?
+      fleet_subscriptions.any? { |subscription| subscription.active_on?(date) }
+    else
+      fleet_subscriptions.active_on(date).exists?
+    end
   end
 
   # Called by FleetSubscription after a write, and by `reload`. The memo is a
@@ -292,7 +299,11 @@ class Fleet < ApplicationRecord
     return @active_subscription[date] if @active_subscription&.key?(date)
 
     @active_subscription ||= {}
-    @active_subscription[date] = fleet_subscriptions.active_on(date).first
+    @active_subscription[date] = if fleet_subscriptions.loaded?
+      fleet_subscriptions.find { |subscription| subscription.active_on?(date) }
+    else
+      fleet_subscriptions.active_on(date).first
+    end
   end
 
   def features

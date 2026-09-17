@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetInventoriesController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       after_action -> { pagination_header(:fleet_inventories) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -15,6 +17,7 @@ module Api
 
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
+      before_action -> { require_fleet_subscription(:logistics) }
       before_action :set_fleet_inventory, only: %i[show update destroy]
 
       def index

@@ -5,6 +5,8 @@ require "discord/scheduled_event_sync"
 module Api
   module V1
     class FleetEventsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       after_action -> { pagination_header(:fleet_events) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -17,6 +19,7 @@ module Api
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
+      before_action -> { require_fleet_subscription(:events) }
       before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
       before_action :set_mission, only: %i[create]
 

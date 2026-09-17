@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetEventSignupsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
@@ -14,6 +16,7 @@ module Api
       before_action :set_signup_for_self, only: %i[update destroy_self]
       before_action :set_signup_admin, only: %i[destroy update_admin]
       before_action :check_fleet_mission_builder_feature
+      before_action -> { require_fleet_subscription(:events) }
 
       def create
         if @membership.nil?
@@ -305,6 +308,12 @@ module Api
 
       private def set_signup_admin
         @signup = FleetEventSignup.find(params[:id])
+      end
+
+      # Mirrors the capability check below: most actions never load a fleet,
+      # only the slot or the signup the request is about.
+      private def subscription_fleet
+        @fleet || @slot&.fleet_event&.fleet || @signup&.fleet_event&.fleet
       end
 
       private def check_fleet_mission_builder_feature

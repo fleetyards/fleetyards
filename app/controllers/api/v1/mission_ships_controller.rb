@@ -3,12 +3,15 @@
 module Api
   module V1
     class MissionShipsController < ::Api::BaseController
+      include FleetSubscriptionConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
+      before_action -> { require_fleet_subscription(:events) }
       before_action :set_mission
       before_action :set_team
       before_action :set_ship, only: %i[update destroy duplicate]

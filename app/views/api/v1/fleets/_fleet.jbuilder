@@ -11,6 +11,12 @@ json.my_fleet(local_assigns.fetch(:my_fleet, false))
 # itself changed.
 json.features fleet.features
 
+# Outside the cache for the same reason as `features` above, and more sharply:
+# a subscription is a row in another table, so nothing about the fleet record
+# changes when one opens or lapses. A cached copy would keep granting after the
+# entitlement stopped.
+json.subscribed fleet.subscribed?
+
 if local_assigns.fetch(:my_fleet, false)
   json.calendar_feed_token fleet.calendar_feed_token
 end

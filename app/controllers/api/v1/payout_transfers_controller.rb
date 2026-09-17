@@ -4,6 +4,7 @@ module Api
   module V1
     class PayoutTransfersController < ::Api::BaseController
       include PayoutLedgerScoped
+      include FleetSubscriptionConcern
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read", "user" },
@@ -15,6 +16,7 @@ module Api
 
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
+      before_action -> { require_fleet_subscription(:tours) }
       before_action :set_payout_transfer, only: %i[confirm unconfirm]
 
       def index
@@ -37,6 +39,14 @@ module Api
 
         @payout_transfer.unconfirm!
         render :show
+      end
+
+      # Defined here rather than left to PayoutLedgerScoped: both it and
+      # FleetSubscriptionConcern define this, and the concern is included last,
+      # so its `@fleet` default -- nil here -- would win the lookup and skip
+      # enforcement. A method on the class beats either module.
+      private def subscription_fleet
+        @payout_ledger&.fleet
       end
 
       private def set_payout_transfer
