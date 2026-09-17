@@ -47,8 +47,8 @@ module V1
             withKnownSource: {type: :boolean},
 
             currentVersion: {type: :boolean},
-            s: {type: :string, enum: ::Blueprint::ALLOWED_SORTING_PARAMS},
-            sorts: {type: :array, items: {type: :string, enum: ::Blueprint::ALLOWED_SORTING_PARAMS}}
+            s: ::V1::Schemas::Enums::BlueprintSortingEnum,
+            sorts: {type: :array, items: ::V1::Schemas::Enums::BlueprintSortingEnum}
           },
           additionalProperties: false,
           example: {}

@@ -15929,25 +15929,11 @@ components:
         currentVersion:
           type: boolean
         s:
-          type: string
-          enum:
-          - name asc
-          - name desc
-          - craftTime asc
-          - craftTime desc
-          - createdAt asc
-          - createdAt desc
+          "$ref": "#/components/schemas/BlueprintSortingEnum"
         sorts:
           type: array
           items:
-            type: string
-            enum:
-            - name asc
-            - name desc
-            - craftTime asc
-            - craftTime desc
-            - createdAt asc
-            - createdAt desc
+            "$ref": "#/components/schemas/BlueprintSortingEnum"
       additionalProperties: false
       example: {}
       title: BlueprintQuery
@@ -15960,6 +15946,23 @@ components:
       - LINEAR
       - LINEAR_INTEGER_ADDITIVE
       title: BlueprintRampEnum
+    BlueprintSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - craftTime asc
+      - craftTime desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CRAFT_TIME_ASC
+      - CRAFT_TIME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: BlueprintSortingEnum
     BlueprintSource:
       type: object
       properties:
