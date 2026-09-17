@@ -34,28 +34,26 @@ module Subscriptions
   # Whether this contribution, on its own, is enough to open a subscription.
   # Whether it is active, and which fleet it names, are the reconciler's
   # questions rather than this one's.
+  #
+  # The figure is met in *either* currency: the normalised EUR amount, or what
+  # the supporter actually set in the currency they set it in.
+  #
+  # Deliberately not keyed on `recurring?`. Every pledge on the platform today
+  # is $5, which converts to EUR 4.36, so an EUR-only rule refuses the only
+  # people currently paying -- and `recurring` is not the axis that separates
+  # them, because the two importers record a standing pledge differently.
+  # Patreon marks one row recurring; Ko-fi deliberately writes a fresh
+  # non-recurring row per payment, since it notifies on payment and never on
+  # cancellation. Keying on the flag would qualify a $5 Patreon pledge and
+  # refuse an identical $5 Ko-fi subscription, which is a fact about our
+  # importers rather than about what the supporter did.
+  #
+  # The cost is that a one-off $5 also clears an EUR 5 bar. That is the right
+  # side to err on: the alternative refuses somebody who gave what was asked
+  # because the rate moved between their pledge and the read.
   def self.qualifying?(contribution)
-    return true if contribution.amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
-
-    standing_pledge_at_the_figure?(contribution)
-  end
-
-  # A standing pledge is judged on what the supporter set it to, not on what
-  # the exchange rate made of it this month.
-  #
-  # Every recurring pledge on the platform today is $5, which converts to €4.36
-  # -- so an amount-only rule refuses the only people currently paying, which is
-  # the one outcome D16 exists to prevent. The commitment did not change; the
-  # rate did.
-  #
-  # Source-blind, because `User#supporter_recurring?` already settled that a
-  # standing pledge is one whatever it was set up on. The comparison is against
-  # the figure in the currency it was pledged in, which is not the same unit --
-  # deliberately so: $5 a month and €5 a month are the same commitment, and
-  # pricing them apart by the day's rate is what this avoids.
-  private_class_method def self.standing_pledge_at_the_figure?(contribution)
-    return false unless contribution.recurring?
-
-    contribution.source_amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
+    [contribution.amount_cents, contribution.source_amount_cents]
+      .compact
+      .any? { |cents| cents >= QUALIFYING_AMOUNT_CENTS }
   end
 end
