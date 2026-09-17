@@ -325,13 +325,18 @@ What each still needs before it can be a tab:
 
 | tenant | public API today | missing |
 |---|---|---|
-| components | `index`, `show`, `weapons`, category/sub-type filters | the pages (Phase 4) |
-| blueprints | none | the whole API — #4988's Phase 3 |
+| components | `index`, `show`, `weapons`, `categories`/`sub-types` filters (plus `classes` and `item-types`, both deprecated) | the pages (Phase 4) |
+| blueprints | `index`, `show` — landed in #5013 | the pages |
 | commodities | `index` (`param: :slug`), `price_history`, `types` filter | a `show` endpoint, then pages |
-| equipment | `index`, `types` filter | a `show` endpoint, then pages |
+| equipment | `index`, `types` and `item-types` filters | a `show` endpoint, then pages |
 
-Commodities is closest: it already routes on `:slug` and has a price history to hang a detail
-page on. Equipment needs the same `show` work this plan did for components.
+Components and blueprints both have their API and want only pages. Commodities is closest of
+the other two — it already routes on `:slug` and has a price history to hang a detail page on;
+equipment needs the same `show` work this plan did for components.
+
+**A tenant earns its tab when its pages exist, not when its API does.** Wiring a tab to a
+route that has no page sends a visitor to the app's generic not-found, which is worse than the
+tab being absent — so the nav lists what is built, and each tenant joins it in its own change.
 
 Route `meta` needs both namespaces: `nav.*` labels the tab and `title.*` the document. The
 detail page also wants a Rails-side route the way `get "ships/:slug"` has one, or a shared link
@@ -455,8 +460,8 @@ throw before the feature does anything.
 
 1. `/components` list in the shared section (D7): search, category and sub-type filters, sort,
    pagination, typographic rows with no imagery (D8). `/catalogue` redirects here, and the
-   section's nav shows only the tenants that exist — blueprints when #4988's API lands,
-   equipment and commodities once each has a `show` endpoint.
+   section's nav lists only the tenants whose **pages** exist — an API alone does not earn a
+   tab, because a tab pointing at a route with no page lands on the generic not-found.
 2. Detail page: every metric for the category, grouped and labelled, plus manufacturer, size,
    grade, class, tags and required tags.
 3. A retired component marked rather than shown as current (D6).
