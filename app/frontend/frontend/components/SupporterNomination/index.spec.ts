@@ -1,16 +1,20 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { flushPromises } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 
 const contributions = ref<unknown[] | undefined>(undefined);
 const fleets = ref<unknown[] | undefined>(undefined);
 const nominate = vi.fn(() => Promise.resolve({}));
+const supported = ref<{ fleet?: { id: string } } | undefined>(undefined);
+const choose = vi.fn(() => Promise.resolve({}));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useMySupporterContributions: () => ({ data: contributions }),
   useMyFleets: () => ({ data: fleets }),
   useNominateFleetForSupporterContribution: () => ({ mutateAsync: nominate }),
+  useMySupportedFleet: () => ({ data: supported }),
+  useChooseMySupportedFleet: () => ({ mutateAsync: choose }),
 }));
 
 const displaySuccess = vi.fn();
@@ -57,6 +61,13 @@ const CONTRIBUTION = {
 
 const FLEET = { id: "f-1", name: "Blue Sun", slug: "blue-sun" };
 
+// Two selects render once a contribution exists -- the standing choice first,
+// then one per donation. Target by name so a test never depends on the order.
+const rowSelect = (wrapper: VueWrapper) =>
+  wrapper
+    .findAllComponents({ name: "BaseSelect" })
+    .filter((select) => select.props("name") === "nomination-c-1")[0];
+
 describe("SupporterNomination", () => {
   beforeEach(() => {
     contributions.value = [CONTRIBUTION];
@@ -64,6 +75,9 @@ describe("SupporterNomination", () => {
     authenticated.value = true;
     featureEnabled.value = true;
     nominate.mockClear();
+    choose.mockClear();
+    choose.mockResolvedValue({});
+    supported.value = undefined;
     nominate.mockResolvedValue({});
     invalidateQueries.mockClear();
     displaySuccess.mockClear();
@@ -72,12 +86,37 @@ describe("SupporterNomination", () => {
 
   // A visitor who has never donated, or whose donation has not been matched
   // yet, must not be shown a form asking them to pick a fleet.
-  it("renders nothing without a linked contribution", async () => {
+  // The whole point of the standing choice: answerable before any donation.
+  it("offers the choice with no contribution at all", async () => {
     contributions.value = [];
 
     const wrapper = await mountWithDefaults(SupporterNomination);
 
+    expect(wrapper.find("[data-test='nomination']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='supported-fleet']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='nomination-c-1']").exists()).toBe(false);
+  });
+
+  // Nothing to pick from, so the section would be a dead control.
+  it("renders nothing when the account is in no fleet", async () => {
+    fleets.value = [];
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+
     expect(wrapper.find("[data-test='nomination']").exists()).toBe(false);
+  });
+
+  it("saves the standing choice", async () => {
+    contributions.value = [];
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+
+    await wrapper
+      .findComponent({ name: "BaseSelect" })
+      .vm.$emit("update:modelValue", "f-1");
+    await flushPromises();
+
+    expect(choose).toHaveBeenCalledWith({ data: { fleetId: "f-1" } });
   });
 
   // The premium rollout ships switched off, so nothing about it is visible
@@ -99,9 +138,7 @@ describe("SupporterNomination", () => {
   it("nominates the picked fleet and refreshes the list", async () => {
     const wrapper = await mountWithDefaults(SupporterNomination);
 
-    await wrapper
-      .findComponent({ name: "BaseSelect" })
-      .vm.$emit("update:modelValue", "f-1");
+    await rowSelect(wrapper).vm.$emit("update:modelValue", "f-1");
     await flushPromises();
 
     expect(nominate).toHaveBeenCalledWith({
@@ -117,9 +154,7 @@ describe("SupporterNomination", () => {
   it("clears the nomination with an explicit null", async () => {
     const wrapper = await mountWithDefaults(SupporterNomination);
 
-    await wrapper
-      .findComponent({ name: "BaseSelect" })
-      .vm.$emit("update:modelValue", "");
+    await rowSelect(wrapper).vm.$emit("update:modelValue", "");
     await flushPromises();
 
     expect(nominate).toHaveBeenCalledWith({
@@ -135,7 +170,7 @@ describe("SupporterNomination", () => {
     nominate.mockImplementation(() => new Promise(() => {}));
 
     const wrapper = await mountWithDefaults(SupporterNomination);
-    const select = wrapper.findComponent({ name: "BaseSelect" });
+    const select = rowSelect(wrapper);
 
     await select.vm.$emit("update:modelValue", "f-1");
     await select.vm.$emit("update:modelValue", "");
@@ -153,9 +188,7 @@ describe("SupporterNomination", () => {
 
     const wrapper = await mountWithDefaults(SupporterNomination);
 
-    await wrapper
-      .findComponent({ name: "BaseSelect" })
-      .vm.$emit("update:modelValue", "f-1");
+    await rowSelect(wrapper).vm.$emit("update:modelValue", "f-1");
     await flushPromises();
 
     expect(displayAlert).toHaveBeenCalled();

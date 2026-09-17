@@ -13,8 +13,11 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   getMySupporterContributionsQueryKey,
+  getMySupportedFleetQueryKey,
   useMyFleets,
   useMySupporterContributions,
+  useMySupportedFleet,
+  useChooseMySupportedFleet,
   useNominateFleetForSupporterContribution,
   FeatureFlagName,
   type FilterOption,
@@ -48,6 +51,14 @@ const { data: contributions } = useMySupporterContributions({
 // nomination is validated against. So nothing offered here can be refused.
 const { data: fleets } = useMyFleets({ query: { enabled } });
 
+// The standing choice, answerable with no donation in sight. This is the part
+// somebody can act on at the moment they are deciding -- a contribution does
+// not exist until a payment has been imported and matched, which is days later
+// for a Patreon sync or a hand-entered payment.
+const { data: supported } = useMySupportedFleet({ query: { enabled } });
+
+const { mutateAsync: chooseSupportedFleet } = useChooseMySupportedFleet();
+
 const { mutateAsync: nominate } = useNominateFleetForSupporterContribution();
 
 const rows = computed<MySupporterContribution[]>(() =>
@@ -60,6 +71,38 @@ const fleetOptions = computed<FilterOption[]>(() =>
     value: fleet.id,
   })),
 );
+
+// Shown whenever there is a fleet to choose, donation or not. Without a fleet
+// there is nothing to pick from, and the section would be a dead control.
+const hasFleets = computed(
+  () => enabled.value && fleetOptions.value.length > 0,
+);
+
+const choosing = ref(false);
+
+const onChooseSupported = async (fleetId: string | null) => {
+  if (choosing.value) return;
+
+  choosing.value = true;
+
+  try {
+    await chooseSupportedFleet({ data: { fleetId } });
+
+    void queryClient.invalidateQueries({
+      queryKey: getMySupportedFleetQueryKey(),
+    });
+
+    displaySuccess({
+      text: t("messages.supporterNomination.update.success"),
+    });
+  } catch {
+    displayAlert({
+      text: t("messages.supporterNomination.update.failure"),
+    });
+  } finally {
+    choosing.value = false;
+  }
+};
 
 const formatAmount = (contribution: MySupporterContribution) =>
   new Intl.NumberFormat(undefined, {
@@ -104,7 +147,7 @@ const onSelect = async (
 </script>
 
 <template>
-  <div v-if="rows.length" class="supporter-nomination" data-test="nomination">
+  <div v-if="hasFleets" class="supporter-nomination" data-test="nomination">
     <div class="supporter-nomination__label">
       {{ t("labels.account.supporterNomination.label") }}
     </div>
@@ -112,6 +155,30 @@ const onSelect = async (
     <p class="supporter-nomination__hint">
       {{ t("labels.account.supporterNomination.hint") }}
     </p>
+
+    <BaseSelect
+      name="supportedFleet"
+      :model-value="supported?.fleet?.id ?? null"
+      :options="fleetOptions"
+      :label="t('labels.account.supporterNomination.fleet')"
+      :disabled="choosing"
+      nullable
+      no-label
+      data-test="supported-fleet"
+      @update:model-value="
+        (value) => onChooseSupported((value as string) || null)
+      "
+    />
+
+    <template v-if="rows.length">
+      <div class="supporter-nomination__label supporter-nomination__label--sub">
+        {{ t("labels.account.supporterNomination.perDonation") }}
+      </div>
+
+      <p class="supporter-nomination__hint">
+        {{ t("labels.account.supporterNomination.perDonationHint") }}
+      </p>
+    </template>
 
     <div
       v-for="contribution in rows"

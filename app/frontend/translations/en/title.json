@@ -123,6 +123,7 @@
         "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
         "calendar": "Calendar Subscription",
+        "donations": "Donations",
         "security": "Account Security",
         "twoFactor": {
           "enable": "Enable Two-factor Authentication",

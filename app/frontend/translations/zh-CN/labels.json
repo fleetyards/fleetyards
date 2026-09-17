@@ -1470,7 +1470,9 @@
         },
         "supporterNomination": {
           "label": "舰队支持",
-          "hint": "选择捐赠所支持的舰队。只要捐赠有效，其成员即可使用舰队功能。",
+          "hint": "选择你的捐赠所支持的舰队。只要捐赠有效，其成员即可使用舰队功能——你可以现在选择，之后再捐赠。",
+          "perDonation": "按捐赠设置",
+          "perDonationHint": "单笔捐赠可以支持与常用舰队不同的舰队。",
           "fleet": "受支持的舰队"
         },
         "supporterClaimKey": {

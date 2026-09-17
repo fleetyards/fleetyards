@@ -123,6 +123,7 @@
         "oauthApplications": "OAuth 應用程式",
         "notifications": "通知設定",
         "calendar": "行事曆訂閱",
+        "donations": "捐贈",
         "security": "帳戶安全",
         "twoFactor": {
           "enable": "啟用雙因素認證",

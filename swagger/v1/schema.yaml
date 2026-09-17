@@ -9784,6 +9784,83 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/supporter/fleet":
+    get:
+      summary: Show the fleet my donations support
+      tags:
+      - Me Supporter
+      operationId: mySupportedFleet
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MySupportedFleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Choose the fleet my donations support
+      tags:
+      - Me Supporter
+      operationId: chooseMySupportedFleet
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupporterNominationInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MySupportedFleet"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/mission-slots":
     post:
       summary: Create Mission Slot
@@ -24973,6 +25050,13 @@ components:
       items:
         "$ref": "#/components/schemas/Model"
       title: ModelsList
+    MySupportedFleet:
+      type: object
+      properties:
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
+      additionalProperties: false
+      title: MySupportedFleet
     MySupporterContribution:
       type: object
       properties:

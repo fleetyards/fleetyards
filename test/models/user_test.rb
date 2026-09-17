@@ -67,6 +67,7 @@
 #  youtube                   :string
 #  created_at                :datetime
 #  updated_at                :datetime
+#  supported_fleet_id        :uuid
 #
 # Indexes
 #
@@ -81,8 +82,13 @@
 #  index_users_on_normalized_email       (normalized_email)
 #  index_users_on_normalized_username    (normalized_username)
 #  index_users_on_reset_password_token   (reset_password_token) UNIQUE
+#  index_users_on_supported_fleet_id     (supported_fleet_id) WHERE (supported_fleet_id IS NOT NULL)
 #  index_users_on_unlock_token           (unlock_token) UNIQUE
 #  index_users_on_username               (username) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (supported_fleet_id => fleets.id)
 #
 require "test_helper"
 
@@ -744,5 +750,36 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     assert_nil User.find_by_claim_key("hello")
     assert_nil User.find_by_claim_key(nil)
     assert_nil User.find_by_claim_key("FY-0000-0000")
+  end
+  test "a supported fleet must be one the user is an accepted member of" do
+    membership = create(:fleet_membership, :accepted)
+
+    assert membership.user.update(supported_fleet: membership.fleet)
+
+    membership.user.supported_fleet = create(:fleet)
+
+    refute membership.user.valid?
+    assert_includes membership.user.errors[:supported_fleet],
+      membership.user.errors.generate_message(:supported_fleet, :not_a_fleet_of_the_supporter)
+  end
+
+  test "a supported fleet can always be cleared" do
+    membership = create(:fleet_membership, :accepted)
+    membership.user.update!(supported_fleet: membership.fleet)
+
+    assert membership.user.update(supported_fleet: nil)
+  end
+
+  # Leaving the fleet must not make every later write to the account fail.
+  test "a supported fleet that went stale does not block an unrelated update" do
+    membership = create(:fleet_membership, :accepted)
+    membership.user.update!(supported_fleet: membership.fleet)
+    membership.discard
+
+    user = User.find(membership.user_id)
+    user.date_format = User::DATE_FORMATS.keys.last
+
+    assert user.valid?, user.errors.full_messages.to_sentence
+    assert user.save
   end
 end

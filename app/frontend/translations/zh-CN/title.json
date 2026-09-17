@@ -123,6 +123,7 @@
         "oauthApplications": "OAuth 应用",
         "notifications": "通知设置",
         "calendar": "日历订阅",
+        "donations": "捐赠",
         "security": "账户安全",
         "twoFactor": {
           "enable": "启用双因素认证",

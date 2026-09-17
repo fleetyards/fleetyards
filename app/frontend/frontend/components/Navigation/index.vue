@@ -110,6 +110,7 @@ const settingsActive = computed(() => {
     "settings-profile",
     "settings-account",
     "settings-hangar",
+    "settings-donations",
     "settings-features",
     "settings-notifications",
     "settings-friends",

@@ -1470,7 +1470,9 @@
         },
         "supporterNomination": {
           "label": "Apoyo a la flota",
-          "hint": "Elige la flota a la que apoya tu donación. Sus miembros obtienen las funciones de flota mientras la donación esté activa.",
+          "hint": "Elige la flota a la que apoyan tus donaciones. Sus miembros obtienen las funciones de flota mientras una donación esté activa: puedes elegir ahora y donar más tarde.",
+          "perDonation": "Por donación",
+          "perDonationHint": "Una donación puede apoyar una flota distinta de la habitual.",
           "fleet": "Flota apoyada"
         },
         "supporterClaimKey": {

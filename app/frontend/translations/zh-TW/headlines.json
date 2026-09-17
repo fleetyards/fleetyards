@@ -348,7 +348,8 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "calendar": "行事曆訂閱"
+        "calendar": "行事曆訂閱",
+        "donations": "捐贈"
       },
       "oauthApplications": {
         "new": "新增 OAuth 應用程式",

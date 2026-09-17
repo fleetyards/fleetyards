@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1988,6 +1988,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.boolean "rsi_handle_verified", default: false, null: false
     t.boolean "sale_notify", default: false
     t.integer "sign_in_count", default: 0, null: false
+    t.uuid "supported_fleet_id"
     t.boolean "tester", default: false
     t.boolean "tracking", default: true
     t.datetime "transfers_blocked_at"
@@ -2010,6 +2011,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.index ["normalized_email"], name: "index_users_on_normalized_email"
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["supported_fleet_id"], name: "index_users_on_supported_fleet_id", where: "(supported_fleet_id IS NOT NULL)"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -2232,5 +2234,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade
   add_foreign_key "tours", "fleets"
   add_foreign_key "tours", "users", column: "created_by_id"
+  add_foreign_key "users", "fleets", column: "supported_fleet_id"
   add_foreign_key "vehicle_loadouts", "vehicles"
 end

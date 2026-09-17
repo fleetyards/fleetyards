@@ -123,6 +123,7 @@
         "oauthApplications": "Applications OAuth",
         "notifications": "Paramètres de notification",
         "calendar": "Abonnement au calendrier",
+        "donations": "Dons",
         "security": "Sécurité du Compte",
         "twoFactor": {
           "enable": "Activer l'authentification à deux étapes",
