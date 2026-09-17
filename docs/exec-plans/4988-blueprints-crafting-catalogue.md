@@ -30,12 +30,22 @@ chosen and what it costs.
 ### D1 — A blueprint has no name; the output supplies it
 
 1606 of 1607 records carry `blueprintName="@LOC_PLACEHOLDER"`. The single exception is a
-mission item. Name, icon, manufacturer and slug therefore all derive from the crafted
-output, which makes the output link **mandatory** rather than decorative — a blueprint whose
-output does not resolve cannot be rendered and must not be loaded as a nameless row.
+mission item. Name, icon and manufacturer therefore all come from the crafted output.
 
-One output does not resolve: `bp_craft_cool_s04_cnou_pioneer.xml` names an entity class
-present in no file in the export. The loader skips it and counts it, it does not raise.
+**Amended once built.** The first wording made the output link mandatory and said a recipe
+whose output does not resolve must not be loaded. That is wrong twice over, and the
+implementation does neither:
+
+- The *name* is what has to resolve, not the link. The parser reads the entity's own
+  localisation as well, so the four mission carryables that are in no catalogue still load
+  named. 28 recipes carry no `craftable`; all but four carry a name.
+- Dropping a recipe because its output is missing would hide 23 real ones that are only
+  missing because of the localisation bug in #4997, and they would come back silently the
+  day that lands. They load, linked to nothing, and the loader counts them.
+
+Four load with no name at all: `bp_craft_cool_s04_cnou_pioneer`, whose entity class is in no
+file in the export, and three radars the game itself does not name. The page has to say so
+rather than render a blank.
 
 ### D2 — The output is polymorphic
 
@@ -172,18 +182,25 @@ A 1607-record loader plus a new public catalogue plus a new parser is not one re
 Each PR below stands on its own. The known cost is the cascade: a squash merge of any PR in
 the stack forces two force-push rounds per merge, leaf last.
 
-### D11 — Cost rows hang off the blueprint, not off a build
+### D11 — Cost rows hang off the build
 
 `blueprints` and `blueprint_builds` carry the scalar facts (D7). The recipe itself
 -- `blueprint_cost_slots`, `blueprint_cost_options`, `blueprint_cost_modifiers` -- hangs off
-the blueprint and is **rewritten wholesale on every load**.
+the **build**, and is rewritten wholesale on every load.
 
-Unlike a catalogue row, nothing points at a cost line: no ledger entry, no loadout, nothing
-that has to keep resolving. So the argument for versioning them does not apply, and the
-recipe a visitor sees is the one the build we are on states. Written with `insert_all!`
-against generated ids -- a full load is 4,289 slots, 4,289 options and 6,524 modifiers, and
-taking those through ActiveRecord one at a time costs more than the rest of the loader
-together.
+The first cut hung it off the blueprint, reasoning that nothing points at a cost line so
+nothing has to keep resolving. Review caught what that misses: live and ptu are loaded
+separately and a reader can be pointed at either, so one global recipe means whichever tree
+loaded last supplies the costs for both -- live build facts rendered beside ptu materials.
+The recipe is a fact of a build exactly the way the craft time is, so it is stored like one.
+`prune_builds` and `retire_absent_builds` now carry the recipe away with the build it
+belonged to, through the FK cascade.
+
+Written with `insert_all!` against generated ids -- a full load is 4,289 slots, 4,289 options
+and 6,524 modifiers, and taking those through ActiveRecord one at a time costs more than the
+rest of the loader together -- inside one transaction, because the delete lands before the
+three inserts and a failure between them would leave a readable build carrying half a
+recipe.
 
 ### D12 — `localize` moves onto `BaseParser`, and the parser fix does not
 
@@ -341,6 +358,7 @@ Three corrections to the issue body came out of building it:
 - **2026-09-17** Issue read, branch and worktree created, D1–D9 resolved with the user (D4 full chain, D6 ship ramps, D8 shared shell, D10 stacked PRs).
 - **2026-09-17** Verified the contract chain against `4.10.1-live.12660092`: pool→generator references are **GUID-only** (a name grep returns zero files), 130 of 154 pools reach a generator, 107 generator files across 10 guilds, and `factionReputation` resolves to a `FactionReputation` record carrying `displayName`. Worked example recorded in D4.
 - **2026-09-17** Confirmed the public frontend has no commodities/components/equipment pages at all — D8 is a real fork, not a tidy-up.
+- **2026-09-17** Review on #4998 caught that the recipe was global while the build facts were per-source -- a ptu load would have overwritten the live recipe. Moved onto the build (D11), wrapped the rewrite in a transaction, and made an unrecognised ramp kind report itself.
 - **2026-09-17** Phase 1 built and measured end to end against a locally loaded catalogue: 1607 blueprints, 1579 linked, 0 cost options unresolved. Found the `,P` localisation trap (D12) and filed the parser half of it as #4997; found piecewise ramps (D6) and the variable slot count.
 
 ## Progress

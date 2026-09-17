@@ -46,15 +46,15 @@ class Blueprint < ApplicationRecord
   # file in the export.
   belongs_to :craftable, polymorphic: true, optional: true
 
-  has_many :cost_slots,
-    -> { order(:position) },
-    class_name: "BlueprintCostSlot", inverse_of: :blueprint, dependent: :destroy
-
-  has_many :cost_options, through: :cost_slots, source: :options
-
   # What each build of the game says about this blueprint.
   has_many :builds, class_name: "BlueprintBuild", dependent: :destroy
   has_one :build, -> { current }, class_name: "BlueprintBuild", inverse_of: :blueprint
+
+  # The recipe belongs to the build, not to the blueprint: live and ptu are
+  # loaded separately and either can be read, so a single global recipe would
+  # leave whichever tree loaded last supplying the costs for both.
+  has_many :cost_slots, through: :build
+  has_many :cost_options, through: :cost_slots, source: :options
 
   # The newest build of this environment that still describes the recipe, which
   # is what one the export dropped falls back to.
@@ -73,14 +73,16 @@ class Blueprint < ApplicationRecord
     end
   }
 
-  # Recipes that consume a given commodity. Two hops, so it is written as an
-  # exists check rather than a join: a recipe naming the same material in two
-  # slots would otherwise come back twice.
-  scope :consuming, ->(commodity) {
+  # Recipes that consume a given commodity, in the build we are on. Three hops,
+  # so it is written as an exists check rather than a join: a recipe naming the
+  # same material in two slots would otherwise come back twice.
+  scope :consuming, ->(commodity, source = ::ScData::Source.current) {
     where(
-      id: BlueprintCostSlot
-        .where(id: BlueprintCostOption.where(commodity:).select(:blueprint_cost_slot_id))
-        .select(:blueprint_id)
+      id: BlueprintBuild.current(source).where(
+        id: BlueprintCostSlot
+          .where(id: BlueprintCostOption.where(commodity:).select(:blueprint_cost_slot_id))
+          .select(:blueprint_build_id)
+      ).select(:blueprint_id)
     )
   }
 

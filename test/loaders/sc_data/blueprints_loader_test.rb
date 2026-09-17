@@ -114,7 +114,7 @@ module ScData
         commodity = create(:commodity, sc_key: IRON_KEY, name: "Iron")
 
         blueprint = @loader.one(blueprint_data)
-        option = blueprint.cost_slots.first.options.first
+        option = blueprint.build.cost_slots.first.options.first
 
         assert_equal commodity, option.commodity
         assert_equal IRON_KEY, option.commodity_key
@@ -126,7 +126,7 @@ module ScData
       # recipe down with it, and the line still has to say which material.
       test "#one keeps a cost option whose commodity is missing" do
         blueprint = @loader.one(blueprint_data(commodity_key: "items_commodities_unknown"))
-        option = blueprint.cost_slots.first.options.first
+        option = blueprint.build.cost_slots.first.options.first
 
         assert_nil option.commodity
         assert_equal "items_commodities_unknown", option.commodity_key
@@ -145,9 +145,42 @@ module ScData
         assert_equal 1, BlueprintCostOption.count
       end
 
+      # Live and ptu are loaded separately and a reader can be pointed at
+      # either, so a recipe shared between them would leave whichever tree
+      # loaded last supplying the costs for both.
+      test "#one leaves another source's recipe alone" do
+        blueprint = @loader.one(blueprint_data(slots: 2))
+        live = blueprint.build
+
+        ptu = ::ScData::Loader::BlueprintsLoader.new
+        ptu.sc_environment = "ptu"
+        ptu.sc_version = "9.9.9-ptu.1"
+        ptu.one(blueprint_data(slots: 1))
+
+        assert_equal 2, live.reload.cost_slots.count
+        assert_equal 3, BlueprintCostSlot.count
+      end
+
+      # The recipe belongs to the build, and both `retire_absent_builds` and
+      # `prune_builds` drop a build with `delete_all` -- which skips
+      # `dependent: :destroy` entirely. Only the foreign key's cascade takes the
+      # recipe with it, so that is what this asserts.
+      test "dropping a build takes its recipe with it" do
+        blueprint = create(:blueprint)
+        slot = create(:blueprint_cost_slot, build: blueprint.build)
+        create(:blueprint_cost_option, slot:)
+        create(:blueprint_cost_modifier, slot:)
+
+        @loader.retire_absent_builds(BlueprintBuild, :blueprint_id, [create(:blueprint).id])
+
+        assert_equal 0, BlueprintCostSlot.where(id: slot.id).count
+        assert_equal 0, BlueprintCostOption.where(blueprint_cost_slot_id: slot.id).count
+        assert_equal 0, BlueprintCostModifier.where(blueprint_cost_slot_id: slot.id).count
+      end
+
       test "#one keeps every segment of a piecewise ramp" do
         blueprint = @loader.one(blueprint_data(ranges: [[0, 499], [500, 1000]]))
-        modifiers = blueprint.cost_slots.first.modifiers
+        modifiers = blueprint.build.cost_slots.first.modifiers
 
         assert_equal 2, modifiers.size
         assert_equal [499, 1000], modifiers.map(&:end_quality)

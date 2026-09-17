@@ -10,16 +10,21 @@
 # say "any one of these three", which the UI already has a string for
 # (`crafting_ui_ChooseOneMaterial`, "(Choose one material)").
 #
-# These rows hang off the blueprint rather than off a build, and the loader
-# replaces them wholesale on each run. Unlike a catalogue row, nothing points at
-# a cost line -- no ledger entry, no loadout -- so there is nothing that has to
-# keep resolving, and the recipe a visitor is shown is the one the build we are
-# on states.
+# These rows hang off the *build* rather than off the blueprint. The recipe is a
+# fact of one build the way the craft time is: live and ptu are loaded
+# separately and a reader can be pointed at either, so a single global recipe
+# would mean whichever tree loaded last supplied the costs for both -- live
+# build facts rendered beside ptu materials.
+#
+# The loader replaces a build's rows wholesale on each run. Unlike a catalogue
+# row, nothing points at a cost line -- no ledger entry, no loadout -- so there
+# is nothing that has to keep resolving, and `prune_builds` takes the recipe
+# with the build it belonged to.
 class CreateBlueprintCosts < ActiveRecord::Migration[8.1]
   def change
     create_table :blueprint_cost_slots, id: :uuid do |t|
-      t.references :blueprint, type: :uuid, null: false,
-        foreign_key: {on_delete: :cascade}
+      t.references :blueprint_build, type: :uuid, null: false,
+        foreign_key: {on_delete: :cascade}, index: {name: "index_blueprint_cost_slots_on_build"}
 
       # Order within the recipe. The export lists slots in a fixed order and the
       # page renders them that way, so it is stored rather than re-derived.
@@ -33,7 +38,8 @@ class CreateBlueprintCosts < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :blueprint_cost_slots, [:blueprint_id, :position], unique: true
+    add_index :blueprint_cost_slots, [:blueprint_build_id, :position],
+      unique: true, name: "index_blueprint_cost_slots_on_build_and_position"
 
     create_table :blueprint_cost_options, id: :uuid do |t|
       t.references :blueprint_cost_slot, type: :uuid, null: false,

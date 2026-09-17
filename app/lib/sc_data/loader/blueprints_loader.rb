@@ -34,9 +34,9 @@ module ScData
 
         # `sc_ref` and `sc_key` identify the recipe rather than describing a
         # build, so they stay on the row and are not repeated here.
-        apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
+        build = apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
 
-        persist_costs(blueprint, blueprint_data["slots"])
+        persist_costs(build, blueprint_data["slots"])
 
         blueprint
       end
@@ -83,33 +83,40 @@ module ScData
         @commodities ||= Hash.new { |cache, key| cache[key] = Commodity.find_by(sc_key: key) }
       end
 
-      # Rewritten wholesale on every run rather than reconciled row by row.
+      # Written against the build, so live and ptu each keep their own recipe,
+      # and rewritten wholesale on every run rather than reconciled row by row.
       # Nothing points at a cost line -- no ledger entry, no loadout -- so there
       # is nothing that has to keep resolving, and a recipe CIG rewrites has to
       # lose the slots it no longer has.
+      #
+      # In one transaction, because the delete lands before the three inserts:
+      # a failure between them would otherwise leave a readable build carrying
+      # half a recipe until the next successful load repaired it.
       #
       # Written with `insert_all!` against generated ids: a full load is 4,289
       # slots, 4,289 options and 6,524 modifiers, and taking those through
       # ActiveRecord one at a time costs more than the rest of the loader put
       # together. The ids are generated here rather than by the column default
       # so the three levels can be built in one pass.
-      private def persist_costs(blueprint, slots)
-        rows = cost_rows(blueprint, Array.wrap(slots))
+      private def persist_costs(build, slots)
+        rows = cost_rows(build, Array.wrap(slots))
 
-        blueprint.cost_slots.delete_all
+        BlueprintCostSlot.transaction do
+          build.cost_slots.delete_all
 
-        rows.each do |model, written|
-          next if written.blank?
+          rows.each do |model, written|
+            next if written.blank?
 
-          model.insert_all!(written)
+            model.insert_all!(written)
 
-          stats[model.name][:created] += written.size
+            stats[model.name][:created] += written.size
+          end
         end
 
-        blueprint.association(:cost_slots).reset
+        build.association(:cost_slots).reset
       end
 
-      private def cost_rows(blueprint, slots)
+      private def cost_rows(build, slots)
         now = Time.zone.now
         models = self.class.cost_models
         rows = models.each_value.to_h { |model| [model, []] }
@@ -119,7 +126,7 @@ module ScData
 
           rows[models[:slots]] << {
             id: slot_id,
-            blueprint_id: blueprint.id,
+            blueprint_build_id: build.id,
             position: slot["position"],
             sc_key: slot["key"],
             name: slot["name"],

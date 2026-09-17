@@ -97,12 +97,24 @@ class BlueprintTest < ActiveSupport::TestCase
     commodity = create(:commodity)
     blueprint = create(:blueprint)
     2.times do |position|
-      slot = create(:blueprint_cost_slot, blueprint:, position:)
+      slot = create(:blueprint_cost_slot, build: blueprint.build, position:)
       create(:blueprint_cost_option, slot:, commodity:)
     end
     create(:blueprint)
 
     assert_equal [blueprint], Blueprint.consuming(commodity).to_a
+  end
+
+  # Live and ptu are loaded separately and either can be read, so one global
+  # recipe would leave whichever tree loaded last supplying the costs for both.
+  test ".consuming ignores a recipe another build states" do
+    commodity = create(:commodity)
+    blueprint = create(:blueprint)
+    other = blueprint.builds.create!(environment: "ptu", version: "9.9.9-ptu.1")
+    create(:blueprint_cost_option, slot: create(:blueprint_cost_slot, build: other), commodity:)
+
+    assert_empty Blueprint.consuming(commodity)
+    assert_empty blueprint.reload.cost_slots
   end
 
   test ".making finds the recipes for one output" do
@@ -113,13 +125,14 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_equal [blueprint], Blueprint.making(component).to_a
   end
 
-  test "destroying a blueprint takes its recipe with it" do
+  test "destroying a blueprint takes its builds and their recipes with it" do
     blueprint = create(:blueprint)
-    slot = create(:blueprint_cost_slot, blueprint:)
+    slot = create(:blueprint_cost_slot, build: blueprint.build)
     create(:blueprint_cost_option, slot:)
     create(:blueprint_cost_modifier, slot:)
 
-    assert_difference -> { BlueprintCostSlot.count } => -1,
+    assert_difference -> { BlueprintBuild.count } => -1,
+      -> { BlueprintCostSlot.count } => -1,
       -> { BlueprintCostOption.count } => -1,
       -> { BlueprintCostModifier.count } => -1 do
       blueprint.destroy

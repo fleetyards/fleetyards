@@ -38,6 +38,12 @@ class BlueprintBuild < ApplicationRecord
   belongs_to :blueprint
   belongs_to :craftable, polymorphic: true, optional: true
 
+  # The recipe this build states. Destroyed with the build, which is what makes
+  # `prune_builds` and `retire_absent_builds` carry the costs away too.
+  has_many :cost_slots,
+    -> { order(:position) },
+    class_name: "BlueprintCostSlot", inverse_of: :build, dependent: :destroy
+
   FACTS = %i[name craftable_type craftable_id category_ref craft_time slot_count].freeze
 
   # `craftable_type` and `craftable_id` are held back: the association reads the

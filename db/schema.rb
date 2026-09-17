@@ -233,14 +233,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
   end
 
   create_table "blueprint_cost_slots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "blueprint_id", null: false
+    t.uuid "blueprint_build_id", null: false
     t.datetime "created_at", null: false
     t.string "name"
     t.integer "position", null: false
     t.string "sc_key"
     t.datetime "updated_at", null: false
-    t.index ["blueprint_id", "position"], name: "index_blueprint_cost_slots_on_blueprint_id_and_position", unique: true
-    t.index ["blueprint_id"], name: "index_blueprint_cost_slots_on_blueprint_id"
+    t.index ["blueprint_build_id", "position"], name: "index_blueprint_cost_slots_on_build_and_position", unique: true
+    t.index ["blueprint_build_id"], name: "index_blueprint_cost_slots_on_build"
   end
 
   create_table "blueprints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2198,7 +2198,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
   add_foreign_key "blueprint_cost_modifiers", "blueprint_cost_slots", on_delete: :cascade
   add_foreign_key "blueprint_cost_options", "blueprint_cost_slots", on_delete: :cascade
   add_foreign_key "blueprint_cost_options", "commodities", on_delete: :nullify
-  add_foreign_key "blueprint_cost_slots", "blueprints", on_delete: :cascade
+  add_foreign_key "blueprint_cost_slots", "blueprint_builds", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade

@@ -56,7 +56,28 @@ module ScData
       end
 
       def blueprints
-        load_data(SOURCE_PATH).filter_map { |item| parse_blueprint(item[:key], item[:values]) }
+        parsed = load_data(SOURCE_PATH).filter_map { |item| parse_blueprint(item[:key], item[:values]) }
+
+        report_unknown_ramps
+
+        parsed
+      end
+
+      # A ramp shape this does not know how to render is dropped, because a
+      # number it cannot draw a line through is worse than no number. Said out
+      # loud rather than dropped quietly: if CIG adds a third kind, the recipes
+      # would otherwise keep parsing with their stats quietly missing.
+      private def report_unknown_ramps
+        return if unknown_ramps.empty?
+
+        Rails.logger.warn(
+          "[sc_data] BlueprintsParser: ignored #{unknown_ramps.values.sum} value ranges of " \
+          "unknown kind: #{unknown_ramps.keys.sort.join(", ")}"
+        )
+      end
+
+      private def unknown_ramps
+        @unknown_ramps ||= Hash.new(0)
       end
 
       # One tier, one recipe: all 1607 records carry exactly one
@@ -212,7 +233,10 @@ module ScData
             ranges.flat_map do |type, values|
               ramp = RAMPS[type]
 
-              next [] if ramp.blank?
+              if ramp.blank?
+                unknown_ramps[type] += Array.wrap(values).size
+                next []
+              end
 
               Array.wrap(values).map do |range|
                 {
