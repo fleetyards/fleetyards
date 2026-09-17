@@ -77,7 +77,40 @@ module ScData
         end
       end
 
-      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY")
+      # Any item in the tree, for a test that writes its own rather than reading
+      # the one the setup always creates.
+      private def parsed_item(key)
+        @parser.all
+
+        JSON.parse(File.read("#{@base_folder}/parsed/test/items/#{key}.json"))
+      end
+
+      # `normalize_tags` begins with `to_s`, so handing it the already-split
+      # array turned the list into its own inspect output: every component in
+      # the tree stored the single string `["$flightReady"]` rather than the tag
+      # inside it. `required_tags` was always passed the raw value, which is why
+      # only one of the pair was wrong.
+      test "stores each tag on its own, rather than the array's inspect output" do
+        write_item(
+          "armr_tagged",
+          name: "@item_NameTagged",
+          tags: "$flightReady $drak_ironclad",
+          required_tags: "$drak_ironclad"
+        )
+
+        item = parsed_item("armr_tagged")
+
+        assert_equal %w[flightReady drak_ironclad], item["tags"]
+        assert_equal %w[drak_ironclad], item["required_tags"]
+      end
+
+      test "carries no tags rather than an empty string for an item with none" do
+        write_item("armr_untagged", name: "@item_NameUntagged", tags: " ")
+
+        assert_empty parsed_item("armr_untagged")["tags"]
+      end
+
+      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil)
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/armor"
 
         FileUtils.mkdir_p(folder)
@@ -86,7 +119,7 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="Armor" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{key}">
+                <AttachDef Type="Armor" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{tags || key}" RequiredTags="#{required_tags}">
                   <Localization Name="#{name}" ShortName="#{short_name}" Description="#{description}" />
                 </AttachDef>
               </SAttachableComponentParams>

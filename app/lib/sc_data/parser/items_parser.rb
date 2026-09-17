@@ -99,6 +99,11 @@ module ScData
         # rest down to :unknown so they don't surface as module slots.
         category = "unknown" if category == "module" && type != "Module"
 
+        # Split here for the two readers below that want the list; the stored
+        # field normalizes the raw value itself. Handing this array to
+        # `normalize_tags` is what broke it: that helper starts with `to_s`, so
+        # an array arrived as its own inspect output and came back as the single
+        # string `["$flightReady"]` rather than the tag it holds.
         tags = values.dig("Components", "SAttachableComponentParams", "AttachDef", "Tags").to_s.split
 
         item = {
@@ -106,7 +111,7 @@ module ScData
           ref: value_or_nil(values.dig("__ref")),
           category: category,
           type: type,
-          tags: normalize_tags(tags),
+          tags: normalize_tags(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Tags")),
           required_tags: normalize_tags(values.dig("Components", "SAttachableComponentParams", "AttachDef", "RequiredTags")),
           sub_type: value_or_nil(values.dig("Components", "SAttachableComponentParams", "AttachDef", "SubType")),
           size: values.dig("Components", "SAttachableComponentParams", "AttachDef", "Size"),
