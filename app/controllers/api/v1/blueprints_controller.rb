@@ -5,8 +5,6 @@ module Api
     class BlueprintsController < ::Api::PublicBaseController
       skip_verify_authorized only: %i[index show]
 
-      before_action :check_blueprints_feature
-
       after_action -> { pagination_header(:blueprints) }, only: [:index]
 
       # One recipe, with everything a crafter is actually asking: what it makes,
@@ -86,12 +84,6 @@ module Api
 
       private def current_version
         blueprints_query_params.fetch(:current_version, true)
-      end
-
-      private def check_blueprints_feature
-        return if feature_enabled?("blueprints")
-
-        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
 
       private def blueprints_query_params

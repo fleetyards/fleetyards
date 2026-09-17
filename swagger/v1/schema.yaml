@@ -38,12 +38,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Blueprints"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/blueprints/{slug}":
@@ -65,12 +59,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Blueprint"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -17623,7 +17611,6 @@ components:
     FeatureFlagName:
       type: string
       enum:
-      - blueprints
       - components
       - fleet_allies
       - fleet_contracts
@@ -17645,7 +17632,6 @@ components:
       - ship_inventories
       - tour_payouts
       x-enumNames:
-      - BLUEPRINTS
       - COMPONENTS
       - FLEET_ALLIES
       - FLEET_CONTRACTS

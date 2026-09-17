@@ -24,18 +24,10 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
       response(200, "successful") do
         schema ::Shared::V1::Schemas::Blueprints
       end
-
-      # The catalogue is gated while it is being built, and unlike components
-      # this list is new -- there is no established client to take it from.
-      response(403, "forbidden") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
     end
   end
 
   setup do
-    Flipper.enable("blueprints")
-
     @component = create(:component, name: "Bulldog Repeater")
     @blueprint = create(:blueprint, name: "Bulldog Repeater", sc_key: "bp_craft_behr_repeater_s3", craftable: @component)
     @other = create(:blueprint, name: "Omnisky VI Cannon", sc_key: "bp_craft_amrs_lasercannon_s2", craft_time: 960)
@@ -115,11 +107,5 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {q: {"withKnownSource" => false}} do
       assert_equal [@other.id], parsed_body["items"].pluck("id")
     end
-  end
-
-  test "GET /blueprints is forbidden while the flag is off" do
-    Flipper.disable("blueprints")
-
-    assert_api_response :get, 403
   end
 end

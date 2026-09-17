@@ -168,11 +168,23 @@ Phase 4 builds the section shell and its nav once; Blueprints is its first tenan
 Components (#4989) hangs off the same one. This blocks nothing in #4989 — the shell lands on
 this branch first and #4989 rebases onto it.
 
-### D9 — Behind a feature flag
+### D9 — ~~Behind a feature flag~~ — reversed, no flag
 
-A `blueprints` entry in `config/feature_flags.yml` with a description, and the schema
-regeneration that comes with it. A feature-flag addition reddens every descendant of a stack
-until each is regenerated — expected, not a failure.
+Originally: a `blueprints` entry in `config/feature_flags.yml`, on the reasoning that a new
+public surface is gated while it is built.
+
+**Reversed by the maintainer once the API was written.** The catalogue does not need one. It
+is a read-only surface over data that is already loaded and already correct, there is no
+partially-built state to hide, and the endpoints are new — unlike the components flag, which
+gates only `show` because `index` and `weapons` answered long before it existed and gating
+them would take something away from clients who already have it.
+
+So the flag, its controller guard, the 403 responses and their tests are all out. Nothing to
+retire: it was only ever added in this PR and no data migration created it, so
+`RETIRED_FLAG_NAMES` is untouched — that list is for flags that reached production.
+
+If the *pages* want a gate of their own, PR 4 can add one; that is a separate decision from
+gating the API.
 
 ### D10 — Stacked PRs, four of them
 
@@ -388,7 +400,7 @@ Three things came out of building it:
 2. Reverse endpoints: blueprints that **make** a given component/equipment/commodity, and
    blueprints that **consume** a given commodity.
 3. Schema components are hand-written — a new jbuilder field changes no schema on its own.
-4. `blueprints` flag in `config/feature_flags.yml` (D9) and schema regeneration.
+4. No feature flag — see D9, which was reversed once the API was written.
 
 ### Phase 4 — The catalogue shell and the pages (PR 4)
 
@@ -434,7 +446,7 @@ Three corrections to the issue body came out of building it:
 - [ ] **Reverse links** — a component, equipment or commodity page says which blueprints make it and which consume it
 - [ ] **Sourceless blueprints say so** — the 876 with no pool render an explicit statement, not an empty section
 - [ ] **API** — public endpoints and filters in the schema, matching the commodities/components/equipment shape
-- [ ] **Flagged** — everything behind the `blueprints` feature flag
+- [x] **Not flagged** — reversed: the catalogue is a read-only surface with no half-built state to hide (D9)
 
 ## Key files
 
@@ -447,7 +459,6 @@ Three corrections to the issue body came out of building it:
 | `app/models/concerns/sc_data_versioned.rb` | `current_version` scope; `ransackable_scopes` stays per-model |
 | `app/models/commodity.rb` | `sc_key` unique, `sc_ref` nullable — the join target for resources |
 | `app/models/commodity_build.rb` | The build-fact model shape |
-| `config/feature_flags.yml` | The `blueprints` flag (D9) |
 | `app/frontend/frontend/pages/routes.ts` | Public routes — no catalogue section exists yet (D8) |
 | `data/sc_data/raw/4.10.1-live.12660092/Data/Libs/Foundry/Records/crafting/` | 1607 blueprints, 154 pools, 24 crafted properties |
 | `data/sc_data/raw/…/Records/contracts/contractgenerator/` | 107 generators, 10 guilds (Phase 2) |
@@ -466,6 +477,7 @@ Three corrections to the issue body came out of building it:
 - **2026-09-17** Issue read, branch and worktree created, D1–D9 resolved with the user (D4 full chain, D6 ship ramps, D8 shared shell, D10 stacked PRs).
 - **2026-09-17** Verified the contract chain against `4.10.1-live.12660092`: pool→generator references are **GUID-only** (a name grep returns zero files), 130 of 154 pools reach a generator, 107 generator files across 10 guilds, and `factionReputation` resolves to a `FactionReputation` record carrying `displayName`. Worked example recorded in D4.
 - **2026-09-17** Confirmed the public frontend has no commodities/components/equipment pages at all — D8 is a real fork, not a tidy-up.
+- **2026-09-17** D9 reversed: no feature flag. The catalogue is read-only over data that is already loaded, so there is no partially-built state a gate would hide. Removed from the registry, the controller, the schema and the tests; nothing to retire, since it never reached production.
 - **2026-09-17** Phase 3 built. Two ransack limits found by asking it to do the obvious thing — a polymorphic association raises, and a false-valued scope is silently skipped — and the reverse link became a filter once it turned out two of the three catalogues have no detail endpoint to embed it in.
 - **2026-09-17** Review on #5010: the recipe and the sources read through the current build alone while every scalar fact fell back to the last one, so a retired recipe rendered as having no ingredients and no known source. Both go through `facts` now; the class-level scopes stay on the current build, which is what a list filter should match.
 - **2026-09-17** Phase 2's loader suite ran 899s. The cause was not the loader: six tests each triggered a full 1,607-record load, and the cost is in rolling back the ~20k rows afterwards rather than in writing them. Merging three of them into one took it to **106s** with the same 75 assertions. Kept the separate `previously_new_record?` guard anyway -- it buys 2% here but skips ~3,200 redundant round-trips on a production load.
