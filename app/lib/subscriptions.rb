@@ -17,13 +17,14 @@ module Subscriptions
   # separately (D1).
   PREMIUM_FEATURES = %i[contracts events logistics tours].freeze
 
-  # In EUR cents, compared against `amount_cents` rather than the source
-  # currency: `SupporterImporter#apply_amount` already normalises through
-  # ExchangeRateFetcher and stores both figures, so nothing converts at read
-  # time and a rate move cannot silently drop a fleet below the line.
+  # The figure, in cents. A one-off is judged on `amount_cents`, which
+  # `SupporterImporter#apply_amount` has already normalised to EUR through
+  # ExchangeRateFetcher, so nothing converts at read time.
   #
-  # Matches the second SUPPORTER_TIERS step on User, which is the figure a
-  # recurring pledge already has to clear to read as committed support.
+  # A standing pledge is judged on the currency it was pledged in instead --
+  # see `qualifying?`. Matches the second SUPPORTER_TIERS step on User, which is
+  # the figure a recurring pledge already has to clear to read as committed
+  # support.
   QUALIFYING_AMOUNT_CENTS = 500
 
   def self.qualifying_amount_cents
@@ -31,9 +32,30 @@ module Subscriptions
   end
 
   # Whether this contribution, on its own, is enough to open a subscription.
-  # Amount only -- whether it is active, and which fleet it names, are the
-  # reconciler's questions rather than this one's.
-  def self.qualifying_amount?(contribution)
-    contribution.amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
+  # Whether it is active, and which fleet it names, are the reconciler's
+  # questions rather than this one's.
+  def self.qualifying?(contribution)
+    return true if contribution.amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
+
+    standing_pledge_at_the_figure?(contribution)
+  end
+
+  # A standing pledge is judged on what the supporter set it to, not on what
+  # the exchange rate made of it this month.
+  #
+  # Every recurring pledge on the platform today is $5, which converts to €4.36
+  # -- so an amount-only rule refuses the only people currently paying, which is
+  # the one outcome D16 exists to prevent. The commitment did not change; the
+  # rate did.
+  #
+  # Source-blind, because `User#supporter_recurring?` already settled that a
+  # standing pledge is one whatever it was set up on. The comparison is against
+  # the figure in the currency it was pledged in, which is not the same unit --
+  # deliberately so: $5 a month and €5 a month are the same commitment, and
+  # pricing them apart by the day's rate is what this avoids.
+  private_class_method def self.standing_pledge_at_the_figure?(contribution)
+    return false unless contribution.recurring?
+
+    contribution.source_amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
   end
 end
