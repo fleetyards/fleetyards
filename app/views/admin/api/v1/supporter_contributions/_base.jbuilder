@@ -22,4 +22,15 @@ if supporter_contribution.user.present?
   end
 end
 
+# The nomination, and whether anything came of it. Both are what an admin needs
+# to answer "why does this fleet have access" without opening another page.
+if supporter_contribution.fleet.present?
+  json.fleet_id supporter_contribution.fleet_id
+  json.fleet do
+    json.partial! "admin/api/v1/fleets/option", fleet: supporter_contribution.fleet
+  end
+end
+
+json.seeded_subscription supporter_contribution.fleet_subscriptions.any?
+
 json.partial! "api/shared/dates", record: supporter_contribution

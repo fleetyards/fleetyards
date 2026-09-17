@@ -1,6 +1,10 @@
 ---
 zh-TW:
   validation_error:
+    fleet_subscription:
+      create: "無法開通訂閱。"
+      update: "無法更新訂閱。"
+      destroy: "無法移除訂閱。"
     announcement:
       create: "無法建立公告。"
       update: "無法更新公告。"

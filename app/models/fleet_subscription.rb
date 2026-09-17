@@ -39,7 +39,7 @@ class FleetSubscription < ApplicationRecord
   # Same gate as SupporterContribution: only an action somebody took files a
   # version, so a reconciler run leaves no trail of its own. `ended_at` is the
   # field that matters here -- a revocation has to be answerable for.
-  has_paper_trail on: %i[create update],
+  has_paper_trail on: %i[create update destroy],
     only: %i[fleet_id started_at ended_at granted_via supporter_contribution_id note],
     if: ->(record) { record.author_id.present? || PaperTrail.request.whodunnit.present? },
     meta: {
@@ -59,6 +59,15 @@ class FleetSubscription < ApplicationRecord
   GRANTS = %w[contribution manual].freeze
 
   enum :granted_via, GRANTS.index_by(&:itself), prefix: :granted_via, default: "manual"
+
+  paginates_per 30
+
+  DEFAULT_SORTING_PARAMS = "started_at desc"
+  ALLOWED_SORTING_PARAMS = [
+    "startedAt asc", "startedAt desc",
+    "endedAt asc", "endedAt desc",
+    "createdAt asc", "createdAt desc"
+  ]
 
   validates :started_at, presence: true
   validate :ended_at_not_before_started_at
@@ -97,6 +106,17 @@ class FleetSubscription < ApplicationRecord
 
   private def clear_fleet_entitlement_cache
     association(:fleet).target&.clear_entitlement_cache
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "id", "fleet_id", "started_at", "ended_at", "granted_via",
+      "supporter_contribution_id", "note", "created_at", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["fleet", "supporter_contribution"]
   end
 
   private def ended_at_not_before_started_at

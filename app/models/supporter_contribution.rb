@@ -81,6 +81,11 @@ class SupporterContribution < ApplicationRecord
   # payer left. Sponsorship is a fact about the money, not about the roster.
   belongs_to :fleet, optional: true
 
+  # Nullified rather than destroyed when the contribution goes, so a grant the
+  # reconciler made survives its own payment being deleted -- `granted_via` is
+  # what keeps it identifiable after that.
+  has_many :fleet_subscriptions, dependent: :nullify
+
   DEFAULT_SORTING_PARAMS = "started_at desc"
   ALLOWED_SORTING_PARAMS = [
     "startedAt asc", "startedAt desc",

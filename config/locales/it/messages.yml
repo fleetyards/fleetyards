@@ -32,7 +32,10 @@ it:
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Caricamento prestiti riuscito.
+    fleet_subscriptions:
+      already_open: "Questa flotta ha già un abbonamento aperto."
     record_not_found:
+      fleet_subscription: Nessun abbonamento della flotta trovato
       announcement: Nessun annuncio trovato
       announcement_delivery: Nessuna consegna dell'annuncio trovata
       base: Nessuna voce trovata

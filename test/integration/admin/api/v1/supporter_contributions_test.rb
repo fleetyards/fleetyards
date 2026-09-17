@@ -633,4 +633,39 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
 
     assert_api_response :put, 403, path_params: {id: contribution.id}, body: {amountCents: 100, startedAt: Date.current.iso8601}
   end
+
+  # An admin answering "why does this fleet have access" should not need a
+  # second page for it.
+  test "GET /supporter-contributions shows the nomination and whether it seeded a subscription" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = create(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      row = parsed_body["items"].find { |item| item["id"] == contribution.id }
+
+      assert_equal membership.fleet.slug, row.dig("fleet", "slug")
+      refute row["seededSubscription"], "nothing has been opened from it yet"
+    end
+
+    Subscriptions::Sync.call
+
+    assert_api_response :get, 200 do
+      row = parsed_body["items"].find { |item| item["id"] == contribution.id }
+
+      assert row["seededSubscription"],
+        "the fragment cache must not outlive the subscription being opened"
+    end
+  end
+
+  test "GET /supporter-contributions can filter by the nominated fleet" do
+    membership = create(:fleet_membership, :accepted)
+    nominated = create(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+    create(:supporter_contribution)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {fleetIdEq: membership.fleet_id}} do
+      assert_equal [nominated.id], parsed_body["items"].map { |row| row["id"] }
+    end
+  end
 end

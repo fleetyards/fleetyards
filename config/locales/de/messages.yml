@@ -33,7 +33,10 @@ de:
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Leihschiff-Upload erfolgreich.
+    fleet_subscriptions:
+      already_open: "Diese Flotte hat bereits ein offenes Abonnement."
     record_not_found:
+      fleet_subscription: Kein Flotten-Abonnement gefunden
       announcement: Keine Ankündigung gefunden
       announcement_delivery: Keine Ankündigungs-Zustellung gefunden
       base: Kein Eintrag gefunden
