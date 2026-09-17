@@ -9,7 +9,8 @@ module Announcements
       create(:announcement, status: "scheduled", publish_at: 1.hour.from_now)
       create(:announcement)
 
-      Announcements::PublishJob.expects(:perform_async).with(due.id).once
+      # Flagged as a sweep run, which is what holds it to re-checking due-ness.
+      Announcements::PublishJob.expects(:perform_async).with(due.id, true).once
 
       Announcements::PublishScheduledJob.new.perform
     end

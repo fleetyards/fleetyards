@@ -9,7 +9,7 @@ module Announcements
   class PublishScheduledJob < Announcements::BaseJob
     def perform
       Announcement.due.pluck(:id).each do |id|
-        Announcements::PublishJob.perform_async(id)
+        Announcements::PublishJob.perform_async(id, true)
       end
     end
   end

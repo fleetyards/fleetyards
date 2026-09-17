@@ -50,6 +50,39 @@ module Announcements
       2.times { Announcements::PublishJob.new.perform(announcement.id) }
     end
 
+    # The queue is not instant. In the gap between the sweep finding an
+    # announcement due and the job running, an admin can put the date back or
+    # drop it to a draft -- and neither used to stop the send.
+    test "#perform from the sweep refuses one whose date moved back" do
+      announcement = create(:announcement, status: "scheduled", publish_at: 1.minute.ago)
+      Announcements::FanOutJob.expects(:perform_async).never
+
+      announcement.update!(publish_at: 1.week.from_now)
+      Announcements::PublishJob.new.perform(announcement.id, true)
+
+      assert announcement.reload.status_scheduled?
+    end
+
+    test "#perform from the sweep refuses one that went back to a draft" do
+      announcement = create(:announcement, status: "scheduled", publish_at: 1.minute.ago)
+      Announcements::FanOutJob.expects(:perform_async).never
+
+      announcement.update!(status: "draft", publish_at: nil)
+      Announcements::PublishJob.new.perform(announcement.id, true)
+
+      assert announcement.reload.status_draft?
+    end
+
+    # The button means send it now, whatever the date says.
+    test "#perform from the admin publishes a scheduled announcement regardless of its date" do
+      announcement = create(:announcement, status: "scheduled", publish_at: 1.week.from_now)
+      Announcements::FanOutJob.expects(:perform_async).once
+
+      Announcements::PublishJob.new.perform(announcement.id)
+
+      assert announcement.reload.status_published?
+    end
+
     test "#perform ignores a missing announcement" do
       assert_nothing_raised { Announcements::PublishJob.new.perform(SecureRandom.uuid) }
     end
