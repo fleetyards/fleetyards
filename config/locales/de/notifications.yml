@@ -48,6 +48,13 @@ de:
       title: Sie wurden zu %{fleet} eingeladen
     fleet_member_requested:
       title: "%{username} hat eine Beitrittsanfrage für %{fleet} gestellt"
+    fleet_subscription_started:
+      title: "%{fleet} hat jetzt die Flotten-Funktionen"
+    fleet_subscription_ended:
+      title: "%{fleet} hat die Flotten-Funktionen verloren — %{reason}"
+      reasons:
+        contribution: "die unterstützende Spende ist nicht mehr aktiv"
+        manual: "die Freigabe wurde von einem Administrator beendet"
     fleet_member_accepted:
       title: "%{username} ist %{fleet} beigetreten"
     fleet_request_accepted:

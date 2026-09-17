@@ -2215,6 +2215,8 @@
         "fleet_contract_claimed": "合约已接取",
         "fleet_contract_crew_requested": "有人想加入合约",
         "fleet_contract_crew_answered": "合约成员申请已处理",
+        "fleet_subscription_started": "已获得舰队功能",
+        "fleet_subscription_ended": "已失去舰队功能",
         "fleet_contract_fulfilled": "合约已完成"
       },
       "fleets": {

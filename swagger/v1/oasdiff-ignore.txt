@@ -1298,3 +1298,17 @@ PUT /vehicles/{vehicle_id}/loadouts/{id}/activate removed the required property 
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /notification-preferences added the new `fleet_subscription_ended` enum value to the `items/notificationType` response property for the response status `200`
+GET /notification-preferences added the new `fleet_subscription_started` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_subscription_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_subscription_ended` enum value to the `items/items/notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_subscription_started` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_subscription_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_subscription_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_subscription_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_subscription_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`

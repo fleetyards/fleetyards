@@ -75,6 +75,8 @@ class Notification < ApplicationRecord
     fleet_contract_crew_requested: "fleet_contract_crew_requested",
     fleet_contract_crew_answered: "fleet_contract_crew_answered",
     fleet_contract_fulfilled: "fleet_contract_fulfilled",
+    fleet_subscription_started: "fleet_subscription_started",
+    fleet_subscription_ended: "fleet_subscription_ended",
     announcement: "announcement"
   }
 
@@ -294,6 +296,26 @@ class Notification < ApplicationRecord
     fleet_contract_fulfilled: {
       retention: 90.days,
       channels: %i[app]
+    },
+    # Kept a year rather than 90 days, and both are app-only.
+    #
+    # A fleet losing four capabilities is the kind of thing somebody asks about
+    # months later -- "when did we lose contracts, and why" -- and the answer
+    # should still be in the inbox when they do. Mail is not offered because it
+    # would arrive at every admin of every fleet whose payer changed their mind,
+    # and Discord because a fleet's entitlement is not channel business.
+    # On by default and stated rather than inherited: the whole point of D14 is
+    # that a fleet is told before it meets a 403, and a default that could drift
+    # with CHANNEL_DEFAULTS is not something to leave implicit here.
+    fleet_subscription_started: {
+      retention: 365.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
+    },
+    fleet_subscription_ended: {
+      retention: 365.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

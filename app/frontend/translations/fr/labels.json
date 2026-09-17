@@ -2215,6 +2215,8 @@
         "fleet_contract_claimed": "Contrat pris en charge",
         "fleet_contract_crew_requested": "Quelqu'un veut rejoindre un contrat",
         "fleet_contract_crew_answered": "Demande d'équipage traitée",
+        "fleet_subscription_started": "Fonctionnalités de flotte activées",
+        "fleet_subscription_ended": "Fonctionnalités de flotte perdues",
         "fleet_contract_fulfilled": "Contrat rempli"
       },
       "fleets": {

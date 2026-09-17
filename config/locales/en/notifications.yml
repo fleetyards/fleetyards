@@ -43,6 +43,13 @@ en:
       title: "You've been invited to %{fleet}"
     fleet_member_requested:
       title: "%{username} requested to join %{fleet}"
+    fleet_subscription_started:
+      title: "%{fleet} now has the fleet features"
+    fleet_subscription_ended:
+      title: "%{fleet} has lost the fleet features — %{reason}"
+      reasons:
+        contribution: "the donation supporting it is no longer active"
+        manual: "the grant was ended by an administrator"
     fleet_member_accepted:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:

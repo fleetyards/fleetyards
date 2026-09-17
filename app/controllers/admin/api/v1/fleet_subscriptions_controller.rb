@@ -52,7 +52,14 @@ module Admin
 
           authorize! @fleet_subscription, with: ::Admin::FleetSubscriptionPolicy
 
-          return render :show, status: :created if @fleet_subscription.save
+          if @fleet_subscription.save
+            # Not unconditional: `ended_at` is permitted here, so a grant can be
+            # created already closed, or dated into the future -- neither is a
+            # fleet that just gained anything.
+            ::Subscriptions::Notifier.started(@fleet_subscription) if @fleet_subscription.active_on?
+
+            return render :show, status: :created
+          end
 
           render json: ValidationError.new("fleet_subscription.create",
             errors: @fleet_subscription.errors), status: :bad_request
@@ -62,7 +69,18 @@ module Admin
         # action for it: the history is the row, and a revocation is a date on
         # it rather than an event beside it.
         def update
+          was_open = @fleet_subscription.open?
+          was_active = @fleet_subscription.active_on?
+
           if @fleet_subscription.update(update_params.merge(author_id: current_user.id))
+            # Only the transition, not every edit: correcting a note on an
+            # already-closed subscription is not news, and a fleet told twice
+            # that it lapsed learns to ignore the message. An admin closing a
+            # contribution-backed grant is `manual` -- the donation may still be
+            # running, and blaming it would be false.
+            ::Subscriptions::Notifier.announce(@fleet_subscription,
+              was_open:, was_active:, cause: :manual)
+
             return render :show
           end
 
@@ -79,8 +97,17 @@ module Admin
           # one action that removes an entitlement would be the one nobody could
           # see afterwards.
           @fleet_subscription.author_id = current_user.id
+          was_open = @fleet_subscription.open?
+          was_active = @fleet_subscription.active_on?
 
-          return if @fleet_subscription.destroy
+          if @fleet_subscription.destroy
+            # Deleting an entitlement takes access away exactly as closing one
+            # does, so it cannot be the quiet path out.
+            ::Subscriptions::Notifier.announce(@fleet_subscription,
+              was_open:, was_active:, cause: :manual)
+
+            return
+          end
 
           render json: ValidationError.new("fleet_subscription.destroy",
             errors: @fleet_subscription.errors), status: :bad_request

@@ -48,6 +48,13 @@ it:
       title: Sei stato invitato a %{fleet}
     fleet_member_requested:
       title: "%{username} ha chiesto di unirsi a %{fleet}"
+    fleet_subscription_started:
+      title: "%{fleet} ora dispone delle funzioni di flotta"
+    fleet_subscription_ended:
+      title: "%{fleet} ha perso le funzioni di flotta — %{reason}"
+      reasons:
+        contribution: "la donazione che la sosteneva non è più attiva"
+        manual: "la concessione è stata terminata da un amministratore"
     fleet_member_accepted:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:

@@ -25815,6 +25815,8 @@ components:
       - fleet_contract_crew_requested
       - fleet_contract_crew_answered
       - fleet_contract_fulfilled
+      - fleet_subscription_started
+      - fleet_subscription_ended
       - announcement
       x-enumNames:
       - HANGAR_CREATE
@@ -25854,6 +25856,8 @@ components:
       - FLEET_CONTRACT_CREW_REQUESTED
       - FLEET_CONTRACT_CREW_ANSWERED
       - FLEET_CONTRACT_FULFILLED
+      - FLEET_SUBSCRIPTION_STARTED
+      - FLEET_SUBSCRIPTION_ENDED
       - ANNOUNCEMENT
       title: NotificationTypeEnum
     NotificationUnreadCount:

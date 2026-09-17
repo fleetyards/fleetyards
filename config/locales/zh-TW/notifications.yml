@@ -48,6 +48,13 @@ zh-TW:
       title: 您已被邀請加入 %{fleet}
     fleet_member_requested:
       title: "%{username} 請求加入 %{fleet}"
+    fleet_subscription_started:
+      title: "%{fleet} 現已獲得艦隊功能"
+    fleet_subscription_ended:
+      title: "%{fleet} 已失去艦隊功能 — %{reason}"
+      reasons:
+        contribution: "支援該艦隊的捐贈已不再有效"
+        manual: "管理員已結束該授權"
     fleet_member_accepted:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:

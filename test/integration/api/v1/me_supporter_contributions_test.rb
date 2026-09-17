@@ -237,4 +237,19 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
 
     assert_empty Subscriptions::SyncJob.jobs
   end
+
+  # The supporter's own action in their own settings. They know they did it,
+  # and the fleet finds out when the reconciler acts on it -- if it does.
+  test "PUT /me/supporter/contributions/{id} announces nothing by itself" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    create(:fleet_membership, :accepted, user: @supporter, fleet:)
+    sign_in @supporter
+
+    assert_api_response :put, 200, api_path: MEMBER_PATH,
+      path_params: {id: @contribution.id}, body: {fleetId: fleet.id}
+
+    assert_empty Notification.where(notification_type: %w[fleet_subscription_started
+      fleet_subscription_ended])
+  end
 end

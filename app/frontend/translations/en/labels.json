@@ -2229,6 +2229,8 @@
         "fleet_contract_claimed": "Contract claimed",
         "fleet_contract_crew_requested": "Crew wants to join a contract",
         "fleet_contract_crew_answered": "Contract crew request answered",
+        "fleet_subscription_started": "Fleet features unlocked",
+        "fleet_subscription_ended": "Fleet features lost",
         "fleet_contract_fulfilled": "Contract fulfilled"
       },
       "fleets": {

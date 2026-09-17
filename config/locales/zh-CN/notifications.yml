@@ -48,6 +48,13 @@ zh-CN:
       title: 您已被邀请加入 %{fleet}
     fleet_member_requested:
       title: "%{username} 请求加入 %{fleet}"
+    fleet_subscription_started:
+      title: "%{fleet} 现已获得舰队功能"
+    fleet_subscription_ended:
+      title: "%{fleet} 已失去舰队功能 — %{reason}"
+      reasons:
+        contribution: "支持该舰队的捐赠已不再有效"
+        manual: "管理员已结束该授权"
     fleet_member_accepted:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:
