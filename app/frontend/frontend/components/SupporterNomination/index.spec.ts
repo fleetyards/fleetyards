@@ -5,7 +5,9 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 const contributions = ref<unknown[] | undefined>(undefined);
 const fleets = ref<unknown[] | undefined>(undefined);
 const nominate = vi.fn(() => Promise.resolve({}));
-const supported = ref<{ fleet?: { id: string } } | undefined>(undefined);
+const supported = ref<{ fleet?: { id: string; name: string } } | undefined>(
+  undefined,
+);
 const choose = vi.fn(() => Promise.resolve({}));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -19,9 +21,19 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 
 const displaySuccess = vi.fn();
 const displayAlert = vi.fn();
+// Runs the confirm immediately by default; individual tests take the cancel
+// branch by overriding it.
+type ConfirmOptions = {
+  onConfirm?: () => unknown;
+  onClose?: () => unknown;
+};
+
+const displayConfirm = vi.fn(
+  (options: ConfirmOptions) => void options.onConfirm?.(),
+);
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
-  useAppNotifications: () => ({ displaySuccess, displayAlert }),
+  useAppNotifications: () => ({ displaySuccess, displayAlert, displayConfirm }),
 }));
 
 const invalidateQueries = vi.fn();
@@ -82,6 +94,10 @@ describe("SupporterNomination", () => {
     invalidateQueries.mockClear();
     displaySuccess.mockClear();
     displayAlert.mockClear();
+    displayConfirm.mockClear();
+    displayConfirm.mockImplementation(
+      (options: ConfirmOptions) => void options.onConfirm?.(),
+    );
   });
 
   // A visitor who has never donated, or whose donation has not been matched
@@ -181,6 +197,54 @@ describe("SupporterNomination", () => {
       id: "c-1",
       data: { fleetId: "f-1" },
     });
+  });
+
+  // Switching away can take features off the fleet that had them, so it is not
+  // a silent change.
+  it("confirms before moving support to another fleet", async () => {
+    supported.value = { fleet: { id: "f-1", name: "Blue Sun" } };
+    fleets.value = [FLEET, { id: "f-2", name: "Red Sun", slug: "red-sun" }];
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+
+    await wrapper
+      .findComponent({ name: "BaseSelect" })
+      .vm.$emit("update:modelValue", "f-2");
+    await flushPromises();
+
+    expect(displayConfirm).toHaveBeenCalled();
+    expect(choose).toHaveBeenCalledWith({ data: { fleetId: "f-2" } });
+  });
+
+  it("does not ask when there is nothing to take away", async () => {
+    supported.value = undefined;
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+
+    await wrapper
+      .findComponent({ name: "BaseSelect" })
+      .vm.$emit("update:modelValue", "f-1");
+    await flushPromises();
+
+    expect(displayConfirm).not.toHaveBeenCalled();
+    expect(choose).toHaveBeenCalled();
+  });
+
+  it("changes nothing when the confirm is dismissed", async () => {
+    supported.value = { fleet: { id: "f-1", name: "Blue Sun" } };
+    fleets.value = [FLEET, { id: "f-2", name: "Red Sun", slug: "red-sun" }];
+    displayConfirm.mockImplementation(
+      (options: ConfirmOptions) => void options.onClose?.(),
+    );
+
+    const wrapper = await mountWithDefaults(SupporterNomination);
+
+    await wrapper
+      .findComponent({ name: "BaseSelect" })
+      .vm.$emit("update:modelValue", "f-2");
+    await flushPromises();
+
+    expect(choose).not.toHaveBeenCalled();
   });
 
   it("reports a failure instead of claiming success", async () => {

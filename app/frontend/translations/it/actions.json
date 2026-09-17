@@ -448,6 +448,9 @@
         "fleet": {
           "add": "Aggiungi alleato"
         }
+      },
+      "supporterNomination": {
+        "change": "Cambia flotta"
       }
     }
   }

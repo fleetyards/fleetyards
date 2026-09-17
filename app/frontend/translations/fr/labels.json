@@ -1470,7 +1470,7 @@
         },
         "supporterNomination": {
           "label": "Soutien à la flotte",
-          "hint": "Choisissez la flotte que soutiennent vos dons. Ses membres bénéficient des fonctionnalités de flotte tant qu'un don est actif — vous pouvez choisir maintenant et donner plus tard.",
+          "hint": "Ses membres bénéficient des fonctionnalités de flotte tant qu'un don est actif. Vous pouvez choisir avant de donner.",
           "perDonation": "Par don",
           "perDonationHint": "Un don peut soutenir une autre flotte que celle que vous avez choisie.",
           "fleet": "Flotte soutenue"

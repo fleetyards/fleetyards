@@ -177,6 +177,9 @@
         "update": {
           "success": "Fleet selection updated.",
           "failure": "Could not update the fleet selection."
+        },
+        "change": {
+          "confirm": "%{fleet} may lose the fleet features it has now. Continue?"
         }
       },
       "supporterContribution": {

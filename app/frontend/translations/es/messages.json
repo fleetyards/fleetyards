@@ -167,6 +167,9 @@
         "update": {
           "success": "Selección de flota actualizada.",
           "failure": "No se ha podido actualizar la selección de flota."
+        },
+        "change": {
+          "confirm": "%{fleet} puede perder las funciones de flota que tiene ahora. ¿Continuar?"
         }
       },
       "supporterContribution": {

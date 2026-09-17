@@ -448,6 +448,9 @@
         "fleet": {
           "add": "Verbündeten hinzufügen"
         }
+      },
+      "supporterNomination": {
+        "change": "Flotte ändern"
       }
     }
   }

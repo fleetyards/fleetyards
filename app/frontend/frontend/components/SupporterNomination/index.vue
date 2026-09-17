@@ -11,6 +11,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import {
   getMySupporterContributionsQueryKey,
   getMySupportedFleetQueryKey,
@@ -27,7 +28,7 @@ import {
 const { t, l } = useI18n();
 const sessionStore = useSessionStore();
 const queryClient = useQueryClient();
-const { displaySuccess, displayAlert } = useAppNotifications();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const { isFeatureEnabled } = useFeatures();
 
@@ -80,9 +81,37 @@ const hasFleets = computed(
 
 const choosing = ref(false);
 
-const onChooseSupported = async (fleetId: string | null) => {
+// BaseSelect keeps its own value and only re-syncs when `model-value` changes.
+// Backing out of the confirm changes nothing, so the select would sit showing
+// the fleet that was not chosen; bumping the key remounts it on the real one.
+const selectKey = ref(0);
+
+// Only when something is being taken away. Picking a first fleet, or picking
+// the one already chosen, costs nobody anything and asks nothing.
+const onChooseSupported = (fleetId: string | null) => {
   if (choosing.value) return;
 
+  const current = supported.value?.fleet;
+
+  if (!current || current.id === fleetId) {
+    void applySupportedFleet(fleetId);
+    return;
+  }
+
+  displayConfirm({
+    text: t("messages.supporterNomination.change.confirm", {
+      fleet: current.name,
+    }),
+    confirmText: t("actions.supporterNomination.change"),
+    tone: AppConfirmTonesEnum.WARNING,
+    onConfirm: () => applySupportedFleet(fleetId),
+    onClose: () => {
+      selectKey.value += 1;
+    },
+  });
+};
+
+const applySupportedFleet = async (fleetId: string | null) => {
   choosing.value = true;
 
   try {
@@ -118,12 +147,43 @@ const pending = ref<string[]>([]);
 
 const isPending = (id: string) => pending.value.includes(id);
 
-const onSelect = async (
+const rowKeys = ref<Record<string, number>>({});
+
+const rowKey = (id: string) => rowKeys.value[id] ?? 0;
+
+const onSelect = (
   contribution: MySupporterContribution,
   fleetId: string | null,
 ) => {
   if (isPending(contribution.id)) return;
 
+  const current = contribution.fleet;
+
+  if (!current || current.id === fleetId) {
+    void applyNomination(contribution, fleetId);
+    return;
+  }
+
+  displayConfirm({
+    text: t("messages.supporterNomination.change.confirm", {
+      fleet: current.name,
+    }),
+    confirmText: t("actions.supporterNomination.change"),
+    tone: AppConfirmTonesEnum.WARNING,
+    onConfirm: () => applyNomination(contribution, fleetId),
+    onClose: () => {
+      rowKeys.value = {
+        ...rowKeys.value,
+        [contribution.id]: rowKey(contribution.id) + 1,
+      };
+    },
+  });
+};
+
+const applyNomination = async (
+  contribution: MySupporterContribution,
+  fleetId: string | null,
+) => {
   pending.value = [...pending.value, contribution.id];
 
   try {
@@ -152,23 +212,28 @@ const onSelect = async (
       {{ t("labels.account.supporterNomination.label") }}
     </div>
 
-    <p class="supporter-nomination__hint">
-      {{ t("labels.account.supporterNomination.hint") }}
-    </p>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <BaseSelect
+          :key="selectKey"
+          name="supportedFleet"
+          :model-value="supported?.fleet?.id ?? null"
+          :options="fleetOptions"
+          :label="t('labels.account.supporterNomination.fleet')"
+          :disabled="choosing"
+          nullable
+          no-label
+          data-test="supported-fleet"
+          @update:model-value="
+            (value) => onChooseSupported((value as string) || null)
+          "
+        />
 
-    <BaseSelect
-      name="supportedFleet"
-      :model-value="supported?.fleet?.id ?? null"
-      :options="fleetOptions"
-      :label="t('labels.account.supporterNomination.fleet')"
-      :disabled="choosing"
-      nullable
-      no-label
-      data-test="supported-fleet"
-      @update:model-value="
-        (value) => onChooseSupported((value as string) || null)
-      "
-    />
+        <p class="supporter-nomination__hint">
+          {{ t("labels.account.supporterNomination.hint") }}
+        </p>
+      </div>
+    </div>
 
     <template v-if="rows.length">
       <div class="supporter-nomination__label supporter-nomination__label--sub">
@@ -196,6 +261,7 @@ const onSelect = async (
       </div>
 
       <BaseSelect
+        :key="rowKey(contribution.id)"
         :name="`nomination-${contribution.id}`"
         :model-value="contribution.fleet?.id ?? null"
         :options="fleetOptions"
@@ -221,7 +287,8 @@ const onSelect = async (
 }
 
 .supporter-nomination__hint {
-  margin-bottom: 1rem;
+  margin-top: 0.35rem;
+  margin-bottom: 1.5rem;
   font-size: 0.85rem;
   opacity: 0.75;
 }

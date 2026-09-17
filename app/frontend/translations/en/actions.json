@@ -448,6 +448,9 @@
         "fleet": {
           "add": "Add ally"
         }
+      },
+      "supporterNomination": {
+        "change": "Change fleet"
       }
     }
   }

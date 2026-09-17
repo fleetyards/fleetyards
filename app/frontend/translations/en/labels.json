@@ -1470,7 +1470,7 @@
         },
         "supporterNomination": {
           "label": "Fleet support",
-          "hint": "Pick the fleet your donations support. Its members get the fleet features while a donation is active — you can choose now and donate later.",
+          "hint": "Its members get the fleet features while a donation is active. You can choose before donating.",
           "perDonation": "Per donation",
           "perDonationHint": "A donation can support a different fleet from your usual one.",
           "fleet": "Supported fleet"

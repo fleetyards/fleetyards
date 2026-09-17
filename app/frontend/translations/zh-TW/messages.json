@@ -167,6 +167,9 @@
         "update": {
           "success": "艦隊選擇已更新。",
           "failure": "無法更新艦隊選擇。"
+        },
+        "change": {
+          "confirm": "%{fleet} 可能會失去目前擁有的艦隊功能。是否繼續？"
         }
       },
       "supporterContribution": {

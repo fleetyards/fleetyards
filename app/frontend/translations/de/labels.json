@@ -1470,7 +1470,7 @@
         },
         "supporterNomination": {
           "label": "Flottenunterstützung",
-          "hint": "Wähle die Flotte, die deine Spenden unterstützen sollen. Deren Mitglieder erhalten die Flotten-Funktionen, solange eine Spende aktiv ist — du kannst jetzt wählen und später spenden.",
+          "hint": "Deren Mitglieder erhalten die Flotten-Funktionen, solange eine Spende aktiv ist. Du kannst vor dem Spenden wählen.",
           "perDonation": "Pro Spende",
           "perDonationHint": "Eine einzelne Spende kann eine andere Flotte unterstützen als deine übliche.",
           "fleet": "Unterstützte Flotte"

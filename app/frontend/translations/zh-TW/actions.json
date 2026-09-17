@@ -448,6 +448,9 @@
         "fleet": {
           "add": "新增盟友"
         }
+      },
+      "supporterNomination": {
+        "change": "變更艦隊"
       }
     }
   }
