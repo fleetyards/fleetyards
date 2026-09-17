@@ -62,11 +62,11 @@ describe("frontend router feature guard", () => {
   it("lets a fleet route through on the fleet's own flag", async () => {
     queryClient.setQueryData(getFeaturesQueryKey(), []);
     queryClient.setQueryData(getFleetQueryKey("the-fleet"), {
-      features: [FeatureFlagName.FLEET_STARMAP],
+      features: [FeatureFlagName.FLEET_LOGISTICS],
     });
 
     const redirect = await beforeResolve(
-      fleetRoute(FeatureFlagName.FLEET_STARMAP),
+      fleetRoute(FeatureFlagName.FLEET_LOGISTICS),
     );
 
     expect(redirect).toBeUndefined();
@@ -77,7 +77,7 @@ describe("frontend router feature guard", () => {
     queryClient.setQueryData(getFleetQueryKey("the-fleet"), { features: [] });
 
     const redirect = await beforeResolve(
-      fleetRoute(FeatureFlagName.FLEET_STARMAP),
+      fleetRoute(FeatureFlagName.FLEET_LOGISTICS),
     );
 
     expect(redirect).toEqual({ routeName: "404" });
@@ -85,12 +85,12 @@ describe("frontend router feature guard", () => {
 
   it("lets a fleet route through on the viewer's own flag", async () => {
     queryClient.setQueryData(getFeaturesQueryKey(), [
-      FeatureFlagName.FLEET_STARMAP,
+      FeatureFlagName.FLEET_LOGISTICS,
     ]);
     queryClient.setQueryData(getFleetQueryKey("the-fleet"), { features: [] });
 
     const redirect = await beforeResolve(
-      fleetRoute(FeatureFlagName.FLEET_STARMAP),
+      fleetRoute(FeatureFlagName.FLEET_LOGISTICS),
     );
 
     expect(redirect).toBeUndefined();
