@@ -10,6 +10,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
+import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
 import Offline from "@/shared/components/Offline/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { usePaginationStore } from "@/shared/stores/pagination";
@@ -193,6 +194,13 @@ const errorType = computed(() => errorTypeFrom(props.asyncStatus.error?.value));
 // else, comes back 403 — which is an answer, not an outage.
 const forbidden = computed(() => errorType.value === ErrorTypesEnum.FORBIDDEN);
 
+// A premium capability that is rolled out here but unbought. Separate from the
+// above on purpose: the reader's clearance is fine, the fleet has no
+// subscription, and those want different words.
+const subscriptionRequired = computed(
+  () => errorType.value === ErrorTypesEnum.SUBSCRIPTION_REQUIRED,
+);
+
 // A request that never reached the server is not an outage either.
 const offline = computed(() => errorType.value === ErrorTypesEnum.OFFLINE);
 
@@ -333,7 +341,8 @@ const toggleFilter = () => {
         >
           <slot v-if="error" name="error">
             <transition name="fade">
-              <Forbidden v-if="forbidden" />
+              <SubscriptionRequired v-if="subscriptionRequired" />
+              <Forbidden v-else-if="forbidden" />
               <Offline v-else-if="offline" :retry="asyncStatus.refetch" />
               <ServerError v-else />
             </transition>

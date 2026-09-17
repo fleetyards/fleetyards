@@ -1,0 +1,45 @@
+<script lang="ts">
+export default {
+  name: "SubscriptionRequired",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Box from "@/shared/components/Box/index.vue";
+import Text from "@/shared/components/base/Text/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
+import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+
+const { t } = useI18n();
+</script>
+
+<template>
+  <!-- Deliberately not the ERROR tone that `Forbidden` carries. Nothing has
+       gone wrong here and the reader has done nothing wrong: the fleet simply
+       has no active subscription. Painting it red reads as a fault to fix. -->
+  <Box
+    :tone="PanelTonesEnum.HIGHLIGHT"
+    :heading-size="HeadingSizeEnum.HERO"
+    animated
+    large
+  >
+    <template #heading>
+      {{ t("headlines.subscriptionRequired") }}
+    </template>
+    <template #default>
+      <Text>{{ t("texts.subscriptionRequired") }}</Text>
+    </template>
+    <template #footer>
+      <Btn :to="{ name: 'support' }">
+        {{ t("actions.supportUs").toUpperCase() }}
+      </Btn>
+      <Btn :to="{ name: 'home' }" :variant="BtnVariantsEnum.GHOST">
+        <i class="fa fa-chevron-left" />
+        {{ t("actions.backToHome").toUpperCase() }}
+      </Btn>
+    </template>
+  </Box>
+</template>

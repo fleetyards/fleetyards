@@ -18,6 +18,7 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
+import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
 import InviteInvalid from "@/shared/components/InviteInvalid/index.vue";
 import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
 import NotFound from "@/shared/components/NotFound/index.vue";
@@ -422,19 +423,23 @@ const updatePerPage = (value: number | string) => {
 
   <Heading :level="HeadingLevelEnum.H2">Error Pages</Heading>
   <p>
-    The six full-page error blocks. They are normally rendered as a whole route,
-    so they bring their own heading. <code>Forbidden</code> is the one for a
-    resource that exists and is not yours, as against
+    The seven full-page error blocks. They are normally rendered as a whole
+    route, so they bring their own heading. <code>Forbidden</code> is the one
+    for a resource that exists and is not yours, as against
     <code>NotAuthorized</code> for not being signed in at all.
     <code>Offline</code> is for a request that never got an answer, as against
     <code>ServerError</code> for one the server failed; it only shows its retry
     button where the caller hands it one. <code>InviteInvalid</code> names the
     token it was given, which is opaque and long enough to run out of the box if
-    it does not break.
+    it does not break. <code>SubscriptionRequired</code> answers the same 403 as
+    <code>Forbidden</code> and is told apart by the body code; it is the one
+    case where nothing is wrong with the reader, so it is the one that is not
+    painted as an error.
   </p>
   <NotFound />
   <NotAuthorized />
   <Forbidden />
+  <SubscriptionRequired />
   <ServerError />
   <Offline :retry="() => {}" />
   <InviteInvalid token="8f14e45fceea167a5a36dedd4bea2543" />

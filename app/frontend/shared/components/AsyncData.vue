@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import NotFound from "@/shared/components/NotFound/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
+import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Offline from "@/shared/components/Offline/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -46,6 +47,9 @@ const loading = computed(() => {
 <template>
   <slot v-if="error && !hideError" name="error">
     <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
+    <SubscriptionRequired
+      v-else-if="errorType === ErrorTypesEnum.SUBSCRIPTION_REQUIRED"
+    />
     <Forbidden v-else-if="errorType === ErrorTypesEnum.FORBIDDEN" />
     <Offline
       v-else-if="errorType === ErrorTypesEnum.OFFLINE"

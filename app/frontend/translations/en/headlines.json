@@ -190,6 +190,7 @@
       "stats": "Stats",
       "notFound": "Navigation Error",
       "forbidden": "Access Denied",
+      "subscriptionRequired": "Supporter Feature",
       "featureNotReady": "Coming Soon",
       "inviteInvalid": "Invalid Invite Link",
       "accessDenied": "Access Denied",

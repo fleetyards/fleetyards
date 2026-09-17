@@ -4,6 +4,20 @@ import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 const statusOf = (error: unknown) =>
   isAxiosError(error) ? error.response?.status : undefined;
 
+// Both refusals are a 403 and the body is what separates them: a capability
+// that is not rolled out answers `forbidden` to everyone, one that is rolled
+// out and unbought answers `subscription_required`. Read as a bare status they
+// are the same screen, and the second would tell a supporter their clearance
+// is wrong when the truth is that nobody has subscribed the fleet yet.
+//
+// Typed here rather than pulled from the generated client: this file is the
+// one place a raw axios error is read, and it should not need regenerating to
+// keep compiling.
+const codeOf = (error: unknown) =>
+  isAxiosError(error)
+    ? (error.response?.data as { code?: string } | undefined)?.code
+    : undefined;
+
 // A request that never got an answer: the device is offline, the connection
 // dropped, or the host is unreachable. Axios reports all of them without a
 // response, which is the only thing that separates them from a server that
@@ -26,7 +40,11 @@ export const errorTypeFrom = (error: unknown): ErrorTypesEnum | undefined => {
 
   if (status === 404) return ErrorTypesEnum.NOT_FOUND;
 
-  if (status === 403) return ErrorTypesEnum.FORBIDDEN;
+  if (status === 403) {
+    return codeOf(error) === "subscription_required"
+      ? ErrorTypesEnum.SUBSCRIPTION_REQUIRED
+      : ErrorTypesEnum.FORBIDDEN;
+  }
 
   return ErrorTypesEnum.ERROR;
 };
