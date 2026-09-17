@@ -25055,6 +25055,10 @@ components:
       properties:
         fleet:
           "$ref": "#/components/schemas/FleetRef"
+        explicit:
+          type: boolean
+      required:
+      - explicit
       additionalProperties: false
       title: MySupportedFleet
     MySupporterContribution:
