@@ -23,6 +23,11 @@ module Admin
             payerEmail: {type: :string},
             claimKey: {type: :string},
             linkedVia: ::Admin::V1::Schemas::Enums::SupporterContributionLinkedViaEnum,
+            fleetId: {type: :string, format: :uuid},
+            fleet: ::Admin::V1::Schemas::Fleets::Options::FleetOption,
+            # Whether the reconciler ever opened a subscription from this row,
+            # which is what says a nomination actually did something.
+            seededSubscription: {type: :boolean},
             userId: {type: :string, format: :uuid},
             user: ::Admin::V1::Schemas::Users::Options::UserOption,
             createdAt: {type: :string, format: "date-time"},

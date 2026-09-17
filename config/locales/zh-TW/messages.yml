@@ -30,7 +30,10 @@ zh-TW:
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: 借用船上傳成功。
+    fleet_subscriptions:
+      already_open: "該艦隊已有一個開通中的訂閱。"
     record_not_found:
+      fleet_subscription: 未找到艦隊訂閱
       announcement: 未找到公告
       announcement_delivery: 未找到公告投遞
       base: 未找到項目

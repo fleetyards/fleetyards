@@ -1,6 +1,10 @@
 ---
 it:
   validation_error:
+    fleet_subscription:
+      create: "Impossibile aprire l'abbonamento."
+      update: "Impossibile aggiornare l'abbonamento."
+      destroy: "Impossibile rimuovere l'abbonamento."
     announcement:
       create: Impossibile creare l'annuncio.
       update: Impossibile aggiornare l'annuncio.

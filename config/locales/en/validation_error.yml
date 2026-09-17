@@ -1,6 +1,10 @@
 ---
 en:
   validation_error:
+    fleet_subscription:
+      create: "Subscription could not be opened."
+      update: "Subscription could not be updated."
+      destroy: "Subscription could not be removed."
     announcement:
       create: Announcement could not be created.
       update: Announcement could not be updated.

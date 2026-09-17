@@ -25,6 +25,8 @@ module Admin
               startedAtLteq: {type: :string, format: :date},
               endedAtGteq: {type: :string, format: :date},
               endedAtLteq: {type: :string, format: :date},
+              fleetIdEq: {type: :string, format: :uuid},
+              fleetIdNull: {type: :boolean},
               userIdEq: {type: :string, format: :uuid},
               userIdNull: {type: :boolean},
               userUsernameCont: {type: :string},

@@ -1,6 +1,10 @@
 ---
 zh-CN:
   validation_error:
+    fleet_subscription:
+      create: "无法开通订阅。"
+      update: "无法更新订阅。"
+      destroy: "无法移除订阅。"
     announcement:
       create: "无法创建公告。"
       update: "无法更新公告。"

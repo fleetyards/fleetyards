@@ -19,7 +19,7 @@ module Admin
           q = SupporterContribution.ransack(supporter_contribution_query_params)
 
           @supporter_contributions = q.result(distinct: true)
-            .includes(:user)
+            .includes(:user, :fleet, :fleet_subscriptions)
             .page(params[:page])
             .per(per_page(SupporterContribution))
         end
@@ -154,6 +154,7 @@ module Admin
             :linked_via_eq, :started_at_gteq, :started_at_lteq,
             :ended_at_gteq, :ended_at_lteq,
             :user_id_eq, :user_id_null, :user_username_cont,
+            :fleet_id_eq, :fleet_id_null,
             :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end

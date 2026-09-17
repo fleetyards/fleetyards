@@ -1,6 +1,10 @@
 ---
 de:
   validation_error:
+    fleet_subscription:
+      create: "Abonnement konnte nicht angelegt werden."
+      update: "Abonnement konnte nicht aktualisiert werden."
+      destroy: "Abonnement konnte nicht entfernt werden."
     announcement:
       create: Ankündigung konnte nicht erstellt werden.
       update: Ankündigung konnte nicht aktualisiert werden.

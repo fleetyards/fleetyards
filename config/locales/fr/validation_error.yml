@@ -1,6 +1,10 @@
 ---
 fr:
   validation_error:
+    fleet_subscription:
+      create: "L'abonnement n'a pas pu être ouvert."
+      update: "L'abonnement n'a pas pu être mis à jour."
+      destroy: "L'abonnement n'a pas pu être supprimé."
     announcement:
       create: L'annonce n'a pas pu être créée.
       update: L'annonce n'a pas pu être mise à jour.

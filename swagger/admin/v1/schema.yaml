@@ -2206,6 +2206,189 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleet-subscriptions":
+    get:
+      summary: List Fleet Subscriptions
+      tags:
+      - FleetSubscriptions
+      operationId: adminFleetSubscriptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetSubscriptionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSubscriptions"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Open a Fleet Subscription
+      tags:
+      - FleetSubscriptions
+      operationId: createFleetSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSubscriptionInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSubscription"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleet-subscriptions/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    get:
+      summary: Show a Fleet Subscription
+      tags:
+      - FleetSubscriptions
+      operationId: adminFleetSubscription
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update a Fleet Subscription
+      tags:
+      - FleetSubscriptions
+      operationId: updateFleetSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSubscriptionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSubscription"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Remove a Fleet Subscription
+      tags:
+      - FleetSubscriptions
+      operationId: destroyFleetSubscription
+      responses:
+        '204':
+          description: no content
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets":
     post:
       summary: Create Fleet
@@ -12241,6 +12424,168 @@ components:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: FleetSortEnum
+    FleetSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        startedAt:
+          type: string
+          format: date
+        endedAt:
+          type: string
+          format: date
+        grantedVia:
+          "$ref": "#/components/schemas/FleetSubscriptionGrantedViaEnum"
+        note:
+          type: string
+        open:
+          type: boolean
+        active:
+          type: boolean
+        fleet:
+          "$ref": "#/components/schemas/FleetOption"
+        supporterContributionId:
+          type: string
+          format: uuid
+        supporterContribution:
+          "$ref": "#/components/schemas/FleetSubscriptionContribution"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - startedAt
+      - grantedVia
+      - open
+      - active
+      - fleet
+      additionalProperties: false
+      title: FleetSubscription
+    FleetSubscriptionContribution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        displayName:
+          type: string
+      required:
+      - id
+      - amountCents
+      - currency
+      - displayName
+      additionalProperties: false
+      title: FleetSubscriptionContribution
+    FleetSubscriptionGrantedViaEnum:
+      type: string
+      enum:
+      - contribution
+      - manual
+      x-enumNames:
+      - CONTRIBUTION
+      - MANUAL
+      title: FleetSubscriptionGrantedViaEnum
+    FleetSubscriptionInput:
+      type: object
+      properties:
+        fleetId:
+          type: string
+          format: uuid
+        startedAt:
+          type: string
+          format: date
+        endedAt:
+          type:
+          - string
+          - 'null'
+          format: date
+        note:
+          type:
+          - string
+          - 'null'
+        updateReason:
+          type: string
+        updateReasonDescription:
+          type: string
+      additionalProperties: false
+      title: FleetSubscriptionInput
+    FleetSubscriptionQuery:
+      type: object
+      properties:
+        fleetIdEq:
+          type: string
+          format: uuid
+        fleetNameCont:
+          type: string
+        fleetSlugEq:
+          type: string
+        grantedViaEq:
+          "$ref": "#/components/schemas/FleetSubscriptionGrantedViaEnum"
+        endedAtNull:
+          type: boolean
+        supporterContributionIdNull:
+          type: boolean
+        startedAtGteq:
+          type: string
+          format: date
+        startedAtLteq:
+          type: string
+          format: date
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetSubscriptionSortEnum"
+          - "$ref": "#/components/schemas/FleetSubscriptionSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetSubscriptionSortEnum"
+          - "$ref": "#/components/schemas/FleetSubscriptionSortEnum"
+      additionalProperties: false
+      example: {}
+      title: FleetSubscriptionQuery
+    FleetSubscriptionSortEnum:
+      type: string
+      enum:
+      - startedAt asc
+      - startedAt desc
+      - endedAt asc
+      - endedAt desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - STARTED_AT_ASC
+      - STARTED_AT_DESC
+      - ENDED_AT_ASC
+      - ENDED_AT_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FleetSubscriptionSortEnum
+    FleetSubscriptions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSubscription"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetSubscriptions
     Fleets:
       type: object
       properties:
@@ -16390,6 +16735,13 @@ components:
           type: string
         linkedVia:
           "$ref": "#/components/schemas/SupporterContributionLinkedViaEnum"
+        fleetId:
+          type: string
+          format: uuid
+        fleet:
+          "$ref": "#/components/schemas/FleetOption"
+        seededSubscription:
+          type: boolean
         userId:
           type: string
           format: uuid
@@ -16531,6 +16883,11 @@ components:
         endedAtLteq:
           type: string
           format: date
+        fleetIdEq:
+          type: string
+          format: uuid
+        fleetIdNull:
+          type: boolean
         userIdEq:
           type: string
           format: uuid
