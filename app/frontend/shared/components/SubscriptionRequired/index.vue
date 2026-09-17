@@ -33,13 +33,26 @@ const { t } = useI18n();
       <Text>{{ t("texts.subscriptionRequired") }}</Text>
     </template>
     <template #footer>
-      <Btn :to="{ name: 'support' }">
-        {{ t("actions.supportUs").toUpperCase() }}
-      </Btn>
-      <Btn :to="{ name: 'home' }" :variant="BtnVariantsEnum.GHOST">
-        <i class="fa fa-chevron-left" />
-        {{ t("actions.backToHome").toUpperCase() }}
-      </Btn>
+      <!-- The first of these blocks to carry two buttons, so it brings its own
+           row: the footer slot is unstyled because a single button never
+           needed it. -->
+      <div class="subscription-required__actions">
+        <Btn :to="{ name: 'support' }">
+          {{ t("actions.supportUs").toUpperCase() }}
+        </Btn>
+        <Btn :to="{ name: 'home' }" :variant="BtnVariantsEnum.GHOST">
+          <i class="fa fa-chevron-left" />
+          {{ t("actions.backToHome").toUpperCase() }}
+        </Btn>
+      </div>
     </template>
   </Box>
 </template>
+
+<style lang="scss" scoped>
+.subscription-required__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+</style>
