@@ -26,6 +26,10 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
         schema ::Admin::V1::Schemas::FleetSubscriptions
       end
 
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(403, "forbidden") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -47,6 +51,10 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::ValidationError
       end
 
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(403, "forbidden") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -63,6 +71,10 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
 
       response(200, "successful") do
         schema ::Admin::V1::Schemas::FleetSubscription
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
@@ -90,7 +102,15 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::ValidationError
       end
 
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
     end
@@ -102,7 +122,15 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
 
       response(204, "no content")
 
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
     end
@@ -277,5 +305,59 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 404, api_path: MEMBER_PATH,
       path_params: {id: "00000000-0000-0000-0000-000000000000"}
+  end
+
+  test "every action is unauthorized when signed out" do
+    subscription = create(:fleet_subscription, fleet: @fleet)
+
+    assert_api_response :get, 401, api_path: COLLECTION_PATH
+    assert_api_response :post, 401, api_path: COLLECTION_PATH,
+      body: {fleetId: @fleet.id, startedAt: Date.current.iso8601}
+    assert_api_response :get, 401, api_path: MEMBER_PATH, path_params: {id: subscription.id}
+    assert_api_response :put, 401, api_path: MEMBER_PATH, path_params: {id: subscription.id},
+      body: {endedAt: Date.current.iso8601}
+    assert_api_response :delete, 401, api_path: MEMBER_PATH, path_params: {id: subscription.id}
+  end
+
+  # A seeded row moved to another fleet would keep pointing at a contribution
+  # naming the first, and the next sync would open a second row for that fleet
+  # and close the moved one. Closing and reopening is the coherent way.
+  test "PUT cannot move a subscription to a different fleet" do
+    subscription = create(:fleet_subscription, :seeded, fleet: @fleet)
+    other = create(:fleet)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: MEMBER_PATH, path_params: {id: subscription.id},
+      body: {fleetId: other.id, note: "tried to move it"}
+
+    assert_equal @fleet.id, subscription.reload.fleet_id
+    assert_equal "tried to move it", subscription.note
+  end
+
+  test "a conflict on update is reported as an update failure" do
+    create(:fleet_subscription, fleet: @fleet)
+    closed = create(:fleet_subscription, fleet: @fleet, started_at: Date.current - 10,
+      ended_at: Date.current - 1)
+    sign_in @user
+
+    assert_api_response :put, 400, api_path: MEMBER_PATH, path_params: {id: closed.id},
+      body: {endedAt: nil} do
+      assert_equal "validation_error.fleet_subscription.update", parsed_body["code"]
+    end
+  end
+
+  # The one action that removes an entitlement must not be the one nobody can
+  # see afterwards: a version with no author is filtered out of the feed.
+  test "DELETE records who removed it" do
+    subscription = create(:fleet_subscription, fleet: @fleet)
+    sign_in @user
+
+    assert_api_response :delete, 204, api_path: MEMBER_PATH, path_params: {id: subscription.id}
+
+    version = PaperTrail::Version.where(item_type: "FleetSubscription", item_id: subscription.id)
+      .order(:created_at).last
+
+    assert_equal "destroy", version.event
+    assert_equal @user.id, version.author_id
   end
 end

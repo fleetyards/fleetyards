@@ -22,7 +22,7 @@ module Admin
         # a 500. Two admins comping the same fleet at once is exactly the case.
         rescue_from ActiveRecord::RecordNotUnique do |_exception|
           render json: ValidationError.new(
-            "fleet_subscription.create",
+            "fleet_subscription.#{action_name}",
             message: I18n.t("messages.fleet_subscriptions.already_open")
           ), status: :bad_request
         end
@@ -47,7 +47,7 @@ module Admin
 
         def create
           @fleet_subscription = FleetSubscription.new(
-            fleet_subscription_params.merge(granted_via: "manual", author_id: current_user.id)
+            create_params.merge(granted_via: "manual", author_id: current_user.id)
           )
 
           authorize! @fleet_subscription, with: ::Admin::FleetSubscriptionPolicy
@@ -62,7 +62,7 @@ module Admin
         # action for it: the history is the row, and a revocation is a date on
         # it rather than an event beside it.
         def update
-          if @fleet_subscription.update(fleet_subscription_params.merge(author_id: current_user.id))
+          if @fleet_subscription.update(update_params.merge(author_id: current_user.id))
             return render :show
           end
 
@@ -74,6 +74,12 @@ module Admin
         # path -- this one leaves a version too, so a removed entitlement is
         # still answerable for.
         def destroy
+          # paper_trail files a destroy version for this model, and a version
+          # with no author is filtered out of the recent-changes feed -- so the
+          # one action that removes an entitlement would be the one nobody could
+          # see afterwards.
+          @fleet_subscription.author_id = current_user.id
+
           return if @fleet_subscription.destroy
 
           render json: ValidationError.new("fleet_subscription.destroy",
@@ -86,11 +92,19 @@ module Admin
           authorize! @fleet_subscription, with: ::Admin::FleetSubscriptionPolicy
         end
 
-        private def fleet_subscription_params
-          @fleet_subscription_params ||= params.permit(
-            :fleet_id, :started_at, :ended_at, :note,
-            :update_reason, :update_reason_description
-          )
+        private def create_params
+          params.permit(:fleet_id, :started_at, :ended_at, :note,
+            :update_reason, :update_reason_description)
+        end
+
+        # No `fleet_id`. A subscription's fleet is fixed when it is opened:
+        # moving a seeded row to another fleet would leave it pointing at a
+        # contribution that names the first one, and the next sync would then
+        # open a second row for the original fleet and close the moved one.
+        # Closing and opening a new one is the coherent way to say that.
+        private def update_params
+          params.permit(:started_at, :ended_at, :note,
+            :update_reason, :update_reason_description)
         end
 
         private def fleet_subscription_query_params
