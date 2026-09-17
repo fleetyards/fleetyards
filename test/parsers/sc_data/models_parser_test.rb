@@ -87,13 +87,54 @@ module ScData
         assert_equal ["Module"], port["types"]
       end
 
-      private def write_ship
+      # The seven collector ships name themselves through a key the export
+      # declares with a ",P" marker, so `translate` missed and every one of them
+      # loaded nameless.
+      test "carries a name the export declares with a plural marker" do
+        @parser.translations = {"vehicle_NameTEST_Bomber,P" => "Aegis Sabre Firebird Wikelo War Special"}
+
+        assert_equal "Aegis Sabre Firebird Wikelo War Special", parsed_ship["name"]
+      end
+
+      test "carries a name the export declares in another case" do
+        @parser.translations = {"vehicle_nametest_bomber" => "Drake Pitbull"}
+
+        assert_equal "Drake Pitbull", parsed_ship["name"]
+      end
+
+      # A record may write its finished name where a key belongs. The index
+      # cannot answer one, so the literal has to keep reaching the record the
+      # way it did through `translate`.
+      test "carries a name the record writes out rather than names as a key" do
+        write_ship(name: "Mission Prospector")
+
+        @parser.translations = {}
+
+        assert_equal "Mission Prospector", parsed_ship["name"]
+      end
+
+      # Only the name. Career and role resolve exactly for every key 4.10.1
+      # declares, and a description read through the index would arrive with its
+      # newlines already unescaped.
+      test "leaves the description as the export writes it" do
+        @parser.translations = {"vehicle_DescTEST_Bomber" => 'Focus: Combat\n\nA bomber.'}
+
+        assert_equal 'Focus: Combat\n\nA bomber.', parsed_ship["description"]
+      end
+
+      private def parsed_ship
+        @parser.all
+
+        JSON.parse(File.read("#{@base_folder}/parsed/test/models/test_bomber.json"))
+      end
+
+      private def write_ship(name: "@vehicle_NameTEST_Bomber")
         FileUtils.mkdir_p("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships")
 
         File.write("#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/spaceships/test_bomber.xml", <<~XML)
           <EntityClassDefinition.TEST_Bomber>
             <Components>
-              <VehicleComponentParams vehicleName="@vehicle_NameTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}" />
+              <VehicleComponentParams vehicleName="#{name}" vehicleDescription="@vehicle_DescTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}" />
               <SItemPortContainerComponentParams>
                 <Ports>
                   <SItemPortDef Name="hardpoint_relay" MinSize="0" MaxSize="1" PortTags="Relay_Bay" RequiredPortTags="$Relay_Bay" Flags="$uneditable">

@@ -119,6 +119,36 @@ module ScData
         assert_equal "Gatac builds things.", result[:description]
       end
 
+      # "CC's Conversions" is declared `manufacturer_NameCCC,P`, so neither the
+      # record's own-key branch nor `translate` sees it and the maker of the
+      # Aves armour loaded without a name.
+      test "#parse_manufacturer resolves a name the export declares with a plural marker" do
+        @parser.translations = {"manufacturer_NameCCC,P" => "CC's Conversions"}
+
+        result = @parser.parse_manufacturer(record("CCC", name_key: "@manufacturer_NameCCC"))
+
+        assert_equal "CC's Conversions", result[:name]
+      end
+
+      test "#parse_manufacturer resolves a name the export declares in another case" do
+        @parser.translations = {"manufacturer_nametaln" => "Talon"}
+
+        result = @parser.parse_manufacturer(record("TALN", name_key: "@manufacturer_NameTALN"))
+
+        assert_equal "Talon", result[:name]
+      end
+
+      # ASD's key reads "PH Associated Science and Development". It resolves for
+      # the first time through the index, and a manufacturer page under that
+      # name is worse than the nothing it shows today.
+      test "#parse_manufacturer leaves a name the export marks as a placeholder unresolved" do
+        @parser.translations = {"manufacturer_NameASAD,P" => "PH Associated Science and Development"}
+
+        result = @parser.parse_manufacturer(record("ASD", name_key: "@manufacturer_NameASAD"))
+
+        assert_nil result[:name]
+      end
+
       test "#parse_manufacturer ignores a record without a code" do
         assert_nil @parser.parse_manufacturer(record(nil))
       end
