@@ -11,7 +11,7 @@ beforeEach(() => {
   document.body.innerHTML = '<div id="off-canvas-content"></div>';
 });
 
-const failedWith = (status: number) =>
+const failedWith = (status: number, data?: unknown) =>
   ({
     fetchStatus: ref("idle"),
     isError: ref(true),
@@ -19,7 +19,7 @@ const failedWith = (status: number) =>
     isLoading: ref(false),
     isFetching: ref(false),
     isRefetching: ref(false),
-    error: ref({ isAxiosError: true, response: { status } }),
+    error: ref({ isAxiosError: true, response: { status, data } }),
   }) as unknown as AsyncStatus;
 
 // FilteredList is a generic SFC, which is not a plain constructor type; this
@@ -97,9 +97,13 @@ function unanswered() {
   } as unknown as AsyncStatus;
 }
 
-const mount = (status: number) =>
+const mount = (status: number, data?: unknown) =>
   mountWithDefaults<typeof ListComponent>(ListComponent, {
-    props: { name: "test-list", records: [], asyncStatus: failedWith(status) },
+    props: {
+      name: "test-list",
+      records: [],
+      asyncStatus: failedWith(status, data),
+    },
   });
 
 const mountWithToolbar = (slots: Record<string, string>) =>
@@ -115,6 +119,26 @@ const mountWithSlots = (slots: Record<string, () => unknown>) =>
   });
 
 describe("FilteredList", () => {
+  // Same status, told apart by the body alone. The unit test on the classifier
+  // would not notice these two branches written in the wrong order.
+  it("sends an unbought fleet to the supporter block", async () => {
+    const wrapper = await mount(403, { code: "subscription_required" });
+
+    expect(
+      wrapper.findComponent({ name: "SubscriptionRequired" }).exists(),
+    ).toBe(true);
+    expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
+  });
+
+  it("keeps a plain refusal on the access screen", async () => {
+    const wrapper = await mount(403, { code: "forbidden" });
+
+    expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(true);
+    expect(
+      wrapper.findComponent({ name: "SubscriptionRequired" }).exists(),
+    ).toBe(false);
+  });
+
   it("sends a refused list to the access screen, not the outage one", async () => {
     const wrapper = await mount(403);
 

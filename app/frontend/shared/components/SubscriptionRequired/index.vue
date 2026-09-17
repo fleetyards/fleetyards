@@ -14,6 +14,22 @@ import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
+
+const router = useRouter();
+
+// `support` is a route of the frontend app alone, and this block is shared:
+// AsyncData and FilteredList render it and 46 admin surfaces use those. A
+// named route the running app does not have throws while rendering, so the
+// refusal would become a blank page. Where the name is missing the link falls
+// back to a plain navigation -- which is what admin needs regardless, being a
+// separate bundle the router cannot reach.
+const supportRoute = computed(() =>
+  router.hasRoute("support") ? { name: "support" } : undefined,
+);
+
+const supportHref = computed(() =>
+  supportRoute.value ? undefined : "/support/",
+);
 </script>
 
 <template>
@@ -37,12 +53,12 @@ const { t } = useI18n();
            row: the footer slot is unstyled because a single button never
            needed it. -->
       <div class="subscription-required__actions">
-        <Btn :to="{ name: 'support' }">
-          {{ t("actions.supportUs").toUpperCase() }}
-        </Btn>
         <Btn :to="{ name: 'home' }" :variant="BtnVariantsEnum.GHOST">
           <i class="fa fa-chevron-left" />
           {{ t("actions.backToHome").toUpperCase() }}
+        </Btn>
+        <Btn :to="supportRoute" :href="supportHref">
+          {{ t("actions.supportUs").toUpperCase() }}
         </Btn>
       </div>
     </template>
@@ -53,6 +69,7 @@ const { t } = useI18n();
 .subscription-required__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 10px;
 }
 </style>
