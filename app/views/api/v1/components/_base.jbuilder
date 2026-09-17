@@ -30,17 +30,14 @@ json.description component.description
 # values. It needs a parser fix and a re-parse, which is its own change.
 json.required_tags component.required_tags
 
-# The space an item takes, and how big it is. Clean and consistent across all
-# 7,336 rows that carry it.
-#
-# `ammunition`, `power_connection` and `heat_connection` are **not** emitted.
-# They are raw game-file dumps: `heat_connection` alone carries 22 different
-# keys across the table, mixing `MaxCoolingRate` with `cooling_rate` in the
-# same hash, and `ammunition` nests PascalCase damage types. A public contract
-# cannot document that honestly without a parser pass first -- the same
-# cleanup #5002 needs for `tags`. The live power figures are in
-# `typeData.powerRanges` regardless.
-json.inventory_consumption component.inventory_consumption
+# `inventoryConsumption`, `ammunition`, `powerConnection` and `heatConnection`
+# are all absent on purpose. The last three are raw game-file dumps --
+# `heat_connection` alone carries 22 different keys across the table, mixing
+# `MaxCoolingRate` with `cooling_rate` in the same hash -- so no honest schema
+# can describe them until the parser gives them consistent keys, the same
+# cleanup #5002 needs for `tags`. The first is documented as a string it has
+# never been, and correcting that type is a breaking change this PR should not
+# carry. The live power figures are in `typeData.powerRanges` regardless.
 
 json.hidden component.hidden
 

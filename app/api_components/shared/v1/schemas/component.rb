@@ -28,7 +28,14 @@ module Shared
             # item's own -- is absent until the parser stops double-encoding it.
             requiredTags: {type: :array, items: {type: :string}},
 
-            inventoryConsumption: ::Shared::V1::Schemas::ComponentInventoryConsumption,
+            # Left as the string main documents. It is an object really, but
+            # nothing has ever emitted it, and correcting the type registers as
+            # a breaking change on every path `Component` nests under -- which
+            # oasdiff reports under a *different* path on each run, so no
+            # ignore list can match it reliably (measured: 4 of 6 identical
+            # runs failed). It comes back with the parser cleanup that #5002
+            # needs, as one deliberate change rather than a flaky check.
+            inventoryConsumption: {type: :string},
 
             grade: {type: :string},
             gradeLabel: {type: :string},

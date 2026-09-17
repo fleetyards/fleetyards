@@ -10051,7 +10051,7 @@ components:
           items:
             type: string
         inventoryConsumption:
-          "$ref": "#/components/schemas/ComponentInventoryConsumption"
+          type: string
         grade:
           type: string
         gradeLabel:
@@ -10252,17 +10252,6 @@ components:
           "$ref": "#/components/schemas/ComponentDamageRange"
       additionalProperties: false
       title: ComponentDamageTypeMap
-    ComponentDimensions:
-      type: object
-      properties:
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-      additionalProperties: false
-      title: ComponentDimensions
     ComponentInput:
       type: object
       properties:
@@ -10301,15 +10290,6 @@ components:
           type: string
       additionalProperties: false
       title: ComponentInput
-    ComponentInventoryConsumption:
-      type: object
-      properties:
-        microScu:
-          type: number
-        dimensions:
-          "$ref": "#/components/schemas/ComponentDimensions"
-      additionalProperties: false
-      title: ComponentInventoryConsumption
     ComponentItemClassEnum:
       type: string
       enum:
@@ -17323,6 +17303,7 @@ components:
       - Component
       - Fleet
       - FleetContract
+      - FleetSubscription
       - FleetInventory
       - FleetInventoryItem
       - FleetInventoryPosition
@@ -17346,6 +17327,7 @@ components:
       - COMPONENT
       - FLEET
       - FLEET_CONTRACT
+      - FLEET_SUBSCRIPTION
       - FLEET_INVENTORY
       - FLEET_INVENTORY_ITEM
       - FLEET_INVENTORY_POSITION

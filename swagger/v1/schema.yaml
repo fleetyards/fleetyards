@@ -15968,7 +15968,7 @@ components:
           items:
             type: string
         inventoryConsumption:
-          "$ref": "#/components/schemas/ComponentInventoryConsumption"
+          type: string
         grade:
           type: string
         gradeLabel:
@@ -16161,26 +16161,6 @@ components:
           "$ref": "#/components/schemas/ComponentDamageRange"
       additionalProperties: false
       title: ComponentDamageTypeMap
-    ComponentDimensions:
-      type: object
-      properties:
-        x:
-          type: number
-        "y":
-          type: number
-        z:
-          type: number
-      additionalProperties: false
-      title: ComponentDimensions
-    ComponentInventoryConsumption:
-      type: object
-      properties:
-        microScu:
-          type: number
-        dimensions:
-          "$ref": "#/components/schemas/ComponentDimensions"
-      additionalProperties: false
-      title: ComponentInventoryConsumption
     ComponentItemClassEnum:
       type: string
       enum:

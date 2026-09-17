@@ -1298,19 +1298,3 @@ PUT /vehicles/{vehicle_id}/loadouts/{id}/activate removed the required property 
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /components the `items/items/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /fleets/{fleetSlug}/vehicles the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /hangar the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /models/{slug}/hardpoints the `items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /models/{slug}/module-packages the `items/items/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /models/{slug}/modules the `items/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /public/fleets/{fleetSlug}/vehicles the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /public/fleets/{fleetSlug}/vehicles/embed the `items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /public/hangars/embed the `items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /public/hangars/{username} the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /public/wishlists/{username} the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-POST /vehicles the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `201`
-DELETE /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /wishlist the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`

@@ -155,26 +155,3 @@ POST /supporter-contributions added the new `undefined` enum value to the `sourc
 DELETE /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
 GET /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
 PUT /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
-GET /components the `items/items/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-POST /components the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-DELETE /components/{id} the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /components/{id} the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /components/{id} the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /hardpoints the `items/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-POST /hardpoints the `component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `201`
-GET /hardpoints/{id} the `component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /hardpoints/{id} the `component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /model-module-packages the `items/items/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-POST /model-module-packages the `modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /model-module-packages/{id} the `modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /model-module-packages/{id} the `modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /model-modules the `items/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-POST /model-modules the `hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `201`
-GET /model-modules/{id} the `hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /model-modules/{id} the `hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /model-modules/{id}/link the `hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /model-modules/{id}/unlink the `hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /vehicles the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-DELETE /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-PUT /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
