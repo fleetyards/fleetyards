@@ -8,15 +8,8 @@ import {
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
-// `subscribed` is optional although the schema types it required: the public
-// fleet endpoint is documented as returning a whole Fleet but its view renders
-// the base partial only, so a fleet read while signed out carries neither it
-// nor `features`. The optional chaining on `features` below is the same
-// admission. Absent has to read as unsubscribed either way.
 export const useFleetNavAccess = (
-  fleet: MaybeRefOrGetter<
-    (Pick<Fleet, "features"> & Partial<Pick<Fleet, "subscribed">>) | undefined
-  >,
+  fleet: MaybeRefOrGetter<Pick<Fleet, "features"> | undefined>,
 ) => {
   const route = useRoute();
 
@@ -44,26 +37,6 @@ export const useFleetNavAccess = (
 
     return access.some((resource) => allowed.includes(resource));
   };
-
-  // Mirrors `FleetSubscriptionConcern`: two questions, capability first. This
-  // one is the second, and it is asked only once enforcement is rolled out for
-  // this fleet -- while `fleet_subscriptions` is off it answers true and the
-  // tabs are exactly what they were before any of this shipped.
-  //
-  // An unsubscribed fleet loses the tab rather than getting one that leads to
-  // a refusal. The upsell still exists for anyone who arrives by URL or from a
-  // stale link; it is just not something the nav walks people into.
-  const subscriptionSatisfied = computed(() => {
-    const currentFleet = toValue(fleet);
-
-    if (
-      !isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_SUBSCRIPTIONS)
-    ) {
-      return true;
-    }
-
-    return currentFleet?.subscribed ?? false;
-  });
 
   const hasLogisticsAccess = computed(
     () => membership.value?.capabilities?.readInventories ?? false,
@@ -101,8 +74,7 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       hasLogisticsAccess.value &&
-      isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS) &&
-      subscriptionSatisfied.value,
+      isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS),
   );
 
   const showAlliesNav = computed(
@@ -116,8 +88,7 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       hasContractsAccess.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_CONTRACTS) &&
-      subscriptionSatisfied.value,
+      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_CONTRACTS),
   );
 
   const showEventsNav = computed(
@@ -127,8 +98,7 @@ export const useFleetNavAccess = (
       isFleetFeatureEnabled(
         toValue(fleet),
         FeatureFlagName.FLEET_MISSION_BUILDER,
-      ) &&
-      subscriptionSatisfied.value,
+      ),
   );
 
   // Missions are reached from the events page, but the events route only
@@ -142,8 +112,7 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.TOUR_PAYOUTS) &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_TOURS) &&
-      subscriptionSatisfied.value,
+      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_TOURS),
   );
 
   const contractsNavActive = computed(() =>
