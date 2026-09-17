@@ -30,7 +30,10 @@ module ScData
     # for the artwork a record names.
     Catalogue = Struct.new(:key, :floor, :icons)
 
-    # Equipment is the one catalogue whose icons go unchecked. It names artwork
+    # Blueprints name no artwork of their own: 1606 of the 1607 records in
+    # 4.10.1 carry no name either, and both come from whatever the recipe makes.
+    #
+    # Equipment is the other catalogue whose icons go unchecked. It names artwork
     # under `ui/textures/ea/loadouticons` that the export ships none of -- all
     # 2,042 references resolve to nothing, in every build -- and nothing loads
     # them either, since `EquipmentLoader` attaches no icon. Checking them would
@@ -43,6 +46,7 @@ module ScData
     # export whose upload was still running, a parse that died between
     # catalogues, a sync that fetched half a prefix.
     CATALOGUES = {
+      "blueprints" => Catalogue.new(key: "key", floor: 1280, icons: false),
       "commodities" => Catalogue.new(key: "sc_key", floor: 180, icons: true),
       "equipment" => Catalogue.new(key: "key", floor: 3800, icons: false),
       "items" => Catalogue.new(key: "key", floor: 6200, icons: true),
