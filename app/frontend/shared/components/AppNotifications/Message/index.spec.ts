@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   MessageTypesEnum,
   type AppNotification,
 } from "@/shared/components/AppNotifications/types";
+import MessageBody from "./Body/index.vue";
 import Component from "./index.vue";
 
 const hideMessage = vi.fn();
@@ -22,7 +24,13 @@ const message: AppNotification = {
   to: { name: "target" },
 };
 
-const mountMessage = async () => {
+const CustomBody = defineComponent({
+  name: "CustomNotificationBody",
+  setup: () => () =>
+    h(MessageBody, null, { default: () => h("span", "custom") }),
+});
+
+const mountMessage = async (overrides: Partial<AppNotification> = {}) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -34,7 +42,7 @@ const mountMessage = async () => {
   const push = vi.spyOn(router, "push");
 
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props: { message },
+    props: { message: { ...message, ...overrides } },
     plugins: [router],
   });
 
@@ -57,6 +65,18 @@ describe("AppNotificationsMessage", () => {
 
   it("only dismisses when the close button is clicked", async () => {
     const { wrapper, push } = await mountMessage();
+
+    await wrapper.get('[data-test="notification-close"]').trigger("click");
+
+    expect(hideMessage).toHaveBeenCalledWith("message-id");
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("only dismisses when a custom body's close button is clicked", async () => {
+    const { wrapper, push } = await mountMessage({
+      text: undefined,
+      component: () => Promise.resolve(CustomBody),
+    });
 
     await wrapper.get('[data-test="notification-close"]').trigger("click");
 

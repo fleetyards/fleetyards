@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { appNotificationDismissKey } from "@/shared/components/AppNotifications/types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   text?: string;
@@ -14,6 +15,8 @@ type Props = {
 withDefaults(defineProps<Props>(), {
   text: undefined,
 });
+
+const { t } = useI18n();
 
 const dismiss = inject(appNotificationDismissKey, undefined);
 
@@ -33,7 +36,7 @@ const onClose = () => {
     <button
       type="button"
       class="app-notifications__message-body__close"
-      aria-label="Close"
+      :aria-label="t('actions.close')"
       data-test="notification-close"
       @click.stop="onClose"
     >
