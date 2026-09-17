@@ -263,7 +263,7 @@ class Component < ApplicationRecord
   #
   # Every value is a number in the export; `::numeric` is what makes Postgres
   # order them as such rather than as text, where "9" outranks "10".
-  METRIC_SORTS = {
+  METRICS = {
     "maxHealth" => "max_health",
     "maxRegen" => "max_regen",
     "jumpRange" => "jump_range",
@@ -289,7 +289,7 @@ class Component < ApplicationRecord
     "name asc", "name desc",
     "grade asc", "grade desc",
     "createdAt asc", "createdAt desc"
-  ] + METRIC_SORTS.keys.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
+  ] + METRICS.keys.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
 
   def self.ordered_by_name
     order(name: :asc)
@@ -315,7 +315,7 @@ class Component < ApplicationRecord
   # One ransacker per metric, so `q[sorts]=maxHealth desc` and
   # `q[maxHealth_gteq]=1000` both resolve. Only possible since `type_data`
   # stopped being a YAML string -- as text no SQL could reach a figure inside it.
-  METRIC_SORTS.each do |name, key|
+  METRICS.each do |name, key|
     ransacker(name.underscore.to_sym, type: :float) do
       Arel.sql("(components.type_data ->> #{connection.quote(key)})::numeric")
     end
@@ -338,7 +338,7 @@ class Component < ApplicationRecord
       "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
       "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
-    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRIC_SORTS.keys.map(&:underscore)
+    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore)
   end
 
   # `shop_commodities` was listed here long after the association was removed,

@@ -26,6 +26,15 @@ module V1
             componentSubTypeIn: {type: :array, items: {type: :string}},
             currentVersion: {type: :boolean},
             hiddenEq: {type: :boolean},
+            # A range per metric. Generated from the same map the sorts and the
+            # ransackers come from, so the three cannot drift apart.
+            **::Component::METRICS.keys.to_h { |metric|
+              [:"#{metric}Gteq", {type: :number}]
+            },
+            **::Component::METRICS.keys.to_h { |metric|
+              [:"#{metric}Lteq", {type: :number}]
+            },
+
             s: {type: :string, enum: ::Component::ALLOWED_SORTING_PARAMS},
             sorts: {type: :array, items: {type: :string, enum: ::Component::ALLOWED_SORTING_PARAMS}}
           },

@@ -28,12 +28,15 @@ Review feedback on both open PRs has been addressed: `hardpoints` is back in the
 (D3), the plan's D3 section now matches what shipped, and the powered-item block renders
 `powerRanges`.
 
-**One enhancement deliberately not taken:** the metric ransackers make `maxHealthGteq` and
-friends work at the model level, but the public query schema does not offer them, so a client
-asking gets a 400 naming what it accepts. The ransackers exist for *sorting* — ransack will not
-order by an attribute it does not know. Exposing the filter predicates is a natural next step
-and wants its own decision about which of the eight metrics get `_gteq`/`_lteq`, plus schema,
-permit list and tests.
+**Metric filters shipped.** Each of the eight metrics now takes a `Gteq` and an `Lteq` in the
+public query, so "shields over 10,000 HP" is a filter rather than something a client pages
+through and sifts itself — 31 of the 73 shields, against 43 in the 1,000–10,000 band. The
+ransackers behind them already existed (they are what make the metric sorts work), so this was
+the schema and the permit list catching up; the predicates, the sorts and the ransackers are
+all generated from one map, `Component::METRICS`, so they cannot drift apart.
+
+A component whose `type_data` lacks the key is absent from a filtered result rather than
+sorted to one end — the cast is over a key it does not carry.
 
 **Picking this back up:** #5003 and #5006 are stacked, so rebase the leaf last, and expect a
 cascade of force-pushes per merge. Both will have drifted from `main`; re-run
@@ -110,12 +113,12 @@ them.
 
 1,152 of the 1,282 (90%) carry a manufacturer. All 1,282 carry an `sc_key`.
 
-**Known residual, not resolved here:** 112 of the 124 `turret` rows are per-ship "Manned
-Turret" entries — the same pattern as the three excluded categories, one layer down. They are
-left in because the category also holds real, mountable turrets, so excluding it wholesale
-would lose them. Whether the predicate grows a fourth exclusion or a narrower per-row rule is
-a call to make when the list is on screen and the noise is visible; it moves a constant, not
-the architecture.
+**The 112 "Manned Turret" rows stay.** They are per-ship entries — the same pattern as the
+three excluded categories, one layer down — but the `turret` category also holds real,
+mountable turrets, so excluding it wholesale would lose them, and no per-row rule separates
+them cleanly. **Decided: keep them.** They are genuinely mounted on a ship, a hardpoint link
+reaches them, and a page that exists is better than a link that 404s. Worth revisiting only if
+the list reads as noisy once it is on screen; it moves a constant, not the architecture.
 
 ### D2 — A real unique slug, with a migration
 

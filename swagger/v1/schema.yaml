@@ -16763,6 +16763,38 @@ components:
           type: boolean
         hiddenEq:
           type: boolean
+        maxHealthGteq:
+          type: number
+        maxRegenGteq:
+          type: number
+        jumpRangeGteq:
+          type: number
+        driveSpeedGteq:
+          type: number
+        coolingRateGteq:
+          type: number
+        powerBaseGteq:
+          type: number
+        healthGteq:
+          type: number
+        thrustCapacityGteq:
+          type: number
+        maxHealthLteq:
+          type: number
+        maxRegenLteq:
+          type: number
+        jumpRangeLteq:
+          type: number
+        driveSpeedLteq:
+          type: number
+        coolingRateLteq:
+          type: number
+        powerBaseLteq:
+          type: number
+        healthLteq:
+          type: number
+        thrustCapacityLteq:
+          type: number
         s:
           type: string
           enum:

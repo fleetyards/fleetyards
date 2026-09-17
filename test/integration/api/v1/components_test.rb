@@ -194,4 +194,40 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert parsed_body["items"].first.key?("hardpoints")
     end
   end
+  # The ransackers behind these already existed -- they are what make the metric
+  # sorts work -- but the schema refused the predicate with a 400, so the model
+  # could filter on a figure and the API could not.
+  test "GET /components filters on a metric range" do
+    create(:component, name: "Weak Shield", type_data: {"max_health" => 100})
+    create(:component, name: "Strong Shield", type_data: {"max_health" => 9000})
+
+    assert_api_response :get, 200, params: {q: {"maxHealthGteq" => 1000, "nameCont" => "Shield"}} do
+      assert_equal ["Strong Shield"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /components filters on both ends of a metric range" do
+    create(:component, name: "Small Cooler", type_data: {"cooling_rate" => 10})
+    create(:component, name: "Mid Cooler", type_data: {"cooling_rate" => 50})
+    create(:component, name: "Big Cooler", type_data: {"cooling_rate" => 500})
+
+    assert_api_response :get, 200, params: {
+      q: {"coolingRateGteq" => 20, "coolingRateLteq" => 100, "nameCont" => "Cooler"}
+    } do
+      assert_equal ["Mid Cooler"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  # A component that carries no such figure is absent rather than sorted to one
+  # end: the cast is over a key its `type_data` does not have.
+  test "GET /components leaves out a component the metric does not apply to" do
+    create(:component, name: "Has The Metric", type_data: {"max_health" => 5000})
+    create(:component, name: "Different Category", type_data: {"cooling_rate" => 50})
+
+    assert_api_response :get, 200, params: {q: {"maxHealthGteq" => 1}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, "Has The Metric"
+      assert_not_includes names, "Different Category"
+    end
+  end
 end
