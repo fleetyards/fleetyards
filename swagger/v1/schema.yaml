@@ -160,6 +160,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Component"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:

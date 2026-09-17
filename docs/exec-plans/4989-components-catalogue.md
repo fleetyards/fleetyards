@@ -344,8 +344,12 @@ catalogue.
 
 ### D11 — Behind a `components` feature flag
 
-A `components` entry in `config/feature_flags.yml` with a description, matching #4988's D9,
-read at both the nav entry and the routes. Flags are declared in the registry only — no
+A `components` entry in `config/feature_flags.yml` with a description, matching #4988's D9.
+
+**Only the catalogue's own surface is gated.** `show` checks the flag and answers 403 while it
+is off; `index` and `weapons` do not, because both answered long before the flag existed and
+taking them away from clients is not what a rollout gate is for. The nav entry and the pages
+read it too when Phase 4 builds them. Flags are declared in the registry only — no
 `Flipper.add` or `FeatureSetting` data migration, which the next sync would prune.
 
 Expect it to redden every descendant of a stack until each is regenerated; that is the known
