@@ -3,7 +3,6 @@ de:
   discord:
     commands:
       account_not_linked: 'Verknüpfe zuerst deinen Discord-Account auf Fleetyards: %{url}'
-      disabled: Fleetyards-Befehle sind noch nicht verfügbar.
       failed: Beim Abrufen ist etwas schiefgelaufen. Bitte versuche es erneut.
       compare:
         missing_query: Bitte nenne zwei Schiffe.

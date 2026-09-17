@@ -12,8 +12,6 @@ module Discord
       include FleetContext
 
       def call
-        return message(content: I18n.t("discord.commands.disabled")) unless Flipper.enabled?(:discord_fleet_commands)
-
         fleet = guild_fleet
         return message(content: I18n.t("discord.commands.fleet.not_bound")) if fleet.nil?
 

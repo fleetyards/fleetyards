@@ -3,7 +3,6 @@ zh-TW:
   discord:
     commands:
       account_not_linked: '請先在 Fleetyards 上連結你的 Discord 帳號：%{url}'
-      disabled: Fleetyards 指令尚未開放。
       failed: 查詢時發生錯誤，請重試。
       compare:
         missing_query: 請提供兩艘船艦。

@@ -85,136 +85,113 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  class WithCommandsEnabled < DiscordInteractionsTest
-    setup { Flipper.enable(:discord_commands) }
+  test "acknowledges a command with a deferred response" do
+    post_signed(command_payload)
 
-    test "acknowledges a command with a deferred response" do
-      post_signed(command_payload)
+    assert_response :success
+    assert_equal 5, response.parsed_body["type"]
+  end
 
-      assert_response :success
-      assert_equal 5, response.parsed_body["type"]
-    end
+  # The acknowledgement is the only place Discord reads visibility: it fixes
+  # it there and ignores flags on the follow-up. A command that answers in
+  # the channel must therefore acknowledge without the ephemeral flag.
+  test "a public command is acknowledged without the ephemeral flag" do
+    post_signed(command_payload)
 
-    # The acknowledgement is the only place Discord reads visibility: it fixes
-    # it there and ignores flags on the follow-up. A command that answers in
-    # the channel must therefore acknowledge without the ephemeral flag.
-    test "a public command is acknowledged without the ephemeral flag" do
-      post_signed(command_payload)
+    assert_nil response.parsed_body.dig("data", "flags")
+  end
 
-      assert_nil response.parsed_body.dig("data", "flags")
-    end
+  test "an unknown command is acknowledged privately" do
+    post_signed(command_payload(name: "definitely-not-a-command"))
 
-    test "an unknown command is acknowledged privately" do
-      post_signed(command_payload(name: "definitely-not-a-command"))
+    assert_equal 64, response.parsed_body.dig("data", "flags")
+  end
 
-      assert_equal 64, response.parsed_body.dig("data", "flags")
-    end
+  test "every registered command is acknowledged the way the registry declares" do
+    Discord::Commands::Registry::DEFINITIONS.each do |definition|
+      children = Discord::Commands::Registry.subcommands(definition)
 
-    test "every registered command is acknowledged the way the registry declares" do
-      Discord::Commands::Registry::DEFINITIONS.each do |definition|
-        children = Discord::Commands::Registry.subcommands(definition)
+      calls =
+        if children.empty?
+          [[command_payload(name: definition[:name]), nil]]
+        else
+          children.map { |child| [subcommand_payload(name: definition[:name], subcommand: child[:name]), child[:name]] }
+        end
 
-        calls =
-          if children.empty?
-            [[command_payload(name: definition[:name]), nil]]
-          else
-            children.map { |child| [subcommand_payload(name: definition[:name], subcommand: child[:name]), child[:name]] }
-          end
+      calls.each do |payload, subcommand|
+        post_signed(payload)
 
-        calls.each do |payload, subcommand|
-          post_signed(payload)
+        label = "/#{[definition[:name], subcommand].compact.join(" ")}"
+        flags = response.parsed_body.dig("data", "flags")
 
-          label = "/#{[definition[:name], subcommand].compact.join(" ")}"
-          flags = response.parsed_body.dig("data", "flags")
-
-          if Discord::Commands::Registry.ephemeral?(definition[:name], subcommand)
-            assert_equal 64, flags, "#{label} should answer privately"
-          else
-            assert_nil flags, "#{label} should answer in the channel"
-          end
+        if Discord::Commands::Registry.ephemeral?(definition[:name], subcommand)
+          assert_equal 64, flags, "#{label} should answer privately"
+        else
+          assert_nil flags, "#{label} should answer in the channel"
         end
       end
     end
-
-    test "enqueues a subcommand with the arguments nested under it" do
-      post_signed(
-        subcommand_payload(options: [{"name" => "limit", "value" => 5}])
-      )
-
-      context = Discord::CommandJob.jobs.first["args"].first
-
-      assert_equal "fleet", context["command"]
-      assert_equal "info", context["subcommand"]
-      assert_equal({"limit" => 5}, context["options"])
-    end
-
-    # A flat read of the top-level options would find the subcommand itself,
-    # which carries no value, and drop every argument the caller typed.
-    test "a subcommand does not leak into the options hash" do
-      post_signed(subcommand_payload)
-
-      context = Discord::CommandJob.jobs.first["args"].first
-
-      assert_equal({}, context["options"])
-    end
-
-    # Discord will not invoke a command that has subcommands, but the endpoint is
-    # public: a hand-rolled bare call must not dispatch to the parent.
-    test "a bare call to a command with subcommands is acknowledged privately" do
-      post_signed(command_payload(name: "fleet", options: []))
-
-      assert_equal 64, response.parsed_body.dig("data", "flags")
-      assert_nil Discord::CommandJob.jobs.first["args"].first["subcommand"]
-    end
-
-    test "enqueues the command with everything the job needs" do
-      post_signed(command_payload)
-
-      assert_equal 1, Discord::CommandJob.jobs.size
-
-      context = Discord::CommandJob.jobs.first["args"].first
-
-      assert_equal "ship", context["command"]
-      assert_equal({"name" => "Carrack"}, context["options"])
-      assert_equal "interaction-token", context["token"]
-      assert_equal "488788875699945472", context["application_id"]
-      assert_equal "123456789", context["guild_id"]
-      assert_equal "42", context["discord_user_id"]
-      assert_equal "de", context["locale"]
-      assert context["requested_at"].present?
-    end
-
-    test "an unknown command name is still acknowledged rather than dropped" do
-      post_signed(command_payload(name: "nope"))
-
-      assert_response :success
-      assert_equal 5, response.parsed_body["type"]
-    end
-
-    test "an unknown interaction type is answered without content" do
-      post_signed({type: 99})
-
-      assert_response :no_content
-      assert_equal 0, Discord::CommandJob.jobs.size
-    end
   end
 
-  class WithCommandsDisabled < DiscordInteractionsTest
-    setup { Flipper.disable(:discord_commands) }
+  test "enqueues a subcommand with the arguments nested under it" do
+    post_signed(
+      subcommand_payload(options: [{"name" => "limit", "value" => 5}])
+    )
 
-    test "answers a command with a message instead of running it" do
-      post_signed(command_payload)
+    context = Discord::CommandJob.jobs.first["args"].first
 
-      assert_response :success
-      assert_equal 4, response.parsed_body["type"]
-      assert_equal 0, Discord::CommandJob.jobs.size
-    end
+    assert_equal "fleet", context["command"]
+    assert_equal "info", context["subcommand"]
+    assert_equal({"limit" => 5}, context["options"])
+  end
 
-    test "still answers a ping so the endpoint URL can be saved" do
-      post_signed({type: 1})
+  # A flat read of the top-level options would find the subcommand itself,
+  # which carries no value, and drop every argument the caller typed.
+  test "a subcommand does not leak into the options hash" do
+    post_signed(subcommand_payload)
 
-      assert_response :success
-      assert_equal 1, response.parsed_body["type"]
-    end
+    context = Discord::CommandJob.jobs.first["args"].first
+
+    assert_equal({}, context["options"])
+  end
+
+  # Discord will not invoke a command that has subcommands, but the endpoint is
+  # public: a hand-rolled bare call must not dispatch to the parent.
+  test "a bare call to a command with subcommands is acknowledged privately" do
+    post_signed(command_payload(name: "fleet", options: []))
+
+    assert_equal 64, response.parsed_body.dig("data", "flags")
+    assert_nil Discord::CommandJob.jobs.first["args"].first["subcommand"]
+  end
+
+  test "enqueues the command with everything the job needs" do
+    post_signed(command_payload)
+
+    assert_equal 1, Discord::CommandJob.jobs.size
+
+    context = Discord::CommandJob.jobs.first["args"].first
+
+    assert_equal "ship", context["command"]
+    assert_equal({"name" => "Carrack"}, context["options"])
+    assert_equal "interaction-token", context["token"]
+    assert_equal "488788875699945472", context["application_id"]
+    assert_equal "123456789", context["guild_id"]
+    assert_equal "42", context["discord_user_id"]
+    assert_equal "de", context["locale"]
+    assert context["requested_at"].present?
+  end
+
+  test "an unknown command name is still acknowledged rather than dropped" do
+    post_signed(command_payload(name: "nope"))
+
+    assert_response :success
+    assert_equal 5, response.parsed_body["type"]
+  end
+
+  test "an unknown interaction type is answered without content" do
+    post_signed({type: 99})
+
+    assert_response :no_content
+    assert_equal 0, Discord::CommandJob.jobs.size
   end
 end

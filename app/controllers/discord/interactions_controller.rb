@@ -17,19 +17,14 @@ module Discord
 
     # Interaction response types.
     PONG = 1
-    MESSAGE = 4
     DEFERRED_MESSAGE = 5
 
     def create
       return head :unauthorized unless verified?
 
       case payload["type"]
-      # PING answers regardless of the feature flag: saving the endpoint URL in
-      # the Discord portal is what triggers it, and that has to be possible
-      # before the commands are switched on.
       when PING then render json: {type: PONG}
-      when APPLICATION_COMMAND
-        Flipper.enabled?(:discord_commands) ? acknowledge_command : refuse_command
+      when APPLICATION_COMMAND then acknowledge_command
       else head :no_content
       end
     end
@@ -65,16 +60,6 @@ module Discord
 
     private def ephemeral_command?
       Discord::Commands::Registry.ephemeral?(command_data["name"], invoked_subcommand&.dig("name"))
-    end
-
-    private def refuse_command
-      render json: {
-        type: MESSAGE,
-        data: {
-          content: I18n.t("discord.commands.disabled"),
-          flags: Discord::Commands::Base::EPHEMERAL
-        }
-      }
     end
 
     # String keys throughout: Sidekiq serialises arguments to JSON and rejects

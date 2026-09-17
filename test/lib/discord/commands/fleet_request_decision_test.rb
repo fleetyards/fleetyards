@@ -8,8 +8,6 @@ module Discord
   module Commands
     class FleetRequestDecisionTest < ActiveSupport::TestCase
       setup do
-        Flipper.enable(:discord_fleet_commands)
-
         @fleet = create(:fleet, :private, name: "Test Wing")
         @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
 
@@ -149,13 +147,6 @@ module Discord
       test "an unlinked Discord account is told where to link it" do
         assert_includes call(::Discord::Commands::FleetAccept, discord_user_id: "stranger-uid")[:content],
           I18n.t("discord.commands.account_not_linked", url: "https://#{Rails.configuration.app.domain}/settings/connections")
-        assert_equal "requested", @request.reload.aasm_state
-      end
-
-      test "the command is refused while the flag is off" do
-        Flipper.disable(:discord_fleet_commands)
-
-        assert_equal I18n.t("discord.commands.disabled"), call(::Discord::Commands::FleetAccept)[:content]
         assert_equal "requested", @request.reload.aasm_state
       end
 
