@@ -1,167 +1,14 @@
-DELETE /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
-DELETE /components/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-DELETE /components/{id} the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-DELETE /components/{id} the `inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-DELETE /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-DELETE /features/{id} api removed without deprecation
-DELETE /model-hardpoint-loadouts/{id} api path removed without deprecation
-DELETE /model-hardpoints/{id} api path removed without deprecation
-DELETE /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
-DELETE /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
-DELETE /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
-DELETE /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
-DELETE /supporter-contributions/{id} the response property `source` became nullable for the status `200`
-DELETE /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-DELETE /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-DELETE /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
-DELETE /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
-DELETE /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
-DELETE /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-DELETE /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-DELETE /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
-GET /admin_users added the new `announcements` enum value to the `items/items/resourceAccess/items/` response property for the response status `200`
-GET /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
-GET /admin_users/me added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
-GET /components the `items/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /components the `items/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /components the `items/items/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /components the response property `items/items/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /components/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /components/{id} the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /components/{id} the `inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /features removed the required property `items/selfService` from the response with the `200` status
-GET /features/{id} removed the required property `selfService` from the response with the `200` status
-GET /hardpoints the `items/items/component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints the `items/items/component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints the `items/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints the `items/items/hardpoints/items/component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints the `items/items/hardpoints/items/component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints the `items/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints/{id} the `component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints/{id} the `component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints/{id} the `component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints/{id} the `hardpoints/items/component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints/{id} the `hardpoints/items/component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /hardpoints/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /images the 'items/items/size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
-GET /imports the `items/items/input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /imports the `items/items/output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /imports/{id} the `input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /imports/{id} the `output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
-GET /model-hardpoint-loadouts api path removed without deprecation
-GET /model-hardpoint-loadouts the response property `items/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-hardpoint-loadouts/{id} api path removed without deprecation
-GET /model-hardpoint-loadouts/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-hardpoints api path removed without deprecation
-GET /model-hardpoints the response property `items/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-hardpoints the response property `items/items/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-hardpoints/{id} api path removed without deprecation
-GET /model-hardpoints/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-hardpoints/{id} the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-module-packages the `items/items/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-module-packages the `items/items/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-module-packages the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
-GET /model-module-packages the response property `items/items/modules/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-module-packages the response property `items/items/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-module-packages the response property `items/items/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-module-packages/{id} the `modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-module-packages/{id} the `modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-module-packages/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
-GET /model-module-packages/{id} the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-module-packages/{id} the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-module-packages/{id} the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-modules the `items/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-modules the `items/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-modules the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-modules the response property `items/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-modules the response property `items/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-modules/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-modules/{id} the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /model-modules/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
-GET /model-modules/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /model-modules/{id} the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
-GET /model-paints the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
-GET /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
-GET /models the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
-GET /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
-GET /notifications added the new `inventory_transfer_reports` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /resource-access-catalog added the new `announcements` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /supporter-contributions added the new `kofi` enum value to the `items/items/source` response property for the response status `200`
-GET /supporter-contributions added the new `undefined` enum value to the `items/items/source` response property for the response status `200`
-GET /supporter-contributions removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
-GET /supporter-contributions the response property `items/items/source` became nullable for the status `200`
-GET /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
-GET /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
-GET /supporter-contributions/{id} the response property `source` became nullable for the status `200`
-GET /supporter-contributions/per-month removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
-GET /supporter-contributions/stats removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
-GET /vehicles the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /vehicles the `items/items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /vehicles the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles the response property `items/items/modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /vehicles the response property `items/items/modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles the response property `items/items/paint/model/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-GET /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-GET /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
-GET /versions added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
-GET /versions/recent added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
-POST /admin_users added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
-POST /admin_users removed the enum value `model_hardpoints` of the request property `resourceAccess/items/`
-POST /admin_users request property `resourceAccess/items/` was restricted to a list of enum values
-POST /components the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-POST /components the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-POST /components the `inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-POST /components the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-POST /features api removed without deprecation
-POST /hardpoints the `component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /hardpoints the `component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /hardpoints the `component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /hardpoints the `hardpoints/items/component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /hardpoints the `hardpoints/items/component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /hardpoints the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /images the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
-POST /model-hardpoint-loadouts api path removed without deprecation
-POST /model-hardpoint-loadouts the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
-POST /model-hardpoints api path removed without deprecation
-POST /model-hardpoints the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
-POST /model-hardpoints the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
-POST /model-module-packages the `modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-POST /model-module-packages the `modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-POST /model-module-packages the response property `model/cargoHolds/items/name` became nullable for the status `200`
-POST /model-module-packages the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
-POST /model-module-packages the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-POST /model-module-packages the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-POST /model-modules the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /model-modules the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
-POST /model-modules the response property `cargoHolds/items/name` became nullable for the status `201`
-POST /model-modules the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
-POST /model-modules the response property `models/items/cargoHolds/items/name` became nullable for the status `201`
-POST /model-paints the response property `model/cargoHolds/items/name` became nullable for the status `200`
 POST /models the request property 'manufacturerId' became required
 POST /models the request property 'name' became required
-POST /models the response property `cargoHolds/items/name` became nullable for the status `200`
-POST /sessions added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
-POST /supporter-contributions added the new `kofi` enum value to the `source` response property for the response status `200`
-POST /supporter-contributions added the new `undefined` enum value to the `source` response property for the response status `200`
+GET /images the 'items/items/size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
+POST /images the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
+PUT /images/{id} the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
+POST /features api removed without deprecation
+DELETE /features/{id} api removed without deprecation
 POST /supporter-contributions removed the required property `details` from the response with the `400` status
 POST /supporter-contributions removed the required property `error` from the response with the `400` status
-POST /supporter-contributions the response property `source` became nullable for the status `200`
-PUT /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
-PUT /admin_users/{id} removed the enum value `model_hardpoints` of the request property `resourceAccess/items/`
-PUT /admin_users/{id} request property `resourceAccess/items/` was restricted to a list of enum values
-PUT /components/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /components/{id} the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /components/{id} the `inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /features removed the required property `items/selfService` from the response with the `200` status
+GET /features/{id} removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/disable removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/disable-actor removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/disable-group removed the required property `selfService` from the response with the `200` status
@@ -171,54 +18,149 @@ PUT /features/{id}/enable-group removed the required property `selfService` from
 PUT /features/{id}/enable-percentage-of-actors removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/enable-percentage-of-time removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/toggle-self-service api path removed without deprecation
-PUT /hardpoints/{id} the `component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /hardpoints/{id} the `component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /hardpoints/{id} the `component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /hardpoints/{id} the `hardpoints/items/component/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /hardpoints/{id} the `hardpoints/items/component/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /hardpoints/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /images/{id} the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
-PUT /model-hardpoint-loadouts/{id} api path removed without deprecation
+POST /admin_users request property `resourceAccess/items/` was restricted to a list of enum values
+PUT /admin_users/{id} request property `resourceAccess/items/` was restricted to a list of enum values
+GET /imports the `items/items/input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /imports the `items/items/output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /imports/{id} the `input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /imports/{id} the `output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /components the response property `items/items/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /components the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+DELETE /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoint-loadouts the response property `items/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /model-hardpoint-loadouts the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+GET /model-hardpoint-loadouts/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-hardpoint-loadouts/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-PUT /model-hardpoints/{id} api path removed without deprecation
+GET /model-hardpoints the response property `items/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoints the response property `items/items/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /model-hardpoints the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /model-hardpoints the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+GET /model-hardpoints/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoints/{id} the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-hardpoints/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-hardpoints/{id} the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-PUT /model-module-packages/{id} the `modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /model-module-packages/{id} the `modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /model-module-packages the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+POST /model-module-packages the response property `model/cargoHolds/items/name` became nullable for the status `200`
+POST /model-module-packages the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
+POST /model-module-packages the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /model-module-packages the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /model-module-packages/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
 PUT /model-module-packages/{id} the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /model-module-packages/{id} the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-module-packages/{id} the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
-PUT /model-modules/{id} the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /model-modules/{id} the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /model-modules the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-modules the response property `items/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-modules the response property `items/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+POST /model-modules the response property `cargoHolds/items/name` became nullable for the status `201`
+POST /model-modules the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /model-modules the response property `models/items/cargoHolds/items/name` became nullable for the status `201`
+GET /model-modules/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+GET /model-modules/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-modules/{id} the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /model-modules/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
 PUT /model-modules/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-modules/{id} the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
-PUT /model-modules/{id}/link the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /model-modules/{id}/link the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 PUT /model-modules/{id}/link the response property `cargoHolds/items/name` became nullable for the status `200`
 PUT /model-modules/{id}/link the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-modules/{id}/link the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
-PUT /model-modules/{id}/unlink the `hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /model-modules/{id}/unlink the `hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 PUT /model-modules/{id}/unlink the response property `cargoHolds/items/name` became nullable for the status `200`
 PUT /model-modules/{id}/unlink the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /model-modules/{id}/unlink the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-paints the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+POST /model-paints the response property `model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
 PUT /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /models the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+POST /models the response property `cargoHolds/items/name` became nullable for the status `200`
+DELETE /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+GET /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
 PUT /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
 PUT /models/{id}/use-rsi-image the response property `cargoHolds/items/name` became nullable for the status `200`
-PUT /notifications/{id}/archive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/unarchive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/unread added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
-PUT /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
-PUT /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
-PUT /supporter-contributions/{id} the response property `source` became nullable for the status `200`
-PUT /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
-PUT /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /vehicles the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/paint/model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
+POST /admin_users removed the enum value `model_hardpoints` of the request property `resourceAccess/items/`
+PUT /admin_users/{id} removed the enum value `model_hardpoints` of the request property `resourceAccess/items/`
+GET /model-hardpoint-loadouts api path removed without deprecation
+POST /model-hardpoint-loadouts api path removed without deprecation
+DELETE /model-hardpoint-loadouts/{id} api path removed without deprecation
+GET /model-hardpoint-loadouts/{id} api path removed without deprecation
+PUT /model-hardpoint-loadouts/{id} api path removed without deprecation
+GET /model-hardpoints api path removed without deprecation
+POST /model-hardpoints api path removed without deprecation
+DELETE /model-hardpoints/{id} api path removed without deprecation
+GET /model-hardpoints/{id} api path removed without deprecation
+PUT /model-hardpoints/{id} api path removed without deprecation
+GET /notifications added the new `inventory_transfer_reports` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+GET /versions added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
+GET /versions/recent added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
+GET /supporter-contributions added the new `kofi` enum value to the `items/items/source` response property for the response status `200`
+POST /supporter-contributions added the new `kofi` enum value to the `source` response property for the response status `200`
+DELETE /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
+GET /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
+PUT /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
+GET /supporter-contributions removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
+GET /supporter-contributions/per-month removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
+GET /supporter-contributions/stats removed the enum value `manual` from the property `sourceEq` of the `query` request parameter `q`
+GET /admin_users added the new `announcements` enum value to the `items/items/resourceAccess/items/` response property for the response status `200`
+POST /admin_users added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/me added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+DELETE /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+PUT /admin_users/{id} added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /resource-access-catalog added the new `announcements` enum value to the `items/privileges/items/` response property for the response status `200`
+POST /sessions added the new `announcements` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /supporter-contributions the response property `items/items/source` became nullable for the status `200`
+POST /supporter-contributions the response property `source` became nullable for the status `200`
+DELETE /supporter-contributions/{id} the response property `source` became nullable for the status `200`
+GET /supporter-contributions/{id} the response property `source` became nullable for the status `200`
+PUT /supporter-contributions/{id} the response property `source` became nullable for the status `200`
+GET /supporter-contributions added the new `undefined` enum value to the `items/items/source` response property for the response status `200`
+POST /supporter-contributions added the new `undefined` enum value to the `source` response property for the response status `200`
+DELETE /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
+GET /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
+PUT /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
+GET /components the `items/items/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+POST /components the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+DELETE /components/{id} the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /components/{id} the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+PUT /components/{id} the `inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /hardpoints the `items/items/component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+POST /hardpoints the `component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `201`
+GET /hardpoints/{id} the `component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+PUT /hardpoints/{id} the `component/inventoryConsumption` response's property type/format changed from `string`/`` to `object`/`` for status `200`
