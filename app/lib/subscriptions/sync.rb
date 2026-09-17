@@ -55,6 +55,7 @@ module Subscriptions
           granted_via: "contribution",
           supporter_contribution_id: contribution.id
         )
+        Notifier.started(subscription)
         opened << subscription
       rescue ActiveRecord::RecordNotUnique
         # Another run, or another request, opened one between the read and the
@@ -77,6 +78,8 @@ module Subscriptions
         next if entitled_fleet_ids.key?(fleet_id)
 
         subscription.update!(ended_at: @date)
+
+        Notifier.ended(subscription)
         closed << subscription
       end
 

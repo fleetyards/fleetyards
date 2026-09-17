@@ -10,6 +10,14 @@ module Subscriptions
       @fleet = @membership.fleet
     end
 
+    # `ranked.first` is the admin role, which is how the fleet factory makes one.
+    private def admin_of(fleet)
+      user = create(:user)
+      create(:fleet_membership, fleet:, user:, aasm_state: :accepted,
+        fleet_role: fleet.fleet_roles.ranked.first)
+      user
+    end
+
     private def nominated(amount_cents: Subscriptions.qualifying_amount_cents, fleet: @fleet, **attrs)
       create(:supporter_contribution, user: @supporter, fleet:, amount_cents:, **attrs)
     end
@@ -214,6 +222,39 @@ module Subscriptions
 
       assert_equal 1, first[:opened].size
       assert_empty second[:opened], "the second run saw the first's write"
+    end
+
+    # D14: the fleet is told before anybody meets a refusal, which means the
+    # notification is sent where the subscription is written.
+    test "opening a subscription tells the fleet's admins" do
+      admin = admin_of(@fleet)
+      nominated
+
+      Sync.call
+
+      assert Notification.exists?(user: admin, notification_type: "fleet_subscription_started")
+    end
+
+    test "closing one tells them too" do
+      admin_of(@fleet)
+      contribution = nominated
+      Sync.call
+      Notification.delete_all
+
+      contribution.update!(fleet: nil)
+      Sync.call
+
+      assert Notification.exists?(notification_type: "fleet_subscription_ended")
+    end
+
+    test "a run that changes nothing tells nobody" do
+      nominated
+      Sync.call
+      Notification.delete_all
+
+      Sync.call
+
+      assert_empty Notification.all, "a no-op sync must not re-announce anything"
     end
   end
 end

@@ -360,4 +360,57 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
     assert_equal "destroy", version.event
     assert_equal @user.id, version.author_id
   end
+
+  # The admin surface writes subscriptions too, so it has to tell the fleet for
+  # the same reason the reconciler does.
+  test "POST tells the fleet's admins it now has the features" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: COLLECTION_PATH,
+      body: {fleetId: fleet.id, startedAt: Date.current.iso8601}
+
+    assert Notification.exists?(user: fleet_admin, notification_type: "fleet_subscription_started")
+  end
+
+  test "PUT that closes one tells them it lapsed" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    subscription = create(:fleet_subscription, fleet:, started_at: Date.current - 10)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: MEMBER_PATH, path_params: {id: subscription.id},
+      body: {endedAt: Date.current.iso8601}
+
+    assert Notification.exists?(user: fleet_admin, notification_type: "fleet_subscription_ended")
+  end
+
+  # Only the transition. A fleet told twice that it lapsed learns to ignore the
+  # message.
+  test "editing a closed subscription announces nothing" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    subscription = create(:fleet_subscription, fleet:, started_at: Date.current - 10,
+      ended_at: Date.current - 1)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: MEMBER_PATH, path_params: {id: subscription.id},
+      body: {note: "corrected"}
+
+    assert_empty Notification.where(notification_type: "fleet_subscription_ended")
+  end
+
+  test "reopening a closed subscription announces that it started" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    subscription = create(:fleet_subscription, fleet:, started_at: Date.current - 10,
+      ended_at: Date.current - 1)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: MEMBER_PATH, path_params: {id: subscription.id},
+      body: {endedAt: nil}
+
+    assert Notification.exists?(user: fleet_admin, notification_type: "fleet_subscription_started")
+  end
 end

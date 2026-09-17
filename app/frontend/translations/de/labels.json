@@ -2215,6 +2215,8 @@
         "fleet_contract_claimed": "Auftrag übernommen",
         "fleet_contract_crew_requested": "Crew möchte einem Auftrag beitreten",
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
+        "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
+        "fleet_subscription_ended": "Flotten-Funktionen verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt"
       },
       "fleets": {

@@ -52,7 +52,11 @@ module Admin
 
           authorize! @fleet_subscription, with: ::Admin::FleetSubscriptionPolicy
 
-          return render :show, status: :created if @fleet_subscription.save
+          if @fleet_subscription.save
+            ::Subscriptions::Notifier.started(@fleet_subscription)
+
+            return render :show, status: :created
+          end
 
           render json: ValidationError.new("fleet_subscription.create",
             errors: @fleet_subscription.errors), status: :bad_request
@@ -62,7 +66,15 @@ module Admin
         # action for it: the history is the row, and a revocation is a date on
         # it rather than an event beside it.
         def update
+          was_open = @fleet_subscription.open?
+
           if @fleet_subscription.update(update_params.merge(author_id: current_user.id))
+            # Only the transition, not every edit: correcting a note on an
+            # already-closed subscription is not news, and a fleet told twice
+            # that it lapsed learns to ignore the message.
+            ::Subscriptions::Notifier.ended(@fleet_subscription) if was_open && !@fleet_subscription.open?
+            ::Subscriptions::Notifier.started(@fleet_subscription) if !was_open && @fleet_subscription.open?
+
             return render :show
           end
 
