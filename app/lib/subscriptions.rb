@@ -17,34 +17,52 @@ module Subscriptions
   # separately (D1).
   PREMIUM_FEATURES = %i[contracts events logistics tours].freeze
 
-  # The figure, in EUR cents, compared against `amount_cents` -- which
-  # `SupporterImporter#apply_amount` and `Kofi::PaymentImporter#apply_amount`
-  # have both already normalised through ExchangeRateFetcher. One currency, one
-  # comparison, no conversion at read time.
+  # The figure, in the currency the supporter pledged in.
   #
-  # Set below EUR 5 on purpose. Every standing pledge on the platform is $5,
-  # which converts to about EUR 4.36, and refusing the only people currently
-  # paying is the outcome D16 exists to prevent. EUR 4 clears that with room for
-  # the rate to move against us by roughly 8% before it bites again.
+  # Five of your own currency, which is how Patreon and Ko-fi price a tier in
+  # the first place. A single EUR figure cannot express that: Patreon bills in
+  # USD, so a $5 pledge lands as whatever the rate made of it that day, and
+  # comparing that to a EUR bar gives different answers to identical pledges
+  # depending on when each one was first imported.
   #
-  # This is the one number that decides who qualifies, so it is meant to be
-  # argued about rather than inherited.
-  QUALIFYING_AMOUNT_CENTS = 400
+  # That is not hypothetical. `Patreon::SupporterImporter#apply_amount` skips
+  # reconversion while the pledge amount is unchanged, so an existing patron's
+  # EUR figure is frozen at the day-one rate, while a new patron pledging the
+  # same $5 is converted at today's. One EUR threshold would eventually pass the
+  # first and refuse the second. Ko-fi reconverts on every payment, so a monthly
+  # subscriber could qualify one month and not the next.
+  QUALIFYING_AMOUNTS = {
+    "EUR" => 500,
+    "USD" => 500,
+    "GBP" => 500,
+    "CAD" => 700,
+    "AUD" => 800
+  }.freeze
 
-  def self.qualifying_amount_cents
-    QUALIFYING_AMOUNT_CENTS
+  # For a currency nobody has priced: convert and compare in EUR. Deliberately
+  # not "500 of anything" -- minor units are not comparable, and 500 HUF is
+  # about EUR 1.25.
+  FALLBACK_CURRENCY = "EUR"
+
+  def self.qualifying_amount_cents(currency = FALLBACK_CURRENCY)
+    QUALIFYING_AMOUNTS.fetch(currency.to_s.upcase, QUALIFYING_AMOUNTS.fetch(FALLBACK_CURRENCY))
   end
 
   # Whether this contribution, on its own, is enough to open a subscription.
   # Whether it is active, and which fleet it names, are the reconciler's
   # questions rather than this one's.
   #
-  # Only the normalised figure is compared. An earlier version also accepted
-  # `source_amount_cents` against the same number, to let a $5 pledge through --
-  # but minor units are not comparable across currencies, so 500 HUF (about
-  # EUR 1.25) qualified too. The pledge problem is a question about the figure,
-  # not about which currency to measure it in.
+  # Judged in the currency it was pledged in when that currency has a figure,
+  # so the same pledge always gives the same answer however the rate moved
+  # since. Anything else falls back to the normalised EUR amount, which is what
+  # keeps an unpriced currency from qualifying on its minor units alone.
   def self.qualifying?(contribution)
-    contribution.amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
+    currency = contribution.source_currency.to_s.upcase
+
+    if QUALIFYING_AMOUNTS.key?(currency)
+      contribution.source_amount_cents.to_i >= QUALIFYING_AMOUNTS.fetch(currency)
+    else
+      contribution.amount_cents.to_i >= qualifying_amount_cents
+    end
   end
 end

@@ -10,7 +10,7 @@ module Subscriptions
       @fleet = @membership.fleet
     end
 
-    private def nominated(amount_cents: Subscriptions::QUALIFYING_AMOUNT_CENTS, fleet: @fleet, **attrs)
+    private def nominated(amount_cents: Subscriptions.qualifying_amount_cents, fleet: @fleet, **attrs)
       create(:supporter_contribution, user: @supporter, fleet:, amount_cents:, **attrs)
     end
 
@@ -29,7 +29,7 @@ module Subscriptions
     end
 
     test "a contribution below the figure opens nothing" do
-      nominated(amount_cents: Subscriptions::QUALIFYING_AMOUNT_CENTS - 1)
+      nominated(amount_cents: Subscriptions.qualifying_amount_cents - 1)
 
       Sync.call
 
@@ -38,7 +38,7 @@ module Subscriptions
 
     test "an un-nominated contribution opens nothing however much it is for" do
       create(:supporter_contribution, user: @supporter, fleet: nil,
-        amount_cents: Subscriptions::QUALIFYING_AMOUNT_CENTS * 100)
+        amount_cents: Subscriptions.qualifying_amount_cents * 100)
 
       Sync.call
 
@@ -150,7 +150,7 @@ module Subscriptions
 
     test "two contributions naming one fleet open a single subscription" do
       nominated
-      nominated(amount_cents: Subscriptions::QUALIFYING_AMOUNT_CENTS * 2)
+      nominated(amount_cents: Subscriptions.qualifying_amount_cents * 2)
 
       Sync.call
 
@@ -185,7 +185,7 @@ module Subscriptions
       other_membership = create(:fleet_membership, :accepted)
       nominated
       create(:supporter_contribution, user: other_membership.user, fleet: other_membership.fleet,
-        amount_cents: Subscriptions::QUALIFYING_AMOUNT_CENTS)
+        amount_cents: Subscriptions.qualifying_amount_cents)
 
       result = Sync.call
 
