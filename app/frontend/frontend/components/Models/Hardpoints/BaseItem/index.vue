@@ -176,6 +176,7 @@ const hardpointNames = computed(() => {
                   name: 'component',
                   params: { slug: hardpoint.component.slug },
                 }"
+                @click.stop
               >
                 {{ hardpoint.component.name }}
               </router-link>
