@@ -74,6 +74,14 @@ module Api
         end
       end
 
+      # Defined here rather than left to PayoutLedgerScoped: both it and
+      # FleetSubscriptionConcern define this, and the concern is included last,
+      # so its `@fleet` default -- nil here -- would win the lookup and skip
+      # enforcement. A method on the class beats either module.
+      private def subscription_fleet
+        @payout_ledger&.fleet
+      end
+
       private def payout_entry_params
         authorized(params, with: PayoutEntryPolicy, context: ledger_context)
       end

@@ -63,6 +63,14 @@ module Api
       # and moving it here would rewrite whose money every entry against them
       # describes -- the policy filter is shared with create, so the narrowing
       # has to happen on this side.
+      # Defined here rather than left to PayoutLedgerScoped: both it and
+      # FleetSubscriptionConcern define this, and the concern is included last,
+      # so its `@fleet` default -- nil here -- would win the lookup and skip
+      # enforcement. A method on the class beats either module.
+      private def subscription_fleet
+        @payout_ledger&.fleet
+      end
+
       private def weight_attributes
         authorized(params, with: PayoutParticipantPolicy, context: ledger_context).to_h.slice("weight")
       end

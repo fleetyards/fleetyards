@@ -41,6 +41,14 @@ module Api
         render :show
       end
 
+      # Defined here rather than left to PayoutLedgerScoped: both it and
+      # FleetSubscriptionConcern define this, and the concern is included last,
+      # so its `@fleet` default -- nil here -- would win the lookup and skip
+      # enforcement. A method on the class beats either module.
+      private def subscription_fleet
+        @payout_ledger&.fleet
+      end
+
       private def set_payout_transfer
         @payout_transfer = @payout_ledger.payout_transfers.find(params[:id])
       end

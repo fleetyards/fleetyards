@@ -57,11 +57,21 @@ module Api
           return
         end
 
-        # A token already issued would otherwise keep serving the whole event
-        # feed after the fleet's entitlement lapsed. Checked here rather than in
-        # a callback because the fleet is resolved from the path inside this
+        # Both gates, in the order D10 requires. Checked here rather than in a
+        # callback because the fleet is resolved from the path inside this
         # action, and answered in plain text because a calendar client is what
         # reads it.
+        #
+        # The capability first: a feature that is not rolled out is unavailable
+        # to everyone, and checking only the subscription would have served a
+        # subscribed fleet a feed the flag says does not exist. Then the
+        # entitlement, or a token already issued would keep serving the whole
+        # feed after the fleet lapsed.
+        unless feature_enabled?("fleet_mission_builder", @fleet)
+          render plain: "Forbidden", status: :forbidden
+          return
+        end
+
         if fleet_subscription_missing?(@fleet)
           render plain: "Forbidden", status: :forbidden
           return

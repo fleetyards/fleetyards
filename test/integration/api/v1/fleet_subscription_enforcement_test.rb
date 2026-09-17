@@ -250,4 +250,51 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     assert_equal "subscription_required", body_code,
       "a fleet's tour carries no fleet in the path, and must still be enforced"
   end
+
+  # Both PayoutLedgerScoped and FleetSubscriptionConcern define
+  # `subscription_fleet`, and the concern is included last -- so its `@fleet`
+  # default, nil on these controllers, won the lookup and skipped enforcement.
+  test "a fleet event ledger's children are enforced" do
+    Flipper.enable("fleet_subscriptions")
+    event = create(:fleet_event, :active, fleet: @fleet, created_by: @user)
+    ledger = create(:payout_ledger, subject: event)
+    sign_in @user
+
+    get "/api/v1/payouts/#{ledger.id}/entries"
+    assert_equal "subscription_required", body_code, "entries"
+
+    get "/api/v1/payouts/#{ledger.id}/participants"
+    assert_equal "subscription_required", body_code, "participants"
+
+    get "/api/v1/payouts/#{ledger.id}/transfers"
+    assert_equal "subscription_required", body_code, "transfers"
+  end
+
+  test "a subscribed fleet reaches its ledger's children" do
+    Flipper.enable("fleet_subscriptions")
+    subscribe!
+    event = create(:fleet_event, :active, fleet: @fleet, created_by: @user)
+    ledger = create(:payout_ledger, subject: event)
+    sign_in @user
+
+    get "/api/v1/payouts/#{ledger.id}/entries"
+
+    assert_response :success
+  end
+
+  # The capability comes first everywhere, including the feed -- checking only
+  # the subscription would have served a subscribed fleet a feature the flag
+  # says does not exist.
+  test "the calendar feed answers the capability before the subscription" do
+    Flipper.enable("fleet_subscriptions")
+    Flipper.disable("fleet_mission_builder")
+    subscribe!
+    @fleet.ensure_calendar_feed_token!
+    token = @fleet.reload.calendar_feed_token
+
+    get "/api/v1/fleets/#{@fleet.slug}/events.ics", params: {token:}
+
+    assert_response :forbidden,
+      "a capability that is off is unavailable to a subscribed fleet too"
+  end
 end
