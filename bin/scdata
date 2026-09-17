@@ -252,9 +252,13 @@ when "push", "pull"
   # Pushing is what makes a tree real: it replaces the one the loaders pull, and
   # a tree the check has something to say about is exactly the one nobody wants
   # in the bucket. `--force` is here because a floor is a guess about a future
-  # build, and a person who has read the list has to be able to overrule it.
-  if command == "push" && !force && !report_check(sc_environment)
-    abort "  Refusing to push. Fix the tree, or push it anyway with --force."
+  # build, and a person who has read the list has to be able to overrule it --
+  # so it overrules the verdict and never the check itself, which still runs and
+  # still prints, and says so when it was overruled.
+  if command == "push" && !report_check(sc_environment)
+    abort "  Refusing to push. Fix the tree, or push it anyway with --force." unless force
+
+    puts "  Pushing anyway: --force."
   end
 
   store = ScData::ParsedStore.new(sc_environment, settings: s3_settings)
