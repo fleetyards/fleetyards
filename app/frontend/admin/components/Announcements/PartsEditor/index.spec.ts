@@ -77,6 +77,53 @@ describe("AnnouncementPartsEditor", () => {
     expect(counts[1].text()).toContain(`${8 + link.length}/300`);
   });
 
+  // Two or more parts are a thread, and the form says so.
+  it("draws the thread rail only once there is more than one part", async () => {
+    const one = await mountWithDefaults(Component, {
+      props: { name: "social-parts", label: "Posts", modelValue: ["a"] },
+    });
+    const two = await mountWithDefaults(Component, {
+      props: { name: "social-parts", label: "Posts", modelValue: ["a", "b"] },
+    });
+
+    expect(one.find(".parts-editor--threaded").exists()).toBe(false);
+    expect(two.find(".parts-editor--threaded").exists()).toBe(true);
+    // The first part is the head of the thread, not a reply to anything.
+    expect(two.findAll(".parts-editor__reply")).toHaveLength(1);
+  });
+
+  /*
+   * The composer prepends a position marker to every Discord message in a run
+   * of two or more, and Discord counts it. A counter that ignored it would
+   * offer the full 2,000 on a message that then bounces.
+   */
+  it("counts the Discord position marker once the run is a thread", async () => {
+    const body = "x".repeat(100);
+    const discord = [
+      { label: "Discord", limit: 2000, counter: "discord" as const },
+    ];
+
+    const one = await mountWithDefaults(Component, {
+      props: {
+        name: "discord-parts",
+        label: "Messages",
+        modelValue: [body],
+        limits: discord,
+      },
+    });
+    const two = await mountWithDefaults(Component, {
+      props: {
+        name: "discord-parts",
+        label: "Messages",
+        modelValue: [body, body],
+        limits: discord,
+      },
+    });
+
+    expect(one.find(".parts-editor__count").text()).toContain("100/2000");
+    expect(two.find(".parts-editor__count").text()).toContain("109/2000");
+  });
+
   it("marks a part that is over its limit", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {

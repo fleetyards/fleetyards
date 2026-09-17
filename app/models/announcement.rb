@@ -72,7 +72,10 @@ class Announcement < ApplicationRecord
   # too long for X, so the author is told at save rather than having their copy
   # quietly trimmed on the way out.
   validates :social_parts, announcement_part_length: {platforms: %i[x bluesky]}
-  validates :discord_parts, announcement_part_length: {platform: Announcements::Platform::DISCORD}
+  validates :discord_parts, announcement_part_length: {
+    platform: Announcements::Platform::DISCORD,
+    overhead: ->(total) { Announcements::DiscordMessages.marker_overhead(total) }
+  }
   validate :publish_at_required_when_scheduled
   validate :at_least_one_channel
 

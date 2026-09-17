@@ -6,6 +6,9 @@ zh-TW:
       discord: "Discord"
       bluesky: "Bluesky"
       x: "X.com"
+    discord:
+      first: "%{position}/%{total}"
+      continued: "↳ %{position}/%{total}"
     deliveries:
       not_configured: "該管道未設定憑證。"
     preview:

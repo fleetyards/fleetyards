@@ -44,9 +44,23 @@ const parts = defineModel<string[]>({ required: true });
 
 const { t } = useI18n();
 
+// Two or more parts are a thread, and the form says so: a rail down the left
+// ties them together and each row reads as a reply to the one above. Presentation
+// only -- what goes out is unchanged.
+const threaded = computed(() => parts.value.length > 1);
+
+/*
+ * Discord messages carry a position marker the composer adds, so its cost is
+ * counted here too. Without it the editor offers the full 2,000 and the send
+ * bounces — which is exactly the margin a 1,982-character message sits in.
+ */
+const DISCORD_MARKER_OVERHEAD = 9;
+
 function countFor(text: string, counter?: "x" | "bluesky" | "discord") {
   if (counter === "x") return xLength(text);
-  if (counter === "discord") return discordLength(text);
+  if (counter === "discord") {
+    return discordLength(text) + (threaded.value ? DISCORD_MARKER_OVERHEAD : 0);
+  }
 
   return blueskyLength(text);
 }
@@ -74,7 +88,11 @@ const update = (index: number, value: string) => {
 </script>
 
 <template>
-  <div class="parts-editor" :data-test="`parts-editor-${props.name}`">
+  <div
+    class="parts-editor"
+    :class="{ 'parts-editor--threaded': threaded }"
+    :data-test="`parts-editor-${props.name}`"
+  >
     <div class="parts-editor__head">
       <span class="parts-editor__label">{{ props.label }}</span>
       <Btn
@@ -97,6 +115,11 @@ const update = (index: number, value: string) => {
       data-test="parts-editor-part"
     >
       <div class="parts-editor__part-head">
+        <i
+          v-if="threaded && index > 0"
+          class="parts-editor__reply fa-duotone fa-reply"
+          aria-hidden="true"
+        />
         <span class="parts-editor__position">
           {{
             t("labels.admin.announcements.partPosition", {
@@ -187,6 +210,43 @@ const update = (index: number, value: string) => {
 
 .parts-editor__part {
   margin-bottom: 12px;
+}
+
+/*
+ * The rail runs down the gutter between the rows, so it connects them without
+ * moving the fields. `::before` on the part rather than a border on the list:
+ * the last row stops the line at its own head, which is what makes it read as
+ * a chain with an end rather than an open-ended column.
+ */
+.parts-editor--threaded .parts-editor__part {
+  position: relative;
+  padding-left: 18px;
+}
+
+.parts-editor--threaded .parts-editor__part::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 12px;
+  bottom: -12px;
+  width: 2px;
+  background: $gray-lighter;
+  opacity: 0.35;
+}
+
+.parts-editor--threaded .parts-editor__part:last-child::before {
+  bottom: auto;
+  height: 10px;
+}
+
+.parts-editor--threaded .parts-editor__part:first-child::before {
+  top: 18px;
+}
+
+.parts-editor__reply {
+  color: $gray-lighter;
+  margin-right: 4px;
+  opacity: 0.7;
 }
 
 .parts-editor__part-head {

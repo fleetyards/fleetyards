@@ -6,6 +6,9 @@ de:
       discord: "Discord"
       bluesky: "Bluesky"
       x: "X.com"
+    discord:
+      first: "%{position}/%{total}"
+      continued: "↳ %{position}/%{total}"
     deliveries:
       not_configured: "Für diesen Kanal sind keine Zugangsdaten hinterlegt."
     preview:

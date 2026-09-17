@@ -6,6 +6,9 @@ zh-CN:
       discord: "Discord"
       bluesky: "Bluesky"
       x: "X.com"
+    discord:
+      first: "%{position}/%{total}"
+      continued: "↳ %{position}/%{total}"
     deliveries:
       not_configured: "该渠道未配置凭据。"
     preview:

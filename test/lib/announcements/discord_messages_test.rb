@@ -61,8 +61,44 @@ module Announcements
 
       assert_equal(
         ["## Fleet Ops is in public beta", "**How to switch them on**"],
-        DiscordMessages.call(announcement)
+        DiscordMessages.call(announcement).map { |message| message.lines.drop(1).join.strip }
       )
+    end
+
+    # A run of messages reads as several announcements unless something says
+    # otherwise, so each carries its position in Discord's subtext markup.
+    test "marks each message with its position once there is more than one" do
+      announcement = build(:announcement, discord_parts: %w[One Two Three])
+
+      assert_equal(
+        ["-# 1/3", "-# ↳ 2/3", "-# ↳ 3/3"],
+        DiscordMessages.call(announcement).map { |message| message.lines.first.strip }
+      )
+    end
+
+    test "a single message has no position worth stating" do
+      announcement = build(:announcement, discord_parts: ["Only one"])
+
+      assert_equal ["Only one"], DiscordMessages.call(announcement)
+    end
+
+    # The marker is part of what Discord measures, and the Fleet Ops copy's
+    # second message sits 18 characters under the cap.
+    test "the marker is budgeted so a marked message still fits" do
+      body = "x" * (Announcement::DISCORD_PART_LIMIT - DiscordMessages.marker_overhead(2))
+      announcement = build(:announcement, discord_parts: [body, body], post_discord: true)
+
+      assert announcement.valid?
+
+      DiscordMessages.call(announcement).each do |message|
+        assert_operator Announcements::Platform::DISCORD.length(message), :<=, Announcement::DISCORD_PART_LIMIT
+      end
+    end
+
+    test "a message that leaves no room for its marker is refused" do
+      body = "x" * (Announcement::DISCORD_PART_LIMIT - DiscordMessages.marker_overhead(2) + 1)
+
+      refute build(:announcement, discord_parts: [body, body], post_discord: true).valid?
     end
 
     test "puts the link on the last message, not the first" do

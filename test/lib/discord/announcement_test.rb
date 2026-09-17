@@ -33,7 +33,12 @@ module Discord
 
       Discord::Announcement.new(announcement:).run
 
-      assert_equal ["## Fleet Ops is in public beta", "**How to switch them on**"], posted
+      # Each carries its position marker; the copy under it is untouched.
+      assert_equal ["-# 1/2", "-# ↳ 2/2"], posted.map { |body| body.lines.first.strip }
+      assert_equal(
+        ["## Fleet Ops is in public beta", "**How to switch them on**"],
+        posted.map { |body| body.lines.drop(1).join.strip }
+      )
     end
 
     test "#run is a no-op without an updates endpoint" do

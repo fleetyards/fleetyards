@@ -6,6 +6,9 @@ en:
       discord: "Discord"
       bluesky: "Bluesky"
       x: "X.com"
+    discord:
+      first: "%{position}/%{total}"
+      continued: "↳ %{position}/%{total}"
     deliveries:
       not_configured: "This channel has no credentials configured."
     preview:
