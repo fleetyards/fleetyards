@@ -161,6 +161,70 @@ module ScData
         assert_equal [], @parser.send(:normalize_tags, "")
       end
 
+      # The two ways the export declares a key that a record then asks for in a
+      # third: `translate` matches exactly and answers neither.
+      test "#localize_name resolves a key the export declares with a plural marker" do
+        @parser.translations = {"item_Name_qrt_combat_medium_arms_01_02_01,P" => "Testudo Arms Purgatory Camo"}
+
+        assert_nil @parser.send(:translate, "@item_Name_qrt_combat_medium_arms_01_02_01")
+        assert_equal(
+          "Testudo Arms Purgatory Camo",
+          @parser.send(:localize_name, "@item_Name_qrt_combat_medium_arms_01_02_01")
+        )
+      end
+
+      test "#localize_name resolves a key the export declares in another case" do
+        @parser.translations = {"item_namearmr_aegs_redeemer" => "Aegis Redeemer Ship Armor"}
+
+        assert_nil @parser.send(:translate, "@item_NameARMR_AEGS_Redeemer")
+        assert_equal(
+          "Aegis Redeemer Ship Armor",
+          @parser.send(:localize_name, "@item_NameARMR_AEGS_Redeemer")
+        )
+      end
+
+      # The fallback that makes this a safe swap for `translate`: a value the
+      # index cannot answer still resolves to whatever `translate` made of it,
+      # so no record can come out of this with less of a name than before.
+      test "#localize_name passes through a value that is not a key" do
+        @parser.translations = {}
+
+        assert_equal "Mission Prospector", @parser.send(:localize_name, "Mission Prospector")
+      end
+
+      # These resolve for the first time with the index, and reading them as
+      # names would put 25 records called "PH - hdh_boots_01_01_13" in front of
+      # a player. No name is the better answer, and the one they have today.
+      test "#localize_name drops a name the export has left as a placeholder" do
+        @parser.translations = {
+          "item_Name_a,P" => "PH - hdh_boots_01_01_13",
+          "item_Name_b,P" => "PLACEHOLDER - SPV Jacket",
+          "item_Name_c,P" => "PH"
+        }
+
+        assert_nil @parser.send(:localize_name, "@item_Name_a")
+        assert_nil @parser.send(:localize_name, "@item_Name_b")
+        assert_nil @parser.send(:localize_name, "@item_Name_c")
+      end
+
+      # Only a leading marker word, so a name that merely starts with those
+      # letters is left alone.
+      test "#localize_name keeps a name that only begins like a placeholder" do
+        @parser.translations = {"item_Name_phase,P" => "PH-13 Phase Rifle"}
+
+        assert_equal "PH-13 Phase Rifle", @parser.send(:localize_name, "@item_Name_phase")
+      end
+
+      # `describe` reads the prose `translate` returns, and a description read
+      # through the index arrives with its newlines already unescaped -- a
+      # different string from the one every parsed tree so far records.
+      test "#localize leaves the escaped newlines of `translate` alone" do
+        @parser.translations = {"item_Desc_a" => 'Item Type: Turret\n\nA bespoke turret.'}
+
+        assert_equal 'Item Type: Turret\n\nA bespoke turret.', @parser.send(:translate, "@item_Desc_a")
+        assert_equal "Item Type: Turret\n\nA bespoke turret.", @parser.send(:localize, "@item_Desc_a")
+      end
+
       private def write_asset(path, contents)
         target = "#{@base_folder}/raw/1.0.0/Data/#{path}"
 
