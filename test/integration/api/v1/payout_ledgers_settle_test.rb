@@ -41,6 +41,9 @@ class Api::V1::PayoutLedgersSettleTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("tour_payouts")
+    # A ledger belonging to a fleet -- an event, or a tour organised from a
+    # fleet's page -- is a fleet surface and needs the fleet flag too.
+    Flipper.enable("fleet_tours")
 
     @organiser = create(:user)
     @bob = create(:user)

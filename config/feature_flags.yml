@@ -48,9 +48,14 @@ fleet_subscriptions:
 
 # Stacks on tour_payouts rather than replacing it: that flag is what makes
 # tours exist at all, and this one decides whether a fleet runs them as a fleet
-# -- its own tour list, and members asking onto them. Both have to be on.
+# -- its own tour list, members asking onto them, and the payout ledger on a
+# fleet event. Both have to be on.
+#
+# The split is by owner, not by feature: every fleet-scoped payout surface is
+# behind this, every personal one behind tour_payouts. That is what lets one be
+# priced without the other.
 fleet_tours:
-  description: "Fleet tours — a fleet's own tour list, with members asking to join"
+  description: "Fleet tours — a fleet's own tour list and its payouts, with members asking to join"
 
 # Moving stock between two inventories. Rides on top of the three gates above
 # rather than replacing them: a transfer touching a fleet inventory still needs
@@ -102,8 +107,9 @@ oauth-twitch:
   description: "Twitch login"
   permanent: true
 
-# One flag, two surfaces: the fleet toggle gates the ledger on a fleet event,
-# the user toggle gates the standalone tour under /tools. They roll out
-# together because it is one feature with two owners.
+# What makes a payout ledger exist at all, and after the fleet_tours split it
+# owns one surface rather than two: the standalone tour under /tools/ and its
+# ledger. Anything belonging to a fleet -- a fleet's own tours, and the ledger
+# on a fleet event -- needs fleet_tours on top.
 tour_payouts:
   description: "Tour payouts — a shared expense/income ledger with a settlement list, on fleet events and standalone tours"

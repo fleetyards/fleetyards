@@ -116,11 +116,14 @@ const viewerEventRole = computed(
 // event_moderator_or_admin?, which is what a moderator role is actually for.
 const { isFleetFeatureEnabled } = useFeatures();
 
-// The payouts tab is its own flag on top of the events feature, so the link
-// only shows once a fleet has switched it on.
+// The payouts tab is its own pair of flags on top of the events feature.
+// tour_payouts is what makes a ledger exist at all; fleet_tours is what says
+// this fleet runs payouts as a fleet, and the API asks for both -- so the link
+// has to as well, or it would open a page that 403s.
 const canReadPayouts = computed(
   () =>
     isFleetFeatureEnabled(props.fleet, FeatureFlagName.TOUR_PAYOUTS) &&
+    isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_TOURS) &&
     checkAccess(props.resourceAccess, [
       "fleet:manage",
       "fleet:payouts:manage",
