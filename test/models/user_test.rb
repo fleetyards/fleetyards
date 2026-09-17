@@ -782,4 +782,14 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     assert user.valid?, user.errors.full_messages.to_sentence
     assert user.save
   end
+  # A sole admin closing their account destroys the fleet on the way out, and a
+  # restricting reference from that same account's row aborted the whole thing.
+  test "a supported fleet being deleted clears the choice instead of blocking it" do
+    membership = create(:fleet_membership, :accepted)
+    membership.user.update!(supported_fleet: membership.fleet)
+
+    membership.fleet.destroy!
+
+    assert_nil membership.user.reload.supported_fleet_id
+  end
 end

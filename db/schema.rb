@@ -2226,7 +2226,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_120000) do
   add_foreign_key "payout_transfers", "users", column: "confirmed_by_id"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
-  add_foreign_key "supporter_contributions", "fleets"
+  add_foreign_key "supporter_contributions", "fleets", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
   add_foreign_key "task_forces", "vehicles", on_delete: :cascade
   add_foreign_key "tour_join_requests", "tours", on_delete: :cascade
@@ -2234,6 +2234,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_120000) do
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade
   add_foreign_key "tours", "fleets"
   add_foreign_key "tours", "users", column: "created_by_id"
-  add_foreign_key "users", "fleets", column: "supported_fleet_id"
+  add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
   add_foreign_key "vehicle_loadouts", "vehicles"
 end

@@ -17,6 +17,10 @@ class AddSupportedFleetToUsers < ActiveRecord::Migration[8.1]
       type: :uuid,
       null: true,
       index: {where: "supported_fleet_id IS NOT NULL"},
-      foreign_key: {to_table: :fleets}
+      # Nullify rather than restrict: a fleet being deleted must not block the
+      # deletion. `User#check_fleet_memberships` destroys a fleet whose sole
+      # admin is closing their account, and a restricting reference from that
+      # same account's row would abort the whole thing.
+      foreign_key: {to_table: :fleets, on_delete: :nullify}
   end
 end

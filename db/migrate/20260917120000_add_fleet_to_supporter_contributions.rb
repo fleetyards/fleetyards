@@ -12,6 +12,8 @@ class AddFleetToSupporterContributions < ActiveRecord::Migration[8.1]
       type: :uuid,
       null: true,
       index: {where: "fleet_id IS NOT NULL"},
-      foreign_key: true
+      # Nullify for the same reason the standing choice does: a deleted fleet
+      # should clear the nomination, never stop the fleet being deleted.
+      foreign_key: {to_table: :fleets, on_delete: :nullify}
   end
 end

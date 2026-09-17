@@ -368,4 +368,12 @@ class SupporterContributionTest < ActiveSupport::TestCase
 
     assert_equal by_scope, in_ruby
   end
+  test "a nominated fleet being deleted clears the nomination instead of blocking it" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = create(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+
+    membership.fleet.destroy!
+
+    assert_nil contribution.reload.fleet_id
+  end
 end
