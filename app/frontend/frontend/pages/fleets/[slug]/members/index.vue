@@ -20,7 +20,6 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   useMembersView,
   type MembersView,
@@ -32,7 +31,6 @@ import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
   getFleetMembersQueryKey,
-  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
@@ -78,14 +76,6 @@ const viewLink = (value: MembersView) => ({
 
 // Everything that has not been accepted: invited, asked to join, or refused.
 const INVITE_STATES = ["invited", "requested", "declined"];
-
-const { isFleetFeatureEnabled } = useFeatures();
-const starmapEnabled = computed(() =>
-  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_STARMAP),
-);
-const worldmapEnabled = computed(() =>
-  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_WORLDMAP),
-);
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   updateCallback: async () => {
@@ -219,7 +209,6 @@ const crumbs = computed<Crumb[]>(() => {
 
   <Teleport to="#header-right">
     <Btn
-      v-if="worldmapEnabled"
       :size="BtnSizesEnum.MD"
       mobile-icon-only
       :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
@@ -228,7 +217,6 @@ const crumbs = computed<Crumb[]>(() => {
       {{ t("actions.fleet.worldmap") }}
     </Btn>
     <Btn
-      v-if="starmapEnabled"
       :size="BtnSizesEnum.MD"
       mobile-icon-only
       :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
