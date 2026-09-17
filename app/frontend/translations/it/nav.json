@@ -221,7 +221,8 @@
           "index": "Utenti",
           "edit": "Modifica",
           "fleets": "Flotte",
-          "inventories": "Inventari"
+          "inventories": "Inventari",
+          "supporterContributions": "Contributi"
         },
         "fleets": {
           "index": "Flotte",

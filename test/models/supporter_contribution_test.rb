@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("manual"), not null
+#  source              :string           default("other"), not null
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -169,9 +169,13 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_nil contribution.reload.linked_via
   end
 
-  test "source defaults to manual" do
-    assert_equal "manual", SupporterContribution.new.source
-    assert SupporterContribution.new.manual?
+  test "source defaults to other" do
+    assert_equal "other", SupporterContribution.new.source
+    assert SupporterContribution.new.other?
+  end
+
+  test "source names every platform a contribution can arrive on" do
+    assert_equal %w[patreon kofi buymeacoffee paypal other], SupporterContribution.sources.keys
   end
 
   test "rejects a user_id that points at no account" do
@@ -229,12 +233,59 @@ class SupporterContributionTest < ActiveSupport::TestCase
   end
 
   test "patreon scope and enum select source-tagged rows" do
-    manual = create(:supporter_contribution)
+    elsewhere = create(:supporter_contribution, source: "paypal")
     imported = create(:supporter_contribution, :patreon)
 
     assert imported.patreon?
     ids = SupporterContribution.patreon.pluck(:id)
     assert_includes ids, imported.id
-    refute_includes ids, manual.id
+    refute_includes ids, elsewhere.id
+  end
+
+  test "a one-off runs to the end of the month it arrived in" do
+    contribution = create(:supporter_contribution, started_at: Date.new(2026, 6, 10))
+
+    assert_equal Date.new(2026, 6, 30), contribution.active_until
+  end
+
+  test "an open-ended recurring pledge has no last day" do
+    contribution = create(:supporter_contribution, :recurring)
+
+    assert_nil contribution.active_until
+  end
+
+  # `active_in` matches a pledge ended mid-month for the whole of that month,
+  # so cover runs to the end of it. Answering the 5th while the row is still
+  # active would put a date already past beside a badge reading as live.
+  test "a pledge ended mid-month runs to the end of that month" do
+    contribution = create(
+      :supporter_contribution, :recurring,
+      started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 8, 5)
+    )
+
+    assert_equal Date.new(2026, 8, 31), contribution.active_until
+  end
+
+  # The scope and the predicate are the same rule written twice -- once in SQL
+  # for a query, once in Ruby for a preloaded association -- so they are held
+  # against each other rather than trusted to stay in step.
+  test "active_in? matches the scope over every shape of contribution" do
+    month_start = Date.new(2026, 8, 1)
+    month_end = Date.new(2026, 8, 31)
+
+    [
+      {recurring: false, started_at: Date.new(2026, 8, 10), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 7, 31), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 9, 1), ended_at: nil},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: nil},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 8, 5)},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 7, 31)},
+      {recurring: true, started_at: Date.new(2026, 9, 1), ended_at: nil}
+    ].each { |attrs| create(:supporter_contribution, **attrs) }
+
+    by_scope = SupporterContribution.active_in(month_start, month_end).pluck(:id).sort
+    in_ruby = SupporterContribution.all.select { |c| c.active_in?(month_start, month_end) }.map(&:id).sort
+
+    assert_equal by_scope, in_ruby
   end
 end

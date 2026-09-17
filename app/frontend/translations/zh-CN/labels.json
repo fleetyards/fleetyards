@@ -13,7 +13,14 @@
       },
       "supporter": {
         "badge": "支持者",
-        "tooltip": "本月正在支持 FleetYards.net"
+        "tooltip": "本月正在支持 FleetYards.net",
+        "none": "非支持者",
+        "fleetTierUntil": "舰队等级至 %{date}",
+        "fleetTierExpired": "已过期",
+        "fleetTierOngoing": "订阅持续期间享有舰队等级",
+        "until": "有效期至 %{date}",
+        "expiring": "%{date} 到期",
+        "ongoing": "定期支持，无结束日期"
       },
       "destroyedFleets": {
         "discarded": "已丢弃",
@@ -1567,7 +1574,8 @@
           "linked": "账户关联",
           "linkedOnly": "已关联",
           "linkedVia": "关联方式",
-          "unlinkedOnly": "未关联"
+          "unlinkedOnly": "未关联",
+          "source": "来源"
         },
         "adminNotifications": {
           "search": "搜索"
@@ -1778,7 +1786,9 @@
           "source": {
             "patreon": "Patreon",
             "kofi": "Ko-fi",
-            "manual": "手动"
+            "buymeacoffee": "Buy me a coffee",
+            "paypal": "PayPal",
+            "other": "其他"
           },
           "linkedVia": {
             "patreon_account": "Patreon 账户",

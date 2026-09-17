@@ -37,6 +37,9 @@ module V1
           friendsWishlist: {type: :boolean},
           hideOwner: {type: :boolean},
           tracking: {type: :boolean},
+          supporter: {type: :boolean},
+          supporterTier: {type: :integer},
+          supporterUntil: {type: :string, format: :date},
           twoFactorRequired: {type: :boolean},
           twoFactorQrCodeUrl: {type: :string},
           twoFactorProvisioningUrl: {type: :string},
@@ -51,7 +54,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking
+          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking supporter supporterTier
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

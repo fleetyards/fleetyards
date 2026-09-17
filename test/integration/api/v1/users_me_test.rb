@@ -127,6 +127,32 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /users/me says whether support is live and when it lapses" do
+    user = create(:user)
+    create(:supporter_contribution, user: user, amount_cents: 500, started_at: Date.current)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert parsed_body["supporter"]
+      assert_equal 2, parsed_body["supporterTier"]
+      assert_equal Date.current.end_of_month.iso8601, parsed_body["supporterUntil"]
+    end
+  end
+
+  # An open-ended recurring pledge has no date to name, and the absent key is
+  # what separates it from support that has already lapsed.
+  test "GET /users/me omits the lapse date for an open-ended pledge" do
+    user = create(:user)
+    create(:supporter_contribution, :recurring, user: user,
+      started_at: 1.year.ago.to_date, ended_at: nil)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert parsed_body["supporter"]
+      refute parsed_body.key?("supporterUntil")
+    end
+  end
+
   test "GET /users/me returns 401 when not signed in" do
     assert_api_response :get, 401
   end

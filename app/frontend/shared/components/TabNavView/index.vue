@@ -16,6 +16,9 @@ type Props = {
   links?: TabNavLink[];
   authenticated?: boolean;
   resourceAccess?: string[];
+  // Mirrors AccessCheck: the flag sits beside the privilege list rather than
+  // inside it, so a tab gated on one is only reachable by checking both.
+  superAdmin?: boolean;
   activeKey?: string;
   // Counts to show beside a tab, by route name.
   badges?: Record<string, number>;
@@ -26,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   links: undefined,
   authenticated: false,
   resourceAccess: undefined,
+  superAdmin: false,
   activeKey: undefined,
   badges: undefined,
 });
@@ -81,6 +85,7 @@ watch(
         :links="props.links"
         :authenticated="props.authenticated"
         :resource-access="props.resourceAccess"
+        :super-admin="props.superAdmin"
         :badges="props.badges"
       />
       <ul v-else class="tabs">
@@ -91,6 +96,7 @@ watch(
             :links="props.links"
             :authenticated="props.authenticated"
             :resource-access="props.resourceAccess"
+            :super-admin="props.superAdmin"
             :badges="props.badges"
           />
         </slot>

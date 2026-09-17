@@ -221,7 +221,8 @@
           "index": "用户",
           "edit": "编辑",
           "fleets": "舰队",
-          "inventories": "库存"
+          "inventories": "库存",
+          "supporterContributions": "贡献"
         },
         "fleets": {
           "index": "舰队",

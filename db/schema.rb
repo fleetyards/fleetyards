@@ -1828,7 +1828,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_160000) do
     t.string "patreon_user_id"
     t.string "payer_email"
     t.boolean "recurring", default: false, null: false
-    t.string "source", default: "manual", null: false
+    t.string "source", default: "other", null: false
     t.integer "source_amount_cents"
     t.string "source_currency"
     t.date "started_at", null: false

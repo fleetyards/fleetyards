@@ -15,6 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   type SupporterContributionQuery,
   SupporterContributionLinkedViaEnum,
+  SupporterContributionSourceEnum,
 } from "@/services/fyAdminApi";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
@@ -43,6 +44,13 @@ const linkedViaOptions = Object.values(SupporterContributionLinkedViaEnum).map(
   }),
 );
 
+const sourceOptions = Object.values(SupporterContributionSourceEnum).map(
+  (source) => ({
+    label: t(`labels.admin.supporterContributions.source.${source}`),
+    value: source,
+  }),
+);
+
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
@@ -53,6 +61,7 @@ const prefillFormValues = () => {
     userIdEq: filters.value.userIdEq,
     userIdNull: filters.value.userIdNull,
     linkedViaEq: filters.value.linkedViaEq,
+    sourceEq: filters.value.sourceEq,
   };
 };
 
@@ -131,6 +140,14 @@ watch(
       :reset-label="t('labels.all')"
       :options="linkedViaOptions"
       name="linkedViaEq"
+    />
+
+    <RadioList
+      v-model="form.sourceEq"
+      :label="t('labels.filters.supporterContributions.source')"
+      :reset-label="t('labels.all')"
+      :options="sourceOptions"
+      name="sourceEq"
     />
 
     <FormDatePicker
