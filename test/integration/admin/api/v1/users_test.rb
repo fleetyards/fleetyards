@@ -220,6 +220,18 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: user.id}
   end
 
+  test "GET /users/:id says whether support is live and when it lapses" do
+    user = create(:user)
+    create(:supporter_contribution, user: user, amount_cents: 500, started_at: Date.current)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {id: user.id} do
+      assert parsed_body["supporter"]
+      assert_equal 2, parsed_body["supporterTier"]
+      assert_equal Date.current.end_of_month.iso8601, parsed_body["supporterUntil"]
+    end
+  end
+
   test "GET /users/:id returns 404 for missing id" do
     sign_in @admin
 

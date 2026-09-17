@@ -262,6 +262,241 @@ class UserTest < ActiveSupport::TestCase
       assert_equal user, contribution.reload.user
     end
 
+    # The three supporter answers share one loaded set, and `reload` clears the
+    # association cache but not a plain ivar -- so the clearing is explicit.
+    test "reloading re-reads the contributions the answers are drawn from" do
+      refute @user.supporter?
+
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      refute @user.supporter?
+      assert @user.reload.supporter?
+    end
+
+    # The admin user list renders supporter status per row, so the preloaded
+    # path has to answer from memory -- otherwise a page of thirty users pays
+    # for thirty round trips that the preload was supposed to replace.
+    test "a preloaded association answers without asking the database again" do
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      user = User.includes(:supporter_contributions).find(@user.id)
+
+      queries = 0
+      subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+        queries += 1 unless /SCHEMA|TRANSACTION/.match?(payload[:name].to_s)
+      end
+
+      begin
+        assert user.supporter?
+        assert_equal 2, user.supporter_tier
+        assert_equal Date.current.end_of_month, user.supporter_until
+        user.fleet_tier_until
+      ensure
+        ActiveSupport::Notifications.unsubscribe(subscriber)
+      end
+
+      assert_equal 0, queries
+    end
+
+    # Ten euros at five a month is two months, counted from the day it was given.
+    test "a donation buys whole months from the day it was given" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 9, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 11, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    # Whole months only: seven fifty buys one, not one and a half. The tier is
+    # held or it is not, so there are no part months and no day arithmetic.
+    test "a part month is not bought" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 750, started_at: Date.new(2026, 9, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 10, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    test "an amount under the monthly rate buys nothing" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 400, started_at: Date.new(2026, 9, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_nil @user.reload.fleet_tier_until
+      end
+    end
+
+    # The date is fixed when the money arrives, so it does not vanish at the
+    # month rollover the way supporter status does.
+    test "a donation from a past month still runs" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 8, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 10, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    # A donation arriving while the last one is still running adds to it rather
+    # than overlapping it.
+    test "donations stack onto what is already paid for" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 8, 15))
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 9, 1))
+
+      travel_to Date.new(2026, 9, 17) do
+        # August's two months run to 15 October; September's start there.
+        assert_equal Date.new(2026, 12, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    # It keeps paying, so there is no day to name -- and naming one meant a
+    # standing pledge a year old reporting a date eleven months past.
+    test "a standing pledge has no run-out date" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 500, started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
+    # A Patreon pledge is written recurring and open-ended while it stands, so
+    # this is the case the admin sees for every active patron.
+    test "an active patron holds the fleet tier while paying" do
+      create(:supporter_contribution, :patreon, user: @user,
+        amount_cents: 500, started_at: Date.new(2026, 1, 10), ended_at: nil)
+
+      assert @user.reload.fleet_tier_ongoing?
+    end
+
+    # Two euros a month does not buy a five euro month, so it funds nothing --
+    # the same answer a four euro donation gets.
+    test "a standing pledge under the rate funds nothing" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 200, started_at: 1.year.ago.to_date, ended_at: nil)
+
+      refute @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
+    # The pledge is worth nothing, but it must not swallow what was bought
+    # outright alongside it.
+    test "a sub-rate pledge leaves a donation's months alone" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 200, started_at: Date.new(2026, 1, 10), ended_at: nil)
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 9, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        refute @user.reload.fleet_tier_ongoing?
+        assert_equal Date.new(2026, 11, 15), @user.fleet_tier_until
+      end
+    end
+
+    test "nothing standing is not ongoing" do
+      refute @user.fleet_tier_ongoing?
+    end
+
+    # A pledge funds the month it is billed for and banks nothing, so it runs to
+    # the day it stopped.
+    test "an ended pledge runs to the day it stopped" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 500,
+        started_at: Date.new(2026, 1, 10), ended_at: Date.new(2026, 8, 10))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 8, 10), @user.reload.fleet_tier_until
+      end
+    end
+
+    # The importer overwrites one row with the latest amount, so counting a
+    # month per month it ran would read a patron who raised five euros to ten as
+    # having paid ten all along.
+    test "a raised pledge does not backdate its new amount" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 1000,
+        started_at: Date.new(2026, 1, 10), ended_at: Date.new(2026, 8, 10))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 8, 10), @user.reload.fleet_tier_until
+      end
+    end
+
+    # `started_at` is free to be ahead of today, and a pledge that has not begun
+    # funds nothing yet.
+    test "a pledge dated in the future is not yet standing" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 500, started_at: Date.current + 1.month, ended_at: nil)
+
+      refute @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
+    test "a donation dated in the future buys nothing yet" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.current + 1.month)
+
+      assert_nil @user.reload.fleet_tier_until
+    end
+
+    # The band a month's spend falls in, and how long that money lasts, are two
+    # questions. Nothing here moves the tier.
+    test "the fleet tier does not disturb the supporter tier" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.current)
+
+      assert_equal 2, @user.reload.supporter_tier
+      assert_equal Date.current.end_of_month, @user.supporter_until
+    end
+
+    test "no contributions means no fleet tier" do
+      assert_nil @user.fleet_tier_until
+    end
+
+    test "nothing active has no expiry to name" do
+      assert_nil @user.supporter_until
+    end
+
+    test "a one-off lapses at the end of the month it arrived in" do
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      assert_equal Date.current.end_of_month, @user.reload.supporter_until
+    end
+
+    test "an open-ended recurring pledge has no expiry to name" do
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert @user.reload.supporter?
+      assert_nil @user.supporter_until
+    end
+
+    # The month is the unit, so an end date part-way through one still covers the
+    # rest of it.
+    test "an ended recurring pledge lapses at the end of its final month" do
+      ends_on = Date.current.next_month.beginning_of_month + 4
+
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: ends_on)
+
+      assert_equal ends_on.end_of_month, @user.reload.supporter_until
+    end
+
+    # Support ends when the last contribution does, not when the first one runs
+    # out -- an extra one-off must never shorten a pledge that outlives it.
+    test "the latest active contribution sets the expiry" do
+      later = Date.current.next_month.end_of_month
+
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: later)
+
+      assert_equal later, @user.reload.supporter_until
+    end
+
     test "no contributions is tier zero" do
       assert_equal 0, @user.supporter_tier
     end

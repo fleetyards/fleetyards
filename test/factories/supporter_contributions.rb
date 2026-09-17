@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("manual"), not null
+#  source              :string           default("other"), not null
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -64,6 +64,14 @@ FactoryBot.define do
       sequence(:patreon_member_id) { |n| "member-#{n}" }
       recurring { true }
       anonymous { true }
+    end
+
+    trait :buymeacoffee do
+      source { "buymeacoffee" }
+    end
+
+    trait :paypal do
+      source { "paypal" }
     end
 
     trait :kofi do

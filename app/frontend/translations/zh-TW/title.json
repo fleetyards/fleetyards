@@ -232,7 +232,8 @@
           "inventories": "使用者庫存",
           "inventory": "使用者庫存",
           "inventoryItem": "庫存記錄",
-          "fleets": "使用者艦隊"
+          "fleets": "使用者艦隊",
+          "supporterContributions": "使用者支持者貢獻"
         },
         "vehicles": {
           "index": "載具",

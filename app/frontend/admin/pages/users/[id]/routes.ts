@@ -22,6 +22,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "supporter-contributions",
+    name: "admin-user-supporter-contributions",
+    component: () =>
+      import("@/admin/pages/users/[id]/supporter-contributions.vue"),
+    meta: {
+      title: "admin.users.supporterContributions",
+      activeRoute: "users",
+      needsAuthentication: true,
+      access: ["supporters"],
+    },
+  },
+  {
     path: "fleets",
     name: "admin-user-fleets",
     component: () => import("@/admin/pages/users/[id]/fleets.vue"),

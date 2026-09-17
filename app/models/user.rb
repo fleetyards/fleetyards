@@ -553,8 +553,39 @@ class User < ApplicationRecord
   # Anonymity says whether a contribution is *named* on the supporters page --
   # SupporterContribution#public_name is where it is answered -- not whether the
   # person behind it may be known to support at all.
+  # Loaded once because all three answers below are drawn from the same rows,
+  # and the admin user list renders them thirty to a page: separate queries per
+  # answer made that ninety round trips on a cold fragment cache.
+  #
+  # Safe to hold for the life of the instance: a contribution touches its user
+  # when it changes, so the next request builds a new one.
+  def active_supporter_contributions
+    @active_supporter_contributions ||= begin
+      today = Date.current
+
+      # A caller rendering a list preloads the association -- the admin user
+      # index does -- and filtering what is already in memory is what keeps
+      # that one query rather than one per row.
+      if supporter_contributions.loaded?
+        supporter_contributions.select do |contribution|
+          contribution.active_in?(today.beginning_of_month, today.end_of_month)
+        end
+      else
+        supporter_contributions.active_now(today).to_a
+      end
+    end
+  end
+
+  # `reload` clears the association cache but not a plain ivar, so without this
+  # a reloaded record keeps answering from the rows it read before.
+  def reload(*)
+    @active_supporter_contributions = nil
+
+    super
+  end
+
   def supporter?
-    supporter_contributions.active_now.exists?
+    active_supporter_contributions.any?
   end
 
   # 0 for everybody else, so callers can compare rather than branch on nil.
@@ -563,8 +594,8 @@ class User < ApplicationRecord
   # would otherwise need recalculating every time one is added, edited, ended
   # or linked -- with nothing to notice when a recalculation was missed.
   def supporter_tier
-    contributions = supporter_contributions.active_now
-    total = contributions.sum(:amount_cents)
+    contributions = active_supporter_contributions
+    total = contributions.sum(&:amount_cents)
 
     tier = SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
 
@@ -573,6 +604,95 @@ class User < ApplicationRecord
     return [tier, 2].max if contributions.any? { |c| c.patreon? && c.recurring? }
 
     tier
+  end
+
+  # The day the current run of support lapses, or nil when it does not lapse on
+  # a date anybody can name -- either because there is nothing active, or
+  # because an open-ended recurring pledge covers it and only ending that would
+  # set a date. Read it next to `supporter?`, which separates those two.
+  #
+  # The latest date across the active contributions rather than the earliest:
+  # support ends when the last of them does, not when the first one runs out.
+  def supporter_until
+    dates = active_supporter_contributions.map(&:active_until)
+    return if dates.empty? || dates.any?(&:nil?)
+
+    dates.max
+  end
+
+  # What the fleet tier costs to hold for a month. There is one fleet tier -- it
+  # is held or it is not -- so the amount buys duration rather than a rung.
+  FLEET_TIER_MONTHLY_CENTS = 500
+
+  # The day the fleet tier runs out. A donation buys whole months at
+  # `FLEET_TIER_MONTHLY_CENTS` -- ten euros is two, seven is one, four is none --
+  # counted from the day it was given, and each donation extends whatever the one
+  # before it had already paid for.
+  #
+  # Rounded down, so a part month is not bought: the tier is held or it is not,
+  # and half of it is not a thing anybody has.
+  #
+  # Nil for a standing pledge with no end date: it keeps paying, so there is no
+  # day to name -- the same answer `supporter_until` gives. Nil too when nothing
+  # has bought a whole month.
+  #
+  # Every contribution counts, not only this month's: the date is fixed when the
+  # money arrives, so a donation from August still runs into October rather than
+  # vanishing at the rollover.
+  #
+  # Unrelated to `supporter_tier`, which bands a single month's spend and says
+  # nothing about duration. The two were one calculation for a while and read as
+  # a contradiction; they answer different questions and are kept apart.
+  #
+  # A projection for an admin to read, not yet a fact about the account: nothing
+  # here changes `supporter?`, `supporter_tier`, or what `monthly_total` reports
+  # to the funding goal.
+  def fleet_tier_until
+    return if fleet_tier_ongoing?
+
+    started = supporter_contributions.reject { |contribution| contribution.started_at > Date.current }
+
+    # A pledge funds the month it is billed for and banks nothing, so it runs to
+    # the day it stopped. Counting a month per month it ran would also multiply
+    # the wrong figure: the importer overwrites one row with the latest amount,
+    # so a patron who raised five euros to ten reads as having paid ten all
+    # along.
+    pledged_until = started
+      .select { |contribution| ended_pledge_funding_the_tier?(contribution) }
+      .map(&:ended_at)
+      .max
+
+    # Donations stack on top, from the later of their own day and whatever is
+    # already paid for, so one arriving mid-run extends it rather than
+    # overlapping it.
+    started.reject(&:recurring?).sort_by(&:started_at).reduce(pledged_until) do |paid_until, contribution|
+      months = contribution.amount_cents / FLEET_TIER_MONTHLY_CENTS
+      next paid_until if months.zero?
+
+      [contribution.started_at, paid_until].compact.max + months.months
+    end
+  end
+
+  # A standing pledge that covers the monthly rate funds the fleet tier for as
+  # long as it stands, so there is no day to name -- a Patreon patron holds it
+  # while they are paying, not from the day they stop.
+  #
+  # Below the rate it funds nothing, the same as a donation under five euros:
+  # two euros a month does not buy a five euro month. One dated in the future
+  # funds nothing yet either -- `started_at` is free to be ahead of today.
+  def fleet_tier_ongoing?
+    supporter_contributions.any? do |contribution|
+      contribution.recurring? &&
+        contribution.ended_at.nil? &&
+        contribution.started_at <= Date.current &&
+        contribution.amount_cents >= FLEET_TIER_MONTHLY_CENTS
+    end
+  end
+
+  private def ended_pledge_funding_the_tier?(contribution)
+    contribution.recurring? &&
+      contribution.ended_at.present? &&
+      contribution.amount_cents >= FLEET_TIER_MONTHLY_CENTS
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar

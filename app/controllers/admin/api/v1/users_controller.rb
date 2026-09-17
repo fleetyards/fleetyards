@@ -18,7 +18,10 @@ module Admin
 
           q = authorized_scope(User.all).ransack(user_query_params)
 
+          # The payload carries supporter status per row, which is derived from
+          # the contributions; without this each row asks for its own.
           @users = q.result(distinct: true)
+            .includes(:supporter_contributions)
             .page(params[:page])
             .per(per_page(User))
         end

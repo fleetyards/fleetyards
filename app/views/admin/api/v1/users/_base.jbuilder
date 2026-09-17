@@ -29,6 +29,15 @@ json.public_wishlist user.public_wishlist
 json.public_wishlist_url user.public_wishlist_url
 json.hide_owner user.hide_owner
 
+json.supporter user.supporter?
+json.supporter_tier user.supporter_tier
+supporter_until = user.supporter_until
+json.supporter_until supporter_until.iso8601 if supporter_until.present?
+
+json.fleet_tier_ongoing user.fleet_tier_ongoing?
+fleet_tier_until = user.fleet_tier_until
+json.fleet_tier_until fleet_tier_until.iso8601 if fleet_tier_until.present?
+
 json.two_factor_required user.otp_required_for_login?
 unless user.otp_required_for_login?
   json.two_factor_qr_code_url qrcode_api_v1_otp_url

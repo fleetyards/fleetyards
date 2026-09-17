@@ -6,6 +6,12 @@ HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
 export HCLOUD_TOKEN
 
 echo "Triggering on-demand database backup on live..."
-bundle exec kamal accessory exec db-backup -d live --reuse /backup.sh
+
+# Through a shell rather than exec'd directly: /backup.sh ships mode 644 in
+# eeshugerman/postgres-backup-s3, and the image's own entrypoint never runs it
+# any other way either -- `go-cron "$SCHEDULE" /bin/sh backup.sh`. Exec'ing the
+# file fails with docker exit status 126 and "permission denied", which reads as
+# a broken container rather than a missing +x bit.
+bundle exec kamal accessory exec db-backup -d live --reuse "sh /backup.sh"
 
 echo "Done!"

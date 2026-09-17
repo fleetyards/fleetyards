@@ -8,11 +8,13 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import {
+  type FilterOption,
   type SupporterContribution,
   type SupporterContributionInput,
   useUpdateSupporterContribution,
   getSupporterContributionsQueryKey,
   getSupporterContributionQueryKey,
+  SupporterContributionSourceEnum,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -21,6 +23,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import LinkedViaPill from "@/admin/components/SupporterContributions/LinkedViaPill/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -52,6 +55,7 @@ type FormValues = {
   claimKey?: string;
   currency?: string;
   userId?: string;
+  source: SupporterContributionSourceEnum;
 };
 
 const initialValues = ref<FormValues>({
@@ -66,6 +70,7 @@ const initialValues = ref<FormValues>({
   claimKey: props.supporterContribution.claimKey,
   currency: props.supporterContribution.currency,
   userId: props.supporterContribution.userId,
+  source: props.supporterContribution.source,
 });
 
 const validationSchema = {
@@ -88,6 +93,14 @@ const [note, noteProps] = defineField("note");
 const [payerEmail, payerEmailProps] = defineField("payerEmail");
 const [claimKey, claimKeyProps] = defineField("claimKey");
 const [userId, userIdProps] = defineField("userId");
+const [source, sourceProps] = defineField("source");
+
+const sourceOptions = computed<FilterOption[]>(() =>
+  Object.values(SupporterContributionSourceEnum).map((value) => ({
+    value,
+    label: t(`labels.admin.supporterContributions.source.${value}`),
+  })),
+);
 
 const submitting = ref(false);
 
@@ -123,6 +136,7 @@ const onSubmit = handleSubmit(async (values) => {
     claimKey: values.claimKey || null,
     currency: values.currency,
     userId: values.userId || null,
+    source: values.source,
   };
 
   await updateMutation
@@ -210,6 +224,15 @@ const handleCancel = async () => {
           :multiple="false"
           value-attr="id"
           name="userId"
+        />
+        <BaseSelect
+          v-model="source"
+          v-bind="sourceProps"
+          :label="t('labels.supporterContribution.source')"
+          :no-label="false"
+          :options="sourceOptions"
+          :multiple="false"
+          name="source"
         />
         <div class="linked-via">
           <span class="linked-via__label">

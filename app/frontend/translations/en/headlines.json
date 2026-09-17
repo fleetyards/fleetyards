@@ -100,7 +100,8 @@
           "index": "Users",
           "edit": "Edit User",
           "fleets": "Fleets",
-          "inventories": "Inventories"
+          "inventories": "Inventories",
+          "supporterContributions": "Supporter Contributions"
         },
         "vehicles": {
           "index": "Vehicles",

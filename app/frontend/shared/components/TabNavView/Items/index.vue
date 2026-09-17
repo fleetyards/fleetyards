@@ -20,6 +20,9 @@ type Props = {
   links?: TabNavLink[];
   authenticated: boolean;
   resourceAccess?: string[];
+  // Mirrors AccessCheck: the flag sits beside the privilege list rather than
+  // inside it, so a tab gated on one is only reachable by checking both.
+  superAdmin?: boolean;
   // Counts to show beside a tab, by route name. The nav badge's cap, so a tab
   // cannot be widened by a number nobody reads precisely anyway.
   badges?: Record<string, number>;
@@ -28,6 +31,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   links: undefined,
   resourceAccess: undefined,
+  superAdmin: false,
   badges: undefined,
 });
 
@@ -52,7 +56,10 @@ const filteredRoutes = computed(() => {
       return !route.meta?.needsAuthentication;
     })
     .filter((route) => {
-      return checkAccess(props.resourceAccess, route.meta?.access);
+      return (
+        props.superAdmin ||
+        checkAccess(props.resourceAccess, route.meta?.access)
+      );
     });
 });
 

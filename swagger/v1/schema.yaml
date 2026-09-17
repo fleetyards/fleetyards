@@ -26835,6 +26835,13 @@ components:
           type: boolean
         tracking:
           type: boolean
+        supporter:
+          type: boolean
+        supporterTier:
+          type: integer
+        supporterUntil:
+          type: string
+          format: date
         twoFactorRequired:
           type: boolean
         twoFactorQrCodeUrl:
@@ -26879,6 +26886,8 @@ components:
       - friendsWishlist
       - hideOwner
       - tracking
+      - supporter
+      - supporterTier
       - twoFactorRequired
       - resourceAccess
       - authConnections

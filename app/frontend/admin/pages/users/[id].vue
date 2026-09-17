@@ -6,8 +6,10 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { routes as userChildRoutes } from "./[id]/routes";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useSessionStore } from "@/admin/stores/session";
 
 const route = useRoute();
+const sessionStore = useSessionStore();
 const { t } = useI18n();
 
 const { data: user, ...asyncStatus } = useUserQuery(route.params.id as string);
@@ -32,7 +34,12 @@ const crumbs = computed<Crumb[]>(() => [
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
 
-      <TabNavView :routes="userChildRoutes" authenticated>
+      <TabNavView
+        :routes="userChildRoutes"
+        :resource-access="sessionStore.resourceAccess"
+        :super-admin="sessionStore.isSuperAdmin"
+        authenticated
+      >
         <template #content>
           <router-view :user="user" />
         </template>

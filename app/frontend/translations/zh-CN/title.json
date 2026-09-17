@@ -232,7 +232,8 @@
           "inventories": "用户库存列表",
           "inventory": "用户库存",
           "inventoryItem": "库存条目",
-          "fleets": "用户舰队"
+          "fleets": "用户舰队",
+          "supporterContributions": "用户支持者贡献"
         },
         "vehicles": {
           "index": "载具",

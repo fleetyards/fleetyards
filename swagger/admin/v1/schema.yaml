@@ -16365,6 +16365,8 @@ components:
           type: boolean
         recurring:
           type: boolean
+        source:
+          "$ref": "#/components/schemas/SupporterContributionSourceEnum"
         startedAt:
           type: string
           format: date
@@ -16516,13 +16518,17 @@ components:
     SupporterContributionSourceEnum:
       type: string
       enum:
-      - manual
       - patreon
       - kofi
+      - buymeacoffee
+      - paypal
+      - other
       x-enumNames:
-      - MANUAL
       - PATREON
       - KOFI
+      - BUYMEACOFFEE
+      - PAYPAL
+      - OTHER
       title: SupporterContributionSourceEnum
     SupporterContributionStats:
       type: object
@@ -16646,6 +16652,18 @@ components:
           type: string
         hideOwner:
           type: boolean
+        supporter:
+          type: boolean
+        supporterTier:
+          type: integer
+        supporterUntil:
+          type: string
+          format: date
+        fleetTierUntil:
+          type: string
+          format: date
+        fleetTierOngoing:
+          type: boolean
         twoFactorRequired:
           type: boolean
         twoFactorQrCodeUrl:
@@ -16676,6 +16694,9 @@ components:
       - publicHangarLoaners
       - publicWishlist
       - hideOwner
+      - supporter
+      - supporterTier
+      - fleetTierOngoing
       - twoFactorRequired
       - createdAt
       - updatedAt
@@ -17353,23 +17374,6 @@ components:
       - meta
       - items
       title: Videos
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -17399,6 +17403,23 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed

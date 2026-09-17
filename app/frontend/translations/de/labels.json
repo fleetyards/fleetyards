@@ -13,7 +13,14 @@
       },
       "supporter": {
         "badge": "Unterstützer",
-        "tooltip": "Unterstützt FleetYards.net diesen Monat"
+        "tooltip": "Unterstützt FleetYards.net diesen Monat",
+        "none": "Kein Unterstützer",
+        "fleetTierUntil": "Flotten-Stufe bis %{date}",
+        "fleetTierExpired": "Abgelaufen",
+        "fleetTierOngoing": "Flotten-Stufe, solange das Abo läuft",
+        "until": "Aktiv bis %{date}",
+        "expiring": "Läuft am %{date} ab",
+        "ongoing": "Wiederkehrend, ohne Enddatum"
       },
       "destroyedFleets": {
         "discarded": "Verworfen",
@@ -1580,7 +1587,8 @@
           "linked": "Konto-Verknüpfung",
           "linkedOnly": "Verknüpft",
           "linkedVia": "Verknüpft über",
-          "unlinkedOnly": "Nicht verknüpft"
+          "unlinkedOnly": "Nicht verknüpft",
+          "source": "Quelle"
         },
         "adminNotifications": {
           "search": "Suchen"
@@ -1791,7 +1799,9 @@
           "source": {
             "patreon": "Patreon",
             "kofi": "Ko-fi",
-            "manual": "Manuell"
+            "buymeacoffee": "Buy me a coffee",
+            "paypal": "PayPal",
+            "other": "Sonstige"
           },
           "linkedVia": {
             "patreon_account": "Patreon-Konto",

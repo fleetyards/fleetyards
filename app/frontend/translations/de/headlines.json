@@ -98,7 +98,8 @@
           "index": "Benutzer",
           "edit": "Benutzer bearbeiten",
           "fleets": "Flotten",
-          "inventories": "Inventare"
+          "inventories": "Inventare",
+          "supporterContributions": "Unterstützer-Beiträge"
         },
         "vehicles": {
           "index": "Fahrzeuge",
