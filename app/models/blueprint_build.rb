@@ -57,7 +57,11 @@ class BlueprintBuild < ApplicationRecord
   READ_THROUGH = %i[name category_ref craft_time slot_count].freeze
 
   # The facts a browsable catalogue filters and sorts by.
-  FILTERABLE = %i[name craft_time].freeze
+  #
+  # The craftable pair is here because the columns on the row hold whatever the
+  # last source to load wrote: filtering them answers a ptu request with live's
+  # links, which is the same leak the fact readers were fixed for.
+  FILTERABLE = %i[name craft_time craftable_type craftable_id].freeze
 
   validates :environment, presence: true
   validates :version, presence: true

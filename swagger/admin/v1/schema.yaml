@@ -9845,6 +9845,277 @@ components:
       required:
       - meta
       title: BaseList
+    Blueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        craftTime:
+          type:
+          - integer
+          - 'null'
+        slotCount:
+          type:
+          - integer
+          - 'null'
+        retired:
+          type: boolean
+        sourceUnknown:
+          type: boolean
+        craftable:
+          anyOf:
+          - "$ref": "#/components/schemas/BlueprintCraftable"
+          - type: 'null'
+        costSlots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostSlot"
+        sources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSource"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - scKey
+      - scRef
+      - retired
+      - sourceUnknown
+      - createdAt
+      - updatedAt
+      title: Blueprint
+    BlueprintCostCommodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: BlueprintCostCommodity
+    BlueprintCostModifier:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        propertyKey:
+          type:
+          - string
+          - 'null'
+        unitFormat:
+          type:
+          - string
+          - 'null'
+        ramp:
+          "$ref": "#/components/schemas/BlueprintRampEnum"
+        startQuality:
+          type:
+          - integer
+          - 'null'
+        endQuality:
+          type:
+          - integer
+          - 'null'
+        modifierAtStart:
+          type:
+          - number
+          - 'null'
+        modifierAtEnd:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - ramp
+      title: BlueprintCostModifier
+    BlueprintCostOption:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/BlueprintCostTypeEnum"
+        quantity:
+          type:
+          - number
+          - 'null'
+        minQuality:
+          type:
+          - integer
+          - 'null'
+        commodityKey:
+          type:
+          - string
+          - 'null'
+        commodity:
+          anyOf:
+          - "$ref": "#/components/schemas/BlueprintCostCommodity"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - type
+      title: BlueprintCostOption
+    BlueprintCostSlot:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        scKey:
+          type:
+          - string
+          - 'null'
+        position:
+          type: integer
+        options:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostOption"
+        modifiers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostModifier"
+      additionalProperties: false
+      required:
+      - position
+      - options
+      - modifiers
+      title: BlueprintCostSlot
+    BlueprintCostTypeEnum:
+      type: string
+      enum:
+      - resource
+      - item
+      x-enumNames:
+      - RESOURCE
+      - ITEM
+      title: BlueprintCostTypeEnum
+    BlueprintCraftable:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - slug
+      title: BlueprintCraftable
+    BlueprintCraftableTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      title: BlueprintCraftableTypeEnum
+    BlueprintRampEnum:
+      type: string
+      enum:
+      - linear
+      - linear_integer_additive
+      x-enumNames:
+      - LINEAR
+      - LINEAR_INTEGER_ADDITIVE
+      title: BlueprintRampEnum
+    BlueprintSource:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/BlueprintSourceKindEnum"
+        orgName:
+          type:
+          - string
+          - 'null'
+        missionName:
+          type:
+          - string
+          - 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        minPoints:
+          type:
+          - integer
+          - 'null'
+        poolKey:
+          type:
+          - string
+          - 'null'
+        poolGroup:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - kind
+      title: BlueprintSource
+    BlueprintSourceKindEnum:
+      type: string
+      enum:
+      - contract
+      - scenario
+      x-enumNames:
+      - CONTRACT
+      - SCENARIO
+      title: BlueprintSourceKindEnum
+    Blueprints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Blueprint"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Blueprints
     BoughtViaEnum:
       type: string
       enum:

@@ -227,6 +227,38 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_equal [option], blueprint.reload.cost_options.to_a
   end
 
+  # A filter pinned to the current build while the render falls back drops a
+  # retired recipe whose retained build does name the org being asked for.
+  test ".from_org reaches the fallback build when the current one is gone" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:blueprint_source, build: last, org_name: "Eckhart Security")
+
+    assert_empty Blueprint.from_org("Eckhart Security")
+    assert_equal [blueprint], Blueprint.from_org("Eckhart Security", ScData::Source.current, current_only: false).to_a
+  end
+
+  # And the same recipe must not read as sourceless under the fallback, which
+  # would contradict its own rendered response.
+  test ".with_known_source reaches the fallback build too" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:blueprint_source, build: last)
+
+    assert_equal [blueprint], Blueprint.with_known_source(true, ScData::Source.current, current_only: false).to_a
+    assert_empty Blueprint.with_known_source(false, ScData::Source.current, current_only: false)
+  end
+
+  test ".consuming reaches the fallback build too" do
+    commodity = create(:commodity)
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:blueprint_cost_option, slot: create(:blueprint_cost_slot, build: last), commodity:)
+
+    assert_empty Blueprint.consuming(commodity)
+    assert_equal [blueprint], Blueprint.consuming(commodity, ScData::Source.current, current_only: false).to_a
+  end
+
   test "destroying a blueprint takes its builds, recipes and sources with it" do
     blueprint = create(:blueprint)
     slot = create(:blueprint_cost_slot, build: blueprint.build)

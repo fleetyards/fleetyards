@@ -50,6 +50,7 @@ v1_api_routes = lambda do
   draw "api/fleets_routes"
   draw "api/tours_routes"
   draw "api/payouts_routes"
+  draw "api/blueprints_routes"
   draw "api/components_routes"
   draw "api/commodities_routes"
   draw "api/equipment_routes"

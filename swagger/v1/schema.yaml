@@ -10,6 +10,75 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 paths:
+  "/blueprints":
+    get:
+      summary: Blueprints list
+      tags:
+      - Blueprints
+      operationId: blueprints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/BlueprintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Blueprints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/blueprints/{slug}":
+    get:
+      summary: Blueprint detail
+      tags:
+      - Blueprints
+      operationId: blueprint
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Blueprint"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -15622,6 +15691,338 @@ components:
       required:
       - meta
       title: BaseList
+    Blueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        craftTime:
+          type:
+          - integer
+          - 'null'
+        slotCount:
+          type:
+          - integer
+          - 'null'
+        retired:
+          type: boolean
+        sourceUnknown:
+          type: boolean
+        craftable:
+          anyOf:
+          - "$ref": "#/components/schemas/BlueprintCraftable"
+          - type: 'null'
+        costSlots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostSlot"
+        sources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSource"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - scKey
+      - scRef
+      - retired
+      - sourceUnknown
+      - createdAt
+      - updatedAt
+      title: Blueprint
+    BlueprintCostCommodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: BlueprintCostCommodity
+    BlueprintCostModifier:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        propertyKey:
+          type:
+          - string
+          - 'null'
+        unitFormat:
+          type:
+          - string
+          - 'null'
+        ramp:
+          "$ref": "#/components/schemas/BlueprintRampEnum"
+        startQuality:
+          type:
+          - integer
+          - 'null'
+        endQuality:
+          type:
+          - integer
+          - 'null'
+        modifierAtStart:
+          type:
+          - number
+          - 'null'
+        modifierAtEnd:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - ramp
+      title: BlueprintCostModifier
+    BlueprintCostOption:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/BlueprintCostTypeEnum"
+        quantity:
+          type:
+          - number
+          - 'null'
+        minQuality:
+          type:
+          - integer
+          - 'null'
+        commodityKey:
+          type:
+          - string
+          - 'null'
+        commodity:
+          anyOf:
+          - "$ref": "#/components/schemas/BlueprintCostCommodity"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - type
+      title: BlueprintCostOption
+    BlueprintCostSlot:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        scKey:
+          type:
+          - string
+          - 'null'
+        position:
+          type: integer
+        options:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostOption"
+        modifiers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostModifier"
+      additionalProperties: false
+      required:
+      - position
+      - options
+      - modifiers
+      title: BlueprintCostSlot
+    BlueprintCostTypeEnum:
+      type: string
+      enum:
+      - resource
+      - item
+      x-enumNames:
+      - RESOURCE
+      - ITEM
+      title: BlueprintCostTypeEnum
+    BlueprintCraftable:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - slug
+      title: BlueprintCraftable
+    BlueprintCraftableTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      title: BlueprintCraftableTypeEnum
+    BlueprintQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        craftableTypeEq:
+          "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        craftableTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        craftableIdEq:
+          type: string
+          format: uuid
+        craftTimeLteq:
+          type: integer
+        craftTimeGteq:
+          type: integer
+        fromOrg:
+          type: string
+        consumingCommodity:
+          type: string
+        withKnownSource:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          "$ref": "#/components/schemas/BlueprintSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: BlueprintQuery
+    BlueprintRampEnum:
+      type: string
+      enum:
+      - linear
+      - linear_integer_additive
+      x-enumNames:
+      - LINEAR
+      - LINEAR_INTEGER_ADDITIVE
+      title: BlueprintRampEnum
+    BlueprintSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - craftTime asc
+      - craftTime desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CRAFT_TIME_ASC
+      - CRAFT_TIME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: BlueprintSortingEnum
+    BlueprintSource:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/BlueprintSourceKindEnum"
+        orgName:
+          type:
+          - string
+          - 'null'
+        missionName:
+          type:
+          - string
+          - 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        minPoints:
+          type:
+          - integer
+          - 'null'
+        poolKey:
+          type:
+          - string
+          - 'null'
+        poolGroup:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - kind
+      title: BlueprintSource
+    BlueprintSourceKindEnum:
+      type: string
+      enum:
+      - contract
+      - scenario
+      x-enumNames:
+      - CONTRACT
+      - SCENARIO
+      title: BlueprintSourceKindEnum
+    Blueprints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Blueprint"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Blueprints
     BoughtViaEnum:
       type: string
       enum:
@@ -17222,6 +17623,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - blueprints
       - components
       - fleet_allies
       - fleet_contracts
@@ -17243,6 +17645,7 @@ components:
       - ship_inventories
       - tour_payouts
       x-enumNames:
+      - BLUEPRINTS
       - COMPONENTS
       - FLEET_ALLIES
       - FLEET_CONTRACTS

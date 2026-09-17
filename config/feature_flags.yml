@@ -19,6 +19,9 @@
 # The public Components catalogue -- the list, the detail pages and the nav
 # entry. Everything behind it is additive to the API, so the flag gates the
 # surface rather than the data.
+blueprints:
+  description: "Blueprints catalogue — the public list and per-recipe detail pages"
+
 components:
   description: "Components catalogue — the public list and per-component detail pages"
 

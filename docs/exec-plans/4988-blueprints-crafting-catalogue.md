@@ -354,7 +354,33 @@ decision, not settled here.
    130 of 154 pools carry an org; the other 24 carry the pool name alone.
 5. Loader and tests; `retire_absent` over sources too.
 
-### Phase 3 — Public API (PR 3)
+### Phase 3 — Public API (PR 3) — **built**
+
+`/blueprints` and `/blueprints/{slug}`, behind the `blueprints` flag. The list searches by
+name and filters by output kind, output id, craft time, org, consumed commodity, known-source
+and current version; the detail response carries every slot with its materials, quality gates
+and stat ramps, plus the sources.
+
+Three things came out of building it:
+
+1. **`craftable` cannot be a ransackable association.** Ransack computes an association's
+   class to build the join, and a polymorphic one has none — naming it raises
+   *"Polymorphic associations do not support computing the class"* the moment a query touches
+   it. `craftable_type` is filtered as a plain column instead.
+2. **A boolean ransack scope can only ever mean "on".** Ransack converts `"false"` to `false`
+   and then applies a scope only when the value is truthy, so `withKnownSource=false` returned
+   the whole catalogue — 1,607 against the 901 the scope gives called directly. The controller
+   applies that one itself, as the commodities and equipment endpoints already do for their
+   version flag.
+3. **The reverse link is a filter, not an embed.** The criterion says a component, equipment or
+   commodity page says which blueprints make it — but commodities and equipment have **no
+   detail endpoint at all**, only `index`. So the relation is exposed from the blueprints side
+   as `craftableIdEq`, which answers the same question whichever catalogue the thing is in and
+   invents no endpoints.
+
+#### Original plan
+
+
 
 1. `Api::V1::BlueprintsController` + `filters/`, matching the commodities/components/equipment
    shape: search by name, filter by output kind, category, required resource, known-source.
@@ -440,6 +466,7 @@ Three corrections to the issue body came out of building it:
 - **2026-09-17** Issue read, branch and worktree created, D1–D9 resolved with the user (D4 full chain, D6 ship ramps, D8 shared shell, D10 stacked PRs).
 - **2026-09-17** Verified the contract chain against `4.10.1-live.12660092`: pool→generator references are **GUID-only** (a name grep returns zero files), 130 of 154 pools reach a generator, 107 generator files across 10 guilds, and `factionReputation` resolves to a `FactionReputation` record carrying `displayName`. Worked example recorded in D4.
 - **2026-09-17** Confirmed the public frontend has no commodities/components/equipment pages at all — D8 is a real fork, not a tidy-up.
+- **2026-09-17** Phase 3 built. Two ransack limits found by asking it to do the obvious thing — a polymorphic association raises, and a false-valued scope is silently skipped — and the reverse link became a filter once it turned out two of the three catalogues have no detail endpoint to embed it in.
 - **2026-09-17** Review on #5010: the recipe and the sources read through the current build alone while every scalar fact fell back to the last one, so a retired recipe rendered as having no ingredients and no known source. Both go through `facts` now; the class-level scopes stay on the current build, which is what a list filter should match.
 - **2026-09-17** Phase 2's loader suite ran 899s. The cause was not the loader: six tests each triggered a full 1,607-record load, and the cost is in rolling back the ~20k rows afterwards rather than in writing them. Merging three of them into one took it to **106s** with the same 75 assertions. Kept the separate `previously_new_record?` guard anyway -- it buys 2% here but skips ~3,200 redundant round-trips on a production load.
 - **2026-09-17** Phase 2 built. The source chain is two mechanisms and four handler shapes, not one of each; 706 of 1607 recipes have a stated source and 901 do not. Four resolution traps recorded above, each one found by a measurement that disagreed with the previous one.
@@ -451,5 +478,5 @@ Three corrections to the issue body came out of building it:
 
 - [x] Phase 1 — Blueprints parser and loader (PR 1)
 - [x] Phase 2 — Contract sources (PR 2)
-- [ ] Phase 3 — Public API (PR 3)
+- [x] Phase 3 — Public API (PR 3)
 - [ ] Phase 4 — Catalogue shell and pages (PR 4)

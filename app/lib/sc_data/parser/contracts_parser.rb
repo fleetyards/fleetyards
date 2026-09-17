@@ -37,8 +37,24 @@ module ScData
       # one, and its rewards are the parent contract's.
       CONTRACT_KINDS = %w[CareerContract Contract].freeze
 
+      POOLS_FOLDER = "blueprint_pools"
+
       def all
-        save_items(pools, folder: "blueprint_pools")
+        parsed = pools
+
+        # `save_items` returns before it clears, so a run that parsed nothing
+        # leaves the previous catalogue on disk. That is deliberate for `items`
+        # and `models`, which several passes fill and where an early blank pass
+        # must not wipe what a later one writes -- but this folder is written
+        # once, so blank means the crafting tree is gone rather than not reached
+        # yet.
+        #
+        # Left alone, the stale pools would still clear the floor check and load
+        # as the current build's sources, which is the one failure the check
+        # exists to catch.
+        return clear_once("#{export_path}/#{POOLS_FOLDER}") if parsed.blank?
+
+        save_items(parsed, folder: POOLS_FOLDER)
       end
 
       def pools

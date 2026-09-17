@@ -131,6 +131,24 @@ module ScData
         assert_empty @parser.pools.first[:sources]
       end
 
+      # `save_items` returns before it clears, so a blank run would otherwise
+      # leave the previous catalogue on disk -- and stale pools clear the floor
+      # check and load as the current build's sources.
+      test "#all clears the folder when the crafting tree is gone" do
+        pool("bp_missionreward_example")
+        @parser.all
+
+        assert_equal 1, Dir.glob("#{@base_folder}/parsed/test/blueprint_pools/*.json").size
+
+        FileUtils.rm_rf("#{@raw_path}/#{RECORDS_PATH}/crafting")
+
+        ::ScData::Parser::ContractsParser.new(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        ).all
+
+        assert_empty Dir.glob("#{@base_folder}/parsed/test/blueprint_pools/*.json")
+      end
+
       private def translate(entries)
         @parser.translations = entries
       end
