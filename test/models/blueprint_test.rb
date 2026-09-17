@@ -191,6 +191,42 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_empty blueprint.reload.sources
   end
 
+  # The row keeps its last build so a retired recipe still resolves. Reading the
+  # recipe and the sources through the current build alone made a retired one
+  # look like a recipe with no ingredients that nobody knows a source for.
+  test "a retired recipe still carries its recipe and its sources" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(
+      environment: ScData::Source.environment, version: "0.0.1-live.1", name: "Retired"
+    )
+    create(:blueprint_cost_slot, build: last)
+    create(:blueprint_source, build: last, org_name: "Eckhart Security")
+
+    blueprint.reload
+
+    assert_predicate blueprint, :retired?
+    assert_equal 1, blueprint.cost_slots.count
+    assert_equal 1, blueprint.sources.count
+    assert_not_predicate blueprint, :source_unknown?
+  end
+
+  test "a blueprint no build has ever described reads as empty rather than raising" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+
+    assert_empty blueprint.cost_slots
+    assert_empty blueprint.sources
+    assert_empty blueprint.cost_options
+    assert_predicate blueprint, :source_unknown?
+  end
+
+  test "#cost_options reaches the options of the build being read" do
+    blueprint = create(:blueprint)
+    slot = create(:blueprint_cost_slot, build: blueprint.build)
+    option = create(:blueprint_cost_option, slot:)
+
+    assert_equal [option], blueprint.reload.cost_options.to_a
+  end
+
   test "destroying a blueprint takes its builds, recipes and sources with it" do
     blueprint = create(:blueprint)
     slot = create(:blueprint_cost_slot, build: blueprint.build)

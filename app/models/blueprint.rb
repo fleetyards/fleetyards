@@ -50,13 +50,6 @@ class Blueprint < ApplicationRecord
   has_many :builds, class_name: "BlueprintBuild", dependent: :destroy
   has_one :build, -> { current }, class_name: "BlueprintBuild", inverse_of: :blueprint
 
-  # The recipe belongs to the build, not to the blueprint: live and ptu are
-  # loaded separately and either can be read, so a single global recipe would
-  # leave whichever tree loaded last supplying the costs for both.
-  has_many :cost_slots, through: :build
-  has_many :cost_options, through: :cost_slots, source: :options
-  has_many :sources, through: :build
-
   # The newest build of this environment that still describes the recipe, which
   # is what one the export dropped falls back to.
   has_one :last_build,
@@ -125,7 +118,30 @@ class Blueprint < ApplicationRecord
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
 
-  # Nothing in the export says where this one comes from.
+  # The recipe and the sources belong to the build, not to the blueprint: live
+  # and ptu are loaded separately and either can be read, so one global set
+  # would leave whichever tree loaded last answering for both.
+  #
+  # Read through `facts` rather than through `build` alone, so they take the
+  # same fallback every scalar fact does. A retired recipe still has to render,
+  # and a page showing a recipe with no ingredients -- or claiming nobody knows
+  # where it comes from when the last build named four orgs -- reads as broken
+  # rather than as retired.
+  def cost_slots
+    facts&.cost_slots || BlueprintCostSlot.none
+  end
+
+  def sources
+    facts&.sources || BlueprintSource.none
+  end
+
+  def cost_options
+    BlueprintCostOption.where(blueprint_cost_slot_id: cost_slots.select(:id)).order(:position)
+  end
+
+  # Nothing in the export says where this one comes from. Answered off the last
+  # build that did describe it, so a recipe the current build dropped does not
+  # read as one nobody ever knew a source for.
   def source_unknown?
     sources.empty?
   end
