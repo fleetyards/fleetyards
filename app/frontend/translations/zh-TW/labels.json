@@ -1370,7 +1370,8 @@
           "pulseRadius": "脈衝半徑",
           "chargeTime": "充能時間",
           "cooldownTime": "冷卻時間"
-        }
+        },
+        "powerRanges": "功率曲線（低 / 中 / 高）"
       },
       "blank": {
         "propulsion": "沒有推進系統",

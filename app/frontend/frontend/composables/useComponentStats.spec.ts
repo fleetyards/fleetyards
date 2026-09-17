@@ -95,6 +95,39 @@ describe("useComponentStats", () => {
     expect(stats.find((stat) => stat.label === "Idle Draw")?.value).toBe("40%");
   });
 
+  // 3,450 of the 3,755 components carrying the block have an identical modifier
+  // at every tier, which would print three rows of "100%" saying nothing.
+  it("renders the power curve only when it actually varies", () => {
+    const varied = useComponentStats(
+      component("quantumdrive", {
+        driveSpeed: 1000,
+        powerRanges: {
+          low: { start: 0, modifier: 0.7 },
+          medium: { start: 0, modifier: 0.85 },
+          high: { start: 1, modifier: 1 },
+        },
+      }),
+    ).value;
+
+    const curve = varied.find((stat) => stat.label.startsWith("Power Curve"));
+    expect(curve?.value).toBe("70% / 85% / 100%");
+
+    const flat = useComponentStats(
+      component("cooler", {
+        coolingRate: 50,
+        powerRanges: {
+          low: { start: 0, modifier: 1 },
+          medium: { start: 0, modifier: 1 },
+          high: { start: 0, modifier: 1 },
+        },
+      }),
+    ).value;
+
+    expect(
+      flat.find((stat) => stat.label.startsWith("Power Curve")),
+    ).toBeUndefined();
+  });
+
   it("renders a utility component's capacity", () => {
     const stats = useComponentStats(
       component("utility", { capacity: 32 }),

@@ -74,6 +74,32 @@ const usePoweredStats = (
       });
     }
 
+    // What the item draws at each of the three power settings, as one row
+    // rather than three: `low`/`medium`/`high` each carry a modifier, and on
+    // 3,450 of the 3,755 components that have the block at all they are
+    // identical -- a flat curve saying nothing, which would still print three
+    // rows of "100%". The 305 that do vary are the ones worth reading: a
+    // quantum drive runs 70% / 85% / 100%.
+    const ranges = data.powerRanges;
+    if (ranges) {
+      const modifiers = ["low", "medium", "high"]
+        .map((tier) => ranges[tier]?.modifier)
+        .filter(
+          (modifier: unknown): modifier is number =>
+            typeof modifier === "number",
+        );
+
+      if (modifiers.length === 3 && new Set(modifiers).size > 1) {
+        stats.push({
+          label: t("labels.hardpoint.powerRanges"),
+          value: modifiers
+            .map((modifier) => `${Math.round(modifier * 100)}%`)
+            .join(" / "),
+          wide: true,
+        });
+      }
+    }
+
     return stats;
   });
 };
