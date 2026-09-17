@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type AppNotification } from "@/shared/components/AppNotifications/types";
+import {
+  appNotificationDismissKey,
+  type AppNotification,
+} from "@/shared/components/AppNotifications/types";
 import { useNotificationsStore } from "@/shared/stores/notifications";
 import ProgressBar from "@/shared/components/AppNotifications/ProgressBar/index.vue";
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
@@ -33,6 +36,8 @@ const router = useRouter();
 const hideMessage = () => {
   notificationsStore.hideMessage(props.message.id);
 };
+
+provide(appNotificationDismissKey, hideMessage);
 
 const handleClick = async () => {
   hideMessage();
