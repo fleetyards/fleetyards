@@ -13,6 +13,11 @@ class Api::V1::FiltersComponentsItemTypesTest < ActionDispatch::IntegrationTest
       tags "ComponentsFilters"
       produces "application/json"
 
+      # No component in the current build carries the column behind this list,
+      # so every value it offers matches nothing. Kept answering because it is
+      # public; the catalogue does not use it.
+      deprecated true
+
       response(200, "successful") do
         schema ::Shared::V1::Schemas::FilterOptionsList
       end

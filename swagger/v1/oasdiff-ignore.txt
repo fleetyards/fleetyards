@@ -7,6 +7,7 @@ DELETE /vehicles/{id} added the new `Commodity` enum value to the `modulePackage
 DELETE /vehicles/{id} added the new `Commodity` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Commodity` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Commodity` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `200`
+DELETE /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Equipment` enum value to the `model/availability/boughtAt/items/itemType` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Equipment` enum value to the `model/availability/rentalAt/items/itemType` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Equipment` enum value to the `model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -16,7 +17,8 @@ DELETE /vehicles/{id} added the new `Equipment` enum value to the `modulePackage
 DELETE /vehicles/{id} added the new `Equipment` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Equipment` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `200`
 DELETE /vehicles/{id} added the new `Equipment` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `200`
-DELETE /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
+DELETE /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+DELETE /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 DELETE /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
 DELETE /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 DELETE /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
@@ -40,95 +42,14 @@ GET /components added the new `Commodity` enum value to the `items/items/availab
 GET /components added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
 GET /components added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /components added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /components the `items/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /components the `items/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /components the `items/items/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /components the response property `items/items/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 GET /equipment added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /equipment added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
 GET /equipment added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /equipment added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /fleets/invites added the new `fleet:allies:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:allies:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:allies:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:allies:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:contracts:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:contracts:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:contracts:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:contracts:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:contracts:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:events:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:events:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:events:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:events:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:events:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:inventories:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:inventories:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:inventories:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:inventories:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:inventories:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:invites:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:invites:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:invites:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:invites:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:invites:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:memberships:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:memberships:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:memberships:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:memberships:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:memberships:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:missions:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:missions:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:missions:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:missions:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:missions:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:notifications:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:payouts:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:payouts:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:payouts:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:payouts:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:payouts:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:roles:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:roles:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:roles:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:roles:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:roles:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:update:description` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:update:images` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:vehicles:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:vehicles:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:vehicles:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:vehicles:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites added the new `fleet:vehicles:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
-GET /fleets/invites the response property `items/fleetRole` became optional for the status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:create` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:create` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:delete` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:delete` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:manage` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:manage` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:read` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:allies:read` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:create` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:create` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:delete` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:delete` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:manage` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:manage` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:read` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:read` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:update` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:contracts:update` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:create` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:create` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:delete` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:delete` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:manage` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:manage` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:read` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:read` enum value to the `items/privileges/items/` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:update` enum value to the `items/managePrivilege` response property for the response status `200`
-GET /fleets/resource-access-catalog added the new `fleet:payouts:update` enum value to the `items/privileges/items/` response property for the response status `200`
 GET /fleets/{fleetSlug}/inventories removed the required property `items/items/itemCount` from the response with the `200` status
 GET /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Commodity` enum value to the `items/items/item/type` response property for the response status `200`
 GET /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Component` enum value to the `items/items/item/type` response property for the response status `200`
@@ -332,6 +253,8 @@ GET /fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `it
 GET /fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #1: Model]/metrics/hullParts/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #1: Model]/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #1: Model]/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #1: Model]/availability/soldAt/items/itemType` response property for the response status `200`
@@ -344,12 +267,96 @@ GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `it
 GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #1: Model]/metrics/hullParts/items/category` response property for the response status `200`
-GET /fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /fleets/{fleetSlug}/vehicles the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #1: Model]/cargoHolds/items/name` became nullable for the status `200`
 GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/model/cargoHolds/items/name` became nullable for the status `200`
 GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /fleets/invites added the new `fleet:allies:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:allies:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:allies:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:allies:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:contracts:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:contracts:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:contracts:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:contracts:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:contracts:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:events:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:events:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:events:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:events:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:events:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:inventories:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:inventories:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:inventories:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:inventories:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:inventories:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:invites:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:invites:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:invites:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:invites:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:invites:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:memberships:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:memberships:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:memberships:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:memberships:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:memberships:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:missions:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:missions:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:missions:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:missions:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:missions:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:notifications:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:payouts:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:payouts:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:payouts:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:payouts:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:payouts:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:roles:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:roles:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:roles:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:roles:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:roles:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:update:description` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:update:images` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:vehicles:create` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:vehicles:delete` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:vehicles:manage` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:vehicles:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites added the new `fleet:vehicles:update` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/invites the response property `items/fleetRole` became optional for the status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:create` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:create` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:delete` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:delete` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:manage` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:manage` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:read` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:allies:read` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:create` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:create` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:delete` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:delete` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:manage` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:manage` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:read` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:read` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:update` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:contracts:update` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:create` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:create` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:delete` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:delete` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:manage` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:manage` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:read` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:read` enum value to the `items/privileges/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:update` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:payouts:update` enum value to the `items/privileges/items/` response property for the response status `200`
 GET /hangar added the new `Commodity` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Commodity` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Commodity` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -359,6 +366,7 @@ GET /hangar added the new `Commodity` enum value to the `items/items/modulePacka
 GET /hangar added the new `Commodity` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Commodity` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Commodity` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /hangar added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /hangar added the new `Equipment` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Equipment` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Equipment` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -368,7 +376,8 @@ GET /hangar added the new `Equipment` enum value to the `items/items/modulePacka
 GET /hangar added the new `Equipment` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Equipment` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /hangar added the new `Equipment` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /hangar added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /hangar the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /hangar the `items/items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /hangar the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
 GET /hangar the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /hangar the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
@@ -388,56 +397,34 @@ GET /model-paints added the new `Equipment` enum value to the `items/availabilit
 GET /models added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models added the new `Commodity` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models added the new `Equipment` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
-GET /models/embed added the new `Commodity` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /models/embed added the new `Commodity` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /models/embed added the new `Commodity` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/embed added the new `Equipment` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /models/embed added the new `Equipment` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /models/embed added the new `Equipment` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/embed added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
-GET /models/embed the response property `items/cargoHolds/items/name` became nullable for the status `200`
-GET /models/latest added the new `Commodity` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /models/latest added the new `Commodity` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /models/latest added the new `Commodity` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/latest added the new `Equipment` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /models/latest added the new `Equipment` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /models/latest added the new `Equipment` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/latest added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
-GET /models/latest the response property `items/cargoHolds/items/name` became nullable for the status `200`
-GET /models/with-docks added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /models/with-docks added the new `Commodity` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /models/with-docks added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/with-docks added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /models/with-docks added the new `Equipment` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /models/with-docks added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/with-docks added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
-GET /models/with-docks the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
 GET /models/{slug} added the new `Commodity` enum value to the `availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug} added the new `Commodity` enum value to the `availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug} added the new `Commodity` enum value to the `availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/{slug} added the new `cosmetic` enum value to the `metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug} added the new `Equipment` enum value to the `availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug} added the new `Equipment` enum value to the `availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug} added the new `Equipment` enum value to the `availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/{slug} added the new `cosmetic` enum value to the `metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug} the response property `cargoHolds/items/name` became nullable for the status `200`
 GET /models/{slug}/hardpoints added the new `Commodity` enum value to the `items/component/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/hardpoints added the new `Commodity` enum value to the `items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/hardpoints added the new `Equipment` enum value to the `items/component/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/hardpoints added the new `Equipment` enum value to the `items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/hardpoints the `items/` response's property type/format changed from ``/`` to `object`/`` for status `200`
+GET /models/{slug}/hardpoints the `items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /models/{slug}/hardpoints the `items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /models/{slug}/hardpoints the response property `items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 GET /models/{slug}/loaners added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/loaners added the new `Commodity` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/loaners added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/{slug}/loaners added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/loaners added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/loaners added the new `Equipment` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/loaners added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/{slug}/loaners added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/loaners the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
 GET /models/{slug}/module-packages added the new `Commodity` enum value to the `items/items/modules/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/module-packages added the new `Commodity` enum value to the `items/items/modules/items/availability/soldAt/items/itemType` response property for the response status `200`
@@ -447,6 +434,8 @@ GET /models/{slug}/module-packages added the new `Equipment` enum value to the `
 GET /models/{slug}/module-packages added the new `Equipment` enum value to the `items/items/modules/items/availability/soldAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/module-packages added the new `Equipment` enum value to the `items/items/modules/items/hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/module-packages added the new `Equipment` enum value to the `items/items/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/{slug}/module-packages the `items/items/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /models/{slug}/module-packages the `items/items/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /models/{slug}/module-packages the response property `items/items/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /models/{slug}/module-packages the response property `items/items/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 GET /models/{slug}/modules added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
@@ -457,6 +446,8 @@ GET /models/{slug}/modules added the new `Equipment` enum value to the `items/it
 GET /models/{slug}/modules added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/modules added the new `Equipment` enum value to the `items/items/hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/modules added the new `Equipment` enum value to the `items/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/{slug}/modules the `items/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /models/{slug}/modules the `items/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /models/{slug}/modules the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
 GET /models/{slug}/modules the response property `items/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 GET /models/{slug}/paints added the new `Commodity` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
@@ -466,19 +457,43 @@ GET /models/{slug}/paints added the new `Equipment` enum value to the `items/ava
 GET /models/{slug}/snub-crafts added the new `Commodity` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/snub-crafts added the new `Commodity` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/snub-crafts added the new `Commodity` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/{slug}/snub-crafts added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/snub-crafts added the new `Equipment` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/snub-crafts added the new `Equipment` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/snub-crafts added the new `Equipment` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/{slug}/snub-crafts added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/snub-crafts the response property `items/cargoHolds/items/name` became nullable for the status `200`
 GET /models/{slug}/variants added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/variants added the new `Commodity` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/variants added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/{slug}/variants added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/variants added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/variants added the new `Equipment` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /models/{slug}/variants added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /models/{slug}/variants added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
 GET /models/{slug}/variants the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/embed added the new `Commodity` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /models/embed added the new `Commodity` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /models/embed added the new `Commodity` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/embed added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/embed added the new `Equipment` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /models/embed added the new `Equipment` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /models/embed added the new `Equipment` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/embed the response property `items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/latest added the new `Commodity` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /models/latest added the new `Commodity` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /models/latest added the new `Commodity` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/latest added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/latest added the new `Equipment` enum value to the `items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /models/latest added the new `Equipment` enum value to the `items/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /models/latest added the new `Equipment` enum value to the `items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/latest the response property `items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/with-docks added the new `Commodity` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /models/with-docks added the new `Commodity` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /models/with-docks added the new `Commodity` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/with-docks added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/with-docks added the new `Equipment` enum value to the `items/items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /models/with-docks added the new `Equipment` enum value to the `items/items/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /models/with-docks added the new `Equipment` enum value to the `items/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /models/with-docks the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
 GET /notification-preferences added the new `announcement` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_ally_request_accepted` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_ally_request_received` enum value to the `items/notificationType` response property for the response status `200`
@@ -488,26 +503,15 @@ GET /notification-preferences added the new `fleet_contract_crew_requested` enum
 GET /notification-preferences added the new `fleet_contract_fulfilled` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_contract_published` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_cancelled` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_cancelled` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_completed` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_completed` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_locked` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_locked` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_published` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_published` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_signup_added` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_signup_added` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_signup_assigned` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_signup_assigned` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_signup_confirmed` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_signup_confirmed` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_signup_kicked` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_signup_kicked` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_signup_withdrawn` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_signup_withdrawn` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_started` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_started` enum value to the `items/notificationType` response property for the response status `200`
-GET /notification-preferences added the new `fleet_event_starting_soon` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `fleet_event_starting_soon` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `friend_request_accepted` enum value to the `items/notificationType` response property for the response status `200`
 GET /notification-preferences added the new `friend_request_received` enum value to the `items/notificationType` response property for the response status `200`
@@ -524,26 +528,15 @@ GET /notifications added the new `fleet_contract_crew_requested` enum value to t
 GET /notifications added the new `fleet_contract_fulfilled` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_contract_published` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_cancelled` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_cancelled` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_completed` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_completed` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_locked` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_locked` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_published` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_published` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_signup_added` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_signup_added` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_signup_assigned` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_signup_assigned` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_signup_confirmed` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_signup_confirmed` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_signup_kicked` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_signup_kicked` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_signup_withdrawn` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_signup_withdrawn` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_started` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_started` enum value to the `items/items/notificationType` response property for the response status `200`
-GET /notifications added the new `fleet_event_starting_soon` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `fleet_event_starting_soon` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `friend_request_accepted` enum value to the `items/items/notificationType` response property for the response status `200`
 GET /notifications added the new `friend_request_received` enum value to the `items/items/notificationType` response property for the response status `200`
@@ -564,6 +557,8 @@ GET /public/fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to 
 GET /public/fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Commodity` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #1: Model]/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #1: Model]/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #1: Model]/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #1: Model]/availability/soldAt/items/itemType` response property for the response status `200`
@@ -576,8 +571,8 @@ GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to 
 GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles added the new `Equipment` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #1: Model]/metrics/hullParts/items/category` response property for the response status `200`
-GET /public/fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /public/fleets/{fleetSlug}/vehicles the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #1: Model]/cargoHolds/items/name` became nullable for the status `200`
 GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/model/cargoHolds/items/name` became nullable for the status `200`
 GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
@@ -591,6 +586,7 @@ GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Commodity` enum val
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Commodity` enum value to the `items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Commodity` enum value to the `items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `cosmetic` enum value to the `items/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum value to the `items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum value to the `items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum value to the `items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -600,32 +596,11 @@ GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum val
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum value to the `items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed added the new `Equipment` enum value to the `items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/fleets/{fleetSlug}/vehicles/embed added the new `cosmetic` enum value to the `items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed the `items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed the `items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/model/cargoHolds/items/name` became nullable for the status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/model/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/model/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/model/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Commodity` enum value to the `items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/model/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/model/availability/rentalAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/model/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `Equipment` enum value to the `items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/embed added the new `cosmetic` enum value to the `items/model/metrics/hullParts/items/category` response property for the response status `200`
-GET /public/hangars/embed the response property `items/model/cargoHolds/items/name` became nullable for the status `200`
-GET /public/hangars/embed the response property `items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
-GET /public/hangars/embed the response property `items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 GET /public/hangars/{username} added the new `Commodity` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Commodity` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Commodity` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -635,6 +610,7 @@ GET /public/hangars/{username} added the new `Commodity` enum value to the `item
 GET /public/hangars/{username} added the new `Commodity` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Commodity` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Commodity` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/{username} added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /public/hangars/{username} added the new `Equipment` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Equipment` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Equipment` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -644,10 +620,35 @@ GET /public/hangars/{username} added the new `Equipment` enum value to the `item
 GET /public/hangars/{username} added the new `Equipment` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Equipment` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/hangars/{username} added the new `Equipment` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/hangars/{username} added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/hangars/{username} the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /public/hangars/{username} the `items/items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /public/hangars/{username} the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
 GET /public/hangars/{username} the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /public/hangars/{username} the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/model/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/model/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/model/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Commodity` enum value to the `items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `cosmetic` enum value to the `items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/model/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/model/availability/rentalAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/model/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed added the new `Equipment` enum value to the `items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/hangars/embed the `items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /public/hangars/embed the `items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /public/hangars/embed the response property `items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /public/hangars/embed the response property `items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/hangars/embed the response property `items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 GET /public/wishlists/{username} added the new `Commodity` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Commodity` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Commodity` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -657,6 +658,7 @@ GET /public/wishlists/{username} added the new `Commodity` enum value to the `it
 GET /public/wishlists/{username} added the new `Commodity` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Commodity` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Commodity` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /public/wishlists/{username} added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Equipment` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Equipment` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Equipment` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -666,7 +668,8 @@ GET /public/wishlists/{username} added the new `Equipment` enum value to the `it
 GET /public/wishlists/{username} added the new `Equipment` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Equipment` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /public/wishlists/{username} added the new `Equipment` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /public/wishlists/{username} added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/wishlists/{username} the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /public/wishlists/{username} the `items/items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /public/wishlists/{username} the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
 GET /public/wishlists/{username} the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /public/wishlists/{username} the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
@@ -688,6 +691,7 @@ GET /vehicles/{id} added the new `Commodity` enum value to the `modulePackage/mo
 GET /vehicles/{id} added the new `Commodity` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /vehicles/{id} added the new `Commodity` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /vehicles/{id} added the new `Commodity` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
 GET /vehicles/{id} added the new `Equipment` enum value to the `model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /vehicles/{id} added the new `Equipment` enum value to the `model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /vehicles/{id} added the new `Equipment` enum value to the `model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -697,7 +701,8 @@ GET /vehicles/{id} added the new `Equipment` enum value to the `modulePackage/mo
 GET /vehicles/{id} added the new `Equipment` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /vehicles/{id} added the new `Equipment` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /vehicles/{id} added the new `Equipment` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
+GET /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
 GET /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
@@ -743,6 +748,7 @@ GET /wishlist added the new `Commodity` enum value to the `items/items/modulePac
 GET /wishlist added the new `Commodity` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Commodity` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Commodity` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
+GET /wishlist added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
 GET /wishlist added the new `Equipment` enum value to the `items/items/model/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Equipment` enum value to the `items/items/model/availability/rentalAt/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Equipment` enum value to the `items/items/model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -752,7 +758,8 @@ GET /wishlist added the new `Equipment` enum value to the `items/items/modulePac
 GET /wishlist added the new `Equipment` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Equipment` enum value to the `items/items/paint/availability/boughtAt/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Equipment` enum value to the `items/items/paint/availability/soldAt/items/itemType` response property for the response status `200`
-GET /wishlist added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /wishlist the `items/items/modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+GET /wishlist the `items/items/modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 GET /wishlist the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
 GET /wishlist the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /wishlist the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
@@ -760,62 +767,6 @@ PATCH /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug} added th
 PATCH /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
 PATCH /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Commodity` enum value to the `item/type` response property for the response status `200`
 PATCH /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
-POST /fleets/use-invite added the new `fleet:allies:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:allies:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:allies:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:allies:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:contracts:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:contracts:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:contracts:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:contracts:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:contracts:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:events:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:events:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:events:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:events:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:events:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:inventories:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:inventories:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:inventories:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:inventories:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:inventories:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:invites:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:invites:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:invites:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:invites:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:invites:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:memberships:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:memberships:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:memberships:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:memberships:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:memberships:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:missions:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:missions:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:missions:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:missions:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:missions:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:notifications:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:payouts:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:payouts:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:payouts:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:payouts:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:payouts:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:roles:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:roles:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:roles:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:roles:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:roles:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:update:description` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:update:images` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:vehicles:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:vehicles:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:vehicles:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:vehicles:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite added the new `fleet:vehicles:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
-POST /fleets/use-invite the response property `fleetRole` became optional for the status `201`
 POST /fleets/{fleetSlug}/inventories removed the required property `itemCount` from the response with the `201` status
 POST /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Commodity` enum value to the `item/type` response property for the response status `201`
 POST /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Component` enum value to the `item/type` response property for the response status `201`
@@ -879,6 +830,62 @@ POST /fleets/{fleetSlug}/members added the new `fleet:vehicles:update` enum valu
 POST /fleets/{fleetSlug}/members the response property `fleetRole` became optional for the status `201`
 POST /fleets/{fleetSlug}/missions removed the required property `details` from the response with the `400` status
 POST /fleets/{fleetSlug}/missions removed the required property `error` from the response with the `400` status
+POST /fleets/use-invite added the new `fleet:allies:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:allies:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:allies:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:allies:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:contracts:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:contracts:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:contracts:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:contracts:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:contracts:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:events:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:events:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:events:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:events:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:events:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:inventories:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:inventories:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:inventories:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:inventories:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:inventories:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:invites:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:invites:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:invites:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:invites:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:invites:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:memberships:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:memberships:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:memberships:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:memberships:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:memberships:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:missions:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:missions:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:missions:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:missions:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:missions:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:notifications:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:payouts:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:payouts:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:payouts:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:payouts:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:payouts:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:roles:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:roles:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:roles:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:roles:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:roles:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:update:description` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:update:images` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:vehicles:create` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:vehicles:delete` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:vehicles:manage` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:vehicles:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite added the new `fleet:vehicles:update` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+POST /fleets/use-invite the response property `fleetRole` became optional for the status `201`
 POST /hangar/inventories removed the required property `itemCount` from the response with the `201` status
 POST /hangar/inventories/{hangarInventorySlug}/items added the new `Commodity` enum value to the `item/type` response property for the response status `201`
 POST /hangar/inventories/{hangarInventorySlug}/items added the new `Equipment` enum value to the `item/type` response property for the response status `201`
@@ -891,6 +898,7 @@ POST /vehicles added the new `Commodity` enum value to the `modulePackage/module
 POST /vehicles added the new `Commodity` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `201`
 POST /vehicles added the new `Commodity` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `201`
 POST /vehicles added the new `Commodity` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `201`
+POST /vehicles added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `201`
 POST /vehicles added the new `Equipment` enum value to the `model/availability/boughtAt/items/itemType` response property for the response status `201`
 POST /vehicles added the new `Equipment` enum value to the `model/availability/rentalAt/items/itemType` response property for the response status `201`
 POST /vehicles added the new `Equipment` enum value to the `model/availability/soldAt/items/itemType` response property for the response status `201`
@@ -900,12 +908,11 @@ POST /vehicles added the new `Equipment` enum value to the `modulePackage/module
 POST /vehicles added the new `Equipment` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `201`
 POST /vehicles added the new `Equipment` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `201`
 POST /vehicles added the new `Equipment` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `201`
-POST /vehicles added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `201`
+POST /vehicles the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
+POST /vehicles the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `201`
 POST /vehicles the response property `model/cargoHolds/items/name` became nullable for the status `201`
 POST /vehicles the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `201`
 POST /vehicles the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
-POST /vehicles/bulk removed the required property `details` from the response with the `400` status
-POST /vehicles/bulk removed the required property `error` from the response with the `400` status
 POST /vehicles/{vehicle_id}/loadouts added the new `Commodity` enum value to the `hardpoints/items/component/availability/boughtAt/items/itemType` response property for the response status `201`
 POST /vehicles/{vehicle_id}/loadouts added the new `Commodity` enum value to the `hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `201`
 POST /vehicles/{vehicle_id}/loadouts added the new `Commodity` enum value to the `hardpoints/items/hardpoint/component/availability/boughtAt/items/itemType` response property for the response status `201`
@@ -924,6 +931,8 @@ POST /vehicles/{vehicle_id}/loadouts removed the required property `hardpoints` 
 POST /vehicles/{vehicle_id}/loadouts the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
 POST /vehicles/{vehicle_id}/loadouts the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
 POST /vehicles/{vehicle_id}/loadouts the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /vehicles/bulk removed the required property `details` from the response with the `400` status
+POST /vehicles/bulk removed the required property `error` from the response with the `400` status
 PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} added the new `Commodity` enum value to the `item/type` response property for the response status `200`
 PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} added the new `Component` enum value to the `item/type` response property for the response status `200`
 PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
@@ -1131,26 +1140,15 @@ PUT /notification-preferences/{id} added the new `fleet_contract_crew_requested`
 PUT /notification-preferences/{id} added the new `fleet_contract_fulfilled` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_contract_published` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_cancelled` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_cancelled` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_completed` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_completed` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_locked` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_locked` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_published` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_published` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_signup_added` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_signup_added` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_signup_assigned` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_signup_assigned` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_signup_confirmed` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_signup_confirmed` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_signup_kicked` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_signup_kicked` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_signup_withdrawn` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_signup_withdrawn` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_started` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_started` enum value to the `notificationType` response property for the response status `200`
-PUT /notification-preferences/{id} added the new `fleet_event_starting_soon` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `fleet_event_starting_soon` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `friend_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notification-preferences/{id} added the new `friend_request_received` enum value to the `notificationType` response property for the response status `200`
@@ -1182,26 +1180,15 @@ PUT /notifications/{id}/read added the new `fleet_contract_crew_requested` enum 
 PUT /notifications/{id}/read added the new `fleet_contract_fulfilled` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_contract_published` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_cancelled` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_cancelled` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_completed` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_completed` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_locked` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_locked` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_published` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_published` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_signup_added` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_signup_added` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_signup_assigned` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_signup_assigned` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_signup_confirmed` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_signup_confirmed` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_signup_kicked` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_signup_kicked` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_signup_withdrawn` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_signup_withdrawn` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_started` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_started` enum value to the `notificationType` response property for the response status `200`
-PUT /notifications/{id}/read added the new `fleet_event_starting_soon` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `fleet_event_starting_soon` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `friend_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `friend_request_received` enum value to the `notificationType` response property for the response status `200`
@@ -1251,6 +1238,7 @@ PUT /vehicles/{id} added the new `Commodity` enum value to the `modulePackage/mo
 PUT /vehicles/{id} added the new `Commodity` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 PUT /vehicles/{id} added the new `Commodity` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `200`
 PUT /vehicles/{id} added the new `Commodity` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `200`
+PUT /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `Equipment` enum value to the `model/availability/boughtAt/items/itemType` response property for the response status `200`
 PUT /vehicles/{id} added the new `Equipment` enum value to the `model/availability/rentalAt/items/itemType` response property for the response status `200`
 PUT /vehicles/{id} added the new `Equipment` enum value to the `model/availability/soldAt/items/itemType` response property for the response status `200`
@@ -1260,7 +1248,8 @@ PUT /vehicles/{id} added the new `Equipment` enum value to the `modulePackage/mo
 PUT /vehicles/{id} added the new `Equipment` enum value to the `modulePackage/modules/items/hardpoints/items/component/availability/soldAt/items/itemType` response property for the response status `200`
 PUT /vehicles/{id} added the new `Equipment` enum value to the `paint/availability/boughtAt/items/itemType` response property for the response status `200`
 PUT /vehicles/{id} added the new `Equipment` enum value to the `paint/availability/soldAt/items/itemType` response property for the response status `200`
-PUT /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
+PUT /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
+PUT /vehicles/{id} the `modulePackage/modules/items/hardpoints/items/hardpoints/items/component/inventoryConsumption` response's property `type` changed from `string` to `object` for status `200`
 PUT /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`

@@ -10044,8 +10044,20 @@ components:
           "$ref": "#/components/schemas/ComponentTypeEnum"
         subType:
           type: string
-        inventoryConsumption:
+        description:
           type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
+        inventoryConsumption:
+          "$ref": "#/components/schemas/ComponentInventoryConsumption"
+        ammunition:
+          "$ref": "#/components/schemas/ComponentAmmunition"
+        powerConnection:
+          "$ref": "#/components/schemas/ComponentPowerConnection"
+        heatConnection:
+          "$ref": "#/components/schemas/ComponentHeatConnection"
         grade:
           type: string
         gradeLabel:
@@ -10109,6 +10121,17 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentAmmunition:
+      type: object
+      properties:
+        maxAmmoCount:
+          type: number
+        initialAmmoCount:
+          type: number
+        maxRestockCount:
+          type: number
+      additionalProperties: false
+      title: ComponentAmmunition
     ComponentAngularVelocity:
       type: object
       properties:
@@ -10246,6 +10269,17 @@ components:
           "$ref": "#/components/schemas/ComponentDamageRange"
       additionalProperties: false
       title: ComponentDamageTypeMap
+    ComponentHeatConnection:
+      type: object
+      properties:
+        thermalEnergyBase:
+          type: number
+        thermalEnergyDraw:
+          type: number
+        coolingRate:
+          type: number
+      additionalProperties: false
+      title: ComponentHeatConnection
     ComponentInput:
       type: object
       properties:
@@ -10284,6 +10318,23 @@ components:
           type: string
       additionalProperties: false
       title: ComponentInput
+    ComponentInventoryConsumption:
+      type: object
+      properties:
+        microScu:
+          type: number
+        dimensions:
+          type: object
+          properties:
+            x:
+              type: number
+            "y":
+              type: number
+            z:
+              type: number
+          additionalProperties: false
+      additionalProperties: false
+      title: ComponentInventoryConsumption
     ComponentItemClassEnum:
       type: string
       enum:
@@ -10321,6 +10372,15 @@ components:
           type: number
       additionalProperties: false
       title: ComponentPingProperties
+    ComponentPowerConnection:
+      type: object
+      properties:
+        powerBase:
+          type: number
+        powerDraw:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerConnection
     ComponentPowerPlant:
       type: object
       properties:
@@ -10596,13 +10656,49 @@ components:
       enum:
       - name asc
       - name desc
+      - grade asc
+      - grade desc
       - createdAt asc
       - createdAt desc
+      - maxHealth asc
+      - maxHealth desc
+      - maxRegen asc
+      - maxRegen desc
+      - jumpRange asc
+      - jumpRange desc
+      - driveSpeed asc
+      - driveSpeed desc
+      - coolingRate asc
+      - coolingRate desc
+      - powerBase asc
+      - powerBase desc
+      - health asc
+      - health desc
+      - thrustCapacity asc
+      - thrustCapacity desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
+      - GRADE_ASC
+      - GRADE_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - MAX_HEALTH_ASC
+      - MAX_HEALTH_DESC
+      - MAX_REGEN_ASC
+      - MAX_REGEN_DESC
+      - JUMP_RANGE_ASC
+      - JUMP_RANGE_DESC
+      - DRIVE_SPEED_ASC
+      - DRIVE_SPEED_DESC
+      - COOLING_RATE_ASC
+      - COOLING_RATE_DESC
+      - POWER_BASE_ASC
+      - POWER_BASE_DESC
+      - HEALTH_ASC
+      - HEALTH_DESC
+      - THRUST_CAPACITY_ASC
+      - THRUST_CAPACITY_DESC
       title: ComponentSortEnum
     ComponentThruster:
       type: object
@@ -17398,6 +17494,23 @@ components:
       - meta
       - items
       title: Videos
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -17427,23 +17540,6 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed

@@ -22,7 +22,16 @@ module Shared
             type: ::Shared::V1::Schemas::Enums::ComponentTypeEnum,
             subType: {type: :string},
 
-            inventoryConsumption: {type: :string},
+            description: {type: :string},
+
+            # A port and the item that fits it name a shared tag. `tags` -- the
+            # item's own -- is absent until the parser stops double-encoding it.
+            requiredTags: {type: :array, items: {type: :string}},
+
+            inventoryConsumption: ::Shared::V1::Schemas::ComponentInventoryConsumption,
+            ammunition: ::Shared::V1::Schemas::ComponentAmmunition,
+            powerConnection: ::Shared::V1::Schemas::ComponentPowerConnection,
+            heatConnection: ::Shared::V1::Schemas::ComponentHeatConnection,
 
             grade: {type: :string},
             gradeLabel: {type: :string},
@@ -55,6 +64,8 @@ module Shared
               ]
             },
 
+            # Detail responses only -- a list omits it rather than paying an
+            # association hit per row, which is why it is not required.
             hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},
 
             createdAt: {type: :string, format: "date-time"},

@@ -3,7 +3,7 @@
 module Api
   module V1
     class ComponentsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index weapons]
+      skip_verify_authorized only: %i[index show weapons]
 
       after_action -> { pagination_header(:components) }, only: [:index]
 
@@ -34,8 +34,23 @@ module Api
           .order(name: :asc)
       end
 
+      # One component, with the parts a list leaves out. Resolved by slug, which
+      # is unique as of the catalogue work -- before that a name like "Manned
+      # Turret" matched 112 rows and there was no detail page to serve.
+      def show
+        slug = params[:slug].to_s.downcase
+        @component = Component.includes(:manufacturer).find_by!(slug:)
+      end
+
       def index
-        components_query_params["sorts"] = "name asc"
+        # The model has named its allowed sorts all along; this action threw them
+        # away and forced `name asc` on every request. `sorting_params` is what
+        # every other list endpoint uses, and it falls back to the model's
+        # default rather than trusting whatever arrives. `normalize_sort_params`
+        # first, because a sortable list sends `q[s]` and ransack would read a
+        # leftover `s` ahead of the whitelisted `sorts`.
+        normalize_sort_params(components_query_params)
+        components_query_params["sorts"] = sorting_params(Component, components_query_params["sorts"])
 
         # `with_facts` because the filters resolve against the joined build.
         # Without it a fact condition raises rather than quietly matching the
@@ -63,10 +78,20 @@ module Api
       end
 
       private def components_query_params
+        # `description_cont` and `manufacturer_name_cont` are new -- a catalogue
+        # search matching only a name cannot find "the Behring one", or a
+        # component by what it does.
+        #
+        # `item_type_in` and `component_class_in` stay permitted even though no
+        # row in the current build carries either column. Dropping them would
+        # not error, it would silently stop filtering, so a client asking for
+        # nothing would suddenly receive everything. They go when the endpoints
+        # feeding them do.
         @components_query_params ||= params.permit(q: [
-          :name_cont, :current_version, :hidden_eq,
-          id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [], component_class_in: [],
-          category_in: [], component_sub_type_in: []
+          :s, :sorts, :name_cont, :description_cont, :manufacturer_name_cont,
+          :current_version, :hidden_eq,
+          sorts: [], id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [],
+          component_class_in: [], category_in: [], component_sub_type_in: []
         ]).fetch(:q, {})
       end
     end
