@@ -73,7 +73,12 @@ class FleetSubscription < ApplicationRecord
 
   # Seeded from a payment, so D9's reconciler may close it again. A grant with
   # no contribution behind it is somebody's decision and is left alone.
-  scope :seeded, -> { where.not(supporter_contribution_id: nil) }
+  #
+  # Keyed on the provenance rather than on the id being present: deleting a
+  # contribution nullifies the reference, and an id test would then reclassify
+  # the row as a comp and leave the reconciler unable to close it. The two have
+  # to agree, and `granted_via` is the one that survives.
+  scope :seeded, -> { where(granted_via: "contribution") }
 
   def active_on?(date = Date.current)
     started_at <= date && (ended_at.nil? || ended_at >= date)
@@ -81,6 +86,17 @@ class FleetSubscription < ApplicationRecord
 
   def open?
     ended_at.nil?
+  end
+
+  # `Fleet#subscribed?` memoises, so a write through here has to say so or the
+  # instance that already asked keeps answering with what it saw. Only reaches
+  # the fleet this row loads -- another instance elsewhere in the same request
+  # still holds its own answer, which is why the memo is documented as
+  # request-scoped rather than as a cache.
+  after_commit :clear_fleet_entitlement_cache
+
+  private def clear_fleet_entitlement_cache
+    association(:fleet).target&.clear_entitlement_cache
   end
 
   private def ended_at_not_before_started_at

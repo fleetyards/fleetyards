@@ -17,15 +17,19 @@ module Subscriptions
   # separately (D1).
   PREMIUM_FEATURES = %i[contracts events logistics tours].freeze
 
-  # The figure, in cents. A one-off is judged on `amount_cents`, which
-  # `SupporterImporter#apply_amount` has already normalised to EUR through
-  # ExchangeRateFetcher, so nothing converts at read time.
+  # The figure, in EUR cents, compared against `amount_cents` -- which
+  # `SupporterImporter#apply_amount` and `Kofi::PaymentImporter#apply_amount`
+  # have both already normalised through ExchangeRateFetcher. One currency, one
+  # comparison, no conversion at read time.
   #
-  # A standing pledge is judged on the currency it was pledged in instead --
-  # see `qualifying?`. Matches the second SUPPORTER_TIERS step on User, which is
-  # the figure a recurring pledge already has to clear to read as committed
-  # support.
-  QUALIFYING_AMOUNT_CENTS = 500
+  # Set below EUR 5 on purpose. Every standing pledge on the platform is $5,
+  # which converts to about EUR 4.36, and refusing the only people currently
+  # paying is the outcome D16 exists to prevent. EUR 4 clears that with room for
+  # the rate to move against us by roughly 8% before it bites again.
+  #
+  # This is the one number that decides who qualifies, so it is meant to be
+  # argued about rather than inherited.
+  QUALIFYING_AMOUNT_CENTS = 400
 
   def self.qualifying_amount_cents
     QUALIFYING_AMOUNT_CENTS
@@ -35,25 +39,12 @@ module Subscriptions
   # Whether it is active, and which fleet it names, are the reconciler's
   # questions rather than this one's.
   #
-  # The figure is met in *either* currency: the normalised EUR amount, or what
-  # the supporter actually set in the currency they set it in.
-  #
-  # Deliberately not keyed on `recurring?`. Every pledge on the platform today
-  # is $5, which converts to EUR 4.36, so an EUR-only rule refuses the only
-  # people currently paying -- and `recurring` is not the axis that separates
-  # them, because the two importers record a standing pledge differently.
-  # Patreon marks one row recurring; Ko-fi deliberately writes a fresh
-  # non-recurring row per payment, since it notifies on payment and never on
-  # cancellation. Keying on the flag would qualify a $5 Patreon pledge and
-  # refuse an identical $5 Ko-fi subscription, which is a fact about our
-  # importers rather than about what the supporter did.
-  #
-  # The cost is that a one-off $5 also clears an EUR 5 bar. That is the right
-  # side to err on: the alternative refuses somebody who gave what was asked
-  # because the rate moved between their pledge and the read.
+  # Only the normalised figure is compared. An earlier version also accepted
+  # `source_amount_cents` against the same number, to let a $5 pledge through --
+  # but minor units are not comparable across currencies, so 500 HUF (about
+  # EUR 1.25) qualified too. The pledge problem is a question about the figure,
+  # not about which currency to measure it in.
   def self.qualifying?(contribution)
-    [contribution.amount_cents, contribution.source_amount_cents]
-      .compact
-      .any? { |cents| cents >= QUALIFYING_AMOUNT_CENTS }
+    contribution.amount_cents.to_i >= QUALIFYING_AMOUNT_CENTS
   end
 end

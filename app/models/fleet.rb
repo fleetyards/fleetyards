@@ -267,16 +267,29 @@ class Fleet < ApplicationRecord
   # the same, so an entitlement read reached from inside either loop would
   # multiply by the flag count. Asserted with a query-count test.
   def subscribed?(date = Date.current)
-    return @subscribed[date] if defined?(@subscribed) && @subscribed.key?(date)
+    return @subscribed[date] if @subscribed&.key?(date)
 
     @subscribed ||= {}
     @subscribed[date] = fleet_subscriptions.active_on(date).exists?
   end
 
+  # Called by FleetSubscription after a write, and by `reload`. The memo is a
+  # per-request read rather than a cache with an invalidation story: a second
+  # Fleet instance loaded elsewhere in the same request keeps its own answer.
+  def clear_entitlement_cache
+    @subscribed = nil
+    @active_subscription = nil
+  end
+
+  def reload(*)
+    clear_entitlement_cache
+    super
+  end
+
   # The row itself, for anything that needs to say *why* -- an admin screen, or
   # a notification naming what lapsed.
   def active_subscription(date = Date.current)
-    return @active_subscription[date] if defined?(@active_subscription) && @active_subscription.key?(date)
+    return @active_subscription[date] if @active_subscription&.key?(date)
 
     @active_subscription ||= {}
     @active_subscription[date] = fleet_subscriptions.active_on(date).first

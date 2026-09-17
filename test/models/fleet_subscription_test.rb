@@ -108,6 +108,18 @@ class FleetSubscriptionTest < ActiveSupport::TestCase
     refute_includes ids, comped.id
   end
 
+  # An id test would reclassify this as a comp the moment the contribution went
+  # away, and the reconciler would then never close it.
+  test "seeded still finds a row whose contribution was deleted" do
+    subscription = create(:fleet_subscription, :seeded)
+
+    subscription.supporter_contribution.destroy!
+
+    assert_nil subscription.reload.supporter_contribution_id
+    assert FleetSubscription.seeded.exists?(id: subscription.id),
+      "provenance and the scope have to agree, or a seeded row becomes uncloseable"
+  end
+
   test "a grant is manual unless it says otherwise" do
     assert_equal "manual", create(:fleet_subscription).granted_via
     assert create(:fleet_subscription).granted_via_manual?

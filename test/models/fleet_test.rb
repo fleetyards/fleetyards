@@ -171,6 +171,35 @@ class FleetTest < ActiveSupport::TestCase
     assert_equal 1, queries, "expected one query, got #{queries}"
   end
 
+  # The memo answers for the life of the instance, so a write has to say so --
+  # otherwise the fleet that already asked keeps granting after it lapsed.
+  test "a subscription write clears the memo on the fleet it belongs to" do
+    fleet = create(:fleet)
+    subscription = create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    assert subject.subscribed?
+
+    subscription.fleet = subject
+    subscription.update!(started_at: Date.current - 10, ended_at: Date.current - 1)
+
+    refute subject.subscribed?, "the memo outlived the row it was reading"
+  end
+
+  test "reload clears the memo" do
+    fleet = create(:fleet)
+    subscription = create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    assert subject.subscribed?
+
+    FleetSubscription.where(id: subscription.id)
+      .update_all(started_at: Date.current - 10, ended_at: Date.current - 1)
+
+    assert subject.subscribed?, "still memoised, which is the documented contract"
+    refute subject.reload.subscribed?
+  end
+
   test "active_subscription is memoised the same way" do
     fleet = create(:fleet)
     create(:fleet_subscription, fleet:)
