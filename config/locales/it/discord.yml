@@ -3,7 +3,6 @@ it:
   discord:
     commands:
       account_not_linked: 'Collega prima il tuo account Discord su Fleetyards: %{url}'
-      disabled: I comandi Fleetyards non sono ancora disponibili.
       failed: Qualcosa è andato storto durante la ricerca. Riprova.
       compare:
         missing_query: Indica due navi.

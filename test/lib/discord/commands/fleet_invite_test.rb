@@ -7,8 +7,6 @@ module Discord
   module Commands
     class FleetInviteTest < ActiveSupport::TestCase
       setup do
-        Flipper.enable(:discord_fleet_commands)
-
         @fleet = create(:fleet, :private, name: "Test Wing")
         @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
 
@@ -142,13 +140,6 @@ module Discord
         @fleet.fleet_memberships.find_by(user_id: @user.id).discard
 
         assert_equal I18n.t("discord.commands.fleet.invite.not_allowed"), call[:content]
-        assert_empty @fleet.fleet_invite_urls
-      end
-
-      test "the command is refused while the flag is off" do
-        Flipper.disable(:discord_fleet_commands)
-
-        assert_equal I18n.t("discord.commands.disabled"), call[:content]
         assert_empty @fleet.fleet_invite_urls
       end
 

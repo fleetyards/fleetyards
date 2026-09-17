@@ -3,7 +3,6 @@ zh-CN:
   discord:
     commands:
       account_not_linked: '请先在 Fleetyards 上关联你的 Discord 账号：%{url}'
-      disabled: Fleetyards 命令尚不可用。
       failed: 查询时出错，请重试。
       compare:
         missing_query: 请提供两艘飞船。

@@ -20,8 +20,6 @@ module Discord
       }.freeze
 
       def call
-        return message(content: I18n.t("discord.commands.disabled")) unless enabled?
-
         fleet = guild_fleet
         return message(content: I18n.t("discord.commands.fleet.not_bound")) if fleet.nil?
 
@@ -35,10 +33,6 @@ module Discord
         return message(content: I18n.t("discord.commands.fleet.invite.failed")) unless invite.save
 
         message(content: content_for(invite))
-      end
-
-      private def enabled?
-        Flipper.enabled?(:discord_fleet_commands)
       end
 
       private def build_invite(fleet, user)

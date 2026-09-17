@@ -3,7 +3,6 @@ en:
   discord:
     commands:
       account_not_linked: 'Link your Discord account on Fleetyards first: %{url}'
-      disabled: Fleetyards commands are not available yet.
       failed: Something went wrong while looking that up. Please try again.
       compare:
         missing_query: Please name two ships.
