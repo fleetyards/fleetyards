@@ -98,15 +98,26 @@ module Api
           end
       end
 
+      # `try` rather than a FleetEvent check: a tour organised from a fleet's
+      # page carries one too, and naming only the event class would gate a fleet
+      # tour's ledger as though it were the personal tool.
       private def subject_fleet
-        @subject.is_a?(FleetEvent) ? @subject.fleet : nil
+        @subject.try(:fleet)
       end
 
+      # See PayoutLedgerScoped for why there are two flags. Resolved from the
+      # subject as well, because create runs before a ledger exists.
       private def check_tour_payouts_feature
         fleet = @payout_ledger&.fleet || subject_fleet
         actors = fleet ? [fleet] : []
-        return if feature_enabled?("tour_payouts", *actors)
 
+        return render_payouts_unavailable unless feature_enabled?("tour_payouts", *actors)
+        return if fleet.blank? || feature_enabled?("fleet_tours", *actors)
+
+        render_payouts_unavailable
+      end
+
+      private def render_payouts_unavailable
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
     end

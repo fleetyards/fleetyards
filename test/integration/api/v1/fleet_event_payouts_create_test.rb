@@ -65,6 +65,9 @@ class Api::V1::FleetEventPayoutsCreateTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("tour_payouts")
+    # The ledger on a fleet event is a fleet surface, so it needs the fleet flag
+    # on top of the one that makes payouts exist at all.
+    Flipper.enable("fleet_tours")
     Flipper.enable("fleet_mission_builder")
 
     @admin = create(:user)
@@ -136,5 +139,22 @@ class Api::V1::FleetEventPayoutsCreateTest < ActionDispatch::IntegrationTest
     create(:payout_ledger, subject: @event)
 
     assert_api_response :get, 401, path_params: path_params
+  end
+
+  # The split D3 exists for: every fleet-scoped payout surface behind
+  # fleet_tours, every personal one behind tour_payouts. Without it the flag
+  # that prices a fleet feature would also price the standalone tool.
+  test "the ledger on a fleet event needs the fleet flag" do
+    Flipper.disable("fleet_tours")
+    sign_in @admin
+
+    assert_api_response :post, 403, path_params: path_params
+  end
+
+  test "it still needs tour_payouts as well" do
+    Flipper.disable("tour_payouts")
+    sign_in @admin
+
+    assert_api_response :post, 403, path_params: path_params
   end
 end

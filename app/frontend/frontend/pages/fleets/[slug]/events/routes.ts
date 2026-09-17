@@ -50,7 +50,7 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-8",
       title: "fleets.events.payouts",
       needsAuthentication: true,
-      feature: FeatureFlagName.TOUR_PAYOUTS,
+      feature: [FeatureFlagName.TOUR_PAYOUTS, FeatureFlagName.FLEET_TOURS],
       featureScope: "fleet",
       // Event privileges are in the list because the ledger's own policy lets
       // an event's creator, admins and moderators manage it, and none of that

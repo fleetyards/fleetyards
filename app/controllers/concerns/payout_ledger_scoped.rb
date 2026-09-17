@@ -20,13 +20,25 @@ module PayoutLedgerScoped
     authorize! @payout_ledger, with: PayoutLedgerPolicy, to: :show?
   end
 
-  # One flag, two surfaces. A ledger on a fleet event is gated for that fleet;
-  # a tour is gated for the signed-in user alone, since it has no fleet to
-  # carry the toggle.
+  # Two flags, and which apply depends on what the ledger hangs off.
+  #
+  # `tour_payouts` is what makes a ledger exist at all and gates every one of
+  # them. A ledger that belongs to a fleet -- an event always, a tour when it
+  # was organised from a fleet's page -- is a *fleet* surface and needs
+  # `fleet_tours` on top. A standalone tour under /tools/ has no fleet to carry
+  # a toggle and stays on `tour_payouts` alone, which is what keeps the personal
+  # tool free of the fleet flag.
   private def check_tour_payouts_feature
-    actors = @payout_ledger&.fleet ? [@payout_ledger.fleet] : []
-    return if feature_enabled?("tour_payouts", *actors)
+    fleet = @payout_ledger&.fleet
+    actors = fleet ? [fleet] : []
 
+    return render_payouts_unavailable unless feature_enabled?("tour_payouts", *actors)
+    return if fleet.blank? || feature_enabled?("fleet_tours", *actors)
+
+    render_payouts_unavailable
+  end
+
+  private def render_payouts_unavailable
     render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
   end
 
