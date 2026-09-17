@@ -96,12 +96,6 @@ oauth-twitch:
   description: "Twitch login"
   permanent: true
 
-tools_cargo_grids:
-  description: "Cargo grid comparison tool"
-
-tools_travel_times:
-  description: "Travel time calculator tool"
-
 # One flag, two surfaces: the fleet toggle gates the ledger on a fleet event,
 # the user toggle gates the standalone tour under /tools. They roll out
 # together because it is one feature with two owners.

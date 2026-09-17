@@ -1,17 +1,8 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
-
-const enabledFeatures = vi.hoisted(() => ({ value: [] as string[] }));
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: string) =>
-      enabledFeatures.value.includes(feature),
-  }),
-}));
 
 // The panel carries a background image, and jsdom has no IntersectionObserver
 // for useLazyBackground to hand it to.
@@ -24,10 +15,6 @@ beforeAll(() => {
       disconnect() {}
     },
   );
-});
-
-beforeEach(() => {
-  enabledFeatures.value = ["tools_cargo_grids"];
 });
 
 const inventory = (
@@ -122,9 +109,8 @@ describe("InventoryPanel", () => {
     expect(wrapper.find(cargoGridsLink).exists()).toBe(false);
   });
 
-  // A hold the viewer cannot draw, and a tool the viewer cannot reach, both
-  // leave the link pointing at nothing.
-  it("keeps the viewer to ships with a grid and the feature on", async () => {
+  // A hold the viewer cannot draw leaves the link pointing at nothing.
+  it("keeps the viewer to ships with a grid", async () => {
     const gridless = await mount(
       shipInventory({
         vehicle: { id: "v1", name: "Vulture", model: { slug: "vulture" } },
@@ -132,12 +118,6 @@ describe("InventoryPanel", () => {
     );
 
     expect(gridless.find(cargoGridsLink).exists()).toBe(false);
-
-    enabledFeatures.value = [];
-
-    const disabled = await mount(shipInventory());
-
-    expect(disabled.find(cargoGridsLink).exists()).toBe(false);
   });
 
   it("flags an overfilled hold without hiding the numbers", async () => {

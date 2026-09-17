@@ -85,10 +85,6 @@
           "permanent": "长期"
         },
         "settingsIntro": "为您的账户启用或禁用实验性功能。这些功能可能不完整或随时更改。",
-        "descriptions": {
-          "tools_travel_times": "显示地点之间的预计旅行时间。",
-          "tools_cargo_grids": "显示飞船的交互式货物网格查看器。"
-        },
         "registryHint": "功能标志在 config/feature_flags.yml 中声明，并在部署时创建。您可以在此控制它们的开放范围。",
         "fleetSettingsIntro": "为整个舰队启用或禁用功能。您在此启用的内容对所有成员可见。",
         "fleetFeature": "舰队功能",

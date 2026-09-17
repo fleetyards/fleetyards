@@ -33,8 +33,6 @@ import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
-import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
-import { FeatureFlagName } from "@/services/fyApi";
 
 const { t, toNumber } = useI18n();
 
@@ -342,240 +340,238 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
 </script>
 
 <template>
-  <FeatureGuard :feature="FeatureFlagName.TOOLS_TRAVEL_TIMES">
-    <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+  <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
-    <p class="travel-times__intro">
-      {{ t("labels.travelTimes.intro") }}
-    </p>
+  <p class="travel-times__intro">
+    {{ t("labels.travelTimes.intro") }}
+  </p>
 
-    <div class="row">
-      <div class="col-12 col-md-4">
-        <Panel>
-          <PanelHeading :level="HeadingLevelEnum.H2">
-            {{ t("labels.travelTimes.jumpDistance") }}
-          </PanelHeading>
-          <PanelBody>
-            <FormInput
-              v-model.number="distance"
-              class="travel-times__distance"
-              :min="DISTANCE_MIN"
-              name="distance"
-              :type="InputTypesEnum.NUMBER"
-              :alignment="InputAlignmentsEnum.RIGHT"
-              suffix="Mkm"
-              no-label
-            />
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.travelTimes.jumpDistance") }}
+        </PanelHeading>
+        <PanelBody>
+          <FormInput
+            v-model.number="distance"
+            class="travel-times__distance"
+            :min="DISTANCE_MIN"
+            name="distance"
+            :type="InputTypesEnum.NUMBER"
+            :alignment="InputAlignmentsEnum.RIGHT"
+            suffix="Mkm"
+            no-label
+          />
 
-            <Slider
-              v-model="distance"
-              :min="DISTANCE_MIN"
-              :max="DISTANCE_MAX"
-              class="travel-times__slider"
-            />
+          <Slider
+            v-model="distance"
+            :min="DISTANCE_MIN"
+            :max="DISTANCE_MAX"
+            class="travel-times__slider"
+          />
 
-            <div class="travel-times__presets">
-              <Chip
-                v-for="preset in PRESETS"
-                :key="preset.key"
-                :state="
-                  distance === preset.mkm
-                    ? ChipStatesEnum.INCLUDED
-                    : ChipStatesEnum.NEUTRAL
-                "
-                @toggle="distance = preset.mkm"
-              >
-                {{ t(`labels.travelTimes.presets.${preset.key}`) }}
-                <span class="travel-times__preset-value">
-                  {{ preset.mkm }}
-                </span>
-              </Chip>
-            </div>
-
-            <p class="travel-times__hint">
-              {{ t("labels.travelTimes.distanceHint") }}
-            </p>
-          </PanelBody>
-        </Panel>
-
-        <Panel>
-          <PanelHeading :level="HeadingLevelEnum.H2">
-            {{ t("labels.travelTimes.filters") }}
-            <template #actions>
-              <button
-                v-if="filtered"
-                type="button"
-                class="travel-times__reset"
-                @click="clearFilters"
-              >
-                {{ t("labels.travelTimes.resetFilters") }}
-              </button>
-            </template>
-          </PanelHeading>
-          <PanelBody>
-            <div class="travel-times__filter-label">
-              {{ t("labels.travelTimes.size") }}
-            </div>
-            <div class="travel-times__chips">
-              <Chip
-                v-for="size in SIZES"
-                :key="`size-${size}`"
-                :state="
-                  sizeFilter.includes(size)
-                    ? ChipStatesEnum.INCLUDED
-                    : ChipStatesEnum.NEUTRAL
-                "
-                @toggle="toggleSize(size)"
-              >
-                {{ t("labels.travelTimes.sizeValue", { size }) }}
-              </Chip>
-            </div>
-
-            <div class="travel-times__filter-label">
-              {{ t("labels.travelTimes.grade") }}
-            </div>
-            <div class="travel-times__chips">
-              <Chip
-                v-for="grade in GRADES"
-                :key="`grade-${grade}`"
-                :state="
-                  gradeFilter.includes(grade)
-                    ? ChipStatesEnum.INCLUDED
-                    : ChipStatesEnum.NEUTRAL
-                "
-                @toggle="toggleGrade(grade)"
-              >
-                {{ grade }}
-              </Chip>
-            </div>
-          </PanelBody>
-        </Panel>
-
-        <p class="travel-times__credit">
-          {{ t("labels.travelTimes.poweredBy") }}
-          <a
-            href="https://gitlab.com/Erecco/a-study-on-quantum-travel-time/-/blob/master/A_study_on_Quantum_Travel_time_07042021.pdf?ref_type=heads"
-            >Erec</a
-          >
-        </p>
-      </div>
-
-      <div class="col-12 col-md-8">
-        <div class="travel-times__meta">
-          <span>
-            {{
-              filtered
-                ? t("labels.travelTimes.countFiltered", {
-                    count: visibleDrives.length,
-                    total: drives.length,
-                  })
-                : t("labels.travelTimes.count", { count: drives.length })
-            }}
-          </span>
-        </div>
-
-        <!-- `placeholders`, so the table itself draws the wait: a header and a
-             page of placeholder rows out of an empty record set is closer to
-             the answer on its way than a spinner in an empty box. -->
-        <FilteredList
-          key="quantumDrives"
-          :records="visibleDrives"
-          :name="route.name?.toString() || ''"
-          :async-status="asyncStatus"
-          placeholders
-        >
-          <template #default="{ records, loading }">
-            <BaseTable
-              :records="records"
-              :loading="loading"
-              :filter-visible="false"
-              primary-key="slug"
-              :columns="columns"
-              :default-sort="DEFAULT_SORT"
+          <div class="travel-times__presets">
+            <Chip
+              v-for="preset in PRESETS"
+              :key="preset.key"
+              :state="
+                distance === preset.mkm
+                  ? ChipStatesEnum.INCLUDED
+                  : ChipStatesEnum.NEUTRAL
+              "
+              @toggle="distance = preset.mkm"
             >
-              <template #col-rank="{ record }">
-                <span
-                  class="travel-times__rank"
-                  :class="{
-                    'travel-times__rank--podium': byTime && rankOf(record) <= 3,
-                  }"
-                >
-                  {{ String(rankOf(record)).padStart(2, "0") }}
-                </span>
-              </template>
+              {{ t(`labels.travelTimes.presets.${preset.key}`) }}
+              <span class="travel-times__preset-value">
+                {{ preset.mkm }}
+              </span>
+            </Chip>
+          </div>
 
-              <template #col-name="{ record }">
-                <div class="travel-times__drive">
-                  <span>{{ record.name }}</span>
-                  <span class="travel-times__bar">
-                    <span
-                      class="travel-times__bar-fill"
-                      :class="{
-                        'travel-times__bar-fill--podium':
-                          byTime && rankOf(record) <= 3,
-                      }"
-                      :style="{ width: `${barPercent(record)}%` }"
-                    />
-                  </span>
-                </div>
-              </template>
+          <p class="travel-times__hint">
+            {{ t("labels.travelTimes.distanceHint") }}
+          </p>
+        </PanelBody>
+      </Panel>
 
-              <template #col-size="{ record }">
-                <span class="travel-times__badge">
-                  {{
-                    t("labels.travelTimes.sizeValue", { size: sizeOf(record) })
-                  }}
-                </span>
-              </template>
-
-              <template #col-grade="{ record }">
-                <span
-                  v-if="gradeOf(record)"
-                  class="travel-times__badge"
-                  :class="`travel-times__badge--grade-${gradeOf(record).toLowerCase()}`"
-                >
-                  {{ gradeOf(record) }}
-                </span>
-                <template v-else> - </template>
-              </template>
-
-              <template #col-fuel_usage="{ record }">
-                <template v-if="fuelUsage(record)">
-                  {{ toNumber(fuelUsage(record)!, "cargo") }}
-                </template>
-                <template v-else> - </template>
-              </template>
-
-              <template #col-travel_time="{ record }">
-                <TravelTime
-                  class="travel-times__time"
-                  :quantum-drive="record"
-                  :distance="distance"
-                />
-              </template>
-
-              <template #empty>
-                <div class="travel-times__empty">
-                  <span>{{ t("labels.travelTimes.noMatch") }}</span>
-                  <button
-                    type="button"
-                    class="travel-times__reset"
-                    @click="clearFilters"
-                  >
-                    {{ t("labels.travelTimes.resetFilters") }}
-                  </button>
-                </div>
-              </template>
-            </BaseTable>
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.travelTimes.filters") }}
+          <template #actions>
+            <button
+              v-if="filtered"
+              type="button"
+              class="travel-times__reset"
+              @click="clearFilters"
+            >
+              {{ t("labels.travelTimes.resetFilters") }}
+            </button>
           </template>
-        </FilteredList>
+        </PanelHeading>
+        <PanelBody>
+          <div class="travel-times__filter-label">
+            {{ t("labels.travelTimes.size") }}
+          </div>
+          <div class="travel-times__chips">
+            <Chip
+              v-for="size in SIZES"
+              :key="`size-${size}`"
+              :state="
+                sizeFilter.includes(size)
+                  ? ChipStatesEnum.INCLUDED
+                  : ChipStatesEnum.NEUTRAL
+              "
+              @toggle="toggleSize(size)"
+            >
+              {{ t("labels.travelTimes.sizeValue", { size }) }}
+            </Chip>
+          </div>
 
-        <p class="travel-times__legend">
-          {{ t("labels.travelTimes.barLegend") }}
-        </p>
-      </div>
+          <div class="travel-times__filter-label">
+            {{ t("labels.travelTimes.grade") }}
+          </div>
+          <div class="travel-times__chips">
+            <Chip
+              v-for="grade in GRADES"
+              :key="`grade-${grade}`"
+              :state="
+                gradeFilter.includes(grade)
+                  ? ChipStatesEnum.INCLUDED
+                  : ChipStatesEnum.NEUTRAL
+              "
+              @toggle="toggleGrade(grade)"
+            >
+              {{ grade }}
+            </Chip>
+          </div>
+        </PanelBody>
+      </Panel>
+
+      <p class="travel-times__credit">
+        {{ t("labels.travelTimes.poweredBy") }}
+        <a
+          href="https://gitlab.com/Erecco/a-study-on-quantum-travel-time/-/blob/master/A_study_on_Quantum_Travel_time_07042021.pdf?ref_type=heads"
+          >Erec</a
+        >
+      </p>
     </div>
-  </FeatureGuard>
+
+    <div class="col-12 col-md-8">
+      <div class="travel-times__meta">
+        <span>
+          {{
+            filtered
+              ? t("labels.travelTimes.countFiltered", {
+                  count: visibleDrives.length,
+                  total: drives.length,
+                })
+              : t("labels.travelTimes.count", { count: drives.length })
+          }}
+        </span>
+      </div>
+
+      <!-- `placeholders`, so the table itself draws the wait: a header and a
+           page of placeholder rows out of an empty record set is closer to
+           the answer on its way than a spinner in an empty box. -->
+      <FilteredList
+        key="quantumDrives"
+        :records="visibleDrives"
+        :name="route.name?.toString() || ''"
+        :async-status="asyncStatus"
+        placeholders
+      >
+        <template #default="{ records, loading }">
+          <BaseTable
+            :records="records"
+            :loading="loading"
+            :filter-visible="false"
+            primary-key="slug"
+            :columns="columns"
+            :default-sort="DEFAULT_SORT"
+          >
+            <template #col-rank="{ record }">
+              <span
+                class="travel-times__rank"
+                :class="{
+                  'travel-times__rank--podium': byTime && rankOf(record) <= 3,
+                }"
+              >
+                {{ String(rankOf(record)).padStart(2, "0") }}
+              </span>
+            </template>
+
+            <template #col-name="{ record }">
+              <div class="travel-times__drive">
+                <span>{{ record.name }}</span>
+                <span class="travel-times__bar">
+                  <span
+                    class="travel-times__bar-fill"
+                    :class="{
+                      'travel-times__bar-fill--podium':
+                        byTime && rankOf(record) <= 3,
+                    }"
+                    :style="{ width: `${barPercent(record)}%` }"
+                  />
+                </span>
+              </div>
+            </template>
+
+            <template #col-size="{ record }">
+              <span class="travel-times__badge">
+                {{
+                  t("labels.travelTimes.sizeValue", { size: sizeOf(record) })
+                }}
+              </span>
+            </template>
+
+            <template #col-grade="{ record }">
+              <span
+                v-if="gradeOf(record)"
+                class="travel-times__badge"
+                :class="`travel-times__badge--grade-${gradeOf(record).toLowerCase()}`"
+              >
+                {{ gradeOf(record) }}
+              </span>
+              <template v-else> - </template>
+            </template>
+
+            <template #col-fuel_usage="{ record }">
+              <template v-if="fuelUsage(record)">
+                {{ toNumber(fuelUsage(record)!, "cargo") }}
+              </template>
+              <template v-else> - </template>
+            </template>
+
+            <template #col-travel_time="{ record }">
+              <TravelTime
+                class="travel-times__time"
+                :quantum-drive="record"
+                :distance="distance"
+              />
+            </template>
+
+            <template #empty>
+              <div class="travel-times__empty">
+                <span>{{ t("labels.travelTimes.noMatch") }}</span>
+                <button
+                  type="button"
+                  class="travel-times__reset"
+                  @click="clearFilters"
+                >
+                  {{ t("labels.travelTimes.resetFilters") }}
+                </button>
+              </div>
+            </template>
+          </BaseTable>
+        </template>
+      </FilteredList>
+
+      <p class="travel-times__legend">
+        {{ t("labels.travelTimes.barLegend") }}
+      </p>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

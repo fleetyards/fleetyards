@@ -85,10 +85,6 @@
           "permanent": "Permanenti"
         },
         "settingsIntro": "Attiva o disattiva le funzioni sperimentali per il tuo account. Queste funzioni potrebbero essere incomplete o cambiare senza preavviso.",
-        "descriptions": {
-          "tools_travel_times": "Mostra i tempi di viaggio stimati tra le posizioni.",
-          "tools_cargo_grids": "Mostra il visualizzatore interattivo della griglia di carico per le navi."
-        },
         "registryHint": "I flag sono dichiarati in config/feature_flags.yml e creati al deploy. Qui ne controlli le condizioni di attivazione.",
         "fleetSettingsIntro": "Attiva o disattiva le funzionalità per tutta la flotta. Ogni membro vede ciò che attivi qui.",
         "fleetFeature": "Funzionalità della flotta",

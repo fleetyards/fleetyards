@@ -16,8 +16,6 @@ import {
   containersForVolume,
   encodeContainerCounts,
 } from "@/frontend/components/CargoGridViewer/constants";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
@@ -39,7 +37,6 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ edit: [] }>();
 
 const { t } = useI18n();
-const { isFeatureEnabled } = useFeatures();
 
 const totalScu = computed(() => props.inventory.totalScu ?? 0);
 
@@ -101,7 +98,6 @@ const cargoGridsRoute = computed(() => ({
 // both has a grid and carries something to put in it.
 const showCargoGridsLink = computed(
   () =>
-    isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS) &&
     !!props.inventory.vehicle?.model?.slug &&
     (props.inventory.vehicle?.model?.cargo ?? 0) > 0 &&
     (props.inventory.totalVolumeScu ?? 0) >= 1,

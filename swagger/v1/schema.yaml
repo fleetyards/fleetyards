@@ -17137,8 +17137,6 @@ components:
       - oauth-patreon
       - oauth-twitch
       - ship_inventories
-      - tools_cargo_grids
-      - tools_travel_times
       - tour_payouts
       x-enumNames:
       - FLEET_ALLIES
@@ -17159,8 +17157,6 @@ components:
       - OAUTH_PATREON
       - OAUTH_TWITCH
       - SHIP_INVENTORIES
-      - TOOLS_CARGO_GRIDS
-      - TOOLS_TRAVEL_TIMES
       - TOUR_PAYOUTS
       title: FeatureFlagName
     FeatureNamesList:

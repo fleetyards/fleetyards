@@ -8,7 +8,13 @@ module FeatureFlags
     # dropped from the registry so the next sync prunes them from Flipper.
     # Listing one here is what tells a deliberate retirement apart from an
     # entry accidentally left out, which is all the guard below can see.
-    RETIRED_FLAG_NAMES = %w[hardpoints-v2 fleet_starmap fleet_worldmap].freeze
+    RETIRED_FLAG_NAMES = %w[
+      hardpoints-v2
+      fleet_starmap
+      fleet_worldmap
+      tools_cargo_grids
+      tools_travel_times
+    ].freeze
 
     def registry(raw)
       Registry.new(raw: raw)

@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 import { routes as tourRoutes } from "@/frontend/pages/tools/tours/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -18,7 +17,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/tools/travel-times.vue"),
     meta: {
       title: "tools.travelTimes",
-      feature: FeatureFlagName.TOOLS_TRAVEL_TIMES,
       backgroundImage: "bg-8",
     },
   },
@@ -28,7 +26,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/tools/cargo-grids.vue"),
     meta: {
       title: "tools.cargoGrids",
-      feature: FeatureFlagName.TOOLS_CARGO_GRIDS,
       backgroundImage: "bg-7",
     },
   },
