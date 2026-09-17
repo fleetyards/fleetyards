@@ -27,6 +27,13 @@ Review feedback on both open PRs has been addressed: `hardpoints` is back in the
 (D3), the plan's D3 section now matches what shipped, and the powered-item block renders
 `powerRanges`.
 
+**One enhancement deliberately not taken:** the metric ransackers make `maxHealthGteq` and
+friends work at the model level, but the public query schema does not offer them, so a client
+asking gets a 400 naming what it accepts. The ransackers exist for *sorting* — ransack will not
+order by an attribute it does not know. Exposing the filter predicates is a natural next step
+and wants its own decision about which of the eight metrics get `_gteq`/`_lteq`, plus schema,
+permit list and tests.
+
 **Picking this back up:** #5003 and #5006 are stacked, so rebase the leaf last, and expect a
 cascade of force-pushes per merge. Both will have drifted from `main`; re-run
 `bin/generate-schema` **and** `bin/generate-asyncapi`, then fix the `components.parameters`
