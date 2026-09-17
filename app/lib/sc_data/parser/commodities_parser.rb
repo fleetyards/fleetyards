@@ -293,12 +293,11 @@ module ScData
         commodity_translations.key?(base_key) ? base_key : key
       end
 
-      # Localization keys are mixed case and some carry a ",P" plural marker,
-      # while the record references are not consistently cased. Index both down.
+      # The shared ",P"-stripped, downcased index, plus the two aliases that only
+      # commodities need. Duplicated on purpose rather than mutated in place:
+      # every parser reads the same memoized base index.
       private def commodity_translations
-        @commodity_translations ||= translations.each_with_object({}) do |(key, value), index|
-          index[key.sub(/,P\z/, "").downcase] = value
-        end.tap do |index|
+        @commodity_translations ||= normalized_translations.dup.tap do |index|
           KEY_ALIASES.each { |from, to| index[to] = index[from] if index.key?(from) }
         end
       end

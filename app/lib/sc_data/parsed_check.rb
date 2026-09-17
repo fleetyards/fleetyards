@@ -25,12 +25,19 @@ module ScData
   class ParsedCheck
     DEFAULT_BASE_FOLDER = Rails.root.join("data/sc_data").freeze
 
-    # Per catalogue: the field that identifies a record, the smallest number of
-    # files a build could honestly produce, and whether a loader goes looking
-    # for the artwork a record names.
-    Catalogue = Struct.new(:key, :floor, :icons)
+    # Per catalogue: the field or fields that identify a record, the smallest
+    # number of files a build could honestly produce, and whether a loader goes
+    # looking for the artwork a record names.
+    Catalogue = Struct.new(:key, :floor, :icons) do
+      def keys
+        Array.wrap(key)
+      end
+    end
 
-    # Equipment is the one catalogue whose icons go unchecked. It names artwork
+    # Blueprints name no artwork of their own: 1606 of the 1607 records in
+    # 4.10.1 carry no name either, and both come from whatever the recipe makes.
+    #
+    # Equipment is the other catalogue whose icons go unchecked. It names artwork
     # under `ui/textures/ea/loadouticons` that the export ships none of -- all
     # 2,042 references resolve to nothing, in every build -- and nothing loads
     # them either, since `EquipmentLoader` attaches no icon. Checking them would
@@ -43,6 +50,11 @@ module ScData
     # export whose upload was still running, a parse that died between
     # catalogues, a sync that fetched half a prefix.
     CATALOGUES = {
+      # Both, because a blueprint is found by its ref and the loader skips a
+      # record that has none -- and a skipped record is missing from `loaded`,
+      # which is what `retire_absent` reads as "the export dropped it". One
+      # blank ref would retire a recipe the build still carries.
+      "blueprints" => Catalogue.new(key: %w[key ref], floor: 1280, icons: false),
       "commodities" => Catalogue.new(key: "sc_key", floor: 180, icons: true),
       "equipment" => Catalogue.new(key: "key", floor: 3800, icons: false),
       "items" => Catalogue.new(key: "key", floor: 6200, icons: true),
@@ -146,8 +158,10 @@ module ScData
           next
         end
 
-        if data[catalogue.key].to_s.strip.empty?
-          problems << "#{folder}/#{File.basename(file)}: no #{catalogue.key}"
+        catalogue.keys.each do |field|
+          next if data[field].to_s.strip.present?
+
+          problems << "#{folder}/#{File.basename(file)}: no #{field}"
         end
 
         next unless catalogue.icons

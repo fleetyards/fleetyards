@@ -119,7 +119,7 @@ module ScData
     # Every catalogue that records what a build said. A source counts as loaded
     # when any of them has a row for it -- they are loaded separately, and the
     # first to finish makes the source readable.
-    BUILDS = [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild].freeze
+    BUILDS = [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild, BlueprintBuild].freeze
 
     attr_reader :version, :environment
 

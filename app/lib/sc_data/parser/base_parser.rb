@@ -76,6 +76,7 @@ module ScData
         ::ScData::Parser::ModelsParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::CommoditiesParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::EquipmentParser.new(base_folder:, sc_version:, sc_environment:).all
+        ::ScData::Parser::BlueprintsParser.new(base_folder:, sc_version:, sc_environment:).all
       end
 
       def initialize(base_folder:, sc_version:, sc_environment:)
@@ -254,6 +255,29 @@ module ScData
         return translations.dig(key.delete("@")) if key.starts_with?("@")
 
         key
+      end
+
+      # Localisation keys are declared in mixed case, and a key whose string has
+      # a plural form carries a ",P" marker that the records referring to it do
+      # not. `translate` matches exactly, which is right for the keys spelled
+      # the same on both sides -- and misses, silently, every
+      # `@crafting_ui_slotname_*` and `@StatName_GPP_*`: all 73 slot names and
+      # 24 of the 29 crafted properties in 4.10.1 are declared one of those two
+      # ways.
+      private def normalized_translations
+        @normalized_translations ||= translations.each_with_object({}) do |(key, value), index|
+          index[key.sub(/,P\z/, "").downcase] = value
+        end
+      end
+
+      private def localize(key)
+        return if key.blank?
+
+        value = normalized_translations[key.to_s.delete("@").sub(/,P\z/, "").downcase]
+
+        return if value.blank? || value == "@LOC_EMPTY"
+
+        value.gsub('\\n', "\n").strip
       end
 
       private def load_ini_file(path)

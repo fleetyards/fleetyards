@@ -181,6 +181,88 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
     t.index ["status"], name: "index_announcements_on_status"
   end
 
+  create_table "blueprint_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "blueprint_id", null: false
+    t.string "category_ref"
+    t.integer "craft_time"
+    t.uuid "craftable_id"
+    t.string "craftable_type"
+    t.datetime "created_at", null: false
+    t.string "environment", null: false
+    t.string "name"
+    t.integer "slot_count"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.index ["blueprint_id", "environment", "version"], name: "index_blueprint_builds_on_blueprint_and_build", unique: true
+    t.index ["blueprint_id"], name: "index_blueprint_builds_on_blueprint_id"
+    t.index ["environment", "name"], name: "index_blueprint_builds_on_environment_and_name"
+    t.index ["environment", "version"], name: "index_blueprint_builds_on_environment_and_version"
+  end
+
+  create_table "blueprint_cost_modifiers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "blueprint_cost_slot_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "end_quality"
+    t.decimal "modifier_at_end", precision: 12, scale: 4
+    t.decimal "modifier_at_start", precision: 12, scale: 4
+    t.string "name"
+    t.integer "position", null: false
+    t.string "property_key"
+    t.string "property_ref"
+    t.string "ramp", null: false
+    t.integer "start_quality"
+    t.string "unit_format"
+    t.datetime "updated_at", null: false
+    t.index ["blueprint_cost_slot_id", "position"], name: "index_blueprint_cost_modifiers_on_slot_and_position", unique: true
+    t.index ["blueprint_cost_slot_id"], name: "index_blueprint_cost_modifiers_on_slot"
+  end
+
+  create_table "blueprint_cost_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "blueprint_cost_slot_id", null: false
+    t.uuid "commodity_id"
+    t.string "commodity_key"
+    t.string "cost_type", null: false
+    t.datetime "created_at", null: false
+    t.integer "min_quality"
+    t.integer "position", null: false
+    t.decimal "quantity", precision: 12, scale: 4
+    t.datetime "updated_at", null: false
+    t.index ["blueprint_cost_slot_id", "position"], name: "index_blueprint_cost_options_on_slot_and_position", unique: true
+    t.index ["blueprint_cost_slot_id"], name: "index_blueprint_cost_options_on_slot"
+    t.index ["commodity_id"], name: "index_blueprint_cost_options_on_commodity_id"
+  end
+
+  create_table "blueprint_cost_slots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "blueprint_build_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.integer "position", null: false
+    t.string "sc_key"
+    t.datetime "updated_at", null: false
+    t.index ["blueprint_build_id", "position"], name: "index_blueprint_cost_slots_on_build_and_position", unique: true
+    t.index ["blueprint_build_id"], name: "index_blueprint_cost_slots_on_build"
+  end
+
+  create_table "blueprints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "category_ref"
+    t.integer "craft_time"
+    t.uuid "craftable_id"
+    t.string "craftable_type"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.string "sc_key", null: false
+    t.string "sc_ref", null: false
+    t.integer "slot_count"
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.string "version"
+    t.index ["craftable_type", "craftable_id"], name: "index_blueprints_on_craftable_type_and_craftable_id"
+    t.index ["sc_key"], name: "index_blueprints_on_sc_key", unique: true
+    t.index ["sc_ref"], name: "index_blueprints_on_sc_ref", unique: true
+    t.index ["slug"], name: "index_blueprints_on_slug", unique: true
+    t.index ["version"], name: "index_blueprints_on_version"
+  end
+
   create_table "cargo_hold_container_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "best_orientation"
     t.uuid "cargo_hold_id", null: false
@@ -2112,6 +2194,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
   add_foreign_key "admin_notifications", "admin_users", on_delete: :cascade
   add_foreign_key "announcement_deliveries", "announcements", on_delete: :cascade
   add_foreign_key "announcements", "admin_users"
+  add_foreign_key "blueprint_builds", "blueprints", on_delete: :cascade
+  add_foreign_key "blueprint_cost_modifiers", "blueprint_cost_slots", on_delete: :cascade
+  add_foreign_key "blueprint_cost_options", "blueprint_cost_slots", on_delete: :cascade
+  add_foreign_key "blueprint_cost_options", "commodities", on_delete: :nullify
+  add_foreign_key "blueprint_cost_slots", "blueprint_builds", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade

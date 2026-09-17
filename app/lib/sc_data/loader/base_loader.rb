@@ -13,7 +13,9 @@ module ScData
       # body is still being evaluated would be a circular load.
       #
       # Order matters -- items resolve their manufacturer, models resolve the
-      # components a loadout names, and modules hang off models.
+      # components a loadout names, modules hang off models, and a blueprint
+      # resolves against all three of the catalogues a recipe can make or
+      # consume, so it runs last.
       def self.all
         [
           ::ScData::Loader::ManufacturersLoader,
@@ -21,7 +23,8 @@ module ScData
           ::ScData::Loader::ModelsLoader,
           ::ScData::Loader::ModelModulesLoader,
           ::ScData::Loader::CommoditiesLoader,
-          ::ScData::Loader::EquipmentLoader
+          ::ScData::Loader::EquipmentLoader,
+          ::ScData::Loader::BlueprintsLoader
         ].to_h do |loader_class|
           loader = loader_class.new
 
