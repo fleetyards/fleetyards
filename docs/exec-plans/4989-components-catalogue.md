@@ -376,18 +376,20 @@ build.** History is a separate endpoint, so the detail payload stays small and t
 additive rather than a precondition. It lands in Phase 4 and can slip without blocking the
 catalogue.
 
-### D11 — Behind a `components` feature flag
+### D11 — No feature flag
 
-A `components` entry in `config/feature_flags.yml` with a description, matching #4988's D9.
+**Reversed. There is no flag.**
 
-**Only the catalogue's own surface is gated.** `show` checks the flag and answers 403 while it
-is off; `index` and `weapons` do not, because both answered long before the flag existed and
-taking them away from clients is not what a rollout gate is for. The nav entry and the pages
-read it too when Phase 4 builds them. Flags are declared in the registry only — no
-`Flipper.add` or `FeatureSetting` data migration, which the next sync would prune.
+The plan had a `components` entry in `config/feature_flags.yml` gating `show`, matching #4988's
+D9. It is gone: nothing here is experimental or risky enough to earn a gate. The API is
+additive — a `show` endpoint where there was none, and sorting the index already advertised —
+and the pages are a new path nobody is on yet, so there is nothing to roll back to.
 
-Expect it to redden every descendant of a stack until each is regenerated; that is the known
-cost of adding a flag, not a failure.
+A flag that is never switched off is cost without benefit: an entry in the registry, a check on
+every request, a 403 documented on the operation, and a switch somebody has to remember to
+throw before the feature does anything.
+
+`index` and `weapons` were never gated anyway, because both answered long before any of this.
 
 ## What changed
 
@@ -422,8 +424,8 @@ cost of adding a flag, not a failure.
    8,740 rows — if anything of it survives (5).
 8. Document `manufacturerSlugIn` in `ComponentQuery`; the controller permits it and the schema
    does not.
-9. `components` flag (D11), hand-written schema components, `./bin/generate-schema`, orval
-   regeneration, dev-server restart.
+9. Hand-written schema components, `./bin/generate-schema`, orval regeneration, dev-server
+   restart. No feature flag — see D11.
 
 ### Phase 3 — The metric renderer (PR 3)
 
@@ -529,7 +531,6 @@ gets genuinely heavier, and the slim list endpoint deferred in D3 becomes worth 
 - [ ] **The payoff link** — every hardpoint on every ship page links to the component's page
 - [ ] **Seven locales** — category, sub-type and nav/title labels exist in all seven
 - [x] **API** — a documented `show`, and a regenerated schema. The list payload is *not* distinct from the detail one: the issue asked for a split, and neither field that would have moved can leave the index without breaking clients (D3).
-- [ ] **Flagged** — the whole surface behind the `components` flag
 - [ ] **Prices** (Phase 5) — components carry UEX prices where a terminal sells them, and a component nothing sells says so rather than showing an empty panel
 
 ## Key files

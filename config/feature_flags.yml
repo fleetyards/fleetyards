@@ -16,12 +16,6 @@
 # push. Seeded from the flags live in Flipper at the time the registry was
 # introduced.
 
-# The public Components catalogue -- the list, the detail pages and the nav
-# entry. Everything behind it is additive to the API, so the flag gates the
-# surface rather than the data.
-components:
-  description: "Components catalogue — the public list and per-component detail pages"
-
 fleet_allies:
   description: "Fleet alliances — a fleet sharing its ships, stats and roster with another fleet"
 
