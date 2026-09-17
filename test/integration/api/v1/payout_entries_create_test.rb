@@ -197,6 +197,41 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 401, path_params: {payoutLedgerId: @ledger.id}
   end
 
+  # The ledger's children are gated by PayoutLedgerScoped rather than by the
+  # ledgers controller, which is a second code path -- so the refusal is
+  # asserted here too, not only where a ledger is created.
+  test "an entry on a fleet event's ledger needs the fleet flag" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    event = create(:fleet_event, :active, fleet:, created_by: admin)
+    ledger = create(:payout_ledger, subject: event)
+    participant = create(:payout_participant, payout_ledger: ledger, user: admin)
+
+    Flipper.enable("fleet_mission_builder")
+    Flipper.disable("fleet_tours")
+    sign_in admin
+
+    assert_api_response :post, 403,
+      path_params: {payoutLedgerId: ledger.id},
+      body: entry_body(payoutParticipantId: participant.id)
+  end
+
+  test "the same entry is allowed once the fleet flag is on" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    event = create(:fleet_event, :active, fleet:, created_by: admin)
+    ledger = create(:payout_ledger, subject: event)
+    participant = create(:payout_participant, payout_ledger: ledger, user: admin)
+
+    Flipper.enable("fleet_mission_builder")
+    Flipper.enable("fleet_tours")
+    sign_in admin
+
+    assert_api_response :post, 201,
+      path_params: {payoutLedgerId: ledger.id},
+      body: entry_body(payoutParticipantId: participant.id)
+  end
+
   # The other half of the D3 split, and the one that is easy to lose: a
   # standalone tour has no fleet, so it must keep working with the fleet flag
   # off. The personal tool stays free of what prices the fleet feature.
