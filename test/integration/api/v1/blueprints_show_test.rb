@@ -19,10 +19,6 @@ class Api::V1::BlueprintsShowTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::Blueprint
       end
 
-      response(403, "forbidden") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
-
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -30,8 +26,6 @@ class Api::V1::BlueprintsShowTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("blueprints")
-
     @blueprint = create(:blueprint, name: "Bulldog Repeater", sc_key: "bp_craft_behr_repeater_s3")
     @slot = create(:blueprint_cost_slot, build: @blueprint.build, name: "Frame")
   end
@@ -90,11 +84,5 @@ class Api::V1::BlueprintsShowTest < ActionDispatch::IntegrationTest
 
   test "GET /blueprints/{slug} 404s for a slug nobody has" do
     assert_api_response :get, 404, params: {slug: "no-such-blueprint"}
-  end
-
-  test "GET /blueprints/{slug} is forbidden while the flag is off" do
-    Flipper.disable("blueprints")
-
-    assert_api_response :get, 403, params: {slug: @blueprint.slug}
   end
 end
