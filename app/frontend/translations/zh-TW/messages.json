@@ -163,6 +163,15 @@
         "createFailed": "無法建立募資目標。",
         "updateFailed": "無法更新募資目標。"
       },
+      "supporterNomination": {
+        "update": {
+          "success": "艦隊選擇已更新。",
+          "failure": "無法更新艦隊選擇。"
+        },
+        "change": {
+          "confirm": "%{fleet} 可能會失去目前擁有的艦隊功能。是否繼續？"
+        }
+      },
       "supporterContribution": {
         "created": "支持者捐助已建立。",
         "updated": "支持者捐助已更新。",

@@ -348,7 +348,8 @@
           "disable": "Disattiva Autenticazione A Due Fattori",
           "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
         },
-        "calendar": "Abbonamento al calendario"
+        "calendar": "Abbonamento al calendario",
+        "donations": "Donazioni"
       },
       "oauthApplications": {
         "new": "Nuova applicazione OAuth",

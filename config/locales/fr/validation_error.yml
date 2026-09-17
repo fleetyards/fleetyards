@@ -8,6 +8,8 @@ fr:
       already_published: Cette annonce a déjà été envoyée.
       delivery_not_retryable: Seul un envoi en échec ou ignoré peut être relancé.
       test_not_configured: "L'annonce n'a pas pu être testée : aucun webhook n'est configuré pour le canal Discord d'administration."
+    supporter_contributions:
+      nominate: "La flotte n'a pas pu être désignée."
     relationships:
       create: "La demande n'a pas pu être envoyée."
       destroy: "La demande n'a pas pu être supprimée."

@@ -21,6 +21,7 @@
 #  started_at          :date             not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  fleet_id            :uuid
 #  kofi_transaction_id :string
 #  patreon_member_id   :string
 #  patreon_user_id     :string
@@ -28,6 +29,7 @@
 #
 # Indexes
 #
+#  index_supporter_contributions_on_fleet_id                (fleet_id) WHERE (fleet_id IS NOT NULL)
 #  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
 #  index_supporter_contributions_on_linked_via              (linked_via) WHERE (linked_via IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
@@ -39,6 +41,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (user_id => users.id)
 #
 require "test_helper"
@@ -72,6 +75,83 @@ class SupporterContributionTest < ActiveSupport::TestCase
 
     refute record.valid?
     assert_includes record.errors[:ended_at], record.errors.generate_message(:ended_at, :must_be_after_started_at)
+  end
+
+  test "a supporter may nominate a fleet they are an accepted member of" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = build(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+
+    assert contribution.valid?, contribution.errors.full_messages.to_sentence
+  end
+
+  test "a fleet the supporter does not belong to is refused" do
+    supporter = create(:user)
+    somebody_elses_fleet = create(:fleet)
+    contribution = build(:supporter_contribution, user: supporter, fleet: somebody_elses_fleet)
+
+    refute contribution.valid?
+    assert_includes contribution.errors[:fleet],
+      contribution.errors.generate_message(:fleet, :not_a_fleet_of_the_supporter)
+  end
+
+  test "a membership that is only invited or requested is not enough" do
+    %i[invited requested].each do |state|
+      membership = create(:fleet_membership, state)
+      contribution = build(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+
+      refute contribution.valid?, "#{state} membership should not qualify"
+    end
+  end
+
+  test "a discarded membership is not enough" do
+    membership = create(:fleet_membership, :accepted)
+    membership.discard
+    contribution = build(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+
+    refute contribution.valid?
+  end
+
+  test "an unlinked contribution cannot carry a nomination" do
+    contribution = build(:supporter_contribution, user: nil, fleet: create(:fleet))
+
+    refute contribution.valid?
+    assert_includes contribution.errors[:fleet],
+      contribution.errors.generate_message(:fleet, :requires_a_linked_supporter)
+  end
+
+  test "clearing the nomination is always allowed" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = create(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+
+    contribution.fleet = nil
+
+    assert contribution.valid?
+    assert contribution.save
+  end
+
+  # A supporter who leaves the fleet leaves a stale nomination behind. Answering
+  # that is reconciliation's job; if validation answered it, every later write to
+  # the row -- an amount correction, an admin note -- would fail instead.
+  test "a nomination that went stale does not block an unrelated update" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = create(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+    membership.discard
+
+    contribution.reload.note = "corrected by hand"
+
+    assert contribution.valid?, contribution.errors.full_messages.to_sentence
+    assert contribution.save
+  end
+
+  test "the nomination is versioned like every other admin-editable field" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = create(:supporter_contribution, user: membership.user)
+    admin = create(:user)
+
+    contribution.author_id = admin.id
+    contribution.update!(fleet: membership.fleet)
+
+    assert_includes contribution.versions.last.object_changes.keys, "fleet_id"
   end
 
   test ".active_in includes one-time contributions whose started_at lands in the month" do
@@ -287,5 +367,13 @@ class SupporterContributionTest < ActiveSupport::TestCase
     in_ruby = SupporterContribution.all.select { |c| c.active_in?(month_start, month_end) }.map(&:id).sort
 
     assert_equal by_scope, in_ruby
+  end
+  test "a nominated fleet being deleted clears the nomination instead of blocking it" do
+    membership = create(:fleet_membership, :accepted)
+    contribution = create(:supporter_contribution, user: membership.user, fleet: membership.fleet)
+
+    membership.fleet.destroy!
+
+    assert_nil contribution.reload.fleet_id
   end
 end

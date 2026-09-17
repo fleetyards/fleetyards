@@ -348,7 +348,8 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "calendar": "日历订阅"
+        "calendar": "日历订阅",
+        "donations": "捐赠"
       },
       "oauthApplications": {
         "new": "新建 OAuth 应用",

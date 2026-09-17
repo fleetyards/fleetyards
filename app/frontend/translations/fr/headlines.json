@@ -348,7 +348,8 @@
           "disable": "Désactiver l'authentification en deux étapes",
           "backupCodes": "Générer des codes de sauvegarde"
         },
-        "calendar": "Abonnement au calendrier"
+        "calendar": "Abonnement au calendrier",
+        "donations": "Dons"
       },
       "oauthApplications": {
         "new": "Nouvelle application OAuth",

@@ -8,6 +8,8 @@ zh-TW:
       already_published: "該公告已經發送。"
       delivery_not_retryable: "只有失敗或略過的投遞才能重試。"
       test_not_configured: "無法測試公告：管理員 Discord 頻道未設定 webhook。"
+    supporter_contributions:
+      nominate: "無法指定艦隊。"
     relationships:
       create: "無法發送請求。"
       destroy: "無法移除請求。"

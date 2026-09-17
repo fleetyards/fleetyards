@@ -348,7 +348,8 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "calendar": "Suscripción al calendario"
+        "calendar": "Suscripción al calendario",
+        "donations": "Donaciones"
       },
       "oauthApplications": {
         "new": "Nueva aplicación OAuth",

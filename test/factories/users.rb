@@ -65,6 +65,7 @@
 #  youtube                   :string
 #  created_at                :datetime
 #  updated_at                :datetime
+#  supported_fleet_id        :uuid
 #
 # Indexes
 #
@@ -79,8 +80,13 @@
 #  index_users_on_normalized_email       (normalized_email)
 #  index_users_on_normalized_username    (normalized_username)
 #  index_users_on_reset_password_token   (reset_password_token) UNIQUE
+#  index_users_on_supported_fleet_id     (supported_fleet_id) WHERE (supported_fleet_id IS NOT NULL)
 #  index_users_on_unlock_token           (unlock_token) UNIQUE
 #  index_users_on_username               (username) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (supported_fleet_id => fleets.id)
 #
 FactoryBot.define do
   factory :user do

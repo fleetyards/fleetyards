@@ -163,6 +163,15 @@
         "createFailed": "Finanzierungsziel konnte nicht angelegt werden.",
         "updateFailed": "Finanzierungsziel konnte nicht aktualisiert werden."
       },
+      "supporterNomination": {
+        "update": {
+          "success": "Flottenauswahl aktualisiert.",
+          "failure": "Flottenauswahl konnte nicht aktualisiert werden."
+        },
+        "change": {
+          "confirm": "%{fleet} verliert möglicherweise die Flotten-Funktionen, die sie jetzt hat. Fortfahren?"
+        }
+      },
       "supporterContribution": {
         "created": "Unterstützer-Beitrag angelegt.",
         "updated": "Unterstützer-Beitrag aktualisiert.",

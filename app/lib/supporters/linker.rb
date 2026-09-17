@@ -33,8 +33,29 @@ module Supporters
       # later would be guesswork: a donor who put their key in the message and
       # paid from their registered address matches two arms, and by then there
       # is nothing left to say which one actually decided it.
-      @contribution.update!(user: user, linked_via: rule)
+      #
+      # The supporter's standing choice of fleet goes down with it, which is the
+      # only moment it can: a donation is imported and matched days after it was
+      # made, and asking somebody to come back afterwards to say what it was for
+      # is how a nomination never gets made at all. An answer already on the
+      # contribution wins -- an admin who set one was looking at this payment.
+      @contribution.update!(
+        user: user,
+        linked_via: rule,
+        fleet_id: @contribution.fleet_id || supported_fleet_id_for(user)
+      )
       user
+    end
+
+    # Only while they are still in the fleet. A standing choice outlives the
+    # membership that justified it, and stamping a fleet somebody has left
+    # would write an entitlement they cannot answer for.
+    private def supported_fleet_id_for(user)
+      fleet_id = user.effective_supported_fleet_id
+      return if fleet_id.blank?
+      return unless user.fleet_memberships.kept.accepted.exists?(fleet_id:)
+
+      fleet_id
     end
 
     # The user and the name of the arm that found them, in precedence order.

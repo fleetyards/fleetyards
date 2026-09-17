@@ -67,6 +67,7 @@
 #  youtube                   :string
 #  created_at                :datetime
 #  updated_at                :datetime
+#  supported_fleet_id        :uuid
 #
 # Indexes
 #
@@ -81,8 +82,13 @@
 #  index_users_on_normalized_email       (normalized_email)
 #  index_users_on_normalized_username    (normalized_username)
 #  index_users_on_reset_password_token   (reset_password_token) UNIQUE
+#  index_users_on_supported_fleet_id     (supported_fleet_id) WHERE (supported_fleet_id IS NOT NULL)
 #  index_users_on_unlock_token           (unlock_token) UNIQUE
 #  index_users_on_username               (username) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (supported_fleet_id => fleets.id)
 #
 class User < ApplicationRecord
   # A version of a user row holds their old email and username verbatim, so it
@@ -176,6 +182,12 @@ class User < ApplicationRecord
   has_many :fleets,
     -> { kept },
     through: :kept_fleet_memberships
+
+  # The fleet this person's donations support, answerable before any donation
+  # exists. Supporters::Linker stamps it onto a contribution the moment one is
+  # matched to this account; the contribution keeps the authoritative answer
+  # from then on, so changing this later does not rewrite past donations.
+  belongs_to :supported_fleet, class_name: "Fleet", optional: true
 
   has_many :inventories, as: :holder, dependent: :destroy
   has_many :fleet_contract_assignments, dependent: :destroy
@@ -479,6 +491,7 @@ class User < ApplicationRecord
   }.freeze
 
   validates :date_format, inclusion: {in: DATE_FORMATS.keys}
+  validate :supported_fleet_is_one_of_mine
 
   def discord_uid
     connection_for("discord")&.uid
@@ -864,6 +877,44 @@ class User < ApplicationRecord
   # under instead of becoming a nameless guest.
   private def preserve_payout_participant_names
     payout_participants.where(name: nil).update_all(name: username)
+  end
+
+  # The fleet a donation supports when nothing else says otherwise: the explicit
+  # choice, and failing that the fleet this person marked as their main one.
+  #
+  # Falling back to `primary` rather than to nothing is what makes the setting
+  # work for somebody who never opens it. It is a designation they made
+  # themselves -- one per account, enforced by FleetMembership#set_primary --
+  # so it is a statement about which fleet is theirs, not a guess.
+  def effective_supported_fleet_id
+    supported_fleet_id.presence || primary_accepted_fleet_id
+  end
+
+  def effective_supported_fleet
+    return supported_fleet if supported_fleet_id.present?
+
+    ::Fleet.find_by(id: primary_accepted_fleet_id)
+  end
+
+  def supported_fleet_explicit?
+    supported_fleet_id.present?
+  end
+
+  # Only an accepted, kept membership counts: a primary flag outlives the
+  # membership it sits on being discarded.
+  private def primary_accepted_fleet_id
+    fleet_memberships.kept.accepted.find_by(primary: true)&.fleet_id
+  end
+
+  # Same rule the nomination on a contribution answers to, and checked only
+  # while it is changing: somebody who later leaves the fleet must not have
+  # every subsequent write to their account fail.
+  private def supported_fleet_is_one_of_mine
+    return if supported_fleet_id.blank?
+    return unless will_save_change_to_supported_fleet_id?
+    return if fleet_memberships.kept.accepted.exists?(fleet_id: supported_fleet_id)
+
+    errors.add(:supported_fleet, :not_a_fleet_of_the_supporter)
   end
 
   private def check_fleet_memberships

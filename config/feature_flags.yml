@@ -39,6 +39,18 @@ fleet_logistics:
 fleet_mission_builder:
   description: "Mission builder — fleet missions, events, the calendar and Discord sync"
 
+# Rollout only, never entitlement. This decides whether the supporter-facing
+# subscription surfaces exist at all -- the nomination in settings, and later
+# the admin pages and the premium gates. Whether a given fleet has *bought*
+# anything is answered by fleet_subscriptions rows, never by this flag: a deploy
+# prunes gate values, a gate can only grant, and neither can express a
+# revocation. See D1 in docs/exec-plans/premium-fleet-features.md.
+#
+# Off everywhere until the transition is announced, so the whole entitlement
+# half can land in production without anybody meeting it early.
+fleet_subscriptions:
+  description: "Fleet subscriptions — the supporter-facing surfaces of the premium rollout"
+
 fleet_starmap:
   description: "Starmap on the fleet page"
 

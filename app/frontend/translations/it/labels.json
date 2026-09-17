@@ -1468,6 +1468,13 @@
           "intro": "Genera un link privato per aggiungere gli eventi a cui ti sei iscritto alla tua app calendario personale (Apple Calendar, Google Calendar, Outlook).",
           "howTo": "Incolla il link nella tua app calendario sotto \"Iscriviti a un calendario\" o \"Aggiungi tramite URL\". Chiunque abbia questo link può vedere gli eventi a cui ti sei iscritto — tienilo privato."
         },
+        "supporterNomination": {
+          "label": "Supporto alla flotta",
+          "hint": "I suoi membri ottengono le funzioni di flotta finché una donazione è attiva. Puoi scegliere prima di donare.",
+          "perDonation": "Per donazione",
+          "perDonationHint": "Una singola donazione può sostenere una flotta diversa da quella abituale.",
+          "fleet": "Flotta sostenuta"
+        },
         "supporterClaimKey": {
           "signedOut": "Accedi per ottenere la tua chiave personale da sostenitore.",
           "patreonNote": "collegato tramite la tua email, nessuna chiave necessaria",

@@ -182,5 +182,65 @@ module Supporters
       assert_equal user, Supporters::Linker.call(contribution)
       assert_equal user, contribution.reload.user
     end
+
+    test "a linked contribution inherits the supporter's standing choice of fleet" do
+      membership = create(:fleet_membership, :accepted)
+      supporter = membership.user
+      supporter.update!(confirmed_at: Time.current, supported_fleet: membership.fleet)
+      contribution = create(:supporter_contribution, note: "thanks #{supporter.ensure_claim_key!}")
+
+      Supporters::Linker.call(contribution)
+
+      assert_equal membership.fleet_id, contribution.reload.fleet_id
+    end
+
+    # An admin who filled the field in was looking at this payment; a standing
+    # choice is only ever a default.
+    test "a fleet already on the contribution is not overwritten" do
+      membership = create(:fleet_membership, :accepted)
+      supporter = membership.user
+      other = create(:fleet_membership, :accepted, user: supporter).fleet
+      supporter.update!(confirmed_at: Time.current, supported_fleet: membership.fleet)
+      contribution = create(:supporter_contribution, note: "thanks #{supporter.ensure_claim_key!}")
+      contribution.update_column(:fleet_id, other.id)
+
+      Supporters::Linker.call(contribution)
+
+      assert_equal other.id, contribution.reload.fleet_id
+    end
+
+    test "a standing choice for a fleet the supporter has left is not stamped" do
+      membership = create(:fleet_membership, :accepted)
+      supporter = membership.user
+      supporter.update!(confirmed_at: Time.current, supported_fleet: membership.fleet)
+      contribution = create(:supporter_contribution, note: "thanks #{supporter.ensure_claim_key!}")
+      membership.discard
+
+      Supporters::Linker.call(contribution)
+
+      assert_equal supporter.id, contribution.reload.user_id
+      assert_nil contribution.fleet_id
+    end
+
+    test "with no standing choice a contribution inherits the primary fleet" do
+      membership = create(:fleet_membership, :accepted, primary: true)
+      supporter = membership.user
+      supporter.update!(confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, note: "thanks #{supporter.ensure_claim_key!}")
+
+      Supporters::Linker.call(contribution)
+
+      assert_equal membership.fleet_id, contribution.reload.fleet_id
+    end
+
+    test "no standing choice and no primary fleet leaves the nomination empty" do
+      supporter = create(:user, confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, note: "thanks #{supporter.ensure_claim_key!}")
+
+      Supporters::Linker.call(contribution)
+
+      assert_equal supporter.id, contribution.reload.user_id
+      assert_nil contribution.fleet_id
+    end
   end
 end

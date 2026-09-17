@@ -1468,6 +1468,13 @@
           "intro": "Erzeuge einen privaten Link, um die Events, für die du angemeldet bist, in deiner persönlichen Kalender-App zu sehen (Apple Kalender, Google Kalender, Outlook).",
           "howTo": "Füge den Link in deiner Kalender-App unter „Kalender abonnieren“ oder „Per URL hinzufügen“ ein. Wer diesen Link hat, sieht die Events, für die du angemeldet bist — halte ihn privat."
         },
+        "supporterNomination": {
+          "label": "Flottenunterstützung",
+          "hint": "Deren Mitglieder erhalten die Flotten-Funktionen, solange eine Spende aktiv ist. Du kannst vor dem Spenden wählen.",
+          "perDonation": "Pro Spende",
+          "perDonationHint": "Eine einzelne Spende kann eine andere Flotte unterstützen als deine übliche.",
+          "fleet": "Unterstützte Flotte"
+        },
         "supporterClaimKey": {
           "signedOut": "Bitte melde dich an, um deinen persönlichen Unterstützer-Schlüssel zu erhalten.",
           "patreonNote": "wird über deine E-Mail-Adresse zugeordnet, kein Schlüssel nötig",

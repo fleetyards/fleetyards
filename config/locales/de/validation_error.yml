@@ -8,6 +8,8 @@ de:
       already_published: Diese Ankündigung wurde bereits versendet.
       delivery_not_retryable: Nur eine fehlgeschlagene oder übersprungene Zustellung kann wiederholt werden.
       test_not_configured: "Ankündigung konnte nicht getestet werden: für den Admin-Discord-Kanal ist kein Webhook hinterlegt."
+    supporter_contributions:
+      nominate: "Flotte konnte nicht ausgewählt werden."
     relationships:
       create: "Anfrage konnte nicht gesendet werden."
       destroy: "Anfrage konnte nicht entfernt werden."
