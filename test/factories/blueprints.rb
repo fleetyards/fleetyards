@@ -1,5 +1,31 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: blueprints
+#
+#  id             :uuid             not null, primary key
+#  category_ref   :string
+#  craft_time     :integer
+#  craftable_type :string
+#  name           :string
+#  sc_key         :string           not null
+#  sc_ref         :string           not null
+#  slot_count     :integer
+#  slug           :string           not null
+#  version        :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  craftable_id   :uuid
+#
+# Indexes
+#
+#  index_blueprints_on_craftable_type_and_craftable_id  (craftable_type,craftable_id)
+#  index_blueprints_on_sc_key                           (sc_key) UNIQUE
+#  index_blueprints_on_sc_ref                           (sc_ref) UNIQUE
+#  index_blueprints_on_slug                             (slug) UNIQUE
+#  index_blueprints_on_version                          (version)
+#
 FactoryBot.define do
   factory :blueprint do
     sequence(:name) { |n| "Crafted Item #{n}" }
