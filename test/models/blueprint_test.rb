@@ -153,16 +153,93 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_nil blueprint.reload.name
   end
 
-  test "destroying a blueprint takes its builds and their recipes with it" do
+  # 875 of the 1607 recipes in 4.10.1 are in no pool, and 26 more are only in a
+  # pool nothing hands out. The page has to say so rather than render nothing.
+  test "#source_unknown? is true where the export says nothing" do
+    sourced = create(:blueprint)
+    create(:blueprint_source, build: sourced.build)
+
+    assert_not_predicate sourced.reload, :source_unknown?
+    assert_predicate create(:blueprint), :source_unknown?
+  end
+
+  test ".with_known_source splits the catalogue both ways" do
+    sourced = create(:blueprint)
+    create(:blueprint_source, build: sourced.build)
+    unsourced = create(:blueprint)
+
+    assert_equal [sourced], Blueprint.with_known_source.to_a
+    assert_equal [unsourced], Blueprint.with_known_source(false).to_a
+  end
+
+  test ".from_org finds each recipe an org hands out once" do
+    blueprint = create(:blueprint)
+    2.times { |n| create(:blueprint_source, build: blueprint.build, org_name: "Eckhart Security", position: n) }
+    create(:blueprint_source, build: create(:blueprint).build, org_name: "Headhunters")
+
+    assert_equal [blueprint], Blueprint.from_org("Eckhart Security").to_a
+  end
+
+  # Sources belong to the build for the reason the recipe does: live and ptu
+  # are loaded separately and either can be read.
+  test ".from_org ignores a source only another build states" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    other = blueprint.builds.create!(environment: "ptu", version: "9.9.9-ptu.1")
+    create(:blueprint_source, build: other, org_name: "Eckhart Security")
+
+    assert_empty Blueprint.from_org("Eckhart Security")
+    assert_empty blueprint.reload.sources
+  end
+
+  # The row keeps its last build so a retired recipe still resolves. Reading the
+  # recipe and the sources through the current build alone made a retired one
+  # look like a recipe with no ingredients that nobody knows a source for.
+  test "a retired recipe still carries its recipe and its sources" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(
+      environment: ScData::Source.environment, version: "0.0.1-live.1", name: "Retired"
+    )
+    create(:blueprint_cost_slot, build: last)
+    create(:blueprint_source, build: last, org_name: "Eckhart Security")
+
+    blueprint.reload
+
+    assert_predicate blueprint, :retired?
+    assert_equal 1, blueprint.cost_slots.count
+    assert_equal 1, blueprint.sources.count
+    assert_not_predicate blueprint, :source_unknown?
+  end
+
+  test "a blueprint no build has ever described reads as empty rather than raising" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+
+    assert_empty blueprint.cost_slots
+    assert_empty blueprint.sources
+    assert_empty blueprint.cost_options
+    assert_predicate blueprint, :source_unknown?
+  end
+
+  test "#cost_options reaches the options of the build being read" do
+    blueprint = create(:blueprint)
+    slot = create(:blueprint_cost_slot, build: blueprint.build)
+    option = create(:blueprint_cost_option, slot:)
+
+    assert_equal [option], blueprint.reload.cost_options.to_a
+  end
+
+  test "destroying a blueprint takes its builds, recipes and sources with it" do
     blueprint = create(:blueprint)
     slot = create(:blueprint_cost_slot, build: blueprint.build)
     create(:blueprint_cost_option, slot:)
     create(:blueprint_cost_modifier, slot:)
 
+    create(:blueprint_source, build: blueprint.build)
+
     assert_difference -> { BlueprintBuild.count } => -1,
       -> { BlueprintCostSlot.count } => -1,
       -> { BlueprintCostOption.count } => -1,
-      -> { BlueprintCostModifier.count } => -1 do
+      -> { BlueprintCostModifier.count } => -1,
+      -> { BlueprintSource.count } => -1 do
       blueprint.destroy
     end
   end

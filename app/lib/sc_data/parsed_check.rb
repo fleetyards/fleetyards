@@ -50,10 +50,12 @@ module ScData
     # export whose upload was still running, a parse that died between
     # catalogues, a sync that fetched half a prefix.
     CATALOGUES = {
-      # Both, because a blueprint is found by its ref and the loader skips a
-      # record that has none -- and a skipped record is missing from `loaded`,
-      # which is what `retire_absent` reads as "the export dropped it". One
-      # blank ref would retire a recipe the build still carries.
+      # The two crafting catalogues name both fields, where every other names
+      # one: a blueprint and a pool are each found by their ref, and the loader
+      # skips a record that has none. A skipped record is missing from
+      # `loaded`, which is what `retire_absent` reads as "the export dropped
+      # it", so one blank ref would retire a recipe the build still carries.
+      "blueprint_pools" => Catalogue.new(key: %w[key ref], floor: 120, icons: false),
       "blueprints" => Catalogue.new(key: %w[key ref], floor: 1280, icons: false),
       "commodities" => Catalogue.new(key: "sc_key", floor: 180, icons: true),
       "equipment" => Catalogue.new(key: "key", floor: 3800, icons: false),

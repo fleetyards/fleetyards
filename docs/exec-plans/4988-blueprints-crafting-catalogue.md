@@ -202,6 +202,20 @@ rest of the loader together -- inside one transaction, because the delete lands 
 three inserts and a failure between them would leave a readable build carrying half a
 recipe.
 
+### D14 — Sources hang off the build, and are denormalised
+
+`blueprint_sources` belongs to `blueprint_builds`, for the reason the recipe does (D11): live
+and ptu are loaded separately and either can be read. `prune_builds` and
+`retire_absent_builds` drop a build with `delete_all`, which skips `dependent: :destroy`, so the
+FK cascade is what carries the sources away — the same trap, covered by the same kind of test.
+
+The row is wide and denormalised — pool key, org name, mission name, standing band all inline.
+A pool, an org and a mission are each records in the export, but none of them is a Fleetyards
+entity and nothing else would ever point at one, so three tables to render one sentence is the
+worse trade. The loader rewrites them wholesale, deduplicated: a pool is named by every
+difficulty of every mission that hands it out, so the same org and mission arrive several times
+over and the page would otherwise list one line per repetition. 4,101 rows against 4,157 raw.
+
 ### D13 — The build is authoritative; the columns are only an index
 
 `name`, `craft_time`, `slot_count`, `category_ref` and `craftable` are written to the row as
@@ -262,7 +276,53 @@ of those 84, and they load with no link until #4997 lands.
 6. Parser tests and loader tests against the **pushed** parsed tree. A parser change means a
    full re-parse and push first — the loader tests read the pushed tree, not a local one.
 
-### Phase 2 — Contract sources (PR 2)
+### Phase 2 — Contract sources (PR 2) — **built**
+
+Measured against `4.10.1-live.12660092` while building it, and the shape is **one level deeper
+than D4 assumed** and has **two mechanisms, not one**:
+
+```
+ContractGenerator
+└─ generators > ContractGeneratorHandler_*[]        6 shapes; 4 carry a pool
+   ├─ factionReputation ──> FactionReputation.displayName        the org
+   └─ contracts > {CareerContract|Contract}[]       one per difficulty variant
+      ├─ minStanding / maxStanding ──> SReputationStandingParams.displayName
+      ├─ paramOverrides > ContractStringParam[param="Title"]     the mission
+      └─ …contractResults… > BlueprintRewards{chance, blueprintPool}
+
+rox_scenarioprogress.xml                            XenoThreat, the second mechanism
+└─ factionRewardTiers > … > STierReward{minPoints} > blueprintPool > Reference[]
+```
+
+| | |
+|---|---|
+| pools | 154 — **130 have a source**, 24 have none (17 `ors`, 6 mission pools, 1 `48blueprints`) |
+| by mechanism | 105 via a contract generator, 25 via the XenoThreat scenario, **0 overlap** |
+| source entries | 533 — 508 contract, 25 scenario |
+| orgs | 20 named; 9 entries unattributed |
+| blueprints with a source | **706** of 1607 — 732 sit in a pool, 26 of those only in a pool nothing hands out |
+| loaded rows | 4,101 `blueprint_sources` |
+
+Four things only came out of building it:
+
+1. **Walking only `_Career` finds 74 of 105 pools.** Six handler shapes exist and four carry a
+   pool; `_List` alone accounts for most of the shortfall. Handlers and contract kinds are both
+   enumerated now.
+2. **`contractResults` nests to no fixed depth.** A dig that assumes one depth silently returns
+   nothing for the others — which is exactly what made walking `_Career` *look* like it worked.
+   Both the pool lookup and the faction fallback are recursive walks.
+3. **A standing carries a debug `name` beside its `displayName`.** Reading `name` first leaves
+   every band blank, because "FactionRep_Allied_Rank1" is in no localisation file.
+4. **The scenario names a `Faction`, not a `FactionReputation`.** Its own name is
+   `@LOC_UNINITIALIZED`; the org comes through its `factionReputationRef`.
+
+A `_List` handler states no faction, so the org falls back to the generator's — but **only where
+the record names exactly one**. Nine entries name two and are left unattributed: a wrong org is
+worse than none when "who gives me this" is the whole question.
+
+#### Original plan
+
+
 
 The shape, measured while Phase 1 was in review — it is one level deeper than D4 assumed:
 
@@ -380,6 +440,9 @@ Three corrections to the issue body came out of building it:
 - **2026-09-17** Issue read, branch and worktree created, D1–D9 resolved with the user (D4 full chain, D6 ship ramps, D8 shared shell, D10 stacked PRs).
 - **2026-09-17** Verified the contract chain against `4.10.1-live.12660092`: pool→generator references are **GUID-only** (a name grep returns zero files), 130 of 154 pools reach a generator, 107 generator files across 10 guilds, and `factionReputation` resolves to a `FactionReputation` record carrying `displayName`. Worked example recorded in D4.
 - **2026-09-17** Confirmed the public frontend has no commodities/components/equipment pages at all — D8 is a real fork, not a tidy-up.
+- **2026-09-17** Review on #5010: the recipe and the sources read through the current build alone while every scalar fact fell back to the last one, so a retired recipe rendered as having no ingredients and no known source. Both go through `facts` now; the class-level scopes stay on the current build, which is what a list filter should match.
+- **2026-09-17** Phase 2's loader suite ran 899s. The cause was not the loader: six tests each triggered a full 1,607-record load, and the cost is in rolling back the ~20k rows afterwards rather than in writing them. Merging three of them into one took it to **106s** with the same 75 assertions. Kept the separate `previously_new_record?` guard anyway -- it buys 2% here but skips ~3,200 redundant round-trips on a production load.
+- **2026-09-17** Phase 2 built. The source chain is two mechanisms and four handler shapes, not one of each; 706 of 1607 recipes have a stated source and 901 do not. Four resolution traps recorded above, each one found by a measurement that disagreed with the previous one.
 - **2026-09-17** Second review pass: the row's columns were still being read where the build should answer, so `making`, `craftable` and the fact readers now go through the build (D13); `ParsedCheck` requires a blueprint's `ref` as well as its `key`; and the row, its build and its recipe are written in one transaction rather than three.
 - **2026-09-17** Review on #4998 caught that the recipe was global while the build facts were per-source -- a ptu load would have overwritten the live recipe. Moved onto the build (D11), wrapped the rewrite in a transaction, and made an unrecognised ramp kind report itself.
 - **2026-09-17** Phase 1 built and measured end to end against a locally loaded catalogue: 1607 blueprints, 1579 linked, 0 cost options unresolved. Found the `,P` localisation trap (D12) and filed the parser half of it as #4997; found piecewise ramps (D6) and the variable slot count.
@@ -387,6 +450,6 @@ Three corrections to the issue body came out of building it:
 ## Progress
 
 - [x] Phase 1 — Blueprints parser and loader (PR 1)
-- [ ] Phase 2 — Contract sources (PR 2)
+- [x] Phase 2 — Contract sources (PR 2)
 - [ ] Phase 3 — Public API (PR 3)
 - [ ] Phase 4 — Catalogue shell and pages (PR 4)
