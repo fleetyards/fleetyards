@@ -17,7 +17,10 @@ renders a name, a manufacturer and a size and stops. There is no `/components/`,
 page, and no `show` action to build one on — `config/routes/api/components_routes.rb` is
 `resources :components, only: [:index]` plus a `weapons` collection route.
 
-Measured against `live 4.10.0-live.12519617`, the source `ScData::Source.current` resolves to.
+Every figure below is measured against `live 4.10.0-live.12519617`, the build the local
+production dump actually carries. `config/app/sc_data.yml` moved on to `4.10.1-live.12660092`
+part-way through this work; no row of that build is loaded locally, so the counts describe the
+older one. The shape does not move with a patch — the decisions do not depend on which.
 
 Related: #4988 (a public Blueprints catalogue). Both issues add the first public sc_data
 catalogue this site has ever had. #4988's D8 settles the shared shell; this plan consumes it
@@ -451,10 +454,27 @@ cost of adding a flag, not a failure.
 - **2026-09-17** **D3 shrunk.** `Model` already splits list and detail with an `extended:` flag folded into the cache key; no second payload needed.
 - **2026-09-17** **D5 halved.** Metric sorting needs `jsonb`, but name/date sorting needs only deleting one line — `ALLOWED_SORTING_PARAMS` exists and is dead because the controller overwrites `sorts`.
 - **2026-09-17** Confirmed #4988 has built no frontend yet (loader PR only), so the shell D7 depends on is three PRs away.
+- **2026-09-17** **Phase 1 built and verified against a copy of the real rows.** Slug backfill 0.43s, jsonb conversion 2.3s; 5,692 named rows produce 5,692 distinct slugs with 3,048 NULLs, and neither table loses a `type_data` row (5,538 and 13,628 preserved). `down` converts back, so the pair round-trips.
+- **2026-09-17** **A quarter of `type_data` was already unreadable.** 4,556 of 13,628 `component_builds` rows hold a Ruby `Hash#inspect` string rather than YAML, so they have never deserialized — all of them in `4.9.0-live.12344265`, the backfilled build, and none in `components`, which is 100% valid YAML. The migration converts both formats (the inspect one needs `" => "` → `": "` and Ruby `nil` → `null`, which covers all 4,556) and raises on anything else rather than writing NULL over a component's metrics. **Whatever wrote those rows is still unfixed** — see below.
+- **2026-09-17** **jsonb needs a wrapping type, not a bare column.** The YAML carried `!ruby/hash:ActiveSupport::HashWithIndifferentAccess` tags, so readers have always had symbol access; `Hardpoint#thruster_class` digs `:thruster_class` and a bare Hash would answer `nil` without raising. `Types::IndifferentJson` keeps the column's new type invisible to its readers.
+- **2026-09-17** Confirmed the payoff directly: `ORDER BY (type_data ->> 'max_health')::numeric` over shields now runs, which is the query D5 exists for.
+
+### Why 4,556 rows were never readable — closed
+
+`db/data/20260827150100_backfill_component_builds.rb` seeds a build row per component with
+`build.update!(FACTS.index_with { |fact| component.public_send(fact) })`. It shipped in #4557
+(`3bf683f3e`); `ComponentBuild` only gained `serialize :type_data, coder: YAML` in #4559
+(`ed660b600`). So the backfill assigned a real Hash to a plain string column with no
+serializer attached, and Ruby wrote `to_s` — the `Hash#inspect` format. Every later load wrote
+proper YAML, which is why the damage stops at `4.9.0-live.12344265` and never touches
+`components`.
+
+**No live write path is affected**, and the migration converts the residue rather than leaving
+it. Nothing to fix beyond what Phase 1 already does.
 
 ## Progress
 
-- [ ] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
+- [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
 - [ ] Phase 2 — The API (PR 2)
 - [ ] Phase 3 — The metric renderer (PR 3)
 - [ ] Phase 4 — The pages (PR 4) — blocked on #4988's shell
