@@ -141,6 +141,39 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/WeaponIndex"
+  "/components/{slug}":
+    get:
+      summary: Component detail
+      tags:
+      - Components
+      operationId: component
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Component"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/equipment":
     get:
       summary: Equipment list
@@ -216,6 +249,7 @@ paths:
       tags:
       - ComponentsFilters
       operationId: componentClassesFilters
+      deprecated: true
       responses:
         '200':
           description: successful
@@ -229,6 +263,7 @@ paths:
       tags:
       - ComponentsFilters
       operationId: componentItemTypesFilters
+      deprecated: true
       responses:
         '200':
           description: successful
@@ -15932,6 +15967,12 @@ components:
           "$ref": "#/components/schemas/ComponentTypeEnum"
         subType:
           type: string
+        description:
+          type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
         inventoryConsumption:
           type: string
         grade:
@@ -16300,6 +16341,10 @@ components:
       properties:
         nameCont:
           type: string
+        descriptionCont:
+          type: string
+        manufacturerNameCont:
+          type: string
         idIn:
           type: array
           items:
@@ -16309,14 +16354,20 @@ components:
           type: array
           items:
             type: string
+        manufacturerSlugIn:
+          type: array
+          items:
+            type: string
         itemTypeIn:
           type: array
           items:
             type: string
+          deprecated: true
         componentClassIn:
           type: array
           items:
             type: string
+          deprecated: true
         categoryIn:
           type: array
           items:
@@ -16329,6 +16380,58 @@ components:
           type: boolean
         hiddenEq:
           type: boolean
+        s:
+          type: string
+          enum:
+          - name asc
+          - name desc
+          - grade asc
+          - grade desc
+          - createdAt asc
+          - createdAt desc
+          - maxHealth asc
+          - maxHealth desc
+          - maxRegen asc
+          - maxRegen desc
+          - jumpRange asc
+          - jumpRange desc
+          - driveSpeed asc
+          - driveSpeed desc
+          - coolingRate asc
+          - coolingRate desc
+          - powerBase asc
+          - powerBase desc
+          - health asc
+          - health desc
+          - thrustCapacity asc
+          - thrustCapacity desc
+        sorts:
+          type: array
+          items:
+            type: string
+            enum:
+            - name asc
+            - name desc
+            - grade asc
+            - grade desc
+            - createdAt asc
+            - createdAt desc
+            - maxHealth asc
+            - maxHealth desc
+            - maxRegen asc
+            - maxRegen desc
+            - jumpRange asc
+            - jumpRange desc
+            - driveSpeed asc
+            - driveSpeed desc
+            - coolingRate asc
+            - coolingRate desc
+            - powerBase asc
+            - powerBase desc
+            - health asc
+            - health desc
+            - thrustCapacity asc
+            - thrustCapacity desc
       additionalProperties: false
       example: {}
       title: ComponentQuery
@@ -17119,6 +17222,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - components
       - fleet_allies
       - fleet_contracts
       - fleet_logistics
@@ -17139,6 +17243,7 @@ components:
       - ship_inventories
       - tour_payouts
       x-enumNames:
+      - COMPONENTS
       - FLEET_ALLIES
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS

@@ -431,6 +431,12 @@ components:
           "$ref": "#/components/schemas/ComponentTypeEnum"
         subType:
           type: string
+        description:
+          type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
         inventoryConsumption:
           type: string
         grade:

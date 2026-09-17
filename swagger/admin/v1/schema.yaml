@@ -10044,6 +10044,12 @@ components:
           "$ref": "#/components/schemas/ComponentTypeEnum"
         subType:
           type: string
+        description:
+          type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
         inventoryConsumption:
           type: string
         grade:
@@ -10596,13 +10602,49 @@ components:
       enum:
       - name asc
       - name desc
+      - grade asc
+      - grade desc
       - createdAt asc
       - createdAt desc
+      - maxHealth asc
+      - maxHealth desc
+      - maxRegen asc
+      - maxRegen desc
+      - jumpRange asc
+      - jumpRange desc
+      - driveSpeed asc
+      - driveSpeed desc
+      - coolingRate asc
+      - coolingRate desc
+      - powerBase asc
+      - powerBase desc
+      - health asc
+      - health desc
+      - thrustCapacity asc
+      - thrustCapacity desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
+      - GRADE_ASC
+      - GRADE_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - MAX_HEALTH_ASC
+      - MAX_HEALTH_DESC
+      - MAX_REGEN_ASC
+      - MAX_REGEN_DESC
+      - JUMP_RANGE_ASC
+      - JUMP_RANGE_DESC
+      - DRIVE_SPEED_ASC
+      - DRIVE_SPEED_DESC
+      - COOLING_RATE_ASC
+      - COOLING_RATE_DESC
+      - POWER_BASE_ASC
+      - POWER_BASE_DESC
+      - HEALTH_ASC
+      - HEALTH_DESC
+      - THRUST_CAPACITY_ASC
+      - THRUST_CAPACITY_DESC
       title: ComponentSortEnum
     ComponentThruster:
       type: object
@@ -17261,6 +17303,7 @@ components:
       - Component
       - Fleet
       - FleetContract
+      - FleetSubscription
       - FleetInventory
       - FleetInventoryItem
       - FleetInventoryPosition
@@ -17284,6 +17327,7 @@ components:
       - COMPONENT
       - FLEET
       - FLEET_CONTRACT
+      - FLEET_SUBSCRIPTION
       - FLEET_INVENTORY
       - FLEET_INVENTORY_ITEM
       - FLEET_INVENTORY_POSITION

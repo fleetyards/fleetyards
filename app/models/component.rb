@@ -239,10 +239,42 @@ class Component < ApplicationRecord
   serialize :ammunition, coder: YAML
   serialize :inventory_consumption, coder: YAML
 
+  # The metrics worth ordering a catalogue by, and the `type_data` key each one
+  # lives under. Read off the component's own column rather than the joined
+  # build: the loader writes both, so for a current component they agree, and
+  # for a retired one the column still holds the last figures anyone measured.
+  # The fallback join carries only `FILTERABLE`, which leaves `type_data` out,
+  # so reading the build here would break `currentVersion=false`.
+  #
+  # Every value is a number in the export; `::numeric` is what makes Postgres
+  # order them as such rather than as text, where "9" outranks "10".
+  METRIC_SORTS = {
+    "maxHealth" => "max_health",
+    "maxRegen" => "max_regen",
+    "jumpRange" => "jump_range",
+    "driveSpeed" => "drive_speed",
+    "coolingRate" => "cooling_rate",
+    "powerBase" => "power_base",
+    "health" => "health",
+    "thrustCapacity" => "thrust_capacity"
+  }.freeze
+
   DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
+
+  # Grade sorts off the joined build like every other fact. The metrics reach
+  # inside `type_data`, which only became sortable when it stopped being a YAML
+  # string -- "shields by max health" is the question a catalogue exists to
+  # answer, and until now no amount of paging could ask it.
+  #
+  # `size` is deliberately absent. The column is a string holding "10" and "12"
+  # beside "M" and "S", so ordering it puts 10 and 12 ahead of 2 -- and a sort
+  # that reads as broken is worse than one not offered. It needs a numeric
+  # ransacker of its own, which would change what `size_eq` matches.
   ALLOWED_SORTING_PARAMS = [
-    "name asc", "name desc", "createdAt asc", "createdAt desc"
-  ]
+    "name asc", "name desc",
+    "grade asc", "grade desc",
+    "createdAt asc", "createdAt desc"
+  ] + METRIC_SORTS.keys.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
 
   def self.ordered_by_name
     order(name: :asc)
@@ -265,6 +297,15 @@ class Component < ApplicationRecord
     ransacker(fact, type: FACT_RANSACK_TYPES[fact]) { Component.fact_sql(fact) }
   end
 
+  # One ransacker per metric, so `q[sorts]=maxHealth desc` and
+  # `q[maxHealth_gteq]=1000` both resolve. Only possible since `type_data`
+  # stopped being a YAML string -- as text no SQL could reach a figure inside it.
+  METRIC_SORTS.each do |name, key|
+    ransacker(name.underscore.to_sym, type: :float) do
+      Arel.sql("(components.type_data ->> #{connection.quote(key)})::numeric")
+    end
+  end
+
   # The two enums keep their formatters, which turn the name a client sends into
   # the integer the column stores.
   ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do
@@ -282,11 +323,13 @@ class Component < ApplicationRecord
       "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
       "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
-    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
+    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRIC_SORTS.keys.map(&:underscore)
   end
 
+  # `shop_commodities` was listed here long after the association was removed,
+  # so any filter naming it raised rather than matching nothing.
   def self.ransackable_associations(auth_object = nil)
-    ["manufacturer", "shop_commodities"]
+    ["manufacturer"]
   end
 
   def self.ransackable_scopes(auth_object = nil)
@@ -387,8 +430,11 @@ class Component < ApplicationRecord
     end
   end
 
+  # Admin only -- the public endpoint is gone, because no component in the
+  # current build carries this column. `pluck` rather than loading all 8,740
+  # rows to read one attribute off each.
   def self.class_filters
-    Component.all.map(&:component_class).uniq.compact.map do |item|
+    distinct.pluck(:component_class).compact.sort.map do |item|
       Filter.new(
         category: "class",
         label: I18n.t("filter.component.class.items.#{item.downcase}"),
