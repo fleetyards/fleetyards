@@ -24,6 +24,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
 import { engineUrls } from "@/admin/utils/EngineUrls";
+import { patchOf, environmentOf } from "@/admin/utils/CatalogueVersion";
 import { type RouteLocationRaw } from "vue-router";
 
 const { t, lUtc: l, timeDistance } = useI18n();
@@ -142,14 +143,25 @@ const signupsDelta = computed(() =>
 // "4.9.0-live.12344265" -> "4.9.0". The build id is nineteen characters that
 // would force this one value to a smaller size than every other card on the row;
 // it rides in the tooltip instead. A version with no build id is shown whole.
-const cataloguePatch = computed(() => {
-  const version = dashboard.value?.catalogueVersion;
+const cataloguePatch = computed(
+  () =>
+    patchOf(dashboard.value?.catalogueVersion) ??
+    t("labels.admin.dashboard.catalogueUnknown"),
+);
 
-  if (!version) {
-    return t("labels.admin.dashboard.catalogueUnknown");
-  }
+// The environment beside the patch, because the tile reports whichever load
+// finished last and that is not always the live one: a ptu cycle loads several
+// times a week, and a bare "4.10.1" then reads as the patch everyone is on
+// rather than the preview it actually came from.
+const catalogueSuffix = computed(() => {
+  const environment = environmentOf(dashboard.value?.catalogueVersion);
+  const loadedAt = dashboard.value?.catalogueLoadedAt;
 
-  return version.split("-")[0];
+  return (
+    [environment, loadedAt ? timeDistance(loadedAt) : undefined]
+      .filter(Boolean)
+      .join(" · ") || undefined
+  );
 });
 
 const catalogueTooltip = computed(() => {
@@ -235,11 +247,7 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
           icon="fa-duotone fa-database fa-4x"
           :label="t('headlines.admin.dashboard.catalogue')"
           :value="cataloguePatch"
-          :suffix="
-            dashboard?.catalogueLoadedAt
-              ? timeDistance(dashboard.catalogueLoadedAt)
-              : undefined
-          "
+          :suffix="catalogueSuffix"
           :to="{ name: 'imports' }"
         />
       </div>
