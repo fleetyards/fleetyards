@@ -130,6 +130,8 @@ module ScData
         FileUtils.mkdir_p(items_path) unless File.directory?(items_path)
 
         items.each do |item|
+          item[:icon] = asset_path(item[:icon]) if item[:icon].present?
+
           file_name = [prefix, item[key].downcase].compact.join("_")
 
           p "Duplicate key: #{file_name}" if File.exist?("#{items_path}/#{file_name}.json")
@@ -155,6 +157,7 @@ module ScData
       # icons under textures/vector -- so each is still swept of what its own
       # records stopped naming.
       private def save_icon(icon_path)
+        icon_path = asset_path(icon_path)
         source = raw_asset(icon_path)
 
         return if source.blank?
@@ -177,6 +180,17 @@ module ScData
         return if icon_path.blank?
 
         raw_assets[icon_path.downcase.sub(/\.\w+\z/, "")]
+      end
+
+      # The records do not agree on which separator an asset path uses: a few
+      # dozen of the paint swatches name theirs with backslashes, and every
+      # other record in the same folder names the same folder with slashes.
+      # Both the lookup here and the path a record keeps have to be the one the
+      # file system uses, or the artwork is copied under a name no glob can
+      # match and the record points at nothing. Thirty-six paints had no swatch
+      # for that reason.
+      private def asset_path(path)
+        path&.tr("\\", "/")
       end
 
       # Only what a browser can draw. The export also carries the CryEngine

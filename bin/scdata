@@ -9,6 +9,7 @@ EXPORT_FOLDER = "data/sc_data"
 COMMANDS = {
   "sync" => "Sync a raw SC data export from S3 (optionally specify an environment or version)",
   "parse" => "Parse SC data for the given environment",
+  "check" => "Check the parsed tree for the given environment before it is pushed",
   "push" => "Upload the parsed tree for the given environment to S3",
   "pull" => "Download the parsed tree for the given environment from S3",
   "load" => "Load all SC data for the given environment (manufacturers, items, models, modules)",
@@ -78,6 +79,38 @@ def read_secret(field)
   value
 end
 
+# Prints what the check found and answers whether the tree is fit to push.
+# A step's block cannot fail the step -- `CliHelpers.execute_step` discards what
+# it returns -- so the verdict is printed here and the caller decides, the same
+# way `sync` handles an environment with no export.
+def report_check(sc_environment)
+  result = nil
+
+  CliHelpers.run_step("Checking the parsed tree (#{sc_environment})") do
+    result = ScData::ParsedCheck.new(sc_environment).call
+    [true, ""]
+  end
+
+  result.stats.each do |folder, stats|
+    icons = stats[:icons_named].positive? ? ", #{stats[:icons_named] - stats[:icons_absent]}/#{stats[:icons_named]} icons resolve" : ""
+
+    puts "  %-14s %6d files%s" % [folder, stats[:files], icons]
+  end
+
+  if result.ok?
+    puts "  Nothing to report."
+    return true
+  end
+
+  puts "  #{result.problems.size} problem(s):"
+  result.problems.first(20).each { |problem| puts "    #{problem}" }
+
+  remaining = result.problems.size - 20
+  puts "    ... and #{remaining} more" if remaining.positive?
+
+  false
+end
+
 def latest_version(export_folder, sc_environment)
   raw_path = File.join(export_folder, "raw")
   abort "Raw data folder not found: #{raw_path}" unless Dir.exist?(raw_path)
@@ -95,6 +128,9 @@ end
 # Rails can re-exec this process with the current ARGV, so a consumed ARGV
 # comes back short and the positional args land in the wrong slots.
 args = ARGV.dup
+# Consumed before the command, so it can be written on either side of it.
+# `present?` is not available yet: ActiveSupport arrives with the Rails boot.
+force = !args.delete("--force").nil?
 command = args.shift
 usage if command.nil? || command == "--help" || command == "-h"
 
@@ -190,6 +226,21 @@ when "parse"
     puts "  Updated test/fixtures/sc_data/#{sc_environment}/commodity_keys.json (#{keys.size} keys)"
   end
 
+  # Reported rather than enforced: the tree is written by the time anyone can
+  # read this, and what a parse produced is worth seeing whether or not it is
+  # fit to push. `push` is where it decides anything.
+  report_check(sc_environment)
+
+when "check"
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
+
+  sc_environment = args.shift || ScData::Source.environment
+
+  abort unless report_check(sc_environment)
+
 when "push", "pull"
   CliHelpers.run_step("Booting Rails") {
     boot_rails
@@ -197,6 +248,18 @@ when "push", "pull"
   }
 
   sc_environment = args.shift || ScData::Source.environment
+
+  # Pushing is what makes a tree real: it replaces the one the loaders pull, and
+  # a tree the check has something to say about is exactly the one nobody wants
+  # in the bucket. `--force` is here because a floor is a guess about a future
+  # build, and a person who has read the list has to be able to overrule it --
+  # so it overrules the verdict and never the check itself, which still runs and
+  # still prints, and says so when it was overruled.
+  if command == "push" && !report_check(sc_environment)
+    abort "  Refusing to push. Fix the tree, or push it anyway with --force." unless force
+
+    puts "  Pushing anyway: --force."
+  end
 
   store = ScData::ParsedStore.new(sc_environment, settings: s3_settings)
   result = nil
