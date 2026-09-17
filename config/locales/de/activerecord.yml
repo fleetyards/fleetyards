@@ -216,6 +216,14 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        fleet_subscription:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "darf nicht vor dem Startdatum liegen"
+        supporter_contribution:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "darf nicht vor dem Startdatum liegen"
         announcement:
           attributes:
             discord_parts:

@@ -216,6 +216,14 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        fleet_subscription:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "不能早于开始日期"
+        supporter_contribution:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "不能早于开始日期"
         announcement:
           attributes:
             discord_parts:

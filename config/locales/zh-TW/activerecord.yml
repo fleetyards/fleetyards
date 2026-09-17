@@ -216,6 +216,14 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        fleet_subscription:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "不能早於開始日期"
+        supporter_contribution:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "不能早於開始日期"
         announcement:
           attributes:
             discord_parts:

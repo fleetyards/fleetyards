@@ -216,6 +216,14 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        fleet_subscription:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "non può precedere la data di inizio"
+        supporter_contribution:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "non può precedere la data di inizio"
         announcement:
           attributes:
             discord_parts:

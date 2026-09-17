@@ -216,6 +216,14 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        fleet_subscription:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "no puede ser anterior a la fecha de inicio"
+        supporter_contribution:
+          attributes:
+            ended_at:
+              must_be_after_started_at: "no puede ser anterior a la fecha de inicio"
         announcement:
           attributes:
             discord_parts:

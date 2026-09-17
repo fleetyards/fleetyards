@@ -75,6 +75,11 @@ class Fleet < ApplicationRecord
     dependent: :destroy
   has_many :fleet_inventories, dependent: :destroy
 
+  # The database cascades these, so `dependent:` would only be a second, slower
+  # way of doing the same thing -- and a fleet must never fail to delete
+  # because of a row describing what it was entitled to.
+  has_many :fleet_subscriptions, dependent: nil
+
   has_many :sent_alliance_requests,
     class_name: "FleetAlliance",
     foreign_key: :requester_id,
@@ -257,6 +262,39 @@ class Fleet < ApplicationRecord
   # Every flag enabled for this fleet as a Flipper actor — deliberately not the
   # ones a member enabled for themselves, so a fleet page can tell whether a
   # feature is on for *this* fleet rather than for any fleet the viewer is in.
+  # Memoised per instance, and that is not a detail. `#features` above iterates
+  # every flag in the registry per request and `Frontend::BaseController` does
+  # the same, so an entitlement read reached from inside either loop would
+  # multiply by the flag count. Asserted with a query-count test.
+  def subscribed?(date = Date.current)
+    return @subscribed[date] if @subscribed&.key?(date)
+
+    @subscribed ||= {}
+    @subscribed[date] = fleet_subscriptions.active_on(date).exists?
+  end
+
+  # Called by FleetSubscription after a write, and by `reload`. The memo is a
+  # per-request read rather than a cache with an invalidation story: a second
+  # Fleet instance loaded elsewhere in the same request keeps its own answer.
+  def clear_entitlement_cache
+    @subscribed = nil
+    @active_subscription = nil
+  end
+
+  def reload(*)
+    clear_entitlement_cache
+    super
+  end
+
+  # The row itself, for anything that needs to say *why* -- an admin screen, or
+  # a notification naming what lapsed.
+  def active_subscription(date = Date.current)
+    return @active_subscription[date] if @active_subscription&.key?(date)
+
+    @active_subscription ||= {}
+    @active_subscription[date] = fleet_subscriptions.active_on(date).first
+  end
+
   def features
     Flipper.features.filter_map do |feature|
       Flipper.enabled?(feature.name, self) ? feature.name.to_s : nil

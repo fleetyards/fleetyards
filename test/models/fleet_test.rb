@@ -130,4 +130,105 @@ class FleetTest < ActiveSupport::TestCase
       assert_equal "ts3server://foo.bar", @fleet.ts
     end
   end
+  test "subscribed? follows the record rather than a stored state" do
+    fleet = create(:fleet)
+
+    refute fleet.subscribed?
+
+    create(:fleet_subscription, fleet:)
+
+    assert Fleet.find(fleet.id).subscribed?
+  end
+
+  # Lapse is a read, not a job: no sweep runs, no column is written, and the
+  # next request simply stops granting.
+  test "a lapsed subscription stops granting with nothing having run" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:, started_at: 2.months.ago.to_date, ended_at: 1.day.ago.to_date)
+
+    refute Fleet.find(fleet.id).subscribed?
+  end
+
+  test "subscribed? answers per date" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:, started_at: Date.current - 10, ended_at: Date.current - 5)
+
+    refute fleet.subscribed?
+    assert fleet.subscribed?(Date.current - 7)
+  end
+
+  # `#features` iterates every flag in the registry, and Frontend::BaseController
+  # does the same per request. An entitlement read reached from inside either
+  # loop would multiply by the flag count, so it is memoised -- asserted here
+  # rather than left to inspection.
+  test "subscribed? issues one query however many times it is asked" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    queries = count_queries { 10.times { subject.subscribed? } }
+
+    assert_equal 1, queries, "expected one query, got #{queries}"
+  end
+
+  # The memo answers for the life of the instance, so a write has to say so --
+  # otherwise the fleet that already asked keeps granting after it lapsed.
+  test "a subscription write clears the memo on the fleet it belongs to" do
+    fleet = create(:fleet)
+    subscription = create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    assert subject.subscribed?
+
+    subscription.fleet = subject
+    subscription.update!(started_at: Date.current - 10, ended_at: Date.current - 1)
+
+    refute subject.subscribed?, "the memo outlived the row it was reading"
+  end
+
+  test "reload clears the memo" do
+    fleet = create(:fleet)
+    subscription = create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    assert subject.subscribed?
+
+    FleetSubscription.where(id: subscription.id)
+      .update_all(started_at: Date.current - 10, ended_at: Date.current - 1)
+
+    assert subject.subscribed?, "still memoised, which is the documented contract"
+    refute subject.reload.subscribed?
+  end
+
+  test "active_subscription is memoised the same way" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    queries = count_queries { 10.times { subject.active_subscription } }
+
+    assert_equal 1, queries, "expected one query, got #{queries}"
+  end
+
+  test "a full feature listing is not multiplied by the entitlement read" do
+    fleet = create(:fleet)
+    create(:fleet_subscription, fleet:)
+    subject = Fleet.find(fleet.id)
+
+    before = count_queries { subject.features }
+    subject.subscribed?
+    after = count_queries { subject.features }
+
+    assert_equal before, after,
+      "listing features must not issue more queries once a subscription exists"
+  end
+
+  private def count_queries(&block)
+    count = 0
+    counter = ->(_name, _start, _finish, _id, payload) {
+      count += 1 unless payload[:name].in?(%w[CACHE SCHEMA TRANSACTION])
+    }
+    ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &block)
+    count
+  end
 end

@@ -28,6 +28,7 @@ class VersionedItem
     "Component" => [],
     "Fleet" => [],
     "FleetContract" => [:fleet],
+    "FleetSubscription" => [:fleet],
     "FleetInventory" => [:fleet],
     "FleetInventoryItem" => [:fleet_inventory, :fleet],
     "FleetInventoryPosition" => [:fleet_inventory, :fleet],
