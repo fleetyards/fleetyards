@@ -149,6 +149,65 @@ module ScData
         assert_nil result[:name]
       end
 
+      # The own-name precedence has to survive the export declaring that own key
+      # the way it declares most of them. Read exactly, MXOX would miss its own
+      # name and take the one its block points at -- which is how the table grew
+      # four rows called "Aegis Dynamics" in the first place.
+      test "#parse_manufacturer prefers an own name the export declares with a plural marker" do
+        @parser.translations = {
+          "manufacturer_NameAEGS" => "Aegis Dynamics",
+          "manufacturer_NameMXOX,P" => "maxOx"
+        }
+
+        result = @parser.parse_manufacturer(record("MXOX", name_key: "@manufacturer_NameAEGS"))
+
+        assert_equal "maxOx", result[:name]
+      end
+
+      test "#parse_manufacturer prefers an own name the export declares in another case" do
+        @parser.translations = {
+          "manufacturer_NameAEGS" => "Aegis Dynamics",
+          "manufacturer_namemxox" => "maxOx"
+        }
+
+        result = @parser.parse_manufacturer(record("MXOX", name_key: "@manufacturer_NameAEGS"))
+
+        assert_equal "maxOx", result[:name]
+      end
+
+      # ...and the description that came with the block it ignored goes too.
+      test "#parse_manufacturer drops the description of a block it overrode on a plural-marked own key" do
+        @parser.translations = {
+          "manufacturer_NameAEGS" => "Aegis Dynamics",
+          "manufacturer_DescAEGS" => "Aegis grew to prominence...",
+          "manufacturer_NameMXOX,P" => "maxOx"
+        }
+
+        result = @parser.parse_manufacturer(
+          record("MXOX", name_key: "@manufacturer_NameAEGS", desc_key: "@manufacturer_DescAEGS")
+        )
+
+        assert_equal "maxOx", result[:name]
+        assert_nil result[:description]
+      end
+
+      # The other side of the same comparison: a record naming its own key in the
+      # export's spelling is not pointing away from itself, so its description
+      # stays rather than being dropped as a redirect's.
+      test "#parse_manufacturer keeps the description when the block names its own key in another spelling" do
+        @parser.translations = {
+          "manufacturer_NameTALN,P" => "Talon",
+          "manufacturer_DescTALN" => "Talon builds things."
+        }
+
+        result = @parser.parse_manufacturer(
+          record("TALN", name_key: "@manufacturer_nameTALN", desc_key: "@manufacturer_DescTALN")
+        )
+
+        assert_equal "Talon", result[:name]
+        assert_equal "Talon builds things.", result[:description]
+      end
+
       test "#parse_manufacturer ignores a record without a code" do
         assert_nil @parser.parse_manufacturer(record(nil))
       end
