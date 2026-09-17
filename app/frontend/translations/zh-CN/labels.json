@@ -1353,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "打捞填充站",
           "cargogrid": "货物网格",
-          "seat": "座位"
+          "seat": "座位",
+          "thrusters": "推进器",
+          "bombcompartments": "炸弹舱"
         },
         "name": "名称",
         "category": "分类",

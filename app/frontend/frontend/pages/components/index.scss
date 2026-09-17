@@ -1,35 +1,129 @@
+// Slotted markup lives in the consumer's scope, so the metrics-card content
+// primitives have to be imported here rather than inherited from the card.
+@import "@/shared/components/metricsCard";
+
 .component-page {
-  &__manufacturer {
-    color: var(--color-lifted, #eee);
-    margin-bottom: 0.5rem;
+  &__masthead {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  &__icon {
+    width: 52px;
+    flex: none;
+    margin-top: 2px;
+
+    // The categories the drawn set never got are Font Awesome glyphs, which
+    // need a box to sit in rather than a width to scale to.
+    &--glyph {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      font-size: 34px;
+      color: var(--color-primary, #428bca);
+    }
+  }
+
+  &__title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__name {
+    font-family: "Orbitron", tahoma, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px;
+  }
+
+  &__sub {
+    color: var(--color-muted, #7a8288);
+    font-size: 14px;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 8px;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  // Label/value, the way a metrics row reads, so a bare "3" is never left to
+  // explain itself.
+  &__badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 5px 11px;
+    // Filled, not an outline. On black an unfilled badge is a faint rectangle
+    // with nothing behind the text -- `bg-control` is the fill Chip and every
+    // other small control already sits on.
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: 4px;
+    white-space: nowrap;
+
+    &--accent {
+      border-color: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 50%,
+        transparent
+      );
+      background-color: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 22%,
+        transparent
+      );
+    }
+  }
+
+  &__badge-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+  }
+
+  // Open Sans, not Orbitron. The label is a word and carries the display face
+  // fine; the value is often a single glyph, and Orbitron's geometric "3", "A"
+  // and "B" are genuinely hard to tell apart at this size.
+  &__badge-value {
+    font-family: "Open Sans", tahoma, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
   }
 
   &__description {
-    margin-bottom: 1.5rem;
-    max-width: 60ch;
+    max-width: 68ch;
+    margin: 0 0 24px;
   }
 
-  // A definition list rather than a table: one value per label, and nothing to
-  // sort. Stacked by default and paired into two columns only once there is
-  // room -- `max-content` on the label column means a long translation ("Power
-  // Curve (Low / Med / High)", "Consommation d'énergie") would otherwise push
-  // the value off a phone.
-  &__stats {
+  &__empty {
+    color: var(--color-muted, #7a8288);
+    margin: 0;
+  }
+
+  // The rail only earns its own column once there is room for both; the grid
+  // breakpoints here start at 1500px, so this uses its own.
+  &__columns {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.25rem 1.5rem;
-    margin: 0;
+    gap: 22px;
+    align-items: start;
 
-    @media (min-width: 576px) {
-      grid-template-columns: max-content 1fr;
-    }
-
-    dt {
-      color: var(--color-lifted, #eee);
-    }
-
-    dd {
-      margin: 0;
+    @media (min-width: 992px) {
+      grid-template-columns: minmax(0, 1fr) 340px;
     }
   }
 }

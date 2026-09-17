@@ -443,12 +443,26 @@ class Component < ApplicationRecord
     end
   end
 
+  # The export prefixes a component's prose with a metadata block -- "Item Type",
+  # "Manufacturer", "Size", "Grade", "Class" -- separated from it by a blank
+  # line, and escapes its newlines as a literal backslash-n. Returns the prose
+  # and that block, either of which can be absent.
+  def self.split_description(value)
+    return [nil, nil] if value.blank?
+
+    prose, data = value.gsub("\\n", "\n").split("\n\n", 2).reverse
+
+    # Runs of whitespace collapse to one space -- the export wraps a paragraph
+    # across lines.
+    [prose&.gsub(/\s+/, " ")&.strip.presence, data]
+  end
+
   def extract_data_from_description
     return if description.blank?
 
-    cleaned_description, data = description.gsub("\\n", "\n").split("\n\n", 2).reverse
+    cleaned_description, data = self.class.split_description(description)
 
-    self.description = cleaned_description.delete("\n").gsub(/[[:space:]]+/, "").chomp
+    self.description = cleaned_description
 
     return if data.blank?
 

@@ -1353,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Bergungsfüllstation",
           "cargogrid": "Frachtraster",
-          "seat": "Sitze"
+          "seat": "Sitze",
+          "thrusters": "Triebwerke",
+          "bombcompartments": "Bombenschächte"
         },
         "name": "Name",
         "category": "Kategorie",

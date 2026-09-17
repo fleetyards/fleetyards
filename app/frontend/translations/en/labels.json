@@ -1353,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Salvage Filler Station",
           "cargogrid": "Cargo Grid",
-          "seat": "Seats"
+          "seat": "Seats",
+          "thrusters": "Thrusters",
+          "bombcompartments": "Bomb Compartments"
         },
         "name": "Name",
         "category": "Category",

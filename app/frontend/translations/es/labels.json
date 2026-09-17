@@ -1353,7 +1353,9 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Estación de llenado de salvamento",
           "cargogrid": "Grilla de carga",
-          "seat": "Asientos"
+          "seat": "Asientos",
+          "thrusters": "Propulsores",
+          "bombcompartments": "Compartimentos de bombas"
         },
         "name": "Nombre",
         "category": "Categoría",
