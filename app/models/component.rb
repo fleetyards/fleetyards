@@ -38,6 +38,7 @@
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #  index_components_on_name             (name)
 #  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_slug             (slug) UNIQUE
 #  index_components_on_version          (version)
 #
 class Component < ApplicationRecord
@@ -433,5 +434,49 @@ class Component < ApplicationRecord
 
   def tracking_signal_label
     Component.human_enum_name(:tracking_signal, tracking_signal)
+  end
+
+  # The default derivation is `name.parameterize` with nothing to break a tie,
+  # and a component's name is routinely shared -- every ship with a manned
+  # turret contributes another "Manned Turret". `sc_key` is the only field that
+  # separates them, and unlike a counter it survives a reload, so the URL a
+  # visitor bookmarked still resolves after the next patch.
+  #
+  # The backfill suffixes *every* member of a shared base, so the assignment
+  # does not depend on load order -- which row goes first differs between
+  # production and a restored dump. Afterwards the rule relaxes on purpose: a
+  # duplicate arriving in a later patch takes the suffix and the incumbent
+  # keeps the URL it already has, because re-slugging a page people have
+  # bookmarked is worse than the pair reading inconsistently.
+  private def update_slugs
+    base = self.class.slug_for(name)
+
+    if base.blank?
+      self.slug = nil
+      return
+    end
+
+    self.slug = base
+    return unless slug_base_shared? || slug_taken?
+
+    if sc_key.present?
+      self.slug = "#{base}-#{self.class.slug_for(sc_key.tr("_", "-"))}"
+      return unless slug_taken?
+    end
+
+    suffix = 1
+    loop do
+      suffix += 1
+      self.slug = "#{base}-#{suffix}"
+      break unless slug_taken?
+    end
+  end
+
+  private def slug_base_shared?
+    self.class.where(name:).where.not(id:).exists?
+  end
+
+  private def slug_taken?
+    self.class.where(slug:).where.not(id:).exists?
   end
 end

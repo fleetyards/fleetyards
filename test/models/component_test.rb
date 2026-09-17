@@ -40,6 +40,7 @@ require "test_helper"
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #  index_components_on_name             (name)
 #  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_slug             (slug) UNIQUE
 #  index_components_on_version          (version)
 #
 class ComponentTest < ActiveSupport::TestCase
@@ -238,5 +239,47 @@ class ComponentTest < ActiveSupport::TestCase
 
     assert_equal [current.id], Component.current_version.pluck(:id)
     assert_includes Component.current_version(false).pluck(:id), retired.id
+  end
+
+  test "a name nobody else carries slugs to the name alone" do
+    component = create(:component, name: "Bulldog Repeater", sc_key: "behr_repeater_s3")
+
+    assert_equal "bulldog-repeater", component.slug
+  end
+
+  test "a shared name disambiguates on sc_key, which survives a reload" do
+    first = create(:component, name: "Manned Turret", sc_key: "aegs_hammerhead_turret_rear")
+    second = create(:component, name: "Manned Turret", sc_key: "anvl_valkyrie_turret_top")
+
+    assert_equal "manned-turret-anvl-valkyrie-turret-top", second.slug
+    refute_equal first.slug, second.slug
+
+    second.touch
+    assert_equal "manned-turret-anvl-valkyrie-turret-top", second.reload.slug
+  end
+
+  test "a component with no name has no slug, so the index tolerates the 3048 of them" do
+    first = create(:component, name: nil, sc_key: "htnk_nameless_one")
+    second = create(:component, name: nil, sc_key: "htnk_nameless_two")
+
+    assert_nil first.slug
+    assert_nil second.slug
+  end
+
+  test "a shared name with no sc_key to separate it falls back to a counter" do
+    create(:component, name: "Internal Tank", sc_key: nil)
+    second = create(:component, name: "Internal Tank", sc_key: nil)
+
+    assert_equal "internal-tank-2", second.slug
+  end
+
+  test "the database refuses two components on one slug" do
+    first = create(:component, name: "Omnisky VI", sc_key: "klwe_laser_s3")
+    second = create(:component, name: "Omnisky IX", sc_key: "klwe_laser_s4")
+
+    # Past the callback on purpose: the point is the index, not the derivation.
+    assert_raises(ActiveRecord::RecordNotUnique) do
+      second.update_column(:slug, first.slug)
+    end
   end
 end
