@@ -40,17 +40,11 @@ fleet_mission_builder:
 fleet_subscriptions:
   description: "Fleet subscriptions — the supporter-facing surfaces of the premium rollout"
 
-fleet_starmap:
-  description: "Starmap on the fleet page"
-
 # Stacks on tour_payouts rather than replacing it: that flag is what makes
 # tours exist at all, and this one decides whether a fleet runs them as a fleet
 # -- its own tour list, and members asking onto them. Both have to be on.
 fleet_tours:
   description: "Fleet tours — a fleet's own tour list, with members asking to join"
-
-fleet_worldmap:
-  description: "Member worldmap on the fleet page"
 
 # Moving stock between two inventories. Rides on top of the three gates above
 # rather than replacing them: a transfer touching a fleet inventory still needs

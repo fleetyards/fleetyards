@@ -10,8 +10,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
-import { FeatureFlagName } from "@/services/fyApi";
 import MembersStarMap from "@/frontend/components/Fleets/MembersStarMap/index.vue";
 import {
   useFleetMembers as useFleetMembersQuery,
@@ -71,20 +69,15 @@ const crumbs = computed<Crumb[]>(() => [
 </script>
 
 <template>
-  <FeatureGuard :feature="FeatureFlagName.FLEET_STARMAP" :fleet="props.fleet">
-    <BreadCrumbs :crumbs="crumbs" />
-    <Heading>
-      {{ t("headlines.fleets.members.starmap") }}
-      <small v-if="membersWithSystem.length" class="text-muted">
-        {{ membersWithSystem.length }} / {{ memberItems.length }}
-      </small>
-    </Heading>
+  <BreadCrumbs :crumbs="crumbs" />
+  <Heading>
+    {{ t("headlines.fleets.members.starmap") }}
+    <small v-if="membersWithSystem.length" class="text-muted">
+      {{ membersWithSystem.length }} / {{ memberItems.length }}
+    </small>
+  </Heading>
 
-    <Loader :loading="asyncStatus.isLoading.value" />
+  <Loader :loading="asyncStatus.isLoading.value" />
 
-    <MembersStarMap
-      v-if="!asyncStatus.isLoading.value"
-      :members="memberItems"
-    />
-  </FeatureGuard>
+  <MembersStarMap v-if="!asyncStatus.isLoading.value" :members="memberItems" />
 </template>

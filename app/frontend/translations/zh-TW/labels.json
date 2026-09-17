@@ -87,8 +87,7 @@
         "settingsIntro": "為您的帳戶啟用或停用實驗性功能。這些功能可能不完整或隨時變更。",
         "descriptions": {
           "tools_travel_times": "顯示地點之間的預計旅行時間。",
-          "tools_cargo_grids": "顯示飛船的互動式貨物網格檢視器。",
-          "fleet_starmap": "在艦隊成員頁面顯示 Star Citizen 星圖。"
+          "tools_cargo_grids": "顯示飛船的互動式貨物網格檢視器。"
         },
         "registryHint": "功能旗標宣告於 config/feature_flags.yml，並在部署時建立。你可以在這裡控制它們的開放範圍。",
         "fleetSettingsIntro": "為整個艦隊啟用或停用功能。您在此啟用的內容對所有成員可見。",

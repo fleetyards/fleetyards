@@ -87,8 +87,7 @@
         "settingsIntro": "Activez ou désactivez les fonctionnalités expérimentales pour votre compte. Ces fonctionnalités peuvent être incomplètes ou changer sans préavis.",
         "descriptions": {
           "tools_travel_times": "Afficher les temps de trajet estimés entre les emplacements.",
-          "tools_cargo_grids": "Afficher la visionneuse interactive de grille de cargaison pour les vaisseaux.",
-          "fleet_starmap": "Afficher la carte stellaire Star Citizen sur les pages des membres de flotte."
+          "tools_cargo_grids": "Afficher la visionneuse interactive de grille de cargaison pour les vaisseaux."
         },
         "registryHint": "Les flags sont déclarés dans config/feature_flags.yml et créés au déploiement. Vous contrôlez ici leurs conditions d'activation.",
         "fleetSettingsIntro": "Activez ou désactivez des fonctionnalités pour toute la flotte. Tous les membres voient ce que vous activez ici.",
