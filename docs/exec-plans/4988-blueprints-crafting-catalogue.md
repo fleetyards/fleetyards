@@ -225,9 +225,29 @@ of those 84, and they load with no link until #4997 lands.
 
 ### Phase 2 — Contract sources (PR 2)
 
+The shape, measured while Phase 1 was in review — it is one level deeper than D4 assumed:
+
+```
+ContractGenerator
+└─ generators > ContractGeneratorHandler_Career[]      one per system (Stanton, Pyro)
+   ├─ debugName, factionReputation                      the org
+   └─ contracts > CareerContract[]                      one per difficulty variant
+      ├─ minStanding / maxStanding                      the reputation band
+      ├─ template, paramOverrides                       where the localised title comes from
+      ├─ contractResults > difficulty > ContractDifficulty
+      │     difficultyProfile (a GUID) + four descriptors: mechanicalSkill,
+      │     mentalLoad, riskOfLoss, gameKnowledge
+      └─ contractResults > BlueprintRewards { chance, blueprintPool }
+```
+
+So a pool is reached per **(handler, career contract)** pair, and "VHRT and up" is
+`minStanding`/`maxStanding` rather than a tier label — the `difficulty` block is a profile
+reference plus four prose enums, not a rank. Which of the two the page should say is a Phase 2
+decision, not settled here.
+
 1. `ScData::Parser::ContractsParser` over `contracts/contractgenerator/**` (107 files, 10
-   guild folders): generator ref, its pool refs, `factionReputation`, and the per-difficulty
-   localised titles.
+   guild folders): generator ref, its pool refs with their `chance`, `factionReputation`, the
+   standing band, and the localised title.
 2. Faction resolution: `factions/factionreputation/**` → `displayName` (`@*_RepUI_Name`) and
    logo path. Read-through only in this pass; no factions table.
 3. Blueprint pools: `crafting/blueprintrewards/**` (154 records), with `weight` per reward.
