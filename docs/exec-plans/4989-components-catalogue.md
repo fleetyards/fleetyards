@@ -125,31 +125,37 @@ Reuse rather than reinvent: `Model` already carries `legacy_slug` plus
 `redirect_to_canonical_slug` issuing a 301 (`app/controllers/frontend/base_controller.rb:192-198`),
 which is the mechanism for keeping an old URL alive when a slug changes under a game patch.
 
-### D3 — One payload with an `extended:` flag
+### D3 — One payload, and no list/detail split after all
 
-The issue proposes a list payload and a detail payload. `Model` already solved this more
-cheaply and it is the pattern to copy: `_model.jbuilder` folds `extended` **into the cache
-key** and `_base.jbuilder` gates only the genuinely expensive parts behind it:
+**Revised during Phase 2. What shipped is a single payload; the `extended:` flag was built,
+then removed.**
 
-```ruby
-json.cache! ["v1", model, ::ScData::Source.current, Manufacturer.artwork_version,
-             local_assigns.fetch(:extended, false)] do
-  json.partial!("api/v1/models/base", model:, extended: ...)
-end
-```
+The issue proposed a list payload and a detail payload, and `Model`'s `extended`-folded-into-
+the-cache-key looked like the cheap way to get one. Two things killed it, in order:
 
-The same record safely caches two shapes. For components the heavy parts to gate are
-`hardpoints` and `availability` — the two the `weapons` endpoint was built to escape, because
-"the full component serializer is far too heavy for ~200 rows" and a catalogue page is 1,282.
+1. **`availability` cannot move.** It is a `required` property, so a list omitting it breaks
+   every client reading the index — and gating it saves nothing anyway, because
+   `item_prices_cache_key` already loads `item_prices` for every component to build the cache
+   key. Only `hardpoints` was left to gate.
+2. **`hardpoints` cannot move either.** The index has always emitted it. It is optional in the
+   schema, so a response without it still validates — but that documents the incompatible
+   change rather than avoiding it, and a client reading `items[].hardpoints` breaks. Marking a
+   field optional is not a deprecation.
 
-Anything that depends on records other than this one goes **outside** the cached fragment, the
-way `show.jbuilder` appends `carried_by`.
+With nothing left to gate, the flag was unused machinery and went with it. What remains is the
+same partial for both actions, which is simpler than what was planned.
 
-Also folded in here, because they are the same file: the payload gains `description`, `tags`,
-`required_tags`, `inventoryConsumption`, `ammunition` and the power/heat block. `tags` and
-`required_tags` decide which port an item fits, which is exactly what a catalogue visitor is
-asking. **The cache key must change or none of it is visible** — `_component.jbuilder` keys on
-`["v1", component, source, item_prices_cache_key, Manufacturer.artwork_version]`.
+**The list is therefore no lighter than before.** That cost is real — `hardpoints` is an
+association hit per component, which is why the slim `weapons` endpoint exists — but it is the
+status quo, not a regression, and the fix is a lighter endpoint of its own the way `weapons`
+got one. Dropping a field from an established response is not the way to get there.
+
+The cache key still moves to `v2`: the payload gained `description` and `requiredTags`, and a
+fragment cached under the old key would go on serving the shape without them.
+
+`tags`, `ammunition`, `powerConnection` and `heatConnection` are **not** in the payload — see
+the Phase 2 corrections below for why. `inventoryConsumption` is not either, because
+correcting its documented type is a breaking change the tooling cannot check reliably.
 
 ### D4 — Reuse `useHardpointStats`; it is already the per-category renderer
 
@@ -362,8 +368,9 @@ cost of adding a flag, not a failure.
 ### Phase 2 — The API (PR 2)
 
 1. `show` action + route, resolving by slug with a 301 to the canonical slug.
-2. The `extended:` flag on `_component.jbuilder` / `_base.jbuilder` (D3), `hardpoints` and
-   `availability` behind it, and the **cache key changed** so the new fields appear.
+2. One payload for both actions, with the **cache key moved to `v2`** so the new fields
+   appear (D3). The `extended:` flag was built and then removed: neither `availability` nor
+   `hardpoints` can leave the list response without breaking clients.
 3. New payload fields: `description`, `tags`, `required_tags`, `inventoryConsumption`,
    `ammunition`, and the power/heat/signature block.
 4. Replace the hardcoded sort with `sorting_params(Component, …)`; widen the text search
@@ -411,7 +418,7 @@ cost of adding a flag, not a failure.
 - [ ] **Retired** — a component out of the current build is marked, not presented as current
 - [ ] **The payoff link** — every hardpoint on every ship page links to the component's page
 - [ ] **Seven locales** — category, sub-type and nav/title labels exist in all seven
-- [ ] **API** — a documented `show`, a list payload distinct from the detail payload, and a regenerated schema
+- [x] **API** — a documented `show`, and a regenerated schema. The list payload is *not* distinct from the detail one: the issue asked for a split, and neither field that would have moved can leave the index without breaking clients (D3).
 - [ ] **Flagged** — the whole surface behind the `components` flag
 
 ## Key files
@@ -424,7 +431,6 @@ cost of adding a flag, not a failure.
 | `app/controllers/api/v1/components_controller.rb:38` | The hardcoded sort that makes `ALLOWED_SORTING_PARAMS` dead |
 | `app/controllers/api/v1/filters/components_controller.rb` | The four filter endpoints; two must go |
 | `app/views/api/v1/components/_component.jbuilder` | The cache key that hides any new field |
-| `app/views/api/v1/models/_model.jbuilder` | The `extended:`-in-the-cache-key pattern to copy (D3) |
 | `app/lib/sc_data/loader/items_loader.rb:214` | The 32-category `hidden` allowlist; also writes `type_data` twice |
 | `app/api_components/shared/v1/schemas/component*.rb` | The thirteen `anyOf` `type_data` shapes |
 | `app/frontend/frontend/composables/useHardpointStats.ts` | The existing per-category renderer (D4) |
@@ -451,7 +457,7 @@ cost of adding a flag, not a failure.
 - **2026-09-17** **D1 correction.** The `type_data` predicate drops all 954 paints but **not** the per-ship structure: 319 fuel tanks, 269 seats, 226 controllers survive it, 39% of the set and 700 of the 1,374 colliding rows. Verified every `fueltanks` row is a per-ship `htnk_`/`qtnk_` tank — the exclusion is a whole-category rule, not a heuristic. Final set 1,282.
 - **2026-09-17** **D8 correction.** All 887 icon-carrying components are `paints`. The catalogue set has **0 icons and 0 store images** — the list cannot be image-led at all, against the issue's assumed 25%.
 - **2026-09-17** **D4 measured.** `useHardpointStats` already renders 10 of D1's 20 categories, and its 177 labels are already translated in all seven locales — so the issue's "bulk of the translation work" is done. But the other 10 render nothing, and two of them (`missile_racks` 142, `turret` 124) are 21% of the catalogue. Also needed: a `Component#category` → `HardpointCategoryEnum` mapping, without which thrusters match no branch, and the powered-item block, which a grep for all five of its keys shows is rendered nowhere.
-- **2026-09-17** **D3 shrunk.** `Model` already splits list and detail with an `extended:` flag folded into the cache key; no second payload needed.
+- **2026-09-17** **D3 reversed.** `Model`'s `extended`-in-the-cache-key looked like a cheap list/detail split, and it was built — then removed. `availability` is a required property and `hardpoints` has always been in the index, so neither can leave a list response without breaking clients; marking a field optional documents that change rather than avoiding it. One payload for both actions, which is simpler than the plan.
 - **2026-09-17** **D5 halved.** Metric sorting needs `jsonb`, but name/date sorting needs only deleting one line — `ALLOWED_SORTING_PARAMS` exists and is dead because the controller overwrites `sorts`.
 - **2026-09-17** Confirmed #4988 has built no frontend yet (loader PR only), so the shell D7 depends on is three PRs away.
 - **2026-09-17** **Phase 1 built and verified against a copy of the real rows.** Slug backfill 0.43s, jsonb conversion 2.3s; 5,692 named rows produce 5,692 distinct slugs with 3,048 NULLs, and neither table loses a `type_data` row (5,538 and 13,628 preserved). `down` converts back, so the pair round-trips.
@@ -480,10 +486,11 @@ it. Nothing to fix beyond what Phase 1 already does.
 
 Three of Phase 2's planned steps were wrong as written, and the code said so:
 
-1. **`availability` cannot move behind `extended`.** It is a `required` property in the
-   schema, so a list omitting it breaks every client — and gating it saves nothing, because
-   `item_prices_cache_key` already loads `item_prices` for every component to build the cache
-   key. Only `hardpoints` moves; it is optional and is the real per-row association hit.
+1. **Neither `availability` nor `hardpoints` can move behind `extended`.** `availability` is
+   a `required` property, and gating it saves nothing because `item_prices_cache_key` already
+   loads `item_prices` for every component. `hardpoints` is optional in the schema but has
+   always been emitted by the index, so removing it breaks a client reading
+   `items[].hardpoints` — optional is not deprecated. The flag went with them (D3).
 2. **The two dead filter endpoints are deprecated, not removed.** `oasdiff` confirms removing
    a public path is `api-path-removed-without-deprecation`. Their query params stay permitted
    as well: dropping a param does not error, it silently stops filtering, so a client asking

@@ -186,4 +186,12 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert_equal [match.name], parsed_body["items"].map { |item| item["name"] }
     end
   end
+  # The index has always carried this field. Moving it to the detail page only
+  # would break a client reading `items[].hardpoints`, which marking it optional
+  # in the schema documents rather than avoids.
+  test "GET /components keeps hardpoints in the list response" do
+    assert_api_response :get, 200 do
+      assert parsed_body["items"].first.key?("hardpoints")
+    end
+  end
 end

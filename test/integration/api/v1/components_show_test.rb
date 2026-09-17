@@ -36,9 +36,7 @@ class Api::V1::ComponentsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # The weight a list leaves out. `hardpoints` is optional in the schema, so the
-  # index simply omits it -- but the detail page is what it exists for.
-  test "GET /components/{slug} carries the hardpoints a list omits" do
+  test "GET /components/{slug} carries the component's own ports" do
     assert_api_response :get, 200, params: {slug: @component.slug} do
       assert parsed_body.key?("hardpoints")
     end

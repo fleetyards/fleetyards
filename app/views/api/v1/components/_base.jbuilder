@@ -70,17 +70,19 @@ json.availability do
   end
 end
 
-# Detail only, and optional in the schema, so a list response simply omits it.
-# This is the weight the slim weapons endpoint was built to escape -- an
-# association hit per component, against a catalogue page of 50.
+# Emitted by the list as well as the detail page. It is heavy -- an association
+# hit per component, which is why the slim weapons endpoint exists -- but the
+# index has always carried it, and a client reading `items[].hardpoints` would
+# break on its absence. Marking it optional in the schema documents that
+# change rather than avoiding it. A lighter list shape is worth having; it
+# wants its own endpoint, the way `weapons` got one, rather than quietly
+# dropping a field from this one.
 #
 # Narrowed the same way the nested levels are: a component's own ports are
 # game-file slots, and one this build no longer describes has to stop being
 # listed.
-if local_assigns.fetch(:extended, false)
-  json.hardpoints do
-    json.array! component.hardpoints.in_build, partial: "api/v1/hardpoints/base", as: :hardpoint
-  end
+json.hardpoints do
+  json.array! component.hardpoints.in_build, partial: "api/v1/hardpoints/base", as: :hardpoint
 end
 
 json.partial! "api/shared/dates", record: component
