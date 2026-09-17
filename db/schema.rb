@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -369,7 +369,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
     t.string "size"
     t.string "tags"
     t.integer "tracking_signal"
-    t.string "type_data"
+    t.jsonb "type_data"
     t.datetime "updated_at", null: false
     t.string "version", null: false
     t.index ["component_id", "environment", "version"], name: "index_component_builds_on_component_and_build", unique: true
@@ -404,12 +404,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_140000) do
     t.string "slug"
     t.string "tags"
     t.integer "tracking_signal"
-    t.string "type_data"
+    t.jsonb "type_data"
     t.datetime "updated_at", precision: nil
     t.string "version"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
     t.index ["name"], name: "index_components_on_name"
     t.index ["sc_key"], name: "index_components_on_sc_key", unique: true
+    t.index ["slug"], name: "index_components_on_slug", unique: true
     t.index ["version"], name: "index_components_on_version"
   end
 

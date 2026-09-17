@@ -27,7 +27,7 @@ require "test_helper"
 #  size                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string           not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null

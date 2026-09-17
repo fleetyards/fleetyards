@@ -29,7 +29,7 @@ require "test_helper"
 #  slug                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime
@@ -40,6 +40,7 @@ require "test_helper"
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #  index_components_on_name             (name)
 #  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_slug             (slug) UNIQUE
 #  index_components_on_version          (version)
 #
 class ComponentTest < ActiveSupport::TestCase
@@ -238,5 +239,133 @@ class ComponentTest < ActiveSupport::TestCase
 
     assert_equal [current.id], Component.current_version.pluck(:id)
     assert_includes Component.current_version(false).pluck(:id), retired.id
+  end
+
+  test "a name nobody else carries slugs to the name alone" do
+    component = create(:component, name: "Bulldog Repeater", sc_key: "behr_repeater_s3")
+
+    assert_equal "bulldog-repeater", component.slug
+  end
+
+  test "a shared name disambiguates on sc_key, which survives a reload" do
+    first = create(:component, name: "Manned Turret", sc_key: "aegs_hammerhead_turret_rear")
+    second = create(:component, name: "Manned Turret", sc_key: "anvl_valkyrie_turret_top")
+
+    assert_equal "manned-turret-anvl-valkyrie-turret-top", second.slug
+    refute_equal first.slug, second.slug
+
+    second.touch
+    assert_equal "manned-turret-anvl-valkyrie-turret-top", second.reload.slug
+  end
+
+  # A load saves every component it sees. Deriving the slug again costs two
+  # existence checks to land on the value already in the column, so a save that
+  # moves neither name nor sc_key skips it entirely.
+  test "a save that changes neither name nor sc_key spends no query on the slug" do
+    component = create(:component, name: "Manned Turret", sc_key: "aegs_idris_turret")
+
+    statements = statements_for { component.update!(description: "unchanged name") }
+
+    assert_empty statements.grep(/FROM "components" WHERE "components"\."(name|slug)"/)
+  end
+
+  test "a rename still re-derives the slug" do
+    component = create(:component, :without_build, name: "Old Name", sc_key: "behr_laser_s3")
+
+    component.update!(name: "New Name")
+
+    assert_equal "new-name", component.reload.slug
+  end
+
+  # `name` reads through to the build, so a correction has to reach the build to
+  # reach the slug. Writing the column alone leaves both the reader and the slug
+  # on the build's answer -- which is how this behaved before the slug was
+  # unique, and is why an admin correction goes through `update_with_facts`.
+  test "a correction that reaches the build catches the slug up on the next save" do
+    component = create(:component, name: "Old Name", version: ScData::Source.version)
+
+    # The build is written after the row is saved, so the slug is one save
+    # behind a rename -- true before this column was unique, and unchanged.
+    component.update_with_facts({name: "Corrected"})
+    assert_equal "Corrected", component.reload.name
+    assert_equal "old-name", component.slug
+
+    component.update!(description: "any later save")
+
+    assert_equal "corrected", component.reload.slug
+  end
+
+  # The incumbent's URL is the one people have already bookmarked, and a load
+  # saves every component it sees. Before the settled check, the arrival of a
+  # second "Manned Turret" rewrote the first one's bare slug to the suffixed
+  # form on its very next save.
+  test "an incumbent keeps its slug when a duplicate name arrives later" do
+    incumbent = create(:component, :without_build, name: "Manned Turret", sc_key: "aegs_idris_t1")
+    assert_equal "manned-turret", incumbent.slug
+
+    create(:component, :without_build, name: "Manned Turret", sc_key: "anvl_valk_t2")
+    incumbent.update!(description: "the next import saves it again")
+
+    assert_equal "manned-turret", incumbent.reload.slug
+  end
+
+  test "a component with no name has no slug, so the index tolerates the 3048 of them" do
+    first = create(:component, name: nil, sc_key: "htnk_nameless_one")
+    second = create(:component, name: nil, sc_key: "htnk_nameless_two")
+
+    assert_nil first.slug
+    assert_nil second.slug
+  end
+
+  test "a shared name with no sc_key to separate it falls back to a counter" do
+    create(:component, name: "Internal Tank", sc_key: nil)
+    second = create(:component, name: "Internal Tank", sc_key: nil)
+
+    assert_equal "internal-tank-2", second.slug
+  end
+
+  # `type_data` was a YAML string tagged as a HashWithIndifferentAccess, so
+  # every reader got symbol access for free -- `Hardpoint#thruster_class` digs
+  # `:thruster_class`. A plain jsonb column hands back a bare Hash, which would
+  # answer nil there without raising, so the column keeps a type that wraps it.
+  test "a metric read out of jsonb still answers to a symbol" do
+    component = create(:component, type_data: {"thruster_class" => "main", "power_ranges" => {"low" => {"start" => 1.0}}})
+
+    stored = component.reload.type_data
+
+    assert_equal "main", stored[:thruster_class]
+    assert_equal "main", stored["thruster_class"]
+    assert_in_delta 1.0, stored.dig(:power_ranges, :low, :start)
+  end
+
+  test "type_data is queryable as jsonb, which is the point of the column type" do
+    create(:component, name: "Weak Shield", type_data: {"max_health" => 100})
+    strong = create(:component, name: "Strong Shield", type_data: {"max_health" => 9000})
+
+    found = Component.where("(type_data ->> 'max_health')::numeric > ?", 1000)
+
+    assert_equal [strong.id], found.pluck(:id)
+  end
+
+  test "the database refuses two components on one slug" do
+    first = create(:component, name: "Omnisky VI", sc_key: "klwe_laser_s3")
+    second = create(:component, name: "Omnisky IX", sc_key: "klwe_laser_s4")
+
+    # Past the callback on purpose: the point is the index, not the derivation.
+    assert_raises(ActiveRecord::RecordNotUnique) do
+      second.update_column(:slug, first.slug)
+    end
+  end
+
+  private def statements_for
+    statements = []
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+      statements << payload[:sql] unless payload[:name] == "SCHEMA"
+    end
+
+    yield
+    statements
+  ensure
+    ActiveSupport::Notifications.unsubscribe(subscriber)
   end
 end

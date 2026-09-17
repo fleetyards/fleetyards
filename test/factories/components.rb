@@ -25,7 +25,7 @@
 #  slug                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime
@@ -36,6 +36,7 @@
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #  index_components_on_name             (name)
 #  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_slug             (slug) UNIQUE
 #  index_components_on_version          (version)
 #
 FactoryBot.define do
