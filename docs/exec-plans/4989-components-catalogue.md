@@ -23,6 +23,12 @@ the two catalogues land in one navigation rather than two.
 Also shipped on the way, independent of the stack: **#5007**, the parser fix for #5002 —
 `tags` was stored as the array's own inspect output for every component in the tree.
 
+**Open on #5006, not yet fixed:** the powered-item block renders `powerConsumption`,
+`signatureEm`, `signatureIr` and `powerMinimumFraction` but **not `powerRanges`** — the
+low/medium/high curve every powered component carries, and which this plan's D4 names as part
+of that block. Greptile flagged it; the work stopped before it was written. It is the first
+thing to do when #5006 resumes, with a case in the powered-block spec.
+
 **Picking this back up:** #5003 and #5006 are stacked, so rebase the leaf last, and expect a
 cascade of force-pushes per merge. Both will have drifted from `main`; re-run
 `bin/generate-schema` **and** `bin/generate-asyncapi`, then fix the `components.parameters`
