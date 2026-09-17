@@ -413,4 +413,52 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
 
     assert Notification.exists?(user: fleet_admin, notification_type: "fleet_subscription_started")
   end
+
+  # Deleting an entitlement takes access away exactly as closing one does.
+  test "DELETE tells the fleet it lost the features" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    subscription = create(:fleet_subscription, fleet:, started_at: Date.current - 10)
+    sign_in @user
+
+    assert_api_response :delete, 204, api_path: MEMBER_PATH, path_params: {id: subscription.id}
+
+    assert Notification.exists?(user: fleet_admin, notification_type: "fleet_subscription_ended")
+  end
+
+  test "deleting an already-closed subscription announces nothing" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    subscription = create(:fleet_subscription, fleet:, started_at: Date.current - 10,
+      ended_at: Date.current - 1)
+    sign_in @user
+
+    assert_api_response :delete, 204, api_path: MEMBER_PATH, path_params: {id: subscription.id}
+
+    assert_empty Notification.where(notification_type: "fleet_subscription_ended")
+  end
+
+  # `ended_at` is permitted on create, so a grant can arrive already closed.
+  test "POST of an already-closed grant announces nothing" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: COLLECTION_PATH,
+      body: {fleetId: fleet.id, startedAt: (Date.current - 10).iso8601,
+             endedAt: (Date.current - 1).iso8601}
+
+    assert_empty Notification.where(notification_type: "fleet_subscription_started")
+  end
+
+  test "POST of a future-dated grant announces nothing yet" do
+    fleet_admin = create(:user)
+    fleet = create(:fleet, admins: [fleet_admin])
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: COLLECTION_PATH,
+      body: {fleetId: fleet.id, startedAt: (Date.current + 7).iso8601}
+
+    assert_empty Notification.where(notification_type: "fleet_subscription_started")
+  end
 end

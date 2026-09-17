@@ -11,6 +11,12 @@ module Subscriptions
       @subscription = create(:fleet_subscription, fleet: @fleet)
     end
 
+    # @fleet already holds an open subscription, and the partial unique index
+    # allows only one -- so a test needing a second row needs a second fleet.
+    private def another_fleet
+      create(:fleet, admins: [@admin])
+    end
+
     private def notifications_for(user, type)
       Notification.where(user:, notification_type: type)
     end
@@ -43,7 +49,7 @@ module Subscriptions
     test "closing says what lapsed and why" do
       seeded = create(:fleet_subscription, :seeded, fleet: create(:fleet, admins: [@admin]))
 
-      Notifier.ended(seeded)
+      Notifier.ended(seeded, cause: :contribution)
 
       title = notifications_for(@admin, :fleet_subscription_ended).first.title
 
@@ -51,7 +57,7 @@ module Subscriptions
     end
 
     test "a comp being ended says an administrator did it" do
-      Notifier.ended(@subscription)
+      Notifier.ended(@subscription, cause: :manual)
 
       title = notifications_for(@admin, :fleet_subscription_ended).first.title
 
@@ -108,6 +114,75 @@ module Subscriptions
             "reason #{reason} has no #{locale} translation"
         end
       end
+    end
+
+    # `open?` and `active_on?` are not the same question, and a rule built on
+    # either alone gets one of these wrong.
+    test "a grant dated into the future announces nothing yet" do
+      future = create(:fleet_subscription, fleet: another_fleet, started_at: Date.current + 7)
+
+      Notifier.announce(future, was_open: false, was_active: false, cause: :manual)
+
+      assert_empty notifications_for(@admin, :fleet_subscription_started)
+    end
+
+    test "a grant ending today still announces that it ended" do
+      @subscription.update!(started_at: Date.current - 10, ended_at: Date.current)
+
+      Notifier.announce(@subscription, was_open: true, was_active: true, cause: :manual)
+
+      assert_equal 1, notifications_for(@admin, :fleet_subscription_ended).count
+    end
+
+    test "moving the start across today announces that it started" do
+      @subscription.update!(started_at: Date.current)
+
+      Notifier.announce(@subscription, was_open: true, was_active: false, cause: :manual)
+
+      assert_equal 1, notifications_for(@admin, :fleet_subscription_started).count
+    end
+
+    test "an edit that changes neither state announces nothing" do
+      Notifier.announce(@subscription, was_open: true, was_active: true, cause: :manual)
+
+      assert_empty Notification.where(user: @admin)
+    end
+
+    # An admin closing a contribution-backed grant while the donation is still
+    # running must not blame the donation.
+    test "the cause is what the caller says, not what granted_via implies" do
+      seeded = create(:fleet_subscription, :seeded, fleet: another_fleet, started_at: Date.current - 10)
+      seeded.update!(ended_at: Date.current)
+
+      Notifier.announce(seeded, was_open: true, was_active: true, cause: :manual)
+
+      title = notifications_for(@admin, :fleet_subscription_ended).sole.title
+
+      assert_includes title, I18n.t("notifications.fleet_subscription_ended.reasons.manual")
+      refute_includes title, I18n.t("notifications.fleet_subscription_ended.reasons.contribution")
+    end
+
+    # The title is persisted, so it has to be written in the reader's language
+    # rather than in whatever the job happened to run in.
+    test "each admin is told in their own locale" do
+      german = create(:user, locale: "de")
+      create(:fleet_membership, fleet: @fleet, user: german, aasm_state: :accepted,
+        fleet_role: @fleet.fleet_roles.ranked.first)
+
+      I18n.with_locale(:en) { Notifier.started(@subscription) }
+
+      assert_includes notifications_for(german, :fleet_subscription_started).sole.title,
+        I18n.t("notifications.fleet_subscription_started.title", fleet: @fleet.name, locale: :de)
+          .split(" ").last
+      assert_equal I18n.t("notifications.fleet_subscription_started.title",
+        fleet: @fleet.name, locale: :en),
+        notifications_for(@admin, :fleet_subscription_started).sole.title
+    end
+
+    test "an unknown stored locale falls back rather than raising" do
+      @admin.update_column(:locale, "kl")
+
+      assert_nothing_raised { Notifier.started(@subscription) }
     end
   end
 end

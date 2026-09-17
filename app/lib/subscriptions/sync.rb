@@ -79,7 +79,7 @@ module Subscriptions
 
         subscription.update!(ended_at: @date)
 
-        Notifier.ended(subscription)
+        Notifier.ended(subscription, cause: :contribution)
         closed << subscription
       end
 
