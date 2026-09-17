@@ -511,9 +511,56 @@ Only running it against real data showed it.
 And `size` is not offered as a sort: the column is a string holding `"10"` and `"12"` beside
 `"M"` and `"S"`, so ordering it puts 10 and 12 ahead of 2.
 
+### Phase 3 corrections
+
+The plan said nine categories needed a new renderer. Measured against the build, three do:
+
+| | categories | rows |
+|---|---|---|
+| Carry **no** metric keys at all | `missile_racks`, `turret`, `bombcompartments`, `lifesupport`, `module` | 301 |
+| Already rendered | `refuel_boom` — by a *shape* check after the category chain, like tractor beams, which is why its labels already existed | 10 |
+| Genuinely new | `utility`, `selfdestruct`, `quantumenforcementdevice` | 83 |
+
+So 301 rows have a detail page carrying the power block and nothing else. That is the honest
+answer for them, not a bug — but it is what makes the shared power/signature block
+load-bearing rather than decorative.
+
+Two traps found building it:
+
+- **`selfdestruct` stores its figures as strings** (`"15000"`, `"45"`), so a
+  `typeof === "number"` guard — which every other branch uses — silently skips all seven rows.
+- **The category mapping is not optional.** A thruster component says `thrusters`; the slot
+  vocabulary only has `main_`/`retro_`/`vtol_`/`maneuvering_thrusters`. Unmapped it matches no
+  branch and renders nothing.
+
+The power block hangs off `useComponentStats` rather than `useHardpointStats`, so a ship's
+hardpoint list is unchanged by any of this.
+
+### Schema tooling, the hard way
+
+Three separate causes behind `api-schema-breaking` and `api-schema-check` failing, worth
+recording because none was the obvious one:
+
+1. **oasdiff is non-deterministic on a deeply nested shared component.** Six identical runs of
+   the admin check gave 14 errors four times and 0 twice — it attributes the change to a
+   different path each run, so no fixed ignore list can match. The fix was to stop making the
+   breaking change: `inventoryConsumption` was documented as a `string` that no endpoint has
+   ever emitted, so correcting its type bought nothing and cost a flaky gate.
+2. **macOS and Linux order `components.parameters` differently.** `bin/generate-schema` emits
+   it before `securitySchemes` locally and after it on CI, so `api-schema-check` fails on pure
+   ordering. Regenerating locally flips it back every time.
+3. **The AsyncAPI cable documents embed the same `Component` schema** and have their own
+   generator. `api-schema-check` runs `bin/generate-asyncapi` and diffs those files too.
+
+### #5002 is not fixed by #5001
+
+Checked once #5001 landed: it swaps `translate` for `localize_name` on `name` and `short_name`
+only. The `tags` extraction is untouched and the parsed tree still holds `tags: ["[]"]`.
+`tags`, `ammunition`, `powerConnection` and `heatConnection` stay out of the payload.
+
 ## Progress
 
 - [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
 - [x] Phase 2 — The API (PR 2)
-- [ ] Phase 3 — The metric renderer (PR 3)
+- [x] Phase 3 — The metric renderer (PR 3)
 - [ ] Phase 4 — The pages (PR 4) — blocked on #4988's shell
