@@ -44,6 +44,12 @@ class BlueprintBuild < ApplicationRecord
     -> { order(:position) },
     class_name: "BlueprintCostSlot", inverse_of: :build, dependent: :destroy
 
+  # Where this build says the blueprint can be obtained. Same ownership as the
+  # recipe, and for the same reason.
+  has_many :sources,
+    -> { order(:position) },
+    class_name: "BlueprintSource", inverse_of: :build, dependent: :destroy
+
   FACTS = %i[name craftable_type craftable_id category_ref craft_time slot_count].freeze
 
   # `craftable_type` and `craftable_id` are held back: the association reads the

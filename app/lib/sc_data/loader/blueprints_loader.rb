@@ -12,6 +12,47 @@ module ScData
         }
       end
 
+      # Where each blueprint can be obtained, keyed by the blueprint's ref.
+      # Built once per run by inverting the pools the contracts parser wrote:
+      # a pool names its blueprints, and the page asks the other way round.
+      #
+      # Empty when the tree carries no pools at all -- an environment parsed
+      # before the contracts parser existed -- and a blueprint with no entry
+      # simply loads with no sources, which is also the honest answer for the
+      # 875 that appear in no pool.
+      def sources_by_blueprint
+        @sources_by_blueprint ||= load_items("blueprint_pools").each_with_object(
+          Hash.new { |all, ref| all[ref] = [] }
+        ) do |pool, index|
+          entries = Array.wrap(pool["sources"])
+
+          Array.wrap(pool["blueprints"]).each do |blueprint|
+            ref = blueprint["ref"]
+
+            next if ref.blank?
+
+            entries.each { |entry| index[ref] << pool_source(pool, blueprint, entry) }
+          end
+        end
+      end
+
+      private def pool_source(pool, blueprint, entry)
+        {
+          kind: entry["kind"],
+          pool_sc_ref: pool["ref"],
+          pool_key: pool["key"],
+          pool_group: pool["group"],
+          weight: blueprint["weight"],
+          org_ref: entry["org_ref"],
+          org_name: entry["org_name"],
+          source_key: entry["generator_key"] || entry["scenario_key"],
+          mission_name: entry["mission_name"],
+          min_standing: entry["min_standing"],
+          max_standing: entry["max_standing"],
+          min_points: entry["min_points"]
+        }
+      end
+
       def all
         loaded = load_items("blueprints").filter_map { |blueprint_data| one(blueprint_data)&.id }
 
@@ -42,6 +83,7 @@ module ScData
           build = apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
 
           persist_costs(build, blueprint_data["slots"])
+          persist_sources(build, sources_by_blueprint[blueprint_data["ref"]])
         end
 
         blueprint
@@ -106,7 +148,10 @@ module ScData
       private def persist_costs(build, slots)
         rows = cost_rows(build, Array.wrap(slots))
 
-        build.cost_slots.delete_all
+        # A build written for the first time has nothing to clear, and a full
+        # load is 1,607 of them -- the sweep is for a re-load of a build that
+        # is already there.
+        build.cost_slots.delete_all unless build.previously_new_record?
 
         rows.each do |model, written|
           next if written.blank?
@@ -117,6 +162,32 @@ module ScData
         end
 
         build.association(:cost_slots).reset
+      end
+
+      # Rewritten with the build, the way the recipe is. Deduplicated first:
+      # a pool is named by every difficulty of every mission that hands it out,
+      # so the same org and mission arrive several times over and the page
+      # would list one line per repetition.
+      private def persist_sources(build, sources)
+        rows = Array.wrap(sources).uniq.map.with_index do |source, position|
+          source.merge(
+            id: SecureRandom.uuid,
+            blueprint_build_id: build.id,
+            position:,
+            created_at: Time.zone.now,
+            updated_at: Time.zone.now
+          )
+        end
+
+        build.sources.delete_all unless build.previously_new_record?
+
+        return if rows.blank?
+
+        BlueprintSource.insert_all!(rows)
+
+        stats[BlueprintSource.name][:created] += rows.size
+
+        build.association(:sources).reset
       end
 
       private def cost_rows(build, slots)

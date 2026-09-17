@@ -153,16 +153,57 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_nil blueprint.reload.name
   end
 
-  test "destroying a blueprint takes its builds and their recipes with it" do
+  # 875 of the 1607 recipes in 4.10.1 are in no pool, and 26 more are only in a
+  # pool nothing hands out. The page has to say so rather than render nothing.
+  test "#source_unknown? is true where the export says nothing" do
+    sourced = create(:blueprint)
+    create(:blueprint_source, build: sourced.build)
+
+    assert_not_predicate sourced.reload, :source_unknown?
+    assert_predicate create(:blueprint), :source_unknown?
+  end
+
+  test ".with_known_source splits the catalogue both ways" do
+    sourced = create(:blueprint)
+    create(:blueprint_source, build: sourced.build)
+    unsourced = create(:blueprint)
+
+    assert_equal [sourced], Blueprint.with_known_source.to_a
+    assert_equal [unsourced], Blueprint.with_known_source(false).to_a
+  end
+
+  test ".from_org finds each recipe an org hands out once" do
+    blueprint = create(:blueprint)
+    2.times { |n| create(:blueprint_source, build: blueprint.build, org_name: "Eckhart Security", position: n) }
+    create(:blueprint_source, build: create(:blueprint).build, org_name: "Headhunters")
+
+    assert_equal [blueprint], Blueprint.from_org("Eckhart Security").to_a
+  end
+
+  # Sources belong to the build for the reason the recipe does: live and ptu
+  # are loaded separately and either can be read.
+  test ".from_org ignores a source only another build states" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    other = blueprint.builds.create!(environment: "ptu", version: "9.9.9-ptu.1")
+    create(:blueprint_source, build: other, org_name: "Eckhart Security")
+
+    assert_empty Blueprint.from_org("Eckhart Security")
+    assert_empty blueprint.reload.sources
+  end
+
+  test "destroying a blueprint takes its builds, recipes and sources with it" do
     blueprint = create(:blueprint)
     slot = create(:blueprint_cost_slot, build: blueprint.build)
     create(:blueprint_cost_option, slot:)
     create(:blueprint_cost_modifier, slot:)
 
+    create(:blueprint_source, build: blueprint.build)
+
     assert_difference -> { BlueprintBuild.count } => -1,
       -> { BlueprintCostSlot.count } => -1,
       -> { BlueprintCostOption.count } => -1,
-      -> { BlueprintCostModifier.count } => -1 do
+      -> { BlueprintCostModifier.count } => -1,
+      -> { BlueprintSource.count } => -1 do
       blueprint.destroy
     end
   end

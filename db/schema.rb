@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -241,6 +241,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_180000) do
     t.datetime "updated_at", null: false
     t.index ["blueprint_build_id", "position"], name: "index_blueprint_cost_slots_on_build_and_position", unique: true
     t.index ["blueprint_build_id"], name: "index_blueprint_cost_slots_on_build"
+  end
+
+  create_table "blueprint_sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "blueprint_build_id", null: false
+    t.datetime "created_at", null: false
+    t.string "kind", null: false
+    t.string "max_standing"
+    t.integer "min_points"
+    t.string "min_standing"
+    t.string "mission_name"
+    t.string "org_name"
+    t.string "org_ref"
+    t.string "pool_group"
+    t.string "pool_key"
+    t.string "pool_sc_ref", null: false
+    t.integer "position", null: false
+    t.string "source_key"
+    t.datetime "updated_at", null: false
+    t.decimal "weight", precision: 8, scale: 3
+    t.index ["blueprint_build_id", "position"], name: "index_blueprint_sources_on_build_and_position", unique: true
+    t.index ["blueprint_build_id"], name: "index_blueprint_sources_on_build"
+    t.index ["org_name"], name: "index_blueprint_sources_on_org_name"
   end
 
   create_table "blueprints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2214,6 +2236,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_180000) do
   add_foreign_key "blueprint_cost_options", "blueprint_cost_slots", on_delete: :cascade
   add_foreign_key "blueprint_cost_options", "commodities", on_delete: :nullify
   add_foreign_key "blueprint_cost_slots", "blueprint_builds", on_delete: :cascade
+  add_foreign_key "blueprint_sources", "blueprint_builds", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade

@@ -9,12 +9,21 @@ module ScData
       OUTPUT_REF = "75809555-848a-4f4d-81a0-db4457edba2d"
       SECOND_REF = "a39d0aa5-f1af-49fb-aad0-0c1cde0f133f"
 
+      # A blueprint the Foxwell Enforcement ambush pool actually hands out, so
+      # the source side resolves against the real tree the way the output side
+      # already does.
+      POOLED_REF = "6157c081-0a9b-4319-bbbc-7f2cc1ef7158"
+
       setup do
         Blueprint.delete_all
         @loader = ::ScData::Loader::BlueprintsLoader.new
       end
 
-      test "#all loads blueprints from game files" do
+      # One full load, asserted from every angle. A load writes 1,607 records
+      # with 15k recipe rows and 4k sources, and the suite pays for it twice
+      # over -- once to write it and again to roll it back -- so the
+      # assertions are gathered here rather than each buying their own load.
+      test "#all loads the catalogue, its builds, its recipes and its sources" do
         @loader.all
 
         assert_operator Blueprint.count, :>=, 1500
@@ -24,17 +33,9 @@ module ScData
 
         slugs = Blueprint.pluck(:slug)
         assert_equal slugs.uniq.size, slugs.size
-      end
-
-      test "#all writes a build for every blueprint it loads" do
-        @loader.all
 
         assert_equal Blueprint.count, BlueprintBuild.current.count
         assert_empty Blueprint.where.missing(:build).pluck(:sc_key)
-      end
-
-      test "#all writes the recipe as slots, options and modifiers" do
-        @loader.all
 
         assert_operator BlueprintCostSlot.count, :>=, 4000
         assert_operator BlueprintCostOption.count, :>=, 4000
@@ -43,6 +44,15 @@ module ScData
         assert_empty BlueprintCostOption.where(commodity_key: nil).pluck(:id)
         assert_empty BlueprintCostOption.where.not(cost_type: BlueprintCostOption::TYPES).pluck(:cost_type)
         assert_empty BlueprintCostModifier.where.not(ramp: BlueprintCostModifier::RAMPS).pluck(:ramp)
+
+        assert_operator BlueprintSource.count, :>=, 3000
+        assert_empty BlueprintSource.where.not(kind: BlueprintSource::KINDS).pluck(:kind)
+        assert_operator BlueprintSource.where.not(org_name: nil).distinct.count(:org_name), :>=, 15
+
+        # 875 recipes appear in no pool and 26 more only in a pool nothing
+        # hands out, so most of the catalogue has no stated source at all.
+        assert_operator Blueprint.with_known_source.count, :>=, 600
+        assert_operator Blueprint.with_known_source(false).count, :>=, 800
       end
 
       # Three outputs carry two blueprints each in 4.10.1 -- the 890 Jump and
@@ -186,11 +196,70 @@ module ScData
         assert_equal [499, 1000], modifiers.map(&:end_quality)
       end
 
+      # --- sources ------------------------------------------------------
+
+      test "#one writes the org, the mission and the standing band" do
+        blueprint = @loader.one(blueprint_data(ref: POOLED_REF))
+        source = blueprint.build.sources.first
+
+        assert_equal "contract", source.kind
+        assert_predicate source, :attributed?
+        assert source.mission_name.present?
+        assert source.min_standing.present?
+      end
+
+      # A pool is named by every difficulty of every mission that hands it out,
+      # so the same entry arrives several times and the page would otherwise
+      # list one line per repetition.
+      #
+      # Deduplicated on the whole tuple rather than on the mission, because a
+      # title is reused across bands: Foxwell's "Orange Level Contract: Return
+      # the Favor" is offered both Sr.-to-Head and Sr.-to-Elite, and those are
+      # two real offers rather than one row written twice.
+      test "#one writes each distinct source once" do
+        blueprint = @loader.one(blueprint_data(ref: POOLED_REF))
+        sources = blueprint.build.sources.map do |source|
+          [source.kind, source.org_name, source.mission_name, source.pool_sc_ref,
+            source.min_standing, source.max_standing, source.min_points]
+        end
+
+        assert_equal sources.uniq.size, sources.size
+        assert_operator sources.size, :>, 1
+      end
+
+      test "#one leaves a blueprint no pool names without sources" do
+        blueprint = @loader.one(blueprint_data)
+
+        assert_empty blueprint.build.sources
+        assert_predicate blueprint.reload, :source_unknown?
+      end
+
+      # Sources are rewritten with the build, the way the recipe is.
+      test "#one replaces the sources rather than adding to them" do
+        blueprint = @loader.one(blueprint_data(ref: POOLED_REF))
+        count = blueprint.build.sources.count
+
+        assert_operator count, :>, 0
+
+        @loader.one(blueprint_data(ref: POOLED_REF))
+
+        assert_equal count, blueprint.build.reload.sources.count
+      end
+
+      test "dropping a build takes its sources with it" do
+        blueprint = create(:blueprint)
+        source = create(:blueprint_source, build: blueprint.build)
+
+        @loader.retire_absent_builds(BlueprintBuild, :blueprint_id, [create(:blueprint).id])
+
+        assert_equal 0, BlueprintSource.where(id: source.id).count
+      end
+
       private def blueprint_data(kind: "Component", commodity_key: IRON_KEY, output_name: nil,
-        slots: 1, ranges: [[0, 1000]])
+        slots: 1, ranges: [[0, 1000]], ref: OUTPUT_REF)
         {
           "key" => "bp_craft_example",
-          "ref" => OUTPUT_REF,
+          "ref" => ref,
           "category_ref" => "beef",
           "craft_time" => 120,
           "slot_count" => 3,
