@@ -3,7 +3,7 @@ shared:
   # rewrites its own entry and leaves the others alone, so live and ptu can
   # be parsed independently.
   sources:
-    live: "4.10.0-live.12519617"
+    live: "4.10.1-live.12660092"
     ptu: "4.10.1-ptu.12578875"
 
   # What a request that does not name a source gets.
