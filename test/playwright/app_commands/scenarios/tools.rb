@@ -3,9 +3,6 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating tools scenario test data..."
 
-Flipper.enable(:tools_travel_times)
-Flipper.enable(:tools_cargo_grids)
-
 # Ships with cargo holds (for cargo grids)
 # Set cargo_holds YAML attribute via update so the before_save callback
 # creates CargoHold DB records (can't set on create - parent must be saved first)
