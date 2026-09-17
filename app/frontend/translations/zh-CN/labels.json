@@ -1352,7 +1352,26 @@
         },
         "name": "名称",
         "category": "分类",
-        "source": "来源"
+        "source": "来源",
+        "powerConsumption": "功率消耗",
+        "powerMinimumFraction": "待机功耗",
+        "signatureEm": "电磁信号",
+        "signatureIr": "红外信号",
+        "utility": {
+          "capacity": "容量"
+        },
+        "selfDestruct": {
+          "damage": "伤害",
+          "radius": "爆炸半径",
+          "time": "引爆延时"
+        },
+        "quantumEnforcement": {
+          "jammerRange": "干扰范围",
+          "pulseRadius": "脉冲半径",
+          "chargeTime": "充能时间",
+          "cooldownTime": "冷却时间"
+        },
+        "powerRanges": "功率曲线（低 / 中 / 高）"
       },
       "blank": {
         "propulsion": "没有推进系统",

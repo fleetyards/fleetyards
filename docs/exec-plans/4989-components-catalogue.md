@@ -7,6 +7,40 @@ its own stable URL, searchable and filterable, sortable on the metrics that matt
 detail page that renders every figure we hold for that component's category — with every
 hardpoint on every ship page linking into it.
 
+## Status — paused, 2026-09-17
+
+**Parked until the Blueprints catalogue (#4988) is fully shipped.** Phase 4 was always blocked
+on the shared catalogue shell that #4988's D8 puts on its branch; the rest is parked with it so
+the two catalogues land in one navigation rather than two.
+
+| phase | PR | state |
+|---|---|---|
+| 1 — unique slug, `type_data` to `jsonb` | #5000 | **merged** |
+| 2 — the public API | #5003 | open, CI green (17/17) |
+| 3 — the metric renderer | #5006 | open, stacked on #5003 |
+| 4 — the pages | — | not started; needs #4988's shell |
+| 5 — UEX prices | — | scoped, not started |
+
+Also shipped on the way, independent of the stack: **#5007**, the parser fix for #5002 —
+`tags` was stored as the array's own inspect output for every component in the tree.
+
+Review feedback on both open PRs has been addressed: `hardpoints` is back in the list response
+(D3), the plan's D3 section now matches what shipped, and the powered-item block renders
+`powerRanges`.
+
+**One enhancement deliberately not taken:** the metric ransackers make `maxHealthGteq` and
+friends work at the model level, but the public query schema does not offer them, so a client
+asking gets a 400 naming what it accepts. The ransackers exist for *sorting* — ransack will not
+order by an attribute it does not know. Exposing the filter predicates is a natural next step
+and wants its own decision about which of the eight metrics get `_gteq`/`_lteq`, plus schema,
+permit list and tests.
+
+**Picking this back up:** #5003 and #5006 are stacked, so rebase the leaf last, and expect a
+cascade of force-pushes per merge. Both will have drifted from `main`; re-run
+`bin/generate-schema` **and** `bin/generate-asyncapi`, then fix the `components.parameters`
+ordering by hand (see the tooling notes below). Phase 4 starts by rebasing onto whatever
+#4988 built.
+
 ## Context
 
 Resolves #4989.
@@ -411,6 +445,78 @@ cost of adding a flag, not a failure.
 6. The history tab (D10).
 7. Category and sub-type labels in all seven locales, plus public `nav.*` / `title.*` (D9).
 
+### Phase 5 — Component prices from UEX (PR 5)
+
+No component has ever had a price: `Uex::PriceSyncer::ITEM_TYPE = "Model"`, and `item_prices`
+carries no `Component` rows, so `availability` is two empty arrays on every component in the
+payload. UEX does carry them.
+
+**Measured against `https://api.uexcorp.uk/2.0/items_prices_all`:**
+
+| | |
+|---|---|
+| price rows | 24,138 |
+| distinct items / terminals | 2,827 / 471 |
+| catalogue components priced by exact name | 545 |
+| …by `sc_ref` → UEX `item_uuid` | 348 |
+| **…by either** | **551 of 1,282 (43%)** |
+
+Coverage is uneven by category:
+
+| category | priced | of | | category | priced | of |
+|---|---|---|---|---|---|---|
+| weapons | 196 | 303 | | countermeasures | **0** | 166 |
+| missile_racks | 62 | 142 | | turret | **0** | 124 |
+| cooler | 50 | 74 | | armor | **0** | 87 |
+| powerplant | 42 | 78 | | shieldgenerator | 41 | 66 |
+
+**43% is not a 57% failure, and the phase must not be scoped as though it were.** Plenty of
+items are only crafted or looted and are sold at no terminal at all, so no price is the
+*correct* answer for them. The three zeroes read that way: a per-ship turret is not a shop
+item, and armour is largely looted or crafted.
+
+So the number that decides this phase is not the matcher's ceiling on its own. It is the split
+between:
+
+- **matched** — UEX has a price and we found it;
+- **legitimately unpriced** — nothing sells it, so there is nothing to find;
+- **missed** — UEX has a price under a name our matcher did not recognise.
+
+Only the third is work. The unmatched UEX *names* skew to ship-specific mounts ("Anvil Hornet
+F7C Nose Turret") and internal codes ("SW16BR1"), which suggests the third bucket is the
+smallest of the three.
+
+**Blueprints can measure the second bucket.** #4998 is merged, so `Blueprint` and its
+polymorphic `craftable` are on `main`: once the loader has run, "how many unpriced components
+are craftable" is a query rather than a guess. That is the first thing to run, and it is also a
+genuine payoff between the two catalogues — a component page that says *"not sold; crafted from
+this blueprint"* is better than one that shows an empty price panel.
+
+**The shape is already proven twice over.** `ItemPrice#item` is polymorphic, so no migration is
+needed to hang a price off a `Component`; and `Uex::CommodityPriceSyncer` (114 lines, with
+`CommodityMatcher` and `CommodityMapper`) is the second item type this codebase already syncs.
+Phase 5 mirrors it rather than generalising `PriceSyncer`, whose vehicle-specific rental
+handling has nothing to say here.
+
+1. Measure the three buckets first, not just the matcher — load blueprints locally, then count
+   how many unpriced components are craftable, and sample what is left. Try normalised names,
+   manufacturer-qualified names and `id_category` against the remainder. The size of the
+   *missed* bucket decides whether this is one PR or three.
+2. `Uex::Client#item_prices` over `items_prices_all`. Note `/items` **cannot** be fetched
+   wholesale — it answers 400 without `id_category`, `id_company` or `uuid` — but
+   `items_prices_all` carries `item_name` and `item_uuid` inline, which is what matching needs.
+3. `Uex::ComponentMatcher` and `Uex::ComponentPriceSyncer`, against the commodity pair.
+4. The snapshot/repricing path from `Uex::PriceSnapshot`, so a repriced component reads apart
+   from an admin having typed the figure in by hand.
+5. **The page must distinguish "nothing sells this" from "we have no price yet."** An empty
+   panel reads as missing data on a component that is working as intended; the crafted ones
+   should say so, and link to the blueprint once Phase 4 of #4988 gives them a page.
+6. Scheduling alongside the existing syncers.
+
+**Consequence for D3.** `availability` is two empty arrays today, which is part of why keeping
+it in the list payload costs nothing. Once it carries real rows across 471 terminals the list
+gets genuinely heavier, and the slim list endpoint deferred in D3 becomes worth building.
+
 ## Intent Verification
 
 - [ ] **List** — `/components/` lists 1,282 components, paginated, with a text search and filters that all match rows
@@ -424,6 +530,7 @@ cost of adding a flag, not a failure.
 - [ ] **Seven locales** — category, sub-type and nav/title labels exist in all seven
 - [x] **API** — a documented `show`, and a regenerated schema. The list payload is *not* distinct from the detail one: the issue asked for a split, and neither field that would have moved can leave the index without breaking clients (D3).
 - [ ] **Flagged** — the whole surface behind the `components` flag
+- [ ] **Prices** (Phase 5) — components carry UEX prices where a terminal sells them, and a component nothing sells says so rather than showing an empty panel
 
 ## Key files
 
@@ -446,7 +553,7 @@ cost of adding a flag, not a failure.
 
 ## Not in scope (deferred)
 
-- **Prices.** No component has one: `Uex::PriceSyncer::ITEM_TYPE = "Model"`, and `item_prices` carries no `Component` rows. `availability` stays two empty arrays. Pricing components is its own issue.
+- **Prices** — **promoted to Phase 5 above**, not deferred any more. UEX carries 24,138 item price rows and 43% of the catalogue matches on a naive exact name; the shape is the commodity syncer's.
 - **Paints.** Excluded by D1 and already surfaced as ship paints. Listing them again under a second vocabulary is a deliberate non-goal.
 - **Component icons.** 0 of the catalogue set has one (D8), and component icons are vectors that are not rasterised the way other attachments are.
 - **The 112 "Manned Turret" rows.** Flagged in D1; a constant to revisit once the list is visible.
@@ -511,9 +618,59 @@ Only running it against real data showed it.
 And `size` is not offered as a sort: the column is a string holding `"10"` and `"12"` beside
 `"M"` and `"S"`, so ordering it puts 10 and 12 ahead of 2.
 
+### Phase 3 corrections
+
+The plan said nine categories needed a new renderer. Measured against the build, three do:
+
+| | categories | rows |
+|---|---|---|
+| Carry **no** metric keys at all | `missile_racks`, `turret`, `bombcompartments`, `lifesupport`, `module` | 301 |
+| Already rendered | `refuel_boom` — by a *shape* check after the category chain, like tractor beams, which is why its labels already existed | 10 |
+| Genuinely new | `utility`, `selfdestruct`, `quantumenforcementdevice` | 83 |
+
+So 301 rows have a detail page carrying the power block and nothing else. That is the honest
+answer for them, not a bug — but it is what makes the shared power/signature block
+load-bearing rather than decorative.
+
+Two traps found building it:
+
+- **`selfdestruct` stores its figures as strings** (`"15000"`, `"45"`), so a
+  `typeof === "number"` guard — which every other branch uses — silently skips all seven rows.
+- **The category mapping is not optional.** A thruster component says `thrusters`; the slot
+  vocabulary only has `main_`/`retro_`/`vtol_`/`maneuvering_thrusters`. Unmapped it matches no
+  branch and renders nothing.
+
+The power block hangs off `useComponentStats` rather than `useHardpointStats`, so a ship's
+hardpoint list is unchanged by any of this.
+
+### Schema tooling, the hard way
+
+Three separate causes behind `api-schema-breaking` and `api-schema-check` failing, worth
+recording because none was the obvious one:
+
+1. **oasdiff is non-deterministic on a deeply nested shared component.** Six identical runs of
+   the admin check gave 14 errors four times and 0 twice — it attributes the change to a
+   different path each run, so no fixed ignore list can match. The fix was to stop making the
+   breaking change: `inventoryConsumption` was documented as a `string` that no endpoint has
+   ever emitted, so correcting its type bought nothing and cost a flaky gate.
+2. **macOS and Linux order `components.parameters` differently.** `bin/generate-schema` emits
+   it before `securitySchemes` locally and after it on CI, so `api-schema-check` fails on pure
+   ordering. Regenerating locally flips it back every time.
+3. **The AsyncAPI cable documents embed the same `Component` schema** and have their own
+   generator. `api-schema-check` runs `bin/generate-asyncapi` and diffs those files too.
+
+### #5002 is not fixed by #5001
+
+Checked once #5001 landed: it swaps `translate` for `localize_name` on `name` and `short_name`
+only. The `tags` extraction is untouched and the parsed tree still holds `tags: ["[]"]`.
+`tags`, `ammunition`, `powerConnection` and `heatConnection` stay out of the payload.
+
 ## Progress
+
+**Paused after Phase 3 — see Status above.**
 
 - [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
 - [x] Phase 2 — The API (PR 2)
-- [ ] Phase 3 — The metric renderer (PR 3)
-- [ ] Phase 4 — The pages (PR 4) — blocked on #4988's shell
+- [x] Phase 3 — The metric renderer (PR 3)
+- [ ] Phase 4 — The pages (PR 4) — **parked** until #4988 ships its shell
+- [ ] Phase 5 — Component prices from UEX (PR 5)

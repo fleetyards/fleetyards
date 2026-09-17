@@ -1352,7 +1352,26 @@
         },
         "name": "Nome",
         "category": "Categoria",
-        "source": "Fonte"
+        "source": "Fonte",
+        "powerConsumption": "Consumo di energia",
+        "powerMinimumFraction": "Consumo a riposo",
+        "signatureEm": "Firma EM",
+        "signatureIr": "Firma IR",
+        "utility": {
+          "capacity": "Capacità"
+        },
+        "selfDestruct": {
+          "damage": "Danno",
+          "radius": "Raggio d'esplosione",
+          "time": "Tempo di innesco"
+        },
+        "quantumEnforcement": {
+          "jammerRange": "Portata del disturbatore",
+          "pulseRadius": "Raggio dell'impulso",
+          "chargeTime": "Tempo di carica",
+          "cooldownTime": "Recupero"
+        },
+        "powerRanges": "Curva di potenza (bassa / media / alta)"
       },
       "blank": {
         "propulsion": "Nessun Propulsione presente",

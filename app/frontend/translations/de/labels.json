@@ -1352,7 +1352,26 @@
         },
         "name": "Name",
         "category": "Kategorie",
-        "source": "Quelle"
+        "source": "Quelle",
+        "powerConsumption": "Energieverbrauch",
+        "powerMinimumFraction": "Verbrauch im Leerlauf",
+        "signatureEm": "EM-Signatur",
+        "signatureIr": "IR-Signatur",
+        "utility": {
+          "capacity": "Kapazität"
+        },
+        "selfDestruct": {
+          "damage": "Schaden",
+          "radius": "Explosionsradius",
+          "time": "Zündverzögerung"
+        },
+        "quantumEnforcement": {
+          "jammerRange": "Störsender-Reichweite",
+          "pulseRadius": "Impulsradius",
+          "chargeTime": "Ladezeit",
+          "cooldownTime": "Abklingzeit"
+        },
+        "powerRanges": "Leistungskurve (Niedrig / Mittel / Hoch)"
       },
       "blank": {
         "propulsion": "Kein Antrieb vorhanden",
