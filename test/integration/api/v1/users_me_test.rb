@@ -129,7 +129,7 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
 
   test "GET /users/me says whether support is live and when it lapses" do
     user = create(:user)
-    create(:supporter_contribution, user: user, amount_cents: 500, started_at: Date.current)
+    create(:supporter_contribution, user: user, amount_cents: 600, started_at: Date.current)
     sign_in user
 
     assert_api_response :get, 200 do

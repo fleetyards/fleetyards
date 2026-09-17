@@ -543,11 +543,17 @@ class User < ApplicationRecord
     email.ends_with?("@users.noreply.fleetyards.net")
   end
 
+  # The band this month's spend falls in: 1 from a euro, 2 from six, 3 from
+  # twenty-six. Each has an insignia of its own.
+  #
   # Thresholds are compared against amount_cents, which every importer has
   # already normalised to EUR -- the figure the platforms report is whatever
   # currency the donor paid in, and comparing those directly would make a tier
   # mean different things to different people.
-  SUPPORTER_TIERS = {1 => 100, 2 => 500}.freeze
+  #
+  # Whole euros, so anything between two bands stays in the lower one: five
+  # euros fifty has not reached the six the second band asks for.
+  SUPPORTER_TIERS = {1 => 100, 2 => 600, 3 => 2600}.freeze
 
   # Perks and the public badge both, and deliberately blind to anonymity.
   # Anonymity says whether a contribution is *named* on the supporters page --
@@ -594,16 +600,21 @@ class User < ApplicationRecord
   # would otherwise need recalculating every time one is added, edited, ended
   # or linked -- with nothing to notice when a recalculation was missed.
   def supporter_tier
-    contributions = active_supporter_contributions
-    total = contributions.sum(&:amount_cents)
+    total = active_supporter_contributions.sum(&:amount_cents)
 
-    tier = SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
+    SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
+  end
 
-    # A recurring Patreon pledge is the commitment the second tier is for,
-    # whatever the exchange rate did to its amount this month.
-    return [tier, 2].max if contributions.any? { |c| c.patreon? && c.recurring? }
-
-    tier
+  # Whether any of it is a standing commitment rather than a one-off. Shown
+  # beside the tier insignia rather than folded into it: the band is what was
+  # given this month, and this is that it keeps coming -- promoting a recurring
+  # contribution a band would make ten euros a month indistinguishable from
+  # thirty once, which is the difference the marker exists to show.
+  #
+  # Source-blind, where the old rule looked only at Patreon: a standing pledge
+  # is one whatever it was set up on.
+  def supporter_recurring?
+    active_supporter_contributions.any?(&:recurring?)
   end
 
   # The day the current run of support lapses, or nil when it does not lapse on

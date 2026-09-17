@@ -222,7 +222,7 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
 
   test "GET /users/:id says whether support is live and when it lapses" do
     user = create(:user)
-    create(:supporter_contribution, user: user, amount_cents: 500, started_at: Date.current)
+    create(:supporter_contribution, user: user, amount_cents: 600, started_at: Date.current)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {id: user.id} do

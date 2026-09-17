@@ -8,6 +8,7 @@ export default {
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import SupporterBadge from "@/shared/components/SupporterBadge/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type UserPublic } from "@/services/fyApi";
 
@@ -43,19 +44,27 @@ const props = withDefaults(defineProps<Props>(), {
   <Heading size="hero" alignment="left" hero>
     <div class="flex justify-center items-center">
       <Avatar :avatar="props.user.avatar?.smallUrl" />
-      <span>
-        {{ t(props.headlineKey, { user: usernamePlural }) }}
-      </span>
-      <Pill
-        v-if="props.user.supporter"
-        v-tooltip="t('labels.supporter.tooltip')"
-        class="hangar-public-heading__supporter"
-        variant="success"
-        uppercase
-      >
-        <i class="fa-duotone fa-heart" />
-        {{ t("labels.supporter.badge") }}
-      </Pill>
+      <div class="hangar-public-heading__name">
+        <span>
+          {{ t(props.headlineKey, { user: usernamePlural }) }}
+        </span>
+        <Pill
+          v-if="props.user.supporter"
+          v-tooltip="t('labels.supporter.tooltip')"
+          class="hangar-public-heading__supporter"
+          variant="success"
+          uppercase
+        >
+          <SupporterBadge
+            v-if="props.user.supporterTier || props.user.supporterRecurring"
+            :tier="props.user.supporterTier"
+            :recurring="props.user.supporterRecurring"
+            :size="24"
+          />
+          <i v-else class="fa-duotone fa-heart" />
+          {{ t("labels.supporter.badge") }}
+        </Pill>
+      </div>
     </div>
   </Heading>
 </template>

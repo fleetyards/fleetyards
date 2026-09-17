@@ -277,7 +277,7 @@ class UserTest < ActiveSupport::TestCase
     # path has to answer from memory -- otherwise a page of thirty users pays
     # for thirty round trips that the preload was supposed to replace.
     test "a preloaded association answers without asking the database again" do
-      create(:supporter_contribution, user: @user, started_at: Date.current)
+      create(:supporter_contribution, user: @user, amount_cents: 600, started_at: Date.current)
 
       user = User.includes(:supporter_contributions).find(@user.id)
 
@@ -506,9 +506,20 @@ class UserTest < ActiveSupport::TestCase
 
       assert_equal 1, @user.reload.supporter_tier
 
-      create(:supporter_contribution, user: @user, amount_cents: 400, started_at: Date.current)
+      create(:supporter_contribution, user: @user, amount_cents: 500, started_at: Date.current)
 
       assert_equal 2, @user.reload.supporter_tier
+
+      create(:supporter_contribution, user: @user, amount_cents: 2000, started_at: Date.current)
+
+      assert_equal 3, @user.reload.supporter_tier
+    end
+
+    # Whole euros, so the gap between two bands belongs to the lower one.
+    test "an amount between two bands stays in the lower one" do
+      create(:supporter_contribution, user: @user, amount_cents: 550, started_at: Date.current)
+
+      assert_equal 1, @user.reload.supporter_tier
     end
 
     test "a contribution below the first threshold earns a badge but no tier" do
@@ -518,20 +529,37 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 0, @user.reload.supporter_tier
     end
 
-    # The second tier is for the commitment, not for what the exchange rate did
-    # to it in a given month.
-    test "a recurring Patreon pledge is tier two whatever it converted to" do
+    # The band is what was given this month and nothing else: a standing pledge
+    # is marked beside the insignia rather than promoted past somebody who gave
+    # more in one go.
+    test "a recurring pledge does not move the band" do
       create(:supporter_contribution, :patreon, user: @user, amount_cents: 120,
         started_at: 1.year.ago.to_date, ended_at: nil)
 
-      assert_equal 2, @user.reload.supporter_tier
+      assert_equal 1, @user.reload.supporter_tier
+      assert @user.supporter_recurring?
     end
 
-    test "a one-off Patreon contribution is not promoted" do
+    test "a one-off is not recurring whatever it was paid on" do
       create(:supporter_contribution, :patreon, user: @user, amount_cents: 120,
         recurring: false, started_at: Date.current)
 
       assert_equal 1, @user.reload.supporter_tier
+      refute @user.supporter_recurring?
+    end
+
+    # The old rule only ever looked at Patreon; a standing pledge is one
+    # whatever it was set up on.
+    test "recurring is read off any source" do
+      create(:supporter_contribution, :kofi, user: @user, amount_cents: 700,
+        recurring: true, started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert_equal 2, @user.reload.supporter_tier
+      assert @user.supporter_recurring?
+    end
+
+    test "nothing active is not recurring" do
+      refute @user.supporter_recurring?
     end
 
     test "last month's contributions do not count toward the tier" do

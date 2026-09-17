@@ -16082,6 +16082,8 @@ components:
           type: boolean
         supporterTier:
           type: integer
+        supporterRecurring:
+          type: boolean
         supporterUntil:
           type: string
           format: date
@@ -16122,6 +16124,7 @@ components:
       - hideOwner
       - supporter
       - supporterTier
+      - supporterRecurring
       - fleetTierOngoing
       - twoFactorRequired
       - createdAt

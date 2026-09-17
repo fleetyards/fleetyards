@@ -20,7 +20,10 @@
         "fleetTierOngoing": "Flotten-Stufe, solange das Abo läuft",
         "until": "Aktiv bis %{date}",
         "expiring": "Läuft am %{date} ab",
-        "ongoing": "Wiederkehrend, ohne Enddatum"
+        "ongoing": "Wiederkehrend, ohne Enddatum",
+        "tierShort": "Stufe %{tier}",
+        "tierShortRecurring": "Stufe %{tier}, wiederkehrend",
+        "recurringShort": "Wiederkehrend"
       },
       "destroyedFleets": {
         "discarded": "Verworfen",

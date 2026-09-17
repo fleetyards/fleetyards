@@ -10,8 +10,19 @@
   justify-content: center;
 }
 
+.hangar-public-heading__name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* A line of its own under the name rather than set into it. Beside a hero
+   wordmark the pill had to match its height to sit level, which made a
+   secondary label as loud as the thing it qualifies -- and left the insignia
+   inside it a speck by comparison. Small and underneath, the insignia can carry
+   the pill instead. */
 .hangar-public-heading__supporter {
-  margin-left: 12px;
-  font-size: 0.6em;
-  vertical-align: middle;
+  margin-top: 6px;
+  font-size: 0.4em;
+  line-height: 1;
 }

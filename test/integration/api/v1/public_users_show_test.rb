@@ -55,7 +55,7 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
 
   test "GET /public/users/:username carries the supporter tier" do
     user = create(:user, :public_hangar)
-    create(:supporter_contribution, user:, amount_cents: 500, started_at: Date.current)
+    create(:supporter_contribution, user:, amount_cents: 600, started_at: Date.current)
 
     assert_api_response :get, 200, path_params: {username: user.username} do
       assert_equal 2, parsed_body["supporterTier"]

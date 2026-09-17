@@ -40,6 +40,7 @@ json.tracking user.tracking
 
 json.supporter user.supporter?
 json.supporter_tier user.supporter_tier
+json.supporter_recurring user.supporter_recurring?
 supporter_until = user.supporter_until
 json.supporter_until supporter_until.iso8601 if supporter_until.present?
 
