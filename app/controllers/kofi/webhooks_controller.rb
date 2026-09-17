@@ -17,6 +17,10 @@ module Kofi
 
       ::Kofi::PaymentImporter.call(payload)
 
+      # Off the request path: Ko-fi retries on a slow or failed response, and a
+      # reconciliation is not worth a duplicate payment event.
+      ::Subscriptions::SyncJob.perform_async
+
       head :ok
     end
 
