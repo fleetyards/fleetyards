@@ -9,8 +9,8 @@ module Shared
         schema({
           type: :object,
           properties: {
-            name: {type: :string, nullable: true},
-            scKey: {type: :string, nullable: true},
+            name: {type: [:string, :null]},
+            scKey: {type: [:string, :null]},
             position: {type: :integer},
 
             # Every slot in the current build accepts exactly one material, but

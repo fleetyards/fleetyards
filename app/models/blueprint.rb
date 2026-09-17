@@ -70,9 +70,9 @@ class Blueprint < ApplicationRecord
   # Recipes that consume a given commodity, in the build we are on. Three hops,
   # so it is written as an exists check rather than a join: a recipe naming the
   # same material in two slots would otherwise come back twice.
-  scope :consuming, ->(commodity, source = ::ScData::Source.current) {
+  scope :consuming, ->(commodity, source = ::ScData::Source.current, current_only: true) {
     where(
-      id: BlueprintBuild.current(source).where(
+      id: readable_builds(source, current_only:).where(
         id: BlueprintCostSlot
           .where(id: BlueprintCostOption.where(commodity:).select(:blueprint_cost_slot_id))
           .select(:blueprint_build_id)
@@ -83,18 +83,18 @@ class Blueprint < ApplicationRecord
   # Through the build, like `consuming`: the columns on the row carry whatever
   # the last source to load wrote, so filtering them would answer a ptu request
   # with live's links.
-  scope :making, ->(craftable, source = ::ScData::Source.current) {
+  scope :making, ->(craftable, source = ::ScData::Source.current, current_only: true) {
     where(
-      id: BlueprintBuild.current(source)
+      id: readable_builds(source, current_only:)
         .where(craftable_type: craftable.class.name, craftable_id: craftable.id)
         .select(:blueprint_id)
     )
   }
 
   # Recipes an org hands out, in the build we are on.
-  scope :from_org, ->(org_name, source = ::ScData::Source.current) {
+  scope :from_org, ->(org_name, source = ::ScData::Source.current, current_only: true) {
     where(
-      id: BlueprintBuild.current(source)
+      id: readable_builds(source, current_only:)
         .where(id: BlueprintSource.where(org_name:).select(:blueprint_build_id))
         .select(:blueprint_id)
     )
@@ -103,8 +103,8 @@ class Blueprint < ApplicationRecord
   # 875 of the 1607 recipes in 4.10.1 appear in no reward pool, and another 26
   # sit only in a pool nothing hands out. The page has to say so rather than
   # render an empty section, which reads as a bug.
-  scope :with_known_source, ->(flag = true, source = ::ScData::Source.current) {
-    known = BlueprintBuild.current(source)
+  scope :with_known_source, ->(flag = true, source = ::ScData::Source.current, current_only: true) {
+    known = readable_builds(source, current_only:)
       .where(id: BlueprintSource.select(:blueprint_build_id))
       .select(:blueprint_id)
 
@@ -115,6 +115,10 @@ class Blueprint < ApplicationRecord
 
   validates :sc_ref, presence: true, uniqueness: true
   validates :sc_key, presence: true, uniqueness: true
+
+  # The catalogues a recipe can make something in. Named here rather than in the
+  # schema so the API enum and the association cannot drift apart.
+  CRAFTABLE_TYPES = %w[Component Equipment Commodity].freeze
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
 
@@ -185,6 +189,26 @@ class Blueprint < ApplicationRecord
     %w[created_at id id_value name sc_key slug updated_at version craft_time craftable_type craftable_id]
   end
 
+  # The build a read resolves through, for one source: the build we are on
+  # where there is one, and the newest older build otherwise. Mirrors exactly
+  # what `all_facts_join` picks, so a filter and the row it renders agree about
+  # which build they are talking about.
+  #
+  # A filter pinned to the current build while the render falls back would drop
+  # a retired recipe whose retained build does name the org being asked for --
+  # and would let it through `withKnownSource=false` while its own response
+  # said a source was known.
+  def self.readable_builds(source = ::ScData::Source.current, current_only: true)
+    return BlueprintBuild.current(source) if ActiveModel::Type::Boolean.new.cast(current_only)
+
+    BlueprintBuild.from(
+      BlueprintBuild.for_source(source)
+        .select("DISTINCT ON (blueprint_id) blueprint_builds.*")
+        .order(Arel.sql(sanitize_sql_array(["blueprint_id, (version = ?) DESC, created_at DESC", source.version]))),
+      :blueprint_builds
+    )
+  end
+
   # `craftable` is deliberately not here. Ransack computes an association's
   # class to build the join, and a polymorphic one has none -- naming it raises
   # "Polymorphic associations do not support computing the class" the moment a
@@ -208,17 +232,23 @@ class Blueprint < ApplicationRecord
   # redundant exists check. Here the flag *is* the filter, so the controller
   # takes it off the query and applies it directly, the way the commodities and
   # equipment endpoints already do for their version flag.
+  # Only `current_version`, whose own controller reads the flag separately and
+  # for which the scope is a redundant exists check.
+  #
+  # `from_org`, `consuming_commodity` and `with_known_source` all have to know
+  # whether the request is reading the current build or falling back, and a
+  # ransack scope is handed one argument. The controller applies all three.
   def self.ransackable_scopes(auth_object = nil)
-    %w[current_version from_org consuming_commodity]
+    %w[current_version]
   end
 
   # Ransack hands a scope whatever the query names, so the commodity is looked
   # up by slug rather than taken as a record -- a filter is a URL, and a URL
   # cannot carry an ActiveRecord object.
-  scope :consuming_commodity, ->(slug) {
+  scope :consuming_commodity, ->(slug, source = ::ScData::Source.current, current_only: true) {
     commodity = Commodity.find_by(slug: slug.to_s.downcase)
 
-    commodity.present? ? consuming(commodity) : none
+    commodity.present? ? consuming(commodity, source, current_only:) : none
   }
 
   # The recipe and the sources belong to the build, not to the blueprint: live

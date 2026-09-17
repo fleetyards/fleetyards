@@ -11,22 +11,22 @@ module Shared
           properties: {
             # "contract" is a mission an org offers; "scenario" is XenoThreat
             # handing pools out by progress points instead.
-            kind: {type: :string, enum: ::BlueprintSource::KINDS},
+            kind: ::Shared::V1::Schemas::Enums::BlueprintSourceKindEnum,
 
             # Null where the generator names more than one faction: a wrong org
             # is worse than none when this is the whole question.
-            orgName: {type: :string, nullable: true},
-            missionName: {type: :string, nullable: true},
+            orgName: {type: [:string, :null]},
+            missionName: {type: [:string, :null]},
 
             # The reputation band the mission is offered in.
-            minStanding: {type: :string, nullable: true},
-            maxStanding: {type: :string, nullable: true},
+            minStanding: {type: [:string, :null]},
+            maxStanding: {type: [:string, :null]},
 
             # Scenario only: the progress points that unlock the tier.
-            minPoints: {type: :integer, nullable: true},
+            minPoints: {type: [:integer, :null]},
 
-            poolKey: {type: :string, nullable: true},
-            poolGroup: {type: :string, nullable: true}
+            poolKey: {type: [:string, :null]},
+            poolGroup: {type: [:string, :null]}
           },
           additionalProperties: false,
           required: %w[kind]

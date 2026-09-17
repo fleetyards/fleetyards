@@ -16,8 +16,8 @@ module V1
             # Which catalogue the output is in. Filtered on the column rather
             # than through the association: ransack cannot compute the class of
             # a polymorphic one and raises the moment a query touches it.
-            craftableTypeEq: {type: :string, enum: %w[Component Equipment Commodity]},
-            craftableTypeIn: {type: :array, items: {type: :string, enum: %w[Component Equipment Commodity]}},
+            craftableTypeEq: ::Shared::V1::Schemas::Enums::BlueprintCraftableTypeEnum,
+            craftableTypeIn: {type: :array, items: ::Shared::V1::Schemas::Enums::BlueprintCraftableTypeEnum},
 
             # What makes this exact thing -- the reverse of the `craftable`
             # link, asked from the blueprints side.

@@ -15,17 +15,17 @@ module Shared
             # the current build carry a placeholder -- so this is the name of
             # whatever the recipe makes. Null for the four whose output is in
             # no catalogue and the one whose entity class is in no file.
-            name: {type: :string, nullable: true},
+            name: {type: [:string, :null]},
             slug: {type: :string},
             scKey: {type: :string},
             scRef: {type: :string},
 
             # Seconds.
-            craftTime: {type: :integer, nullable: true},
+            craftTime: {type: [:integer, :null]},
 
             # How many of the slots a single craft fills, which is not always
             # all of them.
-            slotCount: {type: :integer, nullable: true},
+            slotCount: {type: [:integer, :null]},
 
             retired: {type: :boolean},
 
@@ -35,17 +35,11 @@ module Shared
             # game's.
             sourceUnknown: {type: :boolean},
 
+            # A component of its own rather than an inline object: Orval names
+            # an anonymous nested shape after its owner and reproduces it once
+            # per owner.
             craftable: {
-              type: :object,
-              nullable: true,
-              properties: {
-                type: {type: :string, enum: %w[Component Equipment Commodity]},
-                id: {type: :string, format: :uuid},
-                name: {type: :string, nullable: true},
-                slug: {type: :string}
-              },
-              additionalProperties: false,
-              required: %w[type id slug]
+              anyOf: [::Shared::V1::Schemas::BlueprintCraftable, {type: :null}]
             },
 
             # Detail responses only -- a list omits both rather than paying

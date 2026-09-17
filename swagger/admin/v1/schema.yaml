@@ -9852,8 +9852,9 @@ components:
           type: string
           format: uuid
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         slug:
           type: string
         scKey:
@@ -9861,38 +9862,21 @@ components:
         scRef:
           type: string
         craftTime:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         slotCount:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         retired:
           type: boolean
         sourceUnknown:
           type: boolean
         craftable:
-          type: object
-          nullable: true
-          properties:
-            type:
-              type: string
-              enum:
-              - Component
-              - Equipment
-              - Commodity
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-              nullable: true
-            slug:
-              type: string
-          additionalProperties: false
-          required:
-          - type
-          - id
-          - slug
+          anyOf:
+          - "$ref": "#/components/schemas/BlueprintCraftable"
+          - type: 'null'
         costSlots:
           type: array
           items:
@@ -9918,35 +9902,55 @@ components:
       - createdAt
       - updatedAt
       title: Blueprint
+    BlueprintCostCommodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: BlueprintCostCommodity
     BlueprintCostModifier:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         propertyKey:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         unitFormat:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         ramp:
-          type: string
-          enum:
-          - linear
-          - linear_integer_additive
+          "$ref": "#/components/schemas/BlueprintRampEnum"
         startQuality:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         endQuality:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         modifierAtStart:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         modifierAtEnd:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
       additionalProperties: false
       required:
       - ramp
@@ -9955,35 +9959,23 @@ components:
       type: object
       properties:
         type:
-          type: string
-          enum:
-          - resource
-          - item
+          "$ref": "#/components/schemas/BlueprintCostTypeEnum"
         quantity:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         minQuality:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         commodityKey:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         commodity:
-          type: object
-          nullable: true
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          additionalProperties: false
-          required:
-          - id
-          - name
-          - slug
+          anyOf:
+          - "$ref": "#/components/schemas/BlueprintCostCommodity"
+          - type: 'null'
       additionalProperties: false
       required:
       - type
@@ -9992,11 +9984,13 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         scKey:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         position:
           type: integer
         options:
@@ -10013,39 +10007,101 @@ components:
       - options
       - modifiers
       title: BlueprintCostSlot
+    BlueprintCostTypeEnum:
+      type: string
+      enum:
+      - resource
+      - item
+      x-enumNames:
+      - RESOURCE
+      - ITEM
+      title: BlueprintCostTypeEnum
+    BlueprintCraftable:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - slug
+      title: BlueprintCraftable
+    BlueprintCraftableTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      title: BlueprintCraftableTypeEnum
+    BlueprintRampEnum:
+      type: string
+      enum:
+      - linear
+      - linear_integer_additive
+      x-enumNames:
+      - LINEAR
+      - LINEAR_INTEGER_ADDITIVE
+      title: BlueprintRampEnum
     BlueprintSource:
       type: object
       properties:
         kind:
-          type: string
-          enum:
-          - contract
-          - scenario
+          "$ref": "#/components/schemas/BlueprintSourceKindEnum"
         orgName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         missionName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         minStanding:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         maxStanding:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         minPoints:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         poolKey:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         poolGroup:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - kind
       title: BlueprintSource
+    BlueprintSourceKindEnum:
+      type: string
+      enum:
+      - contract
+      - scenario
+      x-enumNames:
+      - CONTRACT
+      - SCENARIO
+      title: BlueprintSourceKindEnum
     Blueprints:
       type: object
       properties:
