@@ -316,6 +316,23 @@ a cascade of force-pushes down the branches below it.
 Phases 1–3 here are independent and can proceed in parallel — they are backend, migration and
 composable work that touches none of the shell.
 
+**The section holds four catalogues, not two.** `/catalogue` is the entry and redirects to
+`/components`; the tenants are `/components`, `/blueprints`, `/equipment` and `/commodities`.
+The last two land when they are ready rather than in this phase, so the shell needs to take a
+tenant being absent — a nav that hardcodes four tabs is wrong until all four exist.
+
+What each still needs before it can be a tab:
+
+| tenant | public API today | missing |
+|---|---|---|
+| components | `index`, `show`, `weapons`, category/sub-type filters | the pages (Phase 4) |
+| blueprints | none | the whole API — #4988's Phase 3 |
+| commodities | `index` (`param: :slug`), `price_history`, `types` filter | a `show` endpoint, then pages |
+| equipment | `index`, `types` filter | a `show` endpoint, then pages |
+
+Commodities is closest: it already routes on `:slug` and has a price history to hang a detail
+page on. Equipment needs the same `show` work this plan did for components.
+
 Route `meta` needs both namespaces: `nav.*` labels the tab and `title.*` the document. The
 detail page also wants a Rails-side route the way `get "ships/:slug"` has one, or a shared link
 renders the generic card instead of the component — a `components/:slug` frontend route plus a
@@ -437,7 +454,9 @@ throw before the feature does anything.
 ### Phase 4 — The pages (PR 4) — **blocked on #4988's shell**
 
 1. `/components` list in the shared section (D7): search, category and sub-type filters, sort,
-   pagination, typographic rows with no imagery (D8).
+   pagination, typographic rows with no imagery (D8). `/catalogue` redirects here, and the
+   section's nav shows only the tenants that exist — blueprints when #4988's API lands,
+   equipment and commodities once each has a `show` endpoint.
 2. Detail page: every metric for the category, grouped and labelled, plus manufacturer, size,
    grade, class, tags and required tags.
 3. A retired component marked rather than shown as current (D6).
