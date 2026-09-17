@@ -1,4 +1,3 @@
-import { computed, toValue, type MaybeRefOrGetter } from "vue";
 import {
   HardpointCategoryEnum,
   type Component,
