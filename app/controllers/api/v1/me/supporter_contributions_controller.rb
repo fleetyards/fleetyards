@@ -38,6 +38,10 @@ module Api
           @contribution = my_contributions.find(params[:id])
 
           if @contribution.update(nomination_params)
+            # A nomination change is not a payment event, and it is the other
+            # half of what the reconciler has to answer to (D9).
+            ::Subscriptions::SyncJob.perform_async
+
             render :show
           else
             render json: ValidationError.new("supporter_contributions.nominate",

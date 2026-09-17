@@ -216,4 +216,25 @@ class Api::V1::MeSupporterContributionsTest < ActionDispatch::IntegrationTest
       body: {fleetId: @fleet.id},
       headers: oauth_headers_for(@supporter, scopes: ["user", "user:write"])
   end
+  # A nomination is not a payment event, and it is the other half of what the
+  # reconciler answers to.
+  test "PUT /me/supporter/contributions/{id} schedules a reconciliation" do
+    Subscriptions::SyncJob.jobs.clear
+    sign_in @supporter
+
+    assert_api_response :put, 200, api_path: MEMBER_PATH,
+      path_params: {id: @contribution.id}, body: {fleetId: @fleet.id}
+
+    assert_equal 1, Subscriptions::SyncJob.jobs.size
+  end
+
+  test "a refused nomination schedules nothing" do
+    Subscriptions::SyncJob.jobs.clear
+    sign_in @supporter
+
+    assert_api_response :put, 400, api_path: MEMBER_PATH,
+      path_params: {id: @contribution.id}, body: {fleetId: create(:fleet).id}
+
+    assert_empty Subscriptions::SyncJob.jobs
+  end
 end

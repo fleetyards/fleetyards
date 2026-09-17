@@ -36,4 +36,24 @@ class PatreonSupporterSyncJobTest < ActiveJob::TestCase
       PatreonSupporterSyncJob.new.perform
     end
   end
+
+  # The importer records what was paid; entitlement is decided from the result.
+  test "#perform reconciles subscriptions after importing" do
+    PatreonSupporterSyncJob.stubs(:configured?).returns(true)
+    Patreon::SupporterImporter.stubs(:call).returns({created: 1})
+    Subscriptions::Sync.expects(:call).once
+
+    PatreonSupporterSyncJob.new.perform
+  end
+
+  # A failed import has nothing new to reconcile, and the error is already
+  # reported -- running anyway would only add a second way for the job to fail.
+  test "#perform does not reconcile when the import failed" do
+    PatreonSupporterSyncJob.stubs(:configured?).returns(true)
+    Patreon::SupporterImporter.stubs(:call).raises(Patreon::Error, "token expired")
+    Appsignal.stubs(:report_error)
+    Subscriptions::Sync.expects(:call).never
+
+    PatreonSupporterSyncJob.new.perform
+  end
 end

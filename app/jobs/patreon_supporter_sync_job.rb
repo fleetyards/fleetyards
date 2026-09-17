@@ -16,6 +16,12 @@ class PatreonSupporterSyncJob < ::ApplicationJob
 
     stats = Patreon::SupporterImporter.call
     Rails.logger.info("[PatreonSupporterSync] #{stats}")
+
+    # The importer records what was paid and nothing else; entitlement is
+    # decided from the result (D9). Already in the background, so it runs here
+    # rather than through SyncJob.
+    Subscriptions::Sync.call
+
     stats
   rescue Patreon::Error => e
     Appsignal.report_error(e)

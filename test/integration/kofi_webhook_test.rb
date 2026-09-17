@@ -114,4 +114,14 @@ class KofiWebhookTest < ActionDispatch::IntegrationTest
       assert_response :unauthorized, "#{body} must not 500"
     end
   end
+  # The importer records the payment; entitlement is decided from the result,
+  # off the request path because Ko-fi retries a slow response.
+  test "a recorded payment schedules a reconciliation" do
+    Subscriptions::SyncJob.jobs.clear
+
+    post_webhook(payload)
+
+    assert_response :success
+    assert_equal 1, Subscriptions::SyncJob.jobs.size
+  end
 end
