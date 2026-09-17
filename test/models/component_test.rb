@@ -29,7 +29,7 @@ require "test_helper"
 #  slug                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime
@@ -271,6 +271,29 @@ class ComponentTest < ActiveSupport::TestCase
     second = create(:component, name: "Internal Tank", sc_key: nil)
 
     assert_equal "internal-tank-2", second.slug
+  end
+
+  # `type_data` was a YAML string tagged as a HashWithIndifferentAccess, so
+  # every reader got symbol access for free -- `Hardpoint#thruster_class` digs
+  # `:thruster_class`. A plain jsonb column hands back a bare Hash, which would
+  # answer nil there without raising, so the column keeps a type that wraps it.
+  test "a metric read out of jsonb still answers to a symbol" do
+    component = create(:component, type_data: {"thruster_class" => "main", "power_ranges" => {"low" => {"start" => 1.0}}})
+
+    stored = component.reload.type_data
+
+    assert_equal "main", stored[:thruster_class]
+    assert_equal "main", stored["thruster_class"]
+    assert_in_delta 1.0, stored.dig(:power_ranges, :low, :start)
+  end
+
+  test "type_data is queryable as jsonb, which is the point of the column type" do
+    create(:component, name: "Weak Shield", type_data: {"max_health" => 100})
+    strong = create(:component, name: "Strong Shield", type_data: {"max_health" => 9000})
+
+    found = Component.where("(type_data ->> 'max_health')::numeric > ?", 1000)
+
+    assert_equal [strong.id], found.pluck(:id)
   end
 
   test "the database refuses two components on one slug" do

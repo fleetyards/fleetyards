@@ -25,7 +25,7 @@
 #  size                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string           not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -93,7 +93,10 @@ class ComponentBuild < ApplicationRecord
   # missing `type_data` alone made the weapons endpoint call `dig` on a raw YAML
   # string, because the reader falls through to the column only on nil and a
   # string is not nil.
-  serialize :type_data, coder: YAML
+  # jsonb, not a YAML string: every metric a component has lives in here,
+  # and as text none of it could be filtered, sorted or indexed on. The
+  # type keeps indifferent access, which the readers already assume.
+  attribute :type_data, Types::IndifferentJson.new
   serialize :durability, coder: YAML
   serialize :power_connection, coder: YAML
   serialize :heat_connection, coder: YAML

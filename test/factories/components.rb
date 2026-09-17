@@ -25,7 +25,7 @@
 #  slug                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime

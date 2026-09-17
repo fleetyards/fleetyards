@@ -27,7 +27,7 @@
 #  slug                  :string
 #  tags                  :string
 #  tracking_signal       :integer
-#  type_data             :string
+#  type_data             :jsonb
 #  version               :string
 #  created_at            :datetime
 #  updated_at            :datetime
@@ -229,7 +229,10 @@ class Component < ApplicationRecord
   has_one_attached :store_image
   ransack_attachment :store_image
 
-  serialize :type_data, coder: YAML
+  # jsonb, not a YAML string: every metric a component has lives in here,
+  # and as text none of it could be filtered, sorted or indexed on. The
+  # type keeps indifferent access, which the readers already assume.
+  attribute :type_data, Types::IndifferentJson.new
   serialize :durability, coder: YAML
   serialize :power_connection, coder: YAML
   serialize :heat_connection, coder: YAML
