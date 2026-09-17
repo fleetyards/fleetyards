@@ -7,11 +7,16 @@ export default {
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { SupporterContributionSourceEnum } from "@/services/fyAdminApi";
+import {
+  SupporterContributionSourceEnum,
+  type NullableSupporterContributionSourceEnum,
+} from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 interface Props {
-  source?: SupporterContributionSourceEnum;
+  // Nullable: a row nobody stated a platform for is the common case, and it
+  // renders as a dash rather than as a value.
+  source?: NullableSupporterContributionSourceEnum;
 }
 
 const props = defineProps<Props>();

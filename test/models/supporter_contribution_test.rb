@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("other"), not null
+#  source              :string
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -41,7 +41,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (fleet_id => fleets.id)
+#  fk_rails_...  (fleet_id => fleets.id) ON DELETE => nullify
 #  fk_rails_...  (user_id => users.id)
 #
 require "test_helper"
@@ -249,9 +249,9 @@ class SupporterContributionTest < ActiveSupport::TestCase
     assert_nil contribution.reload.linked_via
   end
 
-  test "source defaults to other" do
-    assert_equal "other", SupporterContribution.new.source
-    assert SupporterContribution.new.other?
+  test "source is unspecified until somebody names a platform" do
+    assert_nil SupporterContribution.new.source
+    refute SupporterContribution.new.other?
   end
 
   test "source names every platform a contribution can arrive on" do
@@ -375,5 +375,26 @@ class SupporterContributionTest < ActiveSupport::TestCase
     membership.fleet.destroy!
 
     assert_nil contribution.reload.fleet_id
+  end
+
+  # `other` is a statement -- a platform, just not one of the named ones -- and
+  # a row nobody was asked about is not making it.
+  test "a persisted row without a stated platform stays unspecified" do
+    assert_nil create(:supporter_contribution).reload.source
+  end
+
+  test "other is still a value an admin can choose" do
+    contribution = create(:supporter_contribution, source: "other")
+
+    assert_equal "other", contribution.reload.source
+    refute_nil contribution.source
+  end
+
+  test "an unspecified source can be filtered apart from other" do
+    unspecified = create(:supporter_contribution)
+    other = create(:supporter_contribution, source: "other")
+
+    assert_equal [unspecified.id], SupporterContribution.where(source: nil).pluck(:id)
+    assert_equal [other.id], SupporterContribution.where(source: "other").pluck(:id)
   end
 end

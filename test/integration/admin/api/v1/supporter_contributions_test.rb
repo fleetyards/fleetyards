@@ -248,11 +248,39 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
-  # An admin who states no platform is not claiming the money came from one.
-  test "POST /supporter-contributions defaults an unstated platform to other" do
+  # An admin who states no platform is not claiming the money came from one --
+  # which is why the answer is null rather than `other`. `other` says "a
+  # platform, just not one of the named ones", and nobody said that here.
+  test "POST /supporter-contributions leaves an unstated platform unspecified" do
     sign_in @user
 
     body = {amountCents: 500, startedAt: Date.current.iso8601}
+
+    assert_api_response :post, 200, body: body do
+      assert_nil parsed_body["source"]
+    end
+  end
+
+  # A filter the controller does not permit is dropped before ransack sees it,
+  # so the list comes back unfiltered while the UI shows a filter applied.
+  test "GET /supporter-contributions can separate unspecified from other" do
+    unspecified = create(:supporter_contribution, name: "No platform stated")
+    stated = create(:supporter_contribution, name: "Stated as other", source: "other")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {sourceNull: true}} do
+      assert_equal [unspecified.id], parsed_body["items"].map { |row| row["id"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {sourceNull: false}} do
+      assert_equal [stated.id], parsed_body["items"].map { |row| row["id"] }
+    end
+  end
+
+  test "POST /supporter-contributions keeps other when an admin states it" do
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, source: "other"}
 
     assert_api_response :post, 200, body: body do
       assert_equal "other", parsed_body["source"]

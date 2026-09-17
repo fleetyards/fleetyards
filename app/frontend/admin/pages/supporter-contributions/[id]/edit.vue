@@ -11,6 +11,7 @@ import {
   type FilterOption,
   type SupporterContribution,
   type SupporterContributionInput,
+  type NullableSupporterContributionSourceEnum,
   useUpdateSupporterContribution,
   getSupporterContributionsQueryKey,
   getSupporterContributionQueryKey,
@@ -55,7 +56,8 @@ type FormValues = {
   claimKey?: string;
   currency?: string;
   userId?: string;
-  source: SupporterContributionSourceEnum;
+  // An admin may leave the platform unstated, which is not the same as `other`.
+  source?: NullableSupporterContributionSourceEnum;
 };
 
 const initialValues = ref<FormValues>({

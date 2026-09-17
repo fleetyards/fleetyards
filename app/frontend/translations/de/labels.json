@@ -1597,6 +1597,9 @@
           "linkedOnly": "Verknüpft",
           "linkedVia": "Verknüpft über",
           "unlinkedOnly": "Nicht verknüpft",
+          "sourceStated": "Plattform angegeben",
+          "sourceStatedOnly": "Plattform angegeben",
+          "sourceUnspecifiedOnly": "Plattform nicht angegeben",
           "source": "Quelle"
         },
         "adminNotifications": {

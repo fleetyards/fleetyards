@@ -15,7 +15,7 @@
 #  note                :text
 #  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
-#  source              :string           default("other"), not null
+#  source              :string
 #  source_amount_cents :integer
 #  source_currency     :string
 #  started_at          :date             not null
@@ -41,7 +41,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (fleet_id => fleets.id)
+#  fk_rails_...  (fleet_id => fleets.id) ON DELETE => nullify
 #  fk_rails_...  (user_id => users.id)
 #
 FactoryBot.define do

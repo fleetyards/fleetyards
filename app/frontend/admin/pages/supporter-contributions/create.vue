@@ -13,6 +13,7 @@ import {
   useCreateSupporterContribution,
   getSupporterContributionsQueryKey,
   SupporterContributionSourceEnum,
+  type NullableSupporterContributionSourceEnum,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -46,7 +47,9 @@ type FormValues = {
   payerEmail?: string;
   claimKey?: string;
   userId?: string;
-  source: SupporterContributionSourceEnum;
+  // Optional and nullable: an admin who does not state a platform is not
+  // saying `other`, which is a platform of its own.
+  source?: NullableSupporterContributionSourceEnum;
 };
 
 const validationSchema = {
@@ -60,7 +63,7 @@ const initialValues = ref<FormValues>({
   startedAt: todayIsoDateLocal(),
   recurring: false,
   anonymous: false,
-  source: SupporterContributionSourceEnum.OTHER,
+  source: undefined,
 });
 
 const { defineField, handleSubmit, meta } = useForm<FormValues>({
@@ -205,6 +208,7 @@ const handleCancel = async () => {
           :no-label="false"
           :options="sourceOptions"
           :multiple="false"
+          nullable
           name="source"
         />
         <FormInput

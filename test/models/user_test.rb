@@ -88,7 +88,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (supported_fleet_id => fleets.id)
+#  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 require "test_helper"
 

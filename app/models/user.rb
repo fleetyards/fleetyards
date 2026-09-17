@@ -88,7 +88,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (supported_fleet_id => fleets.id)
+#  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 class User < ApplicationRecord
   # A version of a user row holds their old email and username verbatim, so it
