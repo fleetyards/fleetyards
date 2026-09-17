@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { appNotificationDismissKey } from "@/shared/components/AppNotifications/types";
+
 type Props = {
   text?: string;
 };
@@ -12,6 +14,12 @@ type Props = {
 withDefaults(defineProps<Props>(), {
   text: undefined,
 });
+
+const dismiss = inject(appNotificationDismissKey, undefined);
+
+const onClose = () => {
+  dismiss?.();
+};
 </script>
 
 <template>
@@ -22,9 +30,15 @@ withDefaults(defineProps<Props>(), {
       <slot v-else />
     </div>
 
-    <div class="app-notifications__message-body__close">
+    <button
+      type="button"
+      class="app-notifications__message-body__close"
+      aria-label="Close"
+      data-test="notification-close"
+      @click.stop="onClose"
+    >
       <i class="fa-light fa-times" />
-    </div>
+    </button>
   </div>
 </template>
 

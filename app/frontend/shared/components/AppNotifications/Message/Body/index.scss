@@ -12,7 +12,13 @@
 
     &__close {
       cursor: pointer;
-      padding-right: 1rem;
+      padding: 1rem;
+      margin: 0;
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: inherit;
+      line-height: 1;
       opacity: 0.5;
       transition: opacity $transition-base-speed ease;
     }

@@ -5,6 +5,7 @@ export enum MessageTypesEnum {
   ALERT = "alert",
 }
 
+import { type InjectionKey } from "vue";
 import { type RouteLocationRaw } from "vue-router";
 
 export type AppNotification = {
@@ -22,3 +23,7 @@ export type AppNotification = {
   // Where clicking the message takes you, on top of dismissing it.
   to?: RouteLocationRaw;
 };
+
+export const appNotificationDismissKey: InjectionKey<() => void> = Symbol(
+  "appNotificationDismiss",
+);
