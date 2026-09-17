@@ -36,14 +36,27 @@ module ScData
       write("#{folder}/#{name}.json", JSON.pretty_generate(attributes))
     end
 
-    # A tree with one record per catalogue, each carrying the field that
-    # identifies it there.
+    # A tree with one record per catalogue, each carrying every field that
+    # identifies it there -- blueprints are found by two.
     private def write_tree(version: VERSION, environment: ENVIRONMENT)
       write("version.json", JSON.pretty_generate({version:, environment:, parsed_at: Time.current.utc.iso8601}))
 
       ::ScData::ParsedCheck::CATALOGUES.each do |folder, catalogue|
-        write_record(folder, "record", {catalogue.key => "a_record"})
+        write_record(folder, "record", catalogue.keys.index_with { "a_record" })
       end
+    end
+
+    # A blueprint with no ref is skipped by the loader, which leaves it out of
+    # the ids `retire_absent` compares against -- so a blank ref there retires a
+    # recipe the build still carries.
+    test "#call fails a blueprint carrying a key but no ref" do
+      write_tree
+      write_record("blueprints", "record", {"key" => "bp_craft_example"})
+
+      result = check
+
+      assert_not_predicate result, :ok?
+      assert_includes result.problems, "blueprints/record.json: no ref"
     end
 
     # --- A tree with nothing wrong with it --------------------------------

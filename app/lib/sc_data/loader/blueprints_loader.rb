@@ -30,13 +30,19 @@ module ScData
 
         update_params = update_params(blueprint_data)
 
-        apply(blueprint, update_params)
+        # One transaction for the row, its build and the recipe. Nothing above
+        # opens one -- `Loaders::ScData::AllJob` only sets the source -- so a
+        # failure part way through would otherwise leave a readable build whose
+        # recipe is missing or half written.
+        Blueprint.transaction do
+          apply(blueprint, update_params)
 
-        # `sc_ref` and `sc_key` identify the recipe rather than describing a
-        # build, so they stay on the row and are not repeated here.
-        build = apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
+          # `sc_ref` and `sc_key` identify the recipe rather than describing a
+          # build, so they stay on the row and are not repeated here.
+          build = apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
 
-        persist_costs(build, blueprint_data["slots"])
+          persist_costs(build, blueprint_data["slots"])
+        end
 
         blueprint
       end
@@ -89,9 +95,8 @@ module ScData
       # is nothing that has to keep resolving, and a recipe CIG rewrites has to
       # lose the slots it no longer has.
       #
-      # In one transaction, because the delete lands before the three inserts:
-      # a failure between them would otherwise leave a readable build carrying
-      # half a recipe until the next successful load repaired it.
+      # The delete lands before the three inserts, so this has to run inside a
+      # transaction: `one` opens it.
       #
       # Written with `insert_all!` against generated ids: a full load is 4,289
       # slots, 4,289 options and 6,524 modifiers, and taking those through
@@ -101,16 +106,14 @@ module ScData
       private def persist_costs(build, slots)
         rows = cost_rows(build, Array.wrap(slots))
 
-        BlueprintCostSlot.transaction do
-          build.cost_slots.delete_all
+        build.cost_slots.delete_all
 
-          rows.each do |model, written|
-            next if written.blank?
+        rows.each do |model, written|
+          next if written.blank?
 
-            model.insert_all!(written)
+          model.insert_all!(written)
 
-            stats[model.name][:created] += written.size
-          end
+          stats[model.name][:created] += written.size
         end
 
         build.association(:cost_slots).reset

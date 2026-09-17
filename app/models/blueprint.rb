@@ -86,8 +86,15 @@ class Blueprint < ApplicationRecord
     )
   }
 
-  scope :making, ->(craftable) {
-    where(craftable_type: craftable.class.name, craftable_id: craftable.id)
+  # Through the build, like `consuming`: the columns on the row carry whatever
+  # the last source to load wrote, so filtering them would answer a ptu request
+  # with live's links.
+  scope :making, ->(craftable, source = ::ScData::Source.current) {
+    where(
+      id: BlueprintBuild.current(source)
+        .where(craftable_type: craftable.class.name, craftable_id: craftable.id)
+        .select(:blueprint_id)
+    )
   }
 
   before_save :update_slugs
@@ -107,11 +114,25 @@ class Blueprint < ApplicationRecord
     build || last_build
   end
 
+  # What the recipe makes, as the build we are read for states it. The column is
+  # written too, so search and sort stay single-table, but it holds whatever the
+  # last source to load wrote -- and a blueprint is in both trees.
+  def craftable
+    facts.nil? ? super : facts.craftable
+  end
+
+  # Read through the build, and the build alone: a `nil` there is an answer, not
+  # a gap to fill from the row.
+  #
+  # This is where Blueprint parts company with Commodity, Equipment and
+  # Component, which do fall back to the column. They have to: an admin creates
+  # commodities by hand and the UEX importer creates them too, so a row with no
+  # build is a real case there. Every blueprint comes from a load, so the only
+  # thing the fallback could do here is answer a ptu request with a live value --
+  # which is exactly what it did for the three radars the game leaves nameless.
   BlueprintBuild::READ_THROUGH.each do |fact|
     define_method(fact) do
-      value = facts&.public_send(fact)
-
-      value.nil? ? super() : value
+      facts.nil? ? super() : facts.public_send(fact)
     end
   end
 

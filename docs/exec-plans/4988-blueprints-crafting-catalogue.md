@@ -202,6 +202,28 @@ rest of the loader together -- inside one transaction, because the delete lands 
 three inserts and a failure between them would leave a readable build carrying half a
 recipe.
 
+### D13 — The build is authoritative; the columns are only an index
+
+`name`, `craft_time`, `slot_count`, `category_ref` and `craftable` are written to the row as
+well as to the build, so a search or a sort stays single-table and indexed (D1, D2). What
+the row holds, though, is whatever the **last source to load** wrote — and a blueprint is in
+both trees.
+
+So every read goes through the build, and a `nil` there is an answer rather than a gap to
+fill from the row. `craftable` reads through it too, and both `making` and `consuming` filter
+`blueprint_builds` rather than the columns.
+
+This is where Blueprint parts company with Commodity, Equipment and Component, which do fall
+back to the column. They have to: an admin creates commodities by hand and the UEX importer
+creates them too, so a row with no build is a real case there. Every blueprint comes from a
+load, so the only thing that fallback could do here is answer a ptu request with a live value
+— which is exactly what it did for the three radars the game leaves nameless.
+
+`ParsedCheck` requires **both** `key` and `ref` on a blueprint record, where every other
+catalogue names one field. The loader skips a record with no ref, a skipped record is missing
+from `loaded`, and `retire_absent` reads that as "the export dropped it" — so one blank ref
+would retire a recipe the build still carries.
+
 ### D12 — `localize` moves onto `BaseParser`, and the parser fix does not
 
 `BaseParser#translate` matches a localisation key exactly, and misses every
@@ -358,6 +380,7 @@ Three corrections to the issue body came out of building it:
 - **2026-09-17** Issue read, branch and worktree created, D1–D9 resolved with the user (D4 full chain, D6 ship ramps, D8 shared shell, D10 stacked PRs).
 - **2026-09-17** Verified the contract chain against `4.10.1-live.12660092`: pool→generator references are **GUID-only** (a name grep returns zero files), 130 of 154 pools reach a generator, 107 generator files across 10 guilds, and `factionReputation` resolves to a `FactionReputation` record carrying `displayName`. Worked example recorded in D4.
 - **2026-09-17** Confirmed the public frontend has no commodities/components/equipment pages at all — D8 is a real fork, not a tidy-up.
+- **2026-09-17** Second review pass: the row's columns were still being read where the build should answer, so `making`, `craftable` and the fact readers now go through the build (D13); `ParsedCheck` requires a blueprint's `ref` as well as its `key`; and the row, its build and its recipe are written in one transaction rather than three.
 - **2026-09-17** Review on #4998 caught that the recipe was global while the build facts were per-source -- a ptu load would have overwritten the live recipe. Moved onto the build (D11), wrapped the rewrite in a transaction, and made an unrecognised ramp kind report itself.
 - **2026-09-17** Phase 1 built and measured end to end against a locally loaded catalogue: 1607 blueprints, 1579 linked, 0 cost options unresolved. Found the `,P` localisation trap (D12) and filed the parser half of it as #4997; found piecewise ramps (D6) and the variable slot count.
 

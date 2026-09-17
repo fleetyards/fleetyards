@@ -125,6 +125,34 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_equal [blueprint], Blueprint.making(component).to_a
   end
 
+  # The columns on the row carry whatever the last source to load wrote, so a
+  # filter against them answers a ptu request with live's links.
+  test ".making ignores an output only another build states" do
+    component = create(:component)
+    blueprint = create(:blueprint, :without_build, version: nil, craftable: component)
+    blueprint.builds.create!(environment: "ptu", version: "9.9.9-ptu.1", craftable: component)
+
+    assert_empty Blueprint.making(component)
+  end
+
+  test "#craftable comes from the build we are read for" do
+    blueprint = create(:blueprint, craftable: create(:component))
+    replacement = create(:equipment)
+    blueprint.build.update!(craftable: replacement)
+
+    assert_equal replacement, blueprint.reload.craftable
+  end
+
+  # A nil on the build is an answer, not a gap to fill from the row -- three
+  # radars have no name in the game files at all, and falling back would have
+  # served another source's name for them.
+  test "a fact the build leaves empty does not fall back to the row" do
+    blueprint = create(:blueprint, name: "Row Name")
+    blueprint.build.update!(name: nil)
+
+    assert_nil blueprint.reload.name
+  end
+
   test "destroying a blueprint takes its builds and their recipes with it" do
     blueprint = create(:blueprint)
     slot = create(:blueprint_cost_slot, build: blueprint.build)
