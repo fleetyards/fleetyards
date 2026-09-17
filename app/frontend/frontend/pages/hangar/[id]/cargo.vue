@@ -141,7 +141,6 @@ const cargoGridsRoute = computed(() => ({
 // has a grid and carries something to put in it.
 const showCargoGridsLink = computed(
   () =>
-    isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS) &&
     !!props.vehicle.model?.slug &&
     cargoCapacity.value > 0 &&
     storedScu.value >= 1,
