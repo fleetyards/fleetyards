@@ -7,7 +7,7 @@ module Subscriptions
     test "it reconciles and reports what it did" do
       membership = create(:fleet_membership, :accepted)
       create(:supporter_contribution, user: membership.user, fleet: membership.fleet,
-        amount_cents: Subscriptions::QUALIFYING_AMOUNT_CENTS)
+        amount_cents: Subscriptions.qualifying_amount_cents)
 
       stats = SyncJob.new.perform
 
