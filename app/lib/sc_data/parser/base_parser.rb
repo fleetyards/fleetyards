@@ -76,6 +76,7 @@ module ScData
         ::ScData::Parser::ModelsParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::CommoditiesParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::EquipmentParser.new(base_folder:, sc_version:, sc_environment:).all
+        ::ScData::Parser::BlueprintsParser.new(base_folder:, sc_version:, sc_environment:).all
       end
 
       def initialize(base_folder:, sc_version:, sc_environment:)
