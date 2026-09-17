@@ -650,12 +650,25 @@ class User < ApplicationRecord
   def fleet_tier_until
     return if fleet_tier_ongoing?
 
-    supporter_contributions.sort_by(&:started_at).reduce(nil) do |paid_until, contribution|
-      months = fleet_tier_months(contribution)
+    started = supporter_contributions.reject { |contribution| contribution.started_at > Date.current }
+
+    # A pledge funds the month it is billed for and banks nothing, so it runs to
+    # the day it stopped. Counting a month per month it ran would also multiply
+    # the wrong figure: the importer overwrites one row with the latest amount,
+    # so a patron who raised five euros to ten reads as having paid ten all
+    # along.
+    pledged_until = started
+      .select { |contribution| ended_pledge_funding_the_tier?(contribution) }
+      .map(&:ended_at)
+      .max
+
+    # Donations stack on top, from the later of their own day and whatever is
+    # already paid for, so one arriving mid-run extends it rather than
+    # overlapping it.
+    started.reject(&:recurring?).sort_by(&:started_at).reduce(pledged_until) do |paid_until, contribution|
+      months = contribution.amount_cents / FLEET_TIER_MONTHLY_CENTS
       next paid_until if months.zero?
 
-      # From the later of the two, so a donation arriving while the last one is
-      # still running adds to it rather than overlapping it.
       [contribution.started_at, paid_until].compact.max + months.months
     end
   end
@@ -665,33 +678,21 @@ class User < ApplicationRecord
   # while they are paying, not from the day they stop.
   #
   # Below the rate it funds nothing, the same as a donation under five euros:
-  # two euros a month does not buy a five euro month.
+  # two euros a month does not buy a five euro month. One dated in the future
+  # funds nothing yet either -- `started_at` is free to be ahead of today.
   def fleet_tier_ongoing?
     supporter_contributions.any? do |contribution|
       contribution.recurring? &&
         contribution.ended_at.nil? &&
+        contribution.started_at <= Date.current &&
         contribution.amount_cents >= FLEET_TIER_MONTHLY_CENTS
     end
   end
 
-  # A standing pledge is billed its amount again every month it ran, so it buys
-  # that many times over; a one-off pays once.
-  #
-  # One still standing buys no date at all: it is either ongoing, answered
-  # above, or under the rate and worth nothing.
-  private def fleet_tier_months(contribution)
-    return 0 if contribution.recurring? && contribution.ended_at.nil?
-
-    billed = contribution.recurring? ? months_billed(contribution) : 1
-
-    (contribution.amount_cents * billed) / FLEET_TIER_MONTHLY_CENTS
-  end
-
-  private def months_billed(contribution)
-    from = contribution.started_at
-    to = contribution.ended_at
-
-    ((to.year * 12 + to.month) - (from.year * 12 + from.month)) + 1
+  private def ended_pledge_funding_the_tier?(contribution)
+    contribution.recurring? &&
+      contribution.ended_at.present? &&
+      contribution.amount_cents >= FLEET_TIER_MONTHLY_CENTS
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar

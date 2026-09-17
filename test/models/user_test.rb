@@ -343,12 +343,13 @@ class UserTest < ActiveSupport::TestCase
     # than overlapping it.
     test "donations stack onto what is already paid for" do
       create(:supporter_contribution, user: @user,
-        amount_cents: 1000, started_at: Date.new(2026, 9, 15))
+        amount_cents: 1000, started_at: Date.new(2026, 8, 15))
       create(:supporter_contribution, user: @user,
-        amount_cents: 1000, started_at: Date.new(2026, 10, 1))
+        amount_cents: 1000, started_at: Date.new(2026, 9, 1))
 
       travel_to Date.new(2026, 9, 17) do
-        assert_equal Date.new(2027, 1, 15), @user.reload.fleet_tier_until
+        # August's two months run to 15 October; September's start there.
+        assert_equal Date.new(2026, 12, 15), @user.reload.fleet_tier_until
       end
     end
 
@@ -399,16 +400,46 @@ class UserTest < ActiveSupport::TestCase
       refute @user.fleet_tier_ongoing?
     end
 
-    # An ended pledge was billed its amount for every month it ran, so it buys
-    # that many times over.
-    test "an ended pledge buys a month for each one it was billed" do
+    # A pledge funds the month it is billed for and banks nothing, so it runs to
+    # the day it stopped.
+    test "an ended pledge runs to the day it stopped" do
       create(:supporter_contribution, :recurring, user: @user,
         amount_cents: 500,
         started_at: Date.new(2026, 1, 10), ended_at: Date.new(2026, 8, 10))
 
       travel_to Date.new(2026, 9, 17) do
-        assert_equal Date.new(2026, 9, 10), @user.reload.fleet_tier_until
+        assert_equal Date.new(2026, 8, 10), @user.reload.fleet_tier_until
       end
+    end
+
+    # The importer overwrites one row with the latest amount, so counting a
+    # month per month it ran would read a patron who raised five euros to ten as
+    # having paid ten all along.
+    test "a raised pledge does not backdate its new amount" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 1000,
+        started_at: Date.new(2026, 1, 10), ended_at: Date.new(2026, 8, 10))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 8, 10), @user.reload.fleet_tier_until
+      end
+    end
+
+    # `started_at` is free to be ahead of today, and a pledge that has not begun
+    # funds nothing yet.
+    test "a pledge dated in the future is not yet standing" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 500, started_at: Date.current + 1.month, ended_at: nil)
+
+      refute @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
+    test "a donation dated in the future buys nothing yet" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.current + 1.month)
+
+      assert_nil @user.reload.fleet_tier_until
     end
 
     # The band a month's spend falls in, and how long that money lasts, are two
