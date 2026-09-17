@@ -1,0 +1,169 @@
+module ScData
+  module Loader
+    class BlueprintsLoader < ::ScData::Loader::BaseLoader
+      # Listed inside a method rather than resolved here: naming the models in
+      # a constant evaluated with this class body would load them before the
+      # loader itself is defined.
+      def self.cost_models
+        {
+          slots: ::BlueprintCostSlot,
+          options: ::BlueprintCostOption,
+          modifiers: ::BlueprintCostModifier
+        }
+      end
+
+      def all
+        loaded = load_items("blueprints").filter_map { |blueprint_data| one(blueprint_data)&.id }
+
+        retire_absent(Blueprint, loaded)
+        retire_absent_builds(BlueprintBuild, :blueprint_id, loaded)
+
+        prune_builds(BlueprintBuild)
+      end
+
+      def one(blueprint_data)
+        return if blueprint_data["ref"].blank?
+        return if blueprint_data["key"].blank?
+
+        blueprint = Blueprint.find_by(sc_ref: blueprint_data["ref"])
+        blueprint ||= Blueprint.new(sc_ref: blueprint_data["ref"])
+
+        update_params = update_params(blueprint_data)
+
+        apply(blueprint, update_params)
+
+        # `sc_ref` and `sc_key` identify the recipe rather than describing a
+        # build, so they stay on the row and are not repeated here.
+        apply_build(blueprint, update_params.except(:sc_ref, :sc_key, :version))
+
+        persist_costs(blueprint, blueprint_data["slots"])
+
+        blueprint
+      end
+
+      private def update_params(blueprint_data)
+        output = blueprint_data["output"] || {}
+        craftable = craftable(output)
+
+        {
+          sc_ref: blueprint_data["ref"],
+          sc_key: blueprint_data["key"],
+          # The thing the recipe makes is what names it. The entity's own name
+          # answers only where that link resolves to nothing -- four mission
+          # carryables are in no catalogue at all and would load nameless.
+          name: craftable&.name.presence || output["name"],
+          craftable:,
+          category_ref: blueprint_data["category_ref"],
+          craft_time: blueprint_data["craft_time"],
+          slot_count: blueprint_data["slot_count"],
+          version: sc_version
+        }
+      end
+
+      # A ship part and a piece of personal gear are found by the ref the
+      # blueprint names. A commodity is not: `Commodity#sc_ref` comes from the
+      # crate entity and is null for 100 of the 232 rows, so the parser resolved
+      # the resource to its `@items_commodities_*` key and the join goes through
+      # `sc_key`.
+      private def craftable(output)
+        case output["kind"]
+        when "Component" then Component.find_by(sc_ref: output["ref"])
+        when "Equipment" then Equipment.find_by(sc_ref: output["ref"])
+        when "Commodity" then commodity(output["commodity_key"])
+        end
+      end
+
+      private def commodity(key)
+        return if key.blank?
+
+        commodities[key]
+      end
+
+      private def commodities
+        @commodities ||= Hash.new { |cache, key| cache[key] = Commodity.find_by(sc_key: key) }
+      end
+
+      # Rewritten wholesale on every run rather than reconciled row by row.
+      # Nothing points at a cost line -- no ledger entry, no loadout -- so there
+      # is nothing that has to keep resolving, and a recipe CIG rewrites has to
+      # lose the slots it no longer has.
+      #
+      # Written with `insert_all!` against generated ids: a full load is 4,289
+      # slots, 4,289 options and 6,524 modifiers, and taking those through
+      # ActiveRecord one at a time costs more than the rest of the loader put
+      # together. The ids are generated here rather than by the column default
+      # so the three levels can be built in one pass.
+      private def persist_costs(blueprint, slots)
+        rows = cost_rows(blueprint, Array.wrap(slots))
+
+        blueprint.cost_slots.delete_all
+
+        rows.each do |model, written|
+          next if written.blank?
+
+          model.insert_all!(written)
+
+          stats[model.name][:created] += written.size
+        end
+
+        blueprint.association(:cost_slots).reset
+      end
+
+      private def cost_rows(blueprint, slots)
+        now = Time.zone.now
+        models = self.class.cost_models
+        rows = models.each_value.to_h { |model| [model, []] }
+
+        slots.each do |slot|
+          slot_id = SecureRandom.uuid
+
+          rows[models[:slots]] << {
+            id: slot_id,
+            blueprint_id: blueprint.id,
+            position: slot["position"],
+            sc_key: slot["key"],
+            name: slot["name"],
+            created_at: now,
+            updated_at: now
+          }
+
+          Array.wrap(slot["options"]).each do |option|
+            rows[models[:options]] << {
+              id: SecureRandom.uuid,
+              blueprint_cost_slot_id: slot_id,
+              commodity_id: commodity(option["commodity_key"])&.id,
+              commodity_key: option["commodity_key"],
+              cost_type: option["cost_type"],
+              quantity: option["quantity"],
+              min_quality: option["min_quality"],
+              position: option["position"],
+              created_at: now,
+              updated_at: now
+            }
+          end
+
+          Array.wrap(slot["modifiers"]).each do |modifier|
+            rows[models[:modifiers]] << {
+              id: SecureRandom.uuid,
+              blueprint_cost_slot_id: slot_id,
+              property_ref: modifier["property_ref"],
+              property_key: modifier["property_key"],
+              name: modifier["name"],
+              unit_format: modifier["unit_format"],
+              ramp: modifier["ramp"],
+              start_quality: modifier["start_quality"],
+              end_quality: modifier["end_quality"],
+              modifier_at_start: modifier["modifier_at_start"],
+              modifier_at_end: modifier["modifier_at_end"],
+              position: modifier["position"],
+              created_at: now,
+              updated_at: now
+            }
+          end
+        end
+
+        rows
+      end
+    end
+  end
+end
