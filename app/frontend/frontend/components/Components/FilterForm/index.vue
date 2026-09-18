@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
 import {
@@ -14,6 +16,14 @@ import {
   useComponentCategoriesFilters,
   useComponentSubTypesFilters,
 } from "@/services/fyApi";
+
+type Props = {
+  hideQuicksearch?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  hideQuicksearch: false,
+});
 
 const { t } = useI18n();
 
@@ -32,7 +42,8 @@ const setupForm = () => {
   form.value = prefillFormValues();
 };
 
-const { filter, filters } = useComponentFilters(setupForm);
+const { filter, resetFilter, isFilterSelected, filters } =
+  useComponentFilters(setupForm);
 
 const form = ref<ComponentQuery>(prefillFormValues());
 
@@ -41,6 +52,10 @@ watch(
   () => filter(form.value),
   { deep: true },
 );
+
+const handleSubmit = () => {
+  filter(form.value);
+};
 
 const { data: categories } = useComponentCategoriesFilters();
 
@@ -58,14 +73,18 @@ const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
 </script>
 
 <template>
-  <form class="components-filter-form" @submit.prevent>
-    <FormInput
-      v-model="form.nameCont"
-      name="nameCont"
-      translation-key="filters.components.name"
-      :no-label="true"
-      :clearable="true"
-    />
+  <form @submit.prevent="handleSubmit">
+    <!-- The name search belongs in the header, where every other list puts it. -->
+    <Teleport v-if="!hideQuicksearch" to="#header-left">
+      <FormInput
+        v-model="form.nameCont"
+        :size="InputSizesEnum.MEDIUM"
+        name="search"
+        translation-key="filters.components.name"
+        :no-label="true"
+        :clearable="true"
+      />
+    </Teleport>
 
     <FormInput
       v-model="form.descriptionCont"
@@ -101,13 +120,11 @@ const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
       :label="t('labels.filters.components.subType')"
       multiple
     />
+
+    <br />
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
+      <i class="fa-light fa-times" />
+      {{ t("actions.resetFilter") }}
+    </Btn>
   </form>
 </template>
-
-<style lang="scss" scoped>
-.components-filter-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-</style>
