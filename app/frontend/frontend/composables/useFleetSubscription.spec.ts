@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
 import { FeatureFlagName } from "@/services/fyApi/models/FeatureFlagName";
 
 const viewerFeatures = ref<string[]>([]);
