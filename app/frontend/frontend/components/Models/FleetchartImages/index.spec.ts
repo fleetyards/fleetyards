@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import type { DOMWrapper } from "@vue/test-utils";
 import type { MediaFile, Model, ModelMedia } from "@/services/fyApi";
 import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 
@@ -143,9 +144,22 @@ describe("the views themselves", () => {
 });
 
 describe("while the next set of images is loading", () => {
+  // jsdom fetches nothing, so `complete` stays false however many load events are
+  // dispatched. The component reads it to tell a real load from one belonging to
+  // the file a switch navigated away from, so a spec standing in for the browser
+  // has to say which of the two it is dispatching.
+  const load = async (img: DOMWrapper<Element>, complete = true) => {
+    Object.defineProperty(img.element, "complete", {
+      value: complete,
+      configurable: true,
+    });
+
+    await img.trigger("load");
+  };
+
   const settleAll = async (wrapper: Awaited<ReturnType<typeof mountViews>>) => {
     for (const img of wrapper.findAll("img")) {
-      await img.trigger("load");
+      await load(img);
     }
   };
 
@@ -154,7 +168,7 @@ describe("while the next set of images is loading", () => {
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
 
-    await wrapper.findAll("img")[0].trigger("load");
+    await load(wrapper.findAll("img")[0]);
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
 
@@ -185,12 +199,35 @@ describe("while the next set of images is loading", () => {
     await settleAll(wrapper);
 
     await wrapper.setProps({ state: ModelStateEnum.LANDED });
-    await wrapper
+
+    const landedTop = wrapper
       .findAll("img")
-      .find((img) => img.attributes("src")?.includes("landed-top"))
-      ?.trigger("load");
+      .find((img) => img.attributes("src")?.includes("landed-top"));
+
+    await load(landedTop!);
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+  });
+
+  // The browser aborts the previous request when src is reassigned, but a load
+  // already queued for it still runs -- against an element now pointing at the
+  // image that replaced it.
+  it("ignores a load that belongs to the image the switch replaced", async () => {
+    const wrapper = await mountViews({
+      ...FLIGHT_VIEWS,
+      landedTopView: file("landed-top"),
+    });
+    await settleAll(wrapper);
+
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+
+    const landedTop = wrapper
+      .findAll("img")
+      .find((img) => img.attributes("src")?.includes("landed-top"));
+
+    await load(landedTop!, false);
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
   });
 
   it("settles a view that fails rather than waiting forever", async () => {

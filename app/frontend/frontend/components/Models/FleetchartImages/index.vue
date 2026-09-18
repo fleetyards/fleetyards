@@ -102,7 +102,19 @@ const loading = computed(() =>
 
 // An image that fails settles too, or the loader would sit over a view that is
 // never going to arrive.
-const settle = (url?: string) => {
+const settleImage = (event: Event) => {
+  const image = event.target as HTMLImageElement;
+
+  // A `load` belonging to the file the switch navigated away from: the element
+  // has already been pointed at its replacement, so the src attribute reads as
+  // the new file and settling on it would clear the loader over an image still
+  // arriving. The element's own `complete` is what knows the difference.
+  if (event.type === "load" && !image.complete) {
+    return;
+  }
+
+  const url = image.getAttribute("src");
+
   if (!url) {
     return;
   }
@@ -193,8 +205,8 @@ onMounted(() => {
           v-if="fleetchartImageAngled"
           :src="fleetchartImageAngled"
           :width="(length > beam ? length : beam) * 1.2"
-          @load="settle(fleetchartImageAngled)"
-          @error="settle(fleetchartImageAngled)"
+          @load="settleImage"
+          @error="settleImage"
         />
       </div>
       <div>
@@ -202,8 +214,8 @@ onMounted(() => {
           v-if="fleetchartImageTop"
           :src="fleetchartImageTop"
           :width="length"
-          @load="settle(fleetchartImageTop)"
-          @error="settle(fleetchartImageTop)"
+          @load="settleImage"
+          @error="settleImage"
         />
       </div>
       <div :class="{ small: mobile }">
@@ -211,8 +223,8 @@ onMounted(() => {
           v-if="fleetchartImageFront"
           :src="fleetchartImageFront"
           :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
-          @load="settle(fleetchartImageFront)"
-          @error="settle(fleetchartImageFront)"
+          @load="settleImage"
+          @error="settleImage"
         />
       </div>
       <div>
@@ -223,9 +235,9 @@ onMounted(() => {
           :width="length"
           @load="
             updateSideViewHeight();
-            settle(fleetchartImageSide);
+            settleImage($event);
           "
-          @error="settle(fleetchartImageSide)"
+          @error="settleImage"
         />
       </div>
     </div>
