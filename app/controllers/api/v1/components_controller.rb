@@ -61,7 +61,12 @@ module Api
         # that build does not describe. `currentVersion=false` needs the fallback
         # join, or a retired component would be filtered out by the join before
         # ransack ever sees it.
+        # `catalogued` because this is a list a reader browses: an entry the game
+        # never gave a display name is unreadable, and having no name it has no
+        # slug either, so it has no detail page to open -- and doors and
+        # subsystem controllers are ship internals nobody fits.
         @q = Component.with_facts(current_version)
+          .catalogued
           .includes(:manufacturer)
           .ransack(components_query_params)
 

@@ -114,6 +114,42 @@ class Component < ApplicationRecord
     end
   }
 
+  # Entries a reader could be shown. The game files carry a great many internal
+  # ones -- `door_deadbolt_cuttable`, `controller_salvage_argo_moth_toolarm` --
+  # that it never gave a display name because no player ever sees them, and the
+  # slug is built from the name, so a nameless row has no detail page to reach
+  # either. 3,020 of 7,274 on the current build, 42% of the catalogue.
+  #
+  # Not `hidden`, which is the game's own flag and a different question: 2,501
+  # of the nameless are not hidden, and 819 hidden components are named.
+  scope :named, -> { where.not(name: [nil, ""]) }
+
+  # Ship internals rather than loadout parts. A door or a subsystem controller
+  # is fitted by the shipwright, never by the player, so neither belongs in a
+  # catalogue somebody browses to kit a ship out -- and between them they were
+  # 1,063 of the 4,254 named components, 25% of it.
+  #
+  # A list rather than a rule because the data carries no flag for it: `hidden`
+  # is the game's own and marks something else, and `type_data` is no guide
+  # either -- 99% of seats carry it and 0% of weapon mounts do.
+  CATALOGUE_EXCLUDED_CATEGORIES = %w[doors controller].freeze
+
+  # What the public catalogue lists. `with_facts` has to be applied by the
+  # caller -- the category is read off the joined build.
+  #
+  # The null arm is not decoration. `NOT IN` is null-unsafe: an uncategorised
+  # component compares NULL rather than true and drops out of a list that was
+  # only ever meant to lose two categories. Nothing on the current build has a
+  # null category, which is exactly why this would have gone unnoticed here and
+  # emptied a list somewhere else.
+  scope :catalogued, -> {
+    category = fact_sql(:category)
+
+    named.where(
+      category.not_in(CATALOGUE_EXCLUDED_CATEGORIES).or(category.eq(nil))
+    )
+  }
+
   # The build a filter resolves against, joined as `component_facts`. Two shapes
   # behind one alias, so a ransacker stays a single static expression either way.
   #
