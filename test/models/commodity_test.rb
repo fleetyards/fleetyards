@@ -8,6 +8,7 @@ require "test_helper"
 #
 #  id             :uuid             not null, primary key
 #  commodity_type :string
+#  counted        :boolean          default(FALSE), not null
 #  description    :text
 #  name           :string           not null
 #  sc_key         :string

@@ -35,6 +35,7 @@ module ScData
           name: commodity_data["name"],
           commodity_type: commodity_data["commodity_type"],
           description: commodity_data["description"],
+          counted: commodity_data["counted"] || false,
           version: sc_version
         }
       end

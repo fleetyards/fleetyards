@@ -6,6 +6,7 @@
 #
 #  id             :uuid             not null, primary key
 #  commodity_type :string
+#  counted        :boolean          default(FALSE), not null
 #  description    :text
 #  environment    :string           not null
 #  name           :string

@@ -99,6 +99,41 @@ module ScData
         assert_not_predicate image, :representable?
       end
 
+      # The gems, the drugs, the horns and the eggs: everything the game hands a
+      # player a piece at a time. The eleven the recipes ask for are the reason
+      # the fact is read at all, so they are named rather than counted.
+      test "#all marks the commodities the game counts in pieces" do
+        @loader.all
+
+        crafting = %w[
+          items_commodities_hadanite items_commodities_dolivine
+          items_commodities_aphorite items_commodities_sadaryx
+          items_commodities_beradom items_commodities_glacosite
+          items_commodities_feynmaline items_commodities_janalite
+          items_commodities_carinite items_commodities_saldynium_ore
+          items_commodities_yormandi_eye
+        ]
+
+        assert_equal crafting.sort, Commodity.where(sc_key: crafting, counted: true).pluck(:sc_key).sort
+
+        # Bulk is the other half of the claim: a material a recipe measures in
+        # SCU must not start offering pieces.
+        assert_not Commodity.find_by(sc_key: "items_commodities_iron").counted
+        assert_not Commodity.find_by(sc_key: "items_commodities_gold").counted
+      end
+
+      # A fact only the row carried would leave the build saying "bulk" about a
+      # commodity the row calls counted, and the build is what every reader
+      # resolves through.
+      test "#all writes counted onto the build as well as the row" do
+        @loader.all
+
+        commodity = Commodity.find_by(sc_key: "items_commodities_hadanite")
+
+        assert commodity.build.counted
+        assert commodity.counted
+      end
+
       test "#all keeps a commodity that already exists without an sc_key" do
         existing = create(:commodity, name: "Gold", sc_key: nil, commodity_type: nil)
 

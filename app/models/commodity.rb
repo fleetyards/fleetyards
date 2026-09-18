@@ -6,6 +6,7 @@
 #
 #  id             :uuid             not null, primary key
 #  commodity_type :string
+#  counted        :boolean          default(FALSE), not null
 #  description    :text
 #  name           :string           not null
 #  sc_key         :string
@@ -174,6 +175,15 @@ class Commodity < ApplicationRecord
 
       value.nil? ? super() : value
     end
+  end
+
+  # The `?` spelling has to be redirected too. Rails defines `counted?` off the
+  # column, and the column is only the fallback -- left alone, the two spellings
+  # of the same question answer differently for every commodity whose build
+  # knows better than its row. The first boolean fact in any of the four
+  # catalogues, which is why none of the others needed this.
+  def counted?
+    counted
   end
 
   # Named as every other catalogue names its picture, so a ledger entry
