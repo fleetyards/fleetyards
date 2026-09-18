@@ -196,14 +196,14 @@ const columns = computed<BaseTableCol<Component>[]>(() => [
     name: "size",
     label: t("labels.hardpoint.size"),
     attributeKey: "sizeOrder",
-    width: "90px",
+    width: "116px",
     alignment: BaseTableColAlignmentEnum.RIGHT,
     sortable: true,
   },
   {
     name: "grade",
     label: t("labels.component.grade"),
-    width: "100px",
+    width: "124px",
     alignment: BaseTableColAlignmentEnum.RIGHT,
     sortable: true,
   },
@@ -296,18 +296,29 @@ const categoryLabel = (key?: string | null) => {
       </span>
     </template>
 
-    <!-- The pill the row carried, minus its own label: the column heading says
-         which figure this is, and repeating it inside every cell would say it
-         3,000 times. -->
+    <!-- The pill the row carried, label and all. A bare "1" or "A" says nothing
+         once it is away from its heading -- on a phone, in a screenshot, or to
+         anyone scanning the right-hand edge rather than reading across.
+         Built from `hardpoint.size` and `component.grade`, which are translated
+         in all seven locales; `component.size` reads "Size: %{size}" and is
+         still English in four of them, and nothing uses it. -->
     <template #col-size="{ record }">
       <span v-if="record.size" class="components-table__badge">
-        {{ record.size }}
+        <span class="components-table__badge-label">
+          {{ t("labels.hardpoint.size") }}
+        </span>
+        <span class="components-table__badge-value">{{ record.size }}</span>
       </span>
     </template>
 
     <template #col-grade="{ record }">
       <span v-if="record.gradeLabel" class="components-table__badge">
-        {{ record.gradeLabel }}
+        <span class="components-table__badge-label">
+          {{ t("labels.component.grade") }}
+        </span>
+        <span class="components-table__badge-value">
+          {{ record.gradeLabel }}
+        </span>
       </span>
     </template>
   </BaseTable>

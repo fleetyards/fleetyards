@@ -70,6 +70,30 @@ describe("ComponentsTable", () => {
     expect(headings(wrapper).slice(-2)).toEqual(["Size", "Grade"]);
   });
 
+  // A bare "1" or "A" says nothing once it is away from its heading -- on a
+  // phone, in a screenshot, or to anyone scanning the right-hand edge rather
+  // than reading across.
+  it("names the figure inside the size and grade badges", async () => {
+    const wrapper = await mount([
+      component({ size: "1", gradeLabel: "A" } as Partial<FyComponent>),
+    ]);
+
+    // Asserted per span rather than on the badge's text: the label and the
+    // value are separated by a flex `gap`, so the rendered text runs them
+    // together as "Size1" with no node between them.
+    const badges = wrapper
+      .findAll(".components-table__badge")
+      .map((badge) => [
+        badge.find(".components-table__badge-label").text(),
+        badge.find(".components-table__badge-value").text(),
+      ]);
+
+    expect(badges).toEqual([
+      ["Size", "1"],
+      ["Grade", "A"],
+    ]);
+  });
+
   // Every sortable heading renders a link; a plain heading does not. `size`
   // sorts through `sizeOrder`, a numeric ransacker, because the column itself
   // is a string and would order 10 and 12 ahead of 2.
