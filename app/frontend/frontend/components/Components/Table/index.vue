@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BaseTable from "@/shared/components/base/Table/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ComponentLeadMetric from "@/frontend/components/Components/LeadMetric/index.vue";
 import ComponentCategoryIcon from "@/frontend/components/Components/CategoryIcon/index.vue";
@@ -224,6 +225,11 @@ const categoryLabel = (key?: string | null) => {
 </script>
 
 <template>
+  <!-- The same sorts the headings offer, on a line that does not scroll away.
+       Both controls run through `useTableSorting`, so they read and write the
+       one `q[s]` and cannot disagree about what is active. -->
+  <SortBar :columns="columns" default-sort="name asc" />
+
   <BaseTable
     :records="components"
     primary-key="slug"

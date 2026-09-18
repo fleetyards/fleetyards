@@ -119,6 +119,64 @@ describe("ComponentsTable", () => {
   // Clicking a value the catalogue can be narrowed by narrows it. The filters
   // live in the route query, so these are plain links -- shareable, undone by
   // the back button, and read back by the filter form.
+  // A heading is only a sort control while it is on screen, and the table
+  // scrolls sideways on a narrow window. The line above it stays put, and runs
+  // through the same composable, so the two cannot disagree about what is
+  // active.
+  describe("the sort line", () => {
+    it("offers a chip for every sortable column", async () => {
+      const wrapper = await mount([component()]);
+
+      const chips = wrapper
+        .findAll(".base-table-sort-chip")
+        .map((chip) => chip.text().trim());
+
+      expect(chips).toEqual([
+        "Name",
+        "Manufacturer",
+        "Category",
+        "Sub Type",
+        "Size",
+        "Grade",
+      ]);
+    });
+
+    // The metric columns come and go with the rows on screen; their chips have
+    // to come with them, or the line offers a sort for a column that is not
+    // there.
+    it("gains a chip when a metric column appears", async () => {
+      const wrapper = await mount([
+        component({ typeData: { maxHealth: 1000 } } as Partial<FyComponent>),
+      ]);
+
+      const chips = wrapper
+        .findAll(".base-table-sort-chip")
+        .map((chip) => chip.text().trim());
+
+      expect(chips).toContain("HP");
+    });
+
+    it("sorts by the same field the heading does", async () => {
+      const wrapper = await mount([component()]);
+
+      const chip = wrapper
+        .findAll(".base-table-sort-chip")
+        .find((link) => link.text().trim() === "Size");
+
+      expect(chip?.attributes("href")).toContain("sizeOrder");
+    });
+
+    // The unheaded columns -- the icon, and the per-row metric figure -- have
+    // nothing to label a chip with and nothing to sort by.
+    it("leaves out the columns with no heading", async () => {
+      const wrapper = await mount([component()]);
+
+      wrapper.findAll(".base-table-sort-chip").forEach((chip) => {
+        expect(chip.text().trim()).not.toBe("");
+      });
+    });
+  });
+
   describe("click to filter", () => {
     const hrefFor = async (column: string) => {
       const wrapper = await mount([

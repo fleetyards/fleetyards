@@ -1,0 +1,18 @@
+@import "@/stylesheets/variables.scss";
+
+.base-table-sort-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+    margin-right: 2px;
+  }
+}
