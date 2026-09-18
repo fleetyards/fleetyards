@@ -89,7 +89,15 @@ class Component < ApplicationRecord
   # What each build of the game says about this component. Written alongside the
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "ComponentBuild", dependent: :destroy
-  has_one :build, -> { current }, class_name: "ComponentBuild", inverse_of: :component
+  # The build we are being served from, which is the configured one unless its
+  # load has not run yet. `current` on its own means *exactly* the configured
+  # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
+  # new build has landed -- so the resolution happens here instead.
+  #
+  # Without it this association is empty for every row during that window, and
+  # `retired?`, which is `build.blank?`, told every reader that everything in
+  # the catalogue was no longer in the game.
+  has_one :build, -> { current(::ScData::Source.current.served) }, class_name: "ComponentBuild", inverse_of: :component
 
   # The newest build of this environment that still describes the component,
   # which is what a record the export dropped falls back to. Without it a retired

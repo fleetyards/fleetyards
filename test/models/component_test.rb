@@ -81,6 +81,12 @@ class ComponentTest < ActiveSupport::TestCase
       component:, environment: ScData::Source.environment,
       version: "0.0.1-live.1", name: "Gorgon", size: "3"
     )
+    # Something else has to carry the configured build. With nothing loaded at
+    # it, `ScData::Source#served` falls back to the newest build there is --
+    # which in a test that creates exactly one is the very build it means to
+    # call retired.
+    create(:component_build, component: create(:component, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version)
 
     assert_equal "Gorgon", component.reload.name
     assert_equal "3", component.size
@@ -144,6 +150,10 @@ class ComponentTest < ActiveSupport::TestCase
   test "#update_with_facts leaves a retired component's build alone" do
     component = create(:component, :without_build, name: "Typo")
     old = create(:component_build, component:, version: "0.0.1-live.1", name: "Old Name")
+    # As above: without a configured build to serve, the old one below is what
+    # gets served and nothing is retired.
+    create(:component_build, component: create(:component, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version)
 
     assert component.update_with_facts({name: "Corrected"})
 

@@ -84,6 +84,12 @@ class EquipmentTest < ActiveSupport::TestCase
       equipment:, environment: ScData::Source.environment,
       version: "0.0.1-live.1", name: "Behring P4-AR", size: "3"
     )
+    # Something else has to carry the configured build. With nothing loaded at
+    # it, `ScData::Source#served` falls back to the newest build there is --
+    # which in a test that creates exactly one is the very build it means to
+    # call retired.
+    create(:equipment_build, equipment: create(:equipment, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version)
 
     assert_equal "Behring P4-AR", equipment.reload.name
     assert_equal "3", equipment.size
@@ -137,6 +143,10 @@ class EquipmentTest < ActiveSupport::TestCase
   test "#update_with_facts leaves a retired record's build alone" do
     equipment = create(:equipment, :without_build, name: "Typo")
     old = create(:equipment_build, equipment:, version: "0.0.1-live.1", name: "Old Name")
+    # As above: without a configured build to serve, the old one below is what
+    # gets served and nothing is retired.
+    create(:equipment_build, equipment: create(:equipment, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version)
 
     assert equipment.update_with_facts({name: "Corrected"})
 
