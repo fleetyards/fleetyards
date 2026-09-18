@@ -281,6 +281,12 @@
         },
         "notifications": {
           "search": "Titre ou contenu..."
+        },
+        "blueprints": {
+          "name": "Greatsword, Testudo, Omnisky...",
+          "material": "Fer, Titane, Aphorite...",
+          "craftableType": "Composant, Équipement...",
+          "source": "Connue, inconnue..."
         }
       },
       "commodity": {

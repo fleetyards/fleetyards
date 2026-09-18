@@ -268,6 +268,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FeatureNamesList"
+  "/filters/blueprints/materials":
+    get:
+      summary: Blueprint materials filter
+      tags:
+      - Filters
+      operationId: filtersBlueprintsMaterials
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/commodities/types":
     get:
       summary: Commodity Types Filters
@@ -15705,6 +15718,10 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/BlueprintCraftable"
           - type: 'null'
+        materials:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostCommodity"
         costSlots:
           type: array
           items:
@@ -15776,6 +15793,14 @@ components:
           - number
           - 'null'
         modifierAtEnd:
+          type:
+          - number
+          - 'null'
+        unit:
+          type:
+          - string
+          - 'null'
+        baseValue:
           type:
           - number
           - 'null'
@@ -15906,6 +15931,10 @@ components:
           type: string
         consumingCommodity:
           type: string
+        consumingCommodityIn:
+          type: array
+          items:
+            type: string
         withKnownSource:
           type: boolean
         currentVersion:
@@ -19969,6 +19998,8 @@ components:
           type: integer
         netQuantity:
           type: number
+        item:
+          "$ref": "#/components/schemas/InventoryStockItemRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -21645,6 +21676,8 @@ components:
           type: integer
         netQuantity:
           type: number
+        item:
+          "$ref": "#/components/schemas/InventoryStockItemRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -22865,7 +22898,20 @@ components:
           type: string
         slug:
           type: string
+        vehicleName:
+          type: string
       title: InventoryRef
+    InventoryStockItemRef:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+      title: InventoryStockItemRef
     InventoryStockPosition:
       type: object
       properties:

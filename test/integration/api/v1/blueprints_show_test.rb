@@ -51,6 +51,59 @@ class Api::V1::BlueprintsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The schema calls the two ramp figures numbers, and the page does arithmetic
+  # on them to place a marker. A `decimal` column renders as a JSON string
+  # unless it is asked otherwise, which is valid JSON, passes the schema check,
+  # and reaches the client typed `number` while holding "0.8".
+  test "GET /blueprints/{slug} renders the ramp figures as numbers" do
+    create(
+      :blueprint_cost_modifier,
+      slot: @slot,
+      modifier_at_start: 0.8,
+      modifier_at_end: 1.2
+    )
+
+    assert_api_response :get, 200, params: {slug: @blueprint.slug} do
+      modifier = parsed_body["costSlots"].first["modifiers"].first
+
+      assert_kind_of Numeric, modifier["modifierAtStart"]
+      assert_kind_of Numeric, modifier["modifierAtEnd"]
+      assert_in_delta 0.8, modifier["modifierAtStart"]
+      assert_in_delta 1.2, modifier["modifierAtEnd"]
+    end
+  end
+
+  # The factor alone does not answer "what do I get"; the page multiplies it
+  # by the crafted item's own figure for the stat, which the API has to carry.
+  test "GET /blueprints/{slug} carries what the factor applies to" do
+    shield = create(:component, type_data: {"max_health" => 3168.0})
+    @blueprint.build.update!(craftable: shield)
+    create(
+      :blueprint_cost_modifier,
+      slot: @slot,
+      property_key: "gpp_shield_maxhealth",
+      unit_format: "%+.2f %%"
+    )
+
+    assert_api_response :get, 200, params: {slug: @blueprint.slug} do
+      modifier = parsed_body["costSlots"].first["modifiers"].first
+
+      assert_in_delta 3168.0, modifier["baseValue"]
+      assert_equal "%", modifier["unit"]
+    end
+  end
+
+  # 2,060 modifiers move a stat the catalogue holds no figure for, and there
+  # the factor is the whole answer rather than a number to multiply.
+  test "GET /blueprints/{slug} leaves the base empty for a stat we do not hold" do
+    @blueprint.build.update!(craftable: create(:component))
+    create(:blueprint_cost_modifier, slot: @slot, property_key: "gpp_weapon_recoil_kick")
+
+    assert_api_response :get, 200, params: {slug: @blueprint.slug} do
+      assert_nil parsed_body["costSlots"].first["modifiers"].first["baseValue"]
+    end
+  end
+
   # A material the commodity catalogue has no row for still has to say which
   # material it is, rather than rendering a nameless cost line.
   test "GET /blueprints/{slug} names a material that resolves to no commodity" do

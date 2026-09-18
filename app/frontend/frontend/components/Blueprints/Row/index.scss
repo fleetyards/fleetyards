@@ -1,0 +1,193 @@
+@import "@/stylesheets/variables.scss";
+
+// Deliberately the same row as `.component-row`: the two sit in one catalogue
+// section, and a reader moving between the tabs should not feel the furniture
+// change. Every value here is that row's, not a fresh guess.
+.blueprint-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  // The control radius, not the surface one: a row is a control-scale box, and
+  // at --radius-surface-slim's 12px the corner was rounder than anything else
+  // in a list of them. Lands beside the hardpoint row's own 9px.
+  border-radius: var(--radius-control, 8px);
+  color: var(--color-text, #c8c8c8);
+  transition: background-color 150ms ease;
+
+  // The surface answers and the frame stays put: `--color-edge-soft` to
+  // `--color-edge` alone was a step too small to register, and recolouring a
+  // frame reads as the row changing shape rather than as it answering the
+  // cursor -- the call Btn and Panel already made. `--color-control-hover` is
+  // the fill those two step to.
+  //
+  // `focus-within` as well as hover, so a row reached by tab is lit the same way
+  // a pointed-at one is.
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+  }
+
+  &__main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  // A table's body cell, which is what this row is a list of -- the weight is
+  // what makes it the row's title, not a brighter grey. It was #fff, which sits
+  // above anything a table ever prints; the lift is kept for the hover.
+  &__name {
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 150ms ease;
+  }
+
+  // Only the link answers the cursor: a blueprint with no slug has no link, and
+  // a plain span that lights up promises a page that is not there.
+  a#{&}__name:hover,
+  a#{&}__name:focus-visible {
+    color: var(--color-lifted, #eee);
+  }
+
+  &__sub {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    min-width: 0;
+    gap: 0 8px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+
+    a {
+      color: var(--color-text-dim, #959595);
+      transition: color 150ms ease;
+
+      // Brighter, not bluer — every link in the app steps from $text-color to
+      // white on hover (stylesheets/shared/links.scss).
+      &:hover,
+      &:focus-visible {
+        color: var(--color-text, #c8c8c8);
+      }
+    }
+
+    // The " · " the meta lines elsewhere join their parts with. Trailing rather
+    // than leading, so a wrapped line does not open with bare punctuation.
+    > :not(:last-child)::after {
+      content: "·";
+      margin-inline-start: 8px;
+      color: var(--color-text-dim, #959595);
+      pointer-events: none;
+    }
+  }
+
+  // Inside the row's own padding, the way Chip and Btn keep their ring inside
+  // the frame rather than straddling it.
+  a:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  // What the recipe eats. Drops out with the figures on a narrow screen rather
+  // than squeezing the name, the way the component row's lead metric does.
+  &__materials {
+    display: none;
+    flex: none;
+    gap: 6px;
+    max-width: 320px;
+    overflow: hidden;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  // Chips rather than a run of muted text. The materials are what a crafter
+  // scans this list for -- "what does this cost me" -- and as plain grey they
+  // read as a second subtitle rather than as the figures they are.
+  &__material {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: 4px;
+    white-space: nowrap;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+
+    // Chip's hover, one rung lower: the recessed field steps up to the control
+    // fill and the label lifts, rather than the row holding two different
+    // answers to the same gesture.
+    &:hover {
+      color: var(--color-lifted, #eee);
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    }
+  }
+
+  &__material-more {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 7px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 6px;
+    flex: none;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-control-bare, 6px);
+    white-space: nowrap;
+
+    // "No known source" is a statement, not a measurement, and carries no
+    // label of its own -- it should not read as loudly as the figures.
+    &--quiet {
+      border-style: dashed;
+
+      .blueprint-row__badge-value {
+        font-weight: 400;
+        color: var(--color-text-dim, #959595);
+      }
+    }
+  }
+
+  // The micro-label the metrics cards, their tiles and the hardpoint rows all
+  // share: Orbitron 10px at .16em.
+  &__badge-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__badge-value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    font-variant-numeric: tabular-nums;
+  }
+}

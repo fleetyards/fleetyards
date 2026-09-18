@@ -46,6 +46,63 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
     create(:inventory_item, inventory: inv2, name: "Med Pens", category: :consumable, quantity: 10, unit: :units, entry_type: :withdrawal)
   end
 
+  # A stock row is only matchable against the catalogue by id: a position's
+  # name is whatever the owner typed, so name-against-name would both
+  # mis-match and silently miss.
+  # `COUNT(DISTINCT)` skips nulls, so a position holding one linked entry and
+  # one free-text entry would otherwise claim the link -- and the position's
+  # whole quantity with it.
+  test "GET inventory-stock stays silent where only some entries name a record" do
+    sign_in @user
+    inventory = create(:inventory, holder: @user, name: "Refinery")
+    create(:inventory_item, inventory:, item: create(:commodity, name: "Iron"),
+      name: "Ore", category: :commodity, quantity: 5, unit: :scu, entry_type: :deposit)
+    create(:inventory_item, inventory:, item: nil,
+      name: "Ore", category: :commodity, quantity: 5, unit: :scu, entry_type: :deposit)
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body.find { |entry| entry["name"] == "Ore" }["item"]
+    end
+  end
+
+  test "GET /hangar/inventory-stock names the catalogue record a position points at" do
+    sign_in @user
+    iron = create(:commodity, name: "Iron")
+    inventory = create(:inventory, holder: @user, name: "Refinery")
+    create(:inventory_item, inventory:, item: iron, name: "Iron",
+      category: :commodity, quantity: 12, unit: :scu, entry_type: :deposit)
+
+    assert_api_response :get, 200 do
+      position = parsed_body.find { |entry| entry["name"] == "Iron" }
+
+      assert_equal iron.id, position["item"]["id"]
+      assert_equal "Commodity", position["item"]["type"]
+    end
+  end
+
+  # A position groups by name, category and unit, so two entries in it can
+  # point at different records. It is then neither of them.
+  test "GET /hangar/inventory-stock stays silent where a position's entries disagree" do
+    sign_in @user
+    inventory = create(:inventory, holder: @user, name: "Refinery")
+    create(:inventory_item, inventory:, item: create(:commodity, name: "Iron"),
+      name: "Ore", category: :commodity, quantity: 5, unit: :scu, entry_type: :deposit)
+    create(:inventory_item, inventory:, item: create(:commodity, name: "Corundum"),
+      name: "Ore", category: :commodity, quantity: 5, unit: :scu, entry_type: :deposit)
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body.find { |entry| entry["name"] == "Ore" }["item"]
+    end
+  end
+
+  test "GET /hangar/inventory-stock leaves the record empty for a free-text entry" do
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body.find { |entry| entry["name"] == "Quantanium" }["item"]
+    end
+  end
+
   test "GET /hangar/inventory-stock aggregates across inventories" do
     sign_in @user
 

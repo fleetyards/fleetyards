@@ -127,7 +127,7 @@ const onToggle = async (transfer: PayoutTransfer) => {
 
 .payout-transfers__empty {
   margin: 0;
-  color: var(--color-muted, #999);
+  color: var(--color-text-dim, #959595);
 }
 
 .payout-transfers__row {
@@ -167,7 +167,7 @@ const onToggle = async (transfer: PayoutTransfer) => {
 }
 
 .payout-transfers__arrow {
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
 }
 
 .payout-transfers__amount {

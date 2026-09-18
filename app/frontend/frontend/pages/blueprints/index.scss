@@ -1,0 +1,181 @@
+.blueprint-page {
+  &__masthead {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__sub {
+    color: var(--color-muted, #7a8288);
+    font-size: 14px;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 8px;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 5px 11px;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  &__badge-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+  }
+
+  &__badge-value {
+    font-family: "Open Sans", tahoma, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // The rail only earns its own column once there is room for both. The grid
+  // breakpoints start at 1500px, so this uses the same 992px the components
+  // detail page settled on.
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+
+    @media (min-width: 992px) {
+      grid-template-columns: minmax(0, 1fr) 340px;
+    }
+  }
+
+  &__recipe {
+    min-width: 0;
+  }
+
+  &__section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+
+  &__section-title {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text, #c8c8c8);
+    margin: 0;
+  }
+
+  // Three recipes in the build fill a subset of their slots. Loud enough to
+  // be read before the list below it is.
+  &__choice {
+    font-size: 12px;
+    color: var(--color-warning, #fa6800);
+  }
+
+  &__quickset {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: rgba($gray-light, 0.08);
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: var(--radius-control, 8px);
+    padding: 11px 14px;
+    margin-bottom: 20px;
+  }
+
+  &__quickset-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+    margin-right: 6px;
+  }
+
+  &__preset {
+    font-family: "Open Sans", tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    background: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-control-bare, 6px);
+    padding: 5px 11px;
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+
+    &:hover {
+      background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+  }
+
+  &__quickset-summary {
+    margin-left: auto;
+    font-size: 11.5px;
+    color: var(--color-gray, #52575c);
+  }
+
+  &__slots {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__empty {
+    color: var(--color-muted, #7a8288);
+    margin: 0;
+  }
+
+  &__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+}
+
+// Appended to the page block above: the retired badge is the page's own,
+// because the design system's Chip has no warning state to borrow.
+.blueprint-page__badge--retired {
+  background-color: color-mix(
+    in srgb,
+    var(--color-warning, #fa6800) 16%,
+    transparent
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--color-warning, #fa6800) 45%,
+    transparent
+  );
+
+  .blueprint-page__badge-value {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-warning, #fa6800);
+  }
+}

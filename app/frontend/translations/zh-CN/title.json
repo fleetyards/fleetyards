@@ -152,6 +152,7 @@
       "privacyPolicy": "隐私政策",
       "cookiePolicy": "Cookie政策",
       "visualTests": {
+        "blueprints": "蓝图",
         "index": "视觉测试",
         "panels": "面板 - 视觉测试",
         "buttons": "按钮 - 视觉测试",
@@ -330,6 +331,9 @@
       "component": "%{name}",
       "components": {
         "index": "部件"
+      },
+      "blueprints": {
+        "index": "蓝图"
       }
     }
   }

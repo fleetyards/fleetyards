@@ -1691,6 +1691,14 @@
         },
         "notifications": {
           "search": "Buscar"
+        },
+        "blueprints": {
+          "name": "Buscar planos",
+          "craftableType": "Produce",
+          "source": "Fuente",
+          "withSource": "Con fuente conocida",
+          "withoutSource": "Sin fuente conocida",
+          "material": "Usa material"
         }
       },
       "station": {
@@ -2650,6 +2658,68 @@
         },
         "requested": "Solicitud enviada",
         "friend": "Amigos"
+      },
+      "blueprint": {
+        "name": "Nombre",
+        "craftTime": "Tiempo de fabricación",
+        "slots": "Ranuras",
+        "materials": "Materiales",
+        "quality": "Calidad",
+        "missionSlots": {
+          "location": "lugar",
+          "objects": "objetos",
+          "target": "objetivo",
+          "ship": "nave",
+          "cargo": "carga",
+          "rank": "rango",
+          "danger": "peligro",
+          "contract": "contrato",
+          "other": "variable"
+        },
+        "missionSlotsHint": "Los términos entre ‹comillas angulares› los completa el juego cuando se ofrece el contrato.",
+        "atNeutral": "%{value} en Q500",
+        "whatYouGet": "Lo que obtienes",
+        "fromSlots": "%{count} ranuras",
+        "factorOnly": "solo factor — sin valor de catálogo",
+        "heldIn": "en",
+        "heldOn": "en",
+        "fromHangar": "Hangar",
+        "makesA": "Receta de fabricación · produce",
+        "makesUnknown": "Receta de fabricación · produce algo que no figura en ningún catálogo",
+        "retired": "Retirado",
+        "minQuality": "Mín. %{quality}",
+        "belowGate": "Por debajo del umbral de esta ranura — el material inferior a %{quality} no cabe aquí.",
+        "unvalued": "afectado — el juego no indica valores",
+        "noStats": "Esta ranura no mueve ninguna estadística — basta con que el material esté.",
+        "noMaterials": "Los archivos del juego no indican materiales para esta receta.",
+        "setEverySlot": "Ajustar todas las ranuras",
+        "qualityAll": "todas las ranuras en %{quality}",
+        "qualityRange": "%{from}–%{to} entre las ranuras",
+        "anyOf": "Cualquiera %{count} de estas %{total}",
+        "scu": "%{amount} SCU",
+        "pieces": "%{count}×",
+        "whereItDrops": "Dónde se consigue",
+        "sourceSummary": "%{count} fuentes · %{orgs} organizaciones",
+        "unattributed": "Sin atribuir",
+        "minPoints": "Desde %{points} puntos",
+        "noKnownSource": "Sin fuente conocida",
+        "noSourceLead": "Ninguna misión ni escenario entrega esta receta.",
+        "noSourceBody": "Los archivos del juego no la incluyen en ningún grupo de recompensas, así que no hay nada que señalar.",
+        "empty": "No hay planos que coincidan.",
+        "craftableTypes": {
+          "Component": "Componente",
+          "Equipment": "Equipo",
+          "Commodity": "Mercancía"
+        },
+        "kinds": {
+          "contract": "Contrato",
+          "scenario": "Escenario"
+        },
+        "duration": {
+          "hours": "%{count} h",
+          "minutes": "%{count} min",
+          "seconds": "%{count} s"
+        }
       }
     }
   }

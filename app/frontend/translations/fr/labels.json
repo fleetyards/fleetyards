@@ -1691,6 +1691,14 @@
         },
         "notifications": {
           "search": "Rechercher"
+        },
+        "blueprints": {
+          "name": "Rechercher des plans",
+          "craftableType": "Produit",
+          "source": "Source",
+          "withSource": "Source connue",
+          "withoutSource": "Aucune source connue",
+          "material": "Utilise le matériau"
         }
       },
       "station": {
@@ -2650,6 +2658,68 @@
         },
         "requested": "Demande envoyée",
         "friend": "Amis"
+      },
+      "blueprint": {
+        "name": "Nom",
+        "craftTime": "Temps de fabrication",
+        "slots": "Emplacements",
+        "materials": "Matériaux",
+        "quality": "Qualité",
+        "missionSlots": {
+          "location": "lieu",
+          "objects": "objets",
+          "target": "cible",
+          "ship": "vaisseau",
+          "cargo": "cargaison",
+          "rank": "rang",
+          "danger": "danger",
+          "contract": "contrat",
+          "other": "variable"
+        },
+        "missionSlotsHint": "Les termes entre ‹chevrons› sont renseignés par le jeu lorsque le contrat est proposé.",
+        "atNeutral": "%{value} à Q500",
+        "whatYouGet": "Ce que vous obtenez",
+        "fromSlots": "%{count} emplacements",
+        "factorOnly": "facteur seul — aucune valeur au catalogue",
+        "heldIn": "dans",
+        "heldOn": "sur",
+        "fromHangar": "Hangar",
+        "makesA": "Plan de fabrication · produit",
+        "makesUnknown": "Plan de fabrication · produit un objet absent de tous les catalogues",
+        "retired": "Retiré",
+        "minQuality": "Min. %{quality}",
+        "belowGate": "Sous le seuil de cet emplacement — un matériau inférieur à %{quality} n'y entre pas.",
+        "unvalued": "concerné — le jeu n'indique aucune valeur",
+        "noStats": "Cet emplacement ne modifie aucune statistique — le matériau doit simplement être présent.",
+        "noMaterials": "Les fichiers du jeu n'indiquent aucun matériau pour ce plan.",
+        "setEverySlot": "Régler tous les emplacements",
+        "qualityAll": "tous les emplacements à %{quality}",
+        "qualityRange": "%{from}–%{to} selon les emplacements",
+        "anyOf": "%{count} au choix parmi ces %{total}",
+        "scu": "%{amount} SCU",
+        "pieces": "%{count}×",
+        "whereItDrops": "Où l'obtenir",
+        "sourceSummary": "%{count} sources · %{orgs} organisations",
+        "unattributed": "Non attribué",
+        "minPoints": "À partir de %{points} points",
+        "noKnownSource": "Aucune source connue",
+        "noSourceLead": "Aucune mission ni aucun scénario ne distribue ce plan.",
+        "noSourceBody": "Les fichiers du jeu ne le placent dans aucun lot de récompenses : il n'y a donc rien à indiquer.",
+        "empty": "Aucun plan ne correspond.",
+        "craftableTypes": {
+          "Component": "Composant",
+          "Equipment": "Équipement",
+          "Commodity": "Marchandise"
+        },
+        "kinds": {
+          "contract": "Contrat",
+          "scenario": "Scénario"
+        },
+        "duration": {
+          "hours": "%{count} h",
+          "minutes": "%{count} min",
+          "seconds": "%{count} s"
+        }
       }
     }
   }

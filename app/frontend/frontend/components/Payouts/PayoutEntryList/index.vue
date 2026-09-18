@@ -118,7 +118,7 @@ const onEdit = (entry: PayoutEntry) => {
 
 .payout-entries__empty {
   margin: 0;
-  color: var(--color-muted, #999);
+  color: var(--color-text-dim, #959595);
 }
 
 .payout-entries__row {
@@ -130,7 +130,7 @@ const onEdit = (entry: PayoutEntry) => {
 }
 
 .payout-entries__icon {
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
 }
 
 .payout-entries__detail {
@@ -148,7 +148,7 @@ const onEdit = (entry: PayoutEntry) => {
 
 .payout-entries__meta {
   font-size: 11px;
-  color: var(--color-muted, #999);
+  color: var(--color-text-dim, #959595);
 }
 
 .payout-entries__amount--income {

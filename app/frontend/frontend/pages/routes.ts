@@ -4,6 +4,7 @@ import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/settings/routes";
 import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
 import { routes as componentsRoutes } from "@/frontend/pages/components/routes";
+import { routes as blueprintsRoutes } from "@/frontend/pages/blueprints/routes";
 import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
@@ -88,6 +89,11 @@ export const routes: RouteRecordRaw[] = [
     path: "/catalogue/components/",
     component: () => import("@/frontend/pages/components.vue"),
     children: componentsRoutes,
+  },
+  {
+    path: "/catalogue/blueprints/",
+    component: () => import("@/frontend/pages/blueprints.vue"),
+    children: blueprintsRoutes,
   },
   // The paths the pages shipped under before the section existed. Both are
   // live -- the detail page has been reachable since #5015 and every hardpoint

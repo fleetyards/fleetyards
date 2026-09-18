@@ -42,6 +42,11 @@ module Shared
               anyOf: [::Shared::V1::Schemas::BlueprintCraftable, {type: :null}]
             },
 
+            # What the recipe consumes, named. On the list as well as the
+            # detail: "what does this eat" is a question the list itself has
+            # to answer.
+            materials: {type: :array, items: ::Shared::V1::Schemas::BlueprintCostCommodity},
+
             # Detail responses only -- a list omits both rather than paying
             # three association hits per row, which is why neither is required.
             costSlots: {type: :array, items: ::Shared::V1::Schemas::BlueprintCostSlot},

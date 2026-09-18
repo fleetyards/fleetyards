@@ -1691,6 +1691,14 @@
         },
         "notifications": {
           "search": "搜尋"
+        },
+        "blueprints": {
+          "name": "搜尋藍圖",
+          "craftableType": "產出",
+          "source": "來源",
+          "withSource": "有已知來源",
+          "withoutSource": "無已知來源",
+          "material": "使用材料"
         }
       },
       "station": {
@@ -2650,6 +2658,68 @@
         },
         "requested": "請求已發送",
         "friend": "已是好友"
+      },
+      "blueprint": {
+        "name": "名稱",
+        "craftTime": "製造時間",
+        "slots": "槽位",
+        "materials": "材料",
+        "quality": "品質",
+        "missionSlots": {
+          "location": "地點",
+          "objects": "目標物",
+          "target": "目標",
+          "ship": "飛船",
+          "cargo": "貨物",
+          "rank": "等級",
+          "danger": "危險度",
+          "contract": "合約",
+          "other": "可變"
+        },
+        "missionSlotsHint": "‹尖括號› 內的內容由遊戲在提供合約時填入。",
+        "atNeutral": "Q500 時為 %{value}",
+        "whatYouGet": "成品屬性",
+        "fromSlots": "%{count} 個槽位",
+        "factorOnly": "僅係數 — 目錄中無該屬性數值",
+        "heldIn": "存於",
+        "heldOn": "存於",
+        "fromHangar": "機庫",
+        "makesA": "製造藍圖 · 產出",
+        "makesUnknown": "製造藍圖 · 產出物不在任何目錄中",
+        "retired": "已移除",
+        "minQuality": "最低 %{quality}",
+        "belowGate": "低於該槽位門檻 — 品質低於 %{quality} 的材料無法放入。",
+        "unvalued": "受影響 — 遊戲未給出數值",
+        "noStats": "該槽位不影響任何屬性 — 材料只需存在即可。",
+        "noMaterials": "遊戲檔案未列出該藍圖的材料。",
+        "setEverySlot": "設定所有槽位",
+        "qualityAll": "全部槽位為 %{quality}",
+        "qualityRange": "各槽位 %{from}–%{to}",
+        "anyOf": "在這 %{total} 項中任選 %{count} 項",
+        "scu": "%{amount} SCU",
+        "pieces": "%{count}×",
+        "whereItDrops": "取得途徑",
+        "sourceSummary": "%{count} 個來源 · %{orgs} 個組織",
+        "unattributed": "未標明組織",
+        "minPoints": "%{points} 點起",
+        "noKnownSource": "無已知來源",
+        "noSourceLead": "沒有任務或場景會發放此藍圖。",
+        "noSourceBody": "遊戲檔案未將其列入任何獎勵池，因此無從指引。",
+        "empty": "沒有符合的藍圖。",
+        "craftableTypes": {
+          "Component": "部件",
+          "Equipment": "裝備",
+          "Commodity": "商品"
+        },
+        "kinds": {
+          "contract": "合約",
+          "scenario": "場景"
+        },
+        "duration": {
+          "hours": "%{count} 小時",
+          "minutes": "%{count} 分",
+          "seconds": "%{count} 秒"
+        }
       }
     }
   }

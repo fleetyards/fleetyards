@@ -464,12 +464,16 @@
         "contractCovers": "Visuels de contrat"
       },
       "component": {
+        "craftedFrom": "Fabriqué à partir de",
         "identity": "Détails",
         "metrics": "Caractéristiques",
         "requiredTags": "S'installe sur un port offrant"
       },
       "components": {
         "index": "Composants"
+      },
+      "blueprints": {
+        "index": "Plans"
       }
     }
   }

@@ -1,0 +1,137 @@
+.blueprint-sources {
+  margin-bottom: 20px;
+
+  &__summary {
+    font-size: 11.5px;
+    color: var(--color-gray, #52575c);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__none {
+    background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: var(--radius-control, 8px);
+    padding: 14px 15px;
+  }
+
+  &__none-lead {
+    margin: 0 0 5px;
+    font-size: 13.5px;
+    color: var(--color-text, #c8c8c8);
+  }
+
+  &__none-body {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--color-muted, #7a8288);
+  }
+
+  &__groups {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__group {
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: var(--radius-control, 8px);
+    overflow: hidden;
+  }
+
+  // A button, not a div: the group opens and closes, so it has to be
+  // reachable and operable from the keyboard.
+  &__group-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+  }
+
+  &__chevron {
+    font-size: 11px;
+    flex: none;
+    color: var(--color-muted, #7a8288);
+    transition: transform 0.12s ease;
+
+    &--open {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__org {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  &__count {
+    flex: none;
+    font-size: 11px;
+    color: var(--color-muted, #7a8288);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__missions {
+    padding: 4px 12px 10px;
+  }
+
+  &__mission {
+    padding: 8px 0 7px;
+    border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.1));
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__mission-name {
+    font-size: 13px;
+    line-height: 1.35;
+    color: #dedede;
+  }
+
+  // What the game fills in when it offers the contract. Set apart from the
+  // fixed words so the title reads as a shape rather than as a sentence with
+  // a stray noun in it.
+  &__slot {
+    color: var(--color-muted, #7a8288);
+    font-style: italic;
+
+    &::before {
+      content: "\2039";
+      margin-right: 1px;
+    }
+
+    &::after {
+      content: "\203a";
+      margin-left: 1px;
+    }
+  }
+
+  // Orbitron at 9px with 0.14em of tracking, uppercased: a standing band is
+  // prose ("Jr. Security Contractor"), and set that way it could not be read
+  // at all. The values already carry their own capitalisation.
+  &__mission-meta {
+    font-size: 11.5px;
+    color: var(--color-muted, #7a8288);
+    margin-top: 2px;
+  }
+
+  &__legend {
+    margin: 10px 0 0;
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--color-gray, #52575c);
+  }
+}

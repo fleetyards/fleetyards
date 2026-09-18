@@ -122,6 +122,7 @@
       },
       "reload": "Aggiornamento disponibile!",
       "visualTests": {
+        "blueprints": "Progetti",
         "index": "Test Visivi",
         "panels": "Pannelli",
         "buttons": "Pulsanti",
@@ -301,6 +302,11 @@
       "scDataSource": "Fonte dati",
       "components": {
         "index": "Componenti"
+      },
+      "catalogue": {
+        "index": "Catalogo",
+        "components": "Componenti",
+        "blueprints": "Progetti"
       }
     }
   }

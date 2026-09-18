@@ -1691,6 +1691,14 @@
         },
         "notifications": {
           "search": "Search"
+        },
+        "blueprints": {
+          "name": "Search blueprints",
+          "craftableType": "Makes",
+          "source": "Source",
+          "withSource": "Has a known source",
+          "withoutSource": "No known source",
+          "material": "Uses material"
         }
       },
       "station": {
@@ -2664,6 +2672,68 @@
         },
         "requested": "Request sent",
         "friend": "Friends"
+      },
+      "blueprint": {
+        "name": "Name",
+        "craftTime": "Craft time",
+        "slots": "Slots",
+        "materials": "Materials",
+        "quality": "Quality",
+        "missionSlots": {
+          "location": "location",
+          "objects": "objects",
+          "target": "target",
+          "ship": "ship",
+          "cargo": "cargo",
+          "rank": "rank",
+          "danger": "danger",
+          "contract": "contract",
+          "other": "varies"
+        },
+        "missionSlotsHint": "Words in ‹angle brackets› are filled in by the game when the contract is offered.",
+        "atNeutral": "%{value} at Q500",
+        "whatYouGet": "What you get",
+        "fromSlots": "%{count} slots",
+        "factorOnly": "factor only — no catalogue figure for this stat",
+        "heldIn": "in",
+        "heldOn": "on",
+        "fromHangar": "Hangar",
+        "makesA": "Crafting recipe · makes a",
+        "makesUnknown": "Crafting recipe · makes something no catalogue here carries",
+        "retired": "Retired",
+        "minQuality": "Min %{quality}",
+        "belowGate": "Below this slot's gate — material under %{quality} cannot go in here.",
+        "unvalued": "affected — the game states no figures",
+        "noStats": "This slot moves no stats — the material only has to be there.",
+        "noMaterials": "The game files list no materials for this recipe.",
+        "setEverySlot": "Set every slot",
+        "qualityAll": "all slots at %{quality}",
+        "qualityRange": "%{from}–%{to} across the slots",
+        "anyOf": "Any %{count} of these %{total}",
+        "scu": "%{amount} SCU",
+        "pieces": "%{count}×",
+        "whereItDrops": "Where it drops",
+        "sourceSummary": "%{count} sources · %{orgs} orgs",
+        "unattributed": "Unattributed",
+        "minPoints": "From %{points} points",
+        "noKnownSource": "No known source",
+        "noSourceLead": "No mission or scenario hands this recipe out.",
+        "noSourceBody": "The game files place it in no reward pool, so there is nothing to point you at.",
+        "empty": "No blueprints match.",
+        "craftableTypes": {
+          "Component": "Component",
+          "Equipment": "Equipment",
+          "Commodity": "Commodity"
+        },
+        "kinds": {
+          "contract": "Contract",
+          "scenario": "Scenario"
+        },
+        "duration": {
+          "hours": "%{count}h",
+          "minutes": "%{count}m",
+          "seconds": "%{count}s"
+        }
       }
     }
   }

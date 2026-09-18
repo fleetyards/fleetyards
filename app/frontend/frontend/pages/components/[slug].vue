@@ -15,7 +15,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useComponentStats } from "@/frontend/composables/useComponentStats";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
-import { useComponent as useComponentQuery } from "@/services/fyApi";
+import {
+  useComponent as useComponentQuery,
+  useBlueprints as useBlueprintsQuery,
+  BlueprintCraftableTypeEnum,
+} from "@/services/fyApi";
 
 const { t, tExists } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -26,6 +30,23 @@ const slug = computed(() => route.params.slug as string);
 const { data: component, ...asyncStatus } = useComponentQuery(slug);
 
 const stats = useComponentStats(component);
+
+// What this can be crafted from. Asked only once the component has arrived,
+// since the recipe is looked up by its id -- 476 of the catalogue's components
+// have one, so most pages get an empty answer and no card.
+const { data: blueprints } = useBlueprintsQuery(
+  computed(() => ({
+    q: {
+      craftableTypeEq: BlueprintCraftableTypeEnum.COMPONENT,
+      craftableIdEq: component.value?.id,
+    },
+  })),
+  {
+    query: { enabled: computed(() => Boolean(component.value?.id)) },
+  },
+);
+
+const recipes = computed(() => blueprints.value?.items || []);
 
 // The renderer already marks the figures worth leading with. Those become hero
 // tiles and the rest fall into the split list below, which is the metrics
@@ -206,23 +227,53 @@ watch(
             </p>
           </MetricsCard>
 
-          <MetricsCard
-            v-if="details.length"
-            :title="t('headlines.component.identity')"
-            variant="slim"
-          >
-            <div class="metrics-card__rows">
-              <div
-                v-for="entry in details"
-                :key="entry.label"
-                class="metrics-card__row"
-                :class="{ 'metrics-card__row--stack': entry.stack }"
-              >
-                <span class="metrics-card__row__label">{{ entry.label }}</span>
-                <span class="metrics-card__row__value">{{ entry.value }}</span>
+          <div class="component-page__rail">
+            <MetricsCard
+              v-if="details.length"
+              :title="t('headlines.component.identity')"
+              variant="slim"
+            >
+              <div class="metrics-card__rows">
+                <div
+                  v-for="entry in details"
+                  :key="entry.label"
+                  class="metrics-card__row"
+                  :class="{ 'metrics-card__row--stack': entry.stack }"
+                >
+                  <span class="metrics-card__row__label">{{
+                    entry.label
+                  }}</span>
+                  <span class="metrics-card__row__value">{{
+                    entry.value
+                  }}</span>
+                </div>
               </div>
-            </div>
-          </MetricsCard>
+            </MetricsCard>
+
+            <MetricsCard
+              v-if="recipes.length"
+              :title="t('headlines.component.craftedFrom')"
+              variant="slim"
+            >
+              <div class="metrics-card__rows">
+                <router-link
+                  v-for="recipe in recipes"
+                  :key="recipe.id"
+                  :to="{ name: 'blueprint', params: { slug: recipe.slug } }"
+                  class="metrics-card__row metrics-card__row--stack component-page__recipe"
+                >
+                  <span class="metrics-card__row__label">{{
+                    recipe.name
+                  }}</span>
+                  <span class="metrics-card__row__value">
+                    {{
+                      (recipe.materials || []).map((m) => m.name).join(" · ")
+                    }}
+                  </span>
+                </router-link>
+              </div>
+            </MetricsCard>
+          </div>
         </div>
       </div>
     </template>

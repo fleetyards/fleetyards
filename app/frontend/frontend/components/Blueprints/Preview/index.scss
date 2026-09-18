@@ -1,0 +1,78 @@
+.blueprint-preview {
+  margin-bottom: 20px;
+
+  &__craftable {
+    font-size: 12.5px;
+    color: var(--color-muted, #7a8288);
+    text-align: right;
+
+    &:hover {
+      color: var(--color-primary, #428bca);
+    }
+  }
+
+  &__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__stat {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 2px 14px;
+    padding: 9px 0 8px;
+    border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.1));
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__stat-name {
+    font-size: 13px;
+    color: var(--color-text, #c8c8c8);
+  }
+
+  &__stat-slots {
+    margin-left: 6px;
+    font-size: 11px;
+    color: var(--color-gray, #52575c);
+  }
+
+  &__stat-value {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Colour states what the change is worth, not which way the number moved:
+  // a recoil stat falling 18% is an improvement and reads as one.
+  &__delta {
+    grid-column: 2;
+    text-align: right;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted, #7a8288);
+
+    &--better {
+      color: var(--color-success, #5cb85c);
+    }
+
+    &--worse {
+      color: var(--color-danger, #dc3545);
+    }
+  }
+
+  &__stat-base {
+    grid-column: 1 / -1;
+    font-size: 11.5px;
+    color: var(--color-gray, #52575c);
+    font-variant-numeric: tabular-nums;
+  }
+}

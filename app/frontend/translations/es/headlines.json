@@ -464,12 +464,16 @@
         "contractCovers": "Portadas de contrato"
       },
       "component": {
+        "craftedFrom": "Se fabrica con",
         "identity": "Detalles",
         "metrics": "Métricas",
         "requiredTags": "Encaja en un puerto con"
       },
       "components": {
         "index": "Componentes"
+      },
+      "blueprints": {
+        "index": "Planos"
       }
     }
   }

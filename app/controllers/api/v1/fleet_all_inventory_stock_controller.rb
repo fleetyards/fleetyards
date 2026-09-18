@@ -29,6 +29,19 @@ module Api
             "fleet_inventory_positions.slug",
             "MIN(fleet_inventory_items.quality) AS quality_min",
             "MAX(fleet_inventory_items.quality) AS quality_max",
+            # A position groups entries by name, category and unit, so its
+            # rows need not agree on which catalogue record they point at --
+            # and the link is optional, so some may point at none. Answered
+            # only where every entry names the same one: `COUNT(DISTINCT)`
+            # skips nulls, so a position holding one linked entry and one
+            # free-text entry would otherwise claim the link -- and the whole
+            # position's quantity with it, which is not all that item.
+            "CASE WHEN COUNT(*) = COUNT(fleet_inventory_items.item_id) " \
+              "AND COUNT(DISTINCT fleet_inventory_items.item_id) = 1 " \
+              "THEN MIN(fleet_inventory_items.item_type) END AS item_type",
+            "CASE WHEN COUNT(*) = COUNT(fleet_inventory_items.item_id) " \
+              "AND COUNT(DISTINCT fleet_inventory_items.item_id) = 1 " \
+              "THEN MIN(fleet_inventory_items.item_id::text) END AS item_id",
             "fleet_inventories.name AS inventory_name",
             "fleet_inventories.slug AS inventory_slug",
             "SUM(CASE WHEN fleet_inventory_items.entry_type = 0 THEN fleet_inventory_items.quantity ELSE -fleet_inventory_items.quantity END) AS net_quantity"

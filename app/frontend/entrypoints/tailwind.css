@@ -64,6 +64,19 @@
    */
   --color-edge-strong: rgb(122 130 136 / 0.7);
 
+  /*
+   * Quiet text: a label, a table header, the meta line under a list row's
+   * title. It is the neutral grey the table header has always been
+   * (`darken($text-color, 20%)`), promoted to a token so the lists can read it
+   * too - a list's meta line used to sit a step lower, at --color-muted, so a
+   * column heading and the row content under it were two different greys.
+   *
+   * Distinct from --color-muted, which stays the *border*-family grey and
+   * carries the quietest text there is (a sort icon, a hint). Text picks
+   * between the two; a border never uses this one.
+   */
+  --color-text-dim: #959595;
+
   --color-edge: rgb(122 130 136 / 0.5);
   --color-edge-soft: rgb(122 130 136 / 0.28);
   --color-edge-faint: rgb(122 130 136 / 0.16);

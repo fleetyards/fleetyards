@@ -9877,6 +9877,10 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/BlueprintCraftable"
           - type: 'null'
+        materials:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostCommodity"
         costSlots:
           type: array
           items:
@@ -9948,6 +9952,14 @@ components:
           - number
           - 'null'
         modifierAtEnd:
+          type:
+          - number
+          - 'null'
+        unit:
+          type:
+          - string
+          - 'null'
+        baseValue:
           type:
           - number
           - 'null'

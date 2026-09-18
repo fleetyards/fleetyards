@@ -166,7 +166,7 @@ const crumbs = computed<Crumb[]>(() => [
 
 <style lang="scss" scoped>
 .fleet-event-payouts__empty {
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
   margin-bottom: 16px;
 }
 </style>

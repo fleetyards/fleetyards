@@ -1,0 +1,538 @@
+.blueprint-slot {
+  position: relative;
+  background: #1a1d21;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 9px;
+  overflow: hidden;
+
+  // The primary rail that marks a mount in the hardpoints list. A slot is the
+  // same kind of thing -- one fitting position among several.
+  &::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 3px;
+    background: linear-gradient($primary, rgba($primary, 0.15));
+    border-radius: 2px;
+    opacity: 0.85;
+    z-index: 1;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 14px 8px 17px;
+    border-bottom: 1px solid rgba($gray-darker, 0.7);
+  }
+
+  &__name {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray-light;
+  }
+
+  &__gate {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-warning, #fa6800);
+    border: 1px solid
+      color-mix(in srgb, var(--color-warning, #fa6800) 45%, transparent);
+    border-radius: 3px;
+    padding: 2px 6px;
+  }
+
+  &__material {
+    margin-left: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    white-space: nowrap;
+  }
+
+  &__amount {
+    flex: none;
+    padding: 3px 9px;
+    border: 1px solid rgba($gray-light, 0.5);
+    border-radius: 7px;
+    background: rgba($gray-light, 0.08);
+    color: color.adjust($text-color, $lightness: 15%);
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // The game's own key, for a material the commodity catalogue has no row
+  // for. Quieter than a name, because it is not one.
+  &__unmapped {
+    font-family: "Open Sans", tahoma, sans-serif;
+    font-size: 12px;
+    color: var(--color-muted, #7a8288);
+  }
+
+  // The control and what it moves, side by side: the slider was reading as a
+  // setting for the whole card rather than as the input to the stats beside
+  // it. The slider takes the larger share -- it is dragged to a number, and
+  // a short track makes every step coarse.
+  &__body {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 4px 20px;
+    align-items: start;
+    padding: 4px 14px 6px 17px;
+  }
+
+  &__control {
+    padding: 6px 0 8px;
+  }
+
+  &__quality {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+
+  &__quality-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+    flex: none;
+  }
+
+  // The track carries the grades actually held, so where a material sits on
+  // the ramp is answered on the ramp rather than in a column of numbers.
+  // Captions are the hit targets; the stems sit over the range input and are
+  // inert, or they would swallow a drag.
+  &__track {
+    position: relative;
+    flex: 1 1 auto;
+    height: 30px;
+  }
+
+  &__mark {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    padding: 0 3px;
+    background: none;
+    border: 0;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted, #7a8288);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 120ms ease;
+
+    &:hover {
+      color: #fff;
+    }
+
+    &--active {
+      color: var(--color-primary, #428bca);
+    }
+  }
+
+  &__stem {
+    position: absolute;
+    top: 14px;
+    width: 2px;
+    height: 16px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: var(--color-edge, rgb(122 130 136 / 0.5));
+    pointer-events: none;
+
+    &--active {
+      background: var(--color-primary, #428bca);
+    }
+  }
+
+  input[type="range"] {
+    appearance: none;
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    outline: none;
+
+    // The native outline is dropped for the track's sake, so the thumb has to
+    // carry the focus itself or the control cannot be found from the keyboard.
+    &:focus-visible::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--color-primary, #428bca) 45%, transparent);
+    }
+
+    &:focus-visible::-moz-range-thumb {
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--color-primary, #428bca) 45%, transparent);
+    }
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-primary, #428bca);
+      border: 2px solid var(--color-background, #000);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-primary, #428bca);
+      border: 2px solid var(--color-background, #000);
+      cursor: pointer;
+    }
+  }
+
+  input[type="number"] {
+    flex: none;
+    width: 66px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+    background: var(--color-field, rgb(18 20 23 / 0.96));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-control-bare, 6px);
+    padding: 4px 7px;
+    outline: none;
+    appearance: textfield;
+
+    &:focus {
+      border-color: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 70%,
+        transparent
+      );
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+  }
+
+  &__number--below {
+    color: var(--color-warning, #fa6800);
+  }
+
+  &__below {
+    margin: 4px 0 0;
+    font-size: 11.5px;
+    color: var(--color-warning, #fa6800);
+  }
+
+  // Given its own panel rather than a line of quiet text under the slider.
+  // As plain rows it read as a caption and went unnoticed, which for the one
+  // thing on the page that is about the reader's own hangar is the wrong way
+  // round.
+  // Set apart by a rule and the accent on its label rather than by a panel:
+  // boxed on the card's own dark ground it read as another slab of black,
+  // which is what the card already is.
+  &__held {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-primary, #428bca) 35%, transparent);
+  }
+
+  // One row per holding: the grade first, because it is what the marks above
+  // are keyed to and what a click applies.
+  &__held-row {
+    display: grid;
+    grid-template-columns: auto auto auto 1fr auto;
+    align-items: center;
+    gap: 9px;
+    padding: 5px 8px;
+    margin: 0 -8px;
+    border-radius: var(--radius-control-bare, 6px);
+    font-size: 12.5px;
+    transition: background-color 120ms ease;
+
+    &:hover {
+      background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+
+    &--pick {
+      cursor: pointer;
+    }
+
+    // The holding the slider is sitting on, marked to match its stem above.
+    &--picked {
+      background: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 14%,
+        transparent
+      );
+
+      &:hover {
+        background: color-mix(
+          in srgb,
+          var(--color-primary, #428bca) 20%,
+          transparent
+        );
+      }
+    }
+  }
+
+  &__held-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-edge, rgb(122 130 136 / 0.5));
+  }
+
+  &__held-row--picked &__held-dot {
+    background: var(--color-primary, #428bca);
+  }
+
+  &__held-grades {
+    display: flex;
+    gap: 4px;
+  }
+
+  &__held-grade {
+    padding: 2px 8px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text, #c8c8c8);
+    background: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-control-bare, 6px);
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+    transition:
+      border-color 120ms ease,
+      color 120ms ease,
+      background-color 120ms ease;
+
+    &:hover {
+      color: #fff;
+      border-color: var(--color-primary, #428bca);
+    }
+
+    &--active {
+      color: #fff;
+      background: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 28%,
+        transparent
+      );
+      border-color: var(--color-primary, #428bca);
+    }
+  }
+
+  &__held-amount {
+    color: var(--color-muted, #7a8288);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__held-where {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-gray, #52575c);
+  }
+
+  &__held-preposition {
+    margin-right: 3px;
+  }
+
+  &__held-place {
+    color: var(--color-muted, #7a8288);
+  }
+
+  a.blueprint-slot__held-place:hover {
+    color: var(--color-primary, #428bca);
+    text-decoration: underline;
+  }
+
+  // Which store it came from. Absent on the reader's own, so a fleet's name
+  // is the thing that stands out.
+  &__held-tag {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-gray, #52575c);
+    white-space: nowrap;
+  }
+
+  &__stats {
+    min-width: 0;
+    padding: 0 0 6px;
+  }
+
+  // A column rather than one long row. Squeezed onto a single line the figure
+  // and its range collided, and the range wrapped mid-phrase.
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 12px 0 11px;
+    border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.1));
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__stat-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  &__stat-name {
+    min-width: 0;
+    font-size: 13.5px;
+    color: var(--color-text, #c8c8c8);
+  }
+
+  // The answer. Given the weight the multiplier used to carry, because the
+  // stat as it comes out is what the slider is being moved to find.
+  &__result {
+    flex: none;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+
+    &--muted {
+      color: var(--color-gray, #52575c);
+    }
+  }
+
+  &__plot {
+    position: relative;
+    height: 46px;
+  }
+
+  // Stretched to the row. At 72x22 the shape of the ramp -- the whole point
+  // of drawing it -- was not readable.
+  &__spark {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  &__axis {
+    stroke: var(--color-edge-faint, rgb(122 130 136 / 0.22));
+    stroke-width: 1;
+  }
+
+  &__neutral {
+    position: absolute;
+    top: 5%;
+    bottom: 5%;
+    width: 0;
+    border-left: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  }
+
+  &__line {
+    fill: none;
+    stroke: var(--color-muted, #7a8288);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  &__marker {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--color-primary, #428bca);
+
+    &--muted {
+      background: var(--color-gray, #52575c);
+    }
+  }
+
+  &__stat-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 14px;
+    font-size: 11.5px;
+    color: var(--color-gray, #52575c);
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Colour states what the change is worth, not which way the number moved:
+  // a recoil stat falling 16% is an improvement and reads as one.
+  &__delta {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted, #7a8288);
+
+    &--better {
+      color: var(--color-success, #5cb85c);
+    }
+
+    &--worse {
+      color: var(--color-danger, #dc3545);
+    }
+  }
+
+  &__stat-base {
+    color: var(--color-muted, #7a8288);
+  }
+
+  &__stat-factor {
+    margin-left: auto;
+    color: var(--color-muted, #7a8288);
+  }
+
+  &__stat-unvalued {
+    flex: none;
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--color-gray, #52575c);
+  }
+
+  // Narrow enough and the slider and the plots each get too little; stacked
+  // they both keep their width.
+  @media (max-width: 991px) {
+    &__body {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  &__no-stats {
+    margin: 0;
+    padding: 10px 0 13px;
+    font-size: 12.5px;
+    color: var(--color-gray, #52575c);
+  }
+}

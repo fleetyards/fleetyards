@@ -464,12 +464,16 @@
         "contractCovers": "合約封面圖"
       },
       "component": {
+        "craftedFrom": "製造配方",
         "identity": "詳情",
         "metrics": "數據",
         "requiredTags": "可裝入具備以下標籤的接口"
       },
       "components": {
         "index": "部件"
+      },
+      "blueprints": {
+        "index": "藍圖"
       }
     }
   }

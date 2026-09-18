@@ -7,12 +7,24 @@
   padding: 10px 16px;
   background-color: var(--color-control, rgb(39 43 48 / 0.9));
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: var(--radius-surface-slim, 12px);
+  // The control radius, not the surface one: a row is a control-scale box, and
+  // at --radius-surface-slim's 12px the corner was rounder than anything else
+  // in a list of them. Lands beside the hardpoint row's own 9px.
+  border-radius: var(--radius-control, 8px);
   color: var(--color-text, #c8c8c8);
-  transition: border-color 150ms ease;
+  transition: background-color 150ms ease;
 
-  &:hover {
-    border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  // The surface answers and the frame stays put: `--color-edge-soft` to
+  // `--color-edge` alone was a step too small to register, and recolouring a
+  // frame reads as the row changing shape rather than as it answering the
+  // cursor -- the call Btn and Panel already made. `--color-control-hover` is
+  // the fill those two step to.
+  //
+  // `focus-within` as well as hover, so a row reached by tab is lit the same way
+  // a pointed-at one is.
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
   }
 
   &__main {
@@ -23,31 +35,72 @@
     gap: 2px;
   }
 
+  // A table's body cell, which is what this row is a list of -- the weight is
+  // what makes it the row's title, not a brighter grey. It was #fff, which sits
+  // above anything a table ever prints; the lift is kept for the hover.
   &__name {
     font-weight: 600;
-    color: #fff;
+    color: var(--color-text, #c8c8c8);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    // Global `a` transitions `all` over half a second, which on a list that
+    // repaints under a filter reads as the names fading in.
+    transition: color 150ms ease;
+  }
 
-    &:hover {
-      color: var(--color-primary, #428bca);
-    }
+  // Only the link answers the cursor. A component the game never named has no
+  // slug and so no link, and a plain span that lights up promises a page that is
+  // not there.
+  a#{&}__name:hover,
+  a#{&}__name:focus-visible {
+    color: var(--color-lifted, #eee);
   }
 
   &__sub {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    align-items: baseline;
+    min-width: 0;
+    gap: 0 8px;
     font-size: 12px;
-    color: var(--color-muted, #7a8288);
+    color: var(--color-text-dim, #959595);
 
     a {
-      color: var(--color-muted, #7a8288);
+      color: var(--color-text-dim, #959595);
+      transition: color 150ms ease;
 
-      &:hover {
-        color: var(--color-primary, #428bca);
+      // Brighter, not bluer. Every link in the app steps from $text-color to
+      // white on hover (stylesheets/shared/links.scss); --color-primary here
+      // made the one line of the row that is not a heading the loudest thing in
+      // it, and read as a different kind of link from the name above it.
+      &:hover,
+      &:focus-visible {
+        color: var(--color-text, #c8c8c8);
       }
     }
+
+    // The " · " the meta lines elsewhere join their parts with. Drawn on the
+    // item rather than written into the markup, and given its own colour so it
+    // does not brighten along with the link it hangs off.
+    //
+    // Trailing rather than leading, which is what decides where it lands when
+    // the line wraps: on a phone the third facet drops to a second line, and a
+    // leading separator would start that line with a bare punctuation mark.
+    > :not(:last-child)::after {
+      content: "·";
+      margin-inline-start: 8px;
+      color: var(--color-text-dim, #959595);
+      pointer-events: none;
+    }
+  }
+
+  // Inside the row's own padding, the way Chip and Btn keep their ring inside
+  // the frame rather than straddling it.
+  a:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   // The figures drop out entirely on a narrow screen rather than squeezing the
@@ -71,24 +124,27 @@
     display: inline-flex;
     align-items: baseline;
     gap: 6px;
-    padding: 3px 9px;
+    padding: 4px 10px;
     border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-    border-radius: 4px;
+    border-radius: var(--radius-control-bare, 6px);
     white-space: nowrap;
   }
 
+  // The micro-label the metrics cards, their tiles and the hardpoint rows all
+  // share: Orbitron 10px at .16em. This was 9px at .14em, a scale nothing else
+  // in the app uses.
   &__badge-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
-    letter-spacing: 0.14em;
+    font-size: 10px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-muted, #7a8288);
+    color: var(--color-text-dim, #959595);
   }
 
   &__badge-value {
-    font-size: 13px;
-    font-weight: 700;
-    color: #dedede;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
     font-variant-numeric: tabular-nums;
   }
 }

@@ -122,6 +122,7 @@
       },
       "reload": "Update available!",
       "visualTests": {
+        "blueprints": "Blueprints",
         "index": "Visual Tests",
         "panels": "Panels",
         "buttons": "Buttons",
@@ -301,6 +302,11 @@
       "scDataSource": "Data source",
       "components": {
         "index": "Components"
+      },
+      "catalogue": {
+        "index": "Catalogue",
+        "components": "Components",
+        "blueprints": "Blueprints"
       }
     }
   }

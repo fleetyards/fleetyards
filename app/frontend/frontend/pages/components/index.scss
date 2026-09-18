@@ -127,3 +127,24 @@
     }
   }
 }
+
+.component-page {
+  // The narrow column's own stack. Without it the cards are grid children and
+  // the third wraps back under the wide one instead of following the second.
+  &__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+  }
+
+  // A row that is also a link, so it answers to the pointer the way the
+  // material chips on a blueprint row do.
+  &__recipe {
+    transition: color 150ms ease;
+
+    &:hover .metrics-card__row__label {
+      color: var(--color-primary, #428bca);
+    }
+  }
+}

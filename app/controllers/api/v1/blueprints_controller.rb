@@ -32,8 +32,11 @@ module Api
         # ransack ever saw it.
         # The three build-reading filters are taken off the query: ransack
         # would either skip them or apply them against the wrong build.
+        # The build and its cost tree come along: a row names the materials it
+        # consumes, and without this the list pays three queries per row for
+        # them.
         @q = Blueprint.with_facts(current_version)
-          .includes(:craftable)
+          .includes(:craftable, build: {cost_slots: {options: :commodity}})
           .ransack(blueprints_query_params.except(:from_org, :consuming_commodity, :with_known_source))
 
         @blueprints = source_filters(@q.result)
@@ -74,8 +77,14 @@ module Api
         blueprints_query_params[:from_org]
       end
 
+      # Both spellings, combined: the scalar is what the filter shipped with and
+      # the list is what a multi-select sends, and asking both ways asks for
+      # the union rather than for whichever the controller looked at first.
       private def commodity_filter
-        blueprints_query_params[:consuming_commodity]
+        [
+          blueprints_query_params[:consuming_commodity],
+          *blueprints_query_params[:consuming_commodity_in]
+        ].compact.uniq
       end
 
       private def known_source_filter
@@ -93,9 +102,11 @@ module Api
           # The three the controller applies itself. Permitted like any other:
           # they are read from here rather than off `params` directly, so an
           # unpermitted one would silently stop filtering.
-          :from_org, :consuming_commodity, :with_known_source,
+          :from_org, :with_known_source,
           :craft_time_lteq, :craft_time_gteq,
-          sorts: [], id_in: [], name_in: [], craftable_type_in: []
+          :consuming_commodity,
+          sorts: [], id_in: [], name_in: [], craftable_type_in: [],
+          consuming_commodity_in: []
         ]).fetch(:q, {})
       end
     end
