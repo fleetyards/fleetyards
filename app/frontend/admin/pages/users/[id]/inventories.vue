@@ -44,11 +44,11 @@ const { data: inventories, ...asyncStatus } = useUserInventoriesQuery(
 );
 
 const columns: BaseTableCol<Inventory>[] = [
-  { name: "name", label: t("labels.fleet.inventories.name") },
+  { name: "name", label: t("labels.fleet.inventories.name"), sortable: true },
   { name: "location", label: t("labels.fleet.inventories.location") },
   { name: "source", label: t("labels.inventories.source") },
   { name: "itemsCount", label: t("labels.fleet.inventories.itemsCount") },
-  { name: "createdAt", label: t("labels.createdAt") },
+  { name: "createdAt", label: t("labels.createdAt"), sortable: true },
 ];
 </script>
 

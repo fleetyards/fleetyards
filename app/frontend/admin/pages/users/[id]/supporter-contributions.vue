@@ -58,10 +58,13 @@ const columns: BaseTableCol<SupporterContribution>[] = [
   {
     name: "name",
     label: t("labels.supporterContribution.name"),
+    sortable: true,
   },
   {
     name: "amount",
     label: t("labels.supporterContribution.amount"),
+    attributeKey: "amountCents",
+    sortable: true,
   },
   {
     name: "source",
@@ -75,11 +78,13 @@ const columns: BaseTableCol<SupporterContribution>[] = [
   {
     name: "startedAt",
     label: t("labels.supporterContribution.startedAt"),
+    sortable: true,
   },
   {
     name: "endedAt",
     label: t("labels.supporterContribution.endedAt"),
     mobile: false,
+    sortable: true,
   },
   {
     name: "recurring",
