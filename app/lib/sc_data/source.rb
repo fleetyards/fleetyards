@@ -138,8 +138,27 @@ module ScData
       BUILDS.any? { |klass| klass.where(environment:, version:).exists? }
     end
 
-    # This build if its rows are here, else the newest build this environment
-    # does have.
+    # Rows are here *and* the load that wrote them finished.
+    #
+    # A load commits its catalogues one at a time and does not roll them back,
+    # so rows on their own only say a load has started -- a different question,
+    # and the wrong one to answer with. Taking rows as proof would hand the
+    # catalogue over to a half-written build the moment its first row landed,
+    # turning a complete previous patch into a visibly shrinking current one.
+    #
+    # Retention is why the rows are still asked about: `BUILDS_RETAINED` prunes
+    # old builds while their ledger entry stays, so a finished import is no
+    # promise that anything is left to read.
+    #
+    # The ledger is asked first because it is the cheaper of the two by a factor
+    # of five -- one index on `[aasm_state, type]` against a scan of six build
+    # tables -- and in the window this all exists for it is the one that fails.
+    def complete?
+      ::Imports::ScData::AllImport.finished.exists?(version:) && loaded?
+    end
+
+    # This build once its load has finished, else the newest build of this
+    # environment that has one.
     #
     # The config names a build as soon as it is parsed and pushed, while the
     # rows arrive when the load runs -- `ScData::CheckJob` enqueues that at
@@ -150,10 +169,19 @@ module ScData
     # broken.
     #
     # Its own environment only: a live bump must never be served ptu rows.
+    #
+    # The last resort is the newest build with rows even though no load is
+    # recorded as having finished for it. That is not the import window -- it is
+    # a database whose ledger has been truncated, where insisting on a marker
+    # that no longer exists would empty every catalogue on the site. Serving the
+    # rows that are there is what this did before the ledger was consulted at
+    # all, so the floor is the old behaviour rather than nothing.
     def served
-      return self if loaded?
+      return self if complete?
 
-      self.class.recorded.find { |source| source.environment == environment } || self
+      candidates = self.class.recorded.select { |source| source.environment == environment }
+
+      candidates.find(&:complete?) || candidates.first || self
     end
 
     def default?

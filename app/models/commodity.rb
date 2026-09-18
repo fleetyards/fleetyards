@@ -117,12 +117,6 @@ class Commodity < ApplicationRecord
     SQL
   end
 
-  scope :with_facts, ->(current_only = true, source = ::ScData::Source.current) {
-    joins(
-      ActiveModel::Type::Boolean.new.cast(current_only) ? current_facts_join(source) : all_facts_join(source)
-    )
-  }
-
   # One fact, off whichever build the join supplied. Referencing the alias
   # without `with_facts` raises rather than returning the wrong rows, which is
   # the failure mode to want here -- ransack drops a condition it cannot place

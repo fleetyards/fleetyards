@@ -24,6 +24,23 @@ module ScDataVersioned
         all
       end
     }
+
+    # One definition rather than four, because three of the four had drifted:
+    # `current_version` had already fallen back to the previous patch while the
+    # join still targeted the configured build, so the scope selected rows the
+    # inner join then threw away -- an empty catalogue, which is the exact
+    # failure the fallback exists to prevent. Here a catalogue cannot have one
+    # without the other, and a fifth cannot be added without both.
+    #
+    # `current_facts_join` and `all_facts_join` stay per model: each names its
+    # own build table and foreign key.
+    scope :with_facts, ->(current_only = true, source = ::ScData::Source.current) {
+      resolved = served_source(source)
+
+      joins(
+        ActiveModel::Type::Boolean.new.cast(current_only) ? current_facts_join(resolved) : all_facts_join(resolved)
+      )
+    }
   end
 
   class_methods do

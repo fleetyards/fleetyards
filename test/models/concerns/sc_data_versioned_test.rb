@@ -12,6 +12,9 @@ class ScDataVersionedTest < ActiveSupport::TestCase
 
     @component = create(:component, :without_build)
     create(:component_build, component: @component, environment: "live", version: @loaded.version)
+
+    # What makes the build count as served. Rows alone only say a load started.
+    create(:import, :scdata_all, aasm_state: :finished, version: @loaded.version)
   end
 
   test "a configured build that has rows serves itself" do
@@ -45,5 +48,46 @@ class ScDataVersionedTest < ActiveSupport::TestCase
     nowhere = ScData::Source.new(version: "3.0.0-live.3", environment: "nowhere")
 
     assert_equal nowhere.version, Component.served_source(nowhere).version
+  end
+
+  # A load commits its catalogues one at a time and does not roll them back, so
+  # the first row of a new build would otherwise hand the whole site over to a
+  # half-written one -- turning a complete previous patch into a visibly
+  # shrinking current one, which is worse than the empty window this all started
+  # from.
+  test "a build whose load is still running is not served yet" do
+    create(:component_build, component: create(:component, :without_build),
+      environment: "live", version: @bumped.version)
+
+    assert_equal @loaded.version, Component.served_source(@bumped).version
+  end
+
+  test "it serves the build once that load finishes" do
+    create(:component_build, component: create(:component, :without_build),
+      environment: "live", version: @bumped.version)
+    create(:import, :scdata_all, aasm_state: :finished, version: @bumped.version)
+
+    assert_equal @bumped.version, Component.served_source(@bumped).version
+  end
+
+  # Not the import window but a truncated ledger, where insisting on a marker
+  # that no longer exists would empty every catalogue on the site.
+  test "rows with no ledger entry at all are still served" do
+    Import.delete_all
+
+    assert_equal @loaded.version, Component.served_source(@bumped).version
+  end
+
+  # Component resolved its fact join and the other three did not, so they
+  # selected the previous patch's rows and then inner-joined facts at a build
+  # with none. The scope lives in one place now, which is what stops that.
+  test "every catalogue joins its facts at the build it selected" do
+    {Commodity => :commodity, Equipment => :equipment, Blueprint => :blueprint}.each do |model, name|
+      record = create(name, :without_build)
+      create(:"#{name}_build", name => record, :environment => "live", :version => @loaded.version)
+
+      assert_equal [record.id], model.with_facts(true, @bumped).pluck(:id),
+        "#{model} emptied its catalogue during the fallback window"
+    end
   end
 end
