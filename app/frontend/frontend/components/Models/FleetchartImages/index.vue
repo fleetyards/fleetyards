@@ -9,39 +9,37 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import {
+  ModelStateEnum,
+  ModelViewEnum,
+  modelStateMetrics,
+  modelStateView,
+  useModelStates,
+} from "@/frontend/composables/useModelStates";
 
 import type { Model, MediaFile } from "@/services/fyApi";
 
 type Props = {
   model: Model;
-  extended?: boolean;
+  state?: ModelStateEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  extended: false,
+  state: ModelStateEnum.RETRACTED,
 });
 
 const emit = defineEmits<{
-  (e: "update:extended", value: boolean): void;
+  (e: "update:state", value: ModelStateEnum): void;
 }>();
 
 const { t } = useI18n();
 
 const mobile = useMobile();
 
-const hasExtendedState = computed(() => {
-  return Boolean(
-    props.model.metrics.extendedLength ||
-    props.model.media.extendedHolo ||
-    props.model.media.extendedTopView ||
-    props.model.media.extendedSideView ||
-    props.model.media.extendedAngledView ||
-    props.model.media.extendedFrontView,
-  );
-});
+const { availableStates } = useModelStates(() => props.model);
 
-const setExtended = (value: boolean) => {
-  emit("update:extended", value);
+const setState = (value: ModelStateEnum) => {
+  emit("update:state", value);
 };
 
 const hasImages = computed(() => {
@@ -68,65 +66,19 @@ const pickViewUrl = (
   return regular?.largeUrl;
 };
 
-const fleetchartImageAngled = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedAngledViewColored,
-      props.model.media.extendedAngledView,
-    );
-    if (url) return url;
-  }
+const viewUrl = (view: ModelViewEnum) => {
+  const { colored, regular } = modelStateView(props.model, props.state, view);
 
-  return pickViewUrl(
-    props.model.media.angledViewColored,
-    props.model.media.angledView,
-  );
-});
+  return pickViewUrl(colored, regular);
+};
 
-const fleetchartImageFront = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedFrontViewColored,
-      props.model.media.extendedFrontView,
-    );
-    if (url) return url;
-  }
+const fleetchartImageAngled = computed(() => viewUrl(ModelViewEnum.ANGLED));
 
-  return pickViewUrl(
-    props.model.media.frontViewColored,
-    props.model.media.frontView,
-  );
-});
+const fleetchartImageFront = computed(() => viewUrl(ModelViewEnum.FRONT));
 
-const fleetchartImageTop = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedTopViewColored,
-      props.model.media.extendedTopView,
-    );
-    if (url) return url;
-  }
+const fleetchartImageTop = computed(() => viewUrl(ModelViewEnum.TOP));
 
-  return pickViewUrl(
-    props.model.media.topViewColored,
-    props.model.media.topView,
-  );
-});
-
-const fleetchartImageSide = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedSideViewColored,
-      props.model.media.extendedSideView,
-    );
-    if (url) return url;
-  }
-
-  return pickViewUrl(
-    props.model.media.sideViewColored,
-    props.model.media.sideView,
-  );
-});
+const fleetchartImageSide = computed(() => viewUrl(ModelViewEnum.SIDE));
 
 const windowWidth = ref(window.innerWidth / 2);
 
@@ -158,35 +110,13 @@ const beam = computed(() => {
   return maxFleetchartWidth.value;
 });
 
-const modelLength = computed(() => {
-  if (!props.model) {
-    return 1;
-  }
+const stateMetrics = computed(() =>
+  modelStateMetrics(props.model, props.state),
+);
 
-  if (props.extended) {
-    const extended =
-      props.model.metrics.extendedFleetchartOffsetLength ||
-      props.model.metrics.extendedLength;
-    if (extended) return extended;
-  }
+const modelLength = computed(() => stateMetrics.value.fleetchartLength || 1);
 
-  return props.model.metrics.fleetchartOffsetLength || 1;
-});
-
-const modelBeam = computed(() => {
-  if (!props.model) {
-    return 1;
-  }
-
-  if (props.extended) {
-    const extended =
-      props.model.metrics.extendedFleetchartOffsetBeam ||
-      props.model.metrics.extendedBeam;
-    if (extended) return extended;
-  }
-
-  return props.model.metrics.fleetchartOffsetBeam || 1;
-});
+const modelBeam = computed(() => stateMetrics.value.fleetchartBeam || 1);
 
 const sideViewImg = ref<HTMLImageElement | null>(null);
 const sideViewHeight = ref(0);
@@ -207,12 +137,20 @@ onMounted(() => {
 
 <template>
   <div v-if="hasImages" class="fleetchart-views-wrapper">
-    <BtnGroup v-if="hasExtendedState" segmented class="fleetchart-views-toggle">
-      <Btn :active="!extended" @click="setExtended(false)">
-        {{ t("labels.model.state.retracted") }}
-      </Btn>
-      <Btn :active="extended" @click="setExtended(true)">
-        {{ t("labels.model.state.extended") }}
+    <BtnGroup
+      v-if="availableStates.length > 1"
+      segmented
+      class="fleetchart-views-toggle"
+      data-test="model-states"
+    >
+      <Btn
+        v-for="modelState in availableStates"
+        :key="modelState"
+        :active="state === modelState"
+        :data-test="`model-state-${modelState}`"
+        @click="setState(modelState)"
+      >
+        {{ t(`labels.model.state.${modelState}`) }}
       </Btn>
     </BtnGroup>
     <div class="fleetchart-views">

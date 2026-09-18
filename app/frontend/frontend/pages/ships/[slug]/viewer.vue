@@ -7,6 +7,13 @@ export default {
 <script lang="ts" setup>
 import { type Model } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModelsStore } from "@/frontend/stores/models";
+import { storeToRefs } from "pinia";
+import {
+  modelStateHolo,
+  modelStateMetrics,
+  useModelStates,
+} from "@/frontend/composables/useModelStates";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
@@ -43,10 +50,17 @@ watch(
 
 const comlink = useComlink();
 
+const { modelState } = storeToRefs(useModelsStore());
+
+const { resolveState } = useModelStates(() => props.model);
+
+// Popped out of the ship page, so it opens on the state that page was left on.
 const holoModel = computed(() => {
+  const state = resolveState(modelState.value);
+
   return {
-    path: props.model.media.holo?.url,
-    length: props.model.metrics.fleetchartOffsetLength,
+    path: modelStateHolo(props.model, state)?.url,
+    length: modelStateMetrics(props.model, state).fleetchartLength,
   };
 });
 

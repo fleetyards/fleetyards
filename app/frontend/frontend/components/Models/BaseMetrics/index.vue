@@ -9,6 +9,10 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import {
+  ModelStateEnum,
+  modelStateMetrics,
+} from "@/frontend/composables/useModelStates";
 
 const { t, toNumber, toDollar, toUEC } = useI18n();
 
@@ -16,39 +20,28 @@ const comlink = useComlink();
 
 type Props = {
   model: Model;
-  extended?: boolean;
+  state?: ModelStateEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  extended: false,
+  state: ModelStateEnum.RETRACTED,
 });
 
 const soldAt = computed(() => props.model.availability.soldAt);
 const rentalAt = computed(() => props.model.availability.rentalAt);
 
-const displayLength = computed(() => {
-  if (props.extended && props.model.metrics.extendedLength) {
-    return props.model.metrics.extendedLength;
-  }
+// One figure per tile, the selected state's. The chip in the card head is what
+// says which state it is -- a second figure in parentheses is not how the site
+// reads a dimension.
+const stateMetrics = computed(() =>
+  modelStateMetrics(props.model, props.state),
+);
 
-  return props.model.metrics.length;
-});
+const displayLength = computed(() => stateMetrics.value.length);
 
-const displayBeam = computed(() => {
-  if (props.extended && props.model.metrics.extendedBeam) {
-    return props.model.metrics.extendedBeam;
-  }
+const displayBeam = computed(() => stateMetrics.value.beam);
 
-  return props.model.metrics.beam;
-});
-
-const displayHeight = computed(() => {
-  if (props.extended && props.model.metrics.extendedHeight) {
-    return props.model.metrics.extendedHeight;
-  }
-
-  return props.model.metrics.height;
-});
+const displayHeight = computed(() => stateMetrics.value.height);
 
 const hasPrice = computed(
   () => !!props.model.price || !!props.model.pledgePrice,
@@ -69,6 +62,13 @@ const openAvailability = () => {
 <template>
   <MetricsCard :title="t('labels.metrics.base')" class="base-panel">
     <template #head>
+      <span
+        v-if="state !== ModelStateEnum.RETRACTED"
+        class="base-panel__chip"
+        data-test="model-state-chip"
+      >
+        {{ t(`labels.model.state.${state}`) }}
+      </span>
       <span v-if="model.metrics.sizeLabel" class="base-panel__chip">
         {{ model.metrics.sizeLabel }}
       </span>

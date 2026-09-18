@@ -34,6 +34,7 @@ const metricRowGroupsWithEmpty = [
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -43,6 +44,10 @@ import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import MissingRolesPanel from "@/shared/components/MissingRolesPanel/index.vue";
 import ModelMetricRows from "@/shared/components/ModelMetricRows/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
+import {
+  MODEL_STATES,
+  ModelStateEnum,
+} from "@/frontend/composables/useModelStates";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
 import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
@@ -93,11 +98,7 @@ provide(
   computed(() => model.value?.metrics?.quantumFuelTankSize),
 );
 
-const extended = ref(false);
-
-const toggleExtended = () => {
-  extended.value = !extended.value;
-};
+const modelState = ref(ModelStateEnum.RETRACTED);
 
 const sampleMetrics = [
   { id: "length", label: "Length", value: "128.0 m" },
@@ -274,13 +275,20 @@ const sampleMetrics = [
     <code>{{ SLUG }}</code> data. Base and crew carry their own frame through
     <code>MetricsCard</code>; speed is bare rows, so it is the only one that
     needs a <code>Panel</code> around it.
-    <Btn @click="toggleExtended">
-      {{ extended ? "Collapse" : "Extend" }} dimensions
-    </Btn>
+    <BtnGroup segmented>
+      <Btn
+        v-for="state in MODEL_STATES"
+        :key="state"
+        :active="modelState === state"
+        @click="modelState = state"
+      >
+        {{ state }}
+      </Btn>
+    </BtnGroup>
   </p>
   <div v-if="model" class="row">
     <div class="col-12 col-lg-4">
-      <ModelBaseMetrics :model="model" :extended="extended" />
+      <ModelBaseMetrics :model="model" :state="modelState" />
     </div>
     <div class="col-12 col-lg-4">
       <ModelCrewMetrics :model="model" />

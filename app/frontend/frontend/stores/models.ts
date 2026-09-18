@@ -1,4 +1,5 @@
 import { type ShipListState } from "@/frontend/types";
+import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { defineStore } from "pinia";
 
 export enum ModelTableViewImageColsEnum {
@@ -30,7 +31,7 @@ export enum ModelTableViewColsEnum {
 
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
-  extendedStateVisible: boolean;
+  modelState: ModelStateEnum;
   tableViewCols: ModelTableViewColsEnum[];
   tableViewImageCols: ModelTableViewImageColsEnum[];
 }
@@ -38,7 +39,7 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
-    extendedStateVisible: false,
+    modelState: ModelStateEnum.RETRACTED,
     detailsVisible: false,
     filterVisible: true,
     gridView: true,
@@ -59,6 +60,11 @@ export const useModelsStore = defineStore("models", {
     toggleHoloviewer() {
       this.holoviewerVisible = !this.holoviewerVisible;
     },
+    // One selection for the whole session: a visitor who wants ships landed
+    // wants the next ship landed too, where it has the images for it.
+    setModelState(state: ModelStateEnum) {
+      this.modelState = state;
+    },
     toggleDetails() {
       this.detailsVisible = !this.detailsVisible;
     },
@@ -78,7 +84,7 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
-      "extendedStateVisible",
+      "modelState",
       "detailsVisible",
       "gridView",
       "tableViewCols",
