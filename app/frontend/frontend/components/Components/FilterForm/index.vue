@@ -10,6 +10,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
 import {
   type ComponentQuery,
@@ -44,7 +45,7 @@ const asList = (value: unknown): string[] => {
 const prefillFormValues = (): ComponentQuery => ({
   nameCont: filters.value.nameCont,
   descriptionCont: filters.value.descriptionCont,
-  manufacturerNameCont: filters.value.manufacturerNameCont,
+  manufacturerSlugIn: asList(filters.value.manufacturerSlugIn),
   categoryIn: asList(filters.value.categoryIn),
   componentSubTypeIn: asList(filters.value.componentSubTypeIn),
 });
@@ -105,13 +106,10 @@ const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
       :clearable="true"
     />
 
-    <FormInput
-      v-model="form.manufacturerNameCont"
-      name="manufacturerNameCont"
-      translation-key="filters.components.manufacturer"
-      :no-label="true"
-      :clearable="true"
-    />
+    <!-- The same control the ships form uses, by slug rather than by a
+         substring of the name: "Aegis" also matches nothing else, but a maker
+         whose name is inside another's would quietly bring both. -->
+    <ManufacturerSelect v-model="form.manufacturerSlugIn" name="manufacturer" />
 
     <!-- The two filter endpoints that match something. `classes` and
          `item-types` are deprecated: no component in the current build carries

@@ -122,7 +122,7 @@ describe("ComponentsList", () => {
         .findAll(".component-row__sub a")
         .map((link) => link.attributes("href") || "");
 
-      expect(hrefs.join(" ")).toContain("manufacturerNameCont=Behring");
+      expect(hrefs.join(" ")).toContain("manufacturerSlugIn=behring");
       expect(hrefs.join(" ")).toContain("categoryIn=shieldgenerator");
       expect(hrefs.join(" ")).toContain("componentSubTypeIn=Gun");
     });

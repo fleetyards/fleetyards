@@ -71,8 +71,8 @@ const categoryLabel = computed(() => {
 
       <span class="component-row__sub">
         <router-link
-          v-if="component.manufacturer?.name"
-          :to="filterLink('manufacturerNameCont', component.manufacturer.name)"
+          v-if="component.manufacturer?.slug"
+          :to="filterLink('manufacturerSlugIn', component.manufacturer.slug)"
         >
           {{ component.manufacturer.name }}
         </router-link>
