@@ -37,3 +37,25 @@ const icon = computed(() => categoryIcon(props.category));
   </span>
   <span v-else class="component-category-icon" />
 </template>
+
+<!-- Sized here rather than by whoever renders it. The table tried to do that
+     through `:deep()` nested under `.components-table` -- a class no element in
+     it actually carries, since the rest are flat BEM children -- so the rule
+     matched nothing and this went out at whatever an unsized `img` and an
+     inherited font-size came to. -->
+<style lang="scss" scoped>
+.component-category-icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+
+  &--glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--color-primary, #428bca);
+  }
+}
+</style>

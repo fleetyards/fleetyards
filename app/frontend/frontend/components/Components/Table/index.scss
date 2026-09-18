@@ -15,20 +15,4 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-
-  // The icon is its own component, so it is reached through :deep -- a scoped
-  // rule carries this file's id and would never match a child's root.
-  :deep(.component-category-icon) {
-    width: 20px;
-    height: 20px;
-    flex: none;
-  }
-
-  :deep(.component-category-icon--glyph) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    color: var(--color-primary, #428bca);
-  }
 }
