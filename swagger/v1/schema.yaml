@@ -268,6 +268,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FeatureNamesList"
+  "/filters/blueprints/materials":
+    get:
+      summary: Blueprint materials filter
+      tags:
+      - Filters
+      operationId: filtersBlueprintsMaterials
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/commodities/types":
     get:
       summary: Commodity Types Filters
@@ -15705,6 +15718,10 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/BlueprintCraftable"
           - type: 'null'
+        materials:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCostCommodity"
         costSlots:
           type: array
           items:
@@ -15776,6 +15793,14 @@ components:
           - number
           - 'null'
         modifierAtEnd:
+          type:
+          - number
+          - 'null'
+        unit:
+          type:
+          - string
+          - 'null'
+        baseValue:
           type:
           - number
           - 'null'
@@ -15905,7 +15930,9 @@ components:
         fromOrg:
           type: string
         consumingCommodity:
-          type: string
+          type: array
+          items:
+            type: string
         withKnownSource:
           type: boolean
         currentVersion:
@@ -19969,6 +19996,16 @@ components:
           type: integer
         netQuantity:
           type: number
+        item:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -21645,6 +21682,16 @@ components:
           type: integer
         netQuantity:
           type: number
+        item:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -22864,6 +22911,8 @@ components:
         name:
           type: string
         slug:
+          type: string
+        vehicleName:
           type: string
       title: InventoryRef
     InventoryStockPosition:
@@ -28598,6 +28647,23 @@ components:
       items:
         type: string
       title: WishlistItemsList
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -28627,23 +28693,6 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed

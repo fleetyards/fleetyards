@@ -37,8 +37,10 @@ module V1
             # The org whose missions hand the recipe out, by name.
             fromOrg: {type: :string},
 
-            # Recipes that consume a material, by the commodity's slug.
-            consumingCommodity: {type: :string},
+            # Recipes that consume a material, by the commodity's slug. Several
+            # mean "uses any of these": a recipe has at most four slots, so
+            # asking for three at once would almost always ask for nothing.
+            consumingCommodity: {type: :array, items: {type: :string}},
 
             # Whether the export says where the recipe comes from at all. Read
             # by the controller rather than applied through ransack, which

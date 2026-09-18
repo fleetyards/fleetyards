@@ -34,5 +34,16 @@ if blueprint.craftable.present?
   end
 end
 
+# What the recipe consumes, named. Flat and compact rather than the whole cost
+# tree: a row wants "Iron, Riccite, Titanium", and the slots, quality gates and
+# stat ramps are the detail page's job.
+#
+# Deduplicated, because a recipe naming the same material in two slots should
+# list it once.
+json.materials blueprint.materials do |material|
+  json.name material.name
+  json.slug material.slug
+end
+
 json.created_at blueprint.created_at
 json.updated_at blueprint.updated_at

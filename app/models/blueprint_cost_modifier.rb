@@ -45,4 +45,18 @@ class BlueprintCostModifier < ApplicationRecord
 
   validates :ramp, presence: true, inclusion: {in: RAMPS}
   validates :position, presence: true, uniqueness: {scope: :blueprint_cost_slot_id}
+
+  # The game carries the stat's unit inside a printf format -- "%+.2f ºC",
+  # "%.2f RPM", "%+.2f %%" -- which is how it renders the figure rather than
+  # something a page can print. Only the unit is wanted here; the sign and the
+  # precision are the game's presentation, not ours.
+  UNIT_FORMAT = /%[-+ 0#]*[\d.]*[a-z]/
+
+  def unit
+    return if unit_format.blank?
+    # "Rating" and the like name the stat instead of formatting a number.
+    return unless unit_format.match?(UNIT_FORMAT)
+
+    unit_format.sub(UNIT_FORMAT, "").gsub("%%", "%").strip.presence
+  end
 end

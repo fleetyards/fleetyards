@@ -2,6 +2,10 @@
 
 json.partial! "api/v1/blueprints/base", blueprint: @blueprint
 
+# Built once for the whole recipe rather than per modifier: every slot's stats
+# resolve against the same crafted item.
+stat_bases = BlueprintStatBases.new(@blueprint.craftable)
+
 # The recipe, which a list leaves out rather than paying three association hits
 # per row for.
 json.cost_slots @blueprint.cost_slots do |slot|
@@ -39,8 +43,13 @@ json.cost_slots @blueprint.cost_slots do |slot|
     json.ramp modifier.ramp
     json.start_quality modifier.start_quality
     json.end_quality modifier.end_quality
-    json.modifier_at_start modifier.modifier_at_start
-    json.modifier_at_end modifier.modifier_at_end
+    # `to_f`, as every other decimal here: a BigDecimal renders as a JSON
+    # string, which the schema does not say and the client cannot compute on.
+    json.modifier_at_start modifier.modifier_at_start&.to_f
+    json.modifier_at_end modifier.modifier_at_end&.to_f
+
+    json.unit modifier.unit
+    json.base_value stat_bases.for(modifier.property_key)
   end
 end
 

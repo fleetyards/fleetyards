@@ -84,8 +84,27 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     slot = create(:blueprint_cost_slot, build: @blueprint.build)
     create(:blueprint_cost_option, slot:, commodity:)
 
-    assert_api_response :get, 200, params: {q: {"consumingCommodity" => commodity.slug}} do
+    assert_api_response :get, 200, params: {q: {"consumingCommodity" => [commodity.slug]}} do
       assert_equal [@blueprint.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  # The filter takes a list, so a crafter can ask what any of the materials
+  # they are holding is good for.
+  test "GET /blueprints finds the recipes consuming any of several commodities" do
+    iron = create(:commodity, name: "Iron")
+    slot = create(:blueprint_cost_slot, build: @blueprint.build)
+    create(:blueprint_cost_option, slot:, commodity: iron)
+
+    other = create(:blueprint)
+    corundum = create(:commodity, name: "Corundum")
+    other_slot = create(:blueprint_cost_slot, build: other.build)
+    create(:blueprint_cost_option, slot: other_slot, commodity: corundum)
+
+    params = {q: {"consumingCommodity" => [iron.slug, corundum.slug]}}
+
+    assert_api_response :get, 200, params: do
+      assert_equal [@blueprint.id, other.id].sort, parsed_body["items"].pluck("id").sort
     end
   end
 

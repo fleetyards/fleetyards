@@ -75,9 +75,11 @@ class Blueprint < ApplicationRecord
     end
   }
 
-  # Recipes that consume a given commodity, in the build we are on. Three hops,
-  # so it is written as an exists check rather than a join: a recipe naming the
-  # same material in two slots would otherwise come back twice.
+  # Recipes that consume a given material, in the build being read. Takes a
+  # record or a relation, so one material and several work the same way.
+  #
+  # Three hops, written as an exists check rather than a join: a recipe naming
+  # the same material in two slots would otherwise come back twice.
   scope :consuming, ->(commodity, source = ::ScData::Source.current, current_only: true) {
     where(
       id: readable_builds(source, current_only:).where(
@@ -247,10 +249,21 @@ class Blueprint < ApplicationRecord
   # Ransack hands a scope whatever the query names, so the commodity is looked
   # up by slug rather than taken as a record -- a filter is a URL, and a URL
   # cannot carry an ActiveRecord object.
-  scope :consuming_commodity, ->(slug, source = ::ScData::Source.current, current_only: true) {
-    commodity = Commodity.find_by(slug: slug.to_s.downcase)
+  # Ransack hands a scope whatever the query names, so the material is looked
+  # up by slug rather than taken as a record -- a filter is a URL, and a URL
+  # cannot carry an ActiveRecord object.
+  #
+  # Several slugs mean "uses any of these", not "uses all of them": a recipe
+  # has at most four slots, so asking for three materials at once would
+  # almost always be asking for nothing.
+  scope :consuming_commodity, ->(slugs, source = ::ScData::Source.current, current_only: true) {
+    wanted = Array.wrap(slugs).map { |slug| slug.to_s.downcase }.reject(&:blank?)
 
-    commodity.present? ? consuming(commodity, source, current_only:) : none
+    return none if wanted.blank?
+
+    commodities = Commodity.where(slug: wanted)
+
+    commodities.exists? ? consuming(commodities, source, current_only:) : none
   }
 
   # The recipe and the sources belong to the build, not to the blueprint: live
@@ -274,11 +287,39 @@ class Blueprint < ApplicationRecord
     BlueprintCostOption.where(blueprint_cost_slot_id: cost_slots.select(:id)).order(:position)
   end
 
+  # The materials this recipe consumes, named, in slot order and without
+  # repeats. Read through `facts` like the recipe it comes from, so a retired
+  # blueprint still lists what it took.
+  def materials
+    cost_slots
+      .flat_map { |slot| slot.options.filter_map(&:commodity) }
+      .uniq
+  end
+
   # Nothing in the export says where this one comes from. Answered off the last
   # build that did describe it, so a recipe the current build dropped does not
   # read as one nobody ever knew a source for.
   def source_unknown?
     sources.empty?
+  end
+
+  # The materials recipes in the build we are on actually consume, as filter
+  # options. Sourced from the cost rows rather than from the commodity
+  # catalogue: 37 of the 232 commodities appear in a recipe, and a select
+  # offering the other 195 would be a filter that cannot match.
+  def self.material_filters(source = ::ScData::Source.current)
+    Commodity
+      .where(
+        id: BlueprintCostOption
+          .where(
+            blueprint_cost_slot_id: BlueprintCostSlot
+              .where(blueprint_build_id: BlueprintBuild.current(source).select(:id))
+              .select(:id)
+          )
+          .select(:commodity_id)
+      )
+      .order(:name)
+      .map { |commodity| Filter.new(category: "material", label: commodity.name, value: commodity.slug) }
   end
 
   # Not in the build we are on.

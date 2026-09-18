@@ -23,7 +23,16 @@ module Shared
             startQuality: {type: [:integer, :null]},
             endQuality: {type: [:integer, :null]},
             modifierAtStart: {type: [:number, :null]},
-            modifierAtEnd: {type: [:number, :null]}
+            modifierAtEnd: {type: [:number, :null]},
+
+            # The unit the stat is measured in, lifted out of unitFormat.
+            unit: {type: [:string, :null]},
+
+            # What the factor applies to: the crafted item's own figure for
+            # this stat, which is its value at quality 500. Null where the
+            # catalogue holds no such figure -- component health and weapon
+            # recoil among them -- and the factor is all there is to show.
+            baseValue: {type: [:number, :null]}
           },
           additionalProperties: false,
           required: %w[ramp]
