@@ -327,7 +327,10 @@
         }
       },
       "notifications": "Notifiche",
-      "component": "%{name}"
+      "component": "%{name}",
+      "components": {
+        "index": "Componenti"
+      }
     }
   }
 }

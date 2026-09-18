@@ -467,6 +467,9 @@
         "identity": "详情",
         "metrics": "数据",
         "requiredTags": "可装入具备以下标签的接口"
+      },
+      "components": {
+        "index": "部件"
       }
     }
   }

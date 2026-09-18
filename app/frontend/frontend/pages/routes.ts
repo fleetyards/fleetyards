@@ -77,6 +77,12 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // `/catalogue` is the section's entry and lands on the first tenant that
+    // has pages. Components today; the others join as they are built.
+    path: "/catalogue/",
+    redirect: { name: "components" },
+  },
+  {
     path: "/components/",
     component: () => import("@/frontend/pages/components.vue"),
     children: componentsRoutes,

@@ -1512,7 +1512,11 @@
           "buyPriceLt": "Buy Price <=",
           "sellPriceGt": "Sell Price >=",
           "sellPriceLt": "Sell Price <=",
-          "storeImageBlank": "Without Store Image?"
+          "storeImageBlank": "Without Store Image?",
+          "description": "Description",
+          "manufacturer": "Manufacturer",
+          "category": "Category",
+          "subType": "Sub Type"
         },
         "shops": {
           "name": "Name",

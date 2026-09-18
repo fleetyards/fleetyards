@@ -469,6 +469,9 @@
         "identity": "Details",
         "metrics": "Metrics",
         "requiredTags": "Fits a port offering"
+      },
+      "components": {
+        "index": "Components"
       }
     }
   }

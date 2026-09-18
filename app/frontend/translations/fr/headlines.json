@@ -467,6 +467,9 @@
         "identity": "Détails",
         "metrics": "Caractéristiques",
         "requiredTags": "S'installe sur un port offrant"
+      },
+      "components": {
+        "index": "Composants"
       }
     }
   }

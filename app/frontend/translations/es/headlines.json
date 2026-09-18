@@ -467,6 +467,9 @@
         "identity": "Detalles",
         "metrics": "Métricas",
         "requiredTags": "Encaja en un puerto con"
+      },
+      "components": {
+        "index": "Componentes"
       }
     }
   }
