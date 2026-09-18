@@ -62,7 +62,7 @@ const sortFields = computed<BaseTableCol<unknown>[]>(() => [
   { name: "title", label: t("labels.title"), sortable: true },
   {
     name: "notificationType",
-    label: t("labels.notification.type"),
+    label: t("labels.notifications.type"),
     sortable: true,
   },
 ]);
