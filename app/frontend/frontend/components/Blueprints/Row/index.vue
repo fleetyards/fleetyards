@@ -94,7 +94,7 @@ const craftableRoute = computed(() => {
         v-for="material in shownMaterials"
         :key="material.slug"
         class="blueprint-row__material"
-        :to="filterLink('consumingCommodity', [material.slug])"
+        :to="filterLink('consumingCommodityIn', [material.slug])"
       >
         {{ material.name }}
       </router-link>

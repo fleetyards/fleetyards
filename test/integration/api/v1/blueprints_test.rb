@@ -84,7 +84,7 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     slot = create(:blueprint_cost_slot, build: @blueprint.build)
     create(:blueprint_cost_option, slot:, commodity:)
 
-    assert_api_response :get, 200, params: {q: {"consumingCommodity" => [commodity.slug]}} do
+    assert_api_response :get, 200, params: {q: {"consumingCommodityIn" => [commodity.slug]}} do
       assert_equal [@blueprint.id], parsed_body["items"].pluck("id")
     end
   end
@@ -113,7 +113,7 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     other_slot = create(:blueprint_cost_slot, build: other.build)
     create(:blueprint_cost_option, slot: other_slot, commodity: corundum)
 
-    params = {q: {"consumingCommodity" => [iron.slug, corundum.slug]}}
+    params = {q: {"consumingCommodityIn" => [iron.slug, corundum.slug]}}
 
     assert_api_response :get, 200, params: do
       assert_equal [@blueprint.id, other.id].sort, parsed_body["items"].pluck("id").sort

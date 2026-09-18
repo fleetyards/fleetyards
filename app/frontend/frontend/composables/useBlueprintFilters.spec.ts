@@ -39,19 +39,19 @@ const queryFor = async (query: LocationQueryRaw) => {
 describe("useBlueprintFilters", () => {
   it("sends a lone material as a list", async () => {
     expect(
-      (await queryFor({ consumingCommodity: "iron" })).consumingCommodity,
+      (await queryFor({ consumingCommodityIn: "iron" })).consumingCommodityIn,
     ).toEqual(["iron"]);
   });
 
   it("leaves several materials alone", async () => {
     expect(
-      (await queryFor({ consumingCommodity: ["iron", "corundum"] }))
-        .consumingCommodity,
+      (await queryFor({ consumingCommodityIn: ["iron", "corundum"] }))
+        .consumingCommodityIn,
     ).toEqual(["iron", "corundum"]);
   });
 
   it("does not invent a list for a material nobody picked", async () => {
-    expect(await queryFor({})).not.toHaveProperty("consumingCommodity");
+    expect(await queryFor({})).not.toHaveProperty("consumingCommodityIn");
   });
 
   it("sends a lone craftable type as a list", async () => {

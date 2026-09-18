@@ -15930,11 +15930,11 @@ components:
         fromOrg:
           type: string
         consumingCommodity:
-          anyOf:
-          - type: string
-          - type: array
-            items:
-              type: string
+          type: string
+        consumingCommodityIn:
+          type: array
+          items:
+            type: string
         withKnownSource:
           type: boolean
         currentVersion:

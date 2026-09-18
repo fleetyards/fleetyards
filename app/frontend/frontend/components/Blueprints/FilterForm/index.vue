@@ -42,7 +42,9 @@ const prefillFormValues = (): BlueprintQuery => ({
   craftableTypeIn: asList(
     filters.value.craftableTypeIn ?? filters.value.craftableTypeEq,
   ) as BlueprintCraftableTypeEnum[],
-  consumingCommodity: asList(filters.value.consumingCommodity),
+  consumingCommodityIn: asList(
+    filters.value.consumingCommodityIn ?? filters.value.consumingCommodity,
+  ),
   withKnownSource: filters.value.withKnownSource,
 });
 
@@ -143,7 +145,7 @@ const sourceValue = computed({
     />
 
     <BaseSelect
-      v-model="form.consumingCommodity"
+      v-model="form.consumingCommodityIn"
       name="material"
       :options="materials ?? []"
       :label="t('labels.filters.blueprints.material')"
