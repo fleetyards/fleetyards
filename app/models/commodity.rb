@@ -73,7 +73,7 @@ class Commodity < ApplicationRecord
   # join, so nothing fans out and `currentVersion=false` stays the plain table.
   scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
     if ActiveModel::Type::Boolean.new.cast(flag)
-      where(id: CommodityBuild.current(source).select(:commodity_id))
+      where(id: CommodityBuild.current(served_source(source)).select(:commodity_id))
     else
       all
     end

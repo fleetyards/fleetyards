@@ -61,7 +61,7 @@ class Blueprint < ApplicationRecord
   # join, so nothing fans out.
   scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
     if ActiveModel::Type::Boolean.new.cast(flag)
-      where(id: BlueprintBuild.current(source).select(:blueprint_id))
+      where(id: BlueprintBuild.current(served_source(source)).select(:blueprint_id))
     else
       all
     end

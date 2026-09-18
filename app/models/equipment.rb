@@ -90,7 +90,7 @@ class Equipment < ApplicationRecord
   # compare their column until they have builds of their own.
   scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
     if ActiveModel::Type::Boolean.new.cast(flag)
-      where(id: EquipmentBuild.current(source).select(:equipment_id))
+      where(id: EquipmentBuild.current(served_source(source)).select(:equipment_id))
     else
       all
     end
