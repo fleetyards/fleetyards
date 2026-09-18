@@ -61,23 +61,26 @@ const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
   <form class="components-filter-form" @submit.prevent>
     <FormInput
       v-model="form.nameCont"
-      :label="t('labels.filters.components.name')"
       name="nameCont"
-      clearable
+      translation-key="filters.components.name"
+      :no-label="true"
+      :clearable="true"
     />
 
     <FormInput
       v-model="form.descriptionCont"
-      :label="t('labels.filters.components.description')"
       name="descriptionCont"
-      clearable
+      translation-key="filters.components.description"
+      :no-label="true"
+      :clearable="true"
     />
 
     <FormInput
       v-model="form.manufacturerNameCont"
-      :label="t('labels.filters.components.manufacturer')"
       name="manufacturerNameCont"
-      clearable
+      translation-key="filters.components.manufacturer"
+      :no-label="true"
+      :clearable="true"
     />
 
     <!-- The two filter endpoints that match something. `classes` and

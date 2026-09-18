@@ -258,7 +258,9 @@
           "email": "E-mail"
         },
         "components": {
-          "name": "Nome"
+          "name": "Nome",
+          "description": "motore quantico, corazzatura...",
+          "manufacturer": "Behring, Ascension Astro, Juno Starwerk..."
         },
         "fleets": {
           "name": "Nome",

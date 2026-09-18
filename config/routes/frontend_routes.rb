@@ -16,7 +16,13 @@ namespace :frontend, **frontend_options do
   # Meta tags for a shared link, the way a ship's page has them -- without this
   # the card renders the generic site description rather than the component.
   # No `og_image`: no component in the catalogue has one.
-  get "components/:slug", to: "base#component", as: :component
+  get "catalogue/components/:slug", to: "base#component", as: :component
+
+  # The path the page shipped under before the section existed. Live since
+  # #5015, and every hardpoint on every ship linked to it, so it moves rather
+  # than disappears.
+  get "components/:slug", to: redirect("/catalogue/components/%{slug}", status: 301)
+  get "components", to: redirect("/catalogue/components/", status: 301)
 
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images

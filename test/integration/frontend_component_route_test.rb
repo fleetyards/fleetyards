@@ -8,19 +8,27 @@ require "test_helper"
 # Recognition rather than a request: rendering the frontend needs Vite assets,
 # which CI does not build for the Ruby suite.
 class FrontendComponentRouteTest < ActionDispatch::IntegrationTest
-  test "GET components/:slug reaches the action that sets the meta tags" do
-    recognized = Rails.application.routes.recognize_path("/components/bulldog-repeater")
+  test "GET catalogue/components/:slug reaches the action that sets the meta tags" do
+    recognized = Rails.application.routes.recognize_path("/catalogue/components/bulldog-repeater")
 
     assert_equal "frontend/base", recognized[:controller]
     assert_equal "component", recognized[:action]
     assert_equal "bulldog-repeater", recognized[:slug]
   end
 
-  # `/components` itself is the catalogue list, which the client router owns --
-  # it must not be swallowed by the detail route.
-  test "GET components without a slug is not the detail action" do
-    recognized = Rails.application.routes.recognize_path("/components")
+  # The list, which the client router owns -- it must not be swallowed by the
+  # detail route.
+  test "GET catalogue/components without a slug is not the detail action" do
+    recognized = Rails.application.routes.recognize_path("/catalogue/components")
 
     assert_not_equal "component", recognized[:action]
+  end
+
+  # The pages were live under the old path before the section existed, and
+  # every hardpoint on every ship linked to it.
+  test "the path the detail page shipped under still resolves" do
+    get "/components/bulldog-repeater"
+
+    assert_redirected_to "/catalogue/components/bulldog-repeater"
   end
 end

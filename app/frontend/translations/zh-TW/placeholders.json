@@ -258,7 +258,9 @@
           "email": "電子郵件"
         },
         "components": {
-          "name": "名稱"
+          "name": "名稱",
+          "description": "量子驅動器、裝甲板……",
+          "manufacturer": "Behring、Ascension Astro、Juno Starwerk……"
         },
         "fleets": {
           "name": "名稱",
