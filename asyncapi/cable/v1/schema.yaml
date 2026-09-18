@@ -425,6 +425,8 @@ components:
           type: boolean
         retired:
           type: boolean
+        catalogued:
+          type: boolean
         category:
           type: string
         type:
@@ -489,6 +491,7 @@ components:
       - slug
       - hidden
       - retired
+      - catalogued
       - availability
       - media
       - createdAt
