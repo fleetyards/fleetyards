@@ -42,24 +42,25 @@ const hasAccessTo = (access?: string[]) => {
 
 /*
  * Nineteen sections stood side by side, with Maintenance the only group. Grouped
- * by what the thing is, so the list is six rows instead of nineteen.
+ * by what the thing is, so the list is a handful of rows instead of nineteen.
  *
  * Presentation only: the members are route names, not nested routes, so no URL
  * moves. Each group's members are rendered by AppNavigationItems, which keeps
  * the access and feature-flag filtering rather than reimplementing it here.
+ *
+ * A group earns its drawer by being the thing the public site calls a section.
+ * "Catalogue" holds what the public catalogue has tenants for and nothing else:
+ * Models, Manufacturers and Images were in here too, which made the admin's
+ * catalogue mean something different from the one a visitor browses, and buried
+ * three of the most-used sections a click deep. They stand on their own now, and
+ * so does Supporter Contributions.
  */
 const GROUPS = [
   {
     key: "catalogue",
-    icon: "fa-duotone fa-rocket",
-    paths: [
-      "/models/",
-      "/components/",
-      "/equipment/",
-      "/commodities/",
-      "/manufacturers/",
-      "/images",
-    ],
+    // The section icon the public catalogue's own nav uses.
+    icon: "fa-duotone fa-books",
+    paths: ["/components/", "/equipment/", "/commodities/"],
   },
   {
     key: "community",
@@ -69,7 +70,7 @@ const GROUPS = [
   {
     key: "people",
     icon: "fa-duotone fa-user-shield",
-    paths: ["/users", "/admins/", "/supporter-contributions/"],
+    paths: ["/users", "/admins/"],
   },
   {
     // Was "Maintenance", which stopped covering it once the OAuth apps moved in
@@ -103,22 +104,6 @@ const mainRoutes = computed(() => {
 const groupRoutes = (group: (typeof GROUPS)[number]) =>
   mainRoutes.value.filter((route) => group.paths.includes(String(route.path)));
 
-const groupedPaths = computed(
-  () => new Set(GROUPS.flatMap((group) => group.paths)),
-);
-
-/*
- * The safety net. Rendering only Home and the groups would make a newly added
- * section vanish from the nav rather than appear in it, and nobody would notice
- * until they went looking for the page.
- */
-const ungroupedRoutes = computed(() =>
-  mainRoutes.value.filter(
-    (route) =>
-      String(route.path) !== "/" && !groupedPaths.value.has(String(route.path)),
-  ),
-);
-
 const homeRoute = computed(() =>
   mainRoutes.value.filter((route) => String(route.path) === "/"),
 );
@@ -140,9 +125,50 @@ const isRouteVisible = (route: RouteRecordRaw) => {
   return hasAccessTo(route.meta?.access);
 };
 
-const visibleGroups = computed(() =>
-  GROUPS.filter((group) => groupRoutes(group).some(isRouteVisible)),
-);
+/*
+ * The nav in route order, with each group standing where its first member does.
+ *
+ * Built as one list rather than "the groups, then whatever they missed": a
+ * section that belongs to no group is not an afterthought to be swept up at the
+ * bottom -- Models would have rendered below System -- it is simply a row in the
+ * same order routes.ts already puts everything in. Walking the routes is also
+ * still the safety net the sweep was: a newly added section appears in the nav
+ * rather than vanishing from it.
+ */
+type NavEntry =
+  | { kind: "route"; route: RouteRecordRaw }
+  | { kind: "group"; group: (typeof GROUPS)[number] };
+
+const navEntries = computed<NavEntry[]>(() => {
+  const seen = new Set<string>();
+
+  return mainRoutes.value.reduce<NavEntry[]>((entries, route) => {
+    const path = String(route.path);
+
+    // Home is rendered on its own, ahead of everything.
+    if (path === "/") return entries;
+
+    const group = GROUPS.find((candidate) => candidate.paths.includes(path));
+
+    if (!group) {
+      if (isRouteVisible(route)) entries.push({ kind: "route", route });
+
+      return entries;
+    }
+
+    if (seen.has(group.key)) return entries;
+    seen.add(group.key);
+
+    if (groupRoutes(group).some(isRouteVisible)) {
+      entries.push({ kind: "group", group });
+    }
+
+    return entries;
+  }, []);
+});
+
+const entryKey = (entry: NavEntry) =>
+  entry.kind === "group" ? entry.group.key : String(entry.route.path);
 
 const groupActive = (group: (typeof GROUPS)[number]) =>
   groupRoutes(group).some(
@@ -177,32 +203,34 @@ const isVisualTestsRoute = computed(() =>
           :authenticated="isAuthenticated"
           :has-access-to="hasAccessTo"
         />
-        <NavItem
-          v-for="group in visibleGroups"
-          :key="group.key"
-          :label="t(`nav.admin.groups.${group.key}`)"
-          :menu-key="`admin-${group.key}`"
-          :submenu-active="groupActive(group)"
-          :icon="group.icon"
-        >
-          <template #submenu>
-            <AppNavigationItems
-              :routes="groupRoutes(group)"
-              :current-route="currentRoute"
-              :authenticated="isAuthenticated"
-              :has-access-to="hasAccessTo"
-            />
-          </template>
-        </NavItem>
-        <!-- Anything a group forgot, so a new section appears rather than
-             disappearing. -->
-        <AppNavigationItems
-          v-if="ungroupedRoutes.length"
-          :routes="ungroupedRoutes"
-          :current-route="currentRoute"
-          :authenticated="isAuthenticated"
-          :has-access-to="hasAccessTo"
-        />
+        <!-- One list, in route order: a group stands where its first member
+             does, and a section belonging to no group is a row like any other
+             rather than a leftover swept to the bottom. -->
+        <template v-for="entry in navEntries" :key="entryKey(entry)">
+          <NavItem
+            v-if="entry.kind === 'group'"
+            :label="t(`nav.admin.groups.${entry.group.key}`)"
+            :menu-key="`admin-${entry.group.key}`"
+            :submenu-active="groupActive(entry.group)"
+            :icon="entry.group.icon"
+          >
+            <template #submenu>
+              <AppNavigationItems
+                :routes="groupRoutes(entry.group)"
+                :current-route="currentRoute"
+                :authenticated="isAuthenticated"
+                :has-access-to="hasAccessTo"
+              />
+            </template>
+          </NavItem>
+          <AppNavigationItems
+            v-else
+            :routes="[entry.route]"
+            :current-route="currentRoute"
+            :authenticated="isAuthenticated"
+            :has-access-to="hasAccessTo"
+          />
+        </template>
         <!--
           Last, and separated - but without a divider of its own: a NavItem with
           a submenu already closes with one, and System is the item above. The
