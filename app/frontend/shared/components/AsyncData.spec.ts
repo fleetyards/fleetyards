@@ -4,12 +4,13 @@ import { ref } from "vue";
 import Component from "./AsyncData.vue";
 import type { AsyncStatus } from "./AsyncData.types";
 
-// Shaped like an AxiosError so isAxiosError() recognises it; only the status
-// matters here.
-const failedWith = (status: number) =>
+// Shaped like an AxiosError so isAxiosError() recognises it. The body matters
+// for a 403: the API answers both of its refusals with one, and the code is
+// what separates them.
+const failedWith = (status: number, data?: unknown) =>
   ({
     isAxiosError: true,
-    response: { status },
+    response: { status, data },
   }) as unknown as AsyncStatus["error"]["value"];
 
 const statusOf = (error: AsyncStatus["error"]["value"]) =>
@@ -32,12 +33,33 @@ function unanswered() {
   } as unknown as AsyncStatus["error"]["value"];
 }
 
-const mount = (status: number) =>
+const mount = (status: number, data?: unknown) =>
   mountWithDefaults<typeof Component>(Component, {
-    props: { asyncStatus: statusOf(failedWith(status)) },
+    props: { asyncStatus: statusOf(failedWith(status, data)) },
   });
 
 describe("AsyncData", () => {
+  // The classifier is unit-tested next door, but nothing there would notice a
+  // branch written in the wrong order or an import that never landed. These
+  // two assert the wiring: the same status, told apart only by the body.
+  it("sends an unbought fleet to the supporter block", async () => {
+    const wrapper = await mount(403, { code: "subscription_required" });
+
+    expect(
+      wrapper.findComponent({ name: "SubscriptionRequired" }).exists(),
+    ).toBe(true);
+    expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
+  });
+
+  it("keeps a plain refusal on the access screen", async () => {
+    const wrapper = await mount(403, { code: "forbidden" });
+
+    expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(true);
+    expect(
+      wrapper.findComponent({ name: "SubscriptionRequired" }).exists(),
+    ).toBe(false);
+  });
+
   it("sends a refused request to the access screen, not the outage one", async () => {
     const wrapper = await mount(403);
 
