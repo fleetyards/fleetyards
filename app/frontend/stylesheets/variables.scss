@@ -13,7 +13,14 @@ $gray-light: #7a8288;
 $gray: #52575c;
 $gray-dark: #3a3f44;
 $gray-darker: #272b30;
-$gray-black: #222;
+// --color-control-press, i.e. the fill of a recessed slot: a hardpoint mount,
+// a stat tile, a bar track. Was #222, the one neutral grey in a blue-tinted
+// ladder, which read a shade warm beside every surface it sat in.
+$gray-black: #1a1d21;
+// The lift a recessed slot answers the cursor with. Small on purpose: a slot is
+// a surface you read, not a control you press, so it acknowledges the pointer
+// without promoting itself to $gray-darker and reading as a raised control.
+$gray-black-hover: #1e2226;
 
 $gold: #d4af37;
 $cyan: #38bec9;

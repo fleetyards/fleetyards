@@ -38,7 +38,7 @@
   width: 100%;
   margin-bottom: 6px;
   padding: 8px 11px 8px 14px;
-  background: #1a1d21;
+  background: $gray-black;
   border: 1px solid rgba($gray-light, 0.28);
   border-radius: 9px;
   transition:
@@ -51,7 +51,7 @@
 
   &:hover {
     border-color: rgba($primary, 0.7);
-    background: #1e2226;
+    background: $gray-black-hover;
   }
 
   // Primary-colour rail marks each mount, telegraphing the future edit surface.
