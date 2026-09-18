@@ -92,5 +92,11 @@ const {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  // The rows carry no margin of their own -- the list spaces them with `gap`
+  // instead -- so nothing separated the last one from the paginator under it
+  // and the two sat flush. Matches the 20px `filtered-list__actions` puts
+  // between the toolbar and the top of the list, so the list is inset the same
+  // on both ends.
+  margin-bottom: 20px;
 }
 </style>
