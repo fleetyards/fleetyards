@@ -52,8 +52,12 @@ export const categorySvgIcons = {
 } as const;
 
 // The categories the drawn set never got, carried as Font Awesome glyphs the
-// hardpoint list already renders. Armor and countermeasures are the two that
-// matter -- 253 of the catalogue between them.
+// hardpoint list already renders.
+//
+// The second block is what the components catalogue turned up: a hardpoint list
+// never shows these, so nothing had needed them before, and between them they
+// were 2,049 of the 4,254 listed components -- 48% of the catalogue rendering
+// with an empty icon slot. Paints and doors alone are 1,761 of that.
 export const categoryFaIcons: Record<string, string> = {
   armor: "fa-duotone fa-shield-halved",
   countermeasures: "fa-duotone fa-shield-quartered",
@@ -63,6 +67,17 @@ export const categoryFaIcons: Record<string, string> = {
   cargogrid: "fa-duotone fa-thin fa-cubes",
   salvagefillerstation: "fa-duotone fa-bin-recycle",
   relay: "fa-duotone fa-transformer-bolt",
+
+  paints: "fa-duotone fa-palette",
+  doors: "fa-duotone fa-door-open",
+  // Ship subsystem controllers rather than anything a player holds -- the
+  // entries are named after what they drive, "SHIELDS" and the like.
+  controller: "fa-duotone fa-sliders",
+  bombcompartments: "fa-duotone fa-bomb",
+  selfdestruct: "fa-duotone fa-explosion",
+  // The loader's fallback when the game files name no category, so the glyph
+  // says exactly that rather than guessing at one.
+  unknown: "fa-duotone fa-circle-question",
 };
 
 // A component's own category is one word where a hardpoint slot names the four

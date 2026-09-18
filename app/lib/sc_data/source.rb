@@ -184,8 +184,43 @@ module ScData
       candidates.find(&:complete?) || candidates.first || self
     end
 
+    # Compared against the build the default environment is actually *served*
+    # from, not the one the config names.
+    #
+    # `available` hands back served sources, so while a configured build is
+    # waiting for its load those two are different versions and nothing in the
+    # list matched -- no source came back flagged, the switch could not find a
+    # default to sit opposite its preview, and it hid itself from everyone. The
+    # one window this whole fallback exists for was the one window the control
+    # over it disappeared in.
+    # The same question as `served`, asked for one catalogue.
+    #
+    # `loaded?` and `complete?` are true when *any* catalogue carries the build,
+    # which is the right answer for the source switch and the wrong one for a
+    # list: blueprints only started being exported recently, so a build that is
+    # complete by every other measure has no `blueprint_builds` rows at all, and
+    # resolving to it would empty that one catalogue while the rest filled.
+    #
+    # Falls back the same way: the newest build this catalogue has that finished
+    # importing, then the newest it has at all, then this one.
+    def served_for(build_class)
+      return self if complete? && build_class.where(environment:, version:).exists?
+
+      # Built from this catalogue's own table rather than from `recorded`, which
+      # reads the six `BUILDS` and so knows nothing about hardpoints or the
+      # other per-slot tables. Resolving those against a list that cannot
+      # contain them walked away from a build they had rows for -- which is a
+      # loader naming a version explicitly, and being answered about another.
+      candidates = build_class.where(environment:).distinct.pluck(:version)
+        .map { |version| self.class.new(version:, environment:) }
+        .sort_by(&:precedence)
+        .reverse
+
+      candidates.find(&:complete?) || candidates.first || self
+    end
+
     def default?
-      self == self.class.default
+      self == self.class.default.served
     end
 
     # Ordered the way the game names a build: `4.10.0-live.12519617` is the

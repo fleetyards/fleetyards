@@ -17,6 +17,10 @@ module Shared
 
             hidden: {type: :boolean},
             retired: {type: :boolean},
+            # Whether the catalogue lists this entry. A ship's hardpoint list
+            # reads it to decide whether the part is a link, so the two cannot
+            # disagree about what we show.
+            catalogued: {type: :boolean},
 
             category: {type: :string},
             type: ::Shared::V1::Schemas::Enums::ComponentTypeEnum,
@@ -76,7 +80,7 @@ module Shared
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug hidden retired availability media createdAt updatedAt]
+          required: %w[id name slug hidden retired catalogued availability media createdAt updatedAt]
         })
       end
     end

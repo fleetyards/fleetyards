@@ -258,7 +258,9 @@
           "email": "Correo electrónico"
         },
         "components": {
-          "name": "Nombre"
+          "name": "Nombre",
+          "description": "motor cuántico, blindaje...",
+          "manufacturer": "Behring, Ascension Astro, Juno Starwerk..."
         },
         "fleets": {
           "name": "Nombre",

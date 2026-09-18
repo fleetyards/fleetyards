@@ -1,0 +1,30 @@
+@import "@/stylesheets/variables.scss";
+
+.component-lead-metric {
+  display: flex;
+  gap: 18px;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+    white-space: nowrap;
+  }
+
+  &__value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #dedede;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}

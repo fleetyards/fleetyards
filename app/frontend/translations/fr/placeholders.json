@@ -258,7 +258,9 @@
           "email": "E-mail"
         },
         "components": {
-          "name": "Nom"
+          "name": "Nom",
+          "description": "lecteur quantique, blindage...",
+          "manufacturer": "Behring, Ascension Astro, Juno Starwerk..."
         },
         "fleets": {
           "name": "Nom",

@@ -258,7 +258,11 @@ export const useHardpointStats = (
               true,
             ),
           );
-          result.push(stat("weapons.burstDps", burstTotal, "integer"));
+          // Key too, not a footnote. Sustained is what the gun does over a
+          // fight and burst is what it does in the moment -- comparing two guns
+          // means reading both, and a reader who only ever sees the derated
+          // figure has no idea what they gave up for the duty cycle.
+          result.push(stat("weapons.burstDps", burstTotal, "integer", true));
           result.push({
             label: t("labels.hardpoint.weapons.efficiency"),
             value: `${Math.round(efficiency * 100)}%`,

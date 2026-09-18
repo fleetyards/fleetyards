@@ -467,6 +467,9 @@
         "identity": "Dettagli",
         "metrics": "Valori",
         "requiredTags": "Si monta su una porta con"
+      },
+      "components": {
+        "index": "Componenti"
       }
     }
   }

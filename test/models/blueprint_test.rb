@@ -201,6 +201,13 @@ class BlueprintTest < ActiveSupport::TestCase
     )
     create(:blueprint_cost_slot, build: last)
     create(:blueprint_source, build: last, org_name: "Eckhart Security")
+    # Something else has to carry the configured build. With nothing loaded at
+    # it, `ScData::Source#served` falls back to the newest build there is --
+    # which in a test that creates exactly one is the very build it means to
+    # call retired.
+    create(:blueprint, :without_build).builds.create!(
+      environment: ScData::Source.environment, version: ScData::Source.version
+    )
 
     blueprint.reload
 

@@ -89,7 +89,15 @@ class Component < ApplicationRecord
   # What each build of the game says about this component. Written alongside the
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "ComponentBuild", dependent: :destroy
-  has_one :build, -> { current }, class_name: "ComponentBuild", inverse_of: :component
+  # The build we are being served from, which is the configured one unless its
+  # load has not run yet. `current` on its own means *exactly* the configured
+  # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
+  # new build has landed -- so the resolution happens here instead.
+  #
+  # Without it this association is empty for every row during that window, and
+  # `retired?`, which is `build.blank?`, told every reader that everything in
+  # the catalogue was no longer in the game.
+  has_one :build, -> { current(::ScData::Source.current.served) }, class_name: "ComponentBuild", inverse_of: :component
 
   # The newest build of this environment that still describes the component,
   # which is what a record the export dropped falls back to. Without it a retired
@@ -112,6 +120,46 @@ class Component < ApplicationRecord
     else
       all
     end
+  }
+
+  # Entries a reader could be shown. The game files carry a great many internal
+  # ones -- `door_deadbolt_cuttable`, `controller_salvage_argo_moth_toolarm` --
+  # that it never gave a display name because no player ever sees them, and the
+  # slug is built from the name, so a nameless row has no detail page to reach
+  # either. 3,020 of 7,274 on the current build, 42% of the catalogue.
+  #
+  # Not `hidden`, which is the game's own flag and a different question: 2,501
+  # of the nameless are not hidden, and 819 hidden components are named.
+  scope :named, -> { where.not(name: [nil, ""]) }
+
+  # Ship internals rather than loadout parts. A door or a subsystem controller
+  # is fitted by the shipwright, never by the player, so neither belongs in a
+  # catalogue somebody browses to kit a ship out -- and between them they were
+  # 1,063 of the 4,254 named components, 25% of it.
+  #
+  # A list rather than a rule because the data carries no flag for it: `hidden`
+  # is the game's own and marks something else, and `type_data` is no guide
+  # either -- 99% of seats carry it and 0% of weapon mounts do.
+  # `seat` is 249 cockpit status displays, 21 beds and one stray turret -- the
+  # manned turrets themselves are `turret`, 120 of the 121 there are, so this
+  # does not touch them. `unknown` is what the loader falls back to when the
+  # files name no category, and reads as caps, scoops and deck plates.
+  CATALOGUE_EXCLUDED_CATEGORIES = %w[doors controller seat unknown].freeze
+
+  # What the public catalogue lists. `with_facts` has to be applied by the
+  # caller -- the category is read off the joined build.
+  #
+  # The null arm is not decoration. `NOT IN` is null-unsafe: an uncategorised
+  # component compares NULL rather than true and drops out of a list that was
+  # only ever meant to lose two categories. Nothing on the current build has a
+  # null category, which is exactly why this would have gone unnoticed here and
+  # emptied a list somewhere else.
+  scope :catalogued, -> {
+    category = fact_sql(:category)
+
+    named.where(
+      category.not_in(CATALOGUE_EXCLUDED_CATEGORIES).or(category.eq(nil))
+    )
   }
 
   # The build a filter resolves against, joined as `component_facts`. Two shapes
@@ -163,6 +211,17 @@ class Component < ApplicationRecord
   # without saying a word.
   def self.fact_sql(fact)
     Arel.sql("component_facts.#{fact}")
+  end
+
+  # Whether this is an entry the catalogue lists -- the row form of `catalogued`,
+  # said out loud in the API because the ship's hardpoint list has to agree with
+  # it: a part it linked to a page the catalogue does not carry would be a way
+  # into something we have decided not to show.
+  #
+  # Derived from the same constant rather than restated, so the list and the
+  # links cannot drift apart.
+  def catalogued?
+    name.present? && CATALOGUE_EXCLUDED_CATEGORIES.exclude?(category)
   end
 
   # Not in the build we are on. Said out loud in the API, which until now offered
@@ -279,9 +338,20 @@ class Component < ApplicationRecord
   # beside "M" and "S", so ordering it puts 10 and 12 ahead of 2 -- and a sort
   # that reads as broken is worse than one not offered. It needs a numeric
   # ransacker of its own, which would change what `size_eq` matches.
+  #
+  # The three added for the catalogue table are the columns a reader can see:
+  # `category` and `componentSubType` are facts like grade, and
+  # `manufacturerName` sorts through the association ransack already allows.
+  # Each name is the one whose `underscore` is the ransackable attribute --
+  # `componentSubType`, not `subType`, which would resolve to nothing and be
+  # dropped without a word.
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
     "grade asc", "grade desc",
+    "category asc", "category desc",
+    "sizeOrder asc", "sizeOrder desc",
+    "componentSubType asc", "componentSubType desc",
+    "manufacturerName asc", "manufacturerName desc",
     "createdAt asc", "createdAt desc"
   ] + METRICS.keys.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
 
@@ -315,6 +385,18 @@ class Component < ApplicationRecord
     end
   end
 
+  # Sort only, and numeric. `size` itself stays a string ransacker so `size_eq`
+  # keeps matching exactly what it always matched -- which is why this is a name
+  # of its own rather than a change to that one.
+  #
+  # Guarded rather than cast outright: every size any component build has ever
+  # carried is digits ("0" to "12", twelve of them), but a `::integer` on a
+  # column that is a string by type would take the endpoint down the first time
+  # the game shipped an "M", and sorting that to the end is the better failure.
+  ransacker :size_order, type: :integer do
+    Arel.sql("CASE WHEN #{fact_sql(:size)} ~ '^[0-9]+$' THEN (#{fact_sql(:size)})::integer END")
+  end
+
   # The two enums keep their formatters, which turn the name a client sends into
   # the integer the column stores.
   ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do
@@ -332,7 +414,11 @@ class Component < ApplicationRecord
       "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
       "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
-    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore)
+    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore) +
+      # Sort-only, but it has to be listed all the same: ransack drops a sort on
+      # anything absent from here without a word, so the column just comes back
+      # in whatever order the planner chose.
+      ["size_order"]
   end
 
   # `shop_commodities` was listed here long after the association was removed,
@@ -389,20 +475,36 @@ class Component < ApplicationRecord
   # Read off the build table rather than through the rows: the builds we are on
   # *are* the current catalogue, so this needs neither the join nor
   # `current_version` and stays a single index scan.
+  # `served_source` for the same reason the catalogue uses it: read against the
+  # configured build alone, every filter came back empty while that build waited
+  # for its load -- an empty category select over a list that was answering
+  # perfectly well from the patch behind.
   def self.build_facet(fact, source = ::ScData::Source.current)
-    scope = ComponentBuild.current(source).where.not(fact => nil)
+    scope = ComponentBuild.current(served_source(source)).where.not(fact => nil)
     scope = yield(scope) if block_given?
 
     scope.distinct.pluck(fact).compact_blank.sort
   end
 
-  def self.categories
-    build_facet(:category)
+  # Taken off the catalogue rather than off the build, so the filter offers
+  # exactly what it can select. Read from the build it listed categories the
+  # list does not carry: the four `CATALOGUE_EXCLUDED_CATEGORIES`, and another
+  # three -- batteries, scanners, salvagemunching -- whose every component the
+  # game left unnamed. Seven dead options out of thirty-four.
+  def self.catalogue_facet(fact, source = ::ScData::Source.current)
+    scope = with_facts(true, source).catalogued
+    scope = yield(scope) if block_given?
+
+    scope.distinct.pluck(fact_sql(fact)).compact_blank.sort
   end
 
-  def self.sub_types(category: nil)
-    build_facet(:component_sub_type) do |scope|
-      category.present? ? scope.where(category:) : scope
+  def self.categories(source = ::ScData::Source.current)
+    catalogue_facet(:category, source)
+  end
+
+  def self.sub_types(category: nil, source: ::ScData::Source.current)
+    catalogue_facet(:component_sub_type, source) do |scope|
+      category.present? ? scope.where(fact_sql(:category).eq(category)) : scope
     end
   end
 

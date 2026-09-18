@@ -143,6 +143,9 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
   # will offer again, and this is what says so.
   test "flags an entry pointing at an item the current build no longer ships" do
     dropped = create(:component, name: "FR-66 Shield Generator", version: "0.0.1-live.1")
+    # Something else has to carry the configured build, or `ScData::Source#served`
+    # falls back to the dropped item's own and the entry is not stale at all.
+    create(:component, version: ScData::Source.version)
 
     item = create(:inventory_item, inventory: @inventory, item: dropped)
 

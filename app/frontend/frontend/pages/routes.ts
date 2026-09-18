@@ -77,9 +77,28 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/components/",
+    // Every catalogue lives under this one path, so the section reads as a
+    // section in the URL as well as the nav. `/catalogue` itself lands on the
+    // first tenant that has pages -- components today; blueprints, equipment
+    // and commodities join as they are built.
+    path: "/catalogue/",
+    redirect: { name: "components" },
+  },
+  {
+    path: "/catalogue/components/",
     component: () => import("@/frontend/pages/components.vue"),
     children: componentsRoutes,
+  },
+  // The paths the pages shipped under before the section existed. Both are
+  // live -- the detail page has been reachable since #5015 and every hardpoint
+  // on every ship links to it -- so they redirect rather than 404.
+  {
+    path: "/components/",
+    redirect: { name: "components" },
+  },
+  {
+    path: "/components/:slug",
+    redirect: (to) => ({ name: "component", params: { slug: to.params.slug } }),
   },
   {
     path: "/ships/",

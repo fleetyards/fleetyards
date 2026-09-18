@@ -1512,7 +1512,11 @@
           "buyPriceLt": "买入价格 <=",
           "sellPriceGt": "卖出价格 >=",
           "sellPriceLt": "卖出价格 <=",
-          "storeImageBlank": "没有商店图片?"
+          "storeImageBlank": "没有商店图片?",
+          "description": "描述",
+          "manufacturer": "制造商",
+          "category": "分类",
+          "subType": "子类型"
         },
         "shops": {
           "name": "名称",

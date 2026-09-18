@@ -10492,6 +10492,8 @@ components:
           type: boolean
         retired:
           type: boolean
+        catalogued:
+          type: boolean
         category:
           type: string
         type:
@@ -10564,6 +10566,7 @@ components:
       - slug
       - hidden
       - retired
+      - catalogued
       - availability
       - media
       - createdAt
@@ -11058,6 +11061,14 @@ components:
       - name desc
       - grade asc
       - grade desc
+      - category asc
+      - category desc
+      - sizeOrder asc
+      - sizeOrder desc
+      - componentSubType asc
+      - componentSubType desc
+      - manufacturerName asc
+      - manufacturerName desc
       - createdAt asc
       - createdAt desc
       - maxHealth asc
@@ -11081,6 +11092,14 @@ components:
       - NAME_DESC
       - GRADE_ASC
       - GRADE_DESC
+      - CATEGORY_ASC
+      - CATEGORY_DESC
+      - SIZE_ORDER_ASC
+      - SIZE_ORDER_DESC
+      - COMPONENT_SUB_TYPE_ASC
+      - COMPONENT_SUB_TYPE_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       - MAX_HEALTH_ASC

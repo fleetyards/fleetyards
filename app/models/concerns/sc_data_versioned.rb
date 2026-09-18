@@ -49,12 +49,17 @@ module ScDataVersioned
     # owns that resolution; the source switch reads it too, so the catalogue
     # and the label over it cannot disagree.
     #
+    # Resolved against this catalogue's own build table rather than globally: a
+    # build can be complete and still carry no rows for one catalogue -- the
+    # blueprint export is newer than the rest -- and resolving to it would empty
+    # that list while the others filled.
+    #
     # Deliberately NOT folded into `<Build>.current`, which has to keep meaning
     # "exactly this build": `ScData::CheckJob#loaded?` asks it whether the new
     # build has landed, and a fallback there would answer yes for ever and the
     # load would never be enqueued at all.
     def served_source(source = ::ScData::Source.current)
-      source.served
+      source.served_for(reflect_on_association(:builds).klass)
     end
   end
 end

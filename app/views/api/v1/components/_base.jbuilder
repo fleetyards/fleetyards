@@ -44,6 +44,7 @@ json.hidden component.hidden
 # Not in the build we are on. Until now the API offered a component the
 # export had dropped as though it were current.
 json.retired component.retired?
+json.catalogued component.catalogued?
 
 json.manufacturer do
   json.null! if component.manufacturer.blank?

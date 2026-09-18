@@ -157,6 +157,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         }"
         icon="fa-duotone fa-starship"
       />
+      <NavItem :to="{ name: 'components' }" icon="fa-duotone fa-microchip" />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
         :to="{

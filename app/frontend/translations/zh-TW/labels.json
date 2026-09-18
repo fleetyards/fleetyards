@@ -1512,7 +1512,11 @@
           "buyPriceLt": "購買價格 <=",
           "sellPriceGt": "出售價格 >=",
           "sellPriceLt": "出售價格 <=",
-          "storeImageBlank": "沒有商店圖片?"
+          "storeImageBlank": "沒有商店圖片?",
+          "description": "描述",
+          "manufacturer": "製造商",
+          "category": "分類",
+          "subType": "子類型"
         },
         "shops": {
           "name": "名稱",

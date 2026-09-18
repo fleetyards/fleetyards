@@ -258,7 +258,9 @@
           "email": "Email"
         },
         "components": {
-          "name": "Name"
+          "name": "Name",
+          "description": "quantum drive, armor plating...",
+          "manufacturer": "Behring, Ascension Astro, Juno Starwerk..."
         },
         "fleets": {
           "name": "Name",

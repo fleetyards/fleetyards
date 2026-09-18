@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
@@ -30,6 +32,19 @@ const stats = useComponentStats(component);
 // card's own division rather than a new one -- see metricsCard.scss.
 const heroStats = computed(() => stats.value.filter((stat) => stat.primary));
 const restStats = computed(() => stats.value.filter((stat) => !stat.primary));
+
+// One crumb, not two. `/catalogue/` only redirects here, so a "Catalogue" step
+// above would be a link back to the page the reader is already on the way to.
+//
+// `BreadCrumbs` resolves it through `useBreadCrumbs`, so the way back carries
+// the filters and the page the reader left the list on rather than dropping
+// them at an unfiltered page one.
+const crumbs = computed<Crumb[]>(() => [
+  {
+    to: { name: "components" },
+    label: t("nav.components.index"),
+  },
+]);
 
 const icon = computed(() => categoryIcon(component.value?.category));
 
@@ -86,6 +101,8 @@ watch(
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <div v-if="component" class="component-page">
+        <BreadCrumbs :crumbs="crumbs" />
+
         <div class="component-page__masthead">
           <img
             v-if="icon?.kind === 'svg'"
@@ -152,10 +169,15 @@ watch(
         <div class="component-page__columns">
           <MetricsCard :title="t('headlines.component.metrics')">
             <div v-if="heroStats.length" class="metrics-card__hero">
+              <!-- The accent marks the headline, so exactly one tile carries
+                   it. A category can name more than one key figure -- a gun
+                   names sustained and burst DPS -- and accenting both says
+                   neither is the one to read first. -->
               <div
-                v-for="stat in heroStats"
+                v-for="(stat, index) in heroStats"
                 :key="stat.label"
-                class="metrics-card__tile metrics-card__tile--primary"
+                class="metrics-card__tile"
+                :class="{ 'metrics-card__tile--primary': index === 0 }"
               >
                 <div class="metrics-card__tile__label">{{ stat.label }}</div>
                 <div class="metrics-card__tile__value">{{ stat.value }}</div>

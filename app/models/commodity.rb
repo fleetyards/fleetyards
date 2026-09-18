@@ -58,7 +58,15 @@ class Commodity < ApplicationRecord
   # What each build of the game says about this commodity. Written alongside the
   # columns, and read through in preference to them.
   has_many :builds, class_name: "CommodityBuild", dependent: :destroy
-  has_one :build, -> { current }, class_name: "CommodityBuild", inverse_of: :commodity
+  # The build we are being served from, which is the configured one unless its
+  # load has not run yet. `current` on its own means *exactly* the configured
+  # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
+  # new build has landed -- so the resolution happens here instead.
+  #
+  # Without it this association is empty for every row during that window, and
+  # `retired?`, which is `build.blank?`, told every reader that everything in
+  # the catalogue was no longer in the game.
+  has_one :build, -> { current(::ScData::Source.current.served) }, class_name: "CommodityBuild", inverse_of: :commodity
 
   # The newest build of this environment that still describes the commodity,
   # which is what a record the export dropped falls back to. Without it a retired
@@ -214,7 +222,9 @@ class Commodity < ApplicationRecord
   # Read off the build table rather than through the rows: the builds we are on
   # *are* the current catalogue, so this needs neither the join nor
   # `current_version` and stays a single index scan.
-  def self.commodity_types(source = ::ScData::Source.current)
+  # The served build, or the filter offers nothing at all while a configured
+  # build waits for its load -- the same empty select the component facets had.
+  def self.commodity_types(source = ::ScData::Source.current.served)
     CommodityBuild.current(source)
       .where.not(commodity_type: nil)
       .distinct

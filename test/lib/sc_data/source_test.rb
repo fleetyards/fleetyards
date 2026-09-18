@@ -132,6 +132,41 @@ class ScData::SourceTest < ActiveSupport::TestCase
     assert_empty ScData::Source.available
   end
 
+  # `available` hands back served sources, so a flag compared against the
+  # configured version matches nothing while a build waits for its load -- and
+  # the switch, which finds its default by that flag, disappears.
+  test "the served build of the default environment is the one flagged default" do
+    stub_config(sources: {live: "1.0.0"})
+    create(:model_build, model: create(:model), environment: "live", version: "0.9.0")
+
+    assert ScData::Source.available.sole.default?
+  end
+
+  # `loaded?` is true when *any* catalogue carries the build, which is right for
+  # the switch and wrong for a list: the blueprint export is newer than the
+  # rest, so a build every other catalogue has can carry no blueprint rows at
+  # all, and resolving to it would empty that one list while the others filled.
+  test "each catalogue is served a build it actually has rows for" do
+    stub_config(sources: {live: "2.0.0"})
+    model = create(:model)
+    create(:model_build, model:, environment: "live", version: "2.0.0")
+    create(:component_build, component: create(:component, :without_build),
+      environment: "live", version: "1.0.0")
+
+    source = ScData::Source.find("live")
+
+    assert_equal "2.0.0", source.served_for(ModelBuild).version
+    assert_equal "1.0.0", source.served_for(ComponentBuild).version,
+      "components have no rows at 2.0.0 and must not be pointed at it"
+  end
+
+  test "a catalogue with no rows anywhere is handed back the build it was given" do
+    stub_config(sources: {live: "2.0.0"})
+    create(:model_build, model: create(:model), environment: "live", version: "2.0.0")
+
+    assert_equal "2.0.0", ScData::Source.find("live").served_for(BlueprintBuild).version
+  end
+
   test "a source nothing has ever been loaded for is still not offered" do
     stub_config(sources: {live: "1.0.0"})
 

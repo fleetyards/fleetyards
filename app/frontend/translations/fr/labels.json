@@ -1512,7 +1512,11 @@
           "buyPriceLt": "Prix d'achat <=",
           "sellPriceGt": "Prix de vente >=",
           "sellPriceLt": "Prix de vente <=",
-          "storeImageBlank": "Sans image de boutique ?"
+          "storeImageBlank": "Sans image de boutique ?",
+          "description": "Description",
+          "manufacturer": "Fabricant",
+          "category": "Catégorie",
+          "subType": "Sous-type"
         },
         "shops": {
           "name": "Nom",

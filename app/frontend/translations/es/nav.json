@@ -298,7 +298,10 @@
         }
       },
       "notifications": "Notificaciones",
-      "scDataSource": "Fuente de datos"
+      "scDataSource": "Fuente de datos",
+      "components": {
+        "index": "Componentes"
+      }
     }
   }
 }

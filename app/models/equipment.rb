@@ -80,7 +80,15 @@ class Equipment < ApplicationRecord
   # What each build of the game says about this item. Written alongside the
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "EquipmentBuild", dependent: :destroy
-  has_one :build, -> { current }, class_name: "EquipmentBuild", inverse_of: :equipment
+  # The build we are being served from, which is the configured one unless its
+  # load has not run yet. `current` on its own means *exactly* the configured
+  # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
+  # new build has landed -- so the resolution happens here instead.
+  #
+  # Without it this association is empty for every row during that window, and
+  # `retired?`, which is `build.blank?`, told every reader that everything in
+  # the catalogue was no longer in the game.
+  has_one :build, -> { current(::ScData::Source.current.served) }, class_name: "EquipmentBuild", inverse_of: :equipment
 
   # Whether the build we are on describes this item, rather than whether the
   # version string on the row still matches it. An exists check rather than a
@@ -293,8 +301,10 @@ class Equipment < ApplicationRecord
   # Read off the build table rather than through the rows: the builds we are on
   # *are* the current catalogue, so this needs neither the join nor
   # `current_version` and stays a single index scan.
+  # See `Component.build_facet`: against the configured build alone every filter
+  # empties while that build waits for its load.
   def self.build_facet(fact, source = ::ScData::Source.current)
-    scope = EquipmentBuild.current(source).where(hidden: false).where.not(fact => nil)
+    scope = EquipmentBuild.current(served_source(source)).where(hidden: false).where.not(fact => nil)
     scope = yield(scope) if block_given?
 
     scope.distinct.order(fact).pluck(fact)

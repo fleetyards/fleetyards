@@ -105,7 +105,11 @@ class Hardpoint < ApplicationRecord
     )
   SQL
 
-  scope :in_build, ->(source = ::ScData::Source.current) {
+  # The served build, not the configured one: a ship's whole game-files view is
+  # gated on this, so reading it strictly emptied every loadout on the site
+  # while the catalogues beside it answered from the patch behind. 65 slots on a
+  # 100i, and "No Hardpoints found".
+  scope :in_build, ->(source = ::ScData::Source.current.served_for(HardpointBuild)) {
     where(
       sanitize_sql_array([
         IN_BUILD_SQL,

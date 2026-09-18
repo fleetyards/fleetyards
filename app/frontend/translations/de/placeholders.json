@@ -258,7 +258,9 @@
           "email": "E-Mail"
         },
         "components": {
-          "name": "Name"
+          "name": "Name",
+          "description": "Quantenantrieb, Panzerung...",
+          "manufacturer": "Behring, Ascension Astro, Juno Starwerk..."
         },
         "fleets": {
           "name": "Name",

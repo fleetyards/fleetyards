@@ -278,6 +278,11 @@ class ModelTest < ActiveSupport::TestCase
   test "a model the current build dropped reads the last build that described it" do
     model = create(:model, mass: 100.0)
     create(:model_build, model:, version: "0.0.1-live.1", mass: 777.0)
+    # Something else has to carry the configured build. With nothing loaded at
+    # it, `ScData::Source#served` falls back to the newest build there is --
+    # which in a test that creates exactly one is the very build it means to
+    # call dropped.
+    create(:model_build, model: create(:model), version: ScData::Source.version)
 
     assert_nil model.reload.build
     assert_equal 777.0, model.mass
@@ -364,6 +369,7 @@ class ModelTest < ActiveSupport::TestCase
   test "#update_with_facts leaves a dropped model's build alone" do
     model = create(:model, mass: 100.0)
     old = create(:model_build, model:, version: "0.0.1-live.1", mass: 777.0)
+    create(:model_build, model: create(:model), version: ScData::Source.version)
 
     assert model.reload.update_with_facts(mass: 250.0)
 
@@ -401,6 +407,7 @@ class ModelTest < ActiveSupport::TestCase
   test "an older build does not answer a filter" do
     model = create(:model, mass: 100.0)
     create(:model_build, model:, version: "0.0.1-live.1", mass: 999_999.0)
+    create(:model_build, model: create(:model), version: ScData::Source.version)
 
     assert_not_includes Model.ransack(mass_gteq: 500_000).result, model,
       "only the build we are on decides a filter"
@@ -581,6 +588,7 @@ class ModelTest < ActiveSupport::TestCase
   test "is not in game when only an older build describes it" do
     model = create(:model)
     create(:model_build, model:, version: "0.0.1-live.1")
+    create(:model_build, model: create(:model), version: ScData::Source.version)
 
     assert_not_predicate model.reload, :in_game?
   end
@@ -617,8 +625,10 @@ class ModelTest < ActiveSupport::TestCase
     Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0"}, default: "live"})
     model = create(:model)
     create(:model_build, model:, environment: "live", version: "0.9.0")
+    other = create(:model)
+    create(:model_build, model: other, environment: "live", version: "1.0.0")
 
-    assert_empty Model.ransack(in_game_eq: true).result
+    assert_equal [other], Model.ransack(in_game_eq: true).result.to_a
     assert_equal [model], Model.ransack(in_game_eq: false).result.to_a
   end
 

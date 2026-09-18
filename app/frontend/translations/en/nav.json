@@ -298,7 +298,10 @@
         }
       },
       "notifications": "Notifications",
-      "scDataSource": "Data source"
+      "scDataSource": "Data source",
+      "components": {
+        "index": "Components"
+      }
     }
   }
 }

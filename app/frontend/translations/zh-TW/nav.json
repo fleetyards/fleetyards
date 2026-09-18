@@ -298,7 +298,10 @@
         }
       },
       "notifications": "通知",
-      "scDataSource": "資料來源"
+      "scDataSource": "資料來源",
+      "components": {
+        "index": "部件"
+      }
     }
   }
 }

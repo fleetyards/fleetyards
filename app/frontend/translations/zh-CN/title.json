@@ -327,7 +327,10 @@
         }
       },
       "notifications": "通知",
-      "component": "%{name}"
+      "component": "%{name}",
+      "components": {
+        "index": "部件"
+      }
     }
   }
 }

@@ -467,6 +467,9 @@
         "identity": "Details",
         "metrics": "Werte",
         "requiredTags": "Passt in einen Port mit"
+      },
+      "components": {
+        "index": "Komponenten"
       }
     }
   }

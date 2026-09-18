@@ -100,8 +100,12 @@ const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
 // which is what the ship page wants.
 const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
 
+// Everything except the headline, rather than everything not flagged key. A
+// category can mark more than one figure key -- a gun marks sustained and burst
+// DPS -- and only the first becomes the gold headline, so filtering on the flag
+// dropped the others off the row altogether.
 const inlineStats = computed(() => {
-  const stats = detailStats.value.filter((s) => !s.primary);
+  const stats = detailStats.value.filter((s) => s !== primaryStat.value);
 
   return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
 });
@@ -167,11 +171,18 @@ const hardpointNames = computed(() => {
         <HardpointComponent>
           <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
             <template v-if="hardpoint.component && hardpoint.component.name">
-              <!-- The catalogue link. Only when the component has a slug: one
+              <!-- The catalogue link. Only when the component has a slug -- one
                    without a name never got one, and a link to nowhere is worse
-                   than plain text. -->
+                   than plain text -- and only when the catalogue actually
+                   carries it: doors, subsystem controllers, seats and the
+                   uncategorised are fitted by the shipwright rather than the
+                   player, and a link here would be a way into a page the
+                   catalogue has decided not to list. The server decides that,
+                   so the two cannot drift. -->
               <router-link
-                v-if="hardpoint.component.slug"
+                v-if="
+                  hardpoint.component.slug && hardpoint.component.catalogued
+                "
                 :to="{
                   name: 'component',
                   params: { slug: hardpoint.component.slug },

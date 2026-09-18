@@ -176,6 +176,12 @@ class CommodityTest < ActiveSupport::TestCase
   test "a retired commodity reads the last build that described it, and is marked" do
     commodity = create(:commodity, :without_build, name: "Column Name")
     create(:commodity_build, commodity:, version: "0.0.1-live.1", name: "Old Build Name")
+    # Something else has to carry the configured build. With nothing loaded at
+    # it, `ScData::Source#served` falls back to the newest build there is --
+    # which in a test that creates exactly one is the very build it means to
+    # call retired.
+    create(:commodity_build, commodity: create(:commodity, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version)
 
     assert_predicate commodity.reload, :retired?
     assert_equal "Old Build Name", commodity.name
@@ -212,6 +218,10 @@ class CommodityTest < ActiveSupport::TestCase
   test "#update_with_facts leaves a retired commodity's build alone" do
     commodity = create(:commodity, :without_build, name: "Wrong Name")
     old = create(:commodity_build, commodity:, version: "0.0.1-live.1", name: "Old Build Name")
+    # As above: without a configured build to serve, the old one below is what
+    # gets served and nothing is retired.
+    create(:commodity_build, commodity: create(:commodity, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version)
 
     assert commodity.update_with_facts(name: "Corrected Name")
 
