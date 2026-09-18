@@ -19,6 +19,16 @@ class BlueprintStatBasesTest < ActiveSupport::TestCase
     assert_in_delta 375.0, BlueprintStatBases.new(component).for("gpp_weapon_damage")
   end
 
+  # `type_data` is jsonb and enforces no shape, so a row need not hold the hash
+  # the parser writes.
+  test "says nothing when the damage figures are not a hash" do
+    [[1, 2], 350.0, "350"].each do |shape|
+      component = build(:component, type_data: {"damage_per_shot" => shape})
+
+      assert_nil BlueprintStatBases.new(component).for("gpp_weapon_damage")
+    end
+  end
+
   test "says nothing for a stat the catalogue holds no figure for" do
     component = build(:component, type_data: {"max_health" => 10.0})
 

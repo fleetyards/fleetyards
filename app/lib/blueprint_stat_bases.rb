@@ -91,6 +91,10 @@ class BlueprintStatBases
 
   def damage(data)
     per_shot = data["damage_per_shot"]
+    # `type_data` is jsonb, which enforces no shape: a row holding an array or
+    # a bare number here would raise out of the serializer on the string-key
+    # lookup below rather than simply resolving to no base.
+    return unless per_shot.is_a?(Hash)
     return if per_shot.blank?
 
     total = DAMAGE_TYPES.sum { |type| per_shot[type].to_f }

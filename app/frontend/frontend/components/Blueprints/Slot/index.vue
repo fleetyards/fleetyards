@@ -151,7 +151,6 @@ const applyGrade = (grade: number) => {
 const { ramps } = useQualityRamp(
   () => props.slotData.modifiers || [],
   () => props.quality,
-  () => !belowGate.value,
 );
 
 // A number input reports "" mid-edit -- cleared, or a lone "-" -- and

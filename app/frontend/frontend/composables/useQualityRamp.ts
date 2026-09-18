@@ -137,7 +137,6 @@ export const byStat = (modifiers: BlueprintCostModifier[]) => {
 export const useQualityRamp = (
   modifiers: MaybeRefOrGetter<BlueprintCostModifier[]>,
   quality: MaybeRefOrGetter<number>,
-  reachable: MaybeRefOrGetter<boolean>,
 ) => {
   // Drawn across the whole quality scale rather than only the ramp's own
   // stretch of it. 249 stats in the build start at quality 500, and a line
@@ -220,7 +219,6 @@ export const useQualityRamp = (
         markerLeft: `${((x(at) / WIDTH) * 100).toFixed(2)}%`,
         markerTop: `${((y(now) / HEIGHT) * 100).toFixed(2)}%`,
         neutralLeft: `${((x(NEUTRAL_QUALITY) / WIDTH) * 100).toFixed(2)}%`,
-        usable: toValue(reachable),
       };
     });
   });

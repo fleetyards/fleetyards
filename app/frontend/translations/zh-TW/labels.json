@@ -2672,10 +2672,10 @@
           "cargo": "貨物",
           "rank": "等級",
           "danger": "危險度",
-          "contract": "契約",
+          "contract": "合約",
           "other": "可變"
         },
-        "missionSlotsHint": "‹尖括號› 內的內容由遊戲在提供契約時填入。",
+        "missionSlotsHint": "‹尖括號› 內的內容由遊戲在提供合約時填入。",
         "atNeutral": "Q500 時為 %{value}",
         "whatYouGet": "成品屬性",
         "fromSlots": "%{count} 個槽位",
