@@ -141,3 +141,65 @@ describe("the views themselves", () => {
     );
   });
 });
+
+describe("while the next set of images is loading", () => {
+  const settleAll = async (wrapper: Awaited<ReturnType<typeof mountViews>>) => {
+    for (const img of wrapper.findAll("img")) {
+      await img.trigger("load");
+    }
+  };
+
+  it("holds the loader until every view has reported", async () => {
+    const wrapper = await mountViews(RETRACTED_VIEWS);
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+
+    await wrapper.findAll("img")[0].trigger("load");
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+
+    await settleAll(wrapper);
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+  });
+
+  it("comes back when the state switches to images not seen yet", async () => {
+    const wrapper = await mountViews({
+      ...RETRACTED_VIEWS,
+      landedTopView: file("landed-top"),
+    });
+    await settleAll(wrapper);
+
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
+  });
+
+  // Three of the four views fall back to the retracted image, which the browser
+  // has already: only the one that actually changed is waited on.
+  it("does not wait again on an image the switch reuses", async () => {
+    const wrapper = await mountViews({
+      ...RETRACTED_VIEWS,
+      landedTopView: file("landed-top"),
+    });
+    await settleAll(wrapper);
+
+    await wrapper.setProps({ state: ModelStateEnum.LANDED });
+    await wrapper
+      .findAll("img")
+      .find((img) => img.attributes("src")?.includes("landed-top"))
+      ?.trigger("load");
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+  });
+
+  it("settles a view that fails rather than waiting forever", async () => {
+    const wrapper = await mountViews(RETRACTED_VIEWS);
+
+    for (const img of wrapper.findAll("img")) {
+      await img.trigger("error");
+    }
+
+    expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+  });
+});

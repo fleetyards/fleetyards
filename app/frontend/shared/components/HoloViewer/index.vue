@@ -141,6 +141,18 @@ onMounted(() => {
   progress.value = 0;
 });
 
+// A swapped path is a fresh download -- the ship page switching between the
+// flying and the landed holo is the everyday case -- and the old mesh stays on
+// screen while it runs. Without this the viewer sat there looking finished, with
+// the progress bar still reading 100% from the file before it.
+watch(
+  () => props.models.map((model) => model.path).join(","),
+  () => {
+    loading.value = true;
+    progress.value = 0;
+  },
+);
+
 const toggleZoom = () => {
   zoom.value = !zoom.value;
 };

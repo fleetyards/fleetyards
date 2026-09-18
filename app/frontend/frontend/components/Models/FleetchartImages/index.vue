@@ -9,6 +9,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import {
   ModelStateEnum,
   ModelViewEnum,
@@ -79,6 +80,35 @@ const fleetchartImageFront = computed(() => viewUrl(ModelViewEnum.FRONT));
 const fleetchartImageTop = computed(() => viewUrl(ModelViewEnum.TOP));
 
 const fleetchartImageSide = computed(() => viewUrl(ModelViewEnum.SIDE));
+
+// The coloured views run to several megabytes each, so switching state leaves the
+// previous set on screen for a beat. Settled by URL rather than by a counter: the
+// four <img> elements stay put across a switch, so each one reports the file it
+// just finished, and an image already in the browser cache reports immediately.
+const settledUrls = ref(new Set<string>());
+
+const currentUrls = computed(() =>
+  [
+    fleetchartImageAngled.value,
+    fleetchartImageTop.value,
+    fleetchartImageFront.value,
+    fleetchartImageSide.value,
+  ].filter((url): url is string => Boolean(url)),
+);
+
+const loading = computed(() =>
+  currentUrls.value.some((url) => !settledUrls.value.has(url)),
+);
+
+// An image that fails settles too, or the loader would sit over a view that is
+// never going to arrive.
+const settle = (url?: string) => {
+  if (!url) {
+    return;
+  }
+
+  settledUrls.value = new Set(settledUrls.value).add(url);
+};
 
 const windowWidth = ref(window.innerWidth / 2);
 
@@ -153,12 +183,18 @@ onMounted(() => {
         {{ t(`labels.model.state.${modelState}`) }}
       </Btn>
     </BtnGroup>
-    <div class="fleetchart-views">
+    <div
+      class="fleetchart-views"
+      :class="{ 'fleetchart-views--loading': loading }"
+    >
+      <Loader relative :loading="loading" />
       <div>
         <img
           v-if="fleetchartImageAngled"
           :src="fleetchartImageAngled"
           :width="(length > beam ? length : beam) * 1.2"
+          @load="settle(fleetchartImageAngled)"
+          @error="settle(fleetchartImageAngled)"
         />
       </div>
       <div>
@@ -166,6 +202,8 @@ onMounted(() => {
           v-if="fleetchartImageTop"
           :src="fleetchartImageTop"
           :width="length"
+          @load="settle(fleetchartImageTop)"
+          @error="settle(fleetchartImageTop)"
         />
       </div>
       <div :class="{ small: mobile }">
@@ -173,6 +211,8 @@ onMounted(() => {
           v-if="fleetchartImageFront"
           :src="fleetchartImageFront"
           :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
+          @load="settle(fleetchartImageFront)"
+          @error="settle(fleetchartImageFront)"
         />
       </div>
       <div>
@@ -181,7 +221,11 @@ onMounted(() => {
           ref="sideViewImg"
           :src="fleetchartImageSide"
           :width="length"
-          @load="updateSideViewHeight"
+          @load="
+            updateSideViewHeight();
+            settle(fleetchartImageSide);
+          "
+          @error="settle(fleetchartImageSide)"
         />
       </div>
     </div>
