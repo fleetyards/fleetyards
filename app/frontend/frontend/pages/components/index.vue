@@ -64,9 +64,10 @@ const {
       />
     </template>
 
-    <!-- Rows, not cards. Nothing in the catalogue has a picture: the 887
-         components that carry an icon are all paints, which the list leaves
-         out, so a grid of tiles would be a grid of placeholders. -->
+    <!-- Rows, not cards. Not one of the 7,274 components carries a picture:
+         `store_image` is curated and nothing has ever been uploaded against a
+         component, so a grid of tiles would be a grid of placeholders. That
+         includes the 1,099 paints, which the list shows like anything else. -->
     <template #default="{ records }">
       <div class="components-list">
         <ComponentRow
