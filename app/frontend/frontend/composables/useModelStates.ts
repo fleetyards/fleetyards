@@ -138,46 +138,46 @@ const STATE_METRICS: Record<ModelStateEnum, StateMetrics> = {
   },
 };
 
-const number = (
+function number(
   metrics: ModelMetrics,
   key: keyof ModelMetrics,
-): number | undefined => {
+): number | undefined {
   const value = metrics[key];
 
   return typeof value === "number" ? value : undefined;
-};
+}
 
-const file = (
-  media: ModelMedia,
-  key: keyof ModelMedia,
-): MediaFile | undefined => {
+function file(media: ModelMedia, key: keyof ModelMedia): MediaFile | undefined {
   const value = media[key];
 
   return typeof value === "string" ? undefined : value;
-};
+}
 
 // The state's own holo, then the flying one -- and then whatever holo the model
 // does have: a hull uploaded landed-first has no flying mesh to fall back to, and
 // the alternative is a 3D view button that opens nothing.
-export const modelStateHolo = (
+export function modelStateHolo(
   model: Model,
   state: ModelStateEnum,
-): MediaFile | undefined =>
-  file(model.media, STATE_MEDIA[state].holo) ||
-  model.media.holo ||
-  MODEL_STATES.map((other) => file(model.media, STATE_MEDIA[other].holo)).find(
-    Boolean,
+): MediaFile | undefined {
+  return (
+    file(model.media, STATE_MEDIA[state].holo) ||
+    model.media.holo ||
+    MODEL_STATES.map((other) =>
+      file(model.media, STATE_MEDIA[other].holo),
+    ).find(Boolean)
   );
+}
 
 // The pair for one view, coloured and not, so the caller keeps its own rule about
 // which it prefers at which screen size. A state that has neither falls back to
 // the flight pair for that view alone: an extended set missing its front view
 // should still show a front view.
-export const modelStateView = (
+export function modelStateView(
   model: Model,
   state: ModelStateEnum,
   view: ModelViewEnum,
-): { regular?: MediaFile; colored?: MediaFile } => {
+): { regular?: MediaFile; colored?: MediaFile } {
   const keys = STATE_MEDIA[state].views[view];
   const regular = file(model.media, keys.regular);
   const colored = file(model.media, keys.colored);
@@ -192,11 +192,11 @@ export const modelStateView = (
     regular: file(model.media, fallback.regular),
     colored: file(model.media, fallback.colored),
   };
-};
+}
 
 // Each figure falls back on its own: a landed holo measures all three, but a
 // state entered by hand may carry only the one that differs.
-export const modelStateMetrics = (model: Model, state: ModelStateEnum) => {
+export function modelStateMetrics(model: Model, state: ModelStateEnum) {
   const keys = STATE_METRICS[state];
   const metrics = model.metrics;
 
@@ -223,9 +223,9 @@ export const modelStateMetrics = (model: Model, state: ModelStateEnum) => {
       metrics.fleetchartOffsetBeam ||
       metrics.beam,
   };
-};
+}
 
-const hasStateMedia = (model: Model, state: ModelStateEnum): boolean => {
+function hasStateMedia(model: Model, state: ModelStateEnum): boolean {
   const { holo, views } = STATE_MEDIA[state];
 
   return Boolean(
@@ -236,12 +236,12 @@ const hasStateMedia = (model: Model, state: ModelStateEnum): boolean => {
         file(model.media, views[view].colored),
     ),
   );
-};
+}
 
 // A measurement of its own, in any of the three dimensions: on several hulls the
 // gear changes the height and nothing else, and that is still a state worth
 // offering.
-const hasStateMetrics = (model: Model, state: ModelStateEnum): boolean => {
+function hasStateMetrics(model: Model, state: ModelStateEnum): boolean {
   const keys = STATE_METRICS[state];
 
   return Boolean(
@@ -249,14 +249,17 @@ const hasStateMetrics = (model: Model, state: ModelStateEnum): boolean => {
     number(model.metrics, keys.beam) ||
     number(model.metrics, keys.height),
   );
-};
+}
 
 // Flight is always on offer -- it is what every other state falls back to --
 // and the other two only once the model carries something of their own.
-export const modelHasState = (model: Model, state: ModelStateEnum): boolean =>
-  state === ModelStateEnum.FLIGHT ||
-  hasStateMetrics(model, state) ||
-  hasStateMedia(model, state);
+export function modelHasState(model: Model, state: ModelStateEnum): boolean {
+  return (
+    state === ModelStateEnum.FLIGHT ||
+    hasStateMetrics(model, state) ||
+    hasStateMedia(model, state)
+  );
+}
 
 export const useModelStates = (model: MaybeRefOrGetter<Model | undefined>) => {
   // What the views toggle offers: a state with any image or a measurement of its

@@ -1,4 +1,4 @@
-# Ship detail — the landed and extended states, not just the retracted one
+# Ship detail — the landed and extended states, not just the flying one
 
 Issue: #5030
 
@@ -35,9 +35,9 @@ names for one state is what the rename exists to stop.
 **D3 — the ship detail page only.** The fleetchart's own extended state (`shared/stores/fleetchart`,
 per namespace) is a different control on a different page.
 
-**D4 — fallback per view and per model.** A state missing one view falls back to the retracted image
+**D4 — fallback per view and per model.** A state missing one view falls back to the flight image
 for that view, which is what the Extended toggle does today. A state persisted from another ship that
-this one does not have reads as retracted.
+this one does not have reads as in flight.
 
 **D5 — one figure, never two.** The tiles swap; they never print a second figure in parentheses.
 
@@ -71,8 +71,8 @@ No backend phase: the payload, the schema and the generated client already carry
   landed set the gear changes the height and nothing else, so a length-only test would have hidden
   the state that motivated the work.
 
-  The fleetchart size chain skips the plain length. `state offset → state measurement → retracted
-offset → length`: falling through to the retracted _length_ before the retracted _offset_ would
+  The fleetchart size chain skips the plain length. `state offset → state measurement → flight
+offset → length`: falling through to the flight _length_ before the flight _offset_ would
   draw a state with no figures of its own at a size nobody curated.
 
   D6 inverted for what the toolbar _lists_. A second holo is still what earns the toolbar, but it

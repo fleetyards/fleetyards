@@ -15,18 +15,19 @@ import {
   useModelStates,
 } from "./useModelStates";
 
-const file = (name: string): MediaFile =>
-  ({
+function file(name: string): MediaFile {
+  return {
     name,
     url: `https://cdn.test/${name}`,
     largeUrl: `https://cdn.test/${name}?large`,
-  }) as MediaFile;
+  } as MediaFile;
+}
 
-const model = (
+function model(
   media: Partial<ModelMedia> = {},
   metrics: Partial<ModelMetrics> = {},
-): Model =>
-  ({
+): Model {
+  return {
     media: { ...media },
     metrics: {
       length: 30,
@@ -35,7 +36,8 @@ const model = (
       fleetchartOffsetLength: 32,
       ...metrics,
     },
-  }) as Model;
+  } as Model;
+}
 
 describe("the states a model offers", () => {
   it("offers flight alone when nothing else is uploaded", () => {

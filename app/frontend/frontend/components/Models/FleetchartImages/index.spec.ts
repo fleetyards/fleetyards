@@ -26,13 +26,14 @@ beforeEach(() => {
   setViewportWidth(1400);
 });
 
-const file = (name: string): MediaFile =>
-  ({
+function file(name: string): MediaFile {
+  return {
     name,
     url: `https://cdn.test/${name}`,
     mediumUrl: `https://cdn.test/${name}?medium`,
     largeUrl: `https://cdn.test/${name}?large`,
-  }) as MediaFile;
+  } as MediaFile;
+}
 
 const FLIGHT_VIEWS: Partial<ModelMedia> = {
   angledView: file("angled"),
@@ -41,11 +42,12 @@ const FLIGHT_VIEWS: Partial<ModelMedia> = {
   sideView: file("side"),
 };
 
-const model = (media: Partial<ModelMedia>): Model =>
-  ({
+function model(media: Partial<ModelMedia>): Model {
+  return {
     media: { ...media },
     metrics: { length: 30, beam: 20, height: 10, fleetchartOffsetLength: 32 },
-  }) as Model;
+  } as Model;
+}
 
 const mountViews = (media: Partial<ModelMedia>, state?: ModelStateEnum) =>
   mountWithDefaults<typeof FleetchartImages>(FleetchartImages, {

@@ -199,7 +199,14 @@ onMounted(() => {
       class="fleetchart-views"
       :class="{ 'fleetchart-views--loading': loading }"
     >
-      <Loader relative :loading="loading" />
+      <!-- Announced here rather than inside Loader: it is a leaf component
+           mounted without a store in several specs, and useI18n needs pinia. -->
+      <Loader
+        relative
+        :loading="loading"
+        role="status"
+        :aria-label="t('labels.loading')"
+      />
       <div>
         <img
           v-if="fleetchartImageAngled"

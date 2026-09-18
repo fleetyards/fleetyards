@@ -18,11 +18,12 @@ vi.mock("@/shared/composables/useComlink", () => ({
 
 import BaseMetrics from "./index.vue";
 
-const model = (metrics: Partial<ModelMetrics> = {}): Model =>
-  ({
+function model(metrics: Partial<ModelMetrics> = {}): Model {
+  return {
     availability: {},
     metrics: { length: 23.58, beam: 19.62, height: 3.28, ...metrics },
-  }) as Model;
+  } as Model;
+}
 
 const mountCard = (
   state: ModelStateEnum,
