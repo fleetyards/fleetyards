@@ -66,6 +66,17 @@ describe("useFleetSubscription", () => {
     );
   });
 
+  // The check below ORs in the viewer's own flags, so with the rollout enabled
+  // for the viewer an absent fleet passed it and the missing `subscribed` then
+  // read as unsubscribed. The case above misses it by clearing the viewer.
+  it("asks nothing about an absent fleet even when the viewer is rolled out", () => {
+    viewerFeatures.value = [FeatureFlagName.FLEET_SUBSCRIPTIONS];
+
+    expect(useFleetSubscription(undefined).subscriptionRequired.value).toBe(
+      false,
+    );
+  });
+
   // Matches `Flipper.enabled?(flag, current_resource_owner, fleet)`: rolled out
   // to the viewer counts too, which is how it is tried on one account first.
   it("reads the enforcement flag from the viewer as well", () => {

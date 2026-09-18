@@ -27,6 +27,15 @@ export const useFleetSubscription = (
   const subscriptionRequired = computed(() => {
     const currentFleet = toValue(fleet);
 
+    // No fleet, nothing to have subscribed -- the same guard the controller
+    // concern opens with. It has to come first: `isFleetFeatureEnabled` ORs in
+    // the viewer's own flags, so a viewer the rollout is enabled for would
+    // otherwise pass the check below with no fleet at all, and the absent
+    // `subscribed` would then read as unsubscribed.
+    if (!currentFleet) {
+      return false;
+    }
+
     if (
       !isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_SUBSCRIPTIONS)
     ) {
