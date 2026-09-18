@@ -23,9 +23,83 @@ type Props = {
   skeletonRows?: number;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const { t, tExists } = useI18n();
+const { t, tExists, toNumber } = useI18n();
+
+// The eight figures inside `type_data` the server can sort on, each with the
+// label the site already uses for it. Every one belongs to exactly one category
+// -- shield HP to shieldgenerator, cooling rate to cooler -- so the label is
+// the category's own rather than a new vocabulary, and all eight resolve in all
+// seven locales.
+//
+// `sort` is the name `Component::ALLOWED_SORTING_PARAMS` whitelists; `field` is
+// what the payload calls it, camelised from the snake_case key the column
+// stores.
+const METRIC_COLUMNS = [
+  {
+    field: "maxHealth",
+    sort: "maxHealth",
+    labelKey: "labels.hardpoint.shields.hp",
+  },
+  {
+    field: "maxRegen",
+    sort: "maxRegen",
+    labelKey: "labels.hardpoint.shields.regen",
+  },
+  { field: "health", sort: "health", labelKey: "labels.hardpoint.armor.hp" },
+  {
+    field: "powerBase",
+    sort: "powerBase",
+    labelKey: "labels.hardpoint.powerPlants.output",
+  },
+  {
+    field: "coolingRate",
+    sort: "coolingRate",
+    labelKey: "labels.hardpoint.coolers.coolingRate",
+  },
+  {
+    field: "driveSpeed",
+    sort: "driveSpeed",
+    labelKey: "labels.hardpoint.quantumDrives.speed",
+  },
+  {
+    field: "jumpRange",
+    sort: "jumpRange",
+    labelKey: "labels.hardpoint.quantumDrives.range",
+  },
+  {
+    field: "thrustCapacity",
+    sort: "thrustCapacity",
+    labelKey: "labels.hardpoint.thrusters.thrust",
+  },
+] as const;
+
+const metricValue = (record: Component, field: string) =>
+  (record.typeData as Record<string, unknown> | undefined)?.[field];
+
+// Only the metrics the rows on screen actually carry. Unfiltered, the list is
+// mostly paints and none of these appear; narrowed to shield generators, HP and
+// Regen show up as columns that sort -- which is the question "shields by HP"
+// needed somewhere to be asked from.
+//
+// Driven by the records rather than by the chosen category so it needs no map
+// from one to the other, and so it still works for a search that happens to
+// land on one kind of part.
+const metricColumns = computed<BaseTableCol<Component>[]>(() =>
+  METRIC_COLUMNS.filter((metric) =>
+    props.components.some(
+      (record) => metricValue(record, metric.field) != null,
+    ),
+  ).map((metric) => ({
+    name: metric.field,
+    label: t(metric.labelKey),
+    attributeKey: metric.sort,
+    minWidth: "110px",
+    alignment: BaseTableColAlignmentEnum.RIGHT,
+    sortable: true,
+  })),
+);
 
 // Every heading here is a label the site already carries in all seven locales:
 // a table of components is the same vocabulary as the hardpoint list and the
@@ -78,13 +152,21 @@ const columns = computed<BaseTableCol<Component>[]>(() => [
     minWidth: "130px",
     sortable: true,
   },
-  // No heading: the figure differs per row, so there is nothing true to put at
-  // the top of the column. See ComponentLeadMetric.
-  {
-    name: "metrics",
-    label: "",
-    minWidth: "200px",
-  },
+  // The generic column only while no metric has a column of its own: with HP
+  // and Regen named at the top of their own, repeating them per row under no
+  // heading says the same thing twice.
+  //
+  // No heading on it, deliberately: the figure it shows differs per row, so
+  // there is nothing true to write above it. See ComponentLeadMetric.
+  ...(metricColumns.value.length
+    ? metricColumns.value
+    : [
+        {
+          name: "metrics",
+          label: "",
+          minWidth: "200px",
+        },
+      ]),
   // Last, and right-aligned: these two are what the eye runs down a column of
   // rows for, so they hold the edge the way they did as badges on a row.
   //
@@ -169,6 +251,16 @@ const categoryLabel = (key?: string | null) => {
 
     <template #col-metrics="{ record }">
       <ComponentLeadMetric :component="record" />
+    </template>
+
+    <template
+      v-for="metric in metricColumns"
+      #[`col-${metric.name}`]="{ record }"
+      :key="metric.name"
+    >
+      <span class="components-table__metric">
+        {{ toNumber(metricValue(record, metric.name) as number) }}
+      </span>
     </template>
 
     <!-- The pill the row carried, minus its own label: the column heading says

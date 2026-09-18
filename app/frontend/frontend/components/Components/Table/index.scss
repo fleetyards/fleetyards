@@ -15,4 +15,12 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
+
+  &__metric {
+    font-size: 13px;
+    font-weight: 600;
+    color: #dedede;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
 }
