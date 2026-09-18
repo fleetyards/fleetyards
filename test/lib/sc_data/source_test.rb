@@ -100,9 +100,40 @@ class ScData::SourceTest < ActiveSupport::TestCase
     assert_predicate live, :loaded?
   end
 
-  test "a build of another version does not make the source available" do
+  # The config names a build as soon as it is parsed and pushed, and the rows
+  # land when the nightly load runs -- so a bump sits ahead of its data for up
+  # to a day. Read strictly that window has every catalogue empty and this
+  # switch offering nothing at all, which reads as broken where one patch behind
+  # reads as slightly stale.
+  test "a configured build with no rows yet is served as the patch behind it" do
     stub_config(sources: {live: "1.0.0"})
     create(:model_build, model: create(:model), environment: "live", version: "0.9.0")
+
+    assert_equal ["0.9.0"], ScData::Source.available.map(&:version)
+  end
+
+  test "the newest recorded build is the one served" do
+    stub_config(sources: {live: "1.0.0"})
+    model = create(:model)
+    create(:model_build, model:, environment: "live", version: "0.8.0")
+    create(:model_build, model:, environment: "live", version: "0.9.0")
+
+    assert_equal "0.9.0", ScData::Source.find("live").served.version
+  end
+
+  # A live bump must never be answered from the preview channel: those are
+  # different games, and silently serving one as the other is worse than serving
+  # nothing.
+  test "the fallback never crosses environments" do
+    stub_config(sources: {live: "1.0.0"})
+    create(:model_build, model: create(:model), environment: "ptu", version: "0.9.0")
+
+    assert_equal "1.0.0", ScData::Source.find("live").served.version
+    assert_empty ScData::Source.available
+  end
+
+  test "a source nothing has ever been loaded for is still not offered" do
+    stub_config(sources: {live: "1.0.0"})
 
     assert_empty ScData::Source.available
   end

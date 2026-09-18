@@ -108,7 +108,7 @@ class Component < ApplicationRecord
   # as its single argument, so the source stays a defaulted second parameter.
   scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
     if ActiveModel::Type::Boolean.new.cast(flag)
-      where(id: ComponentBuild.current(source).select(:component_id))
+      where(id: ComponentBuild.current(served_source(source)).select(:component_id))
     else
       all
     end
@@ -156,12 +156,6 @@ class Component < ApplicationRecord
       ) AS component_facts ON component_facts.component_id = components.id
     SQL
   end
-
-  scope :with_facts, ->(current_only = true, source = ::ScData::Source.current) {
-    joins(
-      ActiveModel::Type::Boolean.new.cast(current_only) ? current_facts_join(source) : all_facts_join(source)
-    )
-  }
 
   # One fact, off whichever build the join supplied. Referencing the alias
   # without `with_facts` raises rather than returning the wrong rows, which is

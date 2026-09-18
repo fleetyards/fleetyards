@@ -20,6 +20,54 @@ describe("AppFooter", () => {
     expect(social.findAll("a")).toHaveLength(4);
   });
 
+  // The patch line follows the source switch. `window.SC_DATA_VERSION` is baked
+  // into the layout from the source that request carried, so on its own it goes
+  // stale the moment somebody switches build.
+  describe("the patch version", () => {
+    const sources = [
+      { environment: "live", version: "4.10.0-live.1", default: true },
+      { environment: "ptu", version: "4.10.1-ptu.2", default: false },
+    ];
+
+    it("shows the build the reader has selected", async () => {
+      const wrapper = await mountWithDefaults<typeof Component>(Component, {
+        initialState: {
+          scDataSource: { available: sources, environment: "ptu" },
+        },
+      });
+
+      expect(
+        wrapper.find("[data-test='app-footer-data-version']").text(),
+      ).toContain("4.10.1-ptu.2");
+    });
+
+    it("shows the default build until the reader switches", async () => {
+      const wrapper = await mountWithDefaults<typeof Component>(Component, {
+        initialState: {
+          scDataSource: { available: sources, environment: undefined },
+        },
+      });
+
+      expect(
+        wrapper.find("[data-test='app-footer-data-version']").text(),
+      ).toContain("4.10.0-live.1");
+    });
+
+    // Admin and docs render this footer and never ask for the source list, and
+    // the frontend has not got it yet on first paint.
+    it("falls back to the baked version while no list has arrived", async () => {
+      window.SC_DATA_VERSION = "4.9.0-live.3";
+
+      const wrapper = await mountWithDefaults<typeof Component>(Component, {
+        initialState: { scDataSource: { available: [] } },
+      });
+
+      expect(
+        wrapper.find("[data-test='app-footer-data-version']").text(),
+      ).toContain("4.9.0-live.3");
+    });
+  });
+
   it("renders the version props it is given", async () => {
     // Every call site has always passed these; until they were declared they
     // fell through onto the root element as DOM attributes and were ignored.

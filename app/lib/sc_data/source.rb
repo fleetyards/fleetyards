@@ -72,10 +72,16 @@ module ScData
       # is offered while it is ahead, and stops being offered the moment live
       # overtakes it, without anyone having to edit the config.
       def available
-        chosen = default
+        chosen = default.served
 
-        configured.select do |source|
-          source.loaded? && (source == chosen || source.ahead_of?(chosen))
+        configured.filter_map do |source|
+          # What a reader would actually be answered from, so a configured build
+          # whose load has not run yet is offered as the patch behind it rather
+          # than vanishing from the switch.
+          served = source.served
+          next unless served.loaded?
+
+          served if served == chosen || served.ahead_of?(chosen)
         end
       end
 
@@ -130,6 +136,52 @@ module ScData
 
     def loaded?
       BUILDS.any? { |klass| klass.where(environment:, version:).exists? }
+    end
+
+    # Rows are here *and* the load that wrote them finished.
+    #
+    # A load commits its catalogues one at a time and does not roll them back,
+    # so rows on their own only say a load has started -- a different question,
+    # and the wrong one to answer with. Taking rows as proof would hand the
+    # catalogue over to a half-written build the moment its first row landed,
+    # turning a complete previous patch into a visibly shrinking current one.
+    #
+    # Retention is why the rows are still asked about: `BUILDS_RETAINED` prunes
+    # old builds while their ledger entry stays, so a finished import is no
+    # promise that anything is left to read.
+    #
+    # The ledger is asked first because it is the cheaper of the two by a factor
+    # of five -- one index on `[aasm_state, type]` against a scan of six build
+    # tables -- and in the window this all exists for it is the one that fails.
+    def complete?
+      ::Imports::ScData::AllImport.finished.exists?(version:) && loaded?
+    end
+
+    # This build once its load has finished, else the newest build of this
+    # environment that has one.
+    #
+    # The config names a build as soon as it is parsed and pushed, while the
+    # rows arrive when the load runs -- `ScData::CheckJob` enqueues that at
+    # 22:00, so a bump can sit a day ahead of its data. Read strictly, that
+    # window has every catalogue answering nothing and the source switch
+    # offering nothing at all. The previous patch is the last thing we actually
+    # know, and one patch behind reads as slightly stale where empty reads as
+    # broken.
+    #
+    # Its own environment only: a live bump must never be served ptu rows.
+    #
+    # The last resort is the newest build with rows even though no load is
+    # recorded as having finished for it. That is not the import window -- it is
+    # a database whose ledger has been truncated, where insisting on a marker
+    # that no longer exists would empty every catalogue on the site. Serving the
+    # rows that are there is what this did before the ledger was consulted at
+    # all, so the floor is the old behaviour rather than nothing.
+    def served
+      return self if complete?
+
+      candidates = self.class.recorded.select { |source| source.environment == environment }
+
+      candidates.find(&:complete?) || candidates.first || self
     end
 
     def default?

@@ -39,6 +39,16 @@ const onPreview = computed(() => !!selected.value && !selected.value.default);
 
 const label = computed(() => t("nav.scDataSource"));
 
+// The build the row is actually reading. The row itself has no space for it --
+// it shows the environment, and two builds of the same environment are
+// indistinguishable there, which is exactly the question somebody checking this
+// row has. Note this can be a patch behind what the config names, while that
+// build's load has not run yet; it says what is being served, not what is
+// configured.
+const tooltip = computed(() =>
+  selected.value ? `${label.value}: ${selected.value.version}` : label.value,
+);
+
 // The same two conditions NavItem collapses on, because the item's own slot is
 // what carries the build here and the slot is handed no state.
 const mobile = useMobile();
@@ -81,6 +91,7 @@ const toggle = async () => {
     :action="() => void toggle()"
     menu-key="sc-data-source"
     :label="label"
+    :tooltip="tooltip"
     class="sc-data-source-switch"
     :class="{ 'sc-data-source-switch--preview': onPreview }"
   >

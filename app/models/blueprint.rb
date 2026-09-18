@@ -61,7 +61,7 @@ class Blueprint < ApplicationRecord
   # join, so nothing fans out.
   scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
     if ActiveModel::Type::Boolean.new.cast(flag)
-      where(id: BlueprintBuild.current(source).select(:blueprint_id))
+      where(id: BlueprintBuild.current(served_source(source)).select(:blueprint_id))
     else
       all
     end
@@ -166,12 +166,6 @@ class Blueprint < ApplicationRecord
       ) AS blueprint_facts ON blueprint_facts.blueprint_id = blueprints.id
     SQL
   end
-
-  scope :with_facts, ->(current_only = true, source = ::ScData::Source.current) {
-    joins(
-      ActiveModel::Type::Boolean.new.cast(current_only) ? current_facts_join(source) : all_facts_join(source)
-    )
-  }
 
   # One fact, off whichever build the join supplied. Referencing the alias
   # without `with_facts` raises rather than returning the wrong rows, which is
