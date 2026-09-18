@@ -75,6 +75,24 @@ const METRIC_COLUMNS = [
   },
 ] as const;
 
+const route = useRoute();
+
+// Every value in the table that the catalogue can be narrowed by is a link that
+// narrows it. The filters live in the route query rather than in a store, so
+// this is a plain link: it is shareable, the back button undoes it, and the
+// filter form prefills from the same place and shows what was chosen.
+//
+// `page` is dropped because the row that was clicked is almost never on the
+// same page of a different, smaller result set.
+//
+// Name is left alone on purpose -- it is the link to the component itself, and
+// filtering a catalogue down to the one row you are already looking at is not
+// a thing anyone wants.
+const filterLink = (key: string, value: string) => ({
+  name: route.name as string,
+  query: { ...route.query, page: undefined, [key]: value },
+});
+
 const metricValue = (record: Component, field: string) =>
   (record.typeData as Record<string, unknown> | undefined)?.[field];
 
@@ -238,15 +256,30 @@ const categoryLabel = (key?: string | null) => {
     </template>
 
     <template #col-manufacturerName="{ record }">
-      {{ record.manufacturer?.name }}
+      <router-link
+        v-if="record.manufacturer?.name"
+        :to="filterLink('manufacturerNameCont', record.manufacturer.name)"
+      >
+        {{ record.manufacturer.name }}
+      </router-link>
     </template>
 
     <template #col-category="{ record }">
-      {{ categoryLabel(record.category) }}
+      <router-link
+        v-if="record.category"
+        :to="filterLink('categoryIn', record.category)"
+      >
+        {{ categoryLabel(record.category) }}
+      </router-link>
     </template>
 
     <template #col-componentSubType="{ record }">
-      {{ record.subType }}
+      <router-link
+        v-if="record.subType"
+        :to="filterLink('componentSubTypeIn', record.subType)"
+      >
+        {{ record.subType }}
+      </router-link>
     </template>
 
     <template #col-metrics="{ record }">

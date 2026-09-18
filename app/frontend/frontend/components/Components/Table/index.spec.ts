@@ -92,6 +92,49 @@ describe("ComponentsTable", () => {
     });
   });
 
+  // Clicking a value the catalogue can be narrowed by narrows it. The filters
+  // live in the route query, so these are plain links -- shareable, undone by
+  // the back button, and read back by the filter form.
+  describe("click to filter", () => {
+    const hrefFor = async (column: string) => {
+      const wrapper = await mount([
+        component({
+          category: "shieldgenerator",
+          subType: "Gun",
+          manufacturer: { name: "Behring", slug: "behring" },
+        } as Partial<FyComponent>),
+      ]);
+
+      // `td` rather than `tbody td`: VTU stubs `transition-group`, which is
+      // what BaseTable renders its body with, so no literal tbody exists in the
+      // markup. `th` and `td` still separate header from body.
+      const cells = wrapper.findAll("td");
+      const index = headings(wrapper).indexOf(column);
+
+      return cells[index]?.find("a").attributes("href") || "";
+    };
+
+    it("narrows by category", async () => {
+      expect(await hrefFor("Category")).toContain("categoryIn=shieldgenerator");
+    });
+
+    it("narrows by sub type", async () => {
+      expect(await hrefFor("Sub Type")).toContain("componentSubTypeIn=Gun");
+    });
+
+    it("narrows by manufacturer", async () => {
+      expect(await hrefFor("Manufacturer")).toContain(
+        "manufacturerNameCont=Behring",
+      );
+    });
+
+    // The name is the link to the component itself. Filtering the catalogue
+    // down to the row you are already looking at is not a thing anyone wants.
+    it("leaves the name linking to the component", async () => {
+      expect(await hrefFor("Name")).toContain("a-part");
+    });
+  });
+
   describe("the metric columns", () => {
     // The question the catalogue exists to answer -- "shields by HP" -- needed a
     // column to be asked from. It appears only when the rows on screen carry
@@ -124,12 +167,22 @@ describe("ComponentsTable", () => {
 
     // With HP named at the top of its own column, repeating it per row under no
     // heading says the same thing twice.
+    //
+    // Counted by unheaded columns rather than by the absence of the per-row
+    // component: that renders nothing for a component carrying no figures at
+    // all, so asserting it is missing would pass whether or not this works.
+    // Two unheaded columns means icon + per-row metrics; one means icon alone.
     it("replace the unheaded per-row column rather than joining it", async () => {
-      const withMetric = await mount([
-        component({ typeData: { maxHealth: 1000 } } as Partial<FyComponent>),
-      ]);
+      const unheaded = async (record: FyComponent) =>
+        headings(await mount([record])).filter((heading) => heading === "")
+          .length;
 
-      expect(withMetric.find(".component-lead-metric").exists()).toBe(false);
+      expect(await unheaded(component())).toBe(2);
+      expect(
+        await unheaded(
+          component({ typeData: { maxHealth: 1000 } } as Partial<FyComponent>),
+        ),
+      ).toBe(1);
     });
   });
 });

@@ -30,12 +30,23 @@ const { t } = useI18n();
 // A local copy prefilled from the URL, pushed back through `filter` on every
 // change -- the same shape the ships form uses, so a reload restores what was
 // chosen and the back button works.
+// A single value in the URL comes back from `route.query` as a string, not an
+// array -- vue-router does no normalising -- so a multi-select handed one
+// straight through gets a string where it expects a list. That was already the
+// case for anyone reloading with exactly one category chosen, and every
+// click-to-filter link in the table lands on it.
+const asList = (value: unknown): string[] => {
+  if (Array.isArray(value)) return value as string[];
+
+  return value ? [value as string] : [];
+};
+
 const prefillFormValues = (): ComponentQuery => ({
   nameCont: filters.value.nameCont,
   descriptionCont: filters.value.descriptionCont,
   manufacturerNameCont: filters.value.manufacturerNameCont,
-  categoryIn: filters.value.categoryIn || [],
-  componentSubTypeIn: filters.value.componentSubTypeIn || [],
+  categoryIn: asList(filters.value.categoryIn),
+  componentSubTypeIn: asList(filters.value.componentSubTypeIn),
 });
 
 const setupForm = () => {
