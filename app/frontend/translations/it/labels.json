@@ -193,6 +193,7 @@
       "fleetInviteToken": "Inviti Alla Flotta",
       "inviteToken": "Codice di invito",
       "scDataVersion": "Versione Della Patch",
+      "title": "Titolo",
       "createdAt": "Creato il",
       "updatedAt": "Aggiornato il",
       "addToHangar": "Aggiungi all'hangar",

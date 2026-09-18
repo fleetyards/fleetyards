@@ -193,6 +193,7 @@
       "fleetInviteToken": "Fleet Invite",
       "inviteToken": "Invite code",
       "scDataVersion": "Patch Version",
+      "title": "Title",
       "createdAt": "Created at",
       "updatedAt": "Updated at",
       "addToHangar": "Add to Hangar",

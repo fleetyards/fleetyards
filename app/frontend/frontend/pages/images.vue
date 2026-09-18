@@ -54,11 +54,15 @@ useGallery(".images");
     </template>
 
     <template #default="{ records, loading, filterVisible }">
+      <!-- Named so a count can target the pictures rather than every link the
+           list happens to contain: the test id above sits on the whole
+           `FilteredList`, so a paginator or a sort chip counted as an image. -->
       <Grid
         :records="records"
         :loading="loading"
         :filter-visible="filterVisible"
         primary-key="id"
+        data-test="images-grid"
       >
         <template #default="{ record }">
           <LazyImage

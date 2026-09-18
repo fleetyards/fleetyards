@@ -193,6 +193,7 @@
       "fleetInviteToken": "invitation de la flotte",
       "inviteToken": "Code d'invitation",
       "scDataVersion": "Version corrigée",
+      "title": "Titre",
       "createdAt": "Créé le",
       "updatedAt": "Mis à jour le",
       "addToHangar": "Ajouter au hangar",

@@ -351,7 +351,14 @@ class Notification < ApplicationRecord
   scope :filed, -> { where(archived_at: ..Time.current).or(expired) }
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
-  ALLOWED_SORTING_PARAMS = ["createdAt asc", "createdAt desc"].freeze
+  # Title and type are columns of their own and already ransackable; only the
+  # sort whitelist was missing, so an inbox could be read newest-first and no
+  # other way.
+  ALLOWED_SORTING_PARAMS = [
+    "createdAt asc", "createdAt desc",
+    "title asc", "title desc",
+    "notificationType asc", "notificationType desc"
+  ].freeze
 
   paginates_per 25
 

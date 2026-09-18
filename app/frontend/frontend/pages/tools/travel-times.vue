@@ -503,7 +503,17 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
 
             <template #col-name="{ record }">
               <div class="travel-times__drive">
-                <span>{{ record.name }}</span>
+                <!-- The catalogue carries every one of these drives, with the
+                     figures this table leaves out. No category icon beside it:
+                     every row here is a quantum drive, so the same glyph on all
+                     of them says nothing. -->
+                <router-link
+                  v-if="record.slug"
+                  :to="{ name: 'component', params: { slug: record.slug } }"
+                >
+                  {{ record.name }}
+                </router-link>
+                <span v-else>{{ record.name }}</span>
                 <span class="travel-times__bar">
                   <span
                     class="travel-times__bar-fill"

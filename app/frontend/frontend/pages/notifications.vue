@@ -11,6 +11,8 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Empty from "@/shared/components/Empty/index.vue";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
 import { useReportListGeometry } from "@/shared/composables/useListGeometry";
@@ -51,6 +53,19 @@ import {
 } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+// An inbox could be read newest-first and no other way. Title and type were
+// columns of their own and already ransackable -- only the sort whitelist was
+// missing.
+const sortFields = computed<BaseTableCol<unknown>[]>(() => [
+  { name: "createdAt", label: t("labels.createdAt"), sortable: true },
+  { name: "title", label: t("labels.title"), sortable: true },
+  {
+    name: "notificationType",
+    label: t("labels.notifications.type"),
+    sortable: true,
+  },
+]);
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const route = useRoute();
@@ -459,6 +474,10 @@ const destroySelected = () =>
 
         <Detail class="notifications__detail" />
       </div>
+    </template>
+
+    <template #sort>
+      <SortBar :columns="sortFields" default-sort="createdAt desc" />
     </template>
 
     <template #default="{ records: shown, emptyVisible }">

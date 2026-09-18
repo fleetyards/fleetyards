@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -58,6 +60,8 @@ import {
 } from "@/services/fyApi";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
+
+const sortFields = useVehicleSortFields();
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 
@@ -554,6 +558,11 @@ const openDisplayOptionsModal = () => {
 
     <template v-if="gridView" #skeleton="{ filterVisible }">
       <GridSkeleton :details="detailsVisible" :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <!-- Grid view only: the table carries the same sorts on its headings. -->
+      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">

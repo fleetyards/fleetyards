@@ -11,6 +11,8 @@ import Grid from "@/shared/components/base/Grid/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Empty from "@/shared/components/Empty/index.vue";
 import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
@@ -29,6 +31,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   useModels as useModelsQuery,
   getModelsQueryKey,
+  type Model,
 } from "@/services/fyApi";
 
 useHangarItems();
@@ -40,6 +43,24 @@ const modelsStore = useModelsStore();
 const fleetchartsStore = useFleetchartStore();
 
 const { detailsVisible, gridView } = storeToRefs(modelsStore);
+
+// Grid view had no way to sort at all: the headings are the only sort control
+// the site has, and switching out of the table takes all sixteen of them away.
+// The same page could order ships by length in one view and not the other.
+//
+// A chosen few rather than all sixteen -- a line of sixteen chips is a wall,
+// and these are the ones a card already shows. The labels are the table's own,
+// so the two views name a sort the same way.
+const sortFields = computed<BaseTableCol<Model>[]>(() =>
+  [
+    ["name", t("labels.vehicle.name")],
+    ["manufacturerName", t("labels.models.table.columns.manufacturerName")],
+    ["length", t("labels.models.table.columns.length")],
+    ["cargo", t("labels.models.table.columns.cargo")],
+    ["price", t("labels.models.table.columns.price")],
+    ["productionStatus", t("labels.models.table.columns.productionStatus")],
+  ].map(([name, label]) => ({ name, label, sortable: true })),
+);
 
 const fleetchartVisible = computed(() => {
   return fleetchartsStore.isVisible("models");
@@ -146,6 +167,11 @@ const openDisplayOptionsModal = () => {
          itself draw its header and a page of placeholder rows. -->
     <template v-if="gridView" #skeleton="{ filterVisible }">
       <GridSkeleton :details="detailsVisible" :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <!-- Grid view only: the table carries the same sorts on its headings. -->
+      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">

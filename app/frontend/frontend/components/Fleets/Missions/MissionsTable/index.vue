@@ -43,6 +43,9 @@ const columns = computed<BaseTableCol<Mission>[]>(() => [
     label: t("headlines.fleets.missions.index"),
     flexGrow: 2,
     minWidth: "200px",
+    // The column renders more than the title, so the sort is named separately.
+    attributeKey: "title",
+    sortable: true,
   },
   {
     name: "category",
@@ -71,6 +74,7 @@ const columns = computed<BaseTableCol<Mission>[]>(() => [
     label: t("labels.createdAt"),
     width: "195px",
     mobile: false,
+    sortable: true,
   },
 ]);
 

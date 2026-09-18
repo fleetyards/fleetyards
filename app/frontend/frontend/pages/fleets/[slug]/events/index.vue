@@ -57,6 +57,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const route = useRoute();

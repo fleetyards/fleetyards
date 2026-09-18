@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -44,6 +46,8 @@ import {
 
 const { t } = useI18n();
 
+const sortFields = useVehicleSortFields();
+
 type Props = {
   user: UserPublic;
 };
@@ -62,7 +66,7 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
-const { filters } = useHangarFilters(async () => {
+const { filters, getQuery } = useHangarFilters(async () => {
   await refetch();
 });
 
@@ -70,7 +74,7 @@ const publicHangarQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    q: getQuery(),
   };
 });
 
@@ -300,6 +304,12 @@ useSubscription({
 
     <template #skeleton="{ filterVisible }">
       <GridSkeleton :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <!-- A public hangar is only ever cards, so this is the whole
+      sort control rather than a second way to reach one. -->
+      <SortBar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading }">

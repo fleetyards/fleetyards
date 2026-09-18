@@ -38,7 +38,12 @@ const SKELETON_ROWS = 5;
 
 const columns = computed<BaseTableCol<Tour>[]>(() => {
   const cols: BaseTableCol<Tour>[] = [
-    { name: "title", label: t("labels.payouts.title"), flexGrow: 2 },
+    {
+      name: "title",
+      label: t("labels.payouts.title"),
+      flexGrow: 2,
+      sortable: true,
+    },
   ];
 
   if (props.withFleet) {
@@ -46,7 +51,7 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
   }
 
   cols.push(
-    { name: "startsAt", label: t("labels.payouts.startsAt") },
+    { name: "startsAt", label: t("labels.payouts.startsAt"), sortable: true },
     { name: "status", label: t("labels.status"), width: "120px" },
   );
 

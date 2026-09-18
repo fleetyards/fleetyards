@@ -37,6 +37,13 @@ module Api
         query_params = params.fetch(:q, {}).permit(:title_cont, :status_eq, :category_eq, :s)
         normalize_sort_params(query_params)
 
+        # Only when one was asked for. `upcoming` and `past` order themselves,
+        # and a default applied here would sit on top of their ordering for
+        # every request that never mentioned sorting.
+        if query_params["sorts"].present?
+          query_params["sorts"] = sorting_params(FleetEvent, query_params["sorts"])
+        end
+
         @q = scope.ransack(query_params)
         result = @q.result(distinct: true)
 

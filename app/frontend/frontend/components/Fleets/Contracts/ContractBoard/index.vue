@@ -6,6 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useSortParam } from "@/shared/composables/useSortParam";
+import { type FleetContractSortEnum } from "@/services/fyApi";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -37,6 +41,25 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+// Grid view only: the table carries the same sorts on its headings.
+const sortFields = computed<BaseTableCol<unknown>[]>(() => [
+  {
+    name: "title",
+    label: t("headlines.fleets.contracts.index"),
+    sortable: true,
+  },
+  {
+    name: "reward",
+    label: t("labels.fleets.contracts.reward"),
+    sortable: true,
+  },
+  {
+    name: "deadline",
+    label: t("labels.fleets.contracts.deadline"),
+    sortable: true,
+  },
+]);
 const comlink = useComlink();
 const route = useRoute();
 
@@ -69,11 +92,13 @@ const boardLink = (board: ContractBoardView) => {
   return { name: "fleet-contracts", params: { slug: props.fleet.slug }, query };
 };
 
+const sortParam = useSortParam<FleetContractSortEnum>();
+
 const queryParams = computed(() => ({
   mine: props.view.mine ? true : undefined,
   // The states are spelled out rather than sent as "archived", because a
   // contract has five of them and each board means a different few.
-  q: { stateIn: props.view.states },
+  q: { stateIn: props.view.states, ...sortParam.value },
 }));
 
 const {
@@ -135,6 +160,14 @@ onUnmounted(() => {
 
     <template #skeleton="{ filterVisible }">
       <GridSkeleton :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <SortBar
+        v-if="gridView"
+        :columns="sortFields"
+        default-sort="deadline asc"
+      />
     </template>
 
     <template #default="{ records, emptyVisible }">

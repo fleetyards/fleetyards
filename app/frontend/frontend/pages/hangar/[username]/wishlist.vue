@@ -6,6 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useSortParam } from "@/shared/composables/useSortParam";
+import { type VehicleSortEnum } from "@/services/fyApi";
+import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -25,6 +29,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+const sortFields = useVehicleSortFields();
 
 type Props = {
   user: UserPublic;
@@ -60,7 +66,14 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
 
 const route = useRoute();
 
-const wishlistQuery = usePublicWishlistQuery(username);
+// `HangarQuery` declares the sort; this call simply sent nothing, so the chip
+// changed its arrow and the cards kept their order.
+const sortParam = useSortParam<VehicleSortEnum>();
+
+const wishlistQuery = usePublicWishlistQuery(
+  username,
+  computed(() => ({ q: sortParam.value })),
+);
 const wishlist = wishlistQuery.data;
 const refetch = wishlistQuery.refetch;
 const asyncStatus = {
@@ -197,6 +210,12 @@ onMounted(async () => {
 
     <template #skeleton="{ filterVisible }">
       <GridSkeleton :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <!-- A public hangar is only ever cards, so this is the whole
+      sort control rather than a second way to reach one. -->
+      <SortBar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading }">

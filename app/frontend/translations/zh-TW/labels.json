@@ -193,6 +193,7 @@
       "fleetInviteToken": "艦隊邀請",
       "inviteToken": "邀請碼",
       "scDataVersion": "補丁版本",
+      "title": "標題",
       "createdAt": "建立於",
       "updatedAt": "更新於",
       "addToHangar": "新增到機庫",
