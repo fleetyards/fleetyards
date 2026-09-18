@@ -729,7 +729,8 @@
         "landedAngledViewColored": "Vista angolata atterrata a colori",
         "state": {
           "retracted": "Retratta",
-          "extended": "Estesa"
+          "extended": "Estesa",
+          "landed": "Atterrata"
         },
         "productionStatus": {
           "in-production": "In Produzione",

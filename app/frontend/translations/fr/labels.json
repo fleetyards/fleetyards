@@ -729,7 +729,8 @@
         "landedAngledViewColored": "Vue en biais posée colorée",
         "state": {
           "retracted": "Replié",
-          "extended": "Déployé"
+          "extended": "Déployé",
+          "landed": "Au sol"
         },
         "productionStatus": {
           "in-production": "En cours de production",

@@ -729,7 +729,8 @@
         "landedAngledViewColored": "Landed Angled View Colored",
         "state": {
           "retracted": "Retracted",
-          "extended": "Extended"
+          "extended": "Extended",
+          "landed": "Landed"
         },
         "productionStatus": {
           "in-production": "In Production",

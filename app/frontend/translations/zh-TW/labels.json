@@ -729,7 +729,8 @@
         "landedAngledViewColored": "著陸斜視圖（彩色）",
         "state": {
           "retracted": "收合",
-          "extended": "展開"
+          "extended": "展開",
+          "landed": "著陸"
         },
         "productionStatus": {
           "in-production": "生產中",
