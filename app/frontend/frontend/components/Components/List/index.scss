@@ -1,0 +1,15 @@
+@import "@/stylesheets/variables.scss";
+
+.components-list {
+  // The rows carry no margin of their own -- the list spaces them with `gap` --
+  // so without this the last one sits flush against the paginator under it.
+  // Matches the 20px `filtered-list__actions` puts above the list, so it is
+  // inset the same at both ends.
+  margin-bottom: 20px;
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

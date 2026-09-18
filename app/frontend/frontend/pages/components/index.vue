@@ -9,7 +9,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import FilterForm from "@/frontend/components/Components/FilterForm/index.vue";
-import ComponentsTable from "@/frontend/components/Components/Table/index.vue";
+import ComponentsList from "@/frontend/components/Components/List/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
@@ -51,7 +51,6 @@ const {
     :records="components?.items || []"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
-    placeholders
   >
     <template #filter>
       <FilterForm />
@@ -65,22 +64,14 @@ const {
       />
     </template>
 
-    <!-- A table, not cards: not one component carries a picture -- `store_image`
-         is curated and nothing has ever been uploaded against one -- so a grid
-         of tiles would be a grid of placeholders. A table also gives the
-         columns somewhere to be sorted from, which is what a catalogue of
-         3,000 parts is for.
-         `placeholders` lets the table draw its own header and a page of
-         placeholder rows out of an empty record set, rather than a spinner
-         beside a column layout that has not appeared yet. -->
-    <template
-      #default="{ records, loading: listLoading, emptyVisible: listEmpty }"
-    >
-      <ComponentsTable
-        :components="records"
-        :loading="listLoading"
-        :empty-visible="listEmpty"
-      />
+    <!-- Rows rather than a table. Not one component carries a picture, so a
+         grid of tiles would be a grid of placeholders -- and a row can carry
+         the figure that means something for its own kind, where a fixed column
+         cannot: a gun leads with sustained DPS and a cooler with cooling rate,
+         in the same list. The sort line above the rows is what a row list
+         otherwise lacks. -->
+    <template #default="{ records, emptyVisible: listEmpty }">
+      <ComponentsList :components="records" :empty-visible="listEmpty" />
     </template>
 
     <template #pagination-bottom>
