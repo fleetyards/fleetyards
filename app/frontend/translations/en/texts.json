@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Drop a folder of views named top.png, side.png, front.png and angled.png. Suffix _colored for the painted set, prefix extended_ for the extended one. holo.gltf and extended_holo.gltf come along too.",
+            "hint": "Drop a folder of views named top.png, side.png, front.png and angled.png. Suffix _colored for the painted set, prefix extended_ for the extended one and landed_ for the landed one. A flight_ prefix, or none at all, goes to the default set. holo.gltf comes along too, with the same prefixes.",
             "uploading": {
               "one": "Uploading one file…",
               "other": "Uploading %{count} files…"

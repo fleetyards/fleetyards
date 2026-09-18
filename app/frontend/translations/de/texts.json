@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Lege hier einen Ordner mit Ansichten namens top.png, side.png, front.png und angled.png ab. Suffix _colored für den lackierten Satz, Präfix extended_ für die ausgefahrene Variante. holo.gltf und extended_holo.gltf werden ebenfalls übernommen.",
+            "hint": "Lege hier einen Ordner mit Ansichten namens top.png, side.png, front.png und angled.png ab. Suffix _colored für den lackierten Satz, Präfix extended_ für die ausgefahrene und landed_ für die gelandete Variante. Das Präfix flight_ oder gar kein Präfix landet im Standardsatz. holo.gltf wird mit denselben Präfixen ebenfalls übernommen.",
             "uploading": {
               "one": "Eine Datei wird hochgeladen…",
               "other": "%{count} Dateien werden hochgeladen…"

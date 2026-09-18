@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Suelta una carpeta de vistas con los nombres top.png, side.png, front.png y angled.png. Añade el sufijo _colored para el juego pintado y el prefijo extended_ para el extendido. holo.gltf y extended_holo.gltf también se incluyen.",
+            "hint": "Suelta una carpeta de vistas con los nombres top.png, side.png, front.png y angled.png. Añade el sufijo _colored para el juego pintado, el prefijo extended_ para el extendido y landed_ para el aterrizado. El prefijo flight_, o ninguno, va al juego predeterminado. holo.gltf también se incluye, con los mismos prefijos.",
             "uploading": {
               "one": "Subiendo un archivo…",
               "other": "Subiendo %{count} archivos…"

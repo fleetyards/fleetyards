@@ -48,26 +48,33 @@ export type MappedFile = {
   filename: string;
 };
 
-// top.png, angled_colored.png, extended-side.png, landed-holo.glb. The
-// separator, the case and a spelled-out "view" are all optional, so a folder
-// named by hand lands where one named by a script does.
+// top.png, angled_colored.png, extended-side.png, landed-holo.glb,
+// flight_top.png. The separator, the case and a spelled-out "view" are all
+// optional, so a folder named by hand lands where one named by a script does.
 const VIEW_NAME =
-  /^(extended[-_ ]?|landed[-_ ]?)?(top|side|front|angled)([-_ ]?view)?([-_ ]?colored)?$/i;
-const HOLO_NAME = /^(extended[-_ ]?|landed[-_ ]?)?holo$/i;
+  /^((?:extended|landed|flight)[-_ ]?)?(top|side|front|angled)([-_ ]?view)?([-_ ]?colored)?$/i;
+const HOLO_NAME = /^((?:extended|landed|flight)[-_ ]?)?holo$/i;
 
 // The name alone is not enough: a Blender export drops holo.blend, holo.obj and
 // holo.mtl beside the glTF, and every one of them answers to "holo".
 const VIEW_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "gif"];
 const HOLO_EXTENSIONS = ["gltf", "glb"];
 
-// The regex accepts either state, so the prefix decides which family the file
-// belongs to rather than a bare "is it prefixed at all".
+// The regex accepts any of the three states, so the prefix that matched decides
+// which family the file belongs to rather than a bare "is it prefixed at all".
+// "flight" is the default state spelled out, and lands where no prefix does.
 const prefixFor = (raw?: string): "extended" | "landed" | undefined => {
-  if (!raw) {
-    return undefined;
+  const state = raw?.toLowerCase() ?? "";
+
+  if (state.startsWith("landed")) {
+    return "landed";
   }
 
-  return raw.toLowerCase().startsWith("landed") ? "landed" : "extended";
+  if (state.startsWith("extended")) {
+    return "extended";
+  }
+
+  return undefined;
 };
 
 const capitalize = (word: string) =>

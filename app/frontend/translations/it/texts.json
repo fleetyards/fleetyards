@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Trascina una cartella di viste chiamate top.png, side.png, front.png e angled.png. Suffisso _colored per il set verniciato, prefisso extended_ per quello esteso. Anche holo.gltf e extended_holo.gltf vengono inclusi.",
+            "hint": "Trascina una cartella di viste chiamate top.png, side.png, front.png e angled.png. Suffisso _colored per il set verniciato, prefisso extended_ per quello esteso e landed_ per quello atterrato. Il prefisso flight_, o nessun prefisso, finisce nel set predefinito. Anche holo.gltf viene incluso, con gli stessi prefissi.",
             "uploading": {
               "one": "Caricamento di un file…",
               "other": "Caricamento di %{count} file…"

@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "拖入一個資料夾，內含名為 top.png、side.png、front.png 與 angled.png 的檢視圖。彩繪版本加上 _colored 後綴，展開版本加上 extended_ 前綴。holo.gltf 與 extended_holo.gltf 也會一併處理。",
+            "hint": "拖入一個資料夾，內含名為 top.png、side.png、front.png 與 angled.png 的檢視圖。彩繪版本加上 _colored 後綴，展開版本加上 extended_ 前綴，著陸版本加上 landed_ 前綴。flight_ 前綴或不加前綴都會歸入預設組。holo.gltf 也會一併處理，前綴規則相同。",
             "uploading": {
               "one": "正在上傳一個檔案…",
               "other": "正在上傳 %{count} 個檔案…"

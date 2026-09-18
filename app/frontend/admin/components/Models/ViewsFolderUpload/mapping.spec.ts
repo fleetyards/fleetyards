@@ -37,6 +37,22 @@ describe("fieldFor", () => {
     expect(fieldFor("holo.png")).toBeUndefined();
   });
 
+  // Every join in a name takes either separator, or none: the prefix to the
+  // viewpoint, the viewpoint to "view", and "view" to "colored".
+  it("takes a dash or an underscore at every join", () => {
+    expect(fieldFor("landed-top-view-colored.png")).toBe(
+      "landedTopViewColored",
+    );
+    expect(fieldFor("landed_top_view_colored.png")).toBe(
+      "landedTopViewColored",
+    );
+    expect(fieldFor("flight-angled_view-colored.png")).toBe(
+      "angledViewColored",
+    );
+    expect(fieldFor("extended-holo.glb")).toBe("extendedHolo");
+    expect(fieldFor("extended_holo.glb")).toBe("extendedHolo");
+  });
+
   it("takes a spelled-out view and any case", () => {
     expect(fieldFor("top_view.png")).toBe("topView");
     expect(fieldFor("Extended_Side_View_Colored.PNG")).toBe(
@@ -143,5 +159,32 @@ describe("the landed family", () => {
     expect(fieldFor("extended-side.png")).toBe("extendedSideView");
     expect(fieldFor("landed-side.png")).toBe("landedSideView");
     expect(fieldFor("side.png")).toBe("sideView");
+  });
+});
+
+describe("the flight family", () => {
+  it("maps a flight holo to the default field", () => {
+    expect(fieldFor("flight-holo.glb")).toBe("holo");
+    expect(fieldFor("flight_holo.gltf")).toBe("holo");
+    expect(fieldFor("FlightHolo.glb")).toBe("holo");
+  });
+
+  it("maps flight views to the default fields, coloured and not", () => {
+    expect(fieldFor("flight-side.png")).toBe("sideView");
+    expect(fieldFor("flight_top_view.png")).toBe("topView");
+    expect(fieldFor("flight angled colored.png")).toBe("angledViewColored");
+    expect(fieldFor("Flight_Front_View_Colored.PNG")).toBe("frontViewColored");
+  });
+
+  // A folder that spells the default state out and one that leaves it off name
+  // the same field, so the second file is the duplicate it looks like.
+  it("collides with the unprefixed set", () => {
+    const { matched, ignored } = mapFolderFiles(
+      ["flight-top.png", "top.png"],
+      (filename) => filename,
+    );
+
+    expect(matched.map((entry) => entry.field)).toEqual(["topView"]);
+    expect(ignored).toEqual(["top.png"]);
   });
 });

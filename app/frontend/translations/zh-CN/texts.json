@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "拖入一个视图文件夹，文件命名为 top.png、side.png、front.png 和 angled.png。带涂装的一组加后缀 _colored，展开状态的一组加前缀 extended_。holo.gltf 和 extended_holo.gltf 也会一并上传。",
+            "hint": "拖入一个视图文件夹，文件命名为 top.png、side.png、front.png 和 angled.png。带涂装的一组加后缀 _colored，展开状态的一组加前缀 extended_，着陆状态的一组加前缀 landed_。前缀 flight_ 或不加前缀都会归入默认组。holo.gltf 也会一并上传，前缀规则相同。",
             "uploading": {
               "one": "正在上传 1 个文件…",
               "other": "正在上传 %{count} 个文件…"

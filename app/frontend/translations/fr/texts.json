@@ -41,7 +41,7 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Déposez un dossier de vues nommées top.png, side.png, front.png et angled.png. Suffixe _colored pour le jeu peint, préfixe extended_ pour le jeu étendu. holo.gltf et extended_holo.gltf sont également pris en charge.",
+            "hint": "Déposez un dossier de vues nommées top.png, side.png, front.png et angled.png. Suffixe _colored pour le jeu peint, préfixe extended_ pour le jeu étendu et landed_ pour le jeu posé. Le préfixe flight_, ou aucun préfixe, va dans le jeu par défaut. holo.gltf est également pris en charge, avec les mêmes préfixes.",
             "uploading": {
               "one": "Envoi d'un fichier…",
               "other": "Envoi de %{count} fichiers…"
