@@ -25,9 +25,18 @@ const stats = useComponentStats(() => props.component);
 // The one or two figures the renderer already marks as worth leading with --
 // the same ones the detail page puts in its hero tiles. A row that repeated
 // every metric would be the detail page.
-const leadStats = computed(() =>
-  stats.value.filter((s) => s.primary).slice(0, 2),
-);
+//
+// Filtered before it is sliced, so a component whose headline figure the build
+// does not carry gives the slot to the next one it does rather than leading
+// with "N/A": `toNumber` renders any falsy value as that string, and a column
+// of them says nothing while taking the width of something that would.
+const leadStats = computed(() => {
+  const unavailable = t("labels.notAvailable");
+
+  return stats.value
+    .filter((s) => s.primary && s.value && s.value !== unavailable)
+    .slice(0, 2);
+});
 
 const categoryLabel = computed(() => {
   const key = props.component.category;
@@ -40,9 +49,21 @@ const categoryLabel = computed(() => {
 </script>
 
 <template>
-  <router-link
+  <!-- A component with no name has no slug either -- the slug is built from the
+       name -- and `router-link` throws on a missing required param rather than
+       rendering nothing, which took the whole list down with it. Such a row has
+       no detail page to reach, so it is not a link. The catalogue filters these
+       out upstream; this is the guard that keeps one reaching the page from
+       being fatal. -->
+  <component
+    :is="component.slug ? 'router-link' : 'span'"
     class="component-row"
-    :to="{ name: 'component', params: { slug: component.slug } }"
+    :class="{ 'component-row--unlinked': !component.slug }"
+    :to="
+      component.slug
+        ? { name: 'component', params: { slug: component.slug } }
+        : undefined
+    "
   >
     <img
       v-if="icon?.kind === 'svg'"
@@ -68,6 +89,17 @@ const categoryLabel = computed(() => {
       </span>
     </span>
 
+    <span class="component-row__stats">
+      <span
+        v-for="stat in leadStats"
+        :key="stat.label"
+        class="component-row__stat"
+      >
+        <span class="component-row__stat-label">{{ stat.label }}</span>
+        <span class="component-row__stat-value">{{ stat.value }}</span>
+      </span>
+    </span>
+
     <span class="component-row__badges">
       <span v-if="component.size" class="component-row__badge">
         <span class="component-row__badge-label">
@@ -84,18 +116,7 @@ const categoryLabel = computed(() => {
         }}</span>
       </span>
     </span>
-
-    <span class="component-row__stats">
-      <span
-        v-for="stat in leadStats"
-        :key="stat.label"
-        class="component-row__stat"
-      >
-        <span class="component-row__stat-label">{{ stat.label }}</span>
-        <span class="component-row__stat-value">{{ stat.value }}</span>
-      </span>
-    </span>
-  </router-link>
+  </component>
 </template>
 
 <style lang="scss" scoped>
