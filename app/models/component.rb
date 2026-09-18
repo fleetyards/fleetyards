@@ -338,9 +338,20 @@ class Component < ApplicationRecord
   # beside "M" and "S", so ordering it puts 10 and 12 ahead of 2 -- and a sort
   # that reads as broken is worse than one not offered. It needs a numeric
   # ransacker of its own, which would change what `size_eq` matches.
+  #
+  # The three added for the catalogue table are the columns a reader can see:
+  # `category` and `componentSubType` are facts like grade, and
+  # `manufacturerName` sorts through the association ransack already allows.
+  # Each name is the one whose `underscore` is the ransackable attribute --
+  # `componentSubType`, not `subType`, which would resolve to nothing and be
+  # dropped without a word.
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
     "grade asc", "grade desc",
+    "category asc", "category desc",
+    "sizeOrder asc", "sizeOrder desc",
+    "componentSubType asc", "componentSubType desc",
+    "manufacturerName asc", "manufacturerName desc",
     "createdAt asc", "createdAt desc"
   ] + METRICS.keys.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
 
@@ -374,6 +385,18 @@ class Component < ApplicationRecord
     end
   end
 
+  # Sort only, and numeric. `size` itself stays a string ransacker so `size_eq`
+  # keeps matching exactly what it always matched -- which is why this is a name
+  # of its own rather than a change to that one.
+  #
+  # Guarded rather than cast outright: every size any component build has ever
+  # carried is digits ("0" to "12", twelve of them), but a `::integer` on a
+  # column that is a string by type would take the endpoint down the first time
+  # the game shipped an "M", and sorting that to the end is the better failure.
+  ransacker :size_order, type: :integer do
+    Arel.sql("CASE WHEN #{fact_sql(:size)} ~ '^[0-9]+$' THEN (#{fact_sql(:size)})::integer END")
+  end
+
   # The two enums keep their formatters, which turn the name a client sends into
   # the integer the column stores.
   ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do
@@ -391,7 +414,11 @@ class Component < ApplicationRecord
       "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
       "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
-    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore)
+    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore) +
+      # Sort-only, but it has to be listed all the same: ransack drops a sort on
+      # anything absent from here without a word, so the column just comes back
+      # in whatever order the planner chose.
+      ["size_order"]
   end
 
   # `shop_commodities` was listed here long after the association was removed,

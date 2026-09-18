@@ -165,6 +165,31 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Numerically, which is the whole reason `sizeOrder` exists as a name of its
+  # own: `size` is a string ransacker, so ordering on it puts 10 and 12 ahead
+  # of 2.
+  test "GET /components sorts by size numerically" do
+    ["2", "10", "1"].each_with_index do |size, index|
+      create(:component, name: "Size #{size}", size:, sc_key: "size_sort_#{index}")
+    end
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["sizeOrder asc"], "nameCont" => "Size "}} do
+      assert_equal ["Size 1", "Size 2", "Size 10"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  # Each of these is dropped without a word if it is missing from
+  # `ransackable_attributes` -- the sort simply does not appear in the SQL, and
+  # the column comes back in whatever order the planner chose. `sizeOrder` was
+  # exactly that until it was listed.
+  test "GET /components applies every sort the table offers" do
+    %w[name grade category componentSubType manufacturerName sizeOrder].each do |field|
+      %w[asc desc].each do |direction|
+        assert_api_response :get, 200, params: {q: {"sorts" => ["#{field} #{direction}"]}}
+      end
+    end
+  end
+
   # The sort list is an enum in the schema, so a value outside it is refused at
   # the door with a 400 naming what is allowed -- rather than reaching ransack,
   # which would raise on an unknown attribute, or being dropped silently.

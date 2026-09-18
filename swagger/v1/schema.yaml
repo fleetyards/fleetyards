@@ -16805,6 +16805,14 @@ components:
           - name desc
           - grade asc
           - grade desc
+          - category asc
+          - category desc
+          - sizeOrder asc
+          - sizeOrder desc
+          - componentSubType asc
+          - componentSubType desc
+          - manufacturerName asc
+          - manufacturerName desc
           - createdAt asc
           - createdAt desc
           - maxHealth asc
@@ -16832,6 +16840,14 @@ components:
             - name desc
             - grade asc
             - grade desc
+            - category asc
+            - category desc
+            - sizeOrder asc
+            - sizeOrder desc
+            - componentSubType asc
+            - componentSubType desc
+            - manufacturerName asc
+            - manufacturerName desc
             - createdAt asc
             - createdAt desc
             - maxHealth asc
