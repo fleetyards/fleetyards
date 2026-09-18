@@ -92,6 +92,25 @@ const subTypeParams = computed(() => {
 });
 
 const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
+
+// A sub type the control cannot show is one the reader cannot remove. Dropping
+// a category narrows this list, and a sub type belonging to the category just
+// removed stayed in the filter while disappearing from the select -- the
+// catalogue came back empty with nothing on screen saying why.
+//
+// Only once options have arrived: they are undefined on the first render, and
+// pruning against nothing would clear a selection restored from the URL.
+watch(subTypes, (options) => {
+  if (!options?.length) return;
+
+  const available = new Set(options.map((option) => option.value));
+  const chosen = form.value.componentSubTypeIn || [];
+  const kept = chosen.filter((value) => available.has(value));
+
+  if (kept.length !== chosen.length) {
+    form.value = { ...form.value, componentSubTypeIn: kept };
+  }
+});
 </script>
 
 <template>
