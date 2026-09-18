@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -37,6 +39,25 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+// Grid view only: the table carries the same sorts on its headings.
+const sortFields = computed<BaseTableCol<unknown>[]>(() => [
+  {
+    name: "title",
+    label: t("headlines.fleets.contracts.index"),
+    sortable: true,
+  },
+  {
+    name: "reward",
+    label: t("labels.fleets.contracts.reward"),
+    sortable: true,
+  },
+  {
+    name: "deadline",
+    label: t("labels.fleets.contracts.deadline"),
+    sortable: true,
+  },
+]);
 const comlink = useComlink();
 const route = useRoute();
 
@@ -135,6 +156,14 @@ onUnmounted(() => {
 
     <template #skeleton="{ filterVisible }">
       <GridSkeleton :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <SortBar
+        v-if="gridView"
+        :columns="sortFields"
+        default-sort="deadline asc"
+      />
     </template>
 
     <template #default="{ records, emptyVisible }">

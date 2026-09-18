@@ -44,6 +44,9 @@ const columns = computed<BaseTableCol<FleetEvent>[]>(() => [
     label: t("headlines.fleets.events.index"),
     flexGrow: 2,
     minWidth: "200px",
+    // The column renders more than the title, so the sort is named separately.
+    attributeKey: "title",
+    sortable: true,
   },
   {
     name: "startsAt",
@@ -52,6 +55,7 @@ const columns = computed<BaseTableCol<FleetEvent>[]>(() => [
     // timezone is not optional on it.
     label: t("labels.fleets.events.startsAt"),
     width: "195px",
+    sortable: true,
   },
   {
     name: "location",

@@ -228,6 +228,18 @@ class FleetEvent < ApplicationRecord
     status == "open" && !past?
   end
 
+  # Every one of these is already ransackable and already emits an ORDER BY --
+  # what was missing is the list saying which a client may ask for, so the
+  # controller had nothing to filter an arbitrary attribute against.
+  DEFAULT_SORTING_PARAMS = "starts_at asc"
+  ALLOWED_SORTING_PARAMS = [
+    "title asc", "title desc",
+    "startsAt asc", "startsAt desc",
+    "status asc", "status desc",
+    "category asc", "category desc",
+    "createdAt asc", "createdAt desc"
+  ].freeze
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[title slug fleet_id mission_id status starts_at ends_at category scenario archived_at created_at updated_at]
   end
