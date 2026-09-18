@@ -134,7 +134,7 @@ module ScData
       end
 
       private def new_record
-        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, icons: [], paths: []}
+        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, counted: false, icons: [], paths: []}
       end
 
       private def collect_record(records, item)
@@ -146,6 +146,7 @@ module ScData
         canonical = item[:path].start_with?(CANONICAL_PATH)
         record = records[sc_key]
         record[:paths] << item[:path]
+        record[:counted] ||= counted?(item[:values])
 
         if canonical
           record[:canonical_ref] ||= value_or_nil(item[:values].dig("__ref"))
@@ -246,6 +247,7 @@ module ScData
           name:,
           commodity_type: type,
           commodity_type_name: type_name(type),
+          counted: record[:counted],
           description: localize("#{sc_key}_desc"),
           icon: record[:icons].first
         }
@@ -340,6 +342,23 @@ module ScData
 
       private def purchasable_params(values)
         Array.wrap(values.dig("Components", "SCItemPurchasableParams"))
+      end
+
+      # Whether the game counts this commodity in pieces rather than hauling it
+      # in bulk. The container is where its own entity says so: a piece that
+      # rolls its own quality is one the game tracks individually, which is why
+      # a recipe asks for a number of them rather than a volume, and why the
+      # quality ramp applies per piece at all.
+      #
+      # Read off whichever entity carries it rather than the canonical record
+      # alone -- the counted eleven are all harvestables, and none of them has
+      # a record under entities/commodities to declare it on.
+      private def counted?(values)
+        resource_containers(values).any? { |container| container["generateRandomQuality"] == "1" }
+      end
+
+      private def resource_containers(values)
+        Array.wrap(values.dig("Components", "ResourceContainer"))
       end
 
       private def attach_names(values)
