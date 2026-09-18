@@ -1,0 +1,21 @@
+@import "@/stylesheets/variables.scss";
+
+// A column of rows, for the catalogues that show records as rows rather than
+// as a table or a grid of tiles.
+//
+// Deliberately not `ListGroup`: that one carries a transition group, geometry
+// reporting, an expanded-row state and its own skeletons, all of which the
+// settings and notification lists need and a catalogue row list does not.
+.row-list {
+  // The rows carry no margin of their own -- the list spaces them with `gap`
+  // -- so without this the last one sits flush against the paginator under
+  // it. Matches the 20px `filtered-list__actions` puts above the list, so it
+  // is inset the same at both ends.
+  margin-bottom: 20px;
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
