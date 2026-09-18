@@ -74,7 +74,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.components.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-flux-capacitor",
+      icon: "fa-duotone fa-microchip",
       access: ["components"],
     },
   },
@@ -86,7 +86,11 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.equipment.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-gun",
+      // Gear you carry, rather than any one of the things in here: armour is
+      // 2,200 rows and clothing 1,867, so naming either misrepresents the other
+      // half of the table. Weapons are 424 of 4,921 -- the `fa-gun` this
+      // replaces named the smallest tenth of it.
+      icon: "fa-duotone fa-backpack",
       access: ["equipment"],
     },
   },
@@ -110,7 +114,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.manufacturers.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-industry",
+      icon: "fa-duotone fa-buildings",
       access: ["manufacturers"],
     },
   },
@@ -133,7 +137,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.vehicles.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-rocket",
+      icon: "fa-duotone fa-warehouse",
       access: ["vehicles"],
     },
   },
