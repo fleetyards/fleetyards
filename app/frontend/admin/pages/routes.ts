@@ -200,6 +200,12 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.announcements.index",
       needsAuthentication: true,
       icon: "fa-duotone fa-bullhorn",
+      // Linked from the notifications page rather than carried in the nav: the
+      // two are the same job seen from either end -- what the admin sends out,
+      // and what comes back in. So Notifications is the row that lights up
+      // here, or the nav answers nothing at all on an announcements page.
+      nav: "hidden",
+      activeRoute: "admin-notifications",
       access: ["announcements"],
     },
   },

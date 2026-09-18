@@ -20,6 +20,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+const route = useRoute();
+
+// This row is written by hand rather than rendered from the routes, so the
+// `activeRoute` convention AppNavigationItems applies has to be read here too.
+// Announcements is the section that points at it: hidden from the nav, reached
+// from the notifications page, and with nothing else to light up while it is
+// open.
+const active = computed(
+  () => route.meta?.activeRoute === "admin-notifications",
+);
+
 const enabled = computed(() => props.authenticated);
 
 useAdminNotificationUpdates(enabled);
@@ -37,6 +48,7 @@ const badge = computed(() => unreadCount.value?.count || 0);
     :label="t('nav.admin.notifications.index')"
     icon="fa-duotone fa-bell"
     :badge="badge"
+    :active="active"
     :to="{ name: 'admin-notifications' }"
   />
 </template>

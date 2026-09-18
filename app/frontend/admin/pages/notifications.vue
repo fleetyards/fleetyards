@@ -356,6 +356,18 @@ const destroySelected = () =>
   </Heading>
 
   <Teleport to="#header-right">
+    <!-- Announcements carries no nav row of its own: it is the other end of
+         this page's job -- what the admin sends out, against what comes back
+         in -- so the way to it is from here. -->
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'admin-announcements' }"
+      :aria-label="t('nav.admin.announcements.index')"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-bullhorn" />
+      {{ t("nav.admin.announcements.index") }}
+    </Btn>
     <Btn
       :size="BtnSizesEnum.MD"
       :aria-label="t('actions.adminNotifications.readAll')"
