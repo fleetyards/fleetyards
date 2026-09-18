@@ -77,8 +77,12 @@ const { data: categories } = useComponentCategoriesFilters();
 // only search/page and cannot take a category.
 const subTypeParams = computed(() => {
   const chosen = form.value.categoryIn;
+  const category = Array.isArray(chosen) ? chosen[0] : chosen;
 
-  return { category: Array.isArray(chosen) ? chosen[0] : chosen };
+  // An empty object rather than `{category: undefined}`: the key the query is
+  // cached under is built from whatever is passed, and a key carrying an
+  // undefined is not the key an unnarrowed request should have.
+  return category ? { category } : {};
 });
 
 const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
@@ -114,11 +118,16 @@ const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
     <!-- The two filter endpoints that match something. `classes` and
          `item-types` are deprecated: no component in the current build carries
          either column, so both could only ever return nothing. -->
+    <!-- `no-label` puts the label inside the control as its prompt rather than
+         above it, which is what `ManufacturerSelect` beside it does and what
+         the ships form looks like. A stack of three selects with two labelled
+         and one not reads as a mistake. -->
     <BaseSelect
       v-model="form.categoryIn"
       name="category"
       :options="categories ?? []"
       :label="t('labels.filters.components.category')"
+      :no-label="true"
       multiple
     />
 
@@ -127,6 +136,7 @@ const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
       name="subType"
       :options="subTypes ?? []"
       :label="t('labels.filters.components.subType')"
+      :no-label="true"
       multiple
     />
 
