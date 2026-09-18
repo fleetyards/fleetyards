@@ -26,7 +26,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  state: ModelStateEnum.RETRACTED,
+  state: ModelStateEnum.FLIGHT,
 });
 
 const emit = defineEmits<{

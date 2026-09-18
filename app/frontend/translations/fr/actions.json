@@ -63,7 +63,7 @@
       "hideFleetchart": "Affichage par défaut",
       "fleetchartApp": {
         "useExtendedState": "Afficher les vaisseaux déployés",
-        "useRetractedState": "Afficher les vaisseaux repliés"
+        "useRetractedState": "Afficher les vaisseaux en vol"
       },
       "showLabels": "Afficher les labels",
       "hideLabels": "Masquer les labels",

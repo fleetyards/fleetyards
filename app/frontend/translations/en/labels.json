@@ -728,7 +728,7 @@
         "landedFrontViewColored": "Landed Front View Colored",
         "landedAngledViewColored": "Landed Angled View Colored",
         "state": {
-          "retracted": "Retracted",
+          "flight": "In Flight",
           "extended": "Extended",
           "landed": "Landed"
         },

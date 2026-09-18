@@ -38,17 +38,17 @@ const model = (
   }) as Model;
 
 describe("the states a model offers", () => {
-  it("offers retracted alone when nothing else is uploaded", () => {
+  it("offers flight alone when nothing else is uploaded", () => {
     const { availableStates } = useModelStates(model());
 
-    expect(availableStates.value).toEqual([ModelStateEnum.RETRACTED]);
+    expect(availableStates.value).toEqual([ModelStateEnum.FLIGHT]);
   });
 
   it("offers a state that has only a measurement", () => {
     const { availableStates } = useModelStates(model({}, { landedHeight: 12 }));
 
     expect(availableStates.value).toEqual([
-      ModelStateEnum.RETRACTED,
+      ModelStateEnum.FLIGHT,
       ModelStateEnum.LANDED,
     ]);
   });
@@ -59,18 +59,18 @@ describe("the states a model offers", () => {
     );
 
     expect(availableStates.value).toEqual([
-      ModelStateEnum.RETRACTED,
+      ModelStateEnum.FLIGHT,
       ModelStateEnum.EXTENDED,
     ]);
   });
 
-  it("keeps them in retracted, extended, landed order", () => {
+  it("keeps them in flight, extended, landed order", () => {
     const { availableStates } = useModelStates(
       model({ landedHolo: file("landed"), extendedHolo: file("extended") }),
     );
 
     expect(availableStates.value).toEqual([
-      ModelStateEnum.RETRACTED,
+      ModelStateEnum.FLIGHT,
       ModelStateEnum.EXTENDED,
       ModelStateEnum.LANDED,
     ]);
@@ -80,18 +80,18 @@ describe("the states a model offers", () => {
     const current = ref(model());
     const { availableStates } = useModelStates(current);
 
-    expect(availableStates.value).toEqual([ModelStateEnum.RETRACTED]);
+    expect(availableStates.value).toEqual([ModelStateEnum.FLIGHT]);
 
     current.value = model({ landedHolo: file("landed") });
 
     expect(availableStates.value).toEqual([
-      ModelStateEnum.RETRACTED,
+      ModelStateEnum.FLIGHT,
       ModelStateEnum.LANDED,
     ]);
   });
 
   it("counts landed images but not a landed state on a bare model", () => {
-    expect(modelHasState(model(), ModelStateEnum.RETRACTED)).toBe(true);
+    expect(modelHasState(model(), ModelStateEnum.FLIGHT)).toBe(true);
     expect(modelHasState(model(), ModelStateEnum.LANDED)).toBe(false);
     expect(
       modelHasState(
@@ -113,7 +113,7 @@ describe("the states the image toolbar offers", () => {
     );
 
     expect(holoStates.value).toEqual([
-      ModelStateEnum.RETRACTED,
+      ModelStateEnum.FLIGHT,
       ModelStateEnum.LANDED,
     ]);
   });
@@ -134,10 +134,10 @@ describe("resolving a persisted state", () => {
     expect(resolveState(ModelStateEnum.LANDED)).toBe(ModelStateEnum.LANDED);
   });
 
-  it("falls back to retracted on a model that does not have it", () => {
+  it("falls back to flight on a model that does not have it", () => {
     const { resolveState } = useModelStates(model());
 
-    expect(resolveState(ModelStateEnum.LANDED)).toBe(ModelStateEnum.RETRACTED);
+    expect(resolveState(ModelStateEnum.LANDED)).toBe(ModelStateEnum.FLIGHT);
   });
 });
 
@@ -159,9 +159,7 @@ describe("picking the holo", () => {
   it("takes the only holo there is when the flying one is missing", () => {
     const subject = model({ landedHolo: file("landed") });
 
-    expect(modelStateHolo(subject, ModelStateEnum.RETRACTED)?.name).toBe(
-      "landed",
-    );
+    expect(modelStateHolo(subject, ModelStateEnum.FLIGHT)?.name).toBe("landed");
   });
 });
 
@@ -183,7 +181,7 @@ describe("picking a view", () => {
 
   // The extended set the site has today is partial on several hulls: the toggle
   // must not blank a view the state happens not to carry.
-  it("falls back to the retracted pair for a view the state is missing", () => {
+  it("falls back to the flight pair for a view the state is missing", () => {
     const subject = model({
       frontView: file("front"),
       frontViewColored: file("front-colored"),
@@ -214,8 +212,8 @@ describe("picking a view", () => {
 });
 
 describe("picking the metrics", () => {
-  it("reads the retracted figures as they are", () => {
-    expect(modelStateMetrics(model(), ModelStateEnum.RETRACTED)).toEqual({
+  it("reads the flight figures as they are", () => {
+    expect(modelStateMetrics(model(), ModelStateEnum.FLIGHT)).toEqual({
       length: 30,
       beam: 20,
       height: 10,
@@ -246,7 +244,7 @@ describe("picking the metrics", () => {
     ).toBe(36);
   });
 
-  it("falls back to the state's measurement, then to the retracted offset", () => {
+  it("falls back to the state's measurement, then to the flight offset", () => {
     expect(
       modelStateMetrics(model({}, { landedLength: 34 }), ModelStateEnum.LANDED)
         .fleetchartLength,

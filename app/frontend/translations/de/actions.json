@@ -63,7 +63,7 @@
       "hideFleetchart": "Standardansicht",
       "fleetchartApp": {
         "useExtendedState": "Schiffe ausgefahren anzeigen",
-        "useRetractedState": "Schiffe eingefahren anzeigen"
+        "useRetractedState": "Schiffe im Flug anzeigen"
       },
       "showLabels": "Labels anzeigen",
       "hideLabels": "Labels verbergen",

@@ -728,7 +728,7 @@
         "landedFrontViewColored": "Gelandete Frontansicht Farbig",
         "landedAngledViewColored": "Gelandete Schrägansicht Farbig",
         "state": {
-          "retracted": "Eingefahren",
+          "flight": "Im Flug",
           "extended": "Ausgefahren",
           "landed": "Gelandet"
         },

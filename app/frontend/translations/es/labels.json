@@ -728,7 +728,7 @@
         "landedFrontViewColored": "Vista frontal aterrizada en color",
         "landedAngledViewColored": "Vista en ángulo aterrizada en color",
         "state": {
-          "retracted": "Retraído",
+          "flight": "En vuelo",
           "extended": "Extendido",
           "landed": "Aterrizado"
         },

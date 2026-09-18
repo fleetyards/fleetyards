@@ -44,8 +44,8 @@ const tiles = (wrapper: ReturnType<typeof mountCard>) =>
   wrapper.findAll(".metrics-card__tile__value").map((tile) => tile.text());
 
 describe("the dimensions the card shows", () => {
-  it("shows the retracted figures, and no state chip for them", () => {
-    const wrapper = mountCard(ModelStateEnum.RETRACTED, { landedHeight: 4.24 });
+  it("shows the flight figures, and no state chip for them", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT, { landedHeight: 4.24 });
 
     expect(tiles(wrapper).slice(0, 3)).toEqual(["23.58", "19.62", "3.28"]);
     expect(wrapper.find('[data-test="model-state-chip"]').exists()).toBe(false);

@@ -728,7 +728,7 @@
         "landedFrontViewColored": "著陸前視圖（彩色）",
         "landedAngledViewColored": "著陸斜視圖（彩色）",
         "state": {
-          "retracted": "收合",
+          "flight": "飛行中",
           "extended": "展開",
           "landed": "著陸"
         },

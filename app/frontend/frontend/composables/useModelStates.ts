@@ -6,11 +6,11 @@ import type {
   ModelMetrics,
 } from "@/services/fyApi";
 
-// The three states a ship is held in. `retracted` is the ship as it flies and is
+// The three states a ship is held in. `flight` is the ship as it flies and is
 // the only one every model has; the other two are uploaded per hull, and their
 // dimensions are read off their own holo by MeasureHoloJob rather than typed.
 export enum ModelStateEnum {
-  RETRACTED = "retracted",
+  FLIGHT = "flight",
   EXTENDED = "extended",
   LANDED = "landed",
 }
@@ -24,7 +24,7 @@ export enum ModelViewEnum {
 
 // The order the selector offers them in, and the order a fallback walks back to.
 export const MODEL_STATES = [
-  ModelStateEnum.RETRACTED,
+  ModelStateEnum.FLIGHT,
   ModelStateEnum.EXTENDED,
   ModelStateEnum.LANDED,
 ] as const;
@@ -55,7 +55,7 @@ type StateMetrics = {
 // client declares, so a typo is a type error here instead of an undefined at
 // runtime.
 const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
-  [ModelStateEnum.RETRACTED]: {
+  [ModelStateEnum.FLIGHT]: {
     holo: "holo",
     views: {
       [ModelViewEnum.ANGLED]: {
@@ -115,7 +115,7 @@ const STATE_MEDIA: Record<ModelStateEnum, StateMedia> = {
 };
 
 const STATE_METRICS: Record<ModelStateEnum, StateMetrics> = {
-  [ModelStateEnum.RETRACTED]: {
+  [ModelStateEnum.FLIGHT]: {
     length: "length",
     beam: "beam",
     height: "height",
@@ -171,7 +171,7 @@ export const modelStateHolo = (
 
 // The pair for one view, coloured and not, so the caller keeps its own rule about
 // which it prefers at which screen size. A state that has neither falls back to
-// the retracted pair for that view alone: an extended set missing its front view
+// the flight pair for that view alone: an extended set missing its front view
 // should still show a front view.
 export const modelStateView = (
   model: Model,
@@ -186,7 +186,7 @@ export const modelStateView = (
     return { regular, colored };
   }
 
-  const fallback = STATE_MEDIA[ModelStateEnum.RETRACTED].views[view];
+  const fallback = STATE_MEDIA[ModelStateEnum.FLIGHT].views[view];
 
   return {
     regular: file(model.media, fallback.regular),
@@ -209,8 +209,8 @@ export const modelStateMetrics = (model: Model, state: ModelStateEnum) => {
     height: number(metrics, keys.height) || metrics.height,
     // What the views and the holo are drawn at, which is not the same question:
     // the state's own curated offset first, then what its holo measured, and only
-    // then the retracted offset. Falling through to the plain length before the
-    // retracted offset would draw a state with no figures of its own at a size
+    // then the flight offset. Falling through to the plain length before the
+    // flight offset would draw a state with no figures of its own at a size
     // nobody curated.
     fleetchartLength:
       number(metrics, keys.fleetchartLength) ||
@@ -251,10 +251,10 @@ const hasStateMetrics = (model: Model, state: ModelStateEnum): boolean => {
   );
 };
 
-// Retracted is always on offer -- it is what every other state falls back to --
+// Flight is always on offer -- it is what every other state falls back to --
 // and the other two only once the model carries something of their own.
 export const modelHasState = (model: Model, state: ModelStateEnum): boolean =>
-  state === ModelStateEnum.RETRACTED ||
+  state === ModelStateEnum.FLIGHT ||
   hasStateMetrics(model, state) ||
   hasStateMedia(model, state);
 
@@ -265,7 +265,7 @@ export const useModelStates = (model: MaybeRefOrGetter<Model | undefined>) => {
     const value = toValue(model);
 
     if (!value) {
-      return [ModelStateEnum.RETRACTED];
+      return [ModelStateEnum.FLIGHT];
     }
 
     return MODEL_STATES.filter((state) => modelHasState(value, state));
@@ -287,7 +287,7 @@ export const useModelStates = (model: MaybeRefOrGetter<Model | undefined>) => {
 
   // A state persisted from a ship that had it, on a ship that does not.
   const resolveState = (state: ModelStateEnum): ModelStateEnum =>
-    availableStates.value.includes(state) ? state : ModelStateEnum.RETRACTED;
+    availableStates.value.includes(state) ? state : ModelStateEnum.FLIGHT;
 
   return { availableStates, holoStates, resolveState };
 };

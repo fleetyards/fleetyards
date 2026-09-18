@@ -4,7 +4,7 @@ Issue: #5030
 
 ## Goal
 
-One state selection on the ship page — retracted, extended or landed — offered only for the states
+One state selection on the ship page — in flight, extended or landed — offered only for the states
 a model actually has, driving the four fleetchart views, the holo (big, inline and popped out) and
 the three dimension tiles on the Base metrics card.
 
@@ -25,8 +25,12 @@ landed height against 3.28 m in flight.
 `3D View` in the image toolbar when the model has more than one holo. The holo is at the top of the
 page and its only control was at the bottom.
 
-**D2 — "Retracted" stays, "Landed" is new.** `labels.model.state.retracted` is already translated
-in all seven locales and is the admin form's vocabulary; only `landed` is added, by hand, in each.
+**D2 — the flying state is called "In Flight", and "Landed" is new.** _Revised after review._ The
+key started as `labels.model.state.retracted` — the admin form's word — and became
+`labels.model.state.flight`: retracted describes gear and wings, not a ship, and it reads as the
+opposite of "extended" rather than as a peer of "landed". `landed` is added by hand in each of the
+seven locales, and the fleetchart's own tooltip drops "retracted state" for the same reason — two
+names for one state is what the rename exists to stop.
 
 **D3 — the ship detail page only.** The fleetchart's own extended state (`shared/stores/fleetchart`,
 per namespace) is a different control on a different page.
@@ -54,6 +58,12 @@ model with landed images but no landed holo does not get a toolbar button that c
 No backend phase: the payload, the schema and the generated client already carry every field.
 
 ## Log
+
+- **2026-09-19** Two things came back from looking at it running. Nothing said a switched view or
+  holo was still loading — the coloured views are megabytes each — so the views now dim under a
+  loader until every image has reported, tracked by URL so the three views that fall back are not
+  waited on twice, and `HoloViewer` resets its own loader when the path changes, which it never did
+  in any of its callers. And D2 inverted: "Retracted" became "In Flight".
 
 - **2026-09-18** Built, all five phases, in #5033. Three things the plan did not say.
 

@@ -33,7 +33,7 @@ const file = (name: string): MediaFile =>
     largeUrl: `https://cdn.test/${name}?large`,
   }) as MediaFile;
 
-const RETRACTED_VIEWS: Partial<ModelMedia> = {
+const FLIGHT_VIEWS: Partial<ModelMedia> = {
   angledView: file("angled"),
   topView: file("top"),
   frontView: file("front"),
@@ -52,15 +52,15 @@ const mountViews = (media: Partial<ModelMedia>, state?: ModelStateEnum) =>
   });
 
 describe("the state switch over the views", () => {
-  it("is absent for a model that only has the retracted set", async () => {
-    const wrapper = await mountViews(RETRACTED_VIEWS);
+  it("is absent for a model that only has the flight set", async () => {
+    const wrapper = await mountViews(FLIGHT_VIEWS);
 
     expect(wrapper.find('[data-test="model-states"]').exists()).toBe(false);
   });
 
   it("offers one segment per state the model carries", async () => {
     const wrapper = await mountViews({
-      ...RETRACTED_VIEWS,
+      ...FLIGHT_VIEWS,
       landedTopView: file("landed-top"),
     });
 
@@ -68,12 +68,12 @@ describe("the state switch over the views", () => {
       wrapper
         .findAll('[data-test="model-states"] button')
         .map((btn) => btn.text()),
-    ).toEqual(["labels.model.state.retracted", "labels.model.state.landed"]);
+    ).toEqual(["labels.model.state.flight", "labels.model.state.landed"]);
   });
 
   it("asks its parent for the state rather than holding one", async () => {
     const wrapper = await mountViews({
-      ...RETRACTED_VIEWS,
+      ...FLIGHT_VIEWS,
       landedTopView: file("landed-top"),
     });
 
@@ -87,8 +87,8 @@ describe("the views themselves", () => {
   const sources = (wrapper: Awaited<ReturnType<typeof mountViews>>) =>
     wrapper.findAll("img").map((img) => img.attributes("src"));
 
-  it("draws the retracted set by default", async () => {
-    const wrapper = await mountViews(RETRACTED_VIEWS);
+  it("draws the flight set by default", async () => {
+    const wrapper = await mountViews(FLIGHT_VIEWS);
 
     expect(sources(wrapper)).toEqual([
       "https://cdn.test/angled?large",
@@ -98,10 +98,10 @@ describe("the views themselves", () => {
     ]);
   });
 
-  it("draws the chosen state, and the retracted image for a view it lacks", async () => {
+  it("draws the chosen state, and the flight image for a view it lacks", async () => {
     const wrapper = await mountViews(
       {
-        ...RETRACTED_VIEWS,
+        ...FLIGHT_VIEWS,
         landedAngledView: file("landed-angled"),
         landedTopView: file("landed-top"),
         landedSideView: file("landed-side"),
@@ -112,7 +112,7 @@ describe("the views themselves", () => {
     expect(sources(wrapper)).toEqual([
       "https://cdn.test/landed-angled?large",
       "https://cdn.test/landed-top?large",
-      // No landed front view uploaded, so the retracted one stands in.
+      // No landed front view uploaded, so the flight one stands in.
       "https://cdn.test/front?large",
       "https://cdn.test/landed-side?large",
     ]);
@@ -121,7 +121,7 @@ describe("the views themselves", () => {
   it("takes the medium variant on a phone", async () => {
     setViewportWidth(500);
 
-    const wrapper = await mountViews(RETRACTED_VIEWS);
+    const wrapper = await mountViews(FLIGHT_VIEWS);
 
     expect(sources(wrapper)[0]).toBe("https://cdn.test/angled?medium");
   });
@@ -129,7 +129,7 @@ describe("the views themselves", () => {
   it("prefers the coloured image where the state has one", async () => {
     const wrapper = await mountViews(
       {
-        ...RETRACTED_VIEWS,
+        ...FLIGHT_VIEWS,
         landedTopView: file("landed-top"),
         landedTopViewColored: file("landed-top-colored"),
       },
@@ -150,7 +150,7 @@ describe("while the next set of images is loading", () => {
   };
 
   it("holds the loader until every view has reported", async () => {
-    const wrapper = await mountViews(RETRACTED_VIEWS);
+    const wrapper = await mountViews(FLIGHT_VIEWS);
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
 
@@ -165,7 +165,7 @@ describe("while the next set of images is loading", () => {
 
   it("comes back when the state switches to images not seen yet", async () => {
     const wrapper = await mountViews({
-      ...RETRACTED_VIEWS,
+      ...FLIGHT_VIEWS,
       landedTopView: file("landed-top"),
     });
     await settleAll(wrapper);
@@ -175,11 +175,11 @@ describe("while the next set of images is loading", () => {
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(true);
   });
 
-  // Three of the four views fall back to the retracted image, which the browser
+  // Three of the four views fall back to the flight image, which the browser
   // has already: only the one that actually changed is waited on.
   it("does not wait again on an image the switch reuses", async () => {
     const wrapper = await mountViews({
-      ...RETRACTED_VIEWS,
+      ...FLIGHT_VIEWS,
       landedTopView: file("landed-top"),
     });
     await settleAll(wrapper);
@@ -194,7 +194,7 @@ describe("while the next set of images is loading", () => {
   });
 
   it("settles a view that fails rather than waiting forever", async () => {
-    const wrapper = await mountViews(RETRACTED_VIEWS);
+    const wrapper = await mountViews(FLIGHT_VIEWS);
 
     for (const img of wrapper.findAll("img")) {
       await img.trigger("error");

@@ -24,7 +24,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  state: ModelStateEnum.RETRACTED,
+  state: ModelStateEnum.FLIGHT,
 });
 
 const soldAt = computed(() => props.model.availability.soldAt);
@@ -63,7 +63,7 @@ const openAvailability = () => {
   <MetricsCard :title="t('labels.metrics.base')" class="base-panel">
     <template #head>
       <span
-        v-if="state !== ModelStateEnum.RETRACTED"
+        v-if="state !== ModelStateEnum.FLIGHT"
         class="base-panel__chip"
         data-test="model-state-chip"
       >

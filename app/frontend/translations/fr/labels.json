@@ -728,7 +728,7 @@
         "landedFrontViewColored": "Vue de face posée colorée",
         "landedAngledViewColored": "Vue en biais posée colorée",
         "state": {
-          "retracted": "Replié",
+          "flight": "En vol",
           "extended": "Déployé",
           "landed": "Au sol"
         },

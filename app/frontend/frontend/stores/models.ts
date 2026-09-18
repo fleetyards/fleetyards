@@ -39,7 +39,7 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
-    modelState: ModelStateEnum.RETRACTED,
+    modelState: ModelStateEnum.FLIGHT,
     detailsVisible: false,
     filterVisible: true,
     gridView: true,

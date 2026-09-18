@@ -98,7 +98,7 @@ provide(
   computed(() => model.value?.metrics?.quantumFuelTankSize),
 );
 
-const modelState = ref(ModelStateEnum.RETRACTED);
+const modelState = ref(ModelStateEnum.FLIGHT);
 
 const sampleMetrics = [
   { id: "length", label: "Length", value: "128.0 m" },
