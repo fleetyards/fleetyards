@@ -1,3 +1,5 @@
+// A step below the header it sits in. The hand-mixed #7c7c7c this replaces is
+// --color-muted to within a percent of lightness, so nothing moves.
 .base-table-sortable-link-icon {
-  color: darken($text-color, 30%);
+  color: var(--color-muted, #7a8288);
 }

@@ -225,12 +225,12 @@ const onCopyInvite = async () => {
 }
 
 .tour-meta__date {
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
   font-size: 12px;
 }
 
 .tour-description {
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
   margin-bottom: 16px;
 }
 </style>

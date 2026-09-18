@@ -172,7 +172,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
 }
 
 .payout-balances__name {
@@ -199,7 +199,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
   padding: 1px 6px;
   border-radius: var(--radius-control-bare, 6px);
   border: 1px solid var(--color-edge-soft, rgba(255, 255, 255, 0.15));
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
 }
 
 .payout-balances__weight--adjusted {
@@ -246,7 +246,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--color-muted, #999);
+    color: var(--color-muted, #7a8288);
   }
 }
 </style>

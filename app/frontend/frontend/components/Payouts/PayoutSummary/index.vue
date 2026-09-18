@@ -110,7 +110,7 @@ const weighted = computed(
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
 }
 
 .payout-summary__value {

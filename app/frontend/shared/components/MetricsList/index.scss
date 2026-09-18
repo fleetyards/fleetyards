@@ -12,7 +12,7 @@
     width: calc(50% - calc(var(--gap) / 2));
 
     &-label {
-      color: darken($text-color, 20%);
+      color: var(--color-text-dim, #959595);
     }
 
     &-value {

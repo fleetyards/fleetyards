@@ -320,7 +320,7 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
 
 .payout-participants__empty {
   margin: 0;
-  color: var(--color-muted, #999);
+  color: var(--color-text-dim, #959595);
 }
 
 .payout-participants__row {
@@ -355,7 +355,7 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
   padding: 1px 6px;
   border-radius: var(--radius-control-bare, 6px);
   border: 1px solid var(--color-edge-soft, rgba(255, 255, 255, 0.15));
-  color: var(--color-muted, #999);
+  color: var(--color-text-dim, #959595);
 }
 
 .payout-participants__actions {

@@ -113,6 +113,6 @@ const onSubmit = handleSubmit(async (values) => {
   text-transform: uppercase;
   font-size: 11px;
   letter-spacing: 0.04em;
-  color: var(--color-muted, #999);
+  color: var(--color-muted, #7a8288);
 }
 </style>
