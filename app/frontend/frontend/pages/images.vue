@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import LazyImage from "@/shared/components/LazyImage/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
@@ -20,6 +22,14 @@ import {
 } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+// The gallery is only ever cards, so this is the whole sort control. One chip,
+// because one is all the endpoint offers a reader: `updatedAt` says when a
+// record was touched rather than when the picture arrived, and `enabled` is an
+// admin's flag. Pressing it swaps newest for oldest.
+const sortFields = computed<BaseTableCol<unknown>[]>(() => [
+  { name: "createdAt", label: t("labels.createdAt"), sortable: true },
+]);
 
 const imagesQueryParams = computed(() => {
   return {
@@ -54,6 +64,8 @@ useGallery(".images");
     </template>
 
     <template #default="{ records, loading, filterVisible }">
+      <SortBar :columns="sortFields" default-sort="createdAt desc" />
+
       <Grid
         :records="records"
         :loading="loading"

@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -25,6 +27,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+const sortFields = useVehicleSortFields();
 
 type Props = {
   user: UserPublic;
@@ -200,6 +204,10 @@ onMounted(async () => {
     </template>
 
     <template #default="{ records, loading }">
+      <!-- A public hangar is only ever cards, so this is the whole
+           sort control rather than a second way to reach one. -->
+      <SortBar :columns="sortFields" default-sort="name asc" />
+
       <Grid :records="records" :filter-visible="false" primary-key="id">
         <template #default="{ record }">
           <VehiclePanel :vehicle="record" :details="false" :editable="false" />
