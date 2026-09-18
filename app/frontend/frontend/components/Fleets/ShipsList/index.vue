@@ -8,6 +8,8 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
@@ -49,6 +51,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
+
+const sortFields = useVehicleSortFields();
 
 const { displayAlert } = useAppNotifications();
 
@@ -320,6 +324,15 @@ useSubscription({
           <GridSkeleton
             :details="detailsVisible"
             :filter-visible="filterVisible"
+          />
+        </template>
+
+        <template #sort>
+          <!-- Grid view only: the table carries the same sorts on its headings. -->
+          <SortBar
+            v-if="gridView"
+            :columns="sortFields"
+            default-sort="name asc"
           />
         </template>
 

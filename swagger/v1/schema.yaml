@@ -25817,9 +25817,17 @@ components:
       enum:
       - createdAt asc
       - createdAt desc
+      - title asc
+      - title desc
+      - notificationType asc
+      - notificationType desc
       x-enumNames:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - TITLE_ASC
+      - TITLE_DESC
+      - NOTIFICATION_TYPE_ASC
+      - NOTIFICATION_TYPE_DESC
       title: NotificationSortEnum
     NotificationTypeEnum:
       type: string

@@ -44,6 +44,9 @@ const columns = computed<BaseTableCol<FleetContract>[]>(() => [
     label: t("headlines.fleets.contracts.index"),
     flexGrow: 2,
     minWidth: "200px",
+    // The column renders more than the title, so the sort is named separately.
+    attributeKey: "title",
+    sortable: true,
   },
   {
     name: "delivered",
@@ -56,6 +59,7 @@ const columns = computed<BaseTableCol<FleetContract>[]>(() => [
     label: t("labels.fleets.contracts.reward"),
     width: "130px",
     alignment: BaseTableColAlignmentEnum.RIGHT,
+    sortable: true,
   },
   {
     name: "deadline",
@@ -65,6 +69,7 @@ const columns = computed<BaseTableCol<FleetContract>[]>(() => [
     label: t("labels.fleets.contracts.deadline"),
     width: "195px",
     mobile: false,
+    sortable: true,
   },
   {
     name: "crew",
