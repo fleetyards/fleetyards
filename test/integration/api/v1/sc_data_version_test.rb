@@ -44,6 +44,20 @@ class Api::V1::ScDataVersionTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The config names a build as soon as it is parsed and pushed, and its rows
+  # land when the nightly load runs. In between, every catalogue is answered
+  # from the patch behind -- so this has to say that build, or the footer claims
+  # a version none of the data on the page came from.
+  test "GET /sc-data/version reports the build actually being served" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.1"}, default: "live"})
+    create(:import, :scdata_all, version: "3.24.0", aasm_state: "finished")
+    create(:model_build, model: create(:model), environment: "live", version: "3.24.0")
+
+    assert_api_response :get, 200 do
+      assert_equal "3.24.0", parsed_body["version"]
+    end
+  end
+
   test "GET /sc-data/version has nothing to report for a source no load finished" do
     Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.0"}, default: "live"})
 

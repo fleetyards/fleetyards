@@ -72,10 +72,16 @@ module ScData
       # is offered while it is ahead, and stops being offered the moment live
       # overtakes it, without anyone having to edit the config.
       def available
-        chosen = default
+        chosen = default.served
 
-        configured.select do |source|
-          source.loaded? && (source == chosen || source.ahead_of?(chosen))
+        configured.filter_map do |source|
+          # What a reader would actually be answered from, so a configured build
+          # whose load has not run yet is offered as the patch behind it rather
+          # than vanishing from the switch.
+          served = source.served
+          next unless served.loaded?
+
+          served if served == chosen || served.ahead_of?(chosen)
         end
       end
 
@@ -130,6 +136,24 @@ module ScData
 
     def loaded?
       BUILDS.any? { |klass| klass.where(environment:, version:).exists? }
+    end
+
+    # This build if its rows are here, else the newest build this environment
+    # does have.
+    #
+    # The config names a build as soon as it is parsed and pushed, while the
+    # rows arrive when the load runs -- `ScData::CheckJob` enqueues that at
+    # 22:00, so a bump can sit a day ahead of its data. Read strictly, that
+    # window has every catalogue answering nothing and the source switch
+    # offering nothing at all. The previous patch is the last thing we actually
+    # know, and one patch behind reads as slightly stale where empty reads as
+    # broken.
+    #
+    # Its own environment only: a live bump must never be served ptu rows.
+    def served
+      return self if loaded?
+
+      self.class.recorded.find { |source| source.environment == environment } || self
     end
 
     def default?
