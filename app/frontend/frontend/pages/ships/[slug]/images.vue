@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -29,6 +31,17 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+// A gallery of cards, so this is the whole sort control. Worth having here and
+// not on the other lists a ship carries: images run to 131 on one model where
+// paints top out at 24 and modules at 9, and this one is paginated.
+//
+// `enabled` is the third sort the endpoint offers and is an admin's flag, so it
+// is not among these.
+const sortFields = computed<BaseTableCol<unknown>[]>(() => [
+  { name: "createdAt", label: t("labels.createdAt"), sortable: true },
+  { name: "updatedAt", label: t("labels.updatedAt"), sortable: true },
+]);
 
 const { updateMetaInfo } = useMetaInfo();
 
@@ -148,6 +161,10 @@ useGallery(".images");
   >
     <template #skeleton="{ filterVisible }">
       <GridSkeleton variant="image" :filter-visible="filterVisible" />
+    </template>
+
+    <template #sort>
+      <SortBar :columns="sortFields" default-sort="createdAt desc" />
     </template>
 
     <template #default="{ records, loading, filterVisible }">
