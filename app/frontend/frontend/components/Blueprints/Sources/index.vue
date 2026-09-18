@@ -71,7 +71,10 @@ watch(
   groups,
   (value) => {
     if (!value.length) return;
-    if (Object.keys(open.value).length) return;
+    // Against the current groups, not against any key at all: a page reused
+    // for another recipe carries the old keys, and testing for those left
+    // every group of the new one shut.
+    if (value.some((group) => open.value[group.key])) return;
 
     open.value = { [value[0].key]: true };
   },

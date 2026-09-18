@@ -7,6 +7,8 @@ import {
   me as fetchMe,
   destroySession,
   getMySupporterClaimKeyQueryKey,
+  getHangarAllInventoryStockQueryKey,
+  getMyFleetsQueryKey,
 } from "@/services/fyApi";
 
 interface SessionState {
@@ -82,6 +84,22 @@ export const useSessionStore = defineStore("session", {
       // claim key would survive the logout and greet the next person here.
       queryClient.removeQueries({
         queryKey: getMySupporterClaimKeyQueryKey(),
+      });
+
+      // The same for what a blueprint page reads: the stock panel is disabled
+      // when signed out rather than absent, and the catalogue is public, so
+      // the cache would show the previous reader's hangar to whoever opens a
+      // recipe next in the same tab.
+      queryClient.removeQueries({
+        queryKey: getHangarAllInventoryStockQueryKey(),
+      });
+      queryClient.removeQueries({ queryKey: getMyFleetsQueryKey() });
+
+      // Fleet stock keys its slug in the middle, so a prefix cannot reach it.
+      queryClient.removeQueries({
+        predicate: (query) =>
+          query.queryKey[0] === "fleets" &&
+          query.queryKey[2] === "inventory-stock",
       });
 
       this.$reset();

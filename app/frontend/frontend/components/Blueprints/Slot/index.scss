@@ -170,6 +170,18 @@
     background: var(--color-edge-soft, rgb(122 130 136 / 0.28));
     outline: none;
 
+    // The native outline is dropped for the track's sake, so the thumb has to
+    // carry the focus itself or the control cannot be found from the keyboard.
+    &:focus-visible::-webkit-slider-thumb {
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--color-primary, #428bca) 45%, transparent);
+    }
+
+    &:focus-visible::-moz-range-thumb {
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--color-primary, #428bca) 45%, transparent);
+    }
+
     &::-webkit-slider-thumb {
       appearance: none;
       width: 16px;
