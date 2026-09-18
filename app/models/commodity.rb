@@ -222,7 +222,9 @@ class Commodity < ApplicationRecord
   # Read off the build table rather than through the rows: the builds we are on
   # *are* the current catalogue, so this needs neither the join nor
   # `current_version` and stays a single index scan.
-  def self.commodity_types(source = ::ScData::Source.current)
+  # The served build, or the filter offers nothing at all while a configured
+  # build waits for its load -- the same empty select the component facets had.
+  def self.commodity_types(source = ::ScData::Source.current.served)
     CommodityBuild.current(source)
       .where.not(commodity_type: nil)
       .distinct

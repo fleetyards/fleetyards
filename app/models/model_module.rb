@@ -83,7 +83,9 @@ class ModelModule < ApplicationRecord
     )
   SQL
 
-  scope :in_build, ->(source = ::ScData::Source.current) {
+  # The served build, like `Hardpoint.in_build`: read strictly, a ship's module
+  # list empties for the whole window between a config bump and its load.
+  scope :in_build, ->(source = ::ScData::Source.current.served) {
     where(sanitize_sql_array([IN_BUILD_SQL, {environment: source.environment, version: source.version}]))
   }
 

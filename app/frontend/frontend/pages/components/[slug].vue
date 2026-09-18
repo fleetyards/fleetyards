@@ -169,10 +169,15 @@ watch(
         <div class="component-page__columns">
           <MetricsCard :title="t('headlines.component.metrics')">
             <div v-if="heroStats.length" class="metrics-card__hero">
+              <!-- The accent marks the headline, so exactly one tile carries
+                   it. A category can name more than one key figure -- a gun
+                   names sustained and burst DPS -- and accenting both says
+                   neither is the one to read first. -->
               <div
-                v-for="stat in heroStats"
+                v-for="(stat, index) in heroStats"
                 :key="stat.label"
-                class="metrics-card__tile metrics-card__tile--primary"
+                class="metrics-card__tile"
+                :class="{ 'metrics-card__tile--primary': index === 0 }"
               >
                 <div class="metrics-card__tile__label">{{ stat.label }}</div>
                 <div class="metrics-card__tile__value">{{ stat.value }}</div>

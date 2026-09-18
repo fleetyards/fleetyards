@@ -174,7 +174,17 @@ class Model < ApplicationRecord
 
   # What each build of the game says about this model's mechanics.
   has_many :builds, class_name: "ModelBuild", dependent: :destroy
-  has_one :build, -> { current }, class_name: "ModelBuild", inverse_of: :model
+  # The build we are being served from, which is the configured one unless its
+  # load has not run yet. `current` on its own means *exactly* the configured
+  # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
+  # new build has landed -- so the resolution happens here.
+  #
+  # Without it `in_game?` is false for every ship during that window, and the
+  # ship page hides its whole game-files view: 65 hardpoints on a 100i, gone,
+  # while the catalogues beside it answered perfectly well from the patch behind.
+  has_one :build,
+    -> { current(::ScData::Source.current.served) },
+    class_name: "ModelBuild", inverse_of: :model
 
   # The newest build of this environment that still describes the model, which is
   # what a model the export dropped falls back to. A hangar entry pointing at a
@@ -230,7 +240,10 @@ class Model < ApplicationRecord
   # subquery the fact filters use, because this asks whether a row is there
   # rather than what it says, and the unique index answers it directly.
   ransacker(:in_game) do
-    source = ::ScData::Source.current
+    # The served build, like the association above: a filter answering a
+    # different question from the flag it filters on would hide ships the page
+    # then shows as in-game.
+    source = ::ScData::Source.current.served
 
     Arel.sql(
       sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
@@ -297,7 +310,10 @@ class Model < ApplicationRecord
   # against the columns on the largest sets in the database: the biggest hangar
   # (5,992 vehicles) 0.69ms against 1.09ms, the biggest fleet (9,598) 1.32ms
   # against 0.56ms, the models list 0.48ms against 0.30ms.
-  def self.fact_sql(fact, source = ::ScData::Source.current)
+  # The served build. Softer than the others -- the COALESCE falls back to the
+  # column, so this degrades to stale figures rather than to nothing -- which is
+  # exactly why it would have gone unnoticed.
+  def self.fact_sql(fact, source = ::ScData::Source.current.served)
     sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
       COALESCE(
         (SELECT model_facts.#{fact} FROM model_builds model_facts

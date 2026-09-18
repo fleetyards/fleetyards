@@ -100,8 +100,12 @@ const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
 // which is what the ship page wants.
 const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
 
+// Everything except the headline, rather than everything not flagged key. A
+// category can mark more than one figure key -- a gun marks sustained and burst
+// DPS -- and only the first becomes the gold headline, so filtering on the flag
+// dropped the others off the row altogether.
 const inlineStats = computed(() => {
-  const stats = detailStats.value.filter((s) => !s.primary);
+  const stats = detailStats.value.filter((s) => s !== primaryStat.value);
 
   return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
 });
