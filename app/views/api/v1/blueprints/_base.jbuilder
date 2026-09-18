@@ -41,6 +41,7 @@ end
 # Deduplicated, because a recipe naming the same material in two slots should
 # list it once.
 json.materials blueprint.materials do |material|
+  json.id material.id
   json.name material.name
   json.slug material.slug
 end

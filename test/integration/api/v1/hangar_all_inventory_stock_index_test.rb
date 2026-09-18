@@ -49,6 +49,22 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
   # A stock row is only matchable against the catalogue by id: a position's
   # name is whatever the owner typed, so name-against-name would both
   # mis-match and silently miss.
+  # `COUNT(DISTINCT)` skips nulls, so a position holding one linked entry and
+  # one free-text entry would otherwise claim the link -- and the position's
+  # whole quantity with it.
+  test "GET inventory-stock stays silent where only some entries name a record" do
+    sign_in @user
+    inventory = create(:inventory, holder: @user, name: "Refinery")
+    create(:inventory_item, inventory:, item: create(:commodity, name: "Iron"),
+      name: "Ore", category: :commodity, quantity: 5, unit: :scu, entry_type: :deposit)
+    create(:inventory_item, inventory:, item: nil,
+      name: "Ore", category: :commodity, quantity: 5, unit: :scu, entry_type: :deposit)
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body.find { |entry| entry["name"] == "Ore" }["item"]
+    end
+  end
+
   test "GET /hangar/inventory-stock names the catalogue record a position points at" do
     sign_in @user
     iron = create(:commodity, name: "Iron")

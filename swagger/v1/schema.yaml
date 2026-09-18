@@ -19999,15 +19999,7 @@ components:
         netQuantity:
           type: number
         item:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            type:
-              "$ref": "#/components/schemas/InventoryItemTypeEnum"
+          "$ref": "#/components/schemas/InventoryStockItemRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -21685,15 +21677,7 @@ components:
         netQuantity:
           type: number
         item:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            type:
-              "$ref": "#/components/schemas/InventoryItemTypeEnum"
+          "$ref": "#/components/schemas/InventoryStockItemRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -22917,6 +22901,17 @@ components:
         vehicleName:
           type: string
       title: InventoryRef
+    InventoryStockItemRef:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+      title: InventoryStockItemRef
     InventoryStockPosition:
       type: object
       properties:

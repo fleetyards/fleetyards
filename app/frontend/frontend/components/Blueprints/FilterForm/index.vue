@@ -105,6 +105,12 @@ const sourceOptions = computed(() => [
 // answers with -- not the 232-row commodity catalogue.
 const { data: materials } = useFiltersBlueprintsMaterials();
 
+// Kept as the string the option carries, never cast to a boolean here.
+// `useFilters` drops every falsy value before it builds the route, so a
+// `withKnownSource` of `false` was deleted on its way out and "no known
+// source" quietly returned the whole catalogue. "false" is truthy and
+// survives, and the API casts it -- which is what the URL would have carried
+// either way, since a query string has only strings in it.
 const sourceValue = computed({
   get: () => {
     const value = form.value.withKnownSource;
@@ -115,7 +121,7 @@ const sourceValue = computed({
   set: (value?: string) => {
     form.value = {
       ...form.value,
-      withKnownSource: value === undefined ? undefined : value === "true",
+      withKnownSource: value as unknown as boolean | undefined,
     };
   },
 });
