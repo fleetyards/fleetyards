@@ -57,34 +57,6 @@ const subTypeParams = computed(() => {
 const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
 </script>
 
-<script lang="ts" setup>
-import BaseSelect from "@/shared/components/base/Select/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
-import {
-  useComponentCategoriesFilters,
-  useComponentSubTypesFilters,
-} from "@/services/fyApi";
-
-const { t } = useI18n();
-const { form } = useComponentFilters();
-
-const { data: categories } = useComponentCategoriesFilters();
-
-// Narrowed by the chosen category, the way the endpoint expects -- unnarrowed
-// it answers with 39 sub types spanning every category at once. Passed as
-// `options` rather than through the select's own `query`, whose params carry
-// only search/page and cannot take a category.
-const subTypeParams = computed(() => {
-  const chosen = form.value.categoryIn;
-
-  return { category: Array.isArray(chosen) ? chosen[0] : chosen };
-});
-
-const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
-</script>
-
 <template>
   <form class="components-filter-form" @submit.prevent>
     <FormInput
