@@ -728,8 +728,9 @@
         "landedFrontViewColored": "Vista frontale atterrata a colori",
         "landedAngledViewColored": "Vista angolata atterrata a colori",
         "state": {
-          "retracted": "Retratta",
-          "extended": "Estesa"
+          "flight": "In volo",
+          "extended": "Estesa",
+          "landed": "Atterrata"
         },
         "productionStatus": {
           "in-production": "In Produzione",

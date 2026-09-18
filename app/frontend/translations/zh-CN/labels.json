@@ -728,8 +728,9 @@
         "landedFrontViewColored": "着陆正视图（涂装）",
         "landedAngledViewColored": "着陆斜视图（涂装）",
         "state": {
-          "retracted": "收起",
-          "extended": "展开"
+          "flight": "飞行中",
+          "extended": "展开",
+          "landed": "着陆"
         },
         "productionStatus": {
           "in-production": "生产中",

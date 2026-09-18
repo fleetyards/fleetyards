@@ -63,7 +63,7 @@
       "hideFleetchart": "Vista di default",
       "fleetchartApp": {
         "useExtendedState": "Mostra le navi in configurazione estesa",
-        "useRetractedState": "Mostra le navi in configurazione retratta"
+        "useRetractedState": "Mostra le navi in volo"
       },
       "showLabels": "Mostra etichette",
       "hideLabels": "Nascondi etichette",

@@ -9,39 +9,38 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import {
+  ModelStateEnum,
+  ModelViewEnum,
+  modelStateMetrics,
+  modelStateView,
+  useModelStates,
+} from "@/frontend/composables/useModelStates";
 
 import type { Model, MediaFile } from "@/services/fyApi";
 
 type Props = {
   model: Model;
-  extended?: boolean;
+  state?: ModelStateEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  extended: false,
+  state: ModelStateEnum.FLIGHT,
 });
 
 const emit = defineEmits<{
-  (e: "update:extended", value: boolean): void;
+  (e: "update:state", value: ModelStateEnum): void;
 }>();
 
 const { t } = useI18n();
 
 const mobile = useMobile();
 
-const hasExtendedState = computed(() => {
-  return Boolean(
-    props.model.metrics.extendedLength ||
-    props.model.media.extendedHolo ||
-    props.model.media.extendedTopView ||
-    props.model.media.extendedSideView ||
-    props.model.media.extendedAngledView ||
-    props.model.media.extendedFrontView,
-  );
-});
+const { availableStates } = useModelStates(() => props.model);
 
-const setExtended = (value: boolean) => {
-  emit("update:extended", value);
+const setState = (value: ModelStateEnum) => {
+  emit("update:state", value);
 };
 
 const hasImages = computed(() => {
@@ -68,65 +67,60 @@ const pickViewUrl = (
   return regular?.largeUrl;
 };
 
-const fleetchartImageAngled = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedAngledViewColored,
-      props.model.media.extendedAngledView,
-    );
-    if (url) return url;
+const viewUrl = (view: ModelViewEnum) => {
+  const { colored, regular } = modelStateView(props.model, props.state, view);
+
+  return pickViewUrl(colored, regular);
+};
+
+const fleetchartImageAngled = computed(() => viewUrl(ModelViewEnum.ANGLED));
+
+const fleetchartImageFront = computed(() => viewUrl(ModelViewEnum.FRONT));
+
+const fleetchartImageTop = computed(() => viewUrl(ModelViewEnum.TOP));
+
+const fleetchartImageSide = computed(() => viewUrl(ModelViewEnum.SIDE));
+
+// The coloured views run to several megabytes each, so switching state leaves the
+// previous set on screen for a beat. Settled by URL rather than by a counter: the
+// four <img> elements stay put across a switch, so each one reports the file it
+// just finished, and an image already in the browser cache reports immediately.
+const settledUrls = ref(new Set<string>());
+
+const currentUrls = computed(() =>
+  [
+    fleetchartImageAngled.value,
+    fleetchartImageTop.value,
+    fleetchartImageFront.value,
+    fleetchartImageSide.value,
+  ].filter((url): url is string => Boolean(url)),
+);
+
+const loading = computed(() =>
+  currentUrls.value.some((url) => !settledUrls.value.has(url)),
+);
+
+// An image that fails settles too, or the loader would sit over a view that is
+// never going to arrive.
+const settleImage = (event: Event) => {
+  const image = event.target as HTMLImageElement;
+
+  // A `load` belonging to the file the switch navigated away from: the element
+  // has already been pointed at its replacement, so the src attribute reads as
+  // the new file and settling on it would clear the loader over an image still
+  // arriving. The element's own `complete` is what knows the difference.
+  if (event.type === "load" && !image.complete) {
+    return;
   }
 
-  return pickViewUrl(
-    props.model.media.angledViewColored,
-    props.model.media.angledView,
-  );
-});
+  const url = image.getAttribute("src");
 
-const fleetchartImageFront = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedFrontViewColored,
-      props.model.media.extendedFrontView,
-    );
-    if (url) return url;
+  if (!url) {
+    return;
   }
 
-  return pickViewUrl(
-    props.model.media.frontViewColored,
-    props.model.media.frontView,
-  );
-});
-
-const fleetchartImageTop = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedTopViewColored,
-      props.model.media.extendedTopView,
-    );
-    if (url) return url;
-  }
-
-  return pickViewUrl(
-    props.model.media.topViewColored,
-    props.model.media.topView,
-  );
-});
-
-const fleetchartImageSide = computed(() => {
-  if (props.extended) {
-    const url = pickViewUrl(
-      props.model.media.extendedSideViewColored,
-      props.model.media.extendedSideView,
-    );
-    if (url) return url;
-  }
-
-  return pickViewUrl(
-    props.model.media.sideViewColored,
-    props.model.media.sideView,
-  );
-});
+  settledUrls.value = new Set(settledUrls.value).add(url);
+};
 
 const windowWidth = ref(window.innerWidth / 2);
 
@@ -158,35 +152,13 @@ const beam = computed(() => {
   return maxFleetchartWidth.value;
 });
 
-const modelLength = computed(() => {
-  if (!props.model) {
-    return 1;
-  }
+const stateMetrics = computed(() =>
+  modelStateMetrics(props.model, props.state),
+);
 
-  if (props.extended) {
-    const extended =
-      props.model.metrics.extendedFleetchartOffsetLength ||
-      props.model.metrics.extendedLength;
-    if (extended) return extended;
-  }
+const modelLength = computed(() => stateMetrics.value.fleetchartLength || 1);
 
-  return props.model.metrics.fleetchartOffsetLength || 1;
-});
-
-const modelBeam = computed(() => {
-  if (!props.model) {
-    return 1;
-  }
-
-  if (props.extended) {
-    const extended =
-      props.model.metrics.extendedFleetchartOffsetBeam ||
-      props.model.metrics.extendedBeam;
-    if (extended) return extended;
-  }
-
-  return props.model.metrics.fleetchartOffsetBeam || 1;
-});
+const modelBeam = computed(() => stateMetrics.value.fleetchartBeam || 1);
 
 const sideViewImg = ref<HTMLImageElement | null>(null);
 const sideViewHeight = ref(0);
@@ -207,20 +179,41 @@ onMounted(() => {
 
 <template>
   <div v-if="hasImages" class="fleetchart-views-wrapper">
-    <BtnGroup v-if="hasExtendedState" segmented class="fleetchart-views-toggle">
-      <Btn :active="!extended" @click="setExtended(false)">
-        {{ t("labels.model.state.retracted") }}
-      </Btn>
-      <Btn :active="extended" @click="setExtended(true)">
-        {{ t("labels.model.state.extended") }}
+    <BtnGroup
+      v-if="availableStates.length > 1"
+      segmented
+      class="fleetchart-views-toggle"
+      data-test="model-states"
+    >
+      <Btn
+        v-for="modelState in availableStates"
+        :key="modelState"
+        :active="state === modelState"
+        :data-test="`model-state-${modelState}`"
+        @click="setState(modelState)"
+      >
+        {{ t(`labels.model.state.${modelState}`) }}
       </Btn>
     </BtnGroup>
-    <div class="fleetchart-views">
+    <div
+      class="fleetchart-views"
+      :class="{ 'fleetchart-views--loading': loading }"
+    >
+      <!-- Announced here rather than inside Loader: it is a leaf component
+           mounted without a store in several specs, and useI18n needs pinia. -->
+      <Loader
+        relative
+        :loading="loading"
+        role="status"
+        :aria-label="t('labels.loading')"
+      />
       <div>
         <img
           v-if="fleetchartImageAngled"
           :src="fleetchartImageAngled"
           :width="(length > beam ? length : beam) * 1.2"
+          @load="settleImage"
+          @error="settleImage"
         />
       </div>
       <div>
@@ -228,6 +221,8 @@ onMounted(() => {
           v-if="fleetchartImageTop"
           :src="fleetchartImageTop"
           :width="length"
+          @load="settleImage"
+          @error="settleImage"
         />
       </div>
       <div :class="{ small: mobile }">
@@ -235,6 +230,8 @@ onMounted(() => {
           v-if="fleetchartImageFront"
           :src="fleetchartImageFront"
           :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
+          @load="settleImage"
+          @error="settleImage"
         />
       </div>
       <div>
@@ -243,7 +240,11 @@ onMounted(() => {
           ref="sideViewImg"
           :src="fleetchartImageSide"
           :width="length"
-          @load="updateSideViewHeight"
+          @load="
+            updateSideViewHeight();
+            settleImage($event);
+          "
+          @error="settleImage"
         />
       </div>
     </div>

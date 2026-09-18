@@ -10,6 +10,14 @@
   margin: 0;
 }
 
+// Dimmed rather than hidden while the next set arrives: the previous state stays
+// readable, and the loader over it says the change was taken.
+.fleetchart-views--loading {
+  img {
+    opacity: 0.3;
+  }
+}
+
 .fleetchart-views {
   margin: 20px 0;
   display: grid;
@@ -25,6 +33,7 @@
 
     img {
       max-width: 100%;
+      transition: opacity 200ms ease;
     }
 
     &.small {

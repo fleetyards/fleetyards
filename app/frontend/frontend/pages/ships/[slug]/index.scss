@@ -146,12 +146,18 @@
   margin-right: 0;
 }
 
-.toggle-3d {
+// The controls over the hero image: the 3D group, and the state switch beside it
+// where the model has a second holo. Wraps rather than overflowing, because both
+// groups together are wider than a phone.
+.image-toolbar {
   position: absolute;
   top: 5px;
   right: 5px;
   z-index: 1000;
-  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 @media (max-width: $desktop-breakpoint) {

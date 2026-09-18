@@ -728,8 +728,9 @@
         "landedFrontViewColored": "Gelandete Frontansicht Farbig",
         "landedAngledViewColored": "Gelandete Schrägansicht Farbig",
         "state": {
-          "retracted": "Eingefahren",
-          "extended": "Ausgefahren"
+          "flight": "Im Flug",
+          "extended": "Ausgefahren",
+          "landed": "Gelandet"
         },
         "productionStatus": {
           "in-production": "In Produktion",

@@ -63,7 +63,7 @@
       "hideFleetchart": "Default view",
       "fleetchartApp": {
         "useExtendedState": "Show ships in extended state",
-        "useRetractedState": "Show ships in retracted state"
+        "useRetractedState": "Show ships in flight"
       },
       "showLabels": "Show Labels",
       "hideLabels": "Hide Labels",

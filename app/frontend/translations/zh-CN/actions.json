@@ -63,7 +63,7 @@
       "hideFleetchart": "默认视图",
       "fleetchartApp": {
         "useExtendedState": "以展开状态显示飞船",
-        "useRetractedState": "以收起状态显示飞船"
+        "useRetractedState": "以飞行状态显示飞船"
       },
       "showLabels": "显示标签",
       "hideLabels": "隐藏标签",

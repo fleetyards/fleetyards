@@ -35,6 +35,12 @@ import CarriedByList from "@/frontend/components/Models/CarriedByList/index.vue"
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
+import {
+  ModelStateEnum,
+  modelStateHolo,
+  modelStateMetrics,
+  useModelStates,
+} from "@/frontend/composables/useModelStates";
 import { storeToRefs } from "pinia";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
@@ -108,8 +114,20 @@ const mobile = useMobile();
 
 const modelsStore = useModelsStore();
 
-const { holoviewerVisible, extendedStateVisible: extendedState } =
-  storeToRefs(modelsStore);
+const { holoviewerVisible, modelState } = storeToRefs(modelsStore);
+
+const { availableStates, holoStates, resolveState } = useModelStates(
+  () => props.model,
+);
+
+// The selection is kept for the session and the next ship may not have the state
+// it was left on, so what the page draws is the resolved one, never the raw
+// store value.
+const activeState = computed(() => resolveState(modelState.value));
+
+const setModelState = (state: ModelStateEnum) => {
+  modelsStore.setModelState(state);
+};
 
 const { supported: webpSupported } = useWebpCheck();
 
@@ -232,17 +250,11 @@ const toggleHoloviewer = () => {
 };
 
 const holoModel = computed(() => {
-  const useExtended = extendedState.value && props.model.media.extendedHolo;
-
-  const path = useExtended
-    ? props.model.media.extendedHolo?.url
-    : props.model.media.holo?.url;
-
-  const length = useExtended
-    ? props.model.metrics.extendedFleetchartOffsetLength ||
-      props.model.metrics.extendedLength ||
-      props.model.metrics.fleetchartOffsetLength
-    : props.model.metrics.fleetchartOffsetLength;
+  const path = modelStateHolo(props.model, activeState.value)?.url;
+  const length = modelStateMetrics(
+    props.model,
+    activeState.value,
+  ).fleetchartLength;
 
   if (!path || !length) {
     return;
@@ -292,28 +304,52 @@ const adiMap = computed(() => {
             }"
             class="image-wrapper"
           >
-            <BtnGroup class="toggle-3d" v-if="model.media.holo">
-              <Btn
-                v-if="holoviewerVisible"
-                :to="{
-                  name: 'ship-viewer',
-                  params: {
-                    slug: model.slug,
-                  },
-                }"
-                v-tooltip="t('labels.openInNewWindow')"
-              >
-                <i class="fa-light fa-external-link-alt" />
-              </Btn>
-              <Btn :active="holoviewerVisible" @click="toggleHoloviewer">
-                {{ t("labels.3dView") }}
-              </Btn>
+            <div v-if="holoStates.length" class="image-toolbar">
+              <BtnGroup>
+                <Btn
+                  v-if="holoviewerVisible"
+                  :to="{
+                    name: 'ship-viewer',
+                    params: {
+                      slug: model.slug,
+                    },
+                  }"
+                  v-tooltip="t('labels.openInNewWindow')"
+                >
+                  <i class="fa-light fa-external-link-alt" />
+                </Btn>
+                <Btn :active="holoviewerVisible" @click="toggleHoloviewer">
+                  {{ t("labels.3dView") }}
+                </Btn>
 
-              <Btn v-if="adiMap" :href="adiMap">
-                <img :src="adiIcon" class="adi-icon" />
-                {{ t("labels.3dMap") }}
-              </Btn>
-            </BtnGroup>
+                <Btn v-if="adiMap" :href="adiMap">
+                  <img :src="adiIcon" class="adi-icon" />
+                  {{ t("labels.3dMap") }}
+                </Btn>
+              </BtnGroup>
+
+              <!-- Earned by a second holo: a state that differs in the views
+                   alone is switched where the views are. Once the switch is
+                   here it offers every state the model has, so both switches
+                   read the same -- one of them showing no selection at all
+                   because the chosen state has no holo of its own is worse than
+                   a segment that only moves the dimensions. -->
+              <BtnGroup
+                v-if="holoStates.length > 1"
+                segmented
+                data-test="model-holo-states"
+              >
+                <Btn
+                  v-for="holoState in availableStates"
+                  :key="holoState"
+                  :active="activeState === holoState"
+                  :data-test="`model-holo-state-${holoState}`"
+                  @click="setModelState(holoState)"
+                >
+                  {{ t(`labels.model.state.${holoState}`) }}
+                </Btn>
+              </BtnGroup>
+            </div>
 
             <HoloViewer
               v-if="holoviewerVisible && holoModel"
@@ -360,7 +396,7 @@ const adiMap = computed(() => {
               inline
             />
           </template>
-          <ModelBaseMetrics :model="model" :extended="extendedState" />
+          <ModelBaseMetrics :model="model" :state="activeState" />
           <ModelCrewMetrics :model="model" />
           <div class="page-actions page-actions-block">
             <Btn
@@ -460,7 +496,11 @@ const adiMap = computed(() => {
           </div>
         </div>
       </div>
-      <FleetchartImages v-model:extended="extendedState" :model="model" />
+      <FleetchartImages
+        :model="model"
+        :state="activeState"
+        @update:state="setModelState"
+      />
       <hr />
       <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
       <CrewPositions :model="model" />
