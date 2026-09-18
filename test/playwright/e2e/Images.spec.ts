@@ -14,7 +14,10 @@ test.describe("Images", () => {
 
     await expect(page).toHaveURL(/\/images/);
 
-    const images = page.getByTestId("images-list").locator("a");
+    // The grid rather than the whole list: `images-list` is on the
+    // `FilteredList` root, so this counted the paginator and the sort chips as
+    // images too.
+    const images = page.getByTestId("images-grid").locator("a");
     await expect(images).toHaveCount(20);
   });
 });
