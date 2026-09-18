@@ -334,9 +334,9 @@ const onQuality = (event: Event) => {
           </div>
 
           <template v-if="ramp.plotted">
-            <!-- No colour and no arrow. 852 of the 6,524 stats in the build ramp
-               downward because lower is better for that stat, and the page
-               cannot know which way is good for a given one. -->
+            <!-- The plot itself stays uncoloured: it is the shape of the ramp,
+               which is the same shape whichever way the stat improves. The
+               figure beside it carries the judgement. -->
             <div class="blueprint-slot__plot">
               <svg
                 class="blueprint-slot__spark"
@@ -378,6 +378,12 @@ const onQuality = (event: Event) => {
             <div class="blueprint-slot__stat-foot">
               <span v-if="ramp.base" class="blueprint-slot__stat-base">
                 {{ t("labels.blueprint.atNeutral", { value: ramp.base }) }}
+              </span>
+              <span
+                class="blueprint-slot__delta"
+                :class="`blueprint-slot__delta--${ramp.trend}`"
+              >
+                {{ ramp.delta }}
               </span>
               <span class="blueprint-slot__stat-span">{{ ramp.span }}</span>
               <span class="blueprint-slot__stat-domain">{{ ramp.domain }}</span>

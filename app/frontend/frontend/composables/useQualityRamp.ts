@@ -17,6 +17,8 @@ export type Ramp = {
   base?: string;
   /** How far the current grade moves it, e.g. "+12.5%". */
   delta?: string;
+  /** Whether that move is an improvement, by the ramp's own direction. */
+  trend?: "better" | "worse" | "level";
   factor?: string;
   /** Printed only when it is not already the headline. */
   showFactor?: boolean;
@@ -32,6 +34,23 @@ export type Ramp = {
 // The quality scale the game ramps a stat over.
 const QUALITY_MIN = 0;
 const QUALITY_MAX = 1000;
+
+/**
+ * Which way a stat improves.
+ *
+ * Better material makes a better item, so the direction a ramp moves over
+ * quality is the direction the stat improves in -- and the files bear that
+ * out: 22 of the 23 stats ramp one way only, and the four that fall are
+ * exactly the ones where less is better (the three recoil stats and quantum
+ * fuel burn). So the polarity is read off the ramp rather than guessed at or
+ * kept in a hand-written list.
+ */
+export const trendOf = (shift: number, direction: number) => {
+  const benefit = shift * Math.sign(direction);
+  if (Math.abs(benefit) < 0.05) return "level" as const;
+
+  return benefit > 0 ? ("better" as const) : ("worse" as const);
+};
 
 // Where every ramp in the build sits at 1.0x: the single-segment ones are
 // symmetric about it, the piecewise ones put their seam there. It is the grade
@@ -177,6 +196,7 @@ export const useQualityRamp = (
       // and there the multiplier is the whole answer.
       const hasBase = base !== undefined && base !== null;
       const shift = (now - 1) * 100;
+      const direction = segments[segments.length - 1].b - segments[0].a;
 
       return {
         key,
@@ -184,7 +204,8 @@ export const useQualityRamp = (
         plotted: true,
         headline: hasBase ? withUnit(base * now, unit) : factor,
         base: hasBase ? withUnit(base, unit) : undefined,
-        delta: `${shift >= 0 ? "+" : ""}${shift.toFixed(1)}%`,
+        delta: `${shift > 0 ? "+" : ""}${shift.toFixed(1)}%`,
+        trend: trendOf(shift, direction),
         factor,
         // The domain comes off the segments. Claiming Q0–1000 for a stat that
         // only starts at 500 would state a range the files do not.

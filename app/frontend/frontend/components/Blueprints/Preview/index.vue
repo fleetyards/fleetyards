@@ -73,6 +73,12 @@ const craftableRoute = computed(() => {
           </span>
         </span>
         <span class="blueprint-preview__stat-value">{{ stat.value }}</span>
+        <span
+          class="blueprint-preview__delta"
+          :class="`blueprint-preview__delta--${stat.trend}`"
+        >
+          {{ stat.delta }}
+        </span>
         <span v-if="stat.base" class="blueprint-preview__stat-base">
           {{ t("labels.blueprint.atNeutral", { value: stat.base }) }}
         </span>

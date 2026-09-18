@@ -1,6 +1,7 @@
 import {
   byStat,
   segmentsOf,
+  trendOf,
   valueAt,
   withUnit,
 } from "@/frontend/composables/useQualityRamp";
@@ -14,6 +15,10 @@ export type CraftedStat = {
   /** What it is at the neutral grade, where the catalogue holds the figure. */
   base?: string;
   factor: string;
+  /** How far the chosen grades move it from the catalogue's figure. */
+  delta: string;
+  /** Whether that move is an improvement, by the ramp's own direction. */
+  trend: "better" | "worse" | "level";
   /** How many slots move this stat -- two, for 358 of the recipes. */
   slots: number;
 };
@@ -43,6 +48,7 @@ export const useCraftedStats = (
         unit?: string | null;
         base?: number | null;
         factor: number;
+        direction: number;
         slots: number;
       }
     >();
@@ -64,6 +70,10 @@ export const useCraftedStats = (
           unit: held?.unit ?? group[0].unit,
           base: held?.base ?? group[0].baseValue,
           factor: (held?.factor ?? 1) * factor,
+          // Every slot moving one stat moves it the same way, so either
+          // slot's ramp answers which way the stat improves.
+          direction:
+            held?.direction ?? segments[segments.length - 1].b - segments[0].a,
           slots: (held?.slots ?? 0) + 1,
         });
       });
@@ -72,6 +82,7 @@ export const useCraftedStats = (
     return [...combined.entries()].map(([key, stat]) => {
       const base = stat.base ?? undefined;
       const factor = `${stat.factor.toFixed(3)}×`;
+      const shift = (stat.factor - 1) * 100;
 
       return {
         key,
@@ -80,6 +91,8 @@ export const useCraftedStats = (
           base === undefined ? factor : withUnit(base * stat.factor, stat.unit),
         base: base === undefined ? undefined : withUnit(base, stat.unit),
         factor,
+        delta: `${shift > 0 ? "+" : ""}${shift.toFixed(1)}%`,
+        trend: trendOf(shift, stat.direction),
         slots: stat.slots,
       };
     });

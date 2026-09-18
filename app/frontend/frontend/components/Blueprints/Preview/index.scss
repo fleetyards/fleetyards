@@ -43,11 +43,30 @@
 
   &__stat-value {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
     color: #fff;
     text-align: right;
     font-variant-numeric: tabular-nums;
+  }
+
+  // Colour states what the change is worth, not which way the number moved:
+  // a recoil stat falling 18% is an improvement and reads as one.
+  &__delta {
+    grid-column: 2;
+    text-align: right;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted, #7a8288);
+
+    &--better {
+      color: var(--color-success, #5cb85c);
+    }
+
+    &--worse {
+      color: var(--color-danger, #dc3545);
+    }
   }
 
   &__stat-base {
