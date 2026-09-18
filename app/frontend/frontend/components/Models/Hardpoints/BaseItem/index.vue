@@ -167,11 +167,18 @@ const hardpointNames = computed(() => {
         <HardpointComponent>
           <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
             <template v-if="hardpoint.component && hardpoint.component.name">
-              <!-- The catalogue link. Only when the component has a slug: one
+              <!-- The catalogue link. Only when the component has a slug -- one
                    without a name never got one, and a link to nowhere is worse
-                   than plain text. -->
+                   than plain text -- and only when the catalogue actually
+                   carries it: doors, subsystem controllers, seats and the
+                   uncategorised are fitted by the shipwright rather than the
+                   player, and a link here would be a way into a page the
+                   catalogue has decided not to list. The server decides that,
+                   so the two cannot drift. -->
               <router-link
-                v-if="hardpoint.component.slug"
+                v-if="
+                  hardpoint.component.slug && hardpoint.component.catalogued
+                "
                 :to="{
                   name: 'component',
                   params: { slug: hardpoint.component.slug },

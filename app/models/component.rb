@@ -140,7 +140,11 @@ class Component < ApplicationRecord
   # A list rather than a rule because the data carries no flag for it: `hidden`
   # is the game's own and marks something else, and `type_data` is no guide
   # either -- 99% of seats carry it and 0% of weapon mounts do.
-  CATALOGUE_EXCLUDED_CATEGORIES = %w[doors controller].freeze
+  # `seat` is 249 cockpit status displays, 21 beds and one stray turret -- the
+  # manned turrets themselves are `turret`, 120 of the 121 there are, so this
+  # does not touch them. `unknown` is what the loader falls back to when the
+  # files name no category, and reads as caps, scoops and deck plates.
+  CATALOGUE_EXCLUDED_CATEGORIES = %w[doors controller seat unknown].freeze
 
   # What the public catalogue lists. `with_facts` has to be applied by the
   # caller -- the category is read off the joined build.
@@ -207,6 +211,17 @@ class Component < ApplicationRecord
   # without saying a word.
   def self.fact_sql(fact)
     Arel.sql("component_facts.#{fact}")
+  end
+
+  # Whether this is an entry the catalogue lists -- the row form of `catalogued`,
+  # said out loud in the API because the ship's hardpoint list has to agree with
+  # it: a part it linked to a page the catalogue does not carry would be a way
+  # into something we have decided not to show.
+  #
+  # Derived from the same constant rather than restated, so the list and the
+  # links cannot drift apart.
+  def catalogued?
+    name.present? && CATALOGUE_EXCLUDED_CATEGORIES.exclude?(category)
   end
 
   # Not in the build we are on. Said out loud in the API, which until now offered
@@ -433,20 +448,36 @@ class Component < ApplicationRecord
   # Read off the build table rather than through the rows: the builds we are on
   # *are* the current catalogue, so this needs neither the join nor
   # `current_version` and stays a single index scan.
+  # `served_source` for the same reason the catalogue uses it: read against the
+  # configured build alone, every filter came back empty while that build waited
+  # for its load -- an empty category select over a list that was answering
+  # perfectly well from the patch behind.
   def self.build_facet(fact, source = ::ScData::Source.current)
-    scope = ComponentBuild.current(source).where.not(fact => nil)
+    scope = ComponentBuild.current(served_source(source)).where.not(fact => nil)
     scope = yield(scope) if block_given?
 
     scope.distinct.pluck(fact).compact_blank.sort
   end
 
-  def self.categories
-    build_facet(:category)
+  # Taken off the catalogue rather than off the build, so the filter offers
+  # exactly what it can select. Read from the build it listed categories the
+  # list does not carry: the four `CATALOGUE_EXCLUDED_CATEGORIES`, and another
+  # three -- batteries, scanners, salvagemunching -- whose every component the
+  # game left unnamed. Seven dead options out of thirty-four.
+  def self.catalogue_facet(fact, source = ::ScData::Source.current)
+    scope = with_facts(true, source).catalogued
+    scope = yield(scope) if block_given?
+
+    scope.distinct.pluck(fact_sql(fact)).compact_blank.sort
   end
 
-  def self.sub_types(category: nil)
-    build_facet(:component_sub_type) do |scope|
-      category.present? ? scope.where(category:) : scope
+  def self.categories(source = ::ScData::Source.current)
+    catalogue_facet(:category, source)
+  end
+
+  def self.sub_types(category: nil, source: ::ScData::Source.current)
+    catalogue_facet(:component_sub_type, source) do |scope|
+      category.present? ? scope.where(fact_sql(:category).eq(category)) : scope
     end
   end
 
