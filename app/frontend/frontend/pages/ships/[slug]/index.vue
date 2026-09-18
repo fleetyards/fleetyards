@@ -116,7 +116,9 @@ const modelsStore = useModelsStore();
 
 const { holoviewerVisible, modelState } = storeToRefs(modelsStore);
 
-const { holoStates, resolveState } = useModelStates(() => props.model);
+const { availableStates, holoStates, resolveState } = useModelStates(
+  () => props.model,
+);
 
 // The selection is kept for the session and the next ship may not have the state
 // it was left on, so what the page draws is the resolved one, never the raw
@@ -329,15 +331,19 @@ const adiMap = computed(() => {
                 </Btn>
               </BtnGroup>
 
-              <!-- Only where a second holo exists: the states that differ in the
-                   views alone are switched where the views are. -->
+              <!-- Earned by a second holo: a state that differs in the views
+                   alone is switched where the views are. Once the switch is
+                   here it offers every state the model has, so both switches
+                   read the same -- one of them showing no selection at all
+                   because the chosen state has no holo of its own is worse than
+                   a segment that only moves the dimensions. -->
               <BtnGroup
                 v-if="holoStates.length > 1"
                 segmented
                 data-test="model-holo-states"
               >
                 <Btn
-                  v-for="holoState in holoStates"
+                  v-for="holoState in availableStates"
                   :key="holoState"
                   :active="activeState === holoState"
                   :data-test="`model-holo-state-${holoState}`"
