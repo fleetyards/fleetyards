@@ -20,6 +20,11 @@ module Maintenance
   class GraceBetaFleetsTask < MaintenanceTasks::Task
     no_collection
 
+    # Shares nothing with the reconciler's lock on purpose -- this grants rows
+    # the reconciler never touches, and blocking one on the other would only
+    # couple two things that do not conflict.
+    LOCK = "grace_beta_fleets"
+
     # Left on by default so an accidental run reports instead of granting.
     attribute :dry_run, :boolean, default: true
 
@@ -39,7 +44,7 @@ module Maintenance
 
       return if halted?(readiness)
 
-      dry_run ? report_plan(readiness) : grant(readiness)
+      dry_run ? report_plan(readiness) : grant
     end
 
     private def report(readiness)
@@ -48,14 +53,16 @@ module Maintenance
       log "of those, would be cut off:   #{readiness[:unready_fleet_ids].size}"
     end
 
-    # A flag switched on for everybody has no actor list to read and every
-    # fleet is reaching it, so the figures above describe the wrong population.
-    # Granting against them would open a subscription for a handful of fleets
-    # and quietly miss the rest, which is worse than doing nothing.
+    # A flag granting through anything but a named actor -- on for everybody, a
+    # group, a percentage, an expression -- has a population this cannot list,
+    # so the figures above describe the wrong one. Granting against them would
+    # open a subscription for a handful of fleets and quietly miss the rest,
+    # which is worse than doing nothing.
     private def halted?(readiness)
-      return false if readiness[:globally_on].empty?
+      gates = readiness[:unenumerable_gates]
+      return false if gates.empty?
 
-      log "STOP: #{readiness[:globally_on].join(", ")} on for everybody, so the gate list is not the population"
+      gates.each { |flag, kinds| log "STOP: #{flag} grants by #{kinds.join(", ")}, which names no actors" }
       log "Switch them back to actor gates, or grace by hand, before running this."
       true
     end
@@ -66,8 +73,16 @@ module Maintenance
       Fleet.where(id: readiness[:unready_fleet_ids]).order(:name).limit(50).pluck(:name).each { |name| log "  #{name}" }
     end
 
-    private def grant(readiness)
-      fleet_ids = readiness[:unready_fleet_ids]
+    # Under a lock, and read again inside it. The snapshot above was taken
+    # outside, and these rows carry an `ended_at` so the partial unique index on
+    # open subscriptions does not cover them -- two overlapping runs would both
+    # call the same fleet unready and grant it twice.
+    private def grant
+      ActiveRecord::Base.with_advisory_lock(LOCK) { grant_unready }
+    end
+
+    private def grant_unready
+      fleet_ids = ::Subscriptions::Readiness.call[:unready_fleet_ids]
 
       fleet_ids.each do |fleet_id|
         FleetSubscription.create!(

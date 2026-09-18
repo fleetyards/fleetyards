@@ -85,15 +85,57 @@ module Maintenance
       assert_predicate @fleet.reload, :subscribed?
     end
 
-    # A flag on for everybody has no actor list, so the gate list is not the
-    # population and granting against it would miss almost everyone.
+    # A flag granting through anything that names no actors has a population
+    # the gate list does not describe, so granting against it would cover a few
+    # fleets and miss the rest.
     test "it refuses to grant while a premium flag is on for everybody" do
       Flipper.enable("fleet_logistics")
 
       assert_no_difference -> { FleetSubscription.count } do
         output = run_task(dry_run: false)
 
-        assert_match(/STOP/, output)
+        assert_match(/STOP: fleet_logistics grants by boolean/, output)
+      end
+    end
+
+    test "it refuses to grant while a premium flag grants to a percentage" do
+      Flipper.enable_percentage_of_actors("fleet_tours", 50)
+
+      assert_no_difference -> { FleetSubscription.count } do
+        output = run_task(dry_run: false)
+
+        assert_match(/STOP: fleet_tours grants by percentage_of_actors/, output)
+      end
+    end
+
+    test "it refuses to grant while a premium flag grants to a group" do
+      Flipper.enable_group("fleet_contracts", :testers)
+
+      assert_no_difference -> { FleetSubscription.count } do
+        run_task(dry_run: false)
+      end
+    end
+
+    # A grace subscription for a deleted fleet is not a thing to create.
+    test "a discarded fleet is not graced" do
+      @fleet.update_column(:discarded_at, Time.current)
+
+      assert_no_difference -> { FleetSubscription.count } do
+        run_task(dry_run: false)
+      end
+    end
+
+    # These rows carry an `ended_at`, so the partial unique index on open
+    # subscriptions does not cover them and the database will not catch a
+    # double grant. `grant` therefore takes no snapshot at all and reads the
+    # population again inside the lock -- it cannot be handed a stale one.
+    test "the grant reads the population again rather than trusting a snapshot" do
+      run_task(dry_run: false)
+
+      assert_no_difference -> { FleetSubscription.count } do
+        task = ::Maintenance::GraceBetaFleetsTask.new
+        task.dry_run = false
+        capture_io { task.send(:grant) }
       end
     end
 
