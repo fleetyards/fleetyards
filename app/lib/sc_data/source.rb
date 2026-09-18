@@ -193,6 +193,27 @@ module ScData
     # default to sit opposite its preview, and it hid itself from everyone. The
     # one window this whole fallback exists for was the one window the control
     # over it disappeared in.
+    # The same question as `served`, asked for one catalogue.
+    #
+    # `loaded?` and `complete?` are true when *any* catalogue carries the build,
+    # which is the right answer for the source switch and the wrong one for a
+    # list: blueprints only started being exported recently, so a build that is
+    # complete by every other measure has no `blueprint_builds` rows at all, and
+    # resolving to it would empty that one catalogue while the rest filled.
+    #
+    # Falls back the same way: the newest build this catalogue has that finished
+    # importing, then the newest it has at all, then this one.
+    def served_for(build_class)
+      return self if complete? && build_class.where(environment:, version:).exists?
+
+      candidates = self.class.recorded.select do |source|
+        source.environment == environment &&
+          build_class.where(environment:, version: source.version).exists?
+      end
+
+      candidates.find(&:complete?) || candidates.first || self
+    end
+
     def default?
       self == self.class.default.served
     end

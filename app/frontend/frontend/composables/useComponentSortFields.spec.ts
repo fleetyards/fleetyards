@@ -1,5 +1,14 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
+
+// The composable reads `q[s]` so an active metric keeps its chip when the page
+// it is on carries no row with that figure. Called outside a component there is
+// no router to read, so one is stood in for.
+const query = vi.hoisted(() => ({ value: {} as Record<string, string> }));
+
+vi.mock("vue-router", () => ({
+  useRoute: () => ({ query: query.value }),
+}));
 import { useComponentSortFields } from "./useComponentSortFields";
 import { type Component } from "@/services/fyApi";
 
@@ -12,6 +21,7 @@ const labels = (records: Component[]) =>
 describe("useComponentSortFields", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    query.value = {};
   });
 
   it("offers the sorts the server can order by", () => {
@@ -50,6 +60,15 @@ describe("useComponentSortFields", () => {
 
     it("stay away when no row carries one", () => {
       expect(labels([component()])).not.toContain("HP");
+    });
+
+    // Derived from the records alone, the chip vanished the moment a page held
+    // no row carrying that figure -- leaving the list ordered by a setting with
+    // no control left to see or undo it.
+    it("keep the chip for the metric the list is ordered by", () => {
+      query.value = { s: "maxHealth desc" };
+
+      expect(labels([component()])).toContain("HP");
     });
 
     it("sort by the name the server whitelists", () => {

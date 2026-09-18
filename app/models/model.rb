@@ -183,7 +183,7 @@ class Model < ApplicationRecord
   # ship page hides its whole game-files view: 65 hardpoints on a 100i, gone,
   # while the catalogues beside it answered perfectly well from the patch behind.
   has_one :build,
-    -> { current(::ScData::Source.current.served) },
+    -> { current(::ScData::Source.current.served_for(ModelBuild)) },
     class_name: "ModelBuild", inverse_of: :model
 
   # The newest build of this environment that still describes the model, which is

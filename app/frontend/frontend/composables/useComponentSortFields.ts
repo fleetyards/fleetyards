@@ -20,6 +20,14 @@ export const useComponentSortFields = (
 ) => {
   const { t } = useI18n();
 
+  const route = useRoute();
+
+  // The metric the list is ordered by right now, if any. `q[s]` carries one
+  // sort as "<field> <direction>".
+  const activeSort = computed(
+    () => String(route.query.s || "").split(" ")[0] || undefined,
+  );
+
   return computed<BaseTableCol<Component>[]>(() => {
     const records = toValue(components);
 
@@ -55,8 +63,14 @@ export const useComponentSortFields = (
       // Regen join the line. Driven by the records rather than by the chosen
       // category, so it needs no map from one to the other and still works for
       // a search that happens to land on one kind of part.
-      ...METRIC_FIELDS.filter((metric) =>
-        records.some((record) => metricValue(record, metric.field) != null),
+      // Or the one the list is ordered by. Derived from the records alone, a
+      // metric sort vanished the moment a page happened to hold no row carrying
+      // it -- the list stayed ordered by a setting with no control left to see
+      // or undo it.
+      ...METRIC_FIELDS.filter(
+        (metric) =>
+          metric.sort === activeSort.value ||
+          records.some((record) => metricValue(record, metric.field) != null),
       ).map((metric) => ({
         name: metric.field,
         label: t(metric.labelKey),

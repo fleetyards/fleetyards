@@ -75,14 +75,20 @@ const { data: categories } = useComponentCategoriesFilters();
 // it answers with 39 sub types spanning every category at once. Passed as
 // `options` rather than through the select's own `query`, whose params carry
 // only search/page and cannot take a category.
+// Narrowed only while exactly one category is chosen. The endpoint takes a
+// single category, so picking the first of several offered sub types belonging
+// to that one and hid every sub type of the rest -- a combination the reader
+// had selected and then could not complete. Unnarrowed is the honest answer
+// there: all 29, of which the ones that match are a subset.
+//
+// An empty object rather than `{category: undefined}`: the key the query is
+// cached under is built from whatever is passed, and a key carrying an
+// undefined is not the key an unnarrowed request should have.
 const subTypeParams = computed(() => {
   const chosen = form.value.categoryIn;
-  const category = Array.isArray(chosen) ? chosen[0] : chosen;
+  const categories = Array.isArray(chosen) ? chosen : [chosen].filter(Boolean);
 
-  // An empty object rather than `{category: undefined}`: the key the query is
-  // cached under is built from whatever is passed, and a key carrying an
-  // undefined is not the key an unnarrowed request should have.
-  return category ? { category } : {};
+  return categories.length === 1 ? { category: categories[0] } : {};
 });
 
 const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);

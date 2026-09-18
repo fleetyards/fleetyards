@@ -70,6 +70,11 @@ const isVisualTestsRoute = computed(() => {
   return String(route.name).includes("visual-tests");
 });
 
+// The detail page keeps the section lit, the way a ship's does.
+const isComponentRoute = computed(() =>
+  ["components", "component"].includes(String(route.name)),
+);
+
 const isShipRoute = computed(() => {
   if (!route.name) {
     return false;
@@ -170,6 +175,16 @@ const settingsActive = computed(() => {
           :active="isShipRoute"
           icon="fa-duotone fa-starship"
           prefix="03"
+        />
+        <!-- Route meta alone does not put anything here: both menus are written
+             out by hand and read none of it, so `nav: "main"` on the route left
+             the catalogue reachable only by typing the address. -->
+        <NavItem
+          :to="{ name: 'components' }"
+          :label="t('nav.components.index')"
+          :active="isComponentRoute"
+          icon="fa-duotone fa-microchip"
+          prefix="04"
         />
         <NavItem
           :to="{ name: 'compare' }"
