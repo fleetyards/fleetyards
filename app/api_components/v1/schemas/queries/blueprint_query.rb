@@ -40,7 +40,16 @@ module V1
             # Recipes that consume a material, by the commodity's slug. Several
             # mean "uses any of these": a recipe has at most four slots, so
             # asking for three at once would almost always ask for nothing.
-            consumingCommodity: {type: :array, items: {type: :string}},
+            #
+            # A single slug is still accepted. The filter shipped taking one,
+            # and narrowing it to a list only would 400 every caller that had
+            # written the string form against the published schema.
+            consumingCommodity: {
+              anyOf: [
+                {type: :string},
+                {type: :array, items: {type: :string}}
+              ]
+            },
 
             # Whether the export says where the recipe comes from at all. Read
             # by the controller rather than applied through ransack, which

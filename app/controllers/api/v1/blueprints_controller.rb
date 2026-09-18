@@ -98,9 +98,13 @@ module Api
           # unpermitted one would silently stop filtering.
           :from_org, :with_known_source,
           :craft_time_lteq, :craft_time_gteq,
-          sorts: [], id_in: [], name_in: [], craftable_type_in: [],
-          consuming_commodity: []
-        ]).fetch(:q, {})
+          # Permitted in both shapes, and the order matters: `permit` keeps the
+          # last form that matches, so the scalar has to be named after the
+          # array or a single slug is dropped and the filter silently does
+          # nothing at all.
+          consuming_commodity: [],
+          sorts: [], id_in: [], name_in: [], craftable_type_in: []
+        ] + [:consuming_commodity]).fetch(:q, {})
       end
     end
   end
