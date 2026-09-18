@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useSortParam } from "@/shared/composables/useSortParam";
+import { type FleetContractSortEnum } from "@/services/fyApi";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -90,11 +92,13 @@ const boardLink = (board: ContractBoardView) => {
   return { name: "fleet-contracts", params: { slug: props.fleet.slug }, query };
 };
 
+const sortParam = useSortParam<FleetContractSortEnum>();
+
 const queryParams = computed(() => ({
   mine: props.view.mine ? true : undefined,
   // The states are spelled out rather than sent as "archived", because a
   // contract has five of them and each board means a different few.
-  q: { stateIn: props.view.states },
+  q: { stateIn: props.view.states, ...sortParam.value },
 }));
 
 const {

@@ -6,8 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
-import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -60,20 +58,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-// Grid view only: the table carries the same sorts on its headings.
-//
-// `category` is sortable server-side and deliberately not offered: it has no
-// label of its own -- only missions have one -- and nothing on a card or in the
-// table shows it, so the order would change with nothing on screen to say why.
-const sortFields = computed<BaseTableCol<unknown>[]>(() => [
-  { name: "title", label: t("labels.fleets.events.title"), sortable: true },
-  {
-    name: "startsAt",
-    label: t("labels.fleets.events.startsAt"),
-    sortable: true,
-  },
-  { name: "status", label: t("labels.status"), sortable: true },
-]);
 const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const route = useRoute();
@@ -477,14 +461,6 @@ const openDisplayOptionsModal = () => {
           </template>
         </template>
       </Empty>
-    </template>
-
-    <template #sort>
-      <SortBar
-        v-if="gridView"
-        :columns="sortFields"
-        default-sort="startsAt asc"
-      />
     </template>
 
     <template #default="{ records, emptyVisible }">

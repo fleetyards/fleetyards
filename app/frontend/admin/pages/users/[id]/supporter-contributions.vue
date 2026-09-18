@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import { useSortParam } from "@/shared/composables/useSortParam";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
@@ -36,12 +37,18 @@ const { formatCents } = useCurrencyFormat();
 
 // The same list the supporters section serves, narrowed to this account --
 // there is no second endpoint, so a column added there shows up here too.
+// The fixed sort is the default, not the only one: sending it unconditionally
+// meant the headings wrote `q[s]` and the request ignored it.
+const sortParam = useSortParam<SupporterContributionSortEnum>();
+
 const queryParams = computed(() => ({
   page: page.value,
   perPage: perPage.value,
   q: {
     userIdEq: props.user.id,
-    sorts: [SupporterContributionSortEnum.STARTED_AT_DESC],
+    sorts: sortParam.value.s
+      ? [sortParam.value.s]
+      : [SupporterContributionSortEnum.STARTED_AT_DESC],
   },
 }));
 

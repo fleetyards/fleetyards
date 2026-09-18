@@ -7,42 +7,68 @@ its own stable URL, searchable and filterable, sortable on the metrics that matt
 detail page that renders every figure we hold for that component's category — with every
 hardpoint on every ship page linking into it.
 
-## Status — paused, 2026-09-17
+## Status — the catalogue is live, 2026-09-18
 
-**Parked until the Blueprints catalogue (#4988) is fully shipped.** Phase 4 was always blocked
-on the shared catalogue shell that #4988's D8 puts on its branch; the rest is parked with it so
-the two catalogues land in one navigation rather than two.
+**The pause is over, and D7 was resolved the other way.** Phases 1–4 have shipped; one PR is
+still open and one phase has not started.
 
 | phase | PR | state |
 |---|---|---|
 | 1 — unique slug, `type_data` to `jsonb` | #5000 | **merged** |
-| 2 — the public API | #5003 | open, CI green (17/17) |
-| 3 — the metric renderer | #5006 | open, stacked on #5003 |
-| 4 — the pages | — | not started; needs #4988's shell |
+| 2 — the public API | #5003 | **merged** |
+| 3 — the metric renderer | #5006 | **merged** |
+| 4a — the detail page, and the link from every hardpoint | #5015 | **merged** |
+| 4b — the catalogue list, and `/catalogue` as the section entry | #5021 | **open** — mergeable, every check green |
 | 5 — UEX prices | — | scoped, not started |
 
-Also shipped on the way, independent of the stack: **#5007**, the parser fix for #5002 —
-`tags` was stored as the array's own inspect output for every component in the tree.
+Merged alongside: **#5016** dropped the `components` feature flag, **#5020** turned each of the
+eight metrics into a `Gteq`/`Lteq` filter rather than only a sort, **#5022** serves the last
+loaded build while a newly configured one waits for its import, and **#5007** fixed the parser
+writing `tags` as the array's own inspect output.
 
-Review feedback on both open PRs has been addressed: `hardpoints` is back in the list response
-(D3), the plan's D3 section now matches what shipped, and the powered-item block renders
-`powerRanges`.
+**#5025** is open beside 4b — a sort line on the card lists that had no way to sort. It is a
+spin-off of 4b's `SortBar`, stacked on that branch, not a phase of this plan.
 
-**Metric filters shipped.** Each of the eight metrics now takes a `Gteq` and an `Lteq` in the
-public query, so "shields over 10,000 HP" is a filter rather than something a client pages
-through and sifts itself — 31 of the 73 shields, against 43 in the 1,000–10,000 band. The
-ransackers behind them already existed (they are what make the metric sorts work), so this was
-the schema and the permit list catching up; the predicates, the sorts and the ransackers are
-all generated from one map, `Component::METRICS`, so they cannot drift apart.
+### D7 inverted — the shell was built here, not on #4988
 
-A component whose `type_data` lacks the key is absent from a filtered result rather than
-sorted to one end — the cast is over a key it does not carry.
+This plan parked Phase 4 on the shared catalogue shell that #4988's D8 put on *its* branch. That
+shell never arrived: #4988's page phase has still not started, while its API landed in #5013. So
+#5021 built the section here, and **blueprints becomes its second tenant rather than its first.**
 
-**Picking this back up:** #5003 and #5006 are stacked, so rebase the leaf last, and expect a
-cascade of force-pushes per merge. Both will have drifted from `main`; re-run
-`bin/generate-schema` **and** `bin/generate-asyncapi`, then fix the `components.parameters`
-ordering by hand (see the tooling notes below). Phase 4 starts by rebasing onto whatever
-#4988 built.
+- `/catalogue/` is the entry and lands on the first tenant that has pages
+- `/catalogue/components/` is the first, list and detail
+- `/components/` and `/components/:slug` 301 to their new addresses — the detail page has been
+  live and linked from every hardpoint since #5015
+- a tenant earns its tab when its **pages** exist; an API alone does not, because a tab pointing
+  at a route with no page lands on the generic not-found. Blueprints is the live example.
+
+The section's other three tenants each have an issue now: #4988 (blueprints), #5026
+(commodities), #5027 (equipment).
+
+### Metric filters
+
+Each of the eight metrics takes a `Gteq` and an `Lteq` in the public query, so "shields over
+10,000 HP" is a filter rather than something a client pages through and sifts itself — 31 of the
+73 shields, against 43 in the 1,000–10,000 band. The ransackers behind them already existed (they
+are what make the metric sorts work), so this was the schema and the permit list catching up; the
+predicates, the sorts and the ransackers are all generated from one map, `Component::METRICS`, so
+they cannot drift apart.
+
+A component whose `type_data` lacks the key is absent from a filtered result rather than sorted
+to one end — the cast is over a key it does not carry.
+
+### What is left on this issue
+
+- **Phase 5 — UEX prices.** Scoped below, not started.
+- **The history tab (D10).** No history endpoint and no tab on the detail page.
+- **Facet labels are English-only in six locales.** `filter.component.category` (34 values) and
+  `sub_type` (3) exist in `config/locales/en/filter.yml` alone; the other six carry only the
+  deprecated `class` group. `Api::BaseController#set_locale` reads `Accept-Language`, so every
+  non-English client reads the category filter in English. The page strings — nav, title,
+  headlines, labels, placeholders — *are* in all seven; it is the API-served facets that are not.
+- **`tags` is still absent from the payload.** #5007 fixed the parser; the tree has not been
+  re-parsed, so the values in it are still the broken ones. Re-parsing the same version is
+  invisible to CI's cache and the nightly loader, so it needs a version bump and a load by hand.
 
 ## Context
 
@@ -459,20 +485,26 @@ throw before the feature does anything.
 3. Nine new category branches, and the shared powered-item block.
 4. Unit tests per category against real `type_data` shapes.
 
-### Phase 4 — The pages (PR 4) — **blocked on #4988's shell**
+### Phase 4 — The pages — **shipped as two PRs, #5015 and #5021**
 
-1. `/components` list in the shared section (D7): search, category and sub-type filters, sort,
-   pagination, typographic rows with no imagery (D8). `/catalogue` redirects here, and the
-   section's nav lists only the tenants whose **pages** exist — an API alone does not earn a
-   tab, because a tab pointing at a route with no page lands on the generic not-found.
+Split in two once it became clear #4988's shell was not coming (see the status above): #5015
+carried the detail page and the hardpoint link, #5021 the list and the section itself.
+
+1. `/catalogue/components` list: search, category and sub-type filters, sort, pagination,
+   typographic rows with no imagery (D8). `/catalogue` lands here, and the section's nav lists
+   only the tenants whose **pages** exist — an API alone does not earn a tab, because a tab
+   pointing at a route with no page lands on the generic not-found. The old `/components` paths
+   301 rather than 404, because the detail page was already live and linked.
 2. Detail page: every metric for the category, grouped and labelled, plus manufacturer, size,
    grade, class, tags and required tags.
 3. A retired component marked rather than shown as current (D6).
 4. `components/:slug` Rails route + `Frontend::BaseController#component` for meta tags.
 5. Every hardpoint on every ship page links to the component — the payoff link, in
    `Models/Hardpoints/BaseItem/index.vue` and its item variants.
-6. The history tab (D10).
-7. Category and sub-type labels in all seven locales, plus public `nav.*` / `title.*` (D9).
+6. The history tab (D10) — **not shipped**; no endpoint and no tab.
+7. Category and sub-type labels in all seven locales, plus public `nav.*` / `title.*` (D9) —
+   the page strings shipped in all seven; the API-served **facet** labels did not. See the
+   status above.
 
 ### Phase 5 — Component prices from UEX (PR 5)
 
@@ -695,10 +727,11 @@ only. The `tags` extraction is untouched and the parsed tree still holds `tags: 
 
 ## Progress
 
-**Paused after Phase 3 — see Status above.**
-
-- [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (PR 1)
-- [x] Phase 2 — The API (PR 2)
-- [x] Phase 3 — The metric renderer (PR 3)
-- [ ] Phase 4 — The pages (PR 4) — **parked** until #4988 ships its shell
-- [ ] Phase 5 — Component prices from UEX (PR 5)
+- [x] Phase 1 — `type_data` to `jsonb`, and a unique slug (#5000)
+- [x] Phase 2 — The API (#5003), with metric filters in #5020
+- [x] Phase 3 — The metric renderer (#5006)
+- [x] Phase 4a — The detail page and the hardpoint link (#5015)
+- [ ] Phase 4b — The list and the section entry (#5021, open)
+- [ ] Phase 5 — Component prices from UEX
+- [ ] The history tab (D10)
+- [ ] Facet labels in the six locales that have none

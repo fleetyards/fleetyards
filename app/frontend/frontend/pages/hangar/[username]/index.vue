@@ -66,7 +66,7 @@ const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("hangar"));
 
-const { filters } = useHangarFilters(async () => {
+const { filters, getQuery } = useHangarFilters(async () => {
   await refetch();
 });
 
@@ -74,7 +74,7 @@ const publicHangarQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    q: getQuery(),
   };
 });
 

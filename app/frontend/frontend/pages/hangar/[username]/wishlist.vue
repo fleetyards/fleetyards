@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import { useSortParam } from "@/shared/composables/useSortParam";
+import { type VehicleSortEnum } from "@/services/fyApi";
 import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -64,7 +66,14 @@ const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
 
 const route = useRoute();
 
-const wishlistQuery = usePublicWishlistQuery(username);
+// `HangarQuery` declares the sort; this call simply sent nothing, so the chip
+// changed its arrow and the cards kept their order.
+const sortParam = useSortParam<VehicleSortEnum>();
+
+const wishlistQuery = usePublicWishlistQuery(
+  username,
+  computed(() => ({ q: sortParam.value })),
+);
 const wishlist = wishlistQuery.data;
 const refetch = wishlistQuery.refetch;
 const asyncStatus = {

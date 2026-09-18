@@ -47,7 +47,6 @@ const columns: BaseTableCol<FleetInventory>[] = [
   {
     name: "name",
     label: t("labels.fleet.inventories.name"),
-    sortable: true,
   },
   {
     name: "location",
@@ -68,7 +67,6 @@ const columns: BaseTableCol<FleetInventory>[] = [
   {
     name: "createdAt",
     label: t("labels.createdAt"),
-    sortable: true,
   },
 ];
 </script>

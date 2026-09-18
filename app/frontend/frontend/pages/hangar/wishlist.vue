@@ -77,14 +77,14 @@ const shareUrl = computed(() => {
   return currentUser.value.publicWishlistUrl;
 });
 
-const { filters, isFilterSelected } = useHangarFilters(async () => {
+const { getQuery, isFilterSelected } = useHangarFilters(async () => {
   await refetch();
 });
 
 const wishlistQueryParams = computed(() => ({
   page: page.value,
   perPage: perPage.value,
-  q: filters.value,
+  q: getQuery(),
 }));
 
 const wishlistQueryKey = computed(() => {

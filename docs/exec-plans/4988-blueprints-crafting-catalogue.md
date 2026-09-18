@@ -6,6 +6,64 @@ A public, filterable Blueprints catalogue: 1607 recipes, each linked to the thin
 every resource slot with its quantity, quality gate and the stats that slot moves, and —
 for the 732 that have one — the org whose missions hand the recipe out.
 
+## Status — data and API shipped, pages not started, 2026-09-18
+
+Three of four phases are merged. What is missing is the visible half: blueprints has a public
+API and **no page anywhere**.
+
+| phase | PR | state |
+|---|---|---|
+| 1 — blueprints parser and loader | #4998 | **merged** |
+| 2 — contract sources (pool → generator → org) | #5010 | **merged** |
+| 3 — the public API | #5013 | **merged** |
+| 4 — the pages | — | **not started** |
+
+**#5017** dropped the `blueprints` feature flag, so the API is live and unguarded (D9 below
+records why).
+
+### D8 is overtaken — #4989 built the shell, and blueprints is its second tenant
+
+D8 put the shared catalogue shell on this branch with Blueprints as first tenant, and #4989
+parked its own page phase on it. That is not what happened. This plan's Phase 4 never started;
+#4989 waited as long as it could and then built the section itself in #5021.
+
+So Phase 4 no longer builds a shell — it **joins** one:
+
+- the section is `/catalogue/`, which lands on the first tenant that has pages
+- `/catalogue/components/` is live, with a list and a page per component
+- `/catalogue/blueprints/` is what this plan still owes
+
+The pattern to reuse is on `main` already: `FilteredList` + a `FilterForm` + a row list +
+`SortBar` + `Paginator`, with a `useBlueprintFilters` / `useBlueprintSortFields` pair beside
+the component ones, plus a `catalogue/blueprints/:slug` Rails route and a
+`Frontend::BaseController` action for meta tags — without the last one a shared link renders
+the generic card rather than the blueprint.
+
+**A tenant earns its tab when its pages exist, not when its API does.** Blueprints is the live
+example of the distinction: the API has been public since #5013 and the nav lists nothing,
+because a tab pointing at a route with no page lands on the generic not-found.
+
+### The reverse link now spans four catalogues
+
+"A component, equipment or commodity page says which blueprints make it, and which blueprints
+consume it" is unshipped, and the ground under it has moved:
+
+| target | rows | surface |
+|---|---|---|
+| `Equipment` | 1,103 recipes make one | no pages — #5027 |
+| `Component` | 476 recipes make one | pages live since #5015 |
+| `Commodity` | consumed as a cost, via `BlueprintCostOption#commodity` | no pages — #5026 |
+
+Components is the only one of the three with a page to put the link on today. The other two are
+tracked as their own issues and each carries the reverse link in its own acceptance criteria, so
+this plan owes the blueprint-side half and the component page.
+
+### One trap for whoever picks up Phase 4
+
+**The local dump carries 0 blueprints** — the loader has never run against it, so every page
+built against local data renders an empty list until it is loaded. Every count in this plan comes
+from the parsed tree, not from a database.
+
 ## Context
 
 Resolves #4988.
@@ -155,18 +213,20 @@ they cannot be rendered with the same sentence.
 4.10.0 has 1608, so drift is already real and a plain upsert would keep retired recipes
 visible forever. Commodities, components and equipment all carry this pair.
 
-### D8 — One shared catalogue shell, built here
+### D8 — One shared catalogue shell — ~~built here~~, **overtaken**
 
-**Chosen: a shared shell, ahead of either catalogue.**
+**Chosen: a shared shell, ahead of either catalogue. Built by #4989 in #5021, not here** — see
+the status section at the top. What follows is the reasoning as it stood; the decision to have
+one section rather than two still holds, only the branch it landed on changed.
 
 Verified: the public frontend has `ships`, `tools`, `compare`, `fleets`, `hangar` — and **no**
 commodities, components or equipment pages at all. Admin has all three. So #4988 and #4989 are
 both adding the first public sc_data catalogue, and whichever lands second inherits the job of
 reconciling two navigations.
 
-Phase 4 builds the section shell and its nav once; Blueprints is its first tenant and
-Components (#4989) hangs off the same one. This blocks nothing in #4989 — the shell lands on
-this branch first and #4989 rebases onto it.
+Phase 4 was to build the section shell and its nav once, with Blueprints as first tenant and
+Components (#4989) hanging off the same one. In the event this phase did not start, #4989 built
+the section in #5021, and Blueprints joins it as the **second** tenant instead.
 
 ### D9 — ~~Behind a feature flag~~ — reversed, no flag
 
@@ -402,10 +462,12 @@ Three things came out of building it:
 3. Schema components are hand-written — a new jbuilder field changes no schema on its own.
 4. No feature flag — see D9, which was reversed once the API was written.
 
-### Phase 4 — The catalogue shell and the pages (PR 4)
+### Phase 4 — The pages (PR 4) — **not started**
 
-1. The shared public catalogue section and its nav (D8), with Blueprints as first tenant.
-   Route `meta.title` needs both namespaces: `nav.*` for the tab, `title.*` for the document.
+1. ~~The shared public catalogue section and its nav (D8), with Blueprints as first tenant.~~
+   The section exists — #4989 built it in #5021. This phase adds `/catalogue/blueprints/` as its
+   second tenant and puts it in the nav. Route `meta` still needs both namespaces: `nav.*` for
+   the tab, `title.*` for the document.
 2. `/blueprints` list — search, the four filters, sort, pagination.
 3. Blueprint detail — what it makes (linked into that catalogue), craft time, every slot with
    its resource, `minQuality`, quantity, and the stats that slot moves (D6).
@@ -491,4 +553,5 @@ Three corrections to the issue body came out of building it:
 - [x] Phase 1 — Blueprints parser and loader (PR 1)
 - [x] Phase 2 — Contract sources (PR 2)
 - [x] Phase 3 — Public API (PR 3)
-- [ ] Phase 4 — Catalogue shell and pages (PR 4)
+- [ ] Phase 4 — The pages (PR 4) — the shell is no longer part of it; see the status at the top
+- [ ] The reverse link from a component page (#5015 shipped the page; the link is still owed)
