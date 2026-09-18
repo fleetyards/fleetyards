@@ -301,8 +301,10 @@ class Equipment < ApplicationRecord
   # Read off the build table rather than through the rows: the builds we are on
   # *are* the current catalogue, so this needs neither the join nor
   # `current_version` and stays a single index scan.
+  # See `Component.build_facet`: against the configured build alone every filter
+  # empties while that build waits for its load.
   def self.build_facet(fact, source = ::ScData::Source.current)
-    scope = EquipmentBuild.current(source).where(hidden: false).where.not(fact => nil)
+    scope = EquipmentBuild.current(served_source(source)).where(hidden: false).where.not(fact => nil)
     scope = yield(scope) if block_given?
 
     scope.distinct.order(fact).pluck(fact)
