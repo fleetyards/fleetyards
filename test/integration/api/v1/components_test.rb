@@ -182,10 +182,40 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
   # `ransackable_attributes` -- the sort simply does not appear in the SQL, and
   # the column comes back in whatever order the planner chose. `sizeOrder` was
   # exactly that until it was listed.
+  #
+  # Asserted as "descending is ascending reversed" rather than against a fixed
+  # list: it needs no expected order written out per field, and a dropped sort
+  # returns the same order both ways, which is exactly what it catches. A status
+  # check alone would pass for every one of them.
   test "GET /components applies every sort the table offers" do
+    [
+      {name: "Sortprobe Aardvark", grade: "A", category: "cooler", component_sub_type: "Alpha", size: "1"},
+      {name: "Sortprobe Basilisk", grade: "B", category: "powerplant", component_sub_type: "Beta", size: "2"},
+      {name: "Sortprobe Cormorant", grade: "C", category: "radar", component_sub_type: "Gamma", size: "10"}
+    ].each_with_index do |attrs, index|
+      create(:component, sc_key: "sort_probe_#{index}",
+        manufacturer: create(:manufacturer, name: "Maker #{attrs[:grade]}"), **attrs)
+    end
+
     %w[name grade category componentSubType manufacturerName sizeOrder].each do |field|
+      ascending = nil
+
       %w[asc desc].each do |direction|
-        assert_api_response :get, 200, params: {q: {"sorts" => ["#{field} #{direction}"]}}
+        assert_api_response :get, 200, params: {
+          # Scoped to the three probes: every other component in the set ties
+          # on these fields, and ties do not reverse, so an unscoped comparison
+          # would fail for a sort that works perfectly well.
+          q: {"sorts" => ["#{field} #{direction}"], "nameCont" => "Sortprobe"}
+        } do
+          names = parsed_body["items"].map { |item| item["name"] }
+
+          if direction == "asc"
+            ascending = names
+          else
+            assert_equal ascending.reverse, names,
+              "#{field} came back in the same order both ways, so the sort was dropped"
+          end
+        end
       end
     end
   end

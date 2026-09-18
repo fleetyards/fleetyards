@@ -48,6 +48,11 @@ class Admin::Api::V1::CommodityTypesTest < ActionDispatch::IntegrationTest
   # type only last patch's commodities carried is not offered.
   test "GET /commodities/type_filters skips commodities from an older build" do
     create(:commodity, :mineral, version: "older-build")
+    # Something else has to carry the configured build, or `ScData::Source#served`
+    # falls back to the older one and it is not older than anything.
+    create(:commodity_build, commodity: create(:commodity, :without_build),
+      environment: ScData::Source.environment, version: ScData::Source.version,
+      commodity_type: nil)
 
     sign_in @user
 

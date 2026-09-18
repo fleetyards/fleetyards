@@ -11,6 +11,7 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import FilterForm from "@/frontend/components/Components/FilterForm/index.vue";
 import ComponentsList from "@/frontend/components/Components/List/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useComponentSortFields } from "@/frontend/composables/useComponentSortFields";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -77,6 +78,14 @@ const sortFields = useComponentSortFields(() => components.value?.items || []);
          cannot: a gun leads with sustained DPS and a cooler with cooling rate,
          in the same list. The sort line above the rows is what a row list
          otherwise lacks. -->
+    <!-- A page of placeholder rows rather than a spinner: the list reserves the
+         height its records will take, so the paginator below does not jump up
+         and then back down as they arrive. Shaped like a `ComponentRow` --
+         category icon, name over a quieter line, figures at the end. -->
+    <template #skeleton="{ count }">
+      <RowsSkeleton :count="count" icon meta trailing />
+    </template>
+
     <template #sort>
       <SortBar :columns="sortFields" default-sort="name asc" />
     </template>
