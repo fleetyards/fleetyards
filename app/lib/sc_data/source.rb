@@ -206,10 +206,15 @@ module ScData
     def served_for(build_class)
       return self if complete? && build_class.where(environment:, version:).exists?
 
-      candidates = self.class.recorded.select do |source|
-        source.environment == environment &&
-          build_class.where(environment:, version: source.version).exists?
-      end
+      # Built from this catalogue's own table rather than from `recorded`, which
+      # reads the six `BUILDS` and so knows nothing about hardpoints or the
+      # other per-slot tables. Resolving those against a list that cannot
+      # contain them walked away from a build they had rows for -- which is a
+      # loader naming a version explicitly, and being answered about another.
+      candidates = build_class.where(environment:).distinct.pluck(:version)
+        .map { |version| self.class.new(version:, environment:) }
+        .sort_by(&:precedence)
+        .reverse
 
       candidates.find(&:complete?) || candidates.first || self
     end
