@@ -339,6 +339,13 @@ const toggleFilter = () => {
           }"
           class="col-12 col-animated"
         >
+          <!-- Outside the branch chain below, deliberately. Everything in it is
+               one of loading, empty or results, so a control rendered there is
+               gone until the first page arrives -- and the sort line is a
+               control, not a result. It stays put while the list loads, while
+               it is empty, and while it refetches under a new order. -->
+          <slot name="sort" />
+
           <slot v-if="error" name="error">
             <transition name="fade">
               <SubscriptionRequired v-if="subscriptionRequired" />

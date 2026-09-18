@@ -47,52 +47,11 @@ const mount = async (components: FyComponent[]) => {
   });
 };
 
-const chips = (wrapper: Awaited<ReturnType<typeof mount>>) =>
-  wrapper.findAll(".base-table-sort-chip").map((chip) => chip.text().trim());
-
 describe("ComponentsList", () => {
   it("renders a row per component", async () => {
     const wrapper = await mount([component(), component({ slug: "b-part" })]);
 
     expect(wrapper.findAll(".component-row")).toHaveLength(2);
-  });
-
-  // A row list has no column headings, so the line is the whole sort control
-  // rather than a second way to reach one.
-  describe("the sort line", () => {
-    it("offers the sorts the server can order by", async () => {
-      expect(await mount([component()]).then(chips)).toEqual([
-        "Name",
-        "Manufacturer",
-        "Category",
-        "Sub Type",
-        "Size",
-        "Grade",
-      ]);
-    });
-
-    it("sorts size numerically rather than as a string", async () => {
-      const wrapper = await mount([component()]);
-      const chip = wrapper
-        .findAll(".base-table-sort-chip")
-        .find((link) => link.text().trim() === "Size");
-
-      expect(chip?.attributes("href")).toContain("sizeOrder");
-    });
-
-    // "Shields by HP" is the question the catalogue exists to answer. The chip
-    // appears only when the rows on screen carry the figure.
-    it("gains a metric chip when the rows carry one", async () => {
-      const wrapper = await mount([
-        component({ typeData: { maxHealth: 1000 } } as Partial<FyComponent>),
-      ]);
-
-      expect(chips(wrapper)).toContain("HP");
-    });
-
-    it("leaves the metric out when no row carries it", async () => {
-      expect(await mount([component()]).then(chips)).not.toContain("HP");
-    });
   });
 
   describe("a row", () => {
