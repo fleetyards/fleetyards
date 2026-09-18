@@ -19,6 +19,17 @@ module V1
               qualityMin: {type: :integer},
               qualityMax: {type: :integer},
               netQuantity: {type: :number},
+
+              # The catalogue record the position's entries point at, where
+              # they agree on one. A position's own name is whatever the
+              # owner typed, so this is the only thing a caller can match on.
+              item: {
+                type: [:object, :null],
+                properties: {
+                  id: {type: :string, format: :uuid},
+                  type: ::V1::Schemas::Enums::InventoryItemTypeEnum
+                }
+              },
               inventory: ::V1::Schemas::InventoryRef
             },
             required: %w[id name category unit netQuantity]

@@ -29,6 +29,14 @@ module Api
             "fleet_inventory_positions.slug",
             "MIN(fleet_inventory_items.quality) AS quality_min",
             "MAX(fleet_inventory_items.quality) AS quality_max",
+            # A position groups entries by name, category and unit, so its
+            # rows need not agree on which catalogue record they point at --
+            # and the link is optional, so some may point at none. Answered
+            # only where the ones that do answer agree.
+            "CASE WHEN COUNT(DISTINCT fleet_inventory_items.item_id) = 1 " \
+              "THEN MIN(fleet_inventory_items.item_type) END AS item_type",
+            "CASE WHEN COUNT(DISTINCT fleet_inventory_items.item_id) = 1 " \
+              "THEN MIN(fleet_inventory_items.item_id::text) END AS item_id",
             "fleet_inventories.name AS inventory_name",
             "fleet_inventories.slug AS inventory_slug",
             "SUM(CASE WHEN fleet_inventory_items.entry_type = 0 THEN fleet_inventory_items.quantity ELSE -fleet_inventory_items.quantity END) AS net_quantity"

@@ -13,9 +13,27 @@ else
 end
 json.net_quantity position.net_quantity.to_f
 
+# The catalogue record the position's entries point at, where they agree on
+# one. Name and slug are left to the detail endpoint: the position carries its
+# own name, and this is here so a caller can match a position to a record by
+# id rather than by guessing at a user-typed name.
+if position.respond_to?(:item_id) && position.item_id.present?
+  json.item do
+    json.id position.item_id
+    json.type position.item_type
+  end
+else
+  json.item nil
+end
+
 if position.respond_to?(:inventory_name) && position.inventory_name.present?
   json.inventory do
     json.name position.inventory_name
     json.slug position.inventory_slug
+
+    # Present where the inventory is a ship's rather than one made by hand.
+    if position.respond_to?(:vehicle_name) && position.vehicle_name.present?
+      json.vehicle_name position.vehicle_name
+    end
   end
 end

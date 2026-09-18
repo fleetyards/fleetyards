@@ -20,6 +20,8 @@ module Api
         @stock = InventoryItem
           .where(inventory_id: inventory_ids)
           .joins(:inventory, :inventory_position)
+          .joins("LEFT JOIN vehicles ON vehicles.id = inventories.vehicle_id")
+          .joins("LEFT JOIN models ON models.id = vehicles.model_id")
           .select(
             "inventory_positions.id AS inventory_position_id",
             "inventory_positions.name",
@@ -28,8 +30,21 @@ module Api
             "inventory_positions.slug",
             "MIN(inventory_items.quality) AS quality_min",
             "MAX(inventory_items.quality) AS quality_max",
+            # A position groups entries by name, category and unit, so its
+            # rows need not agree on which catalogue record they point at --
+            # and the link is optional, so some may point at none. Answered
+            # only where the ones that do answer agree, since a position
+            # holding two different items is not either of them.
+            "CASE WHEN COUNT(DISTINCT inventory_items.item_id) = 1 " \
+              "THEN MIN(inventory_items.item_type) END AS item_type",
+            "CASE WHEN COUNT(DISTINCT inventory_items.item_id) = 1 " \
+              "THEN MIN(inventory_items.item_id::text) END AS item_id",
             "inventories.name AS inventory_name",
             "inventories.slug AS inventory_slug",
+            # An inventory either stands on its own or belongs to a ship, and
+            # "on your Avenger" places the stock in a way its inventory's name
+            # need not. Mirrors `Vehicle#display_name`.
+            "NULLIF(COALESCE(NULLIF(vehicles.name, ''), models.name), '') AS vehicle_name",
             "SUM(CASE WHEN inventory_items.entry_type = 0 THEN inventory_items.quantity ELSE -inventory_items.quantity END) AS net_quantity"
           )
           .group(
@@ -39,7 +54,9 @@ module Api
             "inventory_positions.unit",
             "inventory_positions.slug",
             "inventories.name",
-            "inventories.slug"
+            "inventories.slug",
+            "vehicles.name",
+            "models.name"
           )
           .having("SUM(CASE WHEN inventory_items.entry_type = 0 THEN inventory_items.quantity ELSE -inventory_items.quantity END) > 0")
           .order("inventory_positions.name")
