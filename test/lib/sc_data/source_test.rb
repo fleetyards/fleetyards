@@ -132,6 +132,16 @@ class ScData::SourceTest < ActiveSupport::TestCase
     assert_empty ScData::Source.available
   end
 
+  # `available` hands back served sources, so a flag compared against the
+  # configured version matches nothing while a build waits for its load -- and
+  # the switch, which finds its default by that flag, disappears.
+  test "the served build of the default environment is the one flagged default" do
+    stub_config(sources: {live: "1.0.0"})
+    create(:model_build, model: create(:model), environment: "live", version: "0.9.0")
+
+    assert ScData::Source.available.sole.default?
+  end
+
   test "a source nothing has ever been loaded for is still not offered" do
     stub_config(sources: {live: "1.0.0"})
 

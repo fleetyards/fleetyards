@@ -184,8 +184,17 @@ module ScData
       candidates.find(&:complete?) || candidates.first || self
     end
 
+    # Compared against the build the default environment is actually *served*
+    # from, not the one the config names.
+    #
+    # `available` hands back served sources, so while a configured build is
+    # waiting for its load those two are different versions and nothing in the
+    # list matched -- no source came back flagged, the switch could not find a
+    # default to sit opposite its preview, and it hid itself from everyone. The
+    # one window this whole fallback exists for was the one window the control
+    # over it disappeared in.
     def default?
-      self == self.class.default
+      self == self.class.default.served
     end
 
     # Ordered the way the game names a build: `4.10.0-live.12519617` is the
