@@ -281,6 +281,12 @@
         },
         "notifications": {
           "search": "標題或內容..."
+        },
+        "blueprints": {
+          "name": "Greatsword、Testudo、Omnisky…",
+          "material": "鐵、鈦、Aphorite…",
+          "craftableType": "部件、裝備…",
+          "source": "已知、未知…"
         }
       },
       "commodity": {

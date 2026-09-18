@@ -464,12 +464,16 @@
         "contractCovers": "Copertine dei contratti"
       },
       "component": {
+        "craftedFrom": "Fabbricato con",
         "identity": "Dettagli",
         "metrics": "Valori",
         "requiredTags": "Si monta su una porta con"
       },
       "components": {
         "index": "Componenti"
+      },
+      "blueprints": {
+        "index": "Progetti"
       }
     }
   }

@@ -281,6 +281,12 @@
         },
         "notifications": {
           "search": "Title or content..."
+        },
+        "blueprints": {
+          "name": "Greatsword, Testudo, Omnisky...",
+          "material": "Iron, Titanium, Aphorite...",
+          "craftableType": "Component, Equipment...",
+          "source": "Known, unknown..."
         }
       },
       "commodity": {

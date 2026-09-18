@@ -152,6 +152,7 @@
       "privacyPolicy": "Politique de confidentialité",
       "cookiePolicy": "Politique relative aux cookies",
       "visualTests": {
+        "blueprints": "Plans",
         "index": "Tests Visuels",
         "panels": "Panneaux - Tests Visuels",
         "buttons": "Boutons - Tests Visuels",
@@ -330,6 +331,9 @@
       "component": "%{name}",
       "components": {
         "index": "Composants"
+      },
+      "blueprints": {
+        "index": "Plans"
       }
     }
   }

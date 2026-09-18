@@ -122,6 +122,7 @@
       },
       "reload": "有可用更新！",
       "visualTests": {
+        "blueprints": "藍圖",
         "index": "視覺測試",
         "panels": "面板",
         "buttons": "按鈕",
@@ -301,6 +302,11 @@
       "scDataSource": "資料來源",
       "components": {
         "index": "部件"
+      },
+      "catalogue": {
+        "index": "目錄",
+        "components": "部件",
+        "blueprints": "藍圖"
       }
     }
   }

@@ -281,6 +281,12 @@
         },
         "notifications": {
           "search": "Título o contenido..."
+        },
+        "blueprints": {
+          "name": "Greatsword, Testudo, Omnisky...",
+          "material": "Hierro, Titanio, Aforita...",
+          "craftableType": "Componente, Equipo...",
+          "source": "Conocida, desconocida..."
         }
       },
       "commodity": {

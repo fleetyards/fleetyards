@@ -152,6 +152,7 @@
       "privacyPolicy": "Informativa sulla privacy",
       "cookiePolicy": "Informativa sui Cookie",
       "visualTests": {
+        "blueprints": "Progetti",
         "index": "Test Visivi",
         "panels": "Pannelli - Test Visivi",
         "buttons": "Pulsanti - Test Visivi",
@@ -330,6 +331,9 @@
       "component": "%{name}",
       "components": {
         "index": "Componenti"
+      },
+      "blueprints": {
+        "index": "Progetti"
       }
     }
   }

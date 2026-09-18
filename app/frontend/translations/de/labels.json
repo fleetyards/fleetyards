@@ -1690,6 +1690,14 @@
         },
         "notifications": {
           "search": "Suchen"
+        },
+        "blueprints": {
+          "name": "Baupläne suchen",
+          "craftableType": "Fertigt",
+          "source": "Quelle",
+          "withSource": "Mit bekannter Quelle",
+          "withoutSource": "Ohne bekannte Quelle",
+          "material": "Verwendet Material"
         }
       },
       "station": {
@@ -2649,6 +2657,68 @@
         },
         "requested": "Anfrage gesendet",
         "friend": "Befreundet"
+      },
+      "blueprint": {
+        "name": "Name",
+        "craftTime": "Fertigungszeit",
+        "slots": "Plätze",
+        "materials": "Materialien",
+        "quality": "Qualität",
+        "missionSlots": {
+          "location": "Ort",
+          "objects": "Objekte",
+          "target": "Ziel",
+          "ship": "Schiff",
+          "cargo": "Fracht",
+          "rank": "Rang",
+          "danger": "Gefahr",
+          "contract": "Auftrag",
+          "other": "variabel"
+        },
+        "missionSlotsHint": "Begriffe in ‹spitzen Klammern› setzt das Spiel ein, sobald der Auftrag angeboten wird.",
+        "atNeutral": "%{value} bei Q500",
+        "whatYouGet": "Das Ergebnis",
+        "fromSlots": "%{count} Slots",
+        "factorOnly": "nur Faktor — kein Katalogwert für diesen Wert",
+        "heldIn": "in",
+        "heldOn": "auf",
+        "fromHangar": "Hangar",
+        "makesA": "Bauplan · fertigt",
+        "makesUnknown": "Bauplan · fertigt etwas, das hier in keinem Katalog steht",
+        "retired": "Ausgemustert",
+        "minQuality": "Min. %{quality}",
+        "belowGate": "Unter der Schwelle dieses Platzes — Material unter %{quality} passt hier nicht.",
+        "unvalued": "betroffen — das Spiel nennt keine Werte",
+        "noStats": "Dieser Platz verändert keine Werte — das Material muss nur vorhanden sein.",
+        "noMaterials": "Die Spieldateien nennen keine Materialien für diesen Bauplan.",
+        "setEverySlot": "Alle Plätze setzen",
+        "qualityAll": "alle Plätze auf %{quality}",
+        "qualityRange": "%{from}–%{to} über die Plätze",
+        "anyOf": "Beliebige %{count} von diesen %{total}",
+        "scu": "%{amount} SCU",
+        "pieces": "%{count}×",
+        "whereItDrops": "Woher er stammt",
+        "sourceSummary": "%{count} Quellen · %{orgs} Organisationen",
+        "unattributed": "Ohne Zuordnung",
+        "minPoints": "Ab %{points} Punkten",
+        "noKnownSource": "Keine bekannte Quelle",
+        "noSourceLead": "Keine Mission und kein Szenario vergibt diesen Bauplan.",
+        "noSourceBody": "Die Spieldateien führen ihn in keinem Belohnungspool, es gibt also nichts, worauf wir verweisen könnten.",
+        "empty": "Keine Baupläne gefunden.",
+        "craftableTypes": {
+          "Component": "Komponente",
+          "Equipment": "Ausrüstung",
+          "Commodity": "Ware"
+        },
+        "kinds": {
+          "contract": "Auftrag",
+          "scenario": "Szenario"
+        },
+        "duration": {
+          "hours": "%{count} Std.",
+          "minutes": "%{count} Min.",
+          "seconds": "%{count} Sek."
+        }
       }
     }
   }

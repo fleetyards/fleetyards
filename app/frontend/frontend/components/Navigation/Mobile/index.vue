@@ -157,7 +157,10 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         }"
         icon="fa-duotone fa-starship"
       />
-      <NavItem :to="{ name: 'components' }" icon="fa-duotone fa-microchip" />
+      <!-- The mobile bar is a flat row of icons with no room for a submenu,
+           so the section gets one entry. It lands on the catalogue's own
+           entry, which redirects to the first tenant that has pages. -->
+      <NavItem :to="{ path: '/catalogue/' }" icon="fa-duotone fa-books" />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
         :to="{

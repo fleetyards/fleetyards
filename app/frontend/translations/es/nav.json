@@ -122,6 +122,7 @@
       },
       "reload": "¡Actualización disponible!",
       "visualTests": {
+        "blueprints": "Planos",
         "index": "Pruebas Visuales",
         "panels": "Paneles",
         "buttons": "Botones",
@@ -301,6 +302,11 @@
       "scDataSource": "Fuente de datos",
       "components": {
         "index": "Componentes"
+      },
+      "catalogue": {
+        "index": "Catálogo",
+        "components": "Componentes",
+        "blueprints": "Planos"
       }
     }
   }

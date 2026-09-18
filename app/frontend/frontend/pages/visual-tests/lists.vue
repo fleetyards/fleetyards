@@ -12,9 +12,10 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import ComponentsList from "@/frontend/components/Components/List/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
-import { type FilterOption } from "@/services/fyApi";
+import { type Component, type FilterOption } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { v4 as uuidv4 } from "uuid";
 
@@ -71,6 +72,94 @@ const buildDocks = (): Dock[] => [
     shipSize: "small",
   },
 ];
+
+// ── ComponentsList ───────────────────────────────────────────────────
+
+// The catalogue list, which is the one row list on the site that is not a
+// table: a component leads with the figure that means something for its own
+// kind, so there is no column to put it in. The four below are the shapes the
+// row has to hold - two lead figures, one, none, and a component the game never
+// named, which has no slug and so no link.
+const catalogueComponent = (attrs: Partial<Component>): Component =>
+  ({
+    hidden: false,
+    retired: false,
+    catalogued: true,
+    availability: { boughtAt: [], soldAt: [] },
+    media: {},
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+    ...attrs,
+  }) as Component;
+
+const catalogueComponents: Component[] = [
+  catalogueComponent({
+    id: "vt-component-1",
+    name: "FR-76 Shield Generator",
+    slug: "fr-76-shield-generator",
+    category: "shieldgenerator",
+    subType: "Faceted",
+    size: "2",
+    gradeLabel: "A",
+    manufacturer: {
+      name: "Basilisk",
+      slug: "basilisk",
+      createdAt: "2026-01-01",
+      updatedAt: "2026-01-01",
+    },
+    typeData: {
+      maxHealth: 12420,
+      maxRegen: 310,
+      powerConsumption: 180,
+      signatureEm: 420,
+    },
+  }),
+  catalogueComponent({
+    id: "vt-component-2",
+    name: "Bulwark Cooler With A Name Long Enough To Run Out Of Row",
+    slug: "bulwark-cooler",
+    category: "cooler",
+    subType: "Military",
+    size: "3",
+    gradeLabel: "B",
+    manufacturer: {
+      name: "Juno Starwerk",
+      slug: "juno-starwerk",
+      createdAt: "2026-01-01",
+      updatedAt: "2026-01-01",
+    },
+    typeData: { coolingRate: 41500, powerConsumption: 90 },
+  }),
+  catalogueComponent({
+    id: "vt-component-3",
+    name: "Attrition-3",
+    slug: "attrition-3",
+    category: "weapons",
+    size: "3",
+    gradeLabel: "A",
+    manufacturer: {
+      name: "Behring Applied Technology",
+      slug: "behring",
+      createdAt: "2026-01-01",
+      updatedAt: "2026-01-01",
+    },
+    typeData: {
+      fireRate: 480,
+      damagePerShot: { physical: 78 },
+      powerConsumption: 260,
+    },
+  }),
+  catalogueComponent({
+    id: "vt-component-4",
+    name: "Unnamed Mount",
+    slug: "",
+    category: "missile_racks",
+  }),
+];
+
+// The catalogue's second tenant, on the same `RowList` and deliberately the same
+// row: a reader moving between the two tabs should not feel the furniture
+// change, so they are demoed together and any drift shows up here first.
 
 // ── ListGroup ────────────────────────────────────────────────────────
 
@@ -518,6 +607,21 @@ const toggleFilteredListEmpty = () => {
       </ListGroup>
     </template>
   </FilteredList>
+
+  <Heading :level="HeadingLevelEnum.H2">RowList | ComponentsList</Heading>
+  <p>
+    The catalogue's row list. Each row is its own card; what it borrows from a
+    table is the hover cue — the surface steps up and a primary rail lights at
+    each end. The name is the link; the manufacturer, category and sub-type
+    beside it each narrow the list. A component the game never named has no slug
+    and so no link at all.
+  </p>
+
+  <ComponentsList :components="catalogueComponents" />
+
+  <Heading :level="HeadingLevelEnum.H2">RowList | Empty</Heading>
+
+  <ComponentsList :components="[]" empty-visible />
 </template>
 
 <style lang="scss" scoped>

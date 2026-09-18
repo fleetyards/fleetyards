@@ -1690,6 +1690,14 @@
         },
         "notifications": {
           "search": "Cerca"
+        },
+        "blueprints": {
+          "name": "Cerca progetti",
+          "craftableType": "Produce",
+          "source": "Fonte",
+          "withSource": "Con fonte nota",
+          "withoutSource": "Senza fonte nota",
+          "material": "Usa materiale"
         }
       },
       "station": {
@@ -2649,6 +2657,68 @@
         },
         "requested": "Richiesta inviata",
         "friend": "Amici"
+      },
+      "blueprint": {
+        "name": "Nome",
+        "craftTime": "Tempo di fabbricazione",
+        "slots": "Slot",
+        "materials": "Materiali",
+        "quality": "Qualità",
+        "missionSlots": {
+          "location": "luogo",
+          "objects": "oggetti",
+          "target": "bersaglio",
+          "ship": "nave",
+          "cargo": "carico",
+          "rank": "grado",
+          "danger": "pericolo",
+          "contract": "contratto",
+          "other": "variabile"
+        },
+        "missionSlotsHint": "I termini tra ‹parentesi angolari› vengono inseriti dal gioco quando il contratto viene offerto.",
+        "atNeutral": "%{value} a Q500",
+        "whatYouGet": "Cosa ottieni",
+        "fromSlots": "%{count} slot",
+        "factorOnly": "solo fattore — nessun valore a catalogo",
+        "heldIn": "in",
+        "heldOn": "su",
+        "fromHangar": "Hangar",
+        "makesA": "Progetto di fabbricazione · produce",
+        "makesUnknown": "Progetto di fabbricazione · produce qualcosa che nessun catalogo qui riporta",
+        "retired": "Ritirato",
+        "minQuality": "Min. %{quality}",
+        "belowGate": "Sotto la soglia di questo slot — un materiale inferiore a %{quality} non ci entra.",
+        "unvalued": "interessato — il gioco non indica valori",
+        "noStats": "Questo slot non muove alcuna statistica — il materiale deve solo esserci.",
+        "noMaterials": "I file di gioco non indicano materiali per questo progetto.",
+        "setEverySlot": "Imposta tutti gli slot",
+        "qualityAll": "tutti gli slot a %{quality}",
+        "qualityRange": "%{from}–%{to} tra gli slot",
+        "anyOf": "%{count} qualsiasi di questi %{total}",
+        "scu": "%{amount} SCU",
+        "pieces": "%{count}×",
+        "whereItDrops": "Dove si ottiene",
+        "sourceSummary": "%{count} fonti · %{orgs} organizzazioni",
+        "unattributed": "Non attribuito",
+        "minPoints": "Da %{points} punti",
+        "noKnownSource": "Nessuna fonte nota",
+        "noSourceLead": "Nessuna missione o scenario rilascia questo progetto.",
+        "noSourceBody": "I file di gioco non lo inseriscono in alcun gruppo di ricompense, quindi non c'è nulla da indicare.",
+        "empty": "Nessun progetto corrisponde.",
+        "craftableTypes": {
+          "Component": "Componente",
+          "Equipment": "Equipaggiamento",
+          "Commodity": "Merce"
+        },
+        "kinds": {
+          "contract": "Contratto",
+          "scenario": "Scenario"
+        },
+        "duration": {
+          "hours": "%{count} h",
+          "minutes": "%{count} min",
+          "seconds": "%{count} s"
+        }
       }
     }
   }
