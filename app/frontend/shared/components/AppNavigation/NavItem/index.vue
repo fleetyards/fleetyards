@@ -18,6 +18,9 @@ type Props = {
   action?: () => void;
   href?: string;
   label?: string;
+  // Shown in both states, where `label` stands in only once the navigation
+  // collapses. For a row whose slot carries something the label does not say.
+  tooltip?: string;
   icon?: string;
   image?: string;
   avatar?: boolean;
@@ -35,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   action: undefined,
   href: undefined,
   label: undefined,
+  tooltip: undefined,
   icon: undefined,
   image: undefined,
   avatar: false,
@@ -66,13 +70,15 @@ const routeActive = computed(() => {
   return false;
 });
 
-const tooltip = computed(() => {
-  if (!slim.value) {
+const tooltipOptions = computed(() => {
+  const content = props.tooltip ?? (slim.value ? props.label : null);
+
+  if (!content) {
     return null;
   }
 
   return {
-    content: props.label,
+    content,
     placement: "right",
   };
 });
@@ -143,7 +149,7 @@ const toggleMenu = () => {
       <slot name="submenu" />
       <li class="nav-item__divider" />
     </Collapsed>
-    <button v-tooltip="tooltip" @click="toggleMenu">
+    <button v-tooltip="tooltipOptions" @click="toggleMenu">
       <slot>
         <NavItemInner
           :label="label"
@@ -185,7 +191,7 @@ const toggleMenu = () => {
          anchor with no href is not a tab stop and answers to no key, so a row
          built this way -- logout, the collapse toggle, the build switch -- could
          only ever be reached with a pointer. -->
-    <button v-tooltip="tooltip" type="button" @click="action">
+    <button v-tooltip="tooltipOptions" type="button" @click="action">
       <slot>
         <NavItemInner
           :label="label"
@@ -215,7 +221,7 @@ const toggleMenu = () => {
       @click="navigate"
       @keypress.enter="() => navigate"
     >
-      <a v-tooltip="tooltip" :href="linkHref">
+      <a v-tooltip="tooltipOptions" :href="linkHref">
         <slot>
           <NavItemInner
             :label="label"
@@ -237,7 +243,7 @@ const toggleMenu = () => {
     class="nav-item"
     :data-test="`nav-${navKey}`"
   >
-    <a v-tooltip="tooltip" :href="href" target="_blank" rel="noopener">
+    <a v-tooltip="tooltipOptions" :href="href" target="_blank" rel="noopener">
       <slot>
         <NavItemInner
           :label="label"

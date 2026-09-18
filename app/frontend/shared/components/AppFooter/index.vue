@@ -5,8 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 
 // Declared, at last. All three apps - frontend, admin and docs - have always
 // passed these; the component read `@/frontend/stores/app` instead, so the bound
@@ -33,9 +35,17 @@ const copyrightOwner = computed(() => {
   return window.COPYRIGHT_OWNER;
 });
 
-const scDataVersion = computed(() => {
-  return window.SC_DATA_VERSION;
-});
+const { selected } = storeToRefs(useScDataSourceStore());
+
+// The build being read, not the one configured. `window.SC_DATA_VERSION` is
+// baked into the layout from the source that request carried, so it is right on
+// boot and wrong from the moment the source switch is pressed -- the store's
+// selection is the only thing that follows it. The global stands in until
+// `/sc-data/sources` lands, and stays the answer in admin and docs, which
+// render this footer and never ask for the list at all.
+const scDataVersion = computed(
+  () => selected.value?.version || window.SC_DATA_VERSION,
+);
 
 // Was `new Date().getFullYear()` inline in the template, so it was recomputed on
 // every render and could not be frozen by a test.
@@ -141,7 +151,10 @@ const currentYear = computed(() => new Date().getFullYear());
           </span>
         </div>
 
-        <div class="app-footer__data-version">
+        <div
+          class="app-footer__data-version"
+          data-test="app-footer-data-version"
+        >
           {{ t("labels.scDataVersion") }}: {{ scDataVersion }}
         </div>
       </div>
