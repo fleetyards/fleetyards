@@ -1,4 +1,4 @@
-import { computed, toValue, type MaybeRefOrGetter } from "vue";
+import { type MaybeRefOrGetter } from "vue";
 import type {
   MediaFile,
   Model,
@@ -156,11 +156,18 @@ const file = (
   return typeof value === "string" ? undefined : value;
 };
 
+// The state's own holo, then the flying one -- and then whatever holo the model
+// does have: a hull uploaded landed-first has no flying mesh to fall back to, and
+// the alternative is a 3D view button that opens nothing.
 export const modelStateHolo = (
   model: Model,
   state: ModelStateEnum,
 ): MediaFile | undefined =>
-  file(model.media, STATE_MEDIA[state].holo) || model.media.holo;
+  file(model.media, STATE_MEDIA[state].holo) ||
+  model.media.holo ||
+  MODEL_STATES.map((other) => file(model.media, STATE_MEDIA[other].holo)).find(
+    Boolean,
+  );
 
 // The pair for one view, coloured and not, so the caller keeps its own rule about
 // which it prefers at which screen size. A state that has neither falls back to

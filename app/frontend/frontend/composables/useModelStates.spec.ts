@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import { ref } from "vue";
 import type {
   MediaFile,
   Model,
@@ -153,6 +152,16 @@ describe("picking the holo", () => {
     const subject = model({ holo: file("holo"), landedTopView: file("lt") });
 
     expect(modelStateHolo(subject, ModelStateEnum.LANDED)?.name).toBe("holo");
+  });
+
+  // Uploaded landed-first, with no flying mesh behind it: the 3D view has to open
+  // the holo the model does have rather than nothing at all.
+  it("takes the only holo there is when the flying one is missing", () => {
+    const subject = model({ landedHolo: file("landed") });
+
+    expect(modelStateHolo(subject, ModelStateEnum.RETRACTED)?.name).toBe(
+      "landed",
+    );
   });
 });
 
