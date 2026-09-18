@@ -129,13 +129,10 @@ const storeImage = computed(() => {
   return fallbackImageJpg;
 });
 
-// The one place that leads with the curated logo: it is a hero element here,
-// where a hand-made mark beats the game's. Everywhere else -- filter lists, the
-// panels -- takes the export's icon first, which covers far more manufacturers.
 const manufacturerLogo = computed(() => {
   const { logo, icon } = props.model.manufacturer ?? {};
 
-  return logo?.smallUrl || logo?.url || icon?.smallUrl || icon?.url;
+  return icon?.smallUrl || icon?.url || logo?.smallUrl || logo?.url;
 });
 
 const metaTitle = computed(() => {
