@@ -306,11 +306,13 @@ useSubscription({
       <GridSkeleton :filter-visible="filterVisible" />
     </template>
 
-    <template #default="{ records, loading }">
+    <template #sort>
       <!-- A public hangar is only ever cards, so this is the whole
-           sort control rather than a second way to reach one. -->
+      sort control rather than a second way to reach one. -->
       <SortBar :columns="sortFields" default-sort="name asc" />
+    </template>
 
+    <template #default="{ records, loading }">
       <Grid :records="records" :filter-visible="false" primary-key="id">
         <template #default="{ record }">
           <VehiclePanel

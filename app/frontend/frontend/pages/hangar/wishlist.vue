@@ -332,10 +332,12 @@ const openDisplayOptionsModal = () => {
       <GridSkeleton :details="detailsVisible" :filter-visible="filterVisible" />
     </template>
 
-    <template #default="{ records, loading, filterVisible, emptyVisible }">
+    <template #sort>
       <!-- Grid view only: the table carries the same sorts on its headings. -->
       <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
+    </template>
 
+    <template #default="{ records, loading, filterVisible, emptyVisible }">
       <Grid
         v-if="gridView"
         :records="records"

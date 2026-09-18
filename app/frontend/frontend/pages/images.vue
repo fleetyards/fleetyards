@@ -63,9 +63,11 @@ useGallery(".images");
       <GridSkeleton variant="image" :filter-visible="filterVisible" />
     </template>
 
-    <template #default="{ records, loading, filterVisible }">
+    <template #sort>
       <SortBar :columns="sortFields" default-sort="createdAt desc" />
+    </template>
 
+    <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"
         :loading="loading"
