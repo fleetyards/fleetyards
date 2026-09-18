@@ -82,7 +82,15 @@ module Maintenance
     end
 
     private def grant_unready
-      fleet_ids = ::Subscriptions::Readiness.call[:unready_fleet_ids]
+      # The whole result, guard included. A flag can be switched to a boolean,
+      # a group or a percentage between the check in `process` and this, and
+      # granting against a population that has stopped being enumerable would
+      # cover the fleets still named by an actor gate and silently miss the
+      # rest -- the exact failure the guard exists to prevent.
+      readiness = ::Subscriptions::Readiness.call
+      return if halted?(readiness)
+
+      fleet_ids = readiness[:unready_fleet_ids]
 
       fleet_ids.each do |fleet_id|
         FleetSubscription.create!(

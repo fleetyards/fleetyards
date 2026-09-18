@@ -145,6 +145,22 @@ module Maintenance
       assert_equal Date.current + 6.months, FleetSubscription.sole.ended_at
     end
 
+    # The guard runs before the lock is taken, so a flag switched to a boolean,
+    # a group or a percentage in between would otherwise be granted against --
+    # covering the fleets still named by an actor gate and missing the rest.
+    test "it refuses inside the lock when a gate stops naming actors mid-run" do
+      clean = ::Subscriptions::Readiness.call
+      gated = clean.merge(unenumerable_gates: {"fleet_logistics" => [:boolean]})
+
+      ::Subscriptions::Readiness.stubs(:call).returns(clean).then.returns(gated)
+
+      assert_no_difference -> { FleetSubscription.count } do
+        output = run_task(dry_run: false)
+
+        assert_match(/STOP: fleet_logistics/, output)
+      end
+    end
+
     private def run_task(dry_run:, **attributes)
       task = ::Maintenance::GraceBetaFleetsTask.new
       task.dry_run = dry_run
