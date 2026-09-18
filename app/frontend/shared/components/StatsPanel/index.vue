@@ -103,7 +103,8 @@ const suffix = computed(() => {
   // image showing through the 0.9-alpha panel. Raising it to 0.6 and the wrapper
   // to 0.5 keeps the two tones apart without the icon reading any fainter than
   // the flat one it replaces: measured over $gray-black, 92 and 68 against a
-  // background of 32.
+  // background of 32 - when $gray-black was #222. It is #1a1d21 now, a step
+  // darker, so both margins only widen and the 0.6/0.5 pair still holds.
   .stats-panel__icon {
     position: absolute;
     top: 50%;

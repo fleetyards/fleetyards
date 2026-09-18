@@ -26,7 +26,8 @@
   --color-gray: #52575c;
   --color-gray-dark: #3a3f44;
   --color-gray-darker: #272b30;
-  --color-gray-black: #222;
+  --color-gray-black: #1a1d21;
+  --color-gray-black-hover: #1e2226;
 
   /* Grid gutter to match Bootstrap's $grid-gutter-width: 30px (15px per side) */
   --spacing-gutter: 15px;
