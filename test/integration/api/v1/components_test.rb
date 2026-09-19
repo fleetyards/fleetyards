@@ -157,11 +157,23 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
   # The point of moving `type_data` to jsonb: a figure inside it can order the
   # whole result set, not one page of it.
   test "GET /components sorts on a metric inside typeData" do
-    create(:component, name: "Weak Shield", type_data: {"max_health" => 100})
-    create(:component, name: "Strong Shield", type_data: {"max_health" => 9000})
+    create(:component, name: "Shieldprobe Weak", type_data: {"max_health" => 100})
+    create(:component, name: "Shieldprobe Strong", type_data: {"max_health" => 9000})
 
-    assert_api_response :get, 200, params: {q: {"sorts" => ["maxHealth desc"], "nameCont" => "Shield"}} do
-      assert_equal ["Strong Shield", "Weak Shield"], parsed_body["items"].map { |item| item["name"] }
+    # The decoy is what the probe name exists for, and it stays. `setup` makes
+    # two components before every test in this file and the factory names them
+    # `Faker::Name.name`, so the surname "Shields" satisfies a `nameCont` of
+    # "Shield" -- which is how this test blocked the merge queue once, on a
+    # draw nobody could reproduce from the diff.
+    #
+    # A sort is where that bites: it keeps every row it matches, including one
+    # carrying no metric at all. The range filters below are accidentally safe,
+    # because a component whose `type_data` has no such key is dropped by the
+    # predicate itself.
+    create(:component, name: "Enid Shields DDS")
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["maxHealth desc"], "nameCont" => "Shieldprobe"}} do
+      assert_equal ["Shieldprobe Strong", "Shieldprobe Weak"], parsed_body["items"].map { |item| item["name"] }
     end
   end
 
