@@ -15,7 +15,7 @@ module Admin
           # The fallback join, not the current one: an admin list has to show a
           # commodity the export dropped, and one no load has ever described.
           @q = authorized_scope(Commodity.with_facts(false))
-            .includes(:item_prices)
+            .includes(:item_prices, :refines_into)
             .ransack(commodity_query_params)
 
           @commodities = @q.result

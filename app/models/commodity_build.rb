@@ -13,7 +13,7 @@
 #  id              :uuid             not null, primary key
 #  commodity_type  :string
 #  consumable      :boolean          default(FALSE), not null
-#  container_sizes :decimal(16, 8)   default([]), is an Array
+#  container_sizes :decimal(16, 8)   default([]), not null, is an Array
 #  counted         :boolean          default(FALSE), not null
 #  description     :text
 #  environment     :string           not null

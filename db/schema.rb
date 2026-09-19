@@ -327,7 +327,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "commodity_type"
     t.boolean "consumable", default: false, null: false
-    t.decimal "container_sizes", precision: 16, scale: 8, default: [], array: true
+    t.decimal "container_sizes", precision: 16, scale: 8, default: [], null: false, array: true
     t.boolean "counted", default: false, null: false
     t.datetime "created_at", null: false
     t.text "description"
@@ -352,7 +352,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.uuid "commodity_id", null: false
     t.string "commodity_type"
     t.boolean "consumable", default: false, null: false
-    t.decimal "container_sizes", precision: 16, scale: 8, default: [], array: true
+    t.decimal "container_sizes", precision: 16, scale: 8, default: [], null: false, array: true
     t.boolean "counted", default: false, null: false
     t.datetime "created_at", null: false
     t.text "description"
