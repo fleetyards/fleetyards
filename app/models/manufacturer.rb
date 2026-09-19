@@ -110,12 +110,15 @@ class Manufacturer < ApplicationRecord
     where.not(name: nil)
   end
 
+  # Both read as a filter, not as a fetch -- no caller touches the association.
+  # Joining for them multiplies the manufacturer by its models, which then needs
+  # a DISTINCT over all 110 columns of the joined row to undo.
   def self.with_model
-    includes(:models).where.not(models: {manufacturer_id: nil})
+    where(id: Model.where.not(manufacturer_id: nil).select(:manufacturer_id))
   end
 
   def self.with_component
-    includes(:components).where.not(components: {manufacturer_id: nil})
+    where(id: Component.where.not(manufacturer_id: nil).select(:manufacturer_id))
   end
 
   def self.model_filters
