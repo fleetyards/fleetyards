@@ -339,6 +339,9 @@
           "addSlot": "Slot hinzufügen",
           "viewMissions": "Missionen anzeigen"
         },
+        "tours": {
+          "viewTours": "Touren ansehen"
+        },
         "events": {
           "create": "Event erstellen",
           "edit": "Event bearbeiten",

@@ -44,7 +44,15 @@ vi.mock("@/shared/composables/usePrefetch", () => ({
 
 const { useFleetNavAccess } = await import("./useFleetNavAccess");
 
-const fleetWith = (...features: string[]) => ({ features });
+const fleetWith = (...features: string[]) => ({
+  features,
+  publicFleet: false,
+});
+
+const publicFleetWith = (...features: string[]) => ({
+  features,
+  publicFleet: true,
+});
 
 const memberWith = (...resourceAccess: string[]) => ({
   fleetRole: { resourceAccess },
@@ -176,6 +184,96 @@ describe("useFleetNavAccess", () => {
     membership.value = memberAbleTo("readBlueprints");
 
     expect(useFleetNavAccess(fleetWith()).showBlueprintsNav.value).toBe(true);
+  });
+
+  // The group is a row that opens on a list; with nothing under it, it opens
+  // on nothing.
+  it("hides the assets group from a stranger", () => {
+    expect(useFleetNavAccess(fleetWith()).showAssetsNav.value).toBe(false);
+  });
+
+  // Ships is the one tab somebody outside the fleet can reach, and it stays
+  // top-level rather than joining the group for exactly that reason.
+  it("shows a stranger at a public fleet the ships tab and no group", () => {
+    const tab = useFleetNavAccess(publicFleetWith());
+
+    expect([tab.showShipsNav.value, tab.showAssetsNav.value]).toEqual([
+      true,
+      false,
+    ]);
+  });
+
+  it("hides the assets group from a member who can read neither child", () => {
+    membership.value = memberWith(
+      FleetRoleResourceAccessEnum.FLEET_MEMBERSHIPS_READ,
+    );
+
+    expect(useFleetNavAccess(fleetWith()).showAssetsNav.value).toBe(false);
+  });
+
+  it("shows the assets group once one of its two is on", () => {
+    membership.value = memberAbleTo("readBlueprints");
+
+    expect(useFleetNavAccess(fleetWith()).showAssetsNav.value).toBe(true);
+  });
+
+  // Ships is not one of its children, so the fleetchart is not its route.
+  it("leaves the assets group inactive on the ships routes", () => {
+    route.value = {
+      name: "fleet-fleetchart",
+      params: { slug: "merc" },
+      path: "/fleets/merc/fleetchart",
+    };
+
+    const tab = useFleetNavAccess(fleetWith());
+
+    expect([tab.shipsNavActive.value, tab.assetsNavActive.value]).toEqual([
+      true,
+      false,
+    ]);
+  });
+
+  // Closed, the parent is the only thing that can say where the reader is.
+  it("marks the assets group active on a child's route", () => {
+    route.value = {
+      name: "fleet-blueprints",
+      params: { slug: "merc" },
+      path: "/fleets/merc/blueprints",
+    };
+
+    const tab = useFleetNavAccess(fleetWith());
+
+    expect([tab.assetsNavActive.value, tab.contractsNavActive.value]).toEqual([
+      true,
+      false,
+    ]);
+  });
+
+  // Tours lost its own row -- it is reached from the events page now -- so the
+  // events tab is what has to stay lit in there.
+  it("marks the events tab active on a tour route", () => {
+    route.value = {
+      name: "fleet-tours",
+      params: { slug: "merc" },
+      path: "/fleets/merc/tours",
+    };
+
+    const tab = useFleetNavAccess(fleetWith());
+
+    expect([tab.eventsNavActive.value, tab.assetsNavActive.value]).toEqual([
+      true,
+      false,
+    ]);
+  });
+
+  it("marks the events tab active on a single tour", () => {
+    route.value = {
+      name: "fleet-tour",
+      params: { slug: "merc" },
+      path: "/fleets/merc/tours/spring-run",
+    };
+
+    expect(useFleetNavAccess(fleetWith()).eventsNavActive.value).toBe(true);
   });
 
   it("marks the contracts tab active on a contract detail route", () => {

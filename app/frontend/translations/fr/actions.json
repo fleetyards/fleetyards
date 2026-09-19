@@ -339,6 +339,9 @@
           "addSlot": "Ajouter un poste",
           "viewMissions": "Voir les missions"
         },
+        "tours": {
+          "viewTours": "Voir les tournées"
+        },
         "events": {
           "create": "Créer un événement",
           "edit": "Modifier l'événement",

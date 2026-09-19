@@ -46,6 +46,7 @@ import { useEventsStore } from "@/frontend/stores/events";
 import { storeToRefs } from "pinia";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { checkAccess } from "@/shared/utils/Access";
+import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 import { startOfMonth, endOfMonth, addDays, subDays } from "date-fns";
 
 type Props = {
@@ -223,6 +224,11 @@ const canManageMissions = computed(() =>
   ]),
 );
 
+// Tours has no tab of its own -- this page is where it is reached from, the
+// way missions already are -- so the one definition of "may this reader see
+// tours" is reused rather than restated here.
+const { showToursNav } = useFleetNavAccess(() => props.fleet);
+
 const { data: subscription } = useFleetCalendarSubscription(fleetSlug);
 
 const canSubscribe = computed(() => subscription.value?.enabled === true);
@@ -314,6 +320,17 @@ const openDisplayOptionsModal = () => {
     >
       <i class="fa-light fa-flag-checkered" />
       <span>{{ t("actions.fleets.missions.viewMissions") }}</span>
+    </Btn>
+    <Btn
+      v-if="showToursNav"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'fleet-tours', params: { slug: props.fleet.slug } }"
+      :aria-label="t('actions.fleets.tours.viewTours')"
+      variant="bare"
+      mobile-icon-only
+    >
+      <i class="fa-light fa-coins" />
+      <span>{{ t("actions.fleets.tours.viewTours") }}</span>
     </Btn>
     <Btn
       v-if="canCreate"
