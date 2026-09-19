@@ -25,6 +25,18 @@ module V1
           # no single figure to state.
           pieceVolume: {type: [:number, :null]},
 
+          # Whether a player can eat or drink it. Ten of the catalogue: nine
+          # harvestables you pick and eat, and SLAM.
+          consumable: {type: :boolean},
+
+          # Every size it is packaged in, in SCU -- the hand-carried forms below
+          # one, then the freight crates up to 32. Empty for the refuel and
+          # rearm goods, which no crate entity declares.
+          containerSizes: {type: :array, items: {type: :number}},
+
+          # The refined good an ore or raw form becomes, where it becomes one.
+          refinesInto: ::Shared::V1::Schemas::CommodityRef,
+
           # Whether the build we are on still describes this commodity. Until now
           # the API served one the export had dropped as though it were current.
           retired: {type: :boolean},

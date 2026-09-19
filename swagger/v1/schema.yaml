@@ -16244,6 +16244,14 @@ components:
           type:
           - number
           - 'null'
+        consumable:
+          type: boolean
+        containerSizes:
+          type: array
+          items:
+            type: number
+        refinesInto:
+          "$ref": "#/components/schemas/CommodityRef"
         retired:
           type: boolean
         storeImage:
@@ -16333,6 +16341,24 @@ components:
       additionalProperties: false
       example: {}
       title: CommodityQuery
+    CommodityRef:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: CommodityRef
     CompareShare:
       type: object
       required:
