@@ -1312,3 +1312,16 @@ PUT /notifications/{id}/unarchive added the new `fleet_subscription_ended` enum 
 PUT /notifications/{id}/unarchive added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_subscription_ended` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_subscription_started` enum value to the `notificationType` response property for the response status `200`
+GET /fleets/invites added the new `fleet:blueprints:read` enum value to the `items/fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:blueprints:read` enum value to the `items/managePrivilege` response property for the response status `200`
+GET /fleets/resource-access-catalog added the new `fleet:blueprints:read` enum value to the `items/privileges/items/` response property for the response status `200`
+POST /fleets/use-invite added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+GET /fleets/{fleetSlug}/members added the new `fleet:blueprints:read` enum value to the `items/items/fleetRole/resourceAccess/items/` response property for the response status `200`
+POST /fleets/{fleetSlug}/members added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `201`
+GET /fleets/{fleetSlug}/members/{username} added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
+PUT /fleets/{fleetSlug}/members/{username} added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
+PUT /fleets/{fleetSlug}/members/{username}/demote added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
+PUT /fleets/{fleetSlug}/members/{username}/promote added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/{fleetSlug}/membership added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
+PUT /fleets/{fleetSlug}/membership added the new `fleet:blueprints:read` enum value to the `fleetRole/resourceAccess/items/` response property for the response status `200`
+GET /fleets/{fleetSlug}/roles added the new `fleet:blueprints:read` enum value to the `items/resourceAccess/items/` response property for the response status `200`
