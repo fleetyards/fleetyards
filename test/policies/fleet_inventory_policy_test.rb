@@ -90,4 +90,15 @@ class FleetInventoryPolicyTest < ActiveSupport::TestCase
         .apply_scope(FleetInventory.all, type: :active_record_relation)
     end
   end
+
+  # The manager exception lifts the officers-only bar, not the baseline read
+  # privilege -- and the scope has to agree with `show?` about that, or a
+  # reader with no inventory access at all is listed one thing and refused it.
+  test "a manager whose role carries no inventory access still sees nothing" do
+    manager = member_with([])
+    create(:fleet_inventory, :officers_only, fleet: @fleet, manager: manager)
+
+    assert_empty scoped(manager)
+    refute policy_for(manager, @open).apply(:show?)
+  end
 end

@@ -177,9 +177,8 @@ module InventoryTransferActions
   # two scopes over the party columns rather than over the inventories, so a
   # transfer whose far end was deleted still lists.
   #
-  # A fleet's own end is narrowed to the inventories the reader may see: a
-  # transfer names its inventory, so an unscoped list told a member with write
-  # access the name of every officers-only store the fleet moves stock through.
+  # Both are then narrowed to the inventories the reader may see -- see
+  # `with_visible_fleet_ends`.
   # Addressed to this party, *or* delivered into one of its inventories. The
   # second half is not redundant: an immediate transfer names no recipient at
   # all, so a fleet issuing kit into a member's own locker matched neither this
@@ -188,9 +187,12 @@ module InventoryTransferActions
   private def incoming_scope
     case acting_party
     when ::Fleet
-      InventoryTransfer
-        .where(recipient_fleet: acting_party)
-        .or(InventoryTransfer.where(destination_fleet_inventory: visible_fleet_inventories(acting_party)))
+      with_visible_fleet_ends(
+        InventoryTransfer
+          .where(recipient_fleet: acting_party)
+          .or(InventoryTransfer.where(destination_fleet_inventory: acting_party.fleet_inventories)),
+        acting_party
+      )
     else
       InventoryTransfer
         .where(recipient: acting_party)
@@ -198,10 +200,36 @@ module InventoryTransferActions
     end
   end
 
+  # A transfer names both of its ends, and the endpoint partial renders each
+  # one's name and slug unconditionally. So an officers-only store leaks its
+  # name through the list whichever end it sits at -- including a transfer
+  # merely *addressed* to the fleet, which keeps its `recipient_fleet` when it
+  # is accepted and so matches on that column whatever inventory it landed in.
+  #
+  # Only this fleet's hidden inventories are excluded. A far end belonging to
+  # somebody else is not ours to judge, and filtering on "is visible" rather
+  # than "is not hidden" would drop every cross-party transfer with it.
+  private def with_visible_fleet_ends(relation, fleet)
+    hidden = fleet.fleet_inventories.where.not(id: visible_fleet_inventories(fleet).select(:id)).pluck(:id)
+    return relation if hidden.empty?
+
+    # Spelled out rather than `where.not`: a NULL end is not "not in" the list,
+    # it is unknown, so `NOT IN` would silently drop every transfer that has
+    # only one end so far.
+    relation
+      .where("inventory_transfers.source_fleet_inventory_id IS NULL OR " \
+             "inventory_transfers.source_fleet_inventory_id NOT IN (?)", hidden)
+      .where("inventory_transfers.destination_fleet_inventory_id IS NULL OR " \
+             "inventory_transfers.destination_fleet_inventory_id NOT IN (?)", hidden)
+  end
+
   private def outgoing_scope
     case acting_party
     when ::Fleet
-      InventoryTransfer.where(source_fleet_inventory: visible_fleet_inventories(acting_party))
+      with_visible_fleet_ends(
+        InventoryTransfer.where(source_fleet_inventory: acting_party.fleet_inventories),
+        acting_party
+      )
     else
       InventoryTransfer.where(source_inventory: acting_party.inventories)
     end

@@ -37,7 +37,11 @@ class FleetInventoryPolicy < FleetBasePolicy
 
     membership = accepted_fleet_membership
 
-    if membership.blank?
+    # The read gate first, the same one `index?` applies. Without it the scope
+    # answered for a member whose role carries no inventory access at all,
+    # while `show?` refused them -- the two halves disagreeing in exactly the
+    # way this scope exists to avoid.
+    if membership.blank? || !membership.has_access?(READ_PRIVILEGES)
       relation.none
     elsif membership.has_access?(FleetInventory::OFFICER_PRIVILEGES)
       relation

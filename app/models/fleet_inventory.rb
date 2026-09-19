@@ -80,9 +80,13 @@ class FleetInventory < ApplicationRecord
     return false if membership.blank?
     return true if membership.has_access?(OFFICER_PRIVILEGES)
 
-    # The manager reaches their own store whatever their role carries:
-    # `managed_by` names the member answerable for it, and `manager_belongs_to_fleet`
-    # already keeps that to someone in the fleet.
+    # The manager reaches the store they are answerable for: `managed_by` names
+    # the member accountable for it, and `manager_belongs_to_fleet` already
+    # keeps that to someone in the fleet.
+    #
+    # This lifts the officers-only bar, not the baseline read privilege. A
+    # manager whose role carries no inventory access at all still sees nothing
+    # -- the officers-only distinction never arises for them.
     managed_by.present? && managed_by == membership.user_id
   end
 

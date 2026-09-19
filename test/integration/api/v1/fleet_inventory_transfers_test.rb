@@ -521,4 +521,44 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
       assert_equal 1, parsed_body["items"].count
     end
   end
+
+  # A transfer addressed to the fleet keeps its recipient_fleet when it is
+  # accepted, so the `recipient_fleet` branch matched it whatever inventory it
+  # landed in -- and the endpoint partial renders the destination's name and
+  # slug unconditionally.
+  test "GET leaves out a transfer accepted into an officers-only inventory" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:inventory_transfer, :completed, recipient_fleet: @fleet, initiated_by: @outsider,
+      source_inventory: create(:inventory, holder: @outsider),
+      destination_fleet_inventory: closed)
+
+    sign_in plain_writer
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  # The same leak from the other end: a transfer out of an officers-only store
+  # names its source just as plainly.
+  test "GET leaves out a transfer sent from an officers-only inventory" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:inventory_transfer, source_inventory: nil, source_fleet_inventory: closed,
+      recipient_fleet: @fleet, initiated_by: @officer, destination_fleet_inventory: @depot)
+
+    sign_in plain_writer
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  def plain_writer
+    role = create(:fleet_role, fleet: @fleet, name: "Quartermaster",
+      resource_access: ["fleet:inventories:read", "fleet:inventories:update"])
+
+    create(:user).tap do |user|
+      create(:fleet_membership, :accepted, fleet: @fleet, user: user, fleet_role: role)
+    end
+  end
 end
