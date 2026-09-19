@@ -57,7 +57,11 @@ module Admin
         def material_filters
           authorize! with: ::Admin::BlueprintPolicy
 
-          @filters = Blueprint.material_filters
+          # The superset: the admin list defaults to the fallback join, so an
+          # option list pinned to the build we are on would omit a material a
+          # visible row names. An option that matches nothing costs a click; a
+          # missing one cannot be asked for at all.
+          @filters = Blueprint.material_filters(current_only: false)
 
           render "api/shared/filters"
         end
@@ -65,7 +69,7 @@ module Admin
         def org_filters
           authorize! with: ::Admin::BlueprintPolicy
 
-          @filters = Blueprint.org_filters
+          @filters = Blueprint.org_filters(current_only: false)
 
           render "api/shared/filters"
         end
@@ -84,7 +88,11 @@ module Admin
         # handed one argument.
         private def source_filters(scope)
           current_only = ActiveModel::Type::Boolean.new.cast(current_version)
-          source = ::ScData::Source.current
+          # The *served* build, which is what `with_facts` joins. The configured
+          # one is a different build while its load has not finished, and
+          # filtering that one while rendering the other answers about a build
+          # the response never shows.
+          source = Blueprint.served_source
 
           scope = scope.from_org(org_filter, source, current_only:) if org_filter.present?
           scope = scope.consuming_commodity(commodity_filter, source, current_only:) if commodity_filter.present?

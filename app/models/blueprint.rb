@@ -331,13 +331,18 @@ class Blueprint < ApplicationRecord
   # options. Sourced from the cost rows rather than from the commodity
   # catalogue: 37 of the 232 commodities appear in a recipe, and a select
   # offering the other 195 would be a filter that cannot match.
-  def self.material_filters(source = ::ScData::Source.current)
+  #
+  # Two things it has to agree with, and did not: the build a list is actually
+  # answered from is the *served* one, not the configured one, and a caller
+  # reading the fallback build has to be offered the materials that build
+  # names. Both come from `readable_builds`, which is what the filters use.
+  def self.material_filters(source = served_source, current_only: true)
     Commodity
       .where(
         id: BlueprintCostOption
           .where(
             blueprint_cost_slot_id: BlueprintCostSlot
-              .where(blueprint_build_id: BlueprintBuild.current(source).select(:id))
+              .where(blueprint_build_id: readable_builds(source, current_only:).select(:id))
               .select(:id)
           )
           .select(:commodity_id)
@@ -363,9 +368,9 @@ class Blueprint < ApplicationRecord
   # The orgs whose missions hand a recipe out, in the build we are on. 130 of
   # the 154 reward pools carry an org and the other 24 carry a pool name alone,
   # so this is shorter than the pool list and every option it offers can match.
-  def self.org_filters(source = ::ScData::Source.current)
+  def self.org_filters(source = served_source, current_only: true)
     BlueprintSource
-      .where(blueprint_build_id: BlueprintBuild.current(source).select(:id))
+      .where(blueprint_build_id: readable_builds(source, current_only:).select(:id))
       .where.not(org_name: nil)
       .distinct
       .order(:org_name)
