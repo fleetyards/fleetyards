@@ -220,42 +220,49 @@ const sourceColumns: BaseTableCol<SourceRow>[] = [
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" :current-id="blueprintId" />
 
-      <Heading hero>
+      <Heading hero class="mb-4">
         {{ blueprint?.name || blueprint?.scKey }}
       </Heading>
 
       <DetailList :details="details" data-test="blueprint-details" />
 
       <!--
-        Read only. Every figure below is replaced by the next load, so there is
-        nothing here to edit -- a wrong recipe is a parser or loader fix.
+        The section carries the gap under the details, which render with no
+        outer spacing of their own so that the caller owns it -- the shape every
+        other detail page in the admin uses. The panels below space themselves.
+
+        Read only, all three. Every figure in them is replaced by the next load,
+        so there is nothing here to edit -- a wrong recipe is a parser or loader
+        fix.
       -->
-      <BaseTable
-        :records="materialRows"
-        primary-key="id"
-        :columns="materialColumns"
-        :title="t('headlines.admin.blueprints.materials')"
-        :empty-visible="!materialRows.length"
-        data-test="blueprint-materials"
-      />
+      <section class="mt-10">
+        <BaseTable
+          :records="materialRows"
+          primary-key="id"
+          :columns="materialColumns"
+          :title="t('headlines.admin.blueprints.materials')"
+          :empty-visible="!materialRows.length"
+          data-test="blueprint-materials"
+        />
 
-      <BaseTable
-        :records="statRows"
-        primary-key="id"
-        :columns="statColumns"
-        :title="t('headlines.admin.blueprints.stats')"
-        :empty-visible="!statRows.length"
-        data-test="blueprint-stats"
-      />
+        <BaseTable
+          :records="statRows"
+          primary-key="id"
+          :columns="statColumns"
+          :title="t('headlines.admin.blueprints.stats')"
+          :empty-visible="!statRows.length"
+          data-test="blueprint-stats"
+        />
 
-      <BaseTable
-        :records="sourceRows"
-        primary-key="id"
-        :columns="sourceColumns"
-        :title="t('headlines.admin.blueprints.sources')"
-        :empty-visible="!sourceRows.length"
-        data-test="blueprint-sources"
-      />
+        <BaseTable
+          :records="sourceRows"
+          primary-key="id"
+          :columns="sourceColumns"
+          :title="t('headlines.admin.blueprints.sources')"
+          :empty-visible="!sourceRows.length"
+          data-test="blueprint-sources"
+        />
+      </section>
     </template>
   </AsyncData>
 </template>
