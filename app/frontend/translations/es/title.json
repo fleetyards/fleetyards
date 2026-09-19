@@ -57,6 +57,7 @@
           "starmap": "Mapa estelar de miembros de %{fleet}"
         },
         "stats": "Estadísticas de %{fleet}",
+        "blueprints": "Planos de %{fleet}",
         "logistics": {
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories",

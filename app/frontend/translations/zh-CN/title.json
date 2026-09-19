@@ -57,6 +57,7 @@
           "starmap": "%{fleet} 成员星图"
         },
         "stats": "%{fleet} 统计",
+        "blueprints": "%{fleet} 的蓝图",
         "logistics": {
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories",

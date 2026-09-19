@@ -11,6 +11,8 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
 import BlueprintPreview from "@/frontend/components/Blueprints/Preview/index.vue";
 import BlueprintSources from "@/frontend/components/Blueprints/Sources/index.vue";
+import BlueprintFleetOwners from "@/frontend/components/Blueprints/FleetOwners/index.vue";
+import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
@@ -116,6 +118,13 @@ watch(
                  file in the export. -->
               <span v-else>{{ t("labels.blueprint.makesUnknown") }}</span>
             </div>
+          </div>
+
+          <!-- Beside the badges rather than among them: the badges are what the
+               catalogue knows about the recipe, and this is what the reader has
+               said about it. -->
+          <div class="blueprint-page__actions">
+            <BlueprintOwnToggle :blueprint="blueprint" label />
           </div>
 
           <div class="blueprint-page__badges">
@@ -224,6 +233,9 @@ watch(
               :sources="blueprint.sources || []"
               :source-unknown="blueprint.sourceUnknown"
             />
+            <!-- Last in the rail: who can already make this matters once you
+                 know what it costs and where it drops, not before. -->
+            <BlueprintFleetOwners :blueprint-id="blueprint.id" />
           </div>
         </div>
       </div>

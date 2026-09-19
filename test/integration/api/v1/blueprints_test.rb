@@ -139,4 +139,72 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
       assert_equal [@other.id], parsed_body["items"].pluck("id")
     end
   end
+
+  test "GET /blueprints says which recipes the reader holds" do
+    user = create(:user)
+    create(:user_blueprint, user:, blueprint: @blueprint)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      owned = parsed_body["items"].to_h { |item| [item["id"], item["owned"]] }
+
+      assert owned[@blueprint.id]
+      assert_not owned[@other.id]
+    end
+  end
+
+  # The catalogue is public and its payload is fragment cached on the
+  # blueprint, its build and the source -- no reader in the key. `owned` is
+  # rendered outside that block for exactly this reason, and a second reader
+  # getting the first one's answer is what it would look like if it moved back
+  # in.
+  test "GET /blueprints does not serve one reader's marks to the next" do
+    holder = create(:user)
+    create(:user_blueprint, user: holder, blueprint: @blueprint)
+
+    sign_in holder
+    assert_api_response :get, 200 do
+      assert parsed_body["items"].find { |item| item["id"] == @blueprint.id }["owned"]
+    end
+    sign_out holder
+
+    assert_api_response :get, 200 do
+      assert_not parsed_body["items"].find { |item| item["id"] == @blueprint.id }["owned"]
+    end
+  end
+
+  test "GET /blueprints narrows to the recipes the reader holds" do
+    user = create(:user)
+    create(:user_blueprint, user:, blueprint: @blueprint)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"owned" => true}} do
+      assert_equal [@blueprint.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  # The same trap `withKnownSource` documents: ransack skips a scope whose
+  # value is false, so this asked through ransack would answer "the ones I do
+  # not have" with the whole catalogue.
+  test "GET /blueprints narrows to the recipes the reader does not hold" do
+    user = create(:user)
+    create(:user_blueprint, user:, blueprint: @blueprint)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"owned" => false}} do
+      assert_equal [@other.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  # Nobody holds anything signed out, so "mine" is empty and "not mine" is the
+  # catalogue -- rather than either of them being an error.
+  test "GET /blueprints answers the owned filter for an anonymous reader" do
+    assert_api_response :get, 200, params: {q: {"owned" => true}} do
+      assert_empty parsed_body["items"]
+    end
+
+    assert_api_response :get, 200, params: {q: {"owned" => false}} do
+      assert_equal 2, parsed_body["items"].count
+    end
+  end
 end

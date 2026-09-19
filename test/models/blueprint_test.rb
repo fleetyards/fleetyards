@@ -341,4 +341,62 @@ class BlueprintTest < ActiveSupport::TestCase
       blueprint.destroy
     end
   end
+
+  test ".owned_by is the recipes a holder has, and .not_owned_by its complement" do
+    user = create(:user)
+    held = create(:blueprint)
+    other = create(:blueprint)
+    create(:user_blueprint, user:, blueprint: held)
+
+    assert_equal [held], Blueprint.owned_by(user).to_a
+    assert_equal [other], Blueprint.not_owned_by(user).to_a
+  end
+
+  # The fleet list asks the same scope with a set of members rather than with
+  # one person, which is the whole reason it takes a condition rather than a
+  # user.
+  test ".owned_by takes several holders" do
+    first = create(:user)
+    second = create(:user)
+    held = create(:blueprint)
+    also_held = create(:blueprint)
+    create(:blueprint)
+
+    create(:user_blueprint, user: first, blueprint: held)
+    create(:user_blueprint, user: second, blueprint: also_held)
+
+    assert_equal [held, also_held].map(&:id).sort,
+      Blueprint.owned_by(User.where(id: [first.id, second.id])).pluck(:id).sort
+  end
+
+  # A recipe held by two people is one row in the list, not two -- which a join
+  # would not have given.
+  test ".owned_by lists a recipe two holders have once" do
+    first = create(:user)
+    second = create(:user)
+    held = create(:blueprint)
+
+    create(:user_blueprint, user: first, blueprint: held)
+    create(:user_blueprint, user: second, blueprint: held)
+
+    assert_equal [held], Blueprint.owned_by(User.where(id: [first.id, second.id])).to_a
+  end
+
+  # Signed out, "mine" is empty and "not mine" is the catalogue -- the two
+  # sides of the filter do not answer symmetrically, on purpose.
+  test ".owned_by is empty without a holder, and .not_owned_by is everything" do
+    blueprint = create(:blueprint)
+
+    assert_empty Blueprint.owned_by(nil)
+    assert_equal [blueprint], Blueprint.not_owned_by(nil).to_a
+  end
+
+  test "destroying a blueprint takes the marks on it with it" do
+    blueprint = create(:blueprint)
+    create(:user_blueprint, blueprint:)
+
+    assert_difference -> { UserBlueprint.count } => -1 do
+      blueprint.destroy
+    end
+  end
 end

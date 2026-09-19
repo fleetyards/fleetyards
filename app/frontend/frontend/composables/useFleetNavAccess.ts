@@ -46,6 +46,10 @@ export const useFleetNavAccess = (
     () => membership.value?.capabilities?.readAllies ?? false,
   );
 
+  const hasBlueprintsAccess = computed(
+    () => membership.value?.capabilities?.readBlueprints ?? false,
+  );
+
   const hasContractsAccess = computed(() =>
     hasResourceAccess(
       FleetRoleResourceAccessEnum.FLEET_MANAGE,
@@ -75,6 +79,13 @@ export const useFleetNavAccess = (
       !!membership.value &&
       hasLogisticsAccess.value &&
       isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS),
+  );
+
+  // No feature flag and no subscription: the fleet's list of what its members
+  // can craft ships with the catalogue, free for every fleet, like the ships
+  // tab. The privilege is the only gate.
+  const showBlueprintsNav = computed(
+    () => !!membership.value && hasBlueprintsAccess.value,
   );
 
   const showAlliesNav = computed(
@@ -135,6 +146,7 @@ export const useFleetNavAccess = (
 
   return {
     membership,
+    showBlueprintsNav,
     showLogisticsNav,
     showAlliesNav,
     showContractsNav,

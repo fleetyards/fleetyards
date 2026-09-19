@@ -43,6 +43,11 @@
             "prompt": "Wähle welche Schiffe angezeigt werden sollen",
             "nullablePrompt": "Wähle eine Option"
           },
+          "blueprintsFilter": {
+            "label": "Baupläne-Filter",
+            "prompt": "Wähle, welche Baupläne geteilt werden",
+            "nullablePrompt": "Wähle eine Option"
+          },
           "hangarGroupId": {
             "label": "Hangar Gruppe",
             "prompt": "Wähle eine Hangar Gruppe",

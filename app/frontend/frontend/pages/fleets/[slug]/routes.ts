@@ -28,6 +28,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "blueprints/",
+    name: "fleet-blueprints",
+    component: () => import("@/frontend/pages/fleets/[slug]/blueprints.vue"),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: "bg-8",
+      customTitle: true,
+    },
+  },
+  {
     path: "fleetchart/",
     name: "fleet-fleetchart",
     redirect: {

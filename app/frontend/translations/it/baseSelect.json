@@ -43,6 +43,11 @@
             "prompt": "Seleziona quali navi mostrare",
             "nullablePrompt": "Seleziona un'opzione"
           },
+          "blueprintsFilter": {
+            "label": "Filtro progetti",
+            "prompt": "Scegli quali progetti condividere",
+            "nullablePrompt": "Seleziona un'opzione"
+          },
           "hangarGroupId": {
             "label": "Gruppo hangar",
             "prompt": "Seleziona un gruppo hangar",

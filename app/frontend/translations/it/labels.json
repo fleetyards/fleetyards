@@ -449,6 +449,15 @@
             "label": "Specifica un Gruppo Hangar",
             "nullablePrompt": "Nessun Gruppo selezionato"
           },
+          "blueprintsFilter": {
+            "label": "Quali progetti condividere con la flotta?",
+            "nullablePrompt": "Nessuna opzione selezionata",
+            "field": "Selezione progetti",
+            "values": {
+              "all": "Tutti i progetti che possiedo",
+              "hide": "Nessun progetto"
+            }
+          },
           "total": "Totale: %{count}",
           "joined": "Iscritto il",
           "invited": "Invitato",
@@ -478,6 +487,7 @@
             "memberships": "Membri",
             "invites": "Inviti",
             "vehicles": "Veicoli",
+            "blueprints": "Progetti",
             "roles": "Ruoli",
             "inventories": "Inventari",
             "missions": "Missioni",
@@ -508,6 +518,7 @@
             "fleet:vehicles:update": "Aggiorna veicoli",
             "fleet:vehicles:delete": "Rimuovi veicoli",
             "fleet:vehicles:manage": "Gestisci veicoli",
+            "fleet:blueprints:read": "Vedi i progetti",
             "fleet:roles:read": "Visualizza ruoli",
             "fleet:roles:create": "Crea ruoli",
             "fleet:roles:update": "Aggiorna ruoli",
@@ -1703,7 +1714,10 @@
           "source": "Fonte",
           "withSource": "Con fonte nota",
           "withoutSource": "Senza fonte nota",
-          "material": "Usa materiale"
+          "material": "Usa materiale",
+          "ownedFilter": "Posseduto",
+          "owned": "Posseduto",
+          "notOwned": "Non posseduto"
         }
       },
       "station": {
@@ -2744,6 +2758,8 @@
         "scu": "%{amount} SCU",
         "pieces": "%{count}×",
         "whereItDrops": "Dove si ottiene",
+        "fleetOwners": "Chi può fabbricarlo",
+        "ownedByCount": "%{count} lo possiedono",
         "sourceSummary": "%{count} fonti · %{orgs} organizzazioni",
         "unattributed": "Non attribuito",
         "minPoints": "Da %{points} punti",

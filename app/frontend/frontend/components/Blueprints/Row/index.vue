@@ -5,12 +5,19 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
-import { type Blueprint } from "@/services/fyApi";
+import { type Blueprint, type FleetBlueprintOwner } from "@/services/fyApi";
 
 type Props = {
   blueprint: Blueprint;
+  /**
+   * Who holds it, on a fleet's list of what its members can craft. Absent on
+   * the public catalogue, which knows of no owner but the reader.
+   */
+  owners?: FleetBlueprintOwner[];
+  ownerCount?: number;
 };
 
 const props = defineProps<Props>();
@@ -38,6 +45,19 @@ const shownMaterials = computed(() =>
 const extraMaterials = computed(() =>
   Math.max((props.blueprint.materials || []).length - MATERIALS_SHOWN, 0),
 );
+
+const OWNERS_SHOWN = 3;
+
+const shownOwners = computed(() => (props.owners || []).slice(0, OWNERS_SHOWN));
+
+const extraOwners = computed(() =>
+  Math.max((props.ownerCount ?? (props.owners || []).length) - OWNERS_SHOWN, 0),
+);
+
+// The fleet's name for somebody where it has one, and their username
+// otherwise -- a nickname is optional and most memberships carry none.
+const ownerName = (owner: FleetBlueprintOwner) =>
+  owner.nickname || owner.username;
 
 // What the recipe makes, and where that lives. 5 of the 1,607 recipes in the
 // current build resolve to no catalogue row at all -- four mission carryables
@@ -103,6 +123,23 @@ const craftableRoute = computed(() => {
       </span>
     </span>
 
+    <!-- Who in the fleet holds it. Capped at three names with a count for the
+         rest: a row is one line, and "and 11 others" is the part a reader
+         acts on anyway. -->
+    <span v-if="shownOwners.length" class="blueprint-row__owners">
+      <router-link
+        v-for="owner in shownOwners"
+        :key="owner.userId"
+        class="blueprint-row__owner"
+        :to="{ name: 'hangar-public', params: { username: owner.username } }"
+      >
+        {{ ownerName(owner) }}
+      </router-link>
+      <span v-if="extraOwners" class="blueprint-row__owner-more">
+        +{{ extraOwners }}
+      </span>
+    </span>
+
     <!-- Said on the row, not only on the detail page. 901 of 1,607 recipes
          have no stated source, so "can I actually go and get this" is a
          question the list itself has to answer. -->
@@ -133,6 +170,13 @@ const craftableRoute = computed(() => {
           blueprint.slotCount
         }}</span>
       </span>
+    </span>
+
+    <!-- Last, where a row's action sits everywhere else in the app, and
+         outside the badges: it is the one thing here that is not a fact about
+         the recipe. -->
+    <span class="blueprint-row__actions">
+      <BlueprintOwnToggle :blueprint="blueprint" variant="row" />
     </span>
   </div>
 </template>

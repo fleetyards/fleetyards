@@ -1,0 +1,69 @@
+.blueprint-fleet-owners {
+  margin-bottom: 20px;
+
+  &__fleets {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__fleet {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px 14px;
+    background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: var(--radius-control, 8px);
+  }
+
+  // The fleet's own name is the heading of its block, so it takes the body
+  // text the sources panel gives an org rather than a brighter one.
+  &__name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    transition: color 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-lifted, #eee);
+    }
+  }
+
+  &__count {
+    font-size: 11.5px;
+    color: var(--color-gray, #52575c);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 3px;
+  }
+
+  // The material chip from the catalogue row, at the rail's scale: a name here
+  // is the same kind of thing -- a fact you can click through on.
+  &__member {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: 4px;
+    white-space: nowrap;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text, #c8c8c8);
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+  }
+}

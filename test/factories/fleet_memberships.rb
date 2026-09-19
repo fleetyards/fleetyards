@@ -5,6 +5,7 @@
 #  id                :uuid             not null, primary key
 #  aasm_state        :string
 #  accepted_at       :datetime
+#  blueprints_filter :integer          default(0), not null
 #  declined_at       :datetime
 #  discarded_at      :datetime
 #  hide_ships        :boolean          default(FALSE)

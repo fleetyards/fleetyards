@@ -43,6 +43,11 @@
             "prompt": "選擇要顯示的飛船",
             "nullablePrompt": "選擇一個選項"
           },
+          "blueprintsFilter": {
+            "label": "藍圖篩選",
+            "prompt": "選擇要共享的藍圖",
+            "nullablePrompt": "請選擇一個選項"
+          },
           "hangarGroupId": {
             "label": "機庫群組",
             "prompt": "選擇機庫群組",
