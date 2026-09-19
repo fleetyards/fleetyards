@@ -29,6 +29,11 @@ module Shared
 
             retired: {type: :boolean},
 
+            # Whether the reader holds this recipe. Always stated, and always
+            # false for an anonymous read -- the catalogue is public, so "not
+            # signed in" and "signed in without it" are the same answer here.
+            owned: {type: :boolean},
+
             # Said outright rather than left to an empty `sources`: the export
             # says nothing about where 901 of the 1607 recipes come from, and
             # an empty array reads as a gap in our data rather than in the
@@ -56,7 +61,7 @@ module Shared
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id slug scKey scRef retired sourceUnknown createdAt updatedAt]
+          required: %w[id slug scKey scRef retired owned sourceUnknown createdAt updatedAt]
         })
       end
     end

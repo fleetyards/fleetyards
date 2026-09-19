@@ -10049,6 +10049,8 @@ components:
           - 'null'
         retired:
           type: boolean
+        owned:
+          type: boolean
         sourceUnknown:
           type: boolean
         craftable:
@@ -10086,6 +10088,7 @@ components:
       - scKey
       - scRef
       - retired
+      - owned
       - sourceUnknown
       - createdAt
       - updatedAt

@@ -5,6 +5,13 @@ module Api
     class BlueprintsController < ::Api::PublicBaseController
       skip_verify_authorized only: %i[index show]
 
+      # The catalogue is public; saying you hold a recipe is not. Guarded the
+      # way every mixed controller here is -- a session passes straight
+      # through, and anything else has to carry a token with the scope.
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        only: %i[own unown]
+
       after_action -> { pagination_header(:blueprints) }, only: [:index]
 
       # One recipe, with everything a crafter is actually asking: what it makes,
@@ -16,6 +23,35 @@ module Api
         @blueprint = Blueprint.includes(
           :craftable, build: [{cost_slots: [{options: :commodity}, :modifiers]}, :sources]
         ).find_by!(slug:)
+
+        @owned_blueprint_ids = owned_ids_for([@blueprint])
+      end
+
+      # Idempotent on purpose: holding a recipe is a state, not an event, so
+      # marking one twice is the same answer rather than a duplicate row or a
+      # validation error a client has to interpret.
+      def own
+        blueprint = Blueprint.find_by!(slug: params[:slug].to_s.downcase)
+
+        authorize! blueprint
+
+        UserBlueprint.find_or_create_by!(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+
+        head :no_content
+      rescue ActiveRecord::RecordNotUnique
+        # Two clicks landing together. The row exists either way, which is what
+        # was asked for.
+        head :no_content
+      end
+
+      def unown
+        blueprint = Blueprint.find_by!(slug: params[:slug].to_s.downcase)
+
+        authorize! blueprint, to: :unown?
+
+        UserBlueprint.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id).destroy_all
+
+        head :no_content
       end
 
       def index
@@ -37,11 +73,47 @@ module Api
         # them.
         @q = Blueprint.with_facts(current_version)
           .includes(:craftable, build: {cost_slots: {options: :commodity}})
-          .ransack(blueprints_query_params.except(:from_org, :consuming_commodity, :with_known_source))
+          .ransack(blueprints_query_params.except(:from_org, :consuming_commodity, :with_known_source, :owned))
 
-        @blueprints = source_filters(@q.result)
+        @blueprints = owned_filter(source_filters(@q.result))
           .page(params[:page])
           .per(per_page(Blueprint))
+
+        # One query for the page rather than one per row, and after pagination
+        # so it asks about the 60 rows being rendered rather than the 1,607.
+        @owned_blueprint_ids = owned_ids_for(@blueprints)
+      end
+
+      # Applied here rather than through ransack for the reason
+      # `with_known_source` is: ransack casts a scope argument to a boolean and
+      # then skips the scope when it is false, so `owned=false` would answer
+      # "the recipes I do not have" with the whole catalogue.
+      private def owned_filter(scope)
+        flag = blueprints_query_params[:owned]
+
+        return scope if flag.nil?
+
+        # Off the resolved owner rather than off a parameter: whose recipes are
+        # being asked about is never the caller's to name.
+        holder = current_resource_owner
+
+        if ActiveModel::Type::Boolean.new.cast(flag)
+          scope.owned_by(holder)
+        else
+          scope.not_owned_by(holder)
+        end
+      end
+
+      # The subset of these blueprints the reader holds. Empty when signed out,
+      # which is what the payload's `owned: false` says.
+      private def owned_ids_for(blueprints)
+        holder = current_resource_owner
+
+        return Set.new if holder.blank?
+
+        Set.new(
+          UserBlueprint.where(user_id: holder.id, blueprint_id: blueprints.map(&:id)).pluck(:blueprint_id)
+        )
       end
 
       # The three filters that read a build, applied here rather than through
@@ -106,7 +178,7 @@ module Api
           # The three the controller applies itself. Permitted like any other:
           # they are read from here rather than off `params` directly, so an
           # unpermitted one would silently stop filtering.
-          :from_org, :with_known_source,
+          :from_org, :with_known_source, :owned,
           :craft_time_lteq, :craft_time_gteq,
           :consuming_commodity,
           sorts: [], id_in: [], name_in: [], craftable_type_in: [],

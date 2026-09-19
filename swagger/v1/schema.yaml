@@ -67,6 +67,67 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/blueprints/{slug}/own":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Mark a blueprint as owned
+      tags:
+      - Blueprints
+      operationId: ownBlueprint
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Drop a blueprint's owned mark
+      tags:
+      - Blueprints
+      operationId: unownBlueprint
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -15712,6 +15773,8 @@ components:
           - 'null'
         retired:
           type: boolean
+        owned:
+          type: boolean
         sourceUnknown:
           type: boolean
         craftable:
@@ -15743,6 +15806,7 @@ components:
       - scKey
       - scRef
       - retired
+      - owned
       - sourceUnknown
       - createdAt
       - updatedAt
@@ -15936,6 +16000,8 @@ components:
           items:
             type: string
         withKnownSource:
+          type: boolean
+        owned:
           type: boolean
         currentVersion:
           type: boolean

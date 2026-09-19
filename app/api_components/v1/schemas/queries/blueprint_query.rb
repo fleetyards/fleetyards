@@ -55,6 +55,16 @@ module V1
             # source" question with the whole catalogue.
             withKnownSource: {type: :boolean},
 
+            # The recipes the reader holds, or the ones they do not. Read by the
+            # controller rather than applied through ransack, for the reason
+            # `withKnownSource` is: a scope reached through ransack can only
+            # ever mean "on", so `owned=false` would return the catalogue.
+            #
+            # Whose recipes is never a parameter -- it is always the caller's --
+            # so an anonymous `owned=true` is an empty list rather than an
+            # error.
+            owned: {type: :boolean},
+
             currentVersion: {type: :boolean},
             s: ::V1::Schemas::Enums::BlueprintSortingEnum,
             sorts: {type: :array, items: ::V1::Schemas::Enums::BlueprintSortingEnum}
