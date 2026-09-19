@@ -27,7 +27,7 @@ module Api
         # already leaves out what that build does not describe. Adding the scope
         # beside it scanned `commodity_builds` a second time for the same answer.
         @q = Commodity.with_facts(current_version)
-          .includes(:item_prices)
+          .includes(:item_prices, :refines_into)
           .ransack(commodities_query_params)
 
         @commodities = @q.result

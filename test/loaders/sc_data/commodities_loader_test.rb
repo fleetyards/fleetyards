@@ -147,6 +147,62 @@ module ScData
         assert_empty Commodity.where(counted: false).where.not(piece_volume: nil).pluck(:name)
       end
 
+      # Nine harvestables you pick and eat, the vent slug, and SLAM. Named
+      # rather than counted, because the whole point of the fact is which ones.
+      test "#all marks the commodities a player can eat or drink" do
+        @loader.all
+
+        assert_equal(
+          ["Blue Bilva", "Golden Medmon", "Heart of the Woods", "Jumping Limes",
+            "Lunes (Spiral Fruit)", "Oza", "Pitambu", "SLAM", "Sunset Berries",
+            "Vent Slug"],
+          Commodity.where(consumable: true).order(:name).pluck(:name)
+        )
+      end
+
+      # SLAM's entities sit under entities/scitem/consumables, which is why the
+      # parser reads a third path -- its crates say nothing about taking it.
+      test "#all reads a consumable declared outside the commodity trees" do
+        @loader.all
+
+        assert_predicate Commodity.find_by(sc_key: "items_commodities_slam"), :consumable?
+      end
+
+      test "#all collects every size a commodity is packaged in" do
+        @loader.all
+
+        gold = Commodity.find_by(sc_key: "items_commodities_gold")
+
+        assert_includes gold.container_sizes.map(&:to_f), 32.0
+        assert_includes gold.container_sizes.map(&:to_f), 1.0
+        assert_equal gold.container_sizes, gold.container_sizes.sort
+
+        # The refuel and rearm goods are hauled in generic containers and have
+        # no crate entity anywhere in the build.
+        assert_empty Commodity.find_by(sc_key: "items_commodities_shipammo_size_1").container_sizes
+      end
+
+      # Resolved in a second pass: an ore is regularly read before the good it
+      # refines into exists as a row.
+      test "#all links an ore to the good it refines into" do
+        @loader.all
+
+        ore = Commodity.find_by(sc_key: "items_commodities_gold_ore")
+
+        assert_equal "Gold", ore.refines_into&.name
+        assert_nil Commodity.find_by(sc_key: "items_commodities_gold").refines_into
+      end
+
+      # Three of the construction material forms refine into the same good, so
+      # the reverse side is a collection.
+      test "#all links several raw forms to one refined good" do
+        @loader.all
+
+        refined = Commodity.find_by(sc_key: "items_commodities_constructionmaterials")
+
+        assert_operator refined.refined_from.count, :>=, 3
+      end
+
       test "#all keeps a commodity that already exists without an sc_key" do
         existing = create(:commodity, name: "Gold", sc_key: nil, commodity_type: nil)
 

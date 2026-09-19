@@ -2,7 +2,10 @@ module ScData
   module Loader
     class CommoditiesLoader < ::ScData::Loader::BaseLoader
       def all
-        loaded = load_items("commodities").filter_map { |commodity_data| one(commodity_data)&.id }
+        parsed = load_items("commodities")
+        loaded = parsed.filter_map { |commodity_data| one(commodity_data)&.id }
+
+        link_refined_versions(parsed)
 
         retire_absent(Commodity, loaded)
         retire_absent_builds(CommodityBuild, :commodity_id, loaded)
@@ -28,6 +31,36 @@ module ScData
         commodity
       end
 
+      # Resolved after every row exists, because an ore may be read before the
+      # good it refines into. Written with `update_all` rather than through the
+      # record: this is the loader's column, and versioning 30 links on every
+      # load would bury the handful of real edits the way the UEX sync already
+      # threatens to.
+      private def link_refined_versions(parsed)
+        keys = parsed.filter_map { |commodity_data| commodity_data["sc_key"] }
+        ids = Commodity.where(sc_key: keys).pluck(:sc_key, :id).to_h
+
+        wanted = parsed.each_with_object({}) do |commodity_data, index|
+          source = ids[commodity_data["sc_key"]]
+          target = ids[commodity_data["refines_into"]]
+
+          index[source] = target if source.present?
+        end
+
+        # One statement per distinct target rather than per row, and only where
+        # the answer has moved -- a re-load of the same build writes nothing.
+        #
+        # `IS DISTINCT FROM` rather than `where.not`: every row starts with a
+        # null here, and `refines_into_id != '<uuid>'` is null for a null column
+        # rather than true, so `where.not` matches none of the rows that need
+        # the write.
+        wanted.group_by { |_, target| target }.each do |target, pairs|
+          Commodity.where(id: pairs.map(&:first))
+            .where("refines_into_id IS DISTINCT FROM ?", target)
+            .update_all(refines_into_id: target, updated_at: Time.current)
+        end
+      end
+
       private def update_params(commodity_data)
         {
           sc_key: commodity_data["sc_key"],
@@ -37,6 +70,8 @@ module ScData
           description: commodity_data["description"],
           counted: commodity_data["counted"] || false,
           piece_volume: commodity_data["piece_volume"],
+          consumable: commodity_data["consumable"] || false,
+          container_sizes: Array.wrap(commodity_data["container_sizes"]),
           version: sc_version
         }
       end
