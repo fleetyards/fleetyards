@@ -336,6 +336,64 @@ class InventoryTest < ActiveSupport::TestCase
     assert_not_predicate changed, :valid?
   end
 
+  # A position is identified by name, category and unit, so entries pointing at
+  # different things -- or at nothing -- share one. `move_position` writes the
+  # new unit to every one of them with `update_all`, which skips validation, so
+  # authorising the move from a single reference entry leaves the others
+  # holding a pairing their own validator forbids.
+  test "update_stock_item refuses pieces when another entry in the position points at nothing" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 2)
+    create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 3)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {unit: "units"})
+
+    assert_not_predicate changed, :valid?
+    assert_equal ["scu"], @inventory.inventory_items.distinct.pluck(:unit)
+  end
+
+  # The other direction: every entry pointing at the same counted commodity, so
+  # nothing in the position objects and the move goes through.
+  test "update_stock_item moves a position into pieces when every entry agrees" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    2.times do
+      create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+        category: :commodity, unit: :scu, quantity: 2)
+    end
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {unit: "units"})
+
+    assert_predicate changed, :valid?
+    assert_equal ["units"], @inventory.inventory_items.distinct.pluck(:unit)
+  end
+
+  # A bulk commodity in the same position holds it to SCU even though the
+  # reference entry is a counted one.
+  test "update_stock_item refuses pieces when another entry is a bulk commodity" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    iron = create(:commodity, name: "Iron", counted: false)
+    create(:inventory_item, inventory: @inventory, item: iron, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 2)
+    create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 3)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    assert_not_predicate @inventory.update_stock_item(stock_item, {unit: "units"}), :valid?
+  end
+
   private def stock_position(quantity:, withdrawn: nil)
     create(:inventory_item, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity:)

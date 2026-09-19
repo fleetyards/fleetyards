@@ -150,7 +150,7 @@ module InventoryStock
   # other position and the emptied one goes.
   def update_stock_item(stock_item, attributes)
     target = attributes.symbolize_keys.slice(:name, :category, :unit)
-    changed = InventoryStockItemChange.new(stock_item, target)
+    changed = InventoryStockItemChange.new(stock_item, target, items: items_in_position(stock_item))
 
     return changed unless changed.valid?
 
@@ -234,6 +234,24 @@ module InventoryStock
 
   # The newest entry that carries something worth showing: an uploaded image or
   # a reference to a game item the image can be borrowed from.
+  # Every catalogue record this position's entries point at, one nil per entry
+  # that points at nothing. Plucked rather than loaded through the entries: a
+  # position of two hundred deposits names at most a handful of distinct items.
+  private def items_in_position(stock_item)
+    pairs = inventory_items
+      .where(position_key => stock_item.position_id)
+      .distinct
+      .pluck(:item_type, :item_id)
+
+    return [nil] if pairs.empty?
+
+    pairs.map do |item_type, item_id|
+      next unless item_id.present? && item_type.in?(InventoryLedgerEntry::ITEM_TYPES)
+
+      item_type.constantize.find_by(id: item_id)
+    end
+  end
+
   private def reference_entry_for(row)
     entries = inventory_items
       .where(position_key => row.position_id)
