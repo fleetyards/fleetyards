@@ -28,7 +28,6 @@ require "test_helper"
 #  index_hardpoint_builds_on_component_id             (component_id)
 #  index_hardpoint_builds_on_environment_and_version  (environment,version)
 #  index_hardpoint_builds_on_hardpoint_and_build      (hardpoint_id,environment,version) UNIQUE
-#  index_hardpoint_builds_on_hardpoint_id             (hardpoint_id)
 #
 # Foreign Keys
 #

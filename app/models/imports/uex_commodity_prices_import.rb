@@ -31,7 +31,6 @@
 #  index_imports_on_aasm_state_and_type        (aasm_state,type)
 #  index_imports_on_admin_user_id              (admin_user_id)
 #  index_imports_on_hangar_group_id            (hangar_group_id)
-#  index_imports_on_type                       (type)
 #  index_imports_on_type_and_id                (type,id)
 #  index_imports_on_unmatched_hangar_group_id  (unmatched_hangar_group_id)
 #  index_imports_on_user_id                    (user_id)

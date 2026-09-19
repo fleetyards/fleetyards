@@ -15,7 +15,6 @@
 #
 # Indexes
 #
-#  index_fleet_inventory_positions_on_fleet_inventory_id      (fleet_inventory_id)
 #  index_fleet_inventory_positions_on_inventory_and_identity  (fleet_inventory_id,name,category,unit) UNIQUE
 #  index_fleet_inventory_positions_on_inventory_and_slug      (fleet_inventory_id,slug) UNIQUE
 #

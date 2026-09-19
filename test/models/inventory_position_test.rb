@@ -19,7 +19,6 @@ require "test_helper"
 #
 #  index_inventory_positions_on_inventory_and_identity  (inventory_id,name,category,unit) UNIQUE
 #  index_inventory_positions_on_inventory_and_slug      (inventory_id,slug) UNIQUE
-#  index_inventory_positions_on_inventory_id            (inventory_id)
 #
 # Foreign Keys
 #

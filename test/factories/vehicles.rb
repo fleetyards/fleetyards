@@ -29,11 +29,12 @@
 #
 # Indexes
 #
-#  index_vehicles_on_hidden_and_loaner       (hidden,loaner)
-#  index_vehicles_on_model_id_and_id         (model_id,id)
-#  index_vehicles_on_serial_and_user_id      (serial,user_id) UNIQUE
-#  index_vehicles_on_user_id                 (user_id)
-#  index_vehicles_on_vehicle_id_and_bundled  (vehicle_id,bundled)
+#  index_vehicles_on_hidden_and_loaner_and_wanted  (hidden,loaner,wanted)
+#  index_vehicles_on_model_id_and_id               (model_id,id)
+#  index_vehicles_on_model_paint_id_where_painted  (model_paint_id,hidden,wanted,loaner) WHERE (model_paint_id IS NOT NULL)
+#  index_vehicles_on_serial_and_user_id            (serial,user_id) UNIQUE
+#  index_vehicles_on_user_id                       (user_id)
+#  index_vehicles_on_vehicle_id_and_bundled        (vehicle_id,bundled)
 #
 FactoryBot.define do
   factory :vehicle do

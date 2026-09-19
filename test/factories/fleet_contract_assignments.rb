@@ -24,7 +24,6 @@
 #  index_fleet_contract_assignments_on_accepted_lead       (fleet_contract_id) UNIQUE WHERE ((role = 0) AND ((aasm_state)::text = 'accepted'::text))
 #  index_fleet_contract_assignments_on_approved_by_id      (approved_by_id)
 #  index_fleet_contract_assignments_on_contract_and_state  (fleet_contract_id,aasm_state)
-#  index_fleet_contract_assignments_on_fleet_contract_id   (fleet_contract_id)
 #  index_fleet_contract_assignments_on_user_id             (user_id)
 #
 # Foreign Keys

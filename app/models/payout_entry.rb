@@ -18,7 +18,6 @@
 #
 # Indexes
 #
-#  index_payout_entries_on_payout_ledger_id                 (payout_ledger_id)
 #  index_payout_entries_on_payout_ledger_id_and_entry_type  (payout_ledger_id,entry_type)
 #  index_payout_entries_on_payout_participant_id            (payout_participant_id)
 #
