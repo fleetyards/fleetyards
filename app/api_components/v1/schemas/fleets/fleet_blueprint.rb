@@ -15,6 +15,10 @@ module V1
         schema({
           type: :object,
           properties: {
+            # The recipe's own id: a fleet holds at most one row per blueprint
+            # however many of its members hold it, so that is the row's
+            # identity as well.
+            id: {type: :string, format: :uuid},
             blueprint: ::Shared::V1::Schemas::Blueprint,
 
             # Both, rather than the client counting the array: the names are
@@ -24,7 +28,7 @@ module V1
             owners: {type: :array, items: ::V1::Schemas::Fleets::FleetBlueprintOwner}
           },
           additionalProperties: false,
-          required: %w[blueprint ownerCount owners]
+          required: %w[id blueprint ownerCount owners]
         })
       end
     end

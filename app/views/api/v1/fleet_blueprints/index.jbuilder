@@ -2,6 +2,10 @@
 
 json.items do
   json.array! @blueprints do |record|
+    # The row's identity, which is the recipe's: a fleet holds at most one row
+    # per blueprint however many members hold it.
+    json.id record.id
+
     # Spelled out rather than `blueprint:` on its own: the shorthand reads the
     # *next* line as the value and swallows it.
     json.blueprint do

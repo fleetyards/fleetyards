@@ -51,6 +51,11 @@ const memberWith = (...resourceAccess: string[]) => ({
   capabilities: {},
 });
 
+const memberAbleTo = (...capabilities: string[]) => ({
+  fleetRole: { resourceAccess: [] },
+  capabilities: Object.fromEntries(capabilities.map((key) => [key, true])),
+});
+
 describe("useFleetNavAccess", () => {
   beforeEach(() => {
     route.value = { name: "fleet", params: { slug: "merc" }, path: "/merc" };
@@ -153,6 +158,24 @@ describe("useFleetNavAccess", () => {
     };
 
     expect(useFleetNavAccess(undefined).eventsNavActive.value).toBe(true);
+  });
+
+  // No feature flag and no subscription behind this one: the privilege is the
+  // only gate, so a capability is the whole test.
+  it("hides blueprints from someone who is not a member", () => {
+    expect(useFleetNavAccess(fleetWith()).showBlueprintsNav.value).toBe(false);
+  });
+
+  it("hides blueprints from a member whose role cannot read them", () => {
+    membership.value = memberAbleTo("readVehicles");
+
+    expect(useFleetNavAccess(fleetWith()).showBlueprintsNav.value).toBe(false);
+  });
+
+  it("shows blueprints to a member whose role can read them", () => {
+    membership.value = memberAbleTo("readBlueprints");
+
+    expect(useFleetNavAccess(fleetWith()).showBlueprintsNav.value).toBe(true);
   });
 
   it("marks the contracts tab active on a contract detail route", () => {

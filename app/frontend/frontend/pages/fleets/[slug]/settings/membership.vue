@@ -16,6 +16,7 @@ import {
   type FleetMember,
   type FleetMembershipUpdateInput,
   FleetMembershipShipsFilterEnum,
+  FleetMembershipBlueprintsFilterEnum,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -38,6 +39,7 @@ const initialValues = ref<FleetMembershipUpdateInput>({
   primary: props.membership.primary,
   shipsFilter: props.membership.shipsFilter,
   hangarGroupId: props.membership.hangarGroupId,
+  blueprintsFilter: props.membership.blueprintsFilter,
 });
 
 const { defineField, handleSubmit, setErrors } = useForm({
@@ -47,6 +49,8 @@ const { defineField, handleSubmit, setErrors } = useForm({
 const [primary, primaryProps] = defineField("primary");
 const [shipsFilter, shipsFilterProps] = defineField("shipsFilter");
 const [hangarGroupId, hangarGroupIdProps] = defineField("hangarGroupId");
+const [blueprintsFilter, blueprintsFilterProps] =
+  defineField("blueprintsFilter");
 
 // get fleet() {
 //   return fleetsCollection.record;
@@ -95,6 +99,19 @@ const shipsFilterOptions = computed<FilterOption[]>(() => [
   {
     label: t("labels.fleet.members.shipsFilter.values.hide"),
     value: FleetMembershipShipsFilterEnum.HIDE,
+  },
+]);
+
+// Two positions rather than the ships filter's three: a marker carries nothing
+// to group by, so there is no equivalent of "the ships in this hangar group".
+const blueprintsFilterOptions = computed<FilterOption[]>(() => [
+  {
+    label: t("labels.fleet.members.blueprintsFilter.values.all"),
+    value: FleetMembershipBlueprintsFilterEnum.ALL,
+  },
+  {
+    label: t("labels.fleet.members.blueprintsFilter.values.hide"),
+    value: FleetMembershipBlueprintsFilterEnum.HIDE,
   },
 ]);
 
@@ -177,6 +194,18 @@ const onSubmit = handleSubmit(async (values) => {
           translation-key="fleet.members.hangarGroupId"
           :options="hangarGroupOptions"
           v-bind="hangarGroupIdProps"
+        />
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <BaseSelect
+          v-model="blueprintsFilter"
+          name="blueprintsFilter"
+          translation-key="fleet.members.blueprintsFilter"
+          :options="blueprintsFilterOptions"
+          v-bind="blueprintsFilterProps"
         />
       </div>
     </div>

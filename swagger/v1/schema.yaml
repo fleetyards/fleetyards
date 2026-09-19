@@ -18071,6 +18071,9 @@ components:
     FleetBlueprint:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         blueprint:
           "$ref": "#/components/schemas/Blueprint"
         ownerCount:
@@ -18081,6 +18084,7 @@ components:
             "$ref": "#/components/schemas/FleetBlueprintOwner"
       additionalProperties: false
       required:
+      - id
       - blueprint
       - ownerCount
       - owners

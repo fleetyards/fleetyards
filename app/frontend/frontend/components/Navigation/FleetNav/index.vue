@@ -49,6 +49,7 @@ const currentFleet = computed(() => {
 
 const {
   membership,
+  showBlueprintsNav,
   showLogisticsNav,
   showAlliesNav,
   showContractsNav,
@@ -129,6 +130,17 @@ onMounted(() => {
           prefix="04"
         />
         <NavItem
+          v-if="showBlueprintsNav"
+          :to="{
+            name: 'fleet-blueprints',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.blueprints')"
+          :active="route.name === 'fleet-blueprints'"
+          icon="fa-duotone fa-scroll"
+          prefix="05"
+        />
+        <NavItem
           v-if="showAlliesNav"
           :to="{
             name: 'fleet-allies',
@@ -137,7 +149,7 @@ onMounted(() => {
           :label="t('nav.fleets.allies')"
           :active="String(route.name).startsWith('fleet-allies')"
           icon="fa-duotone fa-handshake"
-          prefix="05"
+          prefix="06"
         />
         <NavItem
           v-if="showContractsNav"
@@ -148,7 +160,7 @@ onMounted(() => {
           :label="t('nav.fleets.contracts.index')"
           :active="contractsNavActive"
           icon="fa-duotone fa-clipboard-list"
-          prefix="06"
+          prefix="07"
         />
         <NavItem
           v-if="showEventsNav"
@@ -159,7 +171,7 @@ onMounted(() => {
           :label="eventsNavLabel"
           :active="eventsNavActive"
           icon="fa-duotone fa-calendar-day"
-          prefix="07"
+          prefix="08"
         />
         <NavItem
           v-if="showToursNav"
@@ -170,14 +182,14 @@ onMounted(() => {
           :label="t('nav.fleets.tours')"
           :active="String(route.name).startsWith('fleet-tour')"
           icon="fa-duotone fa-coins"
-          prefix="07"
+          prefix="08"
         />
         <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="08"
+          prefix="09"
         />
       </template>
     </template>
