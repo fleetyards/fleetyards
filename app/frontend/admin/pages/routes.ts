@@ -75,7 +75,9 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.blueprints.index",
       needsAuthentication: true,
-      icon: "fa-duotone fa-scroll",
+      // The glyph the public catalogue nav gives blueprints, as components
+      // and the group icon already match theirs.
+      icon: "fa-duotone fa-notes",
       access: ["blueprints"],
     },
   },

@@ -71,6 +71,37 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_includes Blueprint.current_version(false), retired
   end
 
+  # Blueprints are the only catalogue with no rows in the older builds, so a
+  # reader on one of those gets a global `served` this catalogue cannot answer
+  # for. `facts` fell back to the last build that did describe the recipe while
+  # `build` stayed empty, and the admin page rendered the whole recipe under the
+  # word "Retired".
+  # Blueprints are the only catalogue with no rows in the older builds, so a
+  # reader on one of those gets a *global* served build this catalogue cannot
+  # answer for. `facts` fell back to the last build that did describe the
+  # recipe while `build` stayed empty, and the admin page rendered the whole
+  # recipe under the word "Retired".
+  #
+  # The global `served` is overridden rather than staged: reproducing it with
+  # real rows needs a build that is `complete?` for another catalogue and absent
+  # from this one, which is a ledger fixture for something the association can
+  # be asked directly.
+  test "#build resolves through this catalogue's own served source" do
+    blueprint = create(:blueprint)
+
+    absent = ScData::Source.new(environment: ScData::Source.environment, version: "9.9.9-live.1")
+    global = ScData::Source.new(environment: ScData::Source.environment, version: ScData::Source.version)
+    global.define_singleton_method(:served) { absent }
+
+    ScData::Source.with(global) do
+      blueprint.reload
+
+      # The build the association picks is the one every fact is read from.
+      assert_equal blueprint.facts, blueprint.build
+      assert_not_predicate blueprint, :retired?
+    end
+  end
+
   test "#retired? is true for a recipe the build no longer carries" do
     assert_not_predicate create(:blueprint), :retired?
     assert_predicate create(:blueprint, :without_build, version: nil), :retired?

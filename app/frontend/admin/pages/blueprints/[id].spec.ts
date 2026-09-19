@@ -53,9 +53,11 @@ const record = (overrides: Partial<Blueprint> = {}): Blueprint => ({
   ...overrides,
 });
 
+// `emptyVisible` is rendered because BaseTable shows the empty row *instead of*
+// the records, so passing it unconditionally silently empties the table.
 const tableStub = {
-  props: ["records", "title"],
-  template: `<div>
+  props: ["records", "title", "emptyVisible"],
+  template: `<div :data-empty="String(emptyVisible)">
     <span v-for="(row, index) in records" :key="index" class="row">{{
       JSON.stringify(row)
     }}</span>
@@ -234,6 +236,45 @@ describe("AdminBlueprintPage", () => {
     expect(detailFor(wrapper, "labels.admin.blueprints.state")).toBe(
       "labels.admin.blueprints.states.current",
     );
+  });
+
+  // BaseTable renders the empty row in place of the records, so a table told
+  // "empty" while holding rows shows none of them.
+  it("only claims a table is empty when it has no rows", async () => {
+    blueprint.value = record({
+      costSlots: [
+        {
+          name: "Metals",
+          scKey: "slot_metals",
+          position: 1,
+          options: [
+            {
+              type: "resource",
+              quantity: 4,
+              minQuality: 200,
+              commodityKey: "titanium",
+              commodity: { id: "c1", name: "Titanium", slug: "titanium" },
+            },
+          ],
+          modifiers: [],
+        },
+      ],
+    });
+
+    const wrapper = await mountPage();
+
+    expect(
+      wrapper
+        .find('[data-test="blueprint-materials"]')
+        .attributes("data-empty"),
+    ).toBe("false");
+    // Nothing fills these two, so they do say so.
+    expect(
+      wrapper.find('[data-test="blueprint-stats"]').attributes("data-empty"),
+    ).toBe("true");
+    expect(
+      wrapper.find('[data-test="blueprint-sources"]').attributes("data-empty"),
+    ).toBe("true");
   });
 
   it("states an output that is in no catalogue", async () => {

@@ -24,6 +24,10 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
       needsAuthentication: true,
       nav: "hidden",
+      // The nav lights its rows by route name, and a detail page is a sibling
+      // of the list rather than a child of it -- without this the Blueprints
+      // row goes dark the moment you open a recipe.
+      activeRoute: "admin-blueprints",
       access: ["blueprints"],
     },
   },

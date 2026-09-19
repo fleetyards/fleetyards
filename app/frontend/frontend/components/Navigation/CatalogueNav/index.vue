@@ -23,8 +23,8 @@ const route = useRoute();
 // routes are its own, the way the flat Components tab did before it moved in
 // here.
 const TENANTS = {
-  components: ["components", "component"],
   blueprints: ["blueprints", "blueprint"],
+  components: ["components", "component"],
 };
 
 const isActive = (tenant: keyof typeof TENANTS) =>
@@ -47,16 +47,16 @@ const active = computed(() =>
   >
     <template #submenu>
       <NavItem
-        :to="{ name: 'components' }"
-        :label="t('nav.catalogue.components')"
-        :active="isActive('components')"
-        icon="fa-duotone fa-microchip"
-      />
-      <NavItem
         :to="{ name: 'blueprints' }"
         :label="t('nav.catalogue.blueprints')"
         :active="isActive('blueprints')"
         icon="fa-duotone fa-notes"
+      />
+      <NavItem
+        :to="{ name: 'components' }"
+        :label="t('nav.catalogue.components')"
+        :active="isActive('components')"
+        icon="fa-duotone fa-microchip"
       />
     </template>
   </NavItem>
