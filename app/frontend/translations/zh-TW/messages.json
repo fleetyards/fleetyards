@@ -211,6 +211,10 @@
             "paragraph3": "取得更多資訊"
           }
         },
+        "blueprint": {
+          "accountRequired": "註冊或登入後即可記錄你擁有的藍圖。",
+          "own": "無法更新該藍圖，請稍後再試。"
+        },
         "default": "<b>發生了錯誤。</b><br>您試過重新啟動嗎？"
       },
       "account": {

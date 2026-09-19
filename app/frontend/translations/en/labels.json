@@ -449,6 +449,15 @@
             "label": "Specify a Hangar Group",
             "nullablePrompt": "No Group selected"
           },
+          "blueprintsFilter": {
+            "label": "Which Blueprints should be shared with the Fleet?",
+            "nullablePrompt": "No Option selected",
+            "field": "Blueprints Select",
+            "values": {
+              "all": "All Blueprints I own",
+              "hide": "No Blueprints"
+            }
+          },
           "total": "Total: %{count}",
           "joined": "Joined at",
           "invited": "Invited",
@@ -478,6 +487,7 @@
             "memberships": "Members",
             "invites": "Invites",
             "vehicles": "Vehicles",
+            "blueprints": "Blueprints",
             "roles": "Roles",
             "inventories": "Inventories",
             "missions": "Missions",
@@ -508,6 +518,7 @@
             "fleet:vehicles:update": "Update Vehicles",
             "fleet:vehicles:delete": "Remove Vehicles",
             "fleet:vehicles:manage": "Manage Vehicles",
+            "fleet:blueprints:read": "View Blueprints",
             "fleet:roles:read": "View Roles",
             "fleet:roles:create": "Create Roles",
             "fleet:roles:update": "Update Roles",
@@ -1703,7 +1714,10 @@
           "source": "Source",
           "withSource": "Has a known source",
           "withoutSource": "No known source",
-          "material": "Uses material"
+          "material": "Uses material",
+          "ownedFilter": "Owned",
+          "owned": "Owned",
+          "notOwned": "Not owned"
         }
       },
       "station": {
@@ -2758,6 +2772,8 @@
         "scu": "%{amount} SCU",
         "pieces": "%{count}×",
         "whereItDrops": "Where it drops",
+        "fleetOwners": "Who can craft it",
+        "ownedByCount": "%{count} hold it",
         "sourceSummary": "%{count} sources · %{orgs} orgs",
         "unattributed": "Unattributed",
         "minPoints": "From %{points} points",

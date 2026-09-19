@@ -211,6 +211,10 @@
             "paragraph3": "获取更多信息 "
           }
         },
+        "blueprint": {
+          "accountRequired": "注册或登录后即可记录你拥有的蓝图。",
+          "own": "无法更新该蓝图，请稍后再试。"
+        },
         "default": "<b>出现了一些问题。</b> <br>您是否尝试过关闭并重新打开？"
       },
       "account": {

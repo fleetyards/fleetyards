@@ -40,6 +40,7 @@
         "add": "创建新舰队",
         "invites": "邀请",
         "ships": "飞船",
+        "blueprints": "蓝图",
         "members": {
           "index": "Members",
           "invites": "Invites",

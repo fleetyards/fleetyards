@@ -449,6 +449,15 @@
             "label": "Hangar-Gruppe angeben",
             "nullablePrompt": "Keine Gruppe ausgewählt"
           },
+          "blueprintsFilter": {
+            "label": "Welche Baupläne sollen mit der Flotte geteilt werden?",
+            "nullablePrompt": "Keine Option ausgewählt",
+            "field": "Baupläne-Auswahl",
+            "values": {
+              "all": "Alle Baupläne, die ich besitze",
+              "hide": "Keine Baupläne"
+            }
+          },
           "total": "Gesamt: %{count}",
           "joined": "Beigetreten am",
           "invited": "Eingeladen",
@@ -478,6 +487,7 @@
             "memberships": "Mitglieder",
             "invites": "Einladungen",
             "vehicles": "Fahrzeuge",
+            "blueprints": "Baupläne",
             "roles": "Rollen",
             "inventories": "Inventare",
             "missions": "Missionen",
@@ -508,6 +518,7 @@
             "fleet:vehicles:update": "Fahrzeuge bearbeiten",
             "fleet:vehicles:delete": "Fahrzeuge entfernen",
             "fleet:vehicles:manage": "Fahrzeuge verwalten",
+            "fleet:blueprints:read": "Baupläne ansehen",
             "fleet:roles:read": "Rollen ansehen",
             "fleet:roles:create": "Rollen erstellen",
             "fleet:roles:update": "Rollen bearbeiten",
@@ -1703,7 +1714,10 @@
           "source": "Quelle",
           "withSource": "Mit bekannter Quelle",
           "withoutSource": "Ohne bekannte Quelle",
-          "material": "Verwendet Material"
+          "material": "Verwendet Material",
+          "ownedFilter": "Im Besitz",
+          "owned": "Im Besitz",
+          "notOwned": "Nicht im Besitz"
         }
       },
       "station": {
@@ -2744,6 +2758,8 @@
         "scu": "%{amount} SCU",
         "pieces": "%{count}×",
         "whereItDrops": "Woher er stammt",
+        "fleetOwners": "Wer ihn fertigen kann",
+        "ownedByCount": "%{count} besitzen ihn",
         "sourceSummary": "%{count} Quellen · %{orgs} Organisationen",
         "unattributed": "Ohne Zuordnung",
         "minPoints": "Ab %{points} Punkten",

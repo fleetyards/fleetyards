@@ -43,6 +43,11 @@
             "prompt": "Sélectionnez les vaisseaux à afficher",
             "nullablePrompt": "Sélectionner une option"
           },
+          "blueprintsFilter": {
+            "label": "Filtre de plans",
+            "prompt": "Choisissez les plans à partager",
+            "nullablePrompt": "Sélectionnez une option"
+          },
           "hangarGroupId": {
             "label": "Groupe de hangar",
             "prompt": "Sélectionner un groupe de hangar",

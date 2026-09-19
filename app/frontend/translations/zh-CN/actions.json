@@ -108,6 +108,10 @@
       "showStatusColor": "显示状态颜色",
       "hideStatusColor": "隐藏状态颜色",
       "addToHangar": "添加到机库",
+      "blueprint": {
+        "own": "标记为已拥有",
+        "unown": "取消已拥有标记"
+      },
       "resetFilter": "重置过滤器",
       "requestPassword": "请求密码邮件",
       "changePassword": "更改密码",

@@ -449,6 +449,15 @@
             "label": "Especifique un grupo de hangar",
             "nullablePrompt": "No se seleccionó ningún grupo"
           },
+          "blueprintsFilter": {
+            "label": "¿Qué planos deben compartirse con la flota?",
+            "nullablePrompt": "Ninguna opción seleccionada",
+            "field": "Selección de planos",
+            "values": {
+              "all": "Todos los planos que poseo",
+              "hide": "Ningún plano"
+            }
+          },
           "total": "Total: %{count}",
           "joined": "Unido el",
           "invited": "Invitado",
@@ -478,6 +487,7 @@
             "memberships": "Miembros",
             "invites": "Invitaciones",
             "vehicles": "Vehículos",
+            "blueprints": "Planos",
             "roles": "Roles",
             "inventories": "Inventarios",
             "missions": "Misiones",
@@ -508,6 +518,7 @@
             "fleet:vehicles:update": "Actualizar vehículos",
             "fleet:vehicles:delete": "Eliminar vehículos",
             "fleet:vehicles:manage": "Administrar vehículos",
+            "fleet:blueprints:read": "Ver planos",
             "fleet:roles:read": "Ver roles",
             "fleet:roles:create": "Crear roles",
             "fleet:roles:update": "Actualizar roles",
@@ -1703,7 +1714,10 @@
           "source": "Fuente",
           "withSource": "Con fuente conocida",
           "withoutSource": "Sin fuente conocida",
-          "material": "Usa material"
+          "material": "Usa material",
+          "ownedFilter": "En posesión",
+          "owned": "En posesión",
+          "notOwned": "Sin poseer"
         }
       },
       "station": {
@@ -2744,6 +2758,8 @@
         "scu": "%{amount} SCU",
         "pieces": "%{count}×",
         "whereItDrops": "Dónde se consigue",
+        "fleetOwners": "Quién puede fabricarlo",
+        "ownedByCount": "%{count} lo tienen",
         "sourceSummary": "%{count} fuentes · %{orgs} organizaciones",
         "unattributed": "Sin atribuir",
         "minPoints": "Desde %{points} puntos",
