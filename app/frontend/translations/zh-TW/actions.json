@@ -339,6 +339,9 @@
           "addSlot": "新增席位",
           "viewMissions": "檢視任務"
         },
+        "tours": {
+          "viewTours": "查看行程"
+        },
         "events": {
           "create": "建立活動",
           "edit": "編輯活動",

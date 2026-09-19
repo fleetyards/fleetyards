@@ -339,6 +339,9 @@
           "addSlot": "Add Slot",
           "viewMissions": "View Missions"
         },
+        "tours": {
+          "viewTours": "View Tours"
+        },
         "events": {
           "create": "Create Event",
           "edit": "Edit Event",

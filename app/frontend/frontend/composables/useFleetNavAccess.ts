@@ -9,7 +9,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 export const useFleetNavAccess = (
-  fleet: MaybeRefOrGetter<Pick<Fleet, "features"> | undefined>,
+  fleet: MaybeRefOrGetter<Pick<Fleet, "features" | "publicFleet"> | undefined>,
 ) => {
   const route = useRoute();
 
@@ -88,6 +88,12 @@ export const useFleetNavAccess = (
     () => !!membership.value && hasBlueprintsAccess.value,
   );
 
+  // The one tab somebody outside the fleet can reach, and the reason it stays
+  // top-level rather than joining the Assets group.
+  const showShipsNav = computed(
+    () => !!membership.value || !!toValue(fleet)?.publicFleet,
+  );
+
   const showAlliesNav = computed(
     () =>
       !!membership.value &&
@@ -126,6 +132,22 @@ export const useFleetNavAccess = (
       isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_TOURS),
   );
 
+  const toursNavActive = computed(() =>
+    String(route.name ?? "").startsWith("fleet-tour"),
+  );
+
+  const logisticsNavActive = computed(() =>
+    String(route.name ?? "").startsWith("fleet-logistics"),
+  );
+
+  const blueprintsNavActive = computed(
+    () => String(route.name ?? "") === "fleet-blueprints",
+  );
+
+  const shipsNavActive = computed(() =>
+    ["fleet-ships", "fleet-fleetchart"].includes(String(route.name ?? "")),
+  );
+
   const contractsNavActive = computed(() =>
     String(route.name ?? "").startsWith("fleet-contract"),
   );
@@ -140,19 +162,49 @@ export const useFleetNavAccess = (
     }
     if (name === "fleet-calendar") return true;
 
+    // Tours has no tab of its own -- it is reached from the events page, the
+    // way missions already are -- so this is the tab that has to stay lit
+    // while a reader is in there.
+    if (name.startsWith("fleet-tour")) return true;
+
     const path = route.path || "";
-    return /\/fleets\/[^/]+\/(events|missions|calendar)/.test(path);
+    return /\/fleets\/[^/]+\/(events|missions|calendar|tours)/.test(path);
   });
+
+  // A parent with nothing under it is a row that opens on an empty list, so
+  // each group is present only when at least one of its children is. The
+  // children keep the guards they already had -- grouping them changes where
+  // they are, not who may see them.
+  //
+  // Ships is deliberately not in here. It is the one tab somebody outside the
+  // fleet can reach, and a public surface behind a parent is a click added for
+  // the reader least able to guess what the parent holds.
+  const showAssetsNav = computed(
+    () => showBlueprintsNav.value || showLogisticsNav.value,
+  );
+
+  // The parent lights up on either of its children's routes, which is what
+  // keeps the group findable once it is closed.
+  const assetsNavActive = computed(
+    () => blueprintsNavActive.value || logisticsNavActive.value,
+  );
 
   return {
     membership,
+    showAssetsNav,
+    assetsNavActive,
+    showShipsNav,
+    shipsNavActive,
     showBlueprintsNav,
+    blueprintsNavActive,
     showLogisticsNav,
+    logisticsNavActive,
     showAlliesNav,
     showContractsNav,
     showEventsNav,
     eventsNavRoute,
     showToursNav,
+    toursNavActive,
     contractsNavActive,
     eventsNavActive,
   };
