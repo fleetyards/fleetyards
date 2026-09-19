@@ -45,8 +45,6 @@ type StockItem = {
   category: string;
   unit: string;
   netQuantity: number;
-  /** The catalogue record the position points at, which says whether it is counted. */
-  item?: { counted?: boolean };
 };
 
 type Props = {
@@ -81,8 +79,14 @@ const pickedItem = ref<PickedItem | undefined>(undefined);
 // position than the one that was picked.
 const selectedPosition = ref<StockItem | undefined>(undefined);
 
-const countedSelection = computed(
-  () => pickedItem.value?.counted ?? selectedPosition.value?.item?.counted,
+// The position's own unit is the evidence, not its item: the stock list does
+// not carry the catalogue reference, and it does not need to. The API accepted
+// the position as it stands, so whatever unit it is recorded in is a unit this
+// commodity may be recorded in.
+const countedSelection = computed(() =>
+  pickedItem.value
+    ? pickedItem.value.counted
+    : selectedPosition.value?.unit === "units" || undefined,
 );
 
 const isDeposit = computed(() => entryType.value === "deposit");
@@ -285,6 +289,7 @@ watch(entryType, (val) => {
   }
   selectedStockItem.value = undefined;
   selectedPosition.value = undefined;
+  pickedItem.value = undefined;
 });
 
 const selectedStockMax = computed(() => {
