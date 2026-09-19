@@ -173,7 +173,11 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     create(:component, name: "CF-227 Badger")
     sign_in @user
 
-    assert_api_response :get, 200, params: {q: {"nameCont" => "Badger"}} do
+    # On the part of the name a person cannot be called. The two components
+    # above are named `Faker::Name.name`, and "Badger" is a surname it draws --
+    # the public components test blocked the merge queue on the same trap with
+    # "Shields". No Faker name carries digits.
+    assert_api_response :get, 200, params: {q: {"nameCont" => "CF-227"}} do
       items = parsed_body["items"]
       assert_equal 1, items.count
       assert_equal "CF-227 Badger", items.first["name"]
