@@ -179,9 +179,13 @@ export const useMaterialStock = () => {
       if (entry.unit === costUnit) return entry.quantity;
       if (!pieceVolume) return undefined;
 
-      return entry.unit === BULK_UNIT
-        ? entry.quantity / pieceVolume
-        : entry.quantity * pieceVolume;
+      // Only the two units we know how to convert. `unit` is optional on the
+      // row, and treating anything-but-SCU as pieces would multiply a holding
+      // whose unit we cannot read into a sufficiency we cannot support.
+      if (entry.unit === BULK_UNIT) return entry.quantity / pieceVolume;
+      if (entry.unit === PIECE_UNIT) return entry.quantity * pieceVolume;
+
+      return undefined;
     };
 
     const usable = (entries: MaterialStock[]) =>
