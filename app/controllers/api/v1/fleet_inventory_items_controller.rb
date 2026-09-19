@@ -3,6 +3,7 @@
 module Api
   module V1
     class FleetInventoryItemsController < ::Api::BaseController
+      include FleetInventoryScoped
       include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:fleet_inventory_items) }, only: %i[index]
@@ -89,7 +90,7 @@ module Api
       end
 
       private def set_fleet_inventory
-        @fleet_inventory = @fleet.fleet_inventories.find_by!(slug: params[:fleet_inventory_slug])
+        @fleet_inventory = visible_fleet_inventories.find_by!(slug: params[:fleet_inventory_slug])
       end
 
       private def set_fleet_inventory_item

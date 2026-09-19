@@ -73,4 +73,27 @@ class Api::V1::FleetsAllInventoryItemsIndexTest < ActionDispatch::IntegrationTes
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  test "GET /fleets/:slug/inventory-items drops officers-only entries for a plain member" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:fleet_inventory_item, fleet_inventory: closed, name: "Officer Rations")
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      names = parsed_body["items"].map { |entry| entry["name"] }
+
+      assert_equal 3, names.count
+      refute_includes names, "Officer Rations"
+    end
+  end
+
+  test "GET /fleets/:slug/inventory-items lists officers-only entries for an admin" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:fleet_inventory_item, fleet_inventory: closed, name: "Officer Rations")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_includes parsed_body["items"].map { |entry| entry["name"] }, "Officer Rations"
+    end
+  end
 end

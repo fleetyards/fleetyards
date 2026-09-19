@@ -109,4 +109,48 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  # An officers-only store is kept from a member whose role only carries read
+  # access -- its name and description included, not just its contents.
+  test "GET /fleets/:slug/inventories hides an officers-only inventory from a plain member" do
+    create(:fleet_inventory, fleet: @fleet, name: "Open Stores")
+    create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal ["Open Stores"], parsed_body["items"].map { |entry| entry["name"] }
+    end
+  end
+
+  test "GET /fleets/:slug/inventories lists an officers-only inventory for an admin" do
+    create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_includes parsed_body["items"].map { |entry| entry["name"] }, "Officer Cache"
+    end
+  end
+
+  test "GET /fleets/:slug/inventories lists the officers-only store its manager answers for" do
+    create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Managed Cache", manager: @member)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal ["Managed Cache"], parsed_body["items"].map { |entry| entry["name"] }
+    end
+  end
+
+  # Ransack runs on top of the authorized scope, so a hand-written filter can
+  # only narrow what the scope already allows. Asserted rather than read,
+  # because it is the ordering of the two that makes it true.
+  test "GET /fleets/:slug/inventories cannot be widened by the visibility filter" do
+    create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    sign_in @member
+
+    get "/api/v1/fleets/#{@fleet.slug}/inventories?q[visibilityEq]=officers_only"
+
+    assert_response :success
+    assert_empty JSON.parse(response.body)["items"]
+  end
 end
