@@ -154,6 +154,19 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     assert_not item.valid?
   end
 
+  # The item is the third side of the pairing, so moving a stored entry onto a
+  # bulk commodity has to re-ask -- otherwise it keeps a unit the API would
+  # never have accepted for it.
+  test "rechecks the unit when the entry is repointed at another commodity" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    iron = create(:commodity, name: "Iron", counted: false)
+
+    item = create(:inventory_item, inventory: @inventory, item: gem,
+      category: :commodity, unit: :units)
+
+    assert_not item.update(item: iron)
+  end
+
   test "allows either unit for an other entry" do
     InventoryLedgerEntry::UNITS.each_key do |unit|
       item = build(:inventory_item, inventory: @inventory, category: :other, unit: unit)

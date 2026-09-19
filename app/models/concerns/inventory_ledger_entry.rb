@@ -95,9 +95,12 @@ module InventoryLedgerEntry
     validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
     validate :referenced_item_exists, if: :item_id?
     # Existing rows predate the pairing, so only entries that touch either side
-    # of it have to satisfy it.
+    # of it have to satisfy it. The item is a third side of it now: repointing a
+    # `units` entry from a counted commodity to a bulk one would otherwise store
+    # a pairing the API would never have accepted.
     validate :unit_fits_category, if: -> {
-      new_record? || will_save_change_to_unit? || will_save_change_to_category?
+      new_record? || will_save_change_to_unit? || will_save_change_to_category? ||
+        will_save_change_to_item_id? || will_save_change_to_item_type?
     }
 
     # Changing one of these on a single entry moves it out of the position it was
