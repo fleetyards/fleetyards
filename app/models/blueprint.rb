@@ -121,6 +121,23 @@ class Blueprint < ApplicationRecord
     ActiveModel::Type::Boolean.new.cast(flag) ? where(id: known) : where.not(id: known)
   }
 
+  # Recipes whose output the build actually names. 5 of the 1607 in 4.10.1
+  # resolve to nothing -- four mission carryables that are in no catalogue and
+  # one entity class that is in no file in the export -- and those five are the
+  # rows an admin goes looking for after a load.
+  #
+  # Shaped like `with_known_source` and applied the same way, by the controller
+  # rather than through ransack, for the reason recorded on `ransackable_scopes`:
+  # ransack skips a scope whose value is false, so as a ransack scope this could
+  # only ever mean "on".
+  scope :with_craftable, ->(flag = true, source = ::ScData::Source.current, current_only: true) {
+    resolved = readable_builds(source, current_only:)
+      .where.not(craftable_id: nil)
+      .select(:blueprint_id)
+
+    ActiveModel::Type::Boolean.new.cast(flag) ? where(id: resolved) : where.not(id: resolved)
+  }
+
   before_save :update_slugs
 
   validates :sc_ref, presence: true, uniqueness: true
@@ -303,6 +320,13 @@ class Blueprint < ApplicationRecord
     sources.empty?
   end
 
+  # The build names no output at all. Read off the build rather than through the
+  # `craftable` association, so it answers exactly what `with_craftable` filters
+  # on -- a row the filter excludes can never render as one it includes.
+  def craftable_missing?
+    (facts || self).craftable_id.blank?
+  end
+
   # The materials recipes in the build we are on actually consume, as filter
   # options. Sourced from the cost rows rather than from the commodity
   # catalogue: 37 of the 232 commodities appear in a recipe, and a select
@@ -320,6 +344,33 @@ class Blueprint < ApplicationRecord
       )
       .order(:name)
       .map { |commodity| Filter.new(category: "material", label: commodity.name, value: commodity.slug) }
+  end
+
+  # The catalogues a recipe can make something in, as filter options. From the
+  # constant rather than from a DISTINCT over the column: all three are always
+  # offerable, and a type nothing currently makes is still a question worth
+  # being able to ask.
+  def self.craftable_type_filters
+    CRAFTABLE_TYPES.map do |type|
+      Filter.new(
+        category: "craftable_type",
+        label: I18n.t("filter.blueprint.craftable_type.items.#{type.underscore}", default: type),
+        value: type
+      )
+    end
+  end
+
+  # The orgs whose missions hand a recipe out, in the build we are on. 130 of
+  # the 154 reward pools carry an org and the other 24 carry a pool name alone,
+  # so this is shorter than the pool list and every option it offers can match.
+  def self.org_filters(source = ::ScData::Source.current)
+    BlueprintSource
+      .where(blueprint_build_id: BlueprintBuild.current(source).select(:id))
+      .where.not(org_name: nil)
+      .distinct
+      .order(:org_name)
+      .pluck(:org_name)
+      .map { |org| Filter.new(category: "org", label: org, value: org) }
   end
 
   # Not in the build we are on.

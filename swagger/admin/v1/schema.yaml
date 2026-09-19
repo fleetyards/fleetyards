@@ -536,6 +536,170 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/blueprints":
+    get:
+      summary: Blueprints list
+      tags:
+      - Blueprints
+      operationId: blueprints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/BlueprintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Blueprints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/blueprints/craftable_type_filters":
+    get:
+      summary: Blueprint craftable types
+      tags:
+      - Blueprints
+      operationId: blueprintCraftableTypes
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/blueprints/material_filters":
+    get:
+      summary: Blueprint materials
+      tags:
+      - Blueprints
+      operationId: blueprintMaterials
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/blueprints/org_filters":
+    get:
+      summary: Blueprint orgs
+      tags:
+      - Blueprints
+      operationId: blueprintOrgs
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/blueprints/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Blueprint id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Blueprint Detail
+      tags:
+      - Blueprints
+      operationId: blueprint
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Blueprint"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/cargo-holds":
     get:
       summary: Cargo Holds list
@@ -8726,6 +8890,18 @@ servers:
   description: Staging Server
 components:
   schemas:
+    AdminBlueprintBuild:
+      type: object
+      properties:
+        version:
+          type: string
+        environment:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      - environment
+      title: AdminBlueprintBuild
     AdminCargoHold:
       type: object
       properties:
@@ -9512,6 +9688,7 @@ components:
       - cargo_holds
       - docks
       - videos
+      - blueprints
       - components
       - equipment
       - commodities
@@ -9544,6 +9721,7 @@ components:
       - CARGO_HOLDS
       - DOCKS
       - VIDEOS
+      - BLUEPRINTS
       - COMPONENTS
       - EQUIPMENT
       - COMMODITIES
@@ -9895,6 +10073,12 @@ components:
         updatedAt:
           type: string
           format: date-time
+        craftableMissing:
+          type: boolean
+        build:
+          anyOf:
+          - "$ref": "#/components/schemas/AdminBlueprintBuild"
+          - type: 'null'
       additionalProperties: false
       required:
       - id
@@ -9905,6 +10089,7 @@ components:
       - sourceUnknown
       - createdAt
       - updatedAt
+      - craftableMissing
       title: Blueprint
     BlueprintCostCommodity:
       type: object
@@ -10059,6 +10244,66 @@ components:
       - EQUIPMENT
       - COMMODITY
       title: BlueprintCraftableTypeEnum
+    BlueprintQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        scKeyCont:
+          type: string
+        slugCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        craftableTypeEq:
+          "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        craftableTypeIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintCraftableTypeEnum"
+        craftableIdEq:
+          type: string
+          format: uuid
+        craftTimeLteq:
+          type: integer
+        craftTimeGteq:
+          type: integer
+        fromOrg:
+          type: string
+        consumingCommodity:
+          type: string
+        consumingCommodityIn:
+          type: array
+          items:
+            type: string
+        withKnownSource:
+          type: boolean
+        withCraftable:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/BlueprintSortEnum"
+          - "$ref": "#/components/schemas/BlueprintSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/BlueprintSortEnum"
+          - "$ref": "#/components/schemas/BlueprintSortEnum"
+      additionalProperties: false
+      example: {}
+      title: BlueprintQuery
     BlueprintRampEnum:
       type: string
       enum:
@@ -10068,6 +10313,23 @@ components:
       - LINEAR
       - LINEAR_INTEGER_ADDITIVE
       title: BlueprintRampEnum
+    BlueprintSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - craftTime asc
+      - craftTime desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CRAFT_TIME_ASC
+      - CRAFT_TIME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: BlueprintSortEnum
     BlueprintSource:
       type: object
       properties:

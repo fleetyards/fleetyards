@@ -256,6 +256,65 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_empty Blueprint.with_known_source(false, ScData::Source.current, current_only: false)
   end
 
+  # The 5 recipes whose output is in no catalogue are the rows an admin goes
+  # looking for after a load, so the scope has to answer both halves -- and
+  # false is the half a ransack scope would silently skip.
+  test ".with_craftable splits the catalogue both ways" do
+    makes = create(:blueprint, :for_component)
+    makes_nothing = create(:blueprint, :without_craftable)
+
+    assert_equal [makes], Blueprint.with_craftable.to_a
+    assert_equal [makes_nothing], Blueprint.with_craftable(false).to_a
+  end
+
+  # Through the build, like every other fact: the column holds whatever the
+  # last source to load wrote, and a blueprint is in both trees.
+  test ".with_craftable reads the build rather than the column" do
+    blueprint = create(:blueprint, :for_component)
+    blueprint.build.update!(craftable: nil)
+
+    assert_empty Blueprint.with_craftable
+    assert_equal [blueprint], Blueprint.with_craftable(false).to_a
+  end
+
+  test ".with_craftable reaches the fallback build too" do
+    blueprint = create(:blueprint, :without_build, version: nil, craftable: create(:component))
+    blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+
+    assert_empty Blueprint.with_craftable
+    assert_empty Blueprint.with_craftable(true, ScData::Source.current, current_only: false)
+    assert_equal [blueprint], Blueprint.with_craftable(false, ScData::Source.current, current_only: false).to_a
+  end
+
+  # A row the filter excludes must never render as one it includes, so the
+  # predicate reads the same build the scope does.
+  test "#craftable_missing? agrees with .with_craftable" do
+    blueprint = create(:blueprint, :for_component)
+
+    assert_not_predicate blueprint, :craftable_missing?
+
+    blueprint.build.update!(craftable: nil)
+
+    assert_predicate blueprint.reload, :craftable_missing?
+  end
+
+  test ".craftable_type_filters offers every catalogue, labelled" do
+    filters = Blueprint.craftable_type_filters
+
+    assert_equal Blueprint::CRAFTABLE_TYPES, filters.map(&:value)
+    assert(filters.all? { |filter| filter.label.present? })
+  end
+
+  # An unattributed pool contributes no option rather than a blank one.
+  test ".org_filters names each org once and skips the unattributed" do
+    build = create(:blueprint).build
+    create(:blueprint_source, build:, org_name: "Eckhart Security", position: 1)
+    create(:blueprint_source, build:, org_name: "Eckhart Security", position: 2)
+    create(:blueprint_source, :unattributed, build:, position: 3)
+
+    assert_equal ["Eckhart Security"], Blueprint.org_filters.map(&:value)
+  end
+
   test ".consuming reaches the fallback build too" do
     commodity = create(:commodity)
     blueprint = create(:blueprint, :without_build, version: nil)

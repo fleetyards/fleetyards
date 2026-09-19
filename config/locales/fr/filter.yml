@@ -2,6 +2,12 @@
 fr:
   filter:
     all: Tout
+    blueprint:
+      craftable_type:
+        items:
+          component: Composants
+          equipment: Equipment
+          commodity: Commodities
     component:
       class:
         items:

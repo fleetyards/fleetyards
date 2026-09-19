@@ -88,6 +88,15 @@ v1_admin_api_routes = lambda do
     end
   end
 
+  # Read only, all the way down. Every blueprint fact is replaced by the next
+  # load, so there is nothing here a human could own -- the section exists to
+  # show what a load produced, not to correct it.
+  resources :blueprints, only: %i[index show] do
+    get :craftable_type_filters, on: :collection
+    get :material_filters, on: :collection
+    get :org_filters, on: :collection
+  end
+
   resources :components, only: %i[index show create update destroy] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection
