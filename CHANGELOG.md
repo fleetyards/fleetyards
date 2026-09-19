@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.2.0](https://github.com/fleetyards/fleetyards/compare/v8.1.0...v8.2.0) (2026-09-19)
+
+
+### Features
+
+* **admin:** announcements behind the notifications page ([738740b](https://github.com/fleetyards/fleetyards/commit/738740b7b18e149a5f75e1d0481b4cf9594d93f0))
+* **admin:** open, close and comp a fleet subscription ([#5011](https://github.com/fleetyards/fleetyards/issues/5011)) ([b755ed6](https://github.com/fleetyards/fleetyards/commit/b755ed68a89fc7cc9124ef89800b590479411660))
+* **admin:** the nav in route order, and a catalogue that means the catalogue ([ed034b2](https://github.com/fleetyards/fleetyards/commit/ed034b20370130543ff8d293a5f3d826b2ca88ca))
+* **admin:** the nav's icons, aligned to the ones the site already uses ([d300cba](https://github.com/fleetyards/fleetyards/commit/d300cbae8d63572ac9c34b0c6af6e3c7e603b0a1))
+* **announcements:** global announcements to Discord, X, Bluesky and the inbox ([#4975](https://github.com/fleetyards/fleetyards/issues/4975)) ([7cdb512](https://github.com/fleetyards/fleetyards/commit/7cdb512223092e84bb970c61eedc6b89c80e8c1d))
+* **blueprints:** a public catalogue API ([#5013](https://github.com/fleetyards/fleetyards/issues/5013)) ([819e916](https://github.com/fleetyards/fleetyards/commit/819e9165a51d442fb7c0193012ca252de86d5438))
+* **blueprints:** no feature flag for the catalogue ([#5017](https://github.com/fleetyards/fleetyards/issues/5017)) ([1e944b7](https://github.com/fleetyards/fleetyards/commit/1e944b78235db6e37cd122f98f7845e58cbb36da))
+* **blueprints:** parse and load the crafting catalogue ([#4998](https://github.com/fleetyards/fleetyards/issues/4998)) ([797e259](https://github.com/fleetyards/fleetyards/commit/797e259842396567968be1daa9641aac68a9a224))
+* **blueprints:** the catalogue pages, and the stats a recipe's materials buy ([#5031](https://github.com/fleetyards/fleetyards/issues/5031)) ([0a2003d](https://github.com/fleetyards/fleetyards/commit/0a2003d0d8d1a6d5081ce9c4e256df7a93ac0708))
+* **blueprints:** where a crafting recipe comes from ([#5010](https://github.com/fleetyards/fleetyards/issues/5010)) ([67218f9](https://github.com/fleetyards/fleetyards/commit/67218f9d9fe21dad8d6466d79647e3e79dec858f))
+* **commodities:** an inventory can record the gems the game counts in pieces ([#5035](https://github.com/fleetyards/fleetyards/issues/5035)) ([ae14e5f](https://github.com/fleetyards/fleetyards/commit/ae14e5f78e36500f7f356f5c142c96c2e4b45e36))
+* **commodities:** the containers, the refining link and whether you can eat it ([#5037](https://github.com/fleetyards/fleetyards/issues/5037)) ([808374c](https://github.com/fleetyards/fleetyards/commit/808374c46bfa3d64a37f66d11c2349c1dab06b5a))
+* **components:** a detail endpoint, and a list that can be sorted ([#5003](https://github.com/fleetyards/fleetyards/issues/5003)) ([878d992](https://github.com/fleetyards/fleetyards/commit/878d992b80bf33ed6a563f914f17a7cc24e612ca))
+* **components:** a page per component, and the link from every hardpoint ([#5015](https://github.com/fleetyards/fleetyards/issues/5015)) ([62d523e](https://github.com/fleetyards/fleetyards/commit/62d523e9540be96132e7e168cdfa8d421ee5362a))
+* **components:** a unique slug, and type_data as jsonb ([#5000](https://github.com/fleetyards/fleetyards/issues/5000)) ([34ea37f](https://github.com/fleetyards/fleetyards/commit/34ea37f5bfb252af34d17a32c4824aada2ee6802))
+* **components:** every metric for one component, without a ship ([#5006](https://github.com/fleetyards/fleetyards/issues/5006)) ([e6c9ad9](https://github.com/fleetyards/fleetyards/commit/e6c9ad92f942c7dd69d6b1a01178fe4528f2a54e))
+* **components:** filter on a metric, not just sort by one ([#5020](https://github.com/fleetyards/fleetyards/issues/5020)) ([ce7ff8c](https://github.com/fleetyards/fleetyards/commit/ce7ff8c84cc9bb5e4c0b59898bb4591683fbc509))
+* **components:** the catalogue list, and /catalogue as its entry ([#5021](https://github.com/fleetyards/fleetyards/issues/5021)) ([c7e1099](https://github.com/fleetyards/fleetyards/commit/c7e109947add741d8e7a26ec271136669b483404))
+* **feature-flags:** track flag activation history ([#4974](https://github.com/fleetyards/fleetyards/issues/4974)) ([80d8ce7](https://github.com/fleetyards/fleetyards/commit/80d8ce76ae83c8a514880af2b01ee156f8a6475d))
+* **fleets:** a subscription is the record a fleet's access reads from ([#4999](https://github.com/fleetyards/fleetyards/issues/4999)) ([b5065db](https://github.com/fleetyards/fleetyards/commit/b5065dbddc83f321b3a9eeef668c76a0ef4cb0f1))
+* **fleets:** contributions propose, the subscription record decides ([#5004](https://github.com/fleetyards/fleetyards/issues/5004)) ([51832eb](https://github.com/fleetyards/fleetyards/commit/51832ebb14781dd0334f92b1ac1a8a2e3380dec3))
+* **fleets:** enforce the subscription on the four premium surfaces, switched off ([#5018](https://github.com/fleetyards/fleetyards/issues/5018)) ([d2b191a](https://github.com/fleetyards/fleetyards/commit/d2b191abfa109332c6aa3bb63f41c93dfea41242))
+* **fleets:** tell a fleet's admins when its subscription starts and ends ([#5014](https://github.com/fleetyards/fleetyards/issues/5014)) ([4f4e562](https://github.com/fleetyards/fleetyards/commit/4f4e5621aa32fe707c15dae4b56c63a05747f6a7))
+* **fleets:** the readiness query, and a grace window for the beta fleets ([#5023](https://github.com/fleetyards/fleetyards/issues/5023)) ([3094eb5](https://github.com/fleetyards/fleetyards/commit/3094eb50516870f8908d2995c3ba13cc1c0540cd))
+* **fleets:** the supporter note and the nav that stops linking to it ([#5019](https://github.com/fleetyards/fleetyards/issues/5019)) ([88aa8f5](https://github.com/fleetyards/fleetyards/commit/88aa8f55ff86f600408f2c09a704d4d1a30b9236))
+* **lists:** a sort line on the card lists that had no way to sort ([#5025](https://github.com/fleetyards/fleetyards/issues/5025)) ([85c80b9](https://github.com/fleetyards/fleetyards/commit/85c80b92417c7a9acfaf7a1bd230afcf9d6c5c23))
+* **models:** a flight prefix for the views folder upload ([e115a27](https://github.com/fleetyards/fleetyards/commit/e115a27e6662337744eab00ebae96d09f071dc70))
+* **payouts:** the fleet-event ledger moves behind fleet_tours ([#5009](https://github.com/fleetyards/fleetyards/issues/5009)) ([75c9f3d](https://github.com/fleetyards/fleetyards/commit/75c9f3db8f566f16ea65f981620eabaab462558c))
+* **supporters:** a supporter nominates the fleet their contribution covers ([#4979](https://github.com/fleetyards/fleetyards/issues/4979)) ([fe617a8](https://github.com/fleetyards/fleetyards/commit/fe617a84087b885a722f0bf6da4010ff68c6f896))
+* **supporters:** three tiers by monthly spend, with a mark for a standing pledge ([#4982](https://github.com/fleetyards/fleetyards/issues/4982)) ([f637d29](https://github.com/fleetyards/fleetyards/commit/f637d29f0ef4b95601cb8028c426ba988be93343))
+* **supporters:** where a contribution came from, and when support lapses ([#4976](https://github.com/fleetyards/fleetyards/issues/4976)) ([90eff17](https://github.com/fleetyards/fleetyards/commit/90eff1701198535916a86f831cfbccc3b39d9963))
+
+
+### Bug Fixes
+
+* **admin:** the dashboard catalogue tile names the build's environment ([#4986](https://github.com/fleetyards/fleetyards/issues/4986)) ([73897e7](https://github.com/fleetyards/fleetyards/commit/73897e7da98b5a48b06e200924d5b9fe3a7ebffa))
+* **api:** consumable and containerSizes are always present ([#5045](https://github.com/fleetyards/fleetyards/issues/5045)) ([d07dabe](https://github.com/fleetyards/fleetyards/commit/d07dabe7f84387175f6fe3edd3c1d9f726879e42))
+* **fleets:** price the subscription in the supporter's own currency ([#5008](https://github.com/fleetyards/fleetyards/issues/5008)) ([b002c3d](https://github.com/fleetyards/fleetyards/commit/b002c3d8d334719432ab145c758a276465ef3186))
+* **hangar:** a vehicle join row cannot outlive its vehicle ([#4971](https://github.com/fleetyards/fleetyards/issues/4971)) ([279df8f](https://github.com/fleetyards/fleetyards/commit/279df8fc99618035a1b16de53f4e7c9eba984e78))
+* **logistics:** authorize a position move against every entry, not one ([#5044](https://github.com/fleetyards/fleetyards/issues/5044)) ([af74e5c](https://github.com/fleetyards/fleetyards/commit/af74e5ca3f27e6a79372dff3be55d3f163541ba1))
+* **notifications:** localize the toast close label, cover the custom body ([#4992](https://github.com/fleetyards/fleetyards/issues/4992)) ([4decca3](https://github.com/fleetyards/fleetyards/commit/4decca3e21c9a95a87734c157ba760470b3ff8f7))
+* **notifications:** the X on a toast closes it without opening the link ([#4987](https://github.com/fleetyards/fleetyards/issues/4987)) ([9645815](https://github.com/fleetyards/fleetyards/commit/96458156e71df2c9071293d39d884adef3e04682))
+* **ops:** the on-demand live backup runs through a shell ([#4984](https://github.com/fleetyards/fleetyards/issues/4984)) ([ef239e3](https://github.com/fleetyards/fleetyards/commit/ef239e3a6451c92743695a21cbae61c6f29f9927))
+* **sc_data:** keep each of an item's tags, not the array's inspect output ([#5007](https://github.com/fleetyards/fleetyards/issues/5007)) ([33f6023](https://github.com/fleetyards/fleetyards/commit/33f60236bcf58aab259da2e16fda7d21adb323e4)), closes [#5002](https://github.com/fleetyards/fleetyards/issues/5002)
+* **sc_data:** parsers keep a name declared with a plural marker or in another case ([#5001](https://github.com/fleetyards/fleetyards/issues/5001)) ([d9fcd75](https://github.com/fleetyards/fleetyards/commit/d9fcd75261ab8b8267ad48815c8bc9c4c079c094))
+* **sc_data:** resolve a manufacturer's own name through the index, and the count the pushed tree produces ([#5005](https://github.com/fleetyards/fleetyards/issues/5005)) ([c0a145d](https://github.com/fleetyards/fleetyards/commit/c0a145d3018835cfed67cc1a4e37d77e24b2a19c))
+* **sc_data:** serve the last loaded build until the new one is imported ([#5022](https://github.com/fleetyards/fleetyards/issues/5022)) ([af7d889](https://github.com/fleetyards/fleetyards/commit/af7d8895d0bbab5c9be35eb77a2c1ead57d211cf))
+* **supporters:** an unstated platform is unspecified, not `other` ([#4996](https://github.com/fleetyards/fleetyards/issues/4996)) ([78b2054](https://github.com/fleetyards/fleetyards/commit/78b2054eecf927b2b1f657f8b20d8259cb369618))
+
+
+### Chores
+
+* **components:** drop the components feature flag ([#5016](https://github.com/fleetyards/fleetyards/issues/5016)) ([d885b51](https://github.com/fleetyards/fleetyards/commit/d885b51702901a8147d93efefaeaf5e237b99959))
+* **deps-dev:** bump @vitejs/plugin-vue from 6.0.8 to 6.0.9 ([#5024](https://github.com/fleetyards/fleetyards/issues/5024)) ([f62a80e](https://github.com/fleetyards/fleetyards/commit/f62a80edb0ed21c3b22576dd69dc2c736f5f3d88))
+* **deps-dev:** bump orval from 8.32.0 to 8.33.0 ([#4985](https://github.com/fleetyards/fleetyards/issues/4985)) ([90ad841](https://github.com/fleetyards/fleetyards/commit/90ad84142bce23184295c4a92d4409479ee7acc8))
+* **discord:** remove the discord_commands and discord_fleet_commands flags ([#4993](https://github.com/fleetyards/fleetyards/issues/4993)) ([5d7fd91](https://github.com/fleetyards/fleetyards/commit/5d7fd915ba45341ad8d38cf402a3583dbb6f7ac2))
+* **fleets:** remove the fleet_starmap and fleet_worldmap flags ([#4994](https://github.com/fleetyards/fleetyards/issues/4994)) ([17bb06a](https://github.com/fleetyards/fleetyards/commit/17bb06aed06293afb1547b2099103a70cc0417c9))
+* **sc_data:** bump live to 4.10.1-live.12660092, and check a parsed tree before it ships ([#4991](https://github.com/fleetyards/fleetyards/issues/4991)) ([b92cf40](https://github.com/fleetyards/fleetyards/commit/b92cf40ac3cb083d87c9d531a74ab8e5f8187e20))
+* **tools:** remove the tools_cargo_grids and tools_travel_times flags ([#4995](https://github.com/fleetyards/fleetyards/issues/4995)) ([3222051](https://github.com/fleetyards/fleetyards/commit/32220513bc8be35820907af09a63254d19e7d904))
+
 ## [8.1.0](https://github.com/fleetyards/fleetyards/compare/v8.0.0...v8.1.0) (2026-09-16)
 
 
