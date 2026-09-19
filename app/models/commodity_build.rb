@@ -16,6 +16,7 @@
 #  description    :text
 #  environment    :string           not null
 #  name           :string
+#  piece_volume   :decimal(16, 8)
 #  version        :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -34,14 +35,14 @@
 class CommodityBuild < ApplicationRecord
   belongs_to :commodity
 
-  # Everything a build says, as opposed to what identifies the commodity. Four
+  # Everything a build says, as opposed to what identifies the commodity. Five
   # facts -- this catalogue has no enums, no serialized columns and no
   # manufacturer, which is why it fits in one change rather than three.
   #
   # The data migration carries its own copy on purpose: a migration has to keep
   # running against the schema of its own moment, not this list as it later
   # becomes.
-  FACTS = %i[name commodity_type description counted].freeze
+  FACTS = %i[name commodity_type description counted piece_volume].freeze
 
   # Every fact is read through the build. Nothing is held back here: equipment
   # and components hold `manufacturer_id` and `hidden` back because an
@@ -49,9 +50,9 @@ class CommodityBuild < ApplicationRecord
   # neither.
   READ_THROUGH = FACTS
 
-  # The facts Commodity filters and sorts by. `description` and `counted` are
-  # left out -- no filter reaches either, and folding one into the fallback
-  # subquery would widen it for no gain.
+  # The facts Commodity filters and sorts by. `description`, `counted` and
+  # `piece_volume` are left out -- no filter reaches them, and folding one into
+  # the fallback subquery would widen it for no gain.
   FILTERABLE = %i[name commodity_type].freeze
 
   validates :environment, presence: true

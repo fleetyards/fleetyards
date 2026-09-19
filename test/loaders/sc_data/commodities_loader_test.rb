@@ -134,6 +134,19 @@ module ScData
         assert commodity.counted
       end
 
+      # The conversion between the two units. Every counted commodity states
+      # one and no bulk one does, which is what keeps a hold-fill figure honest
+      # once a position can be recorded in pieces.
+      test "#all reads what one piece of a counted commodity takes up" do
+        @loader.all
+
+        assert_in_delta 0.001, Commodity.find_by(sc_key: "items_commodities_hadanite").piece_volume, 0.0000001
+        assert_nil Commodity.find_by(sc_key: "items_commodities_iron").piece_volume
+
+        assert_empty Commodity.where(counted: true, piece_volume: nil).pluck(:name)
+        assert_empty Commodity.where(counted: false).where.not(piece_volume: nil).pluck(:name)
+      end
+
       test "#all keeps a commodity that already exists without an sc_key" do
         existing = create(:commodity, name: "Gold", sc_key: nil, commodity_type: nil)
 

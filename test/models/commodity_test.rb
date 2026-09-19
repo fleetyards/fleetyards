@@ -11,6 +11,7 @@ require "test_helper"
 #  counted        :boolean          default(FALSE), not null
 #  description    :text
 #  name           :string           not null
+#  piece_volume   :decimal(16, 8)
 #  sc_key         :string
 #  sc_ref         :string
 #  slug           :string           not null

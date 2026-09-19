@@ -134,7 +134,7 @@ module ScData
       end
 
       private def new_record
-        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, counted: false, icons: [], paths: []}
+        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, counted: false, piece_volume: nil, icons: [], paths: []}
       end
 
       private def collect_record(records, item)
@@ -147,6 +147,7 @@ module ScData
         record = records[sc_key]
         record[:paths] << item[:path]
         record[:counted] ||= counted?(item[:values])
+        record[:piece_volume] ||= piece_volume(item[:values])
 
         if canonical
           record[:canonical_ref] ||= value_or_nil(item[:values].dig("__ref"))
@@ -248,6 +249,7 @@ module ScData
           commodity_type: type,
           commodity_type_name: type_name(type),
           counted: record[:counted],
+          piece_volume: record[:piece_volume],
           description: localize("#{sc_key}_desc"),
           icon: record[:icons].first
         }
@@ -359,6 +361,43 @@ module ScData
 
       private def resource_containers(values)
         Array.wrap(values.dig("Components", "ResourceContainer"))
+      end
+
+      # What one piece takes up, in SCU. Read off the counted container and no
+      # other: every commodity is also sold in crates of 1 to 32 SCU, and those
+      # containers declare their own capacity, so reading any of them would
+      # answer with a crate size rather than with the piece.
+      #
+      # Measured over 4.10.1-live.12660092: all 56 counted commodities declare
+      # one, and none declares two different ones.
+      private def piece_volume(values)
+        container = resource_containers(values).find { |entry| entry["generateRandomQuality"] == "1" }
+
+        capacity_scu(container&.dig("capacity"))
+      end
+
+      # The game states a capacity in whichever of the three cargo units suits
+      # its size -- a gem in microSCU, a drink in centiSCU, a crate in SCU.
+      CARGO_UNITS = {
+        "SMicroCargoUnit" => ["microSCU", 1e-6],
+        "SCentiCargoUnit" => ["centiSCU", 1e-2],
+        "SStandardCargoUnit" => ["standardCargoUnits", 1.0]
+      }.freeze
+
+      private def capacity_scu(capacity)
+        return unless capacity.is_a?(Hash)
+
+        CARGO_UNITS.each do |tag, (attribute, factor)|
+          node = capacity[tag]
+
+          next unless node.is_a?(Hash)
+
+          value = node[attribute].to_f * factor
+
+          return value.round(8) if value.positive?
+        end
+
+        nil
       end
 
       private def attach_names(values)
