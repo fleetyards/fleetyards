@@ -31,6 +31,7 @@ json.cost_slots blueprint.cost_slots do |slot|
         json.id option.commodity.id
         json.name option.commodity.name
         json.slug option.commodity.slug
+        json.piece_volume option.commodity.piece_volume&.to_f
       end
     end
   end

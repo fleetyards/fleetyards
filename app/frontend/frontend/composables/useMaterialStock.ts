@@ -33,13 +33,17 @@ export type MaterialStockSources = {
 };
 
 // A recipe measures bulk in SCU and counts gems individually -- 298 of the
-// 4,289 cost options are the counted kind. An inventory cannot say the same:
-// a commodity position is forced to SCU (`UNITS_BY_CATEGORY`), whatever the
-// game counts it in. So the two units agree only for the bulk ones, and the
-// holding can be compared with what the recipe asks for only there. Gating on
-// the unit instead just hid real stock.
+// 4,289 cost options are the counted kind. An inventory can now say either,
+// so both sides of the comparison have a unit and the two no longer have to
+// match: `pieceVolume` is what one piece takes up in SCU, which converts
+// between them.
+//
+// Where there is no rate -- a bulk material has no single piece to measure --
+// a holding in the other unit still cannot be compared, and is shown rather
+// than judged. Answering "not enough" there would be a made-up claim.
 const BULK_COST_TYPE = "resource";
 const BULK_UNIT = "scu";
+const PIECE_UNIT = "units";
 
 type StockRow = HangarInventoryStockItem | FleetInventoryStockItem;
 
@@ -163,22 +167,36 @@ export const useMaterialStock = () => {
     commodityId?: string,
     needed?: number | null,
     costType?: string | null,
+    pieceVolume?: number | null,
   ): MaterialStockSources => {
     if (!commodityId) return { own: [], fleet: [] };
 
-    // Comparable only where both sides are in SCU. A recipe asking for 170
-    // gems against a holding of 10 SCU is not a comparison, and answering
-    // "not enough" there would be a made-up claim rather than a filter.
-    const comparable = costType === BULK_COST_TYPE;
+    // The unit the recipe states this slot's cost in.
+    const costUnit = costType === BULK_COST_TYPE ? BULK_UNIT : PIECE_UNIT;
+
+    /** The holding, restated in the unit the recipe asked for. */
+    const inCostUnit = (entry: MaterialStock) => {
+      if (entry.unit === costUnit) return entry.quantity;
+      if (!pieceVolume) return undefined;
+
+      return entry.unit === BULK_UNIT
+        ? entry.quantity / pieceVolume
+        : entry.quantity * pieceVolume;
+    };
 
     const usable = (entries: MaterialStock[]) =>
       entries.filter((entry) => {
         // A slot with no stated amount asks for nothing in particular, so any
         // holding of the right material counts.
         if (needed === undefined || needed === null) return true;
-        if (!comparable || entry.unit !== BULK_UNIT) return true;
 
-        return entry.quantity >= needed;
+        const amount = inCostUnit(entry);
+
+        // No rate to convert by, so there is no comparison to make and none
+        // is claimed -- the holding is shown as it stands.
+        if (amount === undefined) return true;
+
+        return amount >= needed;
       });
 
     return {
