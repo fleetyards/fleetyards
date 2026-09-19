@@ -83,19 +83,32 @@ follows it.
 Ships with the catalogue, free for every fleet, like the fleet ships page.
 Reading is gated by privilege alone.
 
-### D6 — `fleet:blueprints:*` privileges, granted to existing roles
+### D6 — One privilege, `fleet:blueprints:read`, granted to existing roles
 
-A `FleetBlueprint`-shaped privilege group — `read` / `manage` — registered in
-`FleetRole::PRIVILEGE_GROUPS`, defaulting to `read` for members.
-`setup_default_roles!` only runs at fleet creation, so a data migration grants
-`fleet:blueprints:read` to every existing role, the way
-`20260913150000_grant_contract_privileges_to_existing_roles` did for contracts.
-Without it every fleet on the site gets a 403 on a tab that looks switched on.
+A privilege group with exactly one entry, registered in
+`FleetRole::PRIVILEGE_GROUPS` as `"blueprints"` and defaulting on for members
+and officers.
+
+No `:manage`, unlike every other group. The others carry create/update/delete
+because the fleet owns the records; these belong to the members, and the fleet
+neither writes nor removes them — a `fleet:blueprints:manage` would grant
+nothing. `FleetRole.privilege_groups` returns `manage_privilege: nil` for such a
+group, the catalogue view omits the key, and the roles page already guards on
+`group.managePrivilege` before offering the toggle.
 
 The privilege constant needs a home. There is no `FleetBlueprint` model under D4,
 so `AVAILABLE_PRIVILEGES` / `DEFAULT_PRIVILEGES` live on `UserBlueprint` — the
 record the fleet is being shown — and `PRIVILEGE_GROUPS` keys it as
 `"blueprints"`.
+
+`setup_default_roles!` only runs at fleet creation, so a data migration grants
+`fleet:blueprints:read` to every existing role, the way
+`20260913150000_grant_contract_privileges_to_existing_roles` did for contracts.
+Without it every fleet on the site gets a 403 on a tab that looks switched on.
+Roles already holding `fleet:manage` are skipped: they pass the check anyway,
+and the roles page renders the privilege as implied rather than as held —
+writing it would turn that into a plain tick and say something different about
+the role.
 
 ### D7 — The owned flag is rendered outside the fragment cache
 
@@ -124,13 +137,13 @@ applies the scope itself.
    `Blueprint`.
 3. `Blueprint.owned_by(user)` and `.not_owned_by(user)` scopes, written as exists
    checks like every other scope on that model.
-4. `POST /blueprints/:slug/own` and `DELETE /blueprints/:slug/own` on the
-   existing blueprints resource; `BlueprintPolicy` for the two new actions,
-   authenticated only.
+4. `PUT /blueprints/:slug/own` and `DELETE /blueprints/:slug/own` on the
+   existing blueprints resource, both idempotent; `BlueprintPolicy` for the two
+   new actions, authenticated only.
 5. `owned` on the blueprint payload, outside the cache block (D7), false when
    signed out. The index preloads the reader's owned ids for the page in one
    query rather than asking per row.
-6. `ownedEq` in `BlueprintQuery`, applied by the controller (D8).
+6. `owned` in `BlueprintQuery`, applied by the controller (D8).
 7. Integration tests in `test/integration/` for own/unown/filter, factory for
    `UserBlueprint`, model test for the scopes.
 
@@ -138,7 +151,9 @@ applies the scope itself.
 
 1. Migration adding `blueprints_filter` (integer, default 0) to
    `fleet_memberships`; enum `{all: 0, hide: 1}`, prefixed, defaulted in
-   `set_default_blueprints_filter` beside the ships one.
+   `set_default_blueprints_filter` beside the ships one. The broadcast payload
+   changes with it, so `bin/generate-asyncapi` has to run or every test that
+   creates a membership raises `AsyncapiCable::Error`.
 2. `blueprints_filter` into `FleetMembershipPolicy`'s params filter and into
    `FleetMembershipUpdateInput`; a `FleetMembershipBlueprintsFilterEnum`
    component sourced from the model.
@@ -149,10 +164,12 @@ applies the scope itself.
    memberships.
 5. `GET /fleets/:slug/blueprints` → `Api::V1::FleetBlueprintsController`, with
    `FleetBlueprintPolicy`, the sharing-member subquery (D4), the catalogue's own
-   ransack surface, and `owners` + `ownerCount` per row.
-6. `FleetBlueprint` / `FleetBlueprints` / `FleetBlueprintOwner` components and a
-   `FleetBlueprintQuery`; integration tests covering the privilege gate, the
-   `hide` filter, and the single-recipe filter the panel uses.
+   ransack surface, and `owners` + `ownerCount` per row. The whole filter
+   surface moves to `BlueprintFiltersConcern` so the two lists cannot drift.
+6. `FleetBlueprint` / `FleetBlueprints` / `FleetBlueprintOwner` components,
+   reusing `BlueprintQuery` rather than a query of their own — the owners panel
+   narrows to one recipe with `idIn`, which it already has. Integration tests
+   cover the privilege gate, the `hide` filter, and that single-recipe filter.
 7. Membership capabilities: `readBlueprints` alongside `readInventories` on the
    membership payload, so the nav can ask one flag.
 
@@ -171,11 +188,13 @@ applies the scope itself.
 
 1. `/fleets/:slug/blueprints` route + page, built on `FilteredList` like the
    catalogue, with an owners column.
-2. `showBlueprintsNav` in `useFleetNavAccess`, a nav item in `FleetNav` and in
-   the mobile nav, and the `prefix` numbering resequenced around it.
+2. `showBlueprintsNav` in `useFleetNavAccess` and a nav item in `FleetNav`, with
+   the `prefix` numbering resequenced around it. Not in the mobile bar: that is
+   a flat row of five icons which already leaves out logistics, allies, stats
+   and tours.
 3. The owners panel on `/blueprints/:slug`: a `useBlueprintFleetOwners`
    composable fanning out over `useMyFleets` with `useQueries`, modelled on
-   `useMaterialStock`.
+   `useMaterialStock`. Shipped in phase 3's commit, with the rail it sits in.
 4. `blueprintsFilter` select on the membership settings page.
 5. `privilegeGroups.blueprints` and the four privilege labels, in all seven
    locales — the thing #5031-era features have repeatedly shipped missing.
@@ -240,6 +259,11 @@ applies the scope itself.
 
 ## Discovery Log
 
+- **2026-09-19** Built. Two corrections to the plan on contact: the privilege
+  group is read-only (D6), and `RowList` constrains its records to `{ id }`, so
+  a fleet row carries the recipe's id as its own. The membership enum stales the
+  AsyncAPI document as well as the OpenAPI one, because `FleetMembership`
+  broadcasts its own payload.
 - **2026-09-19** Research and plan. Confirmed: the blueprint payload is fragment
   cached with no user in the key (D7); ransack skips false-valued scopes, already
   documented on `Blueprint` for `with_known_source` (D8); `FleetRole` presets only
@@ -249,8 +273,8 @@ applies the scope itself.
 
 ## Progress
 
-- [ ] Phase 1 — The owned marker
-- [ ] Phase 2 — Reaching the fleet
-- [ ] Phase 3 — The catalogue, in the browser
-- [ ] Phase 4 — The fleet, in the browser
-- [ ] Phase 5 — Closing
+- [x] Phase 1 — The owned marker
+- [x] Phase 2 — Reaching the fleet
+- [x] Phase 3 — The catalogue, in the browser
+- [x] Phase 4 — The fleet, in the browser
+- [x] Phase 5 — Closing
