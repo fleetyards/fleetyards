@@ -83,6 +83,23 @@ describe("useMaterialStock#forCommodity", () => {
     expect(ownCount([position("scu", 1)], 9999, "item", null)).toBe(1);
   });
 
+  // `unit` is optional on a stock row, and a unit we cannot read is not a
+  // licence to guess -- converting it as though it were pieces would multiply
+  // an unknown into a sufficiency claim.
+  it("refuses to convert a holding whose unit it does not recognise", () => {
+    const unknown = { ...position("scu", 1), unit: "crates" };
+
+    expect(
+      useMaterialStock().forCommodity(GEM, 9999, "item", 0.001).own.length,
+    ).toBe(0);
+
+    hangarStock.value = [unknown];
+
+    expect(
+      useMaterialStock().forCommodity(GEM, 9999, "item", 0.001).own.length,
+    ).toBe(1);
+  });
+
   // A slot with no stated amount asks for nothing in particular.
   it("keeps every holding where the slot names no amount", () => {
     expect(ownCount([position("scu", 1)], null, "item", 0.001)).toBe(1);
