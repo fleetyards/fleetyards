@@ -5,6 +5,8 @@ json.name commodity.name
 json.slug commodity.slug
 json.commodity_type commodity.commodity_type
 json.description commodity.description
+json.counted commodity.counted?
+json.piece_volume commodity.piece_volume&.to_f
 json.retired commodity.retired?
 
 json.store_image do

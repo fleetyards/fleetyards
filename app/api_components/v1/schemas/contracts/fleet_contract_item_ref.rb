@@ -15,7 +15,11 @@ module V1
             id: {type: :string, format: :uuid},
             type: {type: :string},
             name: {type: :string},
-            slug: {type: [:string, :null]}
+            slug: {type: [:string, :null]},
+
+            # Whether the game counts this one in pieces. Editing a line has to
+            # keep offering the unit the line was written in.
+            counted: {type: :boolean}
           },
           additionalProperties: false,
           required: %w[id type name]

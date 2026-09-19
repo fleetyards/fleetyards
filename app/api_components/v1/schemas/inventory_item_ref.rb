@@ -13,6 +13,10 @@ module V1
           type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
           name: {type: :string},
           slug: {type: :string},
+
+          # Whether the game counts this one in pieces. The unit picker needs it
+          # to know that `units` is on offer for a commodity at all.
+          counted: {type: :boolean},
           available: {type: :boolean}
         }
       })

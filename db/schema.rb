@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_19_121000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -326,9 +326,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_190000) do
 
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "commodity_type"
+    t.boolean "counted", default: false, null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.string "name", null: false
+    t.decimal "piece_volume", precision: 16, scale: 8
     t.string "sc_key"
     t.string "sc_ref"
     t.string "slug", null: false
@@ -345,10 +347,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_190000) do
   create_table "commodity_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "commodity_id", null: false
     t.string "commodity_type"
+    t.boolean "counted", default: false, null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.string "environment", null: false
     t.string "name"
+    t.decimal "piece_volume", precision: 16, scale: 8
     t.datetime "updated_at", null: false
     t.string "version", null: false
     t.index ["commodity_id", "environment", "version"], name: "index_commodity_builds_on_commodity_and_build", unique: true

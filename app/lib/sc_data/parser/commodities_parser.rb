@@ -134,7 +134,7 @@ module ScData
       end
 
       private def new_record
-        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, icons: [], paths: []}
+        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, counted: false, piece_volume: nil, icons: [], paths: []}
       end
 
       private def collect_record(records, item)
@@ -146,6 +146,8 @@ module ScData
         canonical = item[:path].start_with?(CANONICAL_PATH)
         record = records[sc_key]
         record[:paths] << item[:path]
+        record[:counted] ||= counted?(item[:values])
+        record[:piece_volume] ||= piece_volume(item[:values])
 
         if canonical
           record[:canonical_ref] ||= value_or_nil(item[:values].dig("__ref"))
@@ -246,6 +248,8 @@ module ScData
           name:,
           commodity_type: type,
           commodity_type_name: type_name(type),
+          counted: record[:counted],
+          piece_volume: record[:piece_volume],
           description: localize("#{sc_key}_desc"),
           icon: record[:icons].first
         }
@@ -340,6 +344,60 @@ module ScData
 
       private def purchasable_params(values)
         Array.wrap(values.dig("Components", "SCItemPurchasableParams"))
+      end
+
+      # Whether the game counts this commodity in pieces rather than hauling it
+      # in bulk. The container is where its own entity says so: a piece that
+      # rolls its own quality is one the game tracks individually, which is why
+      # a recipe asks for a number of them rather than a volume, and why the
+      # quality ramp applies per piece at all.
+      #
+      # Read off whichever entity carries it rather than the canonical record
+      # alone -- the counted eleven are all harvestables, and none of them has
+      # a record under entities/commodities to declare it on.
+      private def counted?(values)
+        resource_containers(values).any? { |container| container["generateRandomQuality"] == "1" }
+      end
+
+      private def resource_containers(values)
+        Array.wrap(values.dig("Components", "ResourceContainer"))
+      end
+
+      # What one piece takes up, in SCU. Read off the counted container and no
+      # other: every commodity is also sold in crates of 1 to 32 SCU, and those
+      # containers declare their own capacity, so reading any of them would
+      # answer with a crate size rather than with the piece.
+      #
+      # Measured over 4.10.1-live.12660092: all 56 counted commodities declare
+      # one, and none declares two different ones.
+      private def piece_volume(values)
+        container = resource_containers(values).find { |entry| entry["generateRandomQuality"] == "1" }
+
+        capacity_scu(container&.dig("capacity"))
+      end
+
+      # The game states a capacity in whichever of the three cargo units suits
+      # its size -- a gem in microSCU, a drink in centiSCU, a crate in SCU.
+      CARGO_UNITS = {
+        "SMicroCargoUnit" => ["microSCU", 1e-6],
+        "SCentiCargoUnit" => ["centiSCU", 1e-2],
+        "SStandardCargoUnit" => ["standardCargoUnits", 1.0]
+      }.freeze
+
+      private def capacity_scu(capacity)
+        return unless capacity.is_a?(Hash)
+
+        CARGO_UNITS.each do |tag, (attribute, factor)|
+          node = capacity[tag]
+
+          next unless node.is_a?(Hash)
+
+          value = node[attribute].to_f * factor
+
+          return value.round(8) if value.positive?
+        end
+
+        nil
       end
 
       private def attach_names(values)

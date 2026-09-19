@@ -240,6 +240,82 @@ module ScData
         assert_equal "metal", result.first[:commodity_type]
       end
 
+      # A gem is picked up a piece at a time and each piece rolls its own
+      # quality, which is the same fact as the game counting them: a recipe
+      # asks for 170 of them rather than for a volume.
+      test "#commodities marks a commodity whose container rolls a quality per piece as counted" do
+        translate("items_commodities_hadanite" => "Hadanite")
+        carryable(
+          "1h/harvestable_mineral_1h_hadanite",
+          attach_name: "@items_commodities_hadanite",
+          display_name: "@items_commodities_hadanite",
+          counted: true
+        )
+
+        assert @parser.commodities.first[:counted]
+      end
+
+      test "#commodities leaves a crate that rolls one quality for the whole container uncounted" do
+        translate("items_commodities_iron" => "Iron")
+        carryable(
+          "2h/carryable_2h_8scu_commodity_metal_iron",
+          attach_name: "@items_commodities_iron",
+          display_name: "@items_commodities_iron",
+          counted: false
+        )
+
+        assert_not @parser.commodities.first[:counted]
+      end
+
+      # The conversion between the two units a recipe and an inventory speak.
+      # Read off the counted container and no other: the same commodity is also
+      # sold in crates of 1 to 32 SCU, each declaring its own capacity.
+      test "#commodities reads what one piece of a counted commodity takes up" do
+        translate("items_commodities_hadanite" => "Hadanite")
+        carryable(
+          "1h/harvestable_mineral_1h_hadanite",
+          attach_name: "@items_commodities_hadanite",
+          display_name: "@items_commodities_hadanite",
+          counted: true
+        )
+        carryable(
+          "2h/carryable_2h_8scu_commodity_mineral_hadanite",
+          attach_name: "@items_commodities_hadanite",
+          display_name: "@items_commodities_hadanite",
+          counted: false,
+          capacity: %(<SStandardCargoUnit standardCargoUnits="8" />)
+        )
+
+        assert_in_delta 0.001, @parser.commodities.first[:piece_volume]
+      end
+
+      # A crate is sold in seven sizes and the game states each one's capacity,
+      # so there is no single figure a bulk commodity could carry.
+      test "#commodities leaves a bulk commodity without a piece volume" do
+        translate("items_commodities_iron" => "Iron")
+        carryable(
+          "2h/carryable_2h_8scu_commodity_metal_iron",
+          attach_name: "@items_commodities_iron",
+          display_name: "@items_commodities_iron",
+          counted: false,
+          capacity: %(<SStandardCargoUnit standardCargoUnits="8" />)
+        )
+
+        assert_nil @parser.commodities.first[:piece_volume]
+      end
+
+      # Bulk is the default, so a commodity with no container to read -- the
+      # refuel and rearm goods, which no crate entity declares -- is bulk
+      # rather than unanswered.
+      test "#commodities leaves a resource no crate declares uncounted" do
+        translate("items_commodities_shipammo_size_1" => "Ship Ammunition - Size 1")
+        resource_types(
+          resource_type("ShipAmmoSize1", display_name: "@items_commodities_shipammo_size_1")
+        )
+
+        assert_not @parser.commodities.first[:counted]
+      end
+
       private def resource_type(name, display_name:, ref: nil, refined_version: nil, containers: true)
         record(
           "ResourceType.#{name}",
@@ -288,11 +364,13 @@ module ScData
         @parser.translations = entries
       end
 
-      private def carryable(path, attach_name:, display_name:, display_type: "@LOC_PLACEHOLDER")
+      private def carryable(path, attach_name:, display_name:, display_type: "@LOC_PLACEHOLDER", counted: nil,
+        capacity: %(<SMicroCargoUnit microSCU="1000" />))
         write_record(
           "entities/scitem/carryables/#{path}",
           <<~XML
             <SCItemPurchasableParams displayName="#{display_name}" displayType="#{display_type}" />
+            #{resource_container_xml(counted, capacity)}
             <SAttachableComponentParams attachToTileItemPort="NoConnection">
               <AttachDef Type="Cargo" SubType="Cargo">
                 <Localization Name="#{attach_name}" ShortName="@LOC_EMPTY" Description="@LOC_EMPTY" />
@@ -300,6 +378,16 @@ module ScData
             </SAttachableComponentParams>
           XML
         )
+      end
+
+      private def resource_container_xml(counted, capacity)
+        return if counted.nil?
+
+        <<~XML
+          <ResourceContainer mutabilityLevel="ReadOnly" generateRandomQuality="#{counted ? 1 : 0}">
+            <capacity>#{capacity}</capacity>
+          </ResourceContainer>
+        XML
       end
 
       private def commodity_record(path, display_name:, display_type:)

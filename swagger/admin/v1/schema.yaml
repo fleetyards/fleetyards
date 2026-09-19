@@ -10333,6 +10333,12 @@ components:
           type:
           - string
           - 'null'
+        counted:
+          type: boolean
+        pieceVolume:
+          type:
+          - number
+          - 'null'
         retired:
           type: boolean
         storeImage:
@@ -10378,6 +10384,7 @@ components:
       - id
       - name
       - slug
+      - counted
       - retired
       - availability
       - createdAt

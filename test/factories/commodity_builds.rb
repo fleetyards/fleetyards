@@ -6,9 +6,11 @@
 #
 #  id             :uuid             not null, primary key
 #  commodity_type :string
+#  counted        :boolean          default(FALSE), not null
 #  description    :text
 #  environment    :string           not null
 #  name           :string
+#  piece_volume   :decimal(16, 8)
 #  version        :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
