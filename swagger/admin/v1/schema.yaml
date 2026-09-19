@@ -10088,7 +10088,6 @@ components:
       - scKey
       - scRef
       - retired
-      - owned
       - sourceUnknown
       - createdAt
       - updatedAt

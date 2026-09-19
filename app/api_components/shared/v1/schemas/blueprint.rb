@@ -29,9 +29,13 @@ module Shared
 
             retired: {type: :boolean},
 
-            # Whether the reader holds this recipe. Always stated, and always
-            # false for an anonymous read -- the catalogue is public, so "not
-            # signed in" and "signed in without it" are the same answer here.
+            # Whether the reader holds this recipe. False rather than absent on
+            # an anonymous read -- the catalogue is public, so "not signed in"
+            # and "signed in without it" are the same answer here.
+            #
+            # Not required, though the catalogue always sends it: the admin
+            # blueprint component inherits this one, and an admin reading the
+            # catalogue is not being asked what they personally hold.
             owned: {type: :boolean},
 
             # Said outright rather than left to an empty `sources`: the export
@@ -61,7 +65,7 @@ module Shared
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id slug scKey scRef retired owned sourceUnknown createdAt updatedAt]
+          required: %w[id slug scKey scRef retired sourceUnknown createdAt updatedAt]
         })
       end
     end
