@@ -2,8 +2,8 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
-const mountInput = (props: Record<string, unknown>) =>
-  mountWithDefaults(Component, { props: { ...props } });
+const mountInput = (props: InstanceType<typeof Component>["$props"]) =>
+  mountWithDefaults(Component, { props });
 
 const placeholder = (wrapper: Awaited<ReturnType<typeof mountInput>>) =>
   wrapper.find("input").attributes("placeholder");
