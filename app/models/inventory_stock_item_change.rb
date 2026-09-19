@@ -9,6 +9,11 @@ class InventoryStockItemChange
 
   attr_accessor :name, :category, :unit
 
+  # The catalogue record the position points at, if it points at one. Read
+  # rather than written: the rename cannot move it, but it decides which units
+  # the position may be recorded in -- a counted commodity may be pieces.
+  attr_reader :item
+
   validates :name, presence: true
   validate :category_is_known
   validate :unit_is_known
@@ -18,6 +23,7 @@ class InventoryStockItemChange
     @name = attributes.fetch(:name, stock_item.name).to_s.strip
     @category = attributes.fetch(:category, stock_item.category).to_s
     @unit = attributes.fetch(:unit, stock_item.unit).to_s
+    @item = stock_item.item
   end
 
   # Enum values, not names: the update runs as a single UPDATE, which writes the
@@ -47,7 +53,7 @@ class InventoryStockItemChange
   private def unit_fits_category
     return if errors.any?
 
-    allowed = InventoryLedgerEntry::UNITS_BY_CATEGORY.fetch(category, [])
+    allowed = InventoryLedgerEntry.units_for_category(category, item)
     return if allowed.include?(unit)
 
     errors.add(:unit, :inclusion, message: "must be #{allowed.join(" or ")} for #{category} entries")

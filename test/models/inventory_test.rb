@@ -305,6 +305,37 @@ class InventoryTest < ActiveSupport::TestCase
     end
   end
 
+  # The rename validator is the second gate on the pairing, and it runs off the
+  # position rather than off an entry -- so it has to reach the item the same
+  # way, or a position the picker now offers to move into pieces is rejected.
+  test "update_stock_item moves a counted commodity position into pieces" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, item: gem,
+      name: "Hadanite", category: :commodity, unit: :scu, quantity: 4)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {unit: "units"})
+
+    assert_predicate changed, :valid?
+  end
+
+  test "update_stock_item refuses pieces for a bulk commodity position" do
+    iron = create(:commodity, name: "Iron", counted: false)
+    create(:inventory_item, inventory: @inventory, item: iron,
+      name: "Iron", category: :commodity, unit: :scu, quantity: 4)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Iron", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {unit: "units"})
+
+    assert_not_predicate changed, :valid?
+  end
+
   private def stock_position(quantity:, withdrawn: nil)
     create(:inventory_item, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity:)
