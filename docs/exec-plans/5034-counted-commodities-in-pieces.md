@@ -166,7 +166,8 @@ base on a feature branch, cascade a force-push on every #5031 update, and make
 
 ### Phase 5 — Re-parse, push, load
 1. Re-parse the build and push the tree — the loader tests read the tree, not the parser.
-2. Bump the CI parsed-tree cache key (`v5` → `v6`); it is keyed on the build, and the build
+2. Bump the CI parsed-tree cache key (`v5` → `v6`, and `v6` → `v7` for the follow-up in
+   #5036); it is keyed on the build, and the build
    has not moved.
 3. Load commodities by hand after deploy, confirm the eleven carry `counted`. `ScData::CheckJob`
    will not do it: the version is unchanged, so it reads as already loaded.

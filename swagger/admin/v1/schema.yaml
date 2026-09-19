@@ -10393,6 +10393,8 @@ components:
       - name
       - slug
       - counted
+      - consumable
+      - containerSizes
       - retired
       - availability
       - createdAt
