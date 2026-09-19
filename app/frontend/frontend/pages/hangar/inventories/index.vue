@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -69,6 +70,15 @@ const refetchAll = async () => {
 };
 
 const { getQuery, isFilterSelected } = useInventoryItemFilters(refetchAll);
+
+// Somebody else can move stock through these while the page is open -- a
+// transfer accepted into one of them, or another session of the reader's own.
+// The grid and the ledger both read it, so both catch up.
+useInventoryUpdates(() => {
+  void refetchInventories();
+  void refetchStock();
+  void refetchItems();
+});
 
 const queryParams = computed(() => ({
   q: getQuery(),

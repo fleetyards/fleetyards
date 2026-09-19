@@ -104,10 +104,14 @@ It still carries an identity rather than being empty: a per-inventory page can i
 - **2026-09-19** Issue filed with the design, blocked on #5038.
 - **2026-09-19** #5038 merged, so the audience rule exists. Re-confirmed on main that the touch chain is intact and no inventory channel exists.
 - **2026-09-19** The asyncapi document is generated, not hand-written: `bin/generate-asyncapi` runs `asyncapi_cable:generate` over `test/asyncapi/**/*_test.rb`, where each file both declares a channel and tests its broadcast. So Phase 1 and Phase 3 are the same files.
-- **2026-09-19** PR #5048 (`feat/5043-blueprint-owned-and-fleet-view`) touches `blueprints/[slug].vue` but not `useMaterialStock.ts`, so keeping the subscription inside the composable avoids the collision. `pieceVolume` already landed on main.
+- **2026-09-19** PR #5048 (`feat/5043-blueprint-owned-and-fleet-view`) touches `blueprints/[slug].vue` but not `useMaterialStock.ts`. `pieceVolume` already landed on main.
+- **2026-09-20** The subscription could not live inside `useMaterialStock` after all: `BlueprintSlot` instantiates it once per recipe slot, so a page would have opened the same channel four to eight times. The queries are shared through the vue-query cache; a subscription is not. `useMaterialStockUpdates` is exported beside it and called once from the page instead — which does mean a two-line touch to `[slug].vue`, the one file PR #5048 also edits.
+- **2026-09-20** The generated TS cable client is gitignored (`.gitignore:38`) and rebuilt by `postinstall`, so only `asyncapi/cable/v1/schema.yaml` is committed. CI regenerates the channel classes from it.
+- **2026-09-20** `ConnectEvent` reports `reconnect` as optional, not boolean — restating the shape inline was a type error rather than a style choice.
+- **2026-09-20** The transfers list subscribes unfiltered on purpose: a transfer moves stock at both ends and the far end is usually an inventory that view is not scoped to.
 
 ## Progress
 
-- [ ] Phase 1 — The broadcast
-- [ ] Phase 2 — The pages
-- [ ] Phase 3 — Coverage
+- [x] Phase 1 — The broadcast
+- [x] Phase 2 — The pages
+- [x] Phase 3 — Coverage
