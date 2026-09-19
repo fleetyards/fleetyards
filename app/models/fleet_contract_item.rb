@@ -32,7 +32,6 @@
 #
 # Indexes
 #
-#  index_fleet_contract_items_on_fleet_contract_id               (fleet_contract_id)
 #  index_fleet_contract_items_on_fleet_contract_id_and_position  (fleet_contract_id,position)
 #  index_fleet_contract_items_on_identity                        (fleet_contract_id, lower((name)::text), category, unit) UNIQUE
 #  index_fleet_contract_items_on_item_type_and_item_id           (item_type,item_id)

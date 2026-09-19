@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_19_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -622,7 +622,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.index ["fleet_contract_id", "aasm_state"], name: "index_fleet_contract_assignments_on_contract_and_state"
     t.index ["fleet_contract_id", "user_id"], name: "idx_on_fleet_contract_id_user_id_cd14b5f8cd", unique: true
     t.index ["fleet_contract_id"], name: "index_fleet_contract_assignments_on_accepted_lead", unique: true, where: "((role = 0) AND ((aasm_state)::text = 'accepted'::text))"
-    t.index ["fleet_contract_id"], name: "index_fleet_contract_assignments_on_fleet_contract_id"
     t.index ["user_id"], name: "index_fleet_contract_assignments_on_user_id"
   end
 
@@ -641,7 +640,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.datetime "updated_at", null: false
     t.index "fleet_contract_id, lower((name)::text), category, unit", name: "index_fleet_contract_items_on_identity", unique: true
     t.index ["fleet_contract_id", "position"], name: "index_fleet_contract_items_on_fleet_contract_id_and_position"
-    t.index ["fleet_contract_id"], name: "index_fleet_contract_items_on_fleet_contract_id"
     t.index ["item_type", "item_id"], name: "index_fleet_contract_items_on_item_type_and_item_id"
     t.check_constraint "quality IS NULL OR quality >= 0 AND quality <= 1000", name: "fleet_contract_items_quality_range"
     t.check_constraint "quantity > 0::numeric", name: "fleet_contract_items_quantity_positive"
@@ -674,7 +672,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.index ["fleet_id", "aasm_state"], name: "index_fleet_contracts_on_fleet_id_and_aasm_state"
     t.index ["fleet_id", "kind"], name: "index_fleet_contracts_on_fleet_id_and_kind"
     t.index ["fleet_id", "slug"], name: "index_fleet_contracts_on_fleet_id_and_slug", unique: true
-    t.index ["fleet_id"], name: "index_fleet_contracts_on_fleet_id"
     t.index ["source_fleet_inventory_id"], name: "index_fleet_contracts_on_source_fleet_inventory_id"
     t.check_constraint "crew_limit IS NULL OR crew_limit > 0", name: "fleet_contracts_crew_limit_positive"
     t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
@@ -887,7 +884,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.datetime "updated_at", null: false
     t.index ["fleet_inventory_id", "name", "category", "unit"], name: "index_fleet_inventory_positions_on_inventory_and_identity", unique: true
     t.index ["fleet_inventory_id", "slug"], name: "index_fleet_inventory_positions_on_inventory_and_slug", unique: true
-    t.index ["fleet_inventory_id"], name: "index_fleet_inventory_positions_on_fleet_inventory_id"
   end
 
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1097,7 +1093,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.index ["component_id"], name: "index_hardpoint_builds_on_component_id"
     t.index ["environment", "version"], name: "index_hardpoint_builds_on_environment_and_version"
     t.index ["hardpoint_id", "environment", "version"], name: "index_hardpoint_builds_on_hardpoint_and_build", unique: true
-    t.index ["hardpoint_id"], name: "index_hardpoint_builds_on_hardpoint_id"
   end
 
   create_table "hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1163,7 +1158,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
     t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"
     t.index ["type", "id"], name: "index_imports_on_type_and_id"
-    t.index ["type"], name: "index_imports_on_type"
     t.index ["unmatched_hangar_group_id"], name: "index_imports_on_unmatched_hangar_group_id"
     t.index ["user_id"], name: "index_imports_on_user_id"
   end
@@ -1215,7 +1209,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.datetime "updated_at", null: false
     t.index ["inventory_id", "name", "category", "unit"], name: "index_inventory_positions_on_inventory_and_identity", unique: true
     t.index ["inventory_id", "slug"], name: "index_inventory_positions_on_inventory_and_slug", unique: true
-    t.index ["inventory_id"], name: "index_inventory_positions_on_inventory_id"
   end
 
   create_table "inventory_transfer_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1534,7 +1527,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.string "version", null: false
     t.index ["environment", "version"], name: "index_model_module_builds_on_environment_and_version"
     t.index ["model_module_id", "environment", "version"], name: "index_model_module_builds_on_module_and_build", unique: true
-    t.index ["model_module_id"], name: "index_model_module_builds_on_model_module_id"
   end
 
   create_table "model_module_package_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1892,7 +1884,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
     t.uuid "recorded_by_id"
     t.datetime "updated_at", null: false
     t.index ["payout_ledger_id", "entry_type"], name: "index_payout_entries_on_payout_ledger_id_and_entry_type"
-    t.index ["payout_ledger_id"], name: "index_payout_entries_on_payout_ledger_id"
     t.index ["payout_participant_id"], name: "index_payout_entries_on_payout_participant_id"
   end
 

@@ -31,7 +31,6 @@
 #
 #  index_fleet_contracts_on_created_by_id                   (created_by_id)
 #  index_fleet_contracts_on_destination_fleet_inventory_id  (destination_fleet_inventory_id)
-#  index_fleet_contracts_on_fleet_id                        (fleet_id)
 #  index_fleet_contracts_on_fleet_id_and_aasm_state         (fleet_id,aasm_state)
 #  index_fleet_contracts_on_fleet_id_and_kind               (fleet_id,kind)
 #  index_fleet_contracts_on_fleet_id_and_slug               (fleet_id,slug) UNIQUE

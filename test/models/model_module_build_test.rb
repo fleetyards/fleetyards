@@ -18,7 +18,6 @@ require "test_helper"
 # Indexes
 #
 #  index_model_module_builds_on_environment_and_version  (environment,version)
-#  index_model_module_builds_on_model_module_id          (model_module_id)
 #  index_model_module_builds_on_module_and_build         (model_module_id,environment,version) UNIQUE
 #
 # Foreign Keys
