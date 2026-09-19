@@ -70,7 +70,7 @@ const emit = defineEmits<{
   clear: [];
 }>();
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
 
 const internalId = ref(props.id ?? `${props.name}-${uuidv4()}`);
 
@@ -85,8 +85,8 @@ const innerLabel = computed(() => {
 const innerPlaceholder = computed(() => {
   if (props.noPlaceholder) return undefined;
   if (props.placeholder) return props.placeholder;
-  if (props.translationKey) return t(`placeholders.${props.translationKey}`);
-  return t(`placeholders.${props.name}`);
+  const key = `placeholders.${props.translationKey ?? props.name}`;
+  return tExists(key) ? t(key) : undefined;
 });
 
 const {

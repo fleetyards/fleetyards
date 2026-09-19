@@ -51,7 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
   noLabel: false,
 });
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
 
 const fieldOptions =
   props.checkboxValue !== undefined
@@ -126,11 +126,9 @@ const innerPlaceholder = computed(() => {
     return props.placeholder;
   }
 
-  if (props.translationKey) {
-    return t(`placeholders.${props.translationKey}`);
-  }
+  const key = `placeholders.${props.translationKey ?? props.name}`;
 
-  return t(`placeholders.${props.name}`);
+  return tExists(key) ? t(key) : undefined;
 });
 </script>
 

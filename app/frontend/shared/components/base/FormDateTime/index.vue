@@ -75,7 +75,7 @@ const innerLabel = computed(() => {
 const innerPlaceholder = computed(() => {
   if (props.noPlaceholder) return undefined;
   if (props.placeholder) return props.placeholder;
-  const key = `placeholders.${props.name}`;
+  const key = `placeholders.${props.translationKey ?? props.name}`;
   return tExists(key) ? t(key) : undefined;
 });
 
