@@ -128,6 +128,30 @@ class Api::V1::FleetBlueprintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A patch dropping a recipe does not take it out of anybody's hands, and the
+  # recipe page renders a retired blueprint with a badge -- so the owners panel
+  # has to be able to answer there. It asks with `currentVersion=false`.
+  test "GET still names the holders of a recipe the build dropped" do
+    retired = create(:blueprint, :without_build, version: nil)
+    retired.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:user_blueprint, user: @crafter, blueprint: retired)
+
+    sign_in @reader
+
+    assert_api_response :get, 200, api_path: PATH, path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"idIn" => [retired.id], "currentVersion" => false}} do
+      assert_equal [retired.id], parsed_body["items"].pluck("blueprint").pluck("id")
+      assert_equal ["crafter"], parsed_body["items"].first["owners"].pluck("username")
+    end
+
+    # And is absent from the default list, which reads the build we are on --
+    # the same answer the catalogue gives.
+    assert_api_response :get, 200, api_path: PATH, path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"idIn" => [retired.id]}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET takes the catalogue's filters" do
     create(:user_blueprint, user: @crafter, blueprint: @other)
 

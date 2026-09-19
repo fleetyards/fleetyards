@@ -259,6 +259,12 @@ applies the scope itself.
 
 ## Discovery Log
 
+- **2026-09-19** Review. Two P1s, both real. The backfill granted the privilege
+  to custom roles cut off from member data on purpose, and it discloses member
+  identities — narrowed to roles that already read the roster or the ships. And
+  the owners panel asked the fleet list without `currentVersion=false`, so it
+  vanished on exactly the page that renders a "Retired" badge while members
+  still held the recipe.
 - **2026-09-19** Built. Two corrections to the plan on contact: the privilege
   group is read-only (D6), and `RowList` constrains its records to `{ id }`, so
   a fleet row carries the recipe's id as its own. The membership enum stales the

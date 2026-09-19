@@ -47,7 +47,17 @@ export const useBlueprintFleetOwners = (
       fleetList.value.map((fleet) =>
         getFleetBlueprintsQueryOptions(
           fleet.slug,
-          computed(() => ({ q: { idIn: [toValue(blueprintId) as string] } })),
+          computed(() => ({
+            q: {
+              idIn: [toValue(blueprintId) as string],
+              // The fleet list defaults to the build we are on, and a retired
+              // recipe is not in it -- so without this the panel vanishes on
+              // exactly the page that renders a "Retired" badge, while members
+              // still hold the thing. What somebody holds is not a fact about
+              // a build.
+              currentVersion: false,
+            },
+          })),
           { query: { enabled, retry: false } },
         ),
       ),
