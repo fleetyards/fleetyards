@@ -10321,6 +10321,8 @@ components:
           type:
           - string
           - 'null'
+        counted:
+          type: boolean
         retired:
           type: boolean
         storeImage:
@@ -10366,6 +10368,7 @@ components:
       - id
       - name
       - slug
+      - counted
       - retired
       - availability
       - createdAt

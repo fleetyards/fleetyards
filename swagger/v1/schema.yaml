@@ -16209,6 +16209,8 @@ components:
           type:
           - string
           - 'null'
+        counted:
+          type: boolean
         retired:
           type: boolean
         storeImage:
@@ -16226,6 +16228,7 @@ components:
       - id
       - name
       - slug
+      - counted
       - retired
       - availability
       - createdAt
@@ -18421,6 +18424,8 @@ components:
           type:
           - string
           - 'null'
+        counted:
+          type: boolean
       additionalProperties: false
       required:
       - id
@@ -22816,6 +22821,8 @@ components:
           type: string
         slug:
           type: string
+        counted:
+          type: boolean
         available:
           type: boolean
       title: InventoryItemRef
@@ -22913,6 +22920,8 @@ components:
               type: string
             slug:
               type: string
+            counted:
+              type: boolean
             available:
               type: boolean
         inventory:
