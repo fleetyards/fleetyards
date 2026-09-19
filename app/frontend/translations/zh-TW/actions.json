@@ -108,6 +108,10 @@
       "showStatusColor": "顯示狀態顏色",
       "hideStatusColor": "隱藏狀態顏色",
       "addToHangar": "新增至機庫",
+      "blueprint": {
+        "own": "標記為已擁有",
+        "unown": "取消已擁有標記"
+      },
       "resetFilter": "重置篩選器",
       "requestPassword": "請求密碼郵件",
       "changePassword": "更改密碼",
@@ -334,6 +338,9 @@
           "addShip": "新增飛船",
           "addSlot": "新增席位",
           "viewMissions": "檢視任務"
+        },
+        "tours": {
+          "viewTours": "查看行程"
         },
         "events": {
           "create": "建立活動",

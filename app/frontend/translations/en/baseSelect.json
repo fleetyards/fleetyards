@@ -47,6 +47,11 @@
             "prompt": "Select which ships to show",
             "nullablePrompt": "Select an option"
           },
+          "blueprintsFilter": {
+            "label": "Blueprints Filter",
+            "prompt": "Select which blueprints to share",
+            "nullablePrompt": "Select an option"
+          },
           "hangarGroupId": {
             "label": "Hangar Group",
             "prompt": "Select a hangar group",

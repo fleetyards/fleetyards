@@ -190,6 +190,13 @@ class User < ApplicationRecord
   belongs_to :supported_fleet, class_name: "Fleet", optional: true
 
   has_many :inventories, as: :holder, dependent: :destroy
+
+  # The crafting recipes this person holds. Personal like a hangar, and reaching
+  # a fleet only through the membership that says it may -- see
+  # `FleetMembership#blueprints_filter`.
+  has_many :user_blueprints, dependent: :destroy
+  has_many :blueprints, through: :user_blueprints
+
   has_many :fleet_contract_assignments, dependent: :destroy
   has_many :fleet_contracts, through: :fleet_contract_assignments
 

@@ -1346,6 +1346,8 @@ components:
         hangarGroupId:
           type: string
           format: uuid
+        blueprintsFilter:
+          "$ref": "#/components/schemas/FleetMembershipBlueprintsFilterEnum"
         fleetSlug:
           type: string
         fleetName:
@@ -1409,10 +1411,19 @@ components:
       - id
       - username
       - shipsFilter
+      - blueprintsFilter
       - fleetSlug
       - fleetName
       - createdAt
       - updatedAt
+    FleetMembershipBlueprintsFilterEnum:
+      type: string
+      enum:
+      - all
+      - hide
+      x-enumNames:
+      - ALL
+      - HIDE
     FleetMembershipCapabilities:
       type: object
       properties:
@@ -1448,6 +1459,8 @@ components:
           type: boolean
         readVehicles:
           type: boolean
+        readBlueprints:
+          type: boolean
         readRoles:
           type: boolean
         manageFleet:
@@ -1474,6 +1487,7 @@ components:
       - destroyAllies
       - manageAllies
       - readVehicles
+      - readBlueprints
       - readRoles
       - manageFleet
       - updateFleet
@@ -1544,6 +1558,7 @@ components:
       - fleet:vehicles:update
       - fleet:vehicles:delete
       - fleet:vehicles:manage
+      - fleet:blueprints:read
       - fleet:roles:read
       - fleet:roles:create
       - fleet:roles:update
@@ -1600,6 +1615,7 @@ components:
       - FLEET_VEHICLES_UPDATE
       - FLEET_VEHICLES_DELETE
       - FLEET_VEHICLES_MANAGE
+      - FLEET_BLUEPRINTS_READ
       - FLEET_ROLES_READ
       - FLEET_ROLES_CREATE
       - FLEET_ROLES_UPDATE

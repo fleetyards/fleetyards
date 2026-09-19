@@ -11,6 +11,8 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
 import BlueprintPreview from "@/frontend/components/Blueprints/Preview/index.vue";
 import BlueprintSources from "@/frontend/components/Blueprints/Sources/index.vue";
+import BlueprintFleetOwners from "@/frontend/components/Blueprints/FleetOwners/index.vue";
+import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
@@ -102,7 +104,13 @@ watch(
       <div v-if="blueprint" class="blueprint-page">
         <div class="blueprint-page__masthead">
           <div class="blueprint-page__title">
-            <Heading hero>{{ blueprint.name }}</Heading>
+            <div class="blueprint-page__headline">
+              <Heading hero>{{ blueprint.name }}</Heading>
+              <!-- Beside the name, because that is what it is about: the
+                   badges are what the catalogue knows about the recipe, and
+                   this is the reader saying they have it. -->
+              <BlueprintOwnToggle :blueprint="blueprint" />
+            </div>
             <div class="blueprint-page__sub">
               <template v-if="blueprint.craftable">
                 {{ t("labels.blueprint.makesA") }}
@@ -224,6 +232,9 @@ watch(
               :sources="blueprint.sources || []"
               :source-unknown="blueprint.sourceUnknown"
             />
+            <!-- Last in the rail: who can already make this matters once you
+                 know what it costs and where it drops, not before. -->
+            <BlueprintFleetOwners :blueprint-id="blueprint.id" />
           </div>
         </div>
       </div>

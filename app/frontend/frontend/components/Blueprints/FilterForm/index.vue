@@ -11,6 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useBlueprintFilters } from "@/frontend/composables/useBlueprintFilters";
+import { useSessionStore } from "@/frontend/stores/session";
 import {
   type BlueprintQuery,
   BlueprintCraftableTypeEnum,
@@ -26,6 +27,8 @@ withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
+const sessionStore = useSessionStore();
 
 // A single value in the URL comes back from `route.query` as a string rather
 // than an array -- vue-router does no normalising -- so a multi-select handed
@@ -46,6 +49,7 @@ const prefillFormValues = (): BlueprintQuery => ({
     filters.value.consumingCommodityIn ?? filters.value.consumingCommodity,
   ),
   withKnownSource: filters.value.withKnownSource,
+  owned: filters.value.owned,
 });
 
 const setupForm = () => {
@@ -125,6 +129,34 @@ const sourceValue = computed({
     };
   },
 });
+
+// Signed out this can only ask for nothing or for everything, so it is not
+// offered -- the API still answers it, because a URL somebody shared is not
+// theirs to break.
+const ownedVisible = computed(() => sessionStore.isAuthenticated);
+
+const ownedOptions = computed(() => [
+  { value: "true", label: t("labels.filters.blueprints.owned") },
+  { value: "false", label: t("labels.filters.blueprints.notOwned") },
+]);
+
+// A string for the reason `sourceValue` carries one: `useFilters` drops every
+// falsy value on its way into the route, so a boolean `false` was deleted and
+// "the ones I do not have" quietly returned the whole catalogue.
+const ownedValue = computed({
+  get: () => {
+    const value = form.value.owned;
+    if (value === undefined || value === null) return undefined;
+
+    return String(value);
+  },
+  set: (value?: string) => {
+    form.value = {
+      ...form.value,
+      owned: value as unknown as boolean | undefined,
+    };
+  },
+});
 </script>
 
 <template>
@@ -158,6 +190,15 @@ const sourceValue = computed({
       :no-label="true"
       multiple
       searchable
+    />
+
+    <BaseSelect
+      v-if="ownedVisible"
+      v-model="ownedValue"
+      name="owned"
+      :options="ownedOptions"
+      :label="t('labels.filters.blueprints.ownedFilter')"
+      :no-label="true"
     />
 
     <BaseSelect

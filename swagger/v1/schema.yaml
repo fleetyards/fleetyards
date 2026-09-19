@@ -67,6 +67,73 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/blueprints/{slug}/own":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Mark a blueprint as owned
+      tags:
+      - Blueprints
+      operationId: ownBlueprint
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Drop a blueprint's owned mark
+      tags:
+      - Blueprints
+      operationId: unownBlueprint
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -1075,6 +1142,68 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/blueprints":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Blueprints the fleet's members hold
+      tags:
+      - Blueprints
+      operationId: fleetBlueprints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/BlueprintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetBlueprints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/calendar":
     parameters:
     - name: fleetSlug
@@ -15712,6 +15841,8 @@ components:
           - 'null'
         retired:
           type: boolean
+        owned:
+          type: boolean
         sourceUnknown:
           type: boolean
         craftable:
@@ -15940,6 +16071,8 @@ components:
           items:
             type: string
         withKnownSource:
+          type: boolean
+        owned:
           type: boolean
         currentVersion:
           type: boolean
@@ -17946,6 +18079,60 @@ components:
       - meta
       - items
       title: FleetAlliancesList
+    FleetBlueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        blueprint:
+          "$ref": "#/components/schemas/Blueprint"
+        ownerCount:
+          type: integer
+        owners:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetBlueprintOwner"
+      additionalProperties: false
+      required:
+      - id
+      - blueprint
+      - ownerCount
+      - owners
+      title: FleetBlueprint
+    FleetBlueprintOwner:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        username:
+          type: string
+        nickname:
+          type:
+          - string
+          - 'null'
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - userId
+      - username
+      title: FleetBlueprintOwner
+    FleetBlueprints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetBlueprint"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetBlueprints
     FleetCalendar:
       type: object
       properties:
@@ -20190,6 +20377,8 @@ components:
         hangarGroupId:
           type: string
           format: uuid
+        blueprintsFilter:
+          "$ref": "#/components/schemas/FleetMembershipBlueprintsFilterEnum"
         fleetSlug:
           type: string
         fleetName:
@@ -20253,6 +20442,7 @@ components:
       - id
       - username
       - shipsFilter
+      - blueprintsFilter
       - fleetSlug
       - fleetName
       - createdAt
@@ -20378,6 +20568,15 @@ components:
       required:
       - total
       title: FleetMembersStatsPublic
+    FleetMembershipBlueprintsFilterEnum:
+      type: string
+      enum:
+      - all
+      - hide
+      x-enumNames:
+      - ALL
+      - HIDE
+      title: FleetMembershipBlueprintsFilterEnum
     FleetMembershipCapabilities:
       type: object
       properties:
@@ -20413,6 +20612,8 @@ components:
           type: boolean
         readVehicles:
           type: boolean
+        readBlueprints:
+          type: boolean
         readRoles:
           type: boolean
         manageFleet:
@@ -20439,6 +20640,7 @@ components:
       - destroyAllies
       - manageAllies
       - readVehicles
+      - readBlueprints
       - readRoles
       - manageFleet
       - updateFleet
@@ -20513,6 +20715,8 @@ components:
           type:
           - string
           - 'null'
+        blueprintsFilter:
+          "$ref": "#/components/schemas/FleetMembershipBlueprintsFilterEnum"
       additionalProperties: false
       title: FleetMembershipUpdateInput
     FleetModelCountsStats:
@@ -20749,6 +20953,7 @@ components:
       - fleet:vehicles:update
       - fleet:vehicles:delete
       - fleet:vehicles:manage
+      - fleet:blueprints:read
       - fleet:roles:read
       - fleet:roles:create
       - fleet:roles:update
@@ -20805,6 +21010,7 @@ components:
       - FLEET_VEHICLES_UPDATE
       - FLEET_VEHICLES_DELETE
       - FLEET_VEHICLES_MANAGE
+      - FLEET_BLUEPRINTS_READ
       - FLEET_ROLES_READ
       - FLEET_ROLES_CREATE
       - FLEET_ROLES_UPDATE

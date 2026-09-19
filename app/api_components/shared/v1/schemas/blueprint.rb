@@ -29,6 +29,15 @@ module Shared
 
             retired: {type: :boolean},
 
+            # Whether the reader holds this recipe. False rather than absent on
+            # an anonymous read -- the catalogue is public, so "not signed in"
+            # and "signed in without it" are the same answer here.
+            #
+            # Not required, though the catalogue always sends it: the admin
+            # blueprint component inherits this one, and an admin reading the
+            # catalogue is not being asked what they personally hold.
+            owned: {type: :boolean},
+
             # Said outright rather than left to an empty `sources`: the export
             # says nothing about where 901 of the 1607 recipes come from, and
             # an empty array reads as a gap in our data rather than in the

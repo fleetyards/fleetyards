@@ -47,6 +47,10 @@ class FleetRole < ApplicationRecord
     "memberships" => FleetMembership::AVAILABLE_PRIVILEGES,
     "invites" => FleetInviteUrl::AVAILABLE_PRIVILEGES,
     "vehicles" => FleetVehicle::AVAILABLE_PRIVILEGES,
+    # Read and nothing else: the markers belong to the members, so there is
+    # nothing here for a fleet to create, update or delete. The roles page
+    # omits a group's manage toggle when the group has none.
+    "blueprints" => UserBlueprint::AVAILABLE_PRIVILEGES,
     "roles" => FleetRole::AVAILABLE_PRIVILEGES,
     "inventories" => FleetInventory::AVAILABLE_PRIVILEGES,
     "allies" => FleetAlliance::AVAILABLE_PRIVILEGES,
@@ -95,6 +99,7 @@ class FleetRole < ApplicationRecord
         FleetMembership::DEFAULT_PRIVILEGES[:admin],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:admin],
         FleetVehicle::DEFAULT_PRIVILEGES[:admin],
+        UserBlueprint::DEFAULT_PRIVILEGES[:admin],
         FleetRole::DEFAULT_PRIVILEGES[:admin],
         FleetInventory::DEFAULT_PRIVILEGES[:admin],
         FleetAlliance::DEFAULT_PRIVILEGES[:admin],
@@ -108,6 +113,7 @@ class FleetRole < ApplicationRecord
         FleetMembership::DEFAULT_PRIVILEGES[:officer],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:officer],
         FleetVehicle::DEFAULT_PRIVILEGES[:officer],
+        UserBlueprint::DEFAULT_PRIVILEGES[:officer],
         FleetRole::DEFAULT_PRIVILEGES[:officer],
         FleetInventory::DEFAULT_PRIVILEGES[:officer],
         FleetAlliance::DEFAULT_PRIVILEGES[:officer],
@@ -121,6 +127,7 @@ class FleetRole < ApplicationRecord
         FleetMembership::DEFAULT_PRIVILEGES[:member],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:member],
         FleetVehicle::DEFAULT_PRIVILEGES[:member],
+        UserBlueprint::DEFAULT_PRIVILEGES[:member],
         FleetRole::DEFAULT_PRIVILEGES[:member],
         FleetInventory::DEFAULT_PRIVILEGES[:member],
         FleetAlliance::DEFAULT_PRIVILEGES[:member],

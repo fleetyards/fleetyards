@@ -211,6 +211,10 @@
             "paragraph3": "Get more Information "
           }
         },
+        "blueprint": {
+          "accountRequired": "Registriere dich oder melde dich an, um deine Baupläne zu verwalten.",
+          "own": "Der Bauplan konnte nicht aktualisiert werden. Bitte versuche es erneut."
+        },
         "default": "<b>Etwas ist schief gelaufen.</b> <br>Hast du schon versucht, es aus- und wieder einzuschalten?"
       },
       "account": {

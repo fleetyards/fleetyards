@@ -46,6 +46,11 @@ class Blueprint < ApplicationRecord
   # file in the export.
   belongs_to :craftable, polymorphic: true, optional: true
 
+  # Who holds this recipe. Not scoped to a build: a patch does not take away
+  # what somebody already has, and a retired recipe still answers "I have this".
+  has_many :user_blueprints, dependent: :destroy
+  has_many :owners, through: :user_blueprints, source: :user
+
   # What each build of the game says about this blueprint.
   has_many :builds, class_name: "BlueprintBuild", dependent: :destroy
   # The build we are being served from, which is the configured one unless its
@@ -147,6 +152,27 @@ class Blueprint < ApplicationRecord
       .select(:blueprint_id)
 
     ActiveModel::Type::Boolean.new.cast(flag) ? where(id: resolved) : where.not(id: resolved)
+  }
+
+  # The recipes a holder has, and its complement. `holder` is whatever a
+  # `user_id` condition takes -- one user, a relation of them, a select of ids --
+  # so "mine" and "anyone in this fleet" are the same scope asked twice.
+  #
+  # Unversioned on purpose, unlike everything else here: what somebody holds is
+  # not a fact about a build, so this is the one filter that does not resolve
+  # through `blueprint_facts`.
+  scope :owned_by, ->(holder) {
+    return none if holder.nil?
+
+    where(id: UserBlueprint.where(user_id: holder).select(:blueprint_id))
+  }
+
+  # Signed out, nobody holds anything, so "not mine" is the whole catalogue
+  # rather than nothing -- the opposite of `owned_by`'s empty answer.
+  scope :not_owned_by, ->(holder) {
+    return all if holder.nil?
+
+    where.not(id: UserBlueprint.where(user_id: holder).select(:blueprint_id))
   }
 
   before_save :update_slugs

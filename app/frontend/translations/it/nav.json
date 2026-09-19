@@ -40,6 +40,8 @@
         "add": "Crea una nuova Flotta",
         "invites": "Inviti",
         "ships": "Navi",
+        "blueprints": "Progetti",
+        "assets": "Beni",
         "members": {
           "index": "Members",
           "invites": "Invites",

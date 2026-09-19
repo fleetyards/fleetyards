@@ -108,6 +108,10 @@
       "showStatusColor": "Afficher l'état en tant que couleur",
       "hideStatusColor": "Masquer le statut en tant que couleur",
       "addToHangar": "Ajouter à votre Hangar",
+      "blueprint": {
+        "own": "Marquer comme possédé",
+        "unown": "Retirer la marque"
+      },
       "resetFilter": "Réinitialiser les filtres",
       "requestPassword": "Demande de mot de passe par e-mail",
       "changePassword": "Modifier le mot de passe",
@@ -334,6 +338,9 @@
           "addShip": "Ajouter un vaisseau",
           "addSlot": "Ajouter un poste",
           "viewMissions": "Voir les missions"
+        },
+        "tours": {
+          "viewTours": "Voir les tournées"
         },
         "events": {
           "create": "Créer un événement",

@@ -108,6 +108,10 @@
       "showStatusColor": "Show Status as Color",
       "hideStatusColor": "Hide Status as Color",
       "addToHangar": "Add to Hangar",
+      "blueprint": {
+        "own": "Mark as owned",
+        "unown": "Remove owned mark"
+      },
       "resetFilter": "Reset Filter",
       "requestPassword": "Request Password email",
       "changePassword": "Change Password",
@@ -334,6 +338,9 @@
           "addShip": "Add Ship",
           "addSlot": "Add Slot",
           "viewMissions": "View Missions"
+        },
+        "tours": {
+          "viewTours": "View Tours"
         },
         "events": {
           "create": "Create Event",

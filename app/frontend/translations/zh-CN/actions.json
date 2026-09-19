@@ -108,6 +108,10 @@
       "showStatusColor": "显示状态颜色",
       "hideStatusColor": "隐藏状态颜色",
       "addToHangar": "添加到机库",
+      "blueprint": {
+        "own": "标记为已拥有",
+        "unown": "取消已拥有标记"
+      },
       "resetFilter": "重置过滤器",
       "requestPassword": "请求密码邮件",
       "changePassword": "更改密码",
@@ -334,6 +338,9 @@
           "addShip": "添加飞船",
           "addSlot": "添加席位",
           "viewMissions": "查看任务"
+        },
+        "tours": {
+          "viewTours": "查看行程"
         },
         "events": {
           "create": "创建活动",

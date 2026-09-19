@@ -211,6 +211,10 @@
             "paragraph3": "Get more Information "
           }
         },
+        "blueprint": {
+          "accountRequired": "Regístrate o inicia sesión para llevar la cuenta de tus planos.",
+          "own": "No pudimos actualizar ese plano. Inténtalo de nuevo."
+        },
         "default": "<b>Algo salió mal.</b> <br>¿Has intentado apagarlo y volverlo a encender?"
       },
       "account": {

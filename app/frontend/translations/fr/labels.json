@@ -449,6 +449,15 @@
             "label": "Spécifier un Hangar de groupe",
             "nullablePrompt": "Aucun Groupe sélectionné"
           },
+          "blueprintsFilter": {
+            "label": "Quels plans partager avec la flotte ?",
+            "nullablePrompt": "Aucune option sélectionnée",
+            "field": "Sélection de plans",
+            "values": {
+              "all": "Tous les plans que je possède",
+              "hide": "Aucun plan"
+            }
+          },
           "total": "Total : %{count}",
           "joined": "Inscrit le",
           "invited": "Invité",
@@ -478,6 +487,7 @@
             "memberships": "Membres",
             "invites": "Invitations",
             "vehicles": "Véhicules",
+            "blueprints": "Plans",
             "roles": "Rôles",
             "inventories": "Inventaires",
             "missions": "Missions",
@@ -508,6 +518,7 @@
             "fleet:vehicles:update": "Mettre à jour les véhicules",
             "fleet:vehicles:delete": "Retirer des véhicules",
             "fleet:vehicles:manage": "Gérer les véhicules",
+            "fleet:blueprints:read": "Voir les plans",
             "fleet:roles:read": "Voir les rôles",
             "fleet:roles:create": "Créer des rôles",
             "fleet:roles:update": "Mettre à jour les rôles",
@@ -1703,7 +1714,10 @@
           "source": "Source",
           "withSource": "Source connue",
           "withoutSource": "Aucune source connue",
-          "material": "Utilise le matériau"
+          "material": "Utilise le matériau",
+          "ownedFilter": "Possédé",
+          "owned": "Possédé",
+          "notOwned": "Non possédé"
         }
       },
       "station": {
@@ -2744,6 +2758,8 @@
         "scu": "%{amount} SCU",
         "pieces": "%{count}×",
         "whereItDrops": "Où l'obtenir",
+        "fleetOwners": "Qui peut le fabriquer",
+        "ownedByCount": "%{count} le possèdent",
         "sourceSummary": "%{count} sources · %{orgs} organisations",
         "unattributed": "Non attribué",
         "minPoints": "À partir de %{points} points",

@@ -40,6 +40,8 @@
         "add": "Crear una nueva flota",
         "invites": "Invitaciones",
         "ships": "Naves",
+        "blueprints": "Planos",
+        "assets": "Activos",
         "members": {
           "index": "Members",
           "invites": "Invites",

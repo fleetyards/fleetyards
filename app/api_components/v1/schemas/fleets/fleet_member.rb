@@ -24,6 +24,7 @@ module V1
             guilded: {type: :string},
             shipsFilter: ::V1::Schemas::Enums::FleetMembershipShipsFilterEnum,
             hangarGroupId: {type: :string, format: :uuid},
+            blueprintsFilter: ::V1::Schemas::Enums::FleetMembershipBlueprintsFilterEnum,
             fleetSlug: {type: :string},
             fleetName: {type: :string},
             fleet: {"$ref": "#/components/schemas/Fleet"},
@@ -53,7 +54,7 @@ module V1
           # Not fleetRole: FleetRole cascades ahead of the memberships it
           # nullifies, so a membership torn down with its fleet is broadcast
           # without one.
-          required: %w[id username shipsFilter fleetSlug fleetName createdAt updatedAt]
+          required: %w[id username shipsFilter blueprintsFilter fleetSlug fleetName createdAt updatedAt]
         })
       end
     end

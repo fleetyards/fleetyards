@@ -449,6 +449,15 @@
             "label": "指定機庫群組",
             "nullablePrompt": "未選擇群組"
           },
+          "blueprintsFilter": {
+            "label": "哪些藍圖應與艦隊共享？",
+            "nullablePrompt": "未選擇任何選項",
+            "field": "藍圖選擇",
+            "values": {
+              "all": "我擁有的全部藍圖",
+              "hide": "不共享藍圖"
+            }
+          },
           "total": "總計: %{count}",
           "joined": "加入於",
           "invited": "已邀請",
@@ -478,6 +487,7 @@
             "memberships": "成員",
             "invites": "邀請",
             "vehicles": "載具",
+            "blueprints": "藍圖",
             "roles": "角色",
             "inventories": "庫存",
             "missions": "任務",
@@ -508,6 +518,7 @@
             "fleet:vehicles:update": "更新載具",
             "fleet:vehicles:delete": "移除載具",
             "fleet:vehicles:manage": "管理載具",
+            "fleet:blueprints:read": "查看藍圖",
             "fleet:roles:read": "檢視角色",
             "fleet:roles:create": "建立角色",
             "fleet:roles:update": "更新角色",
@@ -1703,7 +1714,10 @@
           "source": "來源",
           "withSource": "有已知來源",
           "withoutSource": "無已知來源",
-          "material": "使用材料"
+          "material": "使用材料",
+          "ownedFilter": "已擁有",
+          "owned": "已擁有",
+          "notOwned": "未擁有"
         }
       },
       "station": {
@@ -2744,6 +2758,8 @@
         "scu": "%{amount} SCU",
         "pieces": "%{count}×",
         "whereItDrops": "取得途徑",
+        "fleetOwners": "誰能製造",
+        "ownedByCount": "%{count} 人擁有",
         "sourceSummary": "%{count} 個來源 · %{orgs} 個組織",
         "unattributed": "未標明組織",
         "minPoints": "%{points} 點起",

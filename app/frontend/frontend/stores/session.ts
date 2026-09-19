@@ -71,6 +71,11 @@ export const useSessionStore = defineStore("session", {
     login(user: User) {
       sessionEpoch += 1;
 
+      // Signing in changes what the public catalogue says: every blueprint in
+      // the cache was fetched anonymously and carries `owned: false`, which is
+      // the answer for nobody rather than for the person who just arrived.
+      queryClient.removeQueries({ queryKey: ["blueprints"] });
+
       this.authenticated = true;
       this.currentUser = user;
     },
@@ -100,6 +105,19 @@ export const useSessionStore = defineStore("session", {
         predicate: (query) =>
           query.queryKey[0] === "fleets" &&
           query.queryKey[2] === "inventory-stock",
+      });
+
+      // The blueprint catalogue is public but every row in it carries `owned`,
+      // which is the reader's own answer -- so the cached list and the cached
+      // recipe would both show the previous reader's marks to whoever opens the
+      // catalogue next in the same tab.
+      queryClient.removeQueries({ queryKey: ["blueprints"] });
+
+      // And what a fleet's members hold, which keys its slug in the middle the
+      // way fleet stock does.
+      queryClient.removeQueries({
+        predicate: (query) =>
+          query.queryKey[0] === "fleets" && query.queryKey[2] === "blueprints",
       });
 
       this.$reset();

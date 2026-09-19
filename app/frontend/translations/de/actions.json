@@ -108,6 +108,10 @@
       "showStatusColor": "Status als Farbe anzeigen",
       "hideStatusColor": "Status als Farbe ausblenden",
       "addToHangar": "Zum Hangar hinzufügen",
+      "blueprint": {
+        "own": "Als besessen markieren",
+        "unown": "Markierung entfernen"
+      },
       "resetFilter": "Filter zurücksetzen",
       "requestPassword": "Passwort-E-Mail anfordern",
       "changePassword": "Passwort ändern",
@@ -334,6 +338,9 @@
           "addShip": "Schiff hinzufügen",
           "addSlot": "Slot hinzufügen",
           "viewMissions": "Missionen anzeigen"
+        },
+        "tours": {
+          "viewTours": "Touren ansehen"
         },
         "events": {
           "create": "Event erstellen",

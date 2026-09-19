@@ -40,6 +40,8 @@
         "add": "Create a new Fleet",
         "invites": "Invites",
         "ships": "Ships",
+        "blueprints": "Blueprints",
+        "assets": "Assets",
         "members": {
           "index": "Members",
           "invites": "Invites",

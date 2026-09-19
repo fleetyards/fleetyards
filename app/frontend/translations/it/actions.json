@@ -108,6 +108,10 @@
       "showStatusColor": "Mostra stato come colori",
       "hideStatusColor": "Nascondi stato come colori",
       "addToHangar": "Aggiungi all'hangar",
+      "blueprint": {
+        "own": "Segna come posseduto",
+        "unown": "Rimuovi il contrassegno"
+      },
       "resetFilter": "Resetta i filtri",
       "requestPassword": "Richiedi la password via email",
       "changePassword": "Cambia la password",
@@ -334,6 +338,9 @@
           "addShip": "Aggiungi nave",
           "addSlot": "Aggiungi slot",
           "viewMissions": "Vedi le missioni"
+        },
+        "tours": {
+          "viewTours": "Vedi i tour"
         },
         "events": {
           "create": "Crea evento",
