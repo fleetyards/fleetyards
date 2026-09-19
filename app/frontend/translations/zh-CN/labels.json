@@ -1844,6 +1844,10 @@
       },
       "admin": {
         "blueprints": {
+          "status": {
+            "sourceKnown": "来源已知",
+            "outputResolved": "产出在目录中"
+          },
           "columns": {
             "source": "来源",
             "output": "产出",

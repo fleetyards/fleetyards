@@ -1844,6 +1844,10 @@
       },
       "admin": {
         "blueprints": {
+          "status": {
+            "sourceKnown": "Quelle bekannt",
+            "outputResolved": "Ergebnis in einem Katalog"
+          },
           "columns": {
             "source": "Quelle",
             "output": "Ergebnis",

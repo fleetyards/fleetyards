@@ -120,6 +120,18 @@ const columns: BaseTableCol<Blueprint>[] = [
 
 const materialNames = (record: Blueprint) =>
   (record.materials || []).map((material) => material.name).join(", ");
+
+// A tick and a cross carry the whole answer in these two columns, and an icon
+// has no accessible name -- so each one is read out rather than only drawn.
+const sourceStatus = (record: Blueprint) =>
+  record.sourceUnknown
+    ? t("labels.blueprint.noKnownSource")
+    : t("labels.admin.blueprints.status.sourceKnown");
+
+const outputStatus = (record: Blueprint) =>
+  record.craftableMissing
+    ? t("labels.admin.blueprints.noOutput")
+    : t("labels.admin.blueprints.status.outputResolved");
 </script>
 
 <template>
@@ -186,12 +198,26 @@ const materialNames = (record: Blueprint) =>
           {{ record.slotCount }}
         </template>
         <template #col-source="{ record }">
-          <i v-if="record.sourceUnknown" class="fa-duotone fa-times" />
-          <i v-else class="fa-duotone fa-check" />
+          <i
+            :class="
+              record.sourceUnknown
+                ? 'fa-duotone fa-times'
+                : 'fa-duotone fa-check'
+            "
+            aria-hidden="true"
+          />
+          <span class="sr-only">{{ sourceStatus(record) }}</span>
         </template>
         <template #col-output="{ record }">
-          <i v-if="record.craftableMissing" class="fa-duotone fa-times" />
-          <i v-else class="fa-duotone fa-check" />
+          <i
+            :class="
+              record.craftableMissing
+                ? 'fa-duotone fa-times'
+                : 'fa-duotone fa-check'
+            "
+            aria-hidden="true"
+          />
+          <span class="sr-only">{{ outputStatus(record) }}</span>
         </template>
         <template #col-build="{ record }">
           <span :class="{ 'blueprint-quiet': record.retired }">

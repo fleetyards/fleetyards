@@ -1844,6 +1844,10 @@
       },
       "admin": {
         "blueprints": {
+          "status": {
+            "sourceKnown": "Source known",
+            "outputResolved": "Output in a catalogue"
+          },
           "columns": {
             "source": "Source",
             "output": "Output",
@@ -1865,7 +1869,7 @@
             "pool": "Pool"
           },
           "makes": "Makes",
-          "noOutput": "In no catalogue",
+          "noOutput": "Not in a catalogue",
           "slug": "Slug",
           "scKey": "Game key",
           "scRef": "Game ref",
