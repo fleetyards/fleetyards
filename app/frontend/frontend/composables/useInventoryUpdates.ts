@@ -17,13 +17,13 @@ import { FeatureFlagName } from "@/services/fyApi";
  * own, which is also what tells the two apart: one reader holds one
  * subscription for every fleet they are in.
  */
-export type InventoryChange = {
+export interface InventoryChange {
   inventoryId: string;
   inventorySlug: string;
   fleetSlug?: string;
-};
+}
 
-type Options = {
+interface Options {
   /**
    * Which changes this caller cares about. Applied before the debounce, not
    * after: a burst spanning two fleets would otherwise collapse to whichever
@@ -31,7 +31,7 @@ type Options = {
    * hear about its own change.
    */
   filter?: (change: InventoryChange) => boolean;
-};
+}
 
 /**
  * Refetch when stock moves.

@@ -74,11 +74,16 @@ const { getQuery, isFilterSelected } = useInventoryItemFilters(refetchAll);
 // Somebody else can move stock through these while the page is open -- a
 // transfer accepted into one of them, or another session of the reader's own.
 // The grid and the ledger both read it, so both catch up.
-useInventoryUpdates(() => {
-  void refetchInventories();
-  void refetchStock();
-  void refetchItems();
-});
+useInventoryUpdates(
+  () => {
+    void refetchInventories();
+    void refetchStock();
+    void refetchItems();
+  },
+  // One subscription carries the reader's fleets as well as their own
+  // inventories, and a fleet's store is not on this page.
+  { filter: (change) => change.fleetSlug === undefined },
+);
 
 const queryParams = computed(() => ({
   q: getQuery(),

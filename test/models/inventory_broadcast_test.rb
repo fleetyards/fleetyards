@@ -82,4 +82,46 @@ class InventoryBroadcastTest < ActiveSupport::TestCase
       create(:inventory_item, inventory: inventory)
     end
   end
+
+  # A channel's `broadcast_to` is inherited, so overriding it on the class and
+  # removing the override again puts the real one back -- minitest 6 dropped
+  # `stub`, and the suite pulls in no mocking library.
+  def with_broadcast_failing(channel, recorder = [])
+    channel.define_singleton_method(:broadcast_to) do |recipient, _payload|
+      recorder << recipient
+      raise "pubsub is down"
+    end
+
+    yield recorder
+  ensure
+    channel.singleton_class.send(:remove_method, :broadcast_to)
+  end
+
+  # The ping runs after the write it reports has already committed, so a
+  # pubsub backend that is down must not turn a deposit that landed into a
+  # deposit that raised -- and one recipient failing must not cost the rest
+  # of the roster their notification.
+  test "a failing broadcast neither raises nor stops the fan-out" do
+    depot = create(:fleet_inventory, fleet: @fleet)
+
+    with_broadcast_failing(FleetInventoryChannel) do |attempted|
+      assert_nothing_raised do
+        create(:fleet_inventory_item, fleet_inventory: depot)
+      end
+
+      assert_equal 3, attempted.count,
+        "the fan-out stopped at the first recipient that raised"
+    end
+  end
+
+  test "a failing hangar broadcast does not fail the write" do
+    holder = create(:user)
+    inventory = create(:inventory, holder: holder)
+
+    with_broadcast_failing(HangarInventoryChannel) do
+      assert_nothing_raised do
+        create(:inventory_item, inventory: inventory)
+      end
+    end
+  end
 end

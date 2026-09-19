@@ -74,7 +74,14 @@ useInventoryUpdates(
     void refetchStock();
     void refetchLogItems();
   },
-  { filter: (change) => change.inventorySlug === inventorySlug.value },
+  // The slug alone is not an address: it is unique within its holder, not
+  // across holders, so a fleet store named "Refinery" would match the
+  // reader's own one.
+  {
+    filter: (change) =>
+      change.fleetSlug === undefined &&
+      change.inventorySlug === inventorySlug.value,
+  },
 );
 
 const queryParams = computed(() => ({

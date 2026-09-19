@@ -110,7 +110,7 @@ class FleetInventory < ApplicationRecord
       next unless visible_to?(membership)
       next if membership.user.blank?
 
-      FleetInventoryChannel.broadcast_to(membership.user, payload)
+      broadcast_safely(FleetInventoryChannel, membership.user, payload)
     end
   end
 

@@ -65,7 +65,7 @@ class Inventory < ApplicationRecord
   private def broadcast_inventory_change
     return unless holder.is_a?(::User)
 
-    HangarInventoryChannel.broadcast_to(holder, {inventoryId: id, inventorySlug: slug})
+    broadcast_safely(HangarInventoryChannel, holder, {inventoryId: id, inventorySlug: slug})
   end
 
   def self.provision_for(vehicle, holder:)

@@ -42,6 +42,24 @@ module InventoryStock
     raise NotImplementedError, "#{self.class.name} must define #broadcast_inventory_change"
   end
 
+  # A ping is best effort, and it runs after the write it reports has already
+  # committed. A pubsub backend that is refusing connections must not turn a
+  # deposit that landed into a deposit that raised -- and in a fan-out, one
+  # recipient failing must not cost the remaining members their notification.
+  #
+  # Only the new fan-outs are wrapped. The broadcasts that have always run
+  # bare from `after_commit` -- Vehicle's, FleetMembership's -- carry the same
+  # exposure, and changing the whole app's posture is not this change's
+  # business.
+  private def broadcast_safely(channel, recipient, payload)
+    channel.broadcast_to(recipient, payload)
+  rescue => e
+    Rails.logger.error(
+      "[#{self.class.name}##{id}] #{channel} broadcast to #{recipient.class.name}##{recipient.id} " \
+      "failed: #{e.class}: #{e.message}"
+    )
+  end
+
   class_methods do
     def inventory_items_association(association_name)
       has_many association_name, dependent: :destroy

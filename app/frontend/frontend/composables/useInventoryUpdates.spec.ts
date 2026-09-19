@@ -4,11 +4,11 @@ import { REFRESH_WAIT_MS } from "@/shared/composables/useDebouncedRefresh";
 import { createPinia, setActivePinia } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 
-type Handler = {
+interface Handler {
   channel: { identifier?: string; name?: string };
   received?: (change: unknown) => void;
   connected?: (event: { reconnect?: boolean }) => void;
-};
+}
 
 const handlers: Handler[] = [];
 
