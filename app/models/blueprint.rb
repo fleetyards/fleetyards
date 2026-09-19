@@ -56,7 +56,18 @@ class Blueprint < ApplicationRecord
   # Without it this association is empty for every row during that window, and
   # `retired?`, which is `build.blank?`, told every reader that everything in
   # the catalogue was no longer in the game.
-  has_one :build, -> { current(::ScData::Source.current.served) }, class_name: "BlueprintBuild", inverse_of: :blueprint
+  #
+  # Resolved through `served_source`, which asks the question of *this*
+  # catalogue, rather than through the global `served`. Blueprints are the
+  # reason that distinction exists: they are the only catalogue with no rows in
+  # 4.10.0 or 4.9.0, so a reader on one of those builds gets a global `served`
+  # that blueprints cannot answer for. `facts` then falls back to the last build
+  # that did describe the recipe while `build` stayed empty, and the page said
+  # both -- the whole recipe, off 4.10.1, under the word "Retired".
+  #
+  # `current_version` has always resolved this way; this association was the one
+  # place in the model that did not.
+  has_one :build, -> { current(::Blueprint.served_source) }, class_name: "BlueprintBuild", inverse_of: :blueprint
 
   # The newest build of this environment that still describes the recipe, which
   # is what one the export dropped falls back to.
