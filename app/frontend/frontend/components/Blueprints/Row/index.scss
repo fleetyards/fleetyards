@@ -147,6 +147,45 @@
     font-variant-numeric: tabular-nums;
   }
 
+  // Names rather than chips: a material is a thing the catalogue can be
+  // filtered by, a person is somebody you go and ask.
+  &__owners {
+    display: none;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  &__owner {
+    color: var(--color-text-dim, #959595);
+    white-space: nowrap;
+    transition: color 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text, #c8c8c8);
+    }
+  }
+
+  &__owner-more {
+    color: var(--color-muted, #7a8288);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Not in `__badges`: the badges are what the catalogue knows about the
+  // recipe, and this is what the reader has said about it.
+  &__actions {
+    display: flex;
+    align-items: center;
+    flex: none;
+  }
+
   &__badges {
     display: flex;
     gap: 6px;
