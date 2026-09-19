@@ -10323,6 +10323,10 @@ components:
           - 'null'
         counted:
           type: boolean
+        pieceVolume:
+          type:
+          - number
+          - 'null'
         retired:
           type: boolean
         storeImage:
