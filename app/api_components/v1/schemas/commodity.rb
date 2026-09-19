@@ -51,7 +51,7 @@ module V1
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[id name slug counted retired availability createdAt updatedAt]
+        required: %w[id name slug counted consumable containerSizes retired availability createdAt updatedAt]
       })
     end
   end
