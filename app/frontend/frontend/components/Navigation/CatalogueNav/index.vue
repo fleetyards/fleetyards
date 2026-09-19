@@ -43,7 +43,6 @@ const active = computed(() =>
     menu-key="catalogue-menu"
     :submenu-active="active"
     icon="fa-duotone fa-books"
-    prefix="04"
   >
     <template #submenu>
       <NavItem

@@ -142,7 +142,6 @@ const settingsActive = computed(() => {
           :to="{ name: 'home' }"
           :label="t('nav.home')"
           icon="fa-duotone fa-home-alt"
-          prefix="01"
         />
         <NavItem
           v-if="isAuthenticated || !hangarPreview"
@@ -153,14 +152,12 @@ const settingsActive = computed(() => {
           :label="t('nav.hangar.index')"
           :active="isHangarRoute"
           icon="fa-duotone fa-warehouse"
-          prefix="02"
         />
         <NavItem
           v-else
           :to="{ name: 'hangar-preview' }"
           :label="t('nav.hangar.index')"
           icon="fa-light fa-warehouse"
-          prefix="02"
         />
         <NavItem
           :to="{
@@ -170,7 +167,6 @@ const settingsActive = computed(() => {
           :label="t('nav.ships.index')"
           :active="isShipRoute"
           icon="fa-duotone fa-starship"
-          prefix="03"
         />
         <!-- Route meta alone does not put anything here: both menus are written
              out by hand and read none of it, so `nav: "main"` on the route left
@@ -180,21 +176,18 @@ const settingsActive = computed(() => {
           :to="{ name: 'compare' }"
           :label="t('nav.compare.ships')"
           icon="fa-duotone fa-code-compare"
-          prefix="04"
         />
         <FleetsNav />
         <NavItem
           :to="{ name: 'images' }"
           :label="t('nav.images')"
           icon="fa-duotone fa-images"
-          prefix="06"
         />
         <ToolsNav />
         <NavItem
           :to="{ name: 'stats' }"
           :label="t('nav.stats')"
           icon="fa-duotone fa-chart-bar"
-          prefix="08"
         />
         <template v-if="visualTestsEnabled">
           <li class="nav-item__divider" />
@@ -202,7 +195,6 @@ const settingsActive = computed(() => {
             :to="{ name: 'visual-tests' }"
             :label="t('nav.visualTests.index')"
             icon="fa-duotone fa-pen-swirl"
-            prefix="09"
           />
         </template>
       </template>

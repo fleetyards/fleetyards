@@ -144,13 +144,12 @@ const groupActive = (members: string[]) =>
     />
 
     <NavItem
-      v-for="(group, index) in GROUPS"
+      v-for="group in GROUPS"
       :key="group.key"
       :label="t(`nav.visualTests.groups.${group.key}`)"
       :menu-key="`visual-tests-${group.key}-menu`"
       :submenu-active="groupActive(group.members)"
       :icon="group.icon"
-      :prefix="String(index + 1).padStart(2, '0')"
     >
       <template #submenu>
         <NavItem
@@ -167,13 +166,11 @@ const groupActive = (members: string[]) =>
       :to="{ name: 'visual-tests-forms' }"
       :label="t('nav.visualTests.forms')"
       icon="fadt fa-input-text"
-      prefix="04"
     />
     <NavItem
       :to="{ name: 'visual-tests-events' }"
       :label="t('nav.visualTests.events')"
       icon="fadt fa-calendar-day"
-      prefix="05"
     />
   </div>
 </template>

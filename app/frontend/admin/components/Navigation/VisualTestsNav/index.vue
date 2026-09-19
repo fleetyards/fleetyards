@@ -30,7 +30,6 @@ const { t } = useI18n();
       :to="{ name: 'admin-visual-tests-notifications' }"
       :label="t('nav.admin.visualTests.notifications')"
       icon="fadt fa-bell"
-      prefix="01"
     />
   </div>
 </template>
