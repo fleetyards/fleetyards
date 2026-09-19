@@ -104,6 +104,35 @@ class Api::V1::BlueprintsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The rate between the two units a recipe and an inventory speak. The slot
+  # compares a holding against a cost by converting with it, and treats an
+  # absent one as unconvertible -- so a serializer that stopped emitting it
+  # would quietly switch every cross-unit comparison back off without failing
+  # the schema, which allows null, or the composable tests, which pass their
+  # own. A number here is the only thing that catches it.
+  test "GET /blueprints/{slug} states what one piece of a counted material takes up" do
+    gem = create(:commodity, name: "Hadanite", counted: true, piece_volume: 0.001)
+    create(:blueprint_cost_option, slot: @slot, commodity: gem, cost_type: "item")
+
+    assert_api_response :get, 200, params: {slug: @blueprint.slug} do
+      material = parsed_body["costSlots"].first["options"].first["commodity"]
+
+      assert_in_delta 0.001, material["pieceVolume"], 0.0000001
+      assert_kind_of Numeric, material["pieceVolume"]
+    end
+  end
+
+  # Bulk is the other half: a crate is sold in seven sizes, so there is no one
+  # piece to measure and the slot must not try to convert.
+  test "GET /blueprints/{slug} states no piece volume for a bulk material" do
+    iron = create(:commodity, name: "Iron", counted: false, piece_volume: nil)
+    create(:blueprint_cost_option, slot: @slot, commodity: iron, cost_type: "resource")
+
+    assert_api_response :get, 200, params: {slug: @blueprint.slug} do
+      assert_nil parsed_body["costSlots"].first["options"].first.dig("commodity", "pieceVolume")
+    end
+  end
+
   # A material the commodity catalogue has no row for still has to say which
   # material it is, rather than rendering a nameless cost line.
   test "GET /blueprints/{slug} names a material that resolves to no commodity" do
