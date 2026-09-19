@@ -1693,6 +1693,11 @@
           "search": "Suchen"
         },
         "blueprints": {
+          "org": "Vergeben von",
+          "scKey": "Spielschlüssel",
+          "withKnownSource": "Hat eine bekannte Quelle",
+          "withCraftable": "Ergebnis in einem Katalog",
+          "currentVersion": "Im aktuellen Build",
           "name": "Baupläne suchen",
           "craftableType": "Fertigt",
           "source": "Quelle",
@@ -1838,6 +1843,21 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "makes": "Fertigt",
+          "noOutput": "In keinem Katalog",
+          "slug": "Slug",
+          "scKey": "Spielschlüssel",
+          "scRef": "Spielreferenz",
+          "build": "Build",
+          "state": "Status",
+          "states": {
+            "current": "Aktuell",
+            "retired": "Ausgemustert"
+          },
+          "createdAt": "Erstellt am",
+          "updatedAt": "Aktualisiert am"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Online-Benutzer"
@@ -1900,6 +1920,7 @@
             "system": "System"
           },
           "privileges": {
+            "blueprints": "Baupläne",
             "models": "Modelle",
             "model_modules": "Modell-Module",
             "components": "Komponenten",

@@ -173,6 +173,10 @@
         "notificationCenter": "通知中心 - 视觉测试"
       },
       "admin": {
+        "blueprints": {
+          "index": "蓝图",
+          "show": "%{blueprint}"
+        },
         "models": {
           "index": "模型",
           "new": "新模型",

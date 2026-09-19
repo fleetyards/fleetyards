@@ -149,6 +149,9 @@
         "themes": "Temi"
       },
       "admin": {
+        "blueprints": {
+          "index": "Progetti"
+        },
         "index": "Admin",
         "models": {
           "index": "Modelli",

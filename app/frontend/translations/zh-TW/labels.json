@@ -1693,6 +1693,11 @@
           "search": "搜尋"
         },
         "blueprints": {
+          "org": "發放方",
+          "scKey": "遊戲鍵名",
+          "withKnownSource": "有已知來源",
+          "withCraftable": "產出在目錄中",
+          "currentVersion": "在目前版本中",
           "name": "搜尋藍圖",
           "craftableType": "產出",
           "source": "來源",
@@ -1838,6 +1843,21 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "makes": "產出",
+          "noOutput": "不在任何目錄中",
+          "slug": "Slug",
+          "scKey": "遊戲鍵名",
+          "scRef": "遊戲參考",
+          "build": "版本",
+          "state": "狀態",
+          "states": {
+            "current": "目前",
+            "retired": "已移除"
+          },
+          "createdAt": "建立於",
+          "updatedAt": "更新於"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "線上使用者"
@@ -1900,6 +1920,7 @@
             "system": "系統"
           },
           "privileges": {
+            "blueprints": "藍圖",
             "models": "型號",
             "model_modules": "型號模組",
             "components": "組件",

@@ -149,6 +149,9 @@
         "themes": "主题"
       },
       "admin": {
+        "blueprints": {
+          "index": "蓝图"
+        },
         "index": "管理员",
         "models": {
           "index": "模型",

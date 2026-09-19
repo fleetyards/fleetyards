@@ -1693,6 +1693,11 @@
           "search": "Cerca"
         },
         "blueprints": {
+          "org": "Distribuito da",
+          "scKey": "Chiave di gioco",
+          "withKnownSource": "Ha una fonte nota",
+          "withCraftable": "Risultato in un catalogo",
+          "currentVersion": "Nella build attuale",
           "name": "Cerca progetti",
           "craftableType": "Produce",
           "source": "Fonte",
@@ -1838,6 +1843,21 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "makes": "Produce",
+          "noOutput": "In nessun catalogo",
+          "slug": "Slug",
+          "scKey": "Chiave di gioco",
+          "scRef": "Riferimento di gioco",
+          "build": "Build",
+          "state": "Stato",
+          "states": {
+            "current": "Attuale",
+            "retired": "Ritirato"
+          },
+          "createdAt": "Creato il",
+          "updatedAt": "Aggiornato il"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Utenti online"
@@ -1900,6 +1920,7 @@
             "system": "Sistema"
           },
           "privileges": {
+            "blueprints": "Progetti",
             "models": "Modelli",
             "model_modules": "Moduli dei modelli",
             "components": "Componenti",

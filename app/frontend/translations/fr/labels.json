@@ -1693,6 +1693,11 @@
           "search": "Rechercher"
         },
         "blueprints": {
+          "org": "Distribué par",
+          "scKey": "Clé du jeu",
+          "withKnownSource": "A une source connue",
+          "withCraftable": "Résultat dans un catalogue",
+          "currentVersion": "Dans le build actuel",
           "name": "Rechercher des plans",
           "craftableType": "Produit",
           "source": "Source",
@@ -1838,6 +1843,21 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "makes": "Produit",
+          "noOutput": "Dans aucun catalogue",
+          "slug": "Slug",
+          "scKey": "Clé du jeu",
+          "scRef": "Référence du jeu",
+          "build": "Build",
+          "state": "État",
+          "states": {
+            "current": "Actuel",
+            "retired": "Retiré"
+          },
+          "createdAt": "Créé le",
+          "updatedAt": "Mis à jour le"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Utilisateurs en ligne"
@@ -1900,6 +1920,7 @@
             "system": "Système"
           },
           "privileges": {
+            "blueprints": "Plans",
             "models": "Modèles",
             "model_modules": "Modules de modèle",
             "components": "Composants",

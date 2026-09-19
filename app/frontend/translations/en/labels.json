@@ -1693,6 +1693,11 @@
           "search": "Search"
         },
         "blueprints": {
+          "org": "Handed out by",
+          "scKey": "Game key",
+          "withKnownSource": "Has a known source",
+          "withCraftable": "Output in a catalogue",
+          "currentVersion": "In the current build",
           "name": "Search blueprints",
           "craftableType": "Makes",
           "source": "Source",
@@ -1838,6 +1843,21 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "makes": "Makes",
+          "noOutput": "In no catalogue",
+          "slug": "Slug",
+          "scKey": "Game key",
+          "scRef": "Game ref",
+          "build": "Build",
+          "state": "State",
+          "states": {
+            "current": "Current",
+            "retired": "Retired"
+          },
+          "createdAt": "Created at",
+          "updatedAt": "Updated at"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Online Users",
@@ -1914,6 +1934,7 @@
             "system": "System"
           },
           "privileges": {
+            "blueprints": "Blueprints",
             "models": "Models",
             "model_modules": "Model Modules",
             "components": "Components",

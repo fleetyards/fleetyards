@@ -173,6 +173,10 @@
         "notificationCenter": "Centro de notificaciones - Pruebas Visuales"
       },
       "admin": {
+        "blueprints": {
+          "index": "Planos",
+          "show": "%{blueprint}"
+        },
         "models": {
           "index": "Modelos",
           "new": "Nuevo Modelo",
