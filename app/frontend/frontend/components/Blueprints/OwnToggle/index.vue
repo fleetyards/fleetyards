@@ -23,12 +23,10 @@ import {
 type Props = {
   blueprint: Blueprint;
   variant?: "default" | "row";
-  label?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: "default",
-  label: false,
 });
 
 const { t } = useI18n();
@@ -46,10 +44,9 @@ const saving = ref(false);
 
 const owned = computed(() => props.blueprint.owned);
 
-const btnVariant = computed(() =>
-  props.variant === "row" ? BtnVariantsEnum.BARE : BtnVariantsEnum.SOLID,
-);
-
+// Bare in both places. This sits beside a title or inside a list row, next to
+// facts about the recipe rather than among the page's own controls, and a
+// solid button there reads as the thing the page is for.
 const btnSize = computed(() =>
   props.variant === "row" ? BtnSizesEnum.SM : BtnSizesEnum.MD,
 );
@@ -101,16 +98,16 @@ const toggle = async () => {
 <template>
   <Btn
     v-tooltip.bottom="tooltip"
-    :variant="btnVariant"
+    :variant="BtnVariantsEnum.BARE"
     :size="btnSize"
     :active="owned"
     :disabled="saving"
     data-test="blueprint-own-toggle"
     :aria-pressed="owned"
+    :aria-label="tooltip"
     @click.stop.prevent="toggle"
   >
     <i v-if="owned" class="fa fa-bookmark" />
     <i v-else class="fa-light fa-bookmark" />
-    <span v-if="label">{{ tooltip }}</span>
   </Btn>
 </template>

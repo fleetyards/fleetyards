@@ -16,10 +16,20 @@
     font-size: 14px;
   }
 
-  &__actions {
+  // The name and the one control that belongs to it.
+  &__headline {
     display: flex;
     align-items: center;
-    flex: none;
+    gap: 10px;
+    min-width: 0;
+    // The heading's own bottom margin is what separates it from the subline.
+    // On this row it would sit below the button too and push it above the
+    // text's centre, so it moves to the row.
+    margin-bottom: 15px;
+
+    :deep(h1) {
+      margin-bottom: 0;
+    }
   }
 
   &__badges {

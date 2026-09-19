@@ -104,7 +104,13 @@ watch(
       <div v-if="blueprint" class="blueprint-page">
         <div class="blueprint-page__masthead">
           <div class="blueprint-page__title">
-            <Heading hero>{{ blueprint.name }}</Heading>
+            <div class="blueprint-page__headline">
+              <Heading hero>{{ blueprint.name }}</Heading>
+              <!-- Beside the name, because that is what it is about: the
+                   badges are what the catalogue knows about the recipe, and
+                   this is the reader saying they have it. -->
+              <BlueprintOwnToggle :blueprint="blueprint" />
+            </div>
             <div class="blueprint-page__sub">
               <template v-if="blueprint.craftable">
                 {{ t("labels.blueprint.makesA") }}
@@ -118,13 +124,6 @@ watch(
                  file in the export. -->
               <span v-else>{{ t("labels.blueprint.makesUnknown") }}</span>
             </div>
-          </div>
-
-          <!-- Beside the badges rather than among them: the badges are what the
-               catalogue knows about the recipe, and this is what the reader has
-               said about it. -->
-          <div class="blueprint-page__actions">
-            <BlueprintOwnToggle :blueprint="blueprint" label />
           </div>
 
           <div class="blueprint-page__badges">
