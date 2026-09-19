@@ -1444,6 +1444,7 @@
         "fullPublic": "公开可见（包括名称）",
         "publicShort": "公开",
         "nameVisible": "公开可见",
+        "hidden": "隐藏?",
         "saleNotify": "我希望收到销售通知",
         "hangarGroups": "群组",
         "modelPaintSelect": {

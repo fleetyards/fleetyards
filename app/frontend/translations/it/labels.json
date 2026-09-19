@@ -1444,6 +1444,7 @@
         "fullPublic": "Pubblicamente Visibile incluso il nome",
         "publicShort": "Pubblico",
         "nameVisible": "Pubblicamente Visibile",
+        "hidden": "Nascosto?",
         "saleNotify": "Voglio ricevere notifiche di messa in vendita",
         "hangarGroups": "Gruppi",
         "modelPaintSelect": {
