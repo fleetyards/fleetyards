@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_19_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_19_150100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2190,6 +2190,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_150000) do
     t.boolean "wanted", default: false
     t.index ["hidden", "loaner"], name: "index_vehicles_on_hidden_and_loaner"
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
+    t.index ["model_paint_id", "hidden", "wanted", "loaner"], name: "index_vehicles_on_model_paint_id_where_painted", where: "(model_paint_id IS NOT NULL)"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
     t.index ["vehicle_id", "bundled"], name: "index_vehicles_on_vehicle_id_and_bundled"
