@@ -46,6 +46,8 @@ type StockItem = {
   category: string;
   unit: string;
   netQuantity: number;
+  /** The catalogue record the position points at, which says whether it is counted. */
+  item?: { counted?: boolean };
 };
 
 type Props = {
@@ -72,6 +74,18 @@ const stockItems = ref<StockItem[]>([]);
 // name-edit rule stay single rather than growing a branch per item type.
 // Declared before `unitOptions`, which reads it.
 const pickedItem = ref<PickedItem | undefined>(undefined);
+
+// Picking an existing position copies its unit but drops the catalogue
+// reference on purpose -- a new entry is not a reference to what the old ones
+// pointed at. That reference is also what says `units` is on offer, so the
+// position is remembered here instead: without it the options watcher drags a
+// piece-counted position back to SCU and the entry lands on a different
+// position than the one that was picked.
+const selectedPosition = ref<StockItem | undefined>(undefined);
+
+const countedSelection = computed(
+  () => pickedItem.value?.counted ?? selectedPosition.value?.item?.counted,
+);
 
 const isDeposit = computed(() => entryType.value === "deposit");
 
@@ -131,7 +145,7 @@ const isEquipment = computed(() =>
 // A counted commodity is the only thing that puts `units` on offer under the
 // commodity category, and only the picked item knows -- so the options follow
 // the pick as well as the category.
-const unitOptions = unitOptionsFor(category, () => pickedItem.value?.counted);
+const unitOptions = unitOptionsFor(category, countedSelection);
 
 // The category dictates which units make sense, so a category change pulls the
 // unit along instead of leaving an impossible pairing the API would reject.
@@ -178,6 +192,7 @@ watch(selectedExistingItem, (val) => {
   const picked = stockItems.value.find((item) => item.id === val);
   if (!picked) return;
 
+  selectedPosition.value = picked;
   setFieldValue("name", picked.name);
   /* eslint-disable @typescript-eslint/no-explicit-any */
   setFieldValue("category", picked.category as any);
@@ -224,6 +239,10 @@ watch(name, (val) => {
   if (pickedItem.value && val !== pickedItem.value.name) {
     pickedItem.value = undefined;
   }
+
+  if (selectedPosition.value && val !== selectedPosition.value.name) {
+    selectedPosition.value = undefined;
+  }
 });
 
 // Switching away from the category that offered the picker leaves the reference
@@ -246,6 +265,7 @@ watch(entryType, (val) => {
     void loadStockItems();
   }
   selectedStockItem.value = undefined;
+  selectedPosition.value = undefined;
 });
 
 // When stock item is picked, auto-fill fields
@@ -255,6 +275,7 @@ watch(selectedStockItem, (val) => {
   const picked = stockItems.value.find((item) => item.id === val);
   if (!picked) return;
 
+  selectedPosition.value = picked;
   setFieldValue("name", picked.name);
   /* eslint-disable @typescript-eslint/no-explicit-any */
   setFieldValue("category", picked.category as any);
