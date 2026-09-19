@@ -68,6 +68,10 @@ const entryType = ref<"deposit" | "withdrawal">(
 );
 const selectedStockItem = ref<string | undefined>(undefined);
 const stockItems = ref<StockItem[]>([]);
+// One slot for whichever catalogue the category exposes, so the submit and the
+// name-edit rule stay single rather than growing a branch per item type.
+// Declared before `unitOptions`, which reads it.
+const pickedItem = ref<PickedItem | undefined>(undefined);
 
 const isDeposit = computed(() => entryType.value === "deposit");
 
@@ -124,7 +128,10 @@ const isEquipment = computed(() =>
   EQUIPMENT_CATEGORIES.includes(category.value),
 );
 
-const unitOptions = unitOptionsFor(category);
+// A counted commodity is the only thing that puts `units` on offer under the
+// commodity category, and only the picked item knows -- so the options follow
+// the pick as well as the category.
+const unitOptions = unitOptionsFor(category, () => pickedItem.value?.counted);
 
 // The category dictates which units make sense, so a category change pulls the
 // unit along instead of leaving an impossible pairing the API would reject.
@@ -164,9 +171,6 @@ const existingItemOptions = computed<FilterOption[]>(() =>
 );
 
 const selectedExistingItem = ref<string | undefined>(undefined);
-// One slot for whichever catalogue the category exposes, so the submit and the
-// name-edit rule stay single rather than growing a branch per item type.
-const pickedItem = ref<PickedItem | undefined>(undefined);
 
 watch(selectedExistingItem, (val) => {
   if (!val) return;
@@ -197,6 +201,7 @@ const applyPickedCommodity = (commodity: Commodity) => {
     type: "Commodity",
     id: commodity.id,
     name: commodity.name,
+    counted: commodity.counted,
   };
 
   setFieldValue("name", commodity.name);

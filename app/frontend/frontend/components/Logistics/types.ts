@@ -6,4 +6,6 @@ export type PickedItem = {
   type: PickedItemType;
   id: string;
   name: string;
+  /** Whether the game counts it in pieces, which is what puts `units` on offer. */
+  counted?: boolean;
 };

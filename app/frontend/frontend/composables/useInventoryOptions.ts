@@ -30,8 +30,29 @@ export const INVENTORY_UNITS_BY_CATEGORY: Record<
   other: ["scu", "units"],
 };
 
-export const unitsForCategory = (category?: string) =>
-  INVENTORY_UNITS_BY_CATEGORY[category ?? ""] ?? INVENTORY_UNITS;
+/**
+ * The units a position may be recorded in.
+ *
+ * The category answers for almost everything, but the game hands out 56
+ * commodities a piece at a time, and a crafting recipe asks for a number of
+ * them rather than a volume. `counted` widens the pairing rather than
+ * replacing it: those are still sold by the crate, and every commodity
+ * position ever recorded is in SCU.
+ *
+ * A free-text position points at no catalogue row, so it cannot be counted and
+ * keeps the SCU-only rule -- the same answer the API gives.
+ */
+export const unitsForCategory = (category?: string, counted?: boolean) => {
+  const allowed =
+    INVENTORY_UNITS_BY_CATEGORY[category ?? ""] ?? INVENTORY_UNITS;
+
+  if (!counted || allowed.includes("units")) return allowed;
+
+  return [
+    ...allowed,
+    "units",
+  ] as const satisfies readonly (typeof INVENTORY_UNITS)[number][];
+};
 
 export const INVENTORY_ENTRY_TYPES = ["deposit", "withdrawal"] as const;
 
@@ -52,9 +73,12 @@ export const useInventoryOptions = () => {
     })),
   );
 
-  const unitOptionsFor = (category: MaybeRefOrGetter<string | undefined>) =>
+  const unitOptionsFor = (
+    category: MaybeRefOrGetter<string | undefined>,
+    counted?: MaybeRefOrGetter<boolean | undefined>,
+  ) =>
     computed<FilterOption[]>(() =>
-      unitsForCategory(toValue(category)).map((unit) => ({
+      unitsForCategory(toValue(category), toValue(counted)).map((unit) => ({
         value: unit,
         label: t(`labels.logistics.units.${unit}`),
       })),

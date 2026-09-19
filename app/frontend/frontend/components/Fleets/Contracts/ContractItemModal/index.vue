@@ -98,6 +98,7 @@ const pickedItem = ref<PickedItem | undefined>(
         type: props.item.item.type as PickedItem["type"],
         id: props.item.item.id,
         name: props.item.item.name,
+        counted: props.item.item.counted,
       }
     : undefined,
 );
@@ -168,7 +169,10 @@ const equipmentTypes = computed(() =>
   isCrafting.value ? [] : EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
 );
 
-const unitOptions = unitOptionsFor(category);
+// A counted commodity is the only thing that puts `units` on offer under the
+// commodity category, and only the picked item knows -- so the options follow
+// the pick as well as the category.
+const unitOptions = unitOptionsFor(category, () => pickedItem.value?.counted);
 
 // The category dictates which units make sense, so a category change pulls the
 // unit along instead of leaving a pairing the API would reject.
@@ -200,6 +204,7 @@ const applyPickedCommodity = (commodity: Commodity) => {
     type: "Commodity",
     id: commodity.id,
     name: commodity.name,
+    counted: commodity.counted,
   };
 
   setFieldValue("name", commodity.name);

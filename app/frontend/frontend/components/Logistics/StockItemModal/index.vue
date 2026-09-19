@@ -55,10 +55,12 @@ const [category, categoryProps] = defineField("category");
 const [unit] = defineField("unit");
 
 const unitOptions = computed<FilterOption[]>(() =>
-  unitsForCategory(category.value).map((value) => ({
-    value,
-    label: t(`labels.logistics.units.${value}`),
-  })),
+  unitsForCategory(category.value, props.stockItem.item?.counted).map(
+    (value) => ({
+      value,
+      label: t(`labels.logistics.units.${value}`),
+    }),
+  ),
 );
 
 // Same pairing the API enforces: a category change drags the unit with it.
