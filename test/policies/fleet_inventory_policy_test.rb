@@ -24,9 +24,9 @@ class FleetInventoryPolicyTest < ActiveSupport::TestCase
     FleetInventoryPolicy.new(record, user: reader, fleet: @fleet)
   end
 
-  def scoped(reader)
+  def scoped(reader, name = :default)
     policy_for(reader)
-      .apply_scope(FleetInventory.where(fleet: @fleet), type: :active_record_relation)
+      .apply_scope(FleetInventory.where(fleet: @fleet), type: :active_record_relation, name: name)
       .to_a
   end
 
@@ -84,10 +84,12 @@ class FleetInventoryPolicyTest < ActiveSupport::TestCase
     refute policy_for(writer, @closed).apply(:destroy?)
   end
 
-  test "the relation scope refuses to answer without a fleet" do
-    assert_raises(ArgumentError) do
-      FleetInventoryPolicy.new(nil, user: @member)
-        .apply_scope(FleetInventory.all, type: :active_record_relation)
+  test "neither relation scope answers without a fleet" do
+    [:default, :visible].each do |name|
+      assert_raises(ArgumentError, "the #{name} scope answered without a fleet") do
+        FleetInventoryPolicy.new(nil, user: @member)
+          .apply_scope(FleetInventory.all, type: :active_record_relation, name: name)
+      end
     end
   end
 
@@ -100,5 +102,25 @@ class FleetInventoryPolicyTest < ActiveSupport::TestCase
 
     assert_empty scoped(manager)
     refute policy_for(manager, @open).apply(:show?)
+  end
+
+  # The privilege lists are independent of each other: a role may carry
+  # `fleet:inventories:update` without `:read`. The lookup a write goes through
+  # must not decide that write by failing to find the record, so the `visible`
+  # scope answers on visibility alone and leaves the privilege to `update?`.
+  test "the visible scope finds a record for a writer who cannot read" do
+    writer = member_with(["fleet:inventories:update"])
+
+    assert_includes scoped(writer, :visible), @open
+    assert policy_for(writer, @open).apply(:update?)
+
+    assert_empty scoped(writer), "the default scope is a read, and this role cannot read"
+  end
+
+  test "the visible scope still hides an officers-only inventory" do
+    writer = member_with(["fleet:inventories:update"])
+
+    refute_includes scoped(writer, :visible), @closed
+    refute policy_for(writer, @closed).apply(:update?)
   end
 end

@@ -24,7 +24,7 @@ module Api
       def index
         authorize! with: FleetInventoryPolicy, context: {fleet: @fleet}
 
-        scope = visible_fleet_inventories.includes(manager: [:omniauth_connections])
+        scope = readable_fleet_inventories.includes(manager: [:omniauth_connections])
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :visibility_eq, :s)
         normalize_sort_params(query_params)
