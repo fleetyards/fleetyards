@@ -7,6 +7,7 @@
 # live here and each controller says only who it is acting for.
 module InventoryTransferActions
   extend ActiveSupport::Concern
+  include FleetInventoryScoped
   include InventoryTransfersFeatureConcern
 
   # `state_in` is declared as an array and has to be permitted as one: a scalar
@@ -175,6 +176,10 @@ module InventoryTransferActions
   # Every transfer this party has to answer, and every one it sent. Written as
   # two scopes over the party columns rather than over the inventories, so a
   # transfer whose far end was deleted still lists.
+  #
+  # A fleet's own end is narrowed to the inventories the reader may see: a
+  # transfer names its inventory, so an unscoped list told a member with write
+  # access the name of every officers-only store the fleet moves stock through.
   # Addressed to this party, *or* delivered into one of its inventories. The
   # second half is not redundant: an immediate transfer names no recipient at
   # all, so a fleet issuing kit into a member's own locker matched neither this
@@ -185,7 +190,7 @@ module InventoryTransferActions
     when ::Fleet
       InventoryTransfer
         .where(recipient_fleet: acting_party)
-        .or(InventoryTransfer.where(destination_fleet_inventory: acting_party.fleet_inventories))
+        .or(InventoryTransfer.where(destination_fleet_inventory: visible_fleet_inventories(acting_party)))
     else
       InventoryTransfer
         .where(recipient: acting_party)
@@ -196,7 +201,7 @@ module InventoryTransferActions
   private def outgoing_scope
     case acting_party
     when ::Fleet
-      InventoryTransfer.where(source_fleet_inventory: acting_party.fleet_inventories)
+      InventoryTransfer.where(source_fleet_inventory: visible_fleet_inventories(acting_party))
     else
       InventoryTransfer.where(source_inventory: acting_party.inventories)
     end

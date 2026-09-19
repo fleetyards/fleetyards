@@ -489,4 +489,36 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
 
     builder.transfer
   end
+
+  # A transfer names the inventory it moved through, so an unscoped list told a
+  # member with write access the name of every officers-only store the fleet
+  # keeps -- the one surface left after the lookups were scoped.
+  test "GET leaves out a transfer through an officers-only inventory for a plain writer" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:inventory_transfer, source_inventory: nil, source_fleet_inventory: closed,
+      recipient: @outsider, initiated_by: @officer)
+    create(:inventory_transfer, source_inventory: nil, source_fleet_inventory: @depot,
+      recipient: @outsider, initiated_by: @officer)
+
+    role = create(:fleet_role, fleet: @fleet, name: "Quartermaster",
+      resource_access: ["fleet:inventories:read", "fleet:inventories:update"])
+    writer = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: writer, fleet_role: role)
+    sign_in writer
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
+  test "GET lists a transfer through an officers-only inventory for an officer" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    create(:inventory_transfer, source_inventory: nil, source_fleet_inventory: closed,
+      recipient: @outsider, initiated_by: @officer)
+    sign_in @officer
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
 end
