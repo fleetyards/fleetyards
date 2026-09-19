@@ -3,6 +3,7 @@
 module Api
   module V1
     class FleetAllInventoryItemsController < ::Api::BaseController
+      include FleetInventoryScoped
       include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:fleet_inventory_items) }, only: %i[index]
@@ -20,7 +21,7 @@ module Api
 
         scope = FleetInventoryItem
           .joins(:fleet_inventory)
-          .where(fleet_inventories: {fleet_id: @fleet.id})
+          .where(fleet_inventory_id: visible_fleet_inventories.select(:id))
           .includes(:fleet_inventory)
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :category_eq, :quality_gteq, :quality_lteq, :s)

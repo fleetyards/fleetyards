@@ -81,5 +81,38 @@ module Inventories
       assert_includes parties, fleet
       refute_includes parties, other_fleet
     end
+
+    # Privileges and visibility are separate gates: holding the write privilege
+    # for a fleet says nothing about whether this is a store you may see. A
+    # transfer names its two ends by id, so this is the one way into an
+    # officers-only inventory that does not go through a lookup.
+    test "an officers-only inventory is not an end a plain writer can name" do
+      fleet = create(:fleet)
+      closed = create(:fleet_inventory, :officers_only, fleet:)
+      open_store = create(:fleet_inventory, fleet:)
+
+      role = create(:fleet_role, fleet:, name: "Quartermaster",
+        resource_access: ["fleet:inventories:read", "fleet:inventories:update"])
+      writer = create(:user)
+      create(:fleet_membership, :accepted, fleet:, user: writer, fleet_role: role)
+
+      authorizer = TransferAuthorizer.new(writer)
+
+      assert authorizer.may_deposit_into?(open_store)
+      refute authorizer.may_withdraw_from?(closed)
+      refute authorizer.may_deposit_into?(closed)
+    end
+
+    test "an officer still moves stock through an officers-only inventory" do
+      fleet = create(:fleet)
+      closed = create(:fleet_inventory, :officers_only, fleet:)
+      officer = create(:user)
+      create(:fleet_membership, :accepted, :as_officer, fleet:, user: officer)
+
+      authorizer = TransferAuthorizer.new(officer)
+
+      assert authorizer.may_withdraw_from?(closed)
+      assert authorizer.may_deposit_into?(closed)
+    end
   end
 end

@@ -64,6 +64,32 @@ class FleetInventory < ApplicationRecord
     member: ["fleet:inventories:read"]
   }.freeze
 
+  # Who counts as an officer for an officers-only store. No officer privilege
+  # exists -- the roles enum draws its lines per resource -- so the inventory
+  # manage set stands in for one, which is what `DEFAULT_PRIVILEGES` seeds the
+  # officer role with anyway.
+  OFFICER_PRIVILEGES = ["fleet:manage", "fleet:inventories:manage"].freeze
+
+  # Whether a member may see this inventory at all: its name and description
+  # included, not only its contents.
+  #
+  # One definition, called by `FleetInventoryPolicy` for the endpoints and by
+  # `Inventories::TransferAuthorizer` for the two ends of a transfer.
+  def visible_to?(membership)
+    return true unless officers_only?
+    return false if membership.blank?
+    return true if membership.has_access?(OFFICER_PRIVILEGES)
+
+    # The manager reaches the store they are answerable for: `managed_by` names
+    # the member accountable for it, and `manager_belongs_to_fleet` already
+    # keeps that to someone in the fleet.
+    #
+    # This lifts the officers-only bar, not the baseline read privilege. A
+    # manager whose role carries no inventory access at all still sees nothing
+    # -- the officers-only distinction never arises for them.
+    managed_by.present? && managed_by == membership.user_id
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[name slug fleet_id visibility created_at updated_at]
   end

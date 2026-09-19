@@ -43,7 +43,8 @@ class Api::V1::FleetsInventoryItemsIndexTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_logistics")
     @admin = create(:user)
-    @fleet = create(:fleet, admins: [@admin])
+    @member = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member])
     @inventory = create(:fleet_inventory, fleet: @fleet)
     create_list(:fleet_inventory_item, 3, fleet_inventory: @inventory)
   end
@@ -64,5 +65,14 @@ class Api::V1::FleetsInventoryItemsIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
+  end
+
+  test "GET /inventories/:slug/items is not found on an officers-only inventory for a plain member" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    sign_in @member
+
+    get "/api/v1/fleets/#{@fleet.slug}/inventories/#{closed.slug}/items"
+
+    assert_response :not_found
   end
 end

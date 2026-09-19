@@ -34,7 +34,8 @@ class Api::V1::FleetsAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
   setup do
     Flipper.enable("fleet_logistics")
     @admin = create(:user)
-    @fleet = create(:fleet, admins: [@admin])
+    @member = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member])
     inv1 = create(:fleet_inventory, fleet: @fleet, name: "Mining Ops")
     inv2 = create(:fleet_inventory, fleet: @fleet, name: "Medical Bay")
     create(:fleet_inventory_item, fleet_inventory: inv1, name: "Quantanium", category: :commodity, quantity: 200, unit: :scu, entry_type: :deposit)
@@ -109,5 +110,32 @@ class Api::V1::FleetsAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
+  end
+
+  # The aggregate narrows rather than refuses: a member with read access still
+  # has a legitimate answer coming for the rest of the fleet's stock.
+  test "GET /fleets/:slug/inventory-stock drops officers-only stock for a plain member" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    create(:fleet_inventory_item, fleet_inventory: closed, name: "Quantum Cores",
+      category: :component, quantity: 4, unit: :units, entry_type: :deposit)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      names = parsed_body.map { |entry| entry["name"] }
+
+      refute_includes names, "Quantum Cores"
+      assert_includes names, "Med Pens"
+    end
+  end
+
+  test "GET /fleets/:slug/inventory-stock counts officers-only stock for an admin" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    create(:fleet_inventory_item, fleet_inventory: closed, name: "Quantum Cores",
+      category: :component, quantity: 4, unit: :units, entry_type: :deposit)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_includes parsed_body.map { |entry| entry["name"] }, "Quantum Cores"
+    end
   end
 end

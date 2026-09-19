@@ -28,7 +28,7 @@ module Inventories
 
       case inventory
       when ::Inventory then inventory.holder == @user
-      when ::FleetInventory then fleet_write_access?(inventory.fleet)
+      when ::FleetInventory then fleet_write_access?(inventory.fleet) && visible?(inventory)
       else false
       end
     end
@@ -40,7 +40,7 @@ module Inventories
 
       case inventory
       when ::Inventory then inventory.holder == @user
-      when ::FleetInventory then fleet_write_access?(inventory.fleet)
+      when ::FleetInventory then fleet_write_access?(inventory.fleet) && visible?(inventory)
       else false
       end
     end
@@ -74,6 +74,13 @@ module Inventories
     end
 
     WRITE_PRIVILEGES = ["fleet:manage", "fleet:inventories:manage", "fleet:inventories:update"].freeze
+
+    # An officers-only store is not an end a plain member can name, the same as
+    # it is not one they can read. `fleet:inventories:update` alone reaches
+    # every other inventory in the fleet.
+    private def visible?(inventory)
+      inventory.visible_to?(membership_in(inventory.fleet))
+    end
 
     private def fleet_write_access?(fleet)
       return false if fleet.blank?

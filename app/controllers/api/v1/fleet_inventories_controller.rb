@@ -3,6 +3,7 @@
 module Api
   module V1
     class FleetInventoriesController < ::Api::BaseController
+      include FleetInventoryScoped
       include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:fleet_inventories) }, only: %i[index]
@@ -23,7 +24,7 @@ module Api
       def index
         authorize! with: FleetInventoryPolicy, context: {fleet: @fleet}
 
-        scope = @fleet.fleet_inventories.includes(manager: [:omniauth_connections])
+        scope = readable_fleet_inventories.includes(manager: [:omniauth_connections])
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :visibility_eq, :s)
         normalize_sort_params(query_params)
@@ -80,7 +81,7 @@ module Api
       end
 
       private def set_fleet_inventory
-        @fleet_inventory = @fleet.fleet_inventories.find_by!(slug: params[:slug])
+        @fleet_inventory = visible_fleet_inventories.find_by!(slug: params[:slug])
       end
 
       private def check_fleet_logistics_feature

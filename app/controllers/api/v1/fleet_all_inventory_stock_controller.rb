@@ -3,6 +3,7 @@
 module Api
   module V1
     class FleetAllInventoryStockController < ::Api::BaseController
+      include FleetInventoryScoped
       include FleetSubscriptionConcern
 
       before_action :authenticate_user!, only: []
@@ -16,7 +17,7 @@ module Api
       def index
         authorize! with: FleetInventoryItemPolicy, context: {fleet: @fleet}
 
-        inventory_ids = @fleet.fleet_inventories.pluck(:id)
+        inventory_ids = visible_fleet_inventories.pluck(:id)
 
         @stock = FleetInventoryItem
           .where(fleet_inventory_id: inventory_ids)

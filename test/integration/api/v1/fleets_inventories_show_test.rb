@@ -38,7 +38,8 @@ class Api::V1::FleetsInventoriesShowTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_logistics")
     @admin = create(:user)
-    @fleet = create(:fleet, admins: [@admin])
+    @member = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member])
     @inventory = create(:fleet_inventory, fleet: @fleet)
   end
 
@@ -64,5 +65,32 @@ class Api::V1::FleetsInventoriesShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug, slug: @inventory.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
+  end
+
+  # Not found rather than forbidden: a 403 on a slug confirms the inventory
+  # exists, which is most of what officers-only is hiding.
+  test "GET /fleets/:slug/inventories/:slug returns 404 on an officers-only inventory for a plain member" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    sign_in @member
+
+    assert_api_response :get, 404, path_params: {fleetSlug: @fleet.slug, slug: closed.slug}
+  end
+
+  test "GET /fleets/:slug/inventories/:slug returns an officers-only inventory to an admin" do
+    closed = create(:fleet_inventory, :officers_only, fleet: @fleet)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: closed.slug} do
+      assert_equal closed.name, parsed_body["name"]
+    end
+  end
+
+  test "GET /fleets/:slug/inventories/:slug returns the officers-only store its manager answers for" do
+    managed = create(:fleet_inventory, :officers_only, fleet: @fleet, manager: @member)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: managed.slug} do
+      assert_equal managed.name, parsed_body["name"]
+    end
   end
 end
