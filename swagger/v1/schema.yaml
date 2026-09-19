@@ -15757,6 +15757,10 @@ components:
           type: string
         slug:
           type: string
+        pieceVolume:
+          type:
+          - number
+          - 'null'
       additionalProperties: false
       required:
       - id

@@ -14,7 +14,14 @@ module Shared
           properties: {
             id: {type: :string, format: :uuid},
             name: {type: :string},
-            slug: {type: :string}
+            slug: {type: :string},
+
+            # What one piece takes up, in SCU, where the game counts this
+            # material in pieces. It is the rate between the unit a recipe
+            # states a cost in and the unit a holding may be recorded in, so
+            # without it the two cannot be compared at all. Null for a bulk
+            # material, which has no single piece to measure.
+            pieceVolume: {type: [:number, :null]}
           },
           additionalProperties: false,
           required: %w[id name slug]

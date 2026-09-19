@@ -75,6 +75,7 @@ const held = computed(() =>
     option.value?.commodity?.id,
     option.value?.quantity,
     option.value?.type,
+    option.value?.commodity?.pieceVolume,
   ),
 );
 
