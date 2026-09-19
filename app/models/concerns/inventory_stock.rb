@@ -148,13 +148,27 @@ module InventoryStock
   # Renaming a position onto an identity that already exists merges the two, the
   # same as it did when the identity was the group key -- the entries join the
   # other position and the emptied one goes.
+  #
+  # The inventory row is held for the whole read-validate-move rather than for
+  # the move alone. What the move does is an `update_all`, which skips
+  # validation entirely, so an entry joining the position between the check and
+  # the write would be carried into a pairing nothing ever validated -- a
+  # concurrent free-text deposit landing in a position whose counted references
+  # had just been approved for pieces.
+  #
+  # It is the same row `withdrawal_does_not_exceed_stock` already takes on every
+  # entry save, so this adds no new lock and no new order to deadlock on.
   def update_stock_item(stock_item, attributes)
     target = attributes.symbolize_keys.slice(:name, :category, :unit)
-    changed = InventoryStockItemChange.new(stock_item, target, items: items_in_position(stock_item))
+    changed = nil
+
+    with_lock do
+      changed = InventoryStockItemChange.new(stock_item, target, items: items_in_position(stock_item))
+
+      move_position(stock_item, changed) if changed.valid?
+    end
 
     return changed unless changed.valid?
-
-    transaction { move_position(stock_item, changed) }
 
     touch
 

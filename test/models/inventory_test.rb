@@ -394,6 +394,28 @@ class InventoryTest < ActiveSupport::TestCase
     assert_not_predicate @inventory.update_stock_item(stock_item, {unit: "units"}), :valid?
   end
 
+  # The move is an `update_all`, so the entry set it writes has to be the one
+  # that was validated. Holding the inventory row is what stops a deposit
+  # joining the position in between -- the same row every entry save takes.
+  test "update_stock_item holds the inventory while it resolves and moves" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 2)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    locked = false
+    @inventory.define_singleton_method(:with_lock) do |&block|
+      locked = true
+      super(&block)
+    end
+
+    assert_predicate @inventory.update_stock_item(stock_item, {unit: "units"}), :valid?
+    assert locked, "the move has to run under the inventory lock"
+  end
+
   private def stock_position(quantity:, withdrawn: nil)
     create(:inventory_item, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity:)
