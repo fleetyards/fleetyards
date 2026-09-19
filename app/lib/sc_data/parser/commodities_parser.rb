@@ -8,7 +8,12 @@ module ScData
       # entities/commodities, and once per crate size under scitem/carryables.
       # Together the two trees cover every crated commodity in the build.
       CANONICAL_PATH = "entities/commodities"
-      SOURCE_PATHS = [CANONICAL_PATH, "entities/scitem/carryables"]
+
+      # The third path carries no commodity of its own -- the two files under it
+      # that name one are both SLAM, which its crates already declare. It is
+      # here so that the one drug the game lets you take is not the only
+      # consumable commodity filed as inedible.
+      SOURCE_PATHS = [CANONICAL_PATH, "entities/scitem/carryables", "entities/scitem/consumables"]
 
       # Refuel and rearm goods — the nine sized ship ammunition supplies, the
       # two countermeasures, EVA fuel — are bought by volume and hauled in
@@ -134,7 +139,7 @@ module ScData
       end
 
       private def new_record
-        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, counted: false, piece_volume: nil, icons: [], paths: []}
+        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, counted: false, consumable: false, piece_volume: nil, container_sizes: [], icons: [], paths: []}
       end
 
       private def collect_record(records, item)
@@ -147,7 +152,9 @@ module ScData
         record = records[sc_key]
         record[:paths] << item[:path]
         record[:counted] ||= counted?(item[:values])
+        record[:consumable] ||= consumable?(item[:values])
         record[:piece_volume] ||= piece_volume(item[:values])
+        record[:container_sizes].concat(container_sizes(item[:values]))
 
         if canonical
           record[:canonical_ref] ||= value_or_nil(item[:values].dig("__ref"))
@@ -249,7 +256,10 @@ module ScData
           commodity_type: type,
           commodity_type_name: type_name(type),
           counted: record[:counted],
+          consumable: record[:consumable],
           piece_volume: record[:piece_volume],
+          container_sizes: (record[:container_sizes].uniq - [record[:piece_volume]]).sort,
+          refines_into: refined_versions[sc_key],
           description: localize("#{sc_key}_desc"),
           icon: record[:icons].first
         }
@@ -359,6 +369,18 @@ module ScData
         resource_containers(values).any? { |container| container["generateRandomQuality"] == "1" }
       end
 
+      # Whether a player can eat or drink this. The entity says so by carrying
+      # the params at all -- what is in them describes the animation and the
+      # packaging, and every commodity that has them agrees on all of it.
+      #
+      # 308 entities in the build are consumable and 297 of them name no
+      # commodity: those are the bottles, cans and prepared meals, which are
+      # items rather than goods. The eleven that do name one are nine
+      # harvestables you pick and eat, the vent slug, and SLAM.
+      private def consumable?(values)
+        Array.wrap(values.dig("Components", "SCItemConsumableParams")).any?
+      end
+
       private def resource_containers(values)
         Array.wrap(values.dig("Components", "ResourceContainer"))
       end
@@ -383,6 +405,47 @@ module ScData
         "SCentiCargoUnit" => ["centiSCU", 1e-2],
         "SStandardCargoUnit" => ["standardCargoUnits", 1.0]
       }.freeze
+
+      # Which containers this commodity can be hauled in, as their capacity in
+      # SCU: the hand boxes at a fraction of an SCU and the freight crates from
+      # 1 up to 32. One entity per size, each declaring its own capacity, so the
+      # set is the union over all of them.
+      #
+      # `piece_volume` is subtracted out in `parse_commodity` rather than
+      # filtered on the `generateRandomQuality` flag: a loose gem is not a
+      # container you can put it in, and some of the harvestables carry a second
+      # entity at the same capacity that is not flagged. The result is that 19
+      # of them come out with no container at all, which is the true answer --
+      # you carry them, or you leave them.
+      private def container_sizes(values)
+        resource_containers(values).filter_map { |container| capacity_scu(container["capacity"]) }
+      end
+
+      # Which commodity this one refines into. The ore records carry it as a
+      # reference to another resource record, so both ends have to be resolved
+      # through the database before either can be named.
+      #
+      # Measured over 4.10.1-live.12660092: 30 links, every one resolvable and
+      # named, none of them a chain. Three of the construction material forms
+      # refine into the same good, so it is many-to-one.
+      private def refined_versions
+        @refined_versions ||= begin
+          by_ref = resource_database
+            .select { |values| values["__type"] == RESOURCE_TYPE }
+            .index_by { |values| value_or_nil(values["__ref"]) }
+
+          by_ref.each_value.each_with_object({}) do |values, index|
+            source = commodity_key(values["displayName"])
+            target = by_ref[value_or_nil(values["refinedVersion"])]
+
+            next if source.blank? || target.nil?
+
+            refined = commodity_key(target["displayName"])
+
+            index[source] = refined if refined.present? && refined != source
+          end
+        end
+      end
 
       private def capacity_scu(capacity)
         return unless capacity.is_a?(Hash)

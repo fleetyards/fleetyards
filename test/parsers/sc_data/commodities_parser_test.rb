@@ -316,6 +316,111 @@ module ScData
         assert_not @parser.commodities.first[:counted]
       end
 
+      # The entity says so by carrying the params at all. What is inside them
+      # describes the animation and the packaging, and every commodity that has
+      # them agrees on all of it.
+      test "#commodities marks a commodity a player can eat or drink" do
+        translate("items_commodities_bluebilva" => "Blue Bilva")
+        carryable(
+          "1h/harvestable_bluebilva",
+          attach_name: "@items_commodities_bluebilva",
+          display_name: "@items_commodities_bluebilva",
+          consumable: true
+        )
+
+        assert @parser.commodities.first[:consumable]
+      end
+
+      test "#commodities leaves a commodity nothing can be done with uncounted and inedible" do
+        translate("items_commodities_iron" => "Iron")
+        carryable(
+          "2h/carryable_2h_8scu_commodity_metal_iron",
+          attach_name: "@items_commodities_iron",
+          display_name: "@items_commodities_iron",
+          counted: false,
+          capacity: %(<SStandardCargoUnit standardCargoUnits="8" />)
+        )
+
+        commodity = @parser.commodities.first
+
+        assert_not commodity[:consumable]
+        assert_not commodity[:counted]
+      end
+
+      # One entity per size, each declaring its own capacity, so the answer is
+      # the union over all of them -- sorted, because it is a set and a stable
+      # order is what keeps a build comparison from reporting a reshuffle.
+      test "#commodities collects every size a commodity is packaged in" do
+        translate("items_commodities_gold" => "Gold")
+        [8, 1, 32].each do |size|
+          carryable(
+            "2h/carryable_2h_#{size}scu_commodity_metal_gold",
+            attach_name: "@items_commodities_gold",
+            display_name: "@items_commodities_gold",
+            counted: false,
+            capacity: %(<SStandardCargoUnit standardCargoUnits="#{size}" />)
+          )
+        end
+
+        assert_equal [1.0, 8.0, 32.0], @parser.commodities.first[:container_sizes]
+      end
+
+      # A loose gem is not a container you can put it in. Nineteen of the
+      # counted commodities have nothing else, and come out with no container
+      # at all -- which is the true answer: you carry them, or you leave them.
+      test "#commodities keeps the loose piece out of the containers it hauls in" do
+        translate("items_commodities_hadanite" => "Hadanite")
+        carryable(
+          "1h/harvestable_mineral_1h_hadanite",
+          attach_name: "@items_commodities_hadanite",
+          display_name: "@items_commodities_hadanite",
+          counted: true
+        )
+        carryable(
+          "2h/carryable_2h_8scu_commodity_mineral_hadanite",
+          attach_name: "@items_commodities_hadanite",
+          display_name: "@items_commodities_hadanite",
+          counted: false,
+          capacity: %(<SStandardCargoUnit standardCargoUnits="8" />)
+        )
+
+        commodity = @parser.commodities.first
+
+        assert_in_delta 0.001, commodity[:piece_volume]
+        assert_equal [8.0], commodity[:container_sizes]
+      end
+
+      test "#commodities leaves a commodity carried only loose without any container" do
+        translate("items_commodities_amiantpod" => "Amiant Pod")
+        carryable(
+          "1h/harvestable_amiantpod",
+          attach_name: "@items_commodities_amiantpod",
+          display_name: "@items_commodities_amiantpod",
+          counted: true
+        )
+
+        assert_empty @parser.commodities.first[:container_sizes]
+      end
+
+      # Both ends of the link are references into the resource database, so
+      # neither can be named until the other is resolved.
+      test "#commodities names the good an ore refines into" do
+        translate(
+          "items_commodities_tin_ore" => "Tin (Ore)",
+          "items_commodities_tin" => "Tin"
+        )
+        resource_types(
+          resource_type("Ore_Tin", display_name: "@items_commodities_tin_ore", ref: ORE_REF, refined_version: METAL_REF),
+          resource_type("Tin", display_name: "@items_commodities_tin", ref: METAL_REF)
+        )
+
+        ore = @parser.commodities.find { |commodity| commodity[:sc_key] == "items_commodities_tin_ore" }
+        refined = @parser.commodities.find { |commodity| commodity[:sc_key] == "items_commodities_tin" }
+
+        assert_equal "items_commodities_tin", ore[:refines_into]
+        assert_nil refined[:refines_into]
+      end
+
       private def resource_type(name, display_name:, ref: nil, refined_version: nil, containers: true)
         record(
           "ResourceType.#{name}",
@@ -365,11 +470,12 @@ module ScData
       end
 
       private def carryable(path, attach_name:, display_name:, display_type: "@LOC_PLACEHOLDER", counted: nil,
-        capacity: %(<SMicroCargoUnit microSCU="1000" />))
+        capacity: %(<SMicroCargoUnit microSCU="1000" />), consumable: false)
         write_record(
           "entities/scitem/carryables/#{path}",
           <<~XML
             <SCItemPurchasableParams displayName="#{display_name}" displayType="#{display_type}" />
+            #{consumable_xml(consumable)}
             #{resource_container_xml(counted, capacity)}
             <SAttachableComponentParams attachToTileItemPort="NoConnection">
               <AttachDef Type="Cargo" SubType="Cargo">
@@ -378,6 +484,10 @@ module ScData
             </SAttachableComponentParams>
           XML
         )
+      end
+
+      private def consumable_xml(consumable)
+        %(<SCItemConsumableParams containerTypeTag="fruit" discardWhenConsumed="1" />) if consumable
       end
 
       private def resource_container_xml(counted, capacity)
