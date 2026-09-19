@@ -70,6 +70,12 @@ class FleetInventory < ApplicationRecord
   # officer role with anyway.
   OFFICER_PRIVILEGES = ["fleet:manage", "fleet:inventories:manage"].freeze
 
+  # What it takes to see this fleet's inventories at all, before visibility is
+  # asked about. Here rather than on the policy because the broadcast audience
+  # needs the same list and a model reaching into a policy for it reads
+  # backwards.
+  READ_PRIVILEGES = [*OFFICER_PRIVILEGES, "fleet:inventories:read"].freeze
+
   # Whether a member may see this inventory at all: its name and description
   # included, not only its contents.
   #
@@ -88,6 +94,24 @@ class FleetInventory < ApplicationRecord
     # manager whose role carries no inventory access at all still sees nothing
     # -- the officers-only distinction never arises for them.
     managed_by.present? && managed_by == membership.user_id
+  end
+
+  # The roster, filtered by the same two questions the endpoints ask: the read
+  # privileges, and whether this store is visible to that member. A member who
+  # cannot read an officers-only inventory is not told when it changes either.
+  #
+  # Per member rather than per fleet because a channel here takes no params --
+  # every one is `stream_for current_user` -- so a shared record fans out.
+  private def broadcast_inventory_change
+    payload = {inventoryId: id, inventorySlug: slug, fleetSlug: fleet.slug}
+
+    fleet.fleet_memberships.kept.accepted.includes(:fleet_role, :user).each do |membership|
+      next unless membership.has_access?(READ_PRIVILEGES)
+      next unless visible_to?(membership)
+      next if membership.user.blank?
+
+      FleetInventoryChannel.broadcast_to(membership.user, payload)
+    end
   end
 
   def self.ransackable_attributes(_auth_object = nil)

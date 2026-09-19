@@ -58,6 +58,16 @@ class Inventory < ApplicationRecord
 
   # A ship inventory comes into existence with its first deposit, named after the
   # ship it rides in.
+  # One listener: the person who holds it. `holder` is polymorphic and only
+  # User holds inventories today, so anything else is left alone rather than
+  # guessed at -- a ship's inventory is the holder's too, reached through
+  # `vehicle`, not through a holder of its own.
+  private def broadcast_inventory_change
+    return unless holder.is_a?(::User)
+
+    HangarInventoryChannel.broadcast_to(holder, {inventoryId: id, inventorySlug: slug})
+  end
+
   def self.provision_for(vehicle, holder:)
     find_by(holder:, vehicle:) || create_for(vehicle, holder:)
   end

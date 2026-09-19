@@ -13,6 +13,16 @@ channels:
     messages:
       AppVersionMessage:
         "$ref": "#/components/messages/AppVersionMessage"
+  FleetInventory:
+    address: fleet_inventory:{user_gid}
+    x-actioncable-channel: FleetInventoryChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      FleetInventoryChangedMessage:
+        "$ref": "#/components/messages/FleetInventoryChangedMessage"
   FleetMembers:
     address: fleet_members:{user_gid}
     x-actioncable-channel: FleetMembersChannel
@@ -65,6 +75,16 @@ channels:
     messages:
       Vehicle:
         "$ref": "#/components/messages/Vehicle"
+  HangarInventory:
+    address: hangar_inventory:{user_gid}
+    x-actioncable-channel: HangarInventoryChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      HangarInventoryChangedMessage:
+        "$ref": "#/components/messages/HangarInventoryChangedMessage"
   HangarSync:
     address: hangar_sync:{user_gid}
     x-actioncable-channel: HangarSyncChannel
@@ -172,6 +192,13 @@ operations:
     messages:
     - "$ref": "#/channels/AppVersion/messages/AppVersionMessage"
     summary: A new application version was deployed
+  receiveFleetInventoryUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/FleetInventory"
+    messages:
+    - "$ref": "#/channels/FleetInventory/messages/FleetInventoryChangedMessage"
+    summary: Something in one of the user's fleets' stores changed
   receiveFleetMembers:
     action: receive
     channel:
@@ -200,6 +227,13 @@ operations:
     messages:
     - "$ref": "#/channels/HangarDestroy/messages/Vehicle"
     summary: A vehicle was removed from the user's hangar
+  receiveHangarInventoryUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/HangarInventory"
+    messages:
+    - "$ref": "#/channels/HangarInventory/messages/HangarInventoryChangedMessage"
+    summary: Something in one of the user's own inventories changed
   receiveHangarSyncResult:
     action: receive
     channel:
@@ -1308,6 +1342,21 @@ components:
         crafting:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
+    FleetInventoryChangedMessage:
+      type: object
+      properties:
+        inventoryId:
+          type: string
+          format: uuid
+        inventorySlug:
+          type: string
+        fleetSlug:
+          type: string
+      additionalProperties: false
+      required:
+      - inventoryId
+      - inventorySlug
+      - fleetSlug
     FleetMember:
       type: object
       properties:
@@ -1701,6 +1750,18 @@ components:
       additionalProperties: false
       required:
       - hangarGroupId
+    HangarInventoryChangedMessage:
+      type: object
+      properties:
+        inventoryId:
+          type: string
+          format: uuid
+        inventorySlug:
+          type: string
+      additionalProperties: false
+      required:
+      - inventoryId
+      - inventorySlug
     HangarSyncCancelledMessage:
       type: object
       properties:
@@ -3458,12 +3519,18 @@ components:
     AppVersionMessage:
       payload:
         "$ref": "#/components/schemas/AppVersionMessage"
+    FleetInventoryChangedMessage:
+      payload:
+        "$ref": "#/components/schemas/FleetInventoryChangedMessage"
     FleetMember:
       payload:
         "$ref": "#/components/schemas/FleetMember"
     HangarGroupChangedMessage:
       payload:
         "$ref": "#/components/schemas/HangarGroupChangedMessage"
+    HangarInventoryChangedMessage:
+      payload:
+        "$ref": "#/components/schemas/HangarInventoryChangedMessage"
     HangarSyncCancelledMessage:
       payload:
         "$ref": "#/components/schemas/HangarSyncCancelledMessage"
