@@ -1844,6 +1844,26 @@
       },
       "admin": {
         "blueprints": {
+          "columns": {
+            "source": "Fuente",
+            "output": "Resultado",
+            "build": "Compilación",
+            "created": "Creado el",
+            "slot": "Ranura",
+            "material": "Material",
+            "type": "Tipo",
+            "quantity": "Cantidad",
+            "minQuality": "Calidad mínima",
+            "stat": "Estadística",
+            "change": "Cambio",
+            "base": "Base",
+            "ramp": "Progresión",
+            "kind": "Tipo",
+            "org": "Org",
+            "mission": "Misión",
+            "standing": "Reputación",
+            "pool": "Grupo"
+          },
           "makes": "Produce",
           "noOutput": "En ningún catálogo",
           "slug": "Slug",

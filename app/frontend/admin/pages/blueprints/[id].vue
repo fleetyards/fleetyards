@@ -182,29 +182,36 @@ const sourceRows = computed((): SourceRow[] =>
   })),
 );
 
+const column = (key: string) => t(`labels.admin.blueprints.columns.${key}`);
+
 const materialColumns: BaseTableCol<MaterialRow>[] = [
-  { name: "slot", label: "Slot" },
-  { name: "material", label: "Material" },
-  { name: "type", label: "Type", mobile: false },
-  { name: "quantity", label: "Quantity", alignment: "right" },
-  { name: "minQuality", label: "Min Quality", alignment: "right" },
+  { name: "slot", label: column("slot") },
+  { name: "material", label: column("material") },
+  { name: "type", label: column("type"), mobile: false },
+  { name: "quantity", label: column("quantity"), alignment: "right" },
+  { name: "minQuality", label: column("minQuality"), alignment: "right" },
 ];
 
 const statColumns: BaseTableCol<StatRow>[] = [
-  { name: "slot", label: "Slot" },
-  { name: "stat", label: "Stat" },
-  { name: "quality", label: "Quality", mobile: false },
-  { name: "change", label: "Change", alignment: "right" },
-  { name: "baseValue", label: "Base", alignment: "right", mobile: false },
-  { name: "ramp", label: "Ramp", mobile: false },
+  { name: "slot", label: column("slot") },
+  { name: "stat", label: column("stat") },
+  { name: "quality", label: t("labels.blueprint.quality"), mobile: false },
+  { name: "change", label: column("change"), alignment: "right" },
+  {
+    name: "baseValue",
+    label: column("base"),
+    alignment: "right",
+    mobile: false,
+  },
+  { name: "ramp", label: column("ramp"), mobile: false },
 ];
 
 const sourceColumns: BaseTableCol<SourceRow>[] = [
-  { name: "kind", label: "Kind" },
-  { name: "org", label: "Org" },
-  { name: "mission", label: "Mission", mobile: false },
-  { name: "standing", label: "Standing", mobile: false },
-  { name: "pool", label: "Pool", mobile: false },
+  { name: "kind", label: column("kind") },
+  { name: "org", label: column("org") },
+  { name: "mission", label: column("mission"), mobile: false },
+  { name: "standing", label: column("standing"), mobile: false },
+  { name: "pool", label: column("pool"), mobile: false },
 ];
 </script>
 

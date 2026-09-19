@@ -1844,6 +1844,26 @@
       },
       "admin": {
         "blueprints": {
+          "columns": {
+            "source": "來源",
+            "output": "產出",
+            "build": "版本",
+            "created": "建立於",
+            "slot": "槽位",
+            "material": "材料",
+            "type": "類型",
+            "quantity": "數量",
+            "minQuality": "最低品質",
+            "stat": "屬性",
+            "change": "變化",
+            "base": "基準",
+            "ramp": "曲線",
+            "kind": "類別",
+            "org": "組織",
+            "mission": "任務",
+            "standing": "聲望",
+            "pool": "獎勵池"
+          },
           "makes": "產出",
           "noOutput": "不在任何目錄中",
           "slug": "Slug",

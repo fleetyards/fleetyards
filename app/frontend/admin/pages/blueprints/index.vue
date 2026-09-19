@@ -62,61 +62,61 @@ const {
   ...asyncStatus
 } = useBlueprints(blueprintsQueryParams);
 
+const { t, l } = useI18n();
+
 const columns: BaseTableCol<Blueprint>[] = [
   {
     name: "name",
-    label: "Name",
+    label: t("labels.blueprint.name"),
     sortable: true,
   },
   {
     name: "makes",
-    label: "Makes",
+    label: t("labels.admin.blueprints.makes"),
     mobile: false,
   },
   {
     name: "materials",
-    label: "Materials",
+    label: t("labels.blueprint.materials"),
     mobile: false,
   },
   {
     name: "craftTime",
-    label: "Craft Time",
+    label: t("labels.blueprint.craftTime"),
     alignment: "right",
     mobile: false,
     sortable: true,
   },
   {
     name: "slotCount",
-    label: "Slots",
+    label: t("labels.blueprint.slots"),
     alignment: "right",
     mobile: false,
   },
   {
     name: "source",
-    label: "Source",
+    label: t("labels.admin.blueprints.columns.source"),
     alignment: "center",
     mobile: false,
   },
   {
     name: "output",
-    label: "Output",
+    label: t("labels.admin.blueprints.columns.output"),
     alignment: "center",
     mobile: false,
   },
   {
     name: "build",
-    label: "Build",
+    label: t("labels.admin.blueprints.columns.build"),
     mobile: false,
   },
   {
     name: "createdAt",
-    label: "Created At",
+    label: t("labels.admin.blueprints.columns.created"),
     mobile: false,
     sortable: true,
   },
 ];
-
-const { t, l } = useI18n();
 
 const materialNames = (record: Blueprint) =>
   (record.materials || []).map((material) => material.name).join(", ");

@@ -1844,6 +1844,26 @@
       },
       "admin": {
         "blueprints": {
+          "columns": {
+            "source": "Quelle",
+            "output": "Ergebnis",
+            "build": "Build",
+            "created": "Erstellt am",
+            "slot": "Platz",
+            "material": "Material",
+            "type": "Typ",
+            "quantity": "Menge",
+            "minQuality": "Mindestqualität",
+            "stat": "Wert",
+            "change": "Änderung",
+            "base": "Basis",
+            "ramp": "Verlauf",
+            "kind": "Art",
+            "org": "Org",
+            "mission": "Mission",
+            "standing": "Ansehen",
+            "pool": "Pool"
+          },
           "makes": "Fertigt",
           "noOutput": "In keinem Katalog",
           "slug": "Slug",
