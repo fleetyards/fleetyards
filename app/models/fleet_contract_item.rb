@@ -136,9 +136,17 @@ class FleetContractItem < ApplicationRecord
   private def unit_fits_category
     return if category.blank? || unit.blank?
 
-    allowed = ::InventoryLedgerEntry::UNITS_BY_CATEGORY[category]
+    allowed = ::InventoryLedgerEntry.units_for_category(category, referenced_item)
     return if allowed.blank? || allowed.include?(unit)
 
     errors.add(:unit, :inclusion)
+  end
+
+  # Reading `item` constantizes `item_type`, so the type has to be known to be
+  # one of ours first -- the same gate `referenced_item_exists` applies.
+  private def referenced_item
+    return unless item_type.in?(::InventoryLedgerEntry::ITEM_TYPES)
+
+    item
   end
 end

@@ -32,6 +32,28 @@ module InventoryLedgerEntry
     "other" => UNITS.keys.map(&:to_s)
   }.freeze
 
+  # The units an entry may be recorded in. The category answers for almost
+  # everything -- bulk cargo in SCU, gear per piece -- but the game hands out 56
+  # commodities a piece at a time, and a crafting recipe asks for a number of
+  # them rather than a volume, so an inventory has to be able to say the same.
+  #
+  # Widened, never flipped: a counted commodity is still sold by the crate, and
+  # every commodity position ever recorded is in SCU. `units` joins `scu` rather
+  # than replacing it, so no holding anyone has written down stops validating.
+  #
+  # The item carries the answer, not the category -- `commodity_type` does not
+  # predict it, the minerals splitting nine counted to ten bulk. A free-text
+  # position points at nothing and keeps the SCU-only rule: we have no idea
+  # what a line reading "hadanite" is counting.
+  #
+  # On the module rather than in `class_methods`, because `FleetContractItem`
+  # asks the same question and is not a ledger entry.
+  def self.units_for_category(category, item = nil)
+    allowed = UNITS_BY_CATEGORY.fetch(category.to_s, UNITS.keys.map(&:to_s))
+
+    item.try(:counted?) ? allowed | [UNITS.keys.last.to_s] : allowed
+  end
+
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze
 
   # What makes two entries the same stock position, and so the columns no single
@@ -172,9 +194,7 @@ module InventoryLedgerEntry
       reflect_on_association(position_association_name).klass
     end
 
-    def units_for_category(category)
-      UNITS_BY_CATEGORY.fetch(category.to_s, UNITS.keys.map(&:to_s))
-    end
+    delegate :units_for_category, to: ::InventoryLedgerEntry
 
     def net_quantity_for(inventory_id, name, category, unit)
       where(inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit)
@@ -234,16 +254,21 @@ module InventoryLedgerEntry
   # SCU, so only gear needs the lookup, and only gear the entry actually points
   # at can answer it — a hand-typed "Medpen" has no volume anywhere.
   #
-  # The two catalogues keep the figure in different shapes because they were
+  # The three catalogues keep the figure in different shapes because they were
   # imported years apart: Equipment stores SCU on the row, Component keeps the
-  # game's microSCU inside the occupancy blob. One microSCU is what CIG leaves
-  # on a record nobody measured, so it reads as unknown rather than as nothing.
+  # game's microSCU inside the occupancy blob, and a counted commodity carries
+  # the piece it is handed out in. One microSCU is what CIG leaves on a record
+  # nobody measured, so it reads as unknown rather than as nothing.
+  #
+  # A bulk commodity answers nothing here on purpose: it is already recorded in
+  # SCU, so `InventoryStockItem#volume_scu` never asks.
   def item_volume
     return unless referenced_item?
 
     case item
     when ::Equipment then item.volume&.to_f
     when ::Component then component_item_volume
+    when ::Commodity then item.piece_volume&.to_f
     end&.then { |volume| volume if volume.positive? }
   end
 
@@ -339,7 +364,7 @@ module InventoryLedgerEntry
   private def unit_fits_category
     return if category.blank? || unit.blank?
 
-    allowed = self.class.units_for_category(category)
+    allowed = self.class.units_for_category(category, (item if referenced_item?))
     return if unit.in?(allowed)
 
     errors.add(:unit, :inclusion, message: "must be #{allowed.join(" or ")} for #{category} entries")

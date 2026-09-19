@@ -118,6 +118,42 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     assert_not item.valid?
   end
 
+  # The game hands the gems out a piece at a time and a crafting recipe asks for
+  # a number of them, so an inventory has to be able to say the same.
+  test "accepts units for an entry pointing at a counted commodity" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+
+    item = build(:inventory_item, inventory: @inventory, item: gem, category: :commodity, unit: :units)
+
+    assert_predicate item, :valid?
+  end
+
+  # Widened, not flipped: the gems are still sold by the crate.
+  test "keeps accepting SCU for a counted commodity" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+
+    item = build(:inventory_item, inventory: @inventory, item: gem, category: :commodity, unit: :scu)
+
+    assert_predicate item, :valid?
+  end
+
+  # A line reading "hadanite" that points at nothing is named by whoever typed
+  # it, and we have no idea what it is counting.
+  test "rejects units for a commodity entry that points at nothing" do
+    item = build(:inventory_item, inventory: @inventory, name: "Hadanite",
+      category: :commodity, unit: :units)
+
+    assert_not item.valid?
+  end
+
+  test "rejects units for an entry pointing at a bulk commodity" do
+    iron = create(:commodity, name: "Iron", counted: false)
+
+    item = build(:inventory_item, inventory: @inventory, item: iron, category: :commodity, unit: :units)
+
+    assert_not item.valid?
+  end
+
   test "allows either unit for an other entry" do
     InventoryLedgerEntry::UNITS.each_key do |unit|
       item = build(:inventory_item, inventory: @inventory, category: :other, unit: unit)
@@ -205,6 +241,27 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     unmeasured = create(:component, inventory_consumption: {"micro_scu" => 1.0})
 
     item = create(:inventory_item, inventory: @inventory, item: unmeasured, category: :component, unit: :units)
+
+    assert_nil item.item_volume
+  end
+
+  # Without this a position recorded in pieces has no volume at all, and
+  # `stock_volume` counts it as unmeasured -- so the hold-fill figure would
+  # start understating itself the moment pieces could be recorded.
+  test "#item_volume reads what one piece of a counted commodity takes up" do
+    gem = create(:commodity, name: "Hadanite", counted: true, piece_volume: 0.001)
+
+    item = create(:inventory_item, inventory: @inventory, item: gem, category: :commodity, unit: :units)
+
+    assert_in_delta 0.001, item.item_volume, 0.0000001
+  end
+
+  # A bulk commodity is recorded in SCU, which is already a volume, so there is
+  # nothing to convert and no single crate size to convert by.
+  test "#item_volume has nothing to read for a bulk commodity" do
+    iron = create(:commodity, name: "Iron", counted: false, piece_volume: nil)
+
+    item = create(:inventory_item, inventory: @inventory, item: iron, category: :commodity, unit: :scu)
 
     assert_nil item.item_volume
   end
