@@ -235,7 +235,7 @@ const sourceColumns: BaseTableCol<SourceRow>[] = [
         primary-key="id"
         :columns="materialColumns"
         :title="t('headlines.admin.blueprints.materials')"
-        empty-visible
+        :empty-visible="!materialRows.length"
         data-test="blueprint-materials"
       />
 
@@ -244,7 +244,7 @@ const sourceColumns: BaseTableCol<SourceRow>[] = [
         primary-key="id"
         :columns="statColumns"
         :title="t('headlines.admin.blueprints.stats')"
-        empty-visible
+        :empty-visible="!statRows.length"
         data-test="blueprint-stats"
       />
 
@@ -253,7 +253,7 @@ const sourceColumns: BaseTableCol<SourceRow>[] = [
         primary-key="id"
         :columns="sourceColumns"
         :title="t('headlines.admin.blueprints.sources')"
-        empty-visible
+        :empty-visible="!sourceRows.length"
         data-test="blueprint-sources"
       />
     </template>
