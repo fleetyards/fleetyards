@@ -95,12 +95,15 @@ const toggle = async () => {
 };
 </script>
 
+<!-- No `active`: Btn paints a filled end-cap and a translucent panel for that
+     state, which next to a title reads as a control stuck down rather than as
+     a recipe you have. The bookmark itself is the state -- solid when held,
+     outlined when not -- the way the hangar's own bookmark already works. -->
 <template>
   <Btn
     v-tooltip.bottom="tooltip"
     :variant="BtnVariantsEnum.BARE"
     :size="btnSize"
-    :active="owned"
     :disabled="saving"
     data-test="blueprint-own-toggle"
     :aria-pressed="owned"
