@@ -416,6 +416,32 @@ class InventoryTest < ActiveSupport::TestCase
     assert locked, "the move has to run under the inventory lock"
   end
 
+  # One query per catalogue rather than per reference: a position naming a
+  # commodity, a component and a piece of equipment costs three either way,
+  # but naming twelve commodities has to stay at one.
+  test "update_stock_item resolves a position's references in one query per catalogue" do
+    commodities = Array.new(4) { |at| create(:commodity, name: "Ore #{at}", counted: false) }
+    commodities.each do |commodity|
+      create(:inventory_item, inventory: @inventory, item: commodity, name: "Mixed",
+        category: :commodity, unit: :scu, quantity: 1)
+    end
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Mixed", category: "commodity", unit: "scu")
+    )
+
+    queries = 0
+    counter = ->(_name, _start, _finish, _id, payload) {
+      queries += 1 if payload[:sql]&.include?("FROM \"commodities\"")
+    }
+
+    ActiveSupport::Notifications.subscribed(counter, "sql.active_record") do
+      @inventory.update_stock_item(stock_item, {name: "Mixed Ore"})
+    end
+
+    assert_equal 1, queries, "four references must not cost four lookups"
+  end
+
   private def stock_position(quantity:, withdrawn: nil)
     create(:inventory_item, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity:)

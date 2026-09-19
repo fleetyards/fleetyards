@@ -259,11 +259,16 @@ module InventoryStock
 
     return [nil] if pairs.empty?
 
-    pairs.map do |item_type, item_id|
-      next unless item_id.present? && item_type.in?(InventoryLedgerEntry::ITEM_TYPES)
+    # One query per catalogue, not per reference -- there are three catalogues
+    # an entry may point at, and a position that named all of them would still
+    # cost three.
+    found = pairs
+      .select { |item_type, item_id| item_id.present? && item_type.in?(InventoryLedgerEntry::ITEM_TYPES) }
+      .group_by(&:first)
+      .flat_map { |item_type, typed| item_type.constantize.where(id: typed.map(&:last)).to_a }
+      .index_by { |record| [record.class.name, record.id] }
 
-      item_type.constantize.find_by(id: item_id)
-    end
+    pairs.map { |item_type, item_id| found[[item_type, item_id]] }
   end
 
   private def reference_entry_for(row)
