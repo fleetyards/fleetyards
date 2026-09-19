@@ -12,16 +12,26 @@ module Api
         # does not empty the chart, short enough that it still reads as now.
         TRENDING_WINDOW = 30.days
 
-        QUICK_STATS_TTL = 5.minutes
+        # Every figure here is about the whole catalogue rather than about the
+        # visitor asking, and none of them reads differently five minutes later.
+        STATS_TTL = 5.minutes
 
         before_action :authenticate_user!, only: []
+
+        # For the charts that count their way through 1.57M vehicles. Their
+        # labels come off the records themselves -- a ship's name, a paint's --
+        # so, unlike the charts that translate theirs, one entry serves every
+        # locale.
+        private def cached_chart(name, &)
+          Rails.cache.fetch("stats/#{name}", expires_in: STATS_TTL, &)
+        end
 
         def quick_stats
           # Twelve figures about the whole catalogue and every hangar in it, on
           # a public page, recomputed per visitor. Two of them count their way
           # through 1.57M vehicles. None of it is per-visitor, and none of it
           # changes meaningfully inside five minutes.
-          @quick_stats = Rails.cache.fetch("stats/quick_stats", expires_in: QUICK_STATS_TTL) do
+          @quick_stats = Rails.cache.fetch("stats/quick_stats", expires_in: STATS_TTL) do
             build_quick_stats
           end
         end
@@ -125,11 +135,13 @@ module Api
         # Standing demand, as opposed to `most_wishlisted`, which is the month's
         # additions. A ship can be heavily wanted for years and add nobody new.
         def wishlist_by_model
-          wishlist_by_model = transform_for_bar_chart(
-            Vehicle.visible.wanted.where(loaner: false)
-                   .joins(:model)
-                   .group("models.name").count
-          ).take(10)
+          wishlist_by_model = cached_chart(:wishlist_by_model) do
+            transform_for_bar_chart(
+              Vehicle.visible.wanted.where(loaner: false)
+                     .joins(:model)
+                     .group("models.name").count
+            ).take(10)
+          end
 
           render json: wishlist_by_model.to_json
         end
@@ -138,35 +150,41 @@ module Api
         # one they simply have. Expressed per 100 owned so the figure stays an
         # integer and reads as a comparison rather than a rate.
         def wish_to_own_ratio
-          counted = Vehicle.visible.where(loaner: false)
-            .joins(:model)
-            .group("models.name")
-            .pluck(
-              Arel.sql("models.name"),
-              Arel.sql("COUNT(*) FILTER (WHERE vehicles.wanted)"),
-              Arel.sql("COUNT(*) FILTER (WHERE NOT vehicles.wanted)")
-            )
+          wish_to_own_ratio = cached_chart(:wish_to_own_ratio) do
+            counted = Vehicle.visible.where(loaner: false)
+              .joins(:model)
+              .group("models.name")
+              .pluck(
+                Arel.sql("models.name"),
+                Arel.sql("COUNT(*) FILTER (WHERE vehicles.wanted)"),
+                Arel.sql("COUNT(*) FILTER (WHERE NOT vehicles.wanted)")
+              )
 
-          wish_to_own_ratio = counted.filter_map do |name, wished, owned|
-            next if owned < WISH_TO_OWN_FLOOR
+            ratios = counted.filter_map do |name, wished, owned|
+              next if owned < WISH_TO_OWN_FLOOR
 
-            {label: name, count: (wished * 100.0 / owned).round, tooltip: name}
+              {label: name, count: (wished * 100.0 / owned).round, tooltip: name}
+            end
+
+            ratios.sort_by { |point| -point[:count] }.take(10)
           end
 
-          render json: wish_to_own_ratio.sort_by { |point| -point[:count] }.take(10).to_json
+          render json: wish_to_own_ratio.to_json
         end
 
         def top_paints
-          paint_counts = Vehicle.visible.purchased.where(loaner: false)
-            .where.not(model_paint_id: nil)
-            .group(:model_paint_id).count
+          top_paints = cached_chart(:top_paints) do
+            paint_counts = Vehicle.visible.purchased.where(loaner: false)
+              .where.not(model_paint_id: nil)
+              .group(:model_paint_id).count
 
-          names = ModelPaint.where(id: paint_counts.keys).includes(:model)
-            .to_h { |paint| [paint.id, paint_label(paint)] }
+            names = ModelPaint.where(id: paint_counts.keys).includes(:model)
+              .to_h { |paint| [paint.id, paint_label(paint)] }
 
-          top_paints = transform_for_bar_chart(
-            paint_counts.filter_map { |id, count| [names[id], count] if names.key?(id) }.to_h
-          ).take(10)
+            transform_for_bar_chart(
+              paint_counts.filter_map { |id, count| [names[id], count] if names.key?(id) }.to_h
+            ).take(10)
+          end
 
           render json: top_paints.to_json
         end
@@ -289,11 +307,13 @@ module Api
         end
 
         def vehicles_by_model
-          vehicles_by_model = transform_for_bar_chart(
-            Vehicle.visible.where(loaner: false, wanted: false)
-                   .joins(:model)
-                   .group("models.name").count
-          ).take(10)
+          vehicles_by_model = cached_chart(:vehicles_by_model) do
+            transform_for_bar_chart(
+              Vehicle.visible.where(loaner: false, wanted: false)
+                     .joins(:model)
+                     .group("models.name").count
+            ).take(10)
+          end
 
           render json: vehicles_by_model.to_json
         end
