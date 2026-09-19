@@ -4,27 +4,35 @@
 #
 # Table name: commodities
 #
-#  id             :uuid             not null, primary key
-#  commodity_type :string
-#  counted        :boolean          default(FALSE), not null
-#  description    :text
-#  name           :string           not null
-#  piece_volume   :decimal(16, 8)
-#  sc_key         :string
-#  sc_ref         :string
-#  slug           :string           not null
-#  uex_code       :string
-#  version        :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  uex_id         :integer
+#  id              :uuid             not null, primary key
+#  commodity_type  :string
+#  consumable      :boolean          default(FALSE), not null
+#  container_sizes :decimal(16, 8)   default([]), is an Array
+#  counted         :boolean          default(FALSE), not null
+#  description     :text
+#  name            :string           not null
+#  piece_volume    :decimal(16, 8)
+#  sc_key          :string
+#  sc_ref          :string
+#  slug            :string           not null
+#  uex_code        :string
+#  version         :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  refines_into_id :uuid
+#  uex_id          :integer
 #
 # Indexes
 #
-#  index_commodities_on_commodity_type  (commodity_type)
-#  index_commodities_on_sc_key          (sc_key) UNIQUE
-#  index_commodities_on_slug            (slug) UNIQUE
-#  index_commodities_on_uex_code        (uex_code)
+#  index_commodities_on_commodity_type   (commodity_type)
+#  index_commodities_on_refines_into_id  (refines_into_id)
+#  index_commodities_on_sc_key           (sc_key) UNIQUE
+#  index_commodities_on_slug             (slug) UNIQUE
+#  index_commodities_on_uex_code         (uex_code)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (refines_into_id => commodities.id) ON DELETE => nullify
 #
 class Commodity < ApplicationRecord
   attr_accessor :update_reason, :update_reason_description, :author_id
@@ -178,14 +186,25 @@ class Commodity < ApplicationRecord
     end
   end
 
-  # The `?` spelling has to be redirected too. Rails defines `counted?` off the
+  # The `?` spelling has to be redirected too. Rails defines these off the
   # column, and the column is only the fallback -- left alone, the two spellings
   # of the same question answer differently for every commodity whose build
-  # knows better than its row. The first boolean fact in any of the four
-  # catalogues, which is why none of the others needed this.
+  # knows better than its row. The first booleans in any of the four catalogues,
+  # which is why none of the others needed this.
   def counted?
     counted
   end
+
+  def consumable?
+    consumable
+  end
+
+  # The refined good this one becomes, and the raw forms that become it. Three
+  # of the construction material forms share a target, so the reverse is a
+  # collection rather than a pair.
+  belongs_to :refines_into, class_name: "Commodity", optional: true
+  has_many :refined_from, class_name: "Commodity",
+    foreign_key: :refines_into_id, inverse_of: :refines_into, dependent: :nullify
 
   # Named as every other catalogue names its picture, so a ledger entry
   # pointing at a commodity draws it through the same fallback that already

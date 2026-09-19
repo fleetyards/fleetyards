@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_19_121000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_19_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -326,11 +326,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_121000) do
 
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "commodity_type"
+    t.boolean "consumable", default: false, null: false
+    t.decimal "container_sizes", precision: 16, scale: 8, default: [], array: true
     t.boolean "counted", default: false, null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.string "name", null: false
     t.decimal "piece_volume", precision: 16, scale: 8
+    t.uuid "refines_into_id"
     t.string "sc_key"
     t.string "sc_ref"
     t.string "slug", null: false
@@ -339,6 +342,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_121000) do
     t.datetime "updated_at", null: false
     t.string "version"
     t.index ["commodity_type"], name: "index_commodities_on_commodity_type"
+    t.index ["refines_into_id"], name: "index_commodities_on_refines_into_id"
     t.index ["sc_key"], name: "index_commodities_on_sc_key", unique: true
     t.index ["slug"], name: "index_commodities_on_slug", unique: true
     t.index ["uex_code"], name: "index_commodities_on_uex_code"
@@ -347,6 +351,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_121000) do
   create_table "commodity_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "commodity_id", null: false
     t.string "commodity_type"
+    t.boolean "consumable", default: false, null: false
+    t.decimal "container_sizes", precision: 16, scale: 8, default: [], array: true
     t.boolean "counted", default: false, null: false
     t.datetime "created_at", null: false
     t.text "description"
@@ -2242,6 +2248,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_19_121000) do
   add_foreign_key "blueprint_cost_slots", "blueprint_builds", on_delete: :cascade
   add_foreign_key "blueprint_sources", "blueprint_builds", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "commodities", "commodities", column: "refines_into_id", on_delete: :nullify
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade

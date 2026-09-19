@@ -6,27 +6,35 @@ require "test_helper"
 #
 # Table name: commodities
 #
-#  id             :uuid             not null, primary key
-#  commodity_type :string
-#  counted        :boolean          default(FALSE), not null
-#  description    :text
-#  name           :string           not null
-#  piece_volume   :decimal(16, 8)
-#  sc_key         :string
-#  sc_ref         :string
-#  slug           :string           not null
-#  uex_code       :string
-#  version        :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  uex_id         :integer
+#  id              :uuid             not null, primary key
+#  commodity_type  :string
+#  consumable      :boolean          default(FALSE), not null
+#  container_sizes :decimal(16, 8)   default([]), is an Array
+#  counted         :boolean          default(FALSE), not null
+#  description     :text
+#  name            :string           not null
+#  piece_volume    :decimal(16, 8)
+#  sc_key          :string
+#  sc_ref          :string
+#  slug            :string           not null
+#  uex_code        :string
+#  version         :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  refines_into_id :uuid
+#  uex_id          :integer
 #
 # Indexes
 #
-#  index_commodities_on_commodity_type  (commodity_type)
-#  index_commodities_on_sc_key          (sc_key) UNIQUE
-#  index_commodities_on_slug            (slug) UNIQUE
-#  index_commodities_on_uex_code        (uex_code)
+#  index_commodities_on_commodity_type   (commodity_type)
+#  index_commodities_on_refines_into_id  (refines_into_id)
+#  index_commodities_on_sc_key           (sc_key) UNIQUE
+#  index_commodities_on_slug             (slug) UNIQUE
+#  index_commodities_on_uex_code         (uex_code)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (refines_into_id => commodities.id) ON DELETE => nullify
 #
 class CommodityTest < ActiveSupport::TestCase
   test "generates a slug from the name" do
