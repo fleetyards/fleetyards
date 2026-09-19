@@ -50,6 +50,10 @@ class Api::V1::BlueprintsOwnTest < ActionDispatch::IntegrationTest
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
     end
   end
 
@@ -110,5 +114,13 @@ class Api::V1::BlueprintsOwnTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :put, 404, api_path: PATH, path_params: {slug: "no-such-recipe"}
+  end
+
+  # Unmarking is idempotent about the *mark*, not about the recipe: a slug no
+  # blueprint carries is a wrong address either way round.
+  test "DELETE on a recipe that does not exist is a 404" do
+    sign_in @user
+
+    assert_api_response :delete, 404, api_path: PATH, path_params: {slug: "no-such-recipe"}
   end
 end

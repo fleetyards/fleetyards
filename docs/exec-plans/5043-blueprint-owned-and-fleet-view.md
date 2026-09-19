@@ -159,9 +159,9 @@ applies the scope itself.
    component sourced from the model.
 3. `UserBlueprint::AVAILABLE_PRIVILEGES` / `DEFAULT_PRIVILEGES`, registered in
    `FleetRole::PRIVILEGE_GROUPS` and `preset_privileges` (D6).
-4. Data migration granting `fleet:blueprints:read` to existing roles, and
-   `fleet:blueprints:manage` to anyone who already manages the fleet or its
-   memberships.
+4. Data migration granting `fleet:blueprints:read` to existing roles that can
+   already read the roster or the ship list (D6). There is no `:manage` to
+   grant.
 5. `GET /fleets/:slug/blueprints` → `Api::V1::FleetBlueprintsController`, with
    `FleetBlueprintPolicy`, the sharing-member subquery (D4), the catalogue's own
    ransack surface, and `owners` + `ownerCount` per row. The whole filter

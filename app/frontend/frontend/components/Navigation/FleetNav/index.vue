@@ -137,7 +137,7 @@ onMounted(() => {
           }"
           :label="t('nav.fleets.blueprints')"
           :active="route.name === 'fleet-blueprints'"
-          icon="fa-duotone fa-scroll"
+          icon="fa-duotone fa-notes"
           prefix="05"
         />
         <NavItem
@@ -182,14 +182,14 @@ onMounted(() => {
           :label="t('nav.fleets.tours')"
           :active="String(route.name).startsWith('fleet-tour')"
           icon="fa-duotone fa-coins"
-          prefix="08"
+          prefix="09"
         />
         <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="09"
+          prefix="10"
         />
       </template>
     </template>
