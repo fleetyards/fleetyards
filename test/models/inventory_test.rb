@@ -336,6 +336,112 @@ class InventoryTest < ActiveSupport::TestCase
     assert_not_predicate changed, :valid?
   end
 
+  # A position is identified by name, category and unit, so entries pointing at
+  # different things -- or at nothing -- share one. `move_position` writes the
+  # new unit to every one of them with `update_all`, which skips validation, so
+  # authorising the move from a single reference entry leaves the others
+  # holding a pairing their own validator forbids.
+  test "update_stock_item refuses pieces when another entry in the position points at nothing" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 2)
+    create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 3)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {unit: "units"})
+
+    assert_not_predicate changed, :valid?
+    assert_equal ["scu"], @inventory.inventory_items.distinct.pluck(:unit)
+  end
+
+  # The other direction: every entry pointing at the same counted commodity, so
+  # nothing in the position objects and the move goes through.
+  test "update_stock_item moves a position into pieces when every entry agrees" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    2.times do
+      create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+        category: :commodity, unit: :scu, quantity: 2)
+    end
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {unit: "units"})
+
+    assert_predicate changed, :valid?
+    assert_equal ["units"], @inventory.inventory_items.distinct.pluck(:unit)
+  end
+
+  # A bulk commodity in the same position holds it to SCU even though the
+  # reference entry is a counted one.
+  test "update_stock_item refuses pieces when another entry is a bulk commodity" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    iron = create(:commodity, name: "Iron", counted: false)
+    create(:inventory_item, inventory: @inventory, item: iron, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 2)
+    create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 3)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    assert_not_predicate @inventory.update_stock_item(stock_item, {unit: "units"}), :valid?
+  end
+
+  # The move is an `update_all`, so the entry set it writes has to be the one
+  # that was validated. Holding the inventory row is what stops a deposit
+  # joining the position in between -- the same row every entry save takes.
+  test "update_stock_item holds the inventory while it resolves and moves" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, item: gem, name: "Hadanite",
+      category: :commodity, unit: :scu, quantity: 2)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    locked = false
+    @inventory.define_singleton_method(:with_lock) do |&block|
+      locked = true
+      super(&block)
+    end
+
+    assert_predicate @inventory.update_stock_item(stock_item, {unit: "units"}), :valid?
+    assert locked, "the move has to run under the inventory lock"
+  end
+
+  # One query per catalogue rather than per reference: a position naming a
+  # commodity, a component and a piece of equipment costs three either way,
+  # but naming twelve commodities has to stay at one.
+  test "update_stock_item resolves a position's references in one query per catalogue" do
+    commodities = Array.new(4) { |at| create(:commodity, name: "Ore #{at}", counted: false) }
+    commodities.each do |commodity|
+      create(:inventory_item, inventory: @inventory, item: commodity, name: "Mixed",
+        category: :commodity, unit: :scu, quantity: 1)
+    end
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Mixed", category: "commodity", unit: "scu")
+    )
+
+    queries = 0
+    counter = ->(_name, _start, _finish, _id, payload) {
+      queries += 1 if payload[:sql]&.include?("FROM \"commodities\"")
+    }
+
+    ActiveSupport::Notifications.subscribed(counter, "sql.active_record") do
+      @inventory.update_stock_item(stock_item, {name: "Mixed Ore"})
+    end
+
+    assert_equal 1, queries, "four references must not cost four lookups"
+  end
+
   private def stock_position(quantity:, withdrawn: nil)
     create(:inventory_item, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity:)

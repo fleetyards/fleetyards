@@ -9,21 +9,29 @@ class InventoryStockItemChange
 
   attr_accessor :name, :category, :unit
 
-  # The catalogue record the position points at, if it points at one. Read
-  # rather than written: the rename cannot move it, but it decides which units
-  # the position may be recorded in -- a counted commodity may be pieces.
-  attr_reader :item
+  # Every catalogue record the position's entries point at, with a nil for each
+  # entry that points at nothing. Read rather than written: the rename cannot
+  # move them, but they decide which units the position may be recorded in --
+  # a counted commodity may be pieces, and a free-text line may not.
+  #
+  # All of them, not the reference entry's one: `move_position` writes the unit
+  # to every entry with `update_all`, which skips validation, so authorising
+  # the move from a single entry leaves the others holding a pairing their own
+  # validator forbids.
+  attr_reader :items
 
   validates :name, presence: true
   validate :category_is_known
   validate :unit_is_known
   validate :unit_fits_category
 
-  def initialize(stock_item, attributes = {})
+  def initialize(stock_item, attributes = {}, items: nil)
     @name = attributes.fetch(:name, stock_item.name).to_s.strip
     @category = attributes.fetch(:category, stock_item.category).to_s
     @unit = attributes.fetch(:unit, stock_item.unit).to_s
-    @item = stock_item.item
+    # The reference entry's item is the fallback for a caller that has no
+    # inventory to ask -- the console and the tests.
+    @items = items.presence || [stock_item.item]
   end
 
   # Enum values, not names: the update runs as a single UPDATE, which writes the
@@ -53,7 +61,11 @@ class InventoryStockItemChange
   private def unit_fits_category
     return if errors.any?
 
-    allowed = InventoryLedgerEntry.units_for_category(category, item)
+    # What every entry in the position can accept, which is the intersection:
+    # one free-text line is enough to hold the whole position to SCU.
+    allowed = items.map { |entry_item| InventoryLedgerEntry.units_for_category(category, entry_item) }
+      .reduce(:&).to_a
+
     return if allowed.include?(unit)
 
     errors.add(:unit, :inclusion, message: "must be #{allowed.join(" or ")} for #{category} entries")

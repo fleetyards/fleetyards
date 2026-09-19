@@ -148,13 +148,27 @@ module InventoryStock
   # Renaming a position onto an identity that already exists merges the two, the
   # same as it did when the identity was the group key -- the entries join the
   # other position and the emptied one goes.
+  #
+  # The inventory row is held for the whole read-validate-move rather than for
+  # the move alone. What the move does is an `update_all`, which skips
+  # validation entirely, so an entry joining the position between the check and
+  # the write would be carried into a pairing nothing ever validated -- a
+  # concurrent free-text deposit landing in a position whose counted references
+  # had just been approved for pieces.
+  #
+  # It is the same row `withdrawal_does_not_exceed_stock` already takes on every
+  # entry save, so this adds no new lock and no new order to deadlock on.
   def update_stock_item(stock_item, attributes)
     target = attributes.symbolize_keys.slice(:name, :category, :unit)
-    changed = InventoryStockItemChange.new(stock_item, target)
+    changed = nil
+
+    with_lock do
+      changed = InventoryStockItemChange.new(stock_item, target, items: items_in_position(stock_item))
+
+      move_position(stock_item, changed) if changed.valid?
+    end
 
     return changed unless changed.valid?
-
-    transaction { move_position(stock_item, changed) }
 
     touch
 
@@ -234,6 +248,29 @@ module InventoryStock
 
   # The newest entry that carries something worth showing: an uploaded image or
   # a reference to a game item the image can be borrowed from.
+  # Every catalogue record this position's entries point at, one nil per entry
+  # that points at nothing. Plucked rather than loaded through the entries: a
+  # position of two hundred deposits names at most a handful of distinct items.
+  private def items_in_position(stock_item)
+    pairs = inventory_items
+      .where(position_key => stock_item.position_id)
+      .distinct
+      .pluck(:item_type, :item_id)
+
+    return [nil] if pairs.empty?
+
+    # One query per catalogue, not per reference -- there are three catalogues
+    # an entry may point at, and a position that named all of them would still
+    # cost three.
+    found = pairs
+      .select { |item_type, item_id| item_id.present? && item_type.in?(InventoryLedgerEntry::ITEM_TYPES) }
+      .group_by(&:first)
+      .flat_map { |item_type, typed| item_type.constantize.where(id: typed.map(&:last)).to_a }
+      .index_by { |record| [record.class.name, record.id] }
+
+    pairs.map { |item_type, item_id| found[[item_type, item_id]] }
+  end
+
   private def reference_entry_for(row)
     entries = inventory_items
       .where(position_key => row.position_id)
