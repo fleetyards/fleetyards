@@ -109,6 +109,8 @@ It still carries an identity rather than being empty: a per-inventory page can i
 - **2026-09-20** The generated TS cable client is gitignored (`.gitignore:38`) and rebuilt by `postinstall`, so only `asyncapi/cable/v1/schema.yaml` is committed. CI regenerates the channel classes from it.
 - **2026-09-20** `ConnectEvent` reports `reconnect` as optional, not boolean — restating the shape inline was a type error rather than a style choice.
 - **2026-09-20** The transfers list subscribes unfiltered on purpose: a transfer moves stock at both ends and the far end is usually an inventory that view is not scoped to.
+- **2026-09-20** A new channel class is not only an asyncapi change: the REST schema carries an enum of channel names, so `swagger/v1` and `swagger/admin/v1` both gained two entries. `api-schema-check` runs both generators and demands a clean diff, so it caught this — `bin/generate-asyncapi` alone was not enough.
+- **2026-09-20** Running `bin/generate-schema` on macOS also relocates `components.parameters` from after `securitySchemes` to before it — the same content, moved. That is a platform artifact, not a change: committing it would have reddened the check on CI's Linux. Only the four enum lines per document were applied, by hand.
 
 ## Progress
 
