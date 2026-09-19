@@ -11,7 +11,8 @@ module V1
           properties: {
             primary: {type: :boolean},
             shipsFilter: ::V1::Schemas::Enums::FleetMembershipShipsFilterEnum,
-            hangarGroupId: {type: [:string, :null]}
+            hangarGroupId: {type: [:string, :null]},
+            blueprintsFilter: ::V1::Schemas::Enums::FleetMembershipBlueprintsFilterEnum
           },
           additionalProperties: false
         })

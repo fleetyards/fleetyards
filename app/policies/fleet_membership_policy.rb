@@ -54,7 +54,7 @@ class FleetMembershipPolicy < FleetBasePolicy
     allowed_params = []
 
     if fleet_membership.present?
-      allowed_params << [:primary, :ships_filter, :hangar_group_id]
+      allowed_params << [:primary, :ships_filter, :hangar_group_id, :blueprints_filter]
     end
 
     params.permit(*allowed_params.flatten)

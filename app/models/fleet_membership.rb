@@ -7,6 +7,7 @@
 #  id                :uuid             not null, primary key
 #  aasm_state        :string
 #  accepted_at       :datetime
+#  blueprints_filter :integer          default(0), not null
 #  declined_at       :datetime
 #  discarded_at      :datetime
 #  hide_ships        :boolean          default(FALSE)
@@ -71,10 +72,17 @@ class FleetMembership < ApplicationRecord
     {all: 0, hangar_group: 1, hide: 2},
     prefix: true
 
+  # What this member lets the fleet see of the recipes they hold. Two positions
+  # rather than three: there is nothing to group a marker by.
+  enum :blueprints_filter,
+    {all: 0, hide: 1},
+    prefix: true
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
+      "blueprints_filter",
       "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
@@ -83,7 +91,7 @@ class FleetMembership < ApplicationRecord
     ["fleet", "fleet_role", "user"]
   end
 
-  validate_enum_attributes :ships_filter
+  validate_enum_attributes :ships_filter, :blueprints_filter
 
   validates :user_id, uniqueness: {scope: :fleet_id, conditions: -> { where(discarded_at: nil) }}
 
@@ -104,6 +112,7 @@ class FleetMembership < ApplicationRecord
   ransack_alias :state, :aasm_state
 
   before_validation :set_default_ships_filter
+  before_validation :set_default_blueprints_filter
   before_validation :normalize_nickname
   after_create :broadcast_create
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
@@ -159,6 +168,7 @@ class FleetMembership < ApplicationRecord
     destroy_allies: ["fleet:manage", "fleet:allies:manage", "fleet:allies:delete"],
     manage_allies: ["fleet:manage", "fleet:allies:manage"],
     read_vehicles: ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"],
+    read_blueprints: ["fleet:manage", "fleet:blueprints:read"],
     read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],
     manage_fleet: ["fleet:manage"],
     update_fleet: ["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"],
@@ -208,6 +218,12 @@ class FleetMembership < ApplicationRecord
     return if ships_filter.present?
 
     self.ships_filter = "all"
+  end
+
+  def set_default_blueprints_filter
+    return if blueprints_filter.present?
+
+    self.blueprints_filter = "all"
   end
 
   def normalize_nickname

@@ -160,6 +160,18 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug}, body: {primary: true}
   end
 
+  # The member decides what this fleet sees of the recipes they hold, the way
+  # they already decide what it sees of their hangar.
+  test "PUT /fleets/:slug/membership stops sharing the recipes they hold" do
+    sign_in @member
+
+    assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug}, body: {blueprintsFilter: "hide"} do
+      assert_equal "hide", parsed_body["blueprintsFilter"]
+    end
+
+    assert_equal "hide", @fleet.fleet_memberships.kept.find_by(user_id: @member.id).blueprints_filter
+  end
+
   test "PUT /fleets/:slug/membership returns 404 for unknown fleet" do
     sign_in @member
 
