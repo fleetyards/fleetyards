@@ -1693,6 +1693,11 @@
           "search": "Search"
         },
         "blueprints": {
+          "org": "Handed out by",
+          "scKey": "Game key",
+          "withKnownSource": "Has a known source",
+          "withCraftable": "Output in a catalogue",
+          "currentVersion": "In the current build",
           "name": "Search blueprints",
           "craftableType": "Makes",
           "source": "Source",
@@ -1838,6 +1843,45 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "status": {
+            "sourceKnown": "Source known",
+            "outputResolved": "Output in a catalogue"
+          },
+          "columns": {
+            "source": "Source",
+            "output": "Output",
+            "build": "Build",
+            "created": "Created at",
+            "slot": "Slot",
+            "material": "Material",
+            "type": "Type",
+            "quantity": "Quantity",
+            "minQuality": "Min quality",
+            "stat": "Stat",
+            "change": "Change",
+            "base": "Base",
+            "ramp": "Ramp",
+            "kind": "Kind",
+            "org": "Org",
+            "mission": "Mission",
+            "standing": "Standing",
+            "pool": "Pool"
+          },
+          "makes": "Makes",
+          "noOutput": "Not in a catalogue",
+          "slug": "Slug",
+          "scKey": "Game key",
+          "scRef": "Game ref",
+          "build": "Build",
+          "state": "State",
+          "states": {
+            "current": "Current",
+            "retired": "Retired"
+          },
+          "createdAt": "Created at",
+          "updatedAt": "Updated at"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Online Users",
@@ -1914,6 +1958,7 @@
             "system": "System"
           },
           "privileges": {
+            "blueprints": "Blueprints",
             "models": "Models",
             "model_modules": "Model Modules",
             "components": "Components",

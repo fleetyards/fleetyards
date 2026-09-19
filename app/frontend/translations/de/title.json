@@ -173,6 +173,10 @@
         "notificationCenter": "Benachrichtigungszentrale - Visuelle Tests"
       },
       "admin": {
+        "blueprints": {
+          "index": "Baupläne",
+          "show": "%{blueprint}"
+        },
         "models": {
           "index": "Modelle",
           "new": "Neues Modell",

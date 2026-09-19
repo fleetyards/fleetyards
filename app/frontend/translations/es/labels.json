@@ -1693,6 +1693,11 @@
           "search": "Buscar"
         },
         "blueprints": {
+          "org": "Lo entrega",
+          "scKey": "Clave del juego",
+          "withKnownSource": "Tiene una fuente conocida",
+          "withCraftable": "Resultado en un catálogo",
+          "currentVersion": "En la compilación actual",
           "name": "Buscar planos",
           "craftableType": "Produce",
           "source": "Fuente",
@@ -1838,6 +1843,45 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "status": {
+            "sourceKnown": "Fuente conocida",
+            "outputResolved": "Resultado en un catálogo"
+          },
+          "columns": {
+            "source": "Fuente",
+            "output": "Resultado",
+            "build": "Compilación",
+            "created": "Creado el",
+            "slot": "Ranura",
+            "material": "Material",
+            "type": "Tipo",
+            "quantity": "Cantidad",
+            "minQuality": "Calidad mínima",
+            "stat": "Estadística",
+            "change": "Cambio",
+            "base": "Base",
+            "ramp": "Progresión",
+            "kind": "Tipo",
+            "org": "Org",
+            "mission": "Misión",
+            "standing": "Reputación",
+            "pool": "Grupo"
+          },
+          "makes": "Produce",
+          "noOutput": "En ningún catálogo",
+          "slug": "Slug",
+          "scKey": "Clave del juego",
+          "scRef": "Referencia del juego",
+          "build": "Compilación",
+          "state": "Estado",
+          "states": {
+            "current": "Actual",
+            "retired": "Retirado"
+          },
+          "createdAt": "Creado el",
+          "updatedAt": "Actualizado el"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Usuarios en línea"
@@ -1900,6 +1944,7 @@
             "system": "Sistema"
           },
           "privileges": {
+            "blueprints": "Planos",
             "models": "Modelos",
             "model_modules": "Módulos de modelos",
             "components": "Componentes",

@@ -1,6 +1,7 @@
 import { routes as visualTestsRoutes } from "@/admin/pages/visual-tests/routes";
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
 import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
+import { routes as blueprintsRoutes } from "@/admin/pages/blueprints/routes";
 import { routes as componentsRoutes } from "@/admin/pages/components/routes";
 import { routes as equipmentRoutes } from "@/admin/pages/equipment/routes";
 import { routes as commoditiesRoutes } from "@/admin/pages/commodities/routes";
@@ -64,6 +65,18 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-starship",
       mobileNav: 1,
       access: ["models"],
+    },
+  },
+  {
+    path: "/blueprints/",
+    component: () => import("@/admin/pages/blueprints.vue"),
+    children: blueprintsRoutes,
+    redirect: { name: blueprintsRoutes[0].name },
+    meta: {
+      title: "admin.blueprints.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-scroll",
+      access: ["blueprints"],
     },
   },
   {

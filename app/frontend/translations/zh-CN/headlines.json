@@ -2,6 +2,12 @@
   "zh-CN": {
     "headlines": {
       "admin": {
+        "blueprints": {
+          "index": "蓝图",
+          "materials": "材料",
+          "stats": "属性",
+          "sources": "来源"
+        },
         "dashboard": {
           "title": "仪表板",
           "visitsPerDay": "每日访问",

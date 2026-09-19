@@ -61,7 +61,11 @@ module Api
       # `withKnownSource=false` whose own response says a source is known.
       private def source_filters(scope)
         current_only = current_version
-        source = ::ScData::Source.current
+        # The *served* build, which is what `with_facts` joins. The configured
+        # one is a different build while its load has not finished, and
+        # filtering that one while rendering the other answers about a build
+        # the response never shows.
+        source = Blueprint.served_source
 
         scope = scope.from_org(org_filter, source, current_only:) if org_filter.present?
         scope = scope.consuming_commodity(commodity_filter, source, current_only:) if commodity_filter.present?

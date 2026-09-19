@@ -173,6 +173,10 @@
         "notificationCenter": "Centro notifiche - Test Visivi"
       },
       "admin": {
+        "blueprints": {
+          "index": "Progetti",
+          "show": "%{blueprint}"
+        },
         "models": {
           "index": "Modelli",
           "new": "Nuovo Modello",

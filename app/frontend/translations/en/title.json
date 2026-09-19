@@ -173,6 +173,10 @@
         "notificationCenter": "Notification Center - Visual Tests"
       },
       "admin": {
+        "blueprints": {
+          "index": "Blueprints",
+          "show": "%{blueprint}"
+        },
         "models": {
           "index": "Models",
           "new": "New Model",

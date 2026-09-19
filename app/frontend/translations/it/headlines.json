@@ -2,6 +2,12 @@
   "it": {
     "headlines": {
       "admin": {
+        "blueprints": {
+          "index": "Progetti",
+          "materials": "Materiali",
+          "stats": "Statistiche",
+          "sources": "Fonti"
+        },
         "dashboard": {
           "title": "Pannello di controllo",
           "visitsPerDay": "Visite al giorno",

@@ -2,6 +2,12 @@
   "fr": {
     "headlines": {
       "admin": {
+        "blueprints": {
+          "index": "Plans",
+          "materials": "Matériaux",
+          "stats": "Statistiques",
+          "sources": "Sources"
+        },
         "dashboard": {
           "title": "Tableau de bord",
           "visitsPerDay": "Visites par jour",

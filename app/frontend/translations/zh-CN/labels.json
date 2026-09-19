@@ -1693,6 +1693,11 @@
           "search": "搜索"
         },
         "blueprints": {
+          "org": "发放方",
+          "scKey": "游戏键名",
+          "withKnownSource": "有已知来源",
+          "withCraftable": "产出在目录中",
+          "currentVersion": "在当前版本中",
           "name": "搜索蓝图",
           "craftableType": "产出",
           "source": "来源",
@@ -1838,6 +1843,45 @@
         }
       },
       "admin": {
+        "blueprints": {
+          "status": {
+            "sourceKnown": "来源已知",
+            "outputResolved": "产出在目录中"
+          },
+          "columns": {
+            "source": "来源",
+            "output": "产出",
+            "build": "版本",
+            "created": "创建于",
+            "slot": "槽位",
+            "material": "材料",
+            "type": "类型",
+            "quantity": "数量",
+            "minQuality": "最低品质",
+            "stat": "属性",
+            "change": "变化",
+            "base": "基准",
+            "ramp": "曲线",
+            "kind": "类别",
+            "org": "组织",
+            "mission": "任务",
+            "standing": "声望",
+            "pool": "奖励池"
+          },
+          "makes": "产出",
+          "noOutput": "不在任何目录中",
+          "slug": "Slug",
+          "scKey": "游戏键名",
+          "scRef": "游戏引用",
+          "build": "版本",
+          "state": "状态",
+          "states": {
+            "current": "当前",
+            "retired": "已移除"
+          },
+          "createdAt": "创建于",
+          "updatedAt": "更新于"
+        },
         "dashboard": {
           "quickStats": {
             "onlineUsers": "在线用户"
@@ -1900,6 +1944,7 @@
             "system": "系统"
           },
           "privileges": {
+            "blueprints": "蓝图",
             "models": "型号",
             "model_modules": "型号模块",
             "components": "组件",

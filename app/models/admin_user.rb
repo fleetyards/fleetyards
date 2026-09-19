@@ -54,7 +54,7 @@ class AdminUser < ApplicationRecord
       models model_modules model_module_packages model_paints model_positions
       model_loaners model_snub_crafts model_upgrades
       cargo_holds docks videos
-      components equipment commodities item_prices
+      blueprints components equipment commodities item_prices
       manufacturers vehicles images
     ],
     community: %w[fleets users supporters],
