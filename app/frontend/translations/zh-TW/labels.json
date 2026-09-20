@@ -2204,6 +2204,7 @@
           "loaner_sync": "借用船同步",
           "uex_prices_import": "UEX 價格同步",
           "uex_commodity_prices_import": "UEX 商品同步",
+          "uex_component_prices_import": "UEX 部件同步",
           "new_supporter": "新支持者",
           "rsi_api_blocked": "RSI API 已封鎖",
           "rsi_api_unblocked": "RSI API 已恢復",

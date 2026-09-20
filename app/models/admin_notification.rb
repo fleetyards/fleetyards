@@ -47,6 +47,7 @@ class AdminNotification < ApplicationRecord
     loaner_sync: "loaner_sync",
     uex_prices_import: "uex_prices_import",
     uex_commodity_prices_import: "uex_commodity_prices_import",
+    uex_component_prices_import: "uex_component_prices_import",
     new_supporter: "new_supporter",
     rsi_api_blocked: "rsi_api_blocked",
     rsi_api_unblocked: "rsi_api_unblocked",
@@ -90,6 +91,11 @@ class AdminNotification < ApplicationRecord
       retention: 30.days,
       access: [:models],
       icon: "fa-duotone fa-boxes-stacked"
+    },
+    uex_component_prices_import: {
+      retention: 30.days,
+      access: [:models],
+      icon: "fa-duotone fa-microchip"
     },
     new_supporter: {
       retention: 90.days,

@@ -25,6 +25,11 @@ loaders_uex_commodity_prices_job:
   class: 'Loaders::UexCommodityPricesJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? %>
+loaders_uex_component_prices_job:
+  cron: '0 6 */1 * *' # Daily at 6:00, after the commodity prices
+  class: 'Loaders::UexComponentPricesJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
 sc_data_check_job:
   cron: '0 22 */1 * *' # Daily at 22:00
   class: 'ScData::CheckJob'

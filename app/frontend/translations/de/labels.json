@@ -2204,6 +2204,7 @@
           "loaner_sync": "Leihschiff-Sync",
           "uex_prices_import": "UEX Preis-Sync",
           "uex_commodity_prices_import": "UEX Waren-Sync",
+          "uex_component_prices_import": "UEX Komponenten-Sync",
           "new_supporter": "Neuer Unterstützer",
           "rsi_api_blocked": "RSI-API blockiert",
           "rsi_api_unblocked": "RSI-API wiederhergestellt",
