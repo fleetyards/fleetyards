@@ -144,11 +144,119 @@ They are not vestigial: they are rendered into `metrics`, and the fleetchart's e
 
 This is where a second configuration belongs — the Ursa with its turret raised, or anything else that unfolds. It also means #4856 is accidentally right today: it compares `height`, which for the Ursa is the lowered figure, and a berth should be judged on the smaller of the two. It would be wrong the moment a model is recorded in its extended state instead.
 
+## The model, settled
+
+Worked out with @mortik on 2026-09-20, after the measurements above stopped being
+enough. The axes stay; what changed is which of them answers the reader.
+
+### Two definitions, and only one is shown
+
+**What a berth is for.** The Galaxy's hangar is an XS pad for an XS ship. The Idris
+has three Small pads. Other things physically go in — a medium ship fits an Idris if
+you are careful — and that is deliberately not shown.
+
+**What fits.** Curated, not computed. The admin picks a class, everything of that
+class or below fits, and individual ships are added on top for what the class does
+not cover. That union replaces the envelope comparison #4856 ships today.
+
+### Capacity entries
+
+A dock carries entries of `(ladder, class, count)`.
+
+- **Entries under one dock are alternatives.** The Kraken's deck is one large pad
+  *or* two mediums. The Ironclad Assault's is six Ursas *or* two Novas — a Nova is
+  16 m against a 25 m grid, an Ursa 7.6 m.
+- **Separate docks are simultaneous.** The Kraken's deck, side pads and hangars are
+  all available at once.
+- The count inside an entry is simultaneous within it: `4 × small` is four pads.
+
+An entry says how many of that class fit at once; the class alone says what fits. So
+`1 × large` already admits a medium — `2 × medium` adds that two sit there together.
+Nesting needs no modelling: "a big pad with two mediums on it" *is* the alternative.
+
+One entry per dock is flagged for display and its label renders from class and count
+— "2 medium pads". A flag rather than typed text, so it translates into all seven
+locales instead of being English everywhere.
+
+```
+Galaxy            hangar      1 × extra_small
+Idris             hangar      3 × small
+Kraken  main deck (open)      1 × large  --or--  2 × medium
+        side pads (open)      4 × small
+        hangars   (enclosed)  2 × small
+Ironclad Assault  cargogrid   6 × Ursa-class  --or--  2 × Nova-class
+Carrack           garage      1 × Ursa-class
+Starfarer         cargohold   1 × Ursa-class
+```
+
+### What it retires
+
+- **The envelope as the filter, on both paths.** `Dock#fits?` compares metres with
+  clearance, and `Model#carried_by_with_docks` delegates to it, so an unmeasured berth
+  is rejected there. `WillItFitConcern#will_it_fit_scope` filters to
+  `dock.berth? && dock.measured?` and hands back the untouched scope when nothing is
+  measured. Both have to read `class ∪ additions` instead, and the `measured?` gate
+  has to go with them — otherwise the Merchantman stays silent no matter what is
+  curated. The dimensions stay as reference.
+- **The ship/vehicle gate.** `Dock#accepts?` refuses a vehicle on a ship berth and
+  the reverse, which is why a cargo grid can never admit a snub. A curated class says
+  what a berth takes, and the gate stops being needed.
+- **Invented dimensions.** The Starfarer (#5065) records Ursa-class instead of
+  centimetres nobody measured; the Merchantman (#5064) records what it is for and
+  stops being silent without anyone measuring its pad.
+
+### The ship ladder is the game's, but the assignment is not
+
+`Libs/Foundry/Records/landingpadsize/` defines six pad classes. All six carry a
+`shipSize` box; only Small, Medium and Large carry a `groundVehicleSize`, and the
+other three record `0 × 0 × 0`. `Dock::SHIP_SIZE_METRICS` is the ship half of that
+table transcribed — including XLarge duplicated as `capital`. Station hangars declare
+their class as `sizeId` on 84 instanced interiors. So the ship side is free:
+
+| id | class | shipSize | groundVehicleSize |
+|---|---|---|---|
+| 1 | Tiny / XXS | 12 × 16 × 6 | — |
+| 2 | XSmall | 24 × 32 × 12 | — |
+| 3 | Small | 48 × 48 × 16 | 8 × 16 × 6 |
+| 4 | Medium | 56 × 88 × 18 | 12 × 20 × 6 |
+| 5 | Large | 72 × 128 × 36 | 16 × 30 × 6 |
+| 6 | XLarge | 160 × 272 × 64 | — |
+
+What the game does **not** carry is which pad a given ship is assigned. The recorded
+`dock_size` values do not follow box containment — ships overhang their pads, and five
+of the eighteen sit a class below what the boxes allow — so the class comes from the
+measured hull rather than from any table the game ships.
+
+Nor does the game carry the carrier side: 1062 ship records reference no
+pad size at all, and `ObjectContainers` holds only outposts and stations, so no ship
+interior is in the extract. The Idris' three pads and the Kraken's deck are curation,
+and always will be.
+
+The vehicle ladder is ours — ATLS → Nova, seeded in #5074 — and does not line up with
+the game's three `groundVehicleSize` boxes. A dock may carry entries on either ladder
+or both.
+
+### Build order
+
+1. `models.dock_size` follows the holo measurement. `Dock.ship_size_for` is the game
+   pad table asked the obvious question — the smallest box containing the hull — and
+   `MeasureHoloJob` writes the answer beside the dimensions it just measured. It
+   overwrites: the eighteen values recorded today came from the RSI matrix and the
+   game files, and five of them contradict the boxes outright (the 400i at 56 m is
+   recorded `small` against a 48 m pad). Nothing changes until a holo lands, since
+   deriving from unmeasured dimensions would only move the guess into a new column.
+2. Capacity entries on docks, with the display flag.
+3. The additions list, dock ↔ models, and the admin picker.
+4. Switch the filter and the carried-by list to class ∪ additions.
+
 ## Not in this plan
 
 Letting players record what a specific berth holds — "the garage on my Carrack takes an Ursa", "the 400i bike garage takes a Nox". It needs the class ladder first, so that it is a statement on a scale rather than free text.
 
 ## Discovery Log
+
+- **2026-09-20** The pad ladder is in the game and always was: `landingpadsize/` carries six classes, all with a ship box and three of them with a ground-vehicle box, and `Dock::SHIP_SIZE_METRICS` — which nothing calls — is that table transcribed. What is *not* there is the carrier side: no ship record references a pad size, and ship interiors are absent from `ObjectContainers`. So half of this was derivable all along and the other half never will be.
+- **2026-09-20** `maxBoundingBoxSize` is imported as `sc_length/beam/height` and is where the Cyclone's 8.75 m came from. It is a bucket for ground vehicles: twelve of them carry the same three numbers — five Cyclone variants (AA, MT, RC, RN, TR), both Ursas, the Medivac, the Mule, the CSV-SM and the STV as 6.00 × 8.75 × 3.50, and the base Cyclone as 8.75 × 6.00 × 3.50, the axis order being ours rather than the game's. The ATLS pair has no box at all. For ships it is sound: 93 of 178 match the recorded figures exactly.
 
 - **2026-09-20** The ladder could not be curated at all: `vehicle_size` may only be set where `size` is "vehicle", and the ten largest ground vehicles carried no `size`. The same column held four capitalised spellings and two empty strings — it was a free string copied verbatim from the RSI matrix, which capitalises its own.
 - **2026-09-20** And the matrix carries no size for *exactly* those ten vehicles. The loader wrote what the matrix said, blanks included, so the backfill would have been undone on the next nightly run — and on a vehicle already placed on the ladder the blank fails validation and takes the whole update with it, dimensions and speeds and all. Found by CodeRabbit on #5073; the rule it breaks was already written down in the same file for the four manoeuvring fields.
@@ -170,8 +278,8 @@ Broken out into sub-issues under #4863 on 2026-09-20, one per item.
 - [x] Vehicle class ladder, curated (#5061, in #5074)
 - [x] Ship dock sizes — Galaxy, Odyssey, Polaris — the Polaris at S, per @mortik (#5063, in #5078)
 - [ ] Four half-linked variant families (#5068, in #5080)
-- [ ] Pads: count and size per berth (#5059)
-- [ ] Access: ramp / lift / tractor beam, on the label (#5060)
+- [ ] What a dock is for, and a curated list of what fits (#5059) — model settled, see above
+- [ ] Access: ramp / lift / tractor beam, on the label (#5060, in #5086)
 - [ ] Three unmeasured ship docks (#5064)
 - [ ] Five vehicle dock dimensions that were typed by hand (#5065)
 
