@@ -79,11 +79,13 @@ module ScData
     # `version.json` the parser writes beside it. One small object, so this is
     # cheap enough to ask before deciding whether a whole load is needed.
     def remote_manifest
-      body = client.get_object(bucket:, key: key_for(::ScData::ParsedTree::MANIFEST)).body.read
+      @remote_manifest ||= begin
+        body = client.get_object(bucket:, key: key_for(::ScData::ParsedTree::MANIFEST)).body.read
 
-      JSON.parse(body)
-    rescue Aws::S3::Errors::NoSuchKey
-      {}
+        JSON.parse(body)
+      rescue Aws::S3::Errors::NoSuchKey
+        {}
+      end
     end
 
     # The version the bucket's tree says it is.
@@ -96,6 +98,24 @@ module ScData
     # writing one.
     def remote_checksum
       remote_manifest["checksum"].presence
+    end
+
+    # The same claim, read off the tree on disk. Deliberately read rather than
+    # recomputed: the digest a reader compares against is the one the parser
+    # wrote, so taking it from anywhere else makes two producers for one value
+    # and leaves them free to disagree.
+    def local_manifest
+      file = local_root.join(::ScData::ParsedTree::MANIFEST)
+
+      return {} unless file.file?
+
+      JSON.parse(file.read)
+    rescue JSON::ParserError
+      {}
+    end
+
+    def local_checksum
+      local_manifest["checksum"].presence
     end
 
     # Pointer and payload are stored apart, so they can disagree -- a push that
@@ -122,16 +142,15 @@ module ScData
     # Relative path => MD5 hex. Every object in this tree is written
     # single-part, so a listing's ETag is the plain MD5 of the content and the
     # two sides can be diffed directly.
+    # The manifest is part of the mirror even though it is not part of the
+    # digest: it has to travel with the tree it describes.
     private def local_files
-      return {} unless File.directory?(local_root)
+      files = ::ScData::ParsedTree.files(local_root)
+      manifest = local_root.join(::ScData::ParsedTree::MANIFEST)
 
-      Dir.glob("**/*", base: local_root).each_with_object({}) do |path, files|
-        full = File.join(local_root, path)
+      files[::ScData::ParsedTree::MANIFEST] = Digest::MD5.file(manifest).hexdigest if manifest.file?
 
-        next unless File.file?(full)
-
-        files[path] = Digest::MD5.file(full).hexdigest
-      end
+      files
     end
 
     # A directory the mirror emptied is not an object anywhere, so nothing

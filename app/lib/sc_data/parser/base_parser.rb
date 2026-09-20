@@ -108,7 +108,7 @@ module ScData
           version: sc_version,
           environment: sc_environment,
           parsed_at: Time.now.utc.iso8601,
-          checksum: ::ScData::ParsedTree.checksum(export_path)
+          checksum: ::ScData::ParsedTree.checksum(export_path, files)
         }))
       end
 

@@ -23,14 +23,18 @@ module ScData
 
     module_function
 
-    # Whoever parses computes this and ships it inside the tree, so it never
-    # has to be reproducible on another machine. That is deliberate: it frees
-    # the parsers from having to write byte-identical output under a different
-    # `Dir.glob` order, and the digest still moves whenever the content does.
-    def checksum(root)
-      Digest::SHA256.hexdigest(
-        files(root).sort.map { |path, digest| "#{path}:#{digest}" }.join("\n")
-      )
+    # Nil rather than the digest of nothing. `SHA256("")` is a real-looking
+    # answer to "which tree is this?" for a tree that is not there, and it
+    # would be recorded and compared as though it meant something -- where nil
+    # falls into the "cannot tell" guard every reader already has.
+    #
+    # The caller may pass a walk it has already done: a parse and a push both
+    # have every digest in hand, and re-walking 15k files to say the same thing
+    # is the sort of cost that gets noticed later and not explained.
+    def checksum(root, files = files(root))
+      return if files.empty?
+
+      Digest::SHA256.hexdigest(files.sort.map { |path, digest| "#{path}:#{digest}" }.join("\n"))
     end
 
     def files(root)

@@ -38,9 +38,13 @@ module Loaders
       # Which tree the load actually read, so `ScData::CheckJob` can tell the
       # next one whether anything moved. The version cannot answer that -- a
       # parser change rewrites the tree and leaves it alone.
+      #
+      # Read out of the tree's manifest rather than hashed here: `CheckJob`
+      # compares it against what the parser wrote, and a second producer for
+      # the same value is free to disagree with the first.
       test "#perform records the checksum of the tree it loaded" do
         ::ScData::Loader::BaseLoader.stubs(:all)
-        ::ScData::ParsedTree.stubs(:checksum).returns("tree-digest")
+        ::ScData::ParsedStore.any_instance.stubs(:local_checksum).returns("tree-digest")
 
         ::Loaders::ScData::AllJob.new.perform
 
@@ -52,7 +56,7 @@ module Loaders
       # `CheckJob`, which reads only finished ones, keeps seeing the work as
       # outstanding.
       test "#perform leaves no finished record carrying a checksum when the load fails" do
-        ::ScData::ParsedTree.stubs(:checksum).returns("tree-digest")
+        ::ScData::ParsedStore.any_instance.stubs(:local_checksum).returns("tree-digest")
         ::ScData::Loader::BaseLoader.stubs(:all).raises("nope")
 
         assert_raises(RuntimeError) { ::Loaders::ScData::AllJob.new.perform }

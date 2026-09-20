@@ -56,11 +56,19 @@ module Loaders
         raise e
       end
 
-      # The tree on disk, which after `fetch_parsed_tree!` is the one the bucket
-      # holds. `ParsedStore` only knows where a tree lives here -- it reaches
-      # for no credentials to answer that -- so this works offline too.
+      # Read out of the tree's own manifest rather than recomputed from its
+      # files. `CheckJob` compares this against what the *parser* wrote, so
+      # hashing it a second time here would make two producers for one value
+      # and leave them free to disagree -- and a disagreement there is not
+      # quiet: the tree check has no ceiling, so it would reload the whole of
+      # sc_data every night, indefinitely.
+      #
+      # After `fetch_parsed_tree!` the manifest on disk is the bucket's own, so
+      # the two are the same string by construction. Nil for a tree pushed
+      # before checksums existed, and for a developer whose store is not
+      # configured at all.
       private def tree_checksum(source)
-        ::ScData::ParsedTree.checksum(::ScData::ParsedStore.new(source.environment).local_root)
+        ::ScData::ParsedStore.new(source.environment).local_checksum
       end
 
       # The load only ever iterates models that already exist, so a ship in the

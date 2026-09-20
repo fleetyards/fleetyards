@@ -62,9 +62,27 @@ module ScData
       assert_equal before, ::ScData::ParsedTree.checksum(@root)
     end
 
-    test ".checksum answers for a tree that is not there" do
-      assert_equal ::ScData::ParsedTree.checksum(File.join(@root, "nope")),
-        ::ScData::ParsedTree.checksum(File.join(@root, "also-nope"))
+    # Not the digest of nothing. `SHA256("")` is a real-looking answer to "which
+    # tree is this?", and it would be recorded and compared as though it meant
+    # something -- where nil falls into the "cannot tell" guard readers have.
+    test ".checksum says nothing about a tree that is not there" do
+      assert_nil ::ScData::ParsedTree.checksum(File.join(@root, "nope"))
+    end
+
+    test ".checksum says nothing about a tree holding only its manifest" do
+      FileUtils.rm_rf(File.join(@root, "models"))
+      FileUtils.rm_rf(File.join(@root, "items"))
+      write("version.json", "{}")
+
+      assert_nil ::ScData::ParsedTree.checksum(@root)
+    end
+
+    # A parse and a push both have every digest in hand already.
+    test ".checksum uses a walk the caller hands it" do
+      handed = {"only/this.json" => "deadbeef"}
+
+      assert_equal ::ScData::ParsedTree.checksum(@root, handed),
+        Digest::SHA256.hexdigest("only/this.json:deadbeef")
     end
 
     test ".files skips directories and the manifest" do
