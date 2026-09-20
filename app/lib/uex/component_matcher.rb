@@ -24,7 +24,7 @@ module Uex
       4396 => "cargo_groundvehiclemining_pod_roc"
     }.freeze
 
-    attr_reader :misses, :ambiguous
+    attr_reader :misses, :ambiguous, :stale_mappings
 
     def initialize(scope: Component.with_facts(true).catalogued)
       components = scope.pluck(:id, :name, :sc_ref, :sc_key)
@@ -36,15 +36,28 @@ module Uex
 
       @misses = []
       @ambiguous = []
+      @stale_mappings = []
     end
 
     # The component id, or nil with the row recorded for the report.
     def match(item)
       mapped = MAPPINGS[item["id_item"]]
 
-      # The hand-written mapping is an override, so a wrong resolution can
-      # always be corrected without changing a rule.
-      return @by_sc_key[mapped]&.first if mapped.present?
+      if mapped.present?
+        component = @by_sc_key[mapped]
+
+        # The hand-written mapping is an override, so a wrong resolution can
+        # always be corrected without changing a rule.
+        return component.first if component.present?
+
+        # An entry naming an sc_key the catalogue no longer has. Recorded rather
+        # than fallen through: the mapping exists *because* the rules cannot be
+        # trusted for this item, so trying them again is the guess it was written
+        # to prevent -- and silently returning nil would drop the price from
+        # every report as well as from the catalogue.
+        @stale_mappings << [item, mapped]
+        return nil
+      end
 
       uuid = item["item_uuid"].to_s.downcase
       by_ref = @by_sc_ref[uuid] if uuid.present?

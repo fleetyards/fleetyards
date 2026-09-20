@@ -7,10 +7,11 @@ module Uex
     ITEM_TYPE = "Component"
     TERMINAL_TYPE = "item"
 
-    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unknown, :ambiguous) do
+    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unknown, :ambiguous, :stale_mappings) do
       def to_s
         "created=#{created} updated=#{updated} removed=#{removed} " \
-          "skipped_removals=#{skipped_removals} unknown=#{unknown.size} ambiguous=#{ambiguous.size}"
+          "skipped_removals=#{skipped_removals} unknown=#{unknown.size} ambiguous=#{ambiguous.size} " \
+          "stale_mappings=#{stale_mappings.size}"
       end
     end
 
@@ -38,7 +39,8 @@ module Uex
         removed: counts.removed,
         skipped_removals: counts.skipped_removals,
         unknown: matcher.misses,
-        ambiguous: matcher.ambiguous
+        ambiguous: matcher.ambiguous,
+        stale_mappings: matcher.stale_mappings
       )
     end
 
@@ -103,7 +105,21 @@ module Uex
     # digest of the body, and prices move every day, so anything volatile in
     # here would open a fresh issue on every run.
     def self.github_issue_body(result)
-      lines = ["## Priced UEX Items We Cannot Place (#{result.unknown.size + result.ambiguous.size})", ""]
+      total = result.unknown.size + result.ambiguous.size + result.stale_mappings.size
+      lines = ["## Priced UEX Items We Cannot Place (#{total})", ""]
+
+      if result.stale_mappings.any?
+        lines << "### Mapped to a component that is gone (#{result.stale_mappings.size})"
+        lines << ""
+        lines << "`Uex::ComponentMatcher::MAPPINGS` names an `sc_key` the catalogue no longer"
+        lines << "carries, so the price is dropped. The entry needs repointing or removing --"
+        lines << "until it is, this item is unpriced and the mapping is doing nothing."
+        lines << ""
+        result.stale_mappings.each do |row, sc_key|
+          lines << "- **#{row["item_name"]}** — UEX item `#{row["id_item"]}` → missing `#{sc_key}`"
+        end
+        lines << ""
+      end
 
       lines << "### Named by no component (#{result.unknown.size})"
       lines << ""

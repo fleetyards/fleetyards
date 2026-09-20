@@ -9,11 +9,12 @@ module Loaders
 
       result = ::Uex::ComponentPriceSyncer.new.run
 
-      # Two kinds of miss, and only one of them is work. A UEX item no component
+      # Three kinds of miss, and one of them is not work. A UEX item no component
       # is named by is mostly personal gear this catalogue does not carry; a name
-      # several components answer to is a `MAPPINGS` entry somebody has to write.
-      # So the report is actionable on the second alone.
-      actionable = result.ambiguous.present?
+      # several components answer to is a `MAPPINGS` entry somebody has to write,
+      # and a mapping pointing at a component that is gone is one somebody has to
+      # repoint. The report is actionable on the latter two.
+      actionable = result.ambiguous.present? || result.stale_mappings.present?
 
       AdminReport.deliver(
         task_type: "uex_component_prices_import",
@@ -31,7 +32,8 @@ module Loaders
           removed: result.removed,
           skipped_removals: result.skipped_removals,
           unknown: result.unknown.map { |row| row["item_name"] },
-          ambiguous: result.ambiguous.map { |row, sc_keys| "#{row["item_name"]} -> #{sc_keys.join(", ")}" }
+          ambiguous: result.ambiguous.map { |row, sc_keys| "#{row["item_name"]} -> #{sc_keys.join(", ")}" },
+          stale_mappings: result.stale_mappings.map { |row, sc_key| "#{row["item_name"]} -> #{sc_key}" }
         }
       )
       import.finish!

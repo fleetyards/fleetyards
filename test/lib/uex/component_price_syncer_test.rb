@@ -113,6 +113,40 @@ module Uex
       assert_empty prices_for(@components[:mapping_loser])
     end
 
+    # A MAPPINGS entry naming an sc_key the catalogue no longer carries. Written
+    # by deleting the component the real entry points at rather than by stubbing
+    # the constant, so the test exercises the entry that actually ships.
+    test "#run reports a mapping that points at a component that is gone" do
+      @components[:mapping_match].destroy!
+
+      result = sync
+
+      row, sc_key = result.stale_mappings.sole
+
+      assert_equal "RN-7s", row["item_name"]
+      assert_equal "fuel_nozzle_misc_nozzlestandard", sc_key
+    end
+
+    # Falling through to the name would re-run the rules the mapping exists to
+    # override, and here that means pricing the Starfarer's arm-only nozzle.
+    test "#run does not fall back to the name when a mapping is stale" do
+      @components[:mapping_match].destroy!
+
+      result = sync
+
+      assert_empty prices_for(@components[:mapping_loser])
+      assert_not_includes result.ambiguous.map { |row, _| row["item_name"] }, "RN-7s"
+    end
+
+    test ".github_issue_body names a stale mapping and what it points at" do
+      @components[:mapping_match].destroy!
+
+      body = Uex::ComponentPriceSyncer.github_issue_body(sync)
+
+      assert_includes body, "Mapped to a component that is gone"
+      assert_includes body, "missing `fuel_nozzle_misc_nozzlestandard`"
+    end
+
     test "#run reports a priced item no component is named by" do
       result = sync
 
