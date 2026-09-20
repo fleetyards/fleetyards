@@ -23,9 +23,9 @@
 #
 # Indexes
 #
-#  index_component_build_changes_on_build              (environment,to_version)
+#  index_component_build_changes_on_build                (environment,to_version)
 #  index_component_build_changes_on_component_and_field  (component_id,environment,to_version,field) UNIQUE
-#  index_component_build_changes_on_recorded_at        (recorded_at)
+#  index_component_build_changes_on_recorded_at          (recorded_at)
 #
 # Foreign Keys
 #
