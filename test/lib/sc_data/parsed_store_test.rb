@@ -102,6 +102,40 @@ module ScData
       assert_empty requests(:list_objects_v2)
     end
 
+    # The manifest travels with the tree, so it counts in the mirror -- which
+    # means a directory holding nothing but `version.json` is not empty, and a
+    # plain `local.empty?` would let it through and delete every remote payload
+    # file. It arrives that way by routes no parser touches: an interrupted
+    # pull, or a tree emptied by deleting its subdirectories.
+    test "#push refuses a tree holding nothing but its manifest" do
+      write_local("version.json", '{"version":"4.10.1-live.1"}')
+      stub_listing("models/aurora.json" => "a")
+
+      assert_raises(::ScData::ParsedStore::MissingTree) { store.push }
+
+      assert_empty requests(:delete_object)
+    end
+
+    test "#push accepts a tree carrying a payload beside its manifest" do
+      write_local("version.json", '{"version":"4.10.1-live.1"}')
+      write_local("models/aurora.json", "a")
+      stub_listing({})
+
+      assert_nothing_raised { store.push }
+    end
+
+    # The same shape as `push`, the other way round: a bucket holding nothing
+    # but its manifest would mirror onto disk and delete every local payload
+    # file, handing the loader a tree that retires the whole catalogue.
+    test "#pull refuses a bucket holding nothing but a manifest" do
+      write_local("models/aurora.json", "a")
+      stub_listing("version.json" => '{"version":"4.10.1-live.1"}')
+
+      assert_raises(::ScData::ParsedStore::MissingTree) { store.pull }
+
+      assert_path_exists File.join(@root, "models/aurora.json")
+    end
+
     # The bucket has to mirror the tree, not accumulate it. A model file the
     # parser stopped writing must stop being served, or a pull would keep
     # handing the loader a ship that left the build.
@@ -203,6 +237,20 @@ module ScData
       @client.stub_responses(:get_object, {body: {version: "4.9.0-live.1", environment: "live"}.to_json})
 
       assert_equal "4.9.0-live.1", store.remote_version
+    end
+
+    test "#remote_checksum reads the digest the parser stamped on the tree" do
+      @client.stub_responses(:get_object, {body: {version: "4.9.0-live.1", checksum: "abc123"}.to_json})
+
+      assert_equal "abc123", store.remote_checksum
+    end
+
+    # A tree pushed before the parser wrote one. Readers treat that as "cannot
+    # tell" rather than "changed", so it must not come back as an empty string.
+    test "#remote_checksum is nil for a tree that states none" do
+      @client.stub_responses(:get_object, {body: {version: "4.9.0-live.1"}.to_json})
+
+      assert_nil store.remote_checksum
     end
 
     test "#remote_version is nil when the tree carries no version.json" do

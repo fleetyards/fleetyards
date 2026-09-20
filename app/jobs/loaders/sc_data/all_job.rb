@@ -23,6 +23,12 @@ module Loaders
         stats = ::ScData::Source.with(source) do
           fetch_parsed_tree!(source.version)
 
+          # Recorded before the load rather than after it, and from the tree on
+          # disk rather than the bucket: this is the tree the loaders are about
+          # to read. A load that then fails leaves the checksum on a record that
+          # never finished, so `CheckJob` keeps seeing the work as outstanding.
+          import.update!(tree_checksum: tree_checksum(source))
+
           ::ScData::Loader::BaseLoader.all.to_h
         end
 
@@ -48,6 +54,21 @@ module Loaders
         import.update!(info: e.message)
 
         raise e
+      end
+
+      # Read out of the tree's own manifest rather than recomputed from its
+      # files. `CheckJob` compares this against what the *parser* wrote, so
+      # hashing it a second time here would make two producers for one value
+      # and leave them free to disagree -- and a disagreement there is not
+      # quiet: the tree check has no ceiling, so it would reload the whole of
+      # sc_data every night, indefinitely.
+      #
+      # After `fetch_parsed_tree!` the manifest on disk is the bucket's own, so
+      # the two are the same string by construction. Nil for a tree pushed
+      # before checksums existed, and for a developer whose store is not
+      # configured at all.
+      private def tree_checksum(source)
+        ::ScData::ParsedStore.new(source.environment).local_checksum
       end
 
       # The load only ever iterates models that already exist, so a ship in the

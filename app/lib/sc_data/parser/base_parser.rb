@@ -85,6 +85,31 @@ module ScData
         ::ScData::Parser::EquipmentParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::BlueprintsParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::ContractsParser.new(base_folder:, sc_version:, sc_environment:).all
+
+        write_manifest(base_folder:, sc_version:, sc_environment:)
+      end
+
+      # Written once, after every parser has run, rather than by each of them
+      # on the way in. The checksum cannot be known until the last file is on
+      # disk -- and `parsed_at` now means what it says, rather than when the
+      # seventh parser started.
+      def self.write_manifest(base_folder:, sc_version:, sc_environment:)
+        export_path = "#{base_folder}/parsed/#{sc_environment}"
+        files = ::ScData::ParsedTree.files(export_path)
+
+        # A manifest beside no files at all is worse than no manifest.
+        # `ParsedStore#push` refuses to mirror an *empty* directory precisely so
+        # that a fresh checkout cannot wipe the bucket -- and a lone
+        # `version.json` is not empty, so it walks straight past that guard and
+        # deletes every remote payload file instead.
+        raise ::ScData::ParsedTree::Empty, "no parsed files at #{export_path}" if files.empty?
+
+        File.write("#{export_path}/#{::ScData::ParsedTree::MANIFEST}", JSON.pretty_generate({
+          version: sc_version,
+          environment: sc_environment,
+          parsed_at: Time.now.utc.iso8601,
+          checksum: ::ScData::ParsedTree.checksum(export_path, files)
+        }))
       end
 
       def initialize(base_folder:, sc_version:, sc_environment:)
@@ -95,12 +120,6 @@ module ScData
         self.translations = parse_translations
 
         FileUtils.mkdir_p(export_path) unless File.directory?(export_path)
-
-        File.write("#{export_path}/version.json", JSON.pretty_generate({
-          version: sc_version,
-          environment: sc_environment,
-          parsed_at: Time.now.utc.iso8601
-        }))
       end
 
       private def load_data(path)

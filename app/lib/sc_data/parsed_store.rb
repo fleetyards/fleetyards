@@ -34,7 +34,15 @@ module ScData
       # is no longer tracked in git, "no tree on disk" is the normal state of a
       # fresh checkout rather than an exotic one. Without this the first stray
       # `push` from one would delete the whole remote tree.
-      raise MissingTree, "no tree at #{local_root}" if local.empty?
+      #
+      # Asked of the payload rather than of the mirror. The manifest travels
+      # with the tree, so a directory holding nothing but `version.json` is not
+      # empty and would walk straight past a plain `local.empty?` -- and it can
+      # arrive that way by routes no parser touches: an interrupted `pull`, or a
+      # tree a developer emptied by deleting its subdirectories. `report_check`
+      # would also refuse such a tree, but `--force` exists to overrule the
+      # verdict, and this is the one verdict nothing should be able to.
+      raise MissingTree, "no tree at #{local_root}" if payload_empty?(local)
 
       remote = remote_objects
 
@@ -58,7 +66,12 @@ module ScData
       # An empty listing means a tree that was never pushed, or a wrong prefix.
       # Treating it as "nothing to download" would mirror the emptiness onto
       # disk and hand the loader a tree that retires the whole catalogue.
-      raise MissingTree, "no tree at s3://#{bucket}/#{prefix}" if remote.empty?
+      #
+      # Payload rather than listing, the same way round as `push`: a bucket
+      # holding nothing but `version.json` is not empty, and mirroring it would
+      # delete every local payload file -- which is the outcome this guard is
+      # here to prevent, arriving by a route it did not cover.
+      raise MissingTree, "no tree at s3://#{bucket}/#{prefix}" if payload_empty?(remote)
 
       local = local_files
 
@@ -75,14 +88,47 @@ module ScData
       {downloaded:, removed:, unchanged: remote.size - downloaded}
     end
 
-    # The version the bucket's tree says it is, straight from the `version.json`
-    # the parser writes beside it.
-    def remote_version
-      body = client.get_object(bucket:, key: key_for("version.json")).body.read
+    # What the bucket's tree says about itself, straight from the
+    # `version.json` the parser writes beside it. One small object, so this is
+    # cheap enough to ask before deciding whether a whole load is needed.
+    def remote_manifest
+      @remote_manifest ||= begin
+        body = client.get_object(bucket:, key: key_for(::ScData::ParsedTree::MANIFEST)).body.read
 
-      JSON.parse(body)["version"]
-    rescue Aws::S3::Errors::NoSuchKey
-      nil
+        JSON.parse(body)
+      rescue Aws::S3::Errors::NoSuchKey
+        {}
+      end
+    end
+
+    # The version the bucket's tree says it is.
+    def remote_version
+      remote_manifest["version"]
+    end
+
+    # The tree's own identity, which is the question a reader deciding whether
+    # to reload actually has. Blank for a tree pushed before the parser started
+    # writing one.
+    def remote_checksum
+      remote_manifest["checksum"].presence
+    end
+
+    # The same claim, read off the tree on disk. Deliberately read rather than
+    # recomputed: the digest a reader compares against is the one the parser
+    # wrote, so taking it from anywhere else makes two producers for one value
+    # and leaves them free to disagree.
+    def local_manifest
+      file = local_root.join(::ScData::ParsedTree::MANIFEST)
+
+      return {} unless file.file?
+
+      JSON.parse(file.read)
+    rescue JSON::ParserError
+      {}
+    end
+
+    def local_checksum
+      local_manifest["checksum"].presence
     end
 
     # Pointer and payload are stored apart, so they can disagree -- a push that
@@ -106,19 +152,27 @@ module ScData
       "#{PREFIX}/#{environment}"
     end
 
+    # Whether a listing holds nothing a loader could read. Answered from the
+    # listing already in hand rather than by walking again, and `all?` on an
+    # empty hash is true, so this covers the empty tree and the lone manifest
+    # in one predicate.
+    private def payload_empty?(files)
+      files.keys.all? { |path| path == ::ScData::ParsedTree::MANIFEST }
+    end
+
     # Relative path => MD5 hex. Every object in this tree is written
     # single-part, so a listing's ETag is the plain MD5 of the content and the
     # two sides can be diffed directly.
+    #
+    # The manifest is part of the mirror even though it is not part of the
+    # digest: it has to travel with the tree it describes.
     private def local_files
-      return {} unless File.directory?(local_root)
+      files = ::ScData::ParsedTree.files(local_root)
+      manifest = local_root.join(::ScData::ParsedTree::MANIFEST)
 
-      Dir.glob("**/*", base: local_root).each_with_object({}) do |path, files|
-        full = File.join(local_root, path)
+      files[::ScData::ParsedTree::MANIFEST] = Digest::MD5.file(manifest).hexdigest if manifest.file?
 
-        next unless File.file?(full)
-
-        files[path] = Digest::MD5.file(full).hexdigest
-      end
+      files
     end
 
     # A directory the mirror emptied is not an object anywhere, so nothing

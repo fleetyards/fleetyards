@@ -12,6 +12,8 @@ COMMANDS = {
   "check" => "Check the parsed tree for the given environment before it is pushed",
   "push" => "Upload the parsed tree for the given environment to S3",
   "pull" => "Download the parsed tree for the given environment from S3",
+  "manifest" => "Rewrite the parsed tree's version.json from the files on disk, without re-parsing",
+  "cache-key" => "Print the CI cache key for every configured source, from the trees in S3",
   "load" => "Load all SC data for the given environment (manufacturers, items, models, modules)",
   "load:manufacturers" => "Load manufacturers for the given environment",
   "load:items" => "Load items for the given environment",
@@ -240,6 +242,77 @@ when "check"
   sc_environment = args.shift || ScData::Source.environment
 
   abort unless report_check(sc_environment)
+
+# Recomputes the checksum from the tree already on disk. A tree pushed before
+# the parser started writing one has no checksum at all, and re-parsing the build
+# just to obtain it would drag in every parser change since -- which for a stale
+# environment is a far bigger diff than the one file that actually needs to move.
+when "manifest"
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
+
+  sc_environment = args.shift || ScData::Source.environment
+  source = requested_source(sc_environment)
+
+  manifest_path = Rails.root.join(EXPORT_FOLDER, "parsed", source.environment, ScData::ParsedTree::MANIFEST)
+
+  # Restamping a tree with a build it was not parsed from is the failure
+  # `ParsedCheck` exists to catch: the pointer and the payload disagree, and a
+  # load then stamps rows of one build with the version of another. Re-parsing
+  # is the fix for that, not relabelling.
+  if manifest_path.file?
+    stated = begin
+      JSON.parse(manifest_path.read)
+    rescue
+      {}
+    end
+
+    if stated["version"].present? && stated["version"] != source.version
+      abort "  The tree on disk was parsed from #{stated["version"]}, not #{source.version}. Re-parse it, or point the config at the build it holds."
+    end
+
+    if stated["environment"].present? && stated["environment"] != source.environment
+      abort "  The tree on disk is #{stated["environment"]}, not #{source.environment}."
+    end
+  end
+
+  CliHelpers.run_step("Writing the manifest for #{source}") do
+    ScData::Parser::BaseParser.write_manifest(
+      base_folder: Rails.root.join(EXPORT_FOLDER),
+      sc_version: source.version,
+      sc_environment: source.environment
+    )
+    [true, ""]
+  end
+
+  manifest = JSON.parse(manifest_path.read)
+  puts "  version:  #{manifest["version"]}"
+  puts "  checksum: #{manifest["checksum"]}"
+
+# What CI keys its parsed-tree cache on. The tree's own checksum rather than the
+# build version: a parser change rewrites the tree and leaves the version where
+# it was, which is why this used to need a hand-bumped `vN` prefix.
+#
+# Never fails. The step this replaces was a local YAML read that could not, and
+# it gates every `ruby-tests` run -- including ones whose cache would have hit
+# and needed no network at all. A bucket that cannot be reached falls back to
+# the version, which is what the key held before any of this, so a Hetzner blip
+# costs a stale cache entry rather than a red run on every open PR.
+when "cache-key"
+  boot_rails
+
+  result = ScData::CacheKey.call(settings: s3_settings)
+
+  result.warnings.each { |warning| warn "  #{warning}" }
+
+  # A bare `key=` would collapse every run onto one cache entry whatever the
+  # trees are, which is worse than no cache at all.
+  abort "  No source carries a version; nothing to key on." if result.empty?
+
+  puts "key=#{result.key}"
+  puts "default=#{ScData::Source.environment}"
 
 when "push", "pull"
   CliHelpers.run_step("Booting Rails") {
