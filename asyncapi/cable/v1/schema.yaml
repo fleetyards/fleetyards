@@ -147,6 +147,16 @@ channels:
     messages:
       Notification:
         "$ref": "#/components/messages/Notification"
+  UserPresence:
+    address: user_presence:{user_gid}
+    x-actioncable-channel: UserPresenceChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      UserPresenceMessage:
+        "$ref": "#/components/messages/UserPresenceMessage"
   Wishlist:
     address: wishlist:{user_gid}
     x-actioncable-channel: WishlistChannel
@@ -286,6 +296,14 @@ operations:
     messages:
     - "$ref": "#/channels/UserNotifications/messages/Notification"
     summary: A notification addressed to one user
+  receiveUserPresence:
+    action: receive
+    channel:
+      "$ref": "#/channels/UserPresence"
+    messages:
+    - "$ref": "#/channels/UserPresence/messages/UserPresenceMessage"
+    summary: Somebody the user has an accepted relationship with came online or went
+      offline
   receiveWishlistCreate:
     action: receive
     channel:
@@ -3375,6 +3393,23 @@ components:
       - RETRO
       - VTOL
       - MAV
+    UserPresenceMessage:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        online:
+          type: boolean
+        lastActiveAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - userId
+      - online
     UserRef:
       type: object
       properties:
@@ -3549,6 +3584,9 @@ components:
     PayoutLedger:
       payload:
         "$ref": "#/components/schemas/PayoutLedger"
+    UserPresenceMessage:
+      payload:
+        "$ref": "#/components/schemas/UserPresenceMessage"
     Vehicle:
       payload:
         "$ref": "#/components/schemas/Vehicle"

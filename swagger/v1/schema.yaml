@@ -16337,6 +16337,7 @@ components:
       type: string
       enum:
       - AdminNotificationsChannel
+      - AdminPresenceChannel
       - AppVersionChannel
       - FleetInventoryChannel
       - FleetMembersChannel
@@ -16353,11 +16354,13 @@ components:
       - OnSaleHangarChannel
       - PayoutLedgerChannel
       - UserNotificationsChannel
+      - UserPresenceChannel
       - WishlistChannel
       - WishlistCreateChannel
       - WishlistDestroyChannel
       x-enumNames:
       - ADMIN_NOTIFICATIONS_CHANNEL
+      - ADMIN_PRESENCE_CHANNEL
       - APP_VERSION_CHANNEL
       - FLEET_INVENTORY_CHANNEL
       - FLEET_MEMBERS_CHANNEL
@@ -16374,6 +16377,7 @@ components:
       - ON_SALE_HANGAR_CHANNEL
       - PAYOUT_LEDGER_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
+      - USER_PRESENCE_CHANNEL
       - WISHLIST_CHANNEL
       - WISHLIST_CREATE_CHANNEL
       - WISHLIST_DESTROY_CHANNEL
