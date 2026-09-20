@@ -119,6 +119,93 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The curated answer, through the scope rather than the model: a described
+  # berth says what it is built for, and the hall it sits in does not widen it.
+  test "GET /models/:slug offers a carrier only what its class takes" do
+    carrier = create(:model, name: "Described Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 100, beam: 25, height: 8)
+    create(:dock_capacity, dock:, ladder: :ship, size: "extra_small", quantity: 3)
+
+    small = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+    medium = create(:model, length: 55.0, beam: 30.0, height: 17.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: small.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+
+    assert_api_response :get, 200, path_params: {slug: medium.slug} do
+      assert_not_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  # The Merchantman's case: one berth, no dimensions, and an answer anyway.
+  test "GET /models/:slug offers a described carrier nobody measured" do
+    carrier = create(:model, name: "Unmeasured Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :landingpad, length: nil, beam: nil, height: nil)
+    create(:dock_capacity, dock:, ladder: :ship, size: "small", quantity: 1)
+
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  test "GET /models/:slug offers a carrier that names the ship outright" do
+    carrier = create(:model, name: "Naming Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 20, beam: 12, height: 6)
+    create(:dock_capacity, dock:, ladder: :ship, size: "extra_extra_small", quantity: 1)
+
+    oversized = create(:model, length: 120.0, beam: 60.0, height: 30.0, size: "large")
+    create(:dock_addition, dock:, model: oversized)
+
+    assert_api_response :get, 200, path_params: {slug: oversized.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  # The scope has to read the same way as `Dock#fits?`: a berth nobody described
+  # answers by its envelope, and a name on it adds to that rather than replacing
+  # it.
+  test "GET /models/:slug keeps an undescribed carrier's envelope answer beside its names" do
+    carrier = create(:model, name: "Naming Undescribed Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 40, beam: 20, height: 10)
+    create(:dock_addition, dock:, model: create(:model, name: "Oversized", length: 120.0, beam: 60.0, height: 30.0, size: "large"))
+
+    ordinary = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: ordinary.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  # An unmeasured hull is not compared against anything, but a berth can still
+  # name it -- and the carrier list has to say so.
+  test "GET /models/:slug offers a carrier that names an unmeasured ship" do
+    carrier = create(:model, name: "Naming Carrier For Unmeasured")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 40, beam: 20, height: 10)
+    unmeasured = create(:model, length: 0, beam: 0, height: 0, size: "small")
+    create(:dock_addition, dock:, model: unmeasured)
+
+    assert_api_response :get, 200, path_params: {slug: unmeasured.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  # The same answer as `Dock#fits?` for a hull past every box: `capital` is the
+  # rung it comes back as, and a capital berth is described at that rung.
+  test "GET /models/:slug offers a capital berth a hull larger than every box" do
+    carrier = create(:model, name: "Capital Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 300, beam: 200, height: 80)
+    create(:dock_capacity, dock:, ladder: :ship, size: "capital", quantity: 1)
+
+    enormous = create(:model, length: 250.0, beam: 180.0, height: 70.0, size: "capital")
+
+    assert_api_response :get, 200, path_params: {slug: enormous.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
   # A ship in a garage is the case that stays impossible.
   test "GET /models/:slug does not offer a garage to a ship" do
     carrier = create(:model)

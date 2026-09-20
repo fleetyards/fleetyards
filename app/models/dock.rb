@@ -240,13 +240,66 @@ class Dock < ApplicationRecord
   # hangar, by ramp or lift or in the last resort a tractor beam, but which dock
   # offers which is not recorded — see the follow-up. Saying nothing is better
   # than claiming a fit nobody can achieve.
+  # Two answers, and the curated one wins where it exists.
+  #
+  # A berth that has been described says what it is built for -- a class, and
+  # everything of that class or below -- plus the ships somebody named on top.
+  # A medium ship goes into an Idris if you are careful, and that is exactly
+  # what this refuses to say.
+  #
+  # A berth nobody has described yet falls back to the envelope with clearance,
+  # which is what #4856 shipped. Not as a second opinion but as the only one
+  # there is: the alternative is a catalogue that answers nothing until all 28
+  # berths are curated.
   def fits?(model)
+    # A docking port is a connection rather than a place a hull is set down, and
+    # nothing stops one carrying entries -- the admin endpoint takes any dock
+    # id. The curated answers have to refuse it the way the envelope does.
+    return false unless berth?
+
+    return true if added_model_ids.include?(model.id)
+    return class_fits?(model) if described?
+
     return false unless measured?
     return false unless accepts?(model)
+
+    # Zeroes fit everywhere, so an unmeasured hull is not compared. It can still
+    # be named on a berth or carry a class -- both answered above.
+    return false if [model.length, model.beam, model.height].any? { |value| value.to_f <= 0 }
 
     model.length.to_f <= length - clearance[:length] &&
       model.beam.to_f <= beam - clearance[:beam] &&
       model.height.to_f <= height - clearance[:height]
+  end
+
+  # Described means somebody said what the berth takes, whether or not anybody
+  # measured it. That is the point of the class: the Merchantman's pad has no
+  # dimensions and can still answer.
+  def described?
+    capacities.any?
+  end
+
+  private def class_fits?(model)
+    ladder = (model.size == ::Model::VEHICLE_SIZE) ? "vehicle" : "ship"
+    rungs = ::DockCapacity::LADDER_CLASSES.fetch(ladder)
+    largest = capacities.select { |capacity| capacity.ladder == ladder }
+      .filter_map { |capacity| rungs.index(capacity.size) }
+      .max
+
+    return false if largest.nil?
+
+    # A ship carries its class once a holo has been measured; before that the
+    # pad's own box answers, which is the same question asked of the hull
+    # rather than of a column.
+    rung = if ladder == "vehicle"
+      rungs.index(model.vehicle_size)
+    else
+      rungs.index(model.dock_size || ::Dock.ship_size_for(model.length, model.beam, model.height))
+    end
+
+    return false if rung.nil?
+
+    rung <= largest
   end
 
   private def accepts?(model)

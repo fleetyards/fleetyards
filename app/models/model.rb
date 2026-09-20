@@ -930,15 +930,17 @@ class Model < ApplicationRecord
   # The ships this one can be carried by. Twenty-odd models hold every dock that
   # belongs to a ship, so this walks a handful of rows rather than the catalogue.
   #
-  # A ship without dimensions of its own is not compared at all: zeroes fit
-  # everywhere, and the answer would be confident and wrong.
+  # A ship without dimensions of its own is not compared against an envelope --
+  # zeroes fit everywhere, and the answer would be confident and wrong -- but it
+  # can still be named on a berth, or carry a class, and `Dock#fits?` is where
+  # that distinction lives now.
   # Each carrier paired with the dock that takes this ship, so the reader is told
   # whether it is a hangar or a garage rather than only that it fits somewhere.
   def carried_by_with_docks
-    return [] if length.to_f <= 0 || beam.to_f <= 0 || height.to_f <= 0
-
+    # The entries and the named ships decide the answer now, so they are
+    # preloaded with the berths rather than fetched per dock per carrier.
     Model.visible.active.with_dock.with_attached_store_image.where.not(id:)
-      .preload(:docks, module_docks: :parent)
+      .preload({docks: %i[capacities additions]}, {module_docks: [:parent, :capacities, :additions]})
       .filter_map do |carrier|
         dock = carrier.berths.find { |candidate| candidate.fits?(self) }
         {carrier:, dock:} if dock
