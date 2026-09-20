@@ -18,6 +18,17 @@ channels:
     messages:
       AdminNotification:
         "$ref": "#/components/messages/AdminNotification"
+  AdminPresence:
+    address: admin_presence:{admin_user_gid}
+    x-actioncable-channel: AdminPresenceChannel
+    parameters:
+      admin_user_gid:
+        description: GlobalID param of the subscribed admin user, derived from the
+          connection
+        x-client-supplied: false
+    messages:
+      UserPresenceMessage:
+        "$ref": "#/components/messages/UserPresenceMessage"
   Imports:
     address: imports:{admin_user_gid}
     x-actioncable-channel: ImportsChannel
@@ -37,6 +48,13 @@ operations:
     messages:
     - "$ref": "#/channels/AdminNotifications/messages/AdminNotification"
     summary: A notification addressed to one admin user
+  receiveAdminUserPresence:
+    action: receive
+    channel:
+      "$ref": "#/channels/AdminPresence"
+    messages:
+    - "$ref": "#/channels/AdminPresence/messages/UserPresenceMessage"
+    summary: A user came online or went offline
   receiveImport:
     action: receive
     channel:
@@ -241,6 +259,23 @@ components:
       - IMPORTS_UEX_PRICES_IMPORT
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT
+    UserPresenceMessage:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        online:
+          type: boolean
+        lastActiveAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - userId
+      - online
     UserRefRequired:
       type: object
       properties:
@@ -259,6 +294,9 @@ components:
     Import:
       payload:
         "$ref": "#/components/schemas/Import"
+    UserPresenceMessage:
+      payload:
+        "$ref": "#/components/schemas/UserPresenceMessage"
 servers:
   development:
     host: fleetyards.test

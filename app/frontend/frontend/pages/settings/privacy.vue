@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
-import { type UserUpdateInput } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName, type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -23,6 +24,12 @@ const { displaySuccess } = useAppNotifications();
 
 const sessionStore = useSessionStore();
 
+const { isFeatureEnabled } = useFeatures();
+
+const onlineStatusEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.ONLINE_STATUS),
+);
+
 const submitting = ref(false);
 
 const comlink = useComlink();
@@ -31,6 +38,7 @@ const comlink = useComlink();
 // account is still loading, which would misstate whether visits are recorded.
 const currentValues = (): UserUpdateInput => ({
   tracking: sessionStore.currentUser?.tracking ?? true,
+  showOnlineStatus: sessionStore.currentUser?.showOnlineStatus ?? true,
 });
 
 const { defineField, handleSubmit, resetForm, meta } = useForm<UserUpdateInput>(
@@ -65,6 +73,8 @@ watch(
 );
 
 const [tracking, trackingProps] = defineField("tracking");
+const [showOnlineStatus, showOnlineStatusProps] =
+  defineField("showOnlineStatus");
 
 const mutation = useUpdateProfileMutation();
 
@@ -116,6 +126,21 @@ const onSubmit = handleSubmit(async (values) => {
           name="tracking"
           :disabled="submitting"
           :label="t('labels.user.tracking')"
+        />
+      </div>
+    </div>
+
+    <div v-if="onlineStatusEnabled" class="row">
+      <div class="col-12">
+        <p>{{ t("texts.settings.privacy.onlineStatus") }}</p>
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="showOnlineStatus"
+          v-bind="showOnlineStatusProps"
+          name="showOnlineStatus"
+          :disabled="submitting"
+          :label="t('labels.user.showOnlineStatus')"
         />
       </div>
     </div>

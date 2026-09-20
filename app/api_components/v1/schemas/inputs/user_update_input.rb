@@ -28,6 +28,7 @@ module V1
             friendsWishlist: {type: :boolean},
             hideOwner: {type: :boolean},
             tracking: {type: :boolean},
+            showOnlineStatus: {type: :boolean},
             location: {type: [:string, :null]},
             currentSystem: {type: [:string, :null]}
           },

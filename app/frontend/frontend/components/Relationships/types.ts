@@ -14,6 +14,12 @@ export type RelationshipRow = {
   handle: string;
   label: string;
   avatar?: MediaFile;
+  // Optional on purpose: the same row renders a fleet on the alliances view,
+  // and a fleet is not online. Left unset there, and unset as well for a
+  // friendship nobody has accepted yet.
+  userId?: string;
+  online?: boolean;
+  lastActiveAt?: string | null;
   state: RelationshipStateEnum;
   direction: RelationshipDirectionEnum;
   createdAt: string;

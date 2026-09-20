@@ -16,6 +16,16 @@ json.user do
   json.avatar do
     json.partial! "api/v1/shared/file", record: other, attr: :avatar
   end
+
+  # Only once both sides have agreed. A row that is still pending, or that was
+  # declined or ignored, says nothing about when the other party was last here
+  # -- and an ignore that leaks activity is an ignore the requester can detect.
+  if friendship.accepted?
+    json.last_active_at other&.last_active_at&.utc&.iso8601
+
+    online = online_status_for(other)
+    json.online online unless online.nil?
+  end
 end
 
 json.accepted_at friendship.accepted_at&.utc&.iso8601

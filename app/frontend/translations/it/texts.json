@@ -139,7 +139,8 @@
       },
       "settings": {
         "privacy": {
-          "tracking": "Quando questa opzione è attiva contiamo le pagine che visiti per capire quali parti del sito vengono usate. Gli indirizzi IP vengono resi anonimi, nulla viene memorizzato sul tuo dispositivo e le singole visite vengono eliminate dopo un mese. Disattivandola la registrazione si interrompe del tutto."
+          "tracking": "Quando questa opzione è attiva contiamo le pagine che visiti per capire quali parti del sito vengono usate. Gli indirizzi IP vengono resi anonimi, nulla viene memorizzato sul tuo dispositivo e le singole visite vengono eliminate dopo un mese. Disattivandola la registrazione si interrompe del tutto.",
+          "onlineStatus": "Quando è attivo, i membri delle tue flotte e i tuoi amici vedono un punto accanto al tuo nome finché hai FleetYards aperto. Disattivandolo viene nascosto a loro: non cambia nient'altro e la tua ultima attività resta visibile."
         },
         "notifications": {
           "hint": "Scegli come ricevere ogni evento. Le notifiche dell'app vengono raccolte nel tuo centro notifiche, le email vanno all'indirizzo del tuo account."

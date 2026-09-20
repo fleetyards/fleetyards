@@ -139,7 +139,8 @@
       },
       "settings": {
         "privacy": {
-          "tracking": "When this is enabled we count the pages you visit to see which parts of the site are used. IP addresses are anonymised, nothing is stored on your device, and individual visits are deleted after one month. Turning it off stops the recording entirely."
+          "tracking": "When this is enabled we count the pages you visit to see which parts of the site are used. IP addresses are anonymised, nothing is stored on your device, and individual visits are deleted after one month. Turning it off stops the recording entirely.",
+          "onlineStatus": "When this is enabled, the members of your fleets and your friends see a dot next to your name while you have FleetYards open. Turning it off hides it from them — nothing else changes, and your last activity is still shown."
         },
         "notifications": {
           "hint": "Pick how each event reaches you. App notifications are collected in your notification center, mail goes to your account's address."

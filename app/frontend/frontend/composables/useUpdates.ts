@@ -5,6 +5,7 @@ import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
 import { useSubscription } from "@/shared/composables/useSubscription";
+import { usePresenceUpdates } from "@/frontend/composables/usePresenceUpdates";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
@@ -37,6 +38,11 @@ const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
 };
 
 export const useUpdates = () => {
+  // Mounted here rather than on the surfaces that draw a dot: the subscription
+  // is also this client's own heartbeat, so it has to run wherever the app is
+  // open.
+  usePresenceUpdates();
+
   const appStore = useAppStore();
 
   const updateAppVersion = (data: AppVersionMessage) => {

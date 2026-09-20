@@ -16,6 +16,7 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
 import type { RelationshipRow } from "@/frontend/components/Relationships/types";
 
 type Props = {
@@ -27,7 +28,10 @@ type Props = {
   kind: "user" | "fleet";
 };
 
-withDefaults(defineProps<Props>(), { loading: false, busy: false });
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  busy: false,
+});
 
 const emit = defineEmits<{
   accept: [RelationshipRow];
@@ -37,6 +41,13 @@ const emit = defineEmits<{
 }>();
 
 const { t, l } = useI18n();
+
+const { onlineFor } = useMemberPresence();
+
+// A fleet is not online. `kind` is what tells the two apart, and the alliances
+// view shares this table.
+const rowOnline = (row: RelationshipRow) =>
+  props.kind === "user" ? onlineFor(row) : undefined;
 
 const columns = computed<BaseTableCol<RelationshipRow>[]>(() => [
   { name: "label", label: t("labels.relationships.party"), flexGrow: 2 },
@@ -77,6 +88,7 @@ const canEnd = (row: RelationshipRow) => row.state === "accepted";
           :icon="
             kind === 'fleet' ? 'fa-duotone fa-users' : 'fa-duotone fa-user'
           "
+          :online="rowOnline(record as RelationshipRow)"
         />
         <span class="relationship-party__label">
           {{ (record as RelationshipRow).label }}

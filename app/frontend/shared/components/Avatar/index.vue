@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import PresenceDot from "@/shared/components/PresenceDot/index.vue";
 
 type AvatarSizes = "default" | "small" | "large";
 
@@ -17,6 +18,12 @@ type Props = {
   icon?: string;
   transparent?: boolean;
   round?: boolean;
+  /**
+   * Undefined where presence has no answer — a fleet, a reader with the flag
+   * off — and no dot is drawn at all. `false` is a claim that somebody is
+   * offline, which is a different thing.
+   */
+  online?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   icon: "fa-duotone fa-user",
   transparent: false,
   round: true,
+  online: undefined,
 });
 
 const { t } = useI18n();
@@ -67,6 +75,7 @@ const emitClick = () => {
       'avatar-editable': editable || creatable,
       'avatar-transparent': transparent,
       'avatar-round': round,
+      'avatar-with-presence': online !== undefined,
     }"
   >
     <img
@@ -95,6 +104,11 @@ const emitClick = () => {
         </template>
       </template>
     </div>
+    <PresenceDot
+      v-if="online !== undefined"
+      :online="online"
+      variant="on-avatar"
+    />
   </div>
 </template>
 

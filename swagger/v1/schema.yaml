@@ -16337,6 +16337,7 @@ components:
       type: string
       enum:
       - AdminNotificationsChannel
+      - AdminPresenceChannel
       - AppVersionChannel
       - FleetInventoryChannel
       - FleetMembersChannel
@@ -16353,11 +16354,13 @@ components:
       - OnSaleHangarChannel
       - PayoutLedgerChannel
       - UserNotificationsChannel
+      - UserPresenceChannel
       - WishlistChannel
       - WishlistCreateChannel
       - WishlistDestroyChannel
       x-enumNames:
       - ADMIN_NOTIFICATIONS_CHANNEL
+      - ADMIN_PRESENCE_CHANNEL
       - APP_VERSION_CHANNEL
       - FLEET_INVENTORY_CHANNEL
       - FLEET_MEMBERS_CHANNEL
@@ -16374,6 +16377,7 @@ components:
       - ON_SALE_HANGAR_CHANNEL
       - PAYOUT_LEDGER_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
+      - USER_PRESENCE_CHANNEL
       - WISHLIST_CHANNEL
       - WISHLIST_CREATE_CHANNEL
       - WISHLIST_DESTROY_CHANNEL
@@ -17969,6 +17973,7 @@ components:
       - oauth-google
       - oauth-patreon
       - oauth-twitch
+      - online_status
       - ship_inventories
       - tour_payouts
       x-enumNames:
@@ -17989,6 +17994,7 @@ components:
       - OAUTH_GOOGLE
       - OAUTH_PATREON
       - OAUTH_TWITCH
+      - ONLINE_STATUS
       - SHIP_INVENTORIES
       - TOUR_PAYOUTS
       title: FeatureFlagName
@@ -20496,6 +20502,8 @@ components:
           format: double
         currentSystemCode:
           type: string
+        online:
+          type: boolean
         isDestroyAllowed:
           type: boolean
         capabilities:
@@ -27045,6 +27053,13 @@ components:
           type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
+        lastActiveAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        online:
+          type: boolean
       additionalProperties: false
       required:
       - id
@@ -28012,6 +28027,8 @@ components:
           type: boolean
         tracking:
           type: boolean
+        showOnlineStatus:
+          type: boolean
         supporter:
           type: boolean
         supporterTier:
@@ -28065,6 +28082,7 @@ components:
       - friendsWishlist
       - hideOwner
       - tracking
+      - showOnlineStatus
       - supporter
       - supporterTier
       - supporterRecurring
@@ -28301,6 +28319,8 @@ components:
         hideOwner:
           type: boolean
         tracking:
+          type: boolean
+        showOnlineStatus:
           type: boolean
         location:
           type:

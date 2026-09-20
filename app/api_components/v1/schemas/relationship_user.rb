@@ -14,7 +14,11 @@ module V1
         properties: {
           id: {type: :string, format: :uuid},
           username: {type: :string},
-          avatar: ::Shared::V1::Schemas::MediaFile
+          avatar: ::Shared::V1::Schemas::MediaFile,
+          # Both only once the friendship is accepted, so neither is required:
+          # the same shape carries a request nobody has answered yet.
+          lastActiveAt: {type: [:string, :null], format: "date-time"},
+          online: {type: :boolean}
         },
         additionalProperties: false,
         required: %w[id username]

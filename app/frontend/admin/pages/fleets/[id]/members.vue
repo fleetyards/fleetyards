@@ -15,6 +15,8 @@ import { BaseTableCol } from "@/shared/components/base/Table/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FleetMemberActions from "@/admin/components/Fleets/Members/Actions/index.vue";
+import { useAdminPresence } from "@/admin/composables/useAdminPresence";
+import PresenceDot from "@/shared/components/PresenceDot/index.vue";
 import {
   type Fleet,
   type AdminFleetMember,
@@ -65,6 +67,18 @@ const {
   refetch,
   ...asyncStatus
 } = useFleetMembersQuery(props.fleet.id, membersQueryParams);
+
+const { onlineFor, lastActiveAtFor } = useAdminPresence();
+
+// Drawn with LazyImage rather than the Avatar component, so the dot sits beside
+// the name instead of on the frame.
+const presence = (member: AdminFleetMember) => ({
+  online: onlineFor({ userId: member.userId, online: member.online }),
+  lastActiveAt: lastActiveAtFor({
+    userId: member.userId,
+    lastActiveAt: member.lastActiveAt,
+  }),
+});
 
 const columns: BaseTableCol<AdminFleetMember>[] = [
   {
@@ -147,9 +161,18 @@ const columns: BaseTableCol<AdminFleetMember>[] = [
             shadow
           />
         </template>
+        <template #col-username="{ record }">
+          <span class="admin-member-username">
+            <PresenceDot
+              v-if="presence(record).online !== undefined"
+              :online="presence(record).online as boolean"
+            />
+            {{ record.username }}
+          </span>
+        </template>
         <template #col-lastActiveAt="{ record }">
-          <template v-if="record.lastActiveAt">
-            {{ timeDistance(record.lastActiveAt) }}
+          <template v-if="presence(record).lastActiveAt">
+            {{ timeDistance(presence(record).lastActiveAt as string) }}
           </template>
         </template>
         <template #col-createdAt="{ record }">
@@ -176,3 +199,11 @@ const columns: BaseTableCol<AdminFleetMember>[] = [
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+.admin-member-username {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+</style>

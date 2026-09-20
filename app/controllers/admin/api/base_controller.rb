@@ -7,6 +7,7 @@ module Admin
       include ActionPolicy::Controller
       include RansackHelper
       include Pagination
+      include PresenceReadableConcern
 
       helper_method :combined_fragment_cache_key
       helper_method :view_cache_dependencies
@@ -74,6 +75,15 @@ module Admin
 
       def feature_enabled?(feature)
         Flipper.enabled?(feature, current_user)
+      end
+
+      # Neither gated nor redacted. An admin already sees email, sign-in IPs and
+      # sign-in counts, and `show_online_status` is a promise to co-members and
+      # friends rather than to the people running the site.
+      def online_status_for(user)
+        return if user.blank?
+
+        online_user_ids.include?(user.id)
       end
 
       def resource_message(resource, action, state)

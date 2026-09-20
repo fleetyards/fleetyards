@@ -1,0 +1,25 @@
+.presence-dot {
+  display: inline-block;
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  border-radius: 50%;
+
+  // The ring is what keeps the dot readable against both an avatar photo and a
+  // panel, without the dot itself having to be bigger than a full stop.
+  box-shadow: 0 0 0 2px $background;
+
+  &.presence-dot-online {
+    background-color: $success;
+  }
+
+  &.presence-dot-offline {
+    background-color: $gray;
+  }
+
+  &.presence-dot-on-avatar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}

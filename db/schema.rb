@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_20_191500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2147,6 +2147,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_180000) do
     t.string "rsi_handle"
     t.boolean "rsi_handle_verified", default: false, null: false
     t.boolean "sale_notify", default: false
+    t.boolean "show_online_status", default: true, null: false
     t.integer "sign_in_count", default: 0, null: false
     t.uuid "supported_fleet_id"
     t.boolean "tester", default: false

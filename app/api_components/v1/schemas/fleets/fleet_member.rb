@@ -35,6 +35,7 @@ module V1
             latitude: {type: :number, format: :double},
             longitude: {type: :number, format: :double},
             currentSystemCode: {type: :string},
+            online: {type: :boolean},
             isDestroyAllowed: {type: :boolean},
             capabilities: ::V1::Schemas::Fleets::FleetMembershipCapabilities,
             hangarUpdatedAt: {type: :string, format: "date-time"},
