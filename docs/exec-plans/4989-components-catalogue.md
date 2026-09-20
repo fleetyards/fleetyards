@@ -7,10 +7,10 @@ its own stable URL, searchable and filterable, sortable on the metrics that matt
 detail page that renders every figure we hold for that component's category — with every
 hardpoint on every ship page linking into it.
 
-## Status — the catalogue is live, 2026-09-18
+## Status — every phase but the prices, 2026-09-20
 
-**The pause is over, and D7 was resolved the other way.** Phases 1–4 have shipped; one PR is
-still open and one phase has not started.
+**Phases 1–4 have all shipped**, and the two follow-ups the plan left open — the history tab and
+the facet labels — are done. Only the UEX prices are untouched.
 
 | phase | PR | state |
 |---|---|---|
@@ -18,16 +18,47 @@ still open and one phase has not started.
 | 2 — the public API | #5003 | **merged** |
 | 3 — the metric renderer | #5006 | **merged** |
 | 4a — the detail page, and the link from every hardpoint | #5015 | **merged** |
-| 4b — the catalogue list, and `/catalogue` as the section entry | #5021 | **open** — mergeable, every check green |
-| 5 — UEX prices | — | scoped, not started |
+| 4b — the catalogue list, and `/catalogue` as the section entry | #5021 | **merged** |
+| 5 — UEX prices | — | scoped, not started — #5070 |
 
 Merged alongside: **#5016** dropped the `components` feature flag, **#5020** turned each of the
 eight metrics into a `Gteq`/`Lteq` filter rather than only a sort, **#5022** serves the last
-loaded build while a newly configured one waits for its import, and **#5007** fixed the parser
-writing `tags` as the array's own inspect output.
+loaded build while a newly configured one waits for its import, **#5007** fixed the parser
+writing `tags` as the array's own inspect output, and **#5025** put a sort line on the card
+lists that had no way to sort.
 
-**#5025** is open beside 4b — a sort line on the card lists that had no way to sort. It is a
-spin-off of 4b's `SortBar`, stacked on that branch, not a phase of this plan.
+### What is left, and where it is tracked
+
+The remaining work is three sub-issues of #4989 rather than lines in this plan:
+
+| | issue | state |
+|---|---|---|
+| UEX component prices (Phase 5) | #5070 | not started; the measurement step is the first move |
+| The history tab (D10) | #5071 | **built** — see below |
+| `tags` in the payload | #5072 | waits on a re-parse; the parser fix is already on `main` |
+
+### D10 answered — a recorded change log, not a computed one
+
+The plan left the tab's shape open. It is decided: component builds are pruned to the two or
+three `ScData::Source::BUILDS_RETAINED` keeps, so a diff computed from the retained rows reaches
+back two patches and forgets the rest. `component_build_changes` records it when a build lands
+instead, the way `model_build_changes` already does.
+
+Two things differ from the model table. Values are **text**, because a component's facts are
+names, sizes and grades rather than numbers. And the diff **reaches inside `type_data`** and
+compares its scalar keys, because that is where a weapon's damage and a cooler's cooling rate
+live — the nested shapes stay out, since a re-parse can reorder them with nothing having changed.
+
+The tab is a sibling route under a shell that resolves the component once, so the overview keeps
+its own path and every hardpoint link still lands on it. **The log starts empty and fills from
+the next load**, the way the ship tab did.
+
+### The section entry follows the tenant order
+
+`/catalogue/` named `components` by hand and went on pointing there after blueprints moved to
+the front of the nav. `CATALOGUE_TENANTS` is the one ordered list the nav and the router both
+read now: the entry redirects to the first tenant in it, and each tenant's path is built from
+the same entry.
 
 ### D7 inverted — the shell was built here, not on #4988
 
@@ -731,7 +762,8 @@ only. The `tags` extraction is untouched and the parsed tree still holds `tags: 
 - [x] Phase 2 — The API (#5003), with metric filters in #5020
 - [x] Phase 3 — The metric renderer (#5006)
 - [x] Phase 4a — The detail page and the hardpoint link (#5015)
-- [ ] Phase 4b — The list and the section entry (#5021, open)
-- [ ] Phase 5 — Component prices from UEX
-- [ ] The history tab (D10)
-- [ ] Facet labels in the six locales that have none
+- [x] Phase 4b — The list and the section entry (#5021)
+- [x] The history tab (D10) — a recorded change log, #5071
+- [x] Facet labels in the six locales that had none
+- [ ] Phase 5 — Component prices from UEX (#5070)
+- [ ] `tags` in the payload, after a re-parse (#5072)
