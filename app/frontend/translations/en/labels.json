@@ -1135,6 +1135,7 @@
         "copySameModel": "Target ship must differ from the source ship."
       },
       "component": {
+        "notRecordedYet": "Only recorded from the day this started, so a component can have none yet.",
         "size": "Size: %{size}",
         "grade": "Grade",
         "hidden": "Hidden?",

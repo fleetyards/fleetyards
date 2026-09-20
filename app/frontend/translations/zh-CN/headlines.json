@@ -470,6 +470,7 @@
         "contractCovers": "合约封面图"
       },
       "component": {
+        "history": "历史",
         "craftedFrom": "制造配方",
         "identity": "详情",
         "metrics": "数据",

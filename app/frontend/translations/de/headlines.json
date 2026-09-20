@@ -470,6 +470,7 @@
         "contractCovers": "Auftrags-Titelbilder"
       },
       "component": {
+        "history": "Historie",
         "craftedFrom": "Herstellbar aus",
         "identity": "Details",
         "metrics": "Werte",

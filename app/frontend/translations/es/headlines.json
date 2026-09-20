@@ -470,6 +470,7 @@
         "contractCovers": "Portadas de contrato"
       },
       "component": {
+        "history": "Historial",
         "craftedFrom": "Se fabrica con",
         "identity": "Detalles",
         "metrics": "Métricas",

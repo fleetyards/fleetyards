@@ -148,3 +148,16 @@
     }
   }
 }
+
+.component-page__history-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-dim);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text);
+  }
+}

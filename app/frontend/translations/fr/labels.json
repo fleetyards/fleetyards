@@ -1135,6 +1135,7 @@
         "copySameModel": "Le vaisseau cible doit être différent du vaisseau source."
       },
       "component": {
+        "notRecordedYet": "Enregistré seulement depuis le début du suivi, un composant peut donc n'avoir rien.",
         "size": "Taille : %{size}",
         "grade": "Grade",
         "hidden": "Masqué ?",

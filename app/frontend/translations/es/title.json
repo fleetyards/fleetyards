@@ -16,6 +16,7 @@
       "shipImages": "%{name} Images",
       "shipVideos": "%{name} Videos",
       "shipHistory": "Historial del %{name}",
+      "componentHistory": "Historial de %{name}",
       "shipViewer": "%{name} Viewer",
       "images": "Imágenes",
       "stats": "Estadísticas",

@@ -470,6 +470,7 @@
         "contractCovers": "Visuels de contrat"
       },
       "component": {
+        "history": "Historique",
         "craftedFrom": "Fabriqué à partir de",
         "identity": "Détails",
         "metrics": "Caractéristiques",

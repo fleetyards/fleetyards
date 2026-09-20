@@ -126,6 +126,21 @@ describe("frontend routes", () => {
     expect(router.currentRoute.value.path).toBe("/catalogue/blueprints/");
   });
 
+  /*
+   * The detail page became a shell with children so the history tab could be a
+   * sibling of the overview rather than a second page fetching the same
+   * component. The slug path has to go on opening the overview, because every
+   * hardpoint on every ship links straight to it.
+   */
+  it.each([
+    ["/catalogue/components/bulldog-repeater/", "component"],
+    ["/catalogue/components/bulldog-repeater/history/", "component-history"],
+  ])("opens %s as %s", async (path, name) => {
+    await router.push(path);
+
+    expect(router.currentRoute.value.name).toBe(name);
+  });
+
   it.each(CATALOGUE_TENANTS.map((tenant) => [tenant.key, tenant.listRoute]))(
     "gives %s a list at its own path",
     async (key, listRoute) => {

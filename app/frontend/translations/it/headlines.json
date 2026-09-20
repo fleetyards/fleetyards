@@ -470,6 +470,7 @@
         "contractCovers": "Copertine dei contratti"
       },
       "component": {
+        "history": "Cronologia",
         "craftedFrom": "Fabbricato con",
         "identity": "Dettagli",
         "metrics": "Valori",

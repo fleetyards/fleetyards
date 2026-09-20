@@ -15,6 +15,7 @@
       "images": "Imágenes",
       "videos": "Vídeos",
       "shipHistory": "Historial",
+      "componentHistory": "Historial",
       "hangar": {
         "index": "Mi Hangar",
         "vehicleLoadouts": "Loadouts",

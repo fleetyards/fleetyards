@@ -1135,6 +1135,7 @@
         "copySameModel": "La nave di destinazione deve essere diversa da quella di origine."
       },
       "component": {
+        "notRecordedYet": "Registrato solo da quando è iniziato il tracciamento, quindi un componente può non avere nulla.",
         "size": "Dimensione: %{size}",
         "grade": "Grado",
         "hidden": "Nascosto?",

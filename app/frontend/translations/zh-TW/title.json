@@ -16,6 +16,7 @@
       "shipImages": "%{name} 圖片",
       "shipVideos": "%{name} 影片",
       "shipHistory": "%{name} 歷史",
+      "componentHistory": "%{name} 歷史",
       "shipViewer": "%{name} 檢視器",
       "images": "圖片",
       "stats": "統計",
