@@ -1,6 +1,7 @@
 import { createRouter, createMemoryHistory } from "vue-router";
 import { describe, expect, it } from "vitest";
 import { routes } from "./routes";
+import { CATALOGUE_TENANTS } from "./catalogue/tenants";
 
 /*
  * The friends list moved under settings. Notifications written before it did
@@ -105,4 +106,32 @@ describe("frontend routes", () => {
 
     expect(router.currentRoute.value.query).toEqual({ page: "2", tab: "log" });
   });
+
+  /*
+   * `/catalogue/` used to name its tenant by hand, so it went on opening
+   * components after blueprints had moved to the front of the nav. Both the
+   * entry and the tenants' own paths are built from `CATALOGUE_TENANTS` now,
+   * which is what these two assert together: the entry follows the list, and
+   * the list is what the section is made of.
+   */
+  it("lands on the first tenant of the section", async () => {
+    await router.push("/catalogue/");
+
+    expect(router.currentRoute.value.name).toBe(CATALOGUE_TENANTS[0].listRoute);
+  });
+
+  it("puts blueprints first today", async () => {
+    await router.push("/catalogue/");
+
+    expect(router.currentRoute.value.path).toBe("/catalogue/blueprints/");
+  });
+
+  it.each(CATALOGUE_TENANTS.map((tenant) => [tenant.key, tenant.listRoute]))(
+    "gives %s a list at its own path",
+    async (key, listRoute) => {
+      await router.push(`/catalogue/${key}/`);
+
+      expect(router.currentRoute.value.name).toBe(listRoute);
+    },
+  );
 });
