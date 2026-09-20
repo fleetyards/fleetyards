@@ -1069,6 +1069,27 @@
         "active": "啟用？",
         "hidden": "隱藏？"
       },
+      "dockCapacity": {
+        "ladder": "等級序列",
+        "size": "類別",
+        "quantity": "數量",
+        "display": "作為標籤顯示",
+        "hint": "該泊位的用途。各條目為互選方案，而非累加。",
+        "empty": "容量條目"
+      },
+      "dockCapacityLadders": {
+        "ship": "飛船",
+        "vehicle": "車輛"
+      },
+      "vehicleSizes": {
+        "extra_extra_small": "超超小型 (XXS)",
+        "extra_small": "超小型 (XS)",
+        "small": "小型 (S)",
+        "medium": "中型 (M)",
+        "large": "大型 (L)",
+        "extra_large": "超大型 (XL)",
+        "extra_extra_large": "超超大型 (XXL)"
+      },
       "dock": {
         "name": "名稱",
         "dockType": "停靠類型",

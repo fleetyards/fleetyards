@@ -1069,6 +1069,27 @@
         "active": "激活？",
         "hidden": "隐藏？"
       },
+      "dockCapacity": {
+        "ladder": "等级序列",
+        "size": "类别",
+        "quantity": "数量",
+        "display": "作为标签显示",
+        "hint": "该泊位的用途。各条目为互选方案，而非累加。",
+        "empty": "容量条目"
+      },
+      "dockCapacityLadders": {
+        "ship": "飞船",
+        "vehicle": "车辆"
+      },
+      "vehicleSizes": {
+        "extra_extra_small": "超超小型 (XXS)",
+        "extra_small": "超小型 (XS)",
+        "small": "小型 (S)",
+        "medium": "中型 (M)",
+        "large": "大型 (L)",
+        "extra_large": "超大型 (XL)",
+        "extra_extra_large": "超超大型 (XXL)"
+      },
       "dock": {
         "name": "名称",
         "dockType": "停靠类型",

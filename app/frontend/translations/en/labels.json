@@ -1069,6 +1069,27 @@
         "active": "Active?",
         "hidden": "Hidden?"
       },
+      "dockCapacity": {
+        "ladder": "Ladder",
+        "size": "Class",
+        "quantity": "How many",
+        "display": "Show as the label",
+        "hint": "What the berth is built for. Entries are alternatives, not a sum.",
+        "empty": "capacity entries"
+      },
+      "dockCapacityLadders": {
+        "ship": "Ships",
+        "vehicle": "Vehicles"
+      },
+      "vehicleSizes": {
+        "extra_extra_small": "Extra Extra Small (XXS)",
+        "extra_small": "Extra Small (XS)",
+        "small": "Small (S)",
+        "medium": "Medium (M)",
+        "large": "Large (L)",
+        "extra_large": "Extra Large (XL)",
+        "extra_extra_large": "Extra Extra Large (XXL)"
+      },
       "dock": {
         "name": "Name",
         "dockType": "Dock Type",

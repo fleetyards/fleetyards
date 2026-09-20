@@ -1069,6 +1069,27 @@
         "active": "Aktiv?",
         "hidden": "Versteckt?"
       },
+      "dockCapacity": {
+        "ladder": "Skala",
+        "size": "Klasse",
+        "quantity": "Wie viele",
+        "display": "Als Beschriftung zeigen",
+        "hint": "Wofür der Liegeplatz gebaut ist. Einträge sind Alternativen, keine Summe.",
+        "empty": "Kapazitätseinträge"
+      },
+      "dockCapacityLadders": {
+        "ship": "Schiffe",
+        "vehicle": "Fahrzeuge"
+      },
+      "vehicleSizes": {
+        "extra_extra_small": "Extra extra klein (XXS)",
+        "extra_small": "Extra klein (XS)",
+        "small": "Klein (S)",
+        "medium": "Mittel (M)",
+        "large": "Groß (L)",
+        "extra_large": "Extra groß (XL)",
+        "extra_extra_large": "Extra extra groß (XXL)"
+      },
       "dock": {
         "name": "Name",
         "dockType": "Dock-Typ",

@@ -12164,6 +12164,10 @@ components:
           type: integer
         maxShipSize:
           type: integer
+        capacities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCapacity"
         parentId:
           type: string
           format: uuid
@@ -12182,6 +12186,7 @@ components:
       - dockTypeLabel
       - shipSize
       - shipSizeLabel
+      - capacities
       - parentId
       - parentType
       - createdAt

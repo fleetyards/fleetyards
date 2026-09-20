@@ -1069,6 +1069,27 @@
         "active": "¿Activo?",
         "hidden": "¿Oculto?"
       },
+      "dockCapacity": {
+        "ladder": "Escala",
+        "size": "Clase",
+        "quantity": "Cuántos",
+        "display": "Mostrar como etiqueta",
+        "hint": "Para qué está hecho el atracadero. Las entradas son alternativas, no una suma.",
+        "empty": "entradas de capacidad"
+      },
+      "dockCapacityLadders": {
+        "ship": "Naves",
+        "vehicle": "Vehículos"
+      },
+      "vehicleSizes": {
+        "extra_extra_small": "Extra extra pequeño (XXS)",
+        "extra_small": "Extra pequeño (XS)",
+        "small": "Pequeño (S)",
+        "medium": "Mediano (M)",
+        "large": "Grande (L)",
+        "extra_large": "Extra grande (XL)",
+        "extra_extra_large": "Extra extra grande (XXL)"
+      },
       "dock": {
         "name": "Nombre",
         "dockType": "Tipo de muelle",

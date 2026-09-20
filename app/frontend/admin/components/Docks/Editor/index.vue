@@ -27,6 +27,7 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 // Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
 // without this and the two dropdowns render as empty comments.
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import DocksCapacities from "@/admin/components/Docks/Capacities/index.vue";
 import {
   InputAlignmentsEnum,
   InputTypesEnum,
@@ -218,6 +219,15 @@ const onSaveCreate = async () => {
       <BasePill v-if="item.accessLabel" margin-right>{{
         item.accessLabel
       }}</BasePill>
+      <!-- What the berth is built for. Alternatives rather than a sum, so they
+           read as separate pills. -->
+      <BasePill
+        v-for="capacity in item.capacities || []"
+        :key="capacity.id"
+        margin-right
+      >
+        {{ capacity.quantity }} × {{ capacity.sizeLabel }}
+      </BasePill>
       <span v-if="item.name">{{ item.name }}</span>
       <!-- An unmeasured berth answers nothing, so say so rather than leaving
            the row looking complete. -->
@@ -285,6 +295,10 @@ const onSaveCreate = async () => {
         translation-key="dock.height"
         :step="0.1"
       />
+    </template>
+
+    <template #expanded="{ item }">
+      <DocksCapacities :dock-id="item.id" />
     </template>
 
     <template #create>

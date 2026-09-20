@@ -445,6 +445,9 @@
         "modelModulePackage": {
           "destroy": "Are you sure you want to delete this module package? This action can't be reverted."
         },
+        "dockCapacity": {
+          "destroy": "確定要刪除此容量條目嗎？此操作無法復原。"
+        },
         "dock": {
           "destroy": "Are you sure you want to delete this dock? This action can't be reverted."
         },
@@ -962,6 +965,17 @@
         "joinRequestWithdrawn": "申請已撤回",
         "joinRequestApproved": "申請已通過",
         "joinRequestDeclined": "申請已拒絕"
+      },
+      "dockCapacity": {
+        "create": {
+          "failure": "無法建立容量條目。"
+        },
+        "update": {
+          "failure": "無法儲存容量條目。"
+        },
+        "destroy": {
+          "failure": "無法刪除容量條目。"
+        }
       },
       "dock": {
         "create": {

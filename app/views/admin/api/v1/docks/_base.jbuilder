@@ -14,6 +14,8 @@ json.beam dock.beam&.to_f
 json.height dock.height&.to_f
 json.min_ship_size dock.min_ship_size
 json.max_ship_size dock.max_ship_size
+json.capacities dock.capacities, partial: "admin/api/v1/dock_capacities/base", as: :dock_capacity
+
 json.parent_id dock.parent_id
 json.parent_type dock.parent_type
 
