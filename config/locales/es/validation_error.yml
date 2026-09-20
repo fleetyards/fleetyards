@@ -140,6 +140,8 @@ es:
     dock:
       create: No se pudo crear el dique.
       update: No se pudo actualizar el dique.
+    dock_addition:
+      create: No se pudo crear la adición del atracadero.
     dock_capacity:
       create: No se pudo crear la capacidad del atracadero.
       update: No se pudo actualizar la capacidad del atracadero.

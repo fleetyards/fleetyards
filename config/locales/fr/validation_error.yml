@@ -137,6 +137,8 @@ fr:
     dock:
       create: Impossible de créer le dock.
       update: Impossible de mettre à jour le dock.
+    dock_addition:
+      create: L'ajout au poste n'a pas pu être créé.
     dock_capacity:
       create: La capacité du poste n'a pas pu être créée.
       update: La capacité du poste n'a pas pu être mise à jour.

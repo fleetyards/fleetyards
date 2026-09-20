@@ -145,6 +145,8 @@ de:
     dock:
       create: Dock konnte nicht erstellt werden.
       update: Dock konnte nicht aktualisiert werden.
+    dock_addition:
+      create: Liegeplatz-Ergänzung konnte nicht erstellt werden.
     dock_capacity:
       create: Liegeplatz-Kapazität konnte nicht erstellt werden.
       update: Liegeplatz-Kapazität konnte nicht aktualisiert werden.

@@ -136,6 +136,8 @@ zh-TW:
     dock:
       create: 無法建立停機位。
       update: 無法更新停機位。
+    dock_addition:
+      create: 無法建立泊位補充條目。
     dock_capacity:
       create: 無法建立泊位容量。
       update: 無法更新泊位容量。

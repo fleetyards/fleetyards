@@ -177,6 +177,8 @@ en:
     dock:
       create: Dock could not be created.
       update: Dock could not be updated.
+    dock_addition:
+      create: Berth addition could not be created.
     dock_capacity:
       create: Berth capacity could not be created.
       update: Berth capacity could not be updated.
