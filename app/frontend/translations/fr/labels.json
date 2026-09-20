@@ -2207,6 +2207,7 @@
           "loaner_sync": "Synchronisation des prêts",
           "uex_prices_import": "Synchronisation des prix UEX",
           "uex_commodity_prices_import": "Synchronisation des marchandises UEX",
+          "uex_component_prices_import": "Synchronisation des composants UEX",
           "new_supporter": "Nouveau soutien",
           "rsi_api_blocked": "API RSI bloquée",
           "rsi_api_unblocked": "API RSI rétablie",

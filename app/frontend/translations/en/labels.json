@@ -2221,6 +2221,7 @@
           "loaner_sync": "Loaner Sync",
           "uex_prices_import": "UEX Price Sync",
           "uex_commodity_prices_import": "UEX Commodity Sync",
+          "uex_component_prices_import": "UEX Component Sync",
           "new_supporter": "New Supporter",
           "rsi_api_blocked": "RSI API Blocked",
           "rsi_api_unblocked": "RSI API Restored",
