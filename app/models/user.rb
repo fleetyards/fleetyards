@@ -118,7 +118,7 @@ class User < ApplicationRecord
     only: %i[
       username email unconfirmed_email rsi_handle sale_notify public_hangar
       public_hangar_loaners public_wishlist hide_owner tester
-      friends_hangar friends_hangar_stats friends_wishlist
+      friends_hangar friends_hangar_stats friends_wishlist show_online_status
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -304,6 +304,13 @@ class User < ApplicationRecord
   after_update :notify_user
   after_update :sync_sale_notify_preference
   after_save :touch_fleet_memberships
+
+  # Turning the switch off has to reach the rosters already showing the dot, and
+  # turning it back on has to bring it back — neither is a connection change, so
+  # nothing else would broadcast it. Only worth sending while there is something
+  # to correct.
+  after_commit :broadcast_online_status_change,
+    if: -> { saved_change_to_show_online_status? && ::UserPresence.online?(id) }
 
   has_one_attached :avatar
   validates :avatar, no_vector_image: true
@@ -1025,6 +1032,12 @@ class User < ApplicationRecord
     # rubocop:disable Rails/SkipsModelValidations
     fleet_memberships.update_all(updated_at: Time.zone.now)
     # rubocop:enable Rails/SkipsModelValidations
+  end
+
+  # Through the same job a connection change goes through, so co-members and
+  # friends get the redaction applied on the way out and admins do not.
+  private def broadcast_online_status_change
+    ::Presence::BroadcastTransitionJob.perform_async(id, true)
   end
 
   private def notify_user

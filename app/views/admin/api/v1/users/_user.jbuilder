@@ -6,3 +6,8 @@
 json.cache! ["v1", user, Date.current.beginning_of_month] do
   json.partial!("admin/api/v1/users/base", user:)
 end
+
+# Outside the fragment, which keys on the user and the month -- neither of which
+# a connection opening or closing changes.
+online = online_status_for(user)
+json.online online unless online.nil?

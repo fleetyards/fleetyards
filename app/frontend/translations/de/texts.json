@@ -139,7 +139,8 @@
       },
       "settings": {
         "privacy": {
-          "tracking": "Wenn dies aktiviert ist, zählen wir die von dir besuchten Seiten, um zu sehen, welche Bereiche genutzt werden. IP-Adressen werden anonymisiert, auf deinem Gerät wird nichts gespeichert und einzelne Besuche werden nach einem Monat gelöscht. Beim Ausschalten wird die Erfassung vollständig gestoppt."
+          "tracking": "Wenn dies aktiviert ist, zählen wir die von dir besuchten Seiten, um zu sehen, welche Bereiche genutzt werden. IP-Adressen werden anonymisiert, auf deinem Gerät wird nichts gespeichert und einzelne Besuche werden nach einem Monat gelöscht. Beim Ausschalten wird die Erfassung vollständig gestoppt.",
+          "onlineStatus": "Wenn dies aktiviert ist, sehen die Mitglieder deiner Flotten und deine Freunde einen Punkt neben deinem Namen, solange du FleetYards geöffnet hast. Beim Ausschalten wird er für sie ausgeblendet — sonst ändert sich nichts, und deine letzte Aktivität wird weiterhin angezeigt."
         },
         "notifications": {
           "hint": "Lege fest, wie dich jedes Ereignis erreicht. App-Benachrichtigungen sammeln sich in deinem Benachrichtigungscenter, E-Mails gehen an die Adresse deines Kontos."

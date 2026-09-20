@@ -9,6 +9,7 @@ module Api
     include RansackHelper
     include Pagination
     include ScDataSource
+    include PresenceReadableConcern
 
     helper_method :combined_fragment_cache_key
     helper_method :view_cache_dependencies
@@ -71,6 +72,16 @@ module Api
 
     def feature_enabled?(feature, *actors)
       Flipper.enabled?(feature, current_resource_owner, *actors)
+    end
+
+    # `nil` when the reader gets no answer at all, which is what lets a jbuilder
+    # leave the field out rather than assert `false` — an absence and a claim
+    # that somebody is offline are not the same thing.
+    def online_status_for(user)
+      return if user.blank?
+      return unless feature_enabled?("online_status")
+
+      user.show_online_status? && online_user_ids.include?(user.id)
     end
 
     def access_confirmed?

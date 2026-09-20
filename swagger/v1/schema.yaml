@@ -20502,6 +20502,8 @@ components:
           format: double
         currentSystemCode:
           type: string
+        online:
+          type: boolean
         isDestroyAllowed:
           type: boolean
         capabilities:
@@ -27051,6 +27053,13 @@ components:
           type: string
         avatar:
           "$ref": "#/components/schemas/MediaFile"
+        lastActiveAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        online:
+          type: boolean
       additionalProperties: false
       required:
       - id
@@ -28018,6 +28027,8 @@ components:
           type: boolean
         tracking:
           type: boolean
+        showOnlineStatus:
+          type: boolean
         supporter:
           type: boolean
         supporterTier:
@@ -28071,6 +28082,7 @@ components:
       - friendsWishlist
       - hideOwner
       - tracking
+      - showOnlineStatus
       - supporter
       - supporterTier
       - supporterRecurring
@@ -28307,6 +28319,8 @@ components:
         hideOwner:
           type: boolean
         tracking:
+          type: boolean
+        showOnlineStatus:
           type: boolean
         location:
           type:

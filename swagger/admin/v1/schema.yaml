@@ -9200,6 +9200,8 @@ components:
         lastActiveAt:
           type: string
           format: date-time
+        online:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -18053,6 +18055,8 @@ components:
         lastActiveAt:
           type: string
           format: date-time
+        online:
+          type: boolean
         createdAt:
           type: string
           format: date-time

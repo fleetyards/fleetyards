@@ -122,7 +122,7 @@ module Api
               :avatar, :remove_avatar, :sale_notify, :date_format, :public_hangar, :public_hangar_stats, :public_wishlist, :rsi_handle,
               :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner,
               :friends_hangar, :friends_hangar_stats, :friends_wishlist,
-              :location, :current_system, :tracking
+              :location, :current_system, :tracking, :show_online_status
             )
           if permitted.delete(:remove_avatar).present?
             @user.avatar.purge if @user.avatar.attached?

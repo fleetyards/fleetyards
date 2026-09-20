@@ -37,6 +37,7 @@ json.friends_hangar_stats user.friends_hangar_stats
 json.friends_wishlist user.friends_wishlist
 json.hide_owner user.hide_owner
 json.tracking user.tracking
+json.show_online_status user.show_online_status
 
 json.supporter user.supporter?
 json.supporter_tier user.supporter_tier

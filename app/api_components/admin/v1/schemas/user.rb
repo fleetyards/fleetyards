@@ -41,6 +41,7 @@ module Admin
             hangarUpdatedAt: {type: :string, format: "date-time"},
             confirmedAt: {type: :string, format: "date-time"},
             lastActiveAt: {type: :string, format: "date-time"},
+            online: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
