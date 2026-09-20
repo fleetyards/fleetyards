@@ -474,7 +474,8 @@
         "craftedFrom": "Fabbricato con",
         "identity": "Dettagli",
         "metrics": "Valori",
-        "requiredTags": "Si monta su una porta con"
+        "requiredTags": "Si monta su una porta con",
+        "tags": "Tag"
       },
       "components": {
         "index": "Componenti"

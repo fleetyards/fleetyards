@@ -476,7 +476,8 @@
         "craftedFrom": "Crafted from",
         "identity": "Details",
         "metrics": "Metrics",
-        "requiredTags": "Fits a port offering"
+        "requiredTags": "Fits a port offering",
+        "tags": "Tags"
       },
       "components": {
         "index": "Components"

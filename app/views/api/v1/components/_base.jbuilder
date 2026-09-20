@@ -21,23 +21,26 @@ json.type_data component.type_data
 
 json.description component.description
 
-# What a port must offer to take this item -- half the "what fits where"
-# answer a catalogue visitor is after.
+# The two halves of "what fits where": the tags this item carries, and the
+# tags it demands of the port it goes into. A ship's port matches an item by
+# naming the same tag, so neither side answers the question alone.
 #
-# `tags`, the other half, is deliberately absent: the parser writes the whole
-# JSON array as a single string inside the array (`["[\"flightReady\"]"]`) for
-# every component in the tree, so exposing it would publish visibly broken
-# values. It needs a parser fix and a re-parse, which is its own change.
+# `tags` was held back until the tree carried real values -- the parser used to
+# write the whole JSON array as a single string inside the array
+# (`["[\"flightReady\"]"]`), and publishing that would have been publishing a
+# bug. The parser fix landed in #5007 and the re-parsed tree carries one entry
+# per tag.
+json.tags component.tags
 json.required_tags component.required_tags
 
 # `inventoryConsumption`, `ammunition`, `powerConnection` and `heatConnection`
 # are all absent on purpose. The last three are raw game-file dumps --
 # `heat_connection` alone carries 22 different keys across the table, mixing
 # `MaxCoolingRate` with `cooling_rate` in the same hash -- so no honest schema
-# can describe them until the parser gives them consistent keys, the same
-# cleanup #5002 needs for `tags`. The first is documented as a string it has
-# never been, and correcting that type is a breaking change this PR should not
-# carry. The live power figures are in `typeData.powerRanges` regardless.
+# can describe them until the parser gives them consistent keys -- the cleanup
+# #5002 tracks. The first is documented as a string it has never been, and
+# correcting that type is a breaking change that belongs with #5002 rather than
+# here. The live power figures are in `typeData.powerRanges` regardless.
 
 json.hidden component.hidden
 

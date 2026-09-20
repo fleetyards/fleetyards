@@ -474,7 +474,8 @@
         "craftedFrom": "Fabriqué à partir de",
         "identity": "Détails",
         "metrics": "Caractéristiques",
-        "requiredTags": "S'installe sur un port offrant"
+        "requiredTags": "S'installe sur un port offrant",
+        "tags": "Tags"
       },
       "components": {
         "index": "Composants"

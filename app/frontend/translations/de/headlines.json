@@ -474,7 +474,8 @@
         "craftedFrom": "Herstellbar aus",
         "identity": "Details",
         "metrics": "Werte",
-        "requiredTags": "Passt in einen Port mit"
+        "requiredTags": "Passt in einen Port mit",
+        "tags": "Tags"
       },
       "components": {
         "index": "Komponenten"

@@ -474,7 +474,8 @@
         "craftedFrom": "Se fabrica con",
         "identity": "Detalles",
         "metrics": "Métricas",
-        "requiredTags": "Encaja en un puerto con"
+        "requiredTags": "Encaja en un puerto con",
+        "tags": "Etiquetas"
       },
       "components": {
         "index": "Componentes"

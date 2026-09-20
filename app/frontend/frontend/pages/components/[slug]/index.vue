@@ -107,6 +107,14 @@ const details = computed(() => {
       value: value.requiredTags?.join(" · "),
       stack: true,
     },
+    // The other half of "what fits where". Listed after the port's demands
+    // because it is the longer of the two and carries flags -- `flightReady`,
+    // `weaponMountUsable` -- beside the tags a port actually matches on.
+    {
+      label: t("headlines.component.tags"),
+      value: value.tags?.join(" · "),
+      stack: true,
+    },
   ].filter((entry) => entry.value);
 });
 
