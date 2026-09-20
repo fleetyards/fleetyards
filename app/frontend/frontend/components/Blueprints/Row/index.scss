@@ -186,6 +186,49 @@
     flex: none;
   }
 
+  // The micro-label the "Where it drops" panel annotates each org group with,
+  // at the same size and tracking -- the two say the same thing about the same
+  // recipe, and a reader moving from the list to the page should meet one
+  // treatment, not two.
+  &__alignments {
+    display: none;
+    flex: none;
+    align-items: center;
+    gap: 10px;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  &__alignment {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-text-dim, #959595);
+    transition: text-decoration-color 150ms ease;
+    text-decoration: underline transparent;
+    text-underline-offset: 3px;
+
+    &--lawful {
+      color: var(--color-primary, #428bca);
+    }
+
+    &--outlaw {
+      color: var(--color-danger, #dc3545);
+    }
+
+    // The colour is the meaning here, so it stays put and the underline
+    // answers instead -- stepping one of these to white, the way the row's
+    // other links lift, would read as the word losing what it says.
+    &:hover,
+    &:focus-visible {
+      text-decoration-color: currentcolor;
+    }
+  }
+
   &__badges {
     display: flex;
     gap: 6px;
