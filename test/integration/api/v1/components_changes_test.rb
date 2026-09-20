@@ -89,14 +89,28 @@ class Api::V1::ComponentsChangesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A version passes through ptu before it reaches live, so both environments
+  # carry rows for the same `to_version`. Unscoped, a live reader would be shown
+  # a preview cycle's diffs folded into the patch they are actually running.
+  test "GET /components/:slug/changes leaves out another environment" do
+    component = create(:component)
+    record(component, field: "grade")
+    record(component, field: "size", environment: "ptu")
+
+    assert_api_response :get, 200, path_params: {slug: component.slug} do
+      assert_equal %w[grade], parsed_body.map { |change| change["field"] }
+    end
+  end
+
   test "GET /components/:slug/changes 404s for a slug nobody has" do
     assert_api_response :get, 404, path_params: {slug: "no-such-component"}
   end
 
-  private def record(component, field:, to_version: "4.10.0", old_value: "1", new_value: "2", recorded_at: 1.day.ago)
+  private def record(component, field:, to_version: "4.10.0", old_value: "1", new_value: "2",
+    recorded_at: 1.day.ago, environment: ScData::Source.environment)
     ComponentBuildChange.create!(
-      component:, field:, to_version:, old_value:, new_value:, recorded_at:,
-      environment: ScData::Source.environment, from_version: "4.9.0"
+      component:, field:, to_version:, old_value:, new_value:, recorded_at:, environment:,
+      from_version: "4.9.0"
     )
   end
 end

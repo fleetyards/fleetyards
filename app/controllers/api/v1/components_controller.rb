@@ -45,10 +45,18 @@ module Api
       # What each patch changed about this component, newest first. The builds
       # these were derived from are pruned to the two or three the environment
       # keeps; the log is not.
+      #
+      # Scoped to the source the reader is on. The log holds a row per
+      # environment and a version passes through ptu before it reaches live, so
+      # the two carry rows for the same `to_version` -- unscoped, a live reader
+      # would be shown a preview cycle's diffs folded into the patch they are
+      # actually running.
       def changes
         component = Component.find_by!(slug: params[:slug].to_s.downcase)
 
-        @changes = component.build_changes.newest_first
+        @changes = component.build_changes
+          .where(environment: ::ScData::Source.current.environment)
+          .newest_first
       end
 
       def index

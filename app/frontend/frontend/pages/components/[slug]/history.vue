@@ -74,21 +74,52 @@ const patches = computed(() => {
 });
 
 /*
- * A metric is a `typeData` key and the hardpoint stats already name every one
- * of them in all seven locales; a build fact is a column and the detail page
- * names those. Both fall back to the key made readable, which beats showing
- * `component_sub_type` to a reader.
+ * The hardpoint labels are mostly scoped by the kind of part they describe --
+ * `labels.hardpoint.weapons.fireRate`, not `labels.hardpoint.fireRate` -- so a
+ * metric is looked up under its category's scope first. Only the figures every
+ * powered item carries (`powerConsumption`, `signatureEm`) are flat, which is
+ * what the unscoped attempt after it is for.
+ *
+ * Not every key resolves, and that is expected rather than a gap to paper over:
+ * `useComponentStats` derives its own vocabulary, so a shield's `max_health`
+ * reads as `shields.hp` there and no lookup from the raw key can find it. Those
+ * fall back to the game's own name made readable, which is honest -- and better
+ * than showing a reader `component_sub_type`.
  */
+const METRIC_SCOPES: Record<string, string> = {
+  armor: "armor",
+  cooler: "coolers",
+  fuel_intakes: "fuelIntakes",
+  fueltanks: "fuelTanks",
+  jumpdrive: "jumpDrives",
+  missile_racks: "missiles",
+  powerplant: "powerPlants",
+  quantumdrive: "quantumDrives",
+  quantumenforcementdevice: "quantumEnforcement",
+  radar: "radar",
+  refuel_boom: "refuelBoom",
+  selfdestruct: "selfDestruct",
+  shieldgenerator: "shields",
+  thrusters: "thrusters",
+  utility: "utility",
+  weapons: "weapons",
+};
+
 const fieldLabel = (change: ComponentBuildChange) => {
   const key = change.field.replace(/_(\w)/g, (_, character: string) =>
     character.toUpperCase(),
   );
 
+  const scope = props.component.category
+    ? METRIC_SCOPES[props.component.category]
+    : undefined;
+
   const paths = change.metric
-    ? [`labels.hardpoint.${key}`]
+    ? [scope && `labels.hardpoint.${scope}.${key}`, `labels.hardpoint.${key}`]
     : [`labels.component.${key}`, `labels.hardpoint.${key}`];
 
-  const path = paths.find((candidate) => tExists(candidate));
+  const path = paths.find((candidate) => candidate && tExists(candidate)) as
+    string | undefined;
 
   if (path) {
     return t(path);

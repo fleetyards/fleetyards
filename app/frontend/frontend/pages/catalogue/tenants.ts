@@ -38,7 +38,7 @@ export const CATALOGUE_TENANTS: CatalogueTenant[] = [
     key: "components",
     icon: "fa-duotone fa-microchip",
     listRoute: "components",
-    detailRoutes: ["component"],
+    detailRoutes: ["component", "component-history"],
     component: () => import("@/frontend/pages/components.vue"),
     children: componentsRoutes,
   },
