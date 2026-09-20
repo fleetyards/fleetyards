@@ -1437,6 +1437,8 @@ components:
           format: double
         currentSystemCode:
           type: string
+        online:
+          type: boolean
         isDestroyAllowed:
           type: boolean
         capabilities:
