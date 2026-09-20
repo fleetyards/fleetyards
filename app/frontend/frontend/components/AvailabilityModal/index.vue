@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "ModelAvailabilityModal",
+  name: "AvailabilityModal",
 };
 </script>
 
@@ -9,13 +9,19 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import type { ItemPrice } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
+// Shop-perspective, the way `item_prices` stores it: `soldAt` is where a shop
+// sells the item, which is where a reader buys it. `boughtAt` is the other
+// direction and only components have it -- a ship is never sold back to a
+// terminal, so the section filters itself out for them.
 type Props = {
   soldAt?: ItemPrice[];
+  boughtAt?: ItemPrice[];
   rentalAt?: ItemPrice[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   soldAt: () => [],
+  boughtAt: () => [],
   rentalAt: () => [],
 });
 
@@ -27,17 +33,34 @@ const byPrice = (prices: ItemPrice[]) =>
 const buyPrices = computed(() => byPrice(props.soldAt));
 const rentalPrices = computed(() => byPrice(props.rentalAt));
 
+// Descending: of several shops buying the item back, the best paid is the one
+// worth flying to -- the opposite of what makes a buy price interesting.
+const sellPrices = computed(() =>
+  [...props.boughtAt].sort((a, b) => b.price - a.price),
+);
+
 const sections = computed(() =>
   [
     {
       key: "buy",
       label: t("labels.availability.buy"),
+      // The tile's own label, carried here rather than interpolated from
+      // `section.key` at render: the best row of the sell section is the
+      // dearest, so one "cheapest" key cannot honestly name all three.
+      lead: t("labels.availability.cheapest.buy"),
       prices: buyPrices.value,
     },
     {
       key: "rent",
       label: t("labels.availability.rent"),
+      lead: t("labels.availability.cheapest.rent"),
       prices: rentalPrices.value,
+    },
+    {
+      key: "sell",
+      label: t("labels.availability.sell"),
+      lead: t("labels.availability.bestSale"),
+      prices: sellPrices.value,
     },
   ]
     .filter((section) => section.prices.length)
@@ -74,10 +97,17 @@ const linkUrl = (price: ItemPrice) =>
   /^https?:\/\//i.test(price.locationUrl ?? "") ? price.locationUrl : undefined;
 
 // Vehicle prices barely move between shops — a few percent — so bars scaled to
-// the dearest would all read full. The premium over the cheapest is the part
-// worth showing.
-const premium = (price: ItemPrice, cheapest: ItemPrice) =>
-  cheapest.price ? Math.round((price.price / cheapest.price - 1) * 100) : 0;
+// the dearest would all read full. The distance from the best row of the
+// section is the part worth showing, and it reads in both directions: a buy row
+// costs more than the cheapest, a sell row pays less than the best paid.
+const delta = (price: ItemPrice, best: ItemPrice) =>
+  best.price ? Math.round((price.price / best.price - 1) * 100) : 0;
+
+const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
+  const value = delta(price, best);
+
+  return value > 0 ? `+${value}%` : `${value}%`;
+};
 </script>
 
 <template>
@@ -95,9 +125,7 @@ const premium = (price: ItemPrice, cheapest: ItemPrice) =>
             class="availability__tile"
             :class="{ 'availability__tile--primary': index === 0 }"
           >
-            <div class="availability__tile__label">
-              {{ t(`labels.availability.cheapest.${section.key}`) }}
-            </div>
+            <div class="availability__tile__label">{{ section.lead }}</div>
             <div class="availability__tile__value">
               {{ toNumber(section.prices[0].price, "integer") }}
               <span class="availability__tile__unit">{{ uec }}</span>
@@ -151,10 +179,10 @@ const premium = (price: ItemPrice, cheapest: ItemPrice) =>
                   {{ timeRangeLabel(price) }}
                 </span>
                 <span
-                  v-if="premium(price, section.prices[0]) > 0"
+                  v-if="delta(price, section.prices[0]) !== 0"
                   class="availability__premium"
                 >
-                  +{{ premium(price, section.prices[0]) }}%
+                  {{ deltaLabel(price, section.prices[0]) }}
                 </span>
                 <span
                   class="availability__price"

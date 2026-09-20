@@ -826,10 +826,13 @@
         "title": "Availability",
         "buy": "Buy",
         "rent": "Rent",
+        "sell": "Sell",
         "cheapest": {
           "buy": "Cheapest buy",
           "rent": "Cheapest rent"
         },
+        "bestSale": "Best sale price",
+        "allLocations": "All locations",
         "locations": {
           "one": "%{count} location",
           "other": "%{count} locations"
@@ -1136,6 +1139,11 @@
         "copySameModel": "Target ship must differ from the source ship."
       },
       "component": {
+        "availability": {
+          "retired": "Prices are tracked for the build the catalogue is on, and this part is not in it.",
+          "craftedOnly": "No terminal sells this — it is made from the recipe below.",
+          "none": "No terminal buys or sells this."
+        },
         "notRecordedYet": "Only recorded from the day this started, so a component can have none yet.",
         "size": "Size: %{size}",
         "grade": "Grade",

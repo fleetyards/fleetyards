@@ -19,7 +19,11 @@ const itemPrice = (attributes: Partial<ItemPrice>) =>
     ...attributes,
   }) as ItemPrice;
 
-const mountWith = (props: { soldAt?: ItemPrice[]; rentalAt?: ItemPrice[] }) =>
+const mountWith = (props: {
+  soldAt?: ItemPrice[];
+  boughtAt?: ItemPrice[];
+  rentalAt?: ItemPrice[];
+}) =>
   mount(Component, {
     props,
     global: { stubs: { Modal: { template: "<div><slot /></div>" } } },
@@ -30,7 +34,7 @@ const texts = (
   selector: string,
 ): string[] => wrapper.findAll(selector).map((node) => node.text());
 
-describe("ModelAvailabilityModal", () => {
+describe("AvailabilityModal", () => {
   it("credits UEX when a sale location is shown", () => {
     const link = mountWith({ soldAt: [itemPrice({})] }).get(
       'a[href="https://uexcorp.space"]',
@@ -72,6 +76,37 @@ describe("ModelAvailabilityModal", () => {
       "labels.availability.locations:2",
       "labels.availability.locations:1",
     ]);
+  });
+
+  it("leads the sell section with the best paid rather than the cheapest", () => {
+    const wrapper = mountWith({
+      boughtAt: [
+        itemPrice({ id: "sell-1", price: 4200 }),
+        itemPrice({ id: "sell-2", price: 5100 }),
+      ],
+    });
+
+    expect(texts(wrapper, ".availability__tile__label")).toEqual([
+      "labels.availability.bestSale",
+    ]);
+    expect(texts(wrapper, ".availability__price")).toEqual(["5100", "4200"]);
+    expect(texts(wrapper, ".availability__price--best")).toEqual(["5100"]);
+    // 4,200 / 5,100 - 1 = -17.6%, and a shortfall is what a sell row has
+    // instead of a premium.
+    expect(texts(wrapper, ".availability__premium")).toEqual(["-18%"]);
+  });
+
+  // A ship is never sold back to a terminal, so the section it would need has
+  // to stay out of its modal rather than render empty.
+  it("omits the sell section when nothing buys the item", () => {
+    const wrapper = mountWith({ soldAt: [itemPrice({})] });
+
+    expect(
+      texts(
+        wrapper,
+        ".availability__head > span:not(.availability__head__unit)",
+      ),
+    ).toEqual(["labels.availability.buy"]);
   });
 
   it("marks the cheapest row and prices the rest as a premium over it", () => {

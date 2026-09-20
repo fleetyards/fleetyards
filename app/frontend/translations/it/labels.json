@@ -826,10 +826,13 @@
         "title": "Disponibilità",
         "buy": "Acquisto",
         "rent": "Noleggio",
+        "sell": "Vendita",
         "cheapest": {
           "buy": "Acquisto più economico",
           "rent": "Noleggio più economico"
         },
+        "bestSale": "Miglior prezzo di vendita",
+        "allLocations": "Tutte le posizioni",
         "locations": {
           "one": "%{count} posizione",
           "other": "%{count} posizioni"
@@ -1136,6 +1139,11 @@
         "copySameModel": "La nave di destinazione deve essere diversa da quella di origine."
       },
       "component": {
+        "availability": {
+          "retired": "I prezzi sono rilevati per la build su cui si trova il catalogo, e questo pezzo non ne fa parte.",
+          "craftedOnly": "Nessun terminale lo vende: si produce con la ricetta qui sotto.",
+          "none": "Nessun terminale lo compra o lo vende."
+        },
         "notRecordedYet": "Registrato solo da quando è iniziato il tracciamento, quindi un componente può non avere nulla.",
         "size": "Dimensione: %{size}",
         "grade": "Grado",

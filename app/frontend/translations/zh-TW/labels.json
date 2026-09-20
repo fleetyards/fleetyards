@@ -826,10 +826,13 @@
         "title": "供應狀況",
         "buy": "買入",
         "rent": "租借",
+        "sell": "賣出",
         "cheapest": {
           "buy": "最便宜的購買地點",
           "rent": "最便宜的租借地點"
         },
+        "bestSale": "最高收購價",
+        "allLocations": "全部地點",
         "locations": {
           "one": "%{count} 個地點",
           "other": "%{count} 個地點"
@@ -1136,6 +1139,11 @@
         "copySameModel": "目標飛船必須與來源飛船不同。"
       },
       "component": {
+        "availability": {
+          "retired": "價格只針對目錄目前所在的版本記錄，而該部件不在其中。",
+          "craftedOnly": "沒有終端出售此物品——它由下方的配方製造。",
+          "none": "沒有終端買賣此物品。"
+        },
         "notRecordedYet": "僅從開始記錄之日起統計，因此部件可能尚無記錄。",
         "size": "Size: %{size}",
         "grade": "等級",
