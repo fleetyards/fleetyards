@@ -192,6 +192,20 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The same answer as `Dock#fits?` for a hull past every box: `capital` is the
+  # rung it comes back as, and a capital berth is described at that rung.
+  test "GET /models/:slug offers a capital berth a hull larger than every box" do
+    carrier = create(:model, name: "Capital Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 300, beam: 200, height: 80)
+    create(:dock_capacity, dock:, ladder: :ship, size: "capital", quantity: 1)
+
+    enormous = create(:model, length: 250.0, beam: 180.0, height: 70.0, size: "capital")
+
+    assert_api_response :get, 200, path_params: {slug: enormous.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
   # A ship in a garage is the case that stays impossible.
   test "GET /models/:slug does not offer a garage to a ship" do
     carrier = create(:model)

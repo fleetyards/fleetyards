@@ -252,6 +252,11 @@ class Dock < ApplicationRecord
   # there is: the alternative is a catalogue that answers nothing until all 28
   # berths are curated.
   def fits?(model)
+    # A docking port is a connection rather than a place a hull is set down, and
+    # nothing stops one carrying entries -- the admin endpoint takes any dock
+    # id. The curated answers have to refuse it the way the envelope does.
+    return false unless berth?
+
     return true if added_model_ids.include?(model.id)
     return class_fits?(model) if described?
 

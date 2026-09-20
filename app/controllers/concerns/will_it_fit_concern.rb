@@ -96,10 +96,19 @@ module WillItFitConcern
   # same question asked of the hull rather than of a column, and the box is the
   # game's.
   private def ship_class_branch(scope, rungs, largest)
+    ships = scope.where.not(models: {size: ::Model::VEHICLE_SIZE})
+
+    # The top rung is what a hull larger than every box comes back as, so there
+    # is nothing left for the box to exclude -- `Dock.ship_size_for` says the
+    # same, and the two paths disagreeing is the thing this replaced.
+    if largest == rungs.length - 1
+      return ships.where("models.dock_size IS NOT NULL OR models.length > 0")
+    end
+
     box = ::Dock::SHIP_SIZE_METRICS.fetch(rungs[largest].to_sym)
     pad = [box[:x].to_f, box[:y].to_f].sort.reverse
 
-    scope.where.not(models: {size: ::Model::VEHICLE_SIZE}).where(
+    ships.where(
       "(models.dock_size IS NOT NULL AND models.dock_size <= :rung)
        OR (models.dock_size IS NULL
            AND models.length > 0

@@ -249,6 +249,29 @@ class DockFitsByClassTest < ActiveSupport::TestCase
     assert dock.reload.fits?(unmeasured)
   end
 
+  # A docking port is a connection, not a place a hull is set down -- and the
+  # admin endpoint will happily hang entries off one.
+  test "a docking port refuses what is recorded on it" do
+    dock = create(:dock, :with_dimensions, dock_type: :dockingport)
+    create(:dock_capacity, dock:, ladder: :ship, size: "capital", quantity: 1)
+    model = ship(length: 20.0, beam: 10.0, height: 5.0)
+    create(:dock_addition, dock:, model:)
+
+    assert_not dock.reload.fits?(model)
+  end
+
+  # A hull larger than every pad box comes back `capital`, which is the rung a
+  # capital berth is described at -- so it fits, and the scope has to agree.
+  test "a capital berth takes a hull larger than every box" do
+    dock = create(:dock, dock_type: :hangar, ship_size: :capital, length: 300, beam: 200, height: 80)
+    create(:dock_capacity, dock:, ladder: :ship, size: "capital", quantity: 1)
+
+    enormous = ship(length: 250.0, beam: 180.0, height: 70.0)
+
+    assert_equal "capital", ::Dock.ship_size_for(enormous.length, enormous.beam, enormous.height)
+    assert dock.reload.fits?(enormous)
+  end
+
   test "a garage described as Ursa-class takes an Ursa and refuses a Nova" do
     dock = create(:dock, :with_dimensions, dock_type: :garage)
     create(:dock_capacity, dock:, ladder: :vehicle, size: "large", quantity: 1)
