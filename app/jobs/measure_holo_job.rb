@@ -55,9 +55,14 @@ class MeasureHoloJob
     Rails.logger.warn("MeasureHoloJob: #{name} on model #{model_id} is not readable glTF: #{error.message}")
   end
 
-  # Which pad the hull lands on, from the box just measured. Only the flying
-  # holo answers it -- a landed or extended figure describes a state the ship is
-  # in once it is already there.
+  # Which pad the hull lands on, from the box just measured -- and it lands with
+  # its gear down and its wings wherever landing mode puts them, so the landed
+  # box is the one that decides. The Arrow folds its wings up to extend the
+  # gear: narrower than in flight, and taller, which is what keeps it out of a
+  # Carrack bay it would otherwise clear.
+  #
+  # The flying box still answers for the ships nobody has measured landed, which
+  # today is all but one of them. It does not overwrite a landed answer.
   #
   # The measurement wins over whatever was recorded before. The values it
   # replaces were derived from the RSI matrix and the game files, and those
@@ -67,8 +72,9 @@ class MeasureHoloJob
   # A ground vehicle has no pad class. It is on its own ladder, `vehicle_size`,
   # which is curated rather than measured.
   private def pad_class_for(model, name, result)
-    return {} unless name == "holo"
+    return {} unless %w[holo landed_holo].include?(name)
     return {} if model.size == ::Model::VEHICLE_SIZE
+    return {} if name == "holo" && model.landed_length.present?
 
     length, beam, height = result.sorted
     pad = ::Dock.ship_size_for(length, beam, height)

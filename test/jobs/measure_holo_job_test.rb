@@ -53,13 +53,36 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_nil model.reload.dock_size
   end
 
-  # The landed box describes a state the ship is in once it is already there.
-  test "#perform does not set a pad class from a landed holo" do
+  # A ship lands with its gear down and its wings wherever landing mode puts
+  # them, so the landed box is the one the pad has to take.
+  test "#perform sets the pad class from a landed holo" do
     model = attach(create(:model, size: "small", dock_size: nil), :landed_holo, "plain.gltf")
 
     MeasureHoloJob.new.perform(model.id, "landed_holo")
 
-    assert_nil model.reload.dock_size
+    assert_equal "extra_extra_small", model.reload.dock_size
+  end
+
+  # The Arrow folds its wings up to extend the gear: narrower than in flight and
+  # taller, which is what keeps it out of a bay it would otherwise clear. The
+  # flying box must not talk over that.
+  test "#perform does not let the flying box overwrite a landed answer" do
+    model = create(:model, size: "small", dock_size: "small", landed_length: 30.0, landed_beam: 20.0, landed_height: 10.0)
+    attach(model, :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_equal "small", model.reload.dock_size
+  end
+
+  # Which is all but one ship today: nothing has been measured landed, so the
+  # flying box is the only answer there is.
+  test "#perform falls back to the flying box when nothing is measured landed" do
+    model = attach(create(:model, size: "small", dock_size: nil, landed_length: nil), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_equal "extra_extra_small", model.reload.dock_size
   end
 
   # The point of the separate columns: a landed holo describes the landed state
