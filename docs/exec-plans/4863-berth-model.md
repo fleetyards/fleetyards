@@ -152,6 +152,7 @@ Letting players record what a specific berth holds — "the garage on my Carrack
 
 - **2026-09-20** The ladder could not be curated at all: `vehicle_size` may only be set where `size` is "vehicle", and the ten largest ground vehicles carried no `size`. The same column held four capitalised spellings and two empty strings — it was a free string copied verbatim from the RSI matrix, which capitalises its own.
 - **2026-09-20** And the matrix carries no size for *exactly* those ten vehicles. The loader wrote what the matrix said, blanks included, so the backfill would have been undone on the next nightly run — and on a vehicle already placed on the ladder the blank fails validation and takes the whole update with it, dimensions and speeds and all. Found by CodeRabbit on #5073; the rule it breaks was already written down in the same file for the four manoeuvring fields.
+- **2026-09-20** `Model#variants` answers by `base_model_id` when there is one and by `rsi_chassis_id` when there is not, so a family with no base anywhere is still grouped — the Ursas do list each other, and #5068 was filed off a claim here that production disagreed with. What breaks is a family where only *some* members carry a base: the member holding the lone base shows no variants at all. Four families were in that state.
 - **2026-09-20** The Cyclone beam and the Ursa Medivac height were listed here as curation and filed as such. They are not: both are read off the holo by `MeasureHoloJob`, so a corrected export fixes them and no amount of admin work does.
 - **2026-09-11** Four commits refining this plan — the ladder table and the Ursa correction — were pushed to `docs/4863-berth-model` after #4865 had already merged, so they sat on a dead branch and never reached main. Recovered here. A merged PR does not stop accepting pushes; it stops delivering them.
 - **2026-09-11** D1 built. Two columns turned out not to exist at all: `dock.rb` annotated a `ramp` boolean, and `ransackable_attributes` offered `station_id` — the same 2021 station era that left the 391 orphans. Neither was reachable, both are gone.
@@ -164,15 +165,15 @@ Letting players record what a specific berth holds — "the garage on my Carrack
 Broken out into sub-issues under #4863 on 2026-09-20, one per item.
 
 - [x] D1 — polymorphic parent, after #4864 and #4856 (#4869)
-- [ ] `model_id`, the column D1 kept for one release (#5058, in #5069)
-- [ ] `size` given a vocabulary, and the ten vehicles that had none (#5062, in #5073)
-- [ ] Vehicle class ladder, curated (#5061, in #5074)
-- [ ] Ship dock sizes — Galaxy, Odyssey, Polaris (#5063, in #5078)
+- [x] `model_id`, the column D1 kept for one release (#5058, in #5069)
+- [x] `size` given a vocabulary, and the ten vehicles that had none (#5062, in #5073 and #5083)
+- [x] Vehicle class ladder, curated (#5061, in #5074)
+- [x] Ship dock sizes — Galaxy, Odyssey, Polaris — the Polaris at S, per @mortik (#5063, in #5078)
+- [ ] Four half-linked variant families (#5068, in #5080)
 - [ ] Pads: count and size per berth (#5059)
 - [ ] Access: ramp / lift / tractor beam, on the label (#5060)
 - [ ] Three unmeasured ship docks (#5064)
 - [ ] Five vehicle dock dimensions that were typed by hand (#5065)
-- [ ] The Ursa family is not linked as variants (#5068)
 
 Two items came off the list rather than onto it. The Cyclone's beam (#5066) and
 the Ursa Medivac's height (#5067) are not curation at all: `MeasureHoloJob`
