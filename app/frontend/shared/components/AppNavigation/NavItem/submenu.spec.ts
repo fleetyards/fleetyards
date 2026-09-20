@@ -68,6 +68,49 @@ describe("NavItem with a submenu", () => {
     vi.useRealTimers();
   });
 
+  /*
+   * The trigger controls the nested list in one mode and the panel beside it in
+   * the other, and it is the same button either way -- so what it reports has
+   * to follow the mode, and it may only name an element that is in the
+   * document.
+   */
+  describe("what the trigger reports", () => {
+    it("names the list it controls, and whether it is open", async () => {
+      const wrapper = await mountSection(false, { submenuActive: true });
+      const button = wrapper.get("button");
+
+      expect(button.attributes("aria-expanded")).toBe("true");
+      expect(button.attributes("aria-controls")).toBe(
+        "catalogue-menu-sub-menu",
+      );
+      expect(wrapper.get("ul").attributes("id")).toBe(
+        "catalogue-menu-sub-menu",
+      );
+
+      wrapper.unmount();
+    });
+
+    it("says the panel is shut, and names nothing, until it opens", async () => {
+      const wrapper = await mountSection(true);
+      const button = wrapper.get("button");
+
+      expect(button.attributes("aria-expanded")).toBe("false");
+      expect(button.attributes("aria-controls")).toBeUndefined();
+
+      await wrapper.trigger("pointerenter");
+
+      expect(button.attributes("aria-expanded")).toBe("true");
+      expect(button.attributes("aria-controls")).toBe(
+        "catalogue-menu-sub-menu",
+      );
+      expect(wrapper.get(".nav-flyout").attributes("id")).toBe(
+        "catalogue-menu-sub-menu",
+      );
+
+      wrapper.unmount();
+    });
+  });
+
   describe("expanded", () => {
     it("nests its rows inline rather than beside the navigation", async () => {
       const wrapper = await mountSection(false);

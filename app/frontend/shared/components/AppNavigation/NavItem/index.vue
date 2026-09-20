@@ -118,6 +118,13 @@ const navKey = computed(() => {
   return "nav-item";
 });
 
+/*
+ * Off `navKey` rather than `menuKey`, which is optional -- a row without one
+ * was naming an element called "undefined-sub-menu", which is exactly the sort
+ * of thing `aria-controls` must not do.
+ */
+const submenuId = computed(() => `${navKey.value}-sub-menu`);
+
 const root = ref<HTMLElement | null>(null);
 
 const trigger = ref<HTMLElement | null>(null);
@@ -519,6 +526,21 @@ const checkRoutes = () => {
   open.value = props.submenuActive;
 };
 
+/*
+ * The trigger controls two different things depending on the mode -- the list
+ * nested under it, or the panel beside it -- and has to report whichever one is
+ * currently its own.
+ */
+const submenuExpanded = computed(() =>
+  flyout.value ? flyoutOpen.value : open.value,
+);
+
+// `aria-controls` may only name an element that is in the document, and the
+// panel is not there until it opens.
+const submenuControls = computed(() =>
+  !flyout.value || flyoutOpen.value ? submenuId.value : undefined,
+);
+
 const toggleMenu = () => {
   if (flyout.value) {
     if (pinned.value) {
@@ -558,7 +580,7 @@ const toggleMenu = () => {
   >
     <Collapsed
       v-if="!flyout && submenuDirection === 'up'"
-      :id="`${menuKey}-sub-menu`"
+      :id="submenuId"
       as="ul"
       :visible="open"
     >
@@ -568,6 +590,8 @@ const toggleMenu = () => {
       ref="trigger"
       v-tooltip="tooltipOptions"
       type="button"
+      :aria-expanded="submenuExpanded"
+      :aria-controls="submenuControls"
       @click="toggleMenu"
     >
       <slot>
@@ -592,7 +616,7 @@ const toggleMenu = () => {
     </button>
     <Collapsed
       v-if="!flyout && submenuDirection === 'down'"
-      :id="`${menuKey}-sub-menu`"
+      :id="submenuId"
       :visible="open"
       as="ul"
     >
@@ -601,7 +625,7 @@ const toggleMenu = () => {
     <Transition name="nav-flyout">
       <div
         v-if="flyout && flyoutOpen"
-        :id="`${menuKey}-sub-menu`"
+        :id="submenuId"
         ref="panel"
         class="nav-flyout"
         :style="panelStyle"
