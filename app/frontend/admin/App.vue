@@ -31,6 +31,7 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
+import { useAdminPresenceUpdates } from "@/admin/composables/useAdminPresenceUpdates";
 import { useAxiosInterceptors } from "@/admin/composables/useAxiosInterceptors";
 import { useMe as useMeQuery } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -48,6 +49,7 @@ const sessionStore = useSessionStore();
 const { isAuthenticated } = storeToRefs(sessionStore);
 
 useImportUpdates(isAuthenticated);
+useAdminPresenceUpdates(isAuthenticated);
 
 const route = useRoute();
 

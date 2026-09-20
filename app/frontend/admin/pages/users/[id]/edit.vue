@@ -21,6 +21,8 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import SupporterStatus from "@/shared/components/SupporterStatus/index.vue";
+import PresenceDot from "@/shared/components/PresenceDot/index.vue";
+import { useAdminPresence } from "@/admin/composables/useAdminPresence";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -30,8 +32,21 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, timeDistance } = useI18n();
 const router = useRouter();
+
+const { onlineFor, lastActiveAtFor } = useAdminPresence();
+
+const online = computed(() =>
+  onlineFor({ userId: props.user.id, online: props.user.online }),
+);
+
+const lastActiveAt = computed(() =>
+  lastActiveAtFor({
+    userId: props.user.id,
+    lastActiveAt: props.user.lastActiveAt,
+  }),
+);
 const { extend } = useBreadCrumbs();
 const queryClient = useQueryClient();
 
@@ -118,6 +133,16 @@ const handleCancel = async () => {
 
 <template>
   <Heading hero>{{ t("headlines.admin.users.edit") }}</Heading>
+
+  <p v-if="online !== undefined" class="admin-user-presence">
+    <PresenceDot :online="online" />
+    <span>{{
+      online ? t("labels.user.online") : t("labels.user.offline")
+    }}</span>
+    <span v-if="lastActiveAt" class="admin-user-presence__last-active">
+      {{ t("labels.user.lastActiveAt") }}: {{ timeDistance(lastActiveAt) }}
+    </span>
+  </p>
 
   <SupporterStatus
     :supporter="props.user.supporter"
@@ -215,3 +240,15 @@ const handleCancel = async () => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+.admin-user-presence {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__last-active {
+    color: var(--color-text-dim, #959595);
+  }
+}
+</style>

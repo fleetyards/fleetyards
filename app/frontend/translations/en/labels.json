@@ -1416,6 +1416,7 @@
         "hideOwner": "Hide Ownership for Fleets",
         "tracking": "Allow anonymous usage analytics",
         "showOnlineStatus": "Show when I am online",
+        "onlineStatus": "Online status",
         "online": "Online",
         "offline": "Offline",
         "lastActiveAt": "Last Active",

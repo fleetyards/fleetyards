@@ -23,6 +23,8 @@ import {
   type UserSortEnum,
 } from "@/services/fyAdminApi";
 import { useUserFilters } from "@/admin/composables/useUserFilters";
+import { useAdminPresence } from "@/admin/composables/useAdminPresence";
+import PresenceDot from "@/shared/components/PresenceDot/index.vue";
 import { useMutationState } from "@tanstack/vue-query";
 
 const { t, lUtc: l, timeDistance } = useI18n();
@@ -74,6 +76,18 @@ const pendingDestroyUserIds = useMutationState({
 
 const isUserPendingDestroy = (user: User) =>
   !!user.id && pendingDestroyUserIds.value.includes(user.id);
+
+const { onlineFor, lastActiveAtFor } = useAdminPresence();
+
+// The admin list is drawn with LazyImage rather than the Avatar component, so
+// the dot sits beside the name instead of on the frame.
+const presence = (user: User) => ({
+  online: onlineFor({ userId: user.id, online: user.online }),
+  lastActiveAt: lastActiveAtFor({
+    userId: user.id,
+    lastActiveAt: user.lastActiveAt,
+  }),
+});
 
 const columns: BaseTableCol<User>[] = [
   {
@@ -159,9 +173,18 @@ const columns: BaseTableCol<User>[] = [
             shadow
           />
         </template>
+        <template #col-username="{ record }">
+          <span class="admin-user-username">
+            <PresenceDot
+              v-if="presence(record).online !== undefined"
+              :online="presence(record).online as boolean"
+            />
+            {{ record.username }}
+          </span>
+        </template>
         <template #col-lastActiveAt="{ record }">
-          <template v-if="record.lastActiveAt">
-            {{ timeDistance(record.lastActiveAt) }}
+          <template v-if="presence(record).lastActiveAt">
+            {{ timeDistance(presence(record).lastActiveAt as string) }}
           </template>
         </template>
         <template #col-confirmedAt="{ record }">
@@ -193,3 +216,11 @@ const columns: BaseTableCol<User>[] = [
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+.admin-user-username {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+</style>

@@ -1416,6 +1416,7 @@
         "hideOwner": "Nascondi proprietà per le flotte",
         "tracking": "Consenti analisi di utilizzo anonime",
         "showOnlineStatus": "Mostra quando sono online",
+        "onlineStatus": "Stato online",
         "online": "Online",
         "offline": "Offline",
         "lastActiveAt": "Ultima attività",

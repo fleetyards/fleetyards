@@ -190,8 +190,8 @@ nothing is replayed, so anything it held across the gap is unverifiable.
   recommended and written back into the issue body.
 
 ## Progress
-- [ ] Phase 1 — The presence store
-- [ ] Phase 2 — Connection lifecycle and the channels
-- [ ] Phase 3 — Fan-out and the reaper
-- [ ] Phase 4 — The opt-out and the REST payloads
-- [ ] Phase 5 — The frontend
+- [x] Phase 1 — The presence store
+- [x] Phase 2 — Connection lifecycle and the channels
+- [x] Phase 3 — Fan-out and the reaper
+- [x] Phase 4 — The opt-out and the REST payloads
+- [x] Phase 5 — The frontend

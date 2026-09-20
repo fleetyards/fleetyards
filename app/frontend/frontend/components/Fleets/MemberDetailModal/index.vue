@@ -11,6 +11,7 @@ import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
 import type { FleetMember } from "@/services/fyApi";
 
 type Props = {
@@ -20,6 +21,11 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, l } = useI18n();
+
+const { onlineFor, lastActiveAtFor } = useMemberPresence();
+
+const online = computed(() => onlineFor(props.member));
+const lastActiveAt = computed(() => lastActiveAtFor(props.member));
 
 const joinedDate = computed(() => {
   if (props.member.status === "invited" && props.member.invitedAt) {
@@ -68,7 +74,11 @@ const roleDisplay = computed(() => {
   <Modal>
     <template #title>
       <div class="member-detail-header">
-        <Avatar :avatar="props.member.avatar?.smallUrl" size="small" />
+        <Avatar
+          :avatar="props.member.avatar?.smallUrl"
+          size="small"
+          :online="online"
+        />
         <MemberName :member="props.member" />
       </div>
     </template>
@@ -94,9 +104,16 @@ const roleDisplay = computed(() => {
         <dd>{{ l(joinedDate) }}</dd>
       </template>
 
-      <template v-if="props.member.lastActiveAt">
+      <template v-if="online !== undefined">
+        <dt>{{ t("labels.user.onlineStatus") }}</dt>
+        <dd>
+          {{ online ? t("labels.user.online") : t("labels.user.offline") }}
+        </dd>
+      </template>
+
+      <template v-if="lastActiveAt">
         <dt>{{ t("labels.user.lastActiveAt") }}</dt>
-        <dd>{{ l(props.member.lastActiveAt) }}</dd>
+        <dd>{{ l(lastActiveAt) }}</dd>
       </template>
     </dl>
 

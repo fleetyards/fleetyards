@@ -14,6 +14,7 @@ import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import type {
@@ -31,6 +32,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, l, timeDistance } = useI18n();
+
+const { onlineFor, lastActiveAtFor } = useMemberPresence();
 
 const comlink = useComlink();
 
@@ -100,7 +103,11 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   >
     <template #col-username="{ record }">
       <div class="member-username">
-        <Avatar :avatar="record.avatar?.smallUrl" size="small" />
+        <Avatar
+          :avatar="record.avatar?.smallUrl"
+          size="small"
+          :online="onlineFor(record)"
+        />
         <div class="member-username-inner">
           <MemberName :member="record" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
@@ -132,8 +139,11 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     </template>
 
     <template #col-lastActiveAt="{ record }">
-      <span v-if="record.lastActiveAt" v-tooltip="l(record.lastActiveAt)">
-        {{ timeDistance(record.lastActiveAt) }}
+      <span
+        v-if="lastActiveAtFor(record)"
+        v-tooltip="l(lastActiveAtFor(record) as string)"
+      >
+        {{ timeDistance(lastActiveAtFor(record) as string) }}
       </span>
     </template>
 

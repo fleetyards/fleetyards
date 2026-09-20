@@ -79,6 +79,13 @@
     box-shadow: none;
   }
 
+  // The frame clips to keep an image inside it. A dot that overhangs has to
+  // survive that, and nothing else overflows: the image carries its own radius,
+  // and the edit bar only exists on an editable avatar, which never has a dot.
+  &.avatar-with-presence {
+    overflow: visible;
+  }
+
   &.avatar-round {
     border-radius: 50%;
 
