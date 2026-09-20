@@ -220,6 +220,12 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        dock_capacity:
+          attributes:
+            display:
+              already_set: ist bereits an einem anderen Eintrag dieses Liegeplatzes gesetzt
+            size:
+              not_on_ladder: ist keine Klasse auf dieser Leiter
         fleet_subscription:
           attributes:
             ended_at:

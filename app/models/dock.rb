@@ -38,6 +38,11 @@ class Dock < ApplicationRecord
   # below answer the same question without ever touching the association.
   belongs_to :parent, polymorphic: true, touch: true, optional: true
 
+  # What the berth is built for, one entry per class it takes. Alternatives
+  # rather than a sum -- see DockCapacity.
+  has_many :capacities, -> { order(:ladder, :quantity) },
+    class_name: "DockCapacity", dependent: :destroy, inverse_of: :dock
+
   validates :parent_id, presence: true
   validates :parent_type, inclusion: {in: PARENT_TYPES}
 
@@ -260,6 +265,12 @@ class Dock < ApplicationRecord
   # Nil for a berth nobody has looked at, which is why this is not a plain
   # `humanize`: an unanswered question renders as nothing rather than as a
   # blank pill.
+  # The entry the label is rendered from. Nil until somebody picks one, which is
+  # the honest state for a berth nobody has described yet.
+  def display_capacity
+    capacities.find(&:display?)
+  end
+
   def access_label
     Dock.human_enum_name(:access, access)
   end

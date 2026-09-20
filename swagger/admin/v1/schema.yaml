@@ -1359,6 +1359,195 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/dock-capacities":
+    post:
+      summary: Create new DockCapacity
+      tags:
+      - DockCapacities
+      operationId: createDockCapacity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DockCapacityInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockCapacity"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: DockCapacities list
+      tags:
+      - DockCapacities
+      operationId: dockCapacities
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/DockCapacityQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockCapacities"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/dock-capacities/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: DockCapacity destroy
+      tags:
+      - DockCapacities
+      operationId: destroyDockCapacity
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Get DockCapacity
+      tags:
+      - DockCapacities
+      operationId: dockCapacity
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockCapacity"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update DockCapacity
+      tags:
+      - DockCapacities
+      operationId: updateDockCapacity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DockCapacityInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockCapacity"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/docks":
     post:
       summary: Create new Dock
@@ -12009,6 +12198,95 @@ components:
       - LIFT
       - TRACTOR_BEAM
       title: DockAccessEnum
+    DockCapacities:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockCapacity"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: DockCapacities
+    DockCapacity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        dockId:
+          type: string
+          format: uuid
+        ladder:
+          "$ref": "#/components/schemas/DockCapacityLadderEnum"
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        quantity:
+          type: integer
+        display:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - dockId
+      - ladder
+      - size
+      - sizeLabel
+      - quantity
+      - display
+      - createdAt
+      - updatedAt
+      title: DockCapacity
+    DockCapacityInput:
+      type: object
+      properties:
+        dockId:
+          type: string
+          format: uuid
+        ladder:
+          type: string
+        size:
+          type: string
+        quantity:
+          type: integer
+        display:
+          type: boolean
+      additionalProperties: false
+      title: DockCapacityInput
+    DockCapacityLadderEnum:
+      type: string
+      enum:
+      - ship
+      - vehicle
+      x-enumNames:
+      - SHIP
+      - VEHICLE
+      title: DockCapacityLadderEnum
+    DockCapacityQuery:
+      type: object
+      properties:
+        dockIdEq:
+          type: string
+          format: uuid
+        ladderEq:
+          type: string
+        sizeEq:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: DockCapacityQuery
     DockCount:
       type: object
       properties:

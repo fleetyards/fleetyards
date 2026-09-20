@@ -220,6 +220,12 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        dock_capacity:
+          attributes:
+            display:
+              already_set: è già impostato su un'altra voce di questo attracco
+            size:
+              not_on_ladder: non è una classe di quella scala
         fleet_subscription:
           attributes:
             ended_at:

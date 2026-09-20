@@ -145,6 +145,9 @@ de:
     dock:
       create: Dock konnte nicht erstellt werden.
       update: Dock konnte nicht aktualisiert werden.
+    dock_capacity:
+      create: Liegeplatz-Kapazität konnte nicht erstellt werden.
+      update: Liegeplatz-Kapazität konnte nicht aktualisiert werden.
     fleet_events:
       update_occurrence: Dieser Termin der Serie konnte nicht aktualisiert werden.
       create: Event konnte nicht erstellt werden.

@@ -177,6 +177,9 @@ en:
     dock:
       create: Dock could not be created.
       update: Dock could not be updated.
+    dock_capacity:
+      create: Berth capacity could not be created.
+      update: Berth capacity could not be updated.
     fleet_invite_urls:
       create: Invite link could not be created.
       destroy: Invite link could not be destroyed.

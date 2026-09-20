@@ -140,6 +140,9 @@ es:
     dock:
       create: No se pudo crear el dique.
       update: No se pudo actualizar el dique.
+    dock_capacity:
+      create: No se pudo crear la capacidad del atracadero.
+      update: No se pudo actualizar la capacidad del atracadero.
     fleet_events:
       update_occurrence: No se pudo actualizar esta repetición del evento.
       create: No se pudo crear el evento.
