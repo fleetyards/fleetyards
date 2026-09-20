@@ -966,6 +966,14 @@
         "joinRequestApproved": "Anfrage angenommen",
         "joinRequestDeclined": "Anfrage abgelehnt"
       },
+      "dockAddition": {
+        "create": {
+          "failure": "Schiff konnte nicht hinzugefügt werden."
+        },
+        "destroy": {
+          "failure": "Schiff konnte nicht entfernt werden."
+        }
+      },
       "dockCapacity": {
         "create": {
           "failure": "Kapazitätseintrag konnte nicht erstellt werden."

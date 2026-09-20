@@ -3,6 +3,27 @@
 require "test_helper"
 
 # A ship named as fitting a berth, beyond what the berth's class covers.
+# == Schema Information
+#
+# Table name: dock_additions
+#
+#  id         :uuid             not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  dock_id    :uuid             not null
+#  model_id   :uuid             not null
+#
+# Indexes
+#
+#  index_dock_additions_on_dock_id               (dock_id)
+#  index_dock_additions_on_dock_id_and_model_id  (dock_id,model_id) UNIQUE
+#  index_dock_additions_on_model_id              (model_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (dock_id => docks.id)
+#  fk_rails_...  (model_id => models.id)
+#
 class DockAdditionTest < ActiveSupport::TestCase
   test "a berth names the ships its class does not cover" do
     dock = create(:dock)
