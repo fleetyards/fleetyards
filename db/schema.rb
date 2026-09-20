@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_20_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -472,6 +472,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_170000) do
     t.string "discord_user_id", null: false
     t.datetime "updated_at", null: false
     t.index ["discord_event_id", "discord_user_id"], name: "index_discord_event_subscriptions_on_event_and_user", unique: true
+  end
+
+  create_table "dock_capacities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "display", default: false, null: false
+    t.uuid "dock_id", null: false
+    t.integer "ladder", null: false
+    t.integer "quantity", default: 1, null: false
+    t.string "size", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dock_id", "ladder", "size"], name: "index_dock_capacities_on_dock_id_and_ladder_and_size", unique: true
+    t.index ["dock_id"], name: "index_dock_capacities_on_dock_id"
+    t.index ["dock_id"], name: "index_dock_capacities_on_one_display_per_dock", unique: true, where: "display"
   end
 
   create_table "docks", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -2271,6 +2284,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_170000) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
+  add_foreign_key "dock_capacities", "docks"
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
   add_foreign_key "feature_flag_changes", "users", on_delete: :nullify

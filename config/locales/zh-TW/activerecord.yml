@@ -220,6 +220,12 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        dock_capacity:
+          attributes:
+            display:
+              already_set: 該泊位的另一條目已設定此項
+            size:
+              not_on_ladder: 不是該等級序列中的類別
         fleet_subscription:
           attributes:
             ended_at:

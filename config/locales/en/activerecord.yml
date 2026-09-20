@@ -295,6 +295,12 @@ en:
               must_be_in_game: is not in the game yet
             allowed_model_ids:
               must_be_in_game: name a ship that is not in the game yet
+        dock_capacity:
+          attributes:
+            display:
+              already_set: is already set on another entry for this berth
+            size:
+              not_on_ladder: is not a class on that ladder
         model:
           attributes:
             vehicle_size:

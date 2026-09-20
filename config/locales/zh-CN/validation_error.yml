@@ -136,6 +136,9 @@ zh-CN:
     dock:
       create: 无法创建停机位。
       update: 无法更新停机位。
+    dock_capacity:
+      create: 无法创建泊位容量。
+      update: 无法更新泊位容量。
     fleet_events:
       update_occurrence: 无法更新该活动场次。
       create: 无法创建活动。

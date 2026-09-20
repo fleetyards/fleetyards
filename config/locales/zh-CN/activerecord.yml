@@ -220,6 +220,12 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        dock_capacity:
+          attributes:
+            display:
+              already_set: 该泊位的另一条目已设置此项
+            size:
+              not_on_ladder: 不是该等级序列中的类别
         fleet_subscription:
           attributes:
             ended_at:

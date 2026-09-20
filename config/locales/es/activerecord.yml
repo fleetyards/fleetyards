@@ -220,6 +220,12 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        dock_capacity:
+          attributes:
+            display:
+              already_set: ya está definido en otra entrada de este atracadero
+            size:
+              not_on_ladder: no es una clase de esa escala
         fleet_subscription:
           attributes:
             ended_at:

@@ -137,6 +137,9 @@ it:
     dock:
       create: Impossibile creare il dock.
       update: Impossibile aggiornare il dock.
+    dock_capacity:
+      create: Impossibile creare la capacità dell'attracco.
+      update: Impossibile aggiornare la capacità dell'attracco.
     fleet_events:
       update_occurrence: Impossibile aggiornare questa ricorrenza dell'evento.
       create: Impossibile creare l'evento.

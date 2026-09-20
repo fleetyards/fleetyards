@@ -220,6 +220,12 @@ fr:
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
+        dock_capacity:
+          attributes:
+            display:
+              already_set: est déjà défini sur une autre entrée de ce poste
+            size:
+              not_on_ladder: n'est pas une classe de cette échelle
         fleet_subscription:
           attributes:
             ended_at:

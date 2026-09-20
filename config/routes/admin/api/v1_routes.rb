@@ -78,6 +78,7 @@ v1_admin_api_routes = lambda do
   # missing action.
   resources :hardpoints, only: %i[index show create update destroy]
   resources :docks, only: %i[index show create update destroy]
+  resources :dock_capacities, only: %i[index show create update destroy], path: "dock-capacities"
   resources :model_loaners, path: "model-loaners", only: %i[index show create update destroy]
   resources :model_snub_crafts, path: "model-snub-crafts", only: %i[index show create update destroy]
   resources :cargo_holds, path: "cargo-holds", only: %i[index show update]
