@@ -134,7 +134,7 @@ The Idris is the tell that the column already carries two meanings.
 
 **Vehicle dock outliers:** the three listed above.
 
-**Cyclone dimensions:** the beam is wrong and it misorders the ladder. **Ursa Medivac:** to be corrected to 2.20, matching the chassis it shares with the Ursa. Per @mortik. Both filed separately.
+**Cyclone dimensions:** the beam is wrong and it misorders the ladder. **Ursa Medivac:** to be corrected to 2.20, matching the chassis it shares with the Ursa. Per @mortik. Neither is curation, as it turned out — both figures are measured off the holo, so a corrected export is the whole fix (#5066, #5067).
 
 ### The extended columns are already there, and empty
 
@@ -150,6 +150,9 @@ Letting players record what a specific berth holds — "the garage on my Carrack
 
 ## Discovery Log
 
+- **2026-09-20** The ladder could not be curated at all: `vehicle_size` may only be set where `size` is "vehicle", and the ten largest ground vehicles carried no `size`. The same column held four capitalised spellings and two empty strings — it was a free string copied verbatim from the RSI matrix, which capitalises its own.
+- **2026-09-20** And the matrix carries no size for *exactly* those ten vehicles. The loader wrote what the matrix said, blanks included, so the backfill would have been undone on the next nightly run — and on a vehicle already placed on the ladder the blank fails validation and takes the whole update with it, dimensions and speeds and all. Found by CodeRabbit on #5073; the rule it breaks was already written down in the same file for the four manoeuvring fields.
+- **2026-09-20** The Cyclone beam and the Ursa Medivac height were listed here as curation and filed as such. They are not: both are read off the holo by `MeasureHoloJob`, so a corrected export fixes them and no amount of admin work does.
 - **2026-09-11** Four commits refining this plan — the ladder table and the Ursa correction — were pushed to `docs/4863-berth-model` after #4865 had already merged, so they sat on a dead branch and never reached main. Recovered here. A merged PR does not stop accepting pushes; it stops delivering them.
 - **2026-09-11** D1 built. Two columns turned out not to exist at all: `dock.rb` annotated a `ramp` boolean, and `ransackable_attributes` offered `station_id` — the same 2021 station era that left the 391 orphans. Neither was reachable, both are gone.
 - **2026-09-11** Written after #4856. The polymorphic parent (D1) came out of a question about modules mid-review, and stopped that PR from shipping a `NOT NULL model_id` that would have had to be undone.
@@ -158,8 +161,21 @@ Letting players record what a specific berth holds — "the garage on my Carrack
 
 ## Progress
 
-- [x] D1 — polymorphic parent, after #4864 and #4856
-- [ ] Vehicle class ladder, curated
-- [ ] Pads: count and size per berth
-- [ ] Access: ramp / lift / tractor beam, on the label
-- [ ] Curation pass on the list above
+Broken out into sub-issues under #4863 on 2026-09-20, one per item.
+
+- [x] D1 — polymorphic parent, after #4864 and #4856 (#4869)
+- [ ] `model_id`, the column D1 kept for one release (#5058, in #5069)
+- [ ] `size` given a vocabulary, and the ten vehicles that had none (#5062, in #5073)
+- [ ] Vehicle class ladder, curated (#5061, in #5074)
+- [ ] Ship dock sizes — Galaxy, Odyssey, Polaris (#5063, in #5078)
+- [ ] Pads: count and size per berth (#5059)
+- [ ] Access: ramp / lift / tractor beam, on the label (#5060)
+- [ ] Three unmeasured ship docks (#5064)
+- [ ] Five vehicle dock dimensions that were typed by hand (#5065)
+- [ ] The Ursa family is not linked as variants (#5068)
+
+Two items came off the list rather than onto it. The Cyclone's beam (#5066) and
+the Ursa Medivac's height (#5067) are not curation at all: `MeasureHoloJob`
+writes `length` / `beam` / `height` off an attached holo, so both are answered
+by a corrected export and nothing else. The raised turret is what
+`extended_holo` is for.
