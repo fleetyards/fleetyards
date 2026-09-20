@@ -2773,6 +2773,11 @@
           "Equipment": "Ausrüstung",
           "Commodity": "Ware"
         },
+        "alignments": {
+          "lawful": "Legal",
+          "neutral": "Neutral",
+          "outlaw": "Gesetzlos"
+        },
         "kinds": {
           "contract": "Auftrag",
           "scenario": "Szenario"

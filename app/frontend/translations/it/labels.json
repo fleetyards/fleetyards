@@ -2773,6 +2773,11 @@
           "Equipment": "Equipaggiamento",
           "Commodity": "Merce"
         },
+        "alignments": {
+          "lawful": "Legale",
+          "neutral": "Neutrale",
+          "outlaw": "Fuorilegge"
+        },
         "kinds": {
           "contract": "Contratto",
           "scenario": "Scenario"

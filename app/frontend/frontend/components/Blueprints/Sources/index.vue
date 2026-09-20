@@ -56,6 +56,10 @@ const groups = computed(() => {
     name: key || t("labels.blueprint.unattributed"),
     entries,
     count: entries.length,
+    // One org, one answer: the export states this per faction, so every entry
+    // in a group carries the same value. Null for the unattributed group,
+    // which is the honest answer rather than a third badge saying so.
+    alignment: entries[0]?.alignment ?? undefined,
   }));
 });
 
@@ -129,6 +133,13 @@ const summary = computed(() =>
             :class="{ 'blueprint-sources__chevron--open': isOpen(group.key) }"
           />
           <span class="blueprint-sources__org">{{ group.name }}</span>
+          <span
+            v-if="group.alignment"
+            class="blueprint-sources__alignment"
+            :class="`blueprint-sources__alignment--${group.alignment}`"
+          >
+            {{ t(`labels.blueprint.alignments.${group.alignment}`) }}
+          </span>
           <span class="blueprint-sources__count">{{ group.count }}</span>
         </button>
 

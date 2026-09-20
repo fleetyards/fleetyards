@@ -2773,6 +2773,11 @@
           "Equipment": "Equipo",
           "Commodity": "Mercancía"
         },
+        "alignments": {
+          "lawful": "Legal",
+          "neutral": "Neutral",
+          "outlaw": "Forajido"
+        },
         "kinds": {
           "contract": "Contrato",
           "scenario": "Escenario"

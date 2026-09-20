@@ -2773,6 +2773,11 @@
           "Equipment": "装备",
           "Commodity": "商品"
         },
+        "alignments": {
+          "lawful": "守法",
+          "neutral": "中立",
+          "outlaw": "非法"
+        },
         "kinds": {
           "contract": "合约",
           "scenario": "场景"
