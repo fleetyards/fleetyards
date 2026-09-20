@@ -34,33 +34,39 @@ module WillItFitConcern
     # Both branches are built from `scope` so they stay the same class and stay
     # structurally compatible. `or` demands both and refuses a bare Hash, which
     # is what the hangar used to hand it.
-    docks.map { |dock| dock_branch(scope, dock) }
-      .reduce { |combined, branch| combined.or(branch) }
-  end
+    branches = docks.filter_map { |dock| dock_branch(scope, dock) }
 
-  # The curated answer where there is one, the envelope where there is not.
-  # Not both: a berth that says what it is built for has answered, and adding
-  # everything that physically fits would put the medium ship back in the Idris.
-  private def dock_branch(scope, dock)
-    curated_branch(scope, dock) || envelope_branch(scope, dock)
-  end
-
-  private def curated_branch(scope, dock)
-    branches = []
-
-    named = dock.added_model_ids
-    branches << scope.where(models: {id: named}) if named.any?
-
-    if dock.described?
-      branches << class_branch(scope, dock, "ship")
-      branches << class_branch(scope, dock, "vehicle")
-    end
-
-    branches = branches.compact
-
-    return if branches.empty?
+    # A carrier whose every berth came back empty-handed cannot answer, which is
+    # not the same as answering "nothing fits".
+    return scope if branches.empty?
 
     branches.reduce { |combined, branch| combined.or(branch) }
+  end
+
+  # A described berth answers by its class and the ships named on it, and by
+  # nothing else -- adding everything that physically fits would put the medium
+  # ship back in the Idris.
+  #
+  # An undescribed one still answers by its envelope, and the names are added to
+  # that rather than replacing it: a berth nobody has described has not said
+  # that the ship it names is the only one it takes. `Dock#fits?` reads the same
+  # way, and the two disagreeing is what #4856 existed to end.
+  private def dock_branch(scope, dock)
+    branches = named_branch(scope, dock)
+
+    branches += if dock.described?
+      [class_branch(scope, dock, "ship"), class_branch(scope, dock, "vehicle")]
+    else
+      [envelope_branch(scope, dock)]
+    end
+
+    branches.compact.reduce { |combined, branch| combined.or(branch) }
+  end
+
+  private def named_branch(scope, dock)
+    named = dock.added_model_ids
+
+    named.any? ? [scope.where(models: {id: named})] : []
   end
 
   # Everything of the largest class recorded, and below. The two ladders are
@@ -104,7 +110,11 @@ module WillItFitConcern
     )
   end
 
+  # Nil for a berth nobody measured: it has nothing to compare against, and a
+  # dock with neither measurements nor a description answers nothing at all.
   private def envelope_branch(scope, dock)
+    return unless dock.measured?
+
     clearance = dock.clearance
 
     # Ranges open at the bottom would let a model with no dimensions through as

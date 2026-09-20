@@ -164,6 +164,34 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The scope has to read the same way as `Dock#fits?`: a berth nobody described
+  # answers by its envelope, and a name on it adds to that rather than replacing
+  # it.
+  test "GET /models/:slug keeps an undescribed carrier's envelope answer beside its names" do
+    carrier = create(:model, name: "Naming Undescribed Carrier")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 40, beam: 20, height: 10)
+    create(:dock_addition, dock:, model: create(:model, name: "Oversized", length: 120.0, beam: 60.0, height: 30.0, size: "large"))
+
+    ordinary = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: ordinary.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  # An unmeasured hull is not compared against anything, but a berth can still
+  # name it -- and the carrier list has to say so.
+  test "GET /models/:slug offers a carrier that names an unmeasured ship" do
+    carrier = create(:model, name: "Naming Carrier For Unmeasured")
+    dock = create(:dock, parent: carrier, dock_type: :hangar, length: 40, beam: 20, height: 10)
+    unmeasured = create(:model, length: 0, beam: 0, height: 0, size: "small")
+    create(:dock_addition, dock:, model: unmeasured)
+
+    assert_api_response :get, 200, path_params: {slug: unmeasured.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
   # A ship in a garage is the case that stays impossible.
   test "GET /models/:slug does not offer a garage to a ship" do
     carrier = create(:model)

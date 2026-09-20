@@ -225,6 +225,30 @@ class DockFitsByClassTest < ActiveSupport::TestCase
     assert dock.fits?(ship(length: 4.0, beam: 2.0, height: 2.0))
   end
 
+  # A berth nobody has described has not said that the ship it names is the only
+  # one it takes -- the name is added to the envelope rather than replacing it.
+  test "a named ship does not narrow an undescribed berth" do
+    dock = hangar
+    named = ship(length: 120.0, beam: 60.0, height: 30.0)
+    create(:dock_addition, dock:, model: named)
+
+    assert dock.reload.fits?(named)
+    assert dock.fits?(ship(length: 4.0, beam: 2.0, height: 2.0))
+  end
+
+  # Zeroes fit everywhere, so an unmeasured hull is never compared against an
+  # envelope -- but it can still be named.
+  test "an unmeasured hull is named rather than compared" do
+    dock = hangar
+    unmeasured = create(:model, length: 0, beam: 0, height: 0, size: "small")
+
+    assert_not dock.fits?(unmeasured)
+
+    create(:dock_addition, dock:, model: unmeasured)
+
+    assert dock.reload.fits?(unmeasured)
+  end
+
   test "a garage described as Ursa-class takes an Ursa and refuses a Nova" do
     dock = create(:dock, :with_dimensions, dock_type: :garage)
     create(:dock_capacity, dock:, ladder: :vehicle, size: "large", quantity: 1)

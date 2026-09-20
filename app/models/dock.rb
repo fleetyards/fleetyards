@@ -258,6 +258,10 @@ class Dock < ApplicationRecord
     return false unless measured?
     return false unless accepts?(model)
 
+    # Zeroes fit everywhere, so an unmeasured hull is not compared. It can still
+    # be named on a berth or carry a class -- both answered above.
+    return false if [model.length, model.beam, model.height].any? { |value| value.to_f <= 0 }
+
     model.length.to_f <= length - clearance[:length] &&
       model.beam.to_f <= beam - clearance[:beam] &&
       model.height.to_f <= height - clearance[:height]
