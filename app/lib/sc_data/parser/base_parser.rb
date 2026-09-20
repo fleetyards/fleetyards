@@ -95,10 +95,16 @@ module ScData
       # seventh parser started.
       def self.write_manifest(base_folder:, sc_version:, sc_environment:)
         export_path = "#{base_folder}/parsed/#{sc_environment}"
+        files = ::ScData::ParsedTree.files(export_path)
 
-        FileUtils.mkdir_p(export_path)
+        # A manifest beside no files at all is worse than no manifest.
+        # `ParsedStore#push` refuses to mirror an *empty* directory precisely so
+        # that a fresh checkout cannot wipe the bucket -- and a lone
+        # `version.json` is not empty, so it walks straight past that guard and
+        # deletes every remote payload file instead.
+        raise ::ScData::ParsedTree::Empty, "no parsed files at #{export_path}" if files.empty?
 
-        File.write("#{export_path}/version.json", JSON.pretty_generate({
+        File.write("#{export_path}/#{::ScData::ParsedTree::MANIFEST}", JSON.pretty_generate({
           version: sc_version,
           environment: sc_environment,
           parsed_at: Time.now.utc.iso8601,

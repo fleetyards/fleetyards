@@ -256,6 +256,28 @@ when "manifest"
   sc_environment = args.shift || ScData::Source.environment
   source = requested_source(sc_environment)
 
+  manifest_path = Rails.root.join(EXPORT_FOLDER, "parsed", source.environment, "version.json")
+
+  # Restamping a tree with a build it was not parsed from is the failure
+  # `ParsedCheck` exists to catch: the pointer and the payload disagree, and a
+  # load then stamps rows of one build with the version of another. Re-parsing
+  # is the fix for that, not relabelling.
+  if manifest_path.file?
+    stated = begin
+      JSON.parse(manifest_path.read)
+    rescue
+      {}
+    end
+
+    if stated["version"].present? && stated["version"] != source.version
+      abort "  The tree on disk was parsed from #{stated["version"]}, not #{source.version}. Re-parse it, or point the config at the build it holds."
+    end
+
+    if stated["environment"].present? && stated["environment"] != source.environment
+      abort "  The tree on disk is #{stated["environment"]}, not #{source.environment}."
+    end
+  end
+
   CliHelpers.run_step("Writing the manifest for #{source}") do
     ScData::Parser::BaseParser.write_manifest(
       base_folder: Rails.root.join(EXPORT_FOLDER),

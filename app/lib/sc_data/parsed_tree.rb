@@ -19,6 +19,8 @@ module ScData
     # parse -- which would make two identical trees look different.
     MANIFEST = "version.json"
 
+    class Empty < StandardError; end
+
     module_function
 
     # Whoever parses computes this and ships it inside the tree, so it never

@@ -260,6 +260,31 @@ module ScData
         assert_equal checksums.first, checksums.last
       end
 
+      # `ParsedStore#push` refuses to mirror an empty directory so a fresh
+      # checkout cannot wipe the bucket. A lone `version.json` is not empty, so
+      # it walks past that guard and deletes every remote payload file instead
+      # -- which makes stamping a tree that is not there the worse failure.
+      test ".write_manifest refuses a tree with no files in it" do
+        assert_raises(::ScData::ParsedTree::Empty) do
+          ::ScData::Parser::BaseParser.write_manifest(
+            base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+          )
+        end
+
+        assert_not File.exist?("#{@export_path}/version.json")
+      end
+
+      test ".write_manifest refuses a tree holding nothing but a manifest" do
+        FileUtils.mkdir_p(@export_path)
+        File.write("#{@export_path}/version.json", "{}")
+
+        assert_raises(::ScData::ParsedTree::Empty) do
+          ::ScData::Parser::BaseParser.write_manifest(
+            base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+          )
+        end
+      end
+
       test ".write_manifest moves the checksum when the tree changes" do
         write_parsed("items", "kept")
         ::ScData::Parser::BaseParser.write_manifest(
