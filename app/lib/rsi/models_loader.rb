@@ -124,9 +124,24 @@ module Rsi
 
       updates[:ground] = true if data["type"] == "ground" && model_updated(model, data) && data["type"] != model.classification
 
-      %w[size focus].each do |attr|
-        updates["rsi_#{attr}"] = data[attr]
-        updates[attr] = data[attr] if (model_updated(model, data) && data[attr] != model.send(:"rsi_#{attr}")) || model.send(:"rsi_#{attr}").blank?
+      updates["rsi_focus"] = data["focus"]
+      updates["focus"] = data["focus"] if (model_updated(model, data) && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
+
+      # The matrix mixes its own spellings -- 109 ships "Small" against 3
+      # "small" in one snapshot -- and `Model` downcases what it is given, so
+      # all that is left to decide here is whether the word is one we know. An
+      # unrecognised size fails the model's validation, and a failed validation
+      # on this update takes every other field with it, so it is logged and
+      # skipped rather than written.
+      updates["rsi_size"] = data["size"]
+      if (model_updated(model, data) && data["size"] != model.rsi_size) || model.rsi_size.blank?
+        size = data["size"].to_s.strip.downcase.presence
+
+        if size.nil? || ::Model::SIZES.include?(size)
+          updates["size"] = size
+        else
+          Rails.logger.warn("Rsi::ModelsLoader: #{data["name"]} has an unknown size #{data["size"].inspect}, not recorded")
+        end
       end
 
       updates[:rsi_classification] = data["type"]

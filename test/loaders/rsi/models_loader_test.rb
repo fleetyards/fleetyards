@@ -148,6 +148,33 @@ module Rsi
       assert_equal "2026-06-25T15:03:13Z", polaris.last_updated_at.utc.iso8601
     end
 
+    # The matrix capitalises its own vocabulary and the catalogue does not, and
+    # copying it verbatim is how six ships ended up in a class nothing filters
+    # on. `rsi_size` keeps the raw string -- it is what the change detector
+    # compares against on the next run.
+    test "#folds the matrix's capitalisation into the size the catalogue uses" do
+      @loader.one(7)
+
+      model = Model.find_by(rsi_id: 7)
+
+      assert_equal "small", model.size
+      assert_equal "Small", model.rsi_size
+    end
+
+    # A word we do not know fails the model's validation, and this update is
+    # carrying every other field the matrix supplies -- so it is dropped on its
+    # own rather than taking the ship's speeds and dimensions down with it.
+    test "#leaves a size it does not recognise off the model" do
+      data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
+
+      @loader.send(:create_or_update_model, data.merge("size" => "Enormous"))
+
+      model = Model.find_by(rsi_id: 7)
+
+      assert_nil model.size
+      assert_equal "Enormous", model.rsi_size
+    end
+
     # The manufacturer loader is the only thing that fills a manufacturer's
     # logo and its RSI metadata, and it used to be reached only for a model
     # whose manufacturer was unset -- so a sync over ships that all had one
