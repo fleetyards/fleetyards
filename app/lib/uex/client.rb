@@ -30,6 +30,14 @@ module Uex
       get("commodities_prices_all")
     end
 
+    # Every shop price for every item, in one answer. `/items` cannot stand in
+    # for it: that endpoint refuses a wholesale fetch with a 400 unless given an
+    # `id_category`, `id_company` or `uuid`, while these rows carry `item_name`
+    # and `item_uuid` inline, which is all the matching needs.
+    def item_prices
+      get("items_prices_all")
+    end
+
     private def get(path)
       # UEX answers 403 to requests without a User-Agent, so it is not optional.
       response = Typhoeus.get(
