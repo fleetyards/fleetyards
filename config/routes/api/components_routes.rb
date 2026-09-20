@@ -4,6 +4,11 @@
 # component named "weapons".
 resources :components, only: %i[index show], param: :slug do
   get :weapons, on: :collection
+
+  # A member route rather than part of the detail payload: builds are pruned and
+  # the change log is not, so this answers from a different table and would only
+  # make `show` heavier for the readers who never open the tab.
+  get :changes, on: :member
 end
 
 # `classes` and `item-types` answer with a vocabulary no component in the

@@ -470,6 +470,7 @@
         "contractCovers": "合約封面圖"
       },
       "component": {
+        "history": "歷史",
         "craftedFrom": "製造配方",
         "identity": "詳情",
         "metrics": "數據",

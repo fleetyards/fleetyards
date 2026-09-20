@@ -9,6 +9,42 @@ zh-TW:
           equipment: Equipment
           commodity: Commodities
     component:
+      category:
+        items:
+          armor: 裝甲
+          batteries: 電池
+          bombcompartments: 炸彈艙
+          cargogrid: 貨物網格
+          computers: 電腦
+          controller: 控制器
+          cooler: 冷卻器
+          countermeasures: 反制措施
+          doors: 艙門
+          fuel_intakes: 燃料進氣口
+          fueltanks: 燃料箱
+          jumpdrive: 跳躍模組
+          lifesupport: 生命維持
+          missile_racks: 飛彈架
+          module: 模組
+          paints: 塗裝
+          powerplant: 發電機
+          quantumdrive: 量子引擎
+          quantumenforcementdevice: QED
+          radar: 雷達
+          refuel_boom: 加油臂
+          relay: 中繼
+          salvagefillerstation: 打撈填充站
+          salvagemunching: 打撈粉碎機
+          scanners: 掃描儀
+          seat: 座位
+          selfdestruct: 自毀
+          shieldgenerator: 護盾產生器
+          thrusters: 推進器
+          turret: 砲塔
+          unknown: 未知
+          utility: 實用設備
+          weapon_mounts: 武器掛載
+          weapons: 武器
       class:
         items:
           rsiavionic: 航電
@@ -16,6 +52,11 @@ zh-TW:
           rsipropulsion: 推進
           rsithruster: 推進器
           rsiweapon: 武器
+      sub_type:
+        items:
+          ground_vehicle_missile: 地面載具飛彈
+          pdc_turret: 近防砲塔
+          salvage_modifier_tractor_beam: 打撈牽引光束
     image:
       model:
         title: 型號

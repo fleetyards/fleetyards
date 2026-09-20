@@ -9,6 +9,42 @@ zh-CN:
           equipment: Equipment
           commodity: Commodities
     component:
+      category:
+        items:
+          armor: 装甲
+          batteries: 电池
+          bombcompartments: 炸弹舱
+          cargogrid: 货物网格
+          computers: 电脑
+          controller: 控制器
+          cooler: 冷却器
+          countermeasures: 对抗措施
+          doors: 舱门
+          fuel_intakes: 燃料进气口
+          fueltanks: 燃料箱
+          jumpdrive: 跳跃模块
+          lifesupport: 生命维持
+          missile_racks: 导弹架
+          module: 模块
+          paints: 涂装
+          powerplant: 发电机
+          quantumdrive: 量子引擎
+          quantumenforcementdevice: QED
+          radar: 雷达
+          refuel_boom: 加油臂
+          relay: 中继
+          salvagefillerstation: 打捞填充站
+          salvagemunching: 打捞粉碎机
+          scanners: 扫描仪
+          seat: 座位
+          selfdestruct: 自毁
+          shieldgenerator: 护盾发生器
+          thrusters: 推进器
+          turret: 炮塔
+          unknown: 未知
+          utility: 实用设备
+          weapon_mounts: 武器挂载
+          weapons: 武器
       class:
         items:
           rsiavionic: 航电
@@ -16,6 +52,11 @@ zh-CN:
           rsipropulsion: 推进器
           rsithruster: 推进器
           rsiweapon: 武器
+      sub_type:
+        items:
+          ground_vehicle_missile: 地面载具导弹
+          pdc_turret: 近防炮塔
+          salvage_modifier_tractor_beam: 打捞牵引光束
     image:
       model:
         title: 型号

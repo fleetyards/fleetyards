@@ -1135,6 +1135,7 @@
         "copySameModel": "Das Zielschiff muss sich vom Ausgangsschiff unterscheiden."
       },
       "component": {
+        "notRecordedYet": "Wird erst seit dem Start der Aufzeichnung erfasst, eine Komponente kann also noch nichts haben.",
         "size": "Size: %{size}",
         "grade": "Qualität",
         "hidden": "Versteckt?",

@@ -9,6 +9,42 @@ es:
           equipment: Equipment
           commodity: Commodities
     component:
+      category:
+        items:
+          armor: Blindaje
+          batteries: Baterías
+          bombcompartments: Compartimentos de bombas
+          cargogrid: Grillas de carga
+          computers: Computadoras
+          controller: Controladores
+          cooler: Enfriadores
+          countermeasures: Contramedidas
+          doors: Puertas
+          fuel_intakes: Tomas de combustible
+          fueltanks: Tanques de combustible
+          jumpdrive: Módulos de salto
+          lifesupport: Soporte vital
+          missile_racks: Racks de misiles
+          module: Módulos
+          paints: Pinturas
+          powerplant: Plantas de energía
+          quantumdrive: Motores Quantum
+          quantumenforcementdevice: QED
+          radar: Radares
+          refuel_boom: Brazos de repostaje
+          relay: Relés
+          salvagefillerstation: Estaciones de llenado de salvamento
+          salvagemunching: Trituradoras de salvamento
+          scanners: Escáneres
+          seat: Asientos
+          selfdestruct: Autodestrucción
+          shieldgenerator: Generadores de escudo
+          thrusters: Propulsores
+          turret: Torretas
+          unknown: Desconocido
+          utility: Objetos de utilidad
+          weapon_mounts: Soportes de armas
+          weapons: Armas
       class:
         items:
           rsiavionic: Aviónica
@@ -16,6 +52,11 @@ es:
           rsipropulsion: Propulsión
           rsithruster: Propulsor
           rsiweapon: Arma
+      sub_type:
+        items:
+          ground_vehicle_missile: Misil de vehículo terrestre
+          pdc_turret: Torreta PDC
+          salvage_modifier_tractor_beam: Rayo tractor de salvamento
     image:
       model:
         title: Modelo

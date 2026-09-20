@@ -3,8 +3,10 @@ import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/settings/routes";
 import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
-import { routes as componentsRoutes } from "@/frontend/pages/components/routes";
-import { routes as blueprintsRoutes } from "@/frontend/pages/blueprints/routes";
+import {
+  catalogueEntryRoute,
+  catalogueTenantRoutes,
+} from "@/frontend/pages/catalogue/tenants";
 import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
@@ -80,21 +82,12 @@ export const routes: RouteRecordRaw[] = [
   {
     // Every catalogue lives under this one path, so the section reads as a
     // section in the URL as well as the nav. `/catalogue` itself lands on the
-    // first tenant that has pages -- components today; blueprints, equipment
-    // and commodities join as they are built.
+    // first tenant in `CATALOGUE_TENANTS`, and the tenants' own paths are built
+    // from the same list, so the section has one place that decides its order.
     path: "/catalogue/",
-    redirect: { name: "components" },
+    redirect: { name: catalogueEntryRoute },
   },
-  {
-    path: "/catalogue/components/",
-    component: () => import("@/frontend/pages/components.vue"),
-    children: componentsRoutes,
-  },
-  {
-    path: "/catalogue/blueprints/",
-    component: () => import("@/frontend/pages/blueprints.vue"),
-    children: blueprintsRoutes,
-  },
+  ...catalogueTenantRoutes,
   // The paths the pages shipped under before the section existed. Both are
   // live -- the detail page has been reachable since #5015 and every hardpoint
   // on every ship links to it -- so they redirect rather than 404.

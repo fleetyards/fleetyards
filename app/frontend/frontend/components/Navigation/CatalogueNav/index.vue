@@ -7,32 +7,20 @@ export default {
 <script lang="ts" setup>
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  CATALOGUE_TENANTS,
+  isTenantActive,
+} from "@/frontend/pages/catalogue/tenants";
 
 const { t } = useI18n();
 
 const route = useRoute();
 
-// The section holds four catalogues eventually -- components, blueprints,
-// equipment and commodities. A tenant appears here when its pages exist, not
-// when its API does: a tab pointing at a route with no page sends a visitor to
-// the app's generic not-found, which is worse than the tab being absent.
-//
-// Each tenant names its list route and its detail route. A detail page is a
-// sibling of its list rather than a child of it, so vue-router's own active
-// matching does not light the list's tab there -- the tenant has to say which
-// routes are its own, the way the flat Components tab did before it moved in
-// here.
-const TENANTS = {
-  blueprints: ["blueprints", "blueprint"],
-  components: ["components", "component"],
-};
-
-const isActive = (tenant: keyof typeof TENANTS) =>
-  TENANTS[tenant].includes(String(route.name));
-
-const active = computed(() =>
-  Object.keys(TENANTS).some((tenant) =>
-    isActive(tenant as keyof typeof TENANTS),
+// The tenants and their order live with the routes they build, so this menu and
+// the `/catalogue/` entry cannot disagree about which catalogue comes first.
+const activeTenant = computed(() =>
+  CATALOGUE_TENANTS.find((tenant) =>
+    isTenantActive(tenant, String(route.name)),
   ),
 );
 </script>
@@ -41,21 +29,17 @@ const active = computed(() =>
   <NavItem
     :label="t('nav.catalogue.index')"
     menu-key="catalogue-menu"
-    :submenu-active="active"
+    :submenu-active="!!activeTenant"
     icon="fa-duotone fa-books"
   >
     <template #submenu>
       <NavItem
-        :to="{ name: 'blueprints' }"
-        :label="t('nav.catalogue.blueprints')"
-        :active="isActive('blueprints')"
-        icon="fa-duotone fa-notes"
-      />
-      <NavItem
-        :to="{ name: 'components' }"
-        :label="t('nav.catalogue.components')"
-        :active="isActive('components')"
-        icon="fa-duotone fa-microchip"
+        v-for="tenant in CATALOGUE_TENANTS"
+        :key="tenant.key"
+        :to="{ name: tenant.listRoute }"
+        :label="t(`nav.catalogue.${tenant.key}`)"
+        :active="activeTenant?.key === tenant.key"
+        :icon="tenant.icon"
       />
     </template>
   </NavItem>

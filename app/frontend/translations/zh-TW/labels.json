@@ -1135,6 +1135,7 @@
         "copySameModel": "目標飛船必須與來源飛船不同。"
       },
       "component": {
+        "notRecordedYet": "僅從開始記錄之日起統計，因此部件可能尚無記錄。",
         "size": "Size: %{size}",
         "grade": "等級",
         "hidden": "隱藏?",

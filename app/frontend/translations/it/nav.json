@@ -15,6 +15,7 @@
       "images": "Immagini",
       "videos": "Video",
       "shipHistory": "Cronologia",
+      "componentHistory": "Cronologia",
       "hangar": {
         "index": "Il Mio Hangar",
         "vehicleLoadouts": "Loadouts",

@@ -1,6 +1,7 @@
 import { createRouter, createMemoryHistory } from "vue-router";
 import { describe, expect, it } from "vitest";
 import { routes } from "./routes";
+import { CATALOGUE_TENANTS, isTenantActive } from "./catalogue/tenants";
 
 /*
  * The friends list moved under settings. Notifications written before it did
@@ -105,4 +106,83 @@ describe("frontend routes", () => {
 
     expect(router.currentRoute.value.query).toEqual({ page: "2", tab: "log" });
   });
+
+  /*
+   * `/catalogue/` used to name its tenant by hand, so it went on opening
+   * components after blueprints had moved to the front of the nav. Both the
+   * entry and the tenants' own paths are built from `CATALOGUE_TENANTS` now,
+   * which is what these two assert together: the entry follows the list, and
+   * the list is what the section is made of.
+   */
+  it("lands on the first tenant of the section", async () => {
+    await router.push("/catalogue/");
+
+    expect(router.currentRoute.value.name).toBe(CATALOGUE_TENANTS[0].listRoute);
+  });
+
+  it("puts blueprints first today", async () => {
+    await router.push("/catalogue/");
+
+    expect(router.currentRoute.value.path).toBe("/catalogue/blueprints/");
+  });
+
+  /*
+   * The detail page became a shell with children so the history tab could be a
+   * sibling of the overview rather than a second page fetching the same
+   * component. The slug path has to go on opening the overview, because every
+   * hardpoint on every ship links straight to it.
+   */
+  it.each([
+    ["/catalogue/components/bulldog-repeater/", "component"],
+    ["/catalogue/components/bulldog-repeater/history/", "component-history"],
+  ])("opens %s as %s", async (path, name) => {
+    await router.push(path);
+
+    expect(router.currentRoute.value.name).toBe(name);
+  });
+
+  /*
+   * The nav lights a tenant from the routes it claims, and a detail page is a
+   * sibling of its list rather than a child -- so every page of a tenant has to
+   * be named, or the catalogue menu goes dark on it. The history tab was the
+   * one that got missed.
+   */
+  it.each(
+    CATALOGUE_TENANTS.flatMap((tenant) =>
+      [tenant.listRoute, ...tenant.detailRoutes].map((name) => [
+        tenant.key,
+        name,
+      ]),
+    ),
+  )("counts %s route %s as its own", (key, name) => {
+    const tenant = CATALOGUE_TENANTS.find((entry) => entry.key === key);
+
+    expect(isTenantActive(tenant!, name)).toBe(true);
+  });
+
+  it("claims every route the router draws under a tenant", () => {
+    const claimed = CATALOGUE_TENANTS.flatMap((tenant) => [
+      tenant.listRoute,
+      ...tenant.detailRoutes,
+    ]);
+
+    const drawn = CATALOGUE_TENANTS.flatMap((tenant) =>
+      tenant.children.flatMap((child) =>
+        [child.name, ...(child.children ?? []).map((nested) => nested.name)]
+          .filter(Boolean)
+          .map(String),
+      ),
+    );
+
+    expect([...drawn].sort()).toEqual([...claimed].sort());
+  });
+
+  it.each(CATALOGUE_TENANTS.map((tenant) => [tenant.key, tenant.listRoute]))(
+    "gives %s a list at its own path",
+    async (key, listRoute) => {
+      await router.push(`/catalogue/${key}/`);
+
+      expect(router.currentRoute.value.name).toBe(listRoute);
+    },
+  );
 });

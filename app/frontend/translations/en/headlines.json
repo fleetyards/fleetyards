@@ -472,6 +472,7 @@
         "contractCovers": "Contract covers"
       },
       "component": {
+        "history": "History",
         "craftedFrom": "Crafted from",
         "identity": "Details",
         "metrics": "Metrics",

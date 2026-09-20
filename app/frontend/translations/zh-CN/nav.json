@@ -15,6 +15,7 @@
       "images": "图片",
       "videos": "视频",
       "shipHistory": "历史",
+      "componentHistory": "历史",
       "hangar": {
         "index": "我的机库",
         "vehicleLoadouts": "Loadouts",
