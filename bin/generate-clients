@@ -1,0 +1,204 @@
+#!/usr/bin/env node
+// Regenerates the frontend API and cable clients whenever their inputs moved.
+//
+// The clients are gitignored, so a pull that changes only a schema leaves them
+// stale and Vite fails to resolve whatever the schema added. `pnpm install` is
+// not enough on its own: an install that finds node_modules already in order
+// skips the build phase, `postinstall` included, and a schema-only pull
+// changes no dependency. So Vite and `lint:ts` call this themselves - starting
+// the dev server, the test run or the type check is enough to be current.
+//
+// Both callers run it unconditionally, which is why it stamps: a target whose
+// inputs hash the same as last time and whose output is still on disk costs a
+// few file reads instead of the generator.
+//
+//   bin/generate-clients            # regenerate what is stale
+//   bin/generate-clients --force    # regenerate regardless
+
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import {
+  closeSync,
+  existsSync,
+  mkdirSync,
+  openSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+  writeSync,
+} from "node:fs";
+import { dirname, join, resolve } from "node:path";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+// The lockfile is an input to both: it is what a bump of orval or of
+// asyncapi-cable shows up in, and either changes the output.
+const TARGETS = [
+  {
+    name: "api",
+    script: "generate-api-client",
+    inputs: [
+      "pnpm-lock.yaml",
+      "orval.config.ts",
+      "swagger/v1/schema.yaml",
+      "swagger/oauth/v1/schema.yaml",
+      "swagger/admin/v1/schema.yaml",
+    ],
+    outputs: [
+      "app/frontend/services/fyApi",
+      "app/frontend/services/fyOAuthApi",
+      "app/frontend/services/fyAdminApi",
+    ],
+  },
+  {
+    name: "cable",
+    script: "generate-cable-client",
+    inputs: [
+      "pnpm-lock.yaml",
+      "bin/generate-cable-client",
+      // Declares the targets below, and options like `enumType` that change
+      // the output without any schema moving.
+      "cable.config.mjs",
+      "asyncapi/cable/v1/schema.yaml",
+      "asyncapi/cable/admin/v1/schema.yaml",
+    ],
+    outputs: [
+      "app/frontend/services/fyCable",
+      "app/frontend/services/fyCableAdmin",
+    ],
+  },
+];
+
+// Under node_modules so it cannot outlive the install it describes, and so a
+// worktree keeps its own.
+const stampDir = join(root, "node_modules/.cache/fleetyards");
+
+const hashOf = (target) => {
+  const digest = createHash("sha256");
+
+  for (const input of target.inputs) {
+    const path = join(root, input);
+    digest.update(input);
+    digest.update(existsSync(path) ? readFileSync(path) : "missing");
+  }
+
+  return digest.digest("hex");
+};
+
+const generated = (target) =>
+  target.outputs.every((output) => {
+    const path = join(root, output);
+
+    return existsSync(path) && readdirSync(path).length > 0;
+  });
+
+// What Vite watches, so the list of inputs lives in one place.
+if (process.argv.includes("--inputs")) {
+  const inputs = TARGETS.flatMap((target) => target.inputs);
+
+  console.log(
+    [...new Set(inputs)].map((input) => join(root, input)).join("\n"),
+  );
+  process.exit(0);
+}
+
+// The install, bin/generate-schema and the dev server's watcher all call this,
+// and any two of them overlap: an install rewrites the watched lockfile while
+// the server runs, and bin/generate-schema rewrites three watched schemas. A
+// generator wipes its output directory before it writes, so two runs at once
+// would have one deleting what the other is reading. Whoever waits here finds
+// the stamps current afterwards and does nothing.
+const lockPath = join(stampDir, "generate.lock");
+const lockTimeout = 5 * 60 * 1000;
+
+const sleep = (ms) =>
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+
+// A run killed while holding the lock would otherwise block every later one
+// for good.
+const abandoned = () => {
+  try {
+    if (Date.now() - statSync(lockPath).mtimeMs > lockTimeout) return true;
+
+    const pid = Number(readFileSync(lockPath, "utf8"));
+
+    // Held by whoever just won the race, still writing its pid.
+    if (!pid) return false;
+
+    process.kill(pid, 0);
+
+    return false;
+  } catch (error) {
+    return error.code === "ESRCH" || error.code === "ENOENT";
+  }
+};
+
+const release = () => {
+  try {
+    // Ours only: a run whose lock was taken for abandoned must not delete the
+    // one its successor now holds.
+    if (readFileSync(lockPath, "utf8") === String(process.pid)) {
+      rmSync(lockPath, { force: true });
+    }
+  } catch {
+    // Already gone.
+  }
+};
+
+const acquire = () => {
+  mkdirSync(stampDir, { recursive: true });
+
+  for (;;) {
+    try {
+      const handle = openSync(lockPath, "wx");
+
+      writeSync(handle, String(process.pid));
+      closeSync(handle);
+      // Covers the exits below and an uncaught throw, both of which skip a
+      // finally.
+      process.on("exit", release);
+
+      return;
+    } catch (error) {
+      if (error.code !== "EEXIST") throw error;
+    }
+
+    if (abandoned()) rmSync(lockPath, { force: true });
+    else sleep(100);
+  }
+};
+
+const force = process.argv.includes("--force");
+
+acquire();
+
+const stale = TARGETS.filter((target) => {
+  if (force || !generated(target)) return true;
+
+  const stamp = join(stampDir, `${target.name}.sha`);
+
+  return !existsSync(stamp) || readFileSync(stamp, "utf8") !== hashOf(target);
+});
+
+for (const target of stale) {
+  // Hashed before the generator reads its inputs: an input that moves while it
+  // runs belongs to the next run, and stamping what this one read is what
+  // leaves that run something to find stale.
+  const hash = hashOf(target);
+
+  execFileSync("pnpm", ["run", target.script], { cwd: root, stdio: "inherit" });
+
+  // A generator that exits 0 having written nothing would otherwise be
+  // stamped as current, and the next caller would trust the stamp.
+  if (!generated(target)) {
+    console.error(
+      `${target.script} left ${target.outputs.join(" or ")} empty - not stamping`,
+    );
+    process.exit(1);
+  }
+
+  writeFileSync(join(stampDir, `${target.name}.sha`), hash);
+}

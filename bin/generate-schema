@@ -16,12 +16,11 @@ DOMAIN=fleetyards.test \
   PATTERN="test/integration/api/v1/**/*_test.rb,test/integration/admin/api/v1/**/*_test.rb,test/integration/oauth/**/*_test.rb" \
   bundle exec rake openapi_ruby:generate
 
-echo "cleanup old generated files"
-
-rm -rf ./app/frontend/services/fyAdminApi
-rm -rf ./app/frontend/services/fyApi
-rm -rf ./app/frontend/services/fyOAuthApi
-
 echo "generate api clients"
 
-pnpm generate-api-client
+# Not Orval directly: bin/generate-clients takes the lock the dev server's
+# watcher takes too - the schemas written above are watched inputs, so it is
+# already regenerating from them - and it leaves the stamps current, so the
+# next Vite or lint:ts run does not repeat the work. Orval cleans its own
+# output directories, so nothing has to be removed first.
+bin/generate-clients
