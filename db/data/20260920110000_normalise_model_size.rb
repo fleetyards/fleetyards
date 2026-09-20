@@ -38,10 +38,17 @@ class NormaliseModelSize < ActiveRecord::Migration[8.1]
       misspelled.update_all(size: size)
     end
 
-    unknown = Model.where.not(size: [nil, *Model::SIZES]).pluck(:name, :size)
-    return if unknown.empty?
+    # Anything still outside the vocabulary is cleared rather than left sitting
+    # there. The column is validated from here on, so a row holding a word the
+    # catalogue does not know cannot be saved at all -- an admin correcting the
+    # ship's name would be refused for a reason nothing on the page explains.
+    # Whatever the matrix supplied is still in `rsi_size` either way.
+    unknown = Model.where.not(size: [nil, *Model::SIZES])
+    named = unknown.pluck(:name, :size)
+    return if named.empty?
 
-    say("left alone, not a size this catalogue knows: #{unknown.map { |name, size| "#{name} (#{size})" }.join(", ")}")
+    say("cleared, not a size this catalogue knows: #{named.map { |name, size| "#{name} (#{size})" }.join(", ")}")
+    unknown.update_all(size: nil)
   end
 
   # There is nothing to put back. The capitalisation was a copy of `rsi_size`,

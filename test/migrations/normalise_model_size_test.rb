@@ -56,11 +56,14 @@ class NormaliseModelSizeTest < ActiveSupport::TestCase
     assert_equal "small", stingray.reload.size
   end
 
-  test "a word the catalogue does not know is reported, not guessed at" do
+  # Not guessed at, but not left either: the column is validated from here on,
+  # so a row holding an unknown word could not be saved at all.
+  test "a word the catalogue does not know is cleared, and reported" do
     oddity = model_with_size("enormous")
 
     normalise
 
-    assert_equal "enormous", oddity.reload.size
+    assert_nil oddity.reload.size
+    assert_predicate oddity.reload, :valid?
   end
 end
