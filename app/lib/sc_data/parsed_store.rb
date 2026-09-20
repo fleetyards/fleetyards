@@ -66,7 +66,12 @@ module ScData
       # An empty listing means a tree that was never pushed, or a wrong prefix.
       # Treating it as "nothing to download" would mirror the emptiness onto
       # disk and hand the loader a tree that retires the whole catalogue.
-      raise MissingTree, "no tree at s3://#{bucket}/#{prefix}" if remote.empty?
+      #
+      # Payload rather than listing, the same way round as `push`: a bucket
+      # holding nothing but `version.json` is not empty, and mirroring it would
+      # delete every local payload file -- which is the outcome this guard is
+      # here to prevent, arriving by a route it did not cover.
+      raise MissingTree, "no tree at s3://#{bucket}/#{prefix}" if payload_empty?(remote)
 
       local = local_files
 
@@ -147,14 +152,18 @@ module ScData
       "#{PREFIX}/#{environment}"
     end
 
-    # Relative path => MD5 hex. Every object in this tree is written
-    # single-part, so a listing's ETag is the plain MD5 of the content and the
-    # two sides can be diffed directly.
-    # Answered from the listing already in hand rather than by walking again.
+    # Whether a listing holds nothing a loader could read. Answered from the
+    # listing already in hand rather than by walking again, and `all?` on an
+    # empty hash is true, so this covers the empty tree and the lone manifest
+    # in one predicate.
     private def payload_empty?(files)
       files.keys.all? { |path| path == ::ScData::ParsedTree::MANIFEST }
     end
 
+    # Relative path => MD5 hex. Every object in this tree is written
+    # single-part, so a listing's ETag is the plain MD5 of the content and the
+    # two sides can be diffed directly.
+    #
     # The manifest is part of the mirror even though it is not part of the
     # digest: it has to travel with the tree it describes.
     private def local_files

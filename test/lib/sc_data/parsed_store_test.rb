@@ -124,6 +124,18 @@ module ScData
       assert_nothing_raised { store.push }
     end
 
+    # The same shape as `push`, the other way round: a bucket holding nothing
+    # but its manifest would mirror onto disk and delete every local payload
+    # file, handing the loader a tree that retires the whole catalogue.
+    test "#pull refuses a bucket holding nothing but a manifest" do
+      write_local("models/aurora.json", "a")
+      stub_listing("version.json" => '{"version":"4.10.1-live.1"}')
+
+      assert_raises(::ScData::ParsedStore::MissingTree) { store.pull }
+
+      assert_path_exists File.join(@root, "models/aurora.json")
+    end
+
     # The bucket has to mirror the tree, not accumulate it. A model file the
     # parser stopped writing must stop being served, or a pull would keep
     # handing the loader a ship that left the build.

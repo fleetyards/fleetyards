@@ -34,13 +34,18 @@ module ScData
     def checksum(root, files = files(root))
       return if files.empty?
 
-      # Length-prefixed, because the value's whole job is to be unambiguous. A
-      # `path:digest` line joined by newlines can be forged: a path carrying a
-      # newline serialises exactly as two shorter entries would, so two
-      # different trees could answer the same digest -- and a collision here
-      # means a tree that changed reads as one that did not, which is the one
-      # failure this whole mechanism exists to prevent.
-      records = files.sort.map { |path, digest| "#{path.bytesize}:#{path}#{digest}" }
+      # Both halves length-prefixed, because the value's whole job is to be
+      # unambiguous. A `path:digest` line joined by newlines can be forged -- a
+      # path carrying a newline serialises exactly as two shorter entries would
+      # -- and a collision here means a tree that changed reads as one that did
+      # not, which is the single failure this whole mechanism exists to prevent.
+      #
+      # Delimiting only the path would leave the records separable by the width
+      # of an MD5 digest, an invariant stated nowhere and enforced nowhere, in a
+      # method that takes a caller-supplied walk precisely so the caller can
+      # hand it digests of its own: `{"a" => "b1:cd"}` and
+      # `{"a" => "b", "c" => "d"}` both serialise to `1:ab1:cd`.
+      records = files.sort.map { |path, digest| "#{path.bytesize}:#{path}#{digest.to_s.bytesize}:#{digest}" }
 
       Digest::SHA256.hexdigest(records.join)
     end

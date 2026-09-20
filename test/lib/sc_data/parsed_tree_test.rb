@@ -61,6 +61,14 @@ module ScData
         ::ScData::ParsedTree.checksum(@root, plain)
     end
 
+    # Delimiting only the path leaves the records separable by the width of an
+    # MD5 digest -- an invariant stated nowhere, in a method that takes a
+    # caller-supplied walk. These two serialise identically under that format.
+    test ".checksum tells apart trees a path-only length prefix would collide" do
+      assert_not_equal ::ScData::ParsedTree.checksum(@root, {"a" => "b1:cd"}),
+        ::ScData::ParsedTree.checksum(@root, {"a" => "b", "c" => "d"})
+    end
+
     test ".checksum tells apart a path carrying the record separator" do
       assert_not_equal ::ScData::ParsedTree.checksum(@root, {"a:b" => "c" * 32}),
         ::ScData::ParsedTree.checksum(@root, {"a" => "b:" + "c" * 31})
