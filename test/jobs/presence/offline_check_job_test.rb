@@ -24,7 +24,7 @@ class Presence::OfflineCheckJobTest < ActiveSupport::TestCase
     travel UserPresence::GRACE + 1.second do
       Presence::OfflineCheckJob.new.perform(@user.id)
 
-      assert_equal [[@user.id, false]],
+      assert_equal [[@user.id, false, "connection"]],
         Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
     end
   end
@@ -57,7 +57,7 @@ class Presence::OfflineCheckJobTest < ActiveSupport::TestCase
     travel UserPresence::GRACE + 1.second do
       Presence::OfflineCheckJob.new.perform(@user.id)
 
-      assert_equal [[@user.id, false]],
+      assert_equal [[@user.id, false, "connection"]],
         Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
     end
   end

@@ -42,7 +42,14 @@ module ApplicationCable
       return if current_user.blank?
       return unless UserPresence.connect(current_user.id, presence_token)
 
-      ::Presence::BroadcastTransitionJob.perform_async(current_user.id, true)
+      begin
+        ::Presence::BroadcastTransitionJob.perform_async(current_user.id, true)
+      rescue
+        # The announcement is already committed, so nothing would emit this
+        # again. Putting it back leaves it to the next sweep.
+        UserPresence.revert(current_user.id, true)
+        raise
+      end
     rescue => e
       Appsignal.report_error(e)
     end

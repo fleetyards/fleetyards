@@ -29,8 +29,8 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
     ActiveSupport::JSON.decode(broadcasts(stream).last)
   end
 
-  def run_job(online: true)
-    Presence::BroadcastTransitionJob.new.perform(@user.id, online)
+  def run_job(online: true, reason: Presence::BroadcastTransitionJob::REASON_CONNECTION)
+    Presence::BroadcastTransitionJob.new.perform(@user.id, online, reason)
   end
 
   test "a co-member is told" do
@@ -86,10 +86,22 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
     end
   end
 
-  test "the user who opted out reads as offline to a co-member" do
+  # Emitting `online: false` on every connect and disconnect would leak the
+  # timing of both, which is the thing the switch exists to hide.
+  test "a connection change reaches no peer of somebody who opted out" do
     @user.update!(show_online_status: false)
 
-    run_job
+    assert_no_difference -> { presence_broadcasts_to(@co_member).size } do
+      run_job
+    end
+  end
+
+  test "the switch itself sends one correction, and it reads offline" do
+    @user.update!(show_online_status: false)
+
+    assert_difference -> { presence_broadcasts_to(@co_member).size }, 1 do
+      run_job(reason: Presence::BroadcastTransitionJob::REASON_PREFERENCE)
+    end
 
     refute last_payload(UserPresenceChannel.broadcasting_for(@co_member))["online"]
   end
@@ -112,6 +124,43 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
         run_job
       end
     end
+  end
+
+  # Per recipient, not per subject: the REST field and the UI are gated on the
+  # reader, so gating the fan-out on the subject would leave a reader inside the
+  # rollout holding a dot that never updates.
+  test "the flag is read against each recipient" do
+    Flipper.disable(:online_status)
+    Flipper.enable_actor(:online_status, @co_member)
+    outside = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: outside, aasm_state: "accepted")
+
+    assert_difference -> { presence_broadcasts_to(@co_member).size }, 1 do
+      assert_no_difference -> { presence_broadcasts_to(outside).size } do
+        run_job
+      end
+    end
+  end
+
+  test "a subject outside the rollout still reaches a reader inside it" do
+    Flipper.disable(:online_status)
+    Flipper.enable_actor(:online_status, @co_member)
+
+    assert_difference -> { presence_broadcasts_to(@co_member).size }, 1 do
+      run_job
+    end
+  end
+
+  test "one unreachable recipient does not stop the rest, and the job still fails" do
+    other = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: other, aasm_state: "accepted")
+
+    UserPresenceChannel.stubs(:broadcast_to).raises(RuntimeError, "cable down")
+    AdminPresenceChannel.stubs(:broadcast_to)
+
+    error = assert_raises(Presence::BroadcastTransitionJob::BroadcastFailed) { run_job }
+
+    assert_match(/2 recipient\(s\) not reached/, error.message)
   end
 
   test "a user who no longer exists broadcasts nothing" do

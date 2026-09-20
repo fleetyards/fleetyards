@@ -28,7 +28,9 @@ class UserOnlineStatusTest < ActiveSupport::TestCase
 
     @user.update!(show_online_status: false)
 
-    assert_equal [[@user.id, true]],
+    # Named as the preference, not as a connection: it is the one thing allowed
+    # to reach a peer of somebody who has just opted out.
+    assert_equal [[@user.id, true, "preference"]],
       Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
   end
 

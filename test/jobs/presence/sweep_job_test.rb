@@ -30,7 +30,7 @@ class Presence::SweepJobTest < ActiveSupport::TestCase
     travel UserPresence::TTL + 1.second do
       Presence::SweepJob.new.perform
 
-      assert_equal [[@user.id, false]],
+      assert_equal [[@user.id, false, "connection"]],
         Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
     end
   end
@@ -40,8 +40,29 @@ class Presence::SweepJobTest < ActiveSupport::TestCase
 
     Presence::SweepJob.new.perform
 
-    assert_equal [[@user.id, true]],
+    assert_equal [[@user.id, true, "connection"]],
       Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
+  end
+
+  # The announced set moves before anything is enqueued, so an enqueue that
+  # fails has to be put back or the next pass would see the deduplicated state
+  # and say nothing at all.
+  test "an enqueue that fails leaves the transition for the next pass" do
+    UserPresence.connect(@user.id, "tab-1")
+    Presence::BroadcastTransitionJob.jobs.clear
+
+    travel UserPresence::TTL + 1.second do
+      Presence::BroadcastTransitionJob.stubs(:perform_async).raises(RuntimeError, "queue down")
+
+      assert_raises(RuntimeError) { Presence::SweepJob.new.perform }
+
+      Presence::BroadcastTransitionJob.unstub(:perform_async)
+
+      Presence::SweepJob.new.perform
+
+      assert_equal [[@user.id, false, "connection"]],
+        Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
+    end
   end
 
   test "a second pass emits nothing" do

@@ -9,12 +9,12 @@ module Presence
   # Runs every minute. It reads one sorted set and one set, so the cost does not
   # depend on how many users exist — only on how many are connected.
   class SweepJob < ::ApplicationJob
+    include EmitsTransitions
+
     sidekiq_options queue: "default", retry: false
 
     def perform
-      ::UserPresence.reconcile.each do |user_id, online|
-        BroadcastTransitionJob.perform_async(user_id, online)
-      end
+      emit(::UserPresence.reconcile)
     end
   end
 end

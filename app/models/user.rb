@@ -1037,7 +1037,9 @@ class User < ApplicationRecord
   # Through the same job a connection change goes through, so co-members and
   # friends get the redaction applied on the way out and admins do not.
   private def broadcast_online_status_change
-    ::Presence::BroadcastTransitionJob.perform_async(id, true)
+    ::Presence::BroadcastTransitionJob.perform_async(
+      id, true, ::Presence::BroadcastTransitionJob::REASON_PREFERENCE
+    )
   end
 
   private def notify_user

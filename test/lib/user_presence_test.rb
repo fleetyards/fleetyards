@@ -108,6 +108,29 @@ class UserPresenceTest < ActiveSupport::TestCase
     end
   end
 
+  test "#revert puts an announcement back so a later pass emits it again" do
+    UserPresence.connect(@user, "tab-1")
+
+    assert_empty UserPresence.reconcile
+
+    UserPresence.revert(@user, true)
+
+    assert_equal [[@user, true]], UserPresence.reconcile
+  end
+
+  test "#revert puts a retraction back" do
+    UserPresence.connect(@user, "tab-1")
+    UserPresence.disconnect(@user, "tab-1")
+
+    travel UserPresence::GRACE + 1.second do
+      assert_equal [[@user, false]], UserPresence.reconcile
+
+      UserPresence.revert(@user, false)
+
+      assert_equal [[@user, false]], UserPresence.reconcile
+    end
+  end
+
   test "#sweep drops members nothing can see any more" do
     UserPresence.connect(@user, "tab-1")
 

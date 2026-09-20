@@ -86,6 +86,17 @@ class UserPresence
       end
     end
 
+    # Puts a transition back so a later pass emits it again.
+    #
+    # The announced set is committed before anything is enqueued — that is what
+    # makes two sweeps racing emit one transition between them rather than one
+    # each — so an enqueue that fails afterwards has to be undone, or nothing
+    # would ever say it again and the dot would stay wrong until the user's
+    # next connection change.
+    def revert(user_id, online)
+      online ? retract(user_id) : announce(user_id)
+    end
+
     # Members whose score has passed are already invisible to every read; this
     # only keeps the set from growing without bound.
     def sweep
