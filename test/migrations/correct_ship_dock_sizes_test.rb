@@ -46,11 +46,11 @@ class CorrectShipDockSizesTest < ActiveSupport::TestCase
     assert_equal "medium", polaris.reload.ship_size
   end
 
-  # The Merchantman's vehicle pad is called "Hangar", so the name alone does not
-  # identify the berth these figures are about.
+  # The Merchantman's only berth is a `landingpad` called "Hangar", so the name
+  # alone does not identify the berth these figures are about.
   test "a dock of another type wearing the same name is untouched" do
     polaris = ship("rsi-polaris")
-    pad = create(:dock, parent: polaris, name: "Hangar", dock_type: :vehiclepad, ship_size: :extra_small)
+    pad = create(:dock, parent: polaris, name: "Hangar", dock_type: :landingpad, ship_size: :extra_small)
 
     correct
 
