@@ -55,8 +55,11 @@ class SeedVehicleSizeLadder < ActiveRecord::Migration[8.1]
     say("still without a class: #{unplaced.join(", ")}") if unplaced.any?
   end
 
-  # The column held nothing before this, on every vehicle.
+  # Not reversible. The column held nothing before this ran, but clearing it
+  # afterwards cannot tell a seeded value from one an admin placed by hand --
+  # and a rollback is usually run to get out of an unrelated problem, not to
+  # throw curation away.
   def down
-    Model.where(slug: LADDER.values.flatten).update_all(vehicle_size: nil)
+    raise ActiveRecord::IrreversibleMigration
   end
 end

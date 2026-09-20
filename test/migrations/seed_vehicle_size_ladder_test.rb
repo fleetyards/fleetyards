@@ -62,6 +62,10 @@ class SeedVehicleSizeLadderTest < ActiveSupport::TestCase
     assert_nil ship.reload.vehicle_size
   end
 
+  test "it does not roll back" do
+    assert_raises(ActiveRecord::IrreversibleMigration) { SeedVehicleSizeLadder.new.down }
+  end
+
   test "every slug on the ladder is placed exactly once" do
     slugs = SeedVehicleSizeLadder::LADDER.values.flatten
 
