@@ -10345,6 +10345,8 @@ components:
           type:
           - string
           - 'null'
+        alignment:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
         missionName:
           type:
           - string
@@ -16752,6 +16754,21 @@ components:
       - meta
       - items
       title: Models
+    NullableBlueprintSourceAlignmentEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - lawful
+      - neutral
+      - outlaw
+      -
+      x-enumNames:
+      - LAWFUL
+      - NEUTRAL
+      - OUTLAW
+      - 'NULL'
+      title: NullableBlueprintSourceAlignmentEnum
     NullableEquipmentBackpackCompatibilityEnum:
       type:
       - string
