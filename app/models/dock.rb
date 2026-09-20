@@ -43,6 +43,11 @@ class Dock < ApplicationRecord
   has_many :capacities, -> { order(:ladder, :quantity) },
     class_name: "DockCapacity", dependent: :destroy, inverse_of: :dock
 
+  # The ships this berth takes that its class does not cover -- see
+  # DockAddition.
+  has_many :additions, class_name: "DockAddition", dependent: :destroy, inverse_of: :dock
+  has_many :added_models, through: :additions, source: :model
+
   validates :parent_id, presence: true
   validates :parent_type, inclusion: {in: PARENT_TYPES}
 
