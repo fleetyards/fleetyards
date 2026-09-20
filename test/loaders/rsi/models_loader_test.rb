@@ -175,6 +175,32 @@ module Rsi
       assert_equal "Enormous", model.rsi_size
     end
 
+    # The matrix carries no size for the ten largest ground vehicles -- the Ursa
+    # family, the Lynx, the Storms, the Novas -- which are exactly the ones
+    # 20260920110000 fills in. Writing that absence back would undo the backfill
+    # on the next nightly run.
+    test "#leaves a curated size alone when the matrix carries none" do
+      create(:model, name: "Ursa", rsi_id: 139, rsi_chassis_id: 40, size: "vehicle")
+
+      @loader.one(139)
+
+      assert_equal "vehicle", Model.find_by(rsi_id: 139).size
+    end
+
+    # And it would not merely undo it: a vehicle on the ladder may not stop
+    # being a vehicle, so the update carrying the blank would fail validation
+    # and take the ship's dimensions and speeds down with it.
+    test "#does not invalidate a vehicle that carries a ladder class" do
+      create(:model, name: "Ursa", rsi_id: 139, rsi_chassis_id: 40, size: "vehicle", vehicle_size: "large")
+
+      @loader.one(139)
+
+      model = Model.find_by(rsi_id: 139)
+
+      assert_equal "vehicle", model.size
+      assert_equal "large", model.vehicle_size
+    end
+
     # The manufacturer loader is the only thing that fills a manufacturer's
     # logo and its RSI metadata, and it used to be reached only for a model
     # whose manufacturer was unset -- so a sync over ships that all had one

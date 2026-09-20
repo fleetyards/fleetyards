@@ -133,13 +133,19 @@ module Rsi
       # unrecognised size fails the model's validation, and a failed validation
       # on this update takes every other field with it, so it is logged and
       # skipped rather than written.
+      #
+      # A row with no size writes nothing, per the rule above: the matrix
+      # carries none for the ten largest ground vehicles, which are exactly the
+      # ones 20260920110000 fills in. Copying that absence over would undo the
+      # backfill on the next run -- or fail the whole update, since a vehicle
+      # placed on the ladder may not stop being a vehicle.
       updates["rsi_size"] = data["size"]
       if (model_updated(model, data) && data["size"] != model.rsi_size) || model.rsi_size.blank?
         size = data["size"].to_s.strip.downcase.presence
 
-        if size.nil? || ::Model::SIZES.include?(size)
+        if ::Model::SIZES.include?(size)
           updates["size"] = size
-        else
+        elsif size.present?
           Rails.logger.warn("Rsi::ModelsLoader: #{data["name"]} has an unknown size #{data["size"].inspect}, not recorded")
         end
       end
