@@ -9,6 +9,42 @@ it:
           equipment: Equipment
           commodity: Commodities
     component:
+      category:
+        items:
+          armor: Corazza
+          batteries: Batterie
+          bombcompartments: Vani bombe
+          cargogrid: Griglie di carico
+          computers: Computer
+          controller: Controller
+          cooler: Raffreddatori
+          countermeasures: Contromisure
+          doors: Porte
+          fuel_intakes: Prese di carburante
+          fueltanks: Serbatoi di carburante
+          jumpdrive: Moduli di salto
+          lifesupport: Supporto vitale
+          missile_racks: Rack missili
+          module: Moduli
+          paints: Verniciature
+          powerplant: Centrali energetiche
+          quantumdrive: Motori Quantum
+          quantumenforcementdevice: QED
+          radar: Radar
+          refuel_boom: Bracci di rifornimento
+          relay: Relè
+          salvagefillerstation: Stazioni di riempimento salvataggio
+          salvagemunching: Trituratori di recupero
+          scanners: Scanner
+          seat: Sedili
+          selfdestruct: Autodistruzione
+          shieldgenerator: Generatori di scudi
+          thrusters: Propulsori
+          turret: Torrette
+          unknown: Sconosciuto
+          utility: Oggetti di utilità
+          weapon_mounts: Supporti armi
+          weapons: Armi
       class:
         items:
           rsiavionic: Avionica
@@ -16,6 +52,11 @@ it:
           rsipropulsion: Propulsione
           rsithruster: Motore
           rsiweapon: Armamento
+      sub_type:
+        items:
+          ground_vehicle_missile: Missile per veicolo terrestre
+          pdc_turret: Torretta PDC
+          salvage_modifier_tractor_beam: Raggio traente da recupero
     image:
       model:
         title: Modello
