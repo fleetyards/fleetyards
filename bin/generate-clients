@@ -110,6 +110,11 @@ const stale = TARGETS.filter((target) => {
 });
 
 for (const target of stale) {
+  // Hashed before the generator reads its inputs: an input that moves while it
+  // runs belongs to the next run, and stamping what this one read is what
+  // leaves that run something to find stale.
+  const hash = hashOf(target);
+
   execFileSync("pnpm", ["run", target.script], { cwd: root, stdio: "inherit" });
 
   // A generator that exits 0 having written nothing would otherwise be
@@ -122,5 +127,5 @@ for (const target of stale) {
   }
 
   mkdirSync(stampDir, { recursive: true });
-  writeFileSync(join(stampDir, `${target.name}.sha`), hashOf(target));
+  writeFileSync(join(stampDir, `${target.name}.sha`), hash);
 }
