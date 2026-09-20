@@ -164,3 +164,89 @@ class DockShipSizeForTest < ActiveSupport::TestCase
     assert_nil Dock.ship_size_for(20.0, 10.0, 0)
   end
 end
+
+# Two answers, and the curated one wins where it exists: a berth that says what
+# it is built for has answered, and what could be crammed in is not shown.
+class DockFitsByClassTest < ActiveSupport::TestCase
+  def hangar(ship_size: :small, **attributes)
+    create(:dock, :with_dimensions, dock_type: :hangar, ship_size:, **attributes)
+  end
+
+  def ship(length:, beam:, height:, **attributes)
+    create(:model, length:, beam:, height:, size: "small", **attributes)
+  end
+
+  test "a described berth takes its class and everything below" do
+    dock = hangar
+    create(:dock_capacity, dock:, ladder: :ship, size: "small", quantity: 3)
+
+    assert dock.reload.fits?(ship(length: 40.0, beam: 40.0, height: 15.0))
+    assert dock.fits?(ship(length: 12.0, beam: 10.0, height: 5.0))
+  end
+
+  # The Idris: a 100m hall that is three Gladius pads. A medium ship goes in it
+  # if you are careful, and the catalogue declines to say so.
+  test "a described berth refuses a class above it, whatever the hall measures" do
+    dock = create(:dock, dock_type: :hangar, ship_size: :small, length: 100, beam: 25, height: 8)
+    create(:dock_capacity, dock:, ladder: :ship, size: "small", quantity: 3)
+
+    medium = ship(length: 55.0, beam: 30.0, height: 17.0)
+
+    assert_equal "medium", ::Dock.ship_size_for(medium.length, medium.beam, medium.height)
+    assert_not dock.reload.fits?(medium)
+  end
+
+  # The other half of `class ∪ additions`: the hull somebody checked in game.
+  test "a named ship fits whatever its class says" do
+    dock = hangar
+    create(:dock_capacity, dock:, ladder: :ship, size: "extra_small", quantity: 1)
+    oversized = ship(length: 120.0, beam: 60.0, height: 30.0)
+
+    assert_not dock.reload.fits?(oversized)
+
+    create(:dock_addition, dock:, model: oversized)
+
+    assert dock.reload.fits?(oversized)
+  end
+
+  # The Merchantman: one landing pad, no dimensions, silent until now.
+  test "a described berth answers without being measured" do
+    dock = create(:dock, dock_type: :landingpad, ship_size: :small, length: nil, beam: nil, height: nil)
+    create(:dock_capacity, dock:, ladder: :ship, size: "small", quantity: 1)
+
+    assert_not dock.measured?
+    assert dock.reload.fits?(ship(length: 40.0, beam: 40.0, height: 15.0))
+  end
+
+  test "an undescribed berth still answers by its envelope" do
+    dock = hangar
+
+    assert_not dock.described?
+    assert dock.fits?(ship(length: 4.0, beam: 2.0, height: 2.0))
+  end
+
+  test "a garage described as Ursa-class takes an Ursa and refuses a Nova" do
+    dock = create(:dock, :with_dimensions, dock_type: :garage)
+    create(:dock_capacity, dock:, ladder: :vehicle, size: "large", quantity: 1)
+
+    ursa = create(:model, size: "vehicle", vehicle_size: "large", length: 7.6, beam: 5.5, height: 2.2)
+    nova = create(:model, size: "vehicle", vehicle_size: "extra_extra_large", length: 16.0, beam: 7.0, height: 5.0)
+
+    assert dock.reload.fits?(ursa)
+    assert_not dock.fits?(nova)
+  end
+
+  # The ship/vehicle gate is what keeps a snub off a cargo grid today. A class
+  # says what a berth takes, so the gate stops being the thing that decides.
+  test "a berth described on both ladders takes both" do
+    dock = create(:dock, :with_dimensions, dock_type: :cargogrid)
+    create(:dock_capacity, dock:, ladder: :vehicle, size: "medium", quantity: 6)
+    create(:dock_capacity, dock:, ladder: :ship, size: "extra_extra_small", quantity: 1)
+
+    snub = ship(length: 10.0, beam: 8.0, height: 4.0)
+    cyclone = create(:model, size: "vehicle", vehicle_size: "medium", length: 6.0, beam: 4.0, height: 2.5)
+
+    assert dock.reload.fits?(snub)
+    assert dock.fits?(cyclone)
+  end
+end
