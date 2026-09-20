@@ -37,10 +37,10 @@ const generateClients = (): Plugin => {
       let running = false;
       let again = false;
 
-      // One run at a time: a generator wipes its output directory before it
-      // writes, and bin/generate-schema rewrites three files in a row, so
-      // concurrent runs would have one deleting what the other is writing.
-      // Whatever arrives mid-run collapses into a single trailing run.
+      // One run per server, and bin/generate-clients locks across processes
+      // for the rest - so an install or a bin/generate-schema that overlaps
+      // waits rather than deleting what this run is writing. Whatever arrives
+      // mid-run collapses into a single trailing run.
       const regenerate = () => {
         if (running) {
           again = true;

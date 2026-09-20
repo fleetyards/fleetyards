@@ -19,11 +19,16 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import {
+  closeSync,
   existsSync,
   mkdirSync,
+  openSync,
   readdirSync,
   readFileSync,
+  rmSync,
+  statSync,
   writeFileSync,
+  writeSync,
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
@@ -100,7 +105,76 @@ if (process.argv.includes("--inputs")) {
   process.exit(0);
 }
 
+// The install, bin/generate-schema and the dev server's watcher all call this,
+// and any two of them overlap: an install rewrites the watched lockfile while
+// the server runs, and bin/generate-schema rewrites three watched schemas. A
+// generator wipes its output directory before it writes, so two runs at once
+// would have one deleting what the other is reading. Whoever waits here finds
+// the stamps current afterwards and does nothing.
+const lockPath = join(stampDir, "generate.lock");
+const lockTimeout = 5 * 60 * 1000;
+
+const sleep = (ms) =>
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+
+// A run killed while holding the lock would otherwise block every later one
+// for good.
+const abandoned = () => {
+  try {
+    if (Date.now() - statSync(lockPath).mtimeMs > lockTimeout) return true;
+
+    const pid = Number(readFileSync(lockPath, "utf8"));
+
+    // Held by whoever just won the race, still writing its pid.
+    if (!pid) return false;
+
+    process.kill(pid, 0);
+
+    return false;
+  } catch (error) {
+    return error.code === "ESRCH" || error.code === "ENOENT";
+  }
+};
+
+const release = () => {
+  try {
+    // Ours only: a run whose lock was taken for abandoned must not delete the
+    // one its successor now holds.
+    if (readFileSync(lockPath, "utf8") === String(process.pid)) {
+      rmSync(lockPath, { force: true });
+    }
+  } catch {
+    // Already gone.
+  }
+};
+
+const acquire = () => {
+  mkdirSync(stampDir, { recursive: true });
+
+  for (;;) {
+    try {
+      const handle = openSync(lockPath, "wx");
+
+      writeSync(handle, String(process.pid));
+      closeSync(handle);
+      // Covers the exits below and an uncaught throw, both of which skip a
+      // finally.
+      process.on("exit", release);
+
+      return;
+    } catch (error) {
+      if (error.code !== "EEXIST") throw error;
+    }
+
+    if (abandoned()) rmSync(lockPath, { force: true });
+    else sleep(100);
+  }
+};
+
 const force = process.argv.includes("--force");
+
+acquire();
+
 const stale = TARGETS.filter((target) => {
   if (force || !generated(target)) return true;
 
@@ -126,6 +200,5 @@ for (const target of stale) {
     process.exit(1);
   }
 
-  mkdirSync(stampDir, { recursive: true });
   writeFileSync(join(stampDir, `${target.name}.sha`), hash);
 }
