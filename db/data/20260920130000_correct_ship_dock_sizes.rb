@@ -28,14 +28,19 @@ class CorrectShipDockSizes < ActiveRecord::Migration[8.1]
   ].freeze
 
   def up
-    CORRECTIONS.each { |correction| apply(correction, correction[:from], correction[:to]) }
+    CORRECTIONS.each { |correction| apply(correction) }
   end
 
+  # Not reversible, and the symmetry is a trap rather than a saving: a hangar
+  # somebody had already set to the corrected size is skipped on the way up and
+  # would be moved on the way down, to a figure this migration never wrote.
   def down
-    CORRECTIONS.each { |correction| apply(correction, correction[:to], correction[:from]) }
+    raise ActiveRecord::IrreversibleMigration
   end
 
-  private def apply(correction, from, to)
+  private def apply(correction)
+    from = correction[:from]
+    to = correction[:to]
     model = Model.find_by(slug: correction[:slug])
 
     if model.nil?
@@ -43,7 +48,10 @@ class CorrectShipDockSizes < ActiveRecord::Migration[8.1]
       return
     end
 
-    dock = model.docks.find_by(name: correction[:name], ship_size: from)
+    # Scoped to the hangar: a `vehiclepad` may carry the same name and the same
+    # size -- the Merchantman's is called "Hangar" -- and it is not what these
+    # figures are about.
+    dock = model.docks.find_by(name: correction[:name], dock_type: :hangar, ship_size: from)
 
     if dock.nil?
       say("#{correction[:slug]} #{correction[:name]} is no longer #{from}, left alone")
