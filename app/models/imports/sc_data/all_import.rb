@@ -79,8 +79,23 @@ module Imports
 
       # The load `CheckJob` compares a tree against: the last one that finished
       # for this build, whose `tree_checksum` says which tree it read.
+      #
+      # By completion rather than creation. Nothing serialises a load -- the
+      # nightly check and the admin reload can both enqueue one -- so two can
+      # overlap, and the one started second is not always the one that finished
+      # second. The question here is which tree the database currently reflects,
+      # and that is whichever load wrote last.
+      #
+      # Nulls last, then newest created: a record moved to `finished` without
+      # going through the state machine has no `finished_at`, and Postgres sorts
+      # nulls first on a descending order, which would hand back exactly the
+      # record that knows least.
       def self.last_finished_for(source)
-        finished.where(version: source.version).order(created_at: :asc).last
+        finished
+          .where(version: source.version)
+          .order(Arel.sql("finished_at DESC NULLS LAST"))
+          .order(created_at: :desc)
+          .first
       end
     end
   end

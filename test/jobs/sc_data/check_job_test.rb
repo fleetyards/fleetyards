@@ -176,6 +176,48 @@ module ScData
       ::ScData::CheckJob.new.perform
     end
 
+    # Nothing serialises a load -- the nightly check and the admin reload can
+    # both enqueue one -- so the load started second is not always the one that
+    # finished second. Reading the newest *created* record would answer with a
+    # tree the database does not reflect.
+    test "#perform reads the load that finished last, not the one created last" do
+      earlier = Imports::ScData::AllImport.create!(
+        version: VERSION, aasm_state: "finished", tree_checksum: "new-tree"
+      )
+      later = Imports::ScData::AllImport.create!(
+        version: VERSION, aasm_state: "finished", tree_checksum: "old-tree"
+      )
+      # Created first, finished last.
+      earlier.update!(finished_at: 1.minute.from_now)
+      later.update!(finished_at: 2.minutes.ago)
+
+      load_every_catalogue
+      stub_remote_checksum("new-tree")
+
+      Loaders::ScData::AllJob.expects(:perform_async).never
+
+      ::ScData::CheckJob.new.perform
+    end
+
+    # A record moved to `finished` without the state machine has no
+    # `finished_at`, and Postgres sorts nulls first on a descending order -- so
+    # it would otherwise win over every record that actually knows something.
+    test "#perform prefers a load that recorded when it finished" do
+      Imports::ScData::AllImport.create!(
+        version: VERSION, aasm_state: "finished", tree_checksum: nil, finished_at: nil
+      )
+      Imports::ScData::AllImport.create!(
+        version: VERSION, aasm_state: "finished", tree_checksum: "same-tree", finished_at: 1.minute.ago
+      )
+
+      load_every_catalogue
+      stub_remote_checksum("same-tree")
+
+      Loaders::ScData::AllJob.expects(:perform_async).never
+
+      ::ScData::CheckJob.new.perform
+    end
+
     # Blueprints arrived after the build they shipped on had been imported, and
     # were missing from the coverage list until the checksum work went in.
     test "#perform enqueues AllJob when blueprints were never loaded" do
@@ -188,10 +230,11 @@ module ScData
       ::ScData::CheckJob.new.perform
     end
 
-    private def stub_finished_imports(count, version: VERSION, checksum: nil)
-      count.times do
+    private def stub_finished_imports(count, version: VERSION, checksum: nil, finished_at: Time.current)
+      count.times do |index|
         Imports::ScData::AllImport.create!(
-          version:, aasm_state: "finished", tree_checksum: checksum
+          version:, aasm_state: "finished", tree_checksum: checksum,
+          finished_at: finished_at + index.seconds
         )
       end
     end
