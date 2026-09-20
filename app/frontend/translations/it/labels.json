@@ -1073,6 +1073,7 @@
         "name": "Nome",
         "dockType": "Tipo di dock",
         "shipSize": "Dimensione nave",
+        "access": "Accesso",
         "length": "Lunghezza",
         "beam": "Larghezza",
         "height": "Altezza",
@@ -2648,6 +2649,11 @@
           "commodities": "Merci",
           "models": "Navi"
         }
+      },
+      "dockAccess": {
+        "ramp": "Rampa",
+        "lift": "Ascensore",
+        "tractor_beam": "Raggio traente"
       },
       "dockTypes": {
         "vehiclepad": "Piazzola per veicoli",

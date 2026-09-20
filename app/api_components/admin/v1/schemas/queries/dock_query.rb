@@ -14,6 +14,7 @@ module Admin
               parentTypeEq: {type: :string},
               dockTypeEq: {type: :string},
               shipSizeEq: {type: :string},
+              accessEq: {type: :string},
               nameCont: {type: :string}
             },
             additionalProperties: false,

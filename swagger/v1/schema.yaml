@@ -24755,6 +24755,8 @@ components:
                 type: string
               dockType:
                 type: string
+              accessLabel:
+                type: string
               moduleName:
                 type: string
               storeImage:

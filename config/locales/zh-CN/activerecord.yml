@@ -51,6 +51,10 @@ zh-CN:
           electromagnetic: 电磁
           infrared: 红外
       dock:
+        accesses:
+          lift: 升降机
+          ramp: 坡道
+          tractor_beam: 牵引光束
         dock_types:
           cargogrid: 货运格栅
           dockingport: 对接端口

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_20_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -475,6 +475,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_120000) do
   end
 
   create_table "docks", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "access"
     t.decimal "beam", precision: 15, scale: 2
     t.datetime "created_at", precision: nil, null: false
     t.integer "dock_type"

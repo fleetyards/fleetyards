@@ -51,6 +51,10 @@ it:
           electromagnetic: Elettromagnetico
           infrared: infrarosso
       dock:
+        accesses:
+          lift: Ascensore
+          ramp: Rampa
+          tractor_beam: Raggio traente
         dock_types:
           cargogrid: Griglia di carico
           dockingport: Porta di attracco

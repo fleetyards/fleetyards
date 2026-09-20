@@ -11953,6 +11953,14 @@ components:
           "$ref": "#/components/schemas/DockShipSizeEnum"
         shipSizeLabel:
           type: string
+        access:
+          oneOf:
+          - "$ref": "#/components/schemas/DockAccessEnum"
+          - type: 'null'
+        accessLabel:
+          type:
+          - string
+          - 'null'
         group:
           type: string
         length:
@@ -11988,6 +11996,17 @@ components:
       - createdAt
       - updatedAt
       title: Dock
+    DockAccessEnum:
+      type: string
+      enum:
+      - ramp
+      - lift
+      - tractor_beam
+      x-enumNames:
+      - RAMP
+      - LIFT
+      - TRACTOR_BEAM
+      title: DockAccessEnum
     DockCount:
       type: object
       properties:
@@ -12017,6 +12036,10 @@ components:
           type: string
         shipSize:
           type: string
+        access:
+          type:
+          - string
+          - 'null'
         group:
           type:
           - string
@@ -12062,6 +12085,8 @@ components:
         dockTypeEq:
           type: string
         shipSizeEq:
+          type: string
+        accessEq:
           type: string
         nameCont:
           type: string

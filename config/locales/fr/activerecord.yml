@@ -51,6 +51,10 @@ fr:
           electromagnetic: Électromagnétique
           infrared: infrarouge
       dock:
+        accesses:
+          lift: Ascenseur
+          ramp: Rampe
+          tractor_beam: Rayon tracteur
         dock_types:
           cargogrid: Grille de fret
           dockingport: Port d'amarrage

@@ -51,6 +51,10 @@ es:
           electromagnetic: Electromagnético
           infrared: infrarrojo
       dock:
+        accesses:
+          lift: Elevador
+          ramp: Rampa
+          tractor_beam: Rayo tractor
         dock_types:
           cargogrid: Rejilla de carga
           dockingport: Puerto de acoplamiento

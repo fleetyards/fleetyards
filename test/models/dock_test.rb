@@ -7,6 +7,7 @@ require "test_helper"
 # Table name: docks
 #
 #  id            :uuid             not null, primary key
+#  access        :integer
 #  beam          :decimal(15, 2)
 #  dock_type     :integer
 #  group         :string
@@ -107,6 +108,20 @@ class DockTest < ActiveSupport::TestCase
   end
 
   # Destroying the carrier takes its berths, whichever side they hang off.
+  # Not part of the fit check on purpose: a tractor beam will get a car into a
+  # hangar, badly, and "possible but awkward" is not a comparison of metres.
+  test "how a berth is reached is a label, not a condition" do
+    dock = create(:dock, :with_dimensions, dock_type: :garage, access: :tractor_beam)
+    vehicle = create(:model, length: 4.0, beam: 2.0, height: 2.0, size: "vehicle")
+
+    assert_equal "Tractor Beam", dock.access_label
+    assert dock.fits?(vehicle)
+  end
+
+  test "a berth nobody has looked at has no access label" do
+    assert_nil create(:dock, access: nil).access_label
+  end
+
   test "a module takes its docks with it" do
     model_module = create(:model_module)
     create(:dock, parent: model_module)

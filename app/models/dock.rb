@@ -5,6 +5,7 @@
 # Table name: docks
 #
 #  id            :uuid             not null, primary key
+#  access        :integer
 #  beam          :decimal(15, 2)
 #  dock_type     :integer
 #  group         :string
@@ -70,6 +71,17 @@ class Dock < ApplicationRecord
     parent.table[:ship_size]
   end
 
+  # How the thing gets in. Ordered by how pleasant it is, and the last is a
+  # confession rather than a feature: a tractor beam will put a car in a hangar
+  # that has neither ramp nor lift, badly.
+  #
+  # Prefixed, so the scopes read as `Dock.access_ramp` rather than claiming
+  # `Dock.ramp` and `Dock.lift` outright.
+  enum :access, {ramp: 0, lift: 1, tractor_beam: 2}, prefix: true
+  ransacker :access, formatter: proc { |v| Dock.accesses[v] } do |parent|
+    parent.table[:access]
+  end
+
   # The module this berth arrives with, and nil when it is built into the hull.
   # A module berth is conditional -- whether the ship is carrying that module is
   # the player's choice -- so it is named rather than presented as a fixture.
@@ -79,9 +91,9 @@ class Dock < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "beam", "created_at", "dock_type", "group", "height", "id", "id_value", "length",
-      "max_ship_size", "min_ship_size", "name", "parent_id", "parent_type", "ship_size",
-      "updated_at"
+      "access", "beam", "created_at", "dock_type", "group", "height", "id", "id_value",
+      "length", "max_ship_size", "min_ship_size", "name", "parent_id", "parent_type",
+      "ship_size", "updated_at"
     ]
   end
 
@@ -220,5 +232,12 @@ class Dock < ApplicationRecord
 
   def ship_size_label
     Dock.human_enum_name(:ship_size, ship_size)
+  end
+
+  # Nil for a berth nobody has looked at, which is why this is not a plain
+  # `humanize`: an unanswered question renders as nothing rather than as a
+  # blank pill.
+  def access_label
+    Dock.human_enum_name(:access, access)
   end
 end

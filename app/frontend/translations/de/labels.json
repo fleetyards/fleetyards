@@ -1073,6 +1073,7 @@
         "name": "Name",
         "dockType": "Dock-Typ",
         "shipSize": "Schiffsgröße",
+        "access": "Zugang",
         "length": "Länge",
         "beam": "Breite",
         "height": "Höhe",
@@ -2648,6 +2649,11 @@
           "commodities": "Waren",
           "models": "Schiffe"
         }
+      },
+      "dockAccess": {
+        "ramp": "Rampe",
+        "lift": "Aufzug",
+        "tractor_beam": "Traktorstrahl"
       },
       "dockTypes": {
         "vehiclepad": "Fahrzeugstellplatz",

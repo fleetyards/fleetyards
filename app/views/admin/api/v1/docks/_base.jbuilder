@@ -6,6 +6,8 @@ json.dock_type dock.dock_type
 json.dock_type_label dock.dock_type_label
 json.ship_size dock.ship_size
 json.ship_size_label dock.ship_size_label
+json.access dock.access
+json.access_label dock.access_label
 json.group dock.group
 json.length dock.length&.to_f
 json.beam dock.beam&.to_f

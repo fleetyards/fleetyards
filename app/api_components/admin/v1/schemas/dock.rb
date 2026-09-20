@@ -15,6 +15,10 @@ module Admin
             dockTypeLabel: {type: :string},
             shipSize: Enums::DockShipSizeEnum,
             shipSizeLabel: {type: :string},
+            # Nullable both ways: a berth nobody has looked at has no access
+            # recorded, and the label is derived from it.
+            access: {oneOf: [Enums::DockAccessEnum, {type: :null}]},
+            accessLabel: {type: [:string, :null]},
             group: {type: :string},
             length: {type: :number},
             beam: {type: :number},
