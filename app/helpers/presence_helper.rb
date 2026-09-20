@@ -9,7 +9,7 @@ module PresenceHelper
   # recipients, so there is no reader to gate or redact against. Absent is the
   # right answer there: the client patches presence from its own subscription.
   def online_status_for(user)
-    return unless controller.respond_to?(:online_status_for, true)
+    return unless controller.respond_to?(:online_status_for)
 
     controller.online_status_for(user)
   end
