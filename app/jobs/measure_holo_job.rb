@@ -46,9 +46,9 @@ class MeasureHoloJob
     return if stale_blob?(model.send(name), blob_id)
     return if overtaken?(model, columns, previous)
 
-    measured = columns.zip(result.sorted).to_h
+    model.update_columns(columns.zip(result.sorted).to_h.merge(measured_at_for(name)))
 
-    model.update_columns(measured.merge(measured_at_for(name)).merge(pad_class_for(model, name, result)))
+    write_pad_class(model, name, result)
   rescue ActiveStorage::FileNotFoundError
     Rails.logger.warn("MeasureHoloJob: blob for #{name} on model #{model_id} not found, skipping")
   rescue JSON::ParserError => error
@@ -61,8 +61,14 @@ class MeasureHoloJob
   # gear: narrower than in flight, and taller, which is what keeps it out of a
   # Carrack bay it would otherwise clear.
   #
-  # The flying box still answers for the ships nobody has measured landed, which
-  # today is all but one of them. It does not overwrite a landed answer.
+  # The flying box answers for every ship nobody has measured landed, which
+  # today is all but one of them, and for one measured only partly -- a landed
+  # length with no beam is not a box anything can be classified by.
+  #
+  # Written as its own conditional statement rather than merged into the write
+  # above: the check and the write have to be the same operation, or a landed
+  # job finishing in between has its answer overwritten by a flying one that
+  # was computed before it landed.
   #
   # The measurement wins over whatever was recorded before. The values it
   # replaces were derived from the RSI matrix and the game files, and those
@@ -71,16 +77,20 @@ class MeasureHoloJob
   #
   # A ground vehicle has no pad class. It is on its own ladder, `vehicle_size`,
   # which is curated rather than measured.
-  private def pad_class_for(model, name, result)
-    return {} unless %w[holo landed_holo].include?(name)
-    return {} if model.size == ::Model::VEHICLE_SIZE
-    return {} if name == "holo" && model.landed_length.present?
+  private def write_pad_class(model, name, result)
+    return unless %w[holo landed_holo].include?(name)
+    return if model.size == ::Model::VEHICLE_SIZE
 
-    length, beam, height = result.sorted
-    pad = ::Dock.ship_size_for(length, beam, height)
+    pad = ::Dock.ship_size_for(*result.sorted)
+    return if pad.nil?
 
-    pad.nil? ? {} : {dock_size: pad}
+    scope = ::Model.where(id: model.id)
+    scope = scope.where(INCOMPLETE_LANDED_BOX) if name == "holo"
+
+    scope.update_all(dock_size: ::Model.dock_sizes.fetch(pad))
   end
+
+  INCOMPLETE_LANDED_BOX = "landed_length IS NULL OR landed_beam IS NULL OR landed_height IS NULL"
 
   # Only reached once a measurement is actually being written, which is the
   # whole value of the stamp: a refused export or an overtaken correction

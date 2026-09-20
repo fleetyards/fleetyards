@@ -75,6 +75,17 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_equal "small", model.reload.dock_size
   end
 
+  # A landed length with no beam is not a box anything can be classified by, so
+  # the flying answer still applies.
+  test "#perform falls back to the flying box when the landed one is incomplete" do
+    model = create(:model, size: "small", dock_size: nil, landed_length: 30.0, landed_beam: nil, landed_height: nil)
+    attach(model, :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_equal "extra_extra_small", model.reload.dock_size
+  end
+
   # Which is all but one ship today: nothing has been measured landed, so the
   # flying box is the only answer there is.
   test "#perform falls back to the flying box when nothing is measured landed" do
