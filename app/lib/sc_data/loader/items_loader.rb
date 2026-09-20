@@ -73,7 +73,12 @@ module ScData
           update_params[:version] = sc_version
 
           apply(component, update_params)
-          apply_build(component, update_params.except(:sc_key, :sc_ref, :version))
+          build = apply_build(component, update_params.except(:sc_key, :sc_ref, :version))
+
+          # Recorded now because the build it is measured against is pruned to
+          # the two or three this environment keeps. Waiting until someone asks
+          # means there is nothing left to compare.
+          ComponentBuildChange.record!(build)
 
           if item["icon"].present?
             attach_icon(component, :icon, item["icon"])

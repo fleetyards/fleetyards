@@ -74,6 +74,29 @@ class ComponentBuild < ApplicationRecord
   # column, and `visible` moves with the filters rather than with the readers.
   READ_THROUGH = (FACTS - %i[manufacturer_id hidden]).freeze
 
+  # Facts that are a shape rather than a value. Two loads of the same export can
+  # serialise these differently without anything having changed, so comparing
+  # them whole reports a change on every re-parse -- the change log leaves them
+  # out for the reason `ModelBuild::STRUCTURED_FACTS` names.
+  #
+  # `type_data` is the exception that is handled rather than dropped:
+  # `ComponentBuildChange` reaches inside it and diffs its scalar keys, which is
+  # where a weapon's damage and a cooler's cooling rate actually live.
+  STRUCTURED_FACTS = %i[
+    type_data durability power_connection heat_connection ammunition
+    inventory_consumption
+  ].freeze
+
+  # What a patch diff compares, as columns. Derived rather than listed, so a fact
+  # added to FACTS is diffable without anyone remembering to say so.
+  #
+  # `description` is excluded because it is prose: a reworded sentence is a real
+  # change and an unreadable one to render beside "size 2 -> 3".
+  # `manufacturer_id` because the value it would record is a uuid, which says
+  # nothing to a reader -- the manufacturer's own change log is where that
+  # belongs.
+  DIFFABLE_FACTS = (FACTS - STRUCTURED_FACTS - %i[description manufacturer_id]).freeze
+
   # The facts Component filters and sorts by. One list, so a ransacker and the
   # fallback join's column list cannot drift apart.
   #

@@ -89,6 +89,11 @@ class Component < ApplicationRecord
   # What each build of the game says about this component. Written alongside the
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "ComponentBuild", dependent: :destroy
+
+  has_many :build_changes,
+    class_name: "ComponentBuildChange",
+    dependent: :destroy,
+    inverse_of: :component
   # The build we are being served from, which is the configured one unless its
   # load has not run yet. `current` on its own means *exactly* the configured
   # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the

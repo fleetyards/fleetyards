@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_20_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -376,6 +376,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_100000) do
     t.index ["share_key"], name: "index_compare_images_on_share_key", unique: true, where: "(share_key IS NOT NULL)"
     t.index ["short_code"], name: "index_compare_images_on_short_code", unique: true, where: "(short_code IS NOT NULL)"
     t.index ["slug_set"], name: "index_compare_images_on_slug_set", unique: true
+  end
+
+  create_table "component_build_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "component_id", null: false
+    t.datetime "created_at", null: false
+    t.string "environment", null: false
+    t.string "field", null: false
+    t.string "from_version", null: false
+    t.text "new_value"
+    t.text "old_value"
+    t.datetime "recorded_at", null: false
+    t.string "to_version", null: false
+    t.datetime "updated_at", null: false
+    t.index ["component_id", "environment", "to_version", "field"], name: "index_component_build_changes_on_component_and_field", unique: true
+    t.index ["environment", "to_version"], name: "index_component_build_changes_on_build"
+    t.index ["recorded_at"], name: "index_component_build_changes_on_recorded_at"
   end
 
   create_table "component_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2252,6 +2268,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_100000) do
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "commodities", "commodities", column: "refines_into_id", on_delete: :nullify
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
+  add_foreign_key "component_build_changes", "components", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
