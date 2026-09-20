@@ -147,10 +147,23 @@ module Uex
       assert_includes body, "missing `fuel_nozzle_misc_nozzlestandard`"
     end
 
-    test "#run reports a priced item no component is named by" do
+    # UEX prices clothing, food and FPS weapons in the same feed. An unmatched
+    # item from one of those sections is not a component and not a gap, so it is
+    # counted apart from the ones that are.
+    test "#run keeps a priced item outside every ship section out of the gaps" do
       result = sync
 
-      assert_equal ["Lillo Pants Violet"], result.unknown.map { |row| row["item_name"] }
+      assert_equal ["Lillo Pants Violet"], result.unknown_other.map { |row| row["item_name"] }
+      assert_not_includes result.unknown.map { |row| row["item_name"] }, "Lillo Pants Violet"
+    end
+
+    # The bucket that matters: a part filed under a section a ship carries from
+    # that we cannot place. A patch renaming a gun lands here and takes its
+    # prices with it, which is exactly what somebody has to be told about.
+    test "#run reports a ship part it cannot place" do
+      result = sync
+
+      assert_equal ["Ghostfire Cannon"], result.unknown.map { |row| row["item_name"] }
     end
 
     test "#run counts what it wrote" do
@@ -207,19 +220,21 @@ module Uex
       assert_equal before, ItemPriceSnapshot.where(item_type: "Component", recorded_on: Date.current).count
     end
 
-    test ".github_issue_body names both the unknown and the ambiguous" do
+    test ".github_issue_body names the ship part it cannot place and the ambiguous one" do
       body = Uex::ComponentPriceSyncer.github_issue_body(sync)
 
-      assert_includes body, "Lillo Pants Violet"
+      assert_includes body, "Ghostfire Cannon"
       assert_includes body, "VariPuck S3 Gimbal Mount"
       assert_includes body, "mount_gimbal_s3_polaris"
     end
 
-    # GithubIssueCreator dedupes on a digest of the body and prices move every
-    # day, so a count in here would open a fresh issue on every run.
-    test ".github_issue_body carries nothing that moves with the prices" do
+    # GithubIssueCreator dedupes on a digest of the body, so anything in here
+    # that moves on its own opens a fresh issue every run. UEX lists another
+    # jacket most weeks, and counts move daily with the prices.
+    test ".github_issue_body carries nothing that moves on its own" do
       body = Uex::ComponentPriceSyncer.github_issue_body(sync)
 
+      assert_not_includes body, "Lillo Pants Violet"
       assert_not_includes body, "created="
       assert_not_includes body, "15000"
     end

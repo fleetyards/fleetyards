@@ -30,6 +30,13 @@ module Uex
       get("commodities_prices_all")
     end
 
+    # What kind of thing each item is. `section` is the coarse one -- "Systems",
+    # "Clothing" -- and is what separates a ship part from a pair of trousers,
+    # which the price feed itself gives no way to tell apart.
+    def item_categories
+      get("categories")
+    end
+
     # Every shop price for every item, in one answer. `/items` cannot stand in
     # for it: that endpoint refuses a wholesale fetch with a 400 unless given an
     # `id_category`, `id_company` or `uuid`, while these rows carry `item_name`

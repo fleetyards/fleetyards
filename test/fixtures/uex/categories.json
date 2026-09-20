@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 32,
+      "section": "Vehicle Weapons",
+      "name": "Guns",
+      "is_game_related": 1,
+      "type": null
+    },
+    {
+      "id": 19,
+      "section": "Systems",
+      "name": "Coolers",
+      "is_game_related": 1,
+      "type": null
+    },
+    {
+      "id": 13,
+      "section": "Clothing",
+      "name": "Legwear",
+      "is_game_related": 1,
+      "type": null
+    }
+  ]
+}

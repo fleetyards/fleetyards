@@ -7,10 +7,27 @@ module Uex
     ITEM_TYPE = "Component"
     TERMINAL_TYPE = "item"
 
-    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unknown, :ambiguous, :stale_mappings) do
+    # The UEX sections that hold things a ship carries. Everything else it
+    # prices -- clothing, food, FPS weapons, helmets -- is not a component and
+    # never will be, so an unmatched item from one of those is noise rather than
+    # a gap. Nineteen of UEX's twenty-four thousand price rows in the other
+    # sections would otherwise drown the one report that matters.
+    COMPONENT_SECTIONS = [
+      "Vehicle Weapons", "Systems", "Utility", "Propulsion", "Avionics", "Module", "Liveries"
+    ].freeze
+
+    # `unknown` is split on purpose. A UEX item in a component section that we
+    # cannot place is a gap somebody should look at -- a part renamed by a patch
+    # loses its prices exactly this way. One in Clothing or Foods is neither a
+    # gap nor a component, and the two must not be counted together.
+    Result = Struct.new(
+      :created, :updated, :removed, :skipped_removals,
+      :unknown, :unknown_other, :ambiguous, :stale_mappings
+    ) do
       def to_s
         "created=#{created} updated=#{updated} removed=#{removed} " \
-          "skipped_removals=#{skipped_removals} unknown=#{unknown.size} ambiguous=#{ambiguous.size} " \
+          "skipped_removals=#{skipped_removals} unknown=#{unknown.size} " \
+          "unknown_other=#{unknown_other.size} ambiguous=#{ambiguous.size} " \
           "stale_mappings=#{stale_mappings.size}"
       end
     end
@@ -25,6 +42,8 @@ module Uex
         @client.terminals.select { |terminal| terminal["type"] == TERMINAL_TYPE }
       ).index_by { |terminal| terminal["id"] }
       prices = require_rows(:item_prices, @client.item_prices)
+      sections = require_rows(:categories, @client.item_categories)
+        .to_h { |category| [category["id"], category["section"]] }
 
       matcher = Uex::ComponentMatcher.new
 
@@ -33,12 +52,17 @@ module Uex
 
       record_price_history
 
+      unknown, unknown_other = matcher.misses.partition do |row|
+        COMPONENT_SECTIONS.include?(sections[row["id_category"]])
+      end
+
       Result.new(
         created: counts.created,
         updated: counts.updated,
         removed: counts.removed,
         skipped_removals: counts.skipped_removals,
-        unknown: matcher.misses,
+        unknown:,
+        unknown_other:,
         ambiguous: matcher.ambiguous,
         stale_mappings: matcher.stale_mappings
       )
@@ -101,15 +125,17 @@ module Uex
       result[key] = attributes if better
     end
 
-    # Deliberately free of the sync counts: GithubIssueCreator dedupes on a
-    # digest of the body, and prices move every day, so anything volatile in
-    # here would open a fresh issue on every run.
+    # Deliberately free of anything that moves on its own. GithubIssueCreator
+    # dedupes on a digest of the body, so a line that changes when nothing has
+    # actually changed opens a fresh issue every single run -- which is why the
+    # counts are absent, and why the personal-gear misses are absent too: UEX
+    # adds a pair of trousers most weeks and not one of them is a component.
+    # Those live in the import output, which nothing dedupes.
     def self.github_issue_body(result)
-      total = result.unknown.size + result.ambiguous.size + result.stale_mappings.size
-      lines = ["## Priced UEX Items We Cannot Place (#{total})", ""]
+      lines = ["## Priced UEX Items We Cannot Place", ""]
 
       if result.stale_mappings.any?
-        lines << "### Mapped to a component that is gone (#{result.stale_mappings.size})"
+        lines << "### Mapped to a component that is gone"
         lines << ""
         lines << "`Uex::ComponentMatcher::MAPPINGS` names an `sc_key` the catalogue no longer"
         lines << "carries, so the price is dropped. The entry needs repointing or removing --"
@@ -121,28 +147,31 @@ module Uex
         lines << ""
       end
 
-      lines << "### Named by no component (#{result.unknown.size})"
-      lines << ""
-      lines << "UEX sells these at an item terminal and neither `sc_ref` nor the name reaches a"
-      lines << "catalogued `Component`. Most are personal gear -- clothing, food, FPS weapons --"
-      lines << "which this catalogue does not carry and never will; the rest are parts the build"
-      lines << "we are on has dropped."
-      lines << ""
-      result.unknown.first(100).each do |row|
-        lines << "- **#{row["item_name"]}** — UEX item `#{row["id_item"]}`"
+      if result.ambiguous.any?
+        lines << "### Named by several components"
+        lines << ""
+        lines << "The game files carry a row per mount, so these names answer to more than one"
+        lines << "component and nothing says which one the shop stocks. They are left unpriced:"
+        lines << "guessing would put a shop price on a mount welded to one ship. Add an entry to"
+        lines << "`Uex::ComponentMatcher::MAPPINGS` to settle one."
+        lines << ""
+        result.ambiguous.each do |row, sc_keys|
+          lines << "- **#{row["item_name"]}** — UEX item `#{row["id_item"]}` → `#{sc_keys.join("`, `")}`"
+        end
+        lines << ""
       end
-      lines << "- …and #{result.unknown.size - 100} more" if result.unknown.size > 100
-      lines << ""
 
-      lines << "### Named by several components (#{result.ambiguous.size})"
-      lines << ""
-      lines << "The game files carry a row per mount, so these names answer to more than one"
-      lines << "component and nothing says which one the shop stocks. They are left unpriced:"
-      lines << "guessing would put a shop price on a mount welded to one ship. Add an entry to"
-      lines << "`Uex::ComponentMatcher::MAPPINGS` to settle one."
-      lines << ""
-      result.ambiguous.each do |row, sc_keys|
-        lines << "- **#{row["item_name"]}** — UEX item `#{row["id_item"]}` → `#{sc_keys.join("`, `")}`"
+      if result.unknown.any?
+        lines << "### A ship part we cannot place"
+        lines << ""
+        lines << "UEX files these under a section a ship carries from, and neither `sc_ref` nor"
+        lines << "the name reaches a catalogued `Component`. Either the build we are on has"
+        lines << "dropped the part, or a patch renamed it and its prices have silently gone with"
+        lines << "the old name."
+        lines << ""
+        result.unknown.each do |row|
+          lines << "- **#{row["item_name"]}** — UEX item `#{row["id_item"]}`"
+        end
       end
 
       lines.join("\n")

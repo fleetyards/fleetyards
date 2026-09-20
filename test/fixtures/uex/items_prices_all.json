@@ -118,6 +118,19 @@
       "terminal_name": "",
       "date_added": 1703516981,
       "date_modified": 1788031806
+    },
+    {
+      "id": 10,
+      "id_item": 16,
+      "id_category": 32,
+      "id_terminal": 106,
+      "item_name": "Ghostfire Cannon",
+      "item_uuid": "99999999-0000-0000-0000-000000000009",
+      "price_buy": 3300,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
     }
   ]
 }

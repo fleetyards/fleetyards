@@ -17,23 +17,42 @@ module Loaders
       assert_equal(
         {
           "created" => 4, "updated" => 1, "removed" => 2, "skipped_removals" => 0,
-          "unknown" => [], "ambiguous" => [], "stale_mappings" => []
+          "unknown" => [], "unknown_other" => 0, "ambiguous" => [], "stale_mappings" => []
         },
         import.output
       )
     end
 
-    # A UEX item no component is named by is mostly personal gear -- clothing,
-    # food, FPS weapons -- that this catalogue does not carry and never will, so
-    # it is recorded but does not raise an issue for somebody to act on.
-    test "#perform records an unplaceable item without opening an issue" do
-      stub_run(unknown: [{"id_item" => 14, "item_name" => "Lillo Pants Violet"}])
+    # Clothing, food and FPS weapons come down the same feed. They are counted
+    # and then left alone: not one of them is a component, so raising an issue
+    # would be asking somebody to act on UEX stocking another pair of trousers.
+    test "#perform counts a priced item outside every ship section without opening an issue" do
+      stub_run(unknown_other: [{"id_item" => 14, "item_name" => "Lillo Pants Violet"}])
 
       GithubIssueCreator.expects(:new).never
 
       ::Loaders::UexComponentPricesJob.new.perform
 
-      assert_equal ["Lillo Pants Violet"], Imports::UexComponentPricesImport.last.output["unknown"]
+      assert_equal 1, Imports::UexComponentPricesImport.last.output["unknown_other"]
+    end
+
+    # A part filed under a section a ship carries from is the opposite case: a
+    # patch may have renamed it, and its prices have silently gone with it.
+    test "#perform opens an issue for a ship part it cannot place" do
+      stub_run(unknown: [{"id_item" => 16, "item_name" => "Ghostfire Cannon"}])
+
+      creator = mock("GithubIssueCreator")
+      creator.expects(:run).returns(true)
+      GithubIssueCreator.expects(:new).with(
+        task_type: "uex_component_prices_import",
+        report_key: "uex_component_prices",
+        title: "UEX Component Sync — Items We Cannot Place",
+        body: anything
+      ).returns(creator)
+
+      ::Loaders::UexComponentPricesJob.new.perform
+
+      assert_equal ["Ghostfire Cannon"], Imports::UexComponentPricesImport.last.output["unknown"]
     end
 
     # A name several components answer to is the one that needs a person: only a
@@ -89,16 +108,16 @@ module Loaders
       assert_equal "UEX returned no usable rows for item_prices", import.info
     end
 
-    private def stub_run(unknown: [], ambiguous: [], stale_mappings: [])
+    private def stub_run(unknown: [], unknown_other: [], ambiguous: [], stale_mappings: [])
       syncer = mock("Uex::ComponentPriceSyncer")
-      syncer.stubs(:run).returns(sync_result(unknown:, ambiguous:, stale_mappings:))
+      syncer.stubs(:run).returns(sync_result(unknown:, unknown_other:, ambiguous:, stale_mappings:))
       ::Uex::ComponentPriceSyncer.stubs(:new).returns(syncer)
     end
 
-    private def sync_result(unknown:, ambiguous:, stale_mappings:)
+    private def sync_result(unknown:, unknown_other:, ambiguous:, stale_mappings:)
       ::Uex::ComponentPriceSyncer::Result.new(
         created: 4, updated: 1, removed: 2, skipped_removals: 0,
-        unknown:, ambiguous:, stale_mappings:
+        unknown:, unknown_other:, ambiguous:, stale_mappings:
       )
     end
   end

@@ -9,12 +9,12 @@ module Loaders
 
       result = ::Uex::ComponentPriceSyncer.new.run
 
-      # Three kinds of miss, and one of them is not work. A UEX item no component
-      # is named by is mostly personal gear this catalogue does not carry; a name
-      # several components answer to is a `MAPPINGS` entry somebody has to write,
-      # and a mapping pointing at a component that is gone is one somebody has to
-      # repoint. The report is actionable on the latter two.
-      actionable = result.ambiguous.present? || result.stale_mappings.present?
+      # Four kinds of miss, and one of them is not work: a priced item outside
+      # every section a ship carries from is a pair of trousers, not a gap. The
+      # other three all want a person -- an unplaceable ship part may be a
+      # rename that has silently taken its prices with it, an ambiguous name
+      # wants a `MAPPINGS` entry, and a stale mapping wants repointing.
+      actionable = result.unknown.present? || result.ambiguous.present? || result.stale_mappings.present?
 
       AdminReport.deliver(
         task_type: "uex_component_prices_import",
@@ -32,6 +32,10 @@ module Loaders
           removed: result.removed,
           skipped_removals: result.skipped_removals,
           unknown: result.unknown.map { |row| row["item_name"] },
+          # Not in the issue body, which is deduped on a digest and would open a
+          # fresh issue every time UEX listed another jacket. Counted here, where
+          # nothing dedupes, so a sudden jump is still visible.
+          unknown_other: result.unknown_other.size,
           ambiguous: result.ambiguous.map { |row, sc_keys| "#{row["item_name"]} -> #{sc_keys.join(", ")}" },
           stale_mappings: result.stale_mappings.map { |row, sc_key| "#{row["item_name"]} -> #{sc_key}" }
         }

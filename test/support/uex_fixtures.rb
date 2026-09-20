@@ -13,7 +13,8 @@ module UexFixtures
       terminals: uex_fixture("terminals"),
       commodities: uex_fixture("commodities"),
       commodity_prices: uex_fixture("commodities_prices_all"),
-      item_prices: uex_fixture("items_prices_all")
+      item_prices: uex_fixture("items_prices_all"),
+      item_categories: uex_fixture("categories")
     }.merge(overrides)
 
     client = mock("Uex::Client")
