@@ -28,8 +28,10 @@ module Shared
 
             description: {type: :string},
 
-            # A port and the item that fits it name a shared tag. `tags` -- the
-            # item's own -- is absent until the parser stops double-encoding it.
+            # A port and the item that fits it name a shared tag: `tags` is
+            # what this item carries, `requiredTags` what it demands of the
+            # port. Both are needed to answer "does this fit".
+            tags: {type: :array, items: {type: :string}},
             requiredTags: {type: :array, items: {type: :string}},
 
             # Left as the string main documents. It is an object really, but

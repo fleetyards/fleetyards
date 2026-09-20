@@ -26,13 +26,29 @@ class Api::V1::ComponentsShowTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @component = create(:component, name: "Bulldog Repeater", sc_key: "behr_repeater_s3")
+    @component = create(
+      :component,
+      name: "Bulldog Repeater",
+      sc_key: "behr_repeater_s3",
+      tags: ["BEHR", "LaserRepeater", "flightReady"],
+      required_tags: ["Weapon_Gun"]
+    )
   end
 
   test "GET /components/{slug} returns the component" do
     assert_api_response :get, 200, params: {slug: @component.slug} do
       assert_equal "Bulldog Repeater", parsed_body["name"]
       assert_equal "bulldog-repeater", parsed_body["slug"]
+    end
+  end
+
+  # The two halves of "what fits where". `tags` was held back while the pushed
+  # tree still carried the parser's re-encoded arrays (#5007), so this is also
+  # the assertion that it is being published at all.
+  test "GET /components/{slug} carries both halves of the port match" do
+    assert_api_response :get, 200, params: {slug: @component.slug} do
+      assert_equal ["BEHR", "LaserRepeater", "flightReady"], parsed_body["tags"]
+      assert_equal ["Weapon_Gun"], parsed_body["requiredTags"]
     end
   end
 

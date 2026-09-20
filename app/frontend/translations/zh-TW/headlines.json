@@ -474,7 +474,8 @@
         "craftedFrom": "製造配方",
         "identity": "詳情",
         "metrics": "數據",
-        "requiredTags": "可裝入具備以下標籤的接口"
+        "requiredTags": "可裝入具備以下標籤的接口",
+        "tags": "標籤"
       },
       "components": {
         "index": "部件"
