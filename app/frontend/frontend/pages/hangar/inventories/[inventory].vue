@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -64,6 +65,24 @@ const refetchAll = async () => {
 };
 
 const { getQuery, isFilterSelected } = useInventoryItemFilters(refetchAll);
+
+// Only this store's pings: one subscription carries every inventory the
+// reader holds, and a deposit into another one is not this page's business.
+useInventoryUpdates(
+  () => {
+    void refetchInventory();
+    void refetchStock();
+    void refetchLogItems();
+  },
+  // The slug alone is not an address: it is unique within its holder, not
+  // across holders, so a fleet store named "Refinery" would match the
+  // reader's own one.
+  {
+    filter: (change) =>
+      change.fleetSlug === undefined &&
+      change.inventorySlug === inventorySlug.value,
+  },
+);
 
 const queryParams = computed(() => ({
   q: getQuery(),

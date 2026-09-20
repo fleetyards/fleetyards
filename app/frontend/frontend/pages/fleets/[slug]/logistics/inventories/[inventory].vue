@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -71,6 +72,21 @@ const refetchAll = async () => {
 };
 
 const { getQuery, isFilterSelected } = useInventoryItemFilters(refetchAll);
+
+// Both halves of the address: a slug is unique within its fleet, not across
+// them, so two fleets can each hold a "Refinery".
+useInventoryUpdates(
+  () => {
+    void refetchInventory();
+    void refetchStock();
+    void refetchLogItems();
+  },
+  {
+    filter: (change) =>
+      change.fleetSlug === fleetSlug.value &&
+      change.inventorySlug === inventorySlug.value,
+  },
+);
 
 const queryParams = computed(() => ({
   q: getQuery(),

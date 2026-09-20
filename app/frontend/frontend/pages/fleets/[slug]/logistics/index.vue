@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -92,6 +93,19 @@ const refetchAll = async () => {
 };
 
 const { getQuery, isFilterSelected } = useInventoryItemFilters(refetchAll);
+
+// A fleet's stores are worked by several members at once, which is the whole
+// reason this is live: the grid and the ledger both follow a deposit somebody
+// else just made. Only this fleet's pings count -- one subscription carries
+// every fleet the reader is in.
+useInventoryUpdates(
+  () => {
+    void refetchInventories();
+    void refetchStock();
+    void refetchItems();
+  },
+  { filter: (change) => change.fleetSlug === fleetSlug.value },
+);
 
 const queryParams = computed(() => ({
   q: getQuery(),

@@ -18,6 +18,7 @@ import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import { useBlueprint as useBlueprintQuery } from "@/services/fyApi";
+import { useMaterialStockUpdates } from "@/frontend/composables/useMaterialStock";
 
 const { t } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -28,6 +29,12 @@ const slug = computed(() => route.params.slug as string);
 const { data: blueprint, ...asyncStatus } = useBlueprintQuery(slug);
 
 const { format: formatCraftTime } = useCraftTime();
+
+// The held-material rows under each slot read the reader's inventories, which
+// anyone else with access can move stock in and out of while this page is
+// open. Subscribed once here rather than inside `useMaterialStock`, which
+// every slot instantiates.
+useMaterialStockUpdates();
 
 // One quality per slot, keyed by the slot's position.
 //

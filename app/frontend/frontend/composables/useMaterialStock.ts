@@ -1,7 +1,8 @@
-import { useQueries } from "@tanstack/vue-query";
+import { useQueries, useQueryClient } from "@tanstack/vue-query";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import {
   useHangarAllInventoryStock,
   useMyFleets,
@@ -210,4 +211,36 @@ export const useMaterialStock = () => {
   };
 
   return { forCommodity };
+};
+
+// The two query keys material stock is read through:
+// `['hangar', 'inventory-stock']` and `['fleets', <slug>, 'inventory-stock']`.
+// They share no prefix -- the fleet's slug sits in the middle of its own -- so
+// they are matched rather than listed, which also saves keeping a list of the
+// reader's fleets here just to invalidate them.
+const isMaterialStockQuery = (key: readonly unknown[]) =>
+  (key[0] === "hangar" && key[1] === "inventory-stock") ||
+  (key[0] === "fleets" && key[2] === "inventory-stock");
+
+/**
+ * Keep held-material rows in step with the inventories behind them.
+ *
+ * Called once per page rather than from `useMaterialStock`, which a page
+ * instantiates once per recipe slot: the queries behind it are shared through
+ * the vue-query cache, but a subscription is not, and one per slot would open
+ * the same channel four to eight times over.
+ *
+ * Every material-stock query is invalidated rather than the one the ping
+ * names. A reader's materials can sit in their own hangar and in several
+ * fleets' stores at once, and vue-query refetches only what is actually on
+ * screen.
+ */
+export const useMaterialStockUpdates = () => {
+  const queryClient = useQueryClient();
+
+  useInventoryUpdates(() => {
+    void queryClient.invalidateQueries({
+      predicate: (query) => isMaterialStockQuery(query.queryKey),
+    });
+  });
 };

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -44,6 +45,14 @@ const {
   onCancel,
   onReport,
 } = useInventoryTransfers(() => props.fleetSlug, direction, getQuery);
+
+// A transfer moves stock at both ends, so either end's inventory reporting a
+// change is this list's business too -- an accepted transfer shows up here as
+// a state change, and the ping is what says it landed. Unfiltered on purpose:
+// the far end is often an inventory this view is not scoped to.
+useInventoryUpdates(() => {
+  void refetch();
+});
 
 const DIRECTIONS = ["incoming", "outgoing"] as const;
 </script>

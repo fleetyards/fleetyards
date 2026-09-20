@@ -10533,11 +10533,13 @@ components:
       enum:
       - AdminNotificationsChannel
       - AppVersionChannel
+      - FleetInventoryChannel
       - FleetMembersChannel
       - FleetVehiclesChannel
       - HangarChannel
       - HangarCreateChannel
       - HangarDestroyChannel
+      - HangarInventoryChannel
       - HangarSyncChannel
       - ImportsChannel
       - ModelsChannel
@@ -10552,11 +10554,13 @@ components:
       x-enumNames:
       - ADMIN_NOTIFICATIONS_CHANNEL
       - APP_VERSION_CHANNEL
+      - FLEET_INVENTORY_CHANNEL
       - FLEET_MEMBERS_CHANNEL
       - FLEET_VEHICLES_CHANNEL
       - HANGAR_CHANNEL
       - HANGAR_CREATE_CHANNEL
       - HANGAR_DESTROY_CHANNEL
+      - HANGAR_INVENTORY_CHANNEL
       - HANGAR_SYNC_CHANNEL
       - IMPORTS_CHANNEL
       - MODELS_CHANNEL

@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class FleetInventoryPolicy < FleetBasePolicy
-  READ_PRIVILEGES = [*FleetInventory::OFFICER_PRIVILEGES, "fleet:inventories:read"].freeze
-
   def index?
-    accepted_fleet_membership&.has_access?(READ_PRIVILEGES)
+    accepted_fleet_membership&.has_access?(FleetInventory::READ_PRIVILEGES)
   end
 
   def show?

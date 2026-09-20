@@ -22,6 +22,42 @@ module InventoryStock
     # inventory being destroyed, which is a contradiction, and doing it silently
     # is the worst of the three.
     before_destroy :refuse_while_goods_are_in_transit, prepend: true
+
+    # Every write to an inventory's contents touches the inventory itself.
+    # `inventory_association` declares `belongs_to ..., touch: true`, and the
+    # two bulk paths that bypass entry callbacks touch explicitly afterwards --
+    # `update_stock_item` past `move_position`'s `update_all`, and
+    # `destroy_stock_item` past its `destroy_all`.
+    #
+    # So this one hook carries deposits, withdrawals, corrections, transfers,
+    # position renames and merges. A hook on the entry -- the obvious first
+    # instinct -- would silently miss every rename, because `update_all` runs
+    # no callbacks at all.
+    after_commit :broadcast_inventory_change
+  end
+
+  # Who hears about it differs by holder -- one person for a hangar or a ship,
+  # a filtered roster for a fleet -- so each inventory kind says so itself.
+  private def broadcast_inventory_change
+    raise NotImplementedError, "#{self.class.name} must define #broadcast_inventory_change"
+  end
+
+  # A ping is best effort, and it runs after the write it reports has already
+  # committed. A pubsub backend that is refusing connections must not turn a
+  # deposit that landed into a deposit that raised -- and in a fan-out, one
+  # recipient failing must not cost the remaining members their notification.
+  #
+  # Only the new fan-outs are wrapped. The broadcasts that have always run
+  # bare from `after_commit` -- Vehicle's, FleetMembership's -- carry the same
+  # exposure, and changing the whole app's posture is not this change's
+  # business.
+  private def broadcast_safely(channel, recipient, payload)
+    channel.broadcast_to(recipient, payload)
+  rescue => e
+    Rails.logger.error(
+      "[#{self.class.name}##{id}] #{channel} broadcast to #{recipient.class.name}##{recipient.id} " \
+      "failed: #{e.class}: #{e.message}"
+    )
   end
 
   class_methods do
