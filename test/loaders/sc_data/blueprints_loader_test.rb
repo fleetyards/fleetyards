@@ -49,6 +49,24 @@ module ScData
         assert_empty BlueprintSource.where.not(kind: BlueprintSource::KINDS).pluck(:kind)
         assert_operator BlueprintSource.where.not(org_name: nil).distinct.count(:org_name), :>=, 15
 
+        # All three land: two off the export's `entityLawful` and one off the
+        # curated list, which would otherwise be a value nothing ever writes.
+        assert_equal BlueprintSource::ALIGNMENTS.sort,
+          BlueprintSource.where.not(alignment: nil).distinct.pluck(:alignment).sort
+        assert_empty BlueprintSource.where.not(alignment: BlueprintSource::ALIGNMENTS)
+          .where.not(alignment: nil).pluck(:alignment)
+
+        # The curated list wins over the flag rather than filling in for a
+        # missing one: the export marks Wikelo lawful.
+        assert_equal ["neutral"], BlueprintSource.where(org_name: "Wikelo Emporium").distinct.pluck(:alignment)
+
+        # An unattributed source says nothing, the way it says no org. Every
+        # attributed one answers, because all 38 reputation records state the
+        # flag -- a null here would mean a faction arrived by a chain that
+        # never reached its record.
+        assert_empty BlueprintSource.where(org_name: nil).where.not(alignment: nil)
+        assert_empty BlueprintSource.where.not(org_name: nil).where(alignment: nil)
+
         # 875 recipes appear in no pool and 26 more only in a pool nothing
         # hands out, so most of the catalogue has no stated source at all.
         assert_operator Blueprint.with_known_source.count, :>=, 600
@@ -204,6 +222,7 @@ module ScData
 
         assert_equal "contract", source.kind
         assert_predicate source, :attributed?
+        assert_equal "lawful", source.alignment
         assert source.mission_name.present?
         assert source.min_standing.present?
       end

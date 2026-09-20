@@ -45,6 +45,12 @@ module ScData
           weight: blueprint["weight"],
           org_ref: entry["org_ref"],
           org_name: entry["org_name"],
+          # Curated here rather than in the parser: the neutral list is a call
+          # we make, and made this side of the tree it takes effect on the next
+          # load instead of needing the build re-parsed and pushed.
+          alignment: ::BlueprintSource.alignment_for(
+            org_key: entry["org_key"], lawful: entry["org_lawful"]
+          ),
           source_key: entry["generator_key"] || entry["scenario_key"],
           mission_name: entry["mission_name"],
           min_standing: entry["min_standing"],
