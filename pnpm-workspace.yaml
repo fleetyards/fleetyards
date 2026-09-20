@@ -1,5 +1,14 @@
 packages:
   - '.'
+# The fast path this skips answers "up to date" from a check that never reads
+# the lockfile, so an install after a pull could report success in 2ms without
+# having looked at what the pull changed.
+#
+# It does not bring `postinstall` back on a repeat install - pnpm skips the
+# build phase either way once node_modules matches. What keeps the generated
+# API and cable clients current is bin/generate-clients, which Vite and
+# `lint:ts` run themselves.
+optimisticRepeatInstall: false
 allowBuilds:
   '@hyperjump/json-pointer': false
   '@hyperjump/json-schema': false
