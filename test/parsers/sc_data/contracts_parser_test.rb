@@ -80,6 +80,67 @@ module ScData
         assert_equal "Elite Contractor", @parser.pools.first[:sources].first[:max_standing]
       end
 
+      # `entityLawful` sits in `propertiesBB` behind a name, at a different index
+      # per record, so it has to be found rather than dug at a fixed depth.
+      test "#pools reads the org's lawful flag and its record key" do
+        translate("Foxwell_RepUI_Name" => "Foxwell Enforcement")
+        faction_reputation("factionreputation_lawful_foxwellenforcement",
+          ref: ORG_REF, display_name: "@Foxwell_RepUI_Name", lawful: true)
+        pool("bp_pool")
+        generator("gen")
+
+        source = @parser.pools.first[:sources].first
+
+        assert_equal "factionreputation_lawful_foxwellenforcement", source[:org_key]
+        assert source[:org_lawful]
+      end
+
+      # `false` has to survive the `.compact` the entry goes through, or an
+      # outlaw org would arrive indistinguishable from one the export says
+      # nothing about.
+      test "#pools keeps an unlawful org's flag rather than compacting it away" do
+        translate("HeadHunters_RepUI_Name" => "Headhunters")
+        faction_reputation("factionreputation_unlawful_headhunters",
+          ref: ORG_REF, display_name: "@HeadHunters_RepUI_Name", lawful: false)
+        pool("bp_pool")
+        generator("gen")
+
+        source = @parser.pools.first[:sources].first
+
+        assert_includes source, :org_lawful
+        assert_equal false, source[:org_lawful]
+      end
+
+      test "#pools leaves the lawful flag out where the record states none" do
+        translate("Foxwell_RepUI_Name" => "Foxwell Enforcement")
+        faction_reputation("factionreputation_lawful_foxwellenforcement",
+          ref: ORG_REF, display_name: "@Foxwell_RepUI_Name")
+        pool("bp_pool")
+        generator("gen")
+
+        source = @parser.pools.first[:sources].first
+
+        assert_equal "Foxwell Enforcement", source[:org_name]
+        assert_not_includes source, :org_lawful
+      end
+
+      # A `Faction` states no `entityLawful` of its own -- it is a wrapper whose
+      # own name is @LOC_UNINITIALIZED -- so it has to take the reputation
+      # record's entry whole rather than only the name off it.
+      test "#pools carries the lawful flag through a faction wrapper" do
+        translate("Foxwell_RepUI_Name" => "Foxwell Enforcement")
+        faction_reputation("factionreputation_lawful_foxwellenforcement",
+          ref: ORG_REF, display_name: "@Foxwell_RepUI_Name", lawful: true)
+        faction("lawful_foxwellenforcement", ref: FACTION_REF, reputation_ref: ORG_REF)
+        pool("bp_rewards_xenothreat2_15_01", group: "xenothreat2rewards")
+        scenario(faction_ref: FACTION_REF, min_points: 18_000)
+
+        source = @parser.pools.first[:sources].first
+
+        assert_equal "factionreputation_lawful_foxwellenforcement", source[:org_key]
+        assert source[:org_lawful]
+      end
+
       # The scenario names a `Faction`, whose own name is @LOC_UNINITIALIZED and
       # which carries `factionReputationRef` to the record that is named.
       test "#pools resolves the scenario's org through the faction reputation it points at" do
@@ -213,8 +274,27 @@ module ScData
         XML
       end
 
-      private def faction_reputation(key, ref:, display_name:)
-        write("factions/factionreputation/#{key}", "FactionReputation", ref, "", displayName: display_name)
+      private def faction_reputation(key, ref:, display_name:, lawful: nil)
+        body = if lawful.nil?
+          ""
+        else
+          <<~XML
+            <propertiesBB>
+              <SReputationContextBBPropertyParams name="entityDescription">
+                <dynamicProperty>
+                  <SBBDynamicPropertyLocString value="@LOC_PLACEHOLDER" />
+                </dynamicProperty>
+              </SReputationContextBBPropertyParams>
+              <SReputationContextBBPropertyParams name="entityLawful">
+                <dynamicProperty>
+                  <SBBDynamicPropertyBool value="#{lawful ? 1 : 0}" />
+                </dynamicProperty>
+              </SReputationContextBBPropertyParams>
+            </propertiesBB>
+          XML
+        end
+
+        write("factions/factionreputation/#{key}", "FactionReputation", ref, body, displayName: display_name)
       end
 
       private def faction(key, ref:, reputation_ref:)

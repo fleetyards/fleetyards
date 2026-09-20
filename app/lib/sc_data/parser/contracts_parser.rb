@@ -25,6 +25,15 @@ module ScData
       FACTION = "Faction"
       STANDINGS_PATH = "reputation/standings"
 
+      # The only thing the export says about which side of the law an org sits
+      # on, and it is a boolean: all 38 reputation records state it. There is no
+      # third state anywhere in the tree to read instead -- `Faction.factionType`
+      # only ever reads Lawful, Unlawful, PrivateSecurity or LawEnforcement, and
+      # `_RepUI_Area` is prose that says "UEE" for Vaughn, an assassination
+      # broker. So a neutral org is a curation call, made by the loader against
+      # `org_key`, and this carries the half the game is willing to state.
+      LAWFUL_PROPERTY = "entityLawful"
+
       # The one scenario that hands out blueprints without going through a
       # contract generator: XenoThreat, whose reward tiers name a pool each.
       SCENARIO_PATH = "contracts/contractscenarios/rox_scenarioprogress.xml"
@@ -123,11 +132,15 @@ module ScData
           handlers(item[:values]).each do |handler|
             org_ref = value_or_nil(handler["factionReputation"]) || fallback
 
+            org = orgs[org_ref] || {}
+
             contracts(handler).each do |contract|
               entry = {
                 kind: "contract",
                 org_ref:,
-                org_name: factions[org_ref],
+                org_key: org[:key],
+                org_name: org[:name],
+                org_lawful: org[:lawful],
                 generator_key: item[:key].downcase,
                 mission_name: contract_title(contract),
                 min_standing: standings[value_or_nil(contract["minStanding"])],
@@ -228,13 +241,16 @@ module ScData
 
         Array.wrap(values.dig("factionRewardTiers", "SScenarioProgressRewardsTiers")).each do |tier_set|
           org_ref = value_or_nil(tier_set["faction"])
+          org = orgs[org_ref] || {}
 
           Array.wrap(tier_set.dig("tierProgressions", "STierProgressions")).each do |progression|
             Array.wrap(progression.dig("tierRewards", "STierReward")).each do |tier|
               entry = {
                 kind: "scenario",
                 org_ref:,
-                org_name: factions[org_ref],
+                org_key: org[:key],
+                org_name: org[:name],
+                org_lawful: org[:lawful],
                 scenario_key: File.basename(SCENARIO_PATH, ".xml"),
                 min_points: tier["minPoints"]&.to_i
               }.compact
@@ -249,34 +265,58 @@ module ScData
         end
       end
 
-      # The org that hands a contract out, by name, keyed by every ref either
-      # chain can arrive with. All 38 reputation records resolve, but only
-      # through the ",P"-stripped index -- `@Foxwell_RepUI_Name` is declared in
-      # another case.
-      private def factions
-        @factions ||= begin
+      # The org that hands a contract out, keyed by every ref either chain can
+      # arrive with. All 38 reputation records resolve, but only through the
+      # ",P"-stripped index -- `@Foxwell_RepUI_Name` is declared in another case.
+      private def orgs
+        @orgs ||= begin
           records = load_data(FACTIONS_PATH).filter_map { |item|
             ref = value_or_nil(item[:values]["__ref"])
 
-            [ref, item[:values]] if ref.present?
+            [ref, item] if ref.present?
           }.to_h
 
-          named = records.each_with_object({}) do |(ref, values), index|
-            next unless values["__type"] == FACTION_REPUTATION
+          named = records.each_with_object({}) do |(ref, item), index|
+            next unless item[:values]["__type"] == FACTION_REPUTATION
 
-            index[ref] = localize(values["displayName"])
+            index[ref] = {
+              # `factionreputation_wikelo`, from the record's own element name.
+              # The loader curates neutrality against this rather than against
+              # the GUID, which is an identity the export is free to reissue,
+              # or the display name, which is localised.
+              key: item[:key].downcase,
+              name: localize(item[:values]["displayName"]),
+              lawful: lawful(item[:values])
+            }
           end
 
-          records.each do |ref, values|
-            next unless values["__type"] == FACTION
+          # A `Faction` is a wrapper: its own name is `@LOC_UNINITIALIZED` and
+          # it states no `entityLawful` at all, so it takes the reputation
+          # record's entry whole rather than half of it.
+          records.each do |ref, item|
+            next unless item[:values]["__type"] == FACTION
 
-            name = named[value_or_nil(values["factionReputationRef"])]
+            org = named[value_or_nil(item[:values]["factionReputationRef"])]
 
-            named[ref] = name if name.present?
+            named[ref] = org if org.present?
           end
 
           named
         end
+      end
+
+      # Walked rather than dug: `propertiesBB` carries one entry per UI field
+      # and `entityLawful` sits at a different index per record, so the entry
+      # has to be found by name.
+      private def lawful(values)
+        property = Array.wrap(values.dig("propertiesBB", "SReputationContextBBPropertyParams"))
+          .find { |entry| entry.is_a?(Hash) && entry["name"] == LAWFUL_PROPERTY }
+
+        stated = property&.dig("dynamicProperty", "SBBDynamicPropertyBool", "value")
+
+        return if stated.blank?
+
+        stated == "1"
       end
 
       # "Neutral", "Elite Contractor" -- the band a contract is offered in,
