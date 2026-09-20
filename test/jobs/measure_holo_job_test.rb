@@ -23,6 +23,45 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_in_delta 1.0, model.height.to_f
   end
 
+  # The pad class follows the measurement. The fixture is 6 x 2 x 1, which the
+  # game's smallest pad box (12 x 16 x 6) contains.
+  test "#perform sets the pad class from the box it measured" do
+    model = attach(create(:model, size: "small", dock_size: nil), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_equal "extra_extra_small", model.reload.dock_size
+  end
+
+  # The values it replaces came from the RSI matrix and the game files, which
+  # disagree with each other and with the pad table. A measurement does not.
+  test "#perform replaces a pad class recorded before anybody measured" do
+    model = attach(create(:model, size: "small", dock_size: "large"), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_equal "extra_extra_small", model.reload.dock_size
+  end
+
+  # A ground vehicle is on the curated `vehicle_size` ladder instead; it lands
+  # on no pad.
+  test "#perform leaves a ground vehicle without a pad class" do
+    model = attach(create(:model, size: "vehicle", dock_size: nil), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_nil model.reload.dock_size
+  end
+
+  # The landed box describes a state the ship is in once it is already there.
+  test "#perform does not set a pad class from a landed holo" do
+    model = attach(create(:model, size: "small", dock_size: nil), :landed_holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "landed_holo")
+
+    assert_nil model.reload.dock_size
+  end
+
   # The point of the separate columns: a landed holo describes the landed state
   # and must not overwrite the flying one.
   test "#perform keeps the landed columns apart from the flying ones" do

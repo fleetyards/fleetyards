@@ -129,3 +129,38 @@ class DockTest < ActiveSupport::TestCase
     assert_difference("Dock.count", -1) { model_module.destroy }
   end
 end
+
+# The pad class a hull lands on. SHIP_SIZE_METRICS is the game's own
+# `landingpadsize` table, so these are the game's boxes rather than ours.
+class DockShipSizeForTest < ActiveSupport::TestCase
+  test "a hull takes the smallest pad that contains it" do
+    assert_equal "extra_extra_small", Dock.ship_size_for(7.0, 5.4, 3.0)
+    assert_equal "extra_small", Dock.ship_size_for(30.0, 20.0, 10.0)
+    assert_equal "small", Dock.ship_size_for(47.0, 40.0, 15.0)
+    assert_equal "medium", Dock.ship_size_for(80.0, 50.0, 17.0)
+    assert_equal "large", Dock.ship_size_for(120.0, 70.0, 30.0)
+    assert_equal "extra_large", Dock.ship_size_for(250.0, 150.0, 60.0)
+  end
+
+  # A pad does not care which way round a ship sits on it, so the footprint is
+  # compared as a pair rather than axis by axis.
+  test "the footprint is compared either way round" do
+    assert_equal Dock.ship_size_for(48.0, 30.0, 15.0), Dock.ship_size_for(30.0, 48.0, 15.0)
+  end
+
+  # Height is the axis that most often decides it: the Mercury is 19m tall
+  # against a small pad's 16.
+  test "height alone can push a hull up a class" do
+    assert_equal "small", Dock.ship_size_for(40.0, 40.0, 16.0)
+    assert_equal "medium", Dock.ship_size_for(40.0, 40.0, 17.0)
+  end
+
+  test "a hull larger than every pad is capital" do
+    assert_equal "capital", Dock.ship_size_for(300.0, 200.0, 70.0)
+  end
+
+  test "an unmeasured hull has no class" do
+    assert_nil Dock.ship_size_for(0, 0, 0)
+    assert_nil Dock.ship_size_for(20.0, 10.0, 0)
+  end
+end

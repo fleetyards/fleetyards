@@ -138,6 +138,29 @@ class Dock < ApplicationRecord
 
   validates :dock_type, :ship_size, presence: true
 
+  # The pad class a hull of these dimensions lands on: the smallest whose box
+  # contains it. SHIP_SIZE_METRICS is the game's own `landingpadsize` table, so
+  # this is the game's answer rather than one of ours.
+  #
+  # A hull larger than every pad comes back `capital`, which is what that rung
+  # is for -- the table gives it the same box as `extra_large`, being a
+  # transcription of six game classes into seven.
+  #
+  # Compared as footprints rather than axis by axis: a pad does not care which
+  # way round a ship sits on it.
+  def self.ship_size_for(length, beam, height)
+    hull = [length.to_f, beam.to_f].sort.reverse
+    return if hull.last <= 0 || height.to_f <= 0
+
+    SHIP_SIZE_METRICS.each do |size, box|
+      pad = [box[:x].to_f, box[:y].to_f].sort.reverse
+
+      return size.to_s if hull.first <= pad.first && hull.last <= pad.last && height.to_f <= box[:z]
+    end
+
+    "capital"
+  end
+
   def self.size_filters
     Dock.ship_sizes.map do |(item, _index)|
       Filter.new(
