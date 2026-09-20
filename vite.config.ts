@@ -34,14 +34,34 @@ const generateClients = (): Plugin => {
     // feeds, which is a module change like any other.
     configureServer(server) {
       const watched = inputs();
+      let running = false;
+      let again = false;
+
+      // One run at a time: a generator wipes its output directory before it
+      // writes, and bin/generate-schema rewrites three files in a row, so
+      // concurrent runs would have one deleting what the other is writing.
+      // Whatever arrives mid-run collapses into a single trailing run.
+      const regenerate = () => {
+        if (running) {
+          again = true;
+          return;
+        }
+
+        running = true;
+        execFile(script, (error) => {
+          running = false;
+          if (error) server.config.logger.error(String(error));
+
+          if (again) {
+            again = false;
+            regenerate();
+          }
+        });
+      };
 
       server.watcher.add(watched);
       server.watcher.on("change", (file) => {
-        if (!watched.includes(file)) return;
-
-        execFile(script, (error) => {
-          if (error) server.config.logger.error(String(error));
-        });
+        if (watched.includes(file)) regenerate();
       });
     },
   };

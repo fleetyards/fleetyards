@@ -54,6 +54,9 @@ const TARGETS = [
     inputs: [
       "pnpm-lock.yaml",
       "bin/generate-cable-client",
+      // Declares the targets below, and options like `enumType` that change
+      // the output without any schema moving.
+      "cable.config.mjs",
       "asyncapi/cable/v1/schema.yaml",
       "asyncapi/cable/admin/v1/schema.yaml",
     ],
@@ -108,6 +111,15 @@ const stale = TARGETS.filter((target) => {
 
 for (const target of stale) {
   execFileSync("pnpm", ["run", target.script], { cwd: root, stdio: "inherit" });
+
+  // A generator that exits 0 having written nothing would otherwise be
+  // stamped as current, and the next caller would trust the stamp.
+  if (!generated(target)) {
+    console.error(
+      `${target.script} left ${target.outputs.join(" or ")} empty - not stamping`,
+    );
+    process.exit(1);
+  }
 
   mkdirSync(stampDir, { recursive: true });
   writeFileSync(join(stampDir, `${target.name}.sha`), hashOf(target));
