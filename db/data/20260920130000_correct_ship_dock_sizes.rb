@@ -48,9 +48,9 @@ class CorrectShipDockSizes < ActiveRecord::Migration[8.1]
       return
     end
 
-    # Scoped to the hangar: a `vehiclepad` may carry the same name and the same
-    # size -- the Merchantman's is called "Hangar" -- and it is not what these
-    # figures are about.
+    # Scoped to the hangar: another dock type may carry the same name and the
+    # same size -- the Merchantman's only berth is a `landingpad` called
+    # "Hangar" -- and it is not what these figures are about.
     dock = model.docks.find_by(name: correction[:name], dock_type: :hangar, ship_size: from)
 
     if dock.nil?
