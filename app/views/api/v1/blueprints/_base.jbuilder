@@ -22,6 +22,16 @@ json.retired blueprint.retired?
 # than as a gap in the game's.
 json.source_unknown blueprint.source_unknown?
 
+# Which sides of the law hand it out, on the row rather than only in the "Where
+# it drops" panel: "can I actually go and get this" is half the question, and
+# "would I have to turn pirate for it" is the other half.
+#
+# A list, not one value: a pool is handed out by both sides of the law often
+# enough that a single answer would be wrong as often as it was right. Empty
+# where nothing hands the recipe out, and empty where every source it has is
+# one of the nine the export leaves unattributed.
+json.source_alignments blueprint.source_alignments
+
 # What the recipe makes. 5 of 1607 resolve to no catalogue row at all -- four
 # mission carryables that are in no catalogue, and one entity class present in
 # no file in the export -- so this is null rather than guaranteed.

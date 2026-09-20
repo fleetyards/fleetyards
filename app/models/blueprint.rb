@@ -373,6 +373,22 @@ class Blueprint < ApplicationRecord
       .uniq
   end
 
+  # Which sides of the law hand this recipe out, each named once and in the
+  # order the constant states them -- lawful, neutral, outlaw -- rather than in
+  # whatever order the pools happen to sit in.
+  #
+  # A set rather than one value: a pool is handed out by both sides often
+  # enough that "this one is outlaw" would be wrong as often as it was right.
+  # Empty where nothing hands the recipe out, and empty too where every source
+  # it has is one of the nine the export leaves unattributed -- saying nothing
+  # is the honest answer to both.
+  #
+  # Off the loaded sources rather than through a `pluck`, so a list that has
+  # already preloaded them pays nothing per row.
+  def source_alignments
+    sources.filter_map(&:alignment).uniq.sort_by { |alignment| BlueprintSource::ALIGNMENTS.index(alignment) }
+  end
+
   # Nothing in the export says where this one comes from. Answered off the last
   # build that did describe it, so a recipe the current build dropped does not
   # read as one nobody ever knew a source for.

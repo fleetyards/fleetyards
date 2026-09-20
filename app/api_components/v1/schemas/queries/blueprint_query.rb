@@ -47,7 +47,7 @@ module V1
             # leaves unattributed are not askable for here, and
             # `withKnownSource` already answers "nothing hands this out".
             sourceAlignmentIn: {
-              type: :array, items: ::V1::Schemas::Enums::BlueprintSourceAlignmentEnum
+              type: :array, items: ::Shared::V1::Schemas::Enums::BlueprintSourceAlignmentEnum
             },
 
             # Recipes that consume a material, by the commodity's slug. Several

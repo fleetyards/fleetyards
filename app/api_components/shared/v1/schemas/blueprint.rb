@@ -44,6 +44,18 @@ module Shared
             # game's.
             sourceUnknown: {type: :boolean},
 
+            # Which sides of the law hand it out, each named once. On the list
+            # as well as the detail: "would I have to turn pirate for this" is
+            # a question the list itself has to answer, and the full `sources`
+            # array it would otherwise take is a detail response's payload.
+            #
+            # Empty where nothing hands the recipe out, and empty where every
+            # source it has is one the export leaves unattributed -- so this
+            # says nothing about those rather than guessing.
+            sourceAlignments: {
+              type: :array, items: ::Shared::V1::Schemas::Enums::BlueprintSourceAlignmentEnum
+            },
+
             # A component of its own rather than an inline object: Orval names
             # an anonymous nested shape after its owner and reproduces it once
             # per owner.

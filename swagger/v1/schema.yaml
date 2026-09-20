@@ -15845,6 +15845,10 @@ components:
           type: boolean
         sourceUnknown:
           type: boolean
+        sourceAlignments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSourceAlignmentEnum"
         craftable:
           anyOf:
           - "$ref": "#/components/schemas/BlueprintCraftable"

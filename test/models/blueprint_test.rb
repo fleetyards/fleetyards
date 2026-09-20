@@ -211,6 +211,28 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_equal [blueprint], Blueprint.from_org("Eckhart Security").to_a
   end
 
+  test "#source_alignments names each side of the law once, in the stated order" do
+    blueprint = create(:blueprint)
+    ["outlaw", "lawful", "outlaw"].each_with_index do |alignment, n|
+      create(:blueprint_source, build: blueprint.build, alignment:, position: n)
+    end
+
+    assert_equal ["lawful", "outlaw"], blueprint.reload.source_alignments
+  end
+
+  # The nine sources the export leaves unattributed carry no side, and a
+  # recipe whose every source is one of them says nothing rather than guessing.
+  test "#source_alignments skips a source the export leaves unattributed" do
+    blueprint = create(:blueprint)
+    create(:blueprint_source, :unattributed, build: blueprint.build)
+
+    assert_empty blueprint.reload.source_alignments
+  end
+
+  test "#source_alignments is empty where nothing hands the recipe out" do
+    assert_empty create(:blueprint).source_alignments
+  end
+
   test ".from_alignment finds each recipe one side of the law hands out once" do
     blueprint = create(:blueprint)
     2.times { |n| create(:blueprint_source, build: blueprint.build, alignment: "outlaw", position: n) }

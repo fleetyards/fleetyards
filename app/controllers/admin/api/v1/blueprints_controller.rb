@@ -30,8 +30,8 @@ module Admin
           @q = authorized_scope(Blueprint.with_facts(current_version))
             .includes(
               :craftable,
-              build: [:craftable, {cost_slots: {options: :commodity}}],
-              last_build: [:craftable, {cost_slots: {options: :commodity}}]
+              build: [:craftable, :sources, {cost_slots: {options: :commodity}}],
+              last_build: [:craftable, :sources, {cost_slots: {options: :commodity}}]
             )
             .ransack(blueprint_query_params.except(*HAND_APPLIED))
 

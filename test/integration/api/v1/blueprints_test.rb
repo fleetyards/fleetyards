@@ -79,6 +79,20 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # On the row, not only on the detail page: a crafter scanning the list has to
+  # be able to see which side of the law a recipe is reachable from.
+  test "GET /blueprints says which sides of the law hand each recipe out" do
+    create(:blueprint_source, build: @blueprint.build, alignment: "outlaw", position: 1)
+    create(:blueprint_source, build: @blueprint.build, alignment: "lawful", position: 2)
+
+    assert_api_response :get, 200 do
+      items = parsed_body["items"].index_by { |item| item["id"] }
+
+      assert_equal ["lawful", "outlaw"], items[@blueprint.id]["sourceAlignments"]
+      assert_empty items[@other.id]["sourceAlignments"]
+    end
+  end
+
   test "GET /blueprints finds the recipes one side of the law hands out" do
     create(:blueprint_source, build: @blueprint.build, alignment: "outlaw")
     create(:blueprint_source, build: @other.build, alignment: "lawful")

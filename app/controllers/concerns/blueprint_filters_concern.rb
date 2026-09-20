@@ -15,8 +15,9 @@ module BlueprintFiltersConcern
   # build we are on, and `currentVersion=false` needs the fallback join or a
   # retired recipe would be filtered out before ransack ever saw it.
   #
-  # The build and its cost tree come along: a row names the materials it
-  # consumes, and without this the list pays three queries per row for them.
+  # The build, its cost tree and its sources come along: a row names the
+  # materials it consumes and which sides of the law hand it out, and without
+  # this the list pays four queries per row for them.
   private def filtered_blueprints(scope = Blueprint.all)
     # `normalize_sort_params` first, because a sortable list sends `q[s]` and
     # ransack would read a leftover `s` ahead of the whitelisted `sorts`.
@@ -26,7 +27,7 @@ module BlueprintFiltersConcern
     # The build-reading filters are taken off the query: ransack would either
     # skip them or apply them against the wrong build.
     @q = scope.with_facts(current_version)
-      .includes(:craftable, build: {cost_slots: {options: :commodity}})
+      .includes(:craftable, build: [{cost_slots: {options: :commodity}}, :sources])
       .ransack(
         blueprints_query_params.except(
           :from_org, :source_alignment_in, :consuming_commodity, :with_known_source, :owned
