@@ -109,6 +109,33 @@ const createClassOptions = computed(() =>
   classOptionsFor(createForm.value.ladder),
 );
 
+// BaseSelect keeps its value when the options change, so switching ladders
+// would leave `capital` selected on the vehicle side and the save would come
+// back 400. The class falls back to the nearest thing the new ladder has.
+const classOnLadder = (
+  ladder: string | null | undefined,
+  size?: string | null,
+): string => {
+  const options = classOptionsFor(ladder);
+  const kept = options.find((option) => option.value === size);
+
+  return String(kept?.value ?? options[0]?.value ?? "");
+};
+
+watch(
+  () => editForm.value.ladder,
+  (ladder) => {
+    editForm.value.size = classOnLadder(ladder, editForm.value.size);
+  },
+);
+
+watch(
+  () => createForm.value.ladder,
+  (ladder) => {
+    createForm.value.size = classOnLadder(ladder, createForm.value.size);
+  },
+);
+
 const onStartEdit = (record: DockCapacity) => {
   editForm.value = {
     ladder: record.ladder,

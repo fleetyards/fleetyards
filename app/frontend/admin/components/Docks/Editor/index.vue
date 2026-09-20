@@ -27,7 +27,6 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 // Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
 // without this and the two dropdowns render as empty comments.
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import DocksCapacities from "@/admin/components/Docks/Capacities/index.vue";
 import {
   InputAlignmentsEnum,
   InputTypesEnum,
@@ -42,6 +41,12 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+// Dynamic: the expanded slot renders only for the dock being edited, and the
+// entries editor is a second list with its own queries behind it.
+const DocksCapacities = defineAsyncComponent(
+  () => import("@/admin/components/Docks/Capacities/index.vue"),
+);
 
 const { t } = useI18n();
 const queryClient = useQueryClient();

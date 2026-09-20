@@ -13,7 +13,10 @@ module Admin
 
           @q = authorized_scope(Dock.all).ransack(dock_query_params)
 
+          # The row renders its entries, so without this the list pays a query
+          # per dock on a cache miss.
           @docks = @q.result
+            .includes(:capacities)
             .page(params.fetch(:page, nil))
             .per(params.fetch(:per_page, nil))
         end
