@@ -2,7 +2,12 @@
 
 require "test_helper"
 
-class UserPresenceChannelTest < ActionCable::Channel::TestCase
+# Named for the heartbeat rather than the channel: the asyncapi suite already
+# owns `UserPresenceChannelTest`, and two files declaring one constant is a
+# superclass mismatch the moment both are loaded.
+class UserPresenceChannelHeartbeatTest < ActionCable::Channel::TestCase
+  tests UserPresenceChannel
+
   setup do
     UserPresence.reset!
     @user = create(:user)
