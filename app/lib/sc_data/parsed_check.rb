@@ -131,6 +131,17 @@ module ScData
         problems << "version.json names build #{data["version"].inspect}, while #{environment} is configured for #{expected_version.inspect}"
       end
 
+      # The manifest now claims a checksum, and a claim nothing verifies is
+      # worse than none: readers decide whether to reload on it. A mismatch
+      # means files moved after the manifest was written -- a half-finished
+      # parse, or a tree pulled while something else was pushing it.
+      #
+      # Only when one is stated. A tree pushed before checksums existed is out
+      # of date rather than broken, and `bin/scdata manifest` is what fixes it.
+      if data["checksum"].present? && data["checksum"] != ::ScData::ParsedTree.checksum(root)
+        problems << "version.json states a checksum the files do not add up to -- run `bin/scdata manifest #{environment}`"
+      end
+
       problems
     rescue JSON::ParserError => e
       ["version.json does not parse: #{e.message}"]

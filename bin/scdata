@@ -12,6 +12,8 @@ COMMANDS = {
   "check" => "Check the parsed tree for the given environment before it is pushed",
   "push" => "Upload the parsed tree for the given environment to S3",
   "pull" => "Download the parsed tree for the given environment from S3",
+  "manifest" => "Rewrite the parsed tree's version.json from the files on disk, without re-parsing",
+  "cache-key" => "Print the CI cache key for every configured source, from the trees in S3",
   "load" => "Load all SC data for the given environment (manufacturers, items, models, modules)",
   "load:manufacturers" => "Load manufacturers for the given environment",
   "load:items" => "Load items for the given environment",
@@ -240,6 +242,52 @@ when "check"
   sc_environment = args.shift || ScData::Source.environment
 
   abort unless report_check(sc_environment)
+
+# Recomputes the checksum from the tree already on disk. A tree pushed before
+# the parser started writing one has no checksum at all, and re-parsing the build
+# just to obtain it would drag in every parser change since -- which for a stale
+# environment is a far bigger diff than the one file that actually needs to move.
+when "manifest"
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
+
+  sc_environment = args.shift || ScData::Source.environment
+  source = requested_source(sc_environment)
+
+  CliHelpers.run_step("Writing the manifest for #{source}") do
+    ScData::Parser::BaseParser.write_manifest(
+      base_folder: Rails.root.join(EXPORT_FOLDER),
+      sc_version: source.version,
+      sc_environment: source.environment
+    )
+    [true, ""]
+  end
+
+  manifest = JSON.parse(File.read(Rails.root.join(EXPORT_FOLDER, "parsed", source.environment, "version.json")))
+  puts "  version:  #{manifest["version"]}"
+  puts "  checksum: #{manifest["checksum"]}"
+
+# What CI keys its parsed-tree cache on. The tree's own checksum rather than the
+# build version: a parser change rewrites the tree and leaves the version where
+# it was, which is why this used to need a hand-bumped `vN` prefix.
+#
+# Falls back to the version for a tree pushed before checksums existed, so the
+# key is never empty and never collides across environments.
+when "cache-key"
+  boot_rails
+
+  fragments = ScData::Source.configured.filter_map do |source|
+    next if source.version.blank?
+
+    store = ScData::ParsedStore.new(source.environment, settings: s3_settings)
+
+    "#{source.environment}-#{store.remote_checksum || source.version}"
+  end
+
+  puts "key=#{fragments.join("_")}"
+  puts "default=#{ScData::Source.environment}"
 
 when "push", "pull"
   CliHelpers.run_step("Booting Rails") {

@@ -75,14 +75,27 @@ module ScData
       {downloaded:, removed:, unchanged: remote.size - downloaded}
     end
 
-    # The version the bucket's tree says it is, straight from the `version.json`
-    # the parser writes beside it.
-    def remote_version
-      body = client.get_object(bucket:, key: key_for("version.json")).body.read
+    # What the bucket's tree says about itself, straight from the
+    # `version.json` the parser writes beside it. One small object, so this is
+    # cheap enough to ask before deciding whether a whole load is needed.
+    def remote_manifest
+      body = client.get_object(bucket:, key: key_for(::ScData::ParsedTree::MANIFEST)).body.read
 
-      JSON.parse(body)["version"]
+      JSON.parse(body)
     rescue Aws::S3::Errors::NoSuchKey
-      nil
+      {}
+    end
+
+    # The version the bucket's tree says it is.
+    def remote_version
+      remote_manifest["version"]
+    end
+
+    # The tree's own identity, which is the question a reader deciding whether
+    # to reload actually has. Blank for a tree pushed before the parser started
+    # writing one.
+    def remote_checksum
+      remote_manifest["checksum"].presence
     end
 
     # Pointer and payload are stored apart, so they can disagree -- a push that

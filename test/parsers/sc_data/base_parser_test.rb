@@ -225,6 +225,56 @@ module ScData
         assert_equal "Item Type: Turret\n\nA bespoke turret.", @parser.send(:localize, "@item_Desc_a")
       end
 
+      # Written once, after every parser has run -- the checksum cannot be
+      # known until the last file is on disk. It used to be written by each
+      # parser's constructor instead, seven times, before any of them had
+      # parsed anything.
+      test ".write_manifest stamps the tree with the build and its checksum" do
+        write_parsed("items", "kept")
+
+        ::ScData::Parser::BaseParser.write_manifest(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        )
+
+        manifest = JSON.parse(File.read("#{@export_path}/version.json"))
+
+        assert_equal "1.0.0", manifest["version"]
+        assert_equal "test", manifest["environment"]
+        assert_equal ::ScData::ParsedTree.checksum(@export_path), manifest["checksum"]
+        assert manifest["parsed_at"].present?
+      end
+
+      # Otherwise every parse would look like a change to whoever is deciding
+      # whether to reload, because `parsed_at` moves each time.
+      test ".write_manifest states the same checksum for an unchanged tree" do
+        write_parsed("items", "kept")
+
+        checksums = 2.times.map do
+          ::ScData::Parser::BaseParser.write_manifest(
+            base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+          )
+
+          JSON.parse(File.read("#{@export_path}/version.json"))["checksum"]
+        end
+
+        assert_equal checksums.first, checksums.last
+      end
+
+      test ".write_manifest moves the checksum when the tree changes" do
+        write_parsed("items", "kept")
+        ::ScData::Parser::BaseParser.write_manifest(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        )
+        before = JSON.parse(File.read("#{@export_path}/version.json"))["checksum"]
+
+        write_parsed("items", "another")
+        ::ScData::Parser::BaseParser.write_manifest(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        )
+
+        assert_not_equal before, JSON.parse(File.read("#{@export_path}/version.json"))["checksum"]
+      end
+
       private def write_asset(path, contents)
         target = "#{@base_folder}/raw/1.0.0/Data/#{path}"
 

@@ -46,6 +46,43 @@ module ScData
       end
     end
 
+    # Readers decide whether to reload a whole catalogue on this checksum, so a
+    # tree whose files do not add up to the one it states is broken rather than
+    # merely stale.
+    test "#call fails a tree whose files do not add up to the checksum it states" do
+      write_tree
+      write("version.json", JSON.pretty_generate({
+        version: VERSION, environment: ENVIRONMENT, parsed_at: Time.current.utc.iso8601,
+        checksum: "not-the-one"
+      }))
+
+      result = check
+
+      assert_not_predicate result, :ok?
+      assert_includes result.problems,
+        "version.json states a checksum the files do not add up to -- run `bin/scdata manifest #{ENVIRONMENT}`"
+    end
+
+    test "#call passes a tree whose checksum matches its files" do
+      write_tree
+      root = File.join(@root, "parsed", ENVIRONMENT)
+      write("version.json", JSON.pretty_generate({
+        version: VERSION, environment: ENVIRONMENT, parsed_at: Time.current.utc.iso8601,
+        checksum: ::ScData::ParsedTree.checksum(root)
+      }))
+
+      assert_predicate check, :ok?
+    end
+
+    # A tree pushed before checksums existed is out of date, not broken, and
+    # `bin/scdata manifest` is what fixes it -- failing the check would refuse
+    # to push the very tree that would carry one.
+    test "#call passes a tree that states no checksum at all" do
+      write_tree
+
+      assert_predicate check, :ok?
+    end
+
     # A blueprint with no ref is skipped by the loader, which leaves it out of
     # the ids `retire_absent` compares against -- so a blank ref there retires a
     # recipe the build still carries.

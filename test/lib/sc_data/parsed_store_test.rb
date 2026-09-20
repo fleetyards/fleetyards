@@ -205,6 +205,20 @@ module ScData
       assert_equal "4.9.0-live.1", store.remote_version
     end
 
+    test "#remote_checksum reads the digest the parser stamped on the tree" do
+      @client.stub_responses(:get_object, {body: {version: "4.9.0-live.1", checksum: "abc123"}.to_json})
+
+      assert_equal "abc123", store.remote_checksum
+    end
+
+    # A tree pushed before the parser wrote one. Readers treat that as "cannot
+    # tell" rather than "changed", so it must not come back as an empty string.
+    test "#remote_checksum is nil for a tree that states none" do
+      @client.stub_responses(:get_object, {body: {version: "4.9.0-live.1"}.to_json})
+
+      assert_nil store.remote_checksum
+    end
+
     test "#remote_version is nil when the tree carries no version.json" do
       @client.stub_responses(:get_object, "NoSuchKey")
 
