@@ -18,6 +18,12 @@ module BlueprintFiltersConcern
   # The build, its cost tree and its sources come along: a row names the
   # materials it consumes and which sides of the law hand it out, and without
   # this the list pays four queries per row for them.
+  #
+  # `last_build` alongside it, because a row the current build dropped renders
+  # entirely off that one -- `facts` is `build || last_build` -- and a filter
+  # asking for `currentVersion=false` is exactly the request that returns
+  # those rows. Preloading only the current build there put the fan-out back,
+  # one query per retired row per association.
   private def filtered_blueprints(scope = Blueprint.all)
     # `normalize_sort_params` first, because a sortable list sends `q[s]` and
     # ransack would read a leftover `s` ahead of the whitelisted `sorts`.
@@ -27,7 +33,11 @@ module BlueprintFiltersConcern
     # The build-reading filters are taken off the query: ransack would either
     # skip them or apply them against the wrong build.
     @q = scope.with_facts(current_version)
-      .includes(:craftable, build: [{cost_slots: {options: :commodity}}, :sources])
+      .includes(
+        :craftable,
+        build: [:craftable, :sources, {cost_slots: {options: :commodity}}],
+        last_build: [:craftable, :sources, {cost_slots: {options: :commodity}}]
+      )
       .ransack(
         blueprints_query_params.except(
           :from_org, :source_alignment_in, :consuming_commodity, :with_known_source, :owned
@@ -70,7 +80,7 @@ module BlueprintFiltersConcern
     )
   end
 
-  # The fourth, and the same trap: ransack skips a scope whose value is false,
+  # The same trap: ransack skips a scope whose value is false,
   # so `owned=false` would answer "the recipes I do not have" with all of them.
   #
   # Off the resolved reader rather than off a parameter -- whose recipes are

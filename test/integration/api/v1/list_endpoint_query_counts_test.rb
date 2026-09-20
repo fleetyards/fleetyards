@@ -40,6 +40,38 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
       "hangar queries grew from #{for_one} to #{for_many} between 1 and 9 vehicles"
   end
 
+  # The blueprint row renders through `facts`, which is the build we are on or
+  # the last one that described the recipe -- so the fallback build has to be
+  # preloaded as well as the current one. Asked with `currentVersion=false`,
+  # which is the request that returns rows rendered off it.
+  test "the blueprints index issues the same number of queries for one recipe as for many" do
+    # Holds the configured build, so the rows below are genuinely retired
+    # rather than the newest thing there is.
+    create(:blueprint)
+
+    retired_recipe = lambda do
+      blueprint = create(:blueprint, :without_build, version: nil)
+      last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+      create(:blueprint_source, build: last, alignment: "outlaw")
+      create(:blueprint_cost_slot, build: last)
+    end
+
+    retired_recipe.call
+    fallback = {q: {currentVersion: false}}
+
+    get "/api/v1/blueprints", params: fallback
+    assert_response :success
+    for_one = count_queries { get "/api/v1/blueprints", params: fallback }
+
+    8.times { retired_recipe.call }
+    for_many = count_queries { get "/api/v1/blueprints", params: fallback }
+
+    assert_response :success
+    assert_equal 10, response.parsed_body["items"].size
+    assert_equal for_one, for_many,
+      "blueprint queries grew from #{for_one} to #{for_many} between 2 and 10 recipes"
+  end
+
   test "the models index issues the same number of queries for one ship as for many" do
     create(:model)
     get "/api/v1/models"
