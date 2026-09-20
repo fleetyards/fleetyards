@@ -34,7 +34,6 @@ const active = computed(() => {
     menu-key="tools-menu"
     :submenu-active="active"
     icon="fa-duotone fa-toolbox"
-    prefix="07"
   >
     <template #submenu>
       <NavItem

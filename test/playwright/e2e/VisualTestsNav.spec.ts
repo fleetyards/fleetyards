@@ -28,9 +28,16 @@ const TOP_LEVEL = ["forms", "events"];
 const ALL = [...Object.values(GROUPED).flat(), ...TOP_LEVEL];
 
 test.describe("Visual tests nav", () => {
-  test("every demo page has exactly one nav link", async ({ page }) => {
+  test("every demo page has exactly one nav link", async ({ page, nav }) => {
     await page.goto("/visual-tests/typography/");
     await expect(page.locator(".visual-tests")).toBeVisible();
+
+    /*
+     * Expanded, because a collapsed rail opens a section into a panel beside
+     * it and only one of those is up at a time -- so opening the next group
+     * would take the previous group's links back out of the DOM.
+     */
+    await nav.expand();
 
     // Open every group so the submenu links are in the DOM.
     for (const group of Object.keys(GROUPED)) {

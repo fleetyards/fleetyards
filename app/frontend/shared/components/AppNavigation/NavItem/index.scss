@@ -1,3 +1,30 @@
+/*
+ * The centre of a top-level row's icon box: 25px of padding plus half of the
+ * 30px the glyph is given. The rail a submenu hangs from runs down it, so the
+ * children read as branching off their parent's icon rather than starting a
+ * list of their own.
+ */
+$nav-rail-inset: 40px;
+
+$nav-active-glow: color-mix(
+  in srgb,
+  var(--color-primary-shade, #245682) 90%,
+  transparent
+);
+
+@mixin nav-active-bar($inset: 0) {
+  position: absolute;
+  top: 10%;
+  left: $inset;
+  width: 3px;
+  height: 80%;
+  background: var(--color-primary, #428bca);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  box-shadow: 2px 0 10px $nav-active-glow;
+  content: "";
+}
+
 .nav-item {
   > a,
   > button,
@@ -52,17 +79,7 @@
   &--active > a,
   &--active > button {
     &::after {
-      position: absolute;
-      top: 10%;
-      left: 0;
-      width: 3px;
-      height: 80%;
-      background: var(--color-primary, #428bca);
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
-      box-shadow: 2px 0 10px
-        color-mix(in srgb, var(--color-primary-shade, #245682) 90%, transparent);
-      content: "";
+      @include nav-active-bar;
     }
   }
 
@@ -78,34 +95,123 @@
     > button {
       .nav-item__submenu-icon {
         margin-right: 5px;
+        color: var(--color-muted, #7a8288);
 
         i.fa-chevron-right,
         svg.fa-chevron-right {
+          font-size: 12px;
           transition: all $transition-base-speed ease;
         }
       }
     }
 
-    ul {
+    /*
+     * The section a reader is inside has to say so from its own row: with the
+     * children collapsed there is nothing else on screen carrying the mark, and
+     * a rotated chevron on its own is not one.
+     */
+    &--active > button {
+      color: color.adjust($text-color, $lightness: 10%);
+
+      &::after {
+        @include nav-active-bar;
+      }
+
+      .nav-item__submenu-icon {
+        color: var(--color-primary, #428bca);
+      }
+    }
+
+    // The expanded list, not the flyout's -- that one is nested a level deeper
+    // and brings its own spacing.
+    > ul {
+      position: relative;
       margin: 0;
-      padding: 0;
-      padding-bottom: 10px;
+      padding: 0 0 6px;
       list-style: none;
 
-      > li > a {
-        padding-left: 35px;
+      // The rail itself, hanging from the parent's icon down past the last
+      // child.
+      &::before {
+        position: absolute;
+        top: 0;
+        bottom: 10px;
+        left: $nav-rail-inset;
+        width: 1px;
+        background: var(--color-seam, #3a3f44);
+        content: "";
+      }
+
+      > li > a,
+      > li > button,
+      > li > span {
+        padding-left: 52px;
         font-size: 16px;
+
+        i:not(.fa-chevron-right),
+        svg:not(.fa-chevron-right) {
+          min-width: 22px;
+          font-size: 18px;
+        }
+      }
+
+      /*
+       * A node on the rail rather than a bar beside it: the section is a tree
+       * and this is the point on it the reader is standing at. The cap a
+       * top-level row wears would read here as a top-level row that has merely
+       * been indented, competing with the parent it belongs to.
+       *
+       * It belongs to the list, not to the row it marks, so that it can travel
+       * between rows -- see the note in the component. The row itself therefore
+       * draws nothing, and has to be talked out of the bar every active row
+       * otherwise wears.
+       *
+       * Sized and placed off $nav-rail-inset so the node stays centred on the
+       * line however the rail moves. A square turned on its corner measures its
+       * own diagonal, so 7px here reads as a node just under 10px across.
+       *
+       * Moved with `transform` rather than `top`: the offset rides in the same
+       * property as the rotation, which keeps the whole thing on the compositor
+       * and interpolates cleanly, both keyframes being translate-then-rotate.
+       */
+      > li.nav-item--active > a::after {
+        content: none;
+      }
+
+      &::after {
+        position: absolute;
+        top: 0;
+        left: $nav-rail-inset - 3px;
+        width: 7px;
+        height: 7px;
+        background: var(--color-primary, #428bca);
+        border-radius: 1px;
+        box-shadow: 0 0 10px $nav-active-glow;
+        opacity: 0;
+        transform: translateY(calc(var(--nav-node-y, 0px) - 50%)) rotate(45deg);
+        content: "";
+      }
+    }
+
+    &--marked > ul::after {
+      opacity: 1;
+    }
+
+    /*
+     * Only once the node has been placed, so it does not slide down from the
+     * top of the rail on the first paint of a section.
+     */
+    &--settled > ul::after {
+      transition:
+        transform 240ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 160ms ease;
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
       }
     }
 
     &--open {
-      &--active > a,
-      &--active > button {
-        &::after {
-          opacity: 0;
-        }
-      }
-
       > a,
       > button {
         .nav-item__submenu-icon {
@@ -123,13 +229,149 @@
         }
       }
     }
+
+    /*
+     * Collapsed, the chevron has no column to sit in -- the rail is 80px wide
+     * and the icon takes 55 of them -- so it becomes a corner mark against the
+     * glyph, out of the flex flow entirely.
+     */
+    &--flyout {
+      > button {
+        .nav-item__submenu-icon {
+          position: absolute;
+          top: 50%;
+          right: 6px;
+          margin-right: 0;
+          transform: translateY(-50%);
+
+          i.fa-chevron-right,
+          svg.fa-chevron-right {
+            font-size: 9px;
+          }
+        }
+      }
+    }
+
+    &--flyout-open {
+      > button {
+        color: color.adjust($text-color, $lightness: 10%);
+
+        .nav-item__submenu-icon {
+          color: var(--color-primary, #428bca);
+        }
+      }
+    }
+  }
+}
+
+/*
+ * The panel a section opens into while the rail is collapsed. Fixed, so the
+ * rail's own scroll box cannot clip it; see the note on `positionPanel`.
+ */
+.nav-flyout {
+  position: fixed;
+  // Above the navigation's 1000, below AppModal's 1050: a panel that follows
+  // the pointer must not be able to reach over something taking the screen.
+  z-index: 1040;
+  min-width: 220px;
+  max-width: 280px;
+  max-height: calc(100vh - 16px);
+  margin-left: 4px;
+  overflow-y: auto;
+  // It belongs to the row on its left, so that is the edge it grows from.
+  transform-origin: left center;
+  /*
+   * The same tint the rail it grows out of carries, so the panel reads as the
+   * navigation continuing rather than as a window laid over the page. Opaque,
+   * it was the only solid surface in the whole chrome.
+   *
+   * The rail can afford a bare 50% because it sits over the page's backdrop;
+   * the panel is over the page's *content*, so it blurs and darkens what is
+   * behind it -- the treatment the fleet panels already use over photographs.
+   *
+   * Their 0.45 is tuned to make a coloured pill read over a photograph, and it
+   * crushes the backdrop to near-black: the panel came out 19 RGB off the rail
+   * and, worse, lost its cool cast entirely. Blurring harder and darkening less
+   * brings it to 4 RGB, with the rail's blue-over-red ratio intact.
+   */
+  background-color: rgba($gray-darker, 0.5);
+  backdrop-filter: blur(12px) brightness(0.65);
+  border: 1px solid var(--color-seam, #3a3f44);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+
+  /*
+   * It grows out of the row that opened it, so it arrives from the rail's side
+   * and settles rather than appearing whole. Short enough not to be in the way
+   * of a pointer already moving towards it, and quicker to leave than to come.
+   */
+  &-enter-active {
+    transition:
+      opacity 140ms ease-out,
+      transform 140ms cubic-bezier(0.2, 0, 0, 1);
   }
 
-  &--slim {
-    &.nav-item__sub-menu {
-      ul > li > a {
-        padding-left: 25px;
+  &-leave-active {
+    transition:
+      opacity 100ms ease-in,
+      transform 100ms ease-in;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.98);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &-enter-active,
+    &-leave-active {
+      transition: none;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      transform: none;
+    }
+  }
+
+  &__title {
+    padding: 10px 15px 6px;
+    color: var(--color-text-dim, #959595);
+    font-family: "Orbitron", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /*
+   * No padding under the last row. Its own 8px is the panel's bottom margin,
+   * the way the title's 10px is the top one -- a further 6px below it left a
+   * dead band that nothing above the first row answered, and the panel read as
+   * bottom-heavy.
+   */
+  &__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li > a,
+    > li > button,
+    > li > span {
+      padding: 8px 15px;
+      font-size: 15px;
+
+      i:not(.fa-chevron-right),
+      svg:not(.fa-chevron-right) {
+        min-width: 22px;
+        font-size: 18px;
       }
+    }
+
+    > li:hover > a,
+    > li:hover > button {
+      background-color: rgba(255, 255, 255, 0.04);
     }
   }
 }

@@ -93,7 +93,6 @@ onMounted(() => {
         :label="currentFleet.name"
         :image="currentFleet.logo?.smallUrl || undefined"
         :active="route.name === 'fleet'"
-        prefix="00"
       />
       <!-- Top-level, and staying there: this is the one tab somebody outside
            the fleet can reach, and a public surface behind a parent is a click
@@ -104,7 +103,6 @@ onMounted(() => {
         :label="t('nav.fleets.ships')"
         :active="shipsNavActive"
         icon="fa-duotone fa-starship"
-        prefix="01"
       />
 
       <NavItem
@@ -113,7 +111,6 @@ onMounted(() => {
         :label="t('nav.fleets.members.index')"
         :active="String(route.name).startsWith('fleet-members')"
         icon="fa-duotone fa-users"
-        prefix="02"
       />
 
       <!-- What the fleet holds between its members: the recipes they can make
@@ -124,7 +121,6 @@ onMounted(() => {
         menu-key="fleet-assets-menu"
         :submenu-active="assetsNavActive"
         icon="fa-duotone fa-layer-group"
-        prefix="03"
       >
         <template #submenu>
           <NavItem
@@ -159,7 +155,6 @@ onMounted(() => {
         :label="t('nav.fleets.contracts.index')"
         :active="contractsNavActive"
         icon="fa-duotone fa-clipboard-list"
-        prefix="04"
       />
 
       <!-- Tours has no row of its own: it is reached from the events page, the
@@ -174,7 +169,6 @@ onMounted(() => {
         :label="eventsNavLabel"
         :active="eventsNavActive"
         icon="fa-duotone fa-calendar-day"
-        prefix="05"
       />
 
       <!-- Every membership-only row carries its own guard rather than sharing
@@ -190,7 +184,6 @@ onMounted(() => {
         :label="t('nav.fleets.allies')"
         :active="String(route.name).startsWith('fleet-allies')"
         icon="fa-duotone fa-handshake"
-        prefix="06"
       />
       <NavItem
         v-if="currentFleet.publicFleetStats || membership"
@@ -198,7 +191,6 @@ onMounted(() => {
         :label="t('nav.fleets.stats')"
         :active="route.name === 'fleet-stats'"
         icon="fa-duotone fa-chart-bar"
-        prefix="07"
       />
       <NavItem
         v-if="membership"
@@ -206,7 +198,6 @@ onMounted(() => {
         :label="t('nav.fleets.settings.index')"
         :active="String(route.name).startsWith('fleet-settings')"
         icon="fa-duotone fa-cogs"
-        prefix="08"
       />
     </template>
   </div>

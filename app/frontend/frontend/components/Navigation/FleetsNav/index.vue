@@ -63,7 +63,6 @@ watch(
     :submenu-active="active"
     menu-key="fleets-menu"
     icon="fa-duotone fa-users"
-    prefix="05"
   >
     <template #submenu>
       <NavItem
