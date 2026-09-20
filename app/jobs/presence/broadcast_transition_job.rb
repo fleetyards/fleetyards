@@ -19,13 +19,22 @@ module Presence
     # reaches the peers of somebody who has opted out.
     REASON_PREFERENCE = "preference"
 
-    def perform(user_id, online, reason = REASON_CONNECTION)
+    # The state is read here rather than carried in, so the message always says
+    # what is true when it is sent.
+    #
+    # It has to be: a job that partially failed is retried, and Sidekiq's third
+    # backoff lands well past the grace period, so a replayed `online: true`
+    # could arrive after the offline transition it preceded and leave the dot
+    # green for somebody who has gone. Publishing current state instead means
+    # any retry, in any order, converges on the truth. Detecting the transition
+    # stays where it belongs — in the reconcile and in `Connection#connect`.
+    def perform(user_id, reason = REASON_CONNECTION)
       user = ::User.find_by(id: user_id)
       return if user.blank?
 
       payload = {
         userId: user.id,
-        online: online,
+        online: ::UserPresence.online?(user.id),
         lastActiveAt: user.last_active_at&.utc&.iso8601
       }
 

@@ -43,7 +43,7 @@ module ApplicationCable
       return unless UserPresence.connect(current_user.id, presence_token)
 
       begin
-        ::Presence::BroadcastTransitionJob.perform_async(current_user.id, true)
+        ::Presence::BroadcastTransitionJob.perform_async(current_user.id)
       rescue
         # The announcement is already committed, so nothing would emit this
         # again. Putting it back leaves it to the next sweep.

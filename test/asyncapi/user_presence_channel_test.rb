@@ -24,6 +24,10 @@ class UserPresenceChannelTest < AsyncapiTestCase
 
     create(:fleet, officers: [@user], members: [@co_member])
 
+    # The job reads the store rather than taking the value, so the subject has
+    # to actually be connected.
+    UserPresence.connect(@user.id, "tab-1")
+
     Flipper.enable(:online_status)
   end
 
@@ -34,7 +38,7 @@ class UserPresenceChannelTest < AsyncapiTestCase
 
   test "broadcasts the transition to a co-member" do
     payloads = assert_asyncapi_broadcast(params: {user_gid: @co_member.to_gid_param}) do
-      Presence::BroadcastTransitionJob.new.perform(@user.id, true)
+      Presence::BroadcastTransitionJob.new.perform(@user.id)
     end
 
     assert_equal @user.id, payloads.first["userId"]
@@ -46,7 +50,7 @@ class UserPresenceChannelTest < AsyncapiTestCase
     create(:friendship, :accepted, requester: friend, addressee: @user)
 
     payloads = assert_asyncapi_broadcast(params: {user_gid: friend.to_gid_param}) do
-      Presence::BroadcastTransitionJob.new.perform(@user.id, true)
+      Presence::BroadcastTransitionJob.new.perform(@user.id)
     end
 
     assert_equal @user.id, payloads.first["userId"]

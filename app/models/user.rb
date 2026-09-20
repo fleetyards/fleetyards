@@ -1038,7 +1038,7 @@ class User < ApplicationRecord
   # friends get the redaction applied on the way out and admins do not.
   private def broadcast_online_status_change
     ::Presence::BroadcastTransitionJob.perform_async(
-      id, true, ::Presence::BroadcastTransitionJob::REASON_PREFERENCE
+      id, ::Presence::BroadcastTransitionJob::REASON_PREFERENCE
     )
   end
 

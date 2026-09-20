@@ -55,11 +55,7 @@ class UserPresence
     # page intersects this with the rows it is rendering rather than asking per
     # row.
     def online_user_ids
-      read(Set.new) do
-        redis.zrangebyscore(connections_key, "(#{now}", "+inf")
-          .map { |entry| entry.split(":", 2).first }
-          .to_set
-      end
+      live_user_ids || Set.new
     end
 
     # Who changed since the last pass, as `[user_id, online]` pairs. Both the
@@ -73,8 +69,16 @@ class UserPresence
     def reconcile(user_ids: nil)
       sweep
 
-      live = online_user_ids
-      announced = read(Set.new) { redis.smembers(announced_key).to_set }
+      live = live_user_ids
+      announced = announced_user_ids
+
+      # A read that failed and a set that is empty look the same to a rendered
+      # page — no dots either way — but to this they are opposites. Taking a
+      # failed read as "nobody is connected" would announce every user on the
+      # site offline during a Redis blip, so the pass is skipped instead and
+      # the next minute tries again.
+      return [] if live.nil? || announced.nil?
+
       candidates = user_ids.nil? ? (live | announced) : Array(user_ids).map(&:to_s).to_set
 
       candidates.filter_map do |user_id|
@@ -105,6 +109,20 @@ class UserPresence
 
     def reset!
       write { redis.del(connections_key, announced_key) }
+    end
+
+    # Every live user, or `nil` when Redis could not answer. Only `reconcile`
+    # needs the difference; everything else wants the empty set.
+    private def live_user_ids
+      read(nil) do
+        redis.zrangebyscore(connections_key, "(#{now}", "+inf")
+          .map { |entry| entry.split(":", 2).first }
+          .to_set
+      end
+    end
+
+    private def announced_user_ids
+      read(nil) { redis.smembers(announced_key).to_set }
     end
 
     # SADD answers "was it missing", so two sweeps racing emit one transition

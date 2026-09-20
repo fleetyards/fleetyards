@@ -40,7 +40,7 @@ class ApplicationCable::ConnectionTest < ActionCable::Connection::TestCase
 
     assert UserPresence.online?(@user.id)
     assert_equal 1, Presence::BroadcastTransitionJob.jobs.size
-    assert_equal [@user.id, true], Presence::BroadcastTransitionJob.jobs.first["args"]
+    assert_equal [@user.id], Presence::BroadcastTransitionJob.jobs.first["args"]
   end
 
   test "an anonymous connection records nothing" do

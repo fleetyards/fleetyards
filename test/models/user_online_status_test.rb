@@ -30,7 +30,7 @@ class UserOnlineStatusTest < ActiveSupport::TestCase
 
     # Named as the preference, not as a connection: it is the one thing allowed
     # to reach a peer of somebody who has just opted out.
-    assert_equal [[@user.id, true, "preference"]],
+    assert_equal [[@user.id, "preference"]],
       Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
   end
 

@@ -14,10 +14,14 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
     @co_member = create(:user)
     @fleet = create(:fleet, officers: [@user], members: [@co_member])
 
+    UserPresence.reset!
+    connect_user
+
     Flipper.enable(:online_status)
   end
 
   teardown do
+    UserPresence.reset!
     Flipper.disable(:online_status)
   end
 
@@ -29,8 +33,14 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
     ActiveSupport::JSON.decode(broadcasts(stream).last)
   end
 
-  def run_job(online: true, reason: Presence::BroadcastTransitionJob::REASON_CONNECTION)
-    Presence::BroadcastTransitionJob.new.perform(@user.id, online, reason)
+  # The job reads the store rather than taking the value, so a test that wants
+  # to be broadcast as online has to be online.
+  def connect_user
+    UserPresence.connect(@user.id, "tab-1")
+  end
+
+  def run_job(reason: Presence::BroadcastTransitionJob::REASON_CONNECTION)
+    Presence::BroadcastTransitionJob.new.perform(@user.id, reason)
   end
 
   test "a co-member is told" do
@@ -165,7 +175,18 @@ class Presence::BroadcastTransitionJobTest < ActiveSupport::TestCase
 
   test "a user who no longer exists broadcasts nothing" do
     assert_nothing_raised do
-      Presence::BroadcastTransitionJob.new.perform(SecureRandom.uuid, true)
+      Presence::BroadcastTransitionJob.new.perform(SecureRandom.uuid)
     end
+  end
+
+  # A retry of a job that partially failed can land after the transition that
+  # superseded it, so the message has to say what is true when it is sent
+  # rather than replaying what was true when it was queued.
+  test "it publishes the state at send time, not the one it was queued for" do
+    UserPresence.reset!
+
+    run_job
+
+    refute last_payload(UserPresenceChannel.broadcasting_for(@co_member))["online"]
   end
 end

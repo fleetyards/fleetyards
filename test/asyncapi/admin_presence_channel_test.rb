@@ -27,9 +27,10 @@ class AdminPresenceChannelTest < AsyncapiTestCase
   test "an admin sees the transition even with the flag off" do
     admin_user = create(:admin_user)
     user = create(:user)
+    UserPresence.connect(user.id, "tab-1")
 
     payloads = assert_asyncapi_broadcast(params: {admin_user_gid: admin_user.to_gid_param}) do
-      Presence::BroadcastTransitionJob.new.perform(user.id, true)
+      Presence::BroadcastTransitionJob.new.perform(user.id)
     end
 
     assert_equal user.id, payloads.first["userId"]
@@ -39,9 +40,10 @@ class AdminPresenceChannelTest < AsyncapiTestCase
   test "an admin sees the truth about a user who opted out" do
     admin_user = create(:admin_user)
     user = create(:user, show_online_status: false)
+    UserPresence.connect(user.id, "tab-1")
 
     payloads = assert_asyncapi_broadcast(params: {admin_user_gid: admin_user.to_gid_param}) do
-      Presence::BroadcastTransitionJob.new.perform(user.id, true)
+      Presence::BroadcastTransitionJob.new.perform(user.id)
     end
 
     assert payloads.first["online"]

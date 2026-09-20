@@ -131,6 +131,34 @@ class UserPresenceTest < ActiveSupport::TestCase
     end
   end
 
+  # An empty set and a failed read look the same to a rendered page, and are
+  # opposites to the reconcile: "nobody is connected" would announce the whole
+  # site offline.
+  test "#reconcile skips the pass when Redis cannot answer" do
+    UserPresence.connect(@user, "tab-1")
+    UserPresence.disconnect(@user, "tab-1")
+
+    travel UserPresence::GRACE + 1.second do
+      UserPresence.send(:redis).stubs(:zrangebyscore).raises(RuntimeError, "redis down")
+
+      assert_empty UserPresence.reconcile
+
+      UserPresence.send(:redis).unstub(:zrangebyscore)
+
+      assert_equal [[@user, false]], UserPresence.reconcile
+    end
+  end
+
+  test "#online_user_ids still reads as empty when Redis cannot answer" do
+    UserPresence.connect(@user, "tab-1")
+
+    UserPresence.send(:redis).stubs(:zrangebyscore).raises(RuntimeError, "redis down")
+
+    assert_empty UserPresence.online_user_ids
+  ensure
+    UserPresence.send(:redis).unstub(:zrangebyscore)
+  end
+
   test "#sweep drops members nothing can see any more" do
     UserPresence.connect(@user, "tab-1")
 

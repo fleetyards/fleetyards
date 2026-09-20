@@ -30,7 +30,7 @@ class Presence::SweepJobTest < ActiveSupport::TestCase
     travel UserPresence::TTL + 1.second do
       Presence::SweepJob.new.perform
 
-      assert_equal [[@user.id, false, "connection"]],
+      assert_equal [[@user.id, "connection"]],
         Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
     end
   end
@@ -40,28 +40,31 @@ class Presence::SweepJobTest < ActiveSupport::TestCase
 
     Presence::SweepJob.new.perform
 
-    assert_equal [[@user.id, true, "connection"]],
+    assert_equal [[@user.id, "connection"]],
       Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
   end
 
   # The announced set moves before anything is enqueued, so an enqueue that
   # fails has to be put back or the next pass would see the deduplicated state
-  # and say nothing at all.
-  test "an enqueue that fails leaves the transition for the next pass" do
+  # and say nothing at all — and reconcile commits the whole batch, so stopping
+  # at the first failure would strand every transition after it.
+  test "every enqueue that fails is left for the next pass" do
+    other = create(:user)
     UserPresence.connect(@user.id, "tab-1")
+    UserPresence.connect(other.id, "phone")
     Presence::BroadcastTransitionJob.jobs.clear
 
     travel UserPresence::TTL + 1.second do
       Presence::BroadcastTransitionJob.stubs(:perform_async).raises(RuntimeError, "queue down")
 
-      assert_raises(RuntimeError) { Presence::SweepJob.new.perform }
+      assert_raises(Presence::EmitsTransitions::EnqueueFailed) { Presence::SweepJob.new.perform }
 
       Presence::BroadcastTransitionJob.unstub(:perform_async)
 
       Presence::SweepJob.new.perform
 
-      assert_equal [[@user.id, false, "connection"]],
-        Presence::BroadcastTransitionJob.jobs.map { |job| job["args"] }
+      assert_equal [@user.id, other.id].sort,
+        Presence::BroadcastTransitionJob.jobs.map { |job| job["args"].first }.sort
     end
   end
 
