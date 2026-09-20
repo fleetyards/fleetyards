@@ -102,13 +102,15 @@ jobs:
       # builds again, with the names a plural-marked or differently cased
       # localisation key resolves to (#4997) -- 59 more equipment records, 200
       # item names, and two generic manufacturers gone. v5 adds
-      # `blueprint_pools/`, which is where a recipe's sources come from.
+      # `blueprint_pools/`, which is where a recipe's sources come from. v8 is
+      # the same builds once more, with `org_key` and `org_lawful` on a pool's
+      # sources -- 122 of the 154 pool files, and nothing else in the tree.
       - name: Cache the parsed sc_data tree
         id: parsed-tree
         uses: actions/cache@v6
         with:
           path: data/sc_data/parsed
-          key: ${{ runner.os }}-sc-data-parsed-v7-${{ steps.sc-data.outputs.key }}
+          key: ${{ runner.os }}-sc-data-parsed-v8-${{ steps.sc-data.outputs.key }}
 
       - name: Fetch the parsed sc_data tree
         if: steps.parsed-tree.outputs.cache-hit != 'true'

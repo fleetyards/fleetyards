@@ -60,6 +60,7 @@ end
 json.sources blueprint.sources do |source|
   json.kind source.kind
   json.org_name source.org_name
+  json.alignment source.alignment
   json.mission_name source.mission_name
   json.min_standing source.min_standing
   json.max_standing source.max_standing

@@ -75,6 +75,30 @@
     color: #fff;
   }
 
+  // The micro-label the metrics cards and hardpoint rows share, a step down:
+  // Orbitron at 9px and .14em, because this one sits inline beside a 13px org
+  // name rather than over a figure of its own.
+  //
+  // Colour carries it -- there is no filled pill. A row of three rectangles
+  // down the panel would outweigh the org names they are annotating, and the
+  // org is what the group is about.
+  &__alignment {
+    flex: none;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+
+    &--lawful {
+      color: var(--color-primary, #428bca);
+    }
+
+    &--outlaw {
+      color: var(--color-danger, #dc3545);
+    }
+  }
+
   &__count {
     flex: none;
     font-size: 11px;

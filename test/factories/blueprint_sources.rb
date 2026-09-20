@@ -5,6 +5,7 @@
 # Table name: blueprint_sources
 #
 #  id                 :uuid             not null, primary key
+#  alignment          :string
 #  kind               :string           not null
 #  max_standing       :string
 #  min_points         :integer

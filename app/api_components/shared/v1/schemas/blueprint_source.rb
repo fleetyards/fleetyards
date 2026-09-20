@@ -16,6 +16,11 @@ module Shared
             # Null where the generator names more than one faction: a wrong org
             # is worse than none when this is the whole question.
             orgName: {type: [:string, :null]},
+
+            # Which side of the law that org sits on, so a player can tell a
+            # UEE-side contract from an outlaw one without knowing the org.
+            alignment: ::Shared::V1::Schemas::Enums::NullableBlueprintSourceAlignmentEnum,
+
             missionName: {type: [:string, :null]},
 
             # The reputation band the mission is offered in.

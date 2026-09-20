@@ -2787,6 +2787,11 @@
           "Equipment": "Equipment",
           "Commodity": "Commodity"
         },
+        "alignments": {
+          "lawful": "Lawful",
+          "neutral": "Neutral",
+          "outlaw": "Outlaw"
+        },
         "kinds": {
           "contract": "Contract",
           "scenario": "Scenario"
