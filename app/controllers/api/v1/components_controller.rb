@@ -3,7 +3,7 @@
 module Api
   module V1
     class ComponentsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show weapons]
+      skip_verify_authorized only: %i[index show weapons changes]
 
       after_action -> { pagination_header(:components) }, only: [:index]
 
@@ -40,6 +40,15 @@ module Api
       def show
         slug = params[:slug].to_s.downcase
         @component = Component.includes(:manufacturer).find_by!(slug:)
+      end
+
+      # What each patch changed about this component, newest first. The builds
+      # these were derived from are pruned to the two or three the environment
+      # keeps; the log is not.
+      def changes
+        component = Component.find_by!(slug: params[:slug].to_s.downcase)
+
+        @changes = component.build_changes.newest_first
       end
 
       def index

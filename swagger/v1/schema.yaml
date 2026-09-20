@@ -292,6 +292,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/components/{slug}/changes":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Component slug
+      required: true
+    get:
+      summary: Component Changes
+      tags:
+      - Components
+      operationId: componentChanges
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ComponentBuildChangesList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/equipment":
     get:
       summary: Equipment list
@@ -16675,6 +16703,48 @@ components:
           type: number
       additionalProperties: false
       title: ComponentArmor
+    ComponentBuildChange:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        environment:
+          type: string
+        fromVersion:
+          type: string
+        toVersion:
+          type: string
+        field:
+          type: string
+        metric:
+          type: boolean
+        oldValue:
+          type:
+          - string
+          - 'null'
+        newValue:
+          type:
+          - string
+          - 'null'
+        recordedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - environment
+      - fromVersion
+      - toVersion
+      - field
+      - metric
+      - recordedAt
+      additionalProperties: false
+      title: ComponentBuildChange
+    ComponentBuildChangesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ComponentBuildChange"
+      title: ComponentBuildChangesList
     ComponentClassEnum:
       type: string
       enum:
