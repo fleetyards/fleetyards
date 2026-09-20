@@ -191,8 +191,13 @@ Starfarer         cargohold   1 × Ursa-class
 
 ### What it retires
 
-- **The envelope as the filter.** `Dock#fits?` compares metres with clearance. Under
-  this model it decides nothing public; the dimensions stay as reference.
+- **The envelope as the filter, on both paths.** `Dock#fits?` compares metres with
+  clearance, and `Model#carried_by_with_docks` delegates to it, so an unmeasured berth
+  is rejected there. `WillItFitConcern#will_it_fit_scope` filters to
+  `dock.berth? && dock.measured?` and hands back the untouched scope when nothing is
+  measured. Both have to read `class ∪ additions` instead, and the `measured?` gate
+  has to go with them — otherwise the Merchantman stays silent no matter what is
+  curated. The dimensions stay as reference.
 - **The ship/vehicle gate.** `Dock#accepts?` refuses a vehicle on a ship berth and
   the reverse, which is why a cargo grid can never admit a snub. A curated class says
   what a berth takes, and the gate stops being needed.
@@ -202,10 +207,11 @@ Starfarer         cargohold   1 × Ursa-class
 
 ### The ship ladder is the game's
 
-`Libs/Foundry/Records/landingpadsize/` defines six pad classes with explicit boxes,
-and `Dock::SHIP_SIZE_METRICS` is that table transcribed — including XLarge duplicated
-as `capital`. Station hangars declare their class as `sizeId` on 84 instanced
-interiors. So the ship side is free:
+`Libs/Foundry/Records/landingpadsize/` defines six pad classes. All six carry a
+`shipSize` box; only Small, Medium and Large carry a `groundVehicleSize`, and the
+other three record `0 × 0 × 0`. `Dock::SHIP_SIZE_METRICS` is the ship half of that
+table transcribed — including XLarge duplicated as `capital`. Station hangars declare
+their class as `sizeId` on 84 instanced interiors. So the ship side is free:
 
 | id | class | shipSize | groundVehicleSize |
 |---|---|---|---|
@@ -239,8 +245,8 @@ Letting players record what a specific berth holds — "the garage on my Carrack
 
 ## Discovery Log
 
-- **2026-09-20** The pad ladder is in the game and always was: `landingpadsize/` carries six classes with ship *and* ground-vehicle boxes, and `Dock::SHIP_SIZE_METRICS` — which nothing calls — is that table transcribed. What is *not* there is the carrier side: no ship record references a pad size, and ship interiors are absent from `ObjectContainers`. So half of this was derivable all along and the other half never will be.
-- **2026-09-20** `maxBoundingBoxSize` is imported as `sc_length/beam/height` and is where the Cyclone's 8.75 m came from. It is a bucket for ground vehicles: eleven of them — the whole Cyclone family, both Ursas, the Medivac, the Mule, the CSV-SM, the STV — share one identical 6.00 × 8.75 × 3.50 box, and the ATLS pair has none at all. For ships it is sound: 93 of 178 match the recorded figures exactly.
+- **2026-09-20** The pad ladder is in the game and always was: `landingpadsize/` carries six classes, all with a ship box and three of them with a ground-vehicle box, and `Dock::SHIP_SIZE_METRICS` — which nothing calls — is that table transcribed. What is *not* there is the carrier side: no ship record references a pad size, and ship interiors are absent from `ObjectContainers`. So half of this was derivable all along and the other half never will be.
+- **2026-09-20** `maxBoundingBoxSize` is imported as `sc_length/beam/height` and is where the Cyclone's 8.75 m came from. It is a bucket for ground vehicles: twelve of them carry the same three numbers — five Cyclone variants (AA, MT, RC, RN, TR), both Ursas, the Medivac, the Mule, the CSV-SM and the STV as 6.00 × 8.75 × 3.50, and the base Cyclone as 8.75 × 6.00 × 3.50, the axis order being ours rather than the game's. The ATLS pair has no box at all. For ships it is sound: 93 of 178 match the recorded figures exactly.
 
 - **2026-09-20** The ladder could not be curated at all: `vehicle_size` may only be set where `size` is "vehicle", and the ten largest ground vehicles carried no `size`. The same column held four capitalised spellings and two empty strings — it was a free string copied verbatim from the RSI matrix, which capitalises its own.
 - **2026-09-20** And the matrix carries no size for *exactly* those ten vehicles. The loader wrote what the matrix said, blanks included, so the backfill would have been undone on the next nightly run — and on a vehicle already placed on the ladder the blank fails validation and takes the whole update with it, dimensions and speeds and all. Found by CodeRabbit on #5073; the rule it breaks was already written down in the same file for the four manoeuvring fields.
