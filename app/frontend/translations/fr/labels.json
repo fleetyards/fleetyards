@@ -826,10 +826,13 @@
         "title": "Disponibilité",
         "buy": "Achat",
         "rent": "Location",
+        "sell": "Vente",
         "cheapest": {
           "buy": "Achat le moins cher",
           "rent": "Location la moins chère"
         },
+        "bestSale": "Meilleur prix de vente",
+        "allLocations": "Tous les emplacements",
         "locations": {
           "one": "%{count} emplacement",
           "other": "%{count} emplacements"
@@ -1162,6 +1165,11 @@
         "copySameModel": "Le vaisseau cible doit être différent du vaisseau source."
       },
       "component": {
+        "availability": {
+          "retired": "Les prix sont suivis pour la version sur laquelle est le catalogue, et cette pièce n'en fait pas partie.",
+          "craftedOnly": "Aucun terminal ne le vend : il se fabrique à partir de la recette ci-dessous.",
+          "none": "Aucun terminal ne l'achète ni ne le vend."
+        },
         "notRecordedYet": "Enregistré seulement depuis le début du suivi, un composant peut donc n'avoir rien.",
         "size": "Taille : %{size}",
         "grade": "Grade",

@@ -50,7 +50,7 @@ const hasPrice = computed(
 const openAvailability = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Models/AvailabilityModal/index.vue"),
+      import("@/frontend/components/AvailabilityModal/index.vue"),
     props: {
       soldAt: soldAt.value,
       rentalAt: rentalAt.value,

@@ -826,10 +826,13 @@
         "title": "Verfügbarkeit",
         "buy": "Kaufen",
         "rent": "Mieten",
+        "sell": "Verkaufen",
         "cheapest": {
           "buy": "Günstigster Kauf",
           "rent": "Günstigste Miete"
         },
+        "bestSale": "Bester Verkaufspreis",
+        "allLocations": "Alle Standorte",
         "locations": {
           "one": "%{count} Standort",
           "other": "%{count} Standorte"
@@ -1162,6 +1165,11 @@
         "copySameModel": "Das Zielschiff muss sich vom Ausgangsschiff unterscheiden."
       },
       "component": {
+        "availability": {
+          "retired": "Preise werden für den Build erfasst, auf dem der Katalog steht, und dieses Teil ist nicht darin.",
+          "craftedOnly": "Kein Terminal verkauft dieses Teil – es wird nach dem Rezept unten hergestellt.",
+          "none": "Kein Terminal kauft oder verkauft dieses Teil."
+        },
         "notRecordedYet": "Wird erst seit dem Start der Aufzeichnung erfasst, eine Komponente kann also noch nichts haben.",
         "size": "Size: %{size}",
         "grade": "Qualität",

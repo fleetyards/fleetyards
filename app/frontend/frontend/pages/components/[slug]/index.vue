@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import Availability from "@/frontend/components/Components/Availability/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -39,7 +40,7 @@ const stats = useComponentStats(component);
 // What this can be crafted from. Asked only once the component has arrived,
 // since the recipe is looked up by its id -- 476 of the catalogue's components
 // have one, so most pages get an empty answer and no card.
-const { data: blueprints } = useBlueprintsQuery(
+const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
   computed(() => ({
     q: {
       craftableTypeEq: BlueprintCraftableTypeEnum.COMPONENT,
@@ -263,6 +264,14 @@ watch(
             </div>
           </div>
         </MetricsCard>
+
+        <!-- Above the recipe card, because when nothing sells a component the
+             answer it gives is "made from the recipe below". -->
+        <Availability
+          :component="component"
+          :craftable="recipes.length > 0"
+          :loading="recipesPending"
+        />
 
         <MetricsCard
           v-if="recipes.length"
