@@ -1073,6 +1073,7 @@
         "name": "名稱",
         "dockType": "停靠類型",
         "shipSize": "飛船尺寸",
+        "access": "進入方式",
         "length": "長度",
         "beam": "寬度",
         "height": "高度",
@@ -2648,6 +2649,11 @@
           "commodities": "商品",
           "models": "艦船"
         }
+      },
+      "dockAccess": {
+        "ramp": "坡道",
+        "lift": "升降機",
+        "tractor_beam": "牽引光束"
       },
       "dockTypes": {
         "vehiclepad": "載具停放位",

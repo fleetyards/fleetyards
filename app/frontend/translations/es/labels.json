@@ -1073,6 +1073,7 @@
         "name": "Nombre",
         "dockType": "Tipo de muelle",
         "shipSize": "Tamaño de nave",
+        "access": "Acceso",
         "length": "Longitud",
         "beam": "Manga",
         "height": "Altura",
@@ -2648,6 +2649,11 @@
           "commodities": "Mercancías",
           "models": "Naves"
         }
+      },
+      "dockAccess": {
+        "ramp": "Rampa",
+        "lift": "Elevador",
+        "tractor_beam": "Rayo tractor"
       },
       "dockTypes": {
         "vehiclepad": "Plataforma de vehículos",

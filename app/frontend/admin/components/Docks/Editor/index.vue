@@ -97,6 +97,16 @@ const shipSizeOptions = computed<FilterOption[]>(() =>
   ].map((value) => ({ label: t(`labels.shipSizes.${value}`), value })),
 );
 
+// Ordered by how pleasant it is rather than alphabetically, and the last is a
+// confession: a tractor beam gets a vehicle into a berth that has neither ramp
+// nor lift, badly.
+const accessOptions = computed<FilterOption[]>(() =>
+  ["ramp", "lift", "tractor_beam"].map((value) => ({
+    label: t(`labels.dockAccess.${value}`),
+    value,
+  })),
+);
+
 // Edit
 const editForm = ref<DockInput>({});
 
@@ -105,6 +115,7 @@ const onStartEdit = (record: Dock) => {
     name: record.name,
     dockType: record.dockType,
     shipSize: record.shipSize,
+    access: record.access,
     length: record.length,
     beam: record.beam,
     height: record.height,
@@ -204,6 +215,9 @@ const onSaveCreate = async () => {
     <template #display="{ item }">
       <BasePill uppercase margin-right>{{ item.dockTypeLabel }}</BasePill>
       <BasePill margin-right>{{ item.shipSizeLabel }}</BasePill>
+      <BasePill v-if="item.accessLabel" margin-right>{{
+        item.accessLabel
+      }}</BasePill>
       <span v-if="item.name">{{ item.name }}</span>
       <!-- An unmeasured berth answers nothing, so say so rather than leaving
            the row looking complete. -->
@@ -234,6 +248,13 @@ const onSaveCreate = async () => {
         :options="shipSizeOptions"
         unsorted
         :label="t('labels.dock.shipSize')"
+      />
+      <BaseSelect
+        v-model="editForm.access"
+        name="edit-access"
+        :options="accessOptions"
+        unsorted
+        :label="t('labels.dock.access')"
       />
       <FormInput
         v-model="editForm.name"
@@ -279,6 +300,13 @@ const onSaveCreate = async () => {
         :options="shipSizeOptions"
         unsorted
         :label="t('labels.dock.shipSize')"
+      />
+      <BaseSelect
+        v-model="createForm.access"
+        name="create-access"
+        :options="accessOptions"
+        unsorted
+        :label="t('labels.dock.access')"
       />
       <FormInput
         v-model="createForm.name"

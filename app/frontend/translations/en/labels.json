@@ -1073,6 +1073,7 @@
         "name": "Name",
         "dockType": "Dock Type",
         "shipSize": "Ship Size",
+        "access": "Access",
         "length": "Length",
         "beam": "Beam",
         "height": "Height",
@@ -2662,6 +2663,11 @@
           "commodities": "Commodities",
           "models": "Ships"
         }
+      },
+      "dockAccess": {
+        "ramp": "Ramp",
+        "lift": "Lift",
+        "tractor_beam": "Tractor Beam"
       },
       "dockTypes": {
         "vehiclepad": "Vehicle pad",

@@ -51,6 +51,10 @@ en:
           electromagnetic: Electromagnetic
           infrared: infrared
       dock:
+        accesses:
+          lift: Lift
+          ramp: Ramp
+          tractor_beam: Tractor Beam
         dock_types:
           cargogrid: Cargo Grid
           dockingport: Dockingport

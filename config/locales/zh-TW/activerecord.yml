@@ -51,6 +51,10 @@ zh-TW:
           electromagnetic: 電磁
           infrared: 紅外
       dock:
+        accesses:
+          lift: 升降機
+          ramp: 坡道
+          tractor_beam: 牽引光束
         dock_types:
           cargogrid: 貨運格柵
           dockingport: 對接口

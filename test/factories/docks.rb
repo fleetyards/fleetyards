@@ -3,6 +3,7 @@
 # Table name: docks
 #
 #  id            :uuid             not null, primary key
+#  access        :integer
 #  beam          :decimal(15, 2)
 #  dock_type     :integer
 #  group         :string

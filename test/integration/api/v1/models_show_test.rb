@@ -42,6 +42,24 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Stated, not filtered on: the label says how the ship gets in, and a berth
+  # nobody has looked at says nothing rather than guessing.
+  test "GET /models/:slug says how a carrier's berth is reached" do
+    carrier = create(:model, name: "Ramped Carrier")
+    create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar, access: :ramp)
+    unrecorded = create(:model, name: "Unrecorded Carrier")
+    create(:dock, :with_dimensions, parent: unrecorded, dock_type: :hangar, access: nil)
+
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      entries = parsed_body["carriedBy"].index_by { |entry| entry["name"] }
+
+      assert_equal "Ramp", entries[carrier.name]["accessLabel"]
+      assert_not entries[unrecorded.name].key?("accessLabel")
+    end
+  end
+
   # The Galaxy's med bay carries a vehicle lift and its refinery does not, so a
   # berth that arrives with a module counts -- and says which module, because
   # the carrier is conditional on the owner having mounted it.

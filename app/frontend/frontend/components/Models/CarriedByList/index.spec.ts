@@ -74,4 +74,25 @@ describe("ModelsCarriedByList", () => {
     expect(wrapper.text()).toContain("Idris-M");
     expect(wrapper.text()).toContain("Polaris");
   });
+
+  // The label says how the ship gets in. A berth nobody has looked at says
+  // nothing at all rather than rendering an empty pill.
+  it("shows how a berth is reached, and only where it is recorded", async () => {
+    const wrapper = await mount({
+      carriedBy: [
+        {
+          slug: "idris-m",
+          name: "Idris-M",
+          dockType: "hangar",
+          accessLabel: "Ramp",
+        },
+        { slug: "polaris", name: "Polaris", dockType: "hangar" },
+      ],
+    });
+
+    const pills = wrapper.findAll('[data-test="pill"]');
+
+    expect(wrapper.text()).toContain("Ramp");
+    expect(pills).toHaveLength(3);
+  });
 });

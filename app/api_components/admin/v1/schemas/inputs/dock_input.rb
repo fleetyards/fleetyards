@@ -13,6 +13,7 @@ module Admin
               name: {type: [:string, :null]},
               dockType: {type: :string},
               shipSize: {type: :string},
+              access: {type: [:string, :null]},
               group: {type: [:string, :null]},
               length: {type: [:number, :null]},
               beam: {type: [:number, :null]},

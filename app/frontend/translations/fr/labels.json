@@ -1073,6 +1073,7 @@
         "name": "Nom",
         "dockType": "Type de quai",
         "shipSize": "Taille du vaisseau",
+        "access": "Accès",
         "length": "Longueur",
         "beam": "Largeur",
         "height": "Hauteur",
@@ -2648,6 +2649,11 @@
           "commodities": "Marchandises",
           "models": "Vaisseaux"
         }
+      },
+      "dockAccess": {
+        "ramp": "Rampe",
+        "lift": "Ascenseur",
+        "tractor_beam": "Rayon tracteur"
       },
       "dockTypes": {
         "vehiclepad": "Plateforme véhicule",

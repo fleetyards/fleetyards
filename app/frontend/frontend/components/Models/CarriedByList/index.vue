@@ -85,6 +85,17 @@ const storeImage = (item: ModelExtendedCarriedByItem) => {
                         t(`labels.dockTypes.${item.dockType}`)
                       }}
                     </Pill>
+                    <!-- How the ship gets in, when somebody has recorded it.
+                         Absent rather than blank on a berth nobody has looked
+                         at: "we do not know" is not the same statement as
+                         "you will need a tractor beam". -->
+                    <Pill
+                      v-if="item.accessLabel"
+                      :variant="PillVariantsEnum.NEUTRAL"
+                      uppercase
+                    >
+                      {{ item.accessLabel }}
+                    </Pill>
                   </template>
                 </PanelHeading>
               </Panel>

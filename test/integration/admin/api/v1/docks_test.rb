@@ -147,6 +147,31 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201, body: body
   end
 
+  test "POST /docks records how the berth is reached" do
+    model = create(:model)
+    sign_in @user
+
+    body = {
+      name: "Garage", dockType: "garage", shipSize: "small", access: "lift",
+      parentId: model.id, parentType: "Model"
+    }
+    assert_api_response :post, 201, body: body do
+      assert_equal "lift", model.docks.sole.access
+    end
+  end
+
+  # Most berths have not been looked at, and "we do not know" is a different
+  # statement from "you will need a tractor beam".
+  test "POST /docks leaves access unset when it is not given" do
+    model = create(:model)
+    sign_in @user
+
+    body = {name: "Pad 02", dockType: "landingpad", shipSize: "medium", parentId: model.id, parentType: "Model"}
+    assert_api_response :post, 201, body: body do
+      assert_nil model.docks.sole.access
+    end
+  end
+
   test "POST /docks creates a dock on a module" do
     model_module = create(:model_module)
     sign_in @user
@@ -299,6 +324,15 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: dock.id}, body: {name: "Updated Pad"}
+  end
+
+  test "PUT /docks/:id records how the berth is reached" do
+    dock = create(:dock, access: nil)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: dock.id}, body: {access: "tractor_beam"} do
+      assert_equal "tractor_beam", dock.reload.access
+    end
   end
 
   test "PUT /docks/:id returns 404 for missing id" do
