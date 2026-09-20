@@ -21,8 +21,8 @@ require "test_helper"
 #
 # Foreign Keys
 #
-#  fk_rails_...  (dock_id => docks.id)
-#  fk_rails_...  (model_id => models.id)
+#  fk_rails_...  (dock_id => docks.id) ON DELETE => cascade
+#  fk_rails_...  (model_id => models.id) ON DELETE => cascade
 #
 class DockAdditionTest < ActiveSupport::TestCase
   test "a berth names the ships its class does not cover" do
@@ -54,6 +54,18 @@ class DockAdditionTest < ActiveSupport::TestCase
 
     assert_difference -> { DockAddition.count }, -1 do
       dock.destroy
+    end
+  end
+
+  # A name for a ship that no longer exists says nothing -- and the berth that
+  # names it is usually somebody else's, which `dependent: :destroy` on the dock
+  # does not cover.
+  test "a berth stops naming a ship that is deleted" do
+    model = create(:model)
+    create(:dock_addition, dock: create(:dock), model:)
+
+    assert_difference -> { DockAddition.count }, -1 do
+      model.destroy
     end
   end
 

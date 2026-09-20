@@ -2295,8 +2295,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_192000) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
-  add_foreign_key "dock_additions", "docks"
-  add_foreign_key "dock_additions", "models"
+  add_foreign_key "dock_additions", "docks", on_delete: :cascade
+  add_foreign_key "dock_additions", "models", on_delete: :cascade
   add_foreign_key "dock_capacities", "docks"
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify

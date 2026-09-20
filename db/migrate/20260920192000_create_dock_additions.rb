@@ -12,8 +12,13 @@
 class CreateDockAdditions < ActiveRecord::Migration[8.1]
   def change
     create_table :dock_additions, id: :uuid do |t|
-      t.references :dock, type: :uuid, null: false, foreign_key: true
-      t.references :model, type: :uuid, null: false, foreign_key: true
+      # Both cascade. A row is a statement about one berth and one ship, so it
+      # outlives neither: without this, deleting a ship named on somebody
+      # else's dock fails on the constraint rather than taking the name with
+      # it -- and `dependent: :destroy` on the dock only covers the berths that
+      # ship happens to own.
+      t.references :dock, type: :uuid, null: false, foreign_key: {on_delete: :cascade}
+      t.references :model, type: :uuid, null: false, foreign_key: {on_delete: :cascade}
 
       t.timestamps
     end

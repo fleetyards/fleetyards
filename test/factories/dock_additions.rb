@@ -18,8 +18,8 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (dock_id => docks.id)
-#  fk_rails_...  (model_id => models.id)
+#  fk_rails_...  (dock_id => docks.id) ON DELETE => cascade
+#  fk_rails_...  (model_id => models.id) ON DELETE => cascade
 #
 FactoryBot.define do
   factory :dock_addition do
