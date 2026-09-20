@@ -106,6 +106,7 @@ pnpm format:fix                   # Prettier formatting
 ### API Schema
 ```bash
 ./bin/generate-schema             # Generate OpenAPI schema
+./bin/generate-clients            # Regenerate the frontend clients the schemas feed
 ```
 
 ## Backend Conventions
@@ -193,7 +194,14 @@ pnpm format:fix                   # Prettier formatting
 - Uses Tanstack Vue Query as the client (`client: "vue-query"`)
 - Generated files are split by tags (`mode: "tags-split"`)
 - **Never edit generated files** — regenerate with Orval after schema changes
-- After updating API endpoints and regenerating the OpenAPI schema, re-run Orval to update the frontend clients
+- Regeneration is automatic: `bin/generate-clients` runs from `postinstall`, from
+  Vite (so a dev server, a `vite build` or a Vitest run is enough) and from
+  `lint:ts`, and it also covers the cable clients `bin/generate-asyncapi` feeds.
+  It stamps its inputs, so a checkout that is already current does nothing. Run
+  it by hand — or `pnpm generate-api-client` — only to force the point.
+- The clients are gitignored, so a pull that changes only a schema leaves them
+  stale until one of those runs; `pnpm install` alone will not do it, because an
+  install that changes no dependency skips `postinstall`.
 
 ### Linting
 - **Always** run `pnpm lint:fix` after modifying frontend files

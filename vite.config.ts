@@ -1,5 +1,6 @@
 import { resolve } from "path";
-import { defineConfig } from "vite";
+import { execFileSync, execFile } from "node:child_process";
+import { defineConfig, type Plugin } from "vite";
 import ViteRails from "vite-plugin-rails";
 import Vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
@@ -7,6 +8,44 @@ import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { templateCompilerOptions } from "@tresjs/core";
+
+const generateClients = (): Plugin => {
+  const script = resolve(__dirname, "bin/generate-clients");
+
+  const generate = () => execFileSync(script, { stdio: "inherit" });
+
+  const inputs = () =>
+    execFileSync(script, ["--inputs"], { encoding: "utf8" }).trim().split("\n");
+
+  return {
+    name: "fleetyards:generate-clients",
+    enforce: "pre",
+
+    // The API and cable clients are generated and gitignored, and an install
+    // was the only thing that wrote them - so a pull that changed a schema
+    // but no dependency left Vite resolving imports the stale client has no
+    // file for. bin/generate-clients stamps its inputs, so a checkout that is
+    // already current pays a few file reads.
+    buildStart() {
+      generate();
+    },
+
+    // And a schema regenerated while the server runs rebuilds the client it
+    // feeds, which is a module change like any other.
+    configureServer(server) {
+      const watched = inputs();
+
+      server.watcher.add(watched);
+      server.watcher.on("change", (file) => {
+        if (!watched.includes(file)) return;
+
+        execFile(script, (error) => {
+          if (error) server.config.logger.error(String(error));
+        });
+      });
+    },
+  };
+};
 
 const cache: { [key: string]: string } = {};
 
@@ -27,6 +66,7 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 
 export default defineConfig({
   plugins: [
+    generateClients(),
     tailwindcss(),
     ViteRails(),
     Vue({

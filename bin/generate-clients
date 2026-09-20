@@ -1,0 +1,114 @@
+#!/usr/bin/env node
+// Regenerates the frontend API and cable clients whenever their inputs moved.
+//
+// The clients are gitignored, so a pull that changes only a schema leaves them
+// stale and Vite fails to resolve whatever the schema added. `pnpm install` is
+// not enough on its own: an install that finds node_modules already in order
+// skips the build phase, `postinstall` included, and a schema-only pull
+// changes no dependency. So Vite and `lint:ts` call this themselves - starting
+// the dev server, the test run or the type check is enough to be current.
+//
+// Both callers run it unconditionally, which is why it stamps: a target whose
+// inputs hash the same as last time and whose output is still on disk costs a
+// few file reads instead of the generator.
+//
+//   bin/generate-clients            # regenerate what is stale
+//   bin/generate-clients --force    # regenerate regardless
+
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join, resolve } from "node:path";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+
+// The lockfile is an input to both: it is what a bump of orval or of
+// asyncapi-cable shows up in, and either changes the output.
+const TARGETS = [
+  {
+    name: "api",
+    script: "generate-api-client",
+    inputs: [
+      "pnpm-lock.yaml",
+      "orval.config.ts",
+      "swagger/v1/schema.yaml",
+      "swagger/oauth/v1/schema.yaml",
+      "swagger/admin/v1/schema.yaml",
+    ],
+    outputs: [
+      "app/frontend/services/fyApi",
+      "app/frontend/services/fyOAuthApi",
+      "app/frontend/services/fyAdminApi",
+    ],
+  },
+  {
+    name: "cable",
+    script: "generate-cable-client",
+    inputs: [
+      "pnpm-lock.yaml",
+      "bin/generate-cable-client",
+      "asyncapi/cable/v1/schema.yaml",
+      "asyncapi/cable/admin/v1/schema.yaml",
+    ],
+    outputs: [
+      "app/frontend/services/fyCable",
+      "app/frontend/services/fyCableAdmin",
+    ],
+  },
+];
+
+// Under node_modules so it cannot outlive the install it describes, and so a
+// worktree keeps its own.
+const stampDir = join(root, "node_modules/.cache/fleetyards");
+
+const hashOf = (target) => {
+  const digest = createHash("sha256");
+
+  for (const input of target.inputs) {
+    const path = join(root, input);
+    digest.update(input);
+    digest.update(existsSync(path) ? readFileSync(path) : "missing");
+  }
+
+  return digest.digest("hex");
+};
+
+const generated = (target) =>
+  target.outputs.every((output) => {
+    const path = join(root, output);
+
+    return existsSync(path) && readdirSync(path).length > 0;
+  });
+
+// What Vite watches, so the list of inputs lives in one place.
+if (process.argv.includes("--inputs")) {
+  const inputs = TARGETS.flatMap((target) => target.inputs);
+
+  console.log(
+    [...new Set(inputs)].map((input) => join(root, input)).join("\n"),
+  );
+  process.exit(0);
+}
+
+const force = process.argv.includes("--force");
+const stale = TARGETS.filter((target) => {
+  if (force || !generated(target)) return true;
+
+  const stamp = join(stampDir, `${target.name}.sha`);
+
+  return !existsSync(stamp) || readFileSync(stamp, "utf8") !== hashOf(target);
+});
+
+for (const target of stale) {
+  execFileSync("pnpm", ["run", target.script], { cwd: root, stdio: "inherit" });
+
+  mkdirSync(stampDir, { recursive: true });
+  writeFileSync(join(stampDir, `${target.name}.sha`), hashOf(target));
+}
