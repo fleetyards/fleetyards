@@ -1072,7 +1072,7 @@
       "dockCapacity": {
         "ladder": "Scala",
         "size": "Classe",
-        "quantity": "Quanti",
+        "quantity": "Quantità",
         "display": "Mostra come etichetta",
         "hint": "Per cosa è costruito l'attracco. Le voci sono alternative, non una somma.",
         "empty": "voci di capacità"
