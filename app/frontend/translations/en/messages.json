@@ -455,6 +455,9 @@
         "modelModulePackage": {
           "destroy": "Are you sure you want to delete this module package? This action can't be reverted."
         },
+        "dockCapacity": {
+          "destroy": "Are you sure you want to delete this capacity entry? This action can't be reverted."
+        },
         "dock": {
           "destroy": "Are you sure you want to delete this dock? This action can't be reverted."
         },
@@ -972,6 +975,17 @@
         "joinRequestWithdrawn": "Request withdrawn",
         "joinRequestApproved": "Request approved",
         "joinRequestDeclined": "Request declined"
+      },
+      "dockCapacity": {
+        "create": {
+          "failure": "Could not create the capacity entry."
+        },
+        "update": {
+          "failure": "Could not save the capacity entry."
+        },
+        "destroy": {
+          "failure": "Could not delete the capacity entry."
+        }
       },
       "dock": {
         "create": {

@@ -25,6 +25,9 @@ module Admin
             height: {type: :number},
             minShipSize: {type: :integer},
             maxShipSize: {type: :integer},
+            # What the berth is built for, and how many at once. Alternatives
+            # rather than a sum -- see DockCapacity.
+            capacities: {type: :array, items: DockCapacity},
             parentId: {type: :string, format: :uuid},
             parentType: {type: :string},
             createdAt: {type: :string, format: "date-time"},
@@ -32,7 +35,7 @@ module Admin
           },
           additionalProperties: false,
           required: %w[
-            id dockType dockTypeLabel shipSize shipSizeLabel parentId parentType
+            id dockType dockTypeLabel shipSize shipSizeLabel capacities parentId parentType
             createdAt updatedAt
           ]
         })

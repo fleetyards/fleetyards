@@ -445,6 +445,9 @@
         "modelModulePackage": {
           "destroy": "Bist du sicher, dass du dieses Modulpaket löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
+        "dockCapacity": {
+          "destroy": "Soll dieser Kapazitätseintrag wirklich gelöscht werden? Das lässt sich nicht rückgängig machen."
+        },
         "dock": {
           "destroy": "Bist du sicher, dass du diesen Dock löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
@@ -962,6 +965,17 @@
         "joinRequestWithdrawn": "Anfrage zurückgezogen",
         "joinRequestApproved": "Anfrage angenommen",
         "joinRequestDeclined": "Anfrage abgelehnt"
+      },
+      "dockCapacity": {
+        "create": {
+          "failure": "Kapazitätseintrag konnte nicht erstellt werden."
+        },
+        "update": {
+          "failure": "Kapazitätseintrag konnte nicht gespeichert werden."
+        },
+        "destroy": {
+          "failure": "Kapazitätseintrag konnte nicht gelöscht werden."
+        }
       },
       "dock": {
         "create": {

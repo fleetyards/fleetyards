@@ -42,6 +42,12 @@ interface Props {
 
 const props = defineProps<Props>();
 
+// Dynamic: the expanded slot renders only for the dock being edited, and the
+// entries editor is a second list with its own queries behind it.
+const DocksCapacities = defineAsyncComponent(
+  () => import("@/admin/components/Docks/Capacities/index.vue"),
+);
+
 const { t } = useI18n();
 const queryClient = useQueryClient();
 const { displayAlert } = useAppNotifications();
@@ -218,6 +224,15 @@ const onSaveCreate = async () => {
       <BasePill v-if="item.accessLabel" margin-right>{{
         item.accessLabel
       }}</BasePill>
+      <!-- What the berth is built for. Alternatives rather than a sum, so they
+           read as separate pills. -->
+      <BasePill
+        v-for="capacity in item.capacities || []"
+        :key="capacity.id"
+        margin-right
+      >
+        {{ capacity.quantity }} × {{ capacity.sizeLabel }}
+      </BasePill>
       <span v-if="item.name">{{ item.name }}</span>
       <!-- An unmeasured berth answers nothing, so say so rather than leaving
            the row looking complete. -->
@@ -285,6 +300,10 @@ const onSaveCreate = async () => {
         translation-key="dock.height"
         :step="0.1"
       />
+    </template>
+
+    <template #expanded="{ item }">
+      <DocksCapacities :dock-id="item.id" />
     </template>
 
     <template #create>

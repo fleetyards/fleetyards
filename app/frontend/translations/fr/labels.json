@@ -1069,6 +1069,27 @@
         "active": "Actif ?",
         "hidden": "Caché ?"
       },
+      "dockCapacity": {
+        "ladder": "Échelle",
+        "size": "Classe",
+        "quantity": "Combien",
+        "display": "Afficher comme étiquette",
+        "hint": "Ce pour quoi le poste est conçu. Les entrées sont des alternatives, pas une somme.",
+        "empty": "entrées de capacité"
+      },
+      "dockCapacityLadders": {
+        "ship": "Vaisseaux",
+        "vehicle": "Véhicules"
+      },
+      "vehicleSizes": {
+        "extra_extra_small": "Minuscule (XXS)",
+        "extra_small": "Très petit (XS)",
+        "small": "Petit (S)",
+        "medium": "Moyen (M)",
+        "large": "Grand (L)",
+        "extra_large": "Très grand (XL)",
+        "extra_extra_large": "Énorme (XXL)"
+      },
       "dock": {
         "name": "Nom",
         "dockType": "Type de quai",
