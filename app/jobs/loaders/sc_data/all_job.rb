@@ -23,6 +23,12 @@ module Loaders
         stats = ::ScData::Source.with(source) do
           fetch_parsed_tree!(source.version)
 
+          # Recorded before the load rather than after it, and from the tree on
+          # disk rather than the bucket: this is the tree the loaders are about
+          # to read. A load that then fails leaves the checksum on a record that
+          # never finished, so `CheckJob` keeps seeing the work as outstanding.
+          import.update!(tree_checksum: tree_checksum(source))
+
           ::ScData::Loader::BaseLoader.all.to_h
         end
 
@@ -48,6 +54,13 @@ module Loaders
         import.update!(info: e.message)
 
         raise e
+      end
+
+      # The tree on disk, which after `fetch_parsed_tree!` is the one the bucket
+      # holds. `ParsedStore` only knows where a tree lives here -- it reaches
+      # for no credentials to answer that -- so this works offline too.
+      private def tree_checksum(source)
+        ::ScData::ParsedTree.checksum(::ScData::ParsedStore.new(source.environment).local_root)
       end
 
       # The load only ever iterates models that already exist, so a ship in the

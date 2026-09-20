@@ -35,6 +35,32 @@ module Loaders
         assert_equal "3.24.0", Imports::ScData::AllImport.last.version
       end
 
+      # Which tree the load actually read, so `ScData::CheckJob` can tell the
+      # next one whether anything moved. The version cannot answer that -- a
+      # parser change rewrites the tree and leaves it alone.
+      test "#perform records the checksum of the tree it loaded" do
+        ::ScData::Loader::BaseLoader.stubs(:all)
+        ::ScData::ParsedTree.stubs(:checksum).returns("tree-digest")
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        assert_equal "tree-digest", Imports::ScData::AllImport.last.tree_checksum
+      end
+
+      # Recorded before the load rather than after it, so a load that dies part
+      # way through leaves the checksum on a record that never finished -- and
+      # `CheckJob`, which reads only finished ones, keeps seeing the work as
+      # outstanding.
+      test "#perform leaves no finished record carrying a checksum when the load fails" do
+        ::ScData::ParsedTree.stubs(:checksum).returns("tree-digest")
+        ::ScData::Loader::BaseLoader.stubs(:all).raises("nope")
+
+        assert_raises(RuntimeError) { ::Loaders::ScData::AllJob.new.perform }
+
+        assert_empty Imports::ScData::AllImport.finished
+        assert_equal "tree-digest", Imports::ScData::AllImport.last.tree_checksum
+      end
+
       # The whole load runs inside the source it was given, so every loader,
       # scope and the parsed-tree fetch underneath resolve that build without
       # being handed it -- which is what makes a second environment loadable at
