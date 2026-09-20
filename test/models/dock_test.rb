@@ -19,7 +19,6 @@ require "test_helper"
 #  ship_size     :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  model_id      :uuid
 #  parent_id     :uuid             not null
 #
 # Indexes
