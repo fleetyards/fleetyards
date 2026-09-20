@@ -1,0 +1,123 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 1,
+      "id_item": 10,
+      "id_category": 32,
+      "id_terminal": 106,
+      "item_name": "Omnisky III Cannon",
+      "item_uuid": "aaaaaaaa-0000-0000-0000-000000000001",
+      "price_buy": 15461,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 2,
+      "id_item": 10,
+      "id_category": 32,
+      "id_terminal": 107,
+      "item_name": "Omnisky III Cannon",
+      "item_uuid": "aaaaaaaa-0000-0000-0000-000000000001",
+      "price_buy": 16000,
+      "price_sell": 7000,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 3,
+      "id_item": 10,
+      "id_category": 32,
+      "id_terminal": 108,
+      "item_name": "Omnisky III Cannon",
+      "item_uuid": "aaaaaaaa-0000-0000-0000-000000000001",
+      "price_buy": 15000,
+      "price_sell": 9000,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 4,
+      "id_item": 11,
+      "id_category": 32,
+      "id_terminal": 106,
+      "item_name": "Sunrise Cooler",
+      "item_uuid": "bbbbbbbb-0000-0000-0000-000000000002",
+      "price_buy": 4200,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 5,
+      "id_item": 12,
+      "id_category": 32,
+      "id_terminal": 106,
+      "item_name": "VariPuck S3 Gimbal Mount",
+      "item_uuid": "cccccccc-0000-0000-0000-000000000003",
+      "price_buy": 900,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 6,
+      "id_item": 776,
+      "id_category": 32,
+      "id_terminal": 106,
+      "item_name": "RN-7s",
+      "item_uuid": "dddddddd-0000-0000-0000-000000000004",
+      "price_buy": 7700,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 7,
+      "id_item": 14,
+      "id_category": 13,
+      "id_terminal": 106,
+      "item_name": "Lillo Pants Violet",
+      "item_uuid": "eeeeeeee-0000-0000-0000-000000000005",
+      "price_buy": 1200,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 8,
+      "id_item": 15,
+      "id_category": 32,
+      "id_terminal": 106,
+      "item_name": "Free Sample Cooler",
+      "item_uuid": "ffffffff-0000-0000-0000-000000000006",
+      "price_buy": 0,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    },
+    {
+      "id": 9,
+      "id_item": 10,
+      "id_category": 32,
+      "id_terminal": 102,
+      "item_name": "Omnisky III Cannon",
+      "item_uuid": "aaaaaaaa-0000-0000-0000-000000000001",
+      "price_buy": 1,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
+    }
+  ]
+}

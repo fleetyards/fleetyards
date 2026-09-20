@@ -43,6 +43,27 @@
       "name": "TDD - Trade and Development Division - Area 18",
       "nickname": "TDD Area 18 Annex",
       "contact_url": "https://example.test/tdd"
+    },
+    {
+      "id": 106,
+      "type": "item",
+      "name": "CenterMass - Area 18",
+      "nickname": null,
+      "contact_url": "https://example.test/centermass"
+    },
+    {
+      "id": 107,
+      "type": "item",
+      "name": "Dumper's Depot - Area 18",
+      "nickname": null,
+      "contact_url": null
+    },
+    {
+      "id": 108,
+      "type": "item",
+      "name": "Dumper's Depot - Area 18",
+      "nickname": null,
+      "contact_url": null
     }
   ]
 }

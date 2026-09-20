@@ -12,7 +12,8 @@ module UexFixtures
       vehicle_rental_prices: uex_fixture("vehicles_rentals_prices_all"),
       terminals: uex_fixture("terminals"),
       commodities: uex_fixture("commodities"),
-      commodity_prices: uex_fixture("commodities_prices_all")
+      commodity_prices: uex_fixture("commodities_prices_all"),
+      item_prices: uex_fixture("items_prices_all")
     }.merge(overrides)
 
     client = mock("Uex::Client")
@@ -45,6 +46,30 @@ module UexFixtures
 
   # The price feed joins on uex_id rather than on name, so the price tests need
   # commodities already carrying the ids the mapper would have written.
+  # The components the fixture item prices are expected to resolve to, one per
+  # matching layer, plus the two that must not be priced.
+  #
+  # `sc_ref` is the game file's own id and is what UEX carries as `item_uuid`,
+  # so the first of these matches on that rather than on its name -- which is
+  # deliberately not the name UEX uses, to prove the uuid is what did it.
+  def create_uex_priced_components
+    {
+      ref_match: create(:component, name: "Omnisky III", sc_key: "behr_lasercannon_s3",
+        sc_ref: "aaaaaaaa-0000-0000-0000-000000000001"),
+      name_match: create(:component, name: "Sunrise Cooler", sc_key: "jspc_cooler_s1", sc_ref: nil),
+      mapping_match: create(:component, name: "RN-7s", sc_key: "fuel_nozzle_misc_nozzlestandard", sc_ref: nil),
+      # Three of a name, so nothing says which one the shop stocks.
+      ambiguous: [
+        create(:component, name: "VariPuck S3 Gimbal Mount", sc_key: "mount_gimbal_s3", sc_ref: nil),
+        create(:component, name: "VariPuck S3 Gimbal Mount", sc_key: "mount_gimbal_s3_polaris", sc_ref: nil),
+        create(:component, name: "VariPuck S3 Gimbal Mount", sc_key: "mount_gimbal_s3_perseus", sc_ref: nil)
+      ],
+      # Shares the "RN-7s" name with the mapped one and must lose to it.
+      mapping_loser: create(:component, name: "RN-7s", sc_key: "dockingtube_refuelnozzle_armonly_starfarer", sc_ref: nil),
+      free: create(:component, name: "Free Sample Cooler", sc_key: "jspc_cooler_s0", sc_ref: nil)
+    }
+  end
+
   def create_uex_priced_commodities
     {
       gold: create(:commodity, name: "Gold", sc_key: "items_commodities_gold", uex_id: 33, uex_code: "GOLD"),
