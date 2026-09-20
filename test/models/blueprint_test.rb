@@ -233,6 +233,22 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_empty create(:blueprint).source_alignments
   end
 
+  # Off the build the row is actually rendered from. A recipe the current build
+  # dropped renders entirely off the last one that described it, and reading
+  # the sides through `build` alone would have it say nothing while its own
+  # response listed four orgs.
+  test "#source_alignments reads the fallback build where the current one is gone" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:blueprint_source, build: last, alignment: "outlaw")
+    # Something else has to carry the configured build, or the build above is
+    # the newest there is and the recipe is not retired at all.
+    create(:blueprint)
+
+    assert_predicate blueprint.reload, :retired?
+    assert_equal ["outlaw"], blueprint.source_alignments
+  end
+
   test ".from_alignment finds each recipe one side of the law hands out once" do
     blueprint = create(:blueprint)
     2.times { |n| create(:blueprint_source, build: blueprint.build, alignment: "outlaw", position: n) }

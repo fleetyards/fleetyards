@@ -80,8 +80,8 @@ module BlueprintFiltersConcern
     )
   end
 
-  # The same trap: ransack skips a scope whose value is false,
-  # so `owned=false` would answer "the recipes I do not have" with all of them.
+  # The same trap: ransack skips a scope whose value is false, so `owned=false`
+  # would answer "the recipes I do not have" with all of them.
   #
   # Off the resolved reader rather than off a parameter -- whose recipes are
   # being asked about is never the caller's to name.

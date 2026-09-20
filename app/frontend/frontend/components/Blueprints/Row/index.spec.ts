@@ -75,7 +75,9 @@ describe("Blueprints/Row", () => {
   it("links each side to the filter that asks for it", async () => {
     const wrapper = await mount({ sourceAlignments: ["outlaw"] });
 
-    expect(wrapper.find(ALIGNMENT).attributes("href")).toContain("outlaw");
+    expect(wrapper.find(ALIGNMENT).attributes("href")).toContain(
+      "sourceAlignmentIn=outlaw",
+    );
   });
 
   // 901 of the 1,607 recipes have no stated source, and the nine sources the
