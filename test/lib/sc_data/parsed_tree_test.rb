@@ -51,6 +51,21 @@ module ScData
       assert_not_equal before, ::ScData::ParsedTree.checksum(@root)
     end
 
+    # A `path:digest` line joined by newlines can be forged: these two trees
+    # hold different files and would have serialised identically.
+    test ".checksum tells apart trees a delimited record format would collide" do
+      forged = {"a\n32characterslongdigestaaaaaaaaaa" => "b" * 32}
+      plain = {"a" => "3" * 32, "32characterslongdigestaaaaaaaaaa" => "b" * 32}
+
+      assert_not_equal ::ScData::ParsedTree.checksum(@root, forged),
+        ::ScData::ParsedTree.checksum(@root, plain)
+    end
+
+    test ".checksum tells apart a path carrying the record separator" do
+      assert_not_equal ::ScData::ParsedTree.checksum(@root, {"a:b" => "c" * 32}),
+        ::ScData::ParsedTree.checksum(@root, {"a" => "b:" + "c" * 31})
+    end
+
     # The manifest carries the checksum, so counting it would be circular, and
     # its `parsed_at` moves on every parse -- which would make two identical
     # trees look different.
@@ -77,12 +92,16 @@ module ScData
       assert_nil ::ScData::ParsedTree.checksum(@root)
     end
 
-    # A parse and a push both have every digest in hand already.
-    test ".checksum uses a walk the caller hands it" do
-      handed = {"only/this.json" => "deadbeef"}
+    # A parse and a push both have every digest in hand already. Asserted
+    # against another root rather than against the serialisation, so the record
+    # format stays free to change.
+    test ".checksum uses a walk the caller hands it rather than the tree" do
+      handed = {"only/this.json" => "d" * 32}
 
-      assert_equal ::ScData::ParsedTree.checksum(@root, handed),
-        Digest::SHA256.hexdigest("only/this.json:deadbeef")
+      assert_equal ::ScData::ParsedTree.checksum(File.join(@root, "nowhere"), handed),
+        ::ScData::ParsedTree.checksum(@root, handed)
+      assert_not_equal ::ScData::ParsedTree.checksum(@root),
+        ::ScData::ParsedTree.checksum(@root, handed)
     end
 
     test ".files skips directories and the manifest" do

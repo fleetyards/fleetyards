@@ -34,7 +34,15 @@ module ScData
     def checksum(root, files = files(root))
       return if files.empty?
 
-      Digest::SHA256.hexdigest(files.sort.map { |path, digest| "#{path}:#{digest}" }.join("\n"))
+      # Length-prefixed, because the value's whole job is to be unambiguous. A
+      # `path:digest` line joined by newlines can be forged: a path carrying a
+      # newline serialises exactly as two shorter entries would, so two
+      # different trees could answer the same digest -- and a collision here
+      # means a tree that changed reads as one that did not, which is the one
+      # failure this whole mechanism exists to prevent.
+      records = files.sort.map { |path, digest| "#{path.bytesize}:#{path}#{digest}" }
+
+      Digest::SHA256.hexdigest(records.join)
     end
 
     def files(root)
