@@ -815,3 +815,34 @@ class ModelVehicleSizeTest < ActiveSupport::TestCase
     assert_not_equal before, model.reload.image_attachments.map(&:id)
   end
 end
+
+# `size` was a free string until the vehicle ladder needed to ask whether a
+# model was a vehicle at all.
+class ModelSizeTest < ActiveSupport::TestCase
+  test "the matrix's capitalisation lands lowercase" do
+    model = create(:model, size: "Capital")
+
+    assert_equal "capital", model.size
+  end
+
+  test "an empty size is an absent one" do
+    model = create(:model, size: "")
+
+    assert_nil model.size
+  end
+
+  test "a word the catalogue does not know is refused" do
+    model = build(:model, size: "enormous")
+
+    assert_not model.valid?
+    assert_includes model.errors.attribute_names, :size
+  end
+
+  test "a model without a size is fine" do
+    assert_predicate build(:model, size: nil), :valid?
+  end
+
+  test "the filters offer exactly what the column may hold" do
+    assert_equal Model::SIZES, Model.size_filters.map(&:value)
+  end
+end

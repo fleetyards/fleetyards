@@ -531,6 +531,18 @@ class Model < ApplicationRecord
   validates :name, presence: true, uniqueness: {scope: :manufacturer_id}
   VEHICLE_SIZE = "vehicle"
 
+  # What the column is allowed to say. It was a free string until now, and the
+  # RSI matrix capitalises its own vocabulary -- "Small", "Capital" -- so six
+  # ships sat in a class of their own that nothing filtered on. The loader
+  # downcases what it copies; this is what stops anything else from adding a
+  # spelling.
+  SIZES = %w[vehicle snub small medium large extra_large capital].freeze
+
+  # An empty string is neither a size nor an absence, and two ships carried one.
+  normalizes :size, with: ->(size) { size.to_s.strip.downcase.presence }
+
+  validates :size, inclusion: {in: SIZES}, allow_nil: true
+
   VEHICLE_SIZES = %w[
     extra_extra_small extra_small small medium large extra_large extra_extra_large
   ].freeze
@@ -667,7 +679,7 @@ class Model < ApplicationRecord
   end
 
   def self.size_filters
-    %w[vehicle snub small medium large extra_large capital].map do |item|
+    SIZES.map do |item|
       Filter.new(
         category: "size",
         label: item.humanize,
