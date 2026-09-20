@@ -69,6 +69,14 @@ hangar_inventories:
 ship_inventories:
   description: "Ship inventories — the cargo aboard a vehicle"
 
+# The fan-out is the risky half and it only shows up under real concurrency, so
+# the roster, the friends list and the REST field all sit behind this. The
+# presence store itself is written whether or not the flag is on: Flipper gates
+# are per-actor, and gating the recording would leave a flagged-in reader
+# watching flagged-out users drop offline ninety seconds after they connect.
+online_status:
+  description: "Online status — a live dot on the fleet roster and the friends list, from the cable connection"
+
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true

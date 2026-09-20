@@ -17973,6 +17973,7 @@ components:
       - oauth-google
       - oauth-patreon
       - oauth-twitch
+      - online_status
       - ship_inventories
       - tour_payouts
       x-enumNames:
@@ -17993,6 +17994,7 @@ components:
       - OAUTH_GOOGLE
       - OAUTH_PATREON
       - OAUTH_TWITCH
+      - ONLINE_STATUS
       - SHIP_INVENTORIES
       - TOUR_PAYOUTS
       title: FeatureFlagName

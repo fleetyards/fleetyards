@@ -55,6 +55,7 @@
 #  rsi_handle                :string
 #  rsi_handle_verified       :boolean          default(FALSE), not null
 #  sale_notify               :boolean          default(FALSE)
+#  show_online_status        :boolean          default(TRUE), not null
 #  sign_in_count             :integer          default(0), not null
 #  tester                    :boolean          default(FALSE)
 #  tracking                  :boolean          default(TRUE)
