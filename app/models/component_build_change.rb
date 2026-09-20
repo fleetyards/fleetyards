@@ -79,12 +79,19 @@ class ComponentBuildChange < ApplicationRecord
   end
 
   # The build this one replaced: the most recently first-seen build of the same
-  # environment that is not this one. Re-loading a build updates it in place, so
+  # environment that landed before it. Re-loading a build updates it in place, so
   # `created_at` is when a version landed rather than when it was last touched.
+  #
+  # "Before it" rather than "not it". Loading an older tree by hand -- which is
+  # how a re-parse of a past version is checked -- leaves a build whose newest
+  # sibling is *newer* than itself, and measuring against that one records the
+  # patch backwards: the later version as `from_version`, and every value the
+  # wrong way round.
   def self.previous_build(build)
     build.component.builds
       .where(environment: build.environment)
       .where.not(version: build.version)
+      .where(created_at: ...build.created_at)
       .order(created_at: :desc)
       .first
   end

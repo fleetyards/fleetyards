@@ -113,6 +113,25 @@ class ComponentBuildChangeTest < ActiveSupport::TestCase
     assert_equal "2", ComponentBuildChange.sole.old_value
   end
 
+  # Loading an older tree by hand is how a re-parse of a past version is checked,
+  # and it leaves a build whose newest sibling is newer than itself. Measured
+  # against that one, the patch is recorded backwards.
+  test ".record! ignores a build that landed after this one" do
+    create(
+      :component_build,
+      component: @component, environment: @environment, version: "4.11.0",
+      name: "Sunrise Shield", size: "9", created_at: 1.hour.ago
+    )
+    previous_build(size: "2")
+    build = current_build(size: "3")
+
+    assert_equal 1, ComponentBuildChange.record!(build)
+
+    change = ComponentBuildChange.sole
+    assert_equal "4.9.0", change.from_version
+    assert_equal "2", change.old_value
+  end
+
   test ".record! records a fact the previous build did not carry" do
     previous_build(size: "2", grade: nil)
     build = current_build(size: "2", grade: "A")
