@@ -126,6 +126,29 @@ class Blueprint < ApplicationRecord
     )
   }
 
+  # Recipes handed out by an org on one of the named sides of the law, in the
+  # build we are on.
+  #
+  # Several alignments mean "reachable any of these ways", not all of them: a
+  # recipe carries one source row per difficulty of every mission naming its
+  # pool, and both sides of the law often hand out the same pool, so asking for
+  # two is asking for the union.
+  #
+  # An unknown value is dropped rather than passed to the query. Nothing but
+  # the three can match, and a typo that silently widened the answer to the
+  # whole catalogue would be worse than one that narrows it.
+  scope :from_alignment, ->(alignments, source = ::ScData::Source.current, current_only: true) {
+    wanted = Array.wrap(alignments).map { |value| value.to_s.downcase } & BlueprintSource::ALIGNMENTS
+
+    return none if wanted.blank?
+
+    where(
+      id: readable_builds(source, current_only:)
+        .where(id: BlueprintSource.where(alignment: wanted).select(:blueprint_build_id))
+        .select(:blueprint_id)
+    )
+  }
+
   # 875 of the 1607 recipes in 4.10.1 appear in no reward pool, and another 26
   # sit only in a pool nothing hands out. The page has to say so rather than
   # render an empty section, which reads as a bug.
