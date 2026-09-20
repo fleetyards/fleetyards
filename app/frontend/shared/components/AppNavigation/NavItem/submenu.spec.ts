@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { h } from "vue";
+import type { VueWrapper } from "@vue/test-utils";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { useNavStore } from "@/shared/stores/nav";
 import NavItem from "./index.vue";
 
 const page = { template: "<div />" };
@@ -43,9 +45,27 @@ const mountSection = (slim: boolean, props: Record<string, unknown> = {}) =>
     attachTo: document.body,
   });
 
+/*
+ * The panel gives a pointer a moment to cross the gap between the row and the
+ * panel before it takes the close seriously. Driven rather than waited out: a
+ * real 300ms sleep against a 220ms timer is only ever as reliable as the
+ * machine is idle, and it failed on a loaded one.
+ */
+const waitOutTheGrace = async (wrapper: VueWrapper) => {
+  await vi.advanceTimersByTimeAsync(400);
+  await wrapper.vm.$nextTick();
+};
+
 describe("NavItem with a submenu", () => {
   beforeEach(() => {
     atDesktopWidth();
+    // After mounting would be tidier, but the mount itself schedules nothing --
+    // and a faked clock in place for it costs nothing either.
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   describe("expanded", () => {
@@ -136,8 +156,7 @@ describe("NavItem with a submenu", () => {
 
       await wrapper.find(".nav-flyout").trigger("pointerleave");
 
-      await new Promise((resolve) => setTimeout(resolve, 320));
-      await wrapper.vm.$nextTick();
+      await waitOutTheGrace(wrapper);
 
       expect(wrapper.find(".nav-flyout").exists()).toBe(true);
 
@@ -153,8 +172,7 @@ describe("NavItem with a submenu", () => {
 
       await wrapper.find(".nav-flyout").trigger("pointerleave");
 
-      await new Promise((resolve) => setTimeout(resolve, 320));
-      await wrapper.vm.$nextTick();
+      await waitOutTheGrace(wrapper);
 
       expect(wrapper.find(".nav-flyout").exists()).toBe(false);
 
@@ -168,8 +186,7 @@ describe("NavItem with a submenu", () => {
       await wrapper.trigger("pointerleave");
       await wrapper.find(".nav-flyout").trigger("pointerenter");
 
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      await wrapper.vm.$nextTick();
+      await waitOutTheGrace(wrapper);
 
       expect(wrapper.find(".nav-flyout").exists()).toBe(true);
 
@@ -213,6 +230,31 @@ describe("NavItem with a submenu", () => {
       await wrapper.trigger("pointerenter");
 
       expect(wrapper.find(".nav-flyout").exists()).toBe(true);
+
+      wrapper.unmount();
+    });
+
+    /*
+     * Expanding the rail unmounts the panel but says nothing about the state
+     * behind it. Left open, the section would hand back a panel nobody asked
+     * for the moment the rail collapsed again -- and its listeners would stay
+     * bound to the document in between.
+     */
+    it("does not hand the panel back when the rail expands and collapses", async () => {
+      const wrapper = await mountSection(true);
+      const navStore = useNavStore();
+
+      await wrapper.trigger("pointerenter");
+      expect(wrapper.find(".nav-flyout").exists()).toBe(true);
+
+      navStore.slim = false;
+      await wrapper.vm.$nextTick();
+      expect(wrapper.find(".nav-flyout").exists()).toBe(false);
+
+      navStore.slim = true;
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.find(".nav-flyout").exists()).toBe(false);
 
       wrapper.unmount();
     });

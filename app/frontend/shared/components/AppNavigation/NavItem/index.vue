@@ -144,6 +144,19 @@ const panelStyle = ref<Record<string, string>>({});
  * can undo that pairing -- but a fixed box is laid out against the viewport and
  * escapes both. It pays for that by not moving with the rail, so the rail's own
  * scrolling has to push it by hand.
+ *
+ * It holds only while no ancestor is transformed, which would take the
+ * containing block back off the viewport. One place does that: the admin's
+ * `nav-panel` transition puts `translateX(-100%)` on the wrapper (see
+ * stylesheets/shared/transitions.scss) while the whole navigation enters or
+ * leaves. A panel open across those 500ms is clipped and misplaced.
+ *
+ * Left alone deliberately. `Teleport` would fix it and cost more than it is
+ * worth: outside the row's `li` the panel is no longer in the navigation's tab
+ * order, so its rows stop being reachable by keyboard -- which is the reason
+ * this is not teleported already -- and every pointer, focus and outside-click
+ * check would have to consult two roots instead of one. The window is a
+ * navigation that is on its way off screen anyway.
  */
 const positionPanel = () => {
   const element = trigger.value;
@@ -402,15 +415,37 @@ const measureRailNode = () => {
   railNode.value = active.offsetTop + active.offsetHeight / 2;
 };
 
-const trackRailNode = async () => {
-  await nextTick();
-
-  measureRailNode();
-};
-
 // Rows arrive after the first render -- a fleet list is fetched, a label wraps
 // at a narrower width -- and each changes where the node belongs.
 let listObserver: ResizeObserver | undefined;
+
+/*
+ * Re-attached rather than bound once at mount: the list is `v-if`-ed away in
+ * flyout mode, so the navigation's default -- collapsed -- mounts without one
+ * at all, and expanding the rail builds a list nothing is watching. Collapsing
+ * again would leave the observer holding a node that is no longer in the
+ * document.
+ */
+const observeList = () => {
+  listObserver?.disconnect();
+  listObserver = undefined;
+
+  const list = root.value?.querySelector(":scope > ul");
+
+  // The `typeof` guard is load-bearing for eslint-plugin-compat, which reads
+  // this shape and not an early return.
+  if (list && typeof ResizeObserver !== "undefined") {
+    listObserver = new ResizeObserver(() => measureRailNode());
+    listObserver.observe(list);
+  }
+};
+
+const trackRailNode = async () => {
+  await nextTick();
+
+  observeList();
+  measureRailNode();
+};
 
 watch(flyoutOpen, (value) => {
   trackViewport(value);
@@ -418,6 +453,21 @@ watch(flyoutOpen, (value) => {
 
 watch([() => route.fullPath, open, flyout], () => {
   void trackRailNode();
+});
+
+/*
+ * Leaving flyout mode unmounts the panel and says nothing about the state
+ * behind it -- the rail expanded, or the viewport narrowed to where the
+ * navigation is a drawer. Left open, the section hands a panel nobody asked for
+ * straight back the moment flyout mode returns, and its keydown, pointer and
+ * viewport listeners stay bound to the document for the whole time in between.
+ */
+watch(flyout, (isFlyout) => {
+  if (isFlyout) {
+    return;
+  }
+
+  closeFlyout();
 });
 
 watch(
@@ -457,13 +507,6 @@ onMounted(async () => {
   requestAnimationFrame(() => {
     settled.value = true;
   });
-
-  const list = root.value?.querySelector(":scope > ul");
-
-  if (list && typeof ResizeObserver !== "undefined") {
-    listObserver = new ResizeObserver(() => measureRailNode());
-    listObserver.observe(list);
-  }
 });
 
 onBeforeUnmount(() => {
