@@ -5,7 +5,11 @@ import { useFilters } from "@/shared/composables/useFilters";
 // string when only one is set -- vue-router does no normalising -- and the
 // schema rejects a string where it declared an array, so a lone material
 // arrives as a 400 rather than as a filter.
-const LIST_PARAMS = ["consumingCommodityIn", "craftableTypeIn"] as const;
+const LIST_PARAMS = [
+  "consumingCommodityIn",
+  "craftableTypeIn",
+  "sourceAlignmentIn",
+] as const;
 
 export const useBlueprintFilters = (
   updateCallback?: (() => void) | (() => Promise<void>),
