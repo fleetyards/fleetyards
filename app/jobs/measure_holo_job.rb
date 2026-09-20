@@ -46,11 +46,34 @@ class MeasureHoloJob
     return if stale_blob?(model.send(name), blob_id)
     return if overtaken?(model, columns, previous)
 
-    model.update_columns(columns.zip(result.sorted).to_h.merge(measured_at_for(name)))
+    measured = columns.zip(result.sorted).to_h
+
+    model.update_columns(measured.merge(measured_at_for(name)).merge(pad_class_for(model, name, result)))
   rescue ActiveStorage::FileNotFoundError
     Rails.logger.warn("MeasureHoloJob: blob for #{name} on model #{model_id} not found, skipping")
   rescue JSON::ParserError => error
     Rails.logger.warn("MeasureHoloJob: #{name} on model #{model_id} is not readable glTF: #{error.message}")
+  end
+
+  # Which pad the hull lands on, from the box just measured. Only the flying
+  # holo answers it -- a landed or extended figure describes a state the ship is
+  # in once it is already there.
+  #
+  # The measurement wins over whatever was recorded before. The values it
+  # replaces were derived from the RSI matrix and the game files, and those
+  # disagree with each other and with the pad table; a number read off the mesh
+  # does not.
+  #
+  # A ground vehicle has no pad class. It is on its own ladder, `vehicle_size`,
+  # which is curated rather than measured.
+  private def pad_class_for(model, name, result)
+    return {} unless name == "holo"
+    return {} if model.size == ::Model::VEHICLE_SIZE
+
+    length, beam, height = result.sorted
+    pad = ::Dock.ship_size_for(length, beam, height)
+
+    pad.nil? ? {} : {dock_size: pad}
   end
 
   # Only reached once a measurement is actually being written, which is the
