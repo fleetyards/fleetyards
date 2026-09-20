@@ -205,7 +205,7 @@ Starfarer         cargohold   1 × Ursa-class
   centimetres nobody measured; the Merchantman (#5064) records what it is for and
   stops being silent without anyone measuring its pad.
 
-### The ship ladder is the game's
+### The ship ladder is the game's, but the assignment is not
 
 `Libs/Foundry/Records/landingpadsize/` defines six pad classes. All six carry a
 `shipSize` box; only Small, Medium and Large carry a `groundVehicleSize`, and the
@@ -222,7 +222,12 @@ their class as `sizeId` on 84 instanced interiors. So the ship side is free:
 | 5 | Large | 72 × 128 × 36 | 16 × 30 × 6 |
 | 6 | XLarge | 160 × 272 × 64 | — |
 
-What the game does **not** carry is the carrier side: 1062 ship records reference no
+What the game does **not** carry is which pad a given ship is assigned. The recorded
+`dock_size` values do not follow box containment — ships overhang their pads, and five
+of the eighteen sit a class below what the boxes allow — so the class comes from the
+measured hull rather than from any table the game ships.
+
+Nor does the game carry the carrier side: 1062 ship records reference no
 pad size at all, and `ObjectContainers` holds only outposts and stations, so no ship
 interior is in the extract. The Idris' three pads and the Kraken's deck are curation,
 and always will be.
@@ -233,8 +238,13 @@ or both.
 
 ### Build order
 
-1. Derive `models.dock_size` from the game pad table. Mechanical: set on 18 of 248
-   today, derivable for all 195 measured hulls.
+1. `models.dock_size` follows the holo measurement. `Dock.ship_size_for` is the game
+   pad table asked the obvious question — the smallest box containing the hull — and
+   `MeasureHoloJob` writes the answer beside the dimensions it just measured. It
+   overwrites: the eighteen values recorded today came from the RSI matrix and the
+   game files, and five of them contradict the boxes outright (the 400i at 56 m is
+   recorded `small` against a 48 m pad). Nothing changes until a holo lands, since
+   deriving from unmeasured dimensions would only move the guess into a new column.
 2. Capacity entries on docks, with the display flag.
 3. The additions list, dock ↔ models, and the admin picker.
 4. Switch the filter and the carried-by list to class ∪ additions.
