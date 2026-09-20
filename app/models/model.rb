@@ -410,6 +410,11 @@ class Model < ApplicationRecord
 
   has_many :docks, as: :parent, dependent: :destroy
 
+  # The berths elsewhere that name this ship. Destroyed with it, matching the
+  # cascade on the constraint -- a name for a ship that no longer exists says
+  # nothing.
+  has_many :dock_additions, dependent: :destroy
+
   has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
   has_many :cargo_hold_container_capacities, through: :cargo_holds_db
 

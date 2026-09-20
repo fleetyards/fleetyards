@@ -1069,6 +1069,11 @@
         "active": "Active?",
         "hidden": "Hidden?"
       },
+      "dockAddition": {
+        "model": "Ship",
+        "hint": "Ships this berth takes that its class does not cover.",
+        "empty": "named ships"
+      },
       "dockCapacity": {
         "ladder": "Ladder",
         "size": "Class",

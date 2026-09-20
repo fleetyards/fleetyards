@@ -966,6 +966,14 @@
         "joinRequestApproved": "申請已通過",
         "joinRequestDeclined": "申請已拒絕"
       },
+      "dockAddition": {
+        "create": {
+          "failure": "無法新增該飛船。"
+        },
+        "destroy": {
+          "failure": "無法移除該飛船。"
+        }
+      },
       "dockCapacity": {
         "create": {
           "failure": "無法建立容量條目。"

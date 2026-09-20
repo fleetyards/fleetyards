@@ -1359,6 +1359,153 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/dock-additions":
+    post:
+      summary: Create new DockAddition
+      tags:
+      - DockAdditions
+      operationId: createDockAddition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DockAdditionInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockAddition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: DockAdditions list
+      tags:
+      - DockAdditions
+      operationId: dockAdditions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/DockAdditionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockAdditions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/dock-additions/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: DockAddition destroy
+      tags:
+      - DockAdditions
+      operationId: destroyDockAddition
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Get DockAddition
+      tags:
+      - DockAdditions
+      operationId: dockAddition
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DockAddition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/dock-capacities":
     post:
       summary: Create new DockCapacity
@@ -12213,6 +12360,75 @@ components:
       - LIFT
       - TRACTOR_BEAM
       title: DockAccessEnum
+    DockAddition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        dockId:
+          type: string
+          format: uuid
+        modelId:
+          type: string
+          format: uuid
+        modelName:
+          type: string
+        modelSlug:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - dockId
+      - modelId
+      - modelName
+      - modelSlug
+      - createdAt
+      - updatedAt
+      title: DockAddition
+    DockAdditionInput:
+      type: object
+      properties:
+        dockId:
+          type: string
+          format: uuid
+        modelId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: DockAdditionInput
+    DockAdditionQuery:
+      type: object
+      properties:
+        dockIdEq:
+          type: string
+          format: uuid
+        modelIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      example: {}
+      title: DockAdditionQuery
+    DockAdditions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DockAddition"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: DockAdditions
     DockCapacities:
       type: object
       properties:

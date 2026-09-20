@@ -1069,6 +1069,11 @@
         "active": "啟用？",
         "hidden": "隱藏？"
       },
+      "dockAddition": {
+        "model": "飛船",
+        "hint": "該泊位可容納但其類別未涵蓋的飛船。",
+        "empty": "已指定的飛船"
+      },
       "dockCapacity": {
         "ladder": "等級序列",
         "size": "類別",

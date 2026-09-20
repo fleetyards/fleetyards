@@ -137,6 +137,8 @@ it:
     dock:
       create: Impossibile creare il dock.
       update: Impossibile aggiornare il dock.
+    dock_addition:
+      create: Impossibile creare l'aggiunta all'attracco.
     dock_capacity:
       create: Impossibile creare la capacità dell'attracco.
       update: Impossibile aggiornare la capacità dell'attracco.
