@@ -15,30 +15,45 @@ module BlueprintFiltersConcern
   # build we are on, and `currentVersion=false` needs the fallback join or a
   # retired recipe would be filtered out before ransack ever saw it.
   #
-  # The build and its cost tree come along: a row names the materials it
-  # consumes, and without this the list pays three queries per row for them.
+  # The build, its cost tree and its sources come along: a row names the
+  # materials it consumes and which sides of the law hand it out, and without
+  # this the list pays four queries per row for them.
+  #
+  # `last_build` alongside it, because a row the current build dropped renders
+  # entirely off that one -- `facts` is `build || last_build` -- and a filter
+  # asking for `currentVersion=false` is exactly the request that returns
+  # those rows. Preloading only the current build there put the fan-out back,
+  # one query per retired row per association.
   private def filtered_blueprints(scope = Blueprint.all)
     # `normalize_sort_params` first, because a sortable list sends `q[s]` and
     # ransack would read a leftover `s` ahead of the whitelisted `sorts`.
     normalize_sort_params(blueprints_query_params)
     blueprints_query_params["sorts"] = sorting_params(Blueprint, blueprints_query_params["sorts"])
 
-    # The four build-reading filters are taken off the query: ransack would
-    # either skip them or apply them against the wrong build.
+    # The build-reading filters are taken off the query: ransack would either
+    # skip them or apply them against the wrong build.
     @q = scope.with_facts(current_version)
-      .includes(:craftable, build: {cost_slots: {options: :commodity}})
-      .ransack(blueprints_query_params.except(:from_org, :consuming_commodity, :with_known_source, :owned))
+      .includes(
+        :craftable,
+        build: [:craftable, :sources, {cost_slots: {options: :commodity}}],
+        last_build: [:craftable, :sources, {cost_slots: {options: :commodity}}]
+      )
+      .ransack(
+        blueprints_query_params.except(
+          :from_org, :source_alignment_in, :consuming_commodity, :with_known_source, :owned
+        )
+      )
 
     owned_filter(source_filters(@q.result))
   end
 
-  # The three filters that read a build, applied here rather than through
+  # The filters that read a build, applied here rather than through
   # ransack.
   #
   # Two reasons, and each one alone is enough. Ransack turns a scope's "false"
   # into a boolean and then skips the scope entirely, so `withKnownSource=false`
-  # would quietly return the whole catalogue -- 1,607 rather than 901. And all
-  # three have to know whether the request is reading the build we are on or
+  # would quietly return the whole catalogue -- 1,607 rather than 901. And each
+  # of them has to know whether the request is reading the build we are on or
   # falling back to the last one that described the recipe, which a ransack
   # scope cannot be told: it is handed one argument.
   #
@@ -55,6 +70,7 @@ module BlueprintFiltersConcern
     source = Blueprint.served_source
 
     scope = scope.from_org(org_filter, source, current_only:) if org_filter.present?
+    scope = scope.from_alignment(alignment_filter, source, current_only:) if alignment_filter.present?
     scope = scope.consuming_commodity(commodity_filter, source, current_only:) if commodity_filter.present?
 
     return scope if known_source_filter.nil?
@@ -64,8 +80,8 @@ module BlueprintFiltersConcern
     )
   end
 
-  # The fourth, and the same trap: ransack skips a scope whose value is false,
-  # so `owned=false` would answer "the recipes I do not have" with all of them.
+  # The same trap: ransack skips a scope whose value is false, so `owned=false`
+  # would answer "the recipes I do not have" with all of them.
   #
   # Off the resolved reader rather than off a parameter -- whose recipes are
   # being asked about is never the caller's to name.
@@ -98,6 +114,13 @@ module BlueprintFiltersConcern
     blueprints_query_params[:from_org]
   end
 
+  # Which side of the law hands the recipe out. A list from the start -- both
+  # sides hand out the same pool often enough that one value at a time would be
+  # the wrong question -- so there is no scalar spelling to combine with.
+  private def alignment_filter
+    blueprints_query_params[:source_alignment_in]
+  end
+
   # Both spellings, combined: the scalar is what the filter shipped with and the
   # list is what a multi-select sends, and asking both ways asks for the union
   # rather than for whichever the controller looked at first.
@@ -120,14 +143,15 @@ module BlueprintFiltersConcern
     @blueprints_query_params ||= params.permit(q: [
       :s, :sorts, :name_cont, :current_version,
       :craftable_type_eq, :craftable_id_eq,
-      # The four the controller applies itself. Permitted like any other: they
-      # are read from here rather than off `params` directly, so an unpermitted
-      # one would silently stop filtering.
+      # The ones the controller applies itself -- these and
+      # `source_alignment_in` below. Permitted like any other: they are read
+      # from here rather than off `params` directly, so an unpermitted one
+      # would silently stop filtering.
       :from_org, :with_known_source, :owned,
       :craft_time_lteq, :craft_time_gteq,
       :consuming_commodity,
       sorts: [], id_in: [], name_in: [], craftable_type_in: [],
-      consuming_commodity_in: []
+      consuming_commodity_in: [], source_alignment_in: []
     ]).fetch(:q, {})
   end
 end

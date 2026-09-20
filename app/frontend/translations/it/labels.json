@@ -1716,6 +1716,7 @@
           "source": "Fonte",
           "withSource": "Con fonte nota",
           "withoutSource": "Senza fonte nota",
+          "alignment": "Allineamento della fonte",
           "material": "Usa materiale",
           "ownedFilter": "Posseduto",
           "owned": "Posseduto",

@@ -10053,6 +10053,10 @@ components:
           type: boolean
         sourceUnknown:
           type: boolean
+        sourceAlignments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSourceAlignmentEnum"
         craftable:
           anyOf:
           - "$ref": "#/components/schemas/BlueprintCraftable"
@@ -10375,6 +10379,17 @@ components:
       required:
       - kind
       title: BlueprintSource
+    BlueprintSourceAlignmentEnum:
+      type: string
+      enum:
+      - lawful
+      - neutral
+      - outlaw
+      x-enumNames:
+      - LAWFUL
+      - NEUTRAL
+      - OUTLAW
+      title: BlueprintSourceAlignmentEnum
     BlueprintSourceKindEnum:
       type: string
       enum:

@@ -59,4 +59,17 @@ describe("useBlueprintFilters", () => {
       (await queryFor({ craftableTypeIn: "Component" })).craftableTypeIn,
     ).toEqual(["Component"]);
   });
+
+  it("sends a lone alignment as a list", async () => {
+    expect(
+      (await queryFor({ sourceAlignmentIn: "outlaw" })).sourceAlignmentIn,
+    ).toEqual(["outlaw"]);
+  });
+
+  it("leaves several alignments alone", async () => {
+    expect(
+      (await queryFor({ sourceAlignmentIn: ["lawful", "neutral"] }))
+        .sourceAlignmentIn,
+    ).toEqual(["lawful", "neutral"]);
+  });
 });

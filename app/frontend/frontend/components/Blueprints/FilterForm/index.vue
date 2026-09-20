@@ -15,6 +15,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import {
   type BlueprintQuery,
   BlueprintCraftableTypeEnum,
+  BlueprintSourceAlignmentEnum,
   useFiltersBlueprintsMaterials,
 } from "@/services/fyApi";
 
@@ -48,6 +49,9 @@ const prefillFormValues = (): BlueprintQuery => ({
   consumingCommodityIn: asList(
     filters.value.consumingCommodityIn ?? filters.value.consumingCommodity,
   ),
+  sourceAlignmentIn: asList(
+    filters.value.sourceAlignmentIn,
+  ) as BlueprintSourceAlignmentEnum[],
   withKnownSource: filters.value.withKnownSource,
   owned: filters.value.owned,
 });
@@ -94,6 +98,19 @@ const craftableTypes = computed(() =>
       value,
       label: t(`labels.blueprint.craftableTypes.${value}`),
     })),
+);
+
+// Which side of the law hands the recipe out. Every value the API takes is
+// offered: all three appear across the build, and picking two means
+// "reachable either way" rather than "handed out by both".
+//
+// Labelled off the same keys the source badges on a recipe page use, so the
+// filter and the badge it selects for say the same word.
+const alignments = computed(() =>
+  Object.values(BlueprintSourceAlignmentEnum).map((value) => ({
+    value,
+    label: t(`labels.blueprint.alignments.${value}`),
+  })),
 );
 
 // Three states, not a checkbox: "only recipes I can go and get", "only the
@@ -207,6 +224,15 @@ const ownedValue = computed({
       :options="sourceOptions"
       :label="t('labels.filters.blueprints.source')"
       :no-label="true"
+    />
+
+    <BaseSelect
+      v-model="form.sourceAlignmentIn"
+      name="sourceAlignment"
+      :options="alignments"
+      :label="t('labels.filters.blueprints.alignment')"
+      :no-label="true"
+      multiple
     />
 
     <br />

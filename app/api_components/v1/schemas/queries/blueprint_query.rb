@@ -37,6 +37,19 @@ module V1
             # The org whose missions hand the recipe out, by name.
             fromOrg: {type: :string},
 
+            # Which side of the law hands it out, without having to know the
+            # orgs by name. Several mean "reachable any of these ways": a pool
+            # is often handed out by both sides, so this asks for the union.
+            #
+            # A list from the start, so there is no scalar spelling beside it
+            # the way `consumingCommodity` sits beside its `In` form. Values a
+            # source can carry and nothing else -- the nine sources the export
+            # leaves unattributed are not askable for here, and
+            # `withKnownSource` already answers "nothing hands this out".
+            sourceAlignmentIn: {
+              type: :array, items: ::Shared::V1::Schemas::Enums::BlueprintSourceAlignmentEnum
+            },
+
             # Recipes that consume a material, by the commodity's slug. Several
             # mean "uses any of these": a recipe has at most four slots, so
             # asking for three at once would almost always ask for nothing.

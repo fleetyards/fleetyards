@@ -1716,6 +1716,7 @@
           "source": "Fuente",
           "withSource": "Con fuente conocida",
           "withoutSource": "Sin fuente conocida",
+          "alignment": "Alineación de la fuente",
           "material": "Usa material",
           "ownedFilter": "En posesión",
           "owned": "En posesión",

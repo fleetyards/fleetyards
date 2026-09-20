@@ -126,6 +126,29 @@ class Blueprint < ApplicationRecord
     )
   }
 
+  # Recipes handed out by an org on one of the named sides of the law, in the
+  # build we are on.
+  #
+  # Several alignments mean "reachable any of these ways", not all of them: a
+  # recipe carries one source row per difficulty of every mission naming its
+  # pool, and both sides of the law often hand out the same pool, so asking for
+  # two is asking for the union.
+  #
+  # An unknown value is dropped rather than passed to the query. Nothing but
+  # the three can match, and a typo that silently widened the answer to the
+  # whole catalogue would be worse than one that narrows it.
+  scope :from_alignment, ->(alignments, source = ::ScData::Source.current, current_only: true) {
+    wanted = Array.wrap(alignments).map { |value| value.to_s.downcase } & BlueprintSource::ALIGNMENTS
+
+    return none if wanted.blank?
+
+    where(
+      id: readable_builds(source, current_only:)
+        .where(id: BlueprintSource.where(alignment: wanted).select(:blueprint_build_id))
+        .select(:blueprint_id)
+    )
+  }
+
   # 875 of the 1607 recipes in 4.10.1 appear in no reward pool, and another 26
   # sit only in a pool nothing hands out. The page has to say so rather than
   # render an empty section, which reads as a bug.
@@ -348,6 +371,22 @@ class Blueprint < ApplicationRecord
     cost_slots
       .flat_map { |slot| slot.options.filter_map(&:commodity) }
       .uniq
+  end
+
+  # Which sides of the law hand this recipe out, each named once and in the
+  # order the constant states them -- lawful, neutral, outlaw -- rather than in
+  # whatever order the pools happen to sit in.
+  #
+  # A set rather than one value: a pool is handed out by both sides often
+  # enough that "this one is outlaw" would be wrong as often as it was right.
+  # Empty where nothing hands the recipe out, and empty too where every source
+  # it has is one of the nine the export leaves unattributed -- saying nothing
+  # is the honest answer to both.
+  #
+  # Off the loaded sources rather than through a `pluck`, so a list that has
+  # already preloaded them pays nothing per row.
+  def source_alignments
+    sources.filter_map(&:alignment).uniq.sort_by { |alignment| BlueprintSource::ALIGNMENTS.index(alignment) }
   end
 
   # Nothing in the export says where this one comes from. Answered off the last

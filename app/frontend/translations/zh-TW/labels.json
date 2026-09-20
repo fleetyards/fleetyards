@@ -1716,6 +1716,7 @@
           "source": "來源",
           "withSource": "有已知來源",
           "withoutSource": "無已知來源",
+          "alignment": "來源陣營",
           "material": "使用材料",
           "ownedFilter": "已擁有",
           "owned": "已擁有",

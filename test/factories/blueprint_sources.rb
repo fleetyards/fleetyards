@@ -42,6 +42,8 @@ FactoryBot.define do
     pool_group { "blueprintmissionpools" }
     weight { 1 }
     org_name { "Foxwell Enforcement" }
+    # Foxwell Enforcement is a UEE-side security org, and the export says so.
+    alignment { "lawful" }
     sequence(:org_ref) { |n| Digest::UUID.uuid_v5(Digest::UUID::DNS_NAMESPACE, "org-#{n}") }
     source_key { "foxwellenforcement_ambush" }
     mission_name { "Yellow Level Contract: Ambush An Amateur" }
@@ -67,6 +69,9 @@ FactoryBot.define do
     trait :unattributed do
       org_name { nil }
       org_ref { nil }
+      # No org, so no side of the law -- the loader leaves it blank rather than
+      # guessing which of the named factions the pool came from.
+      alignment { nil }
     end
   end
 end

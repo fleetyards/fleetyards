@@ -59,6 +59,11 @@ const extraOwners = computed(() =>
 const ownerName = (owner: FleetBlueprintOwner) =>
   owner.nickname || owner.username;
 
+// Which sides of the law hand this recipe out, as the API states them: each
+// named once, in the order lawful, neutral, outlaw. An older cached payload
+// carries none, so this stands in for the field rather than assuming it.
+const alignments = computed(() => props.blueprint.sourceAlignments || []);
+
 // What the recipe makes, and where that lives. 5 of the 1,607 recipes in the
 // current build resolve to no catalogue row at all -- four mission carryables
 // and one entity class present in no file -- so this is genuinely absent
@@ -138,6 +143,24 @@ const craftableRoute = computed(() => {
       <span v-if="extraOwners" class="blueprint-row__owner-more">
         +{{ extraOwners }}
       </span>
+    </span>
+
+    <!-- Which sides of the law hand it out. The badges below say whether
+         anything does at all; this says who, which is the half a crafter who
+         flies one side of the law is actually asking.
+
+         Coloured words rather than filled pills, and a link each, like every
+         other value on the row the catalogue can be narrowed by. -->
+    <span v-if="alignments.length" class="blueprint-row__alignments">
+      <router-link
+        v-for="alignment in alignments"
+        :key="alignment"
+        class="blueprint-row__alignment"
+        :class="`blueprint-row__alignment--${alignment}`"
+        :to="filterLink('sourceAlignmentIn', [alignment])"
+      >
+        {{ t(`labels.blueprint.alignments.${alignment}`) }}
+      </router-link>
     </span>
 
     <!-- Said on the row, not only on the detail page. 901 of 1,607 recipes

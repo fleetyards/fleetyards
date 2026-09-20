@@ -211,6 +211,86 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_equal [blueprint], Blueprint.from_org("Eckhart Security").to_a
   end
 
+  test "#source_alignments names each side of the law once, in the stated order" do
+    blueprint = create(:blueprint)
+    ["outlaw", "lawful", "outlaw"].each_with_index do |alignment, n|
+      create(:blueprint_source, build: blueprint.build, alignment:, position: n)
+    end
+
+    assert_equal ["lawful", "outlaw"], blueprint.reload.source_alignments
+  end
+
+  # The nine sources the export leaves unattributed carry no side, and a
+  # recipe whose every source is one of them says nothing rather than guessing.
+  test "#source_alignments skips a source the export leaves unattributed" do
+    blueprint = create(:blueprint)
+    create(:blueprint_source, :unattributed, build: blueprint.build)
+
+    assert_empty blueprint.reload.source_alignments
+  end
+
+  test "#source_alignments is empty where nothing hands the recipe out" do
+    assert_empty create(:blueprint).source_alignments
+  end
+
+  # Off the build the row is actually rendered from. A recipe the current build
+  # dropped renders entirely off the last one that described it, and reading
+  # the sides through `build` alone would have it say nothing while its own
+  # response listed four orgs.
+  test "#source_alignments reads the fallback build where the current one is gone" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:blueprint_source, build: last, alignment: "outlaw")
+    # Something else has to carry the configured build, or the build above is
+    # the newest there is and the recipe is not retired at all.
+    create(:blueprint)
+
+    assert_predicate blueprint.reload, :retired?
+    assert_equal ["outlaw"], blueprint.source_alignments
+  end
+
+  test ".from_alignment finds each recipe one side of the law hands out once" do
+    blueprint = create(:blueprint)
+    2.times { |n| create(:blueprint_source, build: blueprint.build, alignment: "outlaw", position: n) }
+    create(:blueprint_source, build: create(:blueprint).build, alignment: "lawful")
+
+    assert_equal [blueprint], Blueprint.from_alignment(["outlaw"]).to_a
+  end
+
+  # Both sides hand out the same pool often enough that asking for two has to
+  # mean "reachable either way" rather than "handed out by both".
+  test ".from_alignment takes several as a union" do
+    lawful = create(:blueprint)
+    create(:blueprint_source, build: lawful.build, alignment: "lawful")
+    outlaw = create(:blueprint)
+    create(:blueprint_source, build: outlaw.build, alignment: "outlaw")
+    neutral = create(:blueprint)
+    create(:blueprint_source, build: neutral.build, alignment: "neutral")
+
+    assert_equal [lawful, outlaw].sort_by(&:id),
+      Blueprint.from_alignment(["lawful", "outlaw"]).to_a.sort_by(&:id)
+  end
+
+  # The nine sources the export leaves unattributed carry no alignment, and the
+  # filter cannot ask for them -- `with_known_source` is the question about
+  # whether anything hands a recipe out.
+  test ".from_alignment skips a source with no stated alignment" do
+    create(:blueprint_source, :unattributed, build: create(:blueprint).build)
+
+    assert_empty Blueprint.from_alignment(BlueprintSource::ALIGNMENTS)
+  end
+
+  # Nothing but the three can match, so a value that is not one of them narrows
+  # to nothing rather than widening to the catalogue.
+  test ".from_alignment answers nothing for a value it does not know" do
+    blueprint = create(:blueprint)
+    create(:blueprint_source, build: blueprint.build, alignment: "lawful")
+
+    assert_empty Blueprint.from_alignment(["uee"])
+    assert_empty Blueprint.from_alignment([])
+    assert_equal [blueprint], Blueprint.from_alignment(["LAWFUL", "uee"]).to_a
+  end
+
   # Sources belong to the build for the reason the recipe does: live and ptu
   # are loaded separately and either can be read.
   test ".from_org ignores a source only another build states" do
@@ -274,6 +354,16 @@ class BlueprintTest < ActiveSupport::TestCase
 
     assert_empty Blueprint.from_org("Eckhart Security")
     assert_equal [blueprint], Blueprint.from_org("Eckhart Security", ScData::Source.current, current_only: false).to_a
+  end
+
+  test ".from_alignment reaches the fallback build when the current one is gone" do
+    blueprint = create(:blueprint, :without_build, version: nil)
+    last = blueprint.builds.create!(environment: ScData::Source.environment, version: "0.0.1-live.1")
+    create(:blueprint_source, build: last, alignment: "outlaw")
+
+    assert_empty Blueprint.from_alignment(["outlaw"])
+    assert_equal [blueprint],
+      Blueprint.from_alignment(["outlaw"], ScData::Source.current, current_only: false).to_a
   end
 
   # And the same recipe must not read as sourceless under the fallback, which

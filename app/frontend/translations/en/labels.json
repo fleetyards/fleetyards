@@ -1716,6 +1716,7 @@
           "source": "Source",
           "withSource": "Has a known source",
           "withoutSource": "No known source",
+          "alignment": "Source alignment",
           "material": "Uses material",
           "ownedFilter": "Owned",
           "owned": "Owned",

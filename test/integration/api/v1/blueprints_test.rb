@@ -79,6 +79,44 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # On the row, not only on the detail page: a crafter scanning the list has to
+  # be able to see which side of the law a recipe is reachable from.
+  test "GET /blueprints says which sides of the law hand each recipe out" do
+    create(:blueprint_source, build: @blueprint.build, alignment: "outlaw", position: 1)
+    create(:blueprint_source, build: @blueprint.build, alignment: "lawful", position: 2)
+
+    assert_api_response :get, 200 do
+      items = parsed_body["items"].index_by { |item| item["id"] }
+
+      assert_equal ["lawful", "outlaw"], items[@blueprint.id]["sourceAlignments"]
+      assert_empty items[@other.id]["sourceAlignments"]
+    end
+  end
+
+  test "GET /blueprints finds the recipes one side of the law hands out" do
+    create(:blueprint_source, build: @blueprint.build, alignment: "outlaw")
+    create(:blueprint_source, build: @other.build, alignment: "lawful")
+
+    assert_api_response :get, 200, params: {q: {"sourceAlignmentIn" => ["outlaw"]}} do
+      assert_equal [@blueprint.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  # Both sides hand out the same pool often enough that picking two has to mean
+  # "reachable either way".
+  test "GET /blueprints takes several alignments as a union" do
+    create(:blueprint_source, build: @blueprint.build, alignment: "outlaw")
+    create(:blueprint_source, build: @other.build, alignment: "neutral")
+    lawful = create(:blueprint)
+    create(:blueprint_source, build: lawful.build, alignment: "lawful")
+
+    params = {q: {"sourceAlignmentIn" => ["outlaw", "neutral"]}}
+
+    assert_api_response :get, 200, params: do
+      assert_equal [@blueprint.id, @other.id].sort, parsed_body["items"].pluck("id").sort
+    end
+  end
+
   test "GET /blueprints finds the recipes that consume a commodity" do
     commodity = create(:commodity, name: "Iron")
     slot = create(:blueprint_cost_slot, build: @blueprint.build)
