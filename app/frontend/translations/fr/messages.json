@@ -966,6 +966,14 @@
         "joinRequestApproved": "Demande acceptée",
         "joinRequestDeclined": "Demande refusée"
       },
+      "dockAddition": {
+        "create": {
+          "failure": "Impossible d'ajouter ce vaisseau."
+        },
+        "destroy": {
+          "failure": "Impossible de retirer ce vaisseau."
+        }
+      },
       "dockCapacity": {
         "create": {
           "failure": "Impossible de créer l'entrée de capacité."

@@ -48,6 +48,10 @@ const DocksCapacities = defineAsyncComponent(
   () => import("@/admin/components/Docks/Capacities/index.vue"),
 );
 
+const DocksAdditions = defineAsyncComponent(
+  () => import("@/admin/components/Docks/Additions/index.vue"),
+);
+
 const { t } = useI18n();
 const queryClient = useQueryClient();
 const { displayAlert } = useAppNotifications();
@@ -304,6 +308,7 @@ const onSaveCreate = async () => {
 
     <template #expanded="{ item }">
       <DocksCapacities :dock-id="item.id" />
+      <DocksAdditions :dock-id="item.id" />
     </template>
 
     <template #create>

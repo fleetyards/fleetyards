@@ -976,6 +976,14 @@
         "joinRequestApproved": "Request approved",
         "joinRequestDeclined": "Request declined"
       },
+      "dockAddition": {
+        "create": {
+          "failure": "Could not name that ship."
+        },
+        "destroy": {
+          "failure": "Could not remove that ship."
+        }
+      },
       "dockCapacity": {
         "create": {
           "failure": "Could not create the capacity entry."

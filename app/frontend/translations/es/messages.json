@@ -966,6 +966,14 @@
         "joinRequestApproved": "Solicitud aceptada",
         "joinRequestDeclined": "Solicitud rechazada"
       },
+      "dockAddition": {
+        "create": {
+          "failure": "No se pudo añadir esa nave."
+        },
+        "destroy": {
+          "failure": "No se pudo quitar esa nave."
+        }
+      },
       "dockCapacity": {
         "create": {
           "failure": "No se pudo crear la entrada de capacidad."
