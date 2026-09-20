@@ -87,8 +87,8 @@ module ScData
       Rails.configuration.stubs(:sc_data).returns({
         sources: {live: VERSION, ptu: PTU_VERSION}, default: ENVIRONMENT
       })
-      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_VERSION)
-      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_VERSION, version: PTU_VERSION)
+      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_TREE)
+      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_TREE, version: PTU_VERSION)
 
       # Both sources have had their two goes, so neither is asked for. The point
       # is that the ledger is read per source rather than once.
@@ -100,7 +100,7 @@ module ScData
     # Otherwise a catalogue the export has stopped shipping for good would
     # reload the whole of sc_data every night.
     test "#perform stops retrying a version the loaders have already had two goes at" do
-      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_VERSION)
+      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_TREE)
       load_every_catalogue
       Commodity.update_all(version: nil)
 
@@ -154,7 +154,7 @@ module ScData
     # has genuinely changed has to be loaded however many times the version has
     # been tried.
     test "#perform reloads a changed tree even after the version has had its two goes" do
-      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_VERSION, checksum: "old-tree")
+      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_TREE, checksum: "old-tree")
       load_every_catalogue
       stub_remote_checksum("new-tree")
 
@@ -211,6 +211,36 @@ module ScData
       )
 
       load_every_catalogue
+      stub_remote_checksum("same-tree")
+
+      Loaders::ScData::AllJob.expects(:perform_async).never
+
+      ::ScData::CheckJob.new.perform
+    end
+
+    # The ceiling counts loads of *this tree*, not of the version. Counting by
+    # version let a checksum-driven reload burn the coverage budget: the build
+    # already had one import, the reload made two, and `VERSIONED_CATALOGUES`
+    # became unreachable for it -- so a loader added afterwards would never run,
+    # which is the failure the coverage check exists to catch.
+    test "#perform still checks catalogue coverage after a tree reload used up the version's budget" do
+      stub_finished_imports(1, checksum: "old-tree")
+      stub_finished_imports(1, checksum: "new-tree")
+      load_every_catalogue
+      CommodityBuild.delete_all
+      stub_remote_checksum("new-tree")
+
+      Loaders::ScData::AllJob.expects(:perform_async).with(VERSION, nil, ENVIRONMENT)
+
+      ::ScData::CheckJob.new.perform
+    end
+
+    # And it is still a ceiling: two goes at the same tree and it stops, or a
+    # catalogue the export has dropped for good would reload every night.
+    test "#perform stops retrying a tree the loaders have already had two goes at" do
+      stub_finished_imports(::ScData::CheckJob::MAX_IMPORTS_PER_TREE, checksum: "same-tree")
+      load_every_catalogue
+      CommodityBuild.delete_all
       stub_remote_checksum("same-tree")
 
       Loaders::ScData::AllJob.expects(:perform_async).never

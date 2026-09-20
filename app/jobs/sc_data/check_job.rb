@@ -23,7 +23,18 @@ module ScData
     # Bounded on purpose. Should the export stop shipping one of those
     # catalogues for good, an open-ended coverage check would reload the whole
     # of sc_data every night rather than leave the gap for someone to look at.
-    MAX_IMPORTS_PER_VERSION = 2
+    #
+    # Per *tree*, not per version, and that distinction is load-bearing. A
+    # tree-driven reload writes a finished import too, so counting them by
+    # version let one of those burn the coverage budget: live sits on a build
+    # with one import, the first checksum reload makes two, and from then on the
+    # ceiling short-circuits `VERSIONED_CATALOGUES` for that build entirely.
+    # Add a loader after that and nothing reloads -- the tree is byte-identical
+    # so the checksum cannot see it, and the check that could is unreachable.
+    # Which is exactly how Commodity and Equipment sat empty for a week.
+    #
+    # A new tree is a new thing to try, so it starts the count again.
+    MAX_IMPORTS_PER_TREE = 2
 
     # Every configured source, not only the default one. Otherwise a ptu build
     # reaches the bucket and the config and then nothing ever loads it, which is
@@ -48,14 +59,23 @@ module ScData
       return false if last.blank?
       return false if tree_changed?(source, last)
 
-      # Bounded, and only this branch is: it is a guess about a future build,
-      # so should the export stop shipping one of those catalogues for good, an
-      # open-ended coverage check would reload the whole of sc_data every night
-      # rather than leave the gap for someone to look at. The tree check above
-      # is not a guess and needs no such ceiling.
-      return true if Imports::ScData::AllImport.finished.where(version: source.version).count >= MAX_IMPORTS_PER_VERSION
+      # Only the coverage check below is bounded; the tree check above is not a
+      # guess and needs no ceiling.
+      return true if attempts_at(source, last.tree_checksum) >= MAX_IMPORTS_PER_TREE
 
       VERSIONED_CATALOGUES.all? { |catalogue| catalogue.current(source).exists? }
+    end
+
+    # How many times the loaders have been given this tree. Falls back to the
+    # whole version for a load recorded before checksums existed -- there is no
+    # tree to count by, and counting none would leave the coverage check
+    # unbounded, which is the thing the ceiling exists to prevent.
+    private def attempts_at(source, checksum)
+      scope = Imports::ScData::AllImport.finished.where(version: source.version)
+
+      return scope.count if checksum.blank?
+
+      scope.where("input ->> 'tree_checksum' = ?", checksum).count
     end
 
     # Whether the bucket holds a different tree than the one that load read.
