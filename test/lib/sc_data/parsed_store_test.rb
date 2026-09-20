@@ -102,6 +102,28 @@ module ScData
       assert_empty requests(:list_objects_v2)
     end
 
+    # The manifest travels with the tree, so it counts in the mirror -- which
+    # means a directory holding nothing but `version.json` is not empty, and a
+    # plain `local.empty?` would let it through and delete every remote payload
+    # file. It arrives that way by routes no parser touches: an interrupted
+    # pull, or a tree emptied by deleting its subdirectories.
+    test "#push refuses a tree holding nothing but its manifest" do
+      write_local("version.json", '{"version":"4.10.1-live.1"}')
+      stub_listing("models/aurora.json" => "a")
+
+      assert_raises(::ScData::ParsedStore::MissingTree) { store.push }
+
+      assert_empty requests(:delete_object)
+    end
+
+    test "#push accepts a tree carrying a payload beside its manifest" do
+      write_local("version.json", '{"version":"4.10.1-live.1"}')
+      write_local("models/aurora.json", "a")
+      stub_listing({})
+
+      assert_nothing_raised { store.push }
+    end
+
     # The bucket has to mirror the tree, not accumulate it. A model file the
     # parser stopped writing must stop being served, or a pull would keep
     # handing the loader a ship that left the build.

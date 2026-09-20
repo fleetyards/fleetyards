@@ -34,7 +34,15 @@ module ScData
       # is no longer tracked in git, "no tree on disk" is the normal state of a
       # fresh checkout rather than an exotic one. Without this the first stray
       # `push` from one would delete the whole remote tree.
-      raise MissingTree, "no tree at #{local_root}" if local.empty?
+      #
+      # Asked of the payload rather than of the mirror. The manifest travels
+      # with the tree, so a directory holding nothing but `version.json` is not
+      # empty and would walk straight past a plain `local.empty?` -- and it can
+      # arrive that way by routes no parser touches: an interrupted `pull`, or a
+      # tree a developer emptied by deleting its subdirectories. `report_check`
+      # would also refuse such a tree, but `--force` exists to overrule the
+      # verdict, and this is the one verdict nothing should be able to.
+      raise MissingTree, "no tree at #{local_root}" if payload_empty?(local)
 
       remote = remote_objects
 
@@ -142,6 +150,11 @@ module ScData
     # Relative path => MD5 hex. Every object in this tree is written
     # single-part, so a listing's ETag is the plain MD5 of the content and the
     # two sides can be diffed directly.
+    # Answered from the listing already in hand rather than by walking again.
+    private def payload_empty?(files)
+      files.keys.all? { |path| path == ::ScData::ParsedTree::MANIFEST }
+    end
+
     # The manifest is part of the mirror even though it is not part of the
     # digest: it has to travel with the tree it describes.
     private def local_files
