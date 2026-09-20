@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_20_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -467,7 +467,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_090000) do
     t.decimal "length", precision: 15, scale: 2
     t.integer "max_ship_size"
     t.integer "min_ship_size"
-    t.uuid "model_id"
     t.string "name"
     t.uuid "parent_id", null: false
     t.string "parent_type", null: false
