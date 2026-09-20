@@ -113,7 +113,7 @@ module ScData
     # in the bucket disagree, so a load stamps rows of one build with the
     # version of another and nothing ever says so.
     private def version_problems
-      file = root.join("version.json")
+      file = root.join(::ScData::ParsedTree::MANIFEST)
 
       return ["no version.json at #{file}"] unless file.file?
 

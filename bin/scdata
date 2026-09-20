@@ -256,7 +256,7 @@ when "manifest"
   sc_environment = args.shift || ScData::Source.environment
   source = requested_source(sc_environment)
 
-  manifest_path = Rails.root.join(EXPORT_FOLDER, "parsed", source.environment, "version.json")
+  manifest_path = Rails.root.join(EXPORT_FOLDER, "parsed", source.environment, ScData::ParsedTree::MANIFEST)
 
   # Restamping a tree with a build it was not parsed from is the failure
   # `ParsedCheck` exists to catch: the pointer and the payload disagree, and a
@@ -287,7 +287,7 @@ when "manifest"
     [true, ""]
   end
 
-  manifest = JSON.parse(File.read(Rails.root.join(EXPORT_FOLDER, "parsed", source.environment, "version.json")))
+  manifest = JSON.parse(manifest_path.read)
   puts "  version:  #{manifest["version"]}"
   puts "  checksum: #{manifest["checksum"]}"
 
@@ -295,20 +295,23 @@ when "manifest"
 # build version: a parser change rewrites the tree and leaves the version where
 # it was, which is why this used to need a hand-bumped `vN` prefix.
 #
-# Falls back to the version for a tree pushed before checksums existed, so the
-# key is never empty and never collides across environments.
+# Never fails. The step this replaces was a local YAML read that could not, and
+# it gates every `ruby-tests` run -- including ones whose cache would have hit
+# and needed no network at all. A bucket that cannot be reached falls back to
+# the version, which is what the key held before any of this, so a Hetzner blip
+# costs a stale cache entry rather than a red run on every open PR.
 when "cache-key"
   boot_rails
 
-  fragments = ScData::Source.configured.filter_map do |source|
-    next if source.version.blank?
+  result = ScData::CacheKey.call(settings: s3_settings)
 
-    store = ScData::ParsedStore.new(source.environment, settings: s3_settings)
+  result.warnings.each { |warning| warn "  #{warning}" }
 
-    "#{source.environment}-#{store.remote_checksum || source.version}"
-  end
+  # A bare `key=` would collapse every run onto one cache entry whatever the
+  # trees are, which is worse than no cache at all.
+  abort "  No source carries a version; nothing to key on." if result.empty?
 
-  puts "key=#{fragments.join("_")}"
+  puts "key=#{result.key}"
   puts "default=#{ScData::Source.environment}"
 
 when "push", "pull"

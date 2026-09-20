@@ -14,6 +14,9 @@ jobs:
 
     env:
       RAILS_ENV: test
+      # Both sc_data steps below reach the same bucket; named once so a move
+      # does not have to be found in two places.
+      SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USER: root
@@ -99,14 +102,16 @@ jobs:
         id: sc-data
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
         run: |
           SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
           SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
           echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
           echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
           export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
-          bin/scdata cache-key >> "$GITHUB_OUTPUT"
+          # Filtered rather than piped wholesale: one future initializer
+          # printing a line to stdout would otherwise become a malformed
+          # workflow output, and the symptom would point at the cache.
+          bin/scdata cache-key | grep -E '^(key|default)=' >> "$GITHUB_OUTPUT"
 
       - name: Cache the parsed sc_data tree
         id: parsed-tree
@@ -119,7 +124,6 @@ jobs:
         if: steps.parsed-tree.outputs.cache-hit != 'true'
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
         run: |
           SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
           SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
