@@ -127,6 +127,43 @@ class HangarImporterTest < ActiveSupport::TestCase
     refute result[:success]
   end
 
+  # A hangar export can carry an entry with a slug and no name at all. Both the
+  # name mapping and the query used to assume a name was there.
+  test "imports an item that carries only a slug" do
+    import = import_for([{slug: @model.slug}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal [@model.name], result[:imported]
+  end
+
+  test "reports an unmatched slug-only item under its slug" do
+    import = import_for([{slug: "no-such-ship"}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["no-such-ship"], result[:missing]
+    refute result[:success]
+  end
+
+  test "skips an item that identifies nothing" do
+    import = import_for([{groups: ["Main"]}, {name: @model.name}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal [@model.name], result[:imported]
+    assert_empty result[:missing]
+  end
+
+  test "does not report success when nothing matched" do
+    import = import_for([{name: "No Such Ship"}])
+
+    result = ::HangarImporter.new(import).run
+
+    refute result[:success]
+    assert_equal ["No Such Ship"], result[:missing]
+  end
+
   def create_group(name)
     HangarGroup.create!(user_id: @user.id, name:, color: "#ffffff")
   end

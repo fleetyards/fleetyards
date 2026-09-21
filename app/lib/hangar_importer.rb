@@ -51,7 +51,7 @@ class HangarImporter
           break
         end
 
-        name = item[:name]
+        name = item[:name].presence
         name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
         name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
         name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
@@ -60,10 +60,14 @@ class HangarImporter
         slug = item[:slug].downcase if item[:slug].present?
         slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
+        # Neither half of the query can match on an item that names nothing, and
+        # it has no label to report either.
+        next if name.blank? && slug.blank?
+
         query = [
           MODEL_FIND_QUERY.join(" OR "),
           {
-            name: name.downcase,
+            name: name&.downcase,
             slug:,
             normalized_name:,
             search: "%#{normalized_name}%"
@@ -104,7 +108,9 @@ class HangarImporter
           next
         end
 
-        missing_models << item[:name]
+        # A slug-only item has no name to report, and `missing` is sorted --
+        # one nil in the list raises rather than naming what went unmatched.
+        missing_models << (item[:name].presence || item[:slug])
       end
     end
 
@@ -115,7 +121,9 @@ class HangarImporter
     output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: !cancelled && missing_models.size < items.size
+      # `missing_models.size < items.size` counted an item the run skipped as a
+      # success, so a file of nothing but unidentifiable entries reported one.
+      success: !cancelled && imported_models.any?
     }
 
     @import.update!(output: output)
@@ -309,6 +317,8 @@ class HangarImporter
   end
 
   private def strip_name(name)
+    return if name.blank?
+
     name.gsub(/(?:AEGIS|Aegis|ARGO|argo|Argo|ANVIL|Anvil|BANU|Banu|Crusader|CRUSADER|crusader|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|Consolidated Outland|consolidated outland|frigate|Aopoa)/, "").strip
   end
 end
