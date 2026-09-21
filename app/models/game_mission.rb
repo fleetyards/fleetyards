@@ -215,6 +215,51 @@ class GameMission < ApplicationRecord
     define_method(fact) { facts.nil? ? super() : facts.public_send(fact) }
   end
 
+  # The orgs that actually offer work in the build being read -- 29 of the 38
+  # the export declares a reputation record for. Built from the loaded
+  # catalogue rather than from the reputation tree, so an org a patch stops
+  # giving work to stops being offered as a filter.
+  #
+  # Off `readable_builds` rather than off the row, for the reason the blueprint
+  # filters are: the build a list is answered from is the *served* one, and a
+  # caller reading the fallback build has to be offered what that build names.
+  def self.org_filters(source = served_source, current_only: true)
+    readable_builds(source, current_only:)
+      .where.not(org_name: nil)
+      .distinct
+      .order(:org_name)
+      .pluck(:org_name, :org_key)
+      .map { |name, key| Filter.new(category: "org", label: name, value: key) }
+  end
+
+  # The bands missions are offered in, which is a small subset of the 380
+  # standing records: a band nothing is offered in is not a question to ask.
+  #
+  # Ordered by name because the export states no rank order anywhere a parse can
+  # read -- the records carry a display name and a debug name, and neither
+  # sorts "Neutral" below "Elite Contractor".
+  def self.standing_filters(source = served_source, current_only: true)
+    readable_builds(source, current_only:)
+      .where.not(min_standing: nil)
+      .distinct
+      .order(:min_standing)
+      .pluck(:min_standing)
+      .map { |standing| Filter.new(category: "standing", label: standing, value: standing) }
+  end
+
+  # From the constant rather than from a DISTINCT over the array column: all
+  # four are always offerable, and a kind nothing currently pays is still a
+  # question worth being able to ask.
+  def self.reward_kind_filters
+    GameMissionBuild::REWARD_KINDS.map do |kind|
+      Filter.new(
+        category: "reward_kind",
+        label: I18n.t("filter.game_mission.reward_kind.items.#{kind}", default: kind.humanize),
+        value: kind
+      )
+    end
+  end
+
   private def update_slugs
     # From the key rather than the title, the way a blueprint's is. 2536
     # contracts share 836 titles between them -- every difficulty and system

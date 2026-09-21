@@ -51,6 +51,17 @@ class GameMissionReward < ApplicationRecord
 
   scope :of_kind, ->(kind) { where(kind:) }
 
+  # The game works the figure out when it generates the mission, so the export
+  # states that the contract pays and not how much. 2352 of the 2536 are in
+  # this position against 8 that state an amount -- which is why the amount
+  # being absent has to be said rather than left as a blank.
+  #
+  # Unambiguous without a column of its own: every one of the 8 carries an
+  # amount, including the contract whose amount is zero.
+  def calculated?
+    kind == "currency" && amount.nil?
+  end
+
   # A reputation loss is a reward the same way a gain is: 16 of the 58 amounts
   # the export declares are negative, and a contract that costs you standing
   # with the other side is stating a real consequence.

@@ -13929,6 +13929,246 @@ components:
       - MODEL
       - ALBUM
       title: GalleryTypeEnum
+    GameMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/GameMissionKindEnum"
+        retired:
+          type: boolean
+        released:
+          type: boolean
+        org:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionOrg"
+          - type: 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        difficulty:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionDifficulty"
+          - type: 'null'
+        rewardKinds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        description:
+          type:
+          - string
+          - 'null'
+        rewards:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionReward"
+        blueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionBlueprint"
+        generatorKey:
+          type:
+          - string
+          - 'null'
+        debugName:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - scKey
+      - scRef
+      - retired
+      - released
+      - rewardKinds
+      - createdAt
+      - updatedAt
+      title: GameMission
+    GameMissionBlueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      title: GameMissionBlueprint
+    GameMissionDifficulty:
+      type: object
+      properties:
+        profile:
+          type:
+          - string
+          - 'null'
+        mechanicalSkill:
+          type:
+          - integer
+          - 'null'
+        mentalLoad:
+          type:
+          - integer
+          - 'null'
+        riskOfLoss:
+          type:
+          - integer
+          - 'null'
+        gameKnowledge:
+          type:
+          - integer
+          - 'null'
+      additionalProperties: false
+      required: []
+      title: GameMissionDifficulty
+    GameMissionKindEnum:
+      type: string
+      enum:
+      - career
+      - contract
+      x-enumNames:
+      - CAREER
+      - CONTRACT
+      title: GameMissionKindEnum
+    GameMissionOrg:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type:
+          - string
+          - 'null'
+        alignment:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        lawful:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+      required:
+      - name
+      title: GameMissionOrg
+    GameMissionReward:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionRewardKindEnum"
+        amount:
+          type:
+          - integer
+          - 'null'
+        max:
+          type:
+          - integer
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        calculated:
+          type: boolean
+        orgName:
+          type:
+          - string
+          - 'null'
+        orgKey:
+          type:
+          - string
+          - 'null'
+        entityClass:
+          type:
+          - string
+          - 'null'
+        entityName:
+          type:
+          - string
+          - 'null'
+        weight:
+          type:
+          - number
+          - 'null'
+        badge:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - kind
+      title: GameMissionReward
+    GameMissionRewardFilterEnum:
+      type: string
+      enum:
+      - reputation
+      - item
+      - badge
+      - currency
+      - blueprint
+      x-enumNames:
+      - REPUTATION
+      - ITEM
+      - BADGE
+      - CURRENCY
+      - BLUEPRINT
+      title: GameMissionRewardFilterEnum
+    GameMissionRewardKindEnum:
+      type: string
+      enum:
+      - reputation
+      - item
+      - badge
+      - currency
+      x-enumNames:
+      - REPUTATION
+      - ITEM
+      - BADGE
+      - CURRENCY
+      title: GameMissionRewardKindEnum
+    GameMissions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMission"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: GameMissions
     HangarGroup:
       type: object
       properties:
