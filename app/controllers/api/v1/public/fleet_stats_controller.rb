@@ -16,7 +16,7 @@ module Api
 
         def model_counts
           count_params = vehicle_query_params.except("sorts", "s")
-          @q = @fleet.vehicles.ransack(count_params)
+          @q = vehicle_scope.ransack(count_params)
 
           # No `includes`: this returns a grouped count, so no vehicle is ever
           # instantiated and nothing reads an association off one. Eager loading
@@ -32,7 +32,7 @@ module Api
         end
 
         def members
-          @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params.except("sorts", "s"))
+          @q = membership_scope.ransack(member_query_params.except("sorts", "s"))
 
           members = @q.result
 
@@ -44,7 +44,7 @@ module Api
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def vehicles
-          scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+          scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -169,6 +169,17 @@ module Api
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity
         # rubocop:enable Metrics/MethodLength
+
+        # The two populations the figures are drawn from. Seams, so
+        # `Public::FleetSquadronStatsController` narrows them to one squadron
+        # rather than restating the arithmetic.
+        def vehicle_scope
+          @fleet.vehicles
+        end
+
+        def membership_scope
+          @fleet.fleet_memberships.kept.accepted
+        end
 
         def set_fleet
           @fleet = Fleet.kept.find_by!(slug: params[:fleet_slug])

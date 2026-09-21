@@ -19385,6 +19385,7 @@ components:
       - FleetInventoryPosition
       - FleetMembership
       - FleetRole
+      - FleetSquadron
       - Inventory
       - InventoryItem
       - InventoryPosition
@@ -19409,6 +19410,7 @@ components:
       - FLEET_INVENTORY_POSITION
       - FLEET_MEMBERSHIP
       - FLEET_ROLE
+      - FLEET_SQUADRON
       - INVENTORY
       - INVENTORY_ITEM
       - INVENTORY_POSITION

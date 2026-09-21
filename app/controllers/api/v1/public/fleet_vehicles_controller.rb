@@ -25,7 +25,7 @@ module Api
         end
 
         def index
-          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+          scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -91,6 +91,14 @@ module Api
             .includes(VEHICLE_RENDER_INCLUDES)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+        end
+
+        # The ships the list starts from. A seam rather than `@fleet.vehicles`
+        # inline, so `Public::FleetSquadronVehiclesController` narrows it to one
+        # squadron. `embed` and `fleetchart` are the fleet's own surfaces and
+        # keep the whole fleet deliberately.
+        private def vehicle_scope
+          @fleet.vehicles
         end
 
         private def set_fleet
