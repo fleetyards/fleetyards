@@ -146,6 +146,17 @@ class HangarImporterTest < ActiveSupport::TestCase
     refute result[:success]
   end
 
+  # `paint_slug` becomes the slug the lookup uses, so a paint-only item clears
+  # the identifies-nothing guard -- and had nothing left to be reported under.
+  # `sort` raises on one nil beside a string, which is a named miss away.
+  test "reports an unmatched paint-only item beside a named one" do
+    import = import_for([{paint_slug: "no-such-paint"}, {name: "No Such Ship"}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["No Such Ship", "no-such-paint"], result[:missing]
+  end
+
   test "skips an item that identifies nothing" do
     import = import_for([{groups: ["Main"]}, {name: @model.name}])
 

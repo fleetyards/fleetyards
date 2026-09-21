@@ -108,9 +108,12 @@ class HangarImporter
           next
         end
 
-        # A slug-only item has no name to report, and `missing` is sorted --
-        # one nil in the list raises rather than naming what went unmatched.
-        missing_models << (item[:name].presence || item[:slug])
+        # The identifier the lookup actually used: `slug` already holds
+        # `paint_slug` where the item carried one. Reporting `item[:slug]`
+        # instead would name a slug that was never queried, and on an item that
+        # carried only a paint it would report nothing -- `missing` is sorted,
+        # and one nil beside a string raises rather than naming either.
+        missing_models << (item[:name].presence || slug)
       end
     end
 
