@@ -103,11 +103,19 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
-          SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
-          SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
-          echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
-          echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
-          export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
+          # A Dependabot or fork pull request reads secrets from a store it has
+          # no access to, so `op read` fails and there is nothing to probe the
+          # bucket with. `ScData::CacheKey` already falls back to the version in
+          # that case; losing the credentials must not abort the step under
+          # `-e` before that fallback is ever reached.
+          if SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id") &&
+             SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key"); then
+            echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
+            echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
+            export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
+          else
+            echo "::notice::No object-storage credentials; keying on the version."
+          fi
           # Filtered rather than piped wholesale: one future initializer
           # printing a line to stdout would otherwise become a malformed
           # workflow output, and the symptom would point at the cache.
@@ -119,14 +127,40 @@ jobs:
         with:
           path: data/sc_data/parsed
           key: ${{ runner.os }}-sc-data-parsed-${{ steps.sc-data.outputs.key }}
+          # A run that could not reach the bucket keys on the version, which
+          # names an entry nothing ever writes -- so on an exact match alone it
+          # would miss, fall through to the fetch below, and need the very
+          # credentials it does not have. The prefix hands it the newest tree
+          # already on the runner instead. A run that can name the tree it wants
+          # still matches its own key first, so this changes nothing for main.
+          restore-keys: |
+            ${{ runner.os }}-sc-data-parsed-
 
       - name: Fetch the parsed sc_data tree
         if: steps.parsed-tree.outputs.cache-hit != 'true'
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
-          SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
-          SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+          # Reached whenever the key was not an exact match, which includes a
+          # prefix restore: the tree on disk is then some earlier one, and a run
+          # that can fetch should still replace it with the tree it asked for.
+          # That is what keeps main testing against the tree its key names.
+          #
+          # Without credentials there is nothing to replace it with. Testing
+          # against the restored tree beats failing every dependency bump, so
+          # that degrades -- loudly, and only once something was restored. An
+          # empty directory and no credentials is not a run worth continuing.
+          if ! SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id") ||
+             ! SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key"); then
+            if [ -n "$(ls -A data/sc_data/parsed 2>/dev/null)" ]; then
+              echo "::warning::No object-storage credentials; testing against the restored tree."
+              exit 0
+            fi
+
+            echo "::error::No object-storage credentials and no tree to fall back on."
+            exit 1
+          fi
+
           echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
           echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
           export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
