@@ -1204,7 +1204,8 @@
             "JointThruster": "Joint",
             "FixedThruster": "Fix",
             "FlexThruster": "Flex",
-            "Retro": "Fix"
+            "Retro": "Fix",
+            "Light": "Light"
           }
         },
         "refuelBoom": {
