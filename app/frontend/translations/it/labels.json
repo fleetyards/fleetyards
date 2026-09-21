@@ -1767,6 +1767,38 @@
           "notOwned": "Non posseduto"
         },
         "missions": {
+          "unnamed": "Mai nominata dal gioco",
+          "slug": "Slug",
+          "scKey": "Chiave di gioco",
+          "scRef": "Rif di gioco",
+          "generator": "Generatore",
+          "debugName": "Nome di debug",
+          "build": "Build",
+          "difficultyAxes": "Difficoltà (abilità / carico / rischio / conoscenza)",
+          "states": {
+            "retired": "Ritirata",
+            "released": "Nella release",
+            "unreleased": "Non nella release"
+          },
+          "columns": {
+            "released": "Nella release",
+            "generator": "Generatore",
+            "build": "Build",
+            "rewardKind": "Tipo",
+            "amount": "Importo",
+            "rewardDetail": "Dettaglio"
+          },
+          "filters": {
+            "debugName": "Nome di debug",
+            "named": "Nominata",
+            "unnamed": "Mai nominata",
+            "namedFilter": "Denominazione",
+            "currentBuild": "Solo build corrente",
+            "anyBuild": "Qualsiasi build",
+            "build": "Build"
+          }
+        },
+        "missions": {
           "name": "Cerca missioni",
           "org": "Offerta da",
           "standing": "Reputazione",

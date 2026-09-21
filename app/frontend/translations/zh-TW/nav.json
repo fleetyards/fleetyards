@@ -155,6 +155,9 @@
         "blueprints": {
           "index": "藍圖"
         },
+        "missions": {
+          "index": "任務"
+        },
         "index": "管理員",
         "models": {
           "index": "模型",

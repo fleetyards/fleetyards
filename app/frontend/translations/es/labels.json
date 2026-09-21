@@ -1767,6 +1767,38 @@
           "notOwned": "Sin poseer"
         },
         "missions": {
+          "unnamed": "Nunca nombrada por el juego",
+          "slug": "Slug",
+          "scKey": "Clave del juego",
+          "scRef": "Ref del juego",
+          "generator": "Generador",
+          "debugName": "Nombre de depuración",
+          "build": "Compilación",
+          "difficultyAxes": "Dificultad (habilidad / carga / riesgo / conocimiento)",
+          "states": {
+            "retired": "Retirada",
+            "released": "En la versión",
+            "unreleased": "Fuera de la versión"
+          },
+          "columns": {
+            "released": "En la versión",
+            "generator": "Generador",
+            "build": "Compilación",
+            "rewardKind": "Tipo",
+            "amount": "Cantidad",
+            "rewardDetail": "Detalle"
+          },
+          "filters": {
+            "debugName": "Nombre de depuración",
+            "named": "Nombrada",
+            "unnamed": "Nunca nombrada",
+            "namedFilter": "Nombrado",
+            "currentBuild": "Solo compilación actual",
+            "anyBuild": "Cualquier compilación",
+            "build": "Compilación"
+          }
+        },
+        "missions": {
           "name": "Buscar misiones",
           "org": "Ofrecida por",
           "standing": "Reputación",

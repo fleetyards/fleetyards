@@ -1767,6 +1767,38 @@
           "notOwned": "未擁有"
         },
         "missions": {
+          "unnamed": "遊戲從未命名",
+          "slug": "Slug",
+          "scKey": "遊戲鍵",
+          "scRef": "遊戲參照",
+          "generator": "產生器",
+          "debugName": "除錯名稱",
+          "build": "版本",
+          "difficultyAxes": "難度（技巧 / 負擔 / 風險 / 理解）",
+          "states": {
+            "retired": "已移除",
+            "released": "在正式版",
+            "unreleased": "未在正式版"
+          },
+          "columns": {
+            "released": "在正式版",
+            "generator": "產生器",
+            "build": "版本",
+            "rewardKind": "類型",
+            "amount": "數量",
+            "rewardDetail": "詳情"
+          },
+          "filters": {
+            "debugName": "除錯名稱",
+            "named": "已命名",
+            "unnamed": "從未命名",
+            "namedFilter": "命名",
+            "currentBuild": "僅目前版本",
+            "anyBuild": "任何版本",
+            "build": "版本"
+          }
+        },
+        "missions": {
           "name": "搜尋任務",
           "org": "發布方",
           "standing": "聲望",

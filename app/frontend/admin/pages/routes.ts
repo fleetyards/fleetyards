@@ -5,6 +5,7 @@ import { routes as blueprintsRoutes } from "@/admin/pages/blueprints/routes";
 import { routes as componentsRoutes } from "@/admin/pages/components/routes";
 import { routes as equipmentRoutes } from "@/admin/pages/equipment/routes";
 import { routes as commoditiesRoutes } from "@/admin/pages/commodities/routes";
+import { routes as missionsRoutes } from "@/admin/pages/missions/routes";
 import { routes as fleetsRoutes } from "@/admin/pages/fleets/routes";
 import { routes as vehiclesRoutes } from "@/admin/pages/vehicles/routes";
 import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
@@ -79,6 +80,19 @@ export const routes: RouteRecordRaw[] = [
       // and the group icon already match theirs.
       icon: "fa-duotone fa-notes",
       access: ["blueprints"],
+    },
+  },
+  {
+    path: "/missions/",
+    component: () => import("@/admin/pages/missions.vue"),
+    children: missionsRoutes,
+    redirect: { name: missionsRoutes[0].name },
+    meta: {
+      title: "admin.missions.index",
+      needsAuthentication: true,
+      // The glyph the public catalogue nav gives missions.
+      icon: "fa-duotone fa-scroll",
+      access: ["missions"],
     },
   },
   {

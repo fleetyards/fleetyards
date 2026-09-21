@@ -86,10 +86,18 @@ class GameMissionBuild < ApplicationRecord
   # The two arrays are deliberately out. `all_facts_join` wraps every filterable
   # fact in a COALESCE, and an array compared through one cannot use the GIN
   # index that exists for it -- those two are asked through a scope instead.
+  # `debug_name` and `generator_key` are here for admin rather than for the
+  # public catalogue: a developer's note is not a mission name, but it is how a
+  # row is found again in the export when its title is a run-time template or
+  # absent. Filterable rather than merely ransackable, so they resolve through
+  # the joined build like every other fact -- ransack drops a condition it
+  # cannot place without saying a word, which is a filter that silently matches
+  # everything.
   FILTERABLE = %i[
     name kind org_key org_name alignment min_standing max_standing released
     difficulty_profile difficulty_mechanical_skill difficulty_mental_load
     difficulty_risk_of_loss difficulty_game_knowledge
+    debug_name generator_key
   ].freeze
 
   validates :environment, presence: true

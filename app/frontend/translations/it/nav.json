@@ -155,6 +155,9 @@
         "blueprints": {
           "index": "Progetti"
         },
+        "missions": {
+          "index": "Missioni"
+        },
         "index": "Admin",
         "models": {
           "index": "Modelli",
