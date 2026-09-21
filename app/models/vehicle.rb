@@ -146,7 +146,7 @@ class Vehicle < ApplicationRecord
     {pledge_store: 0, ingame: 1},
     prefix: true
 
-  before_validation :normalize_serial
+  before_validation :normalize_serial, :force_ingame_bought_via
   before_save :nil_if_blank
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
@@ -585,6 +585,15 @@ class Vehicle < ApplicationRecord
     return if serial.blank?
 
     self.serial = serial.upcase
+  end
+
+  # A ship the pledge store never sells cannot have been bought there, whichever
+  # way the row arrived -- by hand, through an import, or from a sync that
+  # stamps every entry it creates as a store purchase.
+  protected def force_ingame_bought_via
+    return if model.blank? || !model.ingame_only?
+
+    self.bought_via = :ingame
   end
 
   protected def nil_if_blank

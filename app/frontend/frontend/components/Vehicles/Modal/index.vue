@@ -100,6 +100,19 @@ const onSubmit = handleSubmit(async (values) => {
 
 const { data: boughtViaFilters } = useVehicleBoughtViaFiltersQuery();
 
+// There is no pledge store to have bought an in-game-only ship from, and the
+// server rewrites the value anyway -- offering the choice would only let
+// someone pick an answer that never survives the save.
+const boughtViaOptions = computed(() => {
+  if (!props.vehicle.model?.ingameOnly) {
+    return boughtViaFilters.value;
+  }
+
+  return (boughtViaFilters.value || []).filter(
+    (option) => option.value === "ingame",
+  );
+});
+
 const paintsFilterQuery = () => {
   return fetchModelPaints(props.vehicle?.model?.slug);
 };
@@ -186,7 +199,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
               :key="`bought-via-${vehicle.model?.id}`"
               v-model="boughtVia"
               v-bind="boughtViaProps"
-              :options="boughtViaFilters"
+              :options="boughtViaOptions"
               :label="t('labels.vehicle.boughtViaSelect.label')"
               name="boughtVia"
               :nullable="false"
