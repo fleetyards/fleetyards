@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.3.0](https://github.com/fleetyards/fleetyards/compare/v8.2.0...v8.3.0) (2026-09-21)
+
+
+### Features
+
+* **hangar:** always record in-game-only ships as bought in game ([#5123](https://github.com/fleetyards/fleetyards/issues/5123)) ([eb326cc](https://github.com/fleetyards/fleetyards/commit/eb326cc61e8ac9d5489f6147e76227c4eaf17aa0))
+* **models:** flag the ships you can only get in game ([#5122](https://github.com/fleetyards/fleetyards/issues/5122)) ([f11fa48](https://github.com/fleetyards/fleetyards/commit/f11fa481e8e5734de75ad60ec9dad7e5361a681f))
+* **tools:** add VerseIntel to the tools page ([#5124](https://github.com/fleetyards/fleetyards/issues/5124)) ([f49c642](https://github.com/fleetyards/fleetyards/commit/f49c64223ea824070a39507433dc4bb63738e5f7))
+
+
+### Bug Fixes
+
+* **hangar-import:** every import fails on a column that was never written ([#5118](https://github.com/fleetyards/fleetyards/issues/5118)) ([f7113f5](https://github.com/fleetyards/fleetyards/commit/f7113f5897171b00b7ccf81029c43ed22441224b))
+* **hardpoints:** add the missing Light thruster sub-type label ([1c9e060](https://github.com/fleetyards/fleetyards/commit/1c9e06058ec8003f07f4fede9e974545c0067114))
+* **hardpoints:** fall back to the raw thruster sub-type ([1ed4cc4](https://github.com/fleetyards/fleetyards/commit/1ed4cc48c3e0c9a5ffb99230f78e20c6d2cfa633))
+
+
+### Chores
+
+* **credentials:** add the admin Discord webhook endpoint ([f46fc2c](https://github.com/fleetyards/fleetyards/commit/f46fc2c8add5c04207b77e11556e537e4537c7fc))
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5108](https://github.com/fleetyards/fleetyards/issues/5108)) ([ef3806d](https://github.com/fleetyards/fleetyards/commit/ef3806dee592139ee6121b3da172dc6d639a4dea))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.42 to 3.5.43 ([#5106](https://github.com/fleetyards/fleetyards/issues/5106)) ([369762a](https://github.com/fleetyards/fleetyards/commit/369762aa437677f5e068eb85fa18ec4389f4e784))
+* **deps-dev:** bump @vue/test-utils from 2.5.0 to 2.5.1 ([#5109](https://github.com/fleetyards/fleetyards/issues/5109)) ([f479adc](https://github.com/fleetyards/fleetyards/commit/f479adc71a023321f6bd33ff4133aa52a4a4574a))
+* **deps-dev:** bump annotaterb from 4.24.0 to 4.25.0 ([#5110](https://github.com/fleetyards/fleetyards/issues/5110)) ([6310863](https://github.com/fleetyards/fleetyards/commit/6310863906cd3c855d5ed56969ccf8728ffc1b0c))
+* **deps-dev:** bump knip from 6.35.1 to 6.37.0 ([#5102](https://github.com/fleetyards/fleetyards/issues/5102)) ([6e203e4](https://github.com/fleetyards/fleetyards/commit/6e203e444f0eaba7650281b428ac25df84e3ebaf))
+* **deps-dev:** bump mocha from 12.0.1 to 12.0.2 ([#5111](https://github.com/fleetyards/fleetyards/issues/5111)) ([479060e](https://github.com/fleetyards/fleetyards/commit/479060e78e7c1e0c9be735575a3b4def243725ff))
+* **deps-dev:** bump stylelint-scss from 7.2.0 to 7.3.0 ([#5103](https://github.com/fleetyards/fleetyards/issues/5103)) ([768e845](https://github.com/fleetyards/fleetyards/commit/768e8458848092d6ed7788eee92c727e671a9da7))
+* **deps-dev:** bump vitest from 5.0.0 to 5.0.1 ([#5112](https://github.com/fleetyards/fleetyards/issues/5112)) ([c7a40b9](https://github.com/fleetyards/fleetyards/commit/c7a40b9b455b6dfa2c1c585effc830b050f78426))
+* **deps:** bump @event-calendar/core from 5.12.3 to 5.13.1 ([#5107](https://github.com/fleetyards/fleetyards/issues/5107)) ([4cbc59e](https://github.com/fleetyards/fleetyards/commit/4cbc59e828398f97a4f3d100745f10b40679ef80))
+* **deps:** bump @tanstack/vue-query from 5.102.8 to 5.103.1 ([#5113](https://github.com/fleetyards/fleetyards/issues/5113)) ([e0000b6](https://github.com/fleetyards/fleetyards/commit/e0000b63c7907726527c9a7223de6c796abfc37c))
+* **deps:** bump @vueuse/core from 14.4.0 to 15.0.0 ([#5104](https://github.com/fleetyards/fleetyards/issues/5104)) ([acc0a48](https://github.com/fleetyards/fleetyards/commit/acc0a488e65e423d8e25cada4c55c1537160b72b))
+* **deps:** bump aws-sdk-s3 from 1.232.0 to 1.232.1 ([#5114](https://github.com/fleetyards/fleetyards/issues/5114)) ([b4ad135](https://github.com/fleetyards/fleetyards/commit/b4ad1358963a6963a9d03b9cb82e831d494a63ce))
+* **deps:** bump doorkeeper-jwt from 0.4.4 to 0.4.5 ([#5105](https://github.com/fleetyards/fleetyards/issues/5105)) ([d7eef11](https://github.com/fleetyards/fleetyards/commit/d7eef11fb8ae7471b0bcc3d3813739e3f511deea))
+
 ## [8.2.0](https://github.com/fleetyards/fleetyards/compare/v8.1.0...v8.2.0) (2026-09-21)
 
 
