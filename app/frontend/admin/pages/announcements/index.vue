@@ -24,6 +24,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAnnouncementFilters } from "@/admin/composables/useAnnouncementFilters";
+import { useAnnouncementUpdates } from "@/admin/composables/useAnnouncementUpdates";
 
 const route = useRoute();
 
@@ -64,6 +65,10 @@ const {
   refetch,
   ...asyncStatus
 } = useAnnouncements(announcementsQueryParams);
+
+// A publish dispatches four channels that each settle from their own job, so
+// the rows on screen move on their own from here on.
+useAnnouncementUpdates();
 
 const { t, l } = useI18n();
 
