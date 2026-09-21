@@ -235,17 +235,40 @@ module ScData
         assert_equal "adagio_adagio_intro", @parser.missions.sole[:sc_key]
       end
 
-      # `Dir.glob` fixes no order between builds, so the second key cannot be
-      # positional: a counter would swap the two contracts' history the first
-      # time the walk came back in the other order.
-      test "#missions disambiguates two contracts sharing a generator and a debug name" do
+      # Every member of a shared base takes the suffix, including the first.
+      # `Dir.glob` fixes no order between builds, so "the first one" is not a
+      # property of the contract -- and were two to swap, the loader would try
+      # to write one row the key the other still holds and the unique index
+      # would stop the load rather than the two exchanging URLs.
+      test "#missions suffixes every contract sharing a generator and a debug name" do
         generator("headhunters", debug_name: "Simple_Hit", contract_ids: [CONTRACT_ID, SECOND_CONTRACT_ID])
 
         keys = @parser.missions.pluck(:sc_key)
 
         assert_equal 2, keys.size
-        assert_includes keys, "headhunters_simple_hit"
+        assert_not_includes keys, "headhunters_simple_hit"
+        assert_includes keys, "headhunters_simple_hit_#{CONTRACT_ID.delete("-").first(8)}"
         assert_includes keys, "headhunters_simple_hit_#{SECOND_CONTRACT_ID.delete("-").first(8)}"
+      end
+
+      # The key a contract gets depends on the set of contracts, never on the
+      # order they were walked in: the same two, the other way round, are the
+      # same two keys.
+      test "#missions gives a contract the same key whichever order it is walked in" do
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [CONTRACT_ID, SECOND_CONTRACT_ID])
+        forwards = @parser.missions.to_h { |mission| [mission[:sc_ref], mission[:sc_key]] }
+
+        FileUtils.rm_rf("#{@raw_path}/#{RECORDS_PATH}/contracts")
+
+        reversed_parser = ::ScData::Parser::ContractsParser.new(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        )
+        @parser = reversed_parser
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [SECOND_CONTRACT_ID, CONTRACT_ID])
+
+        backwards = reversed_parser.missions.to_h { |mission| [mission[:sc_ref], mission[:sc_key]] }
+
+        assert_equal forwards, backwards
       end
 
       # A `debugName` is a developer's note: 64 carry a space, a bracket, a dash

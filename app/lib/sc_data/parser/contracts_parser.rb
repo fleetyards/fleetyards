@@ -218,17 +218,23 @@ module ScData
       # One record per contract. 2536 of them in 4.10.1, against the 786 that
       # hand out a blueprint and are the only ones the pool walk keeps.
       def missions
-        used = Hash.new(0)
+        identified = contract_entries.filter_map do |entry|
+          sc_ref = value_or_nil(entry[:contract]["id"])
 
-        contract_entries.filter_map do |entry|
+          [entry, sc_ref, mission_base(entry, sc_ref)] if sc_ref.present?
+        end
+
+        # Counted before a single key is handed out, so that whether a key is
+        # suffixed depends on the set of contracts rather than on the order
+        # they were walked in.
+        shared = identified.map(&:last).tally
+
+        identified.map do |entry, sc_ref, base|
           contract = entry[:contract]
           org = entry[:org]
-          sc_ref = value_or_nil(contract["id"])
-
-          next if sc_ref.blank?
 
           {
-            sc_key: mission_key(entry, sc_ref, used),
+            sc_key: (shared[base] > 1) ? "#{base}_#{sc_ref.delete("-").first(8)}" : base,
             sc_ref:,
             kind: entry[:kind],
             generator_key: entry[:generator_key],
@@ -253,19 +259,24 @@ module ScData
       end
 
       # `generator_key` alone repeats, and `debugName` alone collides across
-      # generators, so the key is both. That still leaves 13 pairs shared by two
-      # contracts each, and those take the head of the GUID rather than a
-      # counter: `Dir.glob` fixes no order between builds, and a positional
-      # suffix would swap the two contracts' history the first time it moved.
+      # generators, so the key is both. That still leaves 13 bases shared by two
+      # contracts each in 4.10.1.
+      #
+      # `missions` suffixes *every* member of a shared base with the head of its
+      # GUID, rather than letting the first one keep the bare base. Nothing
+      # fixes the order `Dir.glob` walks the generators in, so "the first one"
+      # is not a property of the contract: were two to swap between builds, the
+      # loader -- which finds a row by `sc_ref` -- would try to write one row the
+      # `sc_key` the other still holds, and the unique index would stop the load
+      # rather than the two exchanging URLs.
       #
       # The three contracts with no `debugName` fall back to the GUID whole.
-      private def mission_key(entry, sc_ref, used)
+      private def mission_base(entry, sc_ref)
         debug_name = value_or_nil(entry[:contract]["debugName"])
-        base = debug_name.present? ? sanitize_key("#{entry[:generator_key]}_#{debug_name}") : sc_ref
 
-        used[base] += 1
+        return sc_ref if debug_name.blank?
 
-        (used[base] > 1) ? "#{base}_#{sc_ref.delete("-").first(8)}" : base
+        sanitize_key("#{entry[:generator_key]}_#{debug_name}")
       end
 
       # A `debugName` is a developer's note and not an identifier: 64 of them
