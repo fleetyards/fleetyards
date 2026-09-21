@@ -19,7 +19,7 @@ module Api
 
         def index
           result = @fleet.fleet_squadrons
-            .includes(logo_attachment: :blob)
+            .includes(:fleet_memberships, logo_attachment: :blob)
             .order("name ASC")
 
           @fleet_squadrons = result_with_pagination(result, per_page(FleetSquadron))

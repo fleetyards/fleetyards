@@ -103,8 +103,15 @@ class FleetSquadron < ApplicationRecord
     fleet_memberships.kept.accepted
   end
 
+  # An eager-loaded association answers without a query, which is what keeps a
+  # list of squadrons from issuing one apiece. `count` on the relation would
+  # ignore the loaded records and go to the database anyway.
   def member_count
-    accepted_fleet_memberships.count
+    if fleet_memberships.loaded?
+      fleet_memberships.count { |membership| membership.kept? && membership.accepted? }
+    else
+      accepted_fleet_memberships.count
+    end
   end
 
   # Whose ships count as this squadron's. Empty for an empty squadron, which is
