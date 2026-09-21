@@ -10984,14 +10984,6 @@ components:
           type: boolean
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
-        availability:
-          "$ref": "#/components/schemas/ItemAvailability"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
         buyPrice:
           type:
           - number
@@ -11000,6 +10992,14 @@ components:
           type:
           - number
           - 'null'
+        availability:
+          "$ref": "#/components/schemas/ItemAvailability"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
         uexId:
           type:
           - integer
@@ -11140,6 +11140,10 @@ components:
       - name desc
       - commodityType asc
       - commodityType desc
+      - buyPrice asc
+      - buyPrice desc
+      - sellPrice asc
+      - sellPrice desc
       - createdAt asc
       - createdAt desc
       - updatedAt asc
@@ -11149,6 +11153,10 @@ components:
       - NAME_DESC
       - COMMODITY_TYPE_ASC
       - COMMODITY_TYPE_DESC
+      - BUY_PRICE_ASC
+      - BUY_PRICE_DESC
+      - SELL_PRICE_ASC
+      - SELL_PRICE_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       - UPDATED_AT_ASC

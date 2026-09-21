@@ -3,7 +3,7 @@
 module Api
   module V1
     class CommoditiesController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index price_history]
+      skip_verify_authorized only: %i[index show price_history]
 
       after_action -> { pagination_header(:commodities) }, only: [:index]
 
@@ -12,7 +12,14 @@ module Api
       PRICE_HISTORY_WINDOW = 90.days
 
       def index
-        commodities_query_params["sorts"] = "name asc"
+        # The model has named its allowed sorts all along; this action threw them
+        # away and forced `name asc` on every request. `sorting_params` is what
+        # every other list endpoint uses, and it falls back to the model's
+        # default rather than trusting whatever arrives. `normalize_sort_params`
+        # first, because a sortable list sends `q[s]` and ransack would read a
+        # leftover `s` ahead of the whitelisted `sorts`.
+        normalize_sort_params(commodities_query_params)
+        commodities_query_params["sorts"] = sorting_params(Commodity, commodities_query_params["sorts"])
 
         # Commodities a later patch stopped shipping are left out unless
         # currentVersion=false asks for them -- the rows stay so old ledger
@@ -33,6 +40,18 @@ module Api
         @commodities = @q.result
           .page(params[:page])
           .per(per_page(Commodity))
+      end
+
+      # Unscoped by build, unlike the list: a link to a commodity the current
+      # patch has dropped has to keep resolving, because the ledger keeps its
+      # rows so old inventory entries still read. `retired` in the payload is
+      # what says which one the reader is looking at.
+      def show
+        # `item_prices` for the two price figures and the terminals, which
+        # `ItemPriceConcern` reads off the loaded association rather than
+        # querying per call.
+        @commodity = Commodity.includes(:item_prices, :refines_into)
+          .find_by!(slug: params[:slug].to_s.downcase)
       end
 
       def price_history
@@ -87,9 +106,16 @@ module Api
       end
 
       private def commodities_query_params
+        # The price predicates resolve against the `buy_price`/`sell_price`
+        # ransackers, which are typed `:decimal` so a range compares numbers
+        # rather than the strings a query string carries. `_not_null` is the
+        # "traded anywhere we know of" filter: 124 of the 232 have a price row,
+        # and the rest are not a smaller number, they are a different question.
         @commodities_query_params ||= params.permit(q: [
-          :name_cont, :current_version,
-          id_in: [], name_in: [], slug_in: [], commodity_type_in: []
+          :s, :sorts, :name_cont, :description_cont, :current_version,
+          :buy_price_gteq, :buy_price_lteq, :buy_price_not_null,
+          :sell_price_gteq, :sell_price_lteq, :sell_price_not_null,
+          sorts: [], id_in: [], name_in: [], slug_in: [], commodity_type_in: []
         ]).fetch(:q, {})
       end
     end

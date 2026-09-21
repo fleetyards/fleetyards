@@ -1,4 +1,4 @@
-resources :commodities, param: :slug, only: [:index] do
+resources :commodities, param: :slug, only: %i[index show] do
   member do
     get :price_history, path: "price-history"
   end

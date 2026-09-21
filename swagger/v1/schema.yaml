@@ -164,6 +164,33 @@ paths:
                 "$ref": "#/components/schemas/Commodities"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/commodities/{slug}":
+    get:
+      summary: Commodity detail
+      tags:
+      - Commodities
+      operationId: commodity
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodity"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities/{slug}/price-history":
     parameters:
     - name: slug
@@ -16450,6 +16477,14 @@ components:
           type: boolean
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        sellPrice:
+          type:
+          - number
+          - 'null'
         availability:
           "$ref": "#/components/schemas/ItemAvailability"
         createdAt:
@@ -16515,6 +16550,8 @@ components:
       properties:
         nameCont:
           type: string
+        descriptionCont:
+          type: string
         idIn:
           type: array
           items:
@@ -16532,8 +16569,26 @@ components:
           type: array
           items:
             type: string
+        buyPriceGteq:
+          type: number
+        buyPriceLteq:
+          type: number
+        sellPriceGteq:
+          type: number
+        sellPriceLteq:
+          type: number
+        buyPriceNotNull:
+          type: boolean
+        sellPriceNotNull:
+          type: boolean
         currentVersion:
           type: boolean
+        s:
+          "$ref": "#/components/schemas/CommoditySortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CommoditySortingEnum"
       additionalProperties: false
       example: {}
       title: CommodityQuery
@@ -16555,6 +16610,35 @@ components:
       - name
       - slug
       title: CommodityRef
+    CommoditySortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - commodityType asc
+      - commodityType desc
+      - buyPrice asc
+      - buyPrice desc
+      - sellPrice asc
+      - sellPrice desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - COMMODITY_TYPE_ASC
+      - COMMODITY_TYPE_DESC
+      - BUY_PRICE_ASC
+      - BUY_PRICE_DESC
+      - SELL_PRICE_ASC
+      - SELL_PRICE_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: CommoditySortingEnum
     CompareShare:
       type: object
       required:
