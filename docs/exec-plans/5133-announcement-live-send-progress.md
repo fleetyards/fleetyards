@@ -102,8 +102,15 @@ The deliveries cell is a stacked list of channel, status, timestamp, error and a
 ## Discovery Log
 
 - **2026-09-21** Initial research and plan creation.
+- **2026-09-22** All three phases landed. The row's layout was checked with the
+  static CSS harness rather than a dev server (this worktree has none, and the
+  admin app is behind a login): no horizontal scroll and nothing escaping the
+  viewport at 1280 / 768 / 430 / 400px, the title truncating with an ellipsis
+  from 430px down, and the deliveries block 8px under the head at every width.
+  `bin/generate-schema` leaves only the known macOS `components.parameters`
+  reordering, which was reverted.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1 — the channel, the broadcasts and the AsyncAPI declaration
+- [x] Phase 2 — the subscription and the cache patching
+- [x] Phase 3 — the row, the sort bar and the page rewrite
