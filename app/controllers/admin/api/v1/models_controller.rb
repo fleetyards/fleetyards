@@ -165,7 +165,7 @@ module Admin
           @model_query_params ||= params.permit(q: [
             :search_cont, :name_cont, :id_eq, :front_view_blank, :fleetchart_image_blank,
             :top_view_colored_blank, :holo_blank, :sc_key_blank, :dimensions_drifted,
-            :dimensions_measured_at_null, :positions_need_curation_eq, :s, :sorts,
+            :dimensions_measured_at_null, :positions_need_curation_eq, :ingame_only_eq, :s, :sorts,
             name_in: [], id_in: [], id_not_in: [], production_status_in: [],
             manufacturer_in: [], s: [], sorts: []
           ]).fetch(:q, {})
@@ -177,7 +177,7 @@ module Admin
             :scm_speed, :scm_speed_boosted, :max_speed, :reverse_speed_boosted, :yaw, :yaw_boosted,
             :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier, :sc_key,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
-            :classification, :focus, :size, :dock_size, :vehicle_size, :length, :beam, :height, :on_sale, :player_ownable,
+            :classification, :focus, :size, :dock_size, :vehicle_size, :length, :beam, :height, :on_sale, :player_ownable, :ingame_only,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
             :landed_length, :landed_beam, :landed_height,

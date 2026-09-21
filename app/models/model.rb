@@ -40,6 +40,7 @@
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
 #  in_game                           :boolean          default(FALSE), not null
+#  ingame_only                       :boolean          default(FALSE), not null
 #  landed_beam                       :decimal(15, 2)
 #  landed_fleetchart_offset_beam     :decimal(15, 2)
 #  landed_fleetchart_offset_length   :decimal(15, 2)
@@ -578,7 +579,7 @@ class Model < ApplicationRecord
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
       "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
-      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game",
+      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only",
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "min_crew", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "positions_need_curation", "price",
@@ -703,6 +704,19 @@ class Model < ApplicationRecord
 
   def self.active
     where(active: true)
+  end
+
+  # Ships that never reach the pledge store: an ATLS IKTI is bought with aUEC in
+  # game, an F7A Hornet Mk II comes out of an upgrade kit. Says nothing about
+  # whether a player can own one -- that is `player_ownable` -- nor whether the
+  # current build ships it, which is `in_game`. It is what separates a missing
+  # `pledge_price` from one that is never coming.
+  def self.ingame_only
+    where(ingame_only: true)
+  end
+
+  def self.pledge_store
+    where(ingame_only: false)
   end
 
   # Where the curated dimensions disagree with what the loader read from the game

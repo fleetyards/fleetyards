@@ -215,6 +215,7 @@ json.refuel_boom model.refuel_boom
 
 json.on_sale model.on_sale
 json.player_ownable model.player_ownable
+json.ingame_only model.ingame_only
 json.pledge_price((model.pledge_price.to_f if model.pledge_price.present?))
 json.pledge_price_label model.pledge_price_label
 json.price((model.price.to_f if model.price.present?))

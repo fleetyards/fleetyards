@@ -49,6 +49,17 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by ingameOnlyEq" do
+    ingame_only = create(:model, ingame_only: true)
+    pledge = create(:model)
+
+    assert_api_response :get, 200, params: {q: {"ingameOnlyEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, ingame_only.name
+      assert_not_includes names, pledge.name
+    end
+  end
+
   test "GET /models accepts a containerFit map" do
     create_list(:model, 2)
 

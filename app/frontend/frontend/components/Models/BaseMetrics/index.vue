@@ -69,6 +69,13 @@ const openAvailability = () => {
       >
         {{ t(`labels.model.state.${state}`) }}
       </span>
+      <span
+        v-if="model.ingameOnly"
+        class="base-panel__chip"
+        data-test="model-ingame-only-chip"
+      >
+        {{ t("labels.model.ingameOnly") }}
+      </span>
       <span v-if="model.metrics.sizeLabel" class="base-panel__chip">
         {{ model.metrics.sizeLabel }}
       </span>

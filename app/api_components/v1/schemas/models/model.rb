@@ -56,6 +56,7 @@ module V1
 
             onSale: {type: :boolean},
             playerOwnable: {type: :boolean},
+            ingameOnly: {type: :boolean},
             pledgePrice: {type: :number},
             pledgePriceLabel: {type: :string},
             price: {type: :number},
@@ -77,7 +78,7 @@ module V1
           additionalProperties: false,
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos
-            inGame loaners manufacturer media metrics onSale playerOwnable speeds adiMap createdAt
+            inGame ingameOnly loaners manufacturer media metrics onSale playerOwnable speeds adiMap createdAt
             updatedAt
           ]
         })

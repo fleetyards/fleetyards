@@ -226,6 +226,18 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by ingameOnlyEq" do
+    ingame_only = create(:model, ingame_only: true)
+    pledge = create(:model)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"ingameOnlyEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, ingame_only.name
+      assert_not_includes names, pledge.name
+    end
+  end
+
   test "GET /models honours perPage and totals" do
     create_list(:model, 10)
     sign_in @user
@@ -307,6 +319,16 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, path_params: {id: model.id}, body: {name: "Enterprise A"} do
       assert_equal "Enterprise A", parsed_body["name"]
+    end
+  end
+
+  test "PUT /models/:id marks a ship as in-game only" do
+    model = create(:model)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {ingameOnly: true} do
+      assert parsed_body["ingameOnly"]
+      assert model.reload.ingame_only?
     end
   end
 

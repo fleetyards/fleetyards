@@ -42,6 +42,7 @@ require "test_helper"
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
 #  in_game                           :boolean          default(FALSE), not null
+#  ingame_only                       :boolean          default(FALSE), not null
 #  landed_beam                       :decimal(15, 2)
 #  landed_fleetchart_offset_beam     :decimal(15, 2)
 #  landed_fleetchart_offset_length   :decimal(15, 2)

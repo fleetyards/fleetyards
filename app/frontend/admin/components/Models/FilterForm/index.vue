@@ -35,6 +35,7 @@ const prefillFormValues = () => {
     topViewColoredBlank: filters.value.topViewColoredBlank,
     frontViewBlank: filters.value.frontViewBlank,
     positionsNeedCurationEq: filters.value.positionsNeedCurationEq,
+    ingameOnlyEq: filters.value.ingameOnlyEq,
     dimensionsDrifted: filters.value.dimensionsDrifted,
     dimensionsMeasuredAtNull: filters.value.dimensionsMeasuredAtNull,
   };
@@ -133,6 +134,14 @@ watch(
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="positionsNeedCurationEq"
+    />
+
+    <RadioList
+      v-model="form.ingameOnlyEq"
+      :label="t('labels.filters.models.ingameOnly')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="ingameOnlyEq"
     />
 
     <RadioList
