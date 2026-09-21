@@ -96,7 +96,7 @@ describe("Commodities/Row", () => {
   it("marks a commodity the current build has dropped", async () => {
     const wrapper = await mount({ retired: true });
 
-    expect(wrapper.text()).toContain("No longer in the game");
+    expect(wrapper.text()).toContain("No longer in the current build");
   });
 
   // A type a later patch introduces has no label yet, and falling back to

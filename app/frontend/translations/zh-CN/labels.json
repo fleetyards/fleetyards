@@ -2597,7 +2597,7 @@
         "name": "名称",
         "buyPrice": "买入",
         "sellPrice": "卖出",
-        "retired": "已从游戏中移除",
+        "retired": "已不在当前版本中",
         "containerSizes": "货柜尺寸（SCU）",
         "pieceVolume": "每件体积（SCU）",
         "consumable": "可消耗",

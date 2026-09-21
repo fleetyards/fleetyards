@@ -2597,7 +2597,7 @@
         "name": "Nom",
         "buyPrice": "Achat",
         "sellPrice": "Vente",
-        "retired": "N'est plus dans le jeu",
+        "retired": "Absent de la version actuelle",
         "containerSizes": "Tailles de conteneur (SCU)",
         "pieceVolume": "Volume par pièce (SCU)",
         "consumable": "Consommable",
@@ -2608,12 +2608,12 @@
           "none": "Aucun terminal connu n'achète ni ne vend ceci."
         },
         "chart": {
-          "buyHighest": "Achat, le plus haut",
-          "buyAverage": "Achat, moyen",
-          "buyLowest": "Achat, le plus bas",
-          "sellHighest": "Vente, la plus haute",
-          "sellAverage": "Vente, moyenne",
-          "sellLowest": "Vente, la plus basse"
+          "buyHighest": "Prix d'achat le plus élevé",
+          "buyAverage": "Prix d'achat moyen",
+          "buyLowest": "Prix d'achat le plus bas",
+          "sellHighest": "Prix de vente le plus élevé",
+          "sellAverage": "Prix de vente moyen",
+          "sellLowest": "Prix de vente le plus bas"
         },
         "types": {
           "agricultural_supply": "Fournitures agricoles",

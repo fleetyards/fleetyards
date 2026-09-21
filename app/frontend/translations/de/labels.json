@@ -2597,7 +2597,7 @@
         "name": "Name",
         "buyPrice": "Kauf",
         "sellPrice": "Verkauf",
-        "retired": "Nicht mehr im Spiel",
+        "retired": "Nicht mehr im aktuellen Build",
         "containerSizes": "Containergrößen (SCU)",
         "pieceVolume": "Volumen pro Stück (SCU)",
         "consumable": "Verzehrbar",
