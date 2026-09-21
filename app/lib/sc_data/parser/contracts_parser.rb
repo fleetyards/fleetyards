@@ -392,7 +392,14 @@ module ScData
       # same reason the pool refs are: `contractResults` nests a different
       # number of levels per contract shape.
       private def contract_rewards(contract)
-        collect_rewards(contract["contractResults"])
+        rewards = collect_rewards(contract["contractResults"])
+
+        # A contract declares one result per outcome, so the same computed
+        # payout is found several times over. It says one thing however many
+        # times it is stated, and a page listing it four times says no more.
+        calculated, stated = rewards.partition { |reward| reward[:calculated] }
+
+        stated + calculated.first(1)
       end
 
       private def collect_rewards(node)
@@ -412,11 +419,27 @@ module ScData
       private def reward_entries(key, value)
         case key
         when "ContractResult_Reward" then currency_rewards(value)
+        when "ContractResult_CalculatedReward" then calculated_rewards(value)
         when "ContractResult_LegacyReputation" then reputation_rewards(value)
         when "ContractResult_Item" then item_rewards(value)
         when "ContractResult_ItemsWeighting" then weighted_item_rewards(value)
         when "ContractResult_BadgeAward" then badge_rewards(value)
         end
+      end
+
+      # The contract pays money, and the game works out how much when it
+      # generates the mission. The element is empty on every one of the 2352
+      # that carry it -- but its *presence* answers "does this pay at all",
+      # which is a different question from "how much" and a useful one: 176
+      # contracts answer it no.
+      #
+      # No amount, deliberately. A currency reward with no amount is one the
+      # game computes; the 8 that state a figure always carry one, including
+      # the contract whose figure is zero.
+      private def calculated_rewards(value)
+        return [] if Array.wrap(value).empty?
+
+        [{kind: "currency", calculated: true}]
       end
 
       # The only stated payout in the game files: 8 contracts across the whole

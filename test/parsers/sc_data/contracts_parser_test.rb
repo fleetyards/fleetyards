@@ -359,11 +359,32 @@ module ScData
         assert_equal "Foxwell Enforcement", reward[:org_name]
       end
 
-      # 2352 of the 2536 contracts award this and it is an empty element on
-      # every one of them: the game computes the figure at run time and the
-      # export states no table it could be computed from here.
-      test "#missions states no payout for the calculated reward, which states none" do
+      # 2352 of the 2536 contracts award this and it is an empty element on every
+      # one of them. Its presence is still the answer to "does this pay at all",
+      # which is a different question from "how much" -- and 176 contracts
+      # answer it no, so the distinction is worth carrying.
+      test "#missions says a calculated reward pays, without inventing a figure" do
         generator("gen", results: %(<ContractResult_CalculatedReward><missionResults><Bool value="1" /></missionResults></ContractResult_CalculatedReward>))
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal "currency", reward[:kind]
+        assert reward[:calculated]
+        assert_not_includes reward, :amount
+      end
+
+      # A contract declares one result per outcome, so the same computed payout
+      # is found several times over. It says one thing however many times it is
+      # stated.
+      test "#missions states a calculated payout once however often it is declared" do
+        results = 3.times.map { %(<ContractResult_CalculatedReward><missionResults><Bool value="1" /></missionResults></ContractResult_CalculatedReward>) }.join
+        generator("gen", results:)
+
+        assert_equal 1, @parser.missions.sole[:rewards].count { |reward| reward[:calculated] }
+      end
+
+      test "#missions leaves the rewards empty for a contract that states none" do
+        generator("gen", results: "")
 
         assert_empty @parser.missions.sole[:rewards]
       end
