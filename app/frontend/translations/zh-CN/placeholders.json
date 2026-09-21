@@ -274,7 +274,7 @@
         },
         "commodities": {
           "name": "Agricium、Laranite、Quantainium…",
-          "description": "炸药、精炼矿石、药用……",
+          "description": "ore、ammunition、material……",
           "uexCode": "UEX Code"
         },
         "equipment": {

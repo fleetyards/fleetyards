@@ -274,7 +274,7 @@
         },
         "commodities": {
           "name": "Agricium, Laranite, Quantainium...",
-          "description": "explosivos, mineral refinado, medicinal...",
+          "description": "ore, ammunition, material...",
           "uexCode": "UEX Code"
         },
         "equipment": {
