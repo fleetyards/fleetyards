@@ -2925,6 +2925,7 @@
         },
         "rewards": "奖励",
         "rewardKinds": {
+          "blueprint": "蓝图",
           "reputation": "声望",
           "item": "物品",
           "badge": "徽章",

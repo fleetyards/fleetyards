@@ -15,7 +15,7 @@ import {
   type GameMissionQuery,
   BlueprintSourceAlignmentEnum,
   GameMissionKindEnum,
-  GameMissionRewardKindEnum,
+  GameMissionRewardFilterEnum,
   useFiltersGameMissionsOrgs,
   useFiltersGameMissionsStandings,
 } from "@/services/fyApi";
@@ -54,7 +54,7 @@ const prefillFormValues = (): GameMissionQuery => ({
   ) as GameMissionKindEnum[],
   rewardingIn: asList(
     filters.value.rewardingIn ?? filters.value.rewarding,
-  ) as GameMissionRewardKindEnum[],
+  ) as GameMissionRewardFilterEnum[],
   released: filters.value.released,
 });
 
@@ -77,7 +77,7 @@ const handleSubmit = () => {
   filter(form.value);
 };
 
-// The 25 orgs that offer work in the loaded build, not the 38 the export
+// The 29 orgs that offer work in the loaded build, not the 38 the export
 // declares a reputation record for -- the endpoint answers with the former.
 const { data: orgs } = useFiltersGameMissionsOrgs();
 
@@ -99,8 +99,11 @@ const kinds = computed(() =>
   })),
 );
 
+// Every kind a mission can be said to pay, blueprints included -- a recipe
+// comes from a reward pool rather than from a contract result, and a reader
+// filtering "what do I get" should not have to know the difference.
 const rewardKinds = computed(() =>
-  Object.values(GameMissionRewardKindEnum).map((value) => ({
+  Object.values(GameMissionRewardFilterEnum).map((value) => ({
     value,
     label: t(`labels.gameMission.rewardKinds.${value}`),
   })),

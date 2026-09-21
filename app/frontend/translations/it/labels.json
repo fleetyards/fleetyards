@@ -2925,6 +2925,7 @@
         },
         "rewards": "Ricompense",
         "rewardKinds": {
+          "blueprint": "Progetti",
           "reputation": "Reputazione",
           "item": "Oggetti",
           "badge": "Distintivo",

@@ -2925,6 +2925,7 @@
         },
         "rewards": "Recompensas",
         "rewardKinds": {
+          "blueprint": "Planos",
           "reputation": "Reputación",
           "item": "Objetos",
           "badge": "Insignia",

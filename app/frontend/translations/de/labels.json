@@ -2925,6 +2925,7 @@
         },
         "rewards": "Belohnungen",
         "rewardKinds": {
+          "blueprint": "Baupläne",
           "reputation": "Ansehen",
           "item": "Gegenstände",
           "badge": "Abzeichen",

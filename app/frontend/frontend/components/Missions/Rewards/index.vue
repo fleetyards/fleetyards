@@ -82,17 +82,19 @@ const currencyAmount = (reward: GameMissionReward) => {
             }}</span>
           </template>
 
-          <!-- An entity class GUID and nothing that resolves it: an award names
-               things that are variously equipment, a commodity crate, or a
-               carryable in no catalogue at all. The count is the half worth
-               showing, and the weight says it is one of several sets. -->
+          <!-- The name the parser resolved out of the export's entity tree.
+               405 of the 410 awards have one; the five that do not are the only
+               place a ref is shown, because an award with neither would be a
+               blank line. The weight says it is one of several sets. -->
           <template v-else-if="reward.kind === 'item'">
             <span class="mission-rewards__value">
-              {{ reward.amount ?? 1 }}&times;
+              {{ reward.amount ?? 1 }}&times; {{ reward.entityName }}
             </span>
-            <span class="mission-rewards__note mission-rewards__note--ref">{{
-              reward.entityClass
-            }}</span>
+            <span
+              v-if="!reward.entityName"
+              class="mission-rewards__note mission-rewards__note--ref"
+              >{{ reward.entityClass }}</span
+            >
             <span v-if="reward.weight" class="mission-rewards__note">{{
               t("labels.gameMission.oneOfASet")
             }}</span>

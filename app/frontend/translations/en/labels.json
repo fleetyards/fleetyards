@@ -2939,6 +2939,7 @@
         },
         "rewards": "Rewards",
         "rewardKinds": {
+          "blueprint": "Blueprints",
           "reputation": "Reputation",
           "item": "Items",
           "badge": "Badge",
