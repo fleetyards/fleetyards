@@ -88,6 +88,18 @@ class GameMission < ApplicationRecord
     where(id: readable_builds(source, current_only:).where(released: true).select(:game_mission_id))
   }
 
+  # The missions the game gives a name. 74 of the 2,536 contracts have none
+  # anywhere: no `Title` override, and a template whose `displayString` is
+  # `@LOC_UNINITIALIZED` five times over -- so there is nothing to fall back to
+  # but a developer's `debugName`, which is not a mission name.
+  #
+  # A hard exclusion rather than a filter, and not the same question as
+  # `released`: an unreleased mission is one a reader can be told about, while
+  # a nameless row is one they cannot recognise, search for or ask for again.
+  # The rows stay -- admin reads them, and the blueprint link resolves through
+  # them -- they are only not offered as catalogue entries.
+  scope :named, -> { where.not(name: [nil, ""]) }
+
   # Missions an org offers, in the build we are on. Through the build, like
   # everything else: the columns on the row carry whatever the last source to
   # load wrote, so filtering them would answer a ptu request with live's.

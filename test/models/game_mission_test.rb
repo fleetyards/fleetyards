@@ -109,6 +109,19 @@ class GameMissionTest < ActiveSupport::TestCase
     assert_not_includes GameMission.released, mission
   end
 
+  # 74 of the 2,536 contracts have no name anywhere in the game data -- no
+  # Title override, and a template whose displayString is uninitialised -- and
+  # a row a reader cannot recognise is worse than no row.
+  test ".named leaves out a contract the game never named" do
+    named = create(:game_mission)
+    nameless = create(:game_mission, name: nil)
+    blank = create(:game_mission, name: "")
+
+    assert_includes GameMission.named, named
+    assert_not_includes GameMission.named, nameless
+    assert_not_includes GameMission.named, blank
+  end
+
   test ".from_org finds what one org offers" do
     foxwell = create(:game_mission, org_name: "Foxwell Enforcement")
     create(:game_mission, org_name: "Headhunters")
