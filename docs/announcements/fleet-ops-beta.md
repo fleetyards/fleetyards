@@ -21,6 +21,68 @@ job a fleet posts, not a commerce claim. It is the only occurrence, and it is de
 This is the **beta** announcement. It pre-announces the intent; it is not the dated transition notice
 D13 requires, which is #4958 and starts the three-month grace window.
 
+## In-app (notification + mail)
+
+Published through **Admin → Announcements**, which writes every reader a notification and mails the
+ones whose preferences ask for it. `title` and `body` are the announcement record itself; the Discord
+and social blocks below are per-channel overrides of it, so this is the copy to write first.
+
+Four things the two renderers between them constrain:
+
+- **Bold, hyphen lists and inline links only.** The in-app renderer
+  ([`Markdown/index.vue`](../../app/frontend/shared/components/Markdown/index.vue)) handles a narrow
+  subset; the mailer runs Redcarpet over the same text. `*single asterisks*` and numbered lists render
+  in the mail and stay literal in the app, so they are out.
+- **No headings.** `#` becomes an `h3` in the app and an `h1` in the mail, which the MJML template has
+  no style for. Bold lines carry the structure instead.
+- **Links inside the body must be absolute.** Only the `link` field is absolutised for mail
+  (`Announcement#absolute_link`); a `/settings/features` written into the body reaches a mail client
+  as a relative href and resolves to nothing.
+- **`link` itself is a path.** It becomes the "Read more" button in the mail and the reading pane's
+  action in the app, so the body does not repeat it as a closing call to action.
+
+The create form offers no icon field, so this carries the default `fa-duotone fa-bullhorn`.
+
+Set on the record: **notify users** on, and the Discord and social toggles alongside it if the blocks
+below go out in the same announcement.
+
+### Title
+
+*67 characters of 255.*
+
+```
+Fleet Ops is in public beta: Events, Inventories, Contracts & Tours
+```
+
+### Link
+
+```
+/settings/features
+```
+
+### Body
+
+```
+Four new tools for running a fleet just landed on FleetYards, and they are open to everyone as an opt-in public beta.
+
+- **Events** — put your ops on a fleet calendar with a proper briefing, a meetup location and the right timezone. Members sign up, you build teams and fill ship slots with the ships people actually own, and it all syncs to your Discord server.
+- **Inventories** — fleet stock with a deposit and withdrawal ledger: what is in the hold, who put it there, who took it out. Moving goods between two inventories is a transfer the other side has to accept.
+- **Contracts** — a job board for your members: haul it between your own inventories, source it from outside, or craft it to a required quality. Progress is read straight from the transfer ledger rather than typed in by hand.
+- **Tours** — track what one trip earned and what it cost, then let FleetYards work out who owes whom. Share weights handle the member who joined halfway through.
+
+**Switching them on**
+Every member can enable them for themselves under [Settings → Features](https://fleetyards.net/settings/features). Fleet admins can turn them on for a whole fleet under Fleet → Settings → Features. They are behind flags on purpose: this is a beta, and we would rather you opt in than trip over it.
+
+**What happens after the beta**
+All four are free for everyone while the beta runs. Once they leave beta, Events, fleet Inventories, Contracts and fleet Tours become **supporter features for fleets** — a supporter contribution unlocks them for the fleet you nominate.
+
+Your **personal inventories** — your own hangar and your ships' cargo — and the **standalone tour tool** under Tools stay free for everyone, permanently. So does everything else FleetYards does today: hangars, fleets, the ship database, the tools. We will announce the details well before anything changes, and beta feedback will shape them.
+
+FleetYards runs on donations, and that is what keeps all of it free: [every way to chip in is on one page](https://fleetyards.net/support). Any amount helps, and it stays anonymous unless you say otherwise.
+
+Found a bug or got an idea? Drop it in the feedback channel on Discord — that is the whole point of a beta. o7
+```
+
 ## Discord (#announcements)
 
 Posted as two messages — Discord caps a message at 2000 characters.
