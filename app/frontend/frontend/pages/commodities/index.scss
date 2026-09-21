@@ -10,9 +10,12 @@
     margin-bottom: 24px;
   }
 
-  // The row's icon at page scale. `CommodityIcon` sizes itself for a row, so
-  // both the image and the glyph box are overridden here.
-  &__icon {
+  // The row's icon at page scale. `CommodityIcon` sizes itself for a row, and
+  // its own `.commodity-icon` rule is a single class like this one -- equal
+  // specificity, so which wins would come down to the order two scoped
+  // stylesheets happen to be emitted in. Qualified by the masthead to settle
+  // it.
+  &__masthead &__icon {
     width: 52px;
     height: 52px;
     flex: none;
