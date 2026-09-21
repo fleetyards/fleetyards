@@ -40,6 +40,7 @@ const prefillFormValues = () => {
     searchCont: filters.value.searchCont,
     nameCont: filters.value.nameCont,
     onSaleEq: filters.value.onSaleEq,
+    ingameOnlyEq: filters.value.ingameOnlyEq,
     priceLteq: filters.value.priceLteq,
     priceGteq: filters.value.priceGteq,
     pledgePriceLteq: filters.value.pledgePriceLteq,
@@ -251,6 +252,14 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="sale"
+    />
+
+    <RadioList
+      v-model="form.ingameOnlyEq"
+      :label="t('labels.filters.models.ingameOnly')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="ingame-only"
     />
 
     <FormToggle

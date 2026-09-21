@@ -49,6 +49,7 @@ const [description, descriptionProps] = defineField("description");
 const [hidden, hiddenProps] = defineField("hidden");
 const [active, activeProps] = defineField("active");
 const [playerOwnable, playerOwnableProps] = defineField("playerOwnable");
+const [ingameOnly, ingameOnlyProps] = defineField("ingameOnly");
 const [ground, groundProps] = defineField("ground");
 const [rsiId, rsiIdProps] = defineField("rsiId");
 const [scKey, scKeyProps] = defineField("scKey");
@@ -157,6 +158,14 @@ const handleCancel = async () => {
               translation-key="model.playerOwnable"
               v-bind="playerOwnableProps"
               name="playerOwnable"
+            />
+          </div>
+          <div class="col-12 col-md-4">
+            <FormToggle
+              v-model="ingameOnly"
+              translation-key="model.ingameOnly"
+              v-bind="ingameOnlyProps"
+              name="ingameOnly"
             />
           </div>
         </div>

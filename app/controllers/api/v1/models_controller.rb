@@ -505,6 +505,7 @@ module Api
         @model_query_params ||= params.permit(
           q: [
             :name_cont, :name_eq, :slug_eq, :description_cont, :name_or_description_cont, :on_sale_eq,
+            :ingame_only_eq,
             :s, :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
             :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
             :with_dock, :with_cargo, :with_cargo_grids, :in_hangar, :in_game_eq,

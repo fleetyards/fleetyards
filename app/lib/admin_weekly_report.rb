@@ -124,7 +124,7 @@ class AdminWeeklyReport
       metrics: [
         windowed(:star_citizen_updates) { |range| StarCitizenUpdate.where(created_at: range).count },
         gauge(:models_without_image, curatable_models.where.missing(:store_image_attachment).count),
-        gauge(:models_without_price, curatable_models.where(player_ownable: true, pledge_price: nil).count),
+        gauge(:models_without_price, curatable_models.pledge_store.where(player_ownable: true, pledge_price: nil).count),
         gauge(:models_need_position_curation, Model.where(positions_need_curation: true).count)
       ]
     )

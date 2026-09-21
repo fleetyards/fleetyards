@@ -18,19 +18,24 @@ vi.mock("@/shared/composables/useComlink", () => ({
 
 import BaseMetrics from "./index.vue";
 
-function model(metrics: Partial<ModelMetrics> = {}): Model {
+function model(
+  metrics: Partial<ModelMetrics> = {},
+  overrides: Partial<Model> = {},
+): Model {
   return {
     availability: {},
     metrics: { length: 23.58, beam: 19.62, height: 3.28, ...metrics },
+    ...overrides,
   } as Model;
 }
 
 const mountCard = (
   state: ModelStateEnum,
   metrics: Partial<ModelMetrics> = {},
+  overrides: Partial<Model> = {},
 ) =>
   mount(BaseMetrics, {
-    props: { model: model(metrics), state },
+    props: { model: model(metrics, overrides), state },
     global: {
       stubs: {
         MetricsCard: {
@@ -59,6 +64,24 @@ describe("the dimensions the card shows", () => {
     expect(tiles(wrapper).slice(0, 3)).toEqual(["23.58", "19.62", "4.24"]);
     expect(wrapper.find('[data-test="model-state-chip"]').text()).toBe(
       "labels.model.state.landed",
+    );
+  });
+});
+
+describe("the in-game only chip", () => {
+  it("names a ship the pledge store never sells", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT, {}, { ingameOnly: true });
+
+    expect(wrapper.find('[data-test="model-ingame-only-chip"]').text()).toBe(
+      "labels.model.ingameOnly",
+    );
+  });
+
+  it("leaves a pledge ship unmarked", () => {
+    const wrapper = mountCard(ModelStateEnum.FLIGHT, {}, { ingameOnly: false });
+
+    expect(wrapper.find('[data-test="model-ingame-only-chip"]').exists()).toBe(
+      false,
     );
   });
 });

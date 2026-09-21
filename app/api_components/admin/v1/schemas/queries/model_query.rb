@@ -24,6 +24,7 @@ module Admin
               topViewColoredBlank: {type: :boolean},
               frontViewBlank: {type: :boolean},
               positionsNeedCurationEq: {type: :boolean},
+              ingameOnlyEq: {type: :boolean},
               dimensionsDrifted: {type: :boolean},
               dimensionsMeasuredAtNull: {type: :boolean},
               s: {anyOf: [{
