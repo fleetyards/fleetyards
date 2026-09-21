@@ -12,8 +12,8 @@ module Loaders
 
         # Otherwise every test here reads whatever parsed tree happens to be on
         # disk -- 1109 model files locally, none on CI -- and the unlisted report
-        # decides whether a second issue is opened. The tests that are about that
-        # report stub it themselves.
+        # renders whatever it finds. The tests that are about that report stub it
+        # themselves.
         ::ScData::UnlistedModels.any_instance.stubs(:run)
           .returns({seen: 0, new: [], undecided: []})
       end
@@ -160,10 +160,6 @@ module Loaders
         ::ScData::UnlistedModels.any_instance.stubs(:run)
           .returns({seen: 1, new: [entry], undecided: [entry]})
 
-        creator = mock("GithubIssueCreator")
-        creator.stubs(:run)
-        GithubIssueCreator.stubs(:new).returns(creator)
-
         ::Loaders::ScData::AllJob.new.perform
 
         unlisted = AdminNotification.find_by(
@@ -172,11 +168,26 @@ module Loaders
         assert_not_nil unlisted
         assert_equal "warning", unlisted.severity
         assert_includes unlisted.body, "krig_s65_stingray"
+        assert_equal "/models/unlisted/", unlisted.link
       end
 
-      # Only a genuinely new entry is worth an issue, or a pile that has been
-      # sitting undecided would reopen one on every patch.
-      test "#perform opens no issue for the unlisted pile when nothing is new" do
+      # The pile is decided on the admin ships list, so the notification is the
+      # whole report. An issue restated it somewhere nobody worked it, and every
+      # patch left another one to close by hand.
+      test "#perform opens no issue for the unlisted pile" do
+        ::ScData::Loader::BaseLoader.stubs(:all).returns({})
+
+        entry = create(:sc_data_unlisted_model, identifier: "krig_s65_stingray")
+        ::ScData::UnlistedModels.any_instance.stubs(:run)
+          .returns({seen: 1, new: [entry], undecided: [entry]})
+        GithubIssueCreator.expects(:new).never
+
+        ::Loaders::ScData::AllJob.new.perform
+      end
+
+      # Only a genuinely new entry is worth a human's attention, or a pile that
+      # has been sitting undecided would raise a warning on every patch.
+      test "#perform leaves the unlisted report at info when nothing is new" do
         ::ScData::Loader::BaseLoader.stubs(:all).returns({
           "ModelsLoader" => {"Model" => {created: 0, updated: 1, unchanged: 0}}
         })
@@ -184,7 +195,6 @@ module Loaders
         entry = create(:sc_data_unlisted_model)
         ::ScData::UnlistedModels.any_instance.stubs(:run)
           .returns({seen: 1, new: [], undecided: [entry]})
-        GithubIssueCreator.expects(:new).never
 
         ::Loaders::ScData::AllJob.new.perform
 

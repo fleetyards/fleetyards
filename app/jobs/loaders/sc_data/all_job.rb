@@ -82,8 +82,10 @@ module Loaders
       #
       # Inside the source, so a run reads the tree of the build it just loaded.
       #
-      # Only a genuinely new entry is actionable, so the pile that has been
-      # sitting undecided does not reopen an issue on every patch.
+      # Notification only. Every entry is decided on the admin ships list, which
+      # carries the same pile and the buttons that clear it, so an issue opened
+      # here only restates that list somewhere nobody acts on it -- and then has
+      # to be closed by hand. A new entry still raises the severity to warning.
       private def report_unlisted_models(source, import)
         result = ::ScData::Source.with(source) { ::ScData::UnlistedModels.new.run }
 
@@ -92,7 +94,9 @@ module Loaders
           title: "Ships in the game files with no model (#{result[:new].size} new)",
           body: ::ScData::UnlistedModels.report_body(result, source),
           actionable: ::ScData::UnlistedModels.actionable?(result),
-          record: import
+          link: "/models/unlisted/",
+          record: import,
+          github_issue: false
         )
       end
 
