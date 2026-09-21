@@ -203,9 +203,19 @@ const cameraArgs = computed<
 
 const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
 
-const cameraAngle = computed(() => {
-  return props.inline ? 15 : 30;
-});
+const cameraHeight = computed(() => (props.inline ? 15 : 30));
+
+// The steepest the camera is allowed to look down, in degrees. The height
+// above is in world units, which only reads as a shallow angle while every
+// export is about the same size -- a normalised one is around 100 units
+// across and fits at 145 away, so 30 above it is 12 degrees. An export
+// uploaded untransformed, so its bounding box can be measured, is whatever
+// size the game file is: the Cyclone is 5.7 units across and fits at 9 away,
+// where the same 30 is 73 degrees, looking down on the roof.
+//
+// A cap rather than a fixed angle: anything already at or below it keeps the
+// exact framing it has, which is every holo uploaded before the change.
+const maxCameraElevation = computed(() => (props.inline ? 6 : 12));
 
 const gridCellSize = computed(() =>
   Math.max(0.6, modelMaxDimension.value / 100),
@@ -254,8 +264,13 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
-  cameraPosition.value = [0, cameraAngle.value, distance];
-  lightPosition.value = [0, cameraAngle.value, distance];
+  const height = Math.min(
+    cameraHeight.value,
+    Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
+  );
+
+  cameraPosition.value = [0, height, distance];
+  lightPosition.value = [0, height, distance];
 };
 
 const handleRenderError = (error: Error) => {
