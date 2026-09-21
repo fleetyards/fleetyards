@@ -311,7 +311,11 @@ const setupChart = () => {
     holds that height from the start - without it the panel collapses to the
     spinner and snaps open when the data lands.
   -->
-  <div class="chart-container" :style="{ minHeight: `${height}px` }">
+  <div
+    class="chart-container"
+    :data-test="`chart-${name}`"
+    :style="{ minHeight: `${height}px` }"
+  >
     <!--
       v-show, not v-if: setupChart needs the element to exist, and the ref has
       to survive a state change without being re-acquired.
