@@ -20,13 +20,20 @@ module Maintenance
     def collection
       Vehicle.where(model_id: Model.ingame_only.select(:id))
         .where.not(bought_via: :ingame)
+        .includes(:model)
     end
 
     def count
       collection.count
     end
 
+    # Both conditions are read again here: the collection is walked in batches,
+    # so a flag cleared or an entry corrected part way through a run would
+    # otherwise still be rewritten from the selection made before it.
     def process(vehicle)
+      return if vehicle.bought_via_ingame?
+      return unless vehicle.model&.ingame_only?
+
       vehicle.update_columns(bought_via: Vehicle.bought_via[:ingame], updated_at: Time.zone.now)
     end
   end

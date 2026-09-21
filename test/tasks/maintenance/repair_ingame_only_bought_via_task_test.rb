@@ -35,6 +35,17 @@ module Maintenance
       assert_equal 0, @task.count
     end
 
+    # The collection is walked in batches, so the flag can be cleared while the
+    # run is still working through the rows it selected.
+    test "#process leaves an entry alone once its ship is sold in the store again" do
+      vehicle = stale_vehicle(@ingame_only)
+      @ingame_only.update!(ingame_only: false)
+
+      @task.process(vehicle.reload)
+
+      assert vehicle.reload.bought_via_pledge_store?
+    end
+
     test "#process records the entry as bought in game" do
       vehicle = stale_vehicle(@ingame_only)
 
