@@ -21,6 +21,26 @@ class HangarImporterTest < ActiveSupport::TestCase
 
   # An import runs inline in the request, so the user is the `whodunnit` -- no
   # actor-based guard excludes it. It builds the hangar rather than editing it.
+  # The job loads the import by id rather than carrying the instance the request
+  # built, so every assertion that runs against `@import` proves nothing about
+  # what the job actually sees. `import_data` was written by an `after_create`
+  # callback and therefore never reached the column at all.
+  test "runs against a record loaded fresh, the way the job does" do
+    result = ::HangarImporter.new(::Imports::HangarImport.find(@import.id)).run
+
+    assert_equal HangarImportFixtures::IMPORTED_SHIPS, result[:imported]
+    assert_predicate Vehicle.where(user_id: @user.id), :any?
+  end
+
+  test "stores the parsed file on the record" do
+    import = ::Imports::HangarImport.create!(
+      user_id: @user.id,
+      import: Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json"))
+    )
+
+    refute_nil import.reload.import_data
+  end
+
   test "records no versions" do
     assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle").count } do
       ::HangarImporter.new(@import).run

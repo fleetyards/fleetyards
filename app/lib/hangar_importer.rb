@@ -42,8 +42,10 @@ class HangarImporter
     # user made to a ship that already existed.
     cancelled = false
 
+    items = @import.import_data || []
+
     PaperTrail.request(enabled: false) do
-      (@import.import_data || []).each_with_index do |item, index|
+      items.each_with_index do |item, index|
         if stop_requested?(index)
           cancelled = true
           break
@@ -113,7 +115,7 @@ class HangarImporter
     output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: !cancelled && missing_models.size < @import.import_data.size
+      success: !cancelled && missing_models.size < items.size
     }
 
     @import.update!(output: output)

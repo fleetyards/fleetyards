@@ -58,7 +58,13 @@ module Imports
       errors.add(:import, I18n.t("errors.messages.blank"))
     end
 
-    after_create :set_import_data
+    # `before_create`, not `after_create`: an assignment made after the INSERT is
+    # never written. It went unnoticed while the run happened inline in the
+    # request, because the controller held the same instance and the importer's
+    # own `start!` flushed the dirty attribute along with the state. The run
+    # moved into `HangarImportJob`, which loads the row fresh -- and read back a
+    # column that had always been NULL.
+    before_create :set_import_data
 
     serialize :import_data, coder: YAML
 
