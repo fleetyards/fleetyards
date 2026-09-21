@@ -273,7 +273,8 @@
           "nameOrFid": "名稱或 FID"
         },
         "commodities": {
-          "name": "Name",
+          "name": "Agricium、Laranite、Quantainium…",
+          "description": "炸藥、精煉礦石、藥用……",
           "uexCode": "UEX Code"
         },
         "equipment": {

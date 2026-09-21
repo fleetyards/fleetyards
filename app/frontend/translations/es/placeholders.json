@@ -273,7 +273,8 @@
           "nameOrFid": "Nombre o FID"
         },
         "commodities": {
-          "name": "Name",
+          "name": "Agricium, Laranite, Quantainium...",
+          "description": "explosivos, mineral refinado, medicinal...",
           "uexCode": "UEX Code"
         },
         "equipment": {
