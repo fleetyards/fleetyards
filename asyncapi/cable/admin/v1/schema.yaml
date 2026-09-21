@@ -7,6 +7,17 @@ info:
     name: GNU General Public License v3.0
     url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
 channels:
+  AdminAnnouncements:
+    address: admin_announcements:{admin_user_gid}
+    x-actioncable-channel: AdminAnnouncementsChannel
+    parameters:
+      admin_user_gid:
+        description: GlobalID param of the subscribed admin user, derived from the
+          connection
+        x-client-supplied: false
+    messages:
+      Announcement:
+        "$ref": "#/components/messages/Announcement"
   AdminNotifications:
     address: admin_notifications:{admin_user_gid}
     x-actioncable-channel: AdminNotificationsChannel
@@ -41,6 +52,13 @@ channels:
       Import:
         "$ref": "#/components/messages/Import"
 operations:
+  receiveAdminAnnouncement:
+    action: receive
+    channel:
+      "$ref": "#/channels/AdminAnnouncements"
+    messages:
+    - "$ref": "#/channels/AdminAnnouncements/messages/Announcement"
+    summary: An announcement's send made progress
   receiveAdminNotification:
     action: receive
     channel:
@@ -165,6 +183,139 @@ components:
       - IMPORT_RUN
       - OAUTH_APPLICATION_REVIEW
       - INVENTORY_TRANSFER_REPORTS
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        body:
+          type: string
+        discordParts:
+          type: array
+          items:
+            type: string
+        socialParts:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+        icon:
+          type: string
+        status:
+          "$ref": "#/components/schemas/AnnouncementStatusEnum"
+        publishAt:
+          type: string
+          format: date-time
+        publishedAt:
+          type: string
+          format: date-time
+        recipientsCount:
+          type: integer
+        notifyUsers:
+          type: boolean
+        postDiscord:
+          type: boolean
+        postBluesky:
+          type: boolean
+        postX:
+          type: boolean
+        publishable:
+          type: boolean
+        lastTestedAt:
+          type: string
+          format: date-time
+        author:
+          type: string
+        deliveries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AnnouncementDelivery"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - body
+      - icon
+      - status
+      - notifyUsers
+      - postDiscord
+      - postBluesky
+      - postX
+      - publishable
+      - deliveries
+      - discordParts
+      - socialParts
+      - createdAt
+      - updatedAt
+    AnnouncementChannelEnum:
+      type: string
+      enum:
+      - in_app
+      - discord
+      - bluesky
+      - x
+      x-enumNames:
+      - IN_APP
+      - DISCORD
+      - BLUESKY
+      - X
+    AnnouncementDelivery:
+      type: object
+      properties:
+        channel:
+          "$ref": "#/components/schemas/AnnouncementChannelEnum"
+        status:
+          "$ref": "#/components/schemas/AnnouncementDeliveryStatusEnum"
+        externalId:
+          type: string
+        error:
+          type: string
+        deliveredAt:
+          type: string
+          format: date-time
+        attempts:
+          type: integer
+      additionalProperties: false
+      required:
+      - channel
+      - status
+      - attempts
+    AnnouncementDeliveryStatusEnum:
+      type: string
+      enum:
+      - pending
+      - succeeded
+      - skipped
+      - failed
+      x-enumNames:
+      - PENDING
+      - SUCCEEDED
+      - SKIPPED
+      - FAILED
+    AnnouncementStatusEnum:
+      type: string
+      enum:
+      - draft
+      - scheduled
+      - publishing
+      - published
+      - failed
+      x-enumNames:
+      - DRAFT
+      - SCHEDULED
+      - PUBLISHING
+      - PUBLISHED
+      - FAILED
     Import:
       type: object
       properties:
@@ -291,6 +442,9 @@ components:
     AdminNotification:
       payload:
         "$ref": "#/components/schemas/AdminNotification"
+    Announcement:
+      payload:
+        "$ref": "#/components/schemas/Announcement"
     Import:
       payload:
         "$ref": "#/components/schemas/Import"

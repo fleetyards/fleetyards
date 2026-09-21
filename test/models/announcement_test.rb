@@ -165,4 +165,36 @@ class AnnouncementTest < ActiveSupport::TestCase
 
     assert_equal [due], Announcement.due.to_a
   end
+
+  test "a status change reaches every admin" do
+    create(:admin_user)
+    create(:admin_user)
+    announcement = create(:announcement)
+
+    AdminAnnouncementsChannel.expects(:broadcast_to).twice
+
+    announcement.update!(status: :publishing)
+  end
+
+  test "an edit that a send did not make is not broadcast" do
+    create(:admin_user)
+    announcement = create(:announcement)
+
+    AdminAnnouncementsChannel.expects(:broadcast_to).never
+
+    announcement.update!(title: "Renamed")
+  end
+
+  # after_commit, so the write it describes has already landed -- taking the
+  # send down with the socket would leave an announcement half dispatched.
+  test "a broadcast that raises does not take the write with it" do
+    create(:admin_user)
+    announcement = create(:announcement)
+
+    AdminAnnouncementsChannel.stubs(:broadcast_to).raises(StandardError, "cable down")
+
+    announcement.update!(status: :publishing)
+
+    assert announcement.reload.status_publishing?
+  end
 end
