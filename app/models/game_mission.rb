@@ -98,7 +98,20 @@ class GameMission < ApplicationRecord
   # a nameless row is one they cannot recognise, search for or ask for again.
   # The rows stay -- admin reads them, and the blueprint link resolves through
   # them -- they are only not offered as catalogue entries.
-  scope :named, -> { where.not(name: [nil, ""]) }
+  #
+  # Resolved through the build rather than off the row, because `name` is read
+  # through `facts`: the column holds whatever source loaded last, so asking it
+  # would answer a live request with what a ptu load happened to write.
+  scope :named, ->(source = ::ScData::Source.current, current_only: true) {
+    readable = readable_builds(source, current_only:)
+
+    # The row is the last fallback, not a shortcut past the build: it answers
+    # only for a mission no build describes at all, which is what `facts` --
+    # `build || last_build` -- falls back to as well. Reading the build first
+    # and the row only in its absence is the whole of the fact layering.
+    where(id: readable.where.not(name: [nil, ""]).select(:game_mission_id))
+      .or(where.not(id: readable.select(:game_mission_id)).where.not(name: [nil, ""]))
+  }
 
   # Missions an org offers, in the build we are on. Through the build, like
   # everything else: the columns on the row carry whatever the last source to

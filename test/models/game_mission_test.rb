@@ -122,6 +122,32 @@ class GameMissionTest < ActiveSupport::TestCase
     assert_not_includes GameMission.named, blank
   end
 
+  # `name` is read through `facts`, so the predicate has to be too: the column
+  # holds whatever source loaded last, and asking it would answer a live
+  # request with what a ptu load happened to write.
+  test ".named reads the served build rather than the row" do
+    mission = create(:game_mission, name: "Row Title")
+    mission.build.update!(name: nil)
+
+    assert_not_includes GameMission.named, mission
+  end
+
+  test ".named keeps a mission the build names even where the row does not" do
+    mission = create(:game_mission, name: "Row Title")
+    mission.update_columns(name: nil)
+
+    assert_includes GameMission.named, mission
+  end
+
+  # A mission every build has been pruned from renders entirely off the row --
+  # `facts` is nil and the fact readers fall through to it -- so the predicate
+  # has to fall through too, or a link to it 404s while the page would render.
+  test ".named falls back to the row for a mission no build describes" do
+    mission = create(:game_mission, :without_build, version: nil, name: "Only On The Row")
+
+    assert_includes GameMission.named, mission
+  end
+
   test ".from_org finds what one org offers" do
     foxwell = create(:game_mission, org_name: "Foxwell Enforcement")
     create(:game_mission, org_name: "Headhunters")

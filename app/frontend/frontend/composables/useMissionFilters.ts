@@ -13,6 +13,19 @@ const LIST_PARAMS = [
   "rewardingIn",
 ] as const;
 
+// The scalar spellings the API also accepts. `FilterForm` reads each as a
+// fallback for its list form, so a URL carrying one prefills the select -- but
+// `useFilters` builds its query from `route.query` first, so the scalar would
+// then survive beside the list the form writes. Ransack ANDs the two, and
+// `orgNameEq=Foxwell` beside `orgNameIn=[Headhunters]` is a guaranteed empty
+// list.
+const SUPERSEDED_PARAMS = {
+  orgNameIn: "orgNameEq",
+  minStandingIn: "minStandingEq",
+  kindIn: "kindEq",
+  rewardingIn: "rewarding",
+} as const;
+
 export const useMissionFilters = (
   updateCallback?: (() => void) | (() => Promise<void>),
 ) => {
@@ -26,6 +39,12 @@ export const useMissionFilters = (
       if (value === undefined || value === null || Array.isArray(value)) return;
 
       query[key] = [value];
+    });
+
+    Object.entries(SUPERSEDED_PARAMS).forEach(([list, scalar]) => {
+      if (query[list] === undefined || query[list] === null) return;
+
+      delete query[scalar];
     });
 
     return query as GameMissionQuery;
