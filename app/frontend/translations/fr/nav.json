@@ -316,7 +316,8 @@
         "commodities": "Marchandises",
         "index": "Catalogue",
         "components": "Composants",
-        "blueprints": "Plans"
+        "blueprints": "Plans",
+        "missions": "Missions"
       }
     }
   }

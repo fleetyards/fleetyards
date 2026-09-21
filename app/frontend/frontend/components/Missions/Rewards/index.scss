@@ -1,0 +1,60 @@
+@import "@/stylesheets/variables.scss";
+
+.mission-rewards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  // The micro-label the metrics cards, their tiles and the catalogue rows all
+  // share: Orbitron 10px at .16em.
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  &__value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__note {
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+
+    // A GUID is a reference and not a name. Monospaced and smaller, so it
+    // reads as the identifier it is rather than as prose nobody can parse.
+    &--ref {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--color-muted, #7a8288);
+      overflow-wrap: anywhere;
+    }
+  }
+}

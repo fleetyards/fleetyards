@@ -344,6 +344,9 @@
       },
       "blueprints": {
         "index": "Blueprints"
+      },
+      "missions": {
+        "index": "Missions"
       }
     }
   }

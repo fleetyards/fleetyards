@@ -31,6 +31,11 @@ namespace :frontend, **frontend_options do
   # page for one to come from.
   get "catalogue/commodities/:slug", to: "base#commodity", as: :commodity
 
+  # The same, for a mission. No `og_image` and no pre-section redirect: the
+  # export ships no artwork for a contract, and these pages have never lived
+  # anywhere else.
+  get "catalogue/missions/:slug", to: "base#mission", as: :game_mission
+
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos

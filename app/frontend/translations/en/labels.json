@@ -1765,6 +1765,17 @@
           "ownedFilter": "Owned",
           "owned": "Owned",
           "notOwned": "Not owned"
+        },
+        "missions": {
+          "name": "Search missions",
+          "org": "Offered by",
+          "standing": "Standing",
+          "rewarding": "Pays",
+          "alignment": "Side of the law",
+          "kind": "Kind",
+          "releasedFilter": "In release",
+          "released": "In release",
+          "unreleased": "Not in release"
         }
       },
       "station": {
@@ -2901,6 +2912,45 @@
           "minutes": "%{count}m",
           "seconds": "%{count}s"
         }
+      },
+      "gameMission": {
+        "blueprints": "Blueprints",
+        "name": "Name",
+        "org": "Offered by",
+        "offeredBy": "Offered by",
+        "offeredByUnknown": "No stated contractor",
+        "standing": "Standing",
+        "kind": "Kind",
+        "kinds": {
+          "career": "Career",
+          "contract": "One-off"
+        },
+        "difficulty": "Difficulty",
+        "difficultyAxes": {
+          "mechanicalSkill": "Mechanical skill",
+          "mentalLoad": "Mental load",
+          "riskOfLoss": "Risk of loss",
+          "gameKnowledge": "Game knowledge"
+        },
+        "alignments": {
+          "lawful": "Lawful",
+          "neutral": "Neutral",
+          "outlaw": "Outlaw"
+        },
+        "rewards": "Rewards",
+        "rewardKinds": {
+          "reputation": "Reputation",
+          "item": "Items",
+          "badge": "Badge",
+          "currency": "Payout"
+        },
+        "oneOfASet": "one of a set",
+        "briefing": "Briefing",
+        "templatedNote": "The game fills the marked parts in when it hands the mission out.",
+        "payoutNote": "The game works the payout out when the mission is generated, so the files state one for only a handful of contracts.",
+        "noRewards": "The files state no reward for this one.",
+        "unreleased": "Not in release",
+        "retired": "Retired"
       }
     }
   }

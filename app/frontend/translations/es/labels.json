@@ -1765,6 +1765,17 @@
           "ownedFilter": "En posesión",
           "owned": "En posesión",
           "notOwned": "Sin poseer"
+        },
+        "missions": {
+          "name": "Buscar misiones",
+          "org": "Ofrecida por",
+          "standing": "Reputación",
+          "rewarding": "Paga",
+          "alignment": "Lado de la ley",
+          "kind": "Tipo",
+          "releasedFilter": "En la versión",
+          "released": "En la versión",
+          "unreleased": "Fuera de la versión"
         }
       },
       "station": {
@@ -2887,6 +2898,45 @@
           "minutes": "%{count} min",
           "seconds": "%{count} s"
         }
+      },
+      "gameMission": {
+        "blueprints": "Planos",
+        "name": "Nombre",
+        "org": "Ofrecida por",
+        "offeredBy": "Ofrecida por",
+        "offeredByUnknown": "Sin contratista indicado",
+        "standing": "Reputación",
+        "kind": "Tipo",
+        "kinds": {
+          "career": "Carrera",
+          "contract": "Puntual"
+        },
+        "difficulty": "Dificultad",
+        "difficultyAxes": {
+          "mechanicalSkill": "Habilidad mecánica",
+          "mentalLoad": "Carga mental",
+          "riskOfLoss": "Riesgo de pérdida",
+          "gameKnowledge": "Conocimiento del juego"
+        },
+        "alignments": {
+          "lawful": "Legal",
+          "neutral": "Neutral",
+          "outlaw": "Forajido"
+        },
+        "rewards": "Recompensas",
+        "rewardKinds": {
+          "reputation": "Reputación",
+          "item": "Objetos",
+          "badge": "Insignia",
+          "currency": "Pago"
+        },
+        "oneOfASet": "uno de un conjunto",
+        "briefing": "Instrucciones",
+        "templatedNote": "El juego rellena las partes marcadas cuando entrega la misión.",
+        "payoutNote": "El juego calcula el pago al generar la misión, por eso los archivos solo indican uno para unos pocos contratos.",
+        "noRewards": "Los archivos no indican ninguna recompensa para esta misión.",
+        "unreleased": "Fuera de la versión",
+        "retired": "Retirada"
       }
     }
   }

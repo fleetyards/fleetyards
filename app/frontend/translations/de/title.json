@@ -344,6 +344,9 @@
       },
       "blueprints": {
         "index": "Baupläne"
+      },
+      "missions": {
+        "index": "Missionen"
       }
     }
   }

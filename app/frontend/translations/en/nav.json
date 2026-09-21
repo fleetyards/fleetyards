@@ -316,7 +316,8 @@
         "commodities": "Commodities",
         "index": "Catalogue",
         "components": "Components",
-        "blueprints": "Blueprints"
+        "blueprints": "Blueprints",
+        "missions": "Missions"
       }
     }
   }

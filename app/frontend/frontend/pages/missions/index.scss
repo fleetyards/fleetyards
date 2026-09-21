@@ -1,0 +1,181 @@
+@import "@/stylesheets/variables.scss";
+
+// The masthead, panels and badges a blueprint page uses, at the same values:
+// the two are tenants of one catalogue section and a reader moving between
+// them should meet one set of furniture.
+.mission-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &__masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  &__title {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  &__sub {
+    font-size: 13px;
+    color: var(--color-text-dim, #959595);
+
+    a {
+      color: var(--color-text-dim, #959595);
+      transition: color 150ms ease;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--color-text, #c8c8c8);
+      }
+    }
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-control-bare, 6px);
+    white-space: nowrap;
+
+    &--quiet {
+      border-style: dashed;
+
+      .mission-page__badge-value {
+        font-weight: 400;
+        color: var(--color-text-dim, #959595);
+      }
+    }
+
+    &--retired {
+      border-color: var(--color-danger, #dc3545);
+
+      .mission-page__badge-value {
+        color: var(--color-danger, #dc3545);
+      }
+    }
+  }
+
+  &__badge-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__badge-value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-surface-slim, 12px);
+  }
+
+  &__panel-title {
+    margin: 0;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__description {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text, #c8c8c8);
+  }
+
+  // What the page is honest about rather than what it shows: why a name has a
+  // hole in it, and why there is no payout. Quieter than the content it
+  // qualifies, but not hidden.
+  &__note {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__blueprints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Chips, the way a blueprint row lists its materials: these are things to go
+  // and look at, not prose about the mission.
+  &__blueprint a {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: 4px;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-lifted, #eee);
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    }
+  }
+
+  &__axes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 0;
+  }
+
+  &__axis {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__axis-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__axis-value {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    font-variant-numeric: tabular-nums;
+  }
+}

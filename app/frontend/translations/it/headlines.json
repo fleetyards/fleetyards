@@ -490,6 +490,9 @@
       },
       "blueprints": {
         "index": "Progetti"
+      },
+      "missions": {
+        "index": "Missioni"
       }
     }
   }

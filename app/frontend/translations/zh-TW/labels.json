@@ -1765,6 +1765,17 @@
           "ownedFilter": "已擁有",
           "owned": "已擁有",
           "notOwned": "未擁有"
+        },
+        "missions": {
+          "name": "搜尋任務",
+          "org": "發布方",
+          "standing": "聲望",
+          "rewarding": "獎勵",
+          "alignment": "陣營立場",
+          "kind": "類型",
+          "releasedFilter": "正式版",
+          "released": "在正式版中",
+          "unreleased": "未在正式版"
         }
       },
       "station": {
@@ -2887,6 +2898,45 @@
           "minutes": "%{count} 分",
           "seconds": "%{count} 秒"
         }
+      },
+      "gameMission": {
+        "blueprints": "藍圖",
+        "name": "名稱",
+        "org": "發布方",
+        "offeredBy": "發布方",
+        "offeredByUnknown": "未註明委託方",
+        "standing": "聲望",
+        "kind": "類型",
+        "kinds": {
+          "career": "職業",
+          "contract": "一次性"
+        },
+        "difficulty": "難度",
+        "difficultyAxes": {
+          "mechanicalSkill": "操作技巧",
+          "mentalLoad": "心智負擔",
+          "riskOfLoss": "損失風險",
+          "gameKnowledge": "遊戲理解"
+        },
+        "alignments": {
+          "lawful": "守法",
+          "neutral": "中立",
+          "outlaw": "不法"
+        },
+        "rewards": "獎勵",
+        "rewardKinds": {
+          "reputation": "聲望",
+          "item": "物品",
+          "badge": "徽章",
+          "currency": "報酬"
+        },
+        "oneOfASet": "一組中的一件",
+        "briefing": "任務簡報",
+        "templatedNote": "標記的部分由遊戲在發布任務時填入。",
+        "payoutNote": "報酬由遊戲在產生任務時計算，因此遊戲檔案只為少數合約寫明金額。",
+        "noRewards": "遊戲檔案未為此任務寫明獎勵。",
+        "unreleased": "未在正式版",
+        "retired": "已移除"
       }
     }
   }

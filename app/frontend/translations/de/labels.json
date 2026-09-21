@@ -1765,6 +1765,17 @@
           "ownedFilter": "Im Besitz",
           "owned": "Im Besitz",
           "notOwned": "Nicht im Besitz"
+        },
+        "missions": {
+          "name": "Missionen suchen",
+          "org": "Angeboten von",
+          "standing": "Ansehen",
+          "rewarding": "Zahlt",
+          "alignment": "Seite des Gesetzes",
+          "kind": "Art",
+          "releasedFilter": "Im Release",
+          "released": "Im Release",
+          "unreleased": "Nicht im Release"
         }
       },
       "station": {
@@ -2887,6 +2898,45 @@
           "minutes": "%{count} Min.",
           "seconds": "%{count} Sek."
         }
+      },
+      "gameMission": {
+        "blueprints": "Baupläne",
+        "name": "Name",
+        "org": "Angeboten von",
+        "offeredBy": "Angeboten von",
+        "offeredByUnknown": "Kein Auftraggeber genannt",
+        "standing": "Ansehen",
+        "kind": "Art",
+        "kinds": {
+          "career": "Karriere",
+          "contract": "Einmalig"
+        },
+        "difficulty": "Schwierigkeit",
+        "difficultyAxes": {
+          "mechanicalSkill": "Mechanisches Können",
+          "mentalLoad": "Geistige Last",
+          "riskOfLoss": "Verlustrisiko",
+          "gameKnowledge": "Spielwissen"
+        },
+        "alignments": {
+          "lawful": "Gesetzestreu",
+          "neutral": "Neutral",
+          "outlaw": "Gesetzlos"
+        },
+        "rewards": "Belohnungen",
+        "rewardKinds": {
+          "reputation": "Ansehen",
+          "item": "Gegenstände",
+          "badge": "Abzeichen",
+          "currency": "Auszahlung"
+        },
+        "oneOfASet": "eines von mehreren",
+        "briefing": "Briefing",
+        "templatedNote": "Die markierten Stellen füllt das Spiel aus, wenn es die Mission vergibt.",
+        "payoutNote": "Das Spiel berechnet die Auszahlung erst beim Erzeugen der Mission, deshalb nennen die Dateien nur für eine Handvoll Aufträge eine.",
+        "noRewards": "Die Dateien nennen für diesen Auftrag keine Belohnung.",
+        "unreleased": "Nicht im Release",
+        "retired": "Entfernt"
       }
     }
   }

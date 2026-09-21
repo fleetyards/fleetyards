@@ -344,6 +344,9 @@
       },
       "blueprints": {
         "index": "藍圖"
+      },
+      "missions": {
+        "index": "任務"
       }
     }
   }

@@ -69,6 +69,22 @@ module Frontend
       render_frontend
     end
 
+    # The run-time spans the game fills in are stripped to a bracketed name
+    # rather than passed through: a card title is plain text, and
+    # `~mission(TargetName)` in a link preview reads as a bug rather than as
+    # the template it is.
+    def mission
+      @mission = GameMission.find_by(slug: params[:slug].to_s.downcase)
+
+      if @mission.present?
+        @title = [::GameMission.plain_text(@mission.name), @mission.org_name].compact_blank.join(" - ")
+        @description = ::GameMission.plain_text(@mission.description)
+        @og_type = "article"
+      end
+
+      render_frontend
+    end
+
     def model_images
       @model = model_record.first
       return if redirect_to_canonical_slug(@model)

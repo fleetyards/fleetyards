@@ -140,6 +140,34 @@ class GameMissionTest < ActiveSupport::TestCase
     assert_empty create(:game_mission).blueprints
   end
 
+  # A meta title is plain text, so the run-time spans have to come out -- but
+  # not by deletion: dropping one leaves "Bounty:  wanted", and 902 of the 2472
+  # titles carry one.
+  test ".plain_text brackets a substitution rather than dropping it" do
+    assert_equal "Bounty: [TargetName] wanted",
+      GameMission.plain_text("Bounty: ~mission(TargetName) wanted")
+  end
+
+  # The part before the pipe is the noun; the rest names which of its fields
+  # the game will substitute.
+  test ".plain_text names the parameter rather than the field it reads" do
+    assert_equal "Head to [Location]",
+      GameMission.plain_text("Head to ~mission(Location|Address)")
+  end
+
+  # 3,567 opens across the localisation file, four of which never close.
+  test ".plain_text takes the game's emphasis markup out" do
+    assert_equal "Resupply the depot",
+      GameMission.plain_text("Resupply <EM4>the depot</EM4>")
+    assert_equal "Resupply the depot",
+      GameMission.plain_text("Resupply <EM4>the depot")
+  end
+
+  test ".plain_text answers an absent string with nothing" do
+    assert_nil GameMission.plain_text(nil)
+    assert_nil GameMission.plain_text("")
+  end
+
   # The row keeps its last build so a retired contract still resolves, and the
   # facts come off that build rather than off whatever the row happens to hold.
   test "falls back to the last build once the current one is gone" do

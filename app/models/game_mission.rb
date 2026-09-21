@@ -260,6 +260,26 @@ class GameMission < ApplicationRecord
     end
   end
 
+  # A title or description with the game's markup taken out rather than
+  # rendered, for the places that can only hold plain text -- a meta tag, a
+  # link preview. The frontend's `MissionText` does the same job in reverse,
+  # turning each span into a token a reader can see.
+  #
+  # A placeholder becomes its parameter in brackets: dropping it outright
+  # breaks the sentence around it, and 902 of the 2472 titles carry one.
+  PLACEHOLDER = /~mission\(([^)]*)\)/
+  EMPHASIS_TAG = %r{</?EM\d*>}
+
+  def self.plain_text(text)
+    return if text.blank?
+
+    text
+      .gsub(PLACEHOLDER) { "[#{::Regexp.last_match(1).split("|").first}]" }
+      .gsub(EMPHASIS_TAG, "")
+      .squish
+      .presence
+  end
+
   private def update_slugs
     # From the key rather than the title, the way a blueprint's is. 2536
     # contracts share 836 titles between them -- every difficulty and system

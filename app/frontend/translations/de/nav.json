@@ -316,7 +316,8 @@
         "commodities": "Handelswaren",
         "index": "Katalog",
         "components": "Komponenten",
-        "blueprints": "Baupläne"
+        "blueprints": "Baupläne",
+        "missions": "Missionen"
       }
     }
   }
