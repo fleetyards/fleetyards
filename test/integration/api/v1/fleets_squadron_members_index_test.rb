@@ -1,0 +1,104 @@
+# frozen_string_literal: true
+
+require "openapi_helper"
+
+class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
+
+  openapi_schema :"v1/schema"
+
+  api_path "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/members" do
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "fleetSquadronSlug", in: :path, schema: {type: :string}, description: "Squadron slug"
+
+    get("Fleet Squadron Members List") do
+      operationId "fleetSquadronMembers"
+      tags "FleetSquadrons"
+      produces "application/json"
+
+      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::FleetMemberQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
+      ]
+
+      response(200, "successful") do
+        schema ::V1::Schemas::Fleets::FleetMembersList
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  setup do
+    Flipper.enable("fleet_squadrons")
+    @admin = create(:user)
+    @member = create(:user)
+    @outsider_of_squadron = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member, @outsider_of_squadron])
+    @squadron = create(:fleet_squadron, fleet: @fleet)
+    @membership = @fleet.fleet_memberships.kept.find_by(user: @member)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
+  end
+
+  def path_params
+    {fleetSlug: @fleet.slug, fleetSquadronSlug: @squadron.slug}
+  end
+
+  test "GET squadron members lists only the squadron's members" do
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal [@member.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+  end
+
+  test "GET squadron members is readable by a plain member" do
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params
+  end
+
+  # A squadron row survives its member's invitation being withdrawn only until
+  # the membership goes, so the list asks for accepted memberships rather than
+  # the raw join.
+  test "GET squadron members leaves out a member who is no longer accepted" do
+    pending = create(:fleet_membership, :invited, fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: pending)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal [@member.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+  end
+
+  test "GET squadron members returns 404 for an unknown squadron" do
+    sign_in @admin
+
+    assert_api_response :get, 404, path_params: {fleetSlug: @fleet.slug, fleetSquadronSlug: "no-such-wing"}
+  end
+
+  test "GET squadron members returns 401 when not signed in" do
+    assert_api_response :get, 401, path_params: path_params
+  end
+
+  test "GET squadron members with OAuth bearer token" do
+    assert_api_response :get, 200,
+      path_params: path_params,
+      headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
+  end
+end
