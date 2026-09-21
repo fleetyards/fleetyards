@@ -69,6 +69,12 @@ module Api
         render json: ValidationError.new("fleet_squadron_members.destroy", errors: row.errors), status: :bad_request
       end
 
+      private def set_fleet
+        @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
+
+        authorize! @fleet, to: :show?
+      end
+
       # Only the accepted roster: a squadron is a working sub-unit, so somebody
       # with an unanswered invitation is not a person to post to one.
       private def find_member!

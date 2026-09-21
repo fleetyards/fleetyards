@@ -67,6 +67,12 @@ module Api
         end
       end
 
+      private def set_fleet
+        @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
+
+        authorize! @fleet, to: :show?
+      end
+
       private def fleet_squadron_params
         authorized(params, with: FleetSquadronPolicy, context: {fleet: @fleet})
       end

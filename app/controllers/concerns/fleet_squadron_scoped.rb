@@ -13,12 +13,6 @@ module FleetSquadronScoped
     authorized_scope(fleet.fleet_squadrons, with: FleetSquadronPolicy, context: {fleet: fleet})
   end
 
-  private def set_fleet
-    @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
-
-    authorize! @fleet, to: :show?
-  end
-
   private def set_fleet_squadron
     @fleet_squadron = readable_fleet_squadrons.find_by!(slug: params[:slug] || params[:fleet_squadron_slug])
   end
