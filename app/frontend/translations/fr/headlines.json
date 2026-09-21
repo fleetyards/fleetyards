@@ -477,6 +477,14 @@
         "requiredTags": "S'installe sur un port offrant",
         "tags": "Tags"
       },
+      "commodity": {
+        "priceHistory": "Historique des prix",
+        "identity": "Détails",
+        "usedIn": "Utilisée dans"
+      },
+      "commodities": {
+        "index": "Marchandises"
+      },
       "components": {
         "index": "Composants"
       },

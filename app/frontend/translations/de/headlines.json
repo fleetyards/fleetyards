@@ -477,6 +477,14 @@
         "requiredTags": "Passt in einen Port mit",
         "tags": "Tags"
       },
+      "commodity": {
+        "priceHistory": "Preisverlauf",
+        "identity": "Details",
+        "usedIn": "Verwendet in"
+      },
+      "commodities": {
+        "index": "Handelswaren"
+      },
       "components": {
         "index": "Komponenten"
       },

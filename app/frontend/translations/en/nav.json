@@ -306,10 +306,14 @@
       },
       "notifications": "Notifications",
       "scDataSource": "Data source",
+      "commodities": {
+        "index": "Commodities"
+      },
       "components": {
         "index": "Components"
       },
       "catalogue": {
+        "commodities": "Commodities",
         "index": "Catalogue",
         "components": "Components",
         "blueprints": "Blueprints"

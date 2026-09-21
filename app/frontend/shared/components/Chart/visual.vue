@@ -11,6 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import type { BarChartStats, PieChartStats } from "@/services/fyApi";
+import { type ChartSeries } from "@/shared/components/Chart/types";
 
 /*
  * Chart takes its whole lifecycle through one `asyncStatus` bag of refs, so a
@@ -88,6 +89,39 @@ const slices: PieChartStats[] = [
 const oneSlice: PieChartStats[] = [
   { name: "Combat", y: 100, selected: false, sliced: false },
 ];
+
+// What a commodity price history is: sold and bought, each low/average/high,
+// sharing one day axis. The gaps are days nothing was sampled, which have to
+// break the line rather than join across it.
+const priceDays = ["05 Sep", "06 Sep", "07 Sep", "08 Sep", "09 Sep", "10 Sep"];
+
+const priceSeries: ChartSeries[] = [
+  { name: "Sold highest", data: [23000, 23000, 22800, null, 22500, 22500] },
+  { name: "Sold average", data: [22100, 22050, 21900, null, 21700, 21650] },
+  { name: "Sold lowest", data: [21000, 21000, 21000, null, 20900, 20900] },
+  {
+    name: "Bought highest",
+    data: [19000, 19000, 18900, null, 18800, 18800],
+    dashStyle: "ShortDash",
+  },
+  {
+    name: "Bought average",
+    data: [18200, 18150, 18100, null, 18000, 17950],
+    dashStyle: "ShortDash",
+  },
+  {
+    name: "Bought lowest",
+    data: [17500, 17500, 17400, null, 17300, 17300],
+    dashStyle: "ShortDash",
+  },
+];
+
+// A commodity with a price row but no snapshot recorded yet. Six lines of
+// nothing draw a bare pair of axes, which reads as a chart that failed.
+const emptySeries: ChartSeries[] = priceSeries.map((series) => ({
+  ...series,
+  data: series.data.map(() => null),
+}));
 
 const redrawKey = ref(0);
 
@@ -190,6 +224,41 @@ const redraw = () => {
         :async-status="settled"
         :options="flat"
         tooltip-type="ship"
+        :height="300"
+      />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Several series</Heading>
+  <p>
+    Given <code>series</code> and <code>categories</code> instead of
+    <code>options</code>: named lines sharing one axis, with a legend to tell
+    them apart. The axis does not start at zero, or a commodity trading in a
+    narrow band would be a flat line at the top of the chart. Six lines of nulls
+    count as no data rather than as an empty frame.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <Chart
+        :key="`series-${redrawKey}`"
+        name="vt-series"
+        type="line"
+        :async-status="settled"
+        :series="priceSeries"
+        :categories="priceDays"
+        value-suffix="aUEC"
+        :height="300"
+      />
+    </div>
+    <div class="col-12 col-lg-6">
+      <Chart
+        :key="`series-empty-${redrawKey}`"
+        name="vt-series-empty"
+        type="line"
+        :async-status="settled"
+        :series="emptySeries"
+        :categories="priceDays"
+        value-suffix="aUEC"
         :height="300"
       />
     </div>

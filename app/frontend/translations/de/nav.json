@@ -306,10 +306,14 @@
       },
       "notifications": "Benachrichtigungen",
       "scDataSource": "Datenquelle",
+      "commodities": {
+        "index": "Handelswaren"
+      },
       "components": {
         "index": "Komponenten"
       },
       "catalogue": {
+        "commodities": "Handelswaren",
         "index": "Katalog",
         "components": "Komponenten",
         "blueprints": "Baupläne"

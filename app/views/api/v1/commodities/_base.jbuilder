@@ -25,6 +25,13 @@ json.store_image do
   json.partial! "api/v1/shared/file", record: commodity, attr: :store_image
 end
 
+# The cheapest of each direction across every terminal, which is what the row
+# and the price sorts both read. Without them a list would have to reduce the
+# `availability` arrays itself -- 539 price rows on a page of 60 -- to show two
+# numbers, and could not ask the API to order by either.
+json.buy_price commodity.buy_price&.to_f
+json.sell_price commodity.sell_price&.to_f
+
 json.availability do
   json.bought_at do
     json.array! commodity.bought_at, partial: "api/v1/item_prices/base", as: :item_price

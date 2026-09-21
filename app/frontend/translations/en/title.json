@@ -335,6 +335,10 @@
       },
       "notifications": "Notifications",
       "component": "%{name}",
+      "commodity": "%{name}",
+      "commodities": {
+        "index": "Commodities"
+      },
       "components": {
         "index": "Components"
       },

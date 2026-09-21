@@ -477,6 +477,14 @@
         "requiredTags": "Si monta su una porta con",
         "tags": "Tag"
       },
+      "commodity": {
+        "priceHistory": "Storico prezzi",
+        "identity": "Dettagli",
+        "usedIn": "Usata in"
+      },
+      "commodities": {
+        "index": "Merci"
+      },
       "components": {
         "index": "Componenti"
       },

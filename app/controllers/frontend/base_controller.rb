@@ -56,6 +56,19 @@ module Frontend
       render_frontend
     end
 
+    def commodity
+      @commodity = Commodity.find_by(slug: params[:slug].to_s.downcase)
+
+      if @commodity.present?
+        @title = @commodity.name
+        @description = @commodity.description
+        @og_type = "article"
+        @og_image = @commodity.store_image.attached? ? rails_blob_url(@commodity.store_image) : nil
+      end
+
+      render_frontend
+    end
+
     def model_images
       @model = model_record.first
       return if redirect_to_canonical_slug(@model)

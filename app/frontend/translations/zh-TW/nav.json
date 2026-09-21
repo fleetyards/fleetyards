@@ -306,10 +306,14 @@
       },
       "notifications": "通知",
       "scDataSource": "資料來源",
+      "commodities": {
+        "index": "商品"
+      },
       "components": {
         "index": "部件"
       },
       "catalogue": {
+        "commodities": "商品",
         "index": "目錄",
         "components": "部件",
         "blueprints": "藍圖"

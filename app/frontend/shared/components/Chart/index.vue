@@ -14,6 +14,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useChartTheme } from "@/shared/composables/useChartTheme";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { type ChartSeries } from "@/shared/components/Chart/types";
 
 type TooltipLabelOption = {
   label?: number | string;
@@ -27,6 +28,11 @@ type Props = {
   name: string;
   asyncStatus: AsyncStatus;
   options?: ChartData[];
+  // Given instead of `options`. The two are exclusive: `options` carries its
+  // own categories inside each item, these take them alongside.
+  series?: ChartSeries[];
+  categories?: string[];
+  valueSuffix?: string;
   type?: "line" | "bar" | "column" | "area" | "pie";
   reload?: number;
   tooltipType?: string;
@@ -35,11 +41,16 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],
+  series: undefined,
+  categories: () => [],
+  valueSuffix: "",
   type: "line",
   tooltipType: "",
   reload: undefined,
   height: 400,
 });
+
+const multiSeries = computed(() => props.series !== undefined);
 
 const { t } = useI18n();
 
@@ -58,6 +69,10 @@ const chartWithCategory = computed(() => {
 });
 
 const xAxis = computed(() => {
+  if (multiSeries.value) {
+    return { categories: props.categories };
+  }
+
   if (chartWithCategory.value) {
     return {
       categories: (props.options as BarChartStats[]).map((item) => item.label),
@@ -67,6 +82,13 @@ const xAxis = computed(() => {
 });
 
 const yAxis = computed(() => {
+  // Prices, so decimals are meaningful and the axis must not start at zero:
+  // a commodity trading between 21,000 and 23,000 is a flat line at the top of
+  // a zero-based axis.
+  if (multiSeries.value) {
+    return { startOnTick: false, endOnTick: false };
+  }
+
   if (chartWithCategory.value) {
     return {
       allowDecimals: false,
@@ -76,6 +98,11 @@ const yAxis = computed(() => {
 });
 
 const legend = computed(() => {
+  // A single series needs no key saying which one it is; six do.
+  if (multiSeries.value) {
+    return theme.value.legend;
+  }
+
   if (chartWithCategory.value) {
     return { enabled: false };
   }
@@ -114,8 +141,19 @@ const failed = computed(() => !!props.asyncStatus.error?.value);
  * and the failure case drew nothing at all, so an empty box was the only thing
  * either state had to say.
  */
+// A series list that is all gaps is as empty as no list at all -- a commodity
+// with a price row but no snapshot yet plots six lines of nulls, which
+// Highcharts draws as a bare pair of axes.
+const plottable = computed(() => {
+  if (!multiSeries.value) return props.options.length > 0;
+
+  return (props.series ?? []).some((series) =>
+    series.data.some((point) => point !== null && point !== undefined),
+  );
+});
+
 const empty = computed(
-  () => !loading.value && !failed.value && !props.options.length,
+  () => !loading.value && !failed.value && !plottable.value,
 );
 
 const retry = () => {
@@ -151,7 +189,7 @@ const tooltipFormat = (tooltip: Highcharts.Point) => {
 };
 
 watch(
-  () => props.options,
+  () => [props.options, props.series, props.categories],
   () => {
     if (instance.value) {
       reloadChart();
@@ -171,6 +209,19 @@ watch(loading, () => {
 });
 
 const reloadChart = () => {
+  if (multiSeries.value) {
+    instance.value?.update(
+      { xAxis: { categories: props.categories }, series: seriesOptions.value },
+      true,
+      // The series list is replaced rather than matched up index by index: the
+      // number of lines can change with the data, and an update that kept the
+      // old ones would leave a line on the chart with nothing behind it.
+      true,
+    );
+
+    return;
+  }
+
   const series = instance.value?.series[0];
 
   if (!series) {
@@ -192,6 +243,27 @@ const reloadChart = () => {
     series.setData(props.options);
   }
 };
+
+const seriesOptions = computed<Highcharts.SeriesOptionsType[]>(() => {
+  if (multiSeries.value) {
+    return (props.series ?? []).map((series) => ({
+      type: props.type,
+      name: series.name,
+      data: series.data,
+      dashStyle: series.dashStyle,
+      // Otherwise a missing day joins the two around it with a straight line,
+      // which reads as a price that held steady rather than one nobody sampled.
+      connectNulls: false,
+    })) as Highcharts.SeriesOptionsType[];
+  }
+
+  return [
+    {
+      type: props.type,
+      data: chartData.value,
+    },
+  ] as Highcharts.SeriesOptionsType[];
+});
 
 const setupChart = () => {
   // Drawing before the data lands would put a bare axis frame behind the
@@ -216,18 +288,19 @@ const setupChart = () => {
       ...yAxis.value,
     },
     legend: legend.value,
-    tooltip: {
-      ...theme.value.tooltip,
-      formatter() {
-        return tooltipFormat(this);
-      },
-    },
-    series: [
-      {
-        type: props.type,
-        data: chartData.value,
-      },
-    ],
+    tooltip: multiSeries.value
+      ? {
+          ...theme.value.tooltip,
+          shared: true,
+          valueSuffix: props.valueSuffix ? ` ${props.valueSuffix}` : undefined,
+        }
+      : {
+          ...theme.value.tooltip,
+          formatter() {
+            return tooltipFormat(this);
+          },
+        },
+    series: seriesOptions.value,
   });
 };
 </script>
@@ -238,7 +311,11 @@ const setupChart = () => {
     holds that height from the start - without it the panel collapses to the
     spinner and snaps open when the data lands.
   -->
-  <div class="chart-container" :style="{ minHeight: `${height}px` }">
+  <div
+    class="chart-container"
+    :data-test="`chart-${name}`"
+    :style="{ minHeight: `${height}px` }"
+  >
     <!--
       v-show, not v-if: setupChart needs the element to exist, and the ref has
       to survive a state change without being re-acquired.

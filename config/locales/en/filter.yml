@@ -8,6 +8,30 @@ en:
           component: Components
           equipment: Equipment
           commodity: Commodities
+    commodity:
+      commodity_type:
+        items:
+          agricultural_supply: Agricultural Supplies
+          alloy: Alloys
+          consumer_goods: Consumer Goods
+          drink: Drinks
+          food: Food
+          gas: Gases
+          hpmc: HPMC
+          manmade: Manmade
+          medical_supply: Medical Supplies
+          metal: Metals
+          military_supply: Military Supplies
+          mineral: Minerals
+          natural: Natural
+          nonmetals: Nonmetals
+          plasma_fuel: Plasma Fuel
+          processed_goods: Processed Goods
+          quantum_fuel: Quantum Fuel
+          rmc: RMC
+          scrap: Scrap
+          vice: Vice
+          waste: Waste
     component:
       category:
         items:

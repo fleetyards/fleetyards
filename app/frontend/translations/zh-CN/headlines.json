@@ -477,6 +477,14 @@
         "requiredTags": "可装入具备以下标签的接口",
         "tags": "标签"
       },
+      "commodity": {
+        "priceHistory": "价格历史",
+        "identity": "详情",
+        "usedIn": "用于"
+      },
+      "commodities": {
+        "index": "商品"
+      },
       "components": {
         "index": "部件"
       },

@@ -226,15 +226,30 @@ class Commodity < ApplicationRecord
   ].freeze
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
+
+  # `buyPrice` and `sellPrice` are the cheapest of each direction across every
+  # terminal, which `ItemPriceConcern` already exposes as a scalar subquery --
+  # one row per commodity, so ordering needs no `distinct` to undo a join.
+  #
+  # Half the catalogue is priced nowhere, and `MIN()` over no rows is NULL, so
+  # those sort last ascending and first descending. Sorting is not filtering:
+  # an unpriced commodity stays in the list either way, at the end of it.
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
     "commodityType asc", "commodityType desc",
+    "buyPrice asc", "buyPrice desc",
+    "sellPrice asc", "sellPrice desc",
     "createdAt asc", "createdAt desc",
     "updatedAt asc", "updatedAt desc"
   ]
 
+  # `description` matches the column rather than the build: it is not in
+  # `CommodityBuild::FILTERABLE`, so no ransacker shadows it. The loader writes
+  # the row alongside the build, so the column is the current text either way,
+  # and a `_cont` over the joined build would cost a second scan for the same
+  # answer. Component does the same with its own description.
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id name slug commodity_type sc_key uex_code store_image created_at updated_at] +
+    %w[id name slug commodity_type description sc_key uex_code store_image created_at updated_at] +
       ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 
