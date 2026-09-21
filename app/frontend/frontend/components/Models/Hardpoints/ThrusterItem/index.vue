@@ -36,6 +36,14 @@ const typeData = computed(() => {
 const count = computed(() => {
   return props.hardpoints.length;
 });
+
+const subTypeLabel = computed(() => {
+  const subType = hardpoint.value.component?.subType || "FixedThruster";
+
+  return t(`labels.hardpoint.thrusters.subTypes.${subType}`, {
+    defaultValue: subType,
+  });
+});
 </script>
 
 <template>
@@ -45,11 +53,7 @@ const count = computed(() => {
       <HardpointComponent>
         <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
           <template v-if="hardpoint.component">
-            {{
-              t(
-                `labels.hardpoint.thrusters.subTypes.${hardpoint.component.subType || "FixedThruster"}`,
-              )
-            }}
+            {{ subTypeLabel }}
           </template>
           <template v-else>
             <span>TBD</span>
