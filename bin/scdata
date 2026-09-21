@@ -62,21 +62,31 @@ end
 # `.env.tpl` -- which is also how production supplies them to the loader jobs.
 # Run bare, this falls back to reading 1Password directly, so neither
 # invocation needs the wrapper.
-def s3_settings
+def s3_settings(optional: false)
   return ScData::ObjectStore.settings if ScData::ObjectStore.configured?
 
   {
     endpoint: "https://fsn1.your-objectstorage.com",
     bucket: "fltyrd-sc",
-    access_key_id: read_secret("access_key_id"),
-    secret_access_key: read_secret("secret_access_key")
+    access_key_id: read_secret("access_key_id", optional: optional),
+    secret_access_key: read_secret("secret_access_key", optional: optional)
   }
 end
 
-def read_secret(field)
+# `optional` is for the one caller that has somewhere to go without the
+# credentials. A CI run that cannot reach 1Password -- a Dependabot or fork pull
+# request, which reads secrets from a store it has no access to -- still needs a
+# cache key, and `ScData::CacheKey` answers with the version. Returning nil lets
+# `ObjectStore` raise `NotConfigured`, which is what that fallback rescues.
+# Every other caller moves data and has nothing to fall back on.
+def read_secret(field, optional: false)
   value = `op read "op://Fleetyards/HETZNER_S3/#{field}"`.strip
 
-  abort "Could not read #{field} from 1Password. Unlock it and retry." unless $?.success?
+  unless $?.success?
+    return nil if optional
+
+    abort "Could not read #{field} from 1Password. Unlock it and retry."
+  end
 
   value
 end
@@ -303,7 +313,7 @@ when "manifest"
 when "cache-key"
   boot_rails
 
-  result = ScData::CacheKey.call(settings: s3_settings)
+  result = ScData::CacheKey.call(settings: s3_settings(optional: true))
 
   result.warnings.each { |warning| warn "  #{warning}" }
 
