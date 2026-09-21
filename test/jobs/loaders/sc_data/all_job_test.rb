@@ -185,9 +185,10 @@ module Loaders
         ::Loaders::ScData::AllJob.new.perform
       end
 
-      # Only a genuinely new entry is worth a human's attention, or a pile that
-      # has been sitting undecided would raise a warning on every patch.
-      test "#perform leaves the unlisted report at info when nothing is new" do
+      # Only a genuinely new entry is worth a notification. The pile that has
+      # been sitting undecided is on the ships list either way, and a row per
+      # patch saying it is still there is noise.
+      test "#perform reports no unlisted ships when nothing is new" do
         ::ScData::Loader::BaseLoader.stubs(:all).returns({
           "ModelsLoader" => {"Model" => {created: 0, updated: 1, unchanged: 0}}
         })
@@ -198,10 +199,9 @@ module Loaders
 
         ::Loaders::ScData::AllJob.new.perform
 
-        unlisted = AdminNotification.find_by(
+        assert_nil AdminNotification.find_by(
           admin_user: @admin_user, notification_type: "sc_data_unlisted_models"
         )
-        assert_equal "info", unlisted.severity
       end
 
       # The report reads the tree of the build the job just loaded, not the

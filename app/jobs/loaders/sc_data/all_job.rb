@@ -85,15 +85,22 @@ module Loaders
       # Notification only. Every entry is decided on the admin ships list, which
       # carries the same pile and the buttons that clear it, so an issue opened
       # here only restates that list somewhere nobody acts on it -- and then has
-      # to be closed by hand. A new entry still raises the severity to warning.
+      # to be closed by hand.
+      #
+      # The run always happens: it upserts what the export showed and retires
+      # what it no longer does. Only a build that turned up something new is
+      # worth a notification -- the undecided pile is on the ships list either
+      # way, and a row per patch saying it is still there is noise.
       private def report_unlisted_models(source, import)
         result = ::ScData::Source.with(source) { ::ScData::UnlistedModels.new.run }
+
+        return unless ::ScData::UnlistedModels.actionable?(result)
 
         AdminReport.deliver(
           task_type: "sc_data_unlisted_models",
           title: "Ships in the game files with no model (#{result[:new].size} new)",
           body: ::ScData::UnlistedModels.report_body(result, source),
-          actionable: ::ScData::UnlistedModels.actionable?(result),
+          actionable: true,
           link: "/models/unlisted/",
           record: import,
           github_issue: false
