@@ -12,7 +12,9 @@ This turns that walk into a catalogue of its own, as the fourth tenant of the `/
 
 ### Issue lifecycle
 
-Four phases ship as four PRs on a stack. **Only the Phase 4 PR carries `Closes #5125`** — the first three say `Part of #5125` so the issue survives until the tenant is actually reachable. The issue sits at **In Progress** on the Fleetyards project board (ProjectV2 #3) from Phase 1, moves to **In review** when the Phase 4 PR opens, and closes on its merge.
+Three PRs, not four. Phases 1 and 2 ship together: a parser with no loader reads a folder nothing consumes, and neither has a user-visible surface, so splitting them buys a review of half a mechanism and costs a stack rebase. Phase 3 (API) and Phase 4 (frontend) follow as their own PRs.
+
+**Only the last PR carries `Closes #5125`** — the others say `Part of #5125`, so the issue survives until the tenant is actually reachable. The issue sits at **In Progress** on the Fleetyards project board (ProjectV2 #3) from Phase 1, moves to **In review** when the final PR opens, and closes on its merge.
 
 ## Decisions
 
@@ -149,10 +151,12 @@ The normalisation — `blueprint_sources` losing its six contract columns in fav
 - **2026-09-21** D1, D2 and D3 answered and recorded in the issue body.
 - **2026-09-21** Phase 1 written against the real export, which caught two things the shape of the tree does not advertise. A `debugName` is free text — 64 carry a space, bracket, dash or slash, and the slash wrote a key into a directory `save_items` never created. And `<difficulty>` hangs off `contractResults` at variable depth rather than off the contract, so digging at a fixed path found none of the 2,360.
 - **2026-09-21** Reading contracts only from a handler's `contracts` key missed 23 filed under `introContracts` and `PVPBountyContract` — an org's first mission among them. Five of the 23 hand out a blueprint, so fixing it also adds five contracts to the existing `blueprint_pools` output; the next load will write new `blueprint_sources` rows for them.
+- **2026-09-21** `bin/scdata` requires `source.rb` directly rather than through the autoload chain, so `BUILDS` resolved its models with the class body — which worked only for models an earlier step had already loaded. Adding `GameMissionBuild` raised `uninitialized constant` before the tree check could read a file. The list is a method now, the way `BlueprintsLoader.cost_models` is.
+- **2026-09-21** Both trees re-parsed (live 6m54s) and checked: `game_missions 2536 files`, no problems. The loader test loads all 2,536 against the real tree in ~87s, in line with the blueprint suite.
 
 ## Progress
 
-- [ ] Phase 1 — Parser
-- [ ] Phase 2 — Model and loader
+- [x] Phase 1 — Parser
+- [x] Phase 2 — Model and loader
 - [ ] Phase 3 — API
 - [ ] Phase 4 — Frontend
