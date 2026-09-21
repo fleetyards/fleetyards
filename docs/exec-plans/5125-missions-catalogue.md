@@ -153,10 +153,13 @@ The normalisation — `blueprint_sources` losing its six contract columns in fav
 - **2026-09-21** Reading contracts only from a handler's `contracts` key missed 23 filed under `introContracts` and `PVPBountyContract` — an org's first mission among them. Five of the 23 hand out a blueprint, so fixing it also adds five contracts to the existing `blueprint_pools` output; the next load will write new `blueprint_sources` rows for them.
 - **2026-09-21** `bin/scdata` requires `source.rb` directly rather than through the autoload chain, so `BUILDS` resolved its models with the class body — which worked only for models an earlier step had already loaded. Adding `GameMissionBuild` raised `uninitialized constant` before the tree check could read a file. The list is a method now, the way `BlueprintsLoader.cost_models` is.
 - **2026-09-21** Both trees re-parsed (live 6m54s) and checked: `game_missions 2536 files`, no problems. The loader test loads all 2,536 against the real tree in ~87s, in line with the blueprint suite.
+- **2026-09-21** Review on #5127 found the half of the key fix I had missed: the GUID suffix went to whichever of two colliding contracts was walked second, leaving the first holding a base that is positional in exactly the way the counter was. Every member of a shared base is suffixed now, counted before any key is handed out. 26 keys carry one rather than 13, so both trees were re-parsed and re-pushed (14 up, 13 removed on each).
+- **2026-09-21** Tagged the endpoints "Game Missions", not "Missions": the fleet mission planner owns that tag and orval splits its services by tag, so the catalogue's operations were being generated into the planner's own client. The same collision that ruled out `Contract` for the model, one layer up.
+- **2026-09-21** Admin pages are not built. The issue's acceptance criteria name none, every fact is replaced by the next load, and the public catalogue answers the questions an admin would ask of it. Deferred rather than dropped: it is one route block, one nav path and one `RESOURCE_ACCESS` entry whenever it is wanted.
 
 ## Progress
 
 - [x] Phase 1 — Parser
 - [x] Phase 2 — Model and loader
-- [ ] Phase 3 — API
-- [ ] Phase 4 — Frontend
+- [x] Phase 3 — API
+- [x] Phase 4 — Frontend
