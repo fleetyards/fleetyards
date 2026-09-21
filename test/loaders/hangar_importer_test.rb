@@ -21,6 +21,26 @@ class HangarImporterTest < ActiveSupport::TestCase
 
   # An import runs inline in the request, so the user is the `whodunnit` -- no
   # actor-based guard excludes it. It builds the hangar rather than editing it.
+  # The job loads the import by id rather than carrying the instance the request
+  # built, so every assertion that runs against `@import` proves nothing about
+  # what the job actually sees. `import_data` was written by an `after_create`
+  # callback and therefore never reached the column at all.
+  test "runs against a record loaded fresh, the way the job does" do
+    result = ::HangarImporter.new(::Imports::HangarImport.find(@import.id)).run
+
+    assert_equal HangarImportFixtures::IMPORTED_SHIPS, result[:imported]
+    assert_predicate Vehicle.where(user_id: @user.id), :any?
+  end
+
+  test "stores the parsed file on the record" do
+    import = ::Imports::HangarImport.create!(
+      user_id: @user.id,
+      import: Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json"))
+    )
+
+    refute_nil import.reload.import_data
+  end
+
   test "records no versions" do
     assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle").count } do
       ::HangarImporter.new(@import).run
@@ -105,6 +125,73 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_equal interval, Vehicle.where(user_id: @user.id).count
     assert_predicate import.reload, :cancelled?
     refute result[:success]
+  end
+
+  # A hangar export can carry an entry with a slug and no name at all. Both the
+  # name mapping and the query used to assume a name was there.
+  test "imports an item that carries only a slug" do
+    import = import_for([{slug: @model.slug}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal [@model.name], result[:imported]
+  end
+
+  test "reports an unmatched slug-only item under its slug" do
+    import = import_for([{slug: "no-such-ship"}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["no-such-ship"], result[:missing]
+    refute result[:success]
+  end
+
+  # `paint_slug` becomes the slug the lookup uses, so a paint-only item clears
+  # the identifies-nothing guard -- and had nothing left to be reported under.
+  # `sort` raises on one nil beside a string, which is a named miss away.
+  test "reports an unmatched paint-only item beside a named one" do
+    import = import_for([{paint_slug: "no-such-paint"}, {name: "No Such Ship"}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["No Such Ship", "no-such-paint"], result[:missing]
+  end
+
+  test "skips an item that identifies nothing" do
+    import = import_for([{groups: ["Main"]}, {name: @model.name}])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal [@model.name], result[:imported]
+    assert_empty result[:missing]
+  end
+
+  test "does not report success when nothing matched" do
+    import = import_for([{name: "No Such Ship"}])
+
+    result = ::HangarImporter.new(import).run
+
+    refute result[:success]
+    assert_equal ["No Such Ship"], result[:missing]
+  end
+
+  # `cancelled` is only ever set at a checkpoint, so a cancellation that lands
+  # after the last one left `output` claiming success while the record itself
+  # went to `cancelled`.
+  test "does not report success when the cancellation lands after the last checkpoint" do
+    import = import_for([{name: @model.name, slug: @model.slug}])
+
+    importer = ::HangarImporter.new(import)
+    importer.define_singleton_method(:stop_requested?) do |_index|
+      import.request_cancel!
+      false
+    end
+
+    result = importer.run
+
+    refute result[:success]
+    assert_predicate import.reload, :cancelled?
+    assert_equal [@model.name], result[:imported]
   end
 
   def create_group(name)

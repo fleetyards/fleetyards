@@ -42,14 +42,16 @@ class HangarImporter
     # user made to a ship that already existed.
     cancelled = false
 
+    items = @import.import_data || []
+
     PaperTrail.request(enabled: false) do
-      (@import.import_data || []).each_with_index do |item, index|
+      items.each_with_index do |item, index|
         if stop_requested?(index)
           cancelled = true
           break
         end
 
-        name = item[:name]
+        name = item[:name].presence
         name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
         name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
         name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
@@ -58,10 +60,14 @@ class HangarImporter
         slug = item[:slug].downcase if item[:slug].present?
         slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
+        # Neither half of the query can match on an item that names nothing, and
+        # it has no label to report either.
+        next if name.blank? && slug.blank?
+
         query = [
           MODEL_FIND_QUERY.join(" OR "),
           {
-            name: name.downcase,
+            name: name&.downcase,
             slug:,
             normalized_name:,
             search: "%#{normalized_name}%"
@@ -102,7 +108,12 @@ class HangarImporter
           next
         end
 
-        missing_models << item[:name]
+        # The identifier the lookup actually used: `slug` already holds
+        # `paint_slug` where the item carried one. Reporting `item[:slug]`
+        # instead would name a slug that was never queried, and on an item that
+        # carried only a paint it would report nothing -- `missing` is sorted,
+        # and one nil beside a string raises rather than naming either.
+        missing_models << (item[:name].presence || slug)
       end
     end
 
@@ -110,10 +121,17 @@ class HangarImporter
     Vehicle.where(user_id: @import.user_id).update_all(notify: true)
     # rubocop:enable Rails/SkipsModelValidations
 
+    # The loop's own flag, or a cancellation that landed after its last
+    # checkpoint. Asking once means `output` and the transition below cannot
+    # disagree about whether the run was cancelled.
+    cancelled ||= @import.reload.cancelled?
+
     output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: !cancelled && missing_models.size < @import.import_data.size
+      # `missing_models.size < items.size` counted an item the run skipped as a
+      # success, so a file of nothing but unidentifiable entries reported one.
+      success: !cancelled && imported_models.any?
     }
 
     @import.update!(output: output)
@@ -122,7 +140,7 @@ class HangarImporter
     # checkpoint would otherwise fire `finish` from `cancelled` and raise
     # `AASM::InvalidTransition`. The state has already moved; there is nothing
     # left to transition.
-    @import.finish! unless cancelled || @import.reload.cancelled?
+    @import.finish! unless cancelled
 
     output
   rescue => e
@@ -307,6 +325,8 @@ class HangarImporter
   end
 
   private def strip_name(name)
+    return if name.blank?
+
     name.gsub(/(?:AEGIS|Aegis|ARGO|argo|Argo|ANVIL|Anvil|BANU|Banu|Crusader|CRUSADER|crusader|DRAKE|Drake|ESPERIA|Esperia|KRUGER|Kruger|Kruger Intergalactic|MISC|ORIGIN|Origin|RSI|TUMBRIL|Tumbril|VANDUUL|Vanduul|Xi'an|Consolidated Outland|consolidated outland|frigate|Aopoa)/, "").strip
   end
 end
