@@ -990,6 +990,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
   end
 
+  create_table "fleet_squadron_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "fleet_membership_id", null: false
+    t.uuid "fleet_squadron_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_membership_id"], name: "index_fleet_squadron_memberships_on_fleet_membership_id"
+    t.index ["fleet_squadron_id", "fleet_membership_id"], name: "index_fleet_squadron_memberships_on_squadron_and_membership", unique: true
+  end
+
+  create_table "fleet_squadrons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "fleet_id", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index "fleet_id, lower((name)::text)", name: "index_fleet_squadrons_on_fleet_id_and_lower_name", unique: true
+    t.index ["fleet_id", "slug"], name: "index_fleet_squadrons_on_fleet_id_and_slug", unique: true
+  end
+
   create_table "fleet_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "ended_at"
@@ -2431,6 +2452,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "fleet_squadron_memberships", "fleet_memberships"
+  add_foreign_key "fleet_squadron_memberships", "fleet_squadrons"
+  add_foreign_key "fleet_squadrons", "fleets"
   add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade
   add_foreign_key "fleet_subscriptions", "supporter_contributions", on_delete: :nullify
   add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade

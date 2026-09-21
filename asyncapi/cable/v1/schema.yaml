@@ -1621,6 +1621,12 @@ components:
       - fleet:memberships:update
       - fleet:memberships:delete
       - fleet:memberships:manage
+      - fleet:squadrons:read
+      - fleet:squadrons:create
+      - fleet:squadrons:update
+      - fleet:squadrons:delete
+      - fleet:squadrons:members:manage
+      - fleet:squadrons:manage
       - fleet:invites:read
       - fleet:invites:create
       - fleet:invites:update
@@ -1678,6 +1684,12 @@ components:
       - FLEET_MEMBERSHIPS_UPDATE
       - FLEET_MEMBERSHIPS_DELETE
       - FLEET_MEMBERSHIPS_MANAGE
+      - FLEET_SQUADRONS_READ
+      - FLEET_SQUADRONS_CREATE
+      - FLEET_SQUADRONS_UPDATE
+      - FLEET_SQUADRONS_DELETE
+      - FLEET_SQUADRONS_MEMBERS_MANAGE
+      - FLEET_SQUADRONS_MANAGE
       - FLEET_INVITES_READ
       - FLEET_INVITES_CREATE
       - FLEET_INVITES_UPDATE

@@ -28,6 +28,9 @@ fleet_logistics:
 fleet_mission_builder:
   description: "Mission builder — fleet missions, events, the calendar and Discord sync"
 
+fleet_squadrons:
+  description: "Fleet squadrons — named sub-groups of a fleet's roster, with their own ships and stats"
+
 # Rollout only, never entitlement. This decides whether the supporter-facing
 # subscription surfaces exist at all -- the nomination in settings, and later
 # the admin pages and the premium gates. Whether a given fleet has *bought*

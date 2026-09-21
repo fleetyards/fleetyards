@@ -45,6 +45,7 @@ class FleetRole < ApplicationRecord
   PRIVILEGE_GROUPS = {
     "fleet" => Fleet::AVAILABLE_PRIVILEGES,
     "memberships" => FleetMembership::AVAILABLE_PRIVILEGES,
+    "squadrons" => FleetSquadron::AVAILABLE_PRIVILEGES,
     "invites" => FleetInviteUrl::AVAILABLE_PRIVILEGES,
     "vehicles" => FleetVehicle::AVAILABLE_PRIVILEGES,
     # Read and nothing else: the markers belong to the members, so there is
@@ -97,6 +98,7 @@ class FleetRole < ApplicationRecord
       admin: [
         Fleet::DEFAULT_PRIVILEGES[:admin],
         FleetMembership::DEFAULT_PRIVILEGES[:admin],
+        FleetSquadron::DEFAULT_PRIVILEGES[:admin],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:admin],
         FleetVehicle::DEFAULT_PRIVILEGES[:admin],
         UserBlueprint::DEFAULT_PRIVILEGES[:admin],
@@ -111,6 +113,7 @@ class FleetRole < ApplicationRecord
       officer: [
         Fleet::DEFAULT_PRIVILEGES[:officer],
         FleetMembership::DEFAULT_PRIVILEGES[:officer],
+        FleetSquadron::DEFAULT_PRIVILEGES[:officer],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:officer],
         FleetVehicle::DEFAULT_PRIVILEGES[:officer],
         UserBlueprint::DEFAULT_PRIVILEGES[:officer],
@@ -125,6 +128,7 @@ class FleetRole < ApplicationRecord
       member: [
         Fleet::DEFAULT_PRIVILEGES[:member],
         FleetMembership::DEFAULT_PRIVILEGES[:member],
+        FleetSquadron::DEFAULT_PRIVILEGES[:member],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:member],
         FleetVehicle::DEFAULT_PRIVILEGES[:member],
         UserBlueprint::DEFAULT_PRIVILEGES[:member],

@@ -74,6 +74,7 @@ class Fleet < ApplicationRecord
   has_many :fleet_invite_urls,
     dependent: :destroy
   has_many :fleet_inventories, dependent: :destroy
+  has_many :fleet_squadrons, dependent: :destroy
 
   # The database cascades these, so `dependent:` would only be a second, slower
   # way of doing the same thing -- and a fleet must never fail to delete

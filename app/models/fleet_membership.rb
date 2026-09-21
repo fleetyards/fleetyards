@@ -66,6 +66,9 @@ class FleetMembership < ApplicationRecord
   belongs_to :fleet_role, optional: true
   belongs_to :user, touch: true
 
+  has_many :fleet_squadron_memberships, dependent: :destroy
+  has_many :fleet_squadrons, through: :fleet_squadron_memberships
+
   paginates_per 30
 
   enum :ships_filter,
