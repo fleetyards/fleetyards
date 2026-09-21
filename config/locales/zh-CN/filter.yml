@@ -8,6 +8,30 @@ zh-CN:
           component: 组件
           equipment: Equipment
           commodity: Commodities
+    commodity:
+      commodity_type:
+        items:
+          agricultural_supply: 农业物资
+          alloy: 合金
+          consumer_goods: 消费品
+          drink: 饮品
+          food: 食品
+          gas: 气体
+          hpmc: HPMC
+          manmade: 人造物
+          medical_supply: 医疗物资
+          metal: 金属
+          military_supply: 军用物资
+          mineral: 矿物
+          natural: 天然物
+          nonmetals: 非金属
+          plasma_fuel: 等离子燃料
+          processed_goods: 加工品
+          quantum_fuel: 量子燃料
+          rmc: RMC
+          scrap: 废料
+          vice: 违禁品
+          waste: 废弃物
     component:
       category:
         items:
