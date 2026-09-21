@@ -4,6 +4,7 @@
       "descriptions": {
         "verseGuide": "Comprehensive travel guide with detailed system maps, points of interest, and exploration routes across the Star Citizen universe",
         "starCitizenTools": "Community-driven wiki with extensive documentation on ships, weapons, locations, gameplay mechanics, and lore",
+        "verseintel": "Star Citizen knowledge graph that links dev statements, patch notes, articles, Spectrum posts and videos into one searchable, cross-referenced archive",
         "starship42": "Interactive 3D ship viewer with detailed exterior and interior models, component placement, and size comparisons",
         "erkul": "Advanced DPS calculator and ship loadout optimizer with detailed weapon statistics and component comparisons",
         "starjump": "2D fleet visualization tool for creating beautiful ship layouts and fleet organization charts",
