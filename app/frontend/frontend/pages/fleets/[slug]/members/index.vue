@@ -246,7 +246,7 @@ const crumbs = computed<Crumb[]>(() => {
     placeholders
   >
     <template #filter>
-      <FleetMembersFilterForm :variant="view" />
+      <FleetMembersFilterForm :variant="view" :fleet-slug="fleet.slug" />
     </template>
 
     <!-- The roster and the invites, in the same control the boards and the

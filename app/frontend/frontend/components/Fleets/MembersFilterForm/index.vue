@@ -8,7 +8,11 @@ export default {
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
+import {
+  FleetMemberQuery,
+  type FilterOption,
+  useFleetSquadrons,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import {
@@ -22,10 +26,12 @@ import {
 
 type Props = {
   variant?: MembersView;
+  fleetSlug?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: "members",
+  fleetSlug: undefined,
 });
 
 const { t } = useI18n();
@@ -51,6 +57,7 @@ function setupForm() {
   form.value = {
     usernameCont: filters.value.usernameCont,
     roleIn: filters.value.roleIn || [],
+    squadronSlugIn: filters.value.squadronSlugIn || [],
     sorts: filters.value.sorts,
     ...variantFilters(),
   };
@@ -88,6 +95,25 @@ const roleOptions: FilterOption[] = [
     value: "member",
   },
 ];
+
+/*
+ * Only asked for once the page says which fleet this is. The form is mounted
+ * from the members page, which has the fleet; a caller that does not pass it
+ * gets the rest of the form and no squadron filter, rather than a request for
+ * `/fleets/undefined/squadrons`.
+ */
+const { data: squadrons } = useFleetSquadrons(
+  computed(() => props.fleetSlug ?? ""),
+  {},
+  { query: { enabled: computed(() => !!props.fleetSlug) } },
+);
+
+const squadronOptions = computed<FilterOption[]>(() =>
+  (squadrons.value?.items ?? []).map((squadron) => ({
+    label: squadron.name,
+    value: squadron.slug,
+  })),
+);
 
 const stateOptions: FilterOption[] = [
   {
@@ -127,6 +153,16 @@ const stateOptions: FilterOption[] = [
       :options="roleOptions"
       :label="t('labels.filters.fleets.members.role')"
       name="role"
+      :multiple="true"
+      :no-label="true"
+    />
+
+    <BaseSelect
+      v-if="squadronOptions.length"
+      v-model="form.squadronSlugIn"
+      :options="squadronOptions"
+      :label="t('labels.filters.fleets.members.squadron')"
+      name="squadron"
       :multiple="true"
       :no-label="true"
     />

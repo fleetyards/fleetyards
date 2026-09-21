@@ -12,6 +12,7 @@ import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue"
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import SquadronBadge from "@/frontend/components/Fleets/Squadrons/SquadronBadge/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
@@ -27,9 +28,15 @@ type Props = {
   capabilities?: FleetMembershipCapabilities;
   emptyVisible?: boolean;
   loading?: boolean;
+  // Off on a squadron's own page, where every row carries the same badge and
+  // it would say nothing.
+  showSquadrons?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  capabilities: undefined,
+  showSquadrons: true,
+});
 
 const { t, l, timeDistance } = useI18n();
 
@@ -116,6 +123,16 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
               :citizenid-profile-url="record.citizenidProfileUrl"
             />)
           </div>
+          <div
+            v-if="props.showSquadrons && record.squadrons?.length"
+            class="member-squadrons"
+          >
+            <SquadronBadge
+              v-for="squadron in record.squadrons"
+              :key="squadron.id"
+              :squadron="squadron"
+            />
+          </div>
         </div>
       </div>
     </template>
@@ -175,5 +192,12 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 .rsi-handle-inline {
   font-size: 0.85em;
   opacity: 0.8;
+}
+
+.member-squadrons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
 }
 </style>
