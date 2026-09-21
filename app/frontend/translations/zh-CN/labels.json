@@ -1767,38 +1767,6 @@
           "notOwned": "未拥有"
         },
         "missions": {
-          "unnamed": "游戏从未命名",
-          "slug": "Slug",
-          "scKey": "游戏键",
-          "scRef": "游戏引用",
-          "generator": "生成器",
-          "debugName": "调试名称",
-          "build": "版本",
-          "difficultyAxes": "难度（技巧 / 负担 / 风险 / 理解）",
-          "states": {
-            "retired": "已移除",
-            "released": "在正式版",
-            "unreleased": "未在正式版"
-          },
-          "columns": {
-            "released": "在正式版",
-            "generator": "生成器",
-            "build": "版本",
-            "rewardKind": "类型",
-            "amount": "数量",
-            "rewardDetail": "详情"
-          },
-          "filters": {
-            "debugName": "调试名称",
-            "named": "已命名",
-            "unnamed": "从未命名",
-            "namedFilter": "命名",
-            "currentBuild": "仅当前版本",
-            "anyBuild": "任意版本",
-            "build": "版本"
-          }
-        },
-        "missions": {
           "name": "搜索任务",
           "org": "发布方",
           "standing": "声望",
@@ -1985,6 +1953,39 @@
           },
           "createdAt": "创建于",
           "updatedAt": "更新于"
+        },
+        "missions": {
+          "unnamed": "游戏从未命名",
+          "slug": "Slug",
+          "scKey": "游戏键",
+          "scRef": "游戏引用",
+          "generator": "生成器",
+          "debugName": "调试名称",
+          "build": "版本",
+          "difficultyAxes": "难度（技巧 / 负担 / 风险 / 理解）",
+          "state": "状态",
+          "states": {
+            "retired": "已移除",
+            "released": "在正式版",
+            "unreleased": "未在正式版"
+          },
+          "columns": {
+            "released": "在正式版",
+            "generator": "生成器",
+            "build": "版本",
+            "rewardKind": "类型",
+            "amount": "数量",
+            "rewardDetail": "详情"
+          },
+          "filters": {
+            "debugName": "调试名称",
+            "named": "已命名",
+            "unnamed": "从未命名",
+            "namedFilter": "命名",
+            "currentBuild": "仅当前版本",
+            "anyBuild": "任意版本",
+            "build": "版本"
+          }
         },
         "dashboard": {
           "quickStats": {

@@ -8,6 +8,9 @@
           "stats": "Stats",
           "sources": "Sources"
         },
+        "missions": {
+          "index": "Missions"
+        },
         "dashboard": {
           "title": "Dashboard",
           "visitsPerDay": "Visits per Day",

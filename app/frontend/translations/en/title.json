@@ -179,6 +179,10 @@
           "index": "Blueprints",
           "show": "%{blueprint}"
         },
+        "missions": {
+          "index": "Missions",
+          "show": "%{mission}"
+        },
         "models": {
           "index": "Models",
           "new": "New Model",

@@ -179,6 +179,10 @@
           "index": "Progetti",
           "show": "%{blueprint}"
         },
+        "missions": {
+          "index": "Missioni",
+          "show": "%{mission}"
+        },
         "models": {
           "index": "Modelli",
           "new": "Nuovo Modello",

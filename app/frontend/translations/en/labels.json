@@ -1767,38 +1767,6 @@
           "notOwned": "Not owned"
         },
         "missions": {
-          "unnamed": "Never named by the game",
-          "slug": "Slug",
-          "scKey": "Game key",
-          "scRef": "Game ref",
-          "generator": "Generator",
-          "debugName": "Debug name",
-          "build": "Build",
-          "difficultyAxes": "Difficulty (skill / load / risk / knowledge)",
-          "states": {
-            "retired": "Retired",
-            "released": "In release",
-            "unreleased": "Not in release"
-          },
-          "columns": {
-            "released": "In release",
-            "generator": "Generator",
-            "build": "Build",
-            "rewardKind": "Kind",
-            "amount": "Amount",
-            "rewardDetail": "Detail"
-          },
-          "filters": {
-            "debugName": "Debug name",
-            "named": "Named",
-            "unnamed": "Never named",
-            "namedFilter": "Naming",
-            "currentBuild": "Current build only",
-            "anyBuild": "Any build",
-            "build": "Build"
-          }
-        },
-        "missions": {
           "name": "Search missions",
           "org": "Offered by",
           "standing": "Standing",
@@ -1985,6 +1953,39 @@
           },
           "createdAt": "Created at",
           "updatedAt": "Updated at"
+        },
+        "missions": {
+          "unnamed": "Never named by the game",
+          "slug": "Slug",
+          "scKey": "Game key",
+          "scRef": "Game ref",
+          "generator": "Generator",
+          "debugName": "Debug name",
+          "build": "Build",
+          "difficultyAxes": "Difficulty (skill / load / risk / knowledge)",
+          "state": "State",
+          "states": {
+            "retired": "Retired",
+            "released": "In release",
+            "unreleased": "Not in release"
+          },
+          "columns": {
+            "released": "In release",
+            "generator": "Generator",
+            "build": "Build",
+            "rewardKind": "Kind",
+            "amount": "Amount",
+            "rewardDetail": "Detail"
+          },
+          "filters": {
+            "debugName": "Debug name",
+            "named": "Named",
+            "unnamed": "Never named",
+            "namedFilter": "Naming",
+            "currentBuild": "Current build only",
+            "anyBuild": "Any build",
+            "build": "Build"
+          }
         },
         "dashboard": {
           "quickStats": {

@@ -179,6 +179,10 @@
           "index": "藍圖",
           "show": "%{blueprint}"
         },
+        "missions": {
+          "index": "任務",
+          "show": "%{mission}"
+        },
         "models": {
           "index": "模型",
           "new": "新模型",

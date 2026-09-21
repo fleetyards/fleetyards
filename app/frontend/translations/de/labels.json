@@ -1767,38 +1767,6 @@
           "notOwned": "Nicht im Besitz"
         },
         "missions": {
-          "unnamed": "Vom Spiel nie benannt",
-          "slug": "Slug",
-          "scKey": "Spiel-Key",
-          "scRef": "Spiel-Ref",
-          "generator": "Generator",
-          "debugName": "Debug-Name",
-          "build": "Build",
-          "difficultyAxes": "Schwierigkeit (Können / Last / Risiko / Wissen)",
-          "states": {
-            "retired": "Entfernt",
-            "released": "Im Release",
-            "unreleased": "Nicht im Release"
-          },
-          "columns": {
-            "released": "Im Release",
-            "generator": "Generator",
-            "build": "Build",
-            "rewardKind": "Art",
-            "amount": "Betrag",
-            "rewardDetail": "Detail"
-          },
-          "filters": {
-            "debugName": "Debug-Name",
-            "named": "Benannt",
-            "unnamed": "Nie benannt",
-            "namedFilter": "Benennung",
-            "currentBuild": "Nur aktueller Build",
-            "anyBuild": "Beliebiger Build",
-            "build": "Build"
-          }
-        },
-        "missions": {
           "name": "Missionen suchen",
           "org": "Angeboten von",
           "standing": "Ansehen",
@@ -1985,6 +1953,39 @@
           },
           "createdAt": "Erstellt am",
           "updatedAt": "Aktualisiert am"
+        },
+        "missions": {
+          "unnamed": "Vom Spiel nie benannt",
+          "slug": "Slug",
+          "scKey": "Spiel-Key",
+          "scRef": "Spiel-Ref",
+          "generator": "Generator",
+          "debugName": "Debug-Name",
+          "build": "Build",
+          "difficultyAxes": "Schwierigkeit (Können / Last / Risiko / Wissen)",
+          "state": "Status",
+          "states": {
+            "retired": "Entfernt",
+            "released": "Im Release",
+            "unreleased": "Nicht im Release"
+          },
+          "columns": {
+            "released": "Im Release",
+            "generator": "Generator",
+            "build": "Build",
+            "rewardKind": "Art",
+            "amount": "Betrag",
+            "rewardDetail": "Detail"
+          },
+          "filters": {
+            "debugName": "Debug-Name",
+            "named": "Benannt",
+            "unnamed": "Nie benannt",
+            "namedFilter": "Benennung",
+            "currentBuild": "Nur aktueller Build",
+            "anyBuild": "Beliebiger Build",
+            "build": "Build"
+          }
         },
         "dashboard": {
           "quickStats": {

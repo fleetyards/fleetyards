@@ -8,6 +8,9 @@
           "stats": "Werte",
           "sources": "Quellen"
         },
+        "missions": {
+          "index": "Missionen"
+        },
         "dashboard": {
           "title": "Dashboard",
           "visitsPerDay": "Besuche pro Tag",
