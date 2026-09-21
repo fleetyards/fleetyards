@@ -24,7 +24,8 @@ module ScData
           ::ScData::Loader::ModelModulesLoader,
           ::ScData::Loader::CommoditiesLoader,
           ::ScData::Loader::EquipmentLoader,
-          ::ScData::Loader::BlueprintsLoader
+          ::ScData::Loader::BlueprintsLoader,
+          ::ScData::Loader::GameMissionsLoader
         ].to_h do |loader_class|
           loader = loader_class.new
 

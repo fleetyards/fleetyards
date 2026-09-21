@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_21_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_21_210200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1090,6 +1090,94 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_21_100000) do
     t.datetime "updated_at", null: false
     t.index ["effective_from"], name: "index_funding_goals_on_effective_from"
     t.index ["ended_at"], name: "index_funding_goals_on_ended_at"
+  end
+
+  create_table "game_mission_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "alignment"
+    t.text "blueprint_pool_refs", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.string "debug_name"
+    t.text "description"
+    t.integer "difficulty_game_knowledge"
+    t.integer "difficulty_mechanical_skill"
+    t.integer "difficulty_mental_load"
+    t.string "difficulty_profile"
+    t.integer "difficulty_risk_of_loss"
+    t.string "environment", null: false
+    t.uuid "game_mission_id", null: false
+    t.string "generator_key"
+    t.string "kind"
+    t.string "max_standing"
+    t.string "min_standing"
+    t.string "name"
+    t.string "org_key"
+    t.boolean "org_lawful"
+    t.string "org_name"
+    t.string "org_ref"
+    t.boolean "released", default: true, null: false
+    t.text "reward_kinds", default: [], null: false, array: true
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.index ["blueprint_pool_refs"], name: "index_game_mission_builds_on_blueprint_pool_refs", using: :gin
+    t.index ["environment", "name"], name: "index_game_mission_builds_on_environment_and_name"
+    t.index ["environment", "org_name"], name: "index_game_mission_builds_on_environment_and_org_name"
+    t.index ["environment", "version"], name: "index_game_mission_builds_on_environment_and_version"
+    t.index ["game_mission_id", "environment", "version"], name: "index_game_mission_builds_on_mission_and_build", unique: true
+    t.index ["game_mission_id"], name: "index_game_mission_builds_on_game_mission_id"
+    t.index ["reward_kinds"], name: "index_game_mission_builds_on_reward_kinds", using: :gin
+  end
+
+  create_table "game_mission_rewards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amount"
+    t.string "badge"
+    t.datetime "created_at", null: false
+    t.string "currency"
+    t.string "entity_class"
+    t.uuid "game_mission_build_id", null: false
+    t.string "kind", null: false
+    t.integer "max"
+    t.string "org_key"
+    t.string "org_name"
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "weight", precision: 8, scale: 3
+    t.index ["game_mission_build_id", "position"], name: "index_game_mission_rewards_on_build_and_position", unique: true
+    t.index ["game_mission_build_id"], name: "index_game_mission_rewards_on_build"
+    t.index ["kind"], name: "index_game_mission_rewards_on_kind"
+  end
+
+  create_table "game_missions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "alignment"
+    t.text "blueprint_pool_refs", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.string "debug_name"
+    t.text "description"
+    t.integer "difficulty_game_knowledge"
+    t.integer "difficulty_mechanical_skill"
+    t.integer "difficulty_mental_load"
+    t.string "difficulty_profile"
+    t.integer "difficulty_risk_of_loss"
+    t.string "generator_key"
+    t.string "kind"
+    t.string "max_standing"
+    t.string "min_standing"
+    t.string "name"
+    t.string "org_key"
+    t.boolean "org_lawful"
+    t.string "org_name"
+    t.string "org_ref"
+    t.boolean "released", default: true, null: false
+    t.text "reward_kinds", default: [], null: false, array: true
+    t.string "sc_key", null: false
+    t.string "sc_ref", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.string "version"
+    t.index ["org_name"], name: "index_game_missions_on_org_name"
+    t.index ["sc_key"], name: "index_game_missions_on_sc_key", unique: true
+    t.index ["sc_ref"], name: "index_game_missions_on_sc_ref", unique: true
+    t.index ["slug"], name: "index_game_missions_on_slug", unique: true
+    t.index ["version"], name: "index_game_missions_on_version"
   end
 
   create_table "github_issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2347,6 +2435,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_21_100000) do
   add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
+  add_foreign_key "game_mission_builds", "game_missions", on_delete: :cascade
+  add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"

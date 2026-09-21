@@ -133,7 +133,8 @@ module ScData
     # Naming a model no earlier step touches raised `uninitialized constant`
     # before the check could read a single file.
     def self.builds
-      [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild, BlueprintBuild]
+      [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild, BlueprintBuild,
+        GameMissionBuild]
     end
 
     attr_reader :version, :environment
