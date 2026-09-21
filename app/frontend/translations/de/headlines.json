@@ -250,6 +250,12 @@
           "worldmap": "Mitglieder-Weltkarte",
           "starmap": "Mitglieder-Sternenkarte"
         },
+        "squadrons": {
+          "index": "Staffeln",
+          "create": "Staffel anlegen",
+          "edit": "Staffel bearbeiten",
+          "addMembers": "Mitglieder hinzufügen"
+        },
         "stats": "Statistiken",
         "preview": {
           "h1": "Flottenvorschau",
@@ -260,6 +266,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Flottenrollen",
+          "squadrons": "Staffeln der Flotte",
           "notifications": "Benachrichtigungseinstellungen",
           "inAppNotifications": "In-App-Benachrichtigungen",
           "discord": "Discord",

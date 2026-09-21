@@ -479,11 +479,34 @@
             "invites": "Invitaciones"
           }
         },
+        "squadrons": {
+          "index": "Escuadrones",
+          "name": "Nombre",
+          "description": "Descripción",
+          "color": "Color",
+          "logo": "Logotipo",
+          "memberCount": "%{count} miembros",
+          "ships": "Naves",
+          "searchMembers": "Buscar miembros",
+          "availableMembers": "miembros disponibles",
+          "tabs": {
+            "members": "Miembros",
+            "ships": "Naves",
+            "stats": "Estadísticas"
+          },
+          "stats": {
+            "members": "Miembros",
+            "ships": "Naves",
+            "uniqueModels": "Modelos únicos",
+            "totalMoney": "Valor total"
+          }
+        },
         "roles": {
           "permanent": "Permanente",
           "privilegeGroups": {
             "fleet": "Flota",
             "memberships": "Miembros",
+            "squadrons": "Escuadrones",
             "invites": "Invitaciones",
             "vehicles": "Vehículos",
             "blueprints": "Planos",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "Actualizar miembros",
             "fleet:memberships:delete": "Eliminar miembros",
             "fleet:memberships:manage": "Administrar miembros",
+            "fleet:squadrons:read": "Ver escuadrones",
+            "fleet:squadrons:create": "Crear escuadrones",
+            "fleet:squadrons:update": "Editar escuadrones",
+            "fleet:squadrons:delete": "Eliminar escuadrones",
+            "fleet:squadrons:members:manage": "Gestionar miembros del escuadrón",
+            "fleet:squadrons:manage": "Gestionar escuadrones",
             "fleet:invites:read": "Ver invitaciones",
             "fleet:invites:create": "Crear invitaciones",
             "fleet:invites:update": "Actualizar invitaciones",
@@ -1702,6 +1731,7 @@
           "member": "Miembro",
           "members": {
             "role": "Rol",
+            "squadron": "Escuadrón",
             "state": "Estado",
             "acceptedAtGt": "Unido desde",
             "acceptedAtLt": "Unido hasta",

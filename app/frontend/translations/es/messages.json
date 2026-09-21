@@ -311,6 +311,27 @@
             "failure": "No se pudo guardar el apodo."
           }
         },
+        "squadrons": {
+          "create": {
+            "success": "Escuadrón creado.",
+            "failure": "No se ha podido crear el escuadrón."
+          },
+          "update": {
+            "success": "Escuadrón guardado.",
+            "failure": "No se ha podido guardar el escuadrón."
+          },
+          "destroy": {
+            "confirm": "¿Disolver el escuadrón «%{name}»? Sus miembros seguirán en la flota.",
+            "success": "Escuadrón disuelto.",
+            "failure": "No se ha podido disolver el escuadrón."
+          },
+          "members": {
+            "add": {
+              "success": "%{count} miembros añadidos.",
+              "failure": "No se han podido añadir %{count} miembros."
+            }
+          }
+        },
         "calendarSubscription": {
           "enable": {
             "success": "Suscripción al calendario activada.",

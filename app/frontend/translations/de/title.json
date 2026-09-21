@@ -57,6 +57,9 @@
           "worldmap": "%{fleet} Mitglieder-Weltkarte",
           "starmap": "%{fleet} Mitglieder-Sternenkarte"
         },
+        "squadrons": {
+          "index": "%{fleet} Staffeln"
+        },
         "stats": "%{fleet} Statistiken",
         "blueprints": "%{fleet} Baupläne",
         "logistics": {
@@ -96,6 +99,7 @@
           "fleet": "%{fleet} Einstellungen",
           "membership": "%{fleet} Mitgliedschaft",
           "roles": "%{fleet} Rollen",
+          "squadrons": "%{fleet} Staffeln",
           "notifications": "%{fleet} Benachrichtigungseinstellungen",
           "discord": "%{fleet} Discord-Einstellungen",
           "calendar": "%{fleet} Kalendereinstellungen",

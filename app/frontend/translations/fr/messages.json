@@ -311,6 +311,27 @@
             "failure": "Le surnom n'a pas pu être enregistré."
           }
         },
+        "squadrons": {
+          "create": {
+            "success": "Escadron créé.",
+            "failure": "L'escadron n'a pas pu être créé."
+          },
+          "update": {
+            "success": "Escadron enregistré.",
+            "failure": "L'escadron n'a pas pu être enregistré."
+          },
+          "destroy": {
+            "confirm": "Dissoudre l'escadron « %{name} » ? Ses membres restent dans la flotte.",
+            "success": "Escadron dissous.",
+            "failure": "L'escadron n'a pas pu être dissous."
+          },
+          "members": {
+            "add": {
+              "success": "%{count} membres ajoutés.",
+              "failure": "%{count} membres n'ont pas pu être ajoutés."
+            }
+          }
+        },
         "calendarSubscription": {
           "enable": {
             "success": "Abonnement au calendrier activé.",

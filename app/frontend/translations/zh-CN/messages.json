@@ -311,6 +311,27 @@
             "failure": "无法保存昵称。"
           }
         },
+        "squadrons": {
+          "create": {
+            "success": "中队已创建。",
+            "failure": "无法创建中队。"
+          },
+          "update": {
+            "success": "中队已保存。",
+            "failure": "无法保存中队。"
+          },
+          "destroy": {
+            "confirm": "确定要解散中队“%{name}”吗？其成员仍留在舰队中。",
+            "success": "中队已解散。",
+            "failure": "无法解散中队。"
+          },
+          "members": {
+            "add": {
+              "success": "已添加 %{count} 名成员。",
+              "failure": "有 %{count} 名成员未能添加。"
+            }
+          }
+        },
         "calendarSubscription": {
           "enable": {
             "success": "日历订阅已启用。",

@@ -49,6 +49,7 @@
           "worldmap": "Worldmap",
           "starmap": "Starmap"
         },
+        "squadrons": "Squadrons",
         "stats": "Stats",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +78,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles",
+          "squadrons": "Squadrons",
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendar",

@@ -49,6 +49,7 @@
           "worldmap": "世界地圖",
           "starmap": "星圖"
         },
+        "squadrons": "中隊",
         "stats": "統計",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +78,7 @@
           "fleet": "艦隊設定",
           "membership": "成員設定",
           "roles": "角色",
+          "squadrons": "中隊",
           "notifications": "通知",
           "discord": "Discord",
           "calendar": "行事曆",

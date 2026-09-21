@@ -479,11 +479,34 @@
             "invites": "Inviti"
           }
         },
+        "squadrons": {
+          "index": "Squadroni",
+          "name": "Nome",
+          "description": "Descrizione",
+          "color": "Colore",
+          "logo": "Logo",
+          "memberCount": "%{count} membri",
+          "ships": "Navi",
+          "searchMembers": "Cerca membri",
+          "availableMembers": "membri disponibili",
+          "tabs": {
+            "members": "Membri",
+            "ships": "Navi",
+            "stats": "Statistiche"
+          },
+          "stats": {
+            "members": "Membri",
+            "ships": "Navi",
+            "uniqueModels": "Modelli unici",
+            "totalMoney": "Valore totale"
+          }
+        },
         "roles": {
           "permanent": "Permanente",
           "privilegeGroups": {
             "fleet": "Flotta",
             "memberships": "Membri",
+            "squadrons": "Squadroni",
             "invites": "Inviti",
             "vehicles": "Veicoli",
             "blueprints": "Progetti",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "Aggiorna membri",
             "fleet:memberships:delete": "Rimuovi membri",
             "fleet:memberships:manage": "Gestisci membri",
+            "fleet:squadrons:read": "Vedere gli squadroni",
+            "fleet:squadrons:create": "Creare squadroni",
+            "fleet:squadrons:update": "Modificare squadroni",
+            "fleet:squadrons:delete": "Eliminare squadroni",
+            "fleet:squadrons:members:manage": "Gestire i membri dello squadrone",
+            "fleet:squadrons:manage": "Gestire gli squadroni",
             "fleet:invites:read": "Visualizza inviti",
             "fleet:invites:create": "Crea inviti",
             "fleet:invites:update": "Aggiorna inviti",
@@ -1702,6 +1731,7 @@
           "member": "Membro",
           "members": {
             "role": "Ruolo",
+            "squadron": "Squadrone",
             "state": "Stato",
             "acceptedAtGt": "Iscritto dal",
             "acceptedAtLt": "Iscritto fino al",

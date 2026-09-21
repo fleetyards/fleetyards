@@ -311,6 +311,27 @@
             "failure": "Spitzname konnte nicht gespeichert werden."
           }
         },
+        "squadrons": {
+          "create": {
+            "success": "Staffel angelegt.",
+            "failure": "Staffel konnte nicht angelegt werden."
+          },
+          "update": {
+            "success": "Staffel gespeichert.",
+            "failure": "Staffel konnte nicht gespeichert werden."
+          },
+          "destroy": {
+            "confirm": "Soll die Staffel \"%{name}\" wirklich aufgelöst werden? Die Mitglieder bleiben in der Flotte.",
+            "success": "Staffel aufgelöst.",
+            "failure": "Staffel konnte nicht aufgelöst werden."
+          },
+          "members": {
+            "add": {
+              "success": "%{count} Mitglieder hinzugefügt.",
+              "failure": "%{count} Mitglieder konnten nicht hinzugefügt werden."
+            }
+          }
+        },
         "calendarSubscription": {
           "enable": {
             "success": "Kalender-Abo aktiviert.",

@@ -250,6 +250,12 @@
           "worldmap": "Mappa mondiale dei membri",
           "starmap": "Mappa stellare dei membri"
         },
+        "squadrons": {
+          "index": "Squadroni",
+          "create": "Crea squadrone",
+          "edit": "Modifica squadrone",
+          "addMembers": "Aggiungi membri"
+        },
         "stats": "Statistiche",
         "preview": {
           "h1": "Anteprima della Flotta",
@@ -260,6 +266,7 @@
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
           "roles": "Ruoli flotta",
+          "squadrons": "Squadroni della flotta",
           "notifications": "Impostazioni Notifiche",
           "inAppNotifications": "Notifiche in-app",
           "discord": "Discord",

@@ -479,11 +479,34 @@
             "invites": "邀请"
           }
         },
+        "squadrons": {
+          "index": "中队",
+          "name": "名称",
+          "description": "描述",
+          "color": "颜色",
+          "logo": "徽标",
+          "memberCount": "%{count} 名成员",
+          "ships": "舰船",
+          "searchMembers": "搜索成员",
+          "availableMembers": "可添加的成员",
+          "tabs": {
+            "members": "成员",
+            "ships": "舰船",
+            "stats": "统计"
+          },
+          "stats": {
+            "members": "成员",
+            "ships": "舰船",
+            "uniqueModels": "不同型号",
+            "totalMoney": "总价值"
+          }
+        },
         "roles": {
           "permanent": "永久",
           "privilegeGroups": {
             "fleet": "舰队",
             "memberships": "成员",
+            "squadrons": "中队",
             "invites": "邀请",
             "vehicles": "载具",
             "blueprints": "蓝图",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "更新成员",
             "fleet:memberships:delete": "移除成员",
             "fleet:memberships:manage": "管理成员",
+            "fleet:squadrons:read": "查看中队",
+            "fleet:squadrons:create": "创建中队",
+            "fleet:squadrons:update": "编辑中队",
+            "fleet:squadrons:delete": "删除中队",
+            "fleet:squadrons:members:manage": "管理中队成员",
+            "fleet:squadrons:manage": "管理中队",
             "fleet:invites:read": "查看邀请",
             "fleet:invites:create": "创建邀请",
             "fleet:invites:update": "更新邀请",
@@ -1702,6 +1731,7 @@
           "member": "成员",
           "members": {
             "role": "角色",
+            "squadron": "中队",
             "state": "状态",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",

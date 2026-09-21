@@ -207,6 +207,11 @@
         "leave": "Leave %{fleet}",
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
+        "squadrons": {
+          "create": "创建中队",
+          "addMember": "添加成员",
+          "addMembers": "添加 %{count} 名"
+        },
         "manageInvites": "邀请",
         "worldmap": "世界地图",
         "starmap": "星图",

@@ -479,11 +479,34 @@
             "invites": "Einladungen"
           }
         },
+        "squadrons": {
+          "index": "Staffeln",
+          "name": "Name",
+          "description": "Beschreibung",
+          "color": "Farbe",
+          "logo": "Logo",
+          "memberCount": "%{count} Mitglieder",
+          "ships": "Schiffe",
+          "searchMembers": "Mitglieder suchen",
+          "availableMembers": "verfügbare Mitglieder",
+          "tabs": {
+            "members": "Mitglieder",
+            "ships": "Schiffe",
+            "stats": "Statistiken"
+          },
+          "stats": {
+            "members": "Mitglieder",
+            "ships": "Schiffe",
+            "uniqueModels": "Verschiedene Modelle",
+            "totalMoney": "Gesamtwert"
+          }
+        },
         "roles": {
           "permanent": "Permanent",
           "privilegeGroups": {
             "fleet": "Flotte",
             "memberships": "Mitglieder",
+            "squadrons": "Staffeln",
             "invites": "Einladungen",
             "vehicles": "Fahrzeuge",
             "blueprints": "Baupläne",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "Mitglieder bearbeiten",
             "fleet:memberships:delete": "Mitglieder entfernen",
             "fleet:memberships:manage": "Mitglieder verwalten",
+            "fleet:squadrons:read": "Staffeln ansehen",
+            "fleet:squadrons:create": "Staffeln anlegen",
+            "fleet:squadrons:update": "Staffeln bearbeiten",
+            "fleet:squadrons:delete": "Staffeln löschen",
+            "fleet:squadrons:members:manage": "Staffelmitglieder verwalten",
+            "fleet:squadrons:manage": "Staffeln verwalten",
             "fleet:invites:read": "Einladungen ansehen",
             "fleet:invites:create": "Einladungen erstellen",
             "fleet:invites:update": "Einladungen bearbeiten",
@@ -1702,6 +1731,7 @@
           "member": "Mitglied",
           "members": {
             "role": "Rolle",
+            "squadron": "Staffel",
             "state": "Status",
             "acceptedAtGt": "Beigetreten ab",
             "acceptedAtLt": "Beigetreten bis",

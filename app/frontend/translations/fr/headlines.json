@@ -250,6 +250,12 @@
           "worldmap": "Carte du monde des membres",
           "starmap": "Carte stellaire des membres"
         },
+        "squadrons": {
+          "index": "Escadrons",
+          "create": "Créer un escadron",
+          "edit": "Modifier l'escadron",
+          "addMembers": "Ajouter des membres"
+        },
         "stats": "Statistiques",
         "preview": {
           "h1": "Aperçu de la Flotte",
@@ -260,6 +266,7 @@
           "fleet": "Paramètres de la Flotte",
           "membership": "Paramètres des membres",
           "roles": "Rôles de flotte",
+          "squadrons": "Escadrons de la flotte",
           "notifications": "Paramètres de notification",
           "inAppNotifications": "Notifications dans l'application",
           "discord": "Discord",

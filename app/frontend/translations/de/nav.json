@@ -49,6 +49,7 @@
           "worldmap": "Weltkarte",
           "starmap": "Sternenkarte"
         },
+        "squadrons": "Staffeln",
         "stats": "Statistiken",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +78,7 @@
           "fleet": "Flotteneinstellungen",
           "membership": "Mitgliedschaftseinstellungen",
           "roles": "Rollen",
+          "squadrons": "Staffeln",
           "notifications": "Benachrichtigungen",
           "discord": "Discord",
           "calendar": "Kalender",

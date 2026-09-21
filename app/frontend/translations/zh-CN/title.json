@@ -57,6 +57,9 @@
           "worldmap": "%{fleet} 成员世界地图",
           "starmap": "%{fleet} 成员星图"
         },
+        "squadrons": {
+          "index": "%{fleet} 中队"
+        },
         "stats": "%{fleet} 统计",
         "blueprints": "%{fleet} 的蓝图",
         "logistics": {
@@ -96,6 +99,7 @@
           "fleet": "%{fleet} 设置",
           "membership": "%{fleet} 成员资格",
           "roles": "%{fleet} 角色",
+          "squadrons": "%{fleet} 中队",
           "notifications": "%{fleet} 通知设置",
           "discord": "%{fleet} Discord 设置",
           "calendar": "%{fleet} 日历设置",

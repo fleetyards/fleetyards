@@ -57,6 +57,9 @@
           "worldmap": "Mappa mondiale dei membri di %{fleet}",
           "starmap": "Mappa stellare dei membri di %{fleet}"
         },
+        "squadrons": {
+          "index": "Squadroni di %{fleet}"
+        },
         "stats": "Statistiche di %{fleet}",
         "blueprints": "Progetti di %{fleet}",
         "logistics": {
@@ -96,6 +99,7 @@
           "fleet": "Impostazioni di %{fleet}",
           "membership": "Appartenenza a %{fleet}",
           "roles": "Ruoli di %{fleet}",
+          "squadrons": "Squadroni di %{fleet}",
           "notifications": "Impostazioni Notifiche di %{fleet}",
           "discord": "Impostazioni Discord di %{fleet}",
           "calendar": "Impostazioni Calendario di %{fleet}",

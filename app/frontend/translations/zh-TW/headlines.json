@@ -250,6 +250,12 @@
           "worldmap": "成員世界地圖",
           "starmap": "成員星圖"
         },
+        "squadrons": {
+          "index": "中隊",
+          "create": "建立中隊",
+          "edit": "編輯中隊",
+          "addMembers": "新增成員"
+        },
         "stats": "統計",
         "preview": {
           "h1": "艦隊預覽",
@@ -260,6 +266,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "艦隊角色",
+          "squadrons": "艦隊中隊",
           "notifications": "通知設定",
           "inAppNotifications": "應用內通知",
           "discord": "Discord",

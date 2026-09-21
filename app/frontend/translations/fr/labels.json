@@ -479,11 +479,34 @@
             "invites": "Invitations"
           }
         },
+        "squadrons": {
+          "index": "Escadrons",
+          "name": "Nom",
+          "description": "Description",
+          "color": "Couleur",
+          "logo": "Logo",
+          "memberCount": "%{count} membres",
+          "ships": "Vaisseaux",
+          "searchMembers": "Rechercher des membres",
+          "availableMembers": "membres disponibles",
+          "tabs": {
+            "members": "Membres",
+            "ships": "Vaisseaux",
+            "stats": "Statistiques"
+          },
+          "stats": {
+            "members": "Membres",
+            "ships": "Vaisseaux",
+            "uniqueModels": "Modèles uniques",
+            "totalMoney": "Valeur totale"
+          }
+        },
         "roles": {
           "permanent": "Permanent",
           "privilegeGroups": {
             "fleet": "Flotte",
             "memberships": "Membres",
+            "squadrons": "Escadrons",
             "invites": "Invitations",
             "vehicles": "Véhicules",
             "blueprints": "Plans",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "Mettre à jour les membres",
             "fleet:memberships:delete": "Retirer des membres",
             "fleet:memberships:manage": "Gérer les membres",
+            "fleet:squadrons:read": "Voir les escadrons",
+            "fleet:squadrons:create": "Créer des escadrons",
+            "fleet:squadrons:update": "Modifier les escadrons",
+            "fleet:squadrons:delete": "Supprimer des escadrons",
+            "fleet:squadrons:members:manage": "Gérer les membres d'escadron",
+            "fleet:squadrons:manage": "Gérer les escadrons",
             "fleet:invites:read": "Voir les invitations",
             "fleet:invites:create": "Créer des invitations",
             "fleet:invites:update": "Mettre à jour les invitations",
@@ -1702,6 +1731,7 @@
           "member": "Membre",
           "members": {
             "role": "Rôle",
+            "squadron": "Escadron",
             "state": "Statut",
             "acceptedAtGt": "Rejoint depuis",
             "acceptedAtLt": "Rejoint jusqu'à",

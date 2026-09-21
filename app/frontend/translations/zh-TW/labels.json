@@ -479,11 +479,34 @@
             "invites": "邀請"
           }
         },
+        "squadrons": {
+          "index": "中隊",
+          "name": "名稱",
+          "description": "描述",
+          "color": "顏色",
+          "logo": "標誌",
+          "memberCount": "%{count} 位成員",
+          "ships": "艦船",
+          "searchMembers": "搜尋成員",
+          "availableMembers": "可新增的成員",
+          "tabs": {
+            "members": "成員",
+            "ships": "艦船",
+            "stats": "統計"
+          },
+          "stats": {
+            "members": "成員",
+            "ships": "艦船",
+            "uniqueModels": "不同型號",
+            "totalMoney": "總價值"
+          }
+        },
         "roles": {
           "permanent": "永久",
           "privilegeGroups": {
             "fleet": "艦隊",
             "memberships": "成員",
+            "squadrons": "中隊",
             "invites": "邀請",
             "vehicles": "載具",
             "blueprints": "藍圖",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "更新成員",
             "fleet:memberships:delete": "移除成員",
             "fleet:memberships:manage": "管理成員",
+            "fleet:squadrons:read": "檢視中隊",
+            "fleet:squadrons:create": "建立中隊",
+            "fleet:squadrons:update": "編輯中隊",
+            "fleet:squadrons:delete": "刪除中隊",
+            "fleet:squadrons:members:manage": "管理中隊成員",
+            "fleet:squadrons:manage": "管理中隊",
             "fleet:invites:read": "檢視邀請",
             "fleet:invites:create": "建立邀請",
             "fleet:invites:update": "更新邀請",
@@ -1702,6 +1731,7 @@
           "member": "成員",
           "members": {
             "role": "角色",
+            "squadron": "中隊",
             "state": "狀態",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",

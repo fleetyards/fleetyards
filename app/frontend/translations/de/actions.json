@@ -207,6 +207,11 @@
         "leave": "%{fleet} verlassen",
         "createInviteUrl": "Einladungs-Urls erstellen",
         "inviteMember": "Neues Mitglied einladen",
+        "squadrons": {
+          "create": "Staffel anlegen",
+          "addMember": "Mitglieder hinzufügen",
+          "addMembers": "%{count} hinzufügen"
+        },
         "manageInvites": "Einladungen",
         "worldmap": "Weltkarte",
         "starmap": "Sternenkarte",

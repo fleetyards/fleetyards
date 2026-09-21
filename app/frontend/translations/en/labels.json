@@ -479,11 +479,34 @@
             "invites": "Invites"
           }
         },
+        "squadrons": {
+          "index": "Squadrons",
+          "name": "Name",
+          "description": "Description",
+          "color": "Colour",
+          "logo": "Logo",
+          "memberCount": "%{count} Members",
+          "ships": "Ships",
+          "searchMembers": "Search Members",
+          "availableMembers": "available Members",
+          "tabs": {
+            "members": "Members",
+            "ships": "Ships",
+            "stats": "Stats"
+          },
+          "stats": {
+            "members": "Members",
+            "ships": "Ships",
+            "uniqueModels": "Unique Models",
+            "totalMoney": "Total Value"
+          }
+        },
         "roles": {
           "permanent": "Permanent",
           "privilegeGroups": {
             "fleet": "Fleet",
             "memberships": "Members",
+            "squadrons": "Squadrons",
             "invites": "Invites",
             "vehicles": "Vehicles",
             "blueprints": "Blueprints",
@@ -507,6 +530,12 @@
             "fleet:memberships:update": "Update Members",
             "fleet:memberships:delete": "Remove Members",
             "fleet:memberships:manage": "Manage Members",
+            "fleet:squadrons:read": "View Squadrons",
+            "fleet:squadrons:create": "Create Squadrons",
+            "fleet:squadrons:update": "Update Squadrons",
+            "fleet:squadrons:delete": "Delete Squadrons",
+            "fleet:squadrons:members:manage": "Manage Squadron Members",
+            "fleet:squadrons:manage": "Manage Squadrons",
             "fleet:invites:read": "View Invites",
             "fleet:invites:create": "Create Invites",
             "fleet:invites:update": "Update Invites",
@@ -1702,6 +1731,7 @@
           "member": "Member",
           "members": {
             "role": "Role",
+            "squadron": "Squadron",
             "state": "Status",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",
