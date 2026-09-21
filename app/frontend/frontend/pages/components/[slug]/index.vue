@@ -8,7 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import Availability from "@/frontend/components/Components/Availability/index.vue";
+import Availability from "@/frontend/components/Availability/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -268,7 +268,8 @@ watch(
         <!-- Above the recipe card, because when nothing sells a component the
              answer it gives is "made from the recipe below". -->
         <Availability
-          :component="component"
+          :availability="component.availability"
+          :retired="component.retired"
           :craftable="recipes.length > 0"
           :loading="recipesPending"
         />
