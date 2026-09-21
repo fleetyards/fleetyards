@@ -56,8 +56,9 @@ const { data: members, isLoading } = useFleetMembers(
 );
 
 // Filtered here rather than in the query: no endpoint answers "not in this
-// squadron", and a fleet's roster is small enough that asking for the page and
-// dropping the ones already in is cheaper than adding one.
+// squadron". That makes the list the first fifty accepted members minus the
+// ones already in, so on a fleet larger than that the search box is how the
+// rest are reached -- it re-asks the server rather than narrowing what is held.
 const candidates = computed<FleetMember[]>(() =>
   (members.value?.items ?? []).filter(
     (member) =>
