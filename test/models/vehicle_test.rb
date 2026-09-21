@@ -462,6 +462,26 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     assert_equal 2, Inventory.where(holder: @user).pluck(:name).uniq.size
   end
 
+  test "records a ship the pledge store never sells as bought in game" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, ingame_only: true))
+
+    assert vehicle.bought_via_ingame?
+  end
+
+  test "refuses to move such an entry back to the pledge store" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, ingame_only: true))
+
+    vehicle.update!(bought_via: :pledge_store)
+
+    assert vehicle.reload.bought_via_ingame?
+  end
+
+  test "leaves a pledge ship on the way it says it was bought" do
+    vehicle = create(:vehicle, user: @user, model: create(:model), bought_via: :pledge_store)
+
+    assert vehicle.bought_via_pledge_store?
+  end
+
   private def statements_for
     statements = []
     subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
