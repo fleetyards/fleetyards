@@ -85,13 +85,13 @@ class FleetMembership < ApplicationRecord
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
-      "blueprints_filter",
+      "blueprints_filter", "squadron_slug",
       "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["fleet", "fleet_role", "user"]
+    ["fleet", "fleet_role", "user", "fleet_squadrons"]
   end
 
   validate_enum_attributes :ships_filter, :blueprints_filter
@@ -112,6 +112,7 @@ class FleetMembership < ApplicationRecord
   ransack_alias :last_active_at, :user_last_active_at
   ransack_alias :name, :user_username
   ransack_alias :role, :fleet_role_name
+  ransack_alias :squadron_slug, :fleet_squadrons_slug
   ransack_alias :state, :aasm_state
 
   before_validation :set_default_ships_filter
@@ -159,6 +160,11 @@ class FleetMembership < ApplicationRecord
     create_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:create"],
     update_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"],
     destroy_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:destroy"],
+    read_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:read"],
+    create_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:create"],
+    update_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:update"],
+    destroy_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:delete"],
+    manage_squadron_members: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:members:manage"],
     read_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:read"],
     create_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:create"],
     destroy_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:delete"],

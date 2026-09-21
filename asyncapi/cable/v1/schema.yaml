@@ -1412,6 +1412,10 @@ components:
           type: string
         guilded:
           type: string
+        squadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         shipsFilter:
           "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
         hangarGroupId:
@@ -1508,6 +1512,16 @@ components:
           type: boolean
         destroyMembers:
           type: boolean
+        readSquadrons:
+          type: boolean
+        createSquadrons:
+          type: boolean
+        updateSquadrons:
+          type: boolean
+        destroySquadrons:
+          type: boolean
+        manageSquadronMembers:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -1548,6 +1562,11 @@ components:
       - createMembers
       - updateMembers
       - destroyMembers
+      - readSquadrons
+      - createSquadrons
+      - updateSquadrons
+      - destroySquadrons
+      - manageSquadronMembers
       - readInvites
       - createInvites
       - destroyInvites
@@ -1736,6 +1755,25 @@ components:
       - FLEET_PAYOUTS_DELETE
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
+    FleetSquadronRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
     FuelTank:
       type: object
       properties:

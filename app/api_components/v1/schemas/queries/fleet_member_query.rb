@@ -14,6 +14,7 @@ module V1
             nameCont: {type: :string, deprecated: true, description: "Use usernameCont instead"},
             roleIn: {type: :array, items: {type: :string}},
             stateIn: {type: :array, items: {type: :string}},
+            squadronSlugIn: {type: :array, items: {type: :string}},
             acceptedAtGteq: {type: :string, format: :date},
             acceptedAtLteq: {type: :string, format: :date},
             invitedAtGteq: {type: :string, format: :date},

@@ -33,6 +33,14 @@ json.discord member.user.discord
 json.youtube member.user.youtube
 json.twitch member.user.twitch
 json.guilded member.user.guilded
+json.squadrons do
+  json.array! member.fleet_squadrons.order("name ASC") do |squadron|
+    json.id squadron.id
+    json.name squadron.name
+    json.slug squadron.slug
+    json.color squadron.color
+  end
+end
 json.ships_filter member.ships_filter
 json.hangar_group_id member.hangar_group_id
 json.blueprints_filter member.blueprints_filter

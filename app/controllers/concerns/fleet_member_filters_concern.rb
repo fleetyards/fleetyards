@@ -8,7 +8,7 @@ module FleetMemberFiltersConcern
       :invited_at_gteq, :invited_at_lteq,
       :requested_at_gteq, :requested_at_lteq,
       :declined_at_gteq, :declined_at_lteq,
-      role_in: [], state_in: [], s: [], sorts: []
+      role_in: [], state_in: [], squadron_slug_in: [], s: [], sorts: []
     ]).fetch(:q, {})
   end
 end

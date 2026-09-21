@@ -22,7 +22,7 @@
 #
 class FleetSquadronMembership < ApplicationRecord
   belongs_to :fleet_squadron, touch: true
-  belongs_to :fleet_membership
+  belongs_to :fleet_membership, touch: true
 
   validates :fleet_membership_id, uniqueness: {scope: :fleet_squadron_id}
 

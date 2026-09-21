@@ -21423,6 +21423,10 @@ components:
           type: string
         guilded:
           type: string
+        squadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         shipsFilter:
           "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
         hangarGroupId:
@@ -21524,6 +21528,10 @@ components:
           items:
             type: string
         stateIn:
+          type: array
+          items:
+            type: string
+        squadronSlugIn:
           type: array
           items:
             type: string
@@ -21641,6 +21649,16 @@ components:
           type: boolean
         destroyMembers:
           type: boolean
+        readSquadrons:
+          type: boolean
+        createSquadrons:
+          type: boolean
+        updateSquadrons:
+          type: boolean
+        destroySquadrons:
+          type: boolean
+        manageSquadronMembers:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -21681,6 +21699,11 @@ components:
       - createMembers
       - updateMembers
       - destroyMembers
+      - readSquadrons
+      - createSquadrons
+      - updateSquadrons
+      - destroySquadrons
+      - manageSquadronMembers
       - readInvites
       - createInvites
       - destroyInvites
@@ -22193,6 +22216,26 @@ components:
       additionalProperties: false
       example: {}
       title: FleetSquadronQuery
+    FleetSquadronRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: FleetSquadronRef
     FleetSquadronSortEnum:
       type: string
       enum:
