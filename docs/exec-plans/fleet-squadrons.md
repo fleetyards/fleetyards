@@ -187,20 +187,67 @@ When a squadron is deleted, its memberships are destroyed but the underlying fle
 
 Public fleets expose squadron list and squadron vehicle stats. Squadron member identities are not exposed publicly, consistent with existing public fleet behavior where member counts are shown but usernames are not.
 
+### D8 — Behind a `fleet_squadrons` flag
+
+Every substantial fleet feature on the site is gated — `fleet_allies`,
+`fleet_contracts`, `fleet_logistics`, `fleet_mission_builder`, `fleet_tours` —
+and this is one. The flag is declared in `config/feature_flags.yml`; the REST
+endpoints check it against the fleet actor, and the public ones answer 404
+rather than 403 so a flagged-off fleet gives nothing away.
+
+Not in the original plan; added because 5 of 5 comparable features do it.
+
+### D9 — Privileges seed the way the other resources do
+
+The plan gave Admin `fleet:squadrons:manage` outright. The house pattern seeds
+`admin: []` and lets `fleet:manage` — which the Admin role already holds — stand
+in, because the roles page renders a privilege reached that way as *implied*
+rather than as held. Writing it explicitly would say something different about
+the role. The effective permissions are exactly what the plan asked for:
+
+- **Admin** — everything, through `fleet:manage`
+- **Officer** — `fleet:squadrons:read`, `fleet:squadrons:members:manage`
+- **Member** — `fleet:squadrons:read`
+
+`setup_default_roles!` only runs at fleet creation, so a data migration grants
+the same set to roles that already exist —
+`db/data/20260921120100_grant_squadron_privileges_to_existing_roles.rb`,
+following the mission, contract, payout and blueprint backfills before it.
+
+### D10 — Squadron ships and stats subclass, they do not restate
+
+`FleetSquadronVehiclesController < FleetVehiclesController` and
+`FleetSquadronStatsController < FleetStatsController`, each overriding a
+`vehicle_scope` / `membership_scope` seam. Everything else — the filters, the
+grouped-by-model branch, the pagination, the metric arithmetic and the
+partials — is identical, and Rails resolves the views through the superclass's
+prefix. The same pair exists under `Public::`.
+
+An empty squadron flies nothing: `where(user_id: [])` is what says so, and
+dropping the condition for a blank list would hand back the whole fleet.
+
+### D11 — The member count is not cached, the rest of the squadron is
+
+A member *leaving the fleet* is a discard, which leaves the join row in place
+and touches nothing on the squadron — so a count inside the cached fragment
+would go stale with no way to notice. It is rendered outside the fragment, and
+the roster is preloaded so the list still issues a constant number of queries;
+`ListEndpointQueryCountsTest` holds that.
+
 ---
 
 ## Progress
 
-- [ ] Phase 1 — Database migrations and models
-- [ ] Phase 2 — Privileges and policies
-- [ ] Phase 3 — Routes and controllers
-- [ ] Phase 4 — Jbuilder views and API schema
-- [ ] Phase 5 — RSpec request specs
-- [ ] Phase 6 — Frontend: routes, navigation, pages
-- [ ] Phase 7 — Frontend: components and settings UI
-- [ ] Phase 8 — Frontend: member list integration
-- [ ] Phase 9 — Public fleet squadron views
-- [ ] Phase 10 — Linting and final schema generation
+- [x] Phase 1 — Database migrations and models
+- [x] Phase 2 — Privileges and policies
+- [x] Phase 3 — Routes and controllers
+- [x] Phase 4 — Jbuilder views and API schema
+- [x] Phase 5 — Minitest integration tests
+- [x] Phase 6 — Frontend: routes, navigation, pages
+- [x] Phase 7 — Frontend: components and settings UI
+- [x] Phase 8 — Frontend: member list integration
+- [x] Phase 9 — Public fleet squadron views
+- [x] Phase 10 — Linting and final schema generation
 
 ---
 
@@ -302,18 +349,25 @@ Add `FleetSquadron` to `all_available_privileges` and `preset_privileges`.
 
 ### Routes
 
-**Create** `config/routes/api/fleet_squadrons_routes.rb`
-
-Nested under the existing fleet resource:
+**Modify** `config/routes/api/fleets_routes.rb` — there is no per-resource route
+file; every nested fleet resource lives in this one, inside the existing
+`resources :fleets` block:
 
 ```ruby
-resources :squadrons, param: :slug, controller: "fleet_squadrons" do
-  resources :members, controller: "fleet_squadron_members", only: [:index, :create, :destroy], param: :username
+resources :fleet_squadrons, path: "squadrons", param: :slug, only: %i[index show create update destroy] do
+  resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create destroy]
+
   get "vehicles", to: "fleet_squadron_vehicles#index"
   get "stats/vehicles", to: "fleet_squadron_stats#vehicles"
   get "stats/members", to: "fleet_squadron_stats#members"
 end
 ```
+
+The nested lookup param is `:fleet_squadron_slug`, which is what the member,
+vehicle and stats controllers read.
+
+The public half goes in the `namespace :public` block of the same file, with
+`only: %i[index show]` and no member routes.
 
 ### Controllers
 
@@ -367,26 +421,48 @@ end
 
 Run `./bin/generate-schema` after adding the openapi-ruby specs.
 
-## Phase 5 — RSpec Request Specs
+## Phase 5 — Minitest Integration Tests
 
-**Create** specs in `spec/requests/api/v1/`:
+There is no `spec/` directory: this project is Minitest, and per AGENTS.md API
+endpoints get `openapi-ruby` integration tests in `test/integration/`
+(`include OpenapiRuby::Adapters::Minitest::DSL`) — the same specs
+`bin/generate-schema` reads the OpenAPI document out of. One file per endpoint,
+named `fleets_<resource>_<action>_test.rb` after the files already there.
 
-- `fleet_squadrons/index_spec.rb`
-- `fleet_squadrons/show_spec.rb`
-- `fleet_squadrons/create_spec.rb`
-- `fleet_squadrons/update_spec.rb`
-- `fleet_squadrons/destroy_spec.rb`
-- `fleet_squadron_members/index_spec.rb`
-- `fleet_squadron_members/create_spec.rb`
-- `fleet_squadron_members/destroy_spec.rb`
-- `fleet_squadron_vehicles/index_spec.rb`
-- `fleet_squadron_stats/vehicles_spec.rb`
-- `fleet_squadron_stats/members_spec.rb`
+**Create** in `test/integration/api/v1/`:
+
+- `fleets_squadrons_index_test.rb`
+- `fleets_squadrons_show_test.rb`
+- `fleets_squadrons_create_test.rb`
+- `fleets_squadrons_update_test.rb`
+- `fleets_squadrons_destroy_test.rb`
+- `fleets_squadron_members_index_test.rb`
+- `fleets_squadron_members_create_test.rb`
+- `fleets_squadron_members_destroy_test.rb`
+- `fleets_squadron_vehicles_index_test.rb`
+- `fleets_squadron_stats_vehicles_test.rb`
+- `fleets_squadron_stats_members_test.rb`
+- `fleets_members_squadrons_test.rb` — the badges and the roster filter, which
+  ride on the existing members endpoint and so document no path of their own
+- `public_fleets_squadrons_index_test.rb`, `public_fleets_squadrons_show_test.rb`,
+  `public_fleets_squadron_vehicles_index_test.rb`,
+  `public_fleets_squadron_stats_vehicles_test.rb`,
+  `public_fleets_squadron_stats_members_test.rb`
+
+**Create** model and policy tests:
+
+- `test/models/fleet_squadron_test.rb`
+- `test/models/fleet_squadron_membership_test.rb`
+- `test/policies/fleet_squadron_policy_test.rb` — the relation scope and `show?`
+  answer alike, which nothing else holds together
+
+**Modify** `test/integration/api/v1/list_endpoint_query_counts_test.rb` — the
+squadron list's query count must not grow with the number of squadrons.
 
 **Create** factories:
 
-- `spec/factories/fleet_squadrons.rb`
-- `spec/factories/fleet_squadron_memberships.rb`
+- `test/factories/fleet_squadrons.rb`
+- `test/factories/fleet_squadron_memberships.rb`
 
 ## Phase 6 — Frontend: Routes, Navigation, Pages
 
@@ -525,9 +601,13 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 | `app/controllers/api/v1/fleet_squadron_stats_controller.rb` | Squadron stats |
 | `app/policies/fleet_squadron_policy.rb` | Squadron authorization |
 | `app/policies/fleet_squadron_membership_policy.rb` | Squadron member authorization |
-| `config/routes/api/fleet_squadrons_routes.rb` | API routes |
+| `config/routes/api/fleets_routes.rb` | API routes, public half included |
+| `config/feature_flags.yml` | The `fleet_squadrons` gate |
+| `db/data/…_grant_squadron_privileges_to_existing_roles.rb` | Backfill for roles that already exist |
+| `app/lib/versioned_item.rb` | Makes a squadron's paper-trail history readable |
 | `app/frontend/frontend/pages/fleets/[slug]/squadrons/` | Frontend pages |
-| `app/frontend/frontend/components/Fleets/Squadron*/` | Frontend components |
+| `app/frontend/frontend/components/Fleets/Squadrons/` | Frontend components |
+| `app/frontend/frontend/composables/useFleetNavAccess.ts` | Whether the tab shows |
 
 ## Not in Scope (deferred)
 
@@ -541,3 +621,10 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 ## Discovery Log
 
 - **2026-04-22** Initial exec plan
+- **2026-09-21** Implementation. Two corrections to the plan as written: there
+  is no `spec/` directory (Phase 5 is Minitest in `test/integration/`, which is
+  also what generates the OpenAPI document), and nested fleet routes live in
+  `config/routes/api/fleets_routes.rb` rather than a file per resource. Four
+  decisions the plan had not taken are recorded above as D8–D11: the feature
+  flag, how the privileges seed, subclassing for the ship and stat endpoints,
+  and keeping the member count out of the cached fragment.
