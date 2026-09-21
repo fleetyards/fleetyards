@@ -95,5 +95,22 @@ module Announcements
 
       assert announcement.reload.status_failed?
     end
+
+    # The claim is an `update_all`, so no callback fires for it. Without the
+    # explicit broadcast the admin list only learns the announcement is sending
+    # when the first delivery row happens to be written.
+    test "#perform announces `publishing` before it dispatches anything" do
+      create(:admin_user)
+      announcement = create(:announcement)
+      Announcements::FanOutJob.stubs(:perform_async)
+
+      statuses = []
+      AdminAnnouncementsChannel.stubs(:broadcast_to).with { |_admin, payload| statuses << payload["status"] }
+
+      Announcements::PublishJob.new.perform(announcement.id)
+
+      assert_includes statuses, "publishing"
+      assert_equal "published", statuses.last
+    end
   end
 end

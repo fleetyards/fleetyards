@@ -106,6 +106,11 @@ module Admin
 
           @announcement.reload
 
+          # The claim is an `update_all` too, so the delivery going back to
+          # `pending` reaches the admin who pressed the button in this response
+          # and nobody else without this.
+          @announcement.broadcast_to_admins
+
           render :show
         end
 
