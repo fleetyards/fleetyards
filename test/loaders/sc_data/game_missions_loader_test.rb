@@ -39,12 +39,23 @@ module ScData
 
         assert_empty GameMissionReward.where.not(kind: GameMissionReward::KINDS).pluck(:kind)
 
-        # Reputation is what a contract almost always pays, and currency is what
-        # eight of them pay. The exact figure is asserted because it is the
-        # whole of D3: if this number grows, the export has started stating
-        # payouts and the catalogue can start showing them.
+        # Reputation is what a contract almost always pays, and so, it turns
+        # out, is money: 2360 of the 2536 award currency.
         assert_operator GameMissionReward.of_kind("reputation").count, :>=, 2500
-        assert_equal 8, GameMissionReward.of_kind("currency").count
+        assert_operator GameMissionReward.of_kind("currency").count, :>=, 2300
+
+        # The split is the point. 8 contracts state a figure and the rest leave
+        # it to the game -- and the exact 8 is asserted because it is the whole
+        # of D3: if it grows, the export has started stating payouts and the
+        # catalogue can start showing them.
+        assert_equal 8, GameMissionReward.of_kind("currency").where.not(amount: nil).count
+        assert_operator GameMissionReward.of_kind("currency").where(amount: nil).count, :>=, 2300
+
+        # Said once per mission however often the contract repeats it across
+        # outcomes -- a duplicate would render as a payout stated twice.
+        assert_empty GameMissionBuild.current
+          .joins(:rewards).where(game_mission_rewards: {kind: "currency"})
+          .group("game_mission_builds.id").having("COUNT(*) > 1").pluck(:name)
 
         # A reputation loss is a reward too, and the parser has to keep the
         # sign: 16 of the 58 amounts the export declares are negative.
