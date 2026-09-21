@@ -1995,6 +1995,7 @@
           "notifyUsersInfo": "E-Mail nur bei aktivierter Option.",
           "discordPartsInfo": "Leer: wird automatisch aufgeteilt.",
           "socialPartsInfo": "Leer: ein gekürzter Post. Ab zwei: ein Thread.",
+          "recipientsCount": "%{count} Empfänger",
           "partPosition": "%{position} von %{total}"
         },
         "resourceAccess": {

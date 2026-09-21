@@ -2009,6 +2009,7 @@
           "notifyUsersInfo": "E-mail only if they opted in.",
           "discordPartsInfo": "Empty: split automatically.",
           "socialPartsInfo": "Empty: one post, trimmed. Two or more: a thread.",
+          "recipientsCount": "%{count} recipients",
           "partPosition": "%{position} of %{total}"
         },
         "resourceAccess": {

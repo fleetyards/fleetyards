@@ -1995,6 +1995,7 @@
           "notifyUsersInfo": "仅已开启的人收到邮件。",
           "discordPartsInfo": "留空：自动拆分。",
           "socialPartsInfo": "留空：一条帖子，超长截断。两条以上：话题串。",
+          "recipientsCount": "%{count} 位收件人",
           "partPosition": "第 %{position} / %{total} 条"
         },
         "resourceAccess": {

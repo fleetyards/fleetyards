@@ -9,21 +9,20 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableCol } from "@/shared/components/base/Table/types";
-import AnnouncementActions from "@/admin/components/Announcements/Actions/index.vue";
-import AnnouncementStatusPill from "@/admin/components/Announcements/StatusPill/index.vue";
-import AnnouncementDeliveries from "@/admin/components/Announcements/Deliveries/index.vue";
+import RowList from "@/shared/components/RowList/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
+import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import AnnouncementRow from "@/admin/components/Announcements/Row/index.vue";
 import {
   useAnnouncements,
   getAnnouncementsQueryKey,
-  type Announcement,
   type AnnouncementSortEnum,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAnnouncementFilters } from "@/admin/composables/useAnnouncementFilters";
+import { useAnnouncementSortFields } from "@/admin/composables/useAnnouncementSortFields";
 import { useAnnouncementUpdates } from "@/admin/composables/useAnnouncementUpdates";
 
 const route = useRoute();
@@ -70,34 +69,9 @@ const {
 // the rows on screen move on their own from here on.
 useAnnouncementUpdates();
 
-const { t, l } = useI18n();
+const { t } = useI18n();
 
-const columns: BaseTableCol<Announcement>[] = [
-  {
-    name: "title",
-    label: t("labels.admin.announcements.columns.title"),
-    sortable: true,
-  },
-  {
-    name: "status",
-    label: t("labels.admin.announcements.columns.status"),
-  },
-  {
-    name: "deliveries",
-    label: t("labels.admin.announcements.columns.deliveries"),
-    mobile: false,
-  },
-  {
-    name: "recipients",
-    label: t("labels.admin.announcements.columns.recipients"),
-    mobile: false,
-  },
-  {
-    name: "publishedAt",
-    label: t("labels.admin.announcements.columns.publishedAt"),
-    sortable: true,
-  },
-];
+const sortFields = useAnnouncementSortFields();
 </script>
 
 <template>
@@ -129,54 +103,28 @@ const columns: BaseTableCol<Announcement>[] = [
     name="admin-announcements"
     :records="announcements?.items || []"
     :async-status="asyncStatus"
-    hide-loading
-    hide-empty
     :is-filter-selected="isFilterSelected"
   >
-    <template #default="{ loading, refetching, emptyVisible }">
-      <BaseTable
-        :records="announcements?.items || []"
-        primary-key="id"
-        :columns="columns"
-        :loading="loading || refetching"
-        :empty-visible="emptyVisible"
-        default-sort="createdAt desc"
-      >
-        <template #col-title="{ record }">
-          <router-link
-            v-if="record.publishable"
-            :to="{ name: 'admin-announcement-edit', params: { id: record.id } }"
-          >
-            {{ record.title }}
-          </router-link>
-          <span v-else>{{ record.title }}</span>
-        </template>
-        <template #col-status="{ record }">
-          <AnnouncementStatusPill :status="record.status" />
-        </template>
-        <template #col-deliveries="{ record }">
-          <AnnouncementDeliveries :announcement="record" />
-        </template>
-        <template #col-recipients="{ record }">
-          <span v-if="record.recipientsCount">
-            {{ record.recipientsCount }}
-          </span>
-          <span v-else>—</span>
-        </template>
-        <template #col-publishedAt="{ record }">
-          <span v-if="record.publishedAt">
-            {{ l(record.publishedAt, "datetime.formats.short") }}
-          </span>
-          <span v-else-if="record.publishAt">
-            {{ l(record.publishAt, "datetime.formats.short") }}
-          </span>
-          <span v-else>—</span>
-        </template>
-        <template #actions="{ record }">
-          <AnnouncementActions :announcement="record" />
-        </template>
-      </BaseTable>
+    <template #skeleton="{ count }">
+      <RowsSkeleton :count="count" icon meta trailing />
     </template>
+
+    <template #sort>
+      <SortBar :columns="sortFields" default-sort="createdAt desc" />
+    </template>
+
+    <!-- No `hide-empty`: the table used to draw its own empty row so the column
+         headings survived it, and a row list has no headings to keep. The
+         standard Empty box, and its reset-filters action, is the better answer
+         here -- which is the call the catalogues already made. -->
+    <template #default="{ records }">
+      <RowList :records="records">
+        <template #default="{ record }">
+          <AnnouncementRow :announcement="record" />
+        </template>
+      </RowList>
+    </template>
+
     <template #pagination-top>
       <Paginator
         :query-result-ref="announcements"
