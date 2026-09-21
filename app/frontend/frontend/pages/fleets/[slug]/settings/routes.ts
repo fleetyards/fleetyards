@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -21,6 +22,27 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.settings.fleet",
       needsAuthentication: true,
       access: ["fleet:manage"],
+      customTitle: true,
+    },
+  },
+  {
+    path: "squadrons/",
+    name: "fleet-settings-squadrons",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/squadrons.vue"),
+    meta: {
+      title: "fleets.settings.squadrons",
+      needsAuthentication: true,
+      access: [
+        "fleet:squadrons:create",
+        "fleet:squadrons:update",
+        "fleet:squadrons:delete",
+        "fleet:squadrons:members:manage",
+        "fleet:squadrons:manage",
+        "fleet:manage",
+      ],
+      feature: FeatureFlagName.FLEET_SQUADRONS,
+      featureScope: "fleet",
       customTitle: true,
     },
   },
