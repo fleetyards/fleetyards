@@ -162,8 +162,15 @@ class Announcement < ApplicationRecord
   def broadcast_to_admins
     payload = to_jbuilder_hash
 
+    # Per admin, so one dead socket does not cost everybody behind it the
+    # broadcast -- `find_each` would otherwise unwind on the first raise. The
+    # subscription only resyncs on a reconnect, and a broadcast that failed
+    # server-side is not one, so those admins would sit on a stale row until
+    # something else refetched it. Same shape as NotifyBatchJob#broadcast.
     AdminUser.find_each do |admin_user|
       AdminAnnouncementsChannel.broadcast_to(admin_user, payload)
+    rescue => e
+      Rails.logger.error("Announcement broadcast failed for #{id} to admin #{admin_user.id}: #{e.message}")
     end
   rescue => e
     # A send in flight must not be rolled back because a socket was not there:

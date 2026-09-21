@@ -185,6 +185,20 @@ class AnnouncementTest < ActiveSupport::TestCase
     announcement.update!(title: "Renamed")
   end
 
+  # `find_each` unwinds on the first raise, so an outer rescue alone would cost
+  # every admin behind the failing one their broadcast -- and the subscription
+  # only resyncs on a reconnect, which a server-side failure is not.
+  test "a dead socket does not cost the admins behind it the broadcast" do
+    create(:admin_user)
+    create(:admin_user)
+    announcement = create(:announcement)
+
+    AdminAnnouncementsChannel.expects(:broadcast_to).twice
+      .raises(StandardError, "cable down").then.returns(true)
+
+    announcement.update!(status: :publishing)
+  end
+
   # after_commit, so the write it describes has already landed -- taking the
   # send down with the socket would leave an announcement half dispatched.
   test "a broadcast that raises does not take the write with it" do
