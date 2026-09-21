@@ -477,6 +477,14 @@
         "requiredTags": "Encaja en un puerto con",
         "tags": "Etiquetas"
       },
+      "commodity": {
+        "priceHistory": "Histórico de precios",
+        "identity": "Detalles",
+        "usedIn": "Usada en"
+      },
+      "commodities": {
+        "index": "Mercancías"
+      },
       "components": {
         "index": "Componentes"
       },

@@ -306,10 +306,14 @@
       },
       "notifications": "Notificaciones",
       "scDataSource": "Fuente de datos",
+      "commodities": {
+        "index": "Mercancías"
+      },
       "components": {
         "index": "Componentes"
       },
       "catalogue": {
+        "commodities": "Mercancías",
         "index": "Catálogo",
         "components": "Componentes",
         "blueprints": "Planos"

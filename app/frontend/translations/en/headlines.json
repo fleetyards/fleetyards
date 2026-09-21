@@ -479,6 +479,14 @@
         "requiredTags": "Fits a port offering",
         "tags": "Tags"
       },
+      "commodity": {
+        "priceHistory": "Price History",
+        "identity": "Details",
+        "usedIn": "Used In"
+      },
+      "commodities": {
+        "index": "Commodities"
+      },
       "components": {
         "index": "Components"
       },

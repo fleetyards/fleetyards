@@ -477,6 +477,14 @@
         "requiredTags": "可裝入具備以下標籤的接口",
         "tags": "標籤"
       },
+      "commodity": {
+        "priceHistory": "價格歷史",
+        "identity": "詳情",
+        "usedIn": "用於"
+      },
+      "commodities": {
+        "index": "商品"
+      },
       "components": {
         "index": "部件"
       },

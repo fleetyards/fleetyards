@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as blueprintsRoutes } from "@/frontend/pages/blueprints/routes";
+import { routes as commoditiesRoutes } from "@/frontend/pages/commodities/routes";
 import { routes as componentsRoutes } from "@/frontend/pages/components/routes";
 
 export type CatalogueTenant = {
@@ -23,8 +24,8 @@ export type CatalogueTenant = {
 //
 // A tenant joins the list once its *pages* exist, not once its API does: a tab
 // pointing at a route with no page lands on the app's generic not-found, which
-// is worse than the tab being absent. Commodities (#5026) and equipment (#5027)
-// are the two still to come.
+// is worse than the tab being absent. Equipment (#5027) is the one still to
+// come.
 export const CATALOGUE_TENANTS: CatalogueTenant[] = [
   {
     key: "blueprints",
@@ -41,6 +42,14 @@ export const CATALOGUE_TENANTS: CatalogueTenant[] = [
     detailRoutes: ["component", "component-history"],
     component: () => import("@/frontend/pages/components.vue"),
     children: componentsRoutes,
+  },
+  {
+    key: "commodities",
+    icon: "fa-duotone fa-boxes-stacked",
+    listRoute: "commodities",
+    detailRoutes: ["commodity"],
+    component: () => import("@/frontend/pages/commodities.vue"),
+    children: commoditiesRoutes,
   },
 ];
 

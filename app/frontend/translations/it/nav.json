@@ -306,10 +306,14 @@
       },
       "notifications": "Notifiche",
       "scDataSource": "Fonte dati",
+      "commodities": {
+        "index": "Merci"
+      },
       "components": {
         "index": "Componenti"
       },
       "catalogue": {
+        "commodities": "Merci",
         "index": "Catalogo",
         "components": "Componenti",
         "blueprints": "Progetti"

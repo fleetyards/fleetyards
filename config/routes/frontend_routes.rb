@@ -24,6 +24,13 @@ namespace :frontend, **frontend_options do
   get "components/:slug", to: redirect("/catalogue/components/%{slug}", status: 301)
   get "components", to: redirect("/catalogue/components/", status: 301)
 
+  # Meta tags for a shared link. Unlike components, a commodity can carry an
+  # `og_image`: 63 of the 232 ship a store icon.
+  #
+  # No legacy redirect beside it -- there has never been a public `/commodities`
+  # page for one to come from.
+  get "catalogue/commodities/:slug", to: "base#commodity", as: :commodity
+
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos

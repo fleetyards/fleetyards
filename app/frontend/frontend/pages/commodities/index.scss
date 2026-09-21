@@ -1,0 +1,87 @@
+// Slotted markup lives in the consumer's scope, so the metrics-card content
+// primitives have to be imported here rather than inherited from the card.
+@import "@/shared/components/metricsCard";
+
+.commodity-page {
+  &__masthead {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  // The row's icon at page scale. `CommodityIcon` sizes itself for a row, so
+  // both the image and the glyph box are overridden here.
+  &__icon {
+    width: 52px;
+    height: 52px;
+    flex: none;
+    margin-top: 2px;
+    font-size: 34px;
+  }
+
+  &__title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__name {
+    font-family: "Orbitron", tahoma, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px;
+  }
+
+  &__sub {
+    color: var(--color-muted, #7a8288);
+    font-size: 14px;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 8px;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__description {
+    color: var(--color-text-dim, #959595);
+    max-width: 70ch;
+    margin: 0 0 24px;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+
+    @media (min-width: 992px) {
+      grid-template-columns: minmax(0, 1fr) 340px;
+    }
+  }
+
+  // The narrow column's own stack. Without it the cards are grid children and
+  // the third wraps back under the wide one instead of following the second.
+  &__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+  }
+
+  // A row that is also a link, so it answers to the pointer the way the
+  // material chips on a blueprint row do.
+  &__link-row {
+    transition: color 150ms ease;
+
+    &:hover .metrics-card__row__value,
+    &:focus-visible .metrics-card__row__value {
+      color: var(--color-lifted, #eee);
+    }
+  }
+}
