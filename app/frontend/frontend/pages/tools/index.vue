@@ -27,6 +27,7 @@ import regolithImage from "@/images/tools/regolith.webp";
 import spviewerImage from "@/images/tools/spviewer.webp";
 import citizenIdImage from "@/images/tools/citizen-id.webp";
 import haulerImage from "@/images/tools/hauler.webp";
+import verseintelImage from "@/images/tools/verseintel.webp";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -47,6 +48,7 @@ const toolImages: Record<string, string> = {
   spviewer: spviewerImage,
   citizenId: citizenIdImage,
   hauler: haulerImage,
+  verseintel: verseintelImage,
 };
 
 type ToolEntry = Tool & { key: string; category?: string };
@@ -105,6 +107,12 @@ const tools: Array<ToolEntry> = [
     url: "https://starcitizen.tools/",
     name: "Star Citizen Tools",
     description: t("tools.descriptions.starCitizenTools"),
+  },
+  {
+    key: "verseintel",
+    url: "https://verseintel.org/",
+    name: "VerseIntel",
+    description: t("tools.descriptions.verseintel"),
   },
   {
     key: "shinytracker",
