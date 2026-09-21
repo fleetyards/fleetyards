@@ -2914,6 +2914,7 @@
         }
       },
       "gameMission": {
+        "calculatedInGame": "Set in game",
         "blueprints": "Blueprints",
         "name": "Name",
         "org": "Offered by",

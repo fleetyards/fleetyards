@@ -41,6 +41,10 @@ const difficultyAxes = computed(() => {
   );
 });
 
+const hasCalculatedPayout = computed(() =>
+  (mission.value?.rewards || []).some((reward) => reward.calculated),
+);
+
 const standing = computed(() => {
   const min = mission.value?.minStanding;
   const max = mission.value?.maxStanding;
@@ -166,11 +170,9 @@ watch(
             {{ t("labels.gameMission.noRewards") }}
           </p>
 
-          <!-- Said outright on every page, because it is true of 2,352 of the
-               2,536 contracts: the payout is computed by the game at run time
-               and the export states no table to reproduce it from. Leaving it
-               unsaid would read as our gap rather than as the game's. -->
-          <p class="mission-page__note">
+          <!-- Only where there is a computed payout to explain. The rewards
+               list says which entries the game works out; this says why. -->
+          <p v-if="hasCalculatedPayout" class="mission-page__note">
             {{ t("labels.gameMission.payoutNote") }}
           </p>
         </section>

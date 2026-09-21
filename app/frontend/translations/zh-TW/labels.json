@@ -2900,6 +2900,7 @@
         }
       },
       "gameMission": {
+        "calculatedInGame": "由遊戲計算",
         "blueprints": "藍圖",
         "name": "名稱",
         "org": "發布方",

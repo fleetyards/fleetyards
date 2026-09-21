@@ -2900,6 +2900,7 @@
         }
       },
       "gameMission": {
+        "calculatedInGame": "由游戏计算",
         "blueprints": "蓝图",
         "name": "名称",
         "org": "发布方",

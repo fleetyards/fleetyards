@@ -76,8 +76,14 @@ const currencyAmount = (reward: GameMissionReward) => {
             }}</span>
           </template>
 
+          <!-- 2352 of the 2360 contracts that pay leave the figure to the
+               game, so this says which of the two a reader is looking at
+               rather than showing a blank where a number should be. -->
           <template v-else-if="reward.kind === 'currency'">
-            <span class="mission-rewards__value">{{
+            <span v-if="reward.calculated" class="mission-rewards__note">{{
+              t("labels.gameMission.calculatedInGame")
+            }}</span>
+            <span v-else class="mission-rewards__value">{{
               currencyAmount(reward)
             }}</span>
           </template>

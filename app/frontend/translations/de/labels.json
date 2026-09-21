@@ -2900,6 +2900,7 @@
         }
       },
       "gameMission": {
+        "calculatedInGame": "Vom Spiel berechnet",
         "blueprints": "Baupläne",
         "name": "Name",
         "org": "Angeboten von",

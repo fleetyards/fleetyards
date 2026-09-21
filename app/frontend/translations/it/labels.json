@@ -2900,6 +2900,7 @@
         }
       },
       "gameMission": {
+        "calculatedInGame": "Calcolato nel gioco",
         "blueprints": "Progetti",
         "name": "Nome",
         "org": "Offerta da",
