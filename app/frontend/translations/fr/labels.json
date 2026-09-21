@@ -2257,7 +2257,10 @@
           "weekly_stats": "Rapport hebdomadaire",
           "ship_matrix_import": "Import Ship Matrix",
           "sc_data_import": "Import sc_data",
-          "import_run": "Import"
+          "sc_data_unlisted_models": "Vaisseaux non répertoriés",
+          "import_run": "Import",
+          "oauth_application_review": "Examen d'application OAuth",
+          "inventory_transfer_reports": "Transferts d'inventaire signalés"
         }
       },
       "optional": "facultatif",

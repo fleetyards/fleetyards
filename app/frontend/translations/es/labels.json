@@ -2257,7 +2257,10 @@
           "weekly_stats": "Informe semanal",
           "ship_matrix_import": "Importación de Ship Matrix",
           "sc_data_import": "Importación de sc_data",
-          "import_run": "Importación"
+          "sc_data_unlisted_models": "Naves no listadas",
+          "import_run": "Importación",
+          "oauth_application_review": "Revisión de aplicación OAuth",
+          "inventory_transfer_reports": "Transferencias de inventario denunciadas"
         }
       },
       "optional": "opcional",

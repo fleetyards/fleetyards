@@ -2257,7 +2257,10 @@
           "weekly_stats": "每週報告",
           "ship_matrix_import": "Ship Matrix 匯入",
           "sc_data_import": "sc_data 匯入",
-          "import_run": "匯入"
+          "sc_data_unlisted_models": "未收錄飛船",
+          "import_run": "匯入",
+          "oauth_application_review": "OAuth 應用審核",
+          "inventory_transfer_reports": "被檢舉的庫存轉移"
         }
       },
       "optional": "選填",

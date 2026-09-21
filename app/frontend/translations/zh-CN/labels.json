@@ -2257,7 +2257,10 @@
           "weekly_stats": "每周报告",
           "ship_matrix_import": "Ship Matrix 导入",
           "sc_data_import": "sc_data 导入",
-          "import_run": "导入"
+          "sc_data_unlisted_models": "未收录飞船",
+          "import_run": "导入",
+          "oauth_application_review": "OAuth 应用审核",
+          "inventory_transfer_reports": "被举报的库存转移"
         }
       },
       "optional": "可选",
