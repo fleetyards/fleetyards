@@ -121,6 +121,11 @@ class HangarImporter
     Vehicle.where(user_id: @import.user_id).update_all(notify: true)
     # rubocop:enable Rails/SkipsModelValidations
 
+    # The loop's own flag, or a cancellation that landed after its last
+    # checkpoint. Asking once means `output` and the transition below cannot
+    # disagree about whether the run was cancelled.
+    cancelled ||= @import.reload.cancelled?
+
     output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
@@ -135,7 +140,7 @@ class HangarImporter
     # checkpoint would otherwise fire `finish` from `cancelled` and raise
     # `AASM::InvalidTransition`. The state has already moved; there is nothing
     # left to transition.
-    @import.finish! unless cancelled || @import.reload.cancelled?
+    @import.finish! unless cancelled
 
     output
   rescue => e

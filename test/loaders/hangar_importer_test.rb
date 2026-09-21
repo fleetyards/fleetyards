@@ -175,6 +175,25 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_equal ["No Such Ship"], result[:missing]
   end
 
+  # `cancelled` is only ever set at a checkpoint, so a cancellation that lands
+  # after the last one left `output` claiming success while the record itself
+  # went to `cancelled`.
+  test "does not report success when the cancellation lands after the last checkpoint" do
+    import = import_for([{name: @model.name, slug: @model.slug}])
+
+    importer = ::HangarImporter.new(import)
+    importer.define_singleton_method(:stop_requested?) do |_index|
+      import.request_cancel!
+      false
+    end
+
+    result = importer.run
+
+    refute result[:success]
+    assert_predicate import.reload, :cancelled?
+    assert_equal [@model.name], result[:imported]
+  end
+
   def create_group(name)
     HangarGroup.create!(user_id: @user.id, name:, color: "#ffffff")
   end
