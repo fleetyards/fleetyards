@@ -247,8 +247,20 @@ module ScData
 
         assert_equal 2, keys.size
         assert_not_includes keys, "headhunters_simple_hit"
-        assert_includes keys, "headhunters_simple_hit_#{CONTRACT_ID.delete("-").first(8)}"
-        assert_includes keys, "headhunters_simple_hit_#{SECOND_CONTRACT_ID.delete("-").first(8)}"
+        assert_includes keys, "headhunters_simple_hit_#{CONTRACT_ID.delete("-")}"
+        assert_includes keys, "headhunters_simple_hit_#{SECOND_CONTRACT_ID.delete("-")}"
+      end
+
+      # A fixed-length head of the GUID is only probably unique, and the failure
+      # is quiet: `save_items` writes both records to one file name and one
+      # contract silently replaces the other.
+      test "#missions keeps two contracts apart whose GUIDs share a long prefix" do
+        twin = "3f2a4d41-0000-4000-8000-00000000ffff"
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [CONTRACT_ID, twin])
+
+        keys = @parser.missions.pluck(:sc_key)
+
+        assert_equal 2, keys.uniq.size
       end
 
       # The key a contract gets depends on the set of contracts, never on the
