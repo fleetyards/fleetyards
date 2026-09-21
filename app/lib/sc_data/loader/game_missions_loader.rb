@@ -69,12 +69,28 @@ module ScData
           difficulty_risk_of_loss: difficulty["risk_of_loss"],
           difficulty_game_knowledge: difficulty["game_knowledge"],
           # Denormalised off the rewards so a "pays reputation" filter is an
-          # index lookup rather than an exists check per row. Sorted so a build
-          # that only reordered its results does not read as a change.
-          reward_kinds: rewards.filter_map { |reward| reward["kind"] }.uniq.sort,
+          # index lookup rather than an exists check per row.
+          reward_kinds: reward_kinds(rewards, mission_data["blueprint_pools"]),
           blueprint_pool_refs: Array.wrap(mission_data["blueprint_pools"]).uniq.sort,
           version: sc_version
         }
+      end
+
+      # What the mission pays, as a reader would ask it.
+      #
+      # "blueprint" is deliberately not a row in `game_mission_rewards`: a recipe
+      # is handed out through a reward pool rather than as a contract result, and
+      # the pool is what `blueprint_pool_refs` carries. But it is very much
+      # something the mission gives you, and somebody filtering "what do I get"
+      # should not have to know which side of the export it came from.
+      #
+      # Sorted so a build that only reordered its results does not read as a
+      # change.
+      private def reward_kinds(rewards, pools)
+        kinds = rewards.filter_map { |reward| reward["kind"] }
+        kinds << ::GameMissionBuild::BLUEPRINT_REWARD_KIND if Array.wrap(pools).any?
+
+        kinds.uniq.sort
       end
 
       # Written against the build and rewritten wholesale on every run rather
@@ -96,6 +112,7 @@ module ScData
             org_key: reward["org_key"],
             org_name: reward["org_name"],
             entity_class: reward["entity_class"],
+            entity_name: reward["entity_name"],
             weight: reward["weight"],
             badge: reward["badge"],
             position:,

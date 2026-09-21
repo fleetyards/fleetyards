@@ -13,7 +13,7 @@
 #  id                    :uuid             not null, primary key
 #  aasm_state            :string           default("open"), not null
 #  note                  :text
-#  reason                :integer          default(0), not null
+#  reason                :integer          default("spam"), not null
 #  resolution_note       :text
 #  reviewed_at           :datetime
 #  created_at            :datetime         not null

@@ -58,6 +58,16 @@ class GameMissionBuild < ApplicationRecord
     class_name: "GameMissionReward", inverse_of: :build,
     foreign_key: :game_mission_build_id, dependent: :destroy
 
+  # A recipe is handed out through a reward pool rather than as a contract
+  # result, so it is not a `GameMissionReward` row -- but it is something the
+  # mission pays, and `reward_kinds` carries it so a reader can filter for it
+  # without knowing which side of the export it came from.
+  BLUEPRINT_REWARD_KIND = "blueprint"
+
+  # Everything a mission can be said to pay, which is the four the export
+  # states as contract results plus the recipes it hands out.
+  REWARD_KINDS = (::GameMissionReward::KINDS + [BLUEPRINT_REWARD_KIND]).freeze
+
   FACTS = %i[
     name description kind generator_key debug_name
     org_ref org_key org_name org_lawful alignment

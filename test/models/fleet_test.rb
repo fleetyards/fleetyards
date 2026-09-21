@@ -17,7 +17,7 @@
 #  fid                       :string
 #  guilded                   :string
 #  homepage                  :string
-#  inventory_transfer_policy :integer          default(0), not null
+#  inventory_transfer_policy :integer          default("everyone"), not null
 #  name                      :string
 #  normalized_fid            :string
 #  public_fleet              :boolean          default(FALSE)

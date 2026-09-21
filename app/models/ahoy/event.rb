@@ -14,7 +14,7 @@
 # Indexes
 #
 #  index_ahoy_events_on_name_and_time              (name,time)
-#  index_ahoy_events_on_properties_jsonb_path_ops  (properties) USING gin
+#  index_ahoy_events_on_properties_jsonb_path_ops  (properties jsonb_path_ops) USING gin
 #  index_ahoy_events_on_time                       (time)
 #  index_ahoy_events_on_user_id                    (user_id)
 #  index_ahoy_events_on_visit_id                   (visit_id)

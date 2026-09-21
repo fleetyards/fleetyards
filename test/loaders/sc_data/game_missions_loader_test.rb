@@ -52,10 +52,24 @@ module ScData
 
         # The denormalised list and the rows it is drawn from cannot disagree:
         # the list is what a filter reads and the rows are what a page renders.
+        # "blueprint" is the one entry with no row behind it -- a recipe comes
+        # from a reward pool rather than from a contract result -- so it is
+        # asserted against the pools instead.
         mismatched = GameMissionBuild.current.includes(:rewards).reject do |build|
-          build.reward_kinds.sort == build.rewards.map(&:kind).uniq.sort
+          stated = build.rewards.map(&:kind).uniq
+          stated << GameMissionBuild::BLUEPRINT_REWARD_KIND if build.blueprint_pool_refs.any?
+
+          build.reward_kinds.sort == stated.uniq.sort
         end
         assert_empty mismatched.map(&:name)
+
+        assert_empty GameMissionBuild.current.where.not(reward_kinds: []).where("NOT (reward_kinds <@ ARRAY[?]::text[])", GameMissionBuild::REWARD_KINDS).pluck(:name)
+
+        # Every item award names something rather than a GUID: the two commonest
+        # are physical currency, which is the closest the export comes to
+        # stating a payout per contract.
+        assert_operator GameMissionReward.of_kind("item").where.not(entity_name: nil).count, :>=, 390
+        assert_includes GameMissionReward.of_kind("item").distinct.pluck(:entity_name), "MG Scrip"
 
         # An unattributed mission says nothing about alignment, the way it says
         # no org. Every attributed one answers, because all 38 reputation
@@ -69,8 +83,11 @@ module ScData
         assert_empty GameMission.where.not(alignment: [nil, *BlueprintSource::ALIGNMENTS]).pluck(:alignment)
 
         # The link to the crafting catalogue, which is the reverse of what a
-        # blueprint's sources already answer.
+        # blueprint's sources already answer -- and which a reader can filter
+        # for, because it is carried as a reward kind.
         assert_operator GameMission.where.not(blueprint_pool_refs: []).count, :>=, 700
+        assert_equal GameMission.where.not(blueprint_pool_refs: []).count,
+          GameMission.rewarding(GameMissionBuild::BLUEPRINT_REWARD_KIND).count
 
         # Read off the difficulty the contract declares under its results, not
         # off the contract itself -- digging at the contract found none of them.

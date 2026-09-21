@@ -14,6 +14,7 @@
 #  badge                 :string
 #  currency              :string
 #  entity_class          :string
+#  entity_name           :string
 #  kind                  :string           not null
 #  max                   :integer
 #  org_key               :string

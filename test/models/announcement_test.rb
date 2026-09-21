@@ -29,7 +29,7 @@ require "test_helper"
 # Indexes
 #
 #  index_announcements_on_publish_at    (publish_at) WHERE ((status)::text = 'scheduled'::text)
-#  index_announcements_on_published_at  (published_at)
+#  index_announcements_on_published_at  (published_at DESC)
 #  index_announcements_on_status        (status)
 #
 # Foreign Keys

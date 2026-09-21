@@ -7,7 +7,7 @@
 #  id                    :uuid             not null, primary key
 #  amount                :decimal(15, 2)   not null
 #  description           :string           not null
-#  entry_type            :integer          default(0), not null
+#  entry_type            :integer          default("expense"), not null
 #  notes                 :text
 #  occurred_at           :datetime
 #  created_at            :datetime         not null

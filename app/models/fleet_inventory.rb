@@ -11,7 +11,7 @@
 #  managed_by   :uuid
 #  name         :string           not null
 #  slug         :string           not null
-#  visibility   :integer          default(0), not null
+#  visibility   :integer          default("members_only"), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  fleet_id     :uuid             not null
