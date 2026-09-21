@@ -58,6 +58,7 @@ module Admin
               landedFleetchartOffsetBeam: {type: [:number, :null]},
               onSale: {type: :boolean},
               playerOwnable: {type: :boolean},
+              ingameOnly: {type: :boolean},
               storeUrl: {type: [:string, :null]},
               salesPageUrl: {type: [:string, :null]},
               price: {type: [:number, :null]},

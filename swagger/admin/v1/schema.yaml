@@ -15134,6 +15134,8 @@ components:
           type: boolean
         playerOwnable:
           type: boolean
+        ingameOnly:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -15196,6 +15198,7 @@ components:
       - hasUpgrades
       - hasVideos
       - inGame
+      - ingameOnly
       - loaners
       - manufacturer
       - media
@@ -15306,6 +15309,8 @@ components:
         onSale:
           type: boolean
         playerOwnable:
+          type: boolean
+        ingameOnly:
           type: boolean
         storeUrl:
           type: string
@@ -15427,6 +15432,8 @@ components:
           type: boolean
         playerOwnable:
           type: boolean
+        ingameOnly:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -15496,6 +15503,7 @@ components:
       - hasUpgrades
       - hasVideos
       - inGame
+      - ingameOnly
       - loaners
       - manufacturer
       - media
@@ -16614,6 +16622,8 @@ components:
           type: boolean
         positionsNeedCurationEq:
           type: boolean
+        ingameOnlyEq:
+          type: boolean
         dimensionsDrifted:
           type: boolean
         dimensionsMeasuredAtNull:
@@ -17014,6 +17024,8 @@ components:
         onSale:
           type: boolean
         playerOwnable:
+          type: boolean
+        ingameOnly:
           type: boolean
         storeUrl:
           type:
