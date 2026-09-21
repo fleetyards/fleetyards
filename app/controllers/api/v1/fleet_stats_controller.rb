@@ -15,7 +15,7 @@ module Api
       def members
         # Sorting a grouped count puts the ordered column outside the GROUP BY,
         # which Postgres rejects. Stats never need an order anyway.
-        @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params.except("sorts", "s"))
+        @q = membership_scope.ransack(member_query_params.except("sorts", "s"))
 
         members = @q.result
 
@@ -32,7 +32,7 @@ module Api
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/PerceivedComplexity
       def vehicles
-        scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+        scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -77,7 +77,7 @@ module Api
       # rubocop:enable Metrics/CyclomaticComplexity
 
       def model_counts
-        scope = @fleet.vehicles.where(loaner: loaner_included?)
+        scope = vehicle_scope.where(loaner: loaner_included?)
 
         scope = scope.where(user_id: for_members) if for_members.present?
 
@@ -158,6 +158,18 @@ module Api
         )
 
         render json: models_by_classification.to_json
+      end
+
+      # The two populations every figure above is drawn from. Seams rather than
+      # `@fleet.vehicles` and `@fleet.fleet_memberships` inline, so
+      # `FleetSquadronStatsController` narrows them to one squadron by
+      # overriding these instead of restating the arithmetic.
+      private def vehicle_scope
+        @fleet.vehicles
+      end
+
+      private def membership_scope
+        @fleet.fleet_memberships.kept.accepted
       end
 
       private

@@ -28,7 +28,7 @@ module Api
       def index
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+        scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -86,7 +86,7 @@ module Api
       def fleetchart
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+        scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -100,7 +100,7 @@ module Api
       end
 
       private def export_vehicles
-        scope = @fleet.vehicles
+        scope = vehicle_scope
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -123,6 +123,13 @@ module Api
             {user: {avatar_attachment: :blob}}
           )
           .joins(:model)
+      end
+
+      # The ships every action here starts from. A seam rather than
+      # `@fleet.vehicles` inline, so a subclass scoped to part of the fleet --
+      # `FleetSquadronVehiclesController` -- narrows all of them at once.
+      private def vehicle_scope
+        @fleet.vehicles
       end
 
       private def set_fleet
