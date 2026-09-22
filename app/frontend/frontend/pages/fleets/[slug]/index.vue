@@ -49,7 +49,17 @@ const { data: squadrons } = useFleetSquadrons(
   { query: { enabled: showSquadrons } },
 );
 
-const squadronList = computed(() => squadrons.value?.items ?? []);
+const allSquadrons = computed(() => squadrons.value?.items ?? []);
+
+// Two strips, the same split the squadrons page draws: a member belongs to one
+// squadron and can be on any number of teams.
+const squadronList = computed(() =>
+  allSquadrons.value.filter((squadron) => !squadron.team),
+);
+
+const teamList = computed(() =>
+  allSquadrons.value.filter((squadron) => squadron.team),
+);
 
 const description = computed(() => {
   if (!props.fleet || !props.fleet.description) {
@@ -176,6 +186,31 @@ const description = computed(() => {
         >
           <SquadronEmblem :squadron="squadron" :size="32" />
           <span class="squadron-name">{{ squadron.name }}</span>
+        </router-link>
+      </div>
+    </div>
+  </div>
+  <div v-if="teamList.length" class="row md:justify-center">
+    <div class="col-12 col-md-8">
+      <Heading
+        :level="HeadingLevelEnum.H2"
+        :alignment="HeadingAlignmentEnum.CENTER"
+      >
+        {{ t("headlines.fleets.squadrons.teams") }}
+      </Heading>
+      <div class="squadrons squadrons--centred">
+        <router-link
+          v-for="team in teamList"
+          :key="team.id"
+          class="squadron"
+          :to="{
+            name: 'fleet-squadron',
+            params: { slug: fleet.slug, squadron: team.slug },
+          }"
+          :data-test="`fleet-squadron-${team.slug}`"
+        >
+          <SquadronEmblem :squadron="team" :size="32" />
+          <span class="squadron-name">{{ team.name }}</span>
         </router-link>
       </div>
     </div>

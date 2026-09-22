@@ -51,6 +51,31 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
     @squadron = create(:fleet_squadron, fleet: @fleet, name: "Combat Wing")
   end
 
+  test "PUT /fleets/:slug/squadrons/:slug makes a squadron a team" do
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {team: true} do
+      assert parsed_body["team"]
+    end
+  end
+
+  # Nothing would ever repair a rule that was already broken when the flag came
+  # off, so the change is refused rather than the state allowed.
+  test "PUT /fleets/:slug/squadrons/:slug refuses to unmake a team over a shared member" do
+    @squadron.update!(team: true)
+    other = create(:fleet_squadron, fleet: @fleet, name: "Mining")
+    membership = create(:fleet_membership, :accepted, fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: other, fleet_membership: membership)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: membership)
+    sign_in @admin
+
+    assert_api_response :put, 400,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {team: false}
+  end
+
   test "PUT /fleets/:slug/squadrons/:slug renames the squadron and moves its slug" do
     sign_in @admin
 

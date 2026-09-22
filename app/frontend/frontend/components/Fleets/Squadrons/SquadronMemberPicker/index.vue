@@ -113,6 +113,23 @@ const alreadyIn = (member: FleetMember) =>
     (squadron) => squadron.id === props.squadron.id,
   );
 
+/*
+ * A member belongs to one squadron, so somebody who already has one cannot be
+ * added to another. Teams are outside that on both sides: joining one is never
+ * refused, and being on one never blocks anything.
+ *
+ * The server refuses it either way -- this is so the refusal is visible before
+ * the click rather than as a count of failures afterwards, and so it can name
+ * the squadron standing in the way.
+ */
+const blockedBy = (member: FleetMember) => {
+  if (props.squadron.team) return undefined;
+
+  return (member.squadrons ?? []).find(
+    (squadron) => !squadron.team && squadron.id !== props.squadron.id,
+  );
+};
+
 const options = computed(() => records.value.filter((m) => !alreadyIn(m)));
 
 const selection = ref<FleetMember[]>([]);
@@ -213,15 +230,31 @@ const onSubmit = async () => {
         <button
           v-for="member in options"
           :key="member.id"
+          v-tooltip="
+            blockedBy(member)
+              ? t('labels.fleet.squadrons.blockedBy', {
+                  squadron: blockedBy(member)?.name,
+                })
+              : undefined
+          "
           type="button"
           class="member-picker__card"
-          :class="{ 'member-picker__card--selected': isSelected(member) }"
+          :class="{
+            'member-picker__card--selected': isSelected(member),
+            'member-picker__card--blocked': blockedBy(member),
+          }"
+          :disabled="!!blockedBy(member)"
           :data-test="`squadron-member-option-${member.username}`"
           @click="toggle(member)"
         >
           <Avatar :avatar="member.avatar?.smallUrl" size="small" />
           <span class="member-picker__name">{{ member.username }}</span>
           <i
+            v-if="blockedBy(member)"
+            class="fa-solid fa-ban member-picker__tick"
+          />
+          <i
+            v-else
             class="fa-solid member-picker__tick"
             :class="isSelected(member) ? 'fa-circle-check' : 'fa-circle-plus'"
           />
@@ -324,6 +357,18 @@ const onSubmit = async () => {
 
   &--selected {
     border-color: var(--color-primary, #428bca);
+  }
+
+  // Dimmed rather than hidden: the reason somebody is not on the list is worth
+  // seeing, and the tooltip on the card is what carries it.
+  &--blocked {
+    cursor: not-allowed;
+    opacity: 0.45;
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    }
   }
 }
 

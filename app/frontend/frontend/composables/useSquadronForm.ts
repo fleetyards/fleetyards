@@ -55,6 +55,7 @@ export const useSquadronForm = (
       // The picker cannot express "no colour", so a squadron without one opens
       // on the neutral it is already drawn with rather than on black.
       color: squadron?.value?.color ?? "#8899aa",
+      team: squadron?.value?.team ?? false,
       icon: undefined as string | undefined,
       logo: undefined as string | undefined,
       header: undefined as string | undefined,
@@ -70,6 +71,7 @@ export const useSquadronForm = (
     defineField("shortDescription");
   const [description, descriptionProps] = defineField("description");
   const [color, colorProps] = defineField("color");
+  const [team, teamProps] = defineField("team");
   const [icon, iconProps] = defineField("icon");
   const [logo, logoProps] = defineField("logo");
   const [header, headerProps] = defineField("header");
@@ -79,6 +81,7 @@ export const useSquadronForm = (
     shortDescription,
     description,
     color,
+    team,
     icon,
     logo,
     header,
@@ -89,6 +92,7 @@ export const useSquadronForm = (
     shortDescription: shortDescriptionProps,
     description: descriptionProps,
     color: colorProps,
+    team: teamProps,
     icon: iconProps,
     logo: logoProps,
     header: headerProps,
@@ -105,6 +109,7 @@ export const useSquadronForm = (
       shortDescription: values.shortDescription || null,
       description: values.description || null,
       color: values.color || null,
+      team: values.team,
       // Passed through rather than coerced: `undefined` keeps what is attached,
       // `null` is the field saying it was cleared, and a signed id replaces it.
       icon: values.icon,

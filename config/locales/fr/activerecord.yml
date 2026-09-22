@@ -289,6 +289,16 @@ fr:
           attributes:
             managed_by:
               not_a_member: doit être un membre accepté de cette flotte
+        fleet_squadron:
+          attributes:
+            team:
+              conflicting_members: "ne peut pas être désactivé tant que %{members} sont également dans un autre escadron"
+        fleet_squadron_membership:
+          attributes:
+            fleet_membership:
+              not_a_member: "doit être un membre accepté de cette flotte"
+            fleet_squadron:
+              exclusive_conflict: "entre en conflit avec %{squadron} : un membre n'appartient qu'à un seul escadron, sauf s'il s'agit d'une équipe"
         fleet_role:
           attributes:
             base:

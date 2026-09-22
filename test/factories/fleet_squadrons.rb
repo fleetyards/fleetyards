@@ -11,6 +11,7 @@
 #  position          :integer          default(0), not null
 #  short_description :text
 #  slug              :string           not null
+#  team              :boolean          default(FALSE), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  fleet_id          :uuid             not null

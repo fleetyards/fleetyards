@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -67,16 +68,40 @@ watch(
   { immediate: true },
 );
 
-const squadronList = computed<FleetSquadron[]>(() => orderedSquadrons.value);
+/*
+ * Two rows, because they are two things: a member belongs to one squadron, and
+ * can be on any number of teams. Shown together they read as one list with an
+ * invisible rule running through half of it.
+ */
+const squadronList = computed(() =>
+  orderedSquadrons.value.filter((squadron) => !squadron.team),
+);
+
+const teamList = computed(() =>
+  orderedSquadrons.value.filter((squadron) => squadron.team),
+);
 
 const sortMutation = useSortFleetSquadrons();
 
-const onSort = (ids: string[]) => {
+/*
+ * Each row is dragged on its own, but the position is one sequence across the
+ * fleet -- so what goes to the server is both rows, in the order they are now
+ * drawn in. Sending only the dragged row would renumber it from the front and
+ * interleave it with the other.
+ */
+const onSort = (rowIds: string[]) => {
   const previous = orderedSquadrons.value;
+  const held = (id: string) => previous.find((squadron) => squadron.id === id);
+  const row = rowIds.map(held).filter(Boolean) as FleetSquadron[];
+  const isTeamRow = row[0]?.team ?? false;
 
-  orderedSquadrons.value = ids
-    .map((id) => previous.find((squadron) => squadron.id === id))
-    .filter(Boolean) as FleetSquadron[];
+  const kept = previous.filter(
+    (squadron) => (squadron.team ?? false) !== isTeamRow,
+  );
+
+  orderedSquadrons.value = isTeamRow ? [...kept, ...row] : [...row, ...kept];
+
+  const ids = orderedSquadrons.value.map((squadron) => squadron.id);
 
   void sortMutation
     .mutateAsync({ fleetSlug: props.fleet.slug, data: { sorting: ids } })
@@ -159,8 +184,35 @@ const crumbs = computed<Crumb[]>(() => [
     </template>
   </Grid>
 
+  <!-- Headed, unlike the row above it: the page is called Squadrons, so the
+       first row needs no label and the second one does. -->
+  <template v-if="teamList.length">
+    <Heading :level="HeadingLevelEnum.H2" mt>
+      {{ t("headlines.fleets.squadrons.teams") }}
+    </Heading>
+
+    <Grid
+      :records="teamList"
+      primary-key="id"
+      :sortable="canSort"
+      sort-handle=".squadron-panel-grip"
+      @sort="onSort"
+    >
+      <template #default="{ record }">
+        <SquadronPanel
+          :squadron="record"
+          :sortable="canSort"
+          :to="{
+            name: 'fleet-squadron',
+            params: { slug: fleet.slug, squadron: record.slug },
+          }"
+        />
+      </template>
+    </Grid>
+  </template>
+
   <Empty
-    v-else-if="!isLoading"
+    v-else-if="!isLoading && !squadronList.length"
     :name="t('labels.fleet.squadrons.index')"
     data-test="squadrons-empty"
   />

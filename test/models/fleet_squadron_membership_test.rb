@@ -25,8 +25,11 @@ class FleetSquadronMembershipTest < ActiveSupport::TestCase
     assert_includes duplicate.errors.attribute_names, :fleet_membership_id
   end
 
-  test "allows one member in several squadrons of the same fleet" do
-    other = create(:fleet_squadron, fleet: @fleet)
+  # A member belongs to one squadron and to any number of teams. The rule
+  # itself is `FleetSquadronTest::ExclusivityTest`; this is the shape of the
+  # roster it leaves behind.
+  test "allows one member on several teams of the same fleet" do
+    other = create(:fleet_squadron, fleet: @fleet, team: true)
     create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
 
     assert_predicate build(:fleet_squadron_membership, fleet_squadron: other, fleet_membership: @membership), :valid?

@@ -21923,6 +21923,8 @@ components:
           type:
           - string
           - 'null'
+        team:
+          type: boolean
         memberCount:
           type: integer
         icon:
@@ -21942,6 +21944,7 @@ components:
       - id
       - name
       - slug
+      - team
       - memberCount
       - createdAt
       - updatedAt
@@ -21963,6 +21966,8 @@ components:
           type:
           - string
           - 'null'
+        team:
+          type: boolean
         icon:
           type:
           - string
@@ -22016,6 +22021,8 @@ components:
           type:
           - string
           - 'null'
+        team:
+          type: boolean
         icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -22023,6 +22030,7 @@ components:
       - id
       - name
       - slug
+      - team
       title: FleetSquadronRef
     FleetSquadronSortEnum:
       type: string
@@ -22066,6 +22074,8 @@ components:
           type:
           - string
           - 'null'
+        team:
+          type: boolean
         icon:
           type:
           - string

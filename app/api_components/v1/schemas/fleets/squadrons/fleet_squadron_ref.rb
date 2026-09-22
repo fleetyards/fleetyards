@@ -16,10 +16,14 @@ module V1
               name: {type: :string},
               slug: {type: :string},
               color: {type: [:string, :null]},
+              # Carried because the member picker has to say why somebody
+              # cannot be added, which means knowing which of the squadrons
+              # they already hold is an ordinary one rather than a team.
+              team: {type: :boolean},
               icon: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
-            required: %w[id name slug]
+            required: %w[id name slug team]
           })
         end
       end

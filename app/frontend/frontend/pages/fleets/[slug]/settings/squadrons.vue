@@ -8,6 +8,8 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
@@ -60,8 +62,18 @@ const {
   refetch,
 } = useFleetSquadrons(fleetSlug, {});
 
-const squadronList = computed<FleetSquadron[]>(
+const allSquadrons = computed<FleetSquadron[]>(
   () => squadrons.value?.items ?? [],
+);
+
+// Two rows, the same split the squadrons page draws: a member belongs to one
+// squadron and can be on any number of teams.
+const squadronList = computed(() =>
+  allSquadrons.value.filter((squadron) => !squadron.team),
+);
+
+const teamList = computed(() =>
+  allSquadrons.value.filter((squadron) => squadron.team),
 );
 
 const editRoute = (squadron: FleetSquadron) => ({
@@ -168,8 +180,32 @@ onUnmounted(() => {
     </template>
   </Grid>
 
+  <template v-if="teamList.length">
+    <Heading :level="HeadingLevelEnum.H2" mt>
+      {{ t("headlines.fleets.squadrons.teams") }}
+    </Heading>
+
+    <Grid :records="teamList" primary-key="id">
+      <template #default="{ record }">
+        <SquadronPanel
+          :squadron="record"
+          :to="{
+            name: 'fleet-squadron',
+            params: { slug: fleet.slug, squadron: record.slug },
+          }"
+          :editable="canUpdate"
+          :destroyable="canDestroy"
+          :members-manageable="canManageMembers"
+          @edit="openSquadronForm(record)"
+          @destroy="onDestroy(record)"
+          @add-members="openMemberPicker(record)"
+        />
+      </template>
+    </Grid>
+  </template>
+
   <Empty
-    v-else-if="!isLoading"
+    v-else-if="!isLoading && !squadronList.length"
     :name="t('labels.fleet.squadrons.index')"
     data-test="settings-squadrons-empty"
   />

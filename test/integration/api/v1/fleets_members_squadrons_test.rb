@@ -54,15 +54,28 @@ class Api::V1::FleetsMembersSquadronsTest < ActionDispatch::IntegrationTest
     assert_empty member_named(@admin.username)["squadrons"]
   end
 
-  test "the badges are sorted by name" do
-    create(:fleet_squadron_membership, fleet_squadron: @mining, fleet_membership: @pilot_membership)
+  # The squadron first, then the teams. A member holds one squadron, and that is
+  # the badge the roster draws on their avatar -- so it cannot be whichever of
+  # their groups happens to sort first.
+  test "the badges put the squadron ahead of the teams" do
+    rota = create(:fleet_squadron, fleet: @fleet, name: "Alpha Rota", team: true)
+    create(:fleet_squadron_membership, fleet_squadron: rota, fleet_membership: @pilot_membership)
     sign_in @admin
 
     get "/api/v1/fleets/#{@fleet.slug}/members"
 
     assert_response :success
-    assert_equal ["Combat Wing", "Mining Division"],
+    assert_equal ["Combat Wing", "Alpha Rota"],
       member_named(@pilot.username)["squadrons"].map { |badge| badge["name"] }
+  end
+
+  test "a badge says whether it is a team" do
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/members"
+
+    assert_response :success
+    refute member_named(@pilot.username)["squadrons"].first["team"]
   end
 
   test "the roster filters to one squadron" do

@@ -5,6 +5,7 @@ json.name fleet_squadron.name
 json.slug fleet_squadron.slug
 json.short_description fleet_squadron.short_description
 json.color fleet_squadron.color
+json.team fleet_squadron.team
 
 %i[icon logo].each do |attr|
   if fleet_squadron.public_send(attr).attached?

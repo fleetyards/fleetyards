@@ -34,11 +34,15 @@ json.youtube member.user.youtube
 json.twitch member.user.twitch
 json.guilded member.user.guilded
 json.squadrons do
-  json.array! member.fleet_squadrons.order("name ASC") do |squadron|
+  # Ordinary squadrons before teams, then the fleet's own order. A member holds
+  # at most one ordinary squadron, so the first of these is the one the roster
+  # badges them with -- their squadron, not whichever team sorts first.
+  json.array! member.fleet_squadrons.order(team: :asc, position: :asc) do |squadron|
     json.id squadron.id
     json.name squadron.name
     json.slug squadron.slug
     json.color squadron.color
+    json.team squadron.team
 
     # The roster draws the mark rather than the name, and at that size the mark
     # is the square one.

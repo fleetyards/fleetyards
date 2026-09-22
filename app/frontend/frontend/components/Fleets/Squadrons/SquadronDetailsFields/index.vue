@@ -8,6 +8,7 @@ export default {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { VSwatches } from "vue3-swatches";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -55,6 +56,23 @@ const { t } = useI18n();
     </div>
     <div class="col-12 col-md-6">
       <VSwatches v-model="props.fields.color" :inline="true" />
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- The exception, not the rule: a member belongs to one squadron, and a team
+       is what that member can be on as well. The hint carries it, because a
+       lone toggle reading "Team" says nothing about what it changes. -->
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <FormToggle
+        v-model="props.fields.team"
+        v-bind="props.fieldProps.team"
+        name="team"
+        :label="t('labels.fleet.squadrons.team')"
+        :info="t('labels.fleet.squadrons.teamHint')"
+      />
     </div>
   </div>
 

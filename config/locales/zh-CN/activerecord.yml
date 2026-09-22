@@ -289,6 +289,16 @@ zh-CN:
           attributes:
             managed_by:
               not_a_member: 必须是该舰队的正式成员
+        fleet_squadron:
+          attributes:
+            team:
+              conflicting_members: "无法关闭，因为 %{members} 同时还在另一个中队中"
+        fleet_squadron_membership:
+          attributes:
+            fleet_membership:
+              not_a_member: "必须是该舰队已接受的成员"
+            fleet_squadron:
+              exclusive_conflict: "与 %{squadron} 冲突：除非是小队，成员只能属于一个中队"
         fleet_role:
           attributes:
             base:

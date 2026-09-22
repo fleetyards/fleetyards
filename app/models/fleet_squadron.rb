@@ -11,6 +11,7 @@
 #  position          :integer          default(0), not null
 #  short_description :text
 #  slug              :string           not null
+#  team              :boolean          default(FALSE), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  fleet_id          :uuid             not null
@@ -105,6 +106,13 @@ class FleetSquadron < ApplicationRecord
 
   validates :description, length: {maximum: 5000}, allow_blank: true
 
+  # A squadron is where somebody belongs, so belonging to two at once is the
+  # exception: a member holds at most one ordinary squadron in a fleet. A team
+  # is the exception made explicit -- a standing detachment, a trade wing, a
+  # crew that cuts across the roster -- and sits outside the rule entirely, on
+  # either side of it.
+  validate :exclusivity_is_not_already_broken, if: -> { exclusive? && team_changed? }
+
   before_validation :normalize_color
   before_validation :update_slugs
 
@@ -118,11 +126,49 @@ class FleetSquadron < ApplicationRecord
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name slug fleet_id position created_at updated_at]
+    %w[name slug fleet_id position team created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  scope :teams, -> { where(team: true) }
+  scope :exclusive, -> { where(team: false) }
+
+  # Everything that is not a team. Named for what the rule is about rather than
+  # for the column, because the column marks the exception and every read of it
+  # is about the ordinary case.
+  def exclusive?
+    !team?
+  end
+
+  # The members this squadron already holds who are in another exclusive one.
+  # Named rather than counted, because "three members are in two squadrons at
+  # once" is not something anybody can act on.
+  def exclusive_conflicts
+    return FleetMembership.none unless fleet
+
+    FleetMembership
+      .where(id: accepted_fleet_memberships.select(:id))
+      .where(
+        id: FleetSquadronMembership
+          .joins(:fleet_squadron)
+          .where(fleet_squadrons: {fleet_id: fleet_id, team: false})
+          .where.not(fleet_squadron_id: id)
+          .select(:fleet_membership_id)
+      )
+  end
+
+  # Turning a team back into an ordinary squadron cannot be allowed to leave the
+  # rule already broken -- nothing would ever repair it, and every later save of
+  # an untouched squadron would then fail on a state somebody else created.
+  private def exclusivity_is_not_already_broken
+    conflicting = exclusive_conflicts.includes(:user).limit(5)
+
+    return if conflicting.empty?
+
+    errors.add(:team, :conflicting_members, members: conflicting.map { |m| m.user&.username }.compact.to_sentence)
   end
 
   private def set_position

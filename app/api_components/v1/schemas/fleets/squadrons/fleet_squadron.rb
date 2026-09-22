@@ -16,6 +16,7 @@ module V1
               shortDescription: {type: [:string, :null]},
               description: {type: [:string, :null]},
               color: {type: [:string, :null]},
+              team: {type: :boolean},
               memberCount: {type: :integer},
               icon: ::Shared::V1::Schemas::MediaFile,
               logo: ::Shared::V1::Schemas::MediaFile,
@@ -24,7 +25,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name slug memberCount createdAt updatedAt]
+            required: %w[id name slug team memberCount createdAt updatedAt]
           })
         end
       end

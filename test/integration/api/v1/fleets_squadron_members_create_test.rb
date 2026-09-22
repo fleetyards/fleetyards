@@ -92,8 +92,28 @@ class Api::V1::FleetsSquadronMembersCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: path_params, body: {username: @member.username}
   end
 
-  test "POST squadron members adds one member to several squadrons" do
+  # A team takes anybody, however many they are already on.
+  test "POST squadron members adds one member to several teams" do
+    @squadron.update!(team: true)
+    other = create(:fleet_squadron, fleet: @fleet, team: true)
+    membership = @fleet.fleet_memberships.kept.find_by(user: @member)
+    create(:fleet_squadron_membership, fleet_squadron: other, fleet_membership: membership)
+    sign_in @admin
+
+    assert_api_response :post, 201, path_params: path_params, body: {username: @member.username}
+  end
+
+  test "POST squadron members returns 400 for a member who already has a squadron" do
     other = create(:fleet_squadron, fleet: @fleet)
+    membership = @fleet.fleet_memberships.kept.find_by(user: @member)
+    create(:fleet_squadron_membership, fleet_squadron: other, fleet_membership: membership)
+    sign_in @admin
+
+    assert_api_response :post, 400, path_params: path_params, body: {username: @member.username}
+  end
+
+  test "POST squadron members adds a member who is only on teams" do
+    other = create(:fleet_squadron, fleet: @fleet, team: true)
     membership = @fleet.fleet_memberships.kept.find_by(user: @member)
     create(:fleet_squadron_membership, fleet_squadron: other, fleet_membership: membership)
     sign_in @admin
