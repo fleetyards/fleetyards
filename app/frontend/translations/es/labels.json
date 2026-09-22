@@ -498,21 +498,9 @@
           "color": "Color",
           "memberCount": "%{count} miembros",
           "members": "Miembros",
-          "ships": "Naves",
           "searchMembers": "Buscar miembros",
           "availableMembers": "miembros disponibles",
-          "selectedMembers": "%{count} seleccionados",
-          "views": {
-            "members": "Miembros",
-            "ships": "Naves",
-            "stats": "Estadísticas"
-          },
-          "stats": {
-            "members": "Miembros",
-            "ships": "Naves",
-            "uniqueModels": "Modelos únicos",
-            "totalMoney": "Valor total"
-          }
+          "selectedMembers": "%{count} seleccionados"
         },
         "roles": {
           "permanent": "Permanente",
@@ -1744,7 +1732,6 @@
           "member": "Miembro",
           "members": {
             "role": "Rol",
-            "squadron": "Escuadrón",
             "state": "Estado",
             "acceptedAtGt": "Unido desde",
             "acceptedAtLt": "Unido hasta",

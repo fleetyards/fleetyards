@@ -498,21 +498,9 @@
           "color": "颜色",
           "memberCount": "%{count} 名成员",
           "members": "成员",
-          "ships": "舰船",
           "searchMembers": "搜索成员",
           "availableMembers": "可添加的成员",
-          "selectedMembers": "已选择 %{count} 位",
-          "views": {
-            "members": "成员",
-            "ships": "舰船",
-            "stats": "统计"
-          },
-          "stats": {
-            "members": "成员",
-            "ships": "舰船",
-            "uniqueModels": "不同型号",
-            "totalMoney": "总价值"
-          }
+          "selectedMembers": "已选择 %{count} 位"
         },
         "roles": {
           "permanent": "永久",
@@ -1744,7 +1732,6 @@
           "member": "成员",
           "members": {
             "role": "角色",
-            "squadron": "中队",
             "state": "状态",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",

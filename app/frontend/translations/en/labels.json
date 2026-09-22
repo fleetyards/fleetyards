@@ -498,21 +498,9 @@
           "color": "Colour",
           "memberCount": "%{count} Members",
           "members": "Members",
-          "ships": "Ships",
           "searchMembers": "Search Members",
           "availableMembers": "available Members",
-          "selectedMembers": "%{count} selected",
-          "views": {
-            "members": "Members",
-            "ships": "Ships",
-            "stats": "Stats"
-          },
-          "stats": {
-            "members": "Members",
-            "ships": "Ships",
-            "uniqueModels": "Unique Models",
-            "totalMoney": "Total Value"
-          }
+          "selectedMembers": "%{count} selected"
         },
         "roles": {
           "permanent": "Permanent",
@@ -1744,7 +1732,6 @@
           "member": "Member",
           "members": {
             "role": "Role",
-            "squadron": "Squadron",
             "state": "Status",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",

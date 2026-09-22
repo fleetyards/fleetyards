@@ -498,21 +498,9 @@
           "color": "顏色",
           "memberCount": "%{count} 位成員",
           "members": "成員",
-          "ships": "艦船",
           "searchMembers": "搜尋成員",
           "availableMembers": "可新增的成員",
-          "selectedMembers": "已選擇 %{count} 位",
-          "views": {
-            "members": "成員",
-            "ships": "艦船",
-            "stats": "統計"
-          },
-          "stats": {
-            "members": "成員",
-            "ships": "艦船",
-            "uniqueModels": "不同型號",
-            "totalMoney": "總價值"
-          }
+          "selectedMembers": "已選擇 %{count} 位"
         },
         "roles": {
           "permanent": "永久",
@@ -1744,7 +1732,6 @@
           "member": "成員",
           "members": {
             "role": "角色",
-            "squadron": "中隊",
             "state": "狀態",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",
