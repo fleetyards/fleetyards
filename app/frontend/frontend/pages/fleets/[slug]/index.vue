@@ -6,11 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import {
-  HeadingAlignmentEnum,
-  HeadingLevelEnum,
-} from "@/shared/components/base/Heading/types";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -165,14 +160,11 @@ const description = computed(() => {
       <p class="description" v-html="description" />
     </div>
   </div>
+  <!-- Unlabelled: the front page introduces the fleet, and a strip of emblems
+       under its description reads as what it is without a heading over it. The
+       two rows stay two rows -- squadrons, then teams. -->
   <div v-if="squadronList.length" class="row md:justify-center">
     <div class="col-12 col-md-8">
-      <Heading
-        :level="HeadingLevelEnum.H2"
-        :alignment="HeadingAlignmentEnum.CENTER"
-      >
-        {{ t("headlines.fleets.squadrons.index") }}
-      </Heading>
       <div class="squadrons squadrons--centred">
         <router-link
           v-for="squadron in squadronList"
@@ -192,12 +184,6 @@ const description = computed(() => {
   </div>
   <div v-if="teamList.length" class="row md:justify-center">
     <div class="col-12 col-md-8">
-      <Heading
-        :level="HeadingLevelEnum.H2"
-        :alignment="HeadingAlignmentEnum.CENTER"
-      >
-        {{ t("headlines.fleets.squadrons.teams") }}
-      </Heading>
       <div class="squadrons squadrons--centred">
         <router-link
           v-for="team in teamList"
