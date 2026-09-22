@@ -86,6 +86,13 @@ de:
       create: Inventar konnte nicht erstellt werden.
       update: Inventar konnte nicht aktualisiert werden.
       destroy: Inventar konnte nicht gelöscht werden.
+    fleet_squadron_members:
+      create: Mitglied konnte der Staffel nicht hinzugefügt werden.
+      destroy: Mitglied konnte nicht aus der Staffel entfernt werden.
+    fleet_squadrons:
+      create: Staffel konnte nicht erstellt werden.
+      update: Staffel konnte nicht aktualisiert werden.
+      destroy: Staffel konnte nicht aufgelöst werden.
     fleet_inventory_items:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.

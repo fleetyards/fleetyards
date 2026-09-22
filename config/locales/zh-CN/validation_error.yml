@@ -78,6 +78,13 @@ zh-CN:
       create: 无法创建库存。
       update: 无法更新库存。
       destroy: 无法删除库存。
+    fleet_squadron_members:
+      create: 无法将成员添加到中队。
+      destroy: 无法将成员从中队移除。
+    fleet_squadrons:
+      create: 无法创建中队。
+      update: 无法更新中队。
+      destroy: 无法解散中队。
     fleet_inventory_items:
       create: 无法创建库存记录。
       update: 无法更新库存记录。
