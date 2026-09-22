@@ -325,6 +325,9 @@
             "success": "Staffel aufgelöst.",
             "failure": "Staffel konnte nicht aufgelöst werden."
           },
+          "sort": {
+            "failure": "Die Reihenfolge konnte nicht gespeichert werden."
+          },
           "members": {
             "add": {
               "success": "%{count} Mitglieder hinzugefügt.",

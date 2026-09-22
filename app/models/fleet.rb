@@ -74,7 +74,10 @@ class Fleet < ApplicationRecord
   has_many :fleet_invite_urls,
     dependent: :destroy
   has_many :fleet_inventories, dependent: :destroy
-  has_many :fleet_squadrons, dependent: :destroy
+  # Ordered here rather than at every call site: the strip on the front page,
+  # the filter segments and the roster badges all read this association, and a
+  # custom order that only the list page honoured would not be one.
+  has_many :fleet_squadrons, -> { order(position: :asc) }, dependent: :destroy
 
   # The database cascades these, so `dependent:` would only be a second, slower
   # way of doing the same thing -- and a fleet must never fail to delete

@@ -8,6 +8,7 @@
 #  color             :string
 #  description       :text
 #  name              :string           not null
+#  position          :integer          default(0), not null
 #  short_description :text
 #  slug              :string           not null
 #  created_at        :datetime         not null
@@ -17,6 +18,7 @@
 # Indexes
 #
 #  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
+#  index_fleet_squadrons_on_fleet_id_and_position    (fleet_id,position)
 #  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
 #
 # Foreign Keys
@@ -106,15 +108,27 @@ class FleetSquadron < ApplicationRecord
   before_validation :normalize_color
   before_validation :update_slugs
 
-  DEFAULT_SORTING_PARAMS = "name asc"
+  # Appended rather than inserted: a squadron somebody has just made belongs at
+  # the end of the order somebody else arranged, not in the middle of it.
+  before_create :set_position
+
+  # The fleet's own order, which is the point of having one. Sorting by name is
+  # still offered; it is simply not what the list opens on.
+  DEFAULT_SORTING_PARAMS = "position asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name slug fleet_id created_at updated_at]
+    %w[name slug fleet_id position created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  private def set_position
+    return if position.to_i.positive?
+
+    self.position = (fleet&.fleet_squadrons&.maximum(:position) || 0) + 1
   end
 
   # The accepted roster only. A squadron row can outlive the membership's

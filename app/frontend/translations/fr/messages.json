@@ -325,6 +325,9 @@
             "success": "Escadron dissous.",
             "failure": "L'escadron n'a pas pu être dissous."
           },
+          "sort": {
+            "failure": "L'ordre n'a pas pu être enregistré."
+          },
           "members": {
             "add": {
               "success": "%{count} membres ajoutés.",

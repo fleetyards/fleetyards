@@ -16,11 +16,13 @@ import Empty from "@/shared/components/Empty/index.vue";
 import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   type Fleet,
   type FleetMember,
   type FleetSquadron,
   useFleetSquadrons,
+  useSortFleetSquadrons,
 } from "@/services/fyApi";
 
 type Props = {
@@ -32,6 +34,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
+const { displayAlert } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
@@ -45,9 +48,47 @@ const {
   refetch,
 } = useFleetSquadrons(fleetSlug, {});
 
-const squadronList = computed<FleetSquadron[]>(
-  () => squadrons.value?.items ?? [],
+const canSort = computed(
+  () => props.membership?.capabilities?.updateSquadrons ?? false,
 );
+
+/*
+ * The order is the fleet's own, so the list has to hold it locally while the
+ * write is in flight: re-reading the server between the drop and the response
+ * would snap the card back to where it was dragged from.
+ */
+const orderedSquadrons = ref<FleetSquadron[]>([]);
+
+watch(
+  () => squadrons.value?.items,
+  (items) => {
+    orderedSquadrons.value = [...(items ?? [])];
+  },
+  { immediate: true },
+);
+
+const squadronList = computed<FleetSquadron[]>(() => orderedSquadrons.value);
+
+const sortMutation = useSortFleetSquadrons();
+
+const onSort = (ids: string[]) => {
+  const previous = orderedSquadrons.value;
+
+  orderedSquadrons.value = ids
+    .map((id) => previous.find((squadron) => squadron.id === id))
+    .filter(Boolean) as FleetSquadron[];
+
+  void sortMutation
+    .mutateAsync({ fleetSlug: props.fleet.slug, data: { sorting: ids } })
+    .then(() => {
+      comlink.emit("fleet-squadron-updated");
+    })
+    .catch(() => {
+      orderedSquadrons.value = previous;
+
+      displayAlert({ text: t("messages.fleet.squadrons.sort.failure") });
+    });
+};
 
 const squadronCreatedComlink = ref();
 const squadronUpdatedComlink = ref();
@@ -98,10 +139,18 @@ const crumbs = computed<Crumb[]>(() => [
 
   <Loader :loading="isLoading" />
 
-  <Grid v-if="squadronList.length" :records="squadronList" primary-key="id">
+  <Grid
+    v-if="squadronList.length"
+    :records="squadronList"
+    primary-key="id"
+    :sortable="canSort"
+    sort-handle=".squadron-panel-grip"
+    @sort="onSort"
+  >
     <template #default="{ record }">
       <SquadronPanel
         :squadron="record"
+        :sortable="canSort"
         :to="{
           name: 'fleet-squadron',
           params: { slug: fleet.slug, squadron: record.slug },

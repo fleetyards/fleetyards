@@ -325,6 +325,9 @@
             "success": "Escuadrón disuelto.",
             "failure": "No se ha podido disolver el escuadrón."
           },
+          "sort": {
+            "failure": "No se pudo guardar el orden."
+          },
           "members": {
             "add": {
               "success": "%{count} miembros añadidos.",

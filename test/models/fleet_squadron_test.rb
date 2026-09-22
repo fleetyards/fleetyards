@@ -10,6 +10,7 @@ require "test_helper"
 #  color             :string
 #  description       :text
 #  name              :string           not null
+#  position          :integer          default(0), not null
 #  short_description :text
 #  slug              :string           not null
 #  created_at        :datetime         not null
@@ -19,6 +20,7 @@ require "test_helper"
 # Indexes
 #
 #  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
+#  index_fleet_squadrons_on_fleet_id_and_position    (fleet_id,position)
 #  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
 #
 # Foreign Keys
@@ -88,6 +90,26 @@ class FleetSquadronTest < ActiveSupport::TestCase
   # list however the others are changed.
   test "trims the two marks and leaves the header alone" do
     assert_equal %w[icon logo], FleetSquadron.trimmed_attachment_names
+  end
+
+  # The fleet arranges its own list, so a new squadron goes on the end of it
+  # rather than into the middle by name.
+  test "a new squadron is appended to the fleet's order" do
+    first = create(:fleet_squadron, fleet: @fleet, name: "Zulu")
+    second = create(:fleet_squadron, fleet: @fleet, name: "Alpha")
+
+    assert_equal [first, second].map(&:name), @fleet.fleet_squadrons.reload.map(&:name)
+    assert_operator second.position, :>, first.position
+  end
+
+  test "the fleet's order is what the association reads in" do
+    first = create(:fleet_squadron, fleet: @fleet, name: "Alpha")
+    second = create(:fleet_squadron, fleet: @fleet, name: "Bravo")
+
+    second.update!(position: 0)
+
+    assert_equal %w[Bravo Alpha], @fleet.fleet_squadrons.reload.map(&:name)
+    assert_equal first.position, @fleet.fleet_squadrons.last.position
   end
 
   test "counts only accepted members" do

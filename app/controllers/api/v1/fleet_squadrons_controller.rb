@@ -13,7 +13,7 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy]
+        only: %i[create update destroy sort]
 
       before_action :set_fleet
       before_action :check_fleet_squadrons_feature
@@ -57,6 +57,23 @@ module Api
         else
           render json: ValidationError.new("fleet_squadrons.update", errors: @fleet_squadron.errors), status: :bad_request
         end
+      end
+
+      # The whole order in one call rather than a position per squadron: the list
+      # is dragged into shape and then written, and sending each move on its own
+      # would leave the order half-applied whenever one of them failed.
+      def sort
+        authorize! FleetSquadron.new(fleet: @fleet), to: :sort?
+
+        sorting = params.permit(sorting: [])[:sorting] || []
+
+        FleetSquadron.transaction do
+          sorting.each_with_index do |id, index|
+            @fleet.fleet_squadrons.where(id: id).update_all(position: index + 1)
+          end
+        end
+
+        head :no_content
       end
 
       def destroy

@@ -325,6 +325,9 @@
             "success": "Squadrone sciolto.",
             "failure": "Impossibile sciogliere lo squadrone."
           },
+          "sort": {
+            "failure": "Non è stato possibile salvare l'ordine."
+          },
           "members": {
             "add": {
               "success": "%{count} membri aggiunti.",

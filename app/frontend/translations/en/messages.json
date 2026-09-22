@@ -335,6 +335,9 @@
             "success": "Squadron disbanded.",
             "failure": "Squadron could not be disbanded."
           },
+          "sort": {
+            "failure": "The order could not be saved."
+          },
           "members": {
             "add": {
               "success": "%{count} members added.",

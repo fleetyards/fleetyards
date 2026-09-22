@@ -17,6 +17,12 @@ class FleetSquadronPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?([*FleetSquadron::MANAGE_PRIVILEGES, "fleet:squadrons:update"]) || false
   end
 
+  # Arranging the list is the same authority as editing what is in it: whoever
+  # may rename a squadron may say where it sits.
+  def sort?
+    update?
+  end
+
   def destroy?
     accepted_fleet_membership&.has_access?([*FleetSquadron::MANAGE_PRIVILEGES, "fleet:squadrons:delete"]) || false
   end

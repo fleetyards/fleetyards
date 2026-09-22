@@ -23,12 +23,16 @@ type Props = {
   editable?: boolean;
   destroyable?: boolean;
   membersManageable?: boolean;
+  // Draws the grip the grid drags by. The card stays a link: a whole card that
+  // is also a drag target cannot be clicked without moving it a little first.
+  sortable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
   destroyable: false,
   membersManageable: false,
+  sortable: false,
 });
 
 const emit = defineEmits<{ edit: []; destroy: []; addMembers: [] }>();
@@ -65,7 +69,19 @@ const railStyle = computed(() => ({
           {{ squadron.shortDescription }}
         </span>
       </template>
-      <template v-if="membersManageable || editable || destroyable" #actions>
+      <template
+        v-if="sortable || membersManageable || editable || destroyable"
+        #actions
+      >
+        <span
+          v-if="sortable"
+          v-tooltip="t('actions.reorder')"
+          class="squadron-panel-action squadron-panel-grip"
+          :aria-label="t('actions.reorder')"
+          data-test="squadron-panel-grip"
+        >
+          <i class="fa-duotone fa-grip-vertical" />
+        </span>
         <Btn
           v-if="membersManageable"
           v-tooltip="t('actions.fleet.squadrons.addMember')"
@@ -141,6 +157,19 @@ const railStyle = computed(() => ({
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
+  }
+
+  // The one control that is not a button: it does nothing on click, and what it
+  // affords is the drag.
+  &-grip {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-muted);
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 
   &-action {

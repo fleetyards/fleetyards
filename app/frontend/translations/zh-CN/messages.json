@@ -325,6 +325,9 @@
             "success": "中队已解散。",
             "failure": "无法解散中队。"
           },
+          "sort": {
+            "failure": "无法保存排序。"
+          },
           "members": {
             "add": {
               "success": "已添加 %{count} 名成员。",

@@ -32,6 +32,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   resources :fleet_invite_urls, path: "invite-urls", param: :token, only: %i[index create destroy]
 
   resources :fleet_squadrons, path: "squadrons", param: :slug, only: %i[index show create update destroy] do
+    collection do
+      put :sort
+    end
+
     resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create destroy]
   end
 

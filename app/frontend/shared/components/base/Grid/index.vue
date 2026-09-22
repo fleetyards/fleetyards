@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup generic="T">
+import Sortable from "sortablejs";
 import { useReportListGeometry } from "@/shared/composables/useListGeometry";
 import type { ComponentPublicInstance } from "vue";
 
@@ -13,12 +14,22 @@ type Props = {
   primaryKey: keyof T;
   gridBase?: "2" | "3";
   filterVisible?: boolean;
+  // Drag to rearrange. The handle is a selector inside the card, so the card
+  // itself stays a link rather than becoming something you cannot click.
+  sortable?: boolean;
+  sortHandle?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   gridBase: "3",
   filterVisible: false,
+  sortable: false,
+  sortHandle: undefined,
 });
+
+// The keys in the order they now sit in. The caller owns the list, so it is the
+// one that writes the new order and says what to do if that fails.
+const emit = defineEmits<{ sort: [keys: string[]] }>();
 
 const gridClasses = computed(() => {
   if (props.gridBase === "3") {
@@ -70,6 +81,46 @@ const { report } = useReportListGeometry("card", cells, {
 // The filter panel takes a column away from the grid, which makes every card in
 // it narrower and most of them taller.
 watch(() => props.filterVisible, report);
+
+let sortableInstance: Sortable | null = null;
+
+const initSortable = () => {
+  sortableInstance?.destroy();
+  sortableInstance = null;
+
+  const container = cells.value?.$el as HTMLElement | undefined;
+
+  if (!props.sortable || !container) {
+    return;
+  }
+
+  sortableInstance = Sortable.create(container, {
+    animation: 150,
+    handle: props.sortHandle,
+    draggable: ".base-grid__cell",
+    onEnd: () => {
+      const keys = Array.from(
+        container.querySelectorAll<HTMLElement>("[data-sort-id]"),
+      )
+        .map((cell) => cell.dataset.sortId)
+        .filter(Boolean) as string[];
+
+      emit("sort", keys);
+    },
+  });
+};
+
+watch(
+  [() => props.sortable, () => props.sortHandle, () => props.records.length],
+  () => void nextTick(initSortable),
+);
+
+onMounted(() => void nextTick(initSortable));
+
+onUnmounted(() => {
+  sortableInstance?.destroy();
+  sortableInstance = null;
+});
 </script>
 
 <template>
@@ -83,6 +134,7 @@ watch(() => props.filterVisible, report);
     <div
       v-for="(record, index) in records"
       :key="primaryValue(record)"
+      :data-sort-id="sortable ? primaryValue(record) : undefined"
       :class="cssClasses"
     >
       <slot :record="record" :index="index" />
