@@ -174,6 +174,16 @@ export const routes = [
     },
   },
   {
+    path: "squadrons/",
+    name: "visual-tests-squadrons",
+    component: () =>
+      import("@/frontend/components/Fleets/Squadrons/SquadronPanel/visual.vue"),
+    meta: {
+      title: "visualTests.squadrons",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "chips/",
     name: "visual-tests-chips",
     component: () => import("@/shared/components/base/Chip/visual.vue"),

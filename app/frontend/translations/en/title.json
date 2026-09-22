@@ -176,6 +176,7 @@
         "media": "Media - Visual Tests",
         "charts": "Charts - Visual Tests",
         "chips": "Chips - Visual Tests",
+        "squadrons": "Squadrons",
         "notificationCenter": "Notification Center - Visual Tests"
       },
       "admin": {
