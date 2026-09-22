@@ -105,7 +105,7 @@ module Api
 
       def vehicles_by_model
         vehicles_by_model = transform_for_bar_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.name").count
         ).take(params[:limit].present? ? params[:limit].to_i : 10)
@@ -115,7 +115,7 @@ module Api
 
       def models_by_size
         models_by_size = transform_for_pie_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.size").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -127,7 +127,7 @@ module Api
 
       def models_by_production_status
         models_by_production_status = transform_for_pie_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.production_status").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -142,7 +142,7 @@ module Api
           @fleet.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                {manufacturer.name => @fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
+                {manufacturer.name => chart_scope.where(model_id: model_ids).count}
               end
               .reduce(:merge) || []
         )
@@ -152,7 +152,7 @@ module Api
 
       def models_by_classification
         models_by_classification = transform_for_pie_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.classification").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -162,10 +162,19 @@ module Api
         render json: models_by_classification.to_json
       end
 
-      # The two populations every figure above is drawn from. Seams rather than
-      # `@fleet.vehicles` and `@fleet.fleet_memberships` inline, so
-      # `FleetSquadronStatsController` narrows them to one squadron by
-      # overriding these instead of restating the arithmetic.
+      # What the five charts count. They read `@fleet.vehicles` directly until
+      # now, so a squadron picked on the stats page narrowed the metrics row and
+      # left every chart under it describing the whole fleet.
+      #
+      # `for_squadrons` deletes the param as it reads it, so this asks once and
+      # each chart action reuses the answer.
+      private def chart_scope
+        @chart_scope ||= narrow_to_squadrons(vehicle_scope.visible.where(loaner: false))
+      end
+
+      # The two populations every figure above is drawn from, kept as seams
+      # rather than reaching for `@fleet.vehicles` and `@fleet.fleet_memberships`
+      # inline.
       def narrow_to_squadrons(scope)
         user_ids = for_squadrons(@fleet)
 

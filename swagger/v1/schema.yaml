@@ -7064,6 +7064,14 @@ paths:
       tags:
       - FleetStats
       operationId: fleetModelsByClassification
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -7100,6 +7108,14 @@ paths:
       tags:
       - FleetStats
       operationId: fleetModelsByManufacturer
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -7136,6 +7152,14 @@ paths:
       tags:
       - FleetStats
       operationId: fleetModelsByProductionStatus
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -7172,6 +7196,14 @@ paths:
       tags:
       - FleetStats
       operationId: fleetModelsBySize
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -7258,6 +7290,14 @@ paths:
       tags:
       - FleetStats
       operationId: fleetVehiclesByModel
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -13338,6 +13378,14 @@ paths:
       tags:
       - FleetStats
       operationId: publicFleetModelsByClassification
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -13366,6 +13414,14 @@ paths:
       tags:
       - FleetStats
       operationId: publicFleetModelsByManufacturer
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -13394,6 +13450,14 @@ paths:
       tags:
       - FleetStats
       operationId: publicFleetModelsByProductionStatus
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -13422,6 +13486,14 @@ paths:
       tags:
       - FleetStats
       operationId: publicFleetModelsBySize
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -13486,6 +13558,14 @@ paths:
       tags:
       - FleetStats
       operationId: publicFleetVehiclesByModel
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful

@@ -27,7 +27,10 @@ import {
   useFleetModelsByManufacturer as useFleetModelsByManufacturerQuery,
   useFleetVehiclesByModel as useFleetVehiclesByModelQuery,
   type Fleet,
+  type FleetMemberQuery,
+  type FleetVehicleQuery,
 } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -40,28 +43,51 @@ const { t } = useI18n();
 
 const vehiclesByModelLimit = ref(10);
 
-const { data: vehicleStats } = useFleetVehiclesStatsQuery(props.fleet.slug);
+/*
+ * Every figure on this page counts the same vehicles, so they all take the same
+ * filter -- the squadron segments above them write it into the route query and
+ * this reads it back. Read-only here: the control owns the writing.
+ */
+const { getQuery } = useFilters<FleetVehicleQuery>();
+
+const queryParams = computed(() => ({ q: getQuery() }));
+
+/*
+ * The member figures are counted over memberships, not vehicles, so that
+ * endpoint takes a query of its own shape -- and only the squadron narrows
+ * both populations. A classification filter has nothing to say about a head
+ * count.
+ */
+const memberQueryParams = computed(() => ({
+  q: { squadronSlugIn: getQuery().squadronSlugIn } as FleetMemberQuery,
+}));
+
+const { data: vehicleStats } = useFleetVehiclesStatsQuery(
+  props.fleet.slug,
+  queryParams,
+);
 
 const { data: memberStats, ...memberStatsStatus } = useFleetMembersStatsQuery(
   props.fleet.slug,
+  memberQueryParams,
 );
 
 const { data: modelsByClassificationOptions, ...modelsByClassificationStatus } =
-  useFleetModelsByClassificationQuery(props.fleet.slug);
+  useFleetModelsByClassificationQuery(props.fleet.slug, queryParams);
 
 const { data: modelsBySizeOptions, ...modelsBySizeStatus } =
-  useFleetModelsBySizeQuery(props.fleet.slug);
+  useFleetModelsBySizeQuery(props.fleet.slug, queryParams);
 
 const {
   data: modelsByProductionStatusOptions,
   ...modelsByProductionStatusStatus
-} = useFleetModelsByProductionStatusQuery(props.fleet.slug);
+} = useFleetModelsByProductionStatusQuery(props.fleet.slug, queryParams);
 
 const { data: modelsByManufacturerOptions, ...modelsByManufacturerStatus } =
-  useFleetModelsByManufacturerQuery(props.fleet.slug);
+  useFleetModelsByManufacturerQuery(props.fleet.slug, queryParams);
 
 const { data: vehiclesByModelOptions, ...vehiclesByModelStatus } =
-  useFleetVehiclesByModelQuery(props.fleet.slug);
+  useFleetVehiclesByModelQuery(props.fleet.slug, queryParams);
 
 const totalMemberCount = ref(0);
 const totalShipCount = ref(0);
