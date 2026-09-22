@@ -27,6 +27,24 @@ import {
  * controllers subclass the fleet's and override only the scope. That is what
  * lets `FleetShipsList` serve both rather than growing a second copy.
  */
+/*
+ * The cache key for whichever scope is in play, derived from the slugs alone.
+ *
+ * Separate from `useFleetShipsSource` because of an ordering knot: the query
+ * params carry the page, the page comes from `usePagination`, and
+ * `usePagination` wants this key. Taking the key off the queries would mean
+ * declaring the params before the page exists.
+ */
+export const fleetShipsQueryKey = (
+  fleetSlug: Ref<string>,
+  squadronSlug: Ref<string | undefined>,
+) =>
+  computed(() =>
+    squadronSlug.value
+      ? getFleetSquadronVehiclesQueryKey(fleetSlug.value, squadronSlug.value)
+      : getFleetVehiclesQueryKey(fleetSlug.value),
+  );
+
 export const useFleetShipsSource = (
   fleetSlug: Ref<string>,
   squadronSlug: Ref<string | undefined>,
@@ -90,12 +108,6 @@ export const useFleetShipsSource = (
     scoped.value ? squadronStatus : fleetStatus,
   );
 
-  const queryKey = computed(() =>
-    scoped.value
-      ? getFleetSquadronVehiclesQueryKey(fleetSlug.value, squadron.value)
-      : getFleetVehiclesQueryKey(fleetSlug.value),
-  );
-
   const refetch = async () => {
     if (scoped.value) {
       await refetchSquadronVehicles();
@@ -133,7 +145,6 @@ export const useFleetShipsSource = (
     stats,
     modelCounts,
     asyncStatus,
-    queryKey,
     refetch,
     fetchExport,
     fetchHangarLinkExport,

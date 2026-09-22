@@ -38,7 +38,10 @@ import {
   type FleetSquadron,
   type VehicleExport,
 } from "@/services/fyApi";
-import { useFleetShipsSource } from "@/frontend/composables/useFleetShipsSource";
+import {
+  fleetShipsQueryKey,
+  useFleetShipsSource,
+} from "@/frontend/composables/useFleetShipsSource";
 
 type Props = {
   fleet: Fleet;
@@ -179,6 +182,14 @@ const { getQuery } = useFilters<FleetVehicleQuery>({
   },
 });
 
+// Order matters here, and it is not arbitrary: the queries read the params,
+// the params read the page, and the page comes from `usePagination` -- which
+// only wants the key. So the key is derived first, then the page, then the
+// params, then the queries that consume them.
+const fleetVehiclesQueryKey = fleetShipsQueryKey(fleetSlug, squadronSlug);
+
+const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
+
 const fleetVehiclesQueryParams = computed(() => {
   return {
     page: page.value,
@@ -193,13 +204,10 @@ const {
   stats: fleetStats,
   modelCounts,
   asyncStatus,
-  queryKey: fleetVehiclesQueryKey,
   refetch,
   fetchExport,
   fetchHangarLinkExport,
 } = useFleetShipsSource(fleetSlug, squadronSlug, fleetVehiclesQueryParams);
-
-const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
 
 const refresh = useDebouncedRefresh(refetch);
 
