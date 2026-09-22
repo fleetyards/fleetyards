@@ -213,6 +213,7 @@ zh-CN:
           class8: Class 8
     errors:
       messages:
+        not_transparent: 必须是透明图像，例如去除背景的 PNG
         contract_item_already_asked_for: "该合约中已有相同类别和单位的这项货物"
         entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"
         inventory_goods_in_transit: "在已发送的转移得到答复之前无法删除"

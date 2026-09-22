@@ -55,7 +55,9 @@ const { defineField, handleSubmit, setErrors } = useForm({
     // on the neutral it is already drawn with rather than on the browser's
     // default black.
     color: props.squadron?.color ?? "#8899aa",
+    icon: undefined as string | undefined,
     logo: undefined as string | undefined,
+    header: undefined as string | undefined,
   },
 });
 
@@ -64,7 +66,9 @@ const [shortDescription, shortDescriptionProps] =
   defineField("shortDescription");
 const [description, descriptionProps] = defineField("description");
 const [color, colorProps] = defineField("color");
+const [icon, iconProps] = defineField("icon");
 const [logo, logoProps] = defineField("logo");
+const [header, headerProps] = defineField("header");
 
 const createMutation = useCreateFleetSquadron();
 const updateMutation = useUpdateFleetSquadron();
@@ -79,7 +83,9 @@ const onSubmit = handleSubmit(async (values) => {
     color: values.color || null,
     // Passed through rather than coerced: `undefined` keeps what is attached,
     // `null` is the field saying it was cleared, and a signed id replaces it.
+    icon: values.icon,
     logo: values.logo,
+    header: values.header,
   };
 
   const mutation = isEdit.value
@@ -134,11 +140,32 @@ const onSubmit = handleSubmit(async (values) => {
   >
     <form id="fleet-squadron-form" @submit.prevent="onSubmit">
       <FormFileInput
+        v-model="icon"
+        v-bind="iconProps"
+        :file="props.squadron?.icon"
+        name="icon"
+        :label="t('labels.fleet.squadrons.icon')"
+        :info="t('labels.fleet.squadrons.iconHint')"
+        :allowed-types="AllowedFileTypes.IMAGE"
+        clearable
+      />
+      <FormFileInput
         v-model="logo"
         v-bind="logoProps"
         :file="props.squadron?.logo"
         name="logo"
         :label="t('labels.fleet.squadrons.logo')"
+        :info="t('labels.fleet.squadrons.logoHint')"
+        :allowed-types="AllowedFileTypes.IMAGE"
+        clearable
+      />
+      <FormFileInput
+        v-model="header"
+        v-bind="headerProps"
+        :file="props.squadron?.header"
+        name="header"
+        :label="t('labels.fleet.squadrons.header')"
+        :info="t('labels.fleet.squadrons.headerHint')"
         :allowed-types="AllowedFileTypes.IMAGE"
         clearable
       />

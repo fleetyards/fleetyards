@@ -13,7 +13,9 @@ module V1
             shortDescription: {type: [:string, :null]},
             description: {type: [:string, :null]},
             color: {type: [:string, :null]},
-            logo: {type: [:string, :null]}
+            icon: {type: [:string, :null]},
+            logo: {type: [:string, :null]},
+            header: {type: [:string, :null]}
           },
           additionalProperties: false
         })

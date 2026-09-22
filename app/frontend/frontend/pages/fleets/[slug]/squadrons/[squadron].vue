@@ -175,6 +175,12 @@ const crumbs = computed<Crumb[]>(() => [
   <Loader :loading="isLoading" />
 
   <template v-if="squadron">
+    <div
+      v-if="squadron.header?.mediumUrl"
+      class="squadron-header"
+      :style="{ backgroundImage: `url(${squadron.header.mediumUrl})` }"
+    />
+
     <div class="squadron-identity">
       <SquadronEmblem :squadron="squadron" :size="96" />
       <div class="squadron-identity-text">
@@ -256,6 +262,18 @@ const crumbs = computed<Crumb[]>(() => [
 </template>
 
 <style lang="scss" scoped>
+// Its own band rather than a backdrop behind the text: a squadron picks this
+// picture, and a heading laid over an arbitrary photograph is unreadable about
+// half the time.
+.squadron-header {
+  height: 220px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-surface, 16px);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .squadron-identity {
   display: flex;
   align-items: flex-start;

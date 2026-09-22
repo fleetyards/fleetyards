@@ -36,8 +36,19 @@ class FleetSquadron < ApplicationRecord
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 
+  ICON_DIMENSIONS = "256x256"
+  LOGO_DIMENSIONS = "512x256"
+  HEADER_DIMENSIONS = "1920x480"
+
+  has_one_attached :icon
   has_one_attached :logo
-  validates :logo, no_vector_image: true
+  has_one_attached :header
+
+  validates :icon, :logo, :header, no_vector_image: true
+
+  # The two marks have to carry their own cut-out; the header is a photograph
+  # behind a heading and has nothing to cut out of.
+  validates :icon, :logo, transparent_image: true
 
   AVAILABLE_PRIVILEGES = [
     "fleet:squadrons:read",

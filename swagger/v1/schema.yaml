@@ -21865,7 +21865,11 @@ components:
           - 'null'
         memberCount:
           type: integer
+        icon:
+          "$ref": "#/components/schemas/MediaFile"
         logo:
+          "$ref": "#/components/schemas/MediaFile"
+        header:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
@@ -21899,7 +21903,15 @@ components:
           type:
           - string
           - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
         logo:
+          type:
+          - string
+          - 'null'
+        header:
           type:
           - string
           - 'null'
@@ -21944,7 +21956,7 @@ components:
           type:
           - string
           - 'null'
-        logo:
+        icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
@@ -21982,7 +21994,15 @@ components:
           type:
           - string
           - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
         logo:
+          type:
+          - string
+          - 'null'
+        header:
           type:
           - string
           - 'null'

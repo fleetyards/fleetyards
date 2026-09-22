@@ -16,9 +16,14 @@ const props = withDefaults(defineProps<Props>(), {
   size: 44,
 });
 
-const logo = computed(() =>
-  "logo" in props.squadron ? props.squadron.logo?.smallUrl : undefined,
-);
+const mark = computed(() => {
+  const squadron = props.squadron as {
+    icon?: { smallUrl?: string | null } | null;
+    logo?: { smallUrl?: string | null } | null;
+  };
+
+  return squadron.icon?.smallUrl || squadron.logo?.smallUrl || undefined;
+});
 
 // Up to two words, so "Combat Wing" reads CW and "Alpha" reads A. Taken from
 // the name rather than the slug: the slug is lowercased and a squadron called
@@ -98,8 +103,8 @@ const tileStyle = computed(() => ({
 
 <template>
   <img
-    v-if="logo"
-    :src="logo"
+    v-if="mark"
+    :src="mark"
     :alt="squadron.name"
     class="squadron-emblem squadron-emblem--logo"
     :style="logoStyle"

@@ -213,6 +213,7 @@ de:
           class8: Class 8
     errors:
       messages:
+        not_transparent: muss ein transparentes Bild sein, etwa ein PNG mit freigestelltem Hintergrund
         contract_item_already_asked_for: "steht mit derselben Kategorie und Einheit bereits auf diesem Auftrag"
         entry_goods_in_transit: "kann nicht gelöscht werden, solange der zugehörige Transfer noch unbeantwortet ist"
         inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"

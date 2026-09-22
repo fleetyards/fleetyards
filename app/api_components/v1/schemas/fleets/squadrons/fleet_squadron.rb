@@ -17,7 +17,9 @@ module V1
               description: {type: [:string, :null]},
               color: {type: [:string, :null]},
               memberCount: {type: :integer},
+              icon: ::Shared::V1::Schemas::MediaFile,
               logo: ::Shared::V1::Schemas::MediaFile,
+              header: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },

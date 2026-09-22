@@ -213,6 +213,7 @@ en:
           class8: Class 8
     errors:
       messages:
+        not_transparent: must be a transparent image, such as a PNG with a cut-out background
         blank: can't be blank
         record_invalid: Bad Data
         svg_not_supported: must not be an SVG image

@@ -33,8 +33,16 @@ FactoryBot.define do
       color { "#ff8800" }
     end
 
+    trait :with_icon do
+      icon { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
+    end
+
     trait :with_logo do
       logo { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_header do
+      header { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg") }
     end
   end
 end
