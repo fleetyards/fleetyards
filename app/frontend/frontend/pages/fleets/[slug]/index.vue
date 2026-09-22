@@ -176,13 +176,6 @@ const description = computed(() => {
         >
           <SquadronEmblem :squadron="squadron" :size="32" />
           <span class="squadron-name">{{ squadron.name }}</span>
-          <span class="squadron-count text-muted">
-            {{
-              t("labels.fleet.squadrons.memberCount", {
-                count: squadron.memberCount,
-              })
-            }}
-          </span>
         </router-link>
       </div>
     </div>
@@ -220,10 +213,6 @@ const description = computed(() => {
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
     color: var(--color-text, #c8c8c8);
   }
-}
-
-.squadron-count {
-  font-size: 0.85em;
 }
 
 @import "./index.scss";

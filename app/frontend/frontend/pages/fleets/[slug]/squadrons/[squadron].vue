@@ -11,6 +11,8 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -189,9 +191,6 @@ const crumbs = computed<Crumb[]>(() => [
             }}
           </template>
         </Heading>
-        <p v-if="squadron.description" class="squadron-description text-muted">
-          {{ squadron.description }}
-        </p>
       </div>
     </div>
 
@@ -228,24 +227,52 @@ const crumbs = computed<Crumb[]>(() => [
       </Btn>
     </Teleport>
 
-    <!-- Out to the fleet's own pages, narrowed to this squadron, rather than a
-         second ship list and a second stats page living here. -->
-    <div class="squadron-links">
-      <Btn
-        :to="filtered('fleet-members-index')"
-        data-test="squadron-members-link"
-      >
-        <i class="fa-duotone fa-users" />
-        {{ t("actions.fleet.squadrons.viewMembers") }}
-      </Btn>
-      <Btn :to="filtered('fleet-ships')" data-test="squadron-ships-link">
-        <i class="fa-duotone fa-starship" />
-        {{ t("actions.fleet.squadrons.viewShips") }}
-      </Btn>
-      <Btn :to="filtered('fleet-stats')" data-test="squadron-stats-link">
-        <i class="fa-duotone fa-chart-bar" />
-        {{ t("actions.fleet.squadrons.viewStats") }}
-      </Btn>
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <Panel fill-height>
+          <PanelBody>
+            <p v-if="squadron.description" class="squadron-description">
+              {{ squadron.description }}
+            </p>
+            <p v-else class="squadron-description text-muted">
+              {{ t("labels.fleet.squadrons.noDescription") }}
+            </p>
+          </PanelBody>
+        </Panel>
+      </div>
+
+      <!-- Out to the fleet's own pages, narrowed to this squadron, rather than
+           a second roster, a second ship list and a second stats page living
+           here. Stacked, so each reads as a destination rather than as one of a
+           row of buttons. -->
+      <div class="col-12 col-md-4">
+        <div class="squadron-links">
+          <Btn
+            block
+            :to="filtered('fleet-members-index')"
+            data-test="squadron-members-link"
+          >
+            <i class="fa-duotone fa-users" />
+            {{ t("actions.fleet.squadrons.viewMembers") }}
+          </Btn>
+          <Btn
+            block
+            :to="filtered('fleet-ships')"
+            data-test="squadron-ships-link"
+          >
+            <i class="fa-duotone fa-starship" />
+            {{ t("actions.fleet.squadrons.viewShips") }}
+          </Btn>
+          <Btn
+            block
+            :to="filtered('fleet-stats')"
+            data-test="squadron-stats-link"
+          >
+            <i class="fa-duotone fa-chart-bar" />
+            {{ t("actions.fleet.squadrons.viewStats") }}
+          </Btn>
+        </div>
+      </div>
     </div>
   </template>
 
@@ -285,16 +312,14 @@ const crumbs = computed<Crumb[]>(() => [
 }
 
 .squadron-description {
-  margin: 8px 0 0;
-  max-width: 70ch;
+  margin: 0;
   // Written in a textarea; the paragraphs somebody typed are kept.
   white-space: pre-line;
 }
 
 .squadron-links {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
 }
 </style>

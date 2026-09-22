@@ -486,6 +486,7 @@
           "shortDescriptionHint": "一两行，显示在卡片上",
           "description": "描述",
           "descriptionHint": "中队页面上的完整文字",
+          "noDescription": "该中队还没有描述。",
           "icon": "图标",
           "iconHint": "正方形，256×256，透明 PNG",
           "logo": "徽标",

@@ -486,6 +486,7 @@
           "shortDescriptionHint": "Una o due righe, sulla scheda",
           "description": "Descrizione",
           "descriptionHint": "Il testo completo sulla pagina dello squadrone",
+          "noDescription": "Questo squadrone non ha ancora una descrizione.",
           "icon": "Icona",
           "iconHint": "Quadrata, 256×256, PNG trasparente",
           "logo": "Logo",

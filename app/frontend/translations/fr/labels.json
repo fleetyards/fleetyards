@@ -486,6 +486,7 @@
           "shortDescriptionHint": "Une ou deux lignes, sur la carte",
           "description": "Description",
           "descriptionHint": "Le texte complet sur la page de l'escadron",
+          "noDescription": "Cet escadron n'a pas encore de description.",
           "icon": "Icône",
           "iconHint": "Carrée, 256×256, PNG transparent",
           "logo": "Logo",
