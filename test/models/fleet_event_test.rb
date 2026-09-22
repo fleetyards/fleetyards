@@ -14,7 +14,7 @@ require "test_helper"
 #  briefing                  :text
 #  cancelled_at              :datetime
 #  cancelled_reason          :text
-#  category                  :integer          default(0), not null
+#  category                  :integer          default("other"), not null
 #  completed_at              :datetime
 #  cover_image_preset        :string
 #  description               :text

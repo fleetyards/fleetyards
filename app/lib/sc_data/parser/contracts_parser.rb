@@ -1,6 +1,11 @@
 module ScData
   module Parser
-    # Where a crafting blueprint comes from.
+    # The contract generator tree, read for two catalogues.
+    #
+    # `game_missions` is a record per contract -- who offers it, the standing it
+    # takes, its difficulty and what it rewards. `blueprint_pools` is where a
+    # crafting blueprint comes from, which is the older of the two and the
+    # reason the walk exists at all:
     #
     # A blueprint is referenced by nothing outside `crafting/` except the reward
     # pools, and a pool is referenced only by a GUID -- grepping the contract
@@ -13,6 +18,9 @@ module ScData
     # One JSON per pool rather than per blueprint: a pool is the entity the game
     # actually models, 154 of them against 1607 recipes, and the loader is what
     # fans it out.
+    #
+    # Both outputs come off one traversal of the 107 generator files, which is
+    # the expensive half of either.
     class ContractsParser < ScData::Parser::BaseParser
       POOLS_PATH = "crafting/blueprintrewards"
       GENERATORS_PATH = "contracts/contractgenerator"
@@ -44,26 +52,70 @@ module ScData
       #
       # `SubContract` is deliberately not a contract kind: it is a step inside
       # one, and its rewards are the parent contract's.
-      CONTRACT_KINDS = %w[CareerContract Contract].freeze
+      CONTRACT_KINDS = {"CareerContract" => "career", "Contract" => "contract"}.freeze
+
+      # Where the payout, the standing and the items a contract awards are
+      # declared. `ContractResult_CalculatedReward` is not among them on
+      # purpose: it is an empty element on all 2352 contracts that carry it,
+      # because the game computes that figure at run time and the export states
+      # no table, curve or scalar it could be computed from here.
+      REPUTATION_REWARDS_PATH = "reputation/rewards"
+      DIFFICULTY_PROFILES_PATH = "contracts/contractdifficultyprofiles"
+
+      # Where the entities an award names live. An award states a class ref and
+      # nothing else -- no name, no type -- and 234 of the 410 item awards in
+      # 4.10.1 point at physical currency ("MG Scrip", "Council Scrip"), which
+      # is the closest thing to a payout the export states per contract.
+      ENTITIES_PATH = "entities"
+
+      # A difficulty band is a designer's sentence with the level on the end --
+      # "Hard_PvE_or_Easy_PvP_action_5", "Basically_a_Dev_7". The prose is
+      # developer-facing and the 1-7 is the only half worth showing, so the
+      # number is what is carried and the label is ours.
+      DIFFICULTY_AXES = {
+        mechanical_skill: "mechanicalSkill",
+        mental_load: "mentalLoad",
+        risk_of_loss: "riskOfLoss",
+        game_knowledge: "gameKnowledge"
+      }.freeze
+
+      # What `@LOC_UNINITIALIZED` resolves to. It is a real entry in the
+      # localisation file rather than a missing key, so `localize` returns it
+      # happily and a contract that has never been titled would otherwise ship
+      # "<= UNINITIALIZED =>" as its name.
+      UNINITIALIZED = "<= UNINITIALIZED =>"
 
       POOLS_FOLDER = "blueprint_pools"
+      MISSIONS_FOLDER = "game_missions"
 
       def all
+        save_pools
+        save_missions
+      end
+
+      # `save_items` returns before it clears, so a run that parsed nothing
+      # leaves the previous catalogue on disk. That is deliberate for `items`
+      # and `models`, which several passes fill and where an early blank pass
+      # must not wipe what a later one writes -- but these folders are written
+      # once, so blank means the tree is gone rather than not reached yet.
+      #
+      # Left alone, the stale records would still clear the floor check and
+      # load as the current build's, which is the one failure the check exists
+      # to catch.
+      private def save_pools
         parsed = pools
 
-        # `save_items` returns before it clears, so a run that parsed nothing
-        # leaves the previous catalogue on disk. That is deliberate for `items`
-        # and `models`, which several passes fill and where an early blank pass
-        # must not wipe what a later one writes -- but this folder is written
-        # once, so blank means the crafting tree is gone rather than not reached
-        # yet.
-        #
-        # Left alone, the stale pools would still clear the floor check and load
-        # as the current build's sources, which is the one failure the check
-        # exists to catch.
         return clear_once("#{export_path}/#{POOLS_FOLDER}") if parsed.blank?
 
         save_items(parsed, folder: POOLS_FOLDER)
+      end
+
+      private def save_missions
+        parsed = missions
+
+        return clear_once("#{export_path}/#{MISSIONS_FOLDER}") if parsed.blank?
+
+        save_items(parsed, folder: MISSIONS_FOLDER, key: :sc_key)
       end
 
       def pools
@@ -126,30 +178,388 @@ module ScData
       # results, so the title and the standing band that reach it are that
       # contract's own.
       private def collect_generator_sources(sources)
-        load_data(GENERATORS_PATH).each do |item|
+        contract_entries.each do |entry|
+          contract = entry[:contract]
+          org = entry[:org]
+
+          source = {
+            kind: "contract",
+            org_ref: entry[:org_ref],
+            org_key: org[:key],
+            org_name: org[:name],
+            org_lawful: org[:lawful],
+            generator_key: entry[:generator_key],
+            mission_name: contract_title(contract),
+            min_standing: standings[value_or_nil(contract["minStanding"])],
+            max_standing: standings[value_or_nil(contract["maxStanding"])]
+          }.compact
+
+          contract_pools(contract).each { |ref| sources[ref] << source }
+        end
+      end
+
+      # Every contract in the generator tree, with its handler's org already
+      # resolved. Memoised because both catalogues read it and the traversal --
+      # 107 files, one `Hash.from_xml` each -- is what either of them costs.
+      private def contract_entries
+        @contract_entries ||= load_data(GENERATORS_PATH).flat_map do |item|
           fallback = generator_org(item[:values])
 
-          handlers(item[:values]).each do |handler|
+          handlers(item[:values]).flat_map do |handler|
             org_ref = value_or_nil(handler["factionReputation"]) || fallback
 
-            org = orgs[org_ref] || {}
-
-            contracts(handler).each do |contract|
-              entry = {
-                kind: "contract",
-                org_ref:,
-                org_key: org[:key],
-                org_name: org[:name],
-                org_lawful: org[:lawful],
+            contracts(handler).map do |kind, contract|
+              {
                 generator_key: item[:key].downcase,
-                mission_name: contract_title(contract),
-                min_standing: standings[value_or_nil(contract["minStanding"])],
-                max_standing: standings[value_or_nil(contract["maxStanding"])]
-              }.compact
-
-              contract_pools(contract).each { |ref| sources[ref] << entry }
+                kind:,
+                contract:,
+                org_ref:,
+                org: orgs[org_ref] || {}
+              }
             end
           end
+        end
+      end
+
+      # One record per contract. 2536 of them in 4.10.1, against the 786 that
+      # hand out a blueprint and are the only ones the pool walk keeps.
+      def missions
+        identified = contract_entries.filter_map do |entry|
+          sc_ref = value_or_nil(entry[:contract]["id"])
+
+          [entry, sc_ref, mission_base(entry, sc_ref)] if sc_ref.present?
+        end
+
+        # Counted before a single key is handed out, so that whether a key is
+        # suffixed depends on the set of contracts rather than on the order
+        # they were walked in.
+        shared = identified.map(&:last).tally
+
+        parsed = identified.map do |entry, sc_ref, base|
+          contract = entry[:contract]
+          org = entry[:org]
+
+          {
+            sc_key: (shared[base] > 1) ? "#{base}_#{sc_ref.delete("-")}" : base,
+            sc_ref:,
+            kind: entry[:kind],
+            generator_key: entry[:generator_key],
+            debug_name: value_or_nil(contract["debugName"]),
+            title: contract_title(contract),
+            # Kept as the export writes it, `~mission(Location|Address)` spans
+            # and all: the game fills those in from the mission it generates,
+            # and deleting them here breaks the sentence around them.
+            description: contract_param(contract, "Description"),
+            org_ref: entry[:org_ref],
+            org_key: org[:key],
+            org_name: org[:name],
+            org_lawful: org[:lawful],
+            min_standing: standings[value_or_nil(contract["minStanding"])],
+            max_standing: standings[value_or_nil(contract["maxStanding"])],
+            released: released?(contract),
+            difficulty: difficulty(contract),
+            rewards: contract_rewards(contract),
+            blueprint_pools: contract_pools(contract)
+          }.compact
+        end
+
+        name_item_rewards(parsed)
+      end
+
+      # Done in one pass over the finished records rather than per award: the
+      # entity tree is walked once for every ref the whole catalogue names.
+      private def name_item_rewards(parsed)
+        refs = parsed.flat_map { |mission| mission[:rewards].to_a }
+          .select { |reward| reward[:kind] == "item" }
+          .filter_map { |reward| reward[:entity_class] }
+          .uniq
+
+        return parsed if refs.blank?
+
+        names = entity_names(refs)
+
+        parsed.each do |mission|
+          mission[:rewards].to_a.each do |reward|
+            name = names[reward[:entity_class]]
+
+            reward[:entity_name] = name if name.present?
+          end
+        end
+
+        parsed
+      end
+
+      # `generator_key` alone repeats, and `debugName` alone collides across
+      # generators, so the key is both. That still leaves 13 bases shared by two
+      # contracts each in 4.10.1.
+      #
+      # `missions` suffixes *every* member of a shared base with its GUID, rather
+      # than letting the first one keep the bare base. Nothing fixes the order
+      # `Dir.glob` walks the generators in, so "the first one" is not a property
+      # of the contract: were two to swap between builds, the loader -- which
+      # finds a row by `sc_ref` -- would try to write one row the `sc_key` the
+      # other still holds, and the unique index would stop the load rather than
+      # the two exchanging URLs.
+      #
+      # The whole GUID rather than a readable head of it. A fixed-length prefix
+      # is only probably unique, and the failure is quiet: `save_items` writes
+      # both records to one file name, so one contract silently replaces the
+      # other in the tree. 26 of 2536 keys are long; every one of them is
+      # certain.
+      #
+      # The three contracts with no `debugName` fall back to the GUID whole.
+      private def mission_base(entry, sc_ref)
+        debug_name = value_or_nil(entry[:contract]["debugName"])
+
+        return sc_ref if debug_name.blank?
+
+        sanitize_key("#{entry[:generator_key]}_#{debug_name}")
+      end
+
+      # A `debugName` is a developer's note and not an identifier: 64 of them
+      # carry a space, a bracket, a dash or a slash. The key becomes a file
+      # name, so the slash is the one that matters --
+      # `TheCollector_SB_JungleArm(DO_NOT_USE_NOW_LOOT)` merely reads oddly,
+      # while `shubin_rg_discovery_fpsmine_pyro/nyx_rank3_...` writes into a
+      # directory `save_items` never created.
+      #
+      # `-` is kept, which is what leaves this collision-free: flattening the
+      # other four characters adds no pair to the 13 the raw keys already share.
+      private def sanitize_key(key)
+        key.downcase.gsub(/[^a-z0-9_-]+/, "_").gsub(/\A_+|_+\z/, "")
+      end
+
+      # Two flags, both of which mean the contract is in the files but not in
+      # front of a player: 348 are `notForRelease` and 21 `workInProgress`.
+      private def released?(contract)
+        contract["notForRelease"] != "1" && contract["workInProgress"] != "1"
+      end
+
+      # The band sits under `contractResults` rather than on the contract, at
+      # whatever depth that contract's results nest to, so it is found by name.
+      private def difficulty(contract)
+        values = Array.wrap(find_node(contract["contractResults"], "ContractDifficulty")).first
+
+        return if values.blank?
+
+        bands = DIFFICULTY_AXES.to_h { |name, attribute| [name, band_level(values[attribute])] }
+
+        bands.merge(profile: difficulty_profiles[value_or_nil(values["difficultyProfile"])]).compact.presence
+      end
+
+      private def band_level(value)
+        value.to_s[/_(\d+)\z/, 1]&.to_i
+      end
+
+      # The first node declared with `key`, at any depth. `contractResults`
+      # nests a different number of levels depending on the contract shape, and
+      # a dig that assumes one of them silently returns nothing for the others.
+      private def find_node(node, key)
+        case node
+        when Hash
+          return node[key] if node.key?(key)
+
+          node.each_value do |value|
+            found = find_node(value, key)
+
+            return found if found
+          end
+
+          nil
+        when Array
+          node.each do |entry|
+            found = find_node(entry, key)
+
+            return found if found
+          end
+
+          nil
+        end
+      end
+
+      # Profile ref to the record's own element name -- "general", "logistics",
+      # "discovery". The weights it carries are how the game turns the four
+      # bands into a payout, and are deliberately not copied onto every mission.
+      private def difficulty_profiles
+        @difficulty_profiles ||= load_data(DIFFICULTY_PROFILES_PATH).each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+
+          index[ref] = item[:key].downcase if ref.present?
+        end
+      end
+
+      # What the export is willing to state. Walked rather than dug, for the
+      # same reason the pool refs are: `contractResults` nests a different
+      # number of levels per contract shape.
+      private def contract_rewards(contract)
+        rewards = collect_rewards(contract["contractResults"])
+
+        # A contract declares one result per outcome, so the same computed
+        # payout is found several times over. It says one thing however many
+        # times it is stated, and a page listing it four times says no more.
+        calculated, stated = rewards.partition { |reward| reward[:calculated] }
+
+        stated + calculated.first(1)
+      end
+
+      private def collect_rewards(node)
+        case node
+        when Hash
+          node.flat_map { |key, value| reward_entries(key, value) || collect_rewards(value) }
+        when Array
+          node.flat_map { |entry| collect_rewards(entry) }
+        else
+          []
+        end
+      end
+
+      # Returns nil rather than an empty array for anything that is not a
+      # reward, so the walk knows to keep descending. A reward element's own
+      # children are never descended into: they are `missionResults` booleans.
+      private def reward_entries(key, value)
+        case key
+        when "ContractResult_Reward" then currency_rewards(value)
+        when "ContractResult_CalculatedReward" then calculated_rewards(value)
+        when "ContractResult_LegacyReputation" then reputation_rewards(value)
+        when "ContractResult_Item" then item_rewards(value)
+        when "ContractResult_ItemsWeighting" then weighted_item_rewards(value)
+        when "ContractResult_BadgeAward" then badge_rewards(value)
+        end
+      end
+
+      # The contract pays money, and the game works out how much when it
+      # generates the mission. The element is empty on every one of the 2352
+      # that carry it -- but its *presence* answers "does this pay at all",
+      # which is a different question from "how much" and a useful one: 176
+      # contracts answer it no.
+      #
+      # No amount, deliberately. A currency reward with no amount is one the
+      # game computes; the 8 that state a figure always carry one, including
+      # the contract whose figure is zero.
+      private def calculated_rewards(value)
+        return [] if Array.wrap(value).empty?
+
+        [{kind: "currency", calculated: true}]
+      end
+
+      # The only stated payout in the game files: 8 contracts across the whole
+      # tree, one of them in mercenary scrip rather than aUEC. A `max` of zero
+      # is the field's unset value and not a ceiling of nothing.
+      private def currency_rewards(value)
+        Array.wrap(value).filter_map do |result|
+          reward = result["contractReward"]
+
+          next if reward.blank?
+
+          max = reward["max"].to_i
+
+          {
+            kind: "currency",
+            amount: reward["reward"]&.to_i,
+            max: (max if max.positive?),
+            currency: value_or_nil(reward["currencyType"])
+          }.compact
+        end
+      end
+
+      private def reputation_rewards(value)
+        Array.wrap(value).flat_map do |result|
+          Array.wrap(result["contractResultReputationAmounts"]).filter_map do |amounts|
+            amount = reputation_amounts[value_or_nil(amounts["reward"])]
+
+            next if amount.nil?
+
+            org = orgs[value_or_nil(amounts["factionReputation"])] || {}
+
+            {kind: "reputation", amount:, org_key: org[:key], org_name: org[:name]}.compact
+          end
+        end
+      end
+
+      private def item_rewards(value)
+        Array.wrap(value).filter_map do |result|
+          entity_class = value_or_nil(result["entityClass"])
+
+          next if entity_class.blank?
+
+          {kind: "item", entity_class:, amount: result["amount"]&.to_i}.compact
+        end
+      end
+
+      # Entity ref to the name a player reads.
+      #
+      # Only the refs the awards actually name, and found by reading the first
+      # line of each entity file rather than parsing all 26,871 of them: the ref
+      # is an attribute of the root element, so one line says whether a file is
+      # wanted. 162 are, and those are parsed in full.
+      #
+      # Resolved here rather than by the loader against our own catalogues,
+      # because most of these are in none of them: 107 of the 162 are equipment
+      # or components, and the rest are carryables -- the scrip, a Banu favour --
+      # that no Fleetyards catalogue carries and a GUID is not a reward.
+      private def entity_names(refs)
+        wanted = refs.to_set
+
+        Dir.glob("#{import_path}/#{ENTITIES_PATH}/**/*.xml").each_with_object({}) do |file, index|
+          ref = File.open(file) { |handle| handle.readline(chomp: true) }[/__ref="([^"]+)"/, 1]
+
+          next if ref.blank? || !wanted.include?(ref)
+
+          values = Hash.from_xml(File.read(file)).values.first
+          name = entity_name(values)
+
+          index[ref] = name if name.present?
+        rescue EOFError, ArgumentError
+          next
+        end
+      end
+
+      # The name hangs off a `Localization` node inside the attachable component
+      # params, at a depth that varies per entity, so it is found rather than
+      # dug at.
+      private def entity_name(values)
+        localization = Array.wrap(find_node(values, "Localization")).first
+
+        return unless localization.is_a?(Hash)
+
+        localize_name(localization["Name"])
+      end
+
+      # One reward drawn from several weighted sets, each of which awards
+      # everything in it. Flattened to one entry per entity class carrying its
+      # set's weight, because a set is not a thing the catalogue can show.
+      private def weighted_item_rewards(value)
+        Array.wrap(value).flat_map do |result|
+          Array.wrap(result.dig("itemAwardStructure", "ItemAwardWeightings")).flat_map do |weighting|
+            Array.wrap(weighting.dig("awards", "ItemAwardEntityClass")).filter_map do |award|
+              entity_class = value_or_nil(award["entityClass"])
+
+              next if entity_class.blank?
+
+              {kind: "item", entity_class:, amount: award["amountToAward"]&.to_i, weight: weighting["weighting"]&.to_f}.compact
+            end
+          end
+        end
+      end
+
+      private def badge_rewards(value)
+        Array.wrap(value).filter_map do |result|
+          badge = value_or_nil(result["badgeToAward"])
+
+          {kind: "badge", badge:} if badge.present?
+        end
+      end
+
+      # Reward ref to the number of reputation points it is worth. 58 records,
+      # from -640000 to +640000, and a contract names one rather than stating a
+      # figure of its own.
+      private def reputation_amounts
+        @reputation_amounts ||= load_data(REPUTATION_REWARDS_PATH).each_with_object({}) do |item, index|
+          values = item[:values]
+          ref = value_or_nil(values["__ref"])
+          amount = values["reputationAmount"]
+
+          index[ref] = amount.to_i if ref.present? && amount.present?
         end
       end
 
@@ -193,18 +603,48 @@ module ScData
         }.select { |handler| handler.is_a?(Hash) }
       end
 
+      # Walked rather than dug at `contracts`. A handler puts most of them
+      # there and some elsewhere -- `introContracts` holds the mission an org
+      # hands out first, `PVPBountyContract` the NorthRock duels -- which is 23
+      # contracts across 12 generators, five of them handing out a blueprint.
+      #
+      # Paired with the kind, because the element name is the only place a
+      # contract says which of the two it is. A found contract is not descended
+      # into, so a nested one is never mistaken for a sibling.
       private def contracts(handler)
-        CONTRACT_KINDS.flat_map { |kind| Array.wrap(handler.dig("contracts", kind)) }
-          .select { |contract| contract.is_a?(Hash) }
+        contract_nodes(handler)
+      end
+
+      private def contract_nodes(node)
+        case node
+        when Hash
+          node.flat_map do |key, value|
+            kind = CONTRACT_KINDS[key]
+
+            next contract_nodes(value) if kind.blank?
+
+            Array.wrap(value).select { |contract| contract.is_a?(Hash) }.map { |contract| [kind, contract] }
+          end
+        when Array
+          node.flat_map { |entry| contract_nodes(entry) }
+        else
+          []
+        end
       end
 
       # The mission as a player reads it -- "Yellow Level Contract: Ambush An
       # Amateur". `debugName` is the other candidate and is not for reading.
       private def contract_title(contract)
-        params = Array.wrap(contract.dig("paramOverrides", "stringParamOverrides", "ContractStringParam"))
-        title = params.find { |param| param["param"] == "Title" }
+        contract_param(contract, "Title")
+      end
 
-        localize(title&.dig("value"))
+      private def contract_param(contract, name)
+        params = Array.wrap(contract.dig("paramOverrides", "stringParamOverrides", "ContractStringParam"))
+        param = params.find { |entry| entry["param"] == name }
+
+        value = localize(param&.dig("value"))
+
+        value unless value == UNINITIALIZED
       end
 
       # Walked rather than dug at a fixed depth. `contractResults` nests a

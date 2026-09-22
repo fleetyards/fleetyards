@@ -97,7 +97,7 @@ module ScData
       # everything behind the default, which is precisely what a comparison
       # needs to see.
       def recorded
-        BUILDS
+        ::ScData::Source.builds
           .flat_map { |klass| klass.distinct.pluck(:environment, :version) }
           .uniq
           .map { |environment, version| new(environment:, version:) }
@@ -125,7 +125,17 @@ module ScData
     # Every catalogue that records what a build said. A source counts as loaded
     # when any of them has a row for it -- they are loaded separately, and the
     # first to finish makes the source readable.
-    BUILDS = [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild, BlueprintBuild].freeze
+    #
+    # Listed inside a method rather than in a constant, for the reason
+    # `BlueprintsLoader.cost_models` is: `bin/scdata` requires this file
+    # directly, and a constant evaluated with the class body resolves the models
+    # then -- which works only for the ones something else has already loaded.
+    # Naming a model no earlier step touches raised `uninitialized constant`
+    # before the check could read a single file.
+    def self.builds
+      [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild, BlueprintBuild,
+        GameMissionBuild]
+    end
 
     attr_reader :version, :environment
 
@@ -135,7 +145,7 @@ module ScData
     end
 
     def loaded?
-      BUILDS.any? { |klass| klass.where(environment:, version:).exists? }
+      self.class.builds.any? { |klass| klass.where(environment:, version:).exists? }
     end
 
     # Rows are here *and* the load that wrote them finished.
@@ -207,10 +217,10 @@ module ScData
       return self if complete? && build_class.where(environment:, version:).exists?
 
       # Built from this catalogue's own table rather than from `recorded`, which
-      # reads the six `BUILDS` and so knows nothing about hardpoints or the
-      # other per-slot tables. Resolving those against a list that cannot
-      # contain them walked away from a build they had rows for -- which is a
-      # loader naming a version explicitly, and being answered about another.
+      # reads only the catalogue `builds` lists and so knows nothing about
+      # hardpoints or the other per-slot tables. Resolving those against a
+      # list that cannot contain them walked away from a build they had rows
+      # for -- a loader naming a version explicitly, answered about another.
       candidates = build_class.where(environment:).distinct.pluck(:version)
         .map { |version| self.class.new(version:, environment:) }
         .sort_by(&:precedence)

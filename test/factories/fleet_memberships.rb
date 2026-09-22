@@ -5,7 +5,7 @@
 #  id                :uuid             not null, primary key
 #  aasm_state        :string
 #  accepted_at       :datetime
-#  blueprints_filter :integer          default(0), not null
+#  blueprints_filter :integer          default("all"), not null
 #  declined_at       :datetime
 #  discarded_at      :datetime
 #  hide_ships        :boolean          default(FALSE)
@@ -14,7 +14,7 @@
 #  nickname          :string
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
-#  ships_filter      :integer          default(0)
+#  ships_filter      :integer          default("all")
 #  used_invite_token :string
 #  verified          :boolean          default(FALSE), not null
 #  created_at        :datetime         not null

@@ -10,7 +10,7 @@
 #  declined_at       :datetime
 #  removed_at        :datetime
 #  requested_at      :datetime
-#  role              :integer          default(1), not null
+#  role              :integer          default("crew"), not null
 #  withdrawn_at      :datetime
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null

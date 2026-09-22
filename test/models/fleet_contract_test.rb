@@ -16,7 +16,7 @@ require "test_helper"
 #  description                    :text
 #  expired_at                     :datetime
 #  fulfilled_at                   :datetime
-#  kind                           :integer          default(0), not null
+#  kind                           :integer          default("transport"), not null
 #  published_at                   :datetime
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null

@@ -7,10 +7,10 @@ require "test_helper"
 # Table name: inventory_positions
 #
 #  id           :uuid             not null, primary key
-#  category     :integer          default(0), not null
+#  category     :integer          default("commodity"), not null
 #  name         :string           not null
 #  slug         :string           not null
-#  unit         :integer          default(0), not null
+#  unit         :integer          default("scu"), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  inventory_id :uuid             not null

@@ -14,6 +14,11 @@ module ScData
       FACTION_REF = "21c61135-e8ee-459c-8f61-4550b8c02c58"
       RANK0_REF = "a8f635c5-7fc0-4d27-8a08-27bb3476bfb8"
       RANK6_REF = "426da095-27b1-4ac3-8722-af57a973c79c"
+      CONTRACT_ID = "3f2a4d41-0000-4000-8000-000000000001"
+      SECOND_CONTRACT_ID = "7b91cc05-0000-4000-8000-000000000002"
+      PROFILE_REF = "9c0a1f22-0000-4000-8000-0000000000a1"
+      REPUTATION_REWARD_REF = "9c0a1f22-0000-4000-8000-0000000000b1"
+      TITLE_KEY = "@Foxwell_ShipAmbush_VE_title_001"
 
       setup do
         @base_folder = Dir.mktmpdir
@@ -192,6 +197,232 @@ module ScData
         assert_empty @parser.pools.first[:sources]
       end
 
+      test "#missions emits a record per contract with its title, org and standing band" do
+        translate(
+          "Foxwell_RepUI_Name" => "Foxwell Enforcement",
+          "Foxwell_ShipAmbush_VE_title_001" => "Yellow Level Contract: Ambush An Amateur",
+          "Foxwell_ShipAmbush_VE_desc_001" => "Somebody needs teaching a lesson.",
+          "mobiGlas_Reputation_Stance_Neutral" => "Neutral",
+          "RepScope_Contractor_Rank6" => "Elite Contractor"
+        )
+        faction_reputation("foxwellenforcement", ref: ORG_REF, display_name: "@Foxwell_RepUI_Name", lawful: true)
+        standing("rank0", ref: RANK0_REF, display_name: "@mobiGlas_Reputation_Stance_Neutral")
+        standing("rank6", ref: RANK6_REF, display_name: "@RepScope_Contractor_Rank6")
+        generator("foxwellenforcement", debug_name: "Ambush_VeryEasy", description: "@Foxwell_ShipAmbush_VE_desc_001")
+
+        missions = @parser.missions
+
+        assert_equal 1, missions.size
+        assert_equal "foxwellenforcement_ambush_veryeasy", missions.first[:sc_key]
+        assert_equal CONTRACT_ID, missions.first[:sc_ref]
+        assert_equal "career", missions.first[:kind]
+        assert_equal "Yellow Level Contract: Ambush An Amateur", missions.first[:title]
+        assert_equal "Somebody needs teaching a lesson.", missions.first[:description]
+        assert_equal "Foxwell Enforcement", missions.first[:org_name]
+        assert missions.first[:org_lawful]
+        assert_equal "Neutral", missions.first[:min_standing]
+        assert_equal "Elite Contractor", missions.first[:max_standing]
+        assert missions.first[:released]
+        assert_equal [POOL_REF], missions.first[:blueprint_pools]
+      end
+
+      # A handler puts most of its contracts under `contracts` and some under
+      # `introContracts` or `PVPBountyContract`. Digging at the first key alone
+      # lost 23 contracts, five of which hand out a blueprint.
+      test "#missions reads a contract a handler files somewhere other than contracts" do
+        generator("adagio", container: "introContracts", contract_kind: "Contract", debug_name: "Adagio_Intro")
+
+        assert_equal "adagio_adagio_intro", @parser.missions.sole[:sc_key]
+      end
+
+      # Every member of a shared base takes the suffix, including the first.
+      # `Dir.glob` fixes no order between builds, so "the first one" is not a
+      # property of the contract -- and were two to swap, the loader would try
+      # to write one row the key the other still holds and the unique index
+      # would stop the load rather than the two exchanging URLs.
+      test "#missions suffixes every contract sharing a generator and a debug name" do
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [CONTRACT_ID, SECOND_CONTRACT_ID])
+
+        keys = @parser.missions.pluck(:sc_key)
+
+        assert_equal 2, keys.size
+        assert_not_includes keys, "headhunters_simple_hit"
+        assert_includes keys, "headhunters_simple_hit_#{CONTRACT_ID.delete("-")}"
+        assert_includes keys, "headhunters_simple_hit_#{SECOND_CONTRACT_ID.delete("-")}"
+      end
+
+      # A fixed-length head of the GUID is only probably unique, and the failure
+      # is quiet: `save_items` writes both records to one file name and one
+      # contract silently replaces the other.
+      test "#missions keeps two contracts apart whose GUIDs share a long prefix" do
+        twin = "3f2a4d41-0000-4000-8000-00000000ffff"
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [CONTRACT_ID, twin])
+
+        keys = @parser.missions.pluck(:sc_key)
+
+        assert_equal 2, keys.uniq.size
+      end
+
+      # The key a contract gets depends on the set of contracts, never on the
+      # order they were walked in: the same two, the other way round, are the
+      # same two keys.
+      test "#missions gives a contract the same key whichever order it is walked in" do
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [CONTRACT_ID, SECOND_CONTRACT_ID])
+        forwards = @parser.missions.to_h { |mission| [mission[:sc_ref], mission[:sc_key]] }
+
+        FileUtils.rm_rf("#{@raw_path}/#{RECORDS_PATH}/contracts")
+
+        reversed_parser = ::ScData::Parser::ContractsParser.new(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        )
+        @parser = reversed_parser
+        generator("headhunters", debug_name: "Simple_Hit", contract_ids: [SECOND_CONTRACT_ID, CONTRACT_ID])
+
+        backwards = reversed_parser.missions.to_h { |mission| [mission[:sc_ref], mission[:sc_key]] }
+
+        assert_equal forwards, backwards
+      end
+
+      # A `debugName` is a developer's note: 64 carry a space, a bracket, a dash
+      # or a slash, and the key becomes a file name. The slash is the one that
+      # matters -- it wrote into a directory `save_items` never created.
+      test "#missions flattens a debug name that would write into a directory" do
+        generator("shubin", debug_name: "Discovery_Pyro/Nyx Rank3 (Low)")
+
+        assert_equal "shubin_discovery_pyro_nyx_rank3_low", @parser.missions.sole[:sc_key]
+      end
+
+      test "#missions marks a contract the build is not offering" do
+        generator("tarpits", released: false)
+
+        assert_equal false, @parser.missions.sole[:released]
+      end
+
+      # The band is a designer's sentence with the level on the end, and it sits
+      # under `contractResults` rather than on the contract.
+      test "#missions reads the difficulty bands as levels and keeps the profile" do
+        difficulty_profile("general")
+        generator("gen", difficulty: {
+          mechanicalSkill: "Hard_PvE_or_Easy_PvP_action_5",
+          mentalLoad: "AFK_gaming_1",
+          riskOfLoss: "Safe_and_sound_zzzz_1",
+          gameKnowledge: "Basically_a_Dev_7"
+        })
+
+        difficulty = @parser.missions.sole[:difficulty]
+
+        assert_equal 5, difficulty[:mechanical_skill]
+        assert_equal 1, difficulty[:mental_load]
+        assert_equal 1, difficulty[:risk_of_loss]
+        assert_equal 7, difficulty[:game_knowledge]
+        assert_equal "general", difficulty[:profile]
+      end
+
+      test "#missions reads the payout the few contracts that state one carry" do
+        generator("gen", results: %(<ContractResult_Reward><contractReward reward="3000" max="5000" currencyType="MER" /></ContractResult_Reward>))
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal "currency", reward[:kind]
+        assert_equal 3000, reward[:amount]
+        assert_equal 5000, reward[:max]
+        assert_equal "MER", reward[:currency]
+      end
+
+      # Seven of the eight state `max="0"`, which is the field unset rather than
+      # a ceiling of nothing.
+      test "#missions leaves out a maximum of zero" do
+        generator("gen", results: %(<ContractResult_Reward><contractReward reward="40000" max="0" currencyType="UEC" /></ContractResult_Reward>))
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal 40_000, reward[:amount]
+        assert_not_includes reward, :max
+      end
+
+      # A contract names a reward record rather than stating a figure, and the
+      # record is in another tree entirely.
+      test "#missions resolves a reputation reward to the amount its record states" do
+        translate("Foxwell_RepUI_Name" => "Foxwell Enforcement")
+        faction_reputation("foxwellenforcement", ref: ORG_REF, display_name: "@Foxwell_RepUI_Name")
+        reputation_reward("reputationrewardamount_positive_xxxs", ref: REPUTATION_REWARD_REF, amount: 100)
+        generator("gen", results: <<~XML)
+          <ContractResult_LegacyReputation>
+            <contractResultReputationAmounts factionReputation="#{ORG_REF}" reward="#{REPUTATION_REWARD_REF}" />
+          </ContractResult_LegacyReputation>
+        XML
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal "reputation", reward[:kind]
+        assert_equal 100, reward[:amount]
+        assert_equal "Foxwell Enforcement", reward[:org_name]
+      end
+
+      # 2352 of the 2536 contracts award this and it is an empty element on every
+      # one of them. Its presence is still the answer to "does this pay at all",
+      # which is a different question from "how much" -- and 176 contracts
+      # answer it no, so the distinction is worth carrying.
+      test "#missions says a calculated reward pays, without inventing a figure" do
+        generator("gen", results: %(<ContractResult_CalculatedReward><missionResults><Bool value="1" /></missionResults></ContractResult_CalculatedReward>))
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal "currency", reward[:kind]
+        assert reward[:calculated]
+        assert_not_includes reward, :amount
+      end
+
+      # A contract declares one result per outcome, so the same computed payout
+      # is found several times over. It says one thing however many times it is
+      # stated.
+      test "#missions states a calculated payout once however often it is declared" do
+        results = 3.times.map { %(<ContractResult_CalculatedReward><missionResults><Bool value="1" /></missionResults></ContractResult_CalculatedReward>) }.join
+        generator("gen", results:)
+
+        assert_equal 1, @parser.missions.sole[:rewards].count { |reward| reward[:calculated] }
+      end
+
+      test "#missions leaves the rewards empty for a contract that states none" do
+        generator("gen", results: "")
+
+        assert_empty @parser.missions.sole[:rewards]
+      end
+
+      # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
+      # a missing key, so it resolves happily and would ship as a mission name.
+      test "#missions leaves an uninitialized title blank rather than shipping the marker" do
+        translate("LOC_UNINITIALIZED" => "<= UNINITIALIZED =>")
+        generator("gen", title: "@LOC_UNINITIALIZED")
+
+        assert_not_includes @parser.missions.sole, :title
+      end
+
+      test "#all writes both catalogues" do
+        pool("bp_missionreward_example")
+        generator("gen")
+
+        @parser.all
+
+        assert_equal 1, Dir.glob("#{@base_folder}/parsed/test/blueprint_pools/*.json").size
+        assert_equal 1, Dir.glob("#{@base_folder}/parsed/test/game_missions/*.json").size
+      end
+
+      test "#all clears the missions folder when the generator tree is gone" do
+        generator("gen")
+        @parser.all
+
+        assert_equal 1, Dir.glob("#{@base_folder}/parsed/test/game_missions/*.json").size
+
+        FileUtils.rm_rf("#{@raw_path}/#{RECORDS_PATH}/contracts")
+
+        ::ScData::Parser::ContractsParser.new(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        ).all
+
+        assert_empty Dir.glob("#{@base_folder}/parsed/test/game_missions/*.json")
+      end
+
       # `save_items` returns before it clears, so a blank run would otherwise
       # leave the previous catalogue on disk -- and stale pools clear the floor
       # check and load as the current build's sources.
@@ -224,34 +455,70 @@ module ScData
 
       private def generator(key, handler: "ContractGeneratorHandler_Career", contract_kind: "CareerContract",
         org_ref: ORG_REF, min_standing: RANK0_REF, max_standing: RANK6_REF, pool_ref: POOL_REF,
-        sibling_org: nil, second_org: nil)
+        sibling_org: nil, second_org: nil, container: "contracts", contract_ids: [CONTRACT_ID],
+        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil)
         siblings = [sibling_org, second_org].compact.map.with_index do |ref, index|
           %(<ContractGeneratorHandler_Career debugName="Sibling#{index}" factionReputation="#{ref}" />)
+        end
+
+        listed = contract_ids.map do |id|
+          contract(contract_kind, id:, debug_name: debug_name || "#{key}_VeryEasy", min_standing:,
+            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:)
         end
 
         write("contracts/contractgenerator/guild/#{key}", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
           <generators>
             <#{handler} debugName="#{key}"#{%( factionReputation="#{org_ref}") if org_ref}>
-              <contracts>
-                <#{contract_kind} debugName="#{key}_VeryEasy" minStanding="#{min_standing}" maxStanding="#{max_standing}">
-                  <paramOverrides>
-                    <stringParamOverrides>
-                      <ContractStringParam param="Title" value="@Foxwell_ShipAmbush_VE_title_001" />
-                    </stringParamOverrides>
-                  </paramOverrides>
-                  <contractResults>
-                    <contractResults>
-                      <contractResults>
-                        <BlueprintRewards chance="1" blueprintPool="#{pool_ref}" />
-                      </contractResults>
-                    </contractResults>
-                  </contractResults>
-                </#{contract_kind}>
-              </contracts>
+              <#{container}>
+                #{listed.join}
+              </#{container}>
             </#{handler}>
             #{siblings.join}
           </generators>
         XML
+      end
+
+      private def contract(kind, id:, debug_name:, min_standing:, max_standing:, pool_ref:,
+        title:, description:, released:, difficulty:, results:)
+        params = [%(<ContractStringParam param="Title" value="#{title}" />)]
+        params << %(<ContractStringParam param="Description" value="#{description}" />) if description
+
+        <<~XML
+          <#{kind} id="#{id}" debugName="#{debug_name}" notForRelease="#{released ? 0 : 1}"
+            minStanding="#{min_standing}" maxStanding="#{max_standing}">
+            <paramOverrides>
+              <stringParamOverrides>
+                #{params.join}
+              </stringParamOverrides>
+            </paramOverrides>
+            <contractResults>
+              <contractResults>
+                <contractResults>
+                  <BlueprintRewards chance="1" blueprintPool="#{pool_ref}" />
+                  #{results}
+                </contractResults>
+                #{difficulty_xml(difficulty)}
+              </contractResults>
+            </contractResults>
+          </#{kind}>
+        XML
+      end
+
+      private def difficulty_xml(bands)
+        return "" if bands.blank?
+
+        listed = bands.map { |name, value| %(#{name}="#{value}") }.join(" ")
+
+        %(<difficulty><ContractDifficulty difficultyProfile="#{PROFILE_REF}" #{listed} /></difficulty>)
+      end
+
+      private def difficulty_profile(key, ref: PROFILE_REF)
+        write("contracts/contractdifficultyprofiles/#{key}", "ContractDifficultyProfile", ref, "")
+      end
+
+      private def reputation_reward(key, ref:, amount:)
+        write("reputation/rewards/missionrewards_reputation/#{key}", "SReputationRewardAmount", ref, "",
+          reputationAmount: amount)
       end
 
       private def scenario(faction_ref:, min_points:, pool_ref: POOL_REF)

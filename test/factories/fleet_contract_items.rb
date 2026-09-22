@@ -5,14 +5,14 @@
 # Table name: fleet_contract_items
 #
 #  id                :uuid             not null, primary key
-#  category          :integer          default(0), not null
+#  category          :integer          default("commodity"), not null
 #  item_type         :string
 #  name              :string           not null
 #  position          :integer          default(0), not null
 #  quality           :integer
-#  quality_match     :integer          default(0), not null
+#  quality_match     :integer          default("at_least"), not null
 #  quantity          :decimal(15, 2)   default(0.0), not null
-#  unit              :integer          default(0), not null
+#  unit              :integer          default("scu"), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  fleet_contract_id :uuid             not null

@@ -18,7 +18,7 @@ module ScData
     # the build they shipped on had been imported, so nothing would have noticed
     # had their loader never run. Every build model `BaseLoader.all` fills
     # belongs in this list.
-    VERSIONED_CATALOGUES = [ComponentBuild, CommodityBuild, EquipmentBuild, BlueprintBuild].freeze
+    VERSIONED_CATALOGUES = [ComponentBuild, CommodityBuild, EquipmentBuild, BlueprintBuild, GameMissionBuild].freeze
 
     # Bounded on purpose. Should the export stop shipping one of those
     # catalogues for good, an open-ended coverage check would reload the whole

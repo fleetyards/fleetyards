@@ -5,7 +5,7 @@
 # Table name: inventory_transfer_rules
 #
 #  id               :uuid             not null, primary key
-#  effect           :integer          default(0), not null
+#  effect           :integer          default("allow"), not null
 #  note             :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

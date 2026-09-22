@@ -59,6 +59,11 @@ module ScData
       "blueprints" => Catalogue.new(key: %w[key ref], floor: 1280, icons: false),
       "commodities" => Catalogue.new(key: "sc_key", floor: 180, icons: true),
       "equipment" => Catalogue.new(key: "key", floor: 3800, icons: false),
+      # Both fields again, for the crafting catalogues' reason: a mission is
+      # found by its `sc_key` and matched on to its `sc_ref`, and a record
+      # missing either is skipped by the loader -- which `retire_absent` then
+      # reads as a contract the build dropped.
+      "game_missions" => Catalogue.new(key: %w[sc_key sc_ref], floor: 2000, icons: false),
       "items" => Catalogue.new(key: "key", floor: 6200, icons: true),
       "manufacturers" => Catalogue.new(key: "code", floor: 90, icons: true),
       "models" => Catalogue.new(key: "key", floor: 880, icons: false)
