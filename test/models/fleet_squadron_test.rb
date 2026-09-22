@@ -83,6 +83,13 @@ class FleetSquadronTest < ActiveSupport::TestCase
     assert_predicate build(:fleet_squadron, fleet: @fleet, description: "x" * 5000), :valid?
   end
 
+  # The two marks are cropped to their opaque bounds on the way in; the header
+  # is a photograph whose edges are the picture, so it must stay out of the
+  # list however the others are changed.
+  test "trims the two marks and leaves the header alone" do
+    assert_equal %w[icon logo], FleetSquadron.trimmed_attachment_names
+  end
+
   test "counts only accepted members" do
     squadron = create(:fleet_squadron, fleet: @fleet)
     accepted = create(:fleet_membership, :accepted, fleet: @fleet)
