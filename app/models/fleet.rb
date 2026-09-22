@@ -117,7 +117,12 @@ class Fleet < ApplicationRecord
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_. ]{3,}\Z/}
 
+  # A ceiling well clear of anything anybody has written -- the longest
+  # description on record is a little over 5000 characters -- so it bounds the
+  # column without invalidating a fleet that is already there. The form draws
+  # the same number as a running count.
   validates :description,
+    length: {maximum: 10_000},
     format: {
       with: /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú\[\]()\-_'".,?!:;\s]*$/,
       multiline: true
