@@ -10212,6 +10212,7 @@ components:
       - equipment
       - commodities
       - item_prices
+      - missions
       - manufacturers
       - vehicles
       - images
@@ -10245,6 +10246,7 @@ components:
       - EQUIPMENT
       - COMMODITIES
       - ITEM_PRICES
+      - MISSIONS
       - MANUFACTURERS
       - VEHICLES
       - IMAGES
