@@ -149,9 +149,13 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
  * With something beside it the title block can no longer be the full width, or
  * it pushes the leading element out of the box. `min-width: 0` as well, so a
  * long unbroken name truncates inside the column instead of widening it.
+ *
+ * Centred rather than topped: the leading element is an emblem the size of the
+ * whole block, and a title on its own line hung level with the emblem's top
+ * edge with the rest of the mark below it.
  */
 .panel-heading--leading {
-  @apply items-start;
+  @apply items-center;
   gap: 12px;
 }
 
@@ -160,7 +164,7 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
 }
 
 .panel-heading__leading {
-  @apply flex flex-none items-start;
+  @apply flex flex-none items-center;
 }
 
 .panel-heading__title--with-actions {
