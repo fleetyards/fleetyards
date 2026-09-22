@@ -33,22 +33,25 @@ import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { storeToRefs } from "pinia";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
-  useFleetModelCounts as useFleetModelCountsQuery,
-  useFleetVehiclesStats as useFleetVehiclesStatsQuery,
-  fleetVehiclesExport as fetchFleetVehiclesExport,
-  fleetVehiclesHangarLinkExport as fetchFleetVehiclesHangarLinkExport,
-  useFleetVehicles as useFleetVehiclesQuery,
-  getFleetVehiclesQueryKey,
   type FleetVehicleQuery,
   type Fleet,
+  type FleetSquadron,
   type VehicleExport,
 } from "@/services/fyApi";
+import { useFleetShipsSource } from "@/frontend/composables/useFleetShipsSource";
 
 type Props = {
   fleet: Fleet;
+  // Narrows every query, the exports included, to one squadron's members. The
+  // squadron endpoints subclass the fleet's and override only the scope, so
+  // this list behaves identically either way rather than being a second,
+  // thinner ship list that drifts.
+  squadron?: FleetSquadron;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  squadron: undefined,
+});
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -73,8 +76,16 @@ const { grouped, money, detailsVisible, gridView } = storeToRefs(fleetStore);
 
 const fleetchartStore = useFleetchartStore();
 
+const exportScope = computed(() =>
+  props.squadron
+    ? `${props.fleet.slug}-${props.squadron.slug}`
+    : props.fleet.slug,
+);
+
+// The fleetchart's own page is the fleet's; a squadron has no public one to
+// point at, so its chart is drawn but not offered for sharing.
 const fleetchartShareUrl = computed(() => {
-  if (!props.fleet?.publicFleet) {
+  if (props.squadron || !props.fleet?.publicFleet) {
     return undefined;
   }
 
@@ -83,8 +94,16 @@ const fleetchartShareUrl = computed(() => {
   return `${host}/fleets/${props.fleet.slug}/fleetchart`;
 });
 
+const listName = computed(() =>
+  props.squadron ? "fleet-squadron-ships" : "fleet-ships",
+);
+
+const fleetchartNamespace = computed(() =>
+  props.squadron ? "fleet-squadron" : "fleet",
+);
+
 const fleetchartVisible = computed(() => {
-  return fleetchartStore.isVisible("fleet");
+  return fleetchartStore.isVisible(fleetchartNamespace.value);
 });
 
 watch(
@@ -93,16 +112,13 @@ watch(
 );
 
 watch(
-  () => props.fleet,
+  () => [props.fleet, props.squadron],
   () => refetch(),
 );
 
 const exportJson = async () => {
   try {
-    const exportedData = await fetchFleetVehiclesExport(
-      fleetSlug,
-      fleetVehiclesQueryParams,
-    );
+    const exportedData = await fetchExport(fleetVehiclesQueryParams.value);
 
     downloadExport(exportedData, "vehicles");
   } catch (error) {
@@ -113,9 +129,8 @@ const exportJson = async () => {
 
 const exportHangarLink = async () => {
   try {
-    const exportedData = await fetchFleetVehiclesHangarLinkExport(
-      fleetSlug,
-      fleetVehiclesQueryParams,
+    const exportedData = await fetchHangarLinkExport(
+      fleetVehiclesQueryParams.value,
     );
 
     downloadExport(exportedData, "hangar-link");
@@ -139,7 +154,7 @@ const downloadExport = (data: VehicleExport[] | undefined, suffix: string) => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${props.fleet.slug}-${suffix}-${format(
+    `fleetyards-${exportScope.value}-${suffix}-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,
@@ -154,20 +169,15 @@ const downloadExport = (data: VehicleExport[] | undefined, suffix: string) => {
 
 const route = useRoute();
 
-const fleetVehiclesQueryKey = computed(() => {
-  return getFleetVehiclesQueryKey(
-    fleetSlug.value,
-    fleetVehiclesQueryParams.value,
-  );
-});
+const fleetSlug = computed(() => route.params.slug as string);
+
+const squadronSlug = computed(() => props.squadron?.slug);
 
 const { getQuery } = useFilters<FleetVehicleQuery>({
   updateCallback: async () => {
     await refetch();
   },
 });
-
-const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
 
 const fleetVehiclesQueryParams = computed(() => {
   return {
@@ -178,25 +188,18 @@ const fleetVehiclesQueryParams = computed(() => {
   };
 });
 
-const fleetSlug = computed(() => route.params.slug as string);
-
-const { data: fleetStats, refetch: refetchFleetStats } =
-  useFleetVehiclesStatsQuery(fleetSlug);
-
-const { data: modelCounts, refetch: refetchModelCounts } =
-  useFleetModelCountsQuery(fleetSlug, fleetVehiclesQueryParams);
-
-const refetch = async () => {
-  await refetchVehicles();
-  await refetchModelCounts();
-  await refetchFleetStats();
-};
-
 const {
-  data: fleetVehicles,
-  refetch: refetchVehicles,
-  ...asyncStatus
-} = useFleetVehiclesQuery(fleetSlug, fleetVehiclesQueryParams);
+  vehicles: fleetVehicles,
+  stats: fleetStats,
+  modelCounts,
+  asyncStatus,
+  queryKey: fleetVehiclesQueryKey,
+  refetch,
+  fetchExport,
+  fetchHangarLinkExport,
+} = useFleetShipsSource(fleetSlug, squadronSlug, fleetVehiclesQueryParams);
+
+const { perPage, page, updatePerPage } = usePagination(fleetVehiclesQueryKey);
 
 const refresh = useDebouncedRefresh(refetch);
 
@@ -287,7 +290,7 @@ useSubscription({
       </div>
 
       <FilteredList
-        name="fleet-ships"
+        :name="listName"
         :records="fleetVehicles?.items || []"
         :async-status="asyncStatus"
         primary-key="id"
@@ -364,11 +367,11 @@ useSubscription({
 
           <FleetchartApp
             :items="fleetVehicles?.items || []"
-            namespace="fleet"
+            :namespace="fleetchartNamespace"
             :share-url="fleetchartShareUrl"
             :share-title="fleet.name"
             :loading="loading"
-            :download-name="`${fleet.slug}-fleetchart`"
+            :download-name="`${exportScope}-fleetchart`"
           >
             <template #pagination>
               <Paginator

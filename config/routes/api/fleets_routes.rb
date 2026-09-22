@@ -35,8 +35,12 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create destroy]
 
     get "vehicles", to: "fleet_squadron_vehicles#index"
+    get "vehicles/export", to: "fleet_squadron_vehicles#export"
+    get "vehicles/export/hangar-link", to: "fleet_squadron_vehicles#export_hangar_link"
+
     get "stats/vehicles", to: "fleet_squadron_stats#vehicles"
     get "stats/members", to: "fleet_squadron_stats#members"
+    get "stats/model-counts", to: "fleet_squadron_stats#model_counts"
   end
 
   resources :fleet_roles, path: "roles", only: %i[index]

@@ -11,14 +11,11 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
 import MembersList from "@/frontend/components/Fleets/MembersList/index.vue";
-import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
-import { usePagination } from "@/shared/composables/usePagination";
+import FleetShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -28,11 +25,9 @@ import {
   type FleetMember,
   useFleetSquadron,
   useFleetSquadronMembers,
-  useFleetSquadronVehicles,
   useFleetSquadronVehiclesStats,
   useFleetSquadronMembersStats,
   useDestroyFleetSquadron,
-  getFleetSquadronVehiclesQueryKey,
 } from "@/services/fyApi";
 
 type Props = {
@@ -100,26 +95,6 @@ const { data: members, refetch: refetchMembers } = useFleetSquadronMembers(
 
 const memberItems = computed(() => members.value?.items ?? []);
 
-const vehiclesQueryKey = getFleetSquadronVehiclesQueryKey(
-  props.fleet.slug,
-  squadronSlug.value,
-);
-
-const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
-
-const vehicleParams = computed(() => ({
-  page: page.value,
-  perPage: perPage.value,
-}));
-
-const {
-  data: vehicles,
-  isLoading: vehiclesLoading,
-  refetch: refetchVehicles,
-} = useFleetSquadronVehicles(fleetSlug, squadronSlug, vehicleParams);
-
-const vehicleItems = computed(() => vehicles.value?.items ?? []);
-
 const { data: vehicleStats, refetch: refetchVehicleStats } =
   useFleetSquadronVehiclesStats(fleetSlug, squadronSlug);
 
@@ -130,7 +105,6 @@ const refetchAll = async () => {
   await Promise.all([
     refetchSquadron(),
     refetchMembers(),
-    refetchVehicles(),
     refetchVehicleStats(),
     refetchMemberStats(),
   ]);
@@ -300,30 +274,11 @@ const crumbs = computed<Crumb[]>(() => [
       />
     </template>
 
+    <!-- The fleet's own ship list, scoped to this squadron: same filters,
+         same grid/table switch, same grouping, sorting, fleetchart and
+         exports. A second, thinner list here would drift from it. -->
     <template v-else-if="view === 'ships'">
-      <Loader :loading="vehiclesLoading" />
-
-      <Paginator
-        v-if="vehicleItems.length"
-        :query-result-ref="vehicles"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
-      />
-
-      <Grid v-if="vehicleItems.length" :records="vehicleItems" primary-key="id">
-        <template #default="{ record }">
-          <FleetVehiclePanel
-            :fleet-slug="props.fleet.slug"
-            :fleet-vehicle="record"
-          />
-        </template>
-      </Grid>
-
-      <Empty
-        v-else-if="!vehiclesLoading"
-        :name="t('labels.fleet.squadrons.ships')"
-        data-test="squadron-ships-empty"
-      />
+      <FleetShipsList :fleet="props.fleet" :squadron="squadron" />
     </template>
 
     <template v-else>
