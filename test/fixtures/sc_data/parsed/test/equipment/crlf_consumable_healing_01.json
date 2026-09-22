@@ -1,0 +1,36 @@
+{
+  "key": "crlf_consumable_healing_01",
+  "ref": "7d50411f-088c-4c99-b85a-a6eaf95504c3",
+  "name": "MedPen (Hemozal)",
+  "description": "From the Empire’s most trusted medical company, the CureLife MedPen can rapidly dispense doses of the coagulant Hemozal during emergency situations to help relieve bleeding and improve a patient’s overall vitals. Use only as recommended.",
+  "equipment_type": "medical",
+  "slot": null,
+  "item_type": "medical_consumable",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "MedPack",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd55bc19-5212-4365-bbc8-73474f0257ed",
+  "tags": [
+    "Stash_MediPen",
+    "medical_injection"
+  ],
+  "hidden": false,
+  "volume": 0.00018,
+  "volume_dimensions": {
+    "x": 0.0325,
+    "y": 0.16,
+    "z": 0.0325
+  }
+}

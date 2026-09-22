@@ -1,0 +1,23 @@
+{
+  "key": "constructionmaterialsscraps",
+  "sc_key": "items_commodities_constructionmaterialsscraps",
+  "ref": null,
+  "name": "Construction Pieces",
+  "commodity_type": "processed_goods",
+  "commodity_type_name": "Processed Goods",
+  "counted": false,
+  "consumable": false,
+  "piece_volume": null,
+  "container_sizes": [
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0,
+    24.0,
+    32.0
+  ],
+  "refines_into": "items_commodities_constructionmaterials",
+  "description": null,
+  "icon": null
+}

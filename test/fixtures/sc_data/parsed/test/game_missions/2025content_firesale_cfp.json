@@ -1,0 +1,54 @@
+{
+  "sc_key": "2025content_firesale_cfp",
+  "sc_ref": "5aa96690-86e5-451a-b627-48b481c397e1",
+  "kind": "career",
+  "generator_key": "2025content",
+  "debug_name": "Firesale_CFP",
+  "title": "Strategic Detatrine Reserve – Small Resupply",
+  "description": "Following the brutal attack on Pyro and our efforts to combat the vigilante group the Frontier Fighters, our strategic reserves across the system are at an all-time low. Citizens for Prosperity are eager to replenish our stocks before we reach a point of desperation. \n\nTo that end, we were hoping that you would be able to resupply<EM4> ~mission(Destination|Address) with detatrine. </EM4>\n\nThis rare chemical compound is a key ingredient in several vital medical supplies, so it is important that replace what we used up treating local civilians and CFP members injured in the wake of the Frontier Fighter assault.\n\nNormally we would direct you to reputable sources to acquire detatrine, but our contacts have informed us that several <EM4>depots</EM4> around the system have suddenly decided to sell the chemical at a significantly reduced price. In fact, it’s inexpensive enough that I suspect it will draw some unwanted attention. If you decide to seek out this potentially deadly deal, please do so with caution.\n\nYour support of our efforts is much appreciated,\n\nLima Endicott\nLead Dispatcher\nCitizens for Prosperity",
+  "org_ref": "5a6914c9-3d56-47e0-9fe2-b264ee17b992",
+  "org_key": "factionreputation_lawful_citizensforprosperity",
+  "org_name": "Citizens For Prosperity",
+  "org_lawful": true,
+  "min_standing": "Jr. Contractor",
+  "max_standing": "Elite Contractor",
+  "released": true,
+  "difficulty": {
+    "mechanical_skill": 7,
+    "mental_load": 7,
+    "risk_of_loss": 7,
+    "game_knowledge": 7,
+    "profile": "event_difficultyprofile"
+  },
+  "rewards": [
+    {
+      "kind": "reputation",
+      "amount": 400,
+      "org_key": "factionreputation_lawful_citizensforprosperity",
+      "org_name": "Citizens For Prosperity"
+    },
+    {
+      "kind": "reputation",
+      "amount": -190500,
+      "org_key": "factionreputation_unlawful_headhunters",
+      "org_name": "Headhunters"
+    },
+    {
+      "kind": "badge",
+      "badge": "WelcomeToPyro_Firesale"
+    },
+    {
+      "kind": "badge",
+      "badge": "WelcomeToPyro_MiningRush"
+    },
+    {
+      "kind": "badge",
+      "badge": "WelcomeToPyro_SalvageRush"
+    },
+    {
+      "kind": "currency",
+      "calculated": true
+    }
+  ],
+  "blueprint_pools": []
+}

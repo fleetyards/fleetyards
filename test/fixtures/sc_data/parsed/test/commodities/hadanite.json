@@ -1,0 +1,24 @@
+{
+  "key": "hadanite",
+  "sc_key": "items_commodities_hadanite",
+  "ref": "02f40255-e567-4daa-a784-71d40f495a4b",
+  "name": "Hadanite",
+  "commodity_type": "mineral",
+  "commodity_type_name": "Mineral",
+  "counted": true,
+  "consumable": false,
+  "piece_volume": 0.001,
+  "container_sizes": [
+    0.125,
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0,
+    24.0,
+    32.0
+  ],
+  "refines_into": null,
+  "description": "A crystal oscillator sought out for its extremely high frequency of vibration which makes it useful in various applications.",
+  "icon": "ui/textures/vector/general/items/inv_icon_hadanite.svg"
+}

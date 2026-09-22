@@ -1,0 +1,23 @@
+{
+  "key": "janalite",
+  "sc_key": "items_commodities_janalite",
+  "ref": null,
+  "name": "Janalite",
+  "commodity_type": "mineral",
+  "commodity_type_name": "Mineral",
+  "counted": true,
+  "consumable": false,
+  "piece_volume": 0.001,
+  "container_sizes": [
+    1.0,
+    2.0,
+    4.0,
+    8.0,
+    16.0,
+    24.0,
+    32.0
+  ],
+  "refines_into": null,
+  "description": "This rare mineral is valued as an industrial anti-matter precursor. While more stable than other precursors like Feynmaline, it's tougher structure and energy resistance makes it much more difficult to utilize as well as collect.",
+  "icon": null
+}

@@ -1,0 +1,54 @@
+{
+  "sc_key": "2025content_firesale_hh",
+  "sc_ref": "811b51c8-47a9-4919-9997-7b439efcf7cd",
+  "kind": "career",
+  "generator_key": "2025content",
+  "debug_name": "Firesale_HH",
+  "title": "Out of Detatrine – Small Resupply",
+  "description": "Kicking the crap out of those Frontier Fighter bastards seriously depleted our supplies and now our stash of detatrine is practically out of stock. \n\nThat’s why you’re going to do a detatrine resupply run to<EM4> ~mission(Destination|Address). </EM4>\n\nNot sure if you’re familiar with it, but the chemical’s what we use to make our batches of sludge. We can’t really afford to let our sales of the stuff dry up right now. Not when we need credits so bad.\n\nThe good news is that <EM4>depots</EM4> across the system are offering detatrine and rock-bottom prices. Hell if I know why they’re doing it, all I know is that everyone with a lick of sense is trying to get their hands on the stuff so be ready for fierce competition. \n\nI’m trustin’ you to get it done,\nStows",
+  "org_ref": "09efeef4-c646-408d-a979-3ae56a3b1beb",
+  "org_key": "factionreputation_unlawful_headhunters",
+  "org_name": "Headhunters",
+  "org_lawful": false,
+  "min_standing": "Jr. Contractor",
+  "max_standing": "Elite Contractor",
+  "released": true,
+  "difficulty": {
+    "mechanical_skill": 7,
+    "mental_load": 7,
+    "risk_of_loss": 7,
+    "game_knowledge": 7,
+    "profile": "event_difficultyprofile"
+  },
+  "rewards": [
+    {
+      "kind": "reputation",
+      "amount": 400,
+      "org_key": "factionreputation_unlawful_headhunters",
+      "org_name": "Headhunters"
+    },
+    {
+      "kind": "reputation",
+      "amount": -190500,
+      "org_key": "factionreputation_lawful_citizensforprosperity",
+      "org_name": "Citizens For Prosperity"
+    },
+    {
+      "kind": "badge",
+      "badge": "WelcomeToPyro_Firesale"
+    },
+    {
+      "kind": "badge",
+      "badge": "WelcomeToPyro_MiningRush"
+    },
+    {
+      "kind": "badge",
+      "badge": "WelcomeToPyro_SalvageRush"
+    },
+    {
+      "kind": "currency",
+      "calculated": true
+    }
+  ],
+  "blueprint_pools": []
+}

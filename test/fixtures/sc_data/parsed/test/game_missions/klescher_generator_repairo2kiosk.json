@@ -1,0 +1,36 @@
+{
+  "sc_key": "klescher_generator_repairo2kiosk",
+  "sc_ref": "1464ed09-2099-4102-8672-25f764e278d2",
+  "kind": "contract",
+  "generator_key": "klescher_generator",
+  "debug_name": "RepairO2Kiosk",
+  "title": "Inmate Maintenance Opportunity",
+  "description": "Hello Guests,\n\nWe have recently been alerted that one of our Oxygen Dispensers has suffered a technical error. As you know these kiosks are vital to ensure that you have plenty of oxygen handy while participating in our Work Release Program.\n\nWe are looking for any available guest to reset the kiosk. That should reconnect the kiosk to the network and resolve the issue. The first guest who's able to complete this task will not only be compensated with merits, but also with the satisfaction that they're making the workplace safer for other guests.\n\nThank you.",
+  "org_ref": "cfe06ba5-968d-4e27-b738-7cc7abfb511f",
+  "org_key": "factionreputation_klescherrehabilitationservices",
+  "org_name": "Klescher Rehabilitation Facilities",
+  "org_lawful": true,
+  "released": true,
+  "difficulty": {
+    "mechanical_skill": 2,
+    "mental_load": 2,
+    "risk_of_loss": 2,
+    "game_knowledge": 2,
+    "profile": "general"
+  },
+  "rewards": [
+    {
+      "kind": "currency",
+      "amount": 3000,
+      "max": 5000,
+      "currency": "MER"
+    },
+    {
+      "kind": "reputation",
+      "amount": 100,
+      "org_key": "factionreputation_klescherrehabilitationservices",
+      "org_name": "Klescher Rehabilitation Facilities"
+    }
+  ],
+  "blueprint_pools": []
+}
