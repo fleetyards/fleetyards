@@ -50,7 +50,21 @@ const vehiclesByModelLimit = ref(10);
  */
 const { getQuery } = useFilters<FleetVehicleQuery>();
 
-const queryParams = computed(() => ({ q: getQuery() }));
+/*
+ * `squadronSlugIn` is declared as an array and the API refuses a bare string,
+ * which would 400 every query on this page at once and leave it blank. The
+ * router writes brackets so the normal round-trip is already a list; this is
+ * for a link somebody typed or kept from elsewhere.
+ */
+const asList = (query: FleetVehicleQuery) => {
+  const value = query.squadronSlugIn;
+
+  if (value === undefined || Array.isArray(value)) return query;
+
+  return { ...query, squadronSlugIn: [value] };
+};
+
+const queryParams = computed(() => ({ q: asList(getQuery()) }));
 
 /*
  * The member figures are counted over memberships, not vehicles, so that
@@ -59,7 +73,7 @@ const queryParams = computed(() => ({ q: getQuery() }));
  * count.
  */
 const memberQueryParams = computed(() => ({
-  q: { squadronSlugIn: getQuery().squadronSlugIn } as FleetMemberQuery,
+  q: { squadronSlugIn: asList(getQuery()).squadronSlugIn } as FleetMemberQuery,
 }));
 
 const { data: vehicleStats } = useFleetVehiclesStatsQuery(
