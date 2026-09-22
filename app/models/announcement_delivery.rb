@@ -54,6 +54,14 @@ class AnnouncementDelivery < ApplicationRecord
 
   validates :channel, uniqueness: {scope: :announcement_id}
 
+  # The columns the announcement payload renders for a delivery. `posted_parts`
+  # is deliberately not among them: `record_part!` saves once per posted thread
+  # part and the payload does not carry them, so broadcasting those would push
+  # up to thirty identical rows for one threaded send.
+  BROADCAST_ATTRIBUTES = %w[status external_id error delivered_at attempts].freeze
+
+  after_commit :broadcast_progress, on: %i[create update]
+
   # A pending in-app delivery is retryable too, which a pending social one is
   # not: the fan-out is idempotent -- the recipient index makes a second run
   # insert nothing and deliver nothing -- so the worst a re-run does is check
@@ -109,5 +117,15 @@ class AnnouncementDelivery < ApplicationRecord
 
   def skip!(reason)
     update!(status: :skipped, error: reason.to_s.truncate(1_000), delivered_at: nil)
+  end
+
+  # Loaded fresh rather than read through `announcement`: the row is built by
+  # `Announcement#delivery_for`, which reaches it through
+  # `deliveries.find_or_initialize_by`, and the payload has to contain the
+  # transition that just committed.
+  private def broadcast_progress
+    return if (saved_changes.keys & BROADCAST_ATTRIBUTES).empty?
+
+    Announcement.find_by(id: announcement_id)&.broadcast_to_admins
   end
 end

@@ -1995,6 +1995,7 @@
           "notifyUsersInfo": "E-mail seulement si activé.",
           "discordPartsInfo": "Vide : découpé automatiquement.",
           "socialPartsInfo": "Vide : un message rogné. Deux ou plus : un fil.",
+          "recipientsCount": "%{count} destinataires",
           "partPosition": "%{position} sur %{total}"
         },
         "resourceAccess": {

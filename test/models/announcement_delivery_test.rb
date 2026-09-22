@@ -80,4 +80,24 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
     assert delivery.status_skipped?
     refute delivery.status_failed?
   end
+
+  test "settling broadcasts the announcement it belongs to" do
+    create(:admin_user)
+    delivery = create(:announcement_delivery, announcement: @announcement)
+
+    AdminAnnouncementsChannel.expects(:broadcast_to).once
+
+    delivery.succeed!(external_id: "1234")
+  end
+
+  # `posted_parts` is not in the payload, so a thread would push the same row
+  # once per part it gets out.
+  test "recording a posted part broadcasts nothing" do
+    create(:admin_user)
+    delivery = create(:announcement_delivery, announcement: @announcement)
+
+    AdminAnnouncementsChannel.expects(:broadcast_to).never
+
+    delivery.record_part!({"id" => "1"})
+  end
 end

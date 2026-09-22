@@ -1995,6 +1995,7 @@
           "notifyUsersInfo": "E-mail solo se attivata.",
           "discordPartsInfo": "Vuoto: diviso automaticamente.",
           "socialPartsInfo": "Vuoto: un post tagliato. Da due: un thread.",
+          "recipientsCount": "%{count} destinatari",
           "partPosition": "%{position} di %{total}"
         },
         "resourceAccess": {

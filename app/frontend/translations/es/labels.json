@@ -1995,6 +1995,7 @@
           "notifyUsersInfo": "Correo solo si lo han activado.",
           "discordPartsInfo": "Vacío: se divide automáticamente.",
           "socialPartsInfo": "Vacío: una publicación recortada. Dos o más: un hilo.",
+          "recipientsCount": "%{count} destinatarios",
           "partPosition": "%{position} de %{total}"
         },
         "resourceAccess": {

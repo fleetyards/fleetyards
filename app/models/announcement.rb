@@ -89,6 +89,14 @@ class Announcement < ApplicationRecord
   # already does.
   before_destroy :detach_notifications
 
+  # Only what the payload carries, and only what a send moves. An edit made
+  # through the form is already reflected by the mutation's own invalidation,
+  # and re-broadcasting it would push a title change into another admin's open
+  # edit form.
+  BROADCAST_ATTRIBUTES = %w[status published_at recipients_count last_tested_at].freeze
+
+  after_commit :broadcast_progress, on: %i[create update]
+
   scope :due, -> { status_scheduled.where(publish_at: ..Time.current) }
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
@@ -141,6 +149,36 @@ class Announcement < ApplicationRecord
     social_parts.size > 1
   end
 
+  # The default derives "api/v1/announcements/announcement"; announcements have
+  # no public API, and the admin one namespaces its views a level deeper.
+  def jbuilder_template_path
+    "admin/api/v1/announcements/announcement"
+  end
+
+  # Rendered once and handed to everybody, rather than once per admin the way
+  # Import#notify_admin does it: the payload is identical, and the render is an
+  # ActionController::Renderer round trip through a partial that walks the
+  # deliveries.
+  def broadcast_to_admins
+    payload = to_jbuilder_hash
+
+    # Per admin, so one dead socket does not cost everybody behind it the
+    # broadcast -- `find_each` would otherwise unwind on the first raise. The
+    # subscription only resyncs on a reconnect, and a broadcast that failed
+    # server-side is not one, so those admins would sit on a stale row until
+    # something else refetched it. Same shape as NotifyBatchJob#broadcast.
+    AdminUser.find_each do |admin_user|
+      AdminAnnouncementsChannel.broadcast_to(admin_user, payload)
+    rescue => e
+      Rails.logger.error("Announcement broadcast failed for #{id} to admin #{admin_user.id}: #{e.message}")
+    end
+  rescue => e
+    # A send in flight must not be rolled back because a socket was not there:
+    # this runs from after_commit, and the write it describes has already
+    # landed.
+    Rails.logger.error("Announcement broadcast failed for #{id}: #{e.message}")
+  end
+
   def delivery_for(channel)
     deliveries.find_or_initialize_by(channel: channel.to_s)
   end
@@ -153,6 +191,12 @@ class Announcement < ApplicationRecord
     return link if link.start_with?("http")
 
     "https://#{Rails.configuration.app.domain}#{link}"
+  end
+
+  private def broadcast_progress
+    return if (saved_changes.keys & BROADCAST_ATTRIBUTES).empty?
+
+    broadcast_to_admins
   end
 
   private def detach_notifications

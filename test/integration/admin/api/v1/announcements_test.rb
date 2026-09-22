@@ -502,6 +502,26 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The claim is an `update_all`, so no callback fires for it -- the admin who
+  # pressed the button sees `pending` in this response, and every other open
+  # list would sit on `failed` until the job settled.
+  test "PUT /announcements/:id/deliveries/:channel/retry announces the delivery going back to pending" do
+    announcement = create(:announcement, :social, :published)
+    create(:announcement_delivery, announcement:, channel: "x", status: "failed", error: "rate limited")
+    sign_in @admin_user
+
+    Announcements::PostSocialJob.stubs(:perform_async)
+
+    payloads = []
+    AdminAnnouncementsChannel.stubs(:broadcast_to).with { |_admin, payload| payloads << payload }
+
+    assert_api_response :put, 200, path_params: {id: announcement.id, channel: "x"}
+
+    broadcast = payloads.last["deliveries"].find { |row| row["channel"] == "x" }
+
+    assert_equal "pending", broadcast["status"]
+  end
+
   test "PUT /announcements/:id/deliveries/:channel/retry re-runs the fan-out for the in-app channel" do
     announcement = create(:announcement, :published)
     create(:announcement_delivery, announcement:, channel: "in_app", status: "failed")

@@ -18,6 +18,11 @@ module Announcements
 
       announcement.reload
 
+      # The claim above is an `update_all`, so nothing announced `publishing`.
+      # A delivery row written a line later would carry the status along with
+      # it, but only by accident -- and on the retry path there is no such row.
+      announcement.broadcast_to_admins
+
       announcement.social_channels.each do |channel|
         announcement.delivery_for(channel).tap do |delivery|
           delivery.status = :pending
