@@ -860,10 +860,6 @@
             "success": "Nave eliminada.",
             "failure": "No se pudo eliminar la nave.",
             "confirm": "¿Eliminar esta nave y sus slots?"
-          },
-          "expand": {
-            "success": "Slots añadidos.",
-            "failure": "No se pudieron añadir los slots."
           }
         },
         "eventSlot": {

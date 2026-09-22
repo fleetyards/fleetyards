@@ -49,7 +49,6 @@ import {
   ModelStateEnum,
 } from "@/frontend/composables/useModelStates";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
-import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
 import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
@@ -272,9 +271,8 @@ const sampleMetrics = [
   <Heading :level="HeadingLevelEnum.H2">Model Metrics | Panel Rails</Heading>
   <p>
     The rail panels from the ship detail page, fed with live
-    <code>{{ SLUG }}</code> data. Base and crew carry their own frame through
-    <code>MetricsCard</code>; speed is bare rows, so it is the only one that
-    needs a <code>Panel</code> around it.
+    <code>{{ SLUG }}</code> data. Both carry their own frame through
+    <code>MetricsCard</code>, so neither needs a <code>Panel</code> around it.
     <BtnGroup segmented>
       <Btn
         v-for="state in MODEL_STATES"
@@ -292,11 +290,6 @@ const sampleMetrics = [
     </div>
     <div class="col-12 col-lg-4">
       <ModelCrewMetrics :model="model" />
-    </div>
-    <div class="col-12 col-lg-4">
-      <Panel>
-        <ModelSpeedMetrics :model="model" />
-      </Panel>
     </div>
   </div>
 

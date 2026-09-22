@@ -860,10 +860,6 @@
             "success": "Schiff entfernt.",
             "failure": "Schiff konnte nicht entfernt werden.",
             "confirm": "Dieses Schiff und seine Slots entfernen?"
-          },
-          "expand": {
-            "success": "Slots hinzugefügt.",
-            "failure": "Slots konnten nicht hinzugefügt werden."
           }
         },
         "eventSlot": {

@@ -860,10 +860,6 @@
             "success": "飞船已移除。",
             "failure": "无法移除飞船。",
             "confirm": "要移除该飞船及其席位吗?"
-          },
-          "expand": {
-            "success": "席位已添加。",
-            "failure": "无法添加席位。"
           }
         },
         "eventSlot": {

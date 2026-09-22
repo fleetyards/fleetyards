@@ -870,10 +870,6 @@
             "success": "Ship removed.",
             "failure": "Could not remove ship.",
             "confirm": "Remove this ship and its slots?"
-          },
-          "expand": {
-            "success": "Slots added.",
-            "failure": "Could not add slots."
           }
         },
         "eventSlot": {

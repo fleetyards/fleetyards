@@ -1,7 +1,6 @@
 {
   "zh-CN": {
     "actions": {
-      "selectAll": "全选",
       "announcements": {
         "addPart": "添加",
         "removePart": "移除",
@@ -364,7 +363,6 @@
           "setUpCalendar": "设置日历订阅",
           "assignSlot": "分配到席位",
           "reassignSlot": "移动到其他席位",
-          "addSeats": "添加座位",
           "manageEventTeam": "管理活动团队",
           "grantRole": "授予角色",
           "revokeRole": "撤销",

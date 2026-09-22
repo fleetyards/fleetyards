@@ -15,8 +15,6 @@
       "minCrew": "min. Besatzung",
       "maxCrew": "max. Besatzung",
       "scmSpeed": "SCM-Geschwindigkeit",
-      "mainAcceleration": "Beschleunigung",
-      "retroAcceleration": "Verzögerung",
       "scmSpeedBoosted": "SCM-Geschwindigkeit verstärkt",
       "reverseSpeedBoosted": "Rückwärts-Geschwindigkeit verstärkt",
       "maxSpeed": "Max-Geschwindigkeit",
@@ -32,9 +30,6 @@
       "rollBoosted": "Roll verstärkt",
       "price": "Preis",
       "groundAcceleration": "Beschleunigung",
-      "groundDeceleration": "Abbremsung",
-      "scmSpeedAcceleration": "Null zu SCM",
-      "scmSpeedDeceleration": "SCM zu Null",
       "compare": {
         "groundMaxSpeed": "Max-Geschwindigkeit am Boden",
         "groundReverseSpeed": "Rückwärts-Geschwindigkeit am Boden",

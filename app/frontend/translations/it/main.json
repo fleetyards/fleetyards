@@ -15,8 +15,6 @@
       "minCrew": "min. Equipaggio",
       "maxCrew": "max. Equipaggio",
       "scmSpeed": "Velocità SCM",
-      "mainAcceleration": "Accelerazione",
-      "retroAcceleration": "Decelerazione",
       "scmSpeedBoosted": "Velocità SCM Potenziata",
       "reverseSpeedBoosted": "Velocità Indietro Potenziata",
       "maxSpeed": "Velocità Massima",
@@ -32,9 +30,6 @@
       "rollBoosted": "Rollio Potenziato",
       "price": "Prezzo",
       "groundAcceleration": "Accelerazione",
-      "groundDeceleration": "Decelerazione",
-      "scmSpeedAcceleration": "Zero a SCM",
-      "scmSpeedDeceleration": "SCM a Zero",
       "compare": {
         "groundMaxSpeed": "Velocità Massima a Terra",
         "groundReverseSpeed": "Velocità Indietro a Terra",

@@ -15,8 +15,6 @@
       "minCrew": "最少船員",
       "maxCrew": "最多船員",
       "scmSpeed": "SCM速度",
-      "mainAcceleration": "加速",
-      "retroAcceleration": "減速",
       "scmSpeedBoosted": "SCM速度增強",
       "reverseSpeedBoosted": "倒車速度增強",
       "maxSpeed": "最大速度",
@@ -32,9 +30,6 @@
       "rollBoosted": "滾轉增強",
       "price": "價格",
       "groundAcceleration": "加速度",
-      "groundDeceleration": "減速度",
-      "scmSpeedAcceleration": "零到SCM",
-      "scmSpeedDeceleration": "SCM到零",
       "compare": {
         "groundMaxSpeed": "地面最大速度",
         "groundReverseSpeed": "地面倒車速度",

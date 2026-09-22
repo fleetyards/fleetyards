@@ -1,7 +1,6 @@
 {
   "de": {
     "actions": {
-      "selectAll": "Alle auswählen",
       "announcements": {
         "addPart": "Hinzufügen",
         "removePart": "Entfernen",
@@ -364,7 +363,6 @@
           "setUpCalendar": "Kalender-Abos einrichten",
           "assignSlot": "Slot zuweisen",
           "reassignSlot": "In anderen Slot verschieben",
-          "addSeats": "Sitze hinzufügen",
           "manageEventTeam": "Event-Team verwalten",
           "grantRole": "Rolle vergeben",
           "revokeRole": "Entziehen",

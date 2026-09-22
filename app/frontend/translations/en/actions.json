@@ -1,7 +1,6 @@
 {
   "en": {
     "actions": {
-      "selectAll": "Select all",
       "announcements": {
         "addPart": "Add",
         "removePart": "Remove",
@@ -364,7 +363,6 @@
           "setUpCalendar": "Set up calendar subscriptions",
           "assignSlot": "Assign to slot",
           "reassignSlot": "Move to another slot",
-          "addSeats": "Add seats",
           "manageEventTeam": "Manage event team",
           "grantRole": "Grant role",
           "revokeRole": "Revoke",

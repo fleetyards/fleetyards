@@ -860,10 +860,6 @@
             "success": "Vaisseau retiré.",
             "failure": "Impossible de retirer le vaisseau.",
             "confirm": "Retirer ce vaisseau et ses postes ?"
-          },
-          "expand": {
-            "success": "Postes ajoutés.",
-            "failure": "Impossible d'ajouter les postes."
           }
         },
         "eventSlot": {
