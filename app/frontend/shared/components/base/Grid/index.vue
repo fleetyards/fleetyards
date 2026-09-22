@@ -98,12 +98,25 @@ const initSortable = () => {
     animation: 150,
     handle: props.sortHandle,
     draggable: ".base-grid__cell",
-    onEnd: () => {
-      const keys = Array.from(
-        container.querySelectorAll<HTMLElement>("[data-sort-id]"),
-      )
-        .map((cell) => cell.dataset.sortId)
-        .filter(Boolean) as string[];
+    onEnd: (event) => {
+      const { item, oldIndex, newIndex } = event;
+
+      if (oldIndex === undefined || newIndex === undefined) return;
+      if (oldIndex === newIndex) return;
+
+      /*
+       * Sortable moves the node itself, and this list is a transition-group --
+       * two things writing the same children. So the move is undone here and
+       * the order goes out as state instead: the caller re-renders it, and the
+       * cards animate between the two positions rather than jumping because
+       * Vue's idea of where they are disagrees with the DOM's.
+       */
+      item.remove();
+      container.insertBefore(item, container.children[oldIndex] ?? null);
+
+      const keys = props.records.map((record) => String(primaryValue(record)));
+      const [moved] = keys.splice(oldIndex, 1);
+      keys.splice(newIndex, 0, moved);
 
       emit("sort", keys);
     },
@@ -134,7 +147,6 @@ onUnmounted(() => {
     <div
       v-for="(record, index) in records"
       :key="primaryValue(record)"
-      :data-sort-id="sortable ? primaryValue(record) : undefined"
       :class="cssClasses"
     >
       <slot :record="record" :index="index" />
