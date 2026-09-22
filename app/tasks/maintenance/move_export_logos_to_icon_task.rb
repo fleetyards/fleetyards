@@ -22,6 +22,11 @@ module Maintenance
     # Left on by default so an accidental run reports instead of moving.
     attribute :dry_run, :boolean, default: true
 
+    # The parsed tree the reference artwork is read from. Overridable for the
+    # same reason a loader's is: a test can then point at the curated export in
+    # test/fixtures/sc_data instead of needing the real tree on disk.
+    attr_writer :base_folder, :sc_environment
+
     def process
       moved = []
       skipped_no_art = []
@@ -66,12 +71,16 @@ module Maintenance
       return if icon_path.blank?
 
       Dir.glob(
-        Rails.root.join("data/sc_data/parsed/#{sc_environment}/icons/#{icon_path.sub(/\.\w+\z/, "")}.*")
+        Pathname(base_folder).join("parsed", sc_environment.to_s, "icons", "#{icon_path.sub(/\.\w+\z/, "")}.*")
       ).first
     end
 
+    private def base_folder
+      @base_folder ||= ::ScData::Loader::BaseLoader::DEFAULT_BASE_FOLDER
+    end
+
     private def sc_environment
-      ::ScData::Source.environment
+      @sc_environment ||= ::ScData::Source.environment
     end
 
     # The task's log is its output in the UI, which is stdout for this engine.

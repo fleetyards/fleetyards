@@ -1,0 +1,127 @@
+{
+  "key": "bp_craft_volt_rifle_energy_01_tint01",
+  "ref": "6157c081-0a9b-4319-bbbc-7f2cc1ef7158",
+  "category_ref": "f9ccf95d-ad0e-4c33-97e0-e56c847a7e37",
+  "craft_time": 180,
+  "slot_count": 3,
+  "output": {
+    "ref": "3e58c8fd-19ff-47b6-9b3a-333addb2573d",
+    "key": "volt_rifle_energy_01_tint01",
+    "path": "entities/scitem/weapons/fps_weapons/volt_rifle_energy_01_tint01.xml",
+    "kind": "Equipment",
+    "name": "Parallax \"Sunstone\" Energy Assault Rifle"
+  },
+  "slots": [
+    {
+      "position": 0,
+      "key": "frame",
+      "name": "Frame",
+      "options": [
+        {
+          "cost_type": "resource",
+          "ref": "60f116f4-c02a-45b2-9ded-333747795124",
+          "commodity_key": "items_commodities_tungsten",
+          "quantity": 0.04,
+          "min_quality": 0,
+          "position": 0
+        }
+      ],
+      "modifiers": [
+        {
+          "ramp": "linear",
+          "property_ref": "1156716c-b01e-4228-8136-7430be5bb9b8",
+          "property_key": "gpp_weapon_recoil_smoothness",
+          "name": "Recoil Smoothness",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 1.4,
+          "modifier_at_end": 0.6,
+          "position": 0
+        },
+        {
+          "ramp": "linear",
+          "property_ref": "037ea34c-e564-492e-b575-3e5aac5895e4",
+          "property_key": "gpp_weapon_recoil_handling",
+          "name": "Recoil Handling",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 1.4,
+          "modifier_at_end": 0.6,
+          "position": 1
+        },
+        {
+          "ramp": "linear",
+          "property_ref": "f68f87d6-1981-4c22-bed6-ce352922cb34",
+          "property_key": "gpp_weapon_recoil_kick",
+          "name": "Recoil Kick",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 1.4,
+          "modifier_at_end": 0.6,
+          "position": 2
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "key": "cabling",
+      "name": "Cabling",
+      "options": [
+        {
+          "cost_type": "resource",
+          "ref": "21825507-7923-4683-9bf3-9cfe316940e3",
+          "commodity_key": "items_commodities_gold",
+          "quantity": 0.02,
+          "min_quality": 0,
+          "position": 0
+        }
+      ],
+      "modifiers": [
+        {
+          "ramp": "linear",
+          "property_ref": "cfc129ce-488a-46f2-92f7-9272cd0cfdfb",
+          "property_key": "gpp_weapon_damage",
+          "name": "Impact Force",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 0.9,
+          "modifier_at_end": 1.1,
+          "position": 0
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "key": "regulator",
+      "name": "Power Regulator",
+      "options": [
+        {
+          "cost_type": "item",
+          "ref": "0b83f4b2-1d15-4843-aa94-29f2b40a5cbe",
+          "commodity_key": "items_commodities_carinite",
+          "quantity": 1.0,
+          "min_quality": 0,
+          "position": 0
+        }
+      ],
+      "modifiers": [
+        {
+          "ramp": "linear",
+          "property_ref": "cfc129ce-488a-46f2-92f7-9272cd0cfdfb",
+          "property_key": "gpp_weapon_damage",
+          "name": "Impact Force",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 0.9,
+          "modifier_at_end": 1.1,
+          "position": 0
+        }
+      ]
+    }
+  ]
+}

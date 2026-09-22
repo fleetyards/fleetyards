@@ -1,0 +1,38 @@
+{
+  "sc_key": "adagio_resourcegathering_shipsalvage_adagio_rg_shipsalvage_nyx_rank0_rmcsmall",
+  "sc_ref": "2a20ef29-7922-487f-b42c-70b48fe8031a",
+  "kind": "career",
+  "generator_key": "adagio_resourcegathering_shipsalvage",
+  "debug_name": "Adagio_RG_ShipSalvage_Nyx_Rank0_RMCSmall",
+  "title": "Salvager Needed (Small Supply of RMC)",
+  "description": "Adagio Holdings\nA Proud Equal Opportunity Employer\n\n> About the job <\nTo help satisfy a recent small-scale order, we are seeking contractors to help source Recycled Material Composite (RMC) by  stripping abandoned ships. We recommend searching for wreckage at Lagrange points or you could purchase a salvage claim from us in your Contract Manager.\n\nOnce acquired, deliver the materials to the freight elevator located at <EM4>~mission(Destination|Address)</EM4>.\n\nFor advice on salvaging, consult <EM4>A Salvager's Guide to Material Collection</EM4> in your mobiGlas journal.\n\n> Requirements <\n     - Any class/size of salvage ship\n\n> Disclaimer <\nContractors are responsible for ensuring that they are collecting materials from vehicles that are considered fair salvage under the pursuant UEE laws. Adagio Holdings is in no way liable for any crimes or misdemeanors committed by contractors and will offer no compensation or reparation for any persons affected by these actions.",
+  "org_ref": "5f6a61ef-e9a4-427d-9358-2b38efe43d11",
+  "org_key": "factionreputation_lawful_adagioholdings",
+  "org_name": "Adagio Holdings",
+  "org_lawful": true,
+  "min_standing": "Neutral",
+  "max_standing": "Neutral",
+  "released": true,
+  "difficulty": {
+    "mechanical_skill": 3,
+    "mental_load": 2,
+    "risk_of_loss": 4,
+    "game_knowledge": 2,
+    "profile": "discovery"
+  },
+  "rewards": [
+    {
+      "kind": "reputation",
+      "amount": 100,
+      "org_key": "factionreputation_lawful_adagioholdings",
+      "org_name": "Adagio Holdings"
+    },
+    {
+      "kind": "currency",
+      "calculated": true
+    }
+  ],
+  "blueprint_pools": [
+    "16a99583-68a3-4f0e-b03c-87d70f6172dc"
+  ]
+}

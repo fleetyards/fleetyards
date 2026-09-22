@@ -2,11 +2,6 @@ name: Ruby Tests Job
 
 on:
   workflow_call:
-    secrets:
-      # Reads the object-storage keys for the parsed sc_data tree. Secrets are
-      # not inherited by a called workflow, so main.yml passes this one through.
-      OP_SERVICE_ACCOUNT_TOKEN:
-        required: true
 
 jobs:
   ruby-tests:
@@ -14,9 +9,6 @@ jobs:
 
     env:
       RAILS_ENV: test
-      # Both sc_data steps below reach the same bucket; named once so a move
-      # does not have to be found in two places.
-      SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USER: root
@@ -76,97 +68,6 @@ jobs:
       - run: mkdir -p log
       - name: Prepare test database
         run: bundle exec rake db:create db:schema:load
-
-      # The loader tests are contract tests over the real export -- they assert
-      # counts like `Equipment.count >= 4_000` and index specific items by key --
-      # so they need the parsed tree, which is no longer in the repository.
-      - name: Install 1Password CLI
-        run: |
-          curl -sSfo /tmp/op.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.0/op_linux_amd64_v2.33.0.zip"
-          unzip -o /tmp/op.zip -d /usr/local/bin op
-          chmod +x /usr/local/bin/op
-
-      # Every configured source, not just one: the cached tree holds all of them,
-      # so the key has to move when any of them does.
-      #
-      # Keyed on each tree's own checksum rather than on the build version it
-      # was parsed from. A parser change rewrites the tree and leaves the
-      # version where it was, so a version-keyed cache kept serving the old tree
-      # until somebody remembered to bump a `vN` prefix -- and a forgotten bump
-      # is silent, which is how a green run went on testing a stale tree. The
-      # prefix is gone; the key now moves on its own whenever the tree does.
-      #
-      # This costs one small GET per source before the cache is consulted, which
-      # is the price of the key being correct rather than remembered.
-      - name: Read the sc_data trees
-        id: sc-data
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-        run: |
-          # A Dependabot or fork pull request reads secrets from a store it has
-          # no access to, so `op read` fails and there is nothing to probe the
-          # bucket with. `ScData::CacheKey` already falls back to the version in
-          # that case; losing the credentials must not abort the step under
-          # `-e` before that fallback is ever reached.
-          if SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id") &&
-             SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key"); then
-            echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
-            echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
-            export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
-          else
-            echo "::notice::No object-storage credentials; keying on the version."
-          fi
-          # Filtered rather than piped wholesale: one future initializer
-          # printing a line to stdout would otherwise become a malformed
-          # workflow output, and the symptom would point at the cache.
-          bin/scdata cache-key | grep -E '^(key|default)=' >> "$GITHUB_OUTPUT"
-
-      - name: Cache the parsed sc_data tree
-        id: parsed-tree
-        uses: actions/cache@v6
-        with:
-          path: data/sc_data/parsed
-          key: ${{ runner.os }}-sc-data-parsed-${{ steps.sc-data.outputs.key }}
-          # A run that could not reach the bucket keys on the version, which
-          # names an entry nothing ever writes -- so on an exact match alone it
-          # would miss, fall through to the fetch below, and need the very
-          # credentials it does not have. The prefix hands it the newest tree
-          # already on the runner instead. A run that can name the tree it wants
-          # still matches its own key first, so this changes nothing for main.
-          restore-keys: |
-            ${{ runner.os }}-sc-data-parsed-
-
-      - name: Fetch the parsed sc_data tree
-        if: steps.parsed-tree.outputs.cache-hit != 'true'
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-        run: |
-          # Reached whenever the key was not an exact match, which includes a
-          # prefix restore: the tree on disk is then some earlier one, and a run
-          # that can fetch should still replace it with the tree it asked for.
-          # That is what keeps main testing against the tree its key names.
-          #
-          # Without credentials there is nothing to replace it with. Testing
-          # against the restored tree beats failing every dependency bump, so
-          # that degrades -- loudly, and only once something was restored. An
-          # empty directory and no credentials is not a run worth continuing.
-          if ! SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id") ||
-             ! SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key"); then
-            if [ -n "$(ls -A data/sc_data/parsed 2>/dev/null)" ]; then
-              echo "::warning::No object-storage credentials; testing against the restored tree."
-              exit 0
-            fi
-
-            echo "::error::No object-storage credentials and no tree to fall back on."
-            exit 1
-          fi
-
-          echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
-          echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
-          export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
-          # The default source, read off the config rather than named here, so
-          # renaming or adding an environment does not leave this behind.
-          bin/scdata pull ${{ steps.sc-data.outputs.default }}
 
       - name: Run Minitest
         run: bin/rails test

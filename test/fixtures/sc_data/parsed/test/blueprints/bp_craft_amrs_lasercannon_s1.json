@@ -1,0 +1,103 @@
+{
+  "key": "bp_craft_amrs_lasercannon_s1",
+  "ref": "280f47b7-8434-410c-b854-380768fdccec",
+  "category_ref": "61e576d2-f8b4-46b1-98e6-9205bb5de686",
+  "craft_time": 540,
+  "slot_count": 3,
+  "output": {
+    "ref": "26838ca7-418a-47d2-8429-7339ebbb8993",
+    "key": "AMRS_LaserCannon_S1",
+    "path": "entities/scitem/ships/weapons/amrs_lasercannon_s1.xml",
+    "kind": "Component",
+    "name": "Omnisky III Cannon"
+  },
+  "slots": [
+    {
+      "position": 0,
+      "key": "frame",
+      "name": "Frame",
+      "options": [
+        {
+          "cost_type": "resource",
+          "ref": "dc6fbcbb-5990-4ed5-82ee-93152dab7845",
+          "commodity_key": "items_commodities_agricium",
+          "quantity": 0.36,
+          "min_quality": 1,
+          "position": 0
+        }
+      ],
+      "modifiers": [
+        {
+          "ramp": "linear",
+          "property_ref": "93a49e68-01cf-4d7e-b995-8224466a9982",
+          "property_key": "gpp_health_maxhealth",
+          "name": "Integrity",
+          "unit_format": null,
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 0.9,
+          "modifier_at_end": 1.1,
+          "position": 0
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "key": "emitter",
+      "name": "Emitter",
+      "options": [
+        {
+          "cost_type": "item",
+          "ref": "125dd723-95ad-488d-830f-62c954445ca1",
+          "commodity_key": "items_commodities_hadanite",
+          "quantity": 7.0,
+          "min_quality": 1,
+          "position": 0
+        }
+      ],
+      "modifiers": [
+        {
+          "ramp": "linear",
+          "property_ref": "cfc129ce-488a-46f2-92f7-9272cd0cfdfb",
+          "property_key": "gpp_weapon_damage",
+          "name": "Impact Force",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 0.95,
+          "modifier_at_end": 1.05,
+          "position": 0
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "key": "aperture_iris",
+      "name": "Aperture Iris",
+      "options": [
+        {
+          "cost_type": "item",
+          "ref": "20094ded-ad04-46a3-b734-9e37aa3154b3",
+          "commodity_key": "items_commodities_dolivine",
+          "quantity": 7.0,
+          "min_quality": 1,
+          "position": 0
+        }
+      ],
+      "modifiers": [
+        {
+          "ramp": "linear",
+          "property_ref": "cfc129ce-488a-46f2-92f7-9272cd0cfdfb",
+          "property_key": "gpp_weapon_damage",
+          "name": "Impact Force",
+          "unit_format": "%+.2f %%",
+          "start_quality": 0,
+          "end_quality": 1000,
+          "modifier_at_start": 0.95,
+          "modifier_at_end": 1.05,
+          "position": 0
+        }
+      ]
+    }
+  ]
+}

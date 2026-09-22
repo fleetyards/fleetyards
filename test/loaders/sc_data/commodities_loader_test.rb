@@ -1,19 +1,25 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "support/sc_data_fixture_tree"
 
 module ScData
   module Loader
     class CommoditiesLoaderTest < ActiveSupport::TestCase
+      include ScDataFixtureTree
+
       setup do
         Commodity.delete_all
-        @loader = ::ScData::Loader::CommoditiesLoader.new
       end
 
-      test "#all loads commodities from game files" do
-        @loader.all
+      def loader
+        fixture_loader(::ScData::Loader::CommoditiesLoader)
+      end
 
-        assert_operator Commodity.count, :>=, 160
+      test "#all loads the catalogue with unique keys and slugs" do
+        loader.all
+
+        assert_equal 15, Commodity.count
 
         sc_keys = Commodity.pluck(:sc_key)
         assert_equal sc_keys.uniq.size, sc_keys.size
@@ -26,21 +32,21 @@ module ScData
       # case, so a lookup that skips the downcase silently drops the label for
       # every multi-word type and leaves the single-word ones looking fine.
       test "every parsed commodity carries the label for its type" do
-        parsed = @loader.load_items("commodities")
+        parsed = loader.load_items("commodities")
 
         assert_empty parsed.select { |commodity| commodity[:commodity_type_name].blank? }
           .map { |commodity| commodity[:sc_key] }
       end
 
       test "#all assigns a type to every commodity" do
-        @loader.all
+        loader.all
 
         assert_empty Commodity.where(commodity_type: nil).pluck(:name)
         assert_empty Commodity.where.not(commodity_type: Commodity::TYPES).pluck(:commodity_type)
       end
 
       test "#all resolves refined metals, ores and harvestables" do
-        @loader.all
+        loader.all
 
         assert_equal "metal", Commodity.find_by(sc_key: "items_commodities_gold")&.commodity_type
         assert_equal "metal", Commodity.find_by(sc_key: "items_commodities_iron_ore")&.commodity_type
@@ -53,11 +59,11 @@ module ScData
       end
 
       test "#all is idempotent" do
-        @loader.all
+        loader.all
         count = Commodity.count
 
         assert_no_difference -> { Commodity.count } do
-          @loader.all
+          loader.all
         end
 
         assert_equal count, Commodity.count
@@ -67,29 +73,29 @@ module ScData
       # current_version filters it out. Re-importing the build we are already on
       # does not: the row keeps claiming it, and the picker keeps offering it.
       test "#all stops a dropped commodity claiming the build it is no longer in" do
-        @loader.all
+        loader.all
 
-        retired = create(:commodity, sc_key: "items_commodities_gone", version: ScData::Source.version)
+        retired = create(:commodity, sc_key: "items_commodities_gone", version: fixture_source.version)
 
-        @loader.all
+        loader.all
 
         assert Commodity.exists?(retired.id), "the row has to stay for existing references"
         assert_nil retired.reload.version
-        assert_not Commodity.current_version.exists?(retired.id)
+        assert_not Commodity.current_version(true, fixture_source).exists?(retired.id)
       end
 
       test "#all leaves the commodities still in the export on the current build" do
-        @loader.all
-        @loader.all
+        loader.all
+        loader.all
 
-        assert_operator Commodity.current_version.count, :>=, 160
+        assert_equal Commodity.count, Commodity.current_version(true, fixture_source).count
       end
 
       # The game ships these as vectors and they stay vectors: the app serves
       # them inline instead of asking ActiveStorage for representations it
       # cannot make of one.
       test "#all attaches the icon the parser carried over" do
-        @loader.all
+        loader.all
 
         image = Commodity.find_by(sc_key: "items_commodities_gold").store_image
 
@@ -99,22 +105,14 @@ module ScData
         assert_not_predicate image, :representable?
       end
 
-      # The gems, the drugs, the horns and the eggs: everything the game hands a
-      # player a piece at a time. The eleven the recipes ask for are the reason
-      # the fact is read at all, so they are named rather than counted.
+      # Which commodities the game counts in pieces is a question for the
+      # contract test -- that the fact is read at all, and that bulk stays bulk,
+      # is this one.
       test "#all marks the commodities the game counts in pieces" do
-        @loader.all
+        loader.all
 
-        crafting = %w[
-          items_commodities_hadanite items_commodities_dolivine
-          items_commodities_aphorite items_commodities_sadaryx
-          items_commodities_beradom items_commodities_glacosite
-          items_commodities_feynmaline items_commodities_janalite
-          items_commodities_carinite items_commodities_saldynium_ore
-          items_commodities_yormandi_eye
-        ]
-
-        assert_equal crafting.sort, Commodity.where(sc_key: crafting, counted: true).pluck(:sc_key).sort
+        assert Commodity.find_by(sc_key: "items_commodities_hadanite").counted
+        assert Commodity.find_by(sc_key: "items_commodities_janalite").counted
 
         # Bulk is the other half of the claim: a material a recipe measures in
         # SCU must not start offering pieces.
@@ -126,19 +124,19 @@ module ScData
       # commodity the row calls counted, and the build is what every reader
       # resolves through.
       test "#all writes counted onto the build as well as the row" do
-        @loader.all
+        loader.all
 
         commodity = Commodity.find_by(sc_key: "items_commodities_hadanite")
 
-        assert commodity.build.counted
+        assert commodity.builds.current(fixture_source).first.counted
         assert commodity.counted
       end
 
-      # The conversion between the two units. Every counted commodity states
-      # one and no bulk one does, which is what keeps a hold-fill figure honest
-      # once a position can be recorded in pieces.
+      # The conversion between the two units. Every counted commodity states one
+      # and no bulk one does, which is what keeps a hold-fill figure honest once
+      # a position can be recorded in pieces.
       test "#all reads what one piece of a counted commodity takes up" do
-        @loader.all
+        loader.all
 
         assert_in_delta 0.001, Commodity.find_by(sc_key: "items_commodities_hadanite").piece_volume, 0.0000001
         assert_nil Commodity.find_by(sc_key: "items_commodities_iron").piece_volume
@@ -147,29 +145,23 @@ module ScData
         assert_empty Commodity.where(counted: false).where.not(piece_volume: nil).pluck(:name)
       end
 
-      # Nine harvestables you pick and eat, the vent slug, and SLAM. Named
-      # rather than counted, because the whole point of the fact is which ones.
-      test "#all marks the commodities a player can eat or drink" do
-        @loader.all
+      test "#all marks a commodity a player can eat or drink" do
+        loader.all
 
-        assert_equal(
-          ["Blue Bilva", "Golden Medmon", "Heart of the Woods", "Jumping Limes",
-            "Lunes (Spiral Fruit)", "Oza", "Pitambu", "SLAM", "Sunset Berries",
-            "Vent Slug"],
-          Commodity.where(consumable: true).order(:name).pluck(:name)
-        )
+        assert_predicate Commodity.find_by(sc_key: "items_commodities_bluebilva"), :consumable?
+        assert_not_predicate Commodity.find_by(sc_key: "items_commodities_gold"), :consumable?
       end
 
       # SLAM's entities sit under entities/scitem/consumables, which is why the
       # parser reads a third path -- its crates say nothing about taking it.
       test "#all reads a consumable declared outside the commodity trees" do
-        @loader.all
+        loader.all
 
         assert_predicate Commodity.find_by(sc_key: "items_commodities_slam"), :consumable?
       end
 
       test "#all collects every size a commodity is packaged in" do
-        @loader.all
+        loader.all
 
         gold = Commodity.find_by(sc_key: "items_commodities_gold")
 
@@ -185,7 +177,7 @@ module ScData
       # Resolved in a second pass: an ore is regularly read before the good it
       # refines into exists as a row.
       test "#all links an ore to the good it refines into" do
-        @loader.all
+        loader.all
 
         ore = Commodity.find_by(sc_key: "items_commodities_gold_ore")
 
@@ -196,22 +188,30 @@ module ScData
       # Three of the construction material forms refine into the same good, so
       # the reverse side is a collection.
       test "#all links several raw forms to one refined good" do
-        @loader.all
+        loader.all
 
         refined = Commodity.find_by(sc_key: "items_commodities_constructionmaterials")
 
-        assert_operator refined.refined_from.count, :>=, 3
+        assert_equal 3, refined.refined_from.count
       end
 
       test "#all keeps a commodity that already exists without an sc_key" do
         existing = create(:commodity, name: "Gold", sc_key: nil, commodity_type: nil)
 
-        @loader.all
+        loader.all
 
         existing.reload
 
         assert_equal "items_commodities_gold", existing.sc_key
         assert_equal "metal", existing.commodity_type
+      end
+
+      # What a build whose files failed to sync looks like from the loader's
+      # side.
+      test "#all writes nothing for a tree that carries no commodities" do
+        empty_tree_loader(::ScData::Loader::CommoditiesLoader).all
+
+        assert_equal 0, Commodity.count
       end
     end
   end

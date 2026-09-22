@@ -1,0 +1,15 @@
+{
+  "key": "shipammo_size_1",
+  "sc_key": "items_commodities_shipammo_size_1",
+  "ref": null,
+  "name": "Ship Ammunition - Size 1",
+  "commodity_type": "manmade",
+  "commodity_type_name": "Man-made",
+  "counted": false,
+  "consumable": false,
+  "piece_volume": null,
+  "container_sizes": [],
+  "refines_into": null,
+  "description": "Bulk ammunition servicing size 1 ship weaponry, based on volume.",
+  "icon": null
+}

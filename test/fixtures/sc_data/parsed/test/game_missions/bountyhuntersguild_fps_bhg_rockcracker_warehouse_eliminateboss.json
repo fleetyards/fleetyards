@@ -1,0 +1,38 @@
+{
+  "sc_key": "bountyhuntersguild_fps_bhg_rockcracker_warehouse_eliminateboss",
+  "sc_ref": "98b24f3b-4e52-4214-9d1d-0eb9fa1b03e1",
+  "kind": "career",
+  "generator_key": "bountyhuntersguild_fps",
+  "debug_name": "BHG_Rockcracker_Warehouse_EliminateBoss",
+  "title": "High-Risk Bounty: ~mission(TargetName) at QV Breaker Station",
+  "description": "--------------------------------------------------------\n----------------- BOUNTY CONTRACT -----------------\n--------------------------------------------------------\n\nBOUNTY HUNTERS GUILD\nPROCESSING & DISTRIBUTION\n\nThe Bounty Hunters Guild has authorized an official bounty.\n\nNAME: ~mission(TargetName) \nSYSTEM: Nyx\nRISK ASSESSMENT: High\nLAST KNOWN LOCATION:  ~mission(Location|Address)\nKNOWN AFFILIATIONS: Claw Salamanders\nNOTES: Because these abandoned QV Breaker Stations are not fully functional, there is a good chance that you will have to perform some repairs before your able to access the target's location. You may also have to deal with other hazards like dangerous fauna.\n\nAdditionally, the intel gathered on ~mission(TargetName) has them as a high ranking member of the Claw Salamanders, one who will not appear unless suitably drawn out of hiding. Engage with enough of their lower ranked associates and they will be forced to come deal with you themselves.\n\n\nBOUNTY HUNTERS GUILD\nIn Pursuit of Justice\n\nThe Bounty Hunters Guild is a security service sanctioned by the Mercenary Guild and authorized to operate in both the UEE and beyond in accordance with Xenotrade Authority Acts.",
+  "org_ref": "6fe6526a-4ae0-44ec-a5b7-4a1a7f8bdc97",
+  "org_key": "factionreputation_lawful_bountyhuntersguild",
+  "org_name": "Bounty Hunters Guild",
+  "org_lawful": true,
+  "min_standing": "Probationary Guild Member",
+  "max_standing": "Guild Steward",
+  "released": false,
+  "difficulty": {
+    "mechanical_skill": 5,
+    "mental_load": 3,
+    "risk_of_loss": 5,
+    "game_knowledge": 3,
+    "profile": "general"
+  },
+  "rewards": [
+    {
+      "kind": "reputation",
+      "amount": 250,
+      "org_key": "factionreputation_lawful_bountyhuntersguild",
+      "org_name": "Bounty Hunters Guild"
+    },
+    {
+      "kind": "currency",
+      "calculated": true
+    }
+  ],
+  "blueprint_pools": [
+    "61b089a0-880c-41da-a2c2-482a1bffe96f"
+  ]
+}

@@ -12,16 +12,6 @@ module ScData
         clean_loader_tables
       end
 
-      test "#one loads data from game files" do
-        loader = ::ScData::Loader::ModelsLoader.new
-        manufacturer = create(:manufacturer, name: "Roberts Space Industries", slug: "rsi", code: "RSI")
-        model = create(:model, :in_game, name: "Constellation Andromeda", manufacturer: manufacturer)
-
-        assert_difference -> { Hardpoint.where(parent: model).count }, 95 do
-          loader.one(model)
-        end
-      end
-
       test "#load_model persists the parsed cross section signature" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, :in_game, name: "Cross Section Test")

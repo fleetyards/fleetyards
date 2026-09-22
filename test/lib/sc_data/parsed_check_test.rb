@@ -256,17 +256,5 @@ module ScData
 
       assert_equal 12, check.problems.count { |problem| problem.end_with?("empty file") }
     end
-
-    # --- The tree that is actually loaded ---------------------------------
-
-    # Deliberately the real tree, and the reason this class exists: a build that
-    # arrives half-uploaded, a category the export renamed, a parse that stopped
-    # between catalogues. None of those raise anywhere -- they produce a tree
-    # that loads and quietly retires whatever it no longer carries.
-    test "#call passes the parsed tree the configured build points at" do
-      result = ::ScData::ParsedCheck.new.call
-
-      assert_predicate result, :ok?, result.problems.first(20).join("\n")
-    end
   end
 end

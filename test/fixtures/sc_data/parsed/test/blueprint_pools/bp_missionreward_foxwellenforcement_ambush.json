@@ -1,0 +1,117 @@
+{
+  "key": "bp_missionreward_foxwellenforcement_ambush",
+  "ref": "af21edb5-3938-45ac-8a35-130e52463f44",
+  "group": "blueprintmissionpools",
+  "blueprints": [
+    {
+      "ref": "6157c081-0a9b-4319-bbbc-7f2cc1ef7158",
+      "weight": 1.0
+    },
+    {
+      "ref": "5dc3e1ce-22b9-4616-a4b6-5a7b18df07a9",
+      "weight": 1.0
+    },
+    {
+      "ref": "9876eb01-42b0-474c-a002-491ff662a3bf",
+      "weight": 1.0
+    },
+    {
+      "ref": "14442076-50ac-42a4-99c0-7d929e8c65b5",
+      "weight": 1.0
+    },
+    {
+      "ref": "2487dc3a-6a2e-4071-a165-f140d0c8b20d",
+      "weight": 1.0
+    },
+    {
+      "ref": "c633e1c4-7d50-41ad-8411-fe924029eaa9",
+      "weight": 1.0
+    }
+  ],
+  "sources": [
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Yellow Level Contract: Ambush An Amateur",
+      "min_standing": "Neutral",
+      "max_standing": "Elite Contractor",
+      "position": 0
+    },
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Yellow Level Contract: Surprise Strike",
+      "min_standing": "Jr. Contractor",
+      "max_standing": "Elite Contractor",
+      "position": 1
+    },
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Orange Level Contract: Spring a Trap",
+      "min_standing": "Contractor",
+      "max_standing": "Elite Contractor",
+      "position": 2
+    },
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Orange Level Contract: Return the Favor",
+      "min_standing": "Sr. Contractor",
+      "max_standing": "Head Contractor",
+      "position": 3
+    },
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Red Level Contract: Ambush Attack Squad",
+      "min_standing": "Veteran Contractor",
+      "max_standing": "Elite Contractor",
+      "position": 4
+    },
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Red Level Contract: Surprise Attack",
+      "min_standing": "Head Contractor",
+      "max_standing": "Elite Contractor",
+      "position": 5
+    },
+    {
+      "kind": "contract",
+      "org_ref": "016c2950-0292-468c-a408-a5283b52f158",
+      "org_key": "factionreputation_lawful_foxwellenforcement",
+      "org_name": "Foxwell Enforcement",
+      "org_lawful": true,
+      "generator_key": "foxwellenforcement_ambush",
+      "mission_name": "Orange Level Contract: Return the Favor",
+      "min_standing": "Sr. Contractor",
+      "max_standing": "Elite Contractor",
+      "position": 6
+    }
+  ]
+}
