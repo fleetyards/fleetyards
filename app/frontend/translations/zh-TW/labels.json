@@ -486,6 +486,7 @@
           "color": "顏色",
           "logo": "標誌",
           "memberCount": "%{count} 位成員",
+          "members": "成員",
           "ships": "艦船",
           "searchMembers": "搜尋成員",
           "availableMembers": "可新增的成員",

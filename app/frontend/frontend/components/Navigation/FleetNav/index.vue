@@ -123,7 +123,7 @@ onMounted(() => {
         :to="{ name: 'fleet-squadrons', params: { slug: currentFleet.slug } }"
         :label="t('nav.fleets.squadrons')"
         :active="squadronsNavActive"
-        icon="fa-duotone fa-users-rectangle"
+        icon="fa-duotone fa-shield-halved"
       />
 
       <!-- What the fleet holds between its members: the recipes they can make

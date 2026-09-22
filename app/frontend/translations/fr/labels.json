@@ -486,6 +486,7 @@
           "color": "Couleur",
           "logo": "Logo",
           "memberCount": "%{count} membres",
+          "members": "Membres",
           "ships": "Vaisseaux",
           "searchMembers": "Rechercher des membres",
           "availableMembers": "membres disponibles",

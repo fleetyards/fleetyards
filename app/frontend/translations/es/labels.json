@@ -486,6 +486,7 @@
           "color": "Color",
           "logo": "Logotipo",
           "memberCount": "%{count} miembros",
+          "members": "Miembros",
           "ships": "Naves",
           "searchMembers": "Buscar miembros",
           "availableMembers": "miembros disponibles",

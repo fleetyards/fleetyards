@@ -1,93 +1,158 @@
 <script lang="ts">
 export default {
-  name: "FleetSquadronCard",
+  name: "FleetSquadronPanel",
 };
 </script>
 
 <script lang="ts" setup>
+import type { RouteLocationRaw } from "vue-router";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { Fleet, FleetSquadron } from "@/services/fyApi";
+import type { FleetSquadron } from "@/services/fyApi";
 
 type Props = {
-  fleet: Fleet;
   squadron: FleetSquadron;
+  to: RouteLocationRaw;
+  editable?: boolean;
+  destroyable?: boolean;
+  membersManageable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  editable: false,
+  destroyable: false,
+  membersManageable: false,
+});
+
+const emit = defineEmits<{ edit: []; destroy: []; addMembers: [] }>();
 
 const { t } = useI18n();
 
-// The logo if there is one, the colour if there is not, and the quiet grey if
-// neither -- so the card always carries something to tell it apart by.
+// The logo if there is one. A squadron without one is told apart by its colour
+// instead -- the stripe down the body -- rather than by stand-in art, because
+// there is no catalogue of squadron pictures to fall back to.
+const image = computed(() => props.squadron.logo?.smallUrl ?? undefined);
+
+// The stripe is the squadron's own colour where it has one, and the quiet grey
+// a glyph takes where it does not -- never a colour nobody chose.
 const markStyle = computed(() => ({
   backgroundColor: props.squadron.color || "var(--color-muted)",
 }));
 </script>
 
 <template>
-  <Btn
-    :to="{
-      name: 'fleet-squadron',
-      params: { slug: props.fleet.slug, squadron: props.squadron.slug },
-    }"
-    block
-    class="justify-start"
-    :data-test="`squadron-card-${props.squadron.slug}`"
+  <Panel
+    :bg-image="image"
+    :data-test="`squadron-panel-${squadron.slug}`"
+    class="squadron-panel"
   >
-    <div class="squadron-card">
-      <img
-        v-if="props.squadron.logo?.smallUrl"
-        :src="props.squadron.logo.smallUrl"
-        :alt="props.squadron.name"
-        class="squadron-card-logo"
-      />
-      <span v-else class="squadron-card-mark" :style="markStyle" />
-      <div class="squadron-card-body">
-        <h5>{{ props.squadron.name }}</h5>
-        <p v-if="props.squadron.description" class="text-muted">
-          {{ props.squadron.description }}
-        </p>
-        <span class="text-muted">
-          {{
-            t("labels.fleet.squadrons.memberCount", {
-              count: props.squadron.memberCount,
-            })
-          }}
+    <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
+      <template #default>
+        <router-link :to="to">
+          {{ squadron.name }}
+        </router-link>
+      </template>
+      <template v-if="squadron.description" #subtitle>
+        {{ squadron.description }}
+      </template>
+      <template v-if="membersManageable || editable || destroyable" #actions>
+        <Btn
+          v-if="membersManageable"
+          v-tooltip="t('actions.fleet.squadrons.addMember')"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.fleet.squadrons.addMember')"
+          class="squadron-panel-action"
+          data-test="squadron-panel-add-members"
+          @click.prevent="emit('addMembers')"
+        >
+          <i class="fa-duotone fa-user-plus" />
+        </Btn>
+        <Btn
+          v-if="editable"
+          v-tooltip="t('actions.edit')"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.edit')"
+          class="squadron-panel-action"
+          data-test="squadron-panel-edit"
+          @click.prevent="emit('edit')"
+        >
+          <i class="fa-duotone fa-pen" />
+        </Btn>
+        <Btn
+          v-if="destroyable"
+          v-tooltip="t('actions.delete')"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.delete')"
+          class="squadron-panel-action"
+          data-test="squadron-panel-destroy"
+          @click.prevent="emit('destroy')"
+        >
+          <i class="fa-duotone fa-trash" />
+        </Btn>
+      </template>
+    </PanelHeading>
+    <PanelBody class="squadron-panel-body" rounded="bottom">
+      <span class="squadron-panel-mark" :style="markStyle" />
+      <div class="squadron-panel-count">
+        <span class="squadron-panel-count-number">
+          {{ squadron.memberCount }}
+        </span>
+        <span class="squadron-panel-count-label">
+          {{ t("labels.fleet.squadrons.members") }}
         </span>
       </div>
-    </div>
-  </Btn>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.squadron-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  width: 100%;
-  text-align: left;
-}
+.squadron-panel {
+  .squadron-panel-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 60px;
+  }
 
-.squadron-card-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
+  &-action {
+    font-size: 18px;
 
-.squadron-card-mark {
-  width: 12px;
-  align-self: stretch;
-  min-height: 40px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
+    > :first-child {
+      font-size: 18px;
+    }
+  }
 
-.squadron-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
+  // The one place a squadron's colour is shown at any size. A stripe rather
+  // than a dot: at badge size the colour is a hint, and here it is what the
+  // card is recognised by across a grid of them.
+  &-mark {
+    width: 4px;
+    align-self: stretch;
+    min-height: 28px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  &-count {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &-count-number {
+    font-size: 1.5em;
+    line-height: 1;
+  }
+
+  &-count-label {
+    color: var(--color-text-dim);
+    font-size: 0.85em;
+  }
 }
 </style>

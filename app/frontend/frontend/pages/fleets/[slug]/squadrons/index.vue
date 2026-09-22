@@ -13,7 +13,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import SquadronCard from "@/frontend/components/Fleets/Squadrons/SquadronCard/index.vue";
+import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -108,7 +108,13 @@ const crumbs = computed<Crumb[]>(() => [
 
   <Grid v-if="squadronList.length" :records="squadronList" primary-key="id">
     <template #default="{ record }">
-      <SquadronCard :fleet="props.fleet" :squadron="record" />
+      <SquadronPanel
+        :squadron="record"
+        :to="{
+          name: 'fleet-squadron',
+          params: { slug: fleet.slug, squadron: record.slug },
+        }"
+      />
     </template>
   </Grid>
 

@@ -5,13 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import SquadronBadge from "@/frontend/components/Fleets/Squadrons/SquadronBadge/index.vue";
+import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -148,56 +147,23 @@ onUnmounted(() => {
 
   <Loader :loading="isLoading" />
 
-  <Panel v-if="squadronList.length">
-    <PanelBody>
-      <ul class="squadron-settings-list">
-        <li
-          v-for="squadron in squadronList"
-          :key="squadron.id"
-          class="squadron-settings-row"
-          :data-test="`settings-squadron-${squadron.slug}`"
-        >
-          <SquadronBadge
-            :squadron="squadron"
-            :to="{
-              name: 'fleet-squadron',
-              params: { slug: fleet.slug, squadron: squadron.slug },
-            }"
-          />
-          <span class="squadron-settings-count text-muted">
-            {{
-              t("labels.fleet.squadrons.memberCount", {
-                count: squadron.memberCount,
-              })
-            }}
-          </span>
-          <div class="squadron-settings-actions">
-            <Btn
-              v-if="canManageMembers"
-              :size="BtnSizesEnum.SM"
-              @click="openMemberPicker(squadron)"
-            >
-              <i class="fa-duotone fa-user-plus" />
-            </Btn>
-            <Btn
-              v-if="canUpdate"
-              :size="BtnSizesEnum.SM"
-              @click="openSquadronModal(squadron)"
-            >
-              <i class="fa-duotone fa-pen" />
-            </Btn>
-            <Btn
-              v-if="canDestroy"
-              :size="BtnSizesEnum.SM"
-              @click="onDestroy(squadron)"
-            >
-              <i class="fa-duotone fa-trash" />
-            </Btn>
-          </div>
-        </li>
-      </ul>
-    </PanelBody>
-  </Panel>
+  <Grid v-if="squadronList.length" :records="squadronList" primary-key="id">
+    <template #default="{ record }">
+      <SquadronPanel
+        :squadron="record"
+        :to="{
+          name: 'fleet-squadron',
+          params: { slug: fleet.slug, squadron: record.slug },
+        }"
+        :editable="canUpdate"
+        :destroyable="canDestroy"
+        :members-manageable="canManageMembers"
+        @edit="openSquadronModal(record)"
+        @destroy="onDestroy(record)"
+        @add-members="openMemberPicker(record)"
+      />
+    </template>
+  </Grid>
 
   <Empty
     v-else-if="!isLoading"
@@ -205,31 +171,3 @@ onUnmounted(() => {
     data-test="settings-squadrons-empty"
   />
 </template>
-
-<style lang="scss" scoped>
-.squadron-settings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.squadron-settings-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.squadron-settings-count {
-  flex: 1;
-  min-width: 0;
-}
-
-.squadron-settings-actions {
-  display: flex;
-  gap: 6px;
-}
-</style>

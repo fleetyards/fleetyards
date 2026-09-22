@@ -486,6 +486,7 @@
           "color": "Colour",
           "logo": "Logo",
           "memberCount": "%{count} Members",
+          "members": "Members",
           "ships": "Ships",
           "searchMembers": "Search Members",
           "availableMembers": "available Members",
