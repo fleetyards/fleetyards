@@ -181,6 +181,17 @@ const crumbs = computed<Crumb[]>(() => [
                 count: squadron.memberCount,
               })
             }}
+            <!-- The lists say which of the two rows a card came from; this page
+                 is reached from both and would otherwise say neither. -->
+            <span
+              v-if="squadron.team"
+              v-tooltip="t('labels.fleet.squadrons.teamHint')"
+              class="squadron-kind"
+              data-test="squadron-team"
+            >
+              <i class="fa-duotone fa-user-group" />
+              {{ t("labels.fleet.squadrons.team") }}
+            </span>
           </template>
         </Heading>
       </div>
@@ -309,6 +320,15 @@ const crumbs = computed<Crumb[]>(() => [
 
 .squadron-identity-text {
   min-width: 0;
+}
+
+.squadron-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
 }
 
 // PanelBody opens at 4px, which is tuned to sit under a heading that closes at
