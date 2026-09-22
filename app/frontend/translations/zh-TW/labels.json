@@ -490,7 +490,7 @@
           "ships": "艦船",
           "searchMembers": "搜尋成員",
           "availableMembers": "可新增的成員",
-          "tabs": {
+          "views": {
             "members": "成員",
             "ships": "艦船",
             "stats": "統計"

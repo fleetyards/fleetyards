@@ -490,7 +490,7 @@
           "ships": "Ships",
           "searchMembers": "Search Members",
           "availableMembers": "available Members",
-          "tabs": {
+          "views": {
             "members": "Members",
             "ships": "Ships",
             "stats": "Stats"

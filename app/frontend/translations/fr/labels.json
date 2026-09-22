@@ -490,7 +490,7 @@
           "ships": "Vaisseaux",
           "searchMembers": "Rechercher des membres",
           "availableMembers": "membres disponibles",
-          "tabs": {
+          "views": {
             "members": "Membres",
             "ships": "Vaisseaux",
             "stats": "Statistiques"

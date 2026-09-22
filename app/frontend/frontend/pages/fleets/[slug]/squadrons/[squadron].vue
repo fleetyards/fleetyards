@@ -49,23 +49,26 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const route = useRoute();
 const router = useRouter();
 
-const TABS = ["members", "ships", "stats"] as const;
+// Views of one squadron, not tabs: the roster, the ships and the numbers are
+// the same record asked three questions, which is what the members page calls
+// a view too.
+const VIEWS = ["members", "ships", "stats"] as const;
 
-type SquadronTab = (typeof TABS)[number];
+type SquadronView = (typeof VIEWS)[number];
 
-// The tab lives in the query rather than in local state, so a link to a
+// The view lives in the query rather than in local state, so a link to a
 // squadron's ships is a link somebody can send. `App.vue` keys the page on
 // `locale-path`, so a path of its own would rebuild the page on every switch.
-const tab = computed<SquadronTab>(() =>
-  TABS.includes(route.query.tab as SquadronTab)
-    ? (route.query.tab as SquadronTab)
+const view = computed<SquadronView>(() =>
+  VIEWS.includes(route.query.view as SquadronView)
+    ? (route.query.view as SquadronView)
     : "members",
 );
 
-const tabLink = (value: SquadronTab) => ({
+const viewLink = (value: SquadronView) => ({
   name: "fleet-squadron",
   params: route.params,
-  query: value === "members" ? {} : { tab: value },
+  query: value === "members" ? {} : { view: value },
 });
 
 const fleetSlug = computed(() => props.fleet.slug);
@@ -269,20 +272,26 @@ const crumbs = computed<Crumb[]>(() => [
       </Btn>
     </Teleport>
 
-    <BtnGroup segmented>
-      <Btn
-        v-for="value in TABS"
-        :key="value"
-        :to="tabLink(value)"
-        :active="tab === value"
-        :data-test="`squadron-tab-${value}`"
-        mobile-icon-only
-      >
-        {{ t(`labels.fleet.squadrons.tabs.${value}`) }}
-      </Btn>
-    </BtnGroup>
+    <!-- The spacing `FilteredList` puts under its toolbar, which is where
+         every other segmented control on the site sits. This one stands on its
+         own, so it carries the gap itself rather than landing flush on the
+         list under it. -->
+    <div class="squadron-views">
+      <BtnGroup segmented>
+        <Btn
+          v-for="value in VIEWS"
+          :key="value"
+          :to="viewLink(value)"
+          :active="view === value"
+          :data-test="`squadron-view-${value}`"
+          mobile-icon-only
+        >
+          {{ t(`labels.fleet.squadrons.views.${value}`) }}
+        </Btn>
+      </BtnGroup>
+    </div>
 
-    <template v-if="tab === 'members'">
+    <template v-if="view === 'members'">
       <MembersList
         :members="memberItems"
         :capabilities="props.membership?.capabilities"
@@ -291,7 +300,7 @@ const crumbs = computed<Crumb[]>(() => [
       />
     </template>
 
-    <template v-else-if="tab === 'ships'">
+    <template v-else-if="view === 'ships'">
       <Loader :loading="vehiclesLoading" />
 
       <Paginator
@@ -360,6 +369,11 @@ const crumbs = computed<Crumb[]>(() => [
 
 <style lang="scss" scoped>
 .squadron-description {
+  margin-bottom: 20px;
+}
+
+.squadron-views {
+  display: flex;
   margin-bottom: 20px;
 }
 </style>

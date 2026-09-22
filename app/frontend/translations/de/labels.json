@@ -490,7 +490,7 @@
           "ships": "Schiffe",
           "searchMembers": "Mitglieder suchen",
           "availableMembers": "verfügbare Mitglieder",
-          "tabs": {
+          "views": {
             "members": "Mitglieder",
             "ships": "Schiffe",
             "stats": "Statistiken"

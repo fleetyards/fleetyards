@@ -490,7 +490,7 @@
           "ships": "舰船",
           "searchMembers": "搜索成员",
           "availableMembers": "可添加的成员",
-          "tabs": {
+          "views": {
             "members": "成员",
             "ships": "舰船",
             "stats": "统计"

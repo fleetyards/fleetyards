@@ -490,7 +490,7 @@
           "ships": "Navi",
           "searchMembers": "Cerca membri",
           "availableMembers": "membri disponibili",
-          "tabs": {
+          "views": {
             "members": "Membri",
             "ships": "Navi",
             "stats": "Statistiche"
