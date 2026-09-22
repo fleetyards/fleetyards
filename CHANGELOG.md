@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.4.0](https://github.com/fleetyards/fleetyards/compare/v8.3.0...v8.4.0) (2026-09-22)
+
+
+### Features
+
+* **api:** a public missions catalogue endpoint ([#5128](https://github.com/fleetyards/fleetyards/issues/5128)) ([ae89018](https://github.com/fleetyards/fleetyards/commit/ae89018e5bb2d9120514b4ca560cf98d8767c11b))
+* **bluesky:** serve the atproto DID for the fleetyards.net handle ([97d459d](https://github.com/fleetyards/fleetyards/commit/97d459d4742d5c9e1e37abf4183ecc9455c61a2b))
+* **game-missions:** parse and load the game's contracts ([#5127](https://github.com/fleetyards/fleetyards/issues/5127)) ([f848233](https://github.com/fleetyards/fleetyards/commit/f8482339c941886586ceee3a0be2ed2fa8143ffe))
+
+
+### Bug Fixes
+
+* **admin:** label the three untranslated notification types ([99e25e9](https://github.com/fleetyards/fleetyards/commit/99e25e9cf3b6c37203f99e8b84efeeff0b0da761))
+* **admin:** order missions last in the catalogue nav ([fe20746](https://github.com/fleetyards/fleetyards/commit/fe207464ffef42b656e0cc2650dac7efaabb6266))
+* **holo:** read holo axes in the export frame instead of sorting them ([a4e2f77](https://github.com/fleetyards/fleetyards/commit/a4e2f77ce4573f35351ff7997498be5fd3c49c39))
+* **sc_data:** only report unlisted ships when something is new ([819f95b](https://github.com/fleetyards/fleetyards/commit/819f95b2e0ba2697f0317af71ef1c5f415be3dc2))
+
+
+### Refactorings
+
+* **maintenance:** give MoveExportLogosToIconTask a parsed-tree seam ([7bc328f](https://github.com/fleetyards/fleetyards/commit/7bc328f8964dc431ae94e423ddaab298ce224065))
+* **sc_data:** stop opening issues for the unlisted-ships report ([7e27a62](https://github.com/fleetyards/fleetyards/commit/7e27a629cb3518d2fc1222bf83eade82af0edb5c))
+
+
+### Chores
+
+* **credentials:** add the X API keys to production ([4344465](https://github.com/fleetyards/fleetyards/commit/4344465d1bcc1d390b90cf499bf62f9499cd61b2))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.48 to 6.2.1 ([#5139](https://github.com/fleetyards/fleetyards/issues/5139)) ([9b555e2](https://github.com/fleetyards/fleetyards/commit/9b555e246bab3e36b6dd3a44e4f95381e668c37d))
+* **deps-dev:** bump @types/node from 26.5.1 to 26.6.2 ([#5143](https://github.com/fleetyards/fleetyards/issues/5143)) ([cf1d24d](https://github.com/fleetyards/fleetyards/commit/cf1d24d5536c9f492d158ab16910ec6a75eef180))
+* **deps-dev:** bump eslint from 10.9.1 to 10.11.0 ([#5140](https://github.com/fleetyards/fleetyards/issues/5140)) ([c498e4d](https://github.com/fleetyards/fleetyards/commit/c498e4ddec108ff757ba00c0aed53346c49c88eb))
+* **deps-dev:** bump jsdom from 30.0.1 to 30.1.0 ([#5144](https://github.com/fleetyards/fleetyards/issues/5144)) ([8ab98bc](https://github.com/fleetyards/fleetyards/commit/8ab98bcbc191201dd4c4ae2b475437ec14523528))
+* **deps-dev:** bump orval from 8.33.0 to 8.34.0 ([#5138](https://github.com/fleetyards/fleetyards/issues/5138)) ([5b09fb9](https://github.com/fleetyards/fleetyards/commit/5b09fb9f72f11475c3ca14bc9440dd8da1b1784d))
+* **deps-dev:** bump prettier from 3.9.6 to 3.9.8 ([#5137](https://github.com/fleetyards/fleetyards/issues/5137)) ([0bb792e](https://github.com/fleetyards/fleetyards/commit/0bb792e6b5c368043fe600fe248e6c49b2a437f2))
+* **deps:** bump highcharts from 13.0.2 to 13.1.0 ([#5136](https://github.com/fleetyards/fleetyards/issues/5136)) ([654a698](https://github.com/fleetyards/fleetyards/commit/654a6980e367a0b2fa99726adf7f9ee55b6cae4f))
+* **deps:** bump swagger-ui-dist from 5.32.15 to 5.33.0 ([#5141](https://github.com/fleetyards/fleetyards/issues/5141)) ([b36292c](https://github.com/fleetyards/fleetyards/commit/b36292c7084af43ab837ac927694383af872eb30))
+* **deps:** bump vue from 3.5.42 to 3.5.43 ([#5142](https://github.com/fleetyards/fleetyards/issues/5142)) ([fd976d5](https://github.com/fleetyards/fleetyards/commit/fd976d5d2dc28cbb5817bf64e943dbe8d26ffd99))
+
 ## [8.3.0](https://github.com/fleetyards/fleetyards/compare/v8.2.0...v8.3.0) (2026-09-21)
 
 
