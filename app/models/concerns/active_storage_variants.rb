@@ -99,9 +99,14 @@ module ActiveStorageVariants
   # own, which may not have run yet: that one has to go through the job, whose
   # retry is what waits for the bytes.
   def already_uploaded?(name)
-    attachable = attachment_changes[name]&.attachable
+    change = attachment_changes[name]
 
-    attachable.is_a?(String) || attachable.is_a?(ActiveStorage::Blob)
+    # A purge is a change too, and `DeleteOne` names no attachable. Asked here
+    # rather than left to the caller because this runs for every attachment the
+    # save touched, before anything has decided which of them are still there.
+    return false unless change.respond_to?(:attachable)
+
+    change.attachable.is_a?(String) || change.attachable.is_a?(ActiveStorage::Blob)
   end
 
   def trim_pending?(name)

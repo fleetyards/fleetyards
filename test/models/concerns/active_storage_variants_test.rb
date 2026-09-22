@@ -92,6 +92,17 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
       assert_equal 1, TrimAttachmentJob.jobs.size
     end
 
+    # A purge is a change like any other, and the record asks every change what
+    # it is carrying before anything has decided which attachments are still
+    # there. `DeleteOne` carries no attachable at all.
+    test "purging an attachment raises nothing" do
+      @model.top_view.attach(padded_blob.signed_id)
+
+      assert_nothing_raised { @model.top_view.purge }
+
+      refute_predicate @model.reload.top_view, :attached?
+    end
+
     private def padded_blob
       ActiveStorage::Blob.create_and_upload!(
         io: StringIO.new(padded_png), filename: "top.png", content_type: "image/png"
