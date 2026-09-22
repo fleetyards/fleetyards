@@ -59,7 +59,10 @@
         },
         "squadrons": {
           "index": "%{fleet} Squadrons",
-          "create": "Create Squadron - %{fleet}",
+          "create": {
+            "details": "Create Squadron - %{fleet}",
+            "images": "Squadron Images - %{fleet}"
+          },
           "edit": {
             "details": "Edit Squadron - %{fleet}",
             "images": "Squadron Images - %{fleet}"

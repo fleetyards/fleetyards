@@ -254,8 +254,8 @@
           "index": "Staffeln",
           "create": "Staffel anlegen",
           "edit": "Staffel bearbeiten",
-          "editDetails": "Details",
-          "editImages": "Bilder",
+          "formDetails": "Details",
+          "formImages": "Bilder",
           "addMembers": "Mitglieder hinzufügen"
         },
         "stats": "Statistiken",

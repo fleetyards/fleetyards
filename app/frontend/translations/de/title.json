@@ -59,7 +59,10 @@
         },
         "squadrons": {
           "index": "%{fleet} Staffeln",
-          "create": "Staffel anlegen – %{fleet}",
+          "create": {
+            "details": "Staffel anlegen – %{fleet}",
+            "images": "Staffel-Bilder – %{fleet}"
+          },
           "edit": {
             "details": "Staffel bearbeiten – %{fleet}",
             "images": "Staffel-Bilder – %{fleet}"

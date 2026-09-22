@@ -59,7 +59,10 @@
         },
         "squadrons": {
           "index": "%{fleet} 中队",
-          "create": "创建中队 - %{fleet}",
+          "create": {
+            "details": "创建中队 - %{fleet}",
+            "images": "中队图片 - %{fleet}"
+          },
           "edit": {
             "details": "编辑中队 - %{fleet}",
             "images": "中队图片 - %{fleet}"

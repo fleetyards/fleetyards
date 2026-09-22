@@ -51,6 +51,10 @@
         },
         "squadrons": {
           "index": "中队",
+          "create": {
+            "details": "详情",
+            "images": "图片"
+          },
           "edit": {
             "details": "详情",
             "images": "图片"

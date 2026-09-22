@@ -1,12 +1,31 @@
 import type { RouteRecordRaw } from "vue-router";
 import { FeatureFlagName } from "@/services/fyApi";
-import { routes as squadronEditRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/[squadron]/edit/routes";
+import { squadronFormRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/form/routes";
 
 const SQUADRON_READ_ACCESS = [
   "fleet:squadrons:read",
   "fleet:squadrons:manage",
   "fleet:manage",
 ];
+
+const SQUADRON_CREATE_ACCESS = [
+  "fleet:squadrons:create",
+  "fleet:squadrons:manage",
+  "fleet:manage",
+];
+
+const SQUADRON_UPDATE_ACCESS = [
+  "fleet:squadrons:update",
+  "fleet:squadrons:manage",
+  "fleet:manage",
+];
+
+const SQUADRON_CREATE_ROUTES = squadronFormRoutes(
+  "create",
+  SQUADRON_CREATE_ACCESS,
+);
+
+const SQUADRON_EDIT_ROUTES = squadronFormRoutes("edit", SQUADRON_UPDATE_ACCESS);
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -26,17 +45,14 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "new/",
-    name: "fleet-squadron-new",
     component: () => import("@/frontend/pages/fleets/[slug]/squadrons/new.vue"),
+    children: SQUADRON_CREATE_ROUTES,
+    redirect: { name: SQUADRON_CREATE_ROUTES[0].name as string },
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.squadrons.create",
       needsAuthentication: true,
-      access: [
-        "fleet:squadrons:create",
-        "fleet:squadrons:manage",
-        "fleet:manage",
-      ],
+      access: SQUADRON_CREATE_ACCESS,
       feature: FeatureFlagName.FLEET_SQUADRONS,
       featureScope: "fleet",
       customTitle: true,
@@ -46,17 +62,13 @@ export const routes: RouteRecordRaw[] = [
     path: ":squadron/edit/",
     component: () =>
       import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/edit.vue"),
-    children: squadronEditRoutes,
-    redirect: { name: squadronEditRoutes[0].name as string },
+    children: SQUADRON_EDIT_ROUTES,
+    redirect: { name: SQUADRON_EDIT_ROUTES[0].name as string },
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.squadrons.edit",
       needsAuthentication: true,
-      access: [
-        "fleet:squadrons:update",
-        "fleet:squadrons:manage",
-        "fleet:manage",
-      ],
+      access: SQUADRON_UPDATE_ACCESS,
       feature: FeatureFlagName.FLEET_SQUADRONS,
       featureScope: "fleet",
       customTitle: true,

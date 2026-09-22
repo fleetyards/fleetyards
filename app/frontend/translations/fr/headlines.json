@@ -254,8 +254,8 @@
           "index": "Escadrons",
           "create": "Créer un escadron",
           "edit": "Modifier l'escadron",
-          "editDetails": "Détails",
-          "editImages": "Images",
+          "formDetails": "Détails",
+          "formImages": "Images",
           "addMembers": "Ajouter des membres"
         },
         "stats": "Statistiques",

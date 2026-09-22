@@ -51,6 +51,10 @@
         },
         "squadrons": {
           "index": "Escadrons",
+          "create": {
+            "details": "Détails",
+            "images": "Images"
+          },
           "edit": {
             "details": "Détails",
             "images": "Images"

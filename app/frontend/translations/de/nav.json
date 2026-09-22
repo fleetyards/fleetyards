@@ -51,6 +51,10 @@
         },
         "squadrons": {
           "index": "Staffeln",
+          "create": {
+            "details": "Details",
+            "images": "Bilder"
+          },
           "edit": {
             "details": "Details",
             "images": "Bilder"

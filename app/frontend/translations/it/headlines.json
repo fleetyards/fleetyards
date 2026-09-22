@@ -254,8 +254,8 @@
           "index": "Squadroni",
           "create": "Crea squadrone",
           "edit": "Modifica squadrone",
-          "editDetails": "Dettagli",
-          "editImages": "Immagini",
+          "formDetails": "Dettagli",
+          "formImages": "Immagini",
           "addMembers": "Aggiungi membri"
         },
         "stats": "Statistiche",
