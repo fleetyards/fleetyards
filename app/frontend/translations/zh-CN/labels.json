@@ -1765,6 +1765,17 @@
           "ownedFilter": "已拥有",
           "owned": "已拥有",
           "notOwned": "未拥有"
+        },
+        "missions": {
+          "name": "搜索任务",
+          "org": "发布方",
+          "standing": "声望",
+          "rewarding": "奖励",
+          "alignment": "阵营立场",
+          "kind": "类型",
+          "releasedFilter": "正式版",
+          "released": "在正式版中",
+          "unreleased": "未在正式版"
         }
       },
       "station": {
@@ -1942,6 +1953,39 @@
           },
           "createdAt": "创建于",
           "updatedAt": "更新于"
+        },
+        "missions": {
+          "unnamed": "游戏从未命名",
+          "slug": "Slug",
+          "scKey": "游戏键",
+          "scRef": "游戏引用",
+          "generator": "生成器",
+          "debugName": "调试名称",
+          "build": "版本",
+          "difficultyAxes": "难度（技巧 / 负担 / 风险 / 理解）",
+          "state": "状态",
+          "states": {
+            "retired": "已移除",
+            "released": "在正式版",
+            "unreleased": "未在正式版"
+          },
+          "columns": {
+            "released": "在正式版",
+            "generator": "生成器",
+            "build": "版本",
+            "rewardKind": "类型",
+            "amount": "数量",
+            "rewardDetail": "详情"
+          },
+          "filters": {
+            "debugName": "调试名称",
+            "named": "已命名",
+            "unnamed": "从未命名",
+            "namedFilter": "命名",
+            "currentBuild": "仅当前版本",
+            "anyBuild": "任意版本",
+            "build": "版本"
+          }
         },
         "dashboard": {
           "quickStats": {
@@ -2887,6 +2931,47 @@
           "minutes": "%{count} 分",
           "seconds": "%{count} 秒"
         }
+      },
+      "gameMission": {
+        "calculatedInGame": "由游戏计算",
+        "blueprints": "蓝图",
+        "name": "名称",
+        "org": "发布方",
+        "offeredBy": "发布方",
+        "offeredByUnknown": "未注明委托方",
+        "standing": "声望",
+        "kind": "类型",
+        "kinds": {
+          "career": "职业",
+          "contract": "一次性"
+        },
+        "difficulty": "难度",
+        "difficultyAxes": {
+          "mechanicalSkill": "操作技巧",
+          "mentalLoad": "心智负担",
+          "riskOfLoss": "损失风险",
+          "gameKnowledge": "游戏理解"
+        },
+        "alignments": {
+          "lawful": "守法",
+          "neutral": "中立",
+          "outlaw": "不法"
+        },
+        "rewards": "奖励",
+        "rewardKinds": {
+          "blueprint": "蓝图",
+          "reputation": "声望",
+          "item": "物品",
+          "badge": "徽章",
+          "currency": "报酬"
+        },
+        "oneOfASet": "一组中的一件",
+        "briefing": "任务简报",
+        "templatedNote": "标记的部分由游戏在发布任务时填入。",
+        "payoutNote": "报酬由游戏在生成任务时计算，因此游戏文件只为少数合同写明了金额。",
+        "noRewards": "游戏文件未为此任务写明奖励。",
+        "unreleased": "未在正式版",
+        "retired": "已移除"
       }
     }
   }

@@ -17,7 +17,8 @@ module GameMissionFiltersConcern
   # `last_build` is preloaded alongside `build`, because a row the current build
   # dropped renders entirely off that one -- `facts` is `build || last_build` --
   # and `currentVersion=false` is exactly the request that returns those rows.
-  private def filtered_missions(scope = GameMission.all)
+  private def filtered_missions(scope = nil)
+    scope ||= GameMission.named(GameMission.served_source, current_only: current_version)
     # `normalize_sort_params` first, because a sortable list sends `q[s]` and
     # ransack would read a leftover `s` ahead of the whitelisted `sorts`.
     normalize_sort_params(missions_query_params)

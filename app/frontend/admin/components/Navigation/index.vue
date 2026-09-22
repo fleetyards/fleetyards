@@ -60,7 +60,13 @@ const GROUPS = [
     key: "catalogue",
     // The section icon the public catalogue's own nav uses.
     icon: "fa-duotone fa-books",
-    paths: ["/blueprints/", "/components/", "/equipment/", "/commodities/"],
+    paths: [
+      "/blueprints/",
+      "/components/",
+      "/equipment/",
+      "/commodities/",
+      "/missions/",
+    ],
   },
   {
     key: "community",

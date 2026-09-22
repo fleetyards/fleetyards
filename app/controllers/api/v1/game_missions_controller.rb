@@ -15,7 +15,12 @@ module Api
       def show
         slug = params[:slug].to_s.downcase
 
-        @mission = GameMission.includes(build: :rewards, last_build: :rewards).find_by!(slug:)
+        # `named`, like the list: a page the list will not offer is a page a
+        # link should not reach either -- the one predicate D7 is about.
+        @mission = GameMission
+          .named(GameMission.served_source)
+          .includes(build: :rewards, last_build: :rewards)
+          .find_by!(slug:)
 
         # A second query rather than a join: a mission hands out pools, a pool
         # holds up to 48 recipes, and folding that into the row would fan the

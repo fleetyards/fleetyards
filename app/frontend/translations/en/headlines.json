@@ -8,6 +8,9 @@
           "stats": "Stats",
           "sources": "Sources"
         },
+        "missions": {
+          "index": "Missions"
+        },
         "dashboard": {
           "title": "Dashboard",
           "visitsPerDay": "Visits per Day",
@@ -492,6 +495,12 @@
       },
       "blueprints": {
         "index": "Blueprints"
+      },
+      "missions": {
+        "index": "Missions"
+      },
+      "missions": {
+        "index": "Missions"
       }
     }
   }

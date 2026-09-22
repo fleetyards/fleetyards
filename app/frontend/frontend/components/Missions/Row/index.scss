@@ -1,0 +1,198 @@
+@import "@/stylesheets/variables.scss";
+
+// Deliberately the same row as `.blueprint-row` and `.component-row`: the three
+// sit in one catalogue section, and a reader moving between the tabs should not
+// feel the furniture change. Every value here is that row's, not a fresh guess
+// -- which also means a change to one of the three belongs in all of them.
+.mission-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-control, 8px);
+  color: var(--color-text, #c8c8c8);
+  transition: background-color 150ms ease;
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+  }
+
+  &__main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 150ms ease;
+  }
+
+  // Only the link answers the cursor: a mission with no slug has no link, and a
+  // plain span that lights up promises a page that is not there.
+  a#{&}__name:hover,
+  a#{&}__name:focus-visible {
+    color: var(--color-lifted, #eee);
+  }
+
+  &__sub {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    min-width: 0;
+    gap: 0 8px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+
+    a {
+      color: var(--color-text-dim, #959595);
+      transition: color 150ms ease;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--color-text, #c8c8c8);
+      }
+    }
+
+    // The " · " the meta lines elsewhere join their parts with. Trailing rather
+    // than leading, so a wrapped line does not open with bare punctuation.
+    > :not(:last-child)::after {
+      content: "·";
+      margin-inline-start: 8px;
+      color: var(--color-text-dim, #959595);
+      pointer-events: none;
+    }
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  // Chips, the way a blueprint row's materials are: what it pays is what a
+  // reader scans this list for, and as plain grey it would read as a second
+  // subtitle rather than as the figures it stands in for.
+  &__rewards {
+    display: none;
+    flex: none;
+    gap: 6px;
+    max-width: 320px;
+    overflow: hidden;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  &__reward {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: 4px;
+    white-space: nowrap;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+
+    &:hover {
+      color: var(--color-lifted, #eee);
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    }
+  }
+
+  &__alignments {
+    display: none;
+    flex: none;
+    align-items: center;
+    gap: 10px;
+
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  &__alignment {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-text-dim, #959595);
+    transition: text-decoration-color 150ms ease;
+    text-decoration: underline transparent;
+    text-underline-offset: 3px;
+
+    &--lawful {
+      color: var(--color-primary, #428bca);
+    }
+
+    &--outlaw {
+      color: var(--color-danger, #dc3545);
+    }
+
+    // The colour is the meaning here, so it stays put and the underline answers
+    // instead -- stepping one of these to white would read as the word losing
+    // what it says.
+    &:hover,
+    &:focus-visible {
+      text-decoration-color: currentcolor;
+    }
+  }
+
+  &__badges {
+    display: flex;
+    gap: 6px;
+    flex: none;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-control-bare, 6px);
+    white-space: nowrap;
+
+    // "Not in release" is a statement, not a measurement, and carries no label
+    // of its own -- it should not read as loudly as the figure beside it.
+    &--quiet {
+      border-style: dashed;
+
+      .mission-row__badge-value {
+        font-weight: 400;
+        color: var(--color-text-dim, #959595);
+      }
+    }
+  }
+
+  &__badge-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__badge-value {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    font-variant-numeric: tabular-nums;
+  }
+}
