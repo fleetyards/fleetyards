@@ -1,0 +1,117 @@
+name: sc_data Contract
+
+# The half of the sc_data tests that reads the real parsed tree.
+#
+# It used to run inside `ruby-tests`, on every pull request, which meant every
+# run pulled a 311MB tree and every Dependabot or fork branch -- which reads no
+# object-storage credentials -- fell through to whatever tree the cache happened
+# to be keeping. The assertions then described an export from months ago and
+# failed a bump that had touched nothing. See
+# test/support/sc_data_contract_tree.rb.
+#
+# Here it has the credentials, so it pulls the tree the configured build names
+# and asks the questions of that. On a schedule because the export is what moves:
+# nothing in this repository has to change for the answers to.
+
+on:
+  schedule:
+    # 05:20 UTC, after the nightly parse has had time to push a tree.
+    - cron: "20 5 * * *"
+  push:
+    branches: ["main"]
+    paths:
+      - "app/lib/sc_data/**"
+      - "app/models/**"
+      - "test/contracts/**"
+      - "config/sc_data/**"
+      - ".github/workflows/sc-data-contract.yml"
+  workflow_dispatch:
+
+jobs:
+  sc-data-contract:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: test
+      # Turns a missing tree from a skip into a failure: a pull that quietly
+      # fetched nothing must not read as a green contract run.
+      SC_DATA_CONTRACT: "1"
+      SC_DATA_S3__ENDPOINT: https://fsn1.your-objectstorage.com
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USER: root
+      DB_PASSWORD: root
+      REDIS_URL: redis://localhost:6379
+      SHORT_DOMAIN: fltyrd.test
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: root
+          POSTGRES_DB: fleetyards_test
+          POSTGRES_PASSWORD: root
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:8.2.9-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      # Pinned to an exact tag: pnpm 12 needs the native bootstrap added in
+      # v6.1.0, and the floating v6 tag still points at v6.0.10.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6.1.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - run: mkdir -p log
+      - name: Prepare test database
+        run: bundle exec rake db:create db:schema:load
+
+      - name: Install 1Password CLI
+        run: |
+          curl -sSfo /tmp/op.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.0/op_linux_amd64_v2.33.0.zip"
+          unzip -o /tmp/op.zip -d /usr/local/bin op
+          chmod +x /usr/local/bin/op
+
+      # Deliberately no cache and no restore-keys. The point of this workflow is
+      # to ask the questions of the tree the configured build names, and a
+      # prefix restore hands back whichever tree the runner last saw -- which is
+      # exactly the failure that moved these tests off pull requests.
+      - name: Fetch the parsed sc_data tree
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          SC_DATA_S3__ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
+          SC_DATA_S3__SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+          echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
+          echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
+          export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
+
+          # No environment named: `pull` falls back to the configured one, so
+          # renaming or adding a source does not leave this behind.
+          bin/scdata pull
+
+      - name: Run the contract tests
+        run: bin/rails test test/contracts
