@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import ComponentCategoryIcon from "@/frontend/components/Components/CategoryIcon/index.vue";
 import ComponentLeadMetric from "@/frontend/components/Components/LeadMetric/index.vue";
+import RowListItem from "@/shared/components/RowListItem/index.vue";
+import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Component } from "@/services/fyApi";
 
@@ -43,75 +45,69 @@ const categoryLabel = computed(() => {
 
   return tExists(path) ? t(path) : key;
 });
+
+const badges = computed<RowListItemBadge[]>(() => {
+  const list: RowListItemBadge[] = [];
+
+  if (props.component.size) {
+    list.push({
+      key: "size",
+      label: t("labels.hardpoint.size"),
+      value: String(props.component.size),
+    });
+  }
+
+  if (props.component.gradeLabel) {
+    list.push({
+      key: "grade",
+      label: t("labels.component.grade"),
+      value: props.component.gradeLabel,
+    });
+  }
+
+  return list;
+});
 </script>
 
 <template>
-  <!-- A container, not one big link. The row holds links of its own now -- the
-       manufacturer and the category each narrow the catalogue -- and an anchor
-       inside an anchor is invalid and does not work. The name is the way to the
-       component instead.
+  <RowListItem
+    class="component-row"
+    :to="
+      component.slug
+        ? { name: 'component', params: { slug: component.slug } }
+        : undefined
+    "
+    :badges="badges"
+  >
+    <template #leading>
+      <ComponentCategoryIcon :category="component.category" />
+    </template>
 
-       It has no link at all when there is no slug: a component the game never
-       named never got one, `router-link` throws on a missing required param
-       rather than rendering nothing, and that took the whole list down. The
-       catalogue filters those out upstream; this is the guard for one that
-       reaches the page anyway. -->
-  <div class="component-row">
-    <ComponentCategoryIcon :category="component.category" />
+    <template #name>{{ component.name }}</template>
 
-    <span class="component-row__main">
+    <template #sub>
       <router-link
-        v-if="component.slug"
-        class="component-row__name"
-        :to="{ name: 'component', params: { slug: component.slug } }"
+        v-if="component.manufacturer?.slug"
+        :to="filterLink('manufacturerSlugIn', component.manufacturer.slug)"
       >
-        {{ component.name }}
+        {{ component.manufacturer.name }}
       </router-link>
-      <span v-else class="component-row__name">{{ component.name }}</span>
-
-      <span class="component-row__sub">
-        <router-link
-          v-if="component.manufacturer?.slug"
-          :to="filterLink('manufacturerSlugIn', component.manufacturer.slug)"
-        >
-          {{ component.manufacturer.name }}
-        </router-link>
-        <router-link
-          v-if="component.category"
-          :to="filterLink('categoryIn', component.category)"
-        >
-          {{ categoryLabel }}
-        </router-link>
-        <router-link
-          v-if="component.subType"
-          :to="filterLink('componentSubTypeIn', component.subType)"
-        >
-          {{ component.subType }}
-        </router-link>
-      </span>
-    </span>
+      <router-link
+        v-if="component.category"
+        :to="filterLink('categoryIn', component.category)"
+      >
+        {{ categoryLabel }}
+      </router-link>
+      <router-link
+        v-if="component.subType"
+        :to="filterLink('componentSubTypeIn', component.subType)"
+      >
+        {{ component.subType }}
+      </router-link>
+    </template>
 
     <ComponentLeadMetric :component="component" />
-
-    <!-- Labelled, because a row has no column heading above it to say which
-         figure a bare "1" or "A" is. -->
-    <span class="component-row__badges">
-      <span v-if="component.size" class="component-row__badge">
-        <span class="component-row__badge-label">
-          {{ t("labels.hardpoint.size") }}
-        </span>
-        <span class="component-row__badge-value">{{ component.size }}</span>
-      </span>
-      <span v-if="component.gradeLabel" class="component-row__badge">
-        <span class="component-row__badge-label">
-          {{ t("labels.component.grade") }}
-        </span>
-        <span class="component-row__badge-value">
-          {{ component.gradeLabel }}
-        </span>
-      </span>
-    </span>
-  </div>
+  </RowListItem>
 </template>
 
 <style lang="scss" scoped>

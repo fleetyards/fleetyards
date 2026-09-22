@@ -6,6 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
+import RowListItem from "@/shared/components/RowListItem/index.vue";
+import {
+  RowListItemTonesEnum,
+  type RowListItemBadge,
+  type RowListItemChip,
+  type RowListItemTag,
+} from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { type Blueprint, type FleetBlueprintOwner } from "@/services/fyApi";
@@ -36,14 +43,13 @@ const filterLink = (key: string, value: string | string[]) => ({
 
 const { format: formatCraftTime } = useCraftTime();
 
-const MATERIALS_SHOWN = 4;
-
-const shownMaterials = computed(() =>
-  (props.blueprint.materials || []).slice(0, MATERIALS_SHOWN),
-);
-
-const extraMaterials = computed(() =>
-  Math.max((props.blueprint.materials || []).length - MATERIALS_SHOWN, 0),
+// What it eats.
+const materials = computed<RowListItemChip[]>(() =>
+  (props.blueprint.materials || []).map((material) => ({
+    key: material.slug,
+    label: material.name,
+    to: filterLink("consumingCommodityIn", [material.slug]),
+  })),
 );
 
 const OWNERS_SHOWN = 3;
@@ -62,7 +68,19 @@ const ownerName = (owner: FleetBlueprintOwner) =>
 // Which sides of the law hand this recipe out, as the API states them: each
 // named once, in the order lawful, neutral, outlaw. An older cached payload
 // carries none, so this stands in for the field rather than assuming it.
-const alignments = computed(() => props.blueprint.sourceAlignments || []);
+const ALIGNMENT_TONES: Record<string, RowListItemTonesEnum> = {
+  lawful: RowListItemTonesEnum.PRIMARY,
+  outlaw: RowListItemTonesEnum.DANGER,
+};
+
+const tags = computed<RowListItemTag[]>(() =>
+  (props.blueprint.sourceAlignments || []).map((alignment) => ({
+    key: alignment,
+    label: t(`labels.blueprint.alignments.${alignment}`),
+    to: filterLink("sourceAlignmentIn", [alignment]),
+    tone: ALIGNMENT_TONES[alignment],
+  })),
+);
 
 // What the recipe makes, and where that lives. 5 of the 1,607 recipes in the
 // current build resolve to no catalogue row at all -- four mission carryables
@@ -81,56 +99,78 @@ const craftableRoute = computed(() => {
   // as plain text until those tenants exist.
   return undefined;
 });
+
+const badges = computed<RowListItemBadge[]>(() => {
+  const list: RowListItemBadge[] = [];
+
+  // Said on the row, not only on the detail page. 901 of 1,607 recipes have no
+  // stated source, so "can I actually go and get this" is a question the list
+  // itself has to answer.
+  if (props.blueprint.sourceUnknown) {
+    list.push({
+      key: "no-source",
+      value: t("labels.blueprint.noKnownSource"),
+      quiet: true,
+    });
+  }
+
+  // The formatted string rather than the raw seconds decides it: a recipe whose
+  // time rounds away to nothing has no figure to show, and an empty badge reads
+  // as a rendering fault.
+  const craftTime = formatCraftTime(props.blueprint.craftTime);
+
+  if (craftTime) {
+    list.push({
+      key: "craft-time",
+      label: t("labels.blueprint.craftTime"),
+      value: craftTime,
+    });
+  }
+
+  if (props.blueprint.slotCount) {
+    list.push({
+      key: "slots",
+      label: t("labels.blueprint.slots"),
+      value: String(props.blueprint.slotCount),
+    });
+  }
+
+  return list;
+});
 </script>
 
 <template>
-  <div class="blueprint-row">
-    <span class="blueprint-row__main">
-      <router-link
-        v-if="blueprint.slug"
-        class="blueprint-row__name"
-        :to="{ name: 'blueprint', params: { slug: blueprint.slug } }"
-      >
-        {{ blueprint.name }}
-      </router-link>
-      <span v-else class="blueprint-row__name">{{ blueprint.name }}</span>
+  <RowListItem
+    class="blueprint-row"
+    :to="
+      blueprint.slug
+        ? { name: 'blueprint', params: { slug: blueprint.slug } }
+        : undefined
+    "
+    :chips="materials"
+    :tags="tags"
+    :badges="badges"
+  >
+    <template #name>{{ blueprint.name }}</template>
 
-      <span class="blueprint-row__sub">
-        <router-link
-          v-if="blueprint.craftable"
-          :to="filterLink('craftableTypeEq', blueprint.craftable.type)"
-        >
-          {{ t(`labels.blueprint.craftableTypes.${blueprint.craftable.type}`) }}
-        </router-link>
-        <router-link v-if="craftableRoute" :to="craftableRoute">
-          {{ blueprint.craftable?.name }}
-        </router-link>
-        <span v-else-if="blueprint.craftable">{{
-          blueprint.craftable.name
-        }}</span>
-      </span>
-    </span>
-
-    <!-- What it eats. Capped at four names with a count for the rest: the
-         busiest recipe uses four materials, but the cap keeps a row one line
-         if a future patch adds more. -->
-    <span v-if="shownMaterials.length" class="blueprint-row__materials">
+    <template #sub>
       <router-link
-        v-for="material in shownMaterials"
-        :key="material.slug"
-        class="blueprint-row__material"
-        :to="filterLink('consumingCommodityIn', [material.slug])"
+        v-if="blueprint.craftable"
+        :to="filterLink('craftableTypeEq', blueprint.craftable.type)"
       >
-        {{ material.name }}
+        {{ t(`labels.blueprint.craftableTypes.${blueprint.craftable.type}`) }}
       </router-link>
-      <span v-if="extraMaterials" class="blueprint-row__material-more">
-        +{{ extraMaterials }}
-      </span>
-    </span>
+      <router-link v-if="craftableRoute" :to="craftableRoute">
+        {{ blueprint.craftable?.name }}
+      </router-link>
+      <span v-else-if="blueprint.craftable">{{
+        blueprint.craftable.name
+      }}</span>
+    </template>
 
     <!-- Who in the fleet holds it. Capped at three names with a count for the
-         rest: a row is one line, and "and 11 others" is the part a reader
-         acts on anyway. -->
+         rest: a row is one line, and "and 11 others" is the part a reader acts
+         on anyway. -->
     <span v-if="shownOwners.length" class="blueprint-row__owners">
       <router-link
         v-for="owner in shownOwners"
@@ -145,63 +185,10 @@ const craftableRoute = computed(() => {
       </span>
     </span>
 
-    <!-- Which sides of the law hand it out. The badges below say whether
-         anything does at all; this says who, which is the half a crafter who
-         flies one side of the law is actually asking.
-
-         Coloured words rather than filled pills, and a link each, like every
-         other value on the row the catalogue can be narrowed by. -->
-    <span v-if="alignments.length" class="blueprint-row__alignments">
-      <router-link
-        v-for="alignment in alignments"
-        :key="alignment"
-        class="blueprint-row__alignment"
-        :class="`blueprint-row__alignment--${alignment}`"
-        :to="filterLink('sourceAlignmentIn', [alignment])"
-      >
-        {{ t(`labels.blueprint.alignments.${alignment}`) }}
-      </router-link>
-    </span>
-
-    <!-- Said on the row, not only on the detail page. 901 of 1,607 recipes
-         have no stated source, so "can I actually go and get this" is a
-         question the list itself has to answer. -->
-    <span class="blueprint-row__badges">
-      <span
-        v-if="blueprint.sourceUnknown"
-        class="blueprint-row__badge blueprint-row__badge--quiet"
-      >
-        <span class="blueprint-row__badge-value">
-          {{ t("labels.blueprint.noKnownSource") }}
-        </span>
-      </span>
-
-      <span v-if="blueprint.craftTime" class="blueprint-row__badge">
-        <span class="blueprint-row__badge-label">
-          {{ t("labels.blueprint.craftTime") }}
-        </span>
-        <span class="blueprint-row__badge-value">
-          {{ formatCraftTime(blueprint.craftTime) }}
-        </span>
-      </span>
-
-      <span v-if="blueprint.slotCount" class="blueprint-row__badge">
-        <span class="blueprint-row__badge-label">
-          {{ t("labels.blueprint.slots") }}
-        </span>
-        <span class="blueprint-row__badge-value">{{
-          blueprint.slotCount
-        }}</span>
-      </span>
-    </span>
-
-    <!-- Last, where a row's action sits everywhere else in the app, and
-         outside the badges: it is the one thing here that is not a fact about
-         the recipe. -->
-    <span class="blueprint-row__actions">
+    <template #actions>
       <BlueprintOwnToggle :blueprint="blueprint" variant="row" />
-    </span>
-  </div>
+    </template>
+  </RowListItem>
 </template>
 
 <style lang="scss" scoped>

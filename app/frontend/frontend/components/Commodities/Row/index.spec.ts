@@ -52,13 +52,13 @@ const mount = async (attrs: Partial<Commodity> = {}) =>
     plugins: [await routerOnList()],
   });
 
-const BADGES = ".commodity-row__badge-value";
+const BADGES = ".row-list-item__badge-value";
 
 describe("Commodities/Row", () => {
   it("links the name to the commodity", async () => {
     const wrapper = await mount();
 
-    expect(wrapper.find(".commodity-row__name").attributes("href")).toContain(
+    expect(wrapper.find(".row-list-item__name").attributes("href")).toContain(
       "/catalogue/commodities/agricium",
     );
   });
@@ -68,7 +68,7 @@ describe("Commodities/Row", () => {
   it("makes the type a link that narrows the list", async () => {
     const wrapper = await mount();
 
-    const link = wrapper.find(".commodity-row__sub a");
+    const link = wrapper.find(".row-list-item__sub a");
 
     expect(link.text()).toBe("Metals");
     expect(link.attributes("href")).toContain("commodityTypeIn=metal");
@@ -104,6 +104,6 @@ describe("Commodities/Row", () => {
   it("falls back to the raw type for one nobody has labelled", async () => {
     const wrapper = await mount({ commodityType: "newfangledgoo" });
 
-    expect(wrapper.find(".commodity-row__sub a").text()).toBe("newfangledgoo");
+    expect(wrapper.find(".row-list-item__sub a").text()).toBe("newfangledgoo");
   });
 });

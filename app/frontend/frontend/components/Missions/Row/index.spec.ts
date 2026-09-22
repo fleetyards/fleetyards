@@ -107,13 +107,13 @@ describe("MissionRow", () => {
   it("marks a mission the build is not offering", async () => {
     const wrapper = await mount({ released: false });
 
-    expect(wrapper.find(".mission-row__badge--quiet").exists()).toBe(true);
+    expect(wrapper.find(".row-list-item__badge--quiet").exists()).toBe(true);
   });
 
   it("leaves the mark off one the build is offering", async () => {
     const wrapper = await mount();
 
-    expect(wrapper.find(".mission-row__badge--quiet").exists()).toBe(false);
+    expect(wrapper.find(".row-list-item__badge--quiet").exists()).toBe(false);
   });
 
   it("links the org back into the list it narrows", async () => {
@@ -121,7 +121,7 @@ describe("MissionRow", () => {
       org: { name: "Headhunters", key: "headhunters", alignment: "outlaw" },
     });
 
-    const link = wrapper.find(".mission-row__sub a");
+    const link = wrapper.find(".row-list-item__sub a");
 
     expect(link.attributes("href")).toContain("orgNameIn");
     expect(link.text()).toBe("Headhunters");

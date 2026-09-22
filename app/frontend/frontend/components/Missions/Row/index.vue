@@ -6,6 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import MissionText from "@/frontend/components/MissionText/index.vue";
+import RowListItem from "@/shared/components/RowListItem/index.vue";
+import {
+  RowListItemTonesEnum,
+  type RowListItemBadge,
+  type RowListItemChip,
+  type RowListItemTag,
+} from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type GameMission } from "@/services/fyApi";
 
@@ -58,82 +65,86 @@ const difficulty = computed(() => {
   );
 });
 
-const rewardKinds = computed(() => props.mission.rewardKinds || []);
+// What it pays, in kinds rather than amounts. The figures are the detail page's
+// job, and for 2,352 of the 2,536 contracts there is no figure to show at all:
+// the game computes the payout at run time.
+const rewards = computed<RowListItemChip[]>(() =>
+  (props.mission.rewardKinds || []).map((kind) => ({
+    key: kind,
+    label: t(`labels.gameMission.rewardKinds.${kind}`),
+    to: filterLink("rewardingIn", [kind]),
+  })),
+);
+
+// Which side of the law offers it.
+const ALIGNMENT_TONES: Record<string, RowListItemTonesEnum> = {
+  lawful: RowListItemTonesEnum.PRIMARY,
+  outlaw: RowListItemTonesEnum.DANGER,
+};
+
+const tags = computed<RowListItemTag[]>(() => {
+  const alignment = props.mission.org?.alignment;
+  if (!alignment) return [];
+
+  return [
+    {
+      key: alignment,
+      label: t(`labels.gameMission.alignments.${alignment}`),
+      to: filterLink("alignmentIn", [alignment]),
+      tone: ALIGNMENT_TONES[alignment],
+    },
+  ];
+});
+
+const badges = computed<RowListItemBadge[]>(() => {
+  const list: RowListItemBadge[] = [];
+
+  // Said on the row, because a reader hunting a mission in game needs to know
+  // before they click that this one is not in front of anybody.
+  if (!props.mission.released) {
+    list.push({
+      key: "unreleased",
+      value: t("labels.gameMission.unreleased"),
+      quiet: true,
+    });
+  }
+
+  if (difficulty.value) {
+    list.push({
+      key: "difficulty",
+      label: t("labels.gameMission.difficulty"),
+      value: `${difficulty.value}/7`,
+    });
+  }
+
+  return list;
+});
 </script>
 
 <template>
-  <div class="mission-row">
-    <span class="mission-row__main">
+  <RowListItem
+    class="mission-row"
+    :to="
+      mission.slug
+        ? { name: 'mission', params: { slug: mission.slug } }
+        : undefined
+    "
+    :chips="rewards"
+    :tags="tags"
+    :badges="badges"
+  >
+    <template #name>
+      <MissionText :text="mission.name" />
+    </template>
+
+    <template #sub>
       <router-link
-        v-if="mission.slug"
-        class="mission-row__name"
-        :to="{ name: 'mission', params: { slug: mission.slug } }"
+        v-if="mission.org?.name"
+        :to="filterLink('orgNameIn', [mission.org.name])"
       >
-        <MissionText :text="mission.name" />
+        {{ mission.org.name }}
       </router-link>
-      <span v-else class="mission-row__name">
-        <MissionText :text="mission.name" />
-      </span>
-
-      <span class="mission-row__sub">
-        <router-link
-          v-if="mission.org?.name"
-          :to="filterLink('orgNameIn', [mission.org.name])"
-        >
-          {{ mission.org.name }}
-        </router-link>
-        <span v-if="standing">{{ standing }}</span>
-      </span>
-    </span>
-
-    <!-- What it pays, in kinds rather than amounts. The figures are the detail
-         page's job, and for 2,352 of the 2,536 contracts there is no figure to
-         show at all: the game computes the payout at run time. -->
-    <span v-if="rewardKinds.length" class="mission-row__rewards">
-      <router-link
-        v-for="kind in rewardKinds"
-        :key="kind"
-        class="mission-row__reward"
-        :to="filterLink('rewardingIn', [kind])"
-      >
-        {{ t(`labels.gameMission.rewardKinds.${kind}`) }}
-      </router-link>
-    </span>
-
-    <!-- Which side of the law offers it. Coloured words rather than filled
-         pills, and a link, like every other value the catalogue narrows by. -->
-    <span v-if="mission.org?.alignment" class="mission-row__alignments">
-      <router-link
-        class="mission-row__alignment"
-        :class="`mission-row__alignment--${mission.org.alignment}`"
-        :to="filterLink('alignmentIn', [mission.org.alignment])"
-      >
-        {{ t(`labels.gameMission.alignments.${mission.org.alignment}`) }}
-      </router-link>
-    </span>
-
-    <span class="mission-row__badges">
-      <!-- Said on the row, because a reader hunting a mission in game needs to
-           know before they click that this one is not in front of anybody. -->
-      <span
-        v-if="!mission.released"
-        class="mission-row__badge mission-row__badge--quiet"
-      >
-        <span class="mission-row__badge-value">
-          {{ t("labels.gameMission.unreleased") }}
-        </span>
-      </span>
-
-      <span v-if="difficulty" class="mission-row__badge">
-        <span class="mission-row__badge-label">
-          {{ t("labels.gameMission.difficulty") }}
-        </span>
-        <span class="mission-row__badge-value">{{ difficulty }}/7</span>
-      </span>
-    </span>
-  </div>
+      <span v-if="standing">{{ standing }}</span>
+    </template>
+  </RowListItem>
 </template>
-
-<style lang="scss" scoped>
-@import "index";
-</style>
