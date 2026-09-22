@@ -256,6 +256,8 @@
           "index": "Squadrons",
           "create": "Create Squadron",
           "edit": "Edit Squadron",
+          "editDetails": "Details",
+          "editImages": "Images",
           "addMembers": "Add Members"
         },
         "stats": "Stats",

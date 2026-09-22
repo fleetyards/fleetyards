@@ -121,7 +121,7 @@ onMounted(() => {
       <NavItem
         v-if="showSquadronsNav"
         :to="{ name: 'fleet-squadrons', params: { slug: currentFleet.slug } }"
-        :label="t('nav.fleets.squadrons')"
+        :label="t('nav.fleets.squadrons.index')"
         :active="squadronsNavActive"
         icon="fa-duotone fa-shield-halved"
       />

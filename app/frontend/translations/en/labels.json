@@ -486,7 +486,6 @@
           "shortDescriptionHint": "A line or two, shown on the card",
           "description": "Description",
           "descriptionHint": "The full text on the squadron's own page",
-          "noDescription": "This squadron has no description yet.",
           "icon": "Icon",
           "iconHint": "Square, 256×256, transparent PNG",
           "logo": "Logo",

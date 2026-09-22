@@ -32,6 +32,8 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
+
+const router = useRouter();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
@@ -62,12 +64,13 @@ const squadronList = computed<FleetSquadron[]>(
   () => squadrons.value?.items ?? [],
 );
 
-const openSquadronModal = (squadron?: FleetSquadron) => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronModal/index.vue"),
-    props: { fleet: props.fleet, squadron },
-  });
+const editRoute = (squadron: FleetSquadron) => ({
+  name: "fleet-squadron-edit",
+  params: { slug: props.fleet.slug, squadron: squadron.slug },
+});
+
+const openSquadronForm = (squadron: FleetSquadron) => {
+  void router.push(editRoute(squadron));
 };
 
 const openMemberPicker = (squadron: FleetSquadron) => {
@@ -138,7 +141,7 @@ onUnmounted(() => {
       :size="BtnSizesEnum.MD"
       mobile-icon-only
       data-test="settings-create-squadron"
-      @click="openSquadronModal()"
+      :to="{ name: 'fleet-squadron-new', params: { slug: fleet.slug } }"
     >
       <i class="fa-light fa-plus" />
       {{ t("actions.fleet.squadrons.create") }}
@@ -158,7 +161,7 @@ onUnmounted(() => {
         :editable="canUpdate"
         :destroyable="canDestroy"
         :members-manageable="canManageMembers"
-        @edit="openSquadronModal(record)"
+        @edit="openSquadronForm(record)"
         @destroy="onDestroy(record)"
         @add-members="openMemberPicker(record)"
       />

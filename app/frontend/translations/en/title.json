@@ -58,7 +58,12 @@
           "starmap": "%{fleet} Member Starmap"
         },
         "squadrons": {
-          "index": "%{fleet} Squadrons"
+          "index": "%{fleet} Squadrons",
+          "create": "Create Squadron - %{fleet}",
+          "edit": {
+            "details": "Edit Squadron - %{fleet}",
+            "images": "Squadron Images - %{fleet}"
+          }
         },
         "stats": "%{fleet} Stats",
         "blueprints": "%{fleet} Blueprints",
@@ -353,9 +358,6 @@
       },
       "blueprints": {
         "index": "Blueprints"
-      },
-      "missions": {
-        "index": "Missions"
       },
       "missions": {
         "index": "Missions"

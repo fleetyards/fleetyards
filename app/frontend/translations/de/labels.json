@@ -486,7 +486,6 @@
           "shortDescriptionHint": "Ein, zwei Zeilen auf der Karte",
           "description": "Beschreibung",
           "descriptionHint": "Der vollständige Text auf der Staffelseite",
-          "noDescription": "Für diese Staffel wurde noch keine Beschreibung hinterlegt.",
           "icon": "Symbol",
           "iconHint": "Quadratisch, 256×256, transparentes PNG",
           "logo": "Logo",

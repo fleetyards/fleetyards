@@ -58,7 +58,12 @@
           "starmap": "%{fleet} 成员星图"
         },
         "squadrons": {
-          "index": "%{fleet} 中队"
+          "index": "%{fleet} 中队",
+          "create": "创建中队 - %{fleet}",
+          "edit": {
+            "details": "编辑中队 - %{fleet}",
+            "images": "中队图片 - %{fleet}"
+          }
         },
         "stats": "%{fleet} 统计",
         "blueprints": "%{fleet} 的蓝图",
@@ -353,9 +358,6 @@
       },
       "blueprints": {
         "index": "蓝图"
-      },
-      "missions": {
-        "index": "任务"
       },
       "missions": {
         "index": "任务"

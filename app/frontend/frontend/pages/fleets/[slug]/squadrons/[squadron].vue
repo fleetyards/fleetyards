@@ -78,14 +78,6 @@ const refetchAll = async () => {
   await refetchSquadron();
 };
 
-const openEditModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronModal/index.vue"),
-    props: { fleet: props.fleet, squadron: squadron.value },
-  });
-};
-
 const openMemberPicker = () => {
   comlink.emit("open-modal", {
     component: () =>
@@ -210,7 +202,10 @@ const crumbs = computed<Crumb[]>(() => [
         :size="BtnSizesEnum.MD"
         mobile-icon-only
         data-test="squadron-edit"
-        @click="openEditModal"
+        :to="{
+          name: 'fleet-squadron-edit',
+          params: { slug: props.fleet.slug, squadron: squadronSlug },
+        }"
       >
         <i class="fa-duotone fa-pen" />
         {{ t("actions.edit") }}
@@ -230,13 +225,18 @@ const crumbs = computed<Crumb[]>(() => [
     <div class="row">
       <div class="col-12 col-md-8">
         <Panel fill-height>
-          <PanelBody>
+          <PanelBody class="squadron-description-body">
             <p v-if="squadron.description" class="squadron-description">
               {{ squadron.description }}
             </p>
-            <p v-else class="squadron-description text-muted">
-              {{ t("labels.fleet.squadrons.noDescription") }}
-            </p>
+            <Empty
+              v-else
+              inline
+              hide-actions
+              :name="t('labels.fleet.squadrons.description')"
+            >
+              <template #info />
+            </Empty>
           </PanelBody>
         </Panel>
       </div>
@@ -311,10 +311,23 @@ const crumbs = computed<Crumb[]>(() => [
   min-width: 0;
 }
 
+// PanelBody opens at 4px, which is tuned to sit under a heading that closes at
+// 12px. There is no heading on this panel, so the text sat against the top edge
+// while the bottom kept its 18px.
+.squadron-description-body {
+  padding: 18px;
+}
+
 .squadron-description {
   margin: 0;
   // Written in a textarea; the paragraphs somebody typed are kept.
   white-space: pre-line;
+}
+
+// Centred in the panel, the way an empty list is in its own column.
+.squadron-description-body :deep(.empty-list) {
+  margin-inline: auto;
+  text-align: center;
 }
 
 .squadron-links {

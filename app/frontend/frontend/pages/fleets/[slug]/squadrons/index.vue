@@ -49,14 +49,6 @@ const squadronList = computed<FleetSquadron[]>(
   () => squadrons.value?.items ?? [],
 );
 
-const openSquadronModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronModal/index.vue"),
-    props: { fleet: props.fleet },
-  });
-};
-
 const squadronCreatedComlink = ref();
 const squadronUpdatedComlink = ref();
 
@@ -97,7 +89,7 @@ const crumbs = computed<Crumb[]>(() => [
       :size="BtnSizesEnum.MD"
       mobile-icon-only
       data-test="create-squadron"
-      @click="openSquadronModal"
+      :to="{ name: 'fleet-squadron-new', params: { slug: fleet.slug } }"
     >
       <i class="fa-light fa-plus" />
       {{ t("actions.fleet.squadrons.create") }}

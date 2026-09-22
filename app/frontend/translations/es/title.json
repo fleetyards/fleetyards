@@ -58,7 +58,12 @@
           "starmap": "Mapa estelar de miembros de %{fleet}"
         },
         "squadrons": {
-          "index": "Escuadrones de %{fleet}"
+          "index": "Escuadrones de %{fleet}",
+          "create": "Crear escuadrón - %{fleet}",
+          "edit": {
+            "details": "Editar escuadrón - %{fleet}",
+            "images": "Imágenes del escuadrón - %{fleet}"
+          }
         },
         "stats": "Estadísticas de %{fleet}",
         "blueprints": "Planos de %{fleet}",
@@ -353,9 +358,6 @@
       },
       "blueprints": {
         "index": "Planos"
-      },
-      "missions": {
-        "index": "Misiones"
       },
       "missions": {
         "index": "Misiones"

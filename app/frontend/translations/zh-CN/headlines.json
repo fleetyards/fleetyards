@@ -254,6 +254,8 @@
           "index": "中队",
           "create": "创建中队",
           "edit": "编辑中队",
+          "editDetails": "详情",
+          "editImages": "图片",
           "addMembers": "添加成员"
         },
         "stats": "统计",

@@ -254,6 +254,8 @@
           "index": "中隊",
           "create": "建立中隊",
           "edit": "編輯中隊",
+          "editDetails": "詳細資訊",
+          "editImages": "圖片",
           "addMembers": "新增成員"
         },
         "stats": "統計",

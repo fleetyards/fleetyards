@@ -58,7 +58,12 @@
           "starmap": "Carte stellaire des membres de %{fleet}"
         },
         "squadrons": {
-          "index": "Escadrons de %{fleet}"
+          "index": "Escadrons de %{fleet}",
+          "create": "Créer un escadron - %{fleet}",
+          "edit": {
+            "details": "Modifier l'escadron - %{fleet}",
+            "images": "Images de l'escadron - %{fleet}"
+          }
         },
         "stats": "Statistiques sur %{fleet}",
         "blueprints": "Plans de %{fleet}",
@@ -353,9 +358,6 @@
       },
       "blueprints": {
         "index": "Plans"
-      },
-      "missions": {
-        "index": "Missions"
       },
       "missions": {
         "index": "Missions"

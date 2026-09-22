@@ -49,7 +49,13 @@
           "worldmap": "Mappa mondiale",
           "starmap": "Mappa stellare"
         },
-        "squadrons": "Squadroni",
+        "squadrons": {
+          "index": "Squadroni",
+          "edit": {
+            "details": "Dettagli",
+            "images": "Immagini"
+          }
+        },
         "stats": "Statistiche",
         "logistics": {
           "index": "Logistics"

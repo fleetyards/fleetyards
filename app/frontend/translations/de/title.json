@@ -58,7 +58,12 @@
           "starmap": "%{fleet} Mitglieder-Sternenkarte"
         },
         "squadrons": {
-          "index": "%{fleet} Staffeln"
+          "index": "%{fleet} Staffeln",
+          "create": "Staffel anlegen – %{fleet}",
+          "edit": {
+            "details": "Staffel bearbeiten – %{fleet}",
+            "images": "Staffel-Bilder – %{fleet}"
+          }
         },
         "stats": "%{fleet} Statistiken",
         "blueprints": "%{fleet} Baupläne",
@@ -353,9 +358,6 @@
       },
       "blueprints": {
         "index": "Baupläne"
-      },
-      "missions": {
-        "index": "Missionen"
       },
       "missions": {
         "index": "Missionen"

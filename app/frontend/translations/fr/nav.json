@@ -49,7 +49,13 @@
           "worldmap": "Carte du monde",
           "starmap": "Carte stellaire"
         },
-        "squadrons": "Escadrons",
+        "squadrons": {
+          "index": "Escadrons",
+          "edit": {
+            "details": "Détails",
+            "images": "Images"
+          }
+        },
         "stats": "Statistiques",
         "logistics": {
           "index": "Logistics"
