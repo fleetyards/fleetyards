@@ -30,7 +30,7 @@ const routerOnList = async () => {
   return router;
 };
 
-const ALIGNMENT = ".blueprint-row__alignment";
+const ALIGNMENT = ".row-list-item__tag";
 
 const blueprint = (attrs: Partial<Blueprint> = {}) =>
   ({
@@ -56,7 +56,7 @@ describe("Blueprints/Row", () => {
     const label = wrapper.find(ALIGNMENT);
 
     expect(label.text()).toBe("Lawful");
-    expect(label.classes()).toContain("blueprint-row__alignment--lawful");
+    expect(label.classes()).toContain("row-list-item__tag--primary");
   });
 
   // Both sides hand out the same pool often enough that a row has to be able

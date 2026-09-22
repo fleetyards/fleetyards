@@ -70,7 +70,7 @@ describe("ComponentsList", () => {
 
     it("links its name to the component", async () => {
       expect(
-        (await row()).find(".component-row__name").attributes("href"),
+        (await row()).find(".row-list-item__name").attributes("href"),
       ).toContain("a-part");
     });
 
@@ -78,7 +78,7 @@ describe("ComponentsList", () => {
     // row is a container rather than one big link.
     it("narrows the catalogue by the values beside the name", async () => {
       const hrefs = (await row())
-        .findAll(".component-row__sub a")
+        .findAll(".row-list-item__sub a")
         .map((link) => link.attributes("href") || "");
 
       expect(hrefs.join(" ")).toContain("manufacturerSlugIn=behring");
@@ -89,10 +89,10 @@ describe("ComponentsList", () => {
     // A row has no column heading above it to say which figure a bare "1" is.
     it("names the figure in its badges", async () => {
       const badges = (await row())
-        .findAll(".component-row__badge")
+        .findAll(".row-list-item__badge")
         .map((badge) => [
-          badge.find(".component-row__badge-label").text(),
-          badge.find(".component-row__badge-value").text(),
+          badge.find(".row-list-item__badge-label").text(),
+          badge.find(".row-list-item__badge-value").text(),
         ]);
 
       expect(badges).toEqual([

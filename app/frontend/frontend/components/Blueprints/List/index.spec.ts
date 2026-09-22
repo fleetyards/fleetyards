@@ -64,7 +64,7 @@ describe("BlueprintsList", () => {
 
     it("links its name to the blueprint", async () => {
       expect(
-        (await row()).find(".blueprint-row__name").attributes("href"),
+        (await row()).find(".row-list-item__name").attributes("href"),
       ).toContain("kbar-ballisticcannon-s2");
     });
 
@@ -87,9 +87,9 @@ describe("BlueprintsList", () => {
         materials: [{ id: "1", name: "Iron", slug: "iron" }],
       });
 
-      expect(
-        found.find(".blueprint-row__material").attributes("href"),
-      ).toContain("iron");
+      expect(found.find(".row-list-item__chip").attributes("href")).toContain(
+        "iron",
+      );
     });
 
     // The busiest recipe uses four, but the cap keeps a row one line if a
@@ -103,8 +103,8 @@ describe("BlueprintsList", () => {
         })),
       });
 
-      expect(found.findAll(".blueprint-row__material")).toHaveLength(4);
-      expect(found.find(".blueprint-row__material-more").text()).toBe("+2");
+      expect(found.findAll(".row-list-item__chip")).toHaveLength(4);
+      expect(found.find(".row-list-item__chip-more").text()).toBe("+2");
     });
 
     // 901 of the 1,607 recipes have no stated source, so "can I actually go
@@ -112,13 +112,13 @@ describe("BlueprintsList", () => {
     it("says so on a recipe nothing hands out", async () => {
       const found = await row({ sourceUnknown: true });
 
-      expect(found.find(".blueprint-row__badge--quiet").exists()).toBe(true);
+      expect(found.find(".row-list-item__badge--quiet").exists()).toBe(true);
     });
 
     it("leaves the badge off a recipe that has a source", async () => {
       const found = await row({ sourceUnknown: false });
 
-      expect(found.find(".blueprint-row__badge--quiet").exists()).toBe(false);
+      expect(found.find(".row-list-item__badge--quiet").exists()).toBe(false);
     });
   });
 });

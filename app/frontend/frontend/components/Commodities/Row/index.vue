@@ -8,6 +8,8 @@ export default {
 import CommodityIcon from "@/frontend/components/Commodities/Icon/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
+import RowListItem from "@/shared/components/RowListItem/index.vue";
+import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Commodity } from "@/services/fyApi";
 
@@ -49,57 +51,54 @@ const costsToBuy = computed(() => props.commodity.sellPrice);
 
 const price = (value?: number | null) =>
   value == null ? undefined : toNumber(value, "integer");
+
+// Nothing at all rather than a dash when the commodity is traded nowhere: 108
+// of the 232 are, and a column of dashes says less than a column of nothing.
+const badges = computed<RowListItemBadge[]>(() => {
+  const list: RowListItemBadge[] = [];
+
+  if (costsToBuy.value != null) {
+    list.push({
+      key: "buy",
+      label: t("labels.commodity.buyPrice"),
+      value: String(price(costsToBuy.value)),
+    });
+  }
+
+  if (paidFor.value != null) {
+    list.push({
+      key: "sell",
+      label: t("labels.commodity.sellPrice"),
+      value: String(price(paidFor.value)),
+    });
+  }
+
+  return list;
+});
 </script>
 
 <template>
-  <!-- A container, not one big link. The row holds links of its own — the type
-       narrows the catalogue — and an anchor inside an anchor is invalid and
-       does not work. The name is the way to the commodity instead. -->
-  <div class="commodity-row">
-    <CommodityIcon :commodity="commodity" />
+  <RowListItem
+    class="commodity-row"
+    :to="{ name: 'commodity', params: { slug: commodity.slug } }"
+    :badges="badges"
+  >
+    <template #leading>
+      <CommodityIcon :commodity="commodity" />
+    </template>
 
-    <span class="commodity-row__main">
+    <template #name>{{ commodity.name }}</template>
+
+    <template #sub>
       <router-link
-        class="commodity-row__name"
-        :to="{ name: 'commodity', params: { slug: commodity.slug } }"
+        v-if="commodity.commodityType"
+        :to="filterLink('commodityTypeIn', commodity.commodityType)"
       >
-        {{ commodity.name }}
+        {{ typeLabel }}
       </router-link>
-
-      <span class="commodity-row__sub">
-        <router-link
-          v-if="commodity.commodityType"
-          :to="filterLink('commodityTypeIn', commodity.commodityType)"
-        >
-          {{ typeLabel }}
-        </router-link>
-        <Chip v-if="commodity.retired" :state="ChipStatesEnum.EXCLUDED">
-          {{ t("labels.commodity.retired") }}
-        </Chip>
-      </span>
-    </span>
-
-    <!-- Labelled, because a row has no column heading above it to say which
-         figure a bare number is — and which direction it is. Nothing at all
-         rather than a dash when the commodity is traded nowhere: 108 of the 232
-         are, and a column of dashes says less than a column of nothing. -->
-    <span class="commodity-row__badges">
-      <span v-if="costsToBuy != null" class="commodity-row__badge">
-        <span class="commodity-row__badge-label">
-          {{ t("labels.commodity.buyPrice") }}
-        </span>
-        <span class="commodity-row__badge-value">{{ price(costsToBuy) }}</span>
-      </span>
-      <span v-if="paidFor != null" class="commodity-row__badge">
-        <span class="commodity-row__badge-label">
-          {{ t("labels.commodity.sellPrice") }}
-        </span>
-        <span class="commodity-row__badge-value">{{ price(paidFor) }}</span>
-      </span>
-    </span>
-  </div>
+      <Chip v-if="commodity.retired" :state="ChipStatesEnum.EXCLUDED">
+        {{ t("labels.commodity.retired") }}
+      </Chip>
+    </template>
+  </RowListItem>
 </template>
-
-<style lang="scss" scoped>
-@import "index";
-</style>

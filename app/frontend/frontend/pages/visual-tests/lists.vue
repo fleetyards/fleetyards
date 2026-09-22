@@ -13,9 +13,18 @@ import InlineEditableList from "@/shared/components/InlineEditableList/index.vue
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import ComponentsList from "@/frontend/components/Components/List/index.vue";
+import BlueprintsList from "@/frontend/components/Blueprints/List/index.vue";
+import MissionsList from "@/frontend/components/Missions/List/index.vue";
+import CommoditiesList from "@/frontend/components/Commodities/List/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
-import { type Component, type FilterOption } from "@/services/fyApi";
+import {
+  type Blueprint,
+  type Commodity,
+  type Component,
+  type FilterOption,
+  type GameMission,
+} from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { v4 as uuidv4 } from "uuid";
 
@@ -157,9 +166,135 @@ const catalogueComponents: Component[] = [
   }),
 ];
 
-// The catalogue's second tenant, on the same `RowList` and deliberately the same
-// row: a reader moving between the two tabs should not feel the furniture
-// change, so they are demoed together and any drift shows up here first.
+// The catalogue's other tenants, on the same `RowList` and the same
+// `RowListItem`: a reader moving between the tabs should not feel the furniture
+// change, so all four are demoed together and any drift shows up here first.
+//
+// Between them they cover every part of the shared row: an icon and a lead
+// metric (components), chips with a `+N` and trailing actions (blueprints),
+// chips and a tag (missions), and two badges and nothing else (commodities).
+
+const catalogueBlueprints: Blueprint[] = [
+  {
+    id: "vt-blueprint-1",
+    name: "Behring Repeater S3 Ballistic Cannon",
+    slug: "behr-repeater-s3",
+    scKey: "behr_repeater_s3",
+    scRef: "3f2a4d41-0000-4000-8000-000000000001",
+    retired: false,
+    sourceUnknown: false,
+    sourceAlignments: ["lawful", "outlaw"],
+    craftTime: 9060,
+    slotCount: 3,
+    craftable: {
+      type: "Component",
+      id: "vt-component-1",
+      name: "Attrition-3",
+      slug: "attrition-3",
+    },
+    // Six, so the row shows the four it caps at and says how many are left --
+    // the case the old 320px clip used to cut, counter and all.
+    materials: [
+      { id: "m1", name: "Quantainium", slug: "quantainium" },
+      { id: "m2", name: "Aluminium", slug: "aluminium" },
+      { id: "m3", name: "Tungsten", slug: "tungsten" },
+      { id: "m4", name: "Corundum", slug: "corundum" },
+      { id: "m5", name: "Titanium", slug: "titanium" },
+      { id: "m6", name: "Copper", slug: "copper" },
+    ],
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+  },
+  {
+    id: "vt-blueprint-2",
+    name: "Salvage Hull Patch",
+    slug: "salvage-hull-patch",
+    scKey: "salvage_hull_patch",
+    scRef: "3f2a4d41-0000-4000-8000-000000000002",
+    retired: false,
+    // 901 of 1,607 recipes have no stated source, so the quiet badge is the
+    // common case rather than the exception.
+    sourceUnknown: true,
+    sourceAlignments: [],
+    materials: [{ id: "m1", name: "Corundum", slug: "corundum" }],
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+  },
+] as Blueprint[];
+
+const catalogueMissions: GameMission[] = [
+  {
+    id: "vt-mission-1",
+    name: "Yellow Level Contract: Ambush An Amateur",
+    slug: "foxwell-ambush-veryeasy",
+    scKey: "foxwell_ambush_veryeasy",
+    scRef: "3f2a4d41-0000-4000-8000-000000000101",
+    retired: false,
+    released: true,
+    org: { name: "Headhunters", key: "headhunters", alignment: "outlaw" },
+    minStanding: "Neutral",
+    maxStanding: "Elite Contractor",
+    difficulty: {
+      profile: "general",
+      mechanicalSkill: 5,
+      mentalLoad: 3,
+      riskOfLoss: 3,
+      gameKnowledge: 1,
+    },
+    // All five kinds, which is what used to run past the clip with nothing on
+    // screen to say a kind had been dropped.
+    rewardKinds: ["currency", "reputation", "item", "badge", "blueprint"],
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+  },
+  {
+    id: "vt-mission-2",
+    name: "Reclaim Abandoned Cargo",
+    slug: "reclaim-abandoned-cargo",
+    scKey: "reclaim_abandoned_cargo",
+    scRef: "3f2a4d41-0000-4000-8000-000000000102",
+    retired: false,
+    released: false,
+    org: { name: "Covalex", key: "covalex", alignment: "lawful" },
+    minStanding: "Neutral",
+    maxStanding: "Neutral",
+    rewardKinds: ["currency"],
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+  },
+] as GameMission[];
+
+const catalogueCommodities: Commodity[] = [
+  {
+    id: "vt-commodity-1",
+    name: "Quantainium",
+    slug: "quantainium",
+    commodityType: "metal",
+    counted: false,
+    consumable: false,
+    containerSizes: [1, 2, 4, 8],
+    retired: false,
+    buyPrice: 8811,
+    sellPrice: 8236,
+    availability: { boughtAt: [], soldAt: [] },
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+  },
+  {
+    // 108 of the 232 are traded nowhere: nothing at all rather than a dash.
+    id: "vt-commodity-2",
+    name: "Ranta Dung",
+    slug: "ranta-dung",
+    commodityType: "waste",
+    counted: false,
+    consumable: false,
+    containerSizes: [1],
+    retired: true,
+    availability: { boughtAt: [], soldAt: [] },
+    createdAt: "2026-01-01",
+    updatedAt: "2026-01-01",
+  },
+] as Commodity[];
 
 // ── ListGroup ────────────────────────────────────────────────────────
 
@@ -618,6 +753,35 @@ const toggleFilteredListEmpty = () => {
   </p>
 
   <ComponentsList :components="catalogueComponents" />
+
+  <Heading :level="HeadingLevelEnum.H2">RowList | BlueprintsList</Heading>
+  <p>
+    The same <code>RowListItem</code>, carrying what a recipe is made of. The
+    materials are capped at four with a <code>+N</code> for the rest; both used
+    to be cut off by a 320px clip that hid the counter along with the chip.
+    Which sides of the law hand it out are tags, and the own-toggle is the row's
+    one action.
+  </p>
+
+  <BlueprintsList :blueprints="catalogueBlueprints" />
+
+  <Heading :level="HeadingLevelEnum.H2">RowList | MissionsList</Heading>
+  <p>
+    What a contract pays in, as chips, and which side of the law offers it, as a
+    tag. The first row carries all five reward kinds — the case that ran past
+    the old clip with nothing on screen to say a kind had been dropped. The
+    second is not in the build, which the quiet badge says.
+  </p>
+
+  <MissionsList :missions="catalogueMissions" />
+
+  <Heading :level="HeadingLevelEnum.H2">RowList | CommoditiesList</Heading>
+  <p>
+    The plainest of the four: an icon, a name, a type, and two prices. Nothing
+    at all rather than a dash where a commodity is traded nowhere.
+  </p>
+
+  <CommoditiesList :commodities="catalogueCommodities" />
 
   <Heading :level="HeadingLevelEnum.H2">RowList | Empty</Heading>
 
