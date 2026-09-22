@@ -498,6 +498,7 @@
           "ships": "Ships",
           "searchMembers": "Search Members",
           "availableMembers": "available Members",
+          "selectedMembers": "%{count} selected",
           "views": {
             "members": "Members",
             "ships": "Ships",

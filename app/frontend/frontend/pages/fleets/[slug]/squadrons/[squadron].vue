@@ -182,7 +182,13 @@ const crumbs = computed<Crumb[]>(() => [
     />
 
     <div class="squadron-identity">
-      <SquadronEmblem :squadron="squadron" :size="96" />
+      <img
+        v-if="squadron.logo?.mediumUrl"
+        :src="squadron.logo.mediumUrl"
+        :alt="squadron.name"
+        class="squadron-logo"
+      />
+      <SquadronEmblem v-else :squadron="squadron" :size="96" />
       <div class="squadron-identity-text">
         <Heading hero size="hero">
           {{ squadron.name }}
@@ -279,6 +285,14 @@ const crumbs = computed<Crumb[]>(() => [
   align-items: flex-start;
   gap: 20px;
   margin-bottom: 20px;
+}
+
+.squadron-logo {
+  width: 192px;
+  max-width: 40vw;
+  height: auto;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .squadron-identity-text {

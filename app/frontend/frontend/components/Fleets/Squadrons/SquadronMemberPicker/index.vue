@@ -7,15 +7,21 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import Empty from "@/shared/components/Empty/index.vue";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import Loader from "@/shared/components/Loader/index.vue";
+import { refDebounced } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { refDebounced } from "@vueuse/core";
 import {
   type Fleet,
   type FleetSquadron,
@@ -39,62 +45,116 @@ const comlink = useComlink();
 const search = ref("");
 const debouncedSearch = refDebounced(search, 300);
 
-const selected = ref<string[]>([]);
-const submitting = ref(false);
+const page = ref(1);
 
 const queryParams = computed<FleetMembersParams>(() => ({
-  perPage: "50",
+  page: String(page.value),
+  perPage: "30",
   q: {
     usernameCont: debouncedSearch.value || undefined,
     stateIn: ["accepted"],
-  },
+  } as never,
 }));
 
-const { data: members, isLoading } = useFleetMembers(
-  props.fleet.slug,
+const { data, isLoading } = useFleetMembers(
+  computed(() => props.fleet.slug),
   queryParams,
 );
 
-// Filtered here rather than in the query: no endpoint answers "not in this
-// squadron". That makes the list the first fifty accepted members minus the
-// ones already in, so on a fleet larger than that the search box is how the
-// rest are reached -- it re-asks the server rather than narrowing what is held.
-const candidates = computed<FleetMember[]>(() =>
-  (members.value?.items ?? []).filter(
-    (member) =>
-      !(member.squadrons ?? []).some(
-        (squadron) => squadron.id === props.squadron.id,
-      ),
-  ),
+/*
+ * Accumulated rather than replaced, so "load more" grows the list the way the
+ * ship picker's does. A new search starts the list again -- page 1 of a
+ * different question is not page 4 of this one.
+ */
+const records = ref<FleetMember[]>([]);
+
+watch(debouncedSearch, () => {
+  page.value = 1;
+  records.value = [];
+});
+
+watch(
+  data,
+  (value) => {
+    if (!value) return;
+
+    const items = value.items ?? [];
+
+    records.value =
+      page.value === 1
+        ? items
+        : [
+            ...records.value,
+            ...items.filter(
+              (item) => !records.value.some((held) => held.id === item.id),
+            ),
+          ];
+  },
+  { immediate: true },
 );
 
-const toggle = (username: string) => {
-  const index = selected.value.indexOf(username);
+const totalPages = computed(
+  () => data.value?.meta?.pagination?.totalPages ?? 1,
+);
 
-  if (index === -1) {
-    selected.value.push(username);
-  } else {
-    selected.value.splice(index, 1);
-  }
+const hasMore = computed(() => page.value < totalPages.value);
+
+const loadMore = () => {
+  page.value += 1;
 };
+
+/*
+ * Already in the squadron, so unpickable. Filtered here rather than in the
+ * query because no endpoint answers "not in this squadron" -- and the server
+ * refuses a duplicate anyway, so this is the courtesy rather than the guard.
+ */
+const alreadyIn = (member: FleetMember) =>
+  (member.squadrons ?? []).some(
+    (squadron) => squadron.id === props.squadron.id,
+  );
+
+const options = computed(() => records.value.filter((m) => !alreadyIn(m)));
+
+const selection = ref<FleetMember[]>([]);
+
+const isSelected = (member: FleetMember) =>
+  selection.value.some((held) => held.id === member.id);
+
+const toggle = (member: FleetMember) => {
+  selection.value = isSelected(member)
+    ? selection.value.filter((held) => held.id !== member.id)
+    : [...selection.value, member];
+};
+
+const remove = (id: string) => {
+  selection.value = selection.value.filter((held) => held.id !== id);
+};
+
+const clearSelection = () => {
+  selection.value = [];
+};
+
+const submitting = ref(false);
 
 const mutation = useCreateFleetSquadronMember();
 
-// One request per person, and a failure part-way through leaves the ones
-// already added in place: they are separate rows, and undoing them would be a
-// second way to remove somebody that nobody asked for. The message says how
-// many landed.
+/*
+ * One request per person, and a failure part-way through leaves the ones
+ * already added in place: they are separate rows, and undoing them would be a
+ * second way to remove somebody that nobody asked for. The message says how
+ * many landed.
+ */
 const onSubmit = async () => {
-  if (!selected.value.length) return;
+  if (!selection.value.length) return;
 
   submitting.value = true;
 
   const results = await Promise.allSettled(
-    selected.value.map((username) =>
+    selection.value.map((member) =>
       mutation.mutateAsync({
         fleetSlug: props.fleet.slug,
         fleetSquadronSlug: props.squadron.slug,
-        data: { username },
+        data: { username: member.username },
       }),
     ),
   );
@@ -128,56 +188,104 @@ const onSubmit = async () => {
 
 <template>
   <Modal :title="t('headlines.fleets.squadrons.addMembers')">
-    <FormInput
-      v-model="search"
-      name="squadron-member-search"
-      :no-label="true"
-      :clearable="true"
-      :label="t('labels.fleet.squadrons.searchMembers')"
-    />
+    <form
+      id="fleet-squadron-members-form"
+      class="member-picker"
+      @submit.prevent="onSubmit"
+    >
+      <div class="member-picker__header">
+        <FormInput
+          v-model="search"
+          name="squadron-member-search"
+          class="member-picker__search"
+          :label="t('labels.fleet.squadrons.searchMembers')"
+          :placeholder="t('labels.fleet.squadrons.searchMembers')"
+          icon="fa-light fa-magnifying-glass"
+          autofocus
+          no-label
+          clearable
+        />
+      </div>
 
-    <Loader :loading="isLoading" />
+      <Loader v-if="isLoading && !records.length" :loading="true" inline />
 
-    <ul v-if="candidates.length" class="squadron-member-picker">
-      <li v-for="member in candidates" :key="member.id">
+      <div v-else-if="options.length" class="member-picker__grid">
         <button
+          v-for="member in options"
+          :key="member.id"
           type="button"
-          class="squadron-member-row"
-          :class="{ selected: selected.includes(member.username) }"
+          class="member-picker__card"
+          :class="{ 'member-picker__card--selected': isSelected(member) }"
           :data-test="`squadron-member-option-${member.username}`"
-          @click="toggle(member.username)"
+          @click="toggle(member)"
         >
           <Avatar :avatar="member.avatar?.smallUrl" size="small" />
-          <span class="squadron-member-name">{{ member.username }}</span>
+          <span class="member-picker__name">{{ member.username }}</span>
           <i
-            class="fa-solid"
-            :class="
-              selected.includes(member.username)
-                ? 'fa-check-square'
-                : 'fa-square'
-            "
+            class="fa-solid member-picker__tick"
+            :class="isSelected(member) ? 'fa-circle-check' : 'fa-circle-plus'"
           />
         </button>
-      </li>
-    </ul>
+      </div>
 
-    <Empty
-      v-else-if="!isLoading"
-      :name="t('labels.fleet.squadrons.availableMembers')"
-      inline
-    />
+      <Empty
+        v-else-if="!isLoading"
+        :variant="EmptyVariantsEnum.DEFAULT"
+        :name="t('labels.fleet.squadrons.availableMembers')"
+        inline
+        hide-actions
+      />
+
+      <div v-if="hasMore" class="member-picker__more">
+        <Btn
+          :loading="isLoading"
+          :variant="BtnVariantsEnum.BARE"
+          @click="loadMore"
+        >
+          {{ t("actions.loadMore") }}
+        </Btn>
+      </div>
+
+      <!-- In the scroll area rather than the footer, for the reason the ship
+           picker gives: the footer is sized for one row of actions and a tray
+           of chips there pushes the submit button out of the viewport. -->
+      <div v-if="selection.length" class="member-picker__tray">
+        <Chip
+          v-for="member in selection"
+          :key="member.id"
+          :state="ChipStatesEnum.INCLUDED"
+          @toggle="remove(member.id)"
+        >
+          {{ member.username }}
+        </Chip>
+      </div>
+    </form>
 
     <template #footer>
-      <div class="modal-actions">
+      <div class="member-picker__actions">
+        <span class="member-picker__selected">
+          {{
+            t("labels.fleet.squadrons.selectedMembers", {
+              count: selection.length,
+            })
+          }}
+        </span>
+        <Btn
+          v-if="selection.length"
+          :variant="BtnVariantsEnum.BARE"
+          @click="clearSelection"
+        >
+          {{ t("actions.reset") }}
+        </Btn>
         <Btn
           :loading="submitting"
-          :disabled="!selected.length"
+          :disabled="!selection.length"
           :size="BtnSizesEnum.LG"
           data-test="squadron-add-members"
           @click="onSubmit"
         >
           {{
-            t("actions.fleet.squadrons.addMembers", { count: selected.length })
+            t("actions.fleet.squadrons.addMembers", { count: selection.length })
           }}
         </Btn>
       </div>
@@ -186,42 +294,80 @@ const onSubmit = async () => {
 </template>
 
 <style lang="scss" scoped>
-.squadron-member-picker {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  max-height: 50vh;
-  overflow-y: auto;
+.member-picker__header {
+  margin-bottom: 12px;
 }
 
-.squadron-member-row {
+.member-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.member-picker__card {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 100%;
-  padding: 8px 10px;
-  background: none;
-  border: 1px solid transparent;
-  color: var(--color-text-dim);
-  cursor: pointer;
+  padding: 8px 12px;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-control, 8px);
+  color: var(--color-text, #c8c8c8);
   text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease;
 
-  &:hover {
-    color: var(--color-text);
-    border-color: var(--color-border);
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
   }
 
-  &.selected {
-    color: var(--color-text);
-    border-color: var(--color-primary);
+  &--selected {
+    border-color: var(--color-primary, #428bca);
   }
 }
 
-.squadron-member-name {
+.member-picker__name {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.member-picker__tick {
+  flex: none;
+  color: var(--color-muted, #7a8288);
+}
+
+.member-picker__card--selected .member-picker__tick {
+  color: var(--color-primary, #428bca);
+}
+
+.member-picker__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.member-picker__tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+}
+
+.member-picker__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.member-picker__selected {
+  margin-right: auto;
+  color: var(--color-text-dim);
 }
 </style>

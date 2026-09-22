@@ -498,6 +498,7 @@
           "ships": "Naves",
           "searchMembers": "Buscar miembros",
           "availableMembers": "miembros disponibles",
+          "selectedMembers": "%{count} seleccionados",
           "views": {
             "members": "Miembros",
             "ships": "Naves",

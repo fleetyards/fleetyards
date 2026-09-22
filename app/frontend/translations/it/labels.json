@@ -498,6 +498,7 @@
           "ships": "Navi",
           "searchMembers": "Cerca membri",
           "availableMembers": "membri disponibili",
+          "selectedMembers": "%{count} selezionati",
           "views": {
             "members": "Membri",
             "ships": "Navi",

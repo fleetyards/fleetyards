@@ -13,6 +13,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { VSwatches } from "vue3-swatches";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -139,26 +140,32 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="fleet-squadron-form" @submit.prevent="onSubmit">
-      <FormFileInput
-        v-model="icon"
-        v-bind="iconProps"
-        :file="props.squadron?.icon"
-        name="icon"
-        :label="t('labels.fleet.squadrons.icon')"
-        :info="t('labels.fleet.squadrons.iconHint')"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        clearable
-      />
-      <FormFileInput
-        v-model="logo"
-        v-bind="logoProps"
-        :file="props.squadron?.logo"
-        name="logo"
-        :label="t('labels.fleet.squadrons.logo')"
-        :info="t('labels.fleet.squadrons.logoHint')"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        clearable
-      />
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <FormFileInput
+            v-model="icon"
+            v-bind="iconProps"
+            :file="props.squadron?.icon"
+            name="icon"
+            :label="t('labels.fleet.squadrons.icon')"
+            :info="t('labels.fleet.squadrons.iconHint')"
+            :allowed-types="AllowedFileTypes.IMAGE"
+            clearable
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <FormFileInput
+            v-model="logo"
+            v-bind="logoProps"
+            :file="props.squadron?.logo"
+            name="logo"
+            :label="t('labels.fleet.squadrons.logo')"
+            :info="t('labels.fleet.squadrons.logoHint')"
+            :allowed-types="AllowedFileTypes.IMAGE"
+            clearable
+          />
+        </div>
+      </div>
       <FormFileInput
         v-model="header"
         v-bind="headerProps"
@@ -199,6 +206,7 @@ const onSubmit = handleSubmit(async (values) => {
         :type="InputTypesEnum.COLOR"
         :label="t('labels.fleet.squadrons.color')"
       />
+      <VSwatches v-model="color" :inline="true" />
     </form>
 
     <template #footer>

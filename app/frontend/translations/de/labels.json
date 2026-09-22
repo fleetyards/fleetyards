@@ -498,6 +498,7 @@
           "ships": "Schiffe",
           "searchMembers": "Mitglieder suchen",
           "availableMembers": "verfügbare Mitglieder",
+          "selectedMembers": "%{count} ausgewählt",
           "views": {
             "members": "Mitglieder",
             "ships": "Schiffe",

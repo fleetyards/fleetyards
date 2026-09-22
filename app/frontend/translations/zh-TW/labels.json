@@ -498,6 +498,7 @@
           "ships": "艦船",
           "searchMembers": "搜尋成員",
           "availableMembers": "可新增的成員",
+          "selectedMembers": "已選擇 %{count} 位",
           "views": {
             "members": "成員",
             "ships": "艦船",

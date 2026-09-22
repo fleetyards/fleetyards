@@ -498,6 +498,7 @@
           "ships": "Vaisseaux",
           "searchMembers": "Rechercher des membres",
           "availableMembers": "membres disponibles",
+          "selectedMembers": "%{count} sélectionnés",
           "views": {
             "members": "Membres",
             "ships": "Vaisseaux",
