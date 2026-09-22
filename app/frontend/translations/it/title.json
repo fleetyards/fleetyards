@@ -179,6 +179,10 @@
           "index": "Progetti",
           "show": "%{blueprint}"
         },
+        "missions": {
+          "index": "Missioni",
+          "show": "%{mission}"
+        },
         "models": {
           "index": "Modelli",
           "new": "Nuovo Modello",
@@ -344,6 +348,12 @@
       },
       "blueprints": {
         "index": "Progetti"
+      },
+      "missions": {
+        "index": "Missioni"
+      },
+      "missions": {
+        "index": "Missioni"
       }
     }
   }

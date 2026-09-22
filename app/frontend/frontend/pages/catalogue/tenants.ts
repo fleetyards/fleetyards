@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from "vue-router";
 import { routes as blueprintsRoutes } from "@/frontend/pages/blueprints/routes";
 import { routes as commoditiesRoutes } from "@/frontend/pages/commodities/routes";
 import { routes as componentsRoutes } from "@/frontend/pages/components/routes";
+import { routes as missionsRoutes } from "@/frontend/pages/missions/routes";
 
 export type CatalogueTenant = {
   // The segment under `/catalogue/`, and the `nav.catalogue.*` key.
@@ -50,6 +51,14 @@ export const CATALOGUE_TENANTS: CatalogueTenant[] = [
     detailRoutes: ["commodity"],
     component: () => import("@/frontend/pages/commodities.vue"),
     children: commoditiesRoutes,
+  },
+  {
+    key: "missions",
+    icon: "fa-duotone fa-scroll",
+    listRoute: "missions",
+    detailRoutes: ["mission"],
+    component: () => import("@/frontend/pages/missions.vue"),
+    children: missionsRoutes,
   },
 ];
 

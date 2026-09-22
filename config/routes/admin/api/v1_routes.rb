@@ -99,6 +99,16 @@ v1_admin_api_routes = lambda do
     get :org_filters, on: :collection
   end
 
+  # Read only, for the reason blueprints are: every fact is replaced by the
+  # next load, so there is nothing here a human could own.
+  resources :missions, only: %i[index show], controller: "game_missions" do
+    collection do
+      get :org_filters
+      get :standing_filters
+      get :reward_kind_filters
+    end
+  end
+
   resources :components, only: %i[index show create update destroy] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection

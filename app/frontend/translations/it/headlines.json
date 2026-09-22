@@ -8,6 +8,9 @@
           "stats": "Statistiche",
           "sources": "Fonti"
         },
+        "missions": {
+          "index": "Missioni"
+        },
         "dashboard": {
           "title": "Pannello di controllo",
           "visitsPerDay": "Visite al giorno",
@@ -490,6 +493,12 @@
       },
       "blueprints": {
         "index": "Progetti"
+      },
+      "missions": {
+        "index": "Missioni"
+      },
+      "missions": {
+        "index": "Missioni"
       }
     }
   }

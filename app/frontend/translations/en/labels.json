@@ -1765,6 +1765,17 @@
           "ownedFilter": "Owned",
           "owned": "Owned",
           "notOwned": "Not owned"
+        },
+        "missions": {
+          "name": "Search missions",
+          "org": "Offered by",
+          "standing": "Standing",
+          "rewarding": "Pays",
+          "alignment": "Side of the law",
+          "kind": "Kind",
+          "releasedFilter": "In release",
+          "released": "In release",
+          "unreleased": "Not in release"
         }
       },
       "station": {
@@ -1942,6 +1953,39 @@
           },
           "createdAt": "Created at",
           "updatedAt": "Updated at"
+        },
+        "missions": {
+          "unnamed": "Never named by the game",
+          "slug": "Slug",
+          "scKey": "Game key",
+          "scRef": "Game ref",
+          "generator": "Generator",
+          "debugName": "Debug name",
+          "build": "Build",
+          "difficultyAxes": "Difficulty (skill / load / risk / knowledge)",
+          "state": "State",
+          "states": {
+            "retired": "Retired",
+            "released": "In release",
+            "unreleased": "Not in release"
+          },
+          "columns": {
+            "released": "In release",
+            "generator": "Generator",
+            "build": "Build",
+            "rewardKind": "Kind",
+            "amount": "Amount",
+            "rewardDetail": "Detail"
+          },
+          "filters": {
+            "debugName": "Debug name",
+            "named": "Named",
+            "unnamed": "Never named",
+            "namedFilter": "Naming",
+            "currentBuild": "Current build only",
+            "anyBuild": "Any build",
+            "build": "Build"
+          }
         },
         "dashboard": {
           "quickStats": {
@@ -2901,6 +2945,47 @@
           "minutes": "%{count}m",
           "seconds": "%{count}s"
         }
+      },
+      "gameMission": {
+        "calculatedInGame": "Set in game",
+        "blueprints": "Blueprints",
+        "name": "Name",
+        "org": "Offered by",
+        "offeredBy": "Offered by",
+        "offeredByUnknown": "No stated contractor",
+        "standing": "Standing",
+        "kind": "Kind",
+        "kinds": {
+          "career": "Career",
+          "contract": "One-off"
+        },
+        "difficulty": "Difficulty",
+        "difficultyAxes": {
+          "mechanicalSkill": "Mechanical skill",
+          "mentalLoad": "Mental load",
+          "riskOfLoss": "Risk of loss",
+          "gameKnowledge": "Game knowledge"
+        },
+        "alignments": {
+          "lawful": "Lawful",
+          "neutral": "Neutral",
+          "outlaw": "Outlaw"
+        },
+        "rewards": "Rewards",
+        "rewardKinds": {
+          "blueprint": "Blueprints",
+          "reputation": "Reputation",
+          "item": "Items",
+          "badge": "Badge",
+          "currency": "Payout"
+        },
+        "oneOfASet": "one of a set",
+        "briefing": "Briefing",
+        "templatedNote": "The game fills the marked parts in when it hands the mission out.",
+        "payoutNote": "The game works the payout out when the mission is generated, so the files state one for only a handful of contracts.",
+        "noRewards": "The files state no reward for this one.",
+        "unreleased": "Not in release",
+        "retired": "Retired"
       }
     }
   }

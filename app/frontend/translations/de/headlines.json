@@ -8,6 +8,9 @@
           "stats": "Werte",
           "sources": "Quellen"
         },
+        "missions": {
+          "index": "Missionen"
+        },
         "dashboard": {
           "title": "Dashboard",
           "visitsPerDay": "Besuche pro Tag",
@@ -490,6 +493,12 @@
       },
       "blueprints": {
         "index": "Baupläne"
+      },
+      "missions": {
+        "index": "Missionen"
+      },
+      "missions": {
+        "index": "Missionen"
       }
     }
   }

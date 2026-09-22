@@ -8,6 +8,9 @@
           "stats": "属性",
           "sources": "来源"
         },
+        "missions": {
+          "index": "任务"
+        },
         "dashboard": {
           "title": "仪表板",
           "visitsPerDay": "每日访问",
@@ -490,6 +493,12 @@
       },
       "blueprints": {
         "index": "蓝图"
+      },
+      "missions": {
+        "index": "任务"
+      },
+      "missions": {
+        "index": "任务"
       }
     }
   }

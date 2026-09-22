@@ -4552,6 +4552,170 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/missions":
+    get:
+      summary: Missions list
+      tags:
+      - Game Missions
+      operationId: gameMissions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/GameMissionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameMissions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/missions/org_filters":
+    get:
+      summary: Mission orgs
+      tags:
+      - Game Missions
+      operationId: gameMissionOrgs
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/missions/reward_kind_filters":
+    get:
+      summary: Mission reward kinds
+      tags:
+      - Game Missions
+      operationId: gameMissionRewardKinds
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/missions/standing_filters":
+    get:
+      summary: Mission standings
+      tags:
+      - Game Missions
+      operationId: gameMissionStandings
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/missions/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Mission id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Mission Detail
+      tags:
+      - Game Missions
+      operationId: gameMission
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameMission"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-loaners":
     post:
       summary: Create Model Loaner
@@ -9431,6 +9595,21 @@ components:
       - name
       - permanent
       title: AdminFleetRole
+    AdminGameMissionBuild:
+      type: object
+      properties:
+        environment:
+          type: string
+        version:
+          type: string
+        current:
+          type: boolean
+      additionalProperties: false
+      required:
+      - environment
+      - version
+      - current
+      title: AdminGameMissionBuild
     AdminHardpoint:
       type: object
       properties:
@@ -13929,6 +14108,343 @@ components:
       - MODEL
       - ALBUM
       title: GalleryTypeEnum
+    GameMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/GameMissionKindEnum"
+        retired:
+          type: boolean
+        released:
+          type: boolean
+        org:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionOrg"
+          - type: 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        difficulty:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionDifficulty"
+          - type: 'null'
+        rewardKinds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        description:
+          type:
+          - string
+          - 'null'
+        rewards:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionReward"
+        blueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionBlueprint"
+        generatorKey:
+          type:
+          - string
+          - 'null'
+        debugName:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        unnamed:
+          type: boolean
+        blueprintPoolRefs:
+          type: array
+          items:
+            type: string
+        build:
+          anyOf:
+          - "$ref": "#/components/schemas/AdminGameMissionBuild"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - scKey
+      - scRef
+      - retired
+      - released
+      - rewardKinds
+      - createdAt
+      - updatedAt
+      - unnamed
+      title: GameMission
+    GameMissionBlueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      title: GameMissionBlueprint
+    GameMissionDifficulty:
+      type: object
+      properties:
+        profile:
+          type:
+          - string
+          - 'null'
+        mechanicalSkill:
+          type:
+          - integer
+          - 'null'
+        mentalLoad:
+          type:
+          - integer
+          - 'null'
+        riskOfLoss:
+          type:
+          - integer
+          - 'null'
+        gameKnowledge:
+          type:
+          - integer
+          - 'null'
+      additionalProperties: false
+      required: []
+      title: GameMissionDifficulty
+    GameMissionKindEnum:
+      type: string
+      enum:
+      - career
+      - contract
+      x-enumNames:
+      - CAREER
+      - CONTRACT
+      title: GameMissionKindEnum
+    GameMissionOrg:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type:
+          - string
+          - 'null'
+        alignment:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        lawful:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+      required:
+      - name
+      title: GameMissionOrg
+    GameMissionQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        scKeyCont:
+          type: string
+        slugCont:
+          type: string
+        debugNameCont:
+          type: string
+        generatorKeyEq:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        kindEq:
+          "$ref": "#/components/schemas/GameMissionKindEnum"
+        kindIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionKindEnum"
+        fromOrg:
+          type: string
+        orgNameEq:
+          type: string
+        orgNameIn:
+          type: array
+          items:
+            type: string
+        alignmentEq:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        alignmentIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSourceAlignmentEnum"
+        minStandingEq:
+          type: string
+        minStandingIn:
+          type: array
+          items:
+            type: string
+        rewarding:
+          "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        rewardingIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        released:
+          type: boolean
+        named:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          "$ref": "#/components/schemas/GameMissionSortEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionSortEnum"
+      additionalProperties: false
+      example: {}
+      title: GameMissionQuery
+    GameMissionReward:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionRewardKindEnum"
+        amount:
+          type:
+          - integer
+          - 'null'
+        max:
+          type:
+          - integer
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        calculated:
+          type: boolean
+        orgName:
+          type:
+          - string
+          - 'null'
+        orgKey:
+          type:
+          - string
+          - 'null'
+        entityClass:
+          type:
+          - string
+          - 'null'
+        entityName:
+          type:
+          - string
+          - 'null'
+        weight:
+          type:
+          - number
+          - 'null'
+        badge:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - kind
+      title: GameMissionReward
+    GameMissionRewardFilterEnum:
+      type: string
+      enum:
+      - reputation
+      - item
+      - badge
+      - currency
+      - blueprint
+      x-enumNames:
+      - REPUTATION
+      - ITEM
+      - BADGE
+      - CURRENCY
+      - BLUEPRINT
+      title: GameMissionRewardFilterEnum
+    GameMissionRewardKindEnum:
+      type: string
+      enum:
+      - reputation
+      - item
+      - badge
+      - currency
+      x-enumNames:
+      - REPUTATION
+      - ITEM
+      - BADGE
+      - CURRENCY
+      title: GameMissionRewardKindEnum
+    GameMissionSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - orgName asc
+      - orgName desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - ORG_NAME_ASC
+      - ORG_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: GameMissionSortEnum
+    GameMissions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMission"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: GameMissions
     HangarGroup:
       type: object
       properties:

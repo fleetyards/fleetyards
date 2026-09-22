@@ -1765,6 +1765,17 @@
           "ownedFilter": "Possédé",
           "owned": "Possédé",
           "notOwned": "Non possédé"
+        },
+        "missions": {
+          "name": "Rechercher des missions",
+          "org": "Proposée par",
+          "standing": "Réputation",
+          "rewarding": "Paie",
+          "alignment": "Côté de la loi",
+          "kind": "Type",
+          "releasedFilter": "Dans la version",
+          "released": "Dans la version",
+          "unreleased": "Hors version"
         }
       },
       "station": {
@@ -1942,6 +1953,39 @@
           },
           "createdAt": "Créé le",
           "updatedAt": "Mis à jour le"
+        },
+        "missions": {
+          "unnamed": "Jamais nommée par le jeu",
+          "slug": "Slug",
+          "scKey": "Clé du jeu",
+          "scRef": "Réf du jeu",
+          "generator": "Générateur",
+          "debugName": "Nom de débogage",
+          "build": "Build",
+          "difficultyAxes": "Difficulté (habileté / charge / risque / connaissance)",
+          "state": "État",
+          "states": {
+            "retired": "Retirée",
+            "released": "Dans la version",
+            "unreleased": "Hors version"
+          },
+          "columns": {
+            "released": "Dans la version",
+            "generator": "Générateur",
+            "build": "Build",
+            "rewardKind": "Type",
+            "amount": "Montant",
+            "rewardDetail": "Détail"
+          },
+          "filters": {
+            "debugName": "Nom de débogage",
+            "named": "Nommée",
+            "unnamed": "Jamais nommée",
+            "namedFilter": "Nommage",
+            "currentBuild": "Build actuel uniquement",
+            "anyBuild": "N'importe quel build",
+            "build": "Build"
+          }
         },
         "dashboard": {
           "quickStats": {
@@ -2887,6 +2931,47 @@
           "minutes": "%{count} min",
           "seconds": "%{count} s"
         }
+      },
+      "gameMission": {
+        "calculatedInGame": "Calculé en jeu",
+        "blueprints": "Plans",
+        "name": "Nom",
+        "org": "Proposée par",
+        "offeredBy": "Proposée par",
+        "offeredByUnknown": "Aucun commanditaire indiqué",
+        "standing": "Réputation",
+        "kind": "Type",
+        "kinds": {
+          "career": "Carrière",
+          "contract": "Ponctuelle"
+        },
+        "difficulty": "Difficulté",
+        "difficultyAxes": {
+          "mechanicalSkill": "Habileté mécanique",
+          "mentalLoad": "Charge mentale",
+          "riskOfLoss": "Risque de perte",
+          "gameKnowledge": "Connaissance du jeu"
+        },
+        "alignments": {
+          "lawful": "Légal",
+          "neutral": "Neutre",
+          "outlaw": "Hors-la-loi"
+        },
+        "rewards": "Récompenses",
+        "rewardKinds": {
+          "blueprint": "Plans",
+          "reputation": "Réputation",
+          "item": "Objets",
+          "badge": "Insigne",
+          "currency": "Paiement"
+        },
+        "oneOfASet": "un parmi un lot",
+        "briefing": "Briefing",
+        "templatedNote": "Le jeu remplit les parties marquées au moment où il attribue la mission.",
+        "payoutNote": "Le jeu calcule le paiement à la génération de la mission ; les fichiers n'en indiquent donc un que pour une poignée de contrats.",
+        "noRewards": "Les fichiers n'indiquent aucune récompense pour celle-ci.",
+        "unreleased": "Hors version",
+        "retired": "Retirée"
       }
     }
   }

@@ -531,6 +531,45 @@ paths:
                 "$ref": "#/components/schemas/ManufacturerOptions"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/missions/orgs":
+    get:
+      summary: Mission orgs filter
+      tags:
+      - Filters
+      operationId: filtersGameMissionsOrgs
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/missions/reward-kinds":
+    get:
+      summary: Mission reward kinds filter
+      tags:
+      - Filters
+      operationId: filtersGameMissionsRewardKinds
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/missions/standings":
+    get:
+      summary: Mission standings filter
+      tags:
+      - Filters
+      operationId: filtersGameMissionsStandings
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/models":
     get:
       summary: Models Filters
@@ -10273,6 +10312,63 @@ paths:
                 "$ref": "#/components/schemas/MissionSlot"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/missions":
+    get:
+      summary: Missions list
+      tags:
+      - Game Missions
+      operationId: gameMissions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/GameMissionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameMissions"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/missions/{slug}":
+    get:
+      summary: Mission detail
+      tags:
+      - Game Missions
+      operationId: gameMission
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameMission"
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -21673,6 +21769,332 @@ components:
       - name
       - slug
       title: Gallery
+    GameMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/GameMissionKindEnum"
+        retired:
+          type: boolean
+        released:
+          type: boolean
+        org:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionOrg"
+          - type: 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        difficulty:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionDifficulty"
+          - type: 'null'
+        rewardKinds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        description:
+          type:
+          - string
+          - 'null'
+        rewards:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionReward"
+        blueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionBlueprint"
+        generatorKey:
+          type:
+          - string
+          - 'null'
+        debugName:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - scKey
+      - scRef
+      - retired
+      - released
+      - rewardKinds
+      - createdAt
+      - updatedAt
+      title: GameMission
+    GameMissionBlueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      title: GameMissionBlueprint
+    GameMissionDifficulty:
+      type: object
+      properties:
+        profile:
+          type:
+          - string
+          - 'null'
+        mechanicalSkill:
+          type:
+          - integer
+          - 'null'
+        mentalLoad:
+          type:
+          - integer
+          - 'null'
+        riskOfLoss:
+          type:
+          - integer
+          - 'null'
+        gameKnowledge:
+          type:
+          - integer
+          - 'null'
+      additionalProperties: false
+      required: []
+      title: GameMissionDifficulty
+    GameMissionKindEnum:
+      type: string
+      enum:
+      - career
+      - contract
+      x-enumNames:
+      - CAREER
+      - CONTRACT
+      title: GameMissionKindEnum
+    GameMissionOrg:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type:
+          - string
+          - 'null'
+        alignment:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        lawful:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+      required:
+      - name
+      title: GameMissionOrg
+    GameMissionQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        kindEq:
+          "$ref": "#/components/schemas/GameMissionKindEnum"
+        kindIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionKindEnum"
+        fromOrg:
+          type: string
+        orgNameEq:
+          type: string
+        orgNameIn:
+          type: array
+          items:
+            type: string
+        alignmentEq:
+          "$ref": "#/components/schemas/NullableBlueprintSourceAlignmentEnum"
+        alignmentIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSourceAlignmentEnum"
+        minStandingEq:
+          type: string
+        minStandingIn:
+          type: array
+          items:
+            type: string
+        maxStandingEq:
+          type: string
+        difficultyMechanicalSkillLteq:
+          type: integer
+        difficultyMechanicalSkillGteq:
+          type: integer
+        difficultyRiskOfLossLteq:
+          type: integer
+        difficultyRiskOfLossGteq:
+          type: integer
+        rewarding:
+          "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        rewardingIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        released:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          "$ref": "#/components/schemas/GameMissionSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: GameMissionQuery
+    GameMissionReward:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionRewardKindEnum"
+        amount:
+          type:
+          - integer
+          - 'null'
+        max:
+          type:
+          - integer
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        calculated:
+          type: boolean
+        orgName:
+          type:
+          - string
+          - 'null'
+        orgKey:
+          type:
+          - string
+          - 'null'
+        entityClass:
+          type:
+          - string
+          - 'null'
+        entityName:
+          type:
+          - string
+          - 'null'
+        weight:
+          type:
+          - number
+          - 'null'
+        badge:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - kind
+      title: GameMissionReward
+    GameMissionRewardFilterEnum:
+      type: string
+      enum:
+      - reputation
+      - item
+      - badge
+      - currency
+      - blueprint
+      x-enumNames:
+      - REPUTATION
+      - ITEM
+      - BADGE
+      - CURRENCY
+      - BLUEPRINT
+      title: GameMissionRewardFilterEnum
+    GameMissionRewardKindEnum:
+      type: string
+      enum:
+      - reputation
+      - item
+      - badge
+      - currency
+      x-enumNames:
+      - REPUTATION
+      - ITEM
+      - BADGE
+      - CURRENCY
+      title: GameMissionRewardKindEnum
+    GameMissionSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - orgName asc
+      - orgName desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - ORG_NAME_ASC
+      - ORG_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: GameMissionSortingEnum
+    GameMissions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMission"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: GameMissions
     Hangar:
       type: object
       properties:

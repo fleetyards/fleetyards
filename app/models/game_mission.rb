@@ -88,6 +88,31 @@ class GameMission < ApplicationRecord
     where(id: readable_builds(source, current_only:).where(released: true).select(:game_mission_id))
   }
 
+  # The missions the game gives a name. 74 of the 2,536 contracts have none
+  # anywhere: no `Title` override, and a template whose `displayString` is
+  # `@LOC_UNINITIALIZED` five times over -- so there is nothing to fall back to
+  # but a developer's `debugName`, which is not a mission name.
+  #
+  # A hard exclusion rather than a filter, and not the same question as
+  # `released`: an unreleased mission is one a reader can be told about, while
+  # a nameless row is one they cannot recognise, search for or ask for again.
+  # The rows stay -- admin reads them, and the blueprint link resolves through
+  # them -- they are only not offered as catalogue entries.
+  #
+  # Resolved through the build rather than off the row, because `name` is read
+  # through `facts`: the column holds whatever source loaded last, so asking it
+  # would answer a live request with what a ptu load happened to write.
+  scope :named, ->(source = ::ScData::Source.current, current_only: true) {
+    readable = readable_builds(source, current_only:)
+
+    # The row is the last fallback, not a shortcut past the build: it answers
+    # only for a mission no build describes at all, which is what `facts` --
+    # `build || last_build` -- falls back to as well. Reading the build first
+    # and the row only in its absence is the whole of the fact layering.
+    where(id: readable.where.not(name: [nil, ""]).select(:game_mission_id))
+      .or(where.not(id: readable.select(:game_mission_id)).where.not(name: [nil, ""]))
+  }
+
   # Missions an org offers, in the build we are on. Through the build, like
   # everything else: the columns on the row carry whatever the last source to
   # load wrote, so filtering them would answer a ptu request with live's.
@@ -213,6 +238,71 @@ class GameMission < ApplicationRecord
   # answers off the row rather than raising.
   GameMissionBuild::READ_THROUGH.each do |fact|
     define_method(fact) { facts.nil? ? super() : facts.public_send(fact) }
+  end
+
+  # The orgs that actually offer work in the build being read -- 29 of the 38
+  # the export declares a reputation record for. Built from the loaded
+  # catalogue rather than from the reputation tree, so an org a patch stops
+  # giving work to stops being offered as a filter.
+  #
+  # Off `readable_builds` rather than off the row, for the reason the blueprint
+  # filters are: the build a list is answered from is the *served* one, and a
+  # caller reading the fallback build has to be offered what that build names.
+  def self.org_filters(source = served_source, current_only: true)
+    readable_builds(source, current_only:)
+      .where.not(org_name: nil)
+      .distinct
+      .order(:org_name)
+      .pluck(:org_name, :org_key)
+      .map { |name, key| Filter.new(category: "org", label: name, value: key) }
+  end
+
+  # The bands missions are offered in, which is a small subset of the 380
+  # standing records: a band nothing is offered in is not a question to ask.
+  #
+  # Ordered by name because the export states no rank order anywhere a parse can
+  # read -- the records carry a display name and a debug name, and neither
+  # sorts "Neutral" below "Elite Contractor".
+  def self.standing_filters(source = served_source, current_only: true)
+    readable_builds(source, current_only:)
+      .where.not(min_standing: nil)
+      .distinct
+      .order(:min_standing)
+      .pluck(:min_standing)
+      .map { |standing| Filter.new(category: "standing", label: standing, value: standing) }
+  end
+
+  # From the constant rather than from a DISTINCT over the array column: all
+  # four are always offerable, and a kind nothing currently pays is still a
+  # question worth being able to ask.
+  def self.reward_kind_filters
+    GameMissionBuild::REWARD_KINDS.map do |kind|
+      Filter.new(
+        category: "reward_kind",
+        label: I18n.t("filter.game_mission.reward_kind.items.#{kind}", default: kind.humanize),
+        value: kind
+      )
+    end
+  end
+
+  # A title or description with the game's markup taken out rather than
+  # rendered, for the places that can only hold plain text -- a meta tag, a
+  # link preview. The frontend's `MissionText` does the same job in reverse,
+  # turning each span into a token a reader can see.
+  #
+  # A placeholder becomes its parameter in brackets: dropping it outright
+  # breaks the sentence around it, and 902 of the 2472 titles carry one.
+  PLACEHOLDER = /~mission\(([^)]*)\)/
+  EMPHASIS_TAG = %r{</?EM\d*>}
+
+  def self.plain_text(text)
+    return if text.blank?
+
+    text
+      .gsub(PLACEHOLDER) { "[#{::Regexp.last_match(1).split("|").first}]" }
+      .gsub(EMPHASIS_TAG, "")
+      .squish
+      .presence
   end
 
   private def update_slugs

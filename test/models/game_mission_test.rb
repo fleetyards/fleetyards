@@ -109,6 +109,45 @@ class GameMissionTest < ActiveSupport::TestCase
     assert_not_includes GameMission.released, mission
   end
 
+  # 74 of the 2,536 contracts have no name anywhere in the game data -- no
+  # Title override, and a template whose displayString is uninitialised -- and
+  # a row a reader cannot recognise is worse than no row.
+  test ".named leaves out a contract the game never named" do
+    named = create(:game_mission)
+    nameless = create(:game_mission, name: nil)
+    blank = create(:game_mission, name: "")
+
+    assert_includes GameMission.named, named
+    assert_not_includes GameMission.named, nameless
+    assert_not_includes GameMission.named, blank
+  end
+
+  # `name` is read through `facts`, so the predicate has to be too: the column
+  # holds whatever source loaded last, and asking it would answer a live
+  # request with what a ptu load happened to write.
+  test ".named reads the served build rather than the row" do
+    mission = create(:game_mission, name: "Row Title")
+    mission.build.update!(name: nil)
+
+    assert_not_includes GameMission.named, mission
+  end
+
+  test ".named keeps a mission the build names even where the row does not" do
+    mission = create(:game_mission, name: "Row Title")
+    mission.update_columns(name: nil)
+
+    assert_includes GameMission.named, mission
+  end
+
+  # A mission every build has been pruned from renders entirely off the row --
+  # `facts` is nil and the fact readers fall through to it -- so the predicate
+  # has to fall through too, or a link to it 404s while the page would render.
+  test ".named falls back to the row for a mission no build describes" do
+    mission = create(:game_mission, :without_build, version: nil, name: "Only On The Row")
+
+    assert_includes GameMission.named, mission
+  end
+
   test ".from_org finds what one org offers" do
     foxwell = create(:game_mission, org_name: "Foxwell Enforcement")
     create(:game_mission, org_name: "Headhunters")
@@ -138,6 +177,34 @@ class GameMissionTest < ActiveSupport::TestCase
 
   test "#blueprints is empty for a mission that hands none out" do
     assert_empty create(:game_mission).blueprints
+  end
+
+  # A meta title is plain text, so the run-time spans have to come out -- but
+  # not by deletion: dropping one leaves "Bounty:  wanted", and 902 of the 2472
+  # titles carry one.
+  test ".plain_text brackets a substitution rather than dropping it" do
+    assert_equal "Bounty: [TargetName] wanted",
+      GameMission.plain_text("Bounty: ~mission(TargetName) wanted")
+  end
+
+  # The part before the pipe is the noun; the rest names which of its fields
+  # the game will substitute.
+  test ".plain_text names the parameter rather than the field it reads" do
+    assert_equal "Head to [Location]",
+      GameMission.plain_text("Head to ~mission(Location|Address)")
+  end
+
+  # 3,567 opens across the localisation file, four of which never close.
+  test ".plain_text takes the game's emphasis markup out" do
+    assert_equal "Resupply the depot",
+      GameMission.plain_text("Resupply <EM4>the depot</EM4>")
+    assert_equal "Resupply the depot",
+      GameMission.plain_text("Resupply <EM4>the depot")
+  end
+
+  test ".plain_text answers an absent string with nothing" do
+    assert_nil GameMission.plain_text(nil)
+    assert_nil GameMission.plain_text("")
   end
 
   # The row keeps its last build so a retired contract still resolves, and the

@@ -155,6 +155,9 @@
         "blueprints": {
           "index": "Planos"
         },
+        "missions": {
+          "index": "Misiones"
+        },
         "index": "Admin",
         "models": {
           "index": "Modelos",
@@ -316,7 +319,8 @@
         "commodities": "Mercancías",
         "index": "Catálogo",
         "components": "Componentes",
-        "blueprints": "Planos"
+        "blueprints": "Planos",
+        "missions": "Misiones"
       }
     }
   }
