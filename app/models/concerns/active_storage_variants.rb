@@ -47,10 +47,12 @@ module ActiveStorageVariants
       # Representations of the padded original would only be thrown away by the
       # crop that follows, which re-attaches and brings this callback round
       # again on the blob worth building them from.
-      if trim_pending?(name)
-        TrimAttachmentJob.perform_async(self.class.name, id, name)
-      else
+      if !trim_pending?(name)
         PreprocessRepresentationsJob.perform_async(attachment.blob.id)
+      elsif uploaded_attachment_names.include?(name)
+        trim_now(name)
+      else
+        TrimAttachmentJob.perform_async(self.class.name, id, name)
       end
     end
   end
@@ -61,8 +63,45 @@ module ActiveStorageVariants
 
   private
 
+  # The crop replaces the blob, so the response is built from the padded
+  # original whenever it runs behind the request -- the emblem is drawn with
+  # its transparent canvas around it until something reloads the page. Doing it
+  # here costs a download and a crop, and only where the bytes are already in
+  # storage, which is what the trim is for.
+  def trim_now(name)
+    attachment = send(name)
+
+    return if AttachmentTrimmer.new(attachment).call
+
+    PreprocessRepresentationsJob.perform_async(attachment.blob.id)
+  rescue => error
+    # Deliberately broad. This runs after the record is committed, so nothing
+    # here can undo the save -- an unreadable file, a storage hiccup, a decoder
+    # gap -- and raising would turn a picture that could not be cropped into a
+    # failed request for a record that is already written. The job is the path
+    # that retries, so the work is handed back to it.
+    Rails.logger.warn("Inline trim of #{self.class.name}##{id} #{name} failed: #{error.class}")
+    TrimAttachmentJob.perform_async(self.class.name, id, name)
+  end
+
   def remember_new_attachments
     @new_attachment_names = one_attachment_names.select { |name| attachment_changes.key?(name) }
+    @uploaded_attachment_names = @new_attachment_names.select { |name| already_uploaded?(name) }
+  end
+
+  def uploaded_attachment_names
+    @uploaded_attachment_names || []
+  end
+
+  # A signed id or a blob names a file the direct-upload endpoint has already
+  # put in storage, so it can be read straight away. Anything else -- a file
+  # posted with the form -- ActiveStorage uploads in an `after_commit` of its
+  # own, which may not have run yet: that one has to go through the job, whose
+  # retry is what waits for the bytes.
+  def already_uploaded?(name)
+    attachable = attachment_changes[name]&.attachable
+
+    attachable.is_a?(String) || attachable.is_a?(ActiveStorage::Blob)
   end
 
   def trim_pending?(name)
