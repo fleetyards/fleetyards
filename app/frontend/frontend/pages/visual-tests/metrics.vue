@@ -285,10 +285,10 @@ const sampleMetrics = [
     </BtnGroup>
   </p>
   <div v-if="model" class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-4">
       <ModelBaseMetrics :model="model" :state="modelState" />
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-4">
       <ModelCrewMetrics :model="model" />
     </div>
   </div>
