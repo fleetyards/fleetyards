@@ -216,6 +216,9 @@ following the mission, contract, payout and blueprint backfills before it.
 
 ### D10 — Squadron ships and stats subclass, they do not restate
 
+> **Superseded by D12.** These ten endpoints were deleted; a squadron narrows
+> the fleet's own pages instead of owning copies of them.
+
 `FleetSquadronVehiclesController < FleetVehiclesController` and
 `FleetSquadronStatsController < FleetStatsController`, each overriding a
 `vehicle_scope` / `membership_scope` seam. Everything else — the filters, the
@@ -234,6 +237,91 @@ would go stale with no way to notice. It is rendered outside the fragment, and
 the roster is preloaded so the list still issues a constant number of queries;
 `ListEndpointQueryCountsTest` holds that.
 
+### D12 — A squadron is a filter, not a second set of pages
+
+Ten endpoints went, and thirteen test files with them. A squadron is the
+fleet's roster sliced, so the slice belongs on the pages that already own the
+roster, the ships and the numbers: `q[squadronSlugIn]` narrows the fleet's
+member list, ship list, stats, model counts, fleetchart and export.
+
+The alternative was a second ship list and a second stats page carrying the
+same filters, the same grouped-by-model branch and the same metric arithmetic
+— which is what D10 had planned, and which would have drifted from the
+originals the first time either changed.
+
+A squadron's own page keeps only what is its own: the member count, the
+description, and three links out to those pages already narrowed to it.
+
+The segmented control that picks one sits above the list rather than in the
+filter sidebar, on both the roster and the ship list, and carries an "All"
+segment. Single-select, because "All" is meaningless beside a multi-select.
+
+### D13 — Creating a squadron and editing one are the same page
+
+Two tabs — what a squadron is, and what it looks like — because three file
+fields under four text fields made a form where neither half was findable.
+Tabs are a way of reading one form, not two forms: the fields live in a
+composable both layouts share, `keepValuesOnUnmount` keeps the off-screen tab
+from dropping what was typed into it, and the submit writes the lot.
+
+The images half needs no saved record. The direct-upload endpoint hands back a
+signed blob id before anything exists, so a new squadron is written with its
+emblem already attached rather than redirecting the author into the editor to
+finish the job.
+
+### D14 — A fleet arranges its own squadrons
+
+Alphabetical is not an order anybody chose. `position` is the default sort and
+the association's own order, so the strip on the front page, the filter
+segments and the roster badges all follow it rather than only the page it was
+arranged on.
+
+The whole order goes to `PUT …/squadrons/sort` in one call. A position per
+squadron would leave the list half-applied whenever one of the writes failed,
+and dragging is a gesture whose result has to be the arrangement on screen or
+the one before it. A squadron left out of the call keeps the place it had.
+
+### D15 — Belonging is the rule; `team` marks the exception
+
+Being in two squadrons at once was possible and meant nothing in particular:
+the roster badged somebody with whichever of their groups sorted first, and the
+member counts added up to more than the fleet had people.
+
+So a member holds at most one squadron in a fleet, and `team` marks the
+exception — a standing rota, a trade wing, a crew that cuts across the roster.
+A team takes anybody however many they are already on, and being on one never
+blocks a squadron: the flag is off on both sides of the rule rather than one.
+
+Refused at the join row, which is what creates the conflict and can therefore
+name the squadron standing in the way. Refused again when a team is turned back
+into a squadron over members who already have one — nothing would repair a rule
+that was already broken when it was turned on, and every later save of an
+untouched squadron would then fail on a state somebody else created.
+
+The two are drawn as two rows on the front page, the squadrons page and in
+settings. Shown together they read as one list with an invisible rule running
+through half of it.
+
+### D16 — Three pictures, two of which must carry their own cut-out
+
+`icon` 256×256, `logo` 512×256, `header` 1920×480. The icon and the logo are
+marks drawn on whatever surface they land on — a card, a table row, the corner
+of an avatar — so an opaque one is refused and both are cropped to their opaque
+bounds on the way in. The header is a photograph whose edges are the picture,
+so it is neither checked nor cropped.
+
+The crop happens in the request where the bytes are already in storage, which
+is every direct upload: run behind the request, the response is built from the
+padded original and the emblem is drawn inside its transparent canvas until
+something reloads the page.
+
+### D17 — Two descriptions
+
+`short_description` is what the card carries and is held to a line or two;
+`description` is the squadron's own page and is only serialised by `show`.
+Thirty long descriptions would otherwise ride on every grid that renders the
+short one.
+
 ---
 
 ## Progress
@@ -250,6 +338,12 @@ the roster is preloaded so the list still issues a constant number of queries;
 - [x] Phase 10 — Linting and final schema generation
 
 ---
+
+> The phases below are the plan as it was written, and the work followed them
+> to a point. Where they and the decision log disagree, the decision log is
+> what shipped — D12 in place of the per-squadron endpoints, and D13 in place
+> of the create/edit modal of Phase 7. `SquadronModal` and `SquadronBadge` were
+> both built and both deleted.
 
 ## Phase 1 — Database Migrations and Models
 
@@ -612,9 +706,12 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 ## Not in Scope (deferred)
 
 - **Squadron-level roles** — Squadrons inherit fleet roles; a separate squadron role hierarchy could be added later if needed
+- **Squadron-scoped contracts and inventories** — Asked for during review: contracts raised for a squadron, and inventories marked as one squadron's. Two questions to settle first — whether "marked for a squadron" is a visibility rule or a label, and whether a record belongs to one squadron (a column) or several (a join table)
+- **Moving a member between squadrons in one step** — D15 makes reassignment two actions, remove and then add. The picker says which squadron holds somebody, so it is not a dead end, but there is no `move`
+- **The public front-page strip** — The public endpoints exist, but the strip is gated on membership, so a signed-out visitor to a public fleet sees nothing
 - **Squadron chat/messaging** — No in-app messaging system exists yet
 - **Squadron events/calendar** — Future feature
-- **Squadron fleetchart** — Could reuse existing fleetchart filtered by squadron; deferred to avoid scope creep
+- ~~**Squadron fleetchart**~~ — Done by D12: the fleet's own fleetchart takes `q[squadronSlugIn]` like its other lists
 - **Admin squadron management** — Admin panel can manage fleets; squadron admin can be added later
 - **Notification types for squadrons** — e.g., `squadron_member_added`; can be added via the notification center once it's complete
 
@@ -628,3 +725,17 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
   decisions the plan had not taken are recorded above as D8–D11: the feature
   flag, how the privileges seed, subclassing for the ship and stat endpoints,
   and keeping the member count out of the cached fragment.
+- **2026-09-22** The shape changed twice under review, and the phases above
+  describe the first shape rather than the one that shipped. D12 replaces the
+  per-squadron endpoints of D10 with a filter dimension, and D13 replaces the
+  create/edit modal of Phase 7 with a two-tab page. D14–D17 are the rest of
+  what review added: a fleet-chosen order, the squadron/team split, the three
+  pictures, and the two descriptions.
+
+  Two bugs the work turned up in code it did not own. `/fleets/:slug/stats/
+  vehicles` declared no `q` parameter, so the ship list's metrics and
+  classification chips had never followed *any* filter — the squadron filter is
+  only what made it visible. And the inline trim of D16 asks every attachment a
+  save touched what it is carrying; a purge is one of those changes and carries
+  nothing, which broke clearing a picture on nine admin endpoints until it was
+  guarded.
