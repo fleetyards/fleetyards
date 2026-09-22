@@ -211,6 +211,7 @@
           "create": "Crear escuadrón",
           "addMember": "Añadir miembros",
           "addMembers": "Añadir %{count}",
+          "viewMembers": "Miembros del escuadrón",
           "viewShips": "Naves del escuadrón",
           "viewStats": "Estadísticas del escuadrón"
         },

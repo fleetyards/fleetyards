@@ -181,8 +181,10 @@ const fleetVehiclesQueryParams = computed(() => {
 
 const fleetSlug = computed(() => route.params.slug as string);
 
+const statsQueryParams = computed(() => ({ q: getQuery() }));
+
 const { data: fleetStats, refetch: refetchFleetStats } =
-  useFleetVehiclesStatsQuery(fleetSlug);
+  useFleetVehiclesStatsQuery(fleetSlug, statsQueryParams);
 
 const { data: modelCounts, refetch: refetchModelCounts } =
   useFleetModelCountsQuery(fleetSlug, fleetVehiclesQueryParams);

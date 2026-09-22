@@ -8,12 +8,10 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import MembersList from "@/frontend/components/Fleets/MembersList/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -23,7 +21,6 @@ import {
   type Fleet,
   type FleetMember,
   useFleetSquadron,
-  useFleetSquadronMembers,
   useDestroyFleetSquadron,
 } from "@/services/fyApi";
 
@@ -62,14 +59,6 @@ const {
   refetch: refetchSquadron,
 } = useFleetSquadron(fleetSlug, squadronSlug);
 
-const { data: members, refetch: refetchMembers } = useFleetSquadronMembers(
-  fleetSlug,
-  squadronSlug,
-  {},
-);
-
-const memberItems = computed(() => members.value?.items ?? []);
-
 /*
  * The squadron's ships and its numbers are the fleet's own pages, narrowed.
  * Building a second ship list and a second stats page here would be two more
@@ -84,7 +73,7 @@ const filtered = (name: string) => ({
 });
 
 const refetchAll = async () => {
-  await Promise.all([refetchSquadron(), refetchMembers()]);
+  await refetchSquadron();
 };
 
 const openEditModal = () => {
@@ -242,6 +231,13 @@ const crumbs = computed<Crumb[]>(() => [
     <!-- Out to the fleet's own pages, narrowed to this squadron, rather than a
          second ship list and a second stats page living here. -->
     <div class="squadron-links">
+      <Btn
+        :to="filtered('fleet-members-index')"
+        data-test="squadron-members-link"
+      >
+        <i class="fa-duotone fa-users" />
+        {{ t("actions.fleet.squadrons.viewMembers") }}
+      </Btn>
       <Btn :to="filtered('fleet-ships')" data-test="squadron-ships-link">
         <i class="fa-duotone fa-starship" />
         {{ t("actions.fleet.squadrons.viewShips") }}
@@ -251,17 +247,6 @@ const crumbs = computed<Crumb[]>(() => [
         {{ t("actions.fleet.squadrons.viewStats") }}
       </Btn>
     </div>
-
-    <Heading :level="HeadingLevelEnum.H3">
-      {{ t("labels.fleet.squadrons.members") }}
-    </Heading>
-
-    <MembersList
-      :members="memberItems"
-      :capabilities="props.membership?.capabilities"
-      :empty-visible="!memberItems.length"
-      :show-squadrons="false"
-    />
   </template>
 
   <Empty v-else-if="!isLoading" :name="t('labels.fleet.squadrons.index')" />

@@ -122,6 +122,47 @@ class Api::V1::FleetsMembersSquadronsTest < ActionDispatch::IntegrationTest
     assert_empty JSON.parse(response.body)["items"]
   end
 
+  # The metrics row and the classification chips are drawn from this endpoint,
+  # and the ship list sends it the same filter -- so a squadron that owns three
+  # ships must not report the fleet's total.
+  test "the vehicle stats narrow to a squadron" do
+    Sidekiq::Testing.inline!
+    pilot = create(:user, vehicle_count: 3)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: pilot).tap do |membership|
+      create(:fleet_squadron_membership, fleet_squadron: @combat, fleet_membership: membership)
+    end
+    create(:user, vehicle_count: 5).tap do |outsider|
+      create(:fleet_membership, :accepted, fleet: @fleet, user: outsider)
+    end
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/stats/vehicles?q[squadronSlugIn][]=combat-wing"
+
+    assert_response :success
+    assert_equal 3, JSON.parse(response.body)["total"]
+  ensure
+    Sidekiq::Testing.fake!
+  end
+
+  test "the model counts narrow to a squadron" do
+    Sidekiq::Testing.inline!
+    pilot = create(:user, vehicle_count: 2)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: pilot).tap do |membership|
+      create(:fleet_squadron_membership, fleet_squadron: @combat, fleet_membership: membership)
+    end
+    create(:user, vehicle_count: 4).tap do |outsider|
+      create(:fleet_membership, :accepted, fleet: @fleet, user: outsider)
+    end
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/stats/model-counts?q[squadronSlugIn][]=combat-wing"
+
+    assert_response :success
+    assert_equal 2, JSON.parse(response.body)["modelCounts"].values.sum
+  ensure
+    Sidekiq::Testing.fake!
+  end
+
   # The badges come off a cached fragment keyed on the membership, so the join
   # touches it. Without that the roster keeps serving yesterday's badges.
   test "adding a member to a squadron expires their roster fragment" do

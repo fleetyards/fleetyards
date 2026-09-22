@@ -15,6 +15,12 @@ class Api::V1::FleetsStatsVehiclesTest < ActionDispatch::IntegrationTest
       tags "FleetStats"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::FleetVehicleQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
+
       security [
         {SessionCookie: []},
         {Oauth2: ["fleet", "fleet:read"]},

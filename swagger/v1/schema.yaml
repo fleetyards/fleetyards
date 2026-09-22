@@ -7164,6 +7164,14 @@ paths:
       tags:
       - FleetStats
       operationId: fleetVehiclesStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -13398,6 +13406,14 @@ paths:
       tags:
       - FleetStats
       operationId: publicFleetVehiclesStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful

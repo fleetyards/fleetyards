@@ -211,6 +211,7 @@
           "create": "建立中隊",
           "addMember": "新增成員",
           "addMembers": "新增 %{count} 位",
+          "viewMembers": "中隊成員",
           "viewShips": "中隊艦船",
           "viewStats": "中隊統計"
         },

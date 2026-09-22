@@ -211,6 +211,7 @@
           "create": "Create Squadron",
           "addMember": "Add Members",
           "addMembers": "Add %{count}",
+          "viewMembers": "Squadron members",
           "viewShips": "Squadron ships",
           "viewStats": "Squadron stats"
         },

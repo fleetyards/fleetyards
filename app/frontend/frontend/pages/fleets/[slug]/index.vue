@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import {
+  HeadingAlignmentEnum,
+  HeadingLevelEnum,
+} from "@/shared/components/base/Heading/types";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -147,12 +150,20 @@ const description = computed(() => {
       </a>
     </div>
   </div>
+  <div v-if="description" class="row md:justify-center">
+    <div class="col-12 col-md-8">
+      <p class="description" v-html="description" />
+    </div>
+  </div>
   <div v-if="squadronList.length" class="row md:justify-center">
     <div class="col-12 col-md-8">
-      <Heading :level="HeadingLevelEnum.H2">
+      <Heading
+        :level="HeadingLevelEnum.H2"
+        :alignment="HeadingAlignmentEnum.CENTER"
+      >
         {{ t("headlines.fleets.squadrons.index") }}
       </Heading>
-      <div class="squadrons">
+      <div class="squadrons squadrons--centred">
         <router-link
           v-for="squadron in squadronList"
           :key="squadron.id"
@@ -176,12 +187,6 @@ const description = computed(() => {
       </div>
     </div>
   </div>
-
-  <div v-if="description" class="row md:justify-center">
-    <div class="col-12 col-md-8">
-      <p class="description" v-html="description" />
-    </div>
-  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -190,6 +195,10 @@ const description = computed(() => {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 20px;
+}
+
+.squadrons--centred {
+  justify-content: center;
 }
 
 // A row of links rather than a grid of cards: the front page introduces the
