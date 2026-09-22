@@ -22,7 +22,7 @@ module Api
       def index
         authorize! with: FleetSquadronPolicy, context: {fleet: @fleet}
 
-        scope = readable_fleet_squadrons.includes(:fleet_memberships, logo_attachment: :blob)
+        scope = readable_fleet_squadrons.includes(:fleet_memberships, *FleetSquadron.attachment_preloads)
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :s)
         normalize_sort_params(query_params)

@@ -10,7 +10,6 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
-import SquadronBadge from "@/frontend/components/Fleets/Squadrons/SquadronBadge/index.vue";
 import combatLogo from "@/images/org-icons/security.png";
 import miningLogo from "@/images/org-icons/resources.png";
 import type { FleetSquadron, MediaFile } from "@/services/fyApi";
@@ -134,23 +133,6 @@ const to = (record: FleetSquadron) => ({
         :key="`lg-${record.id}`"
         :squadron="record"
         :size="72"
-      />
-    </div>
-  </div>
-
-  <Heading :level="HeadingLevelEnum.H2"
-    >The badge, as the roster shows it</Heading
-  >
-  <p class="vt-note">
-    At badge size the colour is a hint beside a name, which is why the card
-    needs the rail as well.
-  </p>
-  <div class="row">
-    <div class="col-12 vt-row">
-      <SquadronBadge
-        v-for="record in squadrons"
-        :key="`badge-${record.id}`"
-        :squadron="record"
       />
     </div>
   </div>

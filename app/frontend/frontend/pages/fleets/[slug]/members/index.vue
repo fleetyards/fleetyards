@@ -15,6 +15,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
 import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
+import SquadronFilter from "@/frontend/components/Fleets/Squadrons/SquadronFilter/index.vue";
 import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -246,13 +247,15 @@ const crumbs = computed<Crumb[]>(() => {
     placeholders
   >
     <template #filter>
-      <FleetMembersFilterForm :variant="view" :fleet-slug="fleet.slug" />
+      <FleetMembersFilterForm :variant="view" />
     </template>
 
-    <!-- The roster and the invites, in the same control the boards and the
-         ledger use. Only somebody who may read the invites is offered them. -->
-    <template v-if="canManageInvites" #actions-left>
-      <BtnGroup segmented>
+    <template #actions-left>
+      <SquadronFilter :fleet="props.fleet" />
+
+      <!-- The roster and the invites, in the same control the boards and the
+           ledger use. Only somebody who may read the invites is offered them. -->
+      <BtnGroup v-if="canManageInvites" segmented>
         <Btn
           v-for="value in views"
           :key="value"

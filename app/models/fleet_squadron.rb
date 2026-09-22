@@ -50,6 +50,13 @@ class FleetSquadron < ApplicationRecord
   # behind a heading and has nothing to cut out of.
   validates :icon, :logo, transparent_image: true
 
+  # Cropped to their opaque bounds before any representation exists. An emblem
+  # exported from a design tool usually sits inside a transparent canvas, and
+  # every size built from it carries that padding -- so at 20px on an avatar the
+  # mark itself would be a handful of pixels. The header is left alone: it is a
+  # photograph, and its edges are the picture.
+  trim_attachment :icon, :logo
+
   AVAILABLE_PRIVILEGES = [
     "fleet:squadrons:read",
     "fleet:squadrons:create",

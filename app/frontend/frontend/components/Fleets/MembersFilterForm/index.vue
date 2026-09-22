@@ -6,15 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  FleetMemberQuery,
-  type FilterOption,
-  useFleetSquadrons,
-} from "@/services/fyApi";
+import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import {
@@ -28,12 +22,10 @@ import {
 
 type Props = {
   variant?: MembersView;
-  fleetSlug?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   variant: "members",
-  fleetSlug: undefined,
 });
 
 const { t } = useI18n();
@@ -59,7 +51,6 @@ function setupForm() {
   form.value = {
     usernameCont: filters.value.usernameCont,
     roleIn: filters.value.roleIn || [],
-    squadronSlugIn: filters.value.squadronSlugIn || [],
     sorts: filters.value.sorts,
     ...variantFilters(),
   };
@@ -97,42 +88,6 @@ const roleOptions: FilterOption[] = [
     value: "member",
   },
 ];
-
-/*
- * Only asked for once the page says which fleet this is. The form is mounted
- * from the members page, which has the fleet; a caller that does not pass it
- * gets the rest of the form and no squadron filter, rather than a request for
- * `/fleets/undefined/squadrons`.
- */
-const { data: squadrons } = useFleetSquadrons(
-  computed(() => props.fleetSlug ?? ""),
-  {},
-  { query: { enabled: computed(() => !!props.fleetSlug) } },
-);
-
-const squadronList = computed(() => squadrons.value?.items ?? []);
-
-const selectedSquadrons = computed<string[]>(
-  () => form.value.squadronSlugIn ?? [],
-);
-
-const squadronSelected = (slug: string) =>
-  selectedSquadrons.value.includes(slug);
-
-// Multi-select, so a segment toggles rather than replacing the others: a
-// fleet's squadrons are not exclusive and a member can be in several.
-const toggleSquadron = (slug: string) => {
-  const selected = [...selectedSquadrons.value];
-  const index = selected.indexOf(slug);
-
-  if (index === -1) {
-    selected.push(slug);
-  } else {
-    selected.splice(index, 1);
-  }
-
-  form.value.squadronSlugIn = selected;
-};
 
 const stateOptions: FilterOption[] = [
   {
@@ -175,21 +130,6 @@ const stateOptions: FilterOption[] = [
       :multiple="true"
       :no-label="true"
     />
-
-    <div v-if="squadronList.length" class="squadron-filter">
-      <BtnGroup segmented>
-        <Btn
-          v-for="squadron in squadronList"
-          :key="squadron.id"
-          :active="squadronSelected(squadron.slug)"
-          :data-test="`squadron-filter-${squadron.slug}`"
-          @click="toggleSquadron(squadron.slug)"
-        >
-          <SquadronEmblem :squadron="squadron" :size="18" />
-          {{ squadron.name }}
-        </Btn>
-      </BtnGroup>
-    </div>
 
     <template v-if="variant === 'members'">
       <div class="row">
@@ -294,15 +234,3 @@ const stateOptions: FilterOption[] = [
     </Btn>
   </form>
 </template>
-
-<style lang="scss" scoped>
-// Wraps rather than scrolls: the sidebar is narrow and a fleet can have more
-// squadrons than fit on one line.
-.squadron-filter {
-  margin-bottom: 10px;
-
-  :deep(.btn-group) {
-    flex-wrap: wrap;
-  }
-}
-</style>

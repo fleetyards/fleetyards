@@ -203,12 +203,10 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 }
 
 // Overhangs the frame the way the presence dot does, on the corner it leaves
-// free, with a ring so it reads as sitting on top of the avatar rather than
-// inside it.
+// free.
 .member-avatar-squadron {
   position: absolute;
   left: -4px;
   bottom: -4px;
-  box-shadow: 0 0 0 2px var(--color-surface, #23282d);
 }
 </style>
