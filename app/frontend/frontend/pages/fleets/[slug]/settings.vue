@@ -14,9 +14,11 @@ import { routes as fleetRoutes } from "./settings/routes";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   type Fleet,
+  type FeatureFlagName,
   useLeaveFleet as useLeaveFleetMutation,
   type FleetMember,
 } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -34,6 +36,29 @@ type Props = {
 const props = defineProps<Props>();
 
 const route = useRoute();
+
+const { isFleetFeatureEnabled } = useFeatures();
+
+/*
+ * A tab gated on a feature flag must not be offered while the flag is off: the
+ * router's guard answers 404, so the strip would hand out a row that only ever
+ * leads to a dead page. `TabNavViewItems` filters on privileges alone -- this
+ * is the first settings route to carry a flag -- so the list is narrowed here,
+ * where the fleet whose flags decide is already to hand.
+ */
+const visibleRoutes = computed(() =>
+  fleetRoutes.filter((settingsRoute) => {
+    const feature = settingsRoute.meta?.feature;
+
+    if (!feature) return true;
+
+    return [feature]
+      .flat()
+      .every((name) =>
+        isFleetFeatureEnabled(props.fleet, name as FeatureFlagName),
+      );
+  }),
+);
 
 const crumbs = computed<Crumb[]>(() => {
   return [
@@ -109,13 +134,13 @@ const leave = () => {
 <template>
   <BreadCrumbs :crumbs="crumbs" />
   <TabNavView
-    :routes="fleetRoutes"
+    :routes="visibleRoutes"
     :authenticated="sessionStore.isAuthenticated"
     :resource-access="membership?.fleetRole?.resourceAccess"
   >
     <template #nav>
       <TabNavViewItems
-        :routes="fleetRoutes"
+        :routes="visibleRoutes"
         :authenticated="sessionStore.isAuthenticated"
         :resource-access="membership?.fleetRole?.resourceAccess"
       />
