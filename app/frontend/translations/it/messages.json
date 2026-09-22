@@ -860,10 +860,6 @@
             "success": "Nave rimossa.",
             "failure": "Non è stato possibile rimuovere la nave.",
             "confirm": "Vuoi rimuovere questa nave e i suoi slot?"
-          },
-          "expand": {
-            "success": "Slot aggiunti.",
-            "failure": "Non è stato possibile aggiungere gli slot."
           }
         },
         "eventSlot": {

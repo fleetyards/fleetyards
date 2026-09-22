@@ -1,7 +1,6 @@
 {
   "zh-TW": {
     "actions": {
-      "selectAll": "全選",
       "announcements": {
         "addPart": "新增",
         "removePart": "移除",
@@ -364,7 +363,6 @@
           "setUpCalendar": "設定行事曆訂閱",
           "assignSlot": "指派席位",
           "reassignSlot": "移至其他席位",
-          "addSeats": "新增座位",
           "manageEventTeam": "管理活動團隊",
           "grantRole": "授予角色",
           "revokeRole": "撤銷",

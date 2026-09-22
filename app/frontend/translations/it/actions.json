@@ -1,7 +1,6 @@
 {
   "it": {
     "actions": {
-      "selectAll": "Seleziona tutto",
       "announcements": {
         "addPart": "Aggiungi",
         "removePart": "Rimuovi",
@@ -364,7 +363,6 @@
           "setUpCalendar": "Configura le sottoscrizioni al calendario",
           "assignSlot": "Assegna a uno slot",
           "reassignSlot": "Sposta in un altro slot",
-          "addSeats": "Aggiungi posti",
           "manageEventTeam": "Gestisci il team dell'evento",
           "grantRole": "Assegna ruolo",
           "revokeRole": "Revoca",
