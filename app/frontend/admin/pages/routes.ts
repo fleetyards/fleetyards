@@ -83,19 +83,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/missions/",
-    component: () => import("@/admin/pages/missions.vue"),
-    children: missionsRoutes,
-    redirect: { name: missionsRoutes[0].name },
-    meta: {
-      title: "admin.missions.index",
-      needsAuthentication: true,
-      // The glyph the public catalogue nav gives missions.
-      icon: "fa-duotone fa-scroll",
-      access: ["missions"],
-    },
-  },
-  {
     path: "/components/",
     component: () => import("@/admin/pages/components.vue"),
     children: componentsRoutes,
@@ -133,6 +120,19 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-boxes-stacked",
       access: ["commodities"],
+    },
+  },
+  {
+    path: "/missions/",
+    component: () => import("@/admin/pages/missions.vue"),
+    children: missionsRoutes,
+    redirect: { name: missionsRoutes[0].name },
+    meta: {
+      title: "admin.missions.index",
+      needsAuthentication: true,
+      // The glyph the public catalogue nav gives missions.
+      icon: "fa-duotone fa-scroll",
+      access: ["missions"],
     },
   },
   {
