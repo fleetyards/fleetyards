@@ -9,6 +9,15 @@ class MeasureHoloJob
 
   sidekiq_options queue: "preprocessing", retry: 3
 
+  # Which raw glTF axis is the length, the beam and the height. The export
+  # pipeline puts every holo in this one frame, confirmed by comparing a
+  # ship's flight holo against its landed or extended one: the length holds
+  # still on z while the pose moves the other two. So the axes are read rather
+  # than guessed -- `HoloDimensions::Result#sorted` guesses, by calling the
+  # largest axis the length, and a hull exported with its wings deployed is
+  # wider than it is long.
+  AXIS_ORDER = %i[z x y].freeze
+
   # What the columns held when the job was queued, as strings: a job's arguments
   # round-trip through JSON and a decimal does not survive that as itself.
   def self.snapshot(model, columns)
@@ -46,9 +55,10 @@ class MeasureHoloJob
     return if stale_blob?(model.send(name), blob_id)
     return if overtaken?(model, columns, previous)
 
-    model.update_columns(columns.zip(result.sorted).to_h.merge(measured_at_for(name)))
+    dimensions = AXIS_ORDER.map { |axis| result.public_send(axis) }
+    model.update_columns(columns.zip(dimensions).to_h.merge(measured_at_for(name)))
 
-    write_pad_class(model, name, result)
+    write_pad_class(model, name, dimensions)
   rescue ActiveStorage::FileNotFoundError
     Rails.logger.warn("MeasureHoloJob: blob for #{name} on model #{model_id} not found, skipping")
   rescue JSON::ParserError => error
@@ -77,11 +87,11 @@ class MeasureHoloJob
   #
   # A ground vehicle has no pad class. It is on its own ladder, `vehicle_size`,
   # which is curated rather than measured.
-  private def write_pad_class(model, name, result)
+  private def write_pad_class(model, name, dimensions)
     return unless %w[holo landed_holo].include?(name)
     return if model.size == ::Model::VEHICLE_SIZE
 
-    pad = ::Dock.ship_size_for(*result.sorted)
+    pad = ::Dock.ship_size_for(*dimensions)
     return if pad.nil?
 
     scope = ::Model.where(id: model.id)

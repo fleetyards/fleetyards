@@ -767,10 +767,9 @@ class Model < ApplicationRecord
     where(id: own).or(where(id: through_modules))
   end
 
-  # `sorted` inside the job assigns largest to length -- right for a hull that
-  # sits the usual way up, wrong for anything rendered on its side. Nothing in
-  # the catalogue is today, and a wrong assignment is visible and editable
-  # rather than silent.
+  # The job reads the axes in the frame the export pipeline uses, so a holo
+  # from somewhere else would be labelled by that frame too. A wrong assignment
+  # is visible and editable rather than silent.
   def measure_attached_holos
     new_holo_names.each do |name|
       columns = HOLO_DIMENSIONS.fetch(name)

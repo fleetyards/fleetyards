@@ -11,7 +11,8 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     model
   end
 
-  # The fixture box is 2 x 1 x 6, so sorted it is 6 / 2 / 1.
+  # The fixture box is x 2, y 1, z 6, so in the pipeline's frame it is a length
+  # of 6, a beam of 2 and a height of 1.
   test "#perform writes a holo's box to the columns it describes" do
     model = attach(create(:model), :holo, "plain.gltf")
 
@@ -20,6 +21,20 @@ class MeasureHoloJobTest < ActiveJob::TestCase
 
     assert_in_delta 6.0, model.length.to_f
     assert_in_delta 2.0, model.beam.to_f
+    assert_in_delta 1.0, model.height.to_f
+  end
+
+  # The fixture is 10 x 1 x 6 -- wider than it is long, like the Corsair with
+  # its wings deployed. Sorting the axes would call the 10 the length; the
+  # frame the pipeline exports in says the 6 is.
+  test "#perform reads the axes in the pipeline's frame rather than sorting them" do
+    model = attach(create(:model), :holo, "wide.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+    model.reload
+
+    assert_in_delta 6.0, model.length.to_f
+    assert_in_delta 10.0, model.beam.to_f
     assert_in_delta 1.0, model.height.to_f
   end
 
