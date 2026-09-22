@@ -73,7 +73,7 @@
     "prismjs": "^1.30.0",
     "qs": "^6.16.0",
     "sortablejs": "^1.15.7",
-    "swagger-ui-dist": "^5.32.15",
+    "swagger-ui-dist": "^5.33.0",
     "three": "0.186.0",
     "uuid": "^14.0.2",
     "vee-validate": "^4.15.1",
