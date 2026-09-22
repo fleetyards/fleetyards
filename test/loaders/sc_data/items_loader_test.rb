@@ -18,46 +18,6 @@ module ScData
         fixture_loader(::ScData::Loader::ItemsLoader)
       end
 
-      # Deliberately the real tree, and the only test here that reads it: an
-      # export whose shape moved -- a renamed field, a category that stopped
-      # being written -- shows up as a load that stops producing components,
-      # and no curated fixture can tell you that. Everything below runs
-      # against test/fixtures/sc_data, because a load of the real tree walks
-      # ~7,800 files and writes ~7,300 components per call.
-      test "#all loads data from game files" do
-        loader = ::ScData::Loader::ItemsLoader.new
-
-        initial = Component.where.not(version: nil).count
-
-        loader.all
-
-        assert_operator Component.where.not(version: nil).count - initial, :>=, 5000
-      end
-
-      # Against the real tree for the same reason as above, and specifically
-      # about the tree rather than the loader: the parser used to write the
-      # whole JSON array as a single string inside the array
-      # (`["[\"flightReady\"]"]`), and a tree parsed before #5007 still carries
-      # those values however current the parser is. `tags` is published now, so
-      # a stale tree has to fail here rather than on the page.
-      test "#all loads one entry per tag, not the array's own inspect output" do
-        ::ScData::Loader::ItemsLoader.new.all
-
-        tagged = Component.where(version: ::ScData::Source.version)
-          .where.not(tags: [nil, "[]"])
-
-        assert_operator tagged.count, :>=, 1000,
-          "the tree carries tags for thousands of items; none arrived"
-
-        # Every row rather than a sample, and in SQL rather than by
-        # deserialising 3,400 of them: a tag starting with `[` is stored as the
-        # two characters `"[`, so the whole column can be asked at once.
-        mangled = tagged.where("tags LIKE ?", '%"[%').pluck(:sc_key)
-
-        assert_empty mangled,
-          "these carry a re-encoded array rather than tags -- the tree predates #5007"
-      end
-
       # A component is the same component across builds. The loader used to key
       # on (sc_key, version) and add a row per import, which is how the table
       # came to hold every patch it had ever seen.

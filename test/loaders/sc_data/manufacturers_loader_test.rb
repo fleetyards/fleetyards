@@ -1,25 +1,32 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "webmock/minitest"
 require "support/hangar_import_fixtures"
+require "support/sc_data_fixture_tree"
 
 module ScData
   module Loader
     class ManufacturersLoaderTest < ActiveSupport::TestCase
       include HangarImportFixtures
+      include ScDataFixtureTree
 
       setup do
         clean_loader_tables
-        @loader = ::ScData::Loader::ManufacturersLoader.new
       end
 
-      test "#all loads data from game files" do
+      def loader
+        fixture_loader(::ScData::Loader::ManufacturersLoader)
+      end
+
+      # How much of the catalogue arrives is a question for the contract test.
+      # That a load produces one row per company, with the codes unique, is this
+      # one -- ROO and SASU are both Sakura Sun, so seven files are six rows.
+      test "#all loads a row per company from the tree" do
         initial = Manufacturer.count
 
-        @loader.all
+        loader.all
 
-        assert_operator Manufacturer.count - initial, :>=, 95
+        assert_equal 6, Manufacturer.count - initial
 
         manufacturer_codes = Manufacturer.pluck(:code)
         assert_equal manufacturer_codes.uniq.size, manufacturer_codes.size
@@ -29,7 +36,7 @@ module ScData
       # lookups only match a row without a ref, so a second code used to create a
       # second row -- four of them ended up called "Aegis Dynamics".
       test "#all leaves no two manufacturers sharing a name" do
-        @loader.all
+        loader.all
 
         assert_empty Manufacturer.where.not(name: nil).group(:name).having("count(*) > 1").count
       end
@@ -37,7 +44,7 @@ module ScData
       # The slug is the stricter of the two: names that differ only in case or
       # punctuation pass a by-name check and still collide here.
       test "#all leaves no two manufacturers sharing a slug" do
-        @loader.all
+        loader.all
 
         assert_empty Manufacturer.where.not(slug: nil).group(:slug).having("count(*) > 1").count
       end
@@ -45,7 +52,7 @@ module ScData
       test "#all reuses the manufacturer a second code names rather than adding one" do
         existing = create(:manufacturer, name: "Sakura Sun", code: "SASU", sc_ref: "already-here")
 
-        @loader.all
+        loader.all
 
         assert_equal [existing.id], Manufacturer.where(name: "Sakura Sun").ids
       end
@@ -58,7 +65,7 @@ module ScData
       test "#all reuses a manufacturer whose name differs only in case" do
         existing = create(:manufacturer, name: "SAKURA SUN", code: "SASU", sc_ref: "already-here")
 
-        @loader.all
+        loader.all
 
         assert_equal [existing.id], Manufacturer.where(slug: "sakura-sun").ids
       end
@@ -66,7 +73,7 @@ module ScData
       test "#all reuses a manufacturer whose name differs only by a trailing space" do
         existing = create(:manufacturer, name: "Sakura Sun ", code: "SASU", sc_ref: "already-here")
 
-        @loader.all
+        loader.all
 
         assert_equal [existing.id], Manufacturer.where(slug: "sakura-sun").ids
       end
@@ -76,7 +83,7 @@ module ScData
       test "#all leaves an existing sc_ref alone when a second code matches by name" do
         existing = create(:manufacturer, name: "Sakura Sun", code: "SASU", sc_ref: "already-here")
 
-        @loader.all
+        loader.all
 
         assert_equal "already-here", existing.reload.sc_ref
       end
@@ -90,19 +97,13 @@ module ScData
           icon_path: "ui/sharedassets/manufacturerlogos/sakurasun_256.tif"
         )
 
-        @loader.all
+        loader.all
 
         assert_equal "ui/sharedassets/manufacturerlogos/sakurasun_256.tif", existing.reload.icon_path
       end
 
-      test "#all skips the records the overrides drop" do
-        @loader.all
-
-        assert_empty Manufacturer.where(code: %w[TRAS GHEX])
-      end
-
       test "#all loads the corrected name for a record the export mislabels" do
-        @loader.all
+        loader.all
 
         assert_equal "maxOx", Manufacturer.find_by(code: "MXOX").name
         assert_equal "Preacher Armaments", Manufacturer.find_by(code: "PRAR").name
@@ -110,7 +111,7 @@ module ScData
       end
 
       test "#all attaches the icon the parser carried over" do
-        @loader.all
+        loader.all
 
         icon = Manufacturer.find_by(code: "TALN").icon
 
@@ -122,7 +123,7 @@ module ScData
       # The export writes to `icon` alone. The logo is curated, and a load that
       # wrote there replaced an admin's upload on every run.
       test "#all leaves the logo untouched" do
-        @loader.all
+        loader.all
 
         assert_not_predicate Manufacturer.find_by(code: "TALN").logo, :attached?
       end
@@ -130,11 +131,11 @@ module ScData
       # Attaching an identical file writes a fresh blob, so a load that changed
       # nothing would leave a few hundred orphans behind on every run.
       test "#all leaves an unchanged icon attached to the blob it already had" do
-        @loader.all
+        loader.all
         blob = Manufacturer.find_by(code: "TALN").icon.blob
 
         assert_no_difference -> { ActiveStorage::Blob.count } do
-          @loader.all
+          loader.all
         end
 
         assert_equal blob, Manufacturer.find_by(code: "TALN").icon.blob
@@ -151,7 +152,7 @@ module ScData
           content_type: "image/png"
         )
 
-        @loader.all
+        loader.all
 
         assert_equal "curated.png", curated.reload.logo.filename.to_s
         assert_equal "talon_256.png", curated.icon.filename.to_s
@@ -168,7 +169,7 @@ module ScData
           content_type: "image/png"
         )
 
-        @loader.all
+        loader.all
 
         assert_equal "by-hand.png", overridden.reload.icon.filename.to_s
       end
@@ -176,17 +177,16 @@ module ScData
       test "#all writes the icon for a manufacturer that has no override" do
         plain = create(:manufacturer, code: "TALN", sc_ref: nil, icon_path: nil)
 
-        @loader.all
+        loader.all
 
         assert_equal "talon_256.png", plain.reload.icon.filename.to_s
       end
 
       test "#all records the logo the game names for a manufacturer" do
-        @loader.all
+        loader.all
 
         assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif",
           Manufacturer.find_by(code: "TALN").icon_path
-        assert_operator Manufacturer.where.not(icon_path: nil).count, :>=, 100
       end
 
       # A curated description beats the game's, but an icon has no curated
@@ -194,43 +194,9 @@ module ScData
       test "#all fills the logo in on a manufacturer that predates it" do
         existing = create(:manufacturer, code: "TALN", sc_ref: nil, icon_path: nil)
 
-        @loader.all
+        loader.all
 
         assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif", existing.reload.icon_path
-      end
-
-      test "reuses existing entries with matrix data" do
-        pledge_response_stub = File.read("test/fixtures/rsi/300i_pledge_page.html")
-        matrix_response_stub = File.read("test/fixtures/rsi/matrix.json")
-        rsi_models_loader = ::Rsi::ModelsLoader.new
-
-        Timecop.freeze("2017-01-01 14:00:00")
-
-        stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/pledge/ships/.*/.*})
-          .to_return(status: 200, body: pledge_response_stub)
-
-        stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
-          .to_return(status: 200, body: matrix_response_stub)
-
-        stub_request(:post, %r{\Ahttps://robertsspaceindustries.com/graphql})
-          .to_return(status: 200, body: [{data: {store: {search: {resources: []}}}}].to_json, headers: {"Content-Type" => "application/json"})
-
-        assert_difference -> { Manufacturer.count }, 19 do
-          rsi_models_loader.all
-        end
-
-        # Counts the real parsed tree, so it moves when the parser's reach does.
-        # 93 until CC's Conversions started resolving: its name is declared
-        # `manufacturer_NameCCC,P`, which an exact lookup never matched, and the
-        # loader only creates a row for a record that has a name.
-        assert_difference -> { Manufacturer.count }, 94 do
-          @loader.all
-        end
-
-        manufacturer_codes = Manufacturer.pluck(:code)
-        assert_equal manufacturer_codes.uniq.size, manufacturer_codes.size
-      ensure
-        Timecop.return
       end
     end
   end

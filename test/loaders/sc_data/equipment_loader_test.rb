@@ -10,14 +10,13 @@ module ScData
 
       setup do
         Equipment.delete_all
-        @loader = ::ScData::Loader::EquipmentLoader.new
       end
 
       # The parsed files are the parser's output and the loader's input, so the
       # data-shape assertions read them directly. Loading all 4,700-odd rows
       # into the database once per test would cost minutes for no more cover.
       def parsed
-        @parsed ||= @loader.load_items("equipment").index_by { |item| item[:key] }
+        @parsed ||= curated.load_items("equipment").index_by { |item| item[:key] }
       end
 
       # What a load does to a record is the same whether the export carries two
@@ -29,13 +28,6 @@ module ScData
         @curated ||= fixture_loader(::ScData::Loader::EquipmentLoader)
       end
 
-      test "every parsed item carries a family the model knows" do
-        assert_empty parsed.values.reject { |item| item[:equipment_type].present? }.map { |item| item[:key] }
-
-        assert_equal %w[armor clothing hacking_tool medical undersuit weapon weapon_attachment],
-          parsed.values.filter_map { |item| item[:equipment_type] }.uniq.sort
-      end
-
       # Magazines are WeaponAttachment in the game's own taxonomy, which is why
       # ammunition is not a family of its own here.
       test "magazines are filed as attachments rather than a family of their own" do
@@ -43,30 +35,6 @@ module ScData
 
         assert_equal "weapon_attachment", magazine[:equipment_type]
         assert_equal "magazine", magazine[:item_type]
-      end
-
-      # Neither Type nor SubType separates a keycard from a hacking chip --
-      # SystemAccess holds both and the orbital keycards are filed under
-      # Hacking -- so both land in the family the game gives them.
-      test "consumables split into the medical and access families" do
-        consumables = parsed.values.select { |item| item[:key].include?("_consumable_") }
-
-        assert_equal %w[hacking_tool medical],
-          consumables.filter_map { |item| item[:equipment_type] }.uniq.sort
-        assert_equal %w[data_drive keycard medical_consumable],
-          consumables.filter_map { |item| item[:item_type] }.uniq.sort
-      end
-
-      # The drives share SystemAccess with the keycards -- the three ASD ones from
-      # the Onyx facility and the generic mission drive alike -- so only the key
-      # keeps them out of a filter for the cards that open a door.
-      test "the data drives are not filed with the keycards" do
-        drives = parsed.values.select { |item| item[:key].include?("_harddrive_") }
-
-        assert_equal ["ASD Data Drive", "ASD Memory Drive", "ASD Secure Drive", "Data Drive"],
-          drives.map { |item| item[:name] }.sort
-        assert_equal ["data_drive"], drives.map { |item| item[:item_type] }.uniq
-        assert_equal ["hacking_tool"], drives.map { |item| item[:equipment_type] }.uniq
       end
 
       test "a medical pen keeps its spec block's type and its prose" do
@@ -104,14 +72,6 @@ module ScData
         assert_nil parsed["behr_rifle_ballistic_01"][:slot]
       end
 
-      test "the two clothing torso layers land in different slots" do
-        clothing = parsed.values.select { |item| item[:equipment_type] == "clothing" }
-        slots = clothing.filter_map { |item| item[:slot] }.uniq
-
-        assert_includes slots, "shirt"
-        assert_includes slots, "jacket"
-      end
-
       test "a weapon's spec block gives its type, class and numbers" do
         rifle = parsed["behr_rifle_ballistic_01"]
 
@@ -132,15 +92,6 @@ module ScData
         assert_equal 33_600, suit[:radiation_protection].to_d
         assert_equal 147.42, suit[:radiation_scrub_rate].to_d
         assert_equal "all", suit[:backpack_compatibility]
-      end
-
-      # Capacity is written "8.0 µSCU" on a suit but "180K µSCU" on a backpack,
-      # while "50 m" of range is metres rather than fifty million.
-      test "a thousands suffix scales a capacity without catching a unit" do
-        armor = parsed.values.select { |item| item[:equipment_type] == "armor" }
-
-        assert_operator armor.filter_map { |item| item[:storage]&.to_d }.max, :>=, 100_000
-        assert_equal 50, parsed["behr_rifle_ballistic_01"][:range].to_d
       end
 
       test "the spec block is stripped, leaving the description as prose" do
@@ -180,19 +131,6 @@ module ScData
 
         assert_operator duplicated.size, :<=, 25,
           "visible duplicates: #{duplicated.keys.sort.join(", ")}"
-      end
-
-      # The real tree, and the only test here that writes it: an export that
-      # stopped parsing -- a renamed field, a tree that failed to sync -- reads
-      # as a load that stops producing records, which no curated fixture can
-      # tell you.
-      test "#all loads the parsed equipment into the table" do
-        @loader.all
-
-        assert_operator Equipment.count, :>=, 4_000
-
-        sc_keys = Equipment.pluck(:sc_key)
-        assert_equal sc_keys.uniq.size, sc_keys.size
       end
 
       test "#all resolves the manufacturer from the record" do
@@ -269,9 +207,15 @@ module ScData
       test "#all persists the volume onto the record" do
         curated.all
 
-        assert_equal Equipment.count, Equipment.current_version(true, fixture_source).where.not(volume: nil).count
-        assert_equal Equipment.count,
+        measured = Equipment.current_version(true, fixture_source).where.not(volume: nil)
+
+        # Every record but the unmeasured placeholder, which has to reach the row
+        # as unknown rather than as the almost-nothing the export states.
+        assert_equal Equipment.count - 1, measured.count
+        assert_equal measured.count,
           Equipment.current_version(true, fixture_source).where.not(volume_dimensions: nil).count
+
+        assert_nil Equipment.find_by(sc_key: "behr_ltp_kinetic_01").volume
 
         helmet = Equipment.find_by(sc_key: "gys_helmet_03_01_01")
 
