@@ -90,15 +90,23 @@ module Maintenance
       manufacturer
     end
 
+    # The fixture tree's copy of Talon's logo rather than the real export's.
+    # What this task is asked about is a file that came from the export, and a
+    # verbatim copy is one -- while the real tree is only on disk for a run that
+    # could reach the bucket. See test/fixtures/sc_data/README.md.
     private def export_art
       @export_art ||= Dir.glob(
-        Rails.root.join("data/sc_data/parsed/live/icons/#{ICON_PATH.sub(/\.\w+\z/, "")}.*")
+        Rails.root.join("test/fixtures/sc_data/parsed/test/icons/#{ICON_PATH.sub(/\.\w+\z/, "")}.*")
       ).first
     end
 
     private def run_task(dry_run:)
       task = ::Maintenance::MoveExportLogosToIconTask.new
       task.dry_run = dry_run
+      # The curated export, which carries Talon's logo -- the real tree is only
+      # on disk for a run that could reach the bucket.
+      task.base_folder = Rails.root.join("test/fixtures/sc_data")
+      task.sc_environment = "test"
 
       capture_io { task.process }.first
     end
