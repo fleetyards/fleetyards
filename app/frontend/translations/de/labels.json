@@ -482,7 +482,10 @@
         "squadrons": {
           "index": "Staffeln",
           "name": "Name",
+          "shortDescription": "Kurzbeschreibung",
+          "shortDescriptionHint": "Ein, zwei Zeilen auf der Karte",
           "description": "Beschreibung",
+          "descriptionHint": "Der vollständige Text auf der Staffelseite",
           "color": "Farbe",
           "logo": "Logo",
           "memberCount": "%{count} Mitglieder",

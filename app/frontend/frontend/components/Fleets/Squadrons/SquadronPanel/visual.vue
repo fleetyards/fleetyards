@@ -7,222 +7,110 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import {
-  PanelVariantsEnum,
-  PanelTonesEnum,
-} from "@/shared/components/base/Panel/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
+import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
-import type { FleetSquadron } from "@/services/fyApi";
+import SquadronBadge from "@/frontend/components/Fleets/Squadrons/SquadronBadge/index.vue";
+import combatLogo from "@/images/org-icons/security.png";
+import miningLogo from "@/images/org-icons/resources.png";
+import type { FleetSquadron, MediaFile } from "@/services/fyApi";
 
 /*
- * Four treatments of the same card, at the width the squadron grid actually
- * uses. What differs is only how loudly a squadron's own colour speaks -- the
- * content is settled by the exec plan: emblem, name, description, member count.
- *
- * The fixtures are chosen for the cases that break a card rather than the ones
- * that flatter it: a long name, a long description, and a squadron with neither
- * colour nor logo.
+ * The fixtures are the cases that break a card rather than the ones that
+ * flatter it: a name with no wrap point, a description long enough to run to
+ * three lines, and a squadron carrying neither colour nor logo.
  */
+const logo = (url: string): MediaFile => ({
+  name: "squadron-logo.png",
+  contentType: "image/png",
+  size: 4_682,
+  url,
+  smallUrl: url,
+  mediumUrl: url,
+  largeUrl: url,
+  xlargeUrl: url,
+});
+
 const squadron = (attributes: Partial<FleetSquadron>): FleetSquadron =>
   ({
     id: attributes.name ?? "x",
-    slug: "combat-wing",
+    slug: (attributes.name ?? "x").toLowerCase().replace(/\s+/g, "-"),
     memberCount: 12,
     ...attributes,
   }) as FleetSquadron;
 
+// One per emblem state: a logo over a colour, a logo alone, a colour alone,
+// and neither.
 const squadrons: FleetSquadron[] = [
   squadron({
     name: "Combat Wing",
-    description: "The pointy end",
+    shortDescription: "The pointy end",
     color: "#dc3545",
+    logo: logo(combatLogo),
     memberCount: 12,
   }),
   squadron({
     name: "Mining Division",
+    shortDescription: "Ore, refining\nand the long haul back",
     description:
-      "Ore, refining and the long haul back — everything that pays for the rest of it",
-    color: "#d4af37",
+      "Everything that pays for the rest of it.\n\nThe division runs the " +
+      "survey ships, the refinery runs, and the hauls back to station.",
+    logo: logo(miningLogo),
     memberCount: 4,
   }),
   squadron({
     name: "Search and Rescue Standing Detachment",
-    description: "On call",
+    shortDescription: "On call",
     color: "#428bca",
     memberCount: 31,
   }),
   squadron({ name: "Reserves", memberCount: 0 }),
 ];
 
-const toneStyle = (record: FleetSquadron) =>
-  record.color ? { "--tone": record.color } : undefined;
+const to = (record: FleetSquadron) => ({
+  name: "visual-tests-squadrons",
+  query: { squadron: record.slug },
+});
 </script>
 
 <template>
-  <Heading :level="HeadingLevelEnum.H2">
-    A — slim frame, the squadron's colour on the edge
-  </Heading>
+  <Heading :level="HeadingLevelEnum.H2">The squadron card</Heading>
   <p class="vt-note">
-    The frame carries the colour. Loudest of the four, and the one that reads
-    fastest across a grid — but four saturated edges at once is a lot of colour
-    for a page that is otherwise grey.
+    A slim panel, because a grid of repeated cards is what that variant is for.
+    The squadron's colour is a rail down the left rather than the frame: at this
+    size a full edge in a colour somebody picked surrounds the content and
+    competes with it, while a rail stays a marker you can find across a grid.
   </p>
   <Grid :records="squadrons" primary-key="id">
     <template #default="{ record }">
-      <Panel
-        :variant="PanelVariantsEnum.SLIM"
-        :tone="record.color ? PanelTonesEnum.PRIMARY : PanelTonesEnum.NEUTRAL"
-        :style="toneStyle(record)"
-        fill-height
-      >
-        <PanelHeading compact divider :level="HeadingLevelEnum.H3">
-          <template #default>{{ record.name }}</template>
-          <template v-if="record.description" #subtitle>
-            {{ record.description }}
-          </template>
-          <template #actions>
-            <Btn :variant="BtnVariantsEnum.BARE">
-              <i class="fa-duotone fa-pen" />
-            </Btn>
-          </template>
-        </PanelHeading>
-        <PanelBody rounded="bottom" class="vt-squadron-body">
-          <SquadronEmblem :squadron="record" />
-          <div class="vt-squadron-count">
-            <span class="vt-squadron-count-number">
-              {{ record.memberCount }}
-            </span>
-            <span class="vt-squadron-count-label">Members</span>
-          </div>
-        </PanelBody>
-      </Panel>
+      <SquadronPanel :squadron="record" :to="to(record)" />
     </template>
   </Grid>
 
-  <Heading :level="HeadingLevelEnum.H2">
-    B — slim frame, the colour only in the emblem
-  </Heading>
+  <Heading :level="HeadingLevelEnum.H2">With the management actions</Heading>
   <p class="vt-note">
-    Neutral frame; the emblem is the only colour. Quietest, and closest to how
-    the rest of the site treats a colour somebody picked. A squadron with no
-    colour and no logo still gets an emblem, outlined rather than filled.
+    As fleet settings draws it. The actions are pinned to the corner by
+    PanelHeading, so they clear the title however long it runs.
   </p>
   <Grid :records="squadrons" primary-key="id">
     <template #default="{ record }">
-      <Panel :variant="PanelVariantsEnum.SLIM" fill-height>
-        <PanelHeading compact divider :level="HeadingLevelEnum.H3">
-          <template #default>{{ record.name }}</template>
-          <template v-if="record.description" #subtitle>
-            {{ record.description }}
-          </template>
-          <template #actions>
-            <Btn :variant="BtnVariantsEnum.BARE">
-              <i class="fa-duotone fa-pen" />
-            </Btn>
-          </template>
-        </PanelHeading>
-        <PanelBody rounded="bottom" class="vt-squadron-body">
-          <SquadronEmblem :squadron="record" />
-          <div class="vt-squadron-count">
-            <span class="vt-squadron-count-number">
-              {{ record.memberCount }}
-            </span>
-            <span class="vt-squadron-count-label">Members</span>
-          </div>
-        </PanelBody>
-      </Panel>
-    </template>
-  </Grid>
-
-  <Heading :level="HeadingLevelEnum.H2">
-    C — slim frame, a colour rail down the left
-  </Heading>
-  <p class="vt-note">
-    The rail the row list uses, stood on its end. The colour is present at full
-    height but never surrounds the content, so it stays a marker rather than a
-    frame.
-  </p>
-  <Grid :records="squadrons" primary-key="id">
-    <template #default="{ record }">
-      <Panel
-        :variant="PanelVariantsEnum.SLIM"
-        fill-height
-        class="vt-squadron-railed"
-      >
-        <span
-          class="vt-squadron-rail"
-          :style="{ backgroundColor: record.color || 'var(--color-muted)' }"
-        />
-        <PanelHeading compact divider :level="HeadingLevelEnum.H3">
-          <template #default>{{ record.name }}</template>
-          <template v-if="record.description" #subtitle>
-            {{ record.description }}
-          </template>
-          <template #actions>
-            <Btn :variant="BtnVariantsEnum.BARE">
-              <i class="fa-duotone fa-pen" />
-            </Btn>
-          </template>
-        </PanelHeading>
-        <PanelBody rounded="bottom" class="vt-squadron-body">
-          <SquadronEmblem :squadron="record" />
-          <div class="vt-squadron-count">
-            <span class="vt-squadron-count-number">
-              {{ record.memberCount }}
-            </span>
-            <span class="vt-squadron-count-label">Members</span>
-          </div>
-        </PanelBody>
-      </Panel>
-    </template>
-  </Grid>
-
-  <Heading :level="HeadingLevelEnum.H2">
-    D — full frame, the colour on the end-caps
-  </Heading>
-  <p class="vt-note">
-    The panel's own signature, which is what the redesign built tone for. The
-    heaviest frame of the four; the plan's own note says a grid of repeated
-    cards is where that weight turns to noise.
-  </p>
-  <Grid :records="squadrons" primary-key="id">
-    <template #default="{ record }">
-      <Panel
-        :tone="record.color ? PanelTonesEnum.PRIMARY : PanelTonesEnum.NEUTRAL"
-        :style="toneStyle(record)"
-        fill-height
-      >
-        <PanelHeading :level="HeadingLevelEnum.H3">
-          <template #default>{{ record.name }}</template>
-          <template v-if="record.description" #subtitle>
-            {{ record.description }}
-          </template>
-          <template #actions>
-            <Btn :variant="BtnVariantsEnum.BARE">
-              <i class="fa-duotone fa-pen" />
-            </Btn>
-          </template>
-        </PanelHeading>
-        <PanelBody rounded="bottom" class="vt-squadron-body">
-          <SquadronEmblem :squadron="record" />
-          <div class="vt-squadron-count">
-            <span class="vt-squadron-count-number">
-              {{ record.memberCount }}
-            </span>
-            <span class="vt-squadron-count-label">Members</span>
-          </div>
-        </PanelBody>
-      </Panel>
+      <SquadronPanel
+        :squadron="record"
+        :to="to(record)"
+        editable
+        destroyable
+        members-manageable
+      />
     </template>
   </Grid>
 
   <Heading :level="HeadingLevelEnum.H2">Emblem sizes and fallbacks</Heading>
+  <p class="vt-note">
+    28px, the 56px the card uses, and 72px. Left to right in each row: a logo
+    over a colour, a logo alone, a colour alone, and neither — the last outlined
+    rather than filled, so an emblem nobody chose a colour for does not
+    out-shout one somebody did.
+  </p>
   <div class="row">
     <div class="col-12 vt-row">
       <SquadronEmblem
@@ -231,11 +119,38 @@ const toneStyle = (record: FleetSquadron) =>
         :squadron="record"
         :size="28"
       />
+    </div>
+    <div class="col-12 vt-row">
+      <SquadronEmblem
+        v-for="record in squadrons"
+        :key="`md-${record.id}`"
+        :squadron="record"
+        :size="56"
+      />
+    </div>
+    <div class="col-12 vt-row">
       <SquadronEmblem
         v-for="record in squadrons"
         :key="`lg-${record.id}`"
         :squadron="record"
-        :size="64"
+        :size="72"
+      />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2"
+    >The badge, as the roster shows it</Heading
+  >
+  <p class="vt-note">
+    At badge size the colour is a hint beside a name, which is why the card
+    needs the rail as well.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <SquadronBadge
+        v-for="record in squadrons"
+        :key="`badge-${record.id}`"
+        :squadron="record"
       />
     </div>
   </div>
@@ -254,40 +169,5 @@ const toneStyle = (record: FleetSquadron) =>
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
-}
-
-.vt-squadron-body {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.vt-squadron-count {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.vt-squadron-count-number {
-  font-size: 1.5em;
-  line-height: 1;
-}
-
-.vt-squadron-count-label {
-  color: var(--color-text-dim);
-  font-size: 0.85em;
-}
-
-.vt-squadron-railed {
-  position: relative;
-  overflow: hidden;
-}
-
-.vt-squadron-rail {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
 }
 </style>

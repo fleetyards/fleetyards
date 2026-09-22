@@ -13,6 +13,7 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               slug: {type: :string},
+              shortDescription: {type: [:string, :null]},
               description: {type: [:string, :null]},
               color: {type: [:string, :null]},
               memberCount: {type: :integer},

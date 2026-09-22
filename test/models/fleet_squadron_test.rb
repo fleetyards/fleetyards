@@ -2,6 +2,29 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: fleet_squadrons
+#
+#  id                :uuid             not null, primary key
+#  color             :string
+#  description       :text
+#  name              :string           not null
+#  short_description :text
+#  slug              :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  fleet_id          :uuid             not null
+#
+# Indexes
+#
+#  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
+#  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_id => fleets.id)
+#
 class FleetSquadronTest < ActiveSupport::TestCase
   setup do
     @fleet = create(:fleet)
@@ -48,6 +71,16 @@ class FleetSquadronTest < ActiveSupport::TestCase
 
     assert_not squadron.valid?
     assert_includes squadron.errors.attribute_names, :color
+  end
+
+  # The card carries `description` on one line and the detail page carries the
+  # long one, so only the short field is held to a line's worth.
+  test "holds the short description to a line and lets the full one run" do
+    assert_not build(:fleet_squadron, fleet: @fleet, short_description: "x" * 256).valid?
+    assert_predicate build(:fleet_squadron, fleet: @fleet, short_description: "x" * 255), :valid?
+
+    assert_not build(:fleet_squadron, fleet: @fleet, description: "x" * 5001).valid?
+    assert_predicate build(:fleet_squadron, fleet: @fleet, description: "x" * 5000), :valid?
   end
 
   test "counts only accepted members" do

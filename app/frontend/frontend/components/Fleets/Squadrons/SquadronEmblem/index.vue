@@ -65,9 +65,30 @@ const foreground = computed(() => {
   return luminance > 0.179 ? "#000" : "#fff";
 });
 
-const style = computed(() => ({
+const box = computed(() => ({
   width: `${props.size}px`,
   height: `${props.size}px`,
+}));
+
+/*
+ * A logo is never given a coloured tile behind it.
+ *
+ * Most emblems are uploaded as transparent PNGs, and a tile turns one into a
+ * sticker on a coloured square. The tile was only ever decoration there --
+ * `object-fit: contain` means an opaque logo covers it anyway, bar the
+ * letterbox bars -- and the squadron's colour is already carried at full height
+ * by the card's rail, so nothing is lost by dropping it.
+ *
+ * Detecting transparency per blob is possible (`AttachmentTrimmer` already asks
+ * vips `has_alpha?`) but it would need the answer stored on the blob and
+ * carried through the payload, to decide something that does not need deciding.
+ */
+const logoStyle = computed(() => box.value);
+
+// The initials are the one case where the colour *is* the emblem, so here the
+// tile earns its place -- and the text has to be readable on it.
+const tileStyle = computed(() => ({
+  ...box.value,
   fontSize: `${Math.round(props.size * 0.36)}px`,
   ...(colour.value
     ? { backgroundColor: colour.value, color: foreground.value }
@@ -81,13 +102,13 @@ const style = computed(() => ({
     :src="logo"
     :alt="squadron.name"
     class="squadron-emblem squadron-emblem--logo"
-    :style="style"
+    :style="logoStyle"
   />
   <span
     v-else
     class="squadron-emblem"
     :class="{ 'squadron-emblem--plain': !colour }"
-    :style="style"
+    :style="tileStyle"
     aria-hidden="true"
   >
     {{ initials }}

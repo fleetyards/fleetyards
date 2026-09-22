@@ -41,7 +41,8 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @member = create(:user)
     @fleet = create(:fleet, admins: [@admin], members: [@member])
-    @squadron = create(:fleet_squadron, :with_color, fleet: @fleet, name: "Combat Wing", description: "The pointy end")
+    @squadron = create(:fleet_squadron, :with_color, fleet: @fleet, name: "Combat Wing",
+      short_description: "The pointy end", description: "Everything the wing does, at length.")
   end
 
   test "GET /fleets/:slug/squadrons/:slug returns the squadron" do
@@ -50,7 +51,8 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
       assert_equal "Combat Wing", parsed_body["name"]
       assert_equal "combat-wing", parsed_body["slug"]
-      assert_equal "The pointy end", parsed_body["description"]
+      assert_equal "The pointy end", parsed_body["shortDescription"]
+      assert_equal "Everything the wing does, at length.", parsed_body["description"]
       assert_equal "#ff8800", parsed_body["color"]
       assert_equal 0, parsed_body["memberCount"]
     end

@@ -4,14 +4,15 @@
 #
 # Table name: fleet_squadrons
 #
-#  id          :uuid             not null, primary key
-#  color       :string
-#  description :text
-#  name        :string           not null
-#  slug        :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  fleet_id    :uuid             not null
+#  id                :uuid             not null, primary key
+#  color             :string
+#  description       :text
+#  name              :string           not null
+#  short_description :text
+#  slug              :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  fleet_id          :uuid             not null
 #
 # Indexes
 #
@@ -79,7 +80,10 @@ class FleetSquadron < ApplicationRecord
 
   validates :color, format: {with: COLOR_FORMAT}, allow_blank: true
 
-  validates :description, length: {maximum: 2000}, allow_blank: true
+  # The card carries this on a line or two, so it is held to a line or two.
+  validates :short_description, length: {maximum: 255}, allow_blank: true
+
+  validates :description, length: {maximum: 5000}, allow_blank: true
 
   before_validation :normalize_color
   before_validation :update_slugs

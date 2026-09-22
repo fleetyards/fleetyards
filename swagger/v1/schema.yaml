@@ -22313,6 +22313,10 @@ components:
           type: string
         slug:
           type: string
+        shortDescription:
+          type:
+          - string
+          - 'null'
         description:
           type:
           - string
@@ -22345,6 +22349,10 @@ components:
       properties:
         name:
           type: string
+        shortDescription:
+          type:
+          - string
+          - 'null'
         description:
           type:
           - string
@@ -22422,6 +22430,10 @@ components:
       properties:
         name:
           type: string
+        shortDescription:
+          type:
+          - string
+          - 'null'
         description:
           type:
           - string

@@ -482,7 +482,10 @@
         "squadrons": {
           "index": "Escadrons",
           "name": "Nom",
+          "shortDescription": "Description courte",
+          "shortDescriptionHint": "Une ou deux lignes, sur la carte",
           "description": "Description",
+          "descriptionHint": "Le texte complet sur la page de l'escadron",
           "color": "Couleur",
           "logo": "Logo",
           "memberCount": "%{count} membres",

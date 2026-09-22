@@ -482,7 +482,10 @@
         "squadrons": {
           "index": "中队",
           "name": "名称",
+          "shortDescription": "简短描述",
+          "shortDescriptionHint": "一两行，显示在卡片上",
           "description": "描述",
+          "descriptionHint": "中队页面上的完整文字",
           "color": "颜色",
           "logo": "徽标",
           "memberCount": "%{count} 名成员",

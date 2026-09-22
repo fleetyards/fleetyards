@@ -41,11 +41,15 @@ const submitting = ref(false);
 
 const validationSchema = {
   name: "required|min:2|max:255",
+  // What the card carries, so it stays short.
+  shortDescription: "max:255",
+  description: "max:5000",
 };
 
 const { defineField, handleSubmit, setErrors } = useForm({
   initialValues: {
     name: props.squadron?.name ?? "",
+    shortDescription: props.squadron?.shortDescription ?? "",
     description: props.squadron?.description ?? "",
     // The picker cannot express "no colour", so a squadron without one opens
     // on the neutral it is already drawn with rather than on the browser's
@@ -56,6 +60,8 @@ const { defineField, handleSubmit, setErrors } = useForm({
 });
 
 const [name, nameProps] = defineField("name");
+const [shortDescription, shortDescriptionProps] =
+  defineField("shortDescription");
 const [description, descriptionProps] = defineField("description");
 const [color, colorProps] = defineField("color");
 const [logo, logoProps] = defineField("logo");
@@ -68,6 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   const data = {
     name: values.name,
+    shortDescription: values.shortDescription || null,
     description: values.description || null,
     color: values.color || null,
     // Passed through rather than coerced: `undefined` keeps what is attached,
@@ -143,10 +150,20 @@ const onSubmit = handleSubmit(async (values) => {
         :label="t('labels.fleet.squadrons.name')"
       />
       <FormTextarea
+        v-model="shortDescription"
+        v-bind="shortDescriptionProps"
+        name="shortDescription"
+        :rules="validationSchema.shortDescription"
+        :label="t('labels.fleet.squadrons.shortDescription')"
+        :info="t('labels.fleet.squadrons.shortDescriptionHint')"
+      />
+      <FormTextarea
         v-model="description"
         v-bind="descriptionProps"
         name="description"
+        :rules="validationSchema.description"
         :label="t('labels.fleet.squadrons.description')"
+        :info="t('labels.fleet.squadrons.descriptionHint')"
       />
       <FormInput
         v-model="color"

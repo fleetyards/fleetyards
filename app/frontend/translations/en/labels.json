@@ -482,7 +482,10 @@
         "squadrons": {
           "index": "Squadrons",
           "name": "Name",
+          "shortDescription": "Short description",
+          "shortDescriptionHint": "A line or two, shown on the card",
           "description": "Description",
+          "descriptionHint": "The full text on the squadron's own page",
           "color": "Colour",
           "logo": "Logo",
           "memberCount": "%{count} Members",

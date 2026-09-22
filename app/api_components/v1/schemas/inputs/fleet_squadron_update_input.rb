@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
+            shortDescription: {type: [:string, :null]},
             description: {type: [:string, :null]},
             color: {type: [:string, :null]},
             logo: {type: [:string, :null]}

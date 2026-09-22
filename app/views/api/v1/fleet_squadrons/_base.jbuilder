@@ -3,7 +3,7 @@
 json.id fleet_squadron.id
 json.name fleet_squadron.name
 json.slug fleet_squadron.slug
-json.description fleet_squadron.description
+json.short_description fleet_squadron.short_description
 json.color fleet_squadron.color
 
 if fleet_squadron.logo.attached?

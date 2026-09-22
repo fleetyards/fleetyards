@@ -12,6 +12,8 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { FleetSquadron } from "@/services/fyApi";
 
@@ -33,32 +35,35 @@ const emit = defineEmits<{ edit: []; destroy: []; addMembers: [] }>();
 
 const { t } = useI18n();
 
-// The logo if there is one. A squadron without one is told apart by its colour
-// instead -- the stripe down the body -- rather than by stand-in art, because
-// there is no catalogue of squadron pictures to fall back to.
-const image = computed(() => props.squadron.logo?.smallUrl ?? undefined);
-
-// The stripe is the squadron's own colour where it has one, and the quiet grey
-// a glyph takes where it does not -- never a colour nobody chose.
-const markStyle = computed(() => ({
+// The squadron's own colour where it has one, and the quiet grey a glyph takes
+// where it does not -- never a colour nobody chose.
+const railStyle = computed(() => ({
   backgroundColor: props.squadron.color || "var(--color-muted)",
 }));
 </script>
 
 <template>
   <Panel
-    :bg-image="image"
+    :variant="PanelVariantsEnum.SLIM"
     :data-test="`squadron-panel-${squadron.slug}`"
     class="squadron-panel"
+    fill-height
   >
-    <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
+    <span class="squadron-panel-rail" :style="railStyle" />
+
+    <PanelHeading compact divider :level="HeadingLevelEnum.H3">
+      <template #leading>
+        <SquadronEmblem :squadron="squadron" :size="56" />
+      </template>
       <template #default>
         <router-link :to="to">
           {{ squadron.name }}
         </router-link>
       </template>
-      <template v-if="squadron.description" #subtitle>
-        {{ squadron.description }}
+      <template v-if="squadron.shortDescription" #subtitle>
+        <span class="squadron-panel-subtitle">
+          {{ squadron.shortDescription }}
+        </span>
       </template>
       <template v-if="membersManageable || editable || destroyable" #actions>
         <Btn
@@ -97,7 +102,6 @@ const markStyle = computed(() => ({
       </template>
     </PanelHeading>
     <PanelBody class="squadron-panel-body" rounded="bottom">
-      <span class="squadron-panel-mark" :style="markStyle" />
       <div class="squadron-panel-count">
         <span class="squadron-panel-count-number">
           {{ squadron.memberCount }}
@@ -112,12 +116,31 @@ const markStyle = computed(() => ({
 
 <style lang="scss" scoped>
 .squadron-panel {
+  // Clipped so the rail takes the panel's own corner radius at both ends.
+  // Safe here: the only overflowing thing a card holds is a tooltip, and those
+  // are fixed-position children of document.body.
+  overflow: hidden;
+
+  /*
+   * The rail rather than a coloured frame: at this size a full edge in a
+   * user-chosen colour surrounds the content and starts competing with it,
+   * while a rail stays a marker you can still find across a grid. The same
+   * language the row list uses, stood on its end.
+   */
+  .squadron-panel-rail {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+  }
+
   .squadron-panel-body {
     flex: 1;
     display: flex;
     align-items: center;
     gap: 12px;
-    min-height: 60px;
+    padding: 14px 16px;
   }
 
   &-action {
@@ -128,15 +151,9 @@ const markStyle = computed(() => ({
     }
   }
 
-  // The one place a squadron's colour is shown at any size. A stripe rather
-  // than a dot: at badge size the colour is a hint, and here it is what the
-  // card is recognised by across a grid of them.
-  &-mark {
-    width: 4px;
-    align-self: stretch;
-    min-height: 28px;
-    border-radius: 2px;
-    flex-shrink: 0;
+  // Written in a textarea, so the lines somebody typed are the lines drawn.
+  &-subtitle {
+    white-space: pre-line;
   }
 
   &-count {

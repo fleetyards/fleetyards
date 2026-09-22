@@ -1005,6 +1005,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.text "description"
     t.uuid "fleet_id", null: false
     t.string "name", null: false
+    t.text "short_description"
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.index "fleet_id, lower((name)::text)", name: "index_fleet_squadrons_on_fleet_id_and_lower_name", unique: true

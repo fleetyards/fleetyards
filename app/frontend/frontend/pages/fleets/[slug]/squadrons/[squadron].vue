@@ -69,6 +69,12 @@ const viewLink = (value: SquadronView) => ({
 const fleetSlug = computed(() => props.fleet.slug);
 const squadronSlug = computed(() => route.params.squadron as string);
 
+// The squadron's own text, falling back to the card's line -- better than an
+// empty page for a squadron that only ever got the short one.
+const pageDescription = computed(
+  () => squadron.value?.description || squadron.value?.shortDescription,
+);
+
 const canUpdate = computed(
   () => props.membership?.capabilities?.updateSquadrons ?? false,
 );
@@ -209,8 +215,8 @@ const crumbs = computed<Crumb[]>(() => [
       </template>
     </Heading>
 
-    <p v-if="squadron.description" class="squadron-description text-muted">
-      {{ squadron.description }}
+    <p v-if="pageDescription" class="squadron-description text-muted">
+      {{ pageDescription }}
     </p>
 
     <Teleport to="#header-right">
@@ -325,6 +331,8 @@ const crumbs = computed<Crumb[]>(() => [
 <style lang="scss" scoped>
 .squadron-description {
   margin-bottom: 20px;
+  // Written in a textarea; the paragraphs somebody typed are kept.
+  white-space: pre-line;
 }
 
 .squadron-views {

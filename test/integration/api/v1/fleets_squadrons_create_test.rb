@@ -55,8 +55,14 @@ class Api::V1::FleetsSquadronsCreateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :post, 201,
       path_params: {fleetSlug: @fleet.slug},
-      body: {name: "Combat Wing", description: "The pointy end", color: "#FF8800"} do
+      body: {
+        name: "Combat Wing",
+        shortDescription: "The pointy end",
+        description: "Everything the wing does, at length.",
+        color: "#FF8800"
+      } do
       assert_equal "Combat Wing", parsed_body["name"]
+      assert_equal "Everything the wing does, at length.", parsed_body["description"]
       assert_equal "combat-wing", parsed_body["slug"]
       assert_equal "#ff8800", parsed_body["color"]
       assert_equal 0, parsed_body["memberCount"]

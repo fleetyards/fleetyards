@@ -81,6 +81,16 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The detail page's text, kept off a list that never renders it.
+  test "GET /fleets/:slug/squadrons leaves the full description out" do
+    create(:fleet_squadron, fleet: @fleet, description: "Paragraphs and paragraphs.")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      refute parsed_body["items"].first.key?("description")
+    end
+  end
+
   test "GET /fleets/:slug/squadrons filters by name" do
     create(:fleet_squadron, fleet: @fleet, name: "Combat Wing")
     create(:fleet_squadron, fleet: @fleet, name: "Mining Division")
