@@ -210,7 +210,9 @@
         "squadrons": {
           "create": "建立中隊",
           "addMember": "新增成員",
-          "addMembers": "新增 %{count} 位"
+          "addMembers": "新增 %{count} 位",
+          "viewShips": "中隊艦船",
+          "viewStats": "中隊統計"
         },
         "manageInvites": "邀請",
         "worldmap": "世界地圖",

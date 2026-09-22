@@ -83,6 +83,45 @@ class Api::V1::FleetsMembersSquadronsTest < ActionDispatch::IntegrationTest
     assert_equal [@miner.username, @pilot.username].sort, members.map { |entry| entry["username"] }.sort
   end
 
+  test "the ship list narrows to a squadron" do
+    Sidekiq::Testing.inline!
+    pilot_ships = create(:user, vehicle_count: 3)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: pilot_ships).tap do |membership|
+      create(:fleet_squadron_membership, fleet_squadron: @combat, fleet_membership: membership)
+    end
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/vehicles?q[squadronSlugIn][]=combat-wing"
+
+    assert_response :success
+    assert_equal [pilot_ships.username],
+      JSON.parse(response.body)["items"].map { |entry| entry["username"] }.uniq
+  ensure
+    Sidekiq::Testing.fake!
+  end
+
+  # An empty squadron has to answer "no ships" rather than falling back to the
+  # whole fleet, which is what a bare `where(user_id: [])` is for.
+  test "the ship list is empty for a squadron nobody is in" do
+    empty = create(:fleet_squadron, fleet: @fleet, name: "Reserves")
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/vehicles?q[squadronSlugIn][]=#{empty.slug}"
+
+    assert_response :success
+    assert_empty JSON.parse(response.body)["items"]
+  end
+
+  test "the ship list ignores a squadron of another fleet" do
+    other = create(:fleet_squadron, fleet: create(:fleet), name: "Somebody Else")
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/vehicles?q[squadronSlugIn][]=#{other.slug}"
+
+    assert_response :success
+    assert_empty JSON.parse(response.body)["items"]
+  end
+
   # The badges come off a cached fragment keyed on the membership, so the join
   # touches it. Without that the roster keeps serving yesterday's badges.
   test "adding a member to a squadron expires their roster fragment" do

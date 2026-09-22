@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
@@ -108,12 +110,29 @@ const { data: squadrons } = useFleetSquadrons(
   { query: { enabled: computed(() => !!props.fleetSlug) } },
 );
 
-const squadronOptions = computed<FilterOption[]>(() =>
-  (squadrons.value?.items ?? []).map((squadron) => ({
-    label: squadron.name,
-    value: squadron.slug,
-  })),
+const squadronList = computed(() => squadrons.value?.items ?? []);
+
+const selectedSquadrons = computed<string[]>(
+  () => form.value.squadronSlugIn ?? [],
 );
+
+const squadronSelected = (slug: string) =>
+  selectedSquadrons.value.includes(slug);
+
+// Multi-select, so a segment toggles rather than replacing the others: a
+// fleet's squadrons are not exclusive and a member can be in several.
+const toggleSquadron = (slug: string) => {
+  const selected = [...selectedSquadrons.value];
+  const index = selected.indexOf(slug);
+
+  if (index === -1) {
+    selected.push(slug);
+  } else {
+    selected.splice(index, 1);
+  }
+
+  form.value.squadronSlugIn = selected;
+};
 
 const stateOptions: FilterOption[] = [
   {
@@ -157,15 +176,20 @@ const stateOptions: FilterOption[] = [
       :no-label="true"
     />
 
-    <BaseSelect
-      v-if="squadronOptions.length"
-      v-model="form.squadronSlugIn"
-      :options="squadronOptions"
-      :label="t('labels.filters.fleets.members.squadron')"
-      name="squadron"
-      :multiple="true"
-      :no-label="true"
-    />
+    <div v-if="squadronList.length" class="squadron-filter">
+      <BtnGroup segmented>
+        <Btn
+          v-for="squadron in squadronList"
+          :key="squadron.id"
+          :active="squadronSelected(squadron.slug)"
+          :data-test="`squadron-filter-${squadron.slug}`"
+          @click="toggleSquadron(squadron.slug)"
+        >
+          <SquadronEmblem :squadron="squadron" :size="18" />
+          {{ squadron.name }}
+        </Btn>
+      </BtnGroup>
+    </div>
 
     <template v-if="variant === 'members'">
       <div class="row">
@@ -270,3 +294,15 @@ const stateOptions: FilterOption[] = [
     </Btn>
   </form>
 </template>
+
+<style lang="scss" scoped>
+// Wraps rather than scrolls: the sidebar is narrow and a fleet can have more
+// squadrons than fit on one line.
+.squadron-filter {
+  margin-bottom: 10px;
+
+  :deep(.btn-group) {
+    flex-wrap: wrap;
+  }
+}
+</style>

@@ -34,6 +34,7 @@ module V1
             modelNameOrModelDescriptionCont: {type: :string},
             loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
             memberIn: {type: :array, items: {type: :string}},
+            squadronSlugIn: {type: :array, items: {type: :string}},
             s: {anyOf: [{
               type: :array, items: ::V1::Schemas::Sorts::FleetVehicleSortEnum
             }, ::V1::Schemas::Sorts::FleetVehicleSortEnum]},

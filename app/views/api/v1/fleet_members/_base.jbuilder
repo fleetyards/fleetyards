@@ -39,6 +39,16 @@ json.squadrons do
     json.name squadron.name
     json.slug squadron.slug
     json.color squadron.color
+
+    # The roster draws the emblem rather than the name, so the badge needs the
+    # picture as well as the colour it falls back to.
+    if squadron.logo.attached?
+      json.logo do
+        json.partial! "api/v1/shared/file", record: squadron, attr: :logo
+      end
+    else
+      json.logo nil
+    end
   end
 end
 json.ships_filter member.ships_filter

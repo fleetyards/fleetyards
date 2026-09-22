@@ -8,14 +8,13 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import MembersList from "@/frontend/components/Fleets/MembersList/index.vue";
-import FleetShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
+import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -25,8 +24,6 @@ import {
   type FleetMember,
   useFleetSquadron,
   useFleetSquadronMembers,
-  useFleetSquadronVehiclesStats,
-  useFleetSquadronMembersStats,
   useDestroyFleetSquadron,
 } from "@/services/fyApi";
 
@@ -44,36 +41,8 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const route = useRoute();
 const router = useRouter();
 
-// Views of one squadron, not tabs: the roster, the ships and the numbers are
-// the same record asked three questions, which is what the members page calls
-// a view too.
-const VIEWS = ["members", "ships", "stats"] as const;
-
-type SquadronView = (typeof VIEWS)[number];
-
-// The view lives in the query rather than in local state, so a link to a
-// squadron's ships is a link somebody can send. `App.vue` keys the page on
-// `locale-path`, so a path of its own would rebuild the page on every switch.
-const view = computed<SquadronView>(() =>
-  VIEWS.includes(route.query.view as SquadronView)
-    ? (route.query.view as SquadronView)
-    : "members",
-);
-
-const viewLink = (value: SquadronView) => ({
-  name: "fleet-squadron",
-  params: route.params,
-  query: value === "members" ? {} : { view: value },
-});
-
 const fleetSlug = computed(() => props.fleet.slug);
 const squadronSlug = computed(() => route.params.squadron as string);
-
-// The squadron's own text, falling back to the card's line -- better than an
-// empty page for a squadron that only ever got the short one.
-const pageDescription = computed(
-  () => squadron.value?.description || squadron.value?.shortDescription,
-);
 
 const canUpdate = computed(
   () => props.membership?.capabilities?.updateSquadrons ?? false,
@@ -89,7 +58,7 @@ const canManageMembers = computed(
 
 const {
   data: squadron,
-  isLoading: squadronLoading,
+  isLoading,
   refetch: refetchSquadron,
 } = useFleetSquadron(fleetSlug, squadronSlug);
 
@@ -101,19 +70,21 @@ const { data: members, refetch: refetchMembers } = useFleetSquadronMembers(
 
 const memberItems = computed(() => members.value?.items ?? []);
 
-const { data: vehicleStats, refetch: refetchVehicleStats } =
-  useFleetSquadronVehiclesStats(fleetSlug, squadronSlug);
-
-const { data: memberStats, refetch: refetchMemberStats } =
-  useFleetSquadronMembersStats(fleetSlug, squadronSlug, {});
+/*
+ * The squadron's ships and its numbers are the fleet's own pages, narrowed.
+ * Building a second ship list and a second stats page here would be two more
+ * implementations of what those pages already do, and they would drift; a
+ * squadron is a way of slicing the fleet, so the slice belongs on the page that
+ * owns the list.
+ */
+const filtered = (name: string) => ({
+  name,
+  params: { slug: props.fleet.slug },
+  query: { squadronSlugIn: [squadronSlug.value] },
+});
 
 const refetchAll = async () => {
-  await Promise.all([
-    refetchSquadron(),
-    refetchMembers(),
-    refetchVehicleStats(),
-    refetchMemberStats(),
-  ]);
+  await Promise.all([refetchSquadron(), refetchMembers()]);
 };
 
 const openEditModal = () => {
@@ -201,23 +172,27 @@ const crumbs = computed<Crumb[]>(() => [
 <template>
   <BreadCrumbs :crumbs="crumbs" />
 
-  <Loader :loading="squadronLoading" />
+  <Loader :loading="isLoading" />
 
   <template v-if="squadron">
-    <Heading hero size="hero">
-      {{ squadron.name }}
-      <template #subHeading>
-        {{
-          t("labels.fleet.squadrons.memberCount", {
-            count: squadron.memberCount,
-          })
-        }}
-      </template>
-    </Heading>
-
-    <p v-if="pageDescription" class="squadron-description text-muted">
-      {{ pageDescription }}
-    </p>
+    <div class="squadron-identity">
+      <SquadronEmblem :squadron="squadron" :size="96" />
+      <div class="squadron-identity-text">
+        <Heading hero size="hero">
+          {{ squadron.name }}
+          <template #subHeading>
+            {{
+              t("labels.fleet.squadrons.memberCount", {
+                count: squadron.memberCount,
+              })
+            }}
+          </template>
+        </Heading>
+        <p v-if="squadron.description" class="squadron-description text-muted">
+          {{ squadron.description }}
+        </p>
+      </div>
+    </div>
 
     <Teleport to="#header-right">
       <Btn
@@ -252,91 +227,57 @@ const crumbs = computed<Crumb[]>(() => [
       </Btn>
     </Teleport>
 
-    <!-- The spacing `FilteredList` puts under its toolbar, which is where
-         every other segmented control on the site sits. This one stands on its
-         own, so it carries the gap itself rather than landing flush on the
-         list under it. -->
-    <div class="squadron-views">
-      <BtnGroup segmented>
-        <Btn
-          v-for="value in VIEWS"
-          :key="value"
-          :to="viewLink(value)"
-          :active="view === value"
-          :data-test="`squadron-view-${value}`"
-          mobile-icon-only
-        >
-          {{ t(`labels.fleet.squadrons.views.${value}`) }}
-        </Btn>
-      </BtnGroup>
+    <!-- Out to the fleet's own pages, narrowed to this squadron, rather than a
+         second ship list and a second stats page living here. -->
+    <div class="squadron-links">
+      <Btn :to="filtered('fleet-ships')" data-test="squadron-ships-link">
+        <i class="fa-duotone fa-starship" />
+        {{ t("actions.fleet.squadrons.viewShips") }}
+      </Btn>
+      <Btn :to="filtered('fleet-stats')" data-test="squadron-stats-link">
+        <i class="fa-duotone fa-chart-bar" />
+        {{ t("actions.fleet.squadrons.viewStats") }}
+      </Btn>
     </div>
 
-    <template v-if="view === 'members'">
-      <MembersList
-        :members="memberItems"
-        :capabilities="props.membership?.capabilities"
-        :empty-visible="!memberItems.length"
-        :show-squadrons="false"
-      />
-    </template>
+    <Heading :level="HeadingLevelEnum.H3">
+      {{ t("labels.fleet.squadrons.members") }}
+    </Heading>
 
-    <!-- The fleet's own ship list, scoped to this squadron: same filters,
-         same grid/table switch, same grouping, sorting, fleetchart and
-         exports. A second, thinner list here would drift from it. -->
-    <template v-else-if="view === 'ships'">
-      <FleetShipsList :fleet="props.fleet" :squadron="squadron" />
-    </template>
-
-    <template v-else>
-      <div class="row">
-        <div class="col-12 col-md-6 col-lg-3">
-          <StatsPanel
-            :label="t('labels.fleet.squadrons.stats.members')"
-            icon="fa-duotone fa-users"
-            :value="memberStats?.total ?? 0"
-          />
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <StatsPanel
-            :label="t('labels.fleet.squadrons.stats.ships')"
-            icon="fa-duotone fa-starship"
-            :value="vehicleStats?.total ?? 0"
-          />
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <StatsPanel
-            :label="t('labels.fleet.squadrons.stats.uniqueModels')"
-            icon="fa-duotone fa-rocket-launch"
-            :value="vehicleStats?.metrics?.uniqueModelsCount ?? 0"
-          />
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <StatsPanel
-            :label="t('labels.fleet.squadrons.stats.totalMoney')"
-            icon="fa-duotone fa-dollar-sign"
-            :value="vehicleStats?.metrics?.totalMoney ?? 0"
-            :prefix="t('number.units.currency')"
-          />
-        </div>
-      </div>
-    </template>
+    <MembersList
+      :members="memberItems"
+      :capabilities="props.membership?.capabilities"
+      :empty-visible="!memberItems.length"
+      :show-squadrons="false"
+    />
   </template>
 
-  <Empty
-    v-else-if="!squadronLoading"
-    :name="t('labels.fleet.squadrons.index')"
-  />
+  <Empty v-else-if="!isLoading" :name="t('labels.fleet.squadrons.index')" />
 </template>
 
 <style lang="scss" scoped>
-.squadron-description {
+.squadron-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
   margin-bottom: 20px;
+}
+
+.squadron-identity-text {
+  min-width: 0;
+}
+
+.squadron-description {
+  margin: 8px 0 0;
+  max-width: 70ch;
   // Written in a textarea; the paragraphs somebody typed are kept.
   white-space: pre-line;
 }
 
-.squadron-views {
+.squadron-links {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 20px;
 }
 </style>

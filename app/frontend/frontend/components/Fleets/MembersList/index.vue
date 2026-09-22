@@ -12,7 +12,7 @@ import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue"
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
-import SquadronBadge from "@/frontend/components/Fleets/Squadrons/SquadronBadge/index.vue";
+import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
@@ -55,6 +55,9 @@ const onRowClick = (member: FleetMember) => {
     props: { member },
   });
 };
+
+const squadronNames = (member: FleetMember) =>
+  (member.squadrons ?? []).map((squadron) => squadron.name).join(", ");
 
 const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   {
@@ -110,11 +113,20 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   >
     <template #col-username="{ record }">
       <div class="member-username">
-        <Avatar
-          :avatar="record.avatar?.smallUrl"
-          size="small"
-          :online="onlineFor(record)"
-        />
+        <span class="member-avatar">
+          <Avatar
+            :avatar="record.avatar?.smallUrl"
+            size="small"
+            :online="onlineFor(record)"
+          />
+          <SquadronEmblem
+            v-if="props.showSquadrons && record.squadrons?.length"
+            v-tooltip="squadronNames(record)"
+            :squadron="record.squadrons[0]"
+            :size="18"
+            class="member-avatar-squadron"
+          />
+        </span>
         <div class="member-username-inner">
           <MemberName :member="record" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
@@ -122,16 +134,6 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
               :handle="record.rsiHandle"
               :citizenid-profile-url="record.citizenidProfileUrl"
             />)
-          </div>
-          <div
-            v-if="props.showSquadrons && record.squadrons?.length"
-            class="member-squadrons"
-          >
-            <SquadronBadge
-              v-for="squadron in record.squadrons"
-              :key="squadron.id"
-              :squadron="squadron"
-            />
           </div>
         </div>
       </div>
@@ -194,10 +196,19 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   opacity: 0.8;
 }
 
-.member-squadrons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 4px;
+.member-avatar {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+// Overhangs the frame the way the presence dot does, on the corner it leaves
+// free, with a ring so it reads as sitting on top of the avatar rather than
+// inside it.
+.member-avatar-squadron {
+  position: absolute;
+  left: -4px;
+  bottom: -4px;
+  box-shadow: 0 0 0 2px var(--color-surface, #23282d);
 }
 </style>

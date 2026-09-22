@@ -210,7 +210,9 @@
         "squadrons": {
           "create": "Create Squadron",
           "addMember": "Add Members",
-          "addMembers": "Add %{count}"
+          "addMembers": "Add %{count}",
+          "viewShips": "Squadron ships",
+          "viewStats": "Squadron stats"
         },
         "manageInvites": "Invites",
         "worldmap": "Worldmap",

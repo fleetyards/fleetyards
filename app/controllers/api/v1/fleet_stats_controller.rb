@@ -35,6 +35,7 @@ module Api
         scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
         scope = scope.where(loaner: loaner_included?)
+        scope = narrow_to_squadrons(scope)
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -80,6 +81,7 @@ module Api
         scope = vehicle_scope.where(loaner: loaner_included?)
 
         scope = scope.where(user_id: for_members) if for_members.present?
+        scope = narrow_to_squadrons(scope)
 
         scope = scope.joins(:model).where(models: {price: price_range}) if price_range.present?
 
@@ -164,6 +166,14 @@ module Api
       # `@fleet.vehicles` and `@fleet.fleet_memberships` inline, so
       # `FleetSquadronStatsController` narrows them to one squadron by
       # overriding these instead of restating the arithmetic.
+      def narrow_to_squadrons(scope)
+        user_ids = for_squadrons(@fleet)
+
+        return scope if user_ids.nil?
+
+        scope.where(user_id: user_ids)
+      end
+
       private def vehicle_scope
         @fleet.vehicles
       end

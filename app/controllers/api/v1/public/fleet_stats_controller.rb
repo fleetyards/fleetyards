@@ -16,7 +16,7 @@ module Api
 
         def model_counts
           count_params = vehicle_query_params.except("sorts", "s")
-          @q = vehicle_scope.ransack(count_params)
+          @q = narrow_to_squadrons(vehicle_scope).ransack(count_params)
 
           # No `includes`: this returns a grouped count, so no vehicle is ever
           # instantiated and nothing reads an association off one. Eager loading
@@ -47,6 +47,7 @@ module Api
           scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
           scope = scope.where(loaner: loaner_included?)
+          scope = narrow_to_squadrons(scope)
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -173,6 +174,14 @@ module Api
         # The two populations the figures are drawn from. Seams, so
         # `Public::FleetSquadronStatsController` narrows them to one squadron
         # rather than restating the arithmetic.
+        def narrow_to_squadrons(scope)
+          user_ids = for_squadrons(@fleet)
+
+          return scope if user_ids.nil?
+
+          scope.where(user_id: user_ids)
+        end
+
         def vehicle_scope
           @fleet.vehicles
         end

@@ -210,7 +210,9 @@
         "squadrons": {
           "create": "Staffel anlegen",
           "addMember": "Mitglieder hinzufügen",
-          "addMembers": "%{count} hinzufügen"
+          "addMembers": "%{count} hinzufügen",
+          "viewShips": "Schiffe der Staffel",
+          "viewStats": "Statistiken der Staffel"
         },
         "manageInvites": "Einladungen",
         "worldmap": "Weltkarte",

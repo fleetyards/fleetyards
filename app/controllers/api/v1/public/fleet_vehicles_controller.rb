@@ -28,6 +28,7 @@ module Api
           scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
           scope = scope.where(loaner: loaner_included?)
+          scope = narrow_to_squadrons(scope)
 
           normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
@@ -91,6 +92,16 @@ module Api
             .includes(VEHICLE_RENDER_INCLUDES)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+        end
+
+        # See the fleet's own list for why an empty list is not the same as no
+        # filter at all.
+        private def narrow_to_squadrons(scope)
+          user_ids = for_squadrons(@fleet)
+
+          return scope if user_ids.nil?
+
+          scope.where(user_id: user_ids)
         end
 
         # The ships the list starts from. A seam rather than `@fleet.vehicles`

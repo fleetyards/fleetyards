@@ -210,7 +210,9 @@
         "squadrons": {
           "create": "Crea squadrone",
           "addMember": "Aggiungi membri",
-          "addMembers": "Aggiungi %{count}"
+          "addMembers": "Aggiungi %{count}",
+          "viewShips": "Navi dello squadrone",
+          "viewStats": "Statistiche dello squadrone"
         },
         "manageInvites": "Inviti",
         "worldmap": "Mappa mondiale",

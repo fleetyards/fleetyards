@@ -210,7 +210,9 @@
         "squadrons": {
           "create": "Créer un escadron",
           "addMember": "Ajouter des membres",
-          "addMembers": "Ajouter %{count}"
+          "addMembers": "Ajouter %{count}",
+          "viewShips": "Vaisseaux de l'escadron",
+          "viewStats": "Statistiques de l'escadron"
         },
         "manageInvites": "Invitations",
         "worldmap": "Carte du monde",

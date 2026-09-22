@@ -15,7 +15,8 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               slug: {type: :string},
-              color: {type: [:string, :null]}
+              color: {type: [:string, :null]},
+              logo: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
             required: %w[id name slug]
