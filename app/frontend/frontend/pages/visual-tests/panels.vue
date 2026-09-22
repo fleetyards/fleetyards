@@ -15,7 +15,6 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
-import TeaserPanel2 from "@/shared/components/TeaserPanel2/index.vue";
 import { BoughtViaEnum, type Model, type Vehicle } from "@/services/fyApi";
 import storeImage from "@/images/fallback/store_image.webp";
 
@@ -585,21 +584,6 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
     </div>
     <div class="col-12 col-md-6 col-lg-3">
       <TeaserPanel :item="teaserWithoutImage" />
-    </div>
-  </div>
-
-  <Heading :level="HeadingLevelEnum.H2">TeaserPanel2</Heading>
-  <p>
-    The later teaser, which takes a model rather than a shape and picks its own
-    image size for mobile. The heading level is a prop, so it can sit under
-    whatever the page around it already uses.
-  </p>
-  <div class="row">
-    <div v-if="model" class="col-12 col-md-6">
-      <TeaserPanel2 :item="model" />
-    </div>
-    <div v-if="model" class="col-12 col-md-6">
-      <TeaserPanel2 :item="model" :level="HeadingLevelEnum.H4" />
     </div>
   </div>
 </template>
