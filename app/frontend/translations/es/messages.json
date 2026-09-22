@@ -329,9 +329,9 @@
             "failure": "No se pudo guardar el orden."
           },
           "members": {
-            "add": {
-              "success": "%{count} miembros añadidos.",
-              "failure": "No se han podido añadir %{count} miembros."
+            "save": {
+              "success": "%{count} cambios guardados.",
+              "failure": "No se pudieron guardar %{count} cambios."
             }
           }
         },

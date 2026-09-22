@@ -329,9 +329,9 @@
             "failure": "無法儲存排序。"
           },
           "members": {
-            "add": {
-              "success": "已新增 %{count} 位成員。",
-              "failure": "有 %{count} 位成員無法新增。"
+            "save": {
+              "success": "已儲存 %{count} 項變更。",
+              "failure": "有 %{count} 項變更無法儲存。"
             }
           }
         },

@@ -202,11 +202,11 @@ const crumbs = computed<Crumb[]>(() => [
         v-if="canManageMembers"
         :size="BtnSizesEnum.MD"
         mobile-icon-only
-        data-test="squadron-add-member"
+        data-test="squadron-manage-members"
         @click="openMemberPicker"
       >
-        <i class="fa-duotone fa-user-plus" />
-        {{ t("actions.fleet.squadrons.addMember") }}
+        <i class="fa-duotone fa-users-gear" />
+        {{ t("actions.fleet.squadrons.manageMembers") }}
       </Btn>
       <Btn
         v-if="canUpdate"

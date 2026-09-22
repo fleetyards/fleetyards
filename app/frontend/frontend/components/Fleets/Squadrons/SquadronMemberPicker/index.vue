@@ -29,6 +29,7 @@ import {
   type FleetMembersParams,
   useFleetMembers,
   useCreateFleetSquadronMember,
+  useDestroyFleetSquadronMember,
 } from "@/services/fyApi";
 
 type Props = {
@@ -104,9 +105,11 @@ const loadMore = () => {
 };
 
 /*
- * Already in the squadron, so unpickable. Filtered here rather than in the
- * query because no endpoint answers "not in this squadron" -- and the server
- * refuses a duplicate anyway, so this is the courtesy rather than the guard.
+ * Who is in it now. The picker shows them ticked rather than hiding them,
+ * because taking somebody out of a squadron has to be possible somewhere and
+ * this is where the roster is already in front of you -- which matters more
+ * now that a member holds only one squadron, so moving them means taking them
+ * out of the one they have.
  */
 const alreadyIn = (member: FleetMember) =>
   (member.squadrons ?? []).some(
@@ -130,9 +133,28 @@ const blockedBy = (member: FleetMember) => {
   );
 };
 
-const options = computed(() => records.value.filter((m) => !alreadyIn(m)));
+const options = computed(() => records.value);
 
+// Seeded from the squadron as the roster loads, so the ticks are the state it
+// is in and the submit is the difference. Only members not yet accounted for
+// are added, so a page 2 that arrives later does not undo an untick on page 1.
 const selection = ref<FleetMember[]>([]);
+const seeded = ref<string[]>([]);
+
+watch(
+  records,
+  (members) => {
+    const fresh = members.filter(
+      (member) => alreadyIn(member) && !seeded.value.includes(member.id),
+    );
+
+    seeded.value = [...seeded.value, ...fresh.map((member) => member.id)];
+    selection.value = [...selection.value, ...fresh];
+  },
+  { immediate: true },
+);
+
+const wasIn = (member: FleetMember) => seeded.value.includes(member.id);
 
 const isSelected = (member: FleetMember) =>
   selection.value.some((held) => held.id === member.id);
@@ -147,52 +169,74 @@ const remove = (id: string) => {
   selection.value = selection.value.filter((held) => held.id !== id);
 };
 
-const clearSelection = () => {
-  selection.value = [];
+const resetSelection = () => {
+  selection.value = records.value.filter(wasIn);
 };
 
 const submitting = ref(false);
 
-const mutation = useCreateFleetSquadronMember();
+const createMutation = useCreateFleetSquadronMember();
+const destroyMutation = useDestroyFleetSquadronMember();
+
+// The difference between what is ticked and what was, which is what the submit
+// has to write. Ticking somebody who was already in is not a request.
+const toAdd = computed(() =>
+  selection.value.filter((member) => !wasIn(member)),
+);
+
+const toRemove = computed(() =>
+  records.value.filter((member) => wasIn(member) && !isSelected(member)),
+);
+
+const pending = computed(() => toAdd.value.length + toRemove.value.length);
 
 /*
- * One request per person, and a failure part-way through leaves the ones
- * already added in place: they are separate rows, and undoing them would be a
- * second way to remove somebody that nobody asked for. The message says how
- * many landed.
+ * One request per person, and a failure part-way through leaves what already
+ * landed in place: they are separate rows, and rolling them back would be a
+ * third way to change a squadron's roster that nobody asked for. The message
+ * says how many did not.
  */
 const onSubmit = async () => {
-  if (!selection.value.length) return;
+  if (!pending.value) return;
 
   submitting.value = true;
 
-  const results = await Promise.allSettled(
-    selection.value.map((member) =>
-      mutation.mutateAsync({
+  const results = await Promise.allSettled([
+    ...toAdd.value.map((member) =>
+      createMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
         fleetSquadronSlug: props.squadron.slug,
         data: { username: member.username },
       }),
     ),
-  );
+    ...toRemove.value.map((member) =>
+      destroyMutation.mutateAsync({
+        fleetSlug: props.fleet.slug,
+        fleetSquadronSlug: props.squadron.slug,
+        username: member.username,
+      }),
+    ),
+  ]);
 
   submitting.value = false;
 
-  const added = results.filter(
+  const landed = results.filter(
     (result) => result.status === "fulfilled",
   ).length;
-  const failed = results.length - added;
+  const failed = results.length - landed;
 
-  if (added) {
+  if (landed) {
     comlink.emit("fleet-squadron-members-updated");
     displaySuccess({
-      text: t("messages.fleet.squadrons.members.add.success", { count: added }),
+      text: t("messages.fleet.squadrons.members.save.success", {
+        count: landed,
+      }),
     });
   }
 
   if (failed) {
     displayAlert({
-      text: t("messages.fleet.squadrons.members.add.failure", {
+      text: t("messages.fleet.squadrons.members.save.failure", {
         count: failed,
       }),
     });
@@ -204,7 +248,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.fleets.squadrons.addMembers')">
+  <Modal :title="t('headlines.fleets.squadrons.manageMembers')">
     <form
       id="fleet-squadron-members-form"
       class="member-picker"
@@ -282,6 +326,8 @@ const onSubmit = async () => {
       <!-- In the scroll area rather than the footer, for the reason the ship
            picker gives: the footer is sized for one row of actions and a tray
            of chips there pushes the submit button out of the viewport. -->
+      <!-- What the squadron will hold, not what is being added: the tray is the
+           answer the submit writes. -->
       <div v-if="selection.length" class="member-picker__tray">
         <Chip
           v-for="member in selection"
@@ -304,22 +350,21 @@ const onSubmit = async () => {
           }}
         </span>
         <Btn
-          v-if="selection.length"
+          v-if="pending"
           :variant="BtnVariantsEnum.BARE"
-          @click="clearSelection"
+          data-test="squadron-members-reset"
+          @click="resetSelection"
         >
           {{ t("actions.reset") }}
         </Btn>
         <Btn
           :loading="submitting"
-          :disabled="!selection.length"
+          :disabled="!pending"
           :size="BtnSizesEnum.LG"
-          data-test="squadron-add-members"
+          data-test="squadron-save-members"
           @click="onSubmit"
         >
-          {{
-            t("actions.fleet.squadrons.addMembers", { count: selection.length })
-          }}
+          {{ t("actions.fleet.squadrons.saveMembers", { count: pending }) }}
         </Btn>
       </div>
     </template>

@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
 import type {
   Fleet,
@@ -40,7 +40,16 @@ const members = [
     username: "on-the-rota",
     squadrons: [squadronRef({ id: "sar", name: "Rescue", team: true })],
   }),
+  // Already in the squadron under test, so the picker opens with them ticked.
+  member({
+    id: "4",
+    username: "settled",
+    squadrons: [squadronRef({ id: "mining", name: "Mining", team: false })],
+  }),
 ];
+
+const addMember = vi.fn(() => Promise.resolve());
+const removeMember = vi.fn(() => Promise.resolve());
 
 // The list is the picker's own paged query; the rule under test is what it does
 // with the members once it has them.
@@ -54,11 +63,17 @@ vi.mock("@/services/fyApi", async () => {
       data: ref({ items: members, meta: { pagination: { totalPages: 1 } } }),
       isLoading: ref(false),
     }),
-    useCreateFleetSquadronMember: () => ({ mutateAsync: vi.fn() }),
+    useCreateFleetSquadronMember: () => ({ mutateAsync: addMember }),
+    useDestroyFleetSquadronMember: () => ({ mutateAsync: removeMember }),
   };
 });
 
 let wrapper: VueWrapper | undefined;
+
+beforeEach(() => {
+  addMember.mockClear();
+  removeMember.mockClear();
+});
 
 afterEach(() => {
   wrapper?.unmount();
@@ -127,5 +142,57 @@ describe("FleetSquadronMemberPicker", () => {
     expect(card(subject, "spoken-for").classes()).not.toContain(
       "member-picker__card--selected",
     );
+  });
+
+  /*
+   * Taking somebody out of a squadron has to be possible somewhere, and this is
+   * where the roster is already in front of you -- which matters more now that
+   * a member holds one squadron, so moving them means taking them out of the
+   * one they have.
+   */
+  it("opens with the members it already holds ticked", async () => {
+    const subject = await mount(false);
+
+    expect(card(subject, "settled").classes()).toContain(
+      "member-picker__card--selected",
+    );
+    expect(card(subject, "free").classes()).not.toContain(
+      "member-picker__card--selected",
+    );
+  });
+
+  it("removes a member who is unticked", async () => {
+    const subject = await mount(false);
+
+    await card(subject, "settled").trigger("click");
+    await subject.find('[data-test="squadron-save-members"]').trigger("click");
+
+    expect(removeMember).toHaveBeenCalledWith(
+      expect.objectContaining({ username: "settled" }),
+    );
+    expect(addMember).not.toHaveBeenCalled();
+  });
+
+  it("adds a member who is ticked", async () => {
+    const subject = await mount(false);
+
+    await card(subject, "free").trigger("click");
+    await subject.find('[data-test="squadron-save-members"]').trigger("click");
+
+    expect(addMember).toHaveBeenCalledWith(
+      expect.objectContaining({ data: { username: "free" } }),
+    );
+    expect(removeMember).not.toHaveBeenCalled();
+  });
+
+  // Ticking somebody who was already in is not a request.
+  it("writes nothing when the roster is left as it was", async () => {
+    const subject = await mount(false);
+
+    expect(
+      subject
+        .find('[data-test="squadron-save-members"]')
+        .attributes("disabled"),
+    ).toBeDefined();
   });
 });
