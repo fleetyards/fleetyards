@@ -77,8 +77,10 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":squadron/members/",
     name: "fleet-squadron-members",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/members.vue"),
+    redirect: (to) => ({
+      name: "fleet-squadron",
+      params: { slug: to.params.slug, squadron: to.params.squadron },
+    }),
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.squadrons.members",

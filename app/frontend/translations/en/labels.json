@@ -499,6 +499,7 @@
           "color": "Colour",
           "memberCount": "%{count} Members",
           "members": "Members",
+          "joinedAt": "Squadron joined at",
           "searchMembers": "Search Members",
           "availableMembers": "available Members",
           "selectedMembers": "%{count} selected"

@@ -499,6 +499,7 @@
           "color": "Farbe",
           "memberCount": "%{count} Mitglieder",
           "members": "Mitglieder",
+          "joinedAt": "Beitritt zum Geschwader",
           "searchMembers": "Mitglieder suchen",
           "availableMembers": "verfügbare Mitglieder",
           "selectedMembers": "%{count} ausgewählt"

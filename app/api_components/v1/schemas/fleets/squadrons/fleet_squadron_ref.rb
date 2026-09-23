@@ -20,6 +20,7 @@ module V1
               # cannot be added, which means knowing which of the squadrons
               # they already hold is an ordinary one rather than a team.
               team: {type: :boolean},
+              membershipCreatedAt: {type: [:string, :null], format: "date-time"},
               icon: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,

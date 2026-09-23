@@ -31,11 +31,15 @@ type Props = {
   // Off on a squadron's own page, where every row carries the same badge and
   // it would say nothing.
   showSquadrons?: boolean;
+  showMemberActions?: boolean;
+  squadronSlug?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   capabilities: undefined,
   showSquadrons: true,
+  showMemberActions: true,
+  squadronSlug: undefined,
 });
 
 const { t, l, timeDistance } = useI18n();
@@ -59,6 +63,17 @@ const onRowClick = (member: FleetMember) => {
 const squadronNames = (member: FleetMember) =>
   (member.squadrons ?? []).map((squadron) => squadron.name).join(", ");
 
+const joinedAt = (member: FleetMember) =>
+  props.squadronSlug
+    ? member.squadrons?.find((squadron) => squadron.slug === props.squadronSlug)
+        ?.membershipCreatedAt
+    : member.acceptedAt;
+
+const joinedAtColumn = computed(() =>
+  props.squadronSlug ? "squadronMembershipCreatedAt" : "acceptedAt",
+);
+const joinedAtSlot = computed(() => `col-${joinedAtColumn.value}`);
+
 const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   {
     name: "username",
@@ -79,8 +94,10 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     width: "10%",
   },
   {
-    name: "acceptedAt",
-    label: t("labels.fleet.members.joined"),
+    name: joinedAtColumn.value,
+    label: props.squadronSlug
+      ? t("labels.fleet.squadrons.joinedAt")
+      : t("labels.fleet.members.joined"),
     width: "15%",
     mobile: false,
     sortable: true,
@@ -151,9 +168,9 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       {{ record.fleetRole?.name }}
     </template>
 
-    <template #col-acceptedAt="{ record }">
-      <span v-if="record.acceptedAt" v-tooltip="l(record.acceptedAt)">
-        {{ l(record.acceptedAt, "datetime.formats.short") }}
+    <template #[joinedAtSlot]="{ record }">
+      <span v-if="joinedAt(record)" v-tooltip="l(joinedAt(record) as string)">
+        {{ l(joinedAt(record) as string, "datetime.formats.short") }}
       </span>
     </template>
 
@@ -176,7 +193,11 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
            than built in, so the removal stays with the page that knows which
            squadron it is about. -->
       <slot name="row-actions" :member="record" />
-      <MemberActions :member="record" :capabilities="props.capabilities" />
+      <MemberActions
+        v-if="props.showMemberActions"
+        :member="record"
+        :capabilities="props.capabilities"
+      />
     </template>
     <template #empty>
       <Empty :name="t('labels.fleet.members.accepted')" inline />

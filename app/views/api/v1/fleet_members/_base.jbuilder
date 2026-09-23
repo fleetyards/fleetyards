@@ -37,12 +37,19 @@ json.squadrons do
   # Ordinary squadrons before teams, then the fleet's own order. A member holds
   # at most one ordinary squadron, so the first of these is the one the roster
   # badges them with -- their squadron, not whichever team sorts first.
-  json.array! member.fleet_squadrons.order(team: :asc, position: :asc) do |squadron|
+  squadron_memberships = member.fleet_squadron_memberships.sort_by do |squadron_membership|
+    squadron = squadron_membership.fleet_squadron
+    [squadron.team? ? 1 : 0, squadron.position]
+  end
+
+  json.array! squadron_memberships do |squadron_membership|
+    squadron = squadron_membership.fleet_squadron
     json.id squadron.id
     json.name squadron.name
     json.slug squadron.slug
     json.color squadron.color
     json.team squadron.team
+    json.membership_created_at squadron_membership.created_at.utc.iso8601
 
     # The roster draws the mark rather than the name, and at that size the mark
     # is the square one.

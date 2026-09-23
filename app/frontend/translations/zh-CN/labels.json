@@ -499,6 +499,7 @@
           "color": "颜色",
           "memberCount": "%{count} 名成员",
           "members": "成员",
+          "joinedAt": "加入中队时间",
           "searchMembers": "搜索成员",
           "availableMembers": "可添加的成员",
           "selectedMembers": "已选择 %{count} 位"

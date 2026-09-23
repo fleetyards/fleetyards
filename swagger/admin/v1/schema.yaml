@@ -13680,9 +13680,11 @@ components:
       enum:
       - members_only
       - officers_only
+      - squadron_only
       x-enumNames:
       - MEMBERS_ONLY
       - OFFICERS_ONLY
+      - SQUADRON_ONLY
       title: FleetInventoryVisibilityEnum
     FleetMembershipSortEnum:
       type: string
@@ -13695,6 +13697,8 @@ components:
       - createdAt desc
       - acceptedAt asc
       - acceptedAt desc
+      - squadronMembershipCreatedAt asc
+      - squadronMembershipCreatedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
       x-enumNames:
@@ -13706,6 +13710,8 @@ components:
       - CREATED_AT_DESC
       - ACCEPTED_AT_ASC
       - ACCEPTED_AT_DESC
+      - SQUADRON_MEMBERSHIP_CREATED_AT_ASC
+      - SQUADRON_MEMBERSHIP_CREATED_AT_DESC
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       title: FleetMembershipSortEnum
@@ -19522,6 +19528,23 @@ components:
       - meta
       - items
       title: Videos
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -19551,23 +19574,6 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed

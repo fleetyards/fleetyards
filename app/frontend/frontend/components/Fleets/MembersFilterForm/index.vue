@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -15,10 +16,7 @@ import {
   MEMBERS_VIEW_FILTER_KEYS,
   type MembersView,
 } from "@/frontend/composables/useMembersView";
-import {
-  InputSizesEnum,
-  InputTypesEnum,
-} from "@/shared/components/base/FormInput/types";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 type Props = {
   variant?: MembersView;
@@ -134,19 +132,17 @@ const stateOptions: FilterOption[] = [
     <template v-if="variant === 'members'">
       <div class="row">
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.acceptedAtGteq"
             name="accepted-at-gteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.acceptedAtGt"
             :no-placeholder="true"
           />
         </div>
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.acceptedAtLteq"
             name="accepted-at-lteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.acceptedAtLt"
             :no-placeholder="true"
           />
@@ -166,19 +162,17 @@ const stateOptions: FilterOption[] = [
 
       <div class="row">
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.invitedAtGteq"
             name="invited-at-gteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.invitedAtGt"
             :no-placeholder="true"
           />
         </div>
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.invitedAtLteq"
             name="invited-at-lteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.invitedAtLt"
             :no-placeholder="true"
           />
@@ -187,19 +181,17 @@ const stateOptions: FilterOption[] = [
 
       <div class="row">
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.requestedAtGteq"
             name="requested-at-gteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.requestedAtGt"
             :no-placeholder="true"
           />
         </div>
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.requestedAtLteq"
             name="requested-at-lteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.requestedAtLt"
             :no-placeholder="true"
           />
@@ -208,19 +200,17 @@ const stateOptions: FilterOption[] = [
 
       <div class="row">
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.declinedAtGteq"
             name="declined-at-gteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.declinedAtGt"
             :no-placeholder="true"
           />
         </div>
         <div class="col-6">
-          <FormInput
+          <FormDatePicker
             v-model="form.declinedAtLteq"
             name="declined-at-lteq"
-            :type="InputTypesEnum.DATE"
             translation-key="filters.fleets.members.declinedAtLt"
             :no-placeholder="true"
           />

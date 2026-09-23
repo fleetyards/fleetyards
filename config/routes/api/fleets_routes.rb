@@ -36,7 +36,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :sort
     end
 
-    resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create destroy]
+    resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create update destroy]
   end
 
   resources :fleet_roles, path: "roles", only: %i[index]

@@ -499,6 +499,7 @@
           "color": "Couleur",
           "memberCount": "%{count} membres",
           "members": "Membres",
+          "joinedAt": "Date d’adhésion à l’escadron",
           "searchMembers": "Rechercher des membres",
           "availableMembers": "membres disponibles",
           "selectedMembers": "%{count} sélectionnés"

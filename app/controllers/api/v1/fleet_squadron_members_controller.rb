@@ -18,7 +18,7 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create destroy]
+        only: %i[create update destroy]
 
       before_action :set_fleet
       before_action :check_fleet_squadrons_feature
@@ -37,7 +37,11 @@ module Api
           FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(:user, :fleet_role)
+          .includes(
+            :user,
+            :fleet_role,
+            fleet_squadron_memberships: :fleet_squadron
+          )
           .joins(:user)
 
         @members = result_with_pagination(result, per_page(FleetMembership))
@@ -69,6 +73,19 @@ module Api
         render json: ValidationError.new("fleet_squadron_members.destroy", errors: row.errors), status: :bad_request
       end
 
+      def update
+        authorize! with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+
+        @member = find_member!
+        row = @fleet_squadron.fleet_squadron_memberships.find_by!(fleet_membership: @member)
+
+        if row.update(squadron_membership_params)
+          head :no_content
+        else
+          render json: ValidationError.new("fleet_squadron_members.update", errors: row.errors), status: :bad_request
+        end
+      end
+
       private def set_fleet
         @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
 
@@ -82,6 +99,10 @@ module Api
           .includes(:user, :fleet_role)
           .joins(:user)
           .find_by!(users: {normalized_username: params[:username].to_s.downcase})
+      end
+
+      private def squadron_membership_params
+        params.transform_keys(&:underscore).permit(:created_at)
       end
     end
   end

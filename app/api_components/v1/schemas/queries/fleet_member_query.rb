@@ -17,6 +17,8 @@ module V1
             squadronSlugIn: {type: :array, items: {type: :string}},
             acceptedAtGteq: {type: :string, format: :date},
             acceptedAtLteq: {type: :string, format: :date},
+            squadronMembershipCreatedAtGteq: {type: :string, format: :date},
+            squadronMembershipCreatedAtLteq: {type: :string, format: :date},
             invitedAtGteq: {type: :string, format: :date},
             invitedAtLteq: {type: :string, format: :date},
             requestedAtGteq: {type: :string, format: :date},

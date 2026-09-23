@@ -18,4 +18,8 @@ class FleetSquadronMembershipPolicy < FleetBasePolicy
   def destroy?
     create?
   end
+
+  def update?
+    create?
+  end
 end

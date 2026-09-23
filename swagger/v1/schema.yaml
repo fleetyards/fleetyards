@@ -6829,6 +6829,48 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet Squadron Member
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronMember
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronMemberUpdateInput"
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - a plain member cannot update squadron membership
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{slug}":
     parameters:
     - name: fleetSlug
@@ -20827,6 +20869,11 @@ components:
       - officers
       - fleet
       - squadron
+      x-extensible-enum:
+      - members
+      - officers
+      - fleet
+      - squadron
       x-enumNames:
       - MEMBERS
       - OFFICERS
@@ -21233,6 +21280,10 @@ components:
       - members_only
       - officers_only
       - squadron_only
+      x-extensible-enum:
+      - members_only
+      - officers_only
+      - squadron_only
       x-enumNames:
       - MEMBERS_ONLY
       - OFFICERS_ONLY
@@ -21447,6 +21498,12 @@ components:
         acceptedAtLteq:
           type: string
           format: date
+        squadronMembershipCreatedAtGteq:
+          type: string
+          format: date
+        squadronMembershipCreatedAtLteq:
+          type: string
+          format: date
         invitedAtGteq:
           type: string
           format: date
@@ -21657,6 +21714,8 @@ components:
       - createdAt desc
       - acceptedAt asc
       - acceptedAt desc
+      - squadronMembershipCreatedAt asc
+      - squadronMembershipCreatedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
       x-enumNames:
@@ -21668,6 +21727,8 @@ components:
       - CREATED_AT_DESC
       - ACCEPTED_AT_ASC
       - ACCEPTED_AT_DESC
+      - SQUADRON_MEMBERSHIP_CREATED_AT_ASC
+      - SQUADRON_MEMBERSHIP_CREATED_AT_DESC
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       title: FleetMembershipSortEnum
@@ -22133,6 +22194,16 @@ components:
       - username
       additionalProperties: false
       title: FleetSquadronMemberCreateInput
+    FleetSquadronMemberUpdateInput:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date
+      required:
+      - createdAt
+      additionalProperties: false
+      title: FleetSquadronMemberUpdateInput
     FleetSquadronQuery:
       type: object
       properties:
@@ -22163,6 +22234,11 @@ components:
           - 'null'
         team:
           type: boolean
+        membershipCreatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -30498,6 +30574,23 @@ components:
       items:
         type: string
       title: WishlistItemsList
+  parameters:
+    PageParameter:
+      name: page
+      in: query
+      schema:
+        type: string
+        default: '1'
+      required: false
+    SortingParameter:
+      name: s
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      description: Sorting
+      required: false
   securitySchemes:
     BearerAuth:
       type: http
@@ -30527,23 +30620,6 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  parameters:
-    PageParameter:
-      name: page
-      in: query
-      schema:
-        type: string
-        default: '1'
-      required: false
-    SortingParameter:
-      name: s
-      in: query
-      schema:
-        type: array
-        items:
-          type: string
-      description: Sorting
-      required: false
   responses:
     SchemaValidationError:
       description: Request validation failed

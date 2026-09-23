@@ -85,13 +85,13 @@ class FleetMembership < ApplicationRecord
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
-      "blueprints_filter", "squadron_slug",
+      "blueprints_filter", "squadron_slug", "squadron_membership_created_at",
       "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["fleet", "fleet_role", "user", "fleet_squadrons"]
+    ["fleet", "fleet_role", "user", "fleet_squadrons", "fleet_squadron_memberships"]
   end
 
   validate_enum_attributes :ships_filter, :blueprints_filter
@@ -104,6 +104,7 @@ class FleetMembership < ApplicationRecord
   ALLOWED_SORTING_PARAMS = [
     "rsiHandle asc", "rsiHandle desc", "username asc", "username desc",
     "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc",
+    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc",
     "lastActiveAt asc", "lastActiveAt desc"
   ]
 
@@ -113,6 +114,7 @@ class FleetMembership < ApplicationRecord
   ransack_alias :name, :user_username
   ransack_alias :role, :fleet_role_name
   ransack_alias :squadron_slug, :fleet_squadrons_slug
+  ransack_alias :squadron_membership_created_at, :fleet_squadron_memberships_created_at
   ransack_alias :state, :aasm_state
 
   before_validation :set_default_ships_filter

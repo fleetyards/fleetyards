@@ -11,6 +11,7 @@ module V1
         schema({
           type: :string,
           enum: VALUES,
+          "x-extensible-enum": VALUES,
           "x-enumNames": VALUES.map { |value| transform_enum_key(value) }
         })
       end
