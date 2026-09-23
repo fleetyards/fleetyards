@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetContractsController < ::Api::BaseController
+      include SquadronVisibilityConcern
+
       include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:fleet_contracts) }, only: %i[index]
@@ -163,7 +165,7 @@ module Api
 
         return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
 
-        scope.where.not(aasm_state: "draft")
+        narrow_to_squadron_access(scope.where.not(aasm_state: "draft"))
       end
 
       private def fleet_contract_params

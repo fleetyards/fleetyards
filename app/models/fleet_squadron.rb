@@ -36,6 +36,7 @@ class FleetSquadron < ApplicationRecord
   belongs_to :fleet, touch: true
 
   has_many :fleet_squadron_memberships, dependent: :destroy
+  has_many :fleet_squadron_assignments, dependent: :destroy
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 
@@ -120,6 +121,12 @@ class FleetSquadron < ApplicationRecord
   # the end of the order somebody else arranged, not in the middle of it.
   before_create :set_position
 
+  # Collected before the assignments go and answered after, because the
+  # question -- "is this record still restricted to anybody?" -- can only be
+  # asked once this squadron has stopped being one of the answers.
+  before_destroy :remember_restricted_records, prepend: true
+  after_destroy :release_restricted_records
+
   # The fleet's own order, which is the point of having one. Sorting by name is
   # still offered; it is simply not what the list opens on.
   DEFAULT_SORTING_PARAMS = "position asc"
@@ -169,6 +176,14 @@ class FleetSquadron < ApplicationRecord
     return if conflicting.empty?
 
     errors.add(:team, :conflicting_members, members: conflicting.map { |m| m.user&.username }.compact.to_sentence)
+  end
+
+  private def remember_restricted_records
+    @restricted_records = fleet_squadron_assignments.map(&:assignable).compact
+  end
+
+  private def release_restricted_records
+    @restricted_records.to_a.each(&:release_squadron_restriction!)
   end
 
   private def set_position

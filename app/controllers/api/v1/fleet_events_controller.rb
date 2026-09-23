@@ -5,6 +5,8 @@ require "discord/scheduled_event_sync"
 module Api
   module V1
     class FleetEventsController < ::Api::BaseController
+      include SquadronVisibilityConcern
+
       include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:fleet_events) }, only: %i[index]
@@ -33,6 +35,7 @@ module Api
         end
         scope = (params[:upcoming] == "true") ? scope.upcoming : scope
         scope = scope.past if params[:past] == "true"
+        scope = narrow_to_squadron_access(scope) unless manages_events?
 
         query_params = params.fetch(:q, {}).permit(:title_cont, :status_eq, :category_eq, :s)
         normalize_sort_params(query_params)
@@ -296,6 +299,12 @@ module Api
 
       private def event_params
         authorized(params, with: FleetEventPolicy)
+      end
+
+      # Whoever may run the fleet's events reaches all of them -- including the
+      # squadron ones they are not in, which they may well have created.
+      private def manages_events?
+        allowed_to?(:manage?, @fleet, with: FleetEventPolicy)
       end
 
       private def set_fleet

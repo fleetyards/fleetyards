@@ -5,7 +5,20 @@ class FleetEventPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage", "fleet:events:read"])
   end
 
-  alias_rule :show?, to: :index?
+  # Not an alias any more: a squadron event is on the board for the squadrons
+  # it names, and reading the list is no longer the same question as reading
+  # one of them.
+  def show?
+    return false unless index?
+
+    record.blank? || manage? || record.visible_to_squadrons_of?(accepted_fleet_membership)
+  end
+
+  # Whoever may run the fleet's events reaches all of them, including the
+  # squadron ones they are not in -- which they may well have created.
+  def manage?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"]) || false
+  end
 
   def create?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage", "fleet:events:create"])
@@ -40,7 +53,7 @@ class FleetEventPolicy < FleetBasePolicy
       :max_attendees, :auto_lock_enabled, :auto_lock_minutes_before,
       :cover_image, :cover_image_preset, :signup_approval,
       :recurring, :recurrence_interval, :recurrence_until, :recurrence_count,
-      excluded_dates: []
+      excluded_dates: [], fleet_squadron_ids: []
     )
   end
 

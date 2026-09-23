@@ -44,7 +44,11 @@ class FleetInventory < ApplicationRecord
   has_one_attached :image
   validates :image, no_vector_image: true
 
-  enum :visibility, {members_only: 0, officers_only: 1}
+  # `squadron_only` narrows it to the squadrons named in `fleet_squadrons`;
+  # see SquadronRestrictable.
+  enum :visibility, {members_only: 0, officers_only: 1, squadron_only: 2}
+
+  include SquadronRestrictable
 
   validates :name, presence: true, uniqueness: {case_sensitive: false, scope: :fleet_id}
 
@@ -82,6 +86,16 @@ class FleetInventory < ApplicationRecord
   # One definition, called by `FleetInventoryPolicy` for the endpoints and by
   # `Inventories::TransferAuthorizer` for the two ends of a transfer.
   def visible_to?(membership)
+    # Its own branch ahead of the officers rule, because the two answer
+    # different questions: officers-only asks what rank you hold, and this asks
+    # which squadron you are in. An officer still reaches it -- they answer for
+    # the fleet's stores whichever squadron keeps them.
+    if squadron_only?
+      return false if membership.blank?
+
+      return membership.has_access?(OFFICER_PRIVILEGES) || visible_to_squadrons_of?(membership)
+    end
+
     return true unless officers_only?
     return false if membership.blank?
     return true if membership.has_access?(OFFICER_PRIVILEGES)

@@ -51,7 +51,9 @@ class FleetInventoryPolicy < FleetBasePolicy
     elsif membership.has_access?(FleetInventory::OFFICER_PRIVILEGES)
       relation
     else
-      relation.where(visibility: :members_only).or(relation.where(managed_by: membership.user_id))
+      relation.where(visibility: :members_only)
+        .or(relation.where(managed_by: membership.user_id))
+        .or(relation.merge(FleetInventory.restricted_to_squadrons_of(membership)))
     end
   end
 
@@ -74,6 +76,7 @@ class FleetInventoryPolicy < FleetBasePolicy
   end
 
   params_filter do |params|
-    params.permit(:name, :description, :managed_by, :visibility, :location, :image, :image_preset)
+    params.permit(:name, :description, :managed_by, :visibility, :location, :image, :image_preset,
+      fleet_squadron_ids: [])
   end
 end

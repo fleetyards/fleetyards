@@ -13,9 +13,19 @@ class FleetContractPolicy < FleetBasePolicy
   # agreed to pay for.
   def show?
     return false unless index?
+    return false unless reachable_by_squadron?
     return true unless record.try(:draft?)
 
     manage?
+  end
+
+  # A contract raised for a squadron is on the board for that squadron. Whoever
+  # may run the fleet's contracts reaches all of them, which is the same
+  # exception the draft rule above makes.
+  private def reachable_by_squadron?
+    return true if record.blank? || manage?
+
+    record.visible_to_squadrons_of?(accepted_fleet_membership)
   end
 
   def create?
@@ -89,6 +99,7 @@ class FleetContractPolicy < FleetBasePolicy
     params.permit(:title, :description, :kind, :reward, :reimburse_expenses,
       :crew_limit, :deadline, :cover_image, :cover_image_preset,
       :source_fleet_inventory_id, :destination_fleet_inventory_id,
+      :visibility, fleet_squadron_ids: [],
       items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
         :item_id, :position])
   end
