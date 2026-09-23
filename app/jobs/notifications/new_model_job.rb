@@ -2,6 +2,7 @@
 
 require "discord/new_ship"
 require "bsky/post"
+require "x_com/post"
 
 module Notifications
   class NewModelJob < Notifications::BaseJob
@@ -13,12 +14,14 @@ module Notifications
 
       ::Discord::NewShip.new(model:).run
       post_socially(model, ::Announcements::Platform::BLUESKY) { |text| ::Bsky::Post.new.create(text) } if ::Bsky::Post.configured?
+      post_socially(model, ::Announcements::Platform::X) { |text| ::XCom::Post.new.create(text) } if ::XCom::Post.configured?
 
       model.update(notified: true)
     end
 
     # A failed social post is reported rather than raised: the job retries, and
-    # a retry would post the Discord message a second time.
+    # a retry would post the Discord message and every platform that did work a
+    # second time.
     private def post_socially(model, platform)
       text = social_text(model, platform)
       yield text if text.present?
