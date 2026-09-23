@@ -257,7 +257,8 @@
           "formDetails": "Details",
           "formImages": "Bilder",
           "teams": "Teams",
-          "manageMembers": "Mitglieder verwalten"
+          "addMembers": "Mitglieder hinzufügen",
+          "members": "Mitglieder"
         },
         "stats": "Statistiken",
         "preview": {

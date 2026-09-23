@@ -329,9 +329,14 @@
             "failure": "無法儲存排序。"
           },
           "members": {
-            "save": {
-              "success": "已儲存 %{count} 項變更。",
-              "failure": "有 %{count} 項變更無法儲存。"
+            "add": {
+              "success": "已新增 %{count} 位成員。",
+              "failure": "有 %{count} 位成員無法新增。"
+            },
+            "destroy": {
+              "confirm": "要將 %{username} 移出 %{squadron} 中隊嗎？該成員仍留在艦隊中。",
+              "success": "已將成員移出中隊。",
+              "failure": "無法移除該成員。"
             }
           }
         },

@@ -171,6 +171,11 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     </template>
 
     <template #actions="{ record }">
+      <!-- Whatever the page this list is on adds per row -- taking somebody
+           out of a squadron, on the squadron's own page. Passed through rather
+           than built in, so the removal stays with the page that knows which
+           squadron it is about. -->
+      <slot name="row-actions" :member="record" />
       <MemberActions :member="record" :capabilities="props.capabilities" />
     </template>
     <template #empty>

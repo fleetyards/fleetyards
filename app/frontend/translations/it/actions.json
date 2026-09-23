@@ -209,8 +209,9 @@
         "inviteMember": "Invita nuovi membri",
         "squadrons": {
           "create": "Crea squadrone",
-          "manageMembers": "Gestisci membri",
-          "saveMembers": "Salva %{count}",
+          "addMember": "Aggiungi membri",
+          "removeMember": "Rimuovi dallo squadrone",
+          "addMembers": "Aggiungi %{count}",
           "viewMembers": "Membri dello squadrone",
           "viewShips": "Navi dello squadrone",
           "viewStats": "Statistiche dello squadrone"

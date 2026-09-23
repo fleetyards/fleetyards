@@ -84,14 +84,14 @@ const railStyle = computed(() => ({
         </span>
         <Btn
           v-if="membersManageable"
-          v-tooltip="t('actions.fleet.squadrons.manageMembers')"
+          v-tooltip="t('actions.fleet.squadrons.addMember')"
           :variant="BtnVariantsEnum.BARE"
-          :aria-label="t('actions.fleet.squadrons.manageMembers')"
+          :aria-label="t('actions.fleet.squadrons.addMember')"
           class="squadron-panel-action"
-          data-test="squadron-panel-manage-members"
+          data-test="squadron-panel-add-members"
           @click.prevent="emit('addMembers')"
         >
-          <i class="fa-duotone fa-users-gear" />
+          <i class="fa-duotone fa-user-plus" />
         </Btn>
         <Btn
           v-if="editable"

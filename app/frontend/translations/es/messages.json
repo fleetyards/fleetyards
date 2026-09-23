@@ -329,9 +329,14 @@
             "failure": "No se pudo guardar el orden."
           },
           "members": {
-            "save": {
-              "success": "%{count} cambios guardados.",
-              "failure": "No se pudieron guardar %{count} cambios."
+            "add": {
+              "success": "%{count} miembros añadidos.",
+              "failure": "No se han podido añadir %{count} miembros."
+            },
+            "destroy": {
+              "confirm": "¿Quitar a %{username} del escuadrón %{squadron}? Seguirá en la flota.",
+              "success": "Miembro quitado del escuadrón.",
+              "failure": "No se pudo quitar al miembro."
             }
           }
         },

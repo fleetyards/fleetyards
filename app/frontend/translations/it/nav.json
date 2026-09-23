@@ -51,6 +51,7 @@
         },
         "squadrons": {
           "index": "Squadroni",
+          "members": "Membri",
           "create": {
             "details": "Dettagli",
             "images": "Immagini"

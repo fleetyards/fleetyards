@@ -202,11 +202,11 @@ const crumbs = computed<Crumb[]>(() => [
         v-if="canManageMembers"
         :size="BtnSizesEnum.MD"
         mobile-icon-only
-        data-test="squadron-manage-members"
+        data-test="squadron-add-member"
         @click="openMemberPicker"
       >
-        <i class="fa-duotone fa-users-gear" />
-        {{ t("actions.fleet.squadrons.manageMembers") }}
+        <i class="fa-duotone fa-user-plus" />
+        {{ t("actions.fleet.squadrons.addMember") }}
       </Btn>
       <Btn
         v-if="canUpdate"
@@ -260,7 +260,10 @@ const crumbs = computed<Crumb[]>(() => [
         <div class="squadron-links">
           <Btn
             block
-            :to="filtered('fleet-members-index')"
+            :to="{
+              name: 'fleet-squadron-members',
+              params: { slug: props.fleet.slug, squadron: squadronSlug },
+            }"
             data-test="squadron-members-link"
           >
             <i class="fa-duotone fa-users" />

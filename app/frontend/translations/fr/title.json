@@ -59,6 +59,7 @@
         },
         "squadrons": {
           "index": "Escadrons de %{fleet}",
+          "members": "Membres de l'escadron de %{fleet}",
           "create": {
             "details": "Créer un escadron - %{fleet}",
             "images": "Images de l'escadron - %{fleet}"

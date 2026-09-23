@@ -257,7 +257,8 @@
           "formDetails": "Dettagli",
           "formImages": "Immagini",
           "teams": "Squadre",
-          "manageMembers": "Gestisci membri"
+          "addMembers": "Aggiungi membri",
+          "members": "Membri"
         },
         "stats": "Statistiche",
         "preview": {

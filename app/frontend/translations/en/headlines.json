@@ -259,7 +259,8 @@
           "formDetails": "Details",
           "formImages": "Images",
           "teams": "Teams",
-          "manageMembers": "Manage Members"
+          "addMembers": "Add Members",
+          "members": "Members"
         },
         "stats": "Stats",
         "preview": {

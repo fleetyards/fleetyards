@@ -29,7 +29,6 @@ import {
   type FleetMembersParams,
   useFleetMembers,
   useCreateFleetSquadronMember,
-  useDestroyFleetSquadronMember,
 } from "@/services/fyApi";
 
 type Props = {
@@ -54,6 +53,10 @@ const queryParams = computed<FleetMembersParams>(() => ({
   q: {
     usernameCont: debouncedSearch.value || undefined,
     stateIn: ["accepted"],
+    // Alphabetically, and asked for rather than sorted on arrival: the roster
+    // comes a page at a time, so sorting what has loaded would put page two's
+    // A under page one's Z.
+    s: ["username asc"],
   } as never,
 }));
 
@@ -105,11 +108,9 @@ const loadMore = () => {
 };
 
 /*
- * Who is in it now. The picker shows them ticked rather than hiding them,
- * because taking somebody out of a squadron has to be possible somewhere and
- * this is where the roster is already in front of you -- which matters more
- * now that a member holds only one squadron, so moving them means taking them
- * out of the one they have.
+ * Already in the squadron, so unpickable. Filtered here rather than in the
+ * query because no endpoint answers "not in this squadron" -- and the server
+ * refuses a duplicate anyway, so this is the courtesy rather than the guard.
  */
 const alreadyIn = (member: FleetMember) =>
   (member.squadrons ?? []).some(
@@ -133,39 +134,9 @@ const blockedBy = (member: FleetMember) => {
   );
 };
 
-/*
- * The squadron's own members first, then everybody else, alphabetically within
- * each. Ordered by who was in it when the modal opened rather than by what is
- * ticked now: re-sorting on every tick moves the next card under the pointer.
- */
-const options = computed(() =>
-  [...records.value].sort((a, b) => {
-    if (wasIn(a) !== wasIn(b)) return wasIn(a) ? -1 : 1;
+const options = computed(() => records.value.filter((m) => !alreadyIn(m)));
 
-    return (a.username ?? "").localeCompare(b.username ?? "");
-  }),
-);
-
-// Seeded from the squadron as the roster loads, so the ticks are the state it
-// is in and the submit is the difference. Only members not yet accounted for
-// are added, so a page 2 that arrives later does not undo an untick on page 1.
 const selection = ref<FleetMember[]>([]);
-const seeded = ref<string[]>([]);
-
-watch(
-  records,
-  (members) => {
-    const fresh = members.filter(
-      (member) => alreadyIn(member) && !seeded.value.includes(member.id),
-    );
-
-    seeded.value = [...seeded.value, ...fresh.map((member) => member.id)];
-    selection.value = [...selection.value, ...fresh];
-  },
-  { immediate: true },
-);
-
-const wasIn = (member: FleetMember) => seeded.value.includes(member.id);
 
 const isSelected = (member: FleetMember) =>
   selection.value.some((held) => held.id === member.id);
@@ -180,74 +151,52 @@ const remove = (id: string) => {
   selection.value = selection.value.filter((held) => held.id !== id);
 };
 
-const resetSelection = () => {
-  selection.value = records.value.filter(wasIn);
+const clearSelection = () => {
+  selection.value = [];
 };
 
 const submitting = ref(false);
 
-const createMutation = useCreateFleetSquadronMember();
-const destroyMutation = useDestroyFleetSquadronMember();
-
-// The difference between what is ticked and what was, which is what the submit
-// has to write. Ticking somebody who was already in is not a request.
-const toAdd = computed(() =>
-  selection.value.filter((member) => !wasIn(member)),
-);
-
-const toRemove = computed(() =>
-  records.value.filter((member) => wasIn(member) && !isSelected(member)),
-);
-
-const pending = computed(() => toAdd.value.length + toRemove.value.length);
+const mutation = useCreateFleetSquadronMember();
 
 /*
- * One request per person, and a failure part-way through leaves what already
- * landed in place: they are separate rows, and rolling them back would be a
- * third way to change a squadron's roster that nobody asked for. The message
- * says how many did not.
+ * One request per person, and a failure part-way through leaves the ones
+ * already added in place: they are separate rows, and undoing them would be a
+ * second way to remove somebody that nobody asked for. The message says how
+ * many landed.
  */
 const onSubmit = async () => {
-  if (!pending.value) return;
+  if (!selection.value.length) return;
 
   submitting.value = true;
 
-  const results = await Promise.allSettled([
-    ...toAdd.value.map((member) =>
-      createMutation.mutateAsync({
+  const results = await Promise.allSettled(
+    selection.value.map((member) =>
+      mutation.mutateAsync({
         fleetSlug: props.fleet.slug,
         fleetSquadronSlug: props.squadron.slug,
         data: { username: member.username },
       }),
     ),
-    ...toRemove.value.map((member) =>
-      destroyMutation.mutateAsync({
-        fleetSlug: props.fleet.slug,
-        fleetSquadronSlug: props.squadron.slug,
-        username: member.username,
-      }),
-    ),
-  ]);
+  );
 
   submitting.value = false;
 
-  const landed = results.filter(
+  const added = results.filter(
     (result) => result.status === "fulfilled",
   ).length;
-  const failed = results.length - landed;
+  const failed = results.length - added;
 
-  if (landed) {
+  if (added) {
     comlink.emit("fleet-squadron-members-updated");
     displaySuccess({
-      text: t("messages.fleet.squadrons.members.save.success", {
-        count: landed,
-      }),
+      text: t("messages.fleet.squadrons.members.add.success", { count: added }),
     });
   }
 
   if (failed) {
     displayAlert({
-      text: t("messages.fleet.squadrons.members.save.failure", {
+      text: t("messages.fleet.squadrons.members.add.failure", {
         count: failed,
       }),
     });
@@ -259,7 +208,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.fleets.squadrons.manageMembers')">
+  <Modal :title="t('headlines.fleets.squadrons.addMembers')">
     <form
       id="fleet-squadron-members-form"
       class="member-picker"
@@ -337,8 +286,6 @@ const onSubmit = async () => {
       <!-- In the scroll area rather than the footer, for the reason the ship
            picker gives: the footer is sized for one row of actions and a tray
            of chips there pushes the submit button out of the viewport. -->
-      <!-- What the squadron will hold, not what is being added: the tray is the
-           answer the submit writes. -->
       <div v-if="selection.length" class="member-picker__tray">
         <Chip
           v-for="member in selection"
@@ -361,21 +308,22 @@ const onSubmit = async () => {
           }}
         </span>
         <Btn
-          v-if="pending"
+          v-if="selection.length"
           :variant="BtnVariantsEnum.BARE"
-          data-test="squadron-members-reset"
-          @click="resetSelection"
+          @click="clearSelection"
         >
           {{ t("actions.reset") }}
         </Btn>
         <Btn
           :loading="submitting"
-          :disabled="!pending"
+          :disabled="!selection.length"
           :size="BtnSizesEnum.LG"
-          data-test="squadron-save-members"
+          data-test="squadron-add-members"
           @click="onSubmit"
         >
-          {{ t("actions.fleet.squadrons.saveMembers", { count: pending }) }}
+          {{
+            t("actions.fleet.squadrons.addMembers", { count: selection.length })
+          }}
         </Btn>
       </div>
     </template>

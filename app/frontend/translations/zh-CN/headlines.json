@@ -257,7 +257,8 @@
           "formDetails": "详情",
           "formImages": "图片",
           "teams": "小队",
-          "manageMembers": "管理成员"
+          "addMembers": "添加成员",
+          "members": "成员"
         },
         "stats": "统计",
         "preview": {

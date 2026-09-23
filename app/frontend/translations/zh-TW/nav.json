@@ -51,6 +51,7 @@
         },
         "squadrons": {
           "index": "中隊",
+          "members": "成員",
           "create": {
             "details": "詳細資訊",
             "images": "圖片"

@@ -209,8 +209,9 @@
         "inviteMember": "Invite new Member",
         "squadrons": {
           "create": "创建中队",
-          "manageMembers": "管理成员",
-          "saveMembers": "保存 %{count} 项",
+          "addMember": "添加成员",
+          "removeMember": "移出中队",
+          "addMembers": "添加 %{count} 名",
           "viewMembers": "中队成员",
           "viewShips": "中队舰船",
           "viewStats": "中队统计"

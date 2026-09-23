@@ -329,9 +329,14 @@
             "failure": "L'ordre n'a pas pu être enregistré."
           },
           "members": {
-            "save": {
-              "success": "%{count} modifications enregistrées.",
-              "failure": "%{count} modifications n'ont pas pu être enregistrées."
+            "add": {
+              "success": "%{count} membres ajoutés.",
+              "failure": "%{count} membres n'ont pas pu être ajoutés."
+            },
+            "destroy": {
+              "confirm": "Retirer %{username} de l'escadron %{squadron} ? La personne reste dans la flotte.",
+              "success": "Membre retiré de l'escadron.",
+              "failure": "Le membre n'a pas pu être retiré."
             }
           }
         },

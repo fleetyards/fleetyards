@@ -329,9 +329,14 @@
             "failure": "Die Reihenfolge konnte nicht gespeichert werden."
           },
           "members": {
-            "save": {
-              "success": "%{count} Änderungen gespeichert.",
-              "failure": "%{count} Änderungen konnten nicht gespeichert werden."
+            "add": {
+              "success": "%{count} Mitglieder hinzugefügt.",
+              "failure": "%{count} Mitglieder konnten nicht hinzugefügt werden."
+            },
+            "destroy": {
+              "confirm": "„%{username}“ aus der Staffel „%{squadron}“ entfernen? Die Person bleibt in der Flotte.",
+              "success": "Mitglied aus der Staffel entfernt.",
+              "failure": "Mitglied konnte nicht entfernt werden."
             }
           }
         },

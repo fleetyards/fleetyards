@@ -339,9 +339,14 @@
             "failure": "The order could not be saved."
           },
           "members": {
-            "save": {
-              "success": "%{count} changes saved.",
-              "failure": "%{count} changes could not be saved."
+            "add": {
+              "success": "%{count} members added.",
+              "failure": "%{count} members could not be added."
+            },
+            "destroy": {
+              "confirm": "Remove %{username} from the %{squadron} squadron? They stay in the fleet.",
+              "success": "Member removed from the squadron.",
+              "failure": "Member could not be removed."
             }
           }
         },

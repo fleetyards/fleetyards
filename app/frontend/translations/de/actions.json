@@ -209,8 +209,9 @@
         "inviteMember": "Neues Mitglied einladen",
         "squadrons": {
           "create": "Staffel anlegen",
-          "manageMembers": "Mitglieder verwalten",
-          "saveMembers": "%{count} übernehmen",
+          "addMember": "Mitglieder hinzufügen",
+          "removeMember": "Aus der Staffel entfernen",
+          "addMembers": "%{count} hinzufügen",
           "viewMembers": "Mitglieder der Staffel",
           "viewShips": "Schiffe der Staffel",
           "viewStats": "Statistiken der Staffel"

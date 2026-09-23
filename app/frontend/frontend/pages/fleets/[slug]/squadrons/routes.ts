@@ -75,6 +75,21 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: ":squadron/members/",
+    name: "fleet-squadron-members",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/squadrons/[squadron]/members.vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.squadrons.members",
+      needsAuthentication: true,
+      access: SQUADRON_READ_ACCESS,
+      feature: FeatureFlagName.FLEET_SQUADRONS,
+      featureScope: "fleet",
+      customTitle: true,
+    },
+  },
+  {
     path: ":squadron/",
     name: "fleet-squadron",
     component: () =>
