@@ -133,7 +133,18 @@ const blockedBy = (member: FleetMember) => {
   );
 };
 
-const options = computed(() => records.value);
+/*
+ * The squadron's own members first, then everybody else, alphabetically within
+ * each. Ordered by who was in it when the modal opened rather than by what is
+ * ticked now: re-sorting on every tick moves the next card under the pointer.
+ */
+const options = computed(() =>
+  [...records.value].sort((a, b) => {
+    if (wasIn(a) !== wasIn(b)) return wasIn(a) ? -1 : 1;
+
+    return (a.username ?? "").localeCompare(b.username ?? "");
+  }),
+);
 
 // Seeded from the squadron as the roster loads, so the ticks are the state it
 // is in and the submit is the difference. Only members not yet accounted for

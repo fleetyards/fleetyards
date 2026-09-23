@@ -150,6 +150,21 @@ describe("FleetSquadronMemberPicker", () => {
    * a member holds one squadron, so moving them means taking them out of the
    * one they have.
    */
+  it("puts its own members first, then the rest alphabetically", async () => {
+    const subject = await mount(false);
+
+    const order = subject
+      .findAll("[data-test^='squadron-member-option-']")
+      .map((el) => el.attributes("data-test"));
+
+    expect(order).toEqual([
+      "squadron-member-option-settled",
+      "squadron-member-option-free",
+      "squadron-member-option-on-the-rota",
+      "squadron-member-option-spoken-for",
+    ]);
+  });
+
   it("opens with the members it already holds ticked", async () => {
     const subject = await mount(false);
 
