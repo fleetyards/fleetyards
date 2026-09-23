@@ -74,6 +74,30 @@ module Bsky
       }
     end
 
+    test "#create makes links and hashtags clickable" do
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+
+      Bsky::Post.new.create("Carrack\nhttps://fleetyards.net\n#starcitizen")
+
+      assert_requested(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord") { |request|
+        features = JSON.parse(request.body).dig("record", "facets").map { |facet| facet["features"].first["$type"] }
+
+        features == ["app.bsky.richtext.facet#link", "app.bsky.richtext.facet#tag"]
+      }
+    end
+
+    test "#create writes no facets for plain text" do
+      stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
+        .to_return(status: 200, body: {uri: "at://first", cid: "cid"}.to_json, headers: {"Content-Type" => "application/json"})
+
+      Bsky::Post.new.create("Hello")
+
+      assert_requested(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord") { |request|
+        !JSON.parse(request.body)["record"].key?("facets")
+      }
+    end
+
     test "#create raises when Bluesky rejects the post" do
       stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
         .to_return(status: 400, body: {error: "InvalidRequest"}.to_json, headers: {"Content-Type" => "application/json"})

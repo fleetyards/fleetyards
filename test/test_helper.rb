@@ -98,6 +98,18 @@ module ActiveSupport
     include FactoryBot::Syntax::Methods
     include ActiveSupport::Testing::TimeHelpers
 
+    # Inline Sidekiq tests exercise model-creation notifications. Keep them from
+    # posting to Bluesky or X unless a test explicitly supplies creds.
+    setup do
+      Rails.application.credentials.stubs(:bsky_handle).returns(nil)
+      Rails.application.credentials.stubs(:bsky_app_password).returns(nil)
+      Rails.application.credentials.stubs(:bsky_endpoint).returns(nil)
+      Rails.application.credentials.stubs(:x_api_key).returns(nil)
+      Rails.application.credentials.stubs(:x_api_secret).returns(nil)
+      Rails.application.credentials.stubs(:x_access_token).returns(nil)
+      Rails.application.credentials.stubs(:x_access_token_secret).returns(nil)
+    end
+
     teardown do
       OmniAuth.config.mock_auth.each_key do |provider|
         OmniAuth.config.mock_auth[provider] = nil
