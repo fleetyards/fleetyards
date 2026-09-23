@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bskyrb"
+require "bsky/facets"
 
 module Bsky
   class Post
@@ -48,6 +49,9 @@ module Bsky
         "createdAt" => Time.current.utc.iso8601(3),
         "text" => message
       }
+
+      facets = ::Bsky::Facets.extract(message)
+      record["facets"] = facets if facets.any?
 
       if parent.present?
         record["reply"] = {
