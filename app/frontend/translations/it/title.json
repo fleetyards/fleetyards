@@ -59,6 +59,7 @@
         },
         "squadrons": {
           "index": "Squadroni di %{fleet}",
+          "overview": "Panoramica dello squadrone di %{fleet}",
           "members": "Membri dello squadrone di %{fleet}",
           "create": {
             "details": "Crea squadrone - %{fleet}",

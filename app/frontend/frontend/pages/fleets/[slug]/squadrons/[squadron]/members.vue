@@ -5,19 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import { type Crumb } from "@/shared/components/BreadCrumbs/types";
-import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
+import SquadronMembersFilterForm from "@/frontend/components/Fleets/Squadrons/SquadronMembersFilterForm/index.vue";
 import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -26,18 +20,19 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import {
   useFleetMembers as useFleetMembersQuery,
-  useFleetSquadron,
   useDestroyFleetSquadronMember,
   getFleetMembersQueryKey,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
   type FleetMembersParams,
+  type FleetSquadron,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
+  squadron: FleetSquadron;
 };
 
 const props = defineProps<Props>();
@@ -49,11 +44,6 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const squadronSlug = computed(() => route.params.squadron as string);
-
-const { data: squadron, isLoading: squadronLoading } = useFleetSquadron(
-  fleetSlug,
-  squadronSlug,
-);
 
 const canManageMembers = computed(
   () => props.membership?.capabilities?.manageSquadronMembers ?? false,
@@ -95,13 +85,33 @@ const memberItems = computed(() => members.value?.items ?? []);
 
 const destroyMutation = useDestroyFleetSquadronMember();
 
+const joinedAtFor = (member: FleetMember) =>
+  member.squadrons?.find((item) => item.slug === squadronSlug.value)
+    ?.membershipCreatedAt;
+
+const openJoinedAtModal = (member: FleetMember) => {
+  const membershipCreatedAt = joinedAtFor(member);
+  if (!membershipCreatedAt) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Squadrons/SquadronMemberDateModal/index.vue"),
+    props: {
+      fleetSlug: props.fleet.slug,
+      squadronSlug: squadronSlug.value,
+      username: member.username,
+      membershipCreatedAt,
+    },
+  });
+};
+
 // Out of the squadron, not out of the fleet -- which is the confusion worth
 // heading off, since this row looks like the roster's.
 const removeMember = (member: FleetMember) => {
   displayConfirm({
     text: t("messages.fleet.squadrons.members.destroy.confirm", {
       username: member.username,
-      squadron: squadron.value?.name,
+      squadron: props.squadron.name,
     }),
     confirmText: t("actions.remove"),
     tone: AppConfirmTonesEnum.DANGER,
@@ -128,14 +138,6 @@ const removeMember = (member: FleetMember) => {
   });
 };
 
-const openMemberPicker = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronMemberPicker/index.vue"),
-    props: { fleet: props.fleet, squadron: squadron.value },
-  });
-};
-
 const membersAddedComlink = ref<() => void>();
 
 onMounted(() => {
@@ -148,55 +150,9 @@ onMounted(() => {
 onUnmounted(() => {
   membersAddedComlink.value?.();
 });
-
-const crumbs = computed<Crumb[]>(() => [
-  {
-    to: { name: "fleet", params: { slug: props.fleet.slug } },
-    label: props.fleet.name,
-  },
-  {
-    to: { name: "fleet-squadrons", params: { slug: props.fleet.slug } },
-    label: t("headlines.fleets.squadrons.index"),
-  },
-  ...(squadron.value
-    ? [
-        {
-          to: {
-            name: "fleet-squadron",
-            params: { slug: props.fleet.slug, squadron: squadron.value.slug },
-          },
-          label: squadron.value.name,
-        },
-      ]
-    : []),
-]);
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
-
-  <Loader :loading="squadronLoading" />
-
-  <Heading hero size="hero">
-    {{ t("headlines.fleets.squadrons.members") }}
-    <template v-if="squadron" #subHeading>
-      {{ squadron.name }}
-    </template>
-  </Heading>
-
-  <Teleport to="#header-right">
-    <Btn
-      v-if="canManageMembers && squadron"
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      data-test="squadron-add-member"
-      @click="openMemberPicker"
-    >
-      <i class="fa-duotone fa-user-plus" />
-      {{ t("actions.fleet.squadrons.addMember") }}
-    </Btn>
-  </Teleport>
-
   <FilteredList
     key="fleet-squadron-members"
     :records="memberItems"
@@ -207,7 +163,7 @@ const crumbs = computed<Crumb[]>(() => [
     placeholders
   >
     <template #filter>
-      <FleetMembersFilterForm variant="members" />
+      <SquadronMembersFilterForm />
     </template>
 
     <template #default="{ emptyVisible, loading }">
@@ -219,17 +175,31 @@ const crumbs = computed<Crumb[]>(() => [
         :empty-visible="emptyVisible"
         :loading="loading"
         :show-squadrons="false"
+        :show-member-actions="false"
+        :squadron-slug="squadronSlug"
       >
         <template v-if="canManageMembers" #row-actions="{ member }">
-          <Btn
-            v-tooltip="t('actions.fleet.squadrons.removeMember')"
-            :variant="BtnVariantsEnum.BARE"
-            :aria-label="t('actions.fleet.squadrons.removeMember')"
-            :data-test="`squadron-remove-${member.username}`"
-            @click="removeMember(member)"
-          >
-            <i class="fa-duotone fa-user-minus" />
-          </Btn>
+          <BtnGroup>
+            <Btn
+              v-if="joinedAtFor(member)"
+              v-tooltip="t('actions.edit')"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('actions.edit')"
+              :data-test="`squadron-member-date-${member.username}`"
+              @click="openJoinedAtModal(member)"
+            >
+              <i class="fa-duotone fa-calendar-pen" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.fleet.squadrons.removeMember')"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('actions.fleet.squadrons.removeMember')"
+              :data-test="`squadron-remove-${member.username}`"
+              @click="removeMember(member)"
+            >
+              <i class="fa-duotone fa-user-minus" />
+            </Btn>
+          </BtnGroup>
         </template>
       </FleetMembersList>
     </template>

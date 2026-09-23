@@ -59,6 +59,7 @@
         },
         "squadrons": {
           "index": "%{fleet} 中队",
+          "overview": "%{fleet} 中队概览",
           "members": "%{fleet} 中队成员",
           "create": {
             "details": "创建中队 - %{fleet}",

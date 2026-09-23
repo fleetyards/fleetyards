@@ -59,6 +59,7 @@
         },
         "squadrons": {
           "index": "%{fleet} Staffeln",
+          "overview": "Staffelübersicht – %{fleet}",
           "members": "%{fleet} Staffel-Mitglieder",
           "create": {
             "details": "Staffel anlegen – %{fleet}",

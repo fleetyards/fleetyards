@@ -8,38 +8,23 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import Empty from "@/shared/components/Empty/index.vue";
-import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SquadronMembersFilterForm from "@/frontend/components/Fleets/Squadrons/SquadronMembersFilterForm/index.vue";
-import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
+import TabNavView from "@/shared/components/TabNavView/index.vue";
+import { type TabNavLink } from "@/shared/components/TabNavView/types";
+import { squadronDetailRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/routes";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { usePagination } from "@/shared/composables/usePagination";
-import { useFilters } from "@/shared/composables/useFilters";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
+import { useSessionStore } from "@/frontend/stores/session";
 import {
   type Fleet,
   type FleetMember,
-  type FleetMemberQuery,
-  type FleetMembersParams,
   useFleetSquadron,
   useDestroyFleetSquadron,
-  useFleetMembers as useFleetMembersQuery,
-  useDestroyFleetSquadronMember,
-  getFleetMembersQueryKey,
 } from "@/services/fyApi";
 
 type Props = {
@@ -52,6 +37,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
+const sessionStore = useSessionStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -62,11 +48,9 @@ const squadronSlug = computed(() => route.params.squadron as string);
 const canUpdate = computed(
   () => props.membership?.capabilities?.updateSquadrons ?? false,
 );
-
 const canDestroy = computed(
   () => props.membership?.capabilities?.destroySquadrons ?? false,
 );
-
 const canManageMembers = computed(
   () => props.membership?.capabilities?.manageSquadronMembers ?? false,
 );
@@ -77,77 +61,24 @@ const {
   refetch: refetchSquadron,
 } = useFleetSquadron(fleetSlug, squadronSlug);
 
-const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
-  updateCallback: async () => await refetchMembers(),
-});
-const { perPage, page, updatePerPage } = usePagination(
-  getFleetMembersQueryKey(props.fleet.slug),
-);
-const membersQueryParams = computed<FleetMembersParams>(() => ({
-  page: page.value,
-  perPage: perPage.value,
-  q: {
-    ...getQuery(),
-    sorts: getQuery().sorts ?? ["squadronMembershipCreatedAt desc"],
-    squadronSlugIn: [squadronSlug.value],
-    stateIn: ["accepted"],
-  } as FleetMemberQuery,
-}));
-const {
-  data: members,
-  refetch: refetchMembers,
-  ...membersStatus
-} = useFleetMembersQuery(fleetSlug, membersQueryParams);
-const memberItems = computed(() => members.value?.items ?? []);
-const destroyMemberMutation = useDestroyFleetSquadronMember();
-
-const removeMember = (member: FleetMember) => {
-  displayConfirm({
-    text: t("messages.fleet.squadrons.members.destroy.confirm", {
-      username: member.username,
-      squadron: squadron.value?.name,
-    }),
-    confirmText: t("actions.remove"),
-    tone: AppConfirmTonesEnum.DANGER,
-    onConfirm: async () => {
-      await destroyMemberMutation
-        .mutateAsync({
-          fleetSlug: props.fleet.slug,
-          fleetSquadronSlug: squadronSlug.value,
-          username: member.username as string,
-        })
-        .then(async () => {
-          displaySuccess({
-            text: t("messages.fleet.squadrons.members.destroy.success"),
-          });
-          comlink.emit("fleet-squadron-members-updated");
-          await refetchMembers();
-        })
-        .catch(() =>
-          displayAlert({
-            text: t("messages.fleet.squadrons.members.destroy.failure"),
-          }),
-        );
+const tabLinks = computed<TabNavLink[]>(() => [
+  {
+    to: {
+      name: "fleet-ships",
+      params: { slug: props.fleet.slug },
+      query: { squadronSlugIn: [squadronSlug.value] },
     },
-  });
-};
-
-/*
- * The squadron's ships and its numbers are the fleet's own pages, narrowed.
- * Building a second ship list and a second stats page here would be two more
- * implementations of what those pages already do, and they would drift; a
- * squadron is a way of slicing the fleet, so the slice belongs on the page that
- * owns the list.
- */
-const filtered = (name: string) => ({
-  name,
-  params: { slug: props.fleet.slug },
-  query: { squadronSlugIn: [squadronSlug.value] },
-});
-
-const refetchAll = async () => {
-  await Promise.all([refetchSquadron(), refetchMembers()]);
-};
+    label: t("actions.fleet.squadrons.viewShips"),
+  },
+  {
+    to: {
+      name: "fleet-stats",
+      params: { slug: props.fleet.slug },
+      query: { squadronSlugIn: [squadronSlug.value] },
+    },
+    label: t("actions.fleet.squadrons.viewStats"),
+  },
+]);
 
 const openMemberPicker = () => {
   comlink.emit("open-modal", {
@@ -157,30 +88,8 @@ const openMemberPicker = () => {
   });
 };
 
-const joinedAtFor = (member: FleetMember) =>
-  member.squadrons?.find((item) => item.slug === squadronSlug.value)
-    ?.membershipCreatedAt;
-
-const openJoinedAtModal = (member: FleetMember) => {
-  const membershipCreatedAt = joinedAtFor(member);
-  if (!membershipCreatedAt) return;
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronMemberDateModal/index.vue"),
-    props: {
-      fleetSlug: props.fleet.slug,
-      squadronSlug: squadronSlug.value,
-      username: member.username,
-      membershipCreatedAt,
-    },
-  });
-};
-
 const destroyMutation = useDestroyFleetSquadron();
 
-// Disbanding takes nobody out of the fleet, but the squadron itself does not
-// come back -- hence danger rather than warning.
 const onDestroy = () => {
   displayConfirm({
     text: t("messages.fleet.squadrons.destroy.confirm", {
@@ -212,23 +121,23 @@ const onDestroy = () => {
   });
 };
 
-const squadronUpdatedComlink = ref();
-const squadronMembersComlink = ref();
+const squadronUpdatedComlink = ref<() => void>();
+const squadronMembersComlink = ref<() => void>();
 
 onMounted(() => {
   squadronUpdatedComlink.value = comlink.on(
     "fleet-squadron-updated",
-    () => void refetchAll(),
+    () => void refetchSquadron(),
   );
   squadronMembersComlink.value = comlink.on(
     "fleet-squadron-members-updated",
-    () => void refetchAll(),
+    () => void refetchSquadron(),
   );
 });
 
 onUnmounted(() => {
-  squadronUpdatedComlink.value();
-  squadronMembersComlink.value();
+  squadronUpdatedComlink.value?.();
+  squadronMembersComlink.value?.();
 });
 
 const crumbs = computed<Crumb[]>(() => [
@@ -245,7 +154,6 @@ const crumbs = computed<Crumb[]>(() => [
 
 <template>
   <BreadCrumbs :crumbs="crumbs" />
-
   <Loader :loading="isLoading" />
 
   <template v-if="squadron">
@@ -272,8 +180,6 @@ const crumbs = computed<Crumb[]>(() => [
                 count: squadron.memberCount,
               })
             }}
-            <!-- The lists say which of the two rows a card came from; this page
-                 is reached from both and would otherwise say neither. -->
             <span
               v-if="squadron.team"
               v-tooltip="t('labels.fleet.squadrons.teamHint')"
@@ -324,121 +230,24 @@ const crumbs = computed<Crumb[]>(() => [
       </Btn>
     </Teleport>
 
-    <div class="squadron-summary">
-      <div class="squadron-description-column">
-        <Panel v-if="squadron.description" fill-height>
-          <PanelBody class="squadron-description-body">
-            <p class="squadron-description">
-              {{ squadron.description }}
-            </p>
-          </PanelBody>
-        </Panel>
-      </div>
-
-      <!-- Out to the fleet's own pages, narrowed to this squadron, rather than
-           a second roster, a second ship list and a second stats page living
-           here. Stacked, so each reads as a destination rather than as one of a
-           row of buttons. -->
-      <div class="squadron-links-column">
-        <div class="squadron-links">
-          <Btn
-            block
-            :to="filtered('fleet-ships')"
-            data-test="squadron-ships-link"
-          >
-            <i class="fa-duotone fa-starship" />
-            {{ t("actions.fleet.squadrons.viewShips") }}
-          </Btn>
-          <Btn
-            block
-            :to="filtered('fleet-stats')"
-            data-test="squadron-stats-link"
-          >
-            <i class="fa-duotone fa-chart-bar" />
-            {{ t("actions.fleet.squadrons.viewStats") }}
-          </Btn>
-        </div>
-      </div>
-    </div>
-
-    <Heading :level="HeadingLevelEnum.H2" mt>
-      {{ t("headlines.fleets.squadrons.members") }}
-    </Heading>
-
-    <FilteredList
-      key="fleet-squadron-members"
-      :records="memberItems"
-      :name="route.name?.toString() || ''"
-      :async-status="membersStatus"
-      :is-filter-selected="isFilterSelected"
-      hide-empty
-      placeholders
+    <TabNavView
+      :routes="squadronDetailRoutes"
+      :links="tabLinks"
+      :authenticated="sessionStore.isAuthenticated"
+      :resource-access="props.membership?.fleetRole?.resourceAccess"
     >
-      <template #filter>
-        <SquadronMembersFilterForm />
-      </template>
-
-      <template #default="{ emptyVisible, loading }">
-        <FleetMembersList
-          :members="memberItems"
-          :capabilities="props.membership?.capabilities"
-          :empty-visible="emptyVisible"
-          :loading="loading"
-          :show-squadrons="false"
-          :show-member-actions="false"
-          :squadron-slug="squadronSlug"
-        >
-          <template v-if="canManageMembers" #row-actions="{ member }">
-            <BtnGroup>
-              <Btn
-                v-if="joinedAtFor(member)"
-                v-tooltip="t('actions.edit')"
-                :variant="BtnVariantsEnum.BARE"
-                :aria-label="t('actions.edit')"
-                :data-test="`squadron-member-date-${member.username}`"
-                @click="openJoinedAtModal(member)"
-              >
-                <i class="fa-duotone fa-calendar-pen" />
-              </Btn>
-              <Btn
-                v-tooltip="t('actions.fleet.squadrons.removeMember')"
-                :variant="BtnVariantsEnum.BARE"
-                :aria-label="t('actions.fleet.squadrons.removeMember')"
-                :data-test="`squadron-remove-${member.username}`"
-                @click="removeMember(member)"
-              >
-                <i class="fa-duotone fa-user-minus" />
-              </Btn>
-            </BtnGroup>
-          </template>
-        </FleetMembersList>
-      </template>
-
-      <template #pagination-top>
-        <Paginator
-          :query-result-ref="members"
-          :per-page="perPage"
-          :update-per-page="updatePerPage"
+      <template #content>
+        <router-view
+          :fleet="props.fleet"
+          :membership="props.membership"
+          :squadron="squadron"
         />
       </template>
-
-      <template #pagination-bottom>
-        <Paginator
-          :query-result-ref="members"
-          :per-page="perPage"
-          :update-per-page="updatePerPage"
-        />
-      </template>
-    </FilteredList>
+    </TabNavView>
   </template>
-
-  <Empty v-else-if="!isLoading" :name="t('labels.fleet.squadrons.index')" />
 </template>
 
 <style lang="scss" scoped>
-// Its own band rather than a backdrop behind the text: a squadron picks this
-// picture, and a heading laid over an arbitrary photograph is unreadable about
-// half the time.
 .squadron-header {
   height: 220px;
   margin-bottom: 20px;
@@ -474,42 +283,5 @@ const crumbs = computed<Crumb[]>(() => [
   margin-left: 12px;
   padding-left: 12px;
   border-left: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-}
-
-// PanelBody opens at 4px, which is tuned to sit under a heading that closes at
-// 12px. There is no heading on this panel, so the text sat against the top edge
-// while the bottom kept its 18px.
-.squadron-description-body {
-  padding: 18px;
-}
-
-.squadron-description {
-  margin: 0;
-  // Written in a textarea; the paragraphs somebody typed are kept.
-  white-space: pre-line;
-}
-
-// Centred in the panel, the way an empty list is in its own column.
-.squadron-description-body :deep(.empty-list) {
-  margin-inline: auto;
-  text-align: center;
-}
-
-.squadron-links {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.squadron-summary {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 20px;
-}
-
-@media (max-width: 767.98px) {
-  .squadron-summary {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 </style>

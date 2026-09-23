@@ -51,6 +51,7 @@
         },
         "squadrons": {
           "index": "Squadrons",
+          "overview": "Overview",
           "members": "Members",
           "create": {
             "details": "Details",

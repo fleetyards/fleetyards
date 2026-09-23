@@ -51,6 +51,7 @@
         },
         "squadrons": {
           "index": "中队",
+          "overview": "概览",
           "members": "成员",
           "create": {
             "details": "详情",

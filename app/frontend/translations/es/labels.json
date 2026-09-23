@@ -486,6 +486,7 @@
           "shortDescriptionHint": "Una o dos líneas, en la tarjeta",
           "description": "Descripción",
           "descriptionHint": "El texto completo en la página del escuadrón",
+          "noDescription": "Todavía no se ha añadido una descripción.",
           "icon": "Icono",
           "iconHint": "Cuadrado, 256×256, PNG transparente",
           "logo": "Logotipo",

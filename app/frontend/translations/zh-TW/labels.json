@@ -486,6 +486,7 @@
           "shortDescriptionHint": "一兩行，顯示在卡片上",
           "description": "描述",
           "descriptionHint": "中隊頁面上的完整文字",
+          "noDescription": "尚未新增描述。",
           "icon": "圖示",
           "iconHint": "正方形，256×256，透明 PNG",
           "logo": "標誌",

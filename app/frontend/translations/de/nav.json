@@ -51,6 +51,7 @@
         },
         "squadrons": {
           "index": "Staffeln",
+          "overview": "Übersicht",
           "members": "Mitglieder",
           "create": {
             "details": "Details",
