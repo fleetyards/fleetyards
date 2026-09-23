@@ -494,6 +494,7 @@
           "headerHint": "宽幅，1920×480，显示在中队页面",
           "team": "小队",
           "teamHint": "小队对所有人开放；否则成员只能属于一个中队",
+          "restrictedToHint": "只有这些中队可见",
           "blockedBy": "已在 %{squadron} 中队中",
           "color": "颜色",
           "memberCount": "%{count} 名成员",
@@ -645,7 +646,8 @@
           "itemsCount": "条目数",
           "visibilities": {
             "members_only": "仅成员",
-            "officers_only": "仅军官"
+            "officers_only": "仅军官",
+            "squadron_only": "仅中队"
           }
         },
         "allies": "盟友可见舰船",
@@ -2208,7 +2210,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "仅中队"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",

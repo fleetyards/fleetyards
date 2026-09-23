@@ -19062,6 +19062,12 @@ components:
           "$ref": "#/components/schemas/FleetContractKindEnum"
         state:
           "$ref": "#/components/schemas/FleetContractStateEnum"
+        visibility:
+          "$ref": "#/components/schemas/FleetContractVisibilityEnum"
+        fleetSquadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         reward:
           type: string
         reimburseExpenses:
@@ -19312,6 +19318,12 @@ components:
           "$ref": "#/components/schemas/FleetContractKindEnum"
         state:
           "$ref": "#/components/schemas/FleetContractStateEnum"
+        visibility:
+          "$ref": "#/components/schemas/FleetContractVisibilityEnum"
+        fleetSquadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         reward:
           type: string
         reimburseExpenses:
@@ -19473,6 +19485,13 @@ components:
         destinationFleetInventoryId:
           type: string
           format: uuid
+        visibility:
+          "$ref": "#/components/schemas/FleetContractVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         items:
           type: array
           items:
@@ -19768,6 +19787,15 @@ components:
       - CANCELLED
       - EXPIRED
       title: FleetContractStateEnum
+    FleetContractVisibilityEnum:
+      type: string
+      enum:
+      - members_only
+      - squadron_only
+      x-enumNames:
+      - MEMBERS_ONLY
+      - SQUADRON_ONLY
+      title: FleetContractVisibilityEnum
     FleetContractsList:
       type: object
       properties:
@@ -19849,6 +19877,10 @@ components:
           type: string
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
+        fleetSquadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         category:
           "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
@@ -20030,6 +20062,11 @@ components:
           - 'null'
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         category:
           "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
@@ -20722,6 +20759,11 @@ components:
           - 'null'
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         category:
           "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
@@ -20784,10 +20826,12 @@ components:
       - members
       - officers
       - fleet
+      - squadron
       x-enumNames:
       - MEMBERS
       - OFFICERS
       - FLEET
+      - SQUADRON
       title: FleetEventVisibilityEnum
     FleetEventsList:
       type: object
@@ -20854,6 +20898,10 @@ components:
           type: string
         visibility:
           "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
+        fleetSquadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         location:
           type: string
         entriesCount:
@@ -20908,6 +20956,11 @@ components:
           format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         location:
           type:
           - string
@@ -21155,6 +21208,11 @@ components:
           format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
         location:
           type:
           - string
@@ -21174,9 +21232,11 @@ components:
       enum:
       - members_only
       - officers_only
+      - squadron_only
       x-enumNames:
       - MEMBERS_ONLY
       - OFFICERS_ONLY
+      - SQUADRON_ONLY
       title: FleetInventoryVisibilityEnum
     FleetInviteUrl:
       type: object

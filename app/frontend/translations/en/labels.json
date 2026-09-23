@@ -494,6 +494,7 @@
           "headerHint": "Wide, 1920×480, shown on the squadron's page",
           "team": "Team",
           "teamHint": "A team is open to everyone — otherwise a member belongs to one squadron",
+          "restrictedToHint": "Only these squadrons can see it",
           "blockedBy": "Already in the %{squadron} squadron",
           "color": "Colour",
           "memberCount": "%{count} Members",
@@ -645,7 +646,8 @@
           "itemsCount": "Entries",
           "visibilities": {
             "members_only": "Members only",
-            "officers_only": "Officers only"
+            "officers_only": "Officers only",
+            "squadron_only": "Squadron only"
           }
         },
         "allies": "Ships visible to allies",
@@ -2222,7 +2224,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "Squadron only"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",

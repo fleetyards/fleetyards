@@ -494,6 +494,7 @@
           "headerHint": "Breit, 1920×480, auf der Staffelseite",
           "team": "Team",
           "teamHint": "Teams stehen allen offen – sonst gehört ein Mitglied nur einer Staffel an",
+          "restrictedToHint": "Nur diese Staffeln sehen es",
           "blockedBy": "Bereits in der Staffel %{squadron}",
           "color": "Farbe",
           "memberCount": "%{count} Mitglieder",
@@ -645,7 +646,8 @@
           "itemsCount": "Einträge",
           "visibilities": {
             "members_only": "Nur Mitglieder",
-            "officers_only": "Nur Offiziere"
+            "officers_only": "Nur Offiziere",
+            "squadron_only": "Nur eine Staffel"
           }
         },
         "allies": "Schiffe für Verbündete sichtbar",
@@ -2208,7 +2210,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "Nur eine Staffel"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",

@@ -3,10 +3,10 @@
 module V1
   module Schemas
     module Enums
-      class FleetInventoryVisibilityEnum
+      class FleetContractVisibilityEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = ::FleetInventory.visibilities.keys.freeze
+        VALUES = ::FleetContract.visibilities.keys.freeze
 
         schema({
           type: :string,

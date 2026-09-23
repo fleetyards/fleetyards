@@ -494,6 +494,7 @@
           "headerHint": "Large, 1920×480, sur la page de l'escadron",
           "team": "Équipe",
           "teamHint": "Une équipe est ouverte à tous — sinon un membre n'appartient qu'à un seul escadron",
+          "restrictedToHint": "Seuls ces escadrons peuvent le voir",
           "blockedBy": "Déjà dans l'escadron %{squadron}",
           "color": "Couleur",
           "memberCount": "%{count} membres",
@@ -645,7 +646,8 @@
           "itemsCount": "Entrées",
           "visibilities": {
             "members_only": "Membres uniquement",
-            "officers_only": "Officiers uniquement"
+            "officers_only": "Officiers uniquement",
+            "squadron_only": "Escadron seulement"
           }
         },
         "allies": "Vaisseaux visibles par les alliés",
@@ -2208,7 +2210,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "Escadron seulement"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",

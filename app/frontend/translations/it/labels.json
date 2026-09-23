@@ -494,6 +494,7 @@
           "headerHint": "Larga, 1920×480, sulla pagina dello squadrone",
           "team": "Squadra",
           "teamHint": "Una squadra è aperta a tutti, altrimenti un membro appartiene a un solo squadrone",
+          "restrictedToHint": "Solo questi squadroni possono vederlo",
           "blockedBy": "Già nello squadrone %{squadron}",
           "color": "Colore",
           "memberCount": "%{count} membri",
@@ -645,7 +646,8 @@
           "itemsCount": "Voci",
           "visibilities": {
             "members_only": "Solo membri",
-            "officers_only": "Solo ufficiali"
+            "officers_only": "Solo ufficiali",
+            "squadron_only": "Solo squadrone"
           }
         },
         "allies": "Navi visibili agli alleati",
@@ -2208,7 +2210,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "Solo squadrone"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",

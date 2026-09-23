@@ -18,6 +18,11 @@ module V1
             description: {type: [:string, :null]},
             kind: ::V1::Schemas::Enums::FleetContractKindEnum,
             state: ::V1::Schemas::Enums::FleetContractStateEnum,
+            visibility: ::V1::Schemas::Enums::FleetContractVisibilityEnum,
+            fleetSquadrons: {
+              type: :array,
+              items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef
+            },
             # decimal(15, 2) with no currency column -- aUEC is the only one,
             # and its name lives in a translation.
             reward: {type: :string},

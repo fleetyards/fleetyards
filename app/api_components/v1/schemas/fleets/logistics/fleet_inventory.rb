@@ -15,6 +15,10 @@ module V1
               slug: {type: :string},
               description: {type: :string},
               visibility: ::V1::Schemas::Enums::FleetInventoryVisibilityEnum,
+              fleetSquadrons: {
+                type: :array,
+                items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef
+              },
               location: {type: :string},
               entriesCount: {type: :integer},
               totalScu: {type: :number},

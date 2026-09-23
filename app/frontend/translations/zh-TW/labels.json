@@ -494,6 +494,7 @@
           "headerHint": "寬幅，1920×480，顯示在中隊頁面",
           "team": "小隊",
           "teamHint": "小隊對所有人開放；否則成員只能屬於一個中隊",
+          "restrictedToHint": "只有這些中隊可見",
           "blockedBy": "已在 %{squadron} 中隊中",
           "color": "顏色",
           "memberCount": "%{count} 位成員",
@@ -645,7 +646,8 @@
           "itemsCount": "記錄數",
           "visibilities": {
             "members_only": "僅限成員",
-            "officers_only": "僅限軍官"
+            "officers_only": "僅限軍官",
+            "squadron_only": "僅中隊"
           }
         },
         "allies": "盟友可見艦船",
@@ -2208,7 +2210,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "僅中隊"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",
