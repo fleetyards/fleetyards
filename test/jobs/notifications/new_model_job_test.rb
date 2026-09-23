@@ -65,5 +65,15 @@ module Notifications
 
       assert_equal true, @model.reload.notified
     end
+
+    test "#perform still marks the model notified when a platform fails" do
+      ::Bsky::Post.stubs(:configured?).returns(true)
+      ::Bsky::Post.stubs(:new).returns(stub.tap { |client| client.stubs(:create).raises(::Bsky::Post::Error) })
+      Appsignal.expects(:report_error).with(instance_of(::Bsky::Post::Error))
+
+      perform
+
+      assert_equal true, @model.reload.notified
+    end
   end
 end

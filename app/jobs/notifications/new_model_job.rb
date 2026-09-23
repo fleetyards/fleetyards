@@ -17,9 +17,13 @@ module Notifications
       model.update(notified: true)
     end
 
+    # A failed social post is reported rather than raised: the job retries, and
+    # a retry would post the Discord message a second time.
     private def post_socially(model, platform)
       text = social_text(model, platform)
       yield text if text.present?
+    rescue => e
+      Appsignal.report_error(e)
     end
 
     # The ship name is what gives way when the post runs long; the link and the
