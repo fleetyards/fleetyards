@@ -81,6 +81,7 @@ zh-TW:
     fleet_squadron_members:
       create: 無法將成員新增至中隊。
       destroy: 無法將成員從中隊移除。
+      update: 無法更新中隊成員關係。
     fleet_squadrons:
       create: 無法建立中隊。
       update: 無法更新中隊。

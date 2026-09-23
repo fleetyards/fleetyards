@@ -85,6 +85,7 @@ es:
     fleet_squadron_members:
       create: No se pudo añadir el miembro al escuadrón.
       destroy: No se pudo quitar el miembro del escuadrón.
+      update: No se pudo actualizar la membresía del escuadrón.
     fleet_squadrons:
       create: No se pudo crear el escuadrón.
       update: No se pudo actualizar el escuadrón.

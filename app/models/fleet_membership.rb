@@ -69,6 +69,11 @@ class FleetMembership < ApplicationRecord
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadrons, through: :fleet_squadron_memberships
 
+  # A squadron membership can be added after this association was loaded, so
+  # make the dependent destroy callback read the current rows before deleting
+  # the fleet membership.
+  before_destroy -> { association(:fleet_squadron_memberships).reset }, prepend: true
+
   paginates_per 30
 
   enum :ships_filter,

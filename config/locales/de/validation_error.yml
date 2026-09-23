@@ -89,6 +89,7 @@ de:
     fleet_squadron_members:
       create: Mitglied konnte der Staffel nicht hinzugefügt werden.
       destroy: Mitglied konnte nicht aus der Staffel entfernt werden.
+      update: Staffelmitgliedschaft konnte nicht aktualisiert werden.
     fleet_squadrons:
       create: Staffel konnte nicht erstellt werden.
       update: Staffel konnte nicht aktualisiert werden.

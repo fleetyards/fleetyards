@@ -82,6 +82,7 @@ it:
     fleet_squadron_members:
       create: Impossibile aggiungere il membro allo squadrone.
       destroy: Impossibile rimuovere il membro dallo squadrone.
+      update: Impossibile aggiornare l'appartenenza allo squadrone.
     fleet_squadrons:
       create: Impossibile creare lo squadrone.
       update: Impossibile aggiornare lo squadrone.

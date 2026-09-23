@@ -81,6 +81,7 @@ zh-CN:
     fleet_squadron_members:
       create: 无法将成员添加到中队。
       destroy: 无法将成员从中队移除。
+      update: 无法更新中队成员关系。
     fleet_squadrons:
       create: 无法创建中队。
       update: 无法更新中队。

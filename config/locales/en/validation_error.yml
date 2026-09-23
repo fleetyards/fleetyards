@@ -114,6 +114,7 @@ en:
     fleet_squadron_members:
       create: Member could not be added to the squadron.
       destroy: Member could not be removed from the squadron.
+      update: Squadron membership could not be updated.
     fleet_squadrons:
       create: Squadron could not be created.
       update: Squadron could not be updated.
