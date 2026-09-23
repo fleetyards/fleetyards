@@ -7,6 +7,7 @@ module Notifications
     test "#perform sends discord notification and marks model as notified" do
       model = create(:model, notified: false)
       ::Discord::NewShip.expects(:new).with(model: model).returns(stub(run: true))
+      ::Bsky::Post.stubs(:configured?).returns(false)
 
       ::Notifications::NewModelJob.new.perform(model.id)
 

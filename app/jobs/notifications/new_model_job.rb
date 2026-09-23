@@ -18,10 +18,17 @@ module Notifications
     private def post_to_bluesky(model)
       link = model.frontend_url
       platform = ::Announcements::Platform::BLUESKY
-      prefix = "New ship added to FleetYards: #{model.manufacturer.name} #{model.name}"
-      prefix = platform.truncate(prefix, to: ::Bsky::Post::MAX_LENGTH - platform.length(link) - 1)
+      return if platform.length(link) > ::Bsky::Post::MAX_LENGTH
 
-      ::Bsky::Post.new.create("#{prefix}\n#{link}")
+      prefix = "New ship added to FleetYards: #{model.manufacturer.name} #{model.name}"
+      prefix_budget = ::Bsky::Post::MAX_LENGTH - platform.length(link) - 1
+      post = if prefix_budget.positive?
+        "#{platform.truncate(prefix, to: prefix_budget)}\n#{link}"
+      else
+        link
+      end
+
+      ::Bsky::Post.new.create(post)
     end
   end
 end
