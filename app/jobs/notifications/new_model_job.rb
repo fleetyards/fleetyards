@@ -2,7 +2,6 @@
 
 require "discord/new_ship"
 require "bsky/post"
-require "announcements/platform"
 
 module Notifications
   class NewModelJob < Notifications::BaseJob
