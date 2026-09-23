@@ -23,7 +23,7 @@ module Api
           )
             .order(@q.result.order_values)
             .includes(:model, :vehicle_loadouts)
-            .joins(:model)
+            .joins(model: :manufacturer)
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
         end

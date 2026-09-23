@@ -48,4 +48,21 @@ class Api::V1::PublicHangarsEmbedTest < ActionDispatch::IntegrationTest
       assert_equal 0, parsed_body.count
     end
   end
+
+  test "sorts vehicles by manufacturer in both directions" do
+    user = create(:user, :public_hangar)
+    vehicles = ["Zulu", "Alpha"].map do |name|
+      manufacturer = create(:manufacturer, name: name)
+      model = create(:model, manufacturer: manufacturer)
+      create(:vehicle, :public, user: user, model: model)
+    end
+
+    ["asc", "desc"].each do |direction|
+      expected = (direction == "asc") ? vehicles.reverse : vehicles
+      assert_api_response :get, 200,
+        params: {usernames: [user.username], q: {sorts: "modelManufacturerName #{direction}"}} do
+        assert_equal expected.map(&:id), parsed_body.map { |item| item["id"] }
+      end
+    end
+  end
 end

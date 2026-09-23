@@ -69,4 +69,22 @@ class Api::V1::PublicWishlistsShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 404, path_params: {username: user.username}
   end
+
+  test "sorts vehicles by manufacturer in both directions" do
+    user = create(:user, public_wishlist: true)
+    vehicles = ["Zulu", "Alpha"].map do |name|
+      manufacturer = create(:manufacturer, name: name)
+      model = create(:model, manufacturer: manufacturer)
+      create(:vehicle, :public, user: user, model: model, wanted: true)
+    end
+
+    ["asc", "desc"].each do |direction|
+      expected = (direction == "asc") ? vehicles.reverse : vehicles
+      assert_api_response :get, 200,
+        path_params: {username: user.username},
+        params: {perPage: 1, q: {sorts: "modelManufacturerName #{direction}"}} do
+        assert_equal [expected.first.id], parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+  end
 end

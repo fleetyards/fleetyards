@@ -76,4 +76,22 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
   test "GET /public/hangars/:username returns 404 for unknown username" do
     assert_api_response :get, 404, path_params: {username: "not-a-user"}
   end
+
+  test "sorts vehicles by manufacturer in both directions" do
+    user = create(:user, :public_hangar)
+    vehicles = ["Zulu", "Alpha"].map do |name|
+      manufacturer = create(:manufacturer, name: name)
+      model = create(:model, manufacturer: manufacturer)
+      create(:vehicle, :public, user: user, model: model)
+    end
+
+    ["asc", "desc"].each do |direction|
+      expected = (direction == "asc") ? vehicles.reverse : vehicles
+      assert_api_response :get, 200,
+        path_params: {username: user.username},
+        params: {perPage: 1, q: {sorts: "modelManufacturerName #{direction}"}} do
+        assert_equal [expected.first.id], parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+  end
 end
