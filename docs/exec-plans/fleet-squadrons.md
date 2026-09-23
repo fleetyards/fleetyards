@@ -322,6 +322,45 @@ something reloads the page.
 Thirty long descriptions would otherwise ride on every grid that renders the
 short one.
 
+### D19 — Squadron access is a value in a vocabulary each record already had
+
+An event, a contract and an inventory can be held to squadrons. The switch is
+the record's own `visibility` -- "squadron" for an event, `squadron_only` for
+an inventory, and for a contract a `visibility` column it never had, at the
+value that keeps today's behaviour. Which squadrons is a polymorphic join,
+because a record can serve more than one and three columns meaning the same
+thing would drift apart.
+
+Both halves are required: a visibility naming no squadron would be visible to
+nobody, which is never what anybody meant. Disbanding a squadron releases what
+it held, for the same reason.
+
+Enforced twice, because these lists are built by hand rather than through
+`authorized_scope`: the scope narrows what is listed and `show?` refuses the
+same records one at a time. A list that serves what opening it refuses is the
+failure worth catching, so one test runs the same cases over all three.
+
+Whoever runs the fleet's events or contracts still reaches all of them --
+including squadron ones they are not in, which they may well have created.
+
+### D18 — Adding and removing are two tasks, not one modal
+
+The picker briefly did both: the squadron's members opened ticked and the
+submit wrote the difference. It reads as one control doing two jobs, and the
+half that matters most -- seeing who is actually in a squadron -- was buried
+in a modal.
+
+So the picker is a picker again, of people not yet in, and the squadron has a
+members page: the fleet's roster with the squadron fixed rather than a second
+list. Fixed, not filtered -- it is what the page is, not something a reader
+can clear. Removal is a row action there, and says plainly that the member
+stays in the fleet.
+
+This walks back the part of D12 that left a squadron with no member list. The
+rest of D12 stands: the ships and the numbers are still the fleet's own pages
+narrowed, because those are lists this feature has nothing to add to. A roster
+is different -- it is the one list a squadron *is*.
+
 ---
 
 ## Progress
@@ -705,9 +744,9 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 
 ## Not in Scope (deferred)
 
-- **Squadron-level roles** — Squadrons inherit fleet roles; a separate squadron role hierarchy could be added later if needed
+- **Squadron ranks** — Asked for during review, to come after this PR: a rank held *within* a squadron, the way a fleet role is held within a fleet. Three to begin with — Squadron Leader, Squadron Officer, Member — shared by every squadron rather than defined per squadron, and later the ability to add roles of a fleet's own on top. Worth settling first: whether a rank carries privileges (who may add or remove members of *this* squadron) or is a label; and whether the three are seeded rows per fleet the way `FleetRole` is, or an enum on the join with custom roles arriving as rows later. `FleetSquadronMembership` is where the rank belongs either way
 - **Squadron-scoped contracts and inventories** — Asked for during review: contracts raised for a squadron, and inventories marked as one squadron's. Two questions to settle first — whether "marked for a squadron" is a visibility rule or a label, and whether a record belongs to one squadron (a column) or several (a join table)
-- **Moving a member between squadrons in one step** — D15 makes reassignment two actions, remove and then add. The picker says which squadron holds somebody, so it is not a dead end, but there is no `move`
+- **Moving a member between squadrons in one step** — D15 makes reassignment two actions, remove and then add. The picker says which squadron holds somebody, and the squadron's members page is where the removal is, but there is no `move`
 - **The public front-page strip** — The public endpoints exist, but the strip is gated on membership, so a signed-out visitor to a public fleet sees nothing
 - **Squadron chat/messaging** — No in-app messaging system exists yet
 - **Squadron events/calendar** — Future feature
@@ -731,6 +770,14 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
   create/edit modal of Phase 7 with a two-tab page. D14–D17 are the rest of
   what review added: a fleet-chosen order, the squadron/team split, the three
   pictures, and the two descriptions.
+
+- **2026-09-23** Events, contracts and inventories gained squadron access
+  (D19), and the member list came back as a page of its own (D18). Two things
+  that turned up on the way: `FleetEvent#visibility` has never been enforced
+  anywhere -- no policy, controller or scope reads it -- so the squadron value
+  is the only one that does anything; and the fleet factory built `fid` from
+  three Faker characters, which collides often enough to redden whichever test
+  drew second.
 
   Two bugs the work turned up in code it did not own. `/fleets/:slug/stats/
   vehicles` declared no `q` parameter, so the ship list's metrics and
