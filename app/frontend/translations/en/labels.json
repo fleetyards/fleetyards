@@ -2591,7 +2591,8 @@
           "visibilities": {
             "members": "Members",
             "officers": "Officers",
-            "fleet": "Public"
+            "fleet": "Public",
+            "squadron": "Squadron only"
           },
           "statuses": {
             "draft": "Draft",
@@ -2628,6 +2629,11 @@
           "reward": "Reward",
           "deadline": "Deadline",
           "crewLimit": "Crew limit",
+          "visibility": "Visibility",
+          "visibilities": {
+            "members_only": "All members",
+            "squadron_only": "Squadron only"
+          },
           "reimburseExpenses": "Reimburse expenses",
           "from": "Collect from",
           "to": "Deliver to",

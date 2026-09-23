@@ -2577,7 +2577,8 @@
           "visibilities": {
             "members": "Mitglieder",
             "officers": "Offiziere",
-            "fleet": "Öffentlich"
+            "fleet": "Öffentlich",
+            "squadron": "Nur eine Staffel"
           },
           "statuses": {
             "draft": "Entwurf",
@@ -2614,6 +2615,11 @@
           "reward": "Belohnung",
           "deadline": "Frist",
           "crewLimit": "Crew-Limit",
+          "visibility": "Sichtbarkeit",
+          "visibilities": {
+            "members_only": "Alle Mitglieder",
+            "squadron_only": "Nur eine Staffel"
+          },
           "reimburseExpenses": "Auslagen erstatten",
           "from": "Abholen bei",
           "to": "Liefern an",

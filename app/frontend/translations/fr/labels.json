@@ -2577,7 +2577,8 @@
           "visibilities": {
             "members": "Membres",
             "officers": "Officiers",
-            "fleet": "Public"
+            "fleet": "Public",
+            "squadron": "Escadron seulement"
           },
           "statuses": {
             "draft": "Brouillon",
@@ -2614,6 +2615,11 @@
           "reward": "Récompense",
           "deadline": "Échéance",
           "crewLimit": "Limite d'équipage",
+          "visibility": "Visibilité",
+          "visibilities": {
+            "members_only": "Tous les membres",
+            "squadron_only": "Escadron seulement"
+          },
           "reimburseExpenses": "Rembourser les frais",
           "from": "Récupérer à",
           "to": "Livrer à",

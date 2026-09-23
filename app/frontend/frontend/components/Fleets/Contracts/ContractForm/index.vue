@@ -16,6 +16,7 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -84,6 +85,10 @@ const { defineField, handleSubmit, meta, setErrors } = useForm({
     reward: props.contract?.reward ?? "0",
     reimburseExpenses: props.contract?.reimburseExpenses ?? true,
     crewLimit: props.contract?.crewLimit ?? null,
+    visibility: props.contract?.visibility ?? "members_only",
+    fleetSquadronIds: (props.contract?.fleetSquadrons ?? []).map(
+      (squadron) => squadron.id,
+    ),
     deadline: props.contract?.deadline ?? null,
     sourceFleetInventoryId: props.contract?.source?.id ?? null,
     destinationFleetInventoryId: props.contract?.destination?.id ?? null,
@@ -102,6 +107,21 @@ watch(kind, (value) => emit("kind-change", value as FleetContractKindEnum), {
 const [reward, rewardProps] = defineField("reward");
 const [reimburseExpenses] = defineField("reimburseExpenses");
 const [crewLimit, crewLimitProps] = defineField("crewLimit");
+const [visibility, visibilityProps] = defineField("visibility");
+const [fleetSquadronIds] = defineField("fleetSquadronIds");
+
+const visibilityOptions = computed<FilterOption[]>(() =>
+  ["members_only", "squadron_only"].map((value) => ({
+    value,
+    label: t(`labels.fleets.contracts.visibilities.${value}`),
+  })),
+);
+
+// The squadron list is the other half of the squadron visibility, so it is
+// only asked for when that is what is chosen.
+const restrictedToSquadrons = computed(
+  () => visibility.value === "squadron_only",
+);
 const [deadline, deadlineProps] = defineField("deadline");
 const [sourceFleetInventoryId, sourceProps] = defineField(
   "sourceFleetInventoryId",
@@ -138,6 +158,12 @@ const onSubmit = handleSubmit(async (values) => {
     reward: String(values.reward ?? "0"),
     reimburseExpenses: values.reimburseExpenses,
     crewLimit: values.crewLimit ? Number(values.crewLimit) : null,
+    visibility: values.visibility as "members_only" | "squadron_only",
+    // Cleared when the visibility is not the squadron one, so switching away
+    // does not leave a restriction the form no longer shows.
+    fleetSquadronIds: restrictedToSquadrons.value
+      ? (values.fleetSquadronIds ?? [])
+      : [],
     // FormDateTime emits a local "YYYY-MM-DDTHH:MM" with no seconds and no
     // offset, which `format: date-time` rejects outright. Parsing it as local
     // and re-emitting ISO is the conversion, not a timezone shift.
@@ -340,6 +366,24 @@ const onSubmit = handleSubmit(async (values) => {
               type="number"
               :label="t('labels.fleets.contracts.crewLimit')"
             />
+          </div>
+        </div>
+
+        <!-- Who the work is for. On the crew tab because that is where the
+             question of who takes it already lives. -->
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <BaseSelect
+              v-model="visibility"
+              v-bind="visibilityProps"
+              :options="visibilityOptions"
+              :label="t('labels.fleets.contracts.visibility')"
+              name="visibility"
+              :searchable="false"
+            />
+          </div>
+          <div v-if="restrictedToSquadrons" class="col-12 col-md-6">
+            <SquadronSelect v-model="fleetSquadronIds" :fleet="props.fleet" />
           </div>
         </div>
 
