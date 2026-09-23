@@ -1771,6 +1771,11 @@ components:
           - 'null'
         team:
           type: boolean
+        membershipCreatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
