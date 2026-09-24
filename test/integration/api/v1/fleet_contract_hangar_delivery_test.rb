@@ -80,4 +80,31 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
     assert_predicate contract, :fulfilled?
     assert_equal 800, @locker.reload.stock_positions.sole.net_quantity
   end
+
+  # Flags are per person. The author's hangar is judged by the author's flag,
+  # not by the contractor's: a contractor who only runs ship holds can still
+  # deliver into it.
+  test "a delivery into the author's hangar is judged by the author's hangar flag" do
+    Flipper.disable(:hangar_inventories)
+    Flipper.enable_actor(:hangar_inventories, @author)
+    Flipper.enable_actor(:ship_inventories, @contractor)
+
+    ship_hold = Inventory.provision_for(create(:vehicle, user: @contractor), holder: @contractor)
+    cargo = create(:inventory_item, inventory: ship_hold,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 100)
+
+    contract = create(:fleet_contract, :in_progress, fleet: @fleet, created_by: @author,
+      destination_fleet_inventory: nil, destination_inventory: @locker)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: contract, user: @contractor)
+
+    sign_in @contractor
+
+    post "/api/v1/hangar/inventory-transfers", as: :json, params: {
+      sourceInventoryId: ship_hold.id, inventoryId: @locker.id, contractId: contract.id,
+      lines: [{positionId: cargo.position.id, quantity: 100}]
+    }
+
+    assert_response :created
+    assert_equal @author.username, response.parsed_body["recipient"]["name"]
+  end
 end
