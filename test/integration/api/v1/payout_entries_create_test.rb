@@ -232,9 +232,10 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
       body: entry_body(payoutParticipantId: participant.id)
   end
 
-  # The other half of the D3 split, and the one that is easy to lose: a
-  # standalone tour has no fleet, so it must keep working with the fleet flag
-  # off. The personal tool stays free of what prices the fleet feature.
+  # The other half of the fleet_tours/tour_payouts split, and the one that is
+  # easy to lose: a standalone tour has no fleet, so it must keep working with
+  # the fleet flag off. The personal tool stays free of what prices the fleet
+  # feature.
   test "a standalone tour's ledger does not need the fleet flag" do
     Flipper.disable("fleet_tours")
     sign_in @member

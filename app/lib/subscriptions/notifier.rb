@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Subscriptions
-  # Tells a fleet's admins that its entitlement changed (D14).
+  # Tells a fleet's admins that its entitlement changed.
   #
   # Losing four capabilities silently is the worst version of this, so the
   # notification has to land before anybody meets a refusal -- which means it is

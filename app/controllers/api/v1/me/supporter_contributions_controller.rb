@@ -39,7 +39,7 @@ module Api
 
           if @contribution.update(nomination_params)
             # A nomination change is not a payment event, and it is the other
-            # half of what the reconciler has to answer to (D9).
+            # half of what the reconciler has to answer to.
             ::Subscriptions::SyncJob.perform_async
 
             render :show

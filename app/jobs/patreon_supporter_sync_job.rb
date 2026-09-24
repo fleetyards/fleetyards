@@ -18,7 +18,7 @@ class PatreonSupporterSyncJob < ::ApplicationJob
     Rails.logger.info("[PatreonSupporterSync] #{stats}")
 
     # The importer records what was paid and nothing else; entitlement is
-    # decided from the result (D9). Already in the background, so it runs here
+    # decided from the result. Already in the background, so it runs here
     # rather than through SyncJob.
     Subscriptions::Sync.call
 

@@ -3,7 +3,7 @@
 # A fleet's entitlement to the premium capabilities, as a dated record rather
 # than a flag.
 #
-# Deliberately not Flipper (D1). A deploy prunes gate values, so paid access
+# Deliberately not Flipper. A deploy prunes gate values, so paid access
 # must not depend on a deploy-time reconciliation job; a gate can only grant,
 # so a revocation cannot be expressed as one; and a flag records who has it now,
 # never who had it when, or why, or who granted it. Those are the four reasons,
@@ -80,7 +80,7 @@ class FleetSubscription < ApplicationRecord
 
   scope :open, -> { where(ended_at: nil) }
 
-  # Seeded from a payment, so D9's reconciler may close it again. A grant with
+  # Seeded from a payment, so the reconciler may close it again. A grant with
   # no contribution behind it is somebody's decision and is left alone.
   #
   # Keyed on the provenance rather than on the id being present: deleting a

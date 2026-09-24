@@ -60,8 +60,8 @@ module PartyRelationship
     }
 
     # `ignored` is deliberately absent from what the requester is shown, and
-    # present for the addressee -- the whole of D3 is that these two views of
-    # one row differ.
+    # present for the addressee -- the whole point of an ignore is that these
+    # two views of one row differ.
     aasm timestamps: true, whiny_transitions: false do
       state :pending, initial: true
       state :accepted

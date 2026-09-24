@@ -6,7 +6,6 @@
 # The loadout is the one thing the row-per-build work never covered. `hardpoints`
 # carries no environment, and `persist_loadout` destroys every game-file row the
 # loaded build does not name -- so loading PTU replaces live's loadouts in place.
-# See item 2 of docs/exec-plans/sc-data-live-and-ptu.md.
 #
 # The split is one layer deeper than the catalogues need, because a loadout
 # differs between builds in *structure* and not only in facts: the slot -- parent

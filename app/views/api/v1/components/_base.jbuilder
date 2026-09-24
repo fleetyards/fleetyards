@@ -28,8 +28,8 @@ json.description component.description
 # `tags` was held back until the tree carried real values -- the parser used to
 # write the whole JSON array as a single string inside the array
 # (`["[\"flightReady\"]"]`), and publishing that would have been publishing a
-# bug. The parser fix landed in #5007 and the re-parsed tree carries one entry
-# per tag.
+# bug. The parser fix has landed and the re-parsed tree carries one entry per
+# tag.
 json.tags component.tags
 json.required_tags component.required_tags
 
@@ -37,10 +37,9 @@ json.required_tags component.required_tags
 # are all absent on purpose. The last three are raw game-file dumps --
 # `heat_connection` alone carries 22 different keys across the table, mixing
 # `MaxCoolingRate` with `cooling_rate` in the same hash -- so no honest schema
-# can describe them until the parser gives them consistent keys -- the cleanup
-# #5002 tracks. The first is documented as a string it has never been, and
-# correcting that type is a breaking change that belongs with #5002 rather than
-# here. The live power figures are in `typeData.powerRanges` regardless.
+# can describe them until the parser gives them consistent keys. The first is
+# documented as a string it has never been, and correcting that type is a
+# breaking change that belongs with that parser cleanup rather than here. The live power figures are in `typeData.powerRanges` regardless.
 
 json.hidden component.hidden
 

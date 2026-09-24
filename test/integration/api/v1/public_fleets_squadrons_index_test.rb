@@ -51,9 +51,9 @@ class Api::V1::PublicFleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # D7: the list and the sizes, never the people or the fleet's own notes on a
-  # squadron. `additionalProperties: false` on the component is what enforces
-  # the first half; this states the intent.
+  # Public means the list and the sizes, never the people or the fleet's own
+  # notes on a squadron. `additionalProperties: false` on the component is what
+  # enforces the first half; this states the intent.
   test "a public squadron carries no description and no member identities" do
     @fleet.update_column(:public_fleet_stats, true)
     membership = create(:fleet_membership, :accepted, fleet: @fleet)

@@ -1,10 +1,8 @@
 /*
- * Phase 0 of the BaseSelect redesign (docs/exec-plans/base-select-redesign.md).
- *
- * These pin the behaviour the rebuild must not regress. They are deliberately
- * written against the component as it is today -- including the DOM contract
- * CargoGrids.spec.ts depends on -- so that the rebuild has something to fail
- * against rather than being verified by eye.
+ * These pin the behaviour a rebuild of BaseSelect must not regress. They are
+ * deliberately written against the component as it is today -- including the
+ * DOM contract CargoGrids.spec.ts depends on -- so that the rebuild has
+ * something to fail against rather than being verified by eye.
  */
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
@@ -25,7 +23,7 @@ const options = [
  * other specs that rely on its inference.
  *
  * The exposed methods are spelled out because four call sites reach them through
- * template refs -- see the plan's F5.
+ * template refs.
  */
 const BaseSelect = Component as unknown as new (...args: never[]) => {
   $props: Record<string, unknown>;

@@ -39,8 +39,9 @@ module Shared
             # a breaking change on every path `Component` nests under -- which
             # oasdiff reports under a *different* path on each run, so no
             # ignore list can match it reliably (measured: 4 of 6 identical
-            # runs failed). It comes back with the parser cleanup that #5002
-            # needs, as one deliberate change rather than a flaky check.
+            # runs failed). It comes back with the parser cleanup that gives
+            # these hashes consistent keys, as one deliberate change rather
+            # than a flaky check.
             inventoryConsumption: {type: :string},
 
             grade: {type: :string},

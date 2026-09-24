@@ -5,8 +5,7 @@
 // the future interactive pip UI will drive (users override per-family targets).
 //
 // Ported so far: the allocation state + atomic primitives (D/W/$/nt/et/ot) and
-// the SCM/NAV base+fill passes (Zn/Jn). Deferred (documented in
-// docs/exec-plans/flight-power-heat-sim.md): the cooler heat-balancing pass
+// the SCM/NAV base+fill passes (Zn/Jn). Deferred: the cooler heat-balancing pass
 // (`ft`, needs the heat model), the refinement passes (`Ct`/`rt`), and building
 // the ports from live loadout data.
 

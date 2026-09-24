@@ -3,7 +3,7 @@
 module Subscriptions
   # Who loses access the day enforcement is switched on.
   #
-  # D16 gates the switch on this number rather than on a calendar: the fleets
+  # The switch is gated on this number rather than on a calendar: the fleets
   # reaching a premium surface today that have neither a subscription nor a
   # grace row. Read it before the announcement and again before the date.
   #

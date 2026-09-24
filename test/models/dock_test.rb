@@ -45,7 +45,8 @@ class DockTest < ActiveSupport::TestCase
 
   # `parent_type` is a plain string column, so without the guard the admin API
   # would take any class name and a dock could hang off something that is not a
-  # berth at all -- a fresh way to grow the orphans #4864 had to delete.
+  # berth at all -- a fresh way to grow the orphans `RemoveOrphanedDocks` had
+  # to delete.
   test "a dock belongs to nothing else" do
     manufacturer = create(:manufacturer)
 

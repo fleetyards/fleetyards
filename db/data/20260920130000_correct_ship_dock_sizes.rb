@@ -14,10 +14,10 @@
 # with.
 #
 # The Idris keeps its `small`: a 100m hall is not small, but it is really three
-# Gladius-sized pads, and until #5059 records pads the column has nowhere else
-# to say so.
+# Gladius-sized pads, and until a dock can record its pads the column has
+# nowhere else to say so.
 #
-# Sizes from @mortik, #5063.
+# Sizes hand-picked by @mortik, not derived.
 class CorrectShipDockSizes < ActiveRecord::Migration[8.1]
   # Keyed on what the row says today, so a hand correction that got there first
   # is left alone rather than being moved to a figure nobody has looked at since.

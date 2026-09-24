@@ -11,9 +11,8 @@ module V1
     # where a typo is a NameError instead of a dangling `$ref`.
     #
     # No `source`: naming the platform would mean reaching for the source enum,
-    # which is admin-scoped and being reworked in #4976. Amount and date are
-    # enough to identify a contribution, and the enum can be added once it has
-    # settled.
+    # which is admin-scoped. Amount and date are enough to identify a
+    # contribution.
     class MySupporterContribution
       include OpenapiRuby::Components::Base
 

@@ -430,7 +430,7 @@ module ScData
       end
 
       # The finding from the first real PTU load, and the reason for all of this.
-      # It was pinned as a bug in #4758 and every assertion in it has now
+      # It was first pinned as a bug, and every assertion in it has now
       # inverted: the two environments no longer share one set of rows in any way
       # that matters, because a load retires build rows instead of destroying
       # slots.

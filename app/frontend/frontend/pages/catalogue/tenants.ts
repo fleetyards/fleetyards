@@ -25,8 +25,7 @@ export type CatalogueTenant = {
 //
 // A tenant joins the list once its *pages* exist, not once its API does: a tab
 // pointing at a route with no page lands on the app's generic not-found, which
-// is worse than the tab being absent. Equipment (#5027) is the one still to
-// come.
+// is worse than the tab being absent. Equipment is the one still to come.
 export const CATALOGUE_TENANTS: CatalogueTenant[] = [
   {
     key: "blueprints",

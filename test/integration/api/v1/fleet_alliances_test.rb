@@ -202,7 +202,7 @@ class Api::V1::FleetAlliancesTest < ActionDispatch::IntegrationTest
     assert_nil FleetAlliance.between(@fleet, @other_fleet)
   end
 
-  # The whole of D12: this is an admin act, and an ordinary member holds none
+  # Alliances are an admin act, and an ordinary member holds none
   # of it.
   test "a plain member can neither read nor send" do
     member = create(:user)

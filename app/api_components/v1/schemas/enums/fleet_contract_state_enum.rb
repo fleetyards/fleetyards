@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Enums
       # `fulfilled` is terminal for now. `settled` arrives with the payout,
-      # once the ledger #4882 builds is on main.
+      # settled on the event payout ledger.
       class FleetContractStateEnum
         include OpenapiRuby::Components::Base
 

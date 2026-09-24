@@ -6,7 +6,7 @@ module Contracts
   # Nothing is stored. Delivered quantity is a sum over the deposits that
   # transfers naming this contract wrote into its destination inventory, and
   # those deposits only exist once a transfer was accepted -- a declined,
-  # cancelled or expired one compensates back into its *source* (#4878 D2), so
+  # cancelled or expired one compensates back into its *source*, so
   # it contributes nothing here without any state having to be consulted.
   #
   # Two queries, not two per line: the entries are aggregated in the database
@@ -15,7 +15,7 @@ module Contracts
   # would be N round trips to apply it.
   class Progress
     # What a contractor delivered against one line, and what it is worth when
-    # the reward is divided (D6).
+    # the reward is divided.
     Contribution = Struct.new(:user_id, :delivered, :weight)
 
     LineProgress = Struct.new(
@@ -132,7 +132,7 @@ module Contracts
       lines.sum(0.to_d, &:fraction) / lines.size
     end
 
-    # D6. Each line contributes at most 1, split between the contractors in
+    # Each line contributes at most 1, split between the contractors in
     # proportion to what each of them put into it; the reward divides by these.
     def weights
       @weights ||= lines.each_with_object(Hash.new(0.to_d)) do |line, result|
@@ -217,7 +217,7 @@ module Contracts
     end
 
     # Netted, not summed. A refused pickup keeps its withdrawal and adds a
-    # compensating deposit back into the source (#4878 D2), so counting
+    # compensating deposit back into the source, so counting
     # withdrawals alone would keep reporting goods as being in a courier's hold
     # after they were returned.
     private def withdrawals

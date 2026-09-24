@@ -8,7 +8,7 @@
 # hand-maintained delete list in `Vehicle.delete_with_dependents` was free to
 # miss them. `vehicle_loadouts` is the one that had a constraint, which is why
 # that table turned a silent orphan into an `ActiveRecord::InvalidForeignKey`
-# and surfaced the other two. See #4946.
+# and surfaced the other two.
 #
 # `ON DELETE CASCADE` rather than `:nullify`: the column is not nullable in any
 # sense the models recognise, so nullifying would trade a dangling reference for
@@ -23,7 +23,7 @@
 # assume. `SET NOT NULL` scans the table under an exclusive lock, which on
 # `fleet_vehicles` is the largest of the two and still well under a second.
 #
-# `Maintenance::DropVehicleOrphansTask` (#4871) cleared the 195,457 and 18,278
+# `Maintenance::DropVehicleOrphansTask` cleared the 195,457 and 18,278
 # rows that were already there, so the count below is a guard rather than a
 # step. It refuses instead of deleting: those rows are a decision that task
 # owns, and `data:migrate` runs unattended inside the Kamal pre-deploy hook.

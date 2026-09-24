@@ -5,8 +5,9 @@
 # A position was derived -- `GROUP BY name, category, unit` over the ledger
 # entries -- so its identity was a mutable label, and renaming one entry moved
 # that entry into a different group. Withdrawals left behind ended up in a group
-# with no deposits, at a negative net that `current_stock` hides. #4844 recorded
-# the rename and #4849 refused the split; this removes the cause.
+# with no deposits, at a negative net that `current_stock` hides. Recording who
+# renamed a position and refusing a rename that splits one only treated the
+# symptom; this removes the cause.
 #
 # Two tables rather than one polymorphic table, because that is how everything
 # about inventories is already shaped here: `inventories`/`fleet_inventories`,

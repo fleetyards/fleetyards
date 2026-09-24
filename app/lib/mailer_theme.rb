@@ -17,8 +17,9 @@ module MailerTheme
   # Drawn on the page.
   BACKGROUND = "#000000"      # --color-background
   SURFACE = "#23272b"         # --color-surface, over BACKGROUND
-  # --color-control is byte-identical to --color-surface; see the panel-redesign
-  # plan's F10 for why that is worth knowing rather than deduplicating.
+  # --color-control is byte-identical to --color-surface, which is why a solid
+  # button on a panel shows only by its edge. Two tokens that happen to agree,
+  # not one to deduplicate.
   CONTROL = "#23272b"         # --color-control, over BACKGROUND
   CONTROL_HOVER = "#31373d"   # --color-control-hover, over BACKGROUND
 

@@ -13,7 +13,7 @@ type SubscribableFleet = Pick<Fleet, "features"> &
  * surfaces that have to answer it before the API is even called. The first --
  * is the capability rolled out here -- stays with the caller, because a
  * capability that is off is unavailable to subscribed and unsubscribed fleets
- * alike and must not be answered with an upsell (D10).
+ * alike and must not be answered with an upsell.
  */
 export const useFleetSubscription = (
   fleet: MaybeRefOrGetter<SubscribableFleet | undefined>,
@@ -22,7 +22,7 @@ export const useFleetSubscription = (
 
   // While `fleet_subscriptions` is off for a fleet, enforcement does not run
   // and entitlement is never asked about -- this is false and every surface
-  // behaves exactly as it did before any of this shipped (D16).
+  // behaves exactly as it did before any of this shipped.
   const subscriptionRequired = computed(() => {
     const currentFleet = toValue(fleet);
 

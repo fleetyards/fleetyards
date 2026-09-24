@@ -491,7 +491,7 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal({main_acceleration: 50.0, retro_acceleration: 20.0}, model.reload.accelerations_from_hardpoints)
   end
 
-  # The cleanup retires a slot rather than destroying it (#4762), so a thruster
+  # The cleanup retires a slot rather than destroying it, so a thruster
   # port a build dropped keeps its row -- and used to keep contributing thrust,
   # because this read every game-file slot the model had ever had. That is not a
   # two-environment problem: it fires on the next live patch that drops a port.

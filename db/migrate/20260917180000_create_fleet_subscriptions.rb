@@ -3,7 +3,7 @@
 # The entitlement record: a row is the grant, `ended_at` is the revocation, and
 # both are dated, so the history is the table rather than a reconstruction of
 # one. Deliberately not a feature flag -- a deploy prunes gate values, a gate
-# can only grant, and neither can express a revocation (D1).
+# can only grant, and neither can express a revocation.
 class CreateFleetSubscriptions < ActiveRecord::Migration[8.1]
   def change
     create_table :fleet_subscriptions, id: :uuid do |t|
@@ -19,8 +19,8 @@ class CreateFleetSubscriptions < ActiveRecord::Migration[8.1]
       # that linked a row for the same reason.
       t.string :granted_via, null: false, default: "manual"
 
-      # Null is what makes a comp identifiable, and what D9's reconciler keys
-      # on: it closes only the subscription it seeded. Nullify rather than
+      # Null is what makes a comp identifiable, and what `Subscriptions::Sync`
+      # keys on: it closes only the subscription it seeded. Nullify rather than
       # restrict, so deleting a contribution can never be blocked by this.
       t.references :supporter_contribution, type: :uuid, null: true,
         foreign_key: {on_delete: :nullify},

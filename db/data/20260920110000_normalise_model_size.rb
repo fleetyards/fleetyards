@@ -11,7 +11,7 @@
 #
 # And ten ground vehicles carry nothing at all -- the Ursa family, the Lynx, the
 # Storms, the Novas and the Ballista. That is the one with consequences: the
-# ladder added in #4868 may only be set where `size` is "vehicle", so the whole
+# `vehicle_size` ladder may only be set where `size` is "vehicle", so the whole
 # top half of it was unreachable.
 class NormaliseModelSize < ActiveRecord::Migration[8.1]
   # The two Geotack beacons are the empty strings, and they are deployables

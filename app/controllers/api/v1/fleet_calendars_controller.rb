@@ -64,7 +64,7 @@ module Api
           return
         end
 
-        # Both gates, in the order D10 requires. Checked here rather than in a
+        # Both gates, in order. Checked here rather than in a
         # callback because the fleet is resolved from the path inside this
         # action, and answered in plain text because a calendar client is what
         # reads it.

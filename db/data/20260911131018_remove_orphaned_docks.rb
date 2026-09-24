@@ -19,8 +19,7 @@
 #
 # `model_id` deliberately stays nullable. `cargo_holds` is already polymorphic
 # and six of its rows hang off a `ModelModule` -- the Galaxy's medic module
-# carries a vehicle lift for an Ursa -- so a dock wants the same parent. See
-# #4863.
+# carries a vehicle lift for an Ursa -- so a dock wants the same parent.
 class RemoveOrphanedDocks < ActiveRecord::Migration[8.1]
   def up
     Dock.where(model_id: nil).delete_all

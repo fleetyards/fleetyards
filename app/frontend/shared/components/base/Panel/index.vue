@@ -88,7 +88,7 @@ const hasInner = computed(
  * 3px/radius-20 `.panel` around a radius-16 `.panel-inner` — four borders and
  * four end-cap hairlines at two different insets for a single surface. Every
  * value here comes from the metrics-card language rather than being designed
- * fresh; see docs/exec-plans/panel-redesign.md.
+ * fresh.
  *
  * `.panel` keeps its class name deliberately: Home.spec.ts locates panels with
  * it, and it is the one piece of this component's markup that is contract.
@@ -113,7 +113,7 @@ const hasInner = computed(
  *
  * The var() fallbacks are load-bearing, not decorative: Tailwind inlines
  * fallbacks for its own theme utilities, but not for a bare var() written by
- * hand, and the embed bundle never registers :root. See the plan's F8.
+ * hand, and the embed bundle never registers :root.
  */
 .panel::before,
 .panel::after {

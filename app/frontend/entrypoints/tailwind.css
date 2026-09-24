@@ -109,8 +109,8 @@
 
   /*
    * Panel surfaces. --color-surface is byte-identical to $panel-bg, and to
-   * --color-control above; see the panel-redesign plan's F10 for why that is
-   * worth knowing rather than deduplicating.
+   * --color-control above, so a solid button on a panel stands out only by its
+   * edge and end-caps. That is worth knowing rather than deduplicating.
    */
   --color-surface: rgb(39 43 48 / 0.9);
 
@@ -129,7 +129,7 @@
  * Deliberately outside @theme: these generate no utilities, and @theme is for
  * values Tailwind turns into classes. Each is consumed as var(--name, literal)
  * so the compiled rule stays self-sufficient where :root was never registered —
- * the embed bundle, per the plan's F8. Do not drop the fallbacks.
+ * the embed bundle. Do not drop the fallbacks.
  *
  * The button cap is shorter than the panel's, so its radius steps down by the
  * same ratio and is then held to half its own height; without that ceiling a 2px
@@ -231,7 +231,6 @@
  * The last three have no existing token. `combined-combat` sits close to
  * --color-danger, and the two show side by side whenever a fleet runs both
  * combat categories; that pairing has not been checked for distinguishability.
- * See the mission-builder plan's Q2.
  */
 :root {
   --color-category-other: var(--color-gray-light, #7a8288);

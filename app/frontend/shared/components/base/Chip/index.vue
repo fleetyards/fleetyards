@@ -130,7 +130,6 @@ const stateHint = computed(() => {
  * One box. The stylesheet this replaces (partials/labels.scss) wrapped a 2px
  * $panel-inner-border box around a second, inner box and drew a pair of #444
  * hairlines between them - both values the panel and button redesigns retired.
- * See docs/exec-plans/label-redesign.md.
  *
  * No end-caps. That is the same call `.panel--slim` makes: a wrapping row of a
  * dozen chips is a denser repetition than any card grid, and at chip width a cap

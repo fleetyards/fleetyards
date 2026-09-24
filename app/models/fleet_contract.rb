@@ -10,8 +10,8 @@
 #
 # Nothing here records how much has been delivered. That is a sum over the
 # ledger entries those transfers wrote, and `Contracts::Progress` is the only
-# thing that computes it. A column would be the stored aggregate #4855 D2
-# refused, and it would let a contract be advanced by writing to it rather than
+# thing that computes it. A column would be a stored aggregate the ledger
+# deliberately never keeps, and it would let a contract be advanced by writing to it rather than
 # by moving goods.
 # == Schema Information
 #

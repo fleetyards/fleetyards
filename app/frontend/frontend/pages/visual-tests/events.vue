@@ -87,7 +87,7 @@ const eventFor = (
   ...overrides,
 });
 
-// Every lifecycle state, which is what D1 moved onto the panel's end-cap.
+// Every lifecycle state, which the panel's end-cap now carries.
 const lifecycle: Array<{ status: FleetEventStatusEnum; past?: boolean }> = [
   { status: FleetEventStatusEnum.DRAFT },
   { status: FleetEventStatusEnum.OPEN },
@@ -295,9 +295,9 @@ const CURRENT_USER = "user-ThalosVex";
 <template>
   <Heading :level="HeadingLevelEnum.H2">Event card, by lifecycle</Heading>
   <p>
-    The tone is on the panel's end-cap, per D1 — the frame stays neutral. The
-    chip beside the title names it, so the state is never carried by colour
-    alone. The last card is a past event still sitting in <code>open</code>.
+    The tone is on the panel's end-cap — the frame stays neutral. The chip
+    beside the title names it, so the state is never carried by colour alone.
+    The last card is a past event still sitting in <code>open</code>.
   </p>
   <div class="row">
     <div
@@ -413,8 +413,8 @@ const CURRENT_USER = "user-ThalosVex";
   <p>
     The month grid, driven through the library's own custom properties. Its
     toolbar is the panel's head — the paginator and the view switch are a plain
-    group and a segmented one, per D7. Events sit around today so the cells are
-    not empty.
+    group and a segmented one. Events sit around today so the cells are not
+    empty.
   </p>
   <CalendarGrid :fleet="fleet" :events="calendarEvents" view="month" />
 
@@ -424,8 +424,8 @@ const CURRENT_USER = "user-ThalosVex";
   <Heading :level="HeadingLevelEnum.H2">Team card</Heading>
   <p>
     A titled sub-surface, so a slim panel with a divider under its head rather
-    than the full frame — per D6, and the same treatment the mission team card
-    carries. Read-only here; the edit page passes <code>editable</code>.
+    than the full frame — the same treatment the mission team card carries.
+    Read-only here; the edit page passes <code>editable</code>.
   </p>
   <EventTeamCard
     :fleet="fleet"

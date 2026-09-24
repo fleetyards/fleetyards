@@ -35,7 +35,7 @@ module V1
             features: {type: :array, items: {type: :string}},
             # Whether the fleet holds an entitlement today. Separate from
             # `features`: that is what is rolled out here, this is what was
-            # bought, and the two are asked independently (D1).
+            # bought, and the two are asked independently.
             subscribed: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

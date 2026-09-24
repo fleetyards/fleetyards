@@ -67,12 +67,12 @@
     padding: 0 12px;
     font-weight: bold;
     /*
-     * #4371's first complaint, answered last: this borrowed the form-input
-     * treatment -- a lighter fill inside a *darker* edge, at half the radius --
-     * where a control in this language is a dark fill inside a lighter one. It
-     * was left alone through that redesign because every alternative that
-     * restyled it fell apart on a multi-select, and because the vocabulary it
-     * needed did not exist yet. It does now.
+     * The first complaint about this select, answered last: it borrowed the
+     * form-input treatment -- a lighter fill inside a *darker* edge, at half the
+     * radius -- where a control in this language is a dark fill inside a lighter
+     * one. It was left alone through the filter-group redesign because every
+     * alternative that restyled it fell apart on a multi-select, and because the
+     * vocabulary it needed did not exist yet. It does now.
      */
     background: var(--color-field, rgb(18 20 23 / 0.96));
     border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));

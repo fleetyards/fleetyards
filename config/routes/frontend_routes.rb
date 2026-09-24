@@ -18,9 +18,8 @@ namespace :frontend, **frontend_options do
   # No `og_image`: no component in the catalogue has one.
   get "catalogue/components/:slug", to: "base#component", as: :component
 
-  # The path the page shipped under before the section existed. Live since
-  # #5015, and every hardpoint on every ship linked to it, so it moves rather
-  # than disappears.
+  # The path the page shipped under before the section existed. Every
+  # hardpoint on every ship linked to it, so it moves rather than disappears.
   get "components/:slug", to: redirect("/catalogue/components/%{slug}", status: 301)
   get "components", to: redirect("/catalogue/components/", status: 301)
 

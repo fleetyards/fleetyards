@@ -178,8 +178,6 @@ const currentYear = computed(() => new Date().getFullYear());
  * built by hand with fixed insets, and at page width the fixed inset fails in the
  * opposite direction from a narrow panel: 80px is 8% of a 992px viewport and 3%
  * of a 2560px one, so the ticks read as artefacts rather than as a signature.
- *
- * See docs/exec-plans/footer-redesign.md.
  */
 .app-footer {
   @apply text-text relative border-t-2;

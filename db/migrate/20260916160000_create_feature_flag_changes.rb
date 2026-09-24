@@ -7,8 +7,6 @@
 # removes a pruned flag's gates wholesale -- so `flipper_gates.created_at`, the
 # only activation signal there was, really means "last switched on, assuming
 # nobody has touched it since".
-#
-# See docs/exec-plans/4972-feature-flag-activation-tracking.md.
 class CreateFeatureFlagChanges < ActiveRecord::Migration[8.1]
   def change
     create_table :feature_flag_changes, id: :uuid do |t|

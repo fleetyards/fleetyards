@@ -36,7 +36,7 @@ fleet_squadrons:
 # the admin pages and the premium gates. Whether a given fleet has *bought*
 # anything is answered by fleet_subscriptions rows, never by this flag: a deploy
 # prunes gate values, a gate can only grant, and neither can express a
-# revocation. See D1 in docs/exec-plans/premium-fleet-features.md.
+# revocation.
 #
 # Off everywhere until the transition is announced, so the whole entitlement
 # half can land in production without anybody meeting it early.
