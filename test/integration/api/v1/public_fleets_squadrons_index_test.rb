@@ -58,6 +58,7 @@ class Api::V1::PublicFleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
   # squadron. `additionalProperties: false` on the component is what enforces
   # the first half; this states the intent.
   test "a public squadron carries no description and no member identities" do
+    @fleet.update_column(:public_fleet_stats, true)
     membership = create(:fleet_membership, :accepted, fleet: @fleet)
     create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: membership)
 
@@ -67,6 +68,17 @@ class Api::V1::PublicFleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
       assert_equal 1, entry["memberCount"]
       refute entry.key?("description")
       refute entry.key?("members")
+    end
+  end
+
+  # A headcount is one of the fleet's numbers, and those stay behind the
+  # fleet's own stats switch however public the fleet page is.
+  test "a public fleet that keeps its stats private does not count its squadrons" do
+    membership = create(:fleet_membership, :accepted, fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: membership)
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_nil parsed_body["items"].first["memberCount"]
     end
   end
 

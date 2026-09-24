@@ -28573,7 +28573,10 @@ components:
           - string
           - 'null'
         memberCount:
-          type: integer
+          type:
+          - integer
+          - 'null'
+          description: Null unless the fleet shares its stats
         icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false

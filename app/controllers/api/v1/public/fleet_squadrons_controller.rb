@@ -32,6 +32,8 @@ module Api
           @fleet = Fleet.kept.find_by!(slug: params[:fleet_slug])
 
           authorize! @fleet, to: :show?, with: ::Public::FleetPolicy
+
+          @show_member_counts = allowed_to?(:show_stats?, @fleet, with: ::Public::FleetPolicy)
         end
 
         private def set_fleet_squadron

@@ -16,7 +16,7 @@ module V1
               name: {type: :string},
               slug: {type: :string},
               color: {type: [:string, :null]},
-              memberCount: {type: :integer},
+              memberCount: {type: [:integer, :null], description: "Null unless the fleet shares its stats"},
               icon: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
