@@ -92,6 +92,18 @@ class SquadronRestrictableTest < ActiveSupport::TestCase
       assert_includes record.errors.details[:fleet_squadrons].pluck(:error), :not_this_fleets
     end
 
+    # Assigning ids to a saved record writes the join rows at once, ahead of
+    # validation, so the refusal has to take them back with it -- a stray row
+    # would let the other fleet's squadron see the record.
+    test "#{factory}: an update naming another fleet's squadron leaves no assignment behind" do
+      record = create(factory, fleet: @fleet)
+      foreign = create(:fleet_squadron, fleet: create(:fleet))
+
+      refute record.update(visibility: restricted, fleet_squadron_ids: [foreign.id])
+      assert_empty record.reload.fleet_squadrons
+      refute FleetSquadronAssignment.exists?(fleet_squadron_id: foreign.id)
+    end
+
     # Left restricted to a squadron that no longer exists, the record would be
     # visible to nobody and would fail validation on its next save.
     test "#{factory}: disbanding its last squadron releases it" do
