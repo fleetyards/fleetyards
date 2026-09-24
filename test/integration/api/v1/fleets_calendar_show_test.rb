@@ -54,6 +54,29 @@ class Api::V1::FleetsCalendarShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The calendar is another list of the fleet's events, so it keeps a
+  # squadron's events to that squadron the way the event list does.
+  test "GET /fleets/:slug/calendar leaves out squadron events the reader is not in" do
+    travel_to Time.current.beginning_of_month + 5.days
+
+    member = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: member)
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    create(:fleet_event, fleet: @fleet, created_by: @admin, title: "Open", starts_at: 1.day.from_now)
+    create(:fleet_event, fleet: @fleet, created_by: @admin, title: "Squadron only",
+      starts_at: 2.days.from_now, visibility: "squadron", fleet_squadrons: [squadron])
+
+    sign_in member
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal ["Open"], parsed_body["items"].map { |entry| entry["title"] }
+    end
+
+    sign_in @admin
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 2, parsed_body["items"].size
+    end
+  end
+
   test "GET /fleets/:slug/calendar with OAuth bearer token" do
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug},

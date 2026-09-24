@@ -21,6 +21,18 @@ class Api::V1::FleetsCalendarIcsTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "END:VCALENDAR"
   end
 
+  test "GET /fleets/:slug/events.ics leaves out events held to squadrons" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Open", starts_at: 2.days.from_now)
+    create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Squadron only",
+      starts_at: 3.days.from_now, visibility: "squadron", fleet_squadrons: [squadron])
+
+    get "/api/v1/fleets/#{@fleet.slug}/events.ics", params: {token: @fleet.calendar_feed_token}
+
+    assert_includes response.body, "SUMMARY:Open"
+    refute_includes response.body, "Squadron only"
+  end
+
   test "GET /fleets/:slug/events.ics includes recently cancelled events with STATUS:CANCELLED" do
     create(:fleet_event, :cancelled,
       fleet: @fleet, created_by: @admin, title: "Scrubbed Op",
