@@ -83,15 +83,16 @@ module Contracts
       assert_includes DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories, hold
     end
 
-    test "a ship's hold needs only the ship flag, not the hangar one" do
-      hold = Inventory.provision_for(create(:vehicle, user: @author), holder: @author)
+    # A delivery into any of them is addressed to the author, and the gate
+    # refuses a person as recipient without the hangar flag -- a ship's hold
+    # included.
+    test "nothing is offered while the gate would refuse the author as recipient" do
+      Inventory.provision_for(create(:vehicle, user: @author), holder: @author)
       Flipper.disable(:hangar_inventories)
       Flipper.enable(:ship_inventories)
 
-      options = DestinationOptions.new(fleet: @fleet, editor: @author)
-
-      assert_equal [hold], options.hangar_inventories
-      assert_not options.allows?(@locker)
+      assert_equal :unavailable, ::Inventories::TransferGate.new(sender: @officer, recipient: @author).refusal&.code
+      assert_empty DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories
     end
 
     test "a contract refuses a destination its editor may not choose" do
