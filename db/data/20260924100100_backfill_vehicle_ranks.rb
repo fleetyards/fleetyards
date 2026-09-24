@@ -41,23 +41,37 @@ class BackfillVehicleRanks < ActiveRecord::Migration[8.1]
   def down
   end
 
+  # Under the same per-owner lock `Vehicle#setup_rank` takes, so a vehicle
+  # created while this runs cannot pick the rank being appended.
   private def append_unranked
-    unranked = select_rows(<<~SQL.squish)
-      SELECT vehicles.user_id, vehicles.id
-      FROM vehicles
-      LEFT JOIN models ON models.id = vehicles.model_id
-      WHERE vehicles.rank IS NULL
-        AND vehicles.user_id IN (SELECT user_id FROM vehicles WHERE rank IS NOT NULL)
-      ORDER BY vehicles.user_id, #{DEFAULT_ORDER}
+    user_ids = select_values(<<~SQL.squish)
+      SELECT user_id FROM vehicles
+      WHERE user_id IS NOT NULL
+      GROUP BY user_id
+      HAVING bool_or(rank IS NULL) AND bool_or(rank IS NOT NULL)
     SQL
 
-    unranked.group_by(&:first).each do |user_id, rows|
-      last = Vehicle.where(user_id: user_id).maximum(:rank)
-
-      rows.each do |(_, id)|
-        last = Vehicle.lexorank_ranking.value_between(last, nil)
-        Vehicle.where(id: id).update_all(rank: last)
+    user_ids.each do |user_id|
+      Vehicle.transaction do
+        Vehicle.lexorank_ranking.with_lock_if_enabled(Vehicle.new(user_id: user_id), transaction: true) do
+          append_unranked_for(user_id)
+        end
       end
+    end
+  end
+
+  private def append_unranked_for(user_id)
+    last = Vehicle.where(user_id: user_id).maximum(:rank)
+
+    select_values(<<~SQL.squish).each do |id|
+      SELECT vehicles.id
+      FROM vehicles
+      LEFT JOIN models ON models.id = vehicles.model_id
+      WHERE vehicles.user_id = #{connection.quote(user_id)} AND vehicles.rank IS NULL
+      ORDER BY #{DEFAULT_ORDER}
+    SQL
+      last = Vehicle.lexorank_ranking.value_between(last, nil)
+      Vehicle.where(id: id).update_all(rank: last)
     end
   end
 
