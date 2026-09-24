@@ -55,12 +55,16 @@ module Contracts
         .group_by(&:fleet_contract_id)
 
       transfer_ids = transfers.values.flatten.map(&:id)
-      inventory_ids = contracts.flat_map do |contract|
+      fleet_inventory_ids = contracts.flat_map do |contract|
         [contract.destination_fleet_inventory_id, contract.source_fleet_inventory_id]
       end.compact.uniq
+      hangar_inventory_ids = contracts.filter_map(&:destination_inventory_id).uniq
 
-      deposits = batch_rollup(inventory_ids, transfer_ids, :deposit)
-      withdrawals = batch_rollup(inventory_ids, transfer_ids, :withdrawal)
+      # Keyed by inventory id, and the two ledgers' ids never collide, so the
+      # halves merge into one lookup.
+      deposits = batch_rollup(::FleetInventoryItem, fleet_inventory_ids, transfer_ids, :deposit)
+        .merge(batch_rollup(::InventoryItem, hangar_inventory_ids, transfer_ids, :deposit))
+      withdrawals = batch_rollup(::FleetInventoryItem, fleet_inventory_ids, transfer_ids, :withdrawal)
 
       contracts.index_by(&:id).transform_values do |contract|
         own_transfers = transfers.fetch(contract.id, [])
@@ -78,13 +82,14 @@ module Contracts
 
     # The same shape `rollup` returns, for every inventory at once: keyed by
     # inventory so a contract can take only the rows written into its own ends.
-    private_class_method def self.batch_rollup(inventory_ids, transfer_ids, entry_type)
+    private_class_method def self.batch_rollup(ledger, inventory_ids, transfer_ids, entry_type)
       return {} if inventory_ids.empty? || transfer_ids.empty?
 
-      rows = ::FleetInventoryItem
-        .where(fleet_inventory_id: inventory_ids, entry_type: entry_type)
+      column = ledger_column(ledger)
+      rows = ledger
+        .where(column => inventory_ids, :entry_type => entry_type)
         .where(inventory_transfer_id: transfer_ids)
-        .group(:fleet_inventory_id, Arel.sql("LOWER(name)"), :category, :unit, :quality,
+        .group(column, Arel.sql("LOWER(name)"), :category, :unit, :quality,
           :inventory_transfer_id)
         .sum(:quantity)
 
@@ -97,6 +102,12 @@ module Contracts
           inventory_transfer_id: transfer_id
         }
       end
+    end
+
+    # The column an entry names its inventory by, which is the one thing the
+    # two ledgers spell differently.
+    def self.ledger_column(ledger)
+      (ledger == ::InventoryItem) ? :inventory_id : :fleet_inventory_id
     end
 
     def initialize(contract, preloaded: nil)
@@ -213,7 +224,11 @@ module Contracts
     end
 
     private def deposits
-      @deposits ||= rollup(@contract.destination_fleet_inventory_id, :deposit)
+      @deposits ||= if @contract.destination_inventory_id.present?
+        rollup(@contract.destination_inventory_id, :deposit, ledger: ::InventoryItem)
+      else
+        rollup(@contract.destination_fleet_inventory_id, :deposit)
+      end
     end
 
     # Netted, not summed. A refused pickup keeps its withdrawal and adds a
@@ -276,12 +291,12 @@ module Contracts
     # Grouped down to one row per position, grade and transfer. Keyed by the
     # same downcased triple `FleetContractItem#position_identity` produces, so a
     # deposit entered as "titanium" answers a contract written as "Titanium".
-    private def rollup(inventory_id, entry_type)
+    private def rollup(inventory_id, entry_type, ledger: ::FleetInventoryItem)
       return {} if inventory_id.blank?
       return sliced_rollup(inventory_id, entry_type) if @preloaded
 
-      rows = ::FleetInventoryItem
-        .where(fleet_inventory_id: inventory_id, entry_type: entry_type)
+      rows = ledger
+        .where(self.class.ledger_column(ledger) => inventory_id, :entry_type => entry_type)
         .where(inventory_transfer_id: transfers_by_id.keys)
         .group(Arel.sql("LOWER(name)"), :category, :unit, :quality, :inventory_transfer_id)
         .sum(:quantity)

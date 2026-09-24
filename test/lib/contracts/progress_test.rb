@@ -248,6 +248,28 @@ module Contracts
       assert_in_delta 1.0, progress.fraction.to_f, 0.0001
     end
 
+    test "a delivery into the author's hangar inventory counts" do
+      locker = create(:inventory, holder: @contract.created_by)
+      @contract.update!(destination_fleet_inventory: nil, destination_inventory: locker)
+      transfer = linked_transfer(destination: nil, recipient: @contract.created_by)
+      transfer.update!(destination_inventory: locker)
+
+      create(:inventory_item, inventory: locker, inventory_transfer: transfer,
+        entry_type: :deposit, name: "titanium", category: :commodity, unit: :scu, quantity: 800)
+      # The same goods landing in a fleet inventory of the same fleet are not
+      # this contract's destination.
+      create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+
+      assert_equal 800.to_d, progress.lines.first.delivered
+      assert progress.complete?
+
+      batched = Contracts::Progress.for_all([@contract.reload]).fetch(@contract.id)
+
+      assert_equal 800.to_d, batched.lines.first.delivered
+      assert_equal [@contractor.id], batched.lines.first.contributions.map(&:user_id)
+    end
+
     private def progress
       Contracts::Progress.new(@contract.reload)
     end
