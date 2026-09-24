@@ -15,6 +15,7 @@
 #  name_visible         :boolean          default(FALSE)
 #  notify               :boolean          default(TRUE)
 #  public               :boolean          default(FALSE)
+#  rank                 :text
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string
@@ -36,9 +37,11 @@
 #  index_vehicles_on_model_paint_id_where_painted  (model_paint_id,hidden,wanted,loaner) WHERE (model_paint_id IS NOT NULL)
 #  index_vehicles_on_serial_and_user_id            (serial,user_id) UNIQUE
 #  index_vehicles_on_user_id                       (user_id)
+#  index_vehicles_on_user_id_and_rank              (user_id,rank) UNIQUE
 #  index_vehicles_on_vehicle_id_and_bundled        (vehicle_id,bundled)
 #
 require "csv"
+require "lexorank/rankable"
 
 class Vehicle < ApplicationRecord
   # `name` and `serial` are whatever the owner typed, and a user's vehicles are
@@ -100,6 +103,8 @@ class Vehicle < ApplicationRecord
     inverse_of: :parent_vehicle,
     dependent: nil
 
+  rank!(group_by: :user)
+
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces
   has_many :public_hangar_groups,
@@ -151,6 +156,7 @@ class Vehicle < ApplicationRecord
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
   before_save :update_slugs
+  before_create :setup_rank
 
   before_destroy :detach_inventory
 
@@ -598,6 +604,17 @@ class Vehicle < ApplicationRecord
 
   protected def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
+  end
+
+  # Held until commit: the rank is read from the user's last vehicle, so two
+  # creates for one hangar would otherwise pick the same value and the second
+  # would fail on the unique index.
+  private def setup_rank
+    return if rank.present? || user_id.blank?
+
+    self.class.lexorank_ranking.with_lock_if_enabled(self, transaction: true) do
+      move_to_end
+    end
   end
 
   # The foreign key nullifies `vehicle_id`, which would otherwise leave the stock

@@ -13,6 +13,7 @@
 #  name_visible         :boolean          default(FALSE)
 #  notify               :boolean          default(TRUE)
 #  public               :boolean          default(FALSE)
+#  rank                 :text
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string
@@ -34,6 +35,7 @@
 #  index_vehicles_on_model_paint_id_where_painted  (model_paint_id,hidden,wanted,loaner) WHERE (model_paint_id IS NOT NULL)
 #  index_vehicles_on_serial_and_user_id            (serial,user_id) UNIQUE
 #  index_vehicles_on_user_id                       (user_id)
+#  index_vehicles_on_user_id_and_rank              (user_id,rank) UNIQUE
 #  index_vehicles_on_vehicle_id_and_bundled        (vehicle_id,bundled)
 #
 FactoryBot.define do

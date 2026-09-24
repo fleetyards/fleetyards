@@ -15,6 +15,7 @@
 #  name_visible         :boolean          default(FALSE)
 #  notify               :boolean          default(TRUE)
 #  public               :boolean          default(FALSE)
+#  rank                 :text
 #  rsi_pledge_synced_at :datetime
 #  sale_notify          :boolean          default(FALSE)
 #  serial               :string
@@ -36,6 +37,7 @@
 #  index_vehicles_on_model_paint_id_where_painted  (model_paint_id,hidden,wanted,loaner) WHERE (model_paint_id IS NOT NULL)
 #  index_vehicles_on_serial_and_user_id            (serial,user_id) UNIQUE
 #  index_vehicles_on_user_id                       (user_id)
+#  index_vehicles_on_user_id_and_rank              (user_id,rank) UNIQUE
 #  index_vehicles_on_vehicle_id_and_bundled        (vehicle_id,bundled)
 #
 require "test_helper"
@@ -492,5 +494,41 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     statements
   ensure
     ActiveSupport::Notifications.unsubscribe(subscriber)
+  end
+end
+
+class VehicleRankTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+  end
+
+  test "a new vehicle is ranked after the owner's others" do
+    first = create(:vehicle, user: @user)
+    second = create(:vehicle, user: @user)
+    third = create(:vehicle, user: @user)
+
+    assert_equal [first, second, third], @user.vehicles.ranked.to_a
+  end
+
+  test "ranks are grouped per owner" do
+    create(:vehicle, user: @user)
+    other = create(:vehicle, user: create(:user))
+
+    assert_equal "U", other.rank
+  end
+
+  test "a rank handed in is kept" do
+    create(:vehicle, user: @user)
+    vehicle = create(:vehicle, user: @user, rank: "0U")
+
+    assert_equal "0U", vehicle.rank
+    assert_equal vehicle, @user.vehicles.ranked.first
+  end
+
+  test "ranks sort by byte, not by the database collation" do
+    upper = create(:vehicle, user: @user, rank: "B")
+    lower = create(:vehicle, user: @user, rank: "a")
+
+    assert_equal [upper, lower], @user.vehicles.ranked.to_a
   end
 end
