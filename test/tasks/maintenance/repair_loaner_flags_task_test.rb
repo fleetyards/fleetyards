@@ -33,6 +33,26 @@ module Maintenance
       assert_equal true, loaner.reload.wanted
     end
 
+    test "#process collapses a parent's duplicate loaners, keeping the visible one" do
+      parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+      visible = Vehicle.find_by(loaner: true, vehicle_id: parent.id)
+      duplicate = visible.dup.tap { |row| row.assign_attributes(hidden: true, rank: nil) }.tap(&:save!)
+
+      @task.process(@user)
+
+      assert_equal [visible.id], Vehicle.where(loaner: true, vehicle_id: parent.id).pluck(:id)
+      assert_not Vehicle.exists?(duplicate.id)
+    end
+
+    test "#process removes a loaner whose pairing the import dropped" do
+      parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+      ModelLoaner.where(model: @parent_model, loaner_model: @loaner_model).delete_all
+
+      @task.process(@user)
+
+      assert_empty Vehicle.where(loaner: true, vehicle_id: parent.id)
+    end
+
     test "#process leaves an orphaned loaner alone" do
       orphan = create(:vehicle, :loaner, user: @user, model: @loaner_model, wanted: false)
       orphan.update_columns(vehicle_id: nil)
