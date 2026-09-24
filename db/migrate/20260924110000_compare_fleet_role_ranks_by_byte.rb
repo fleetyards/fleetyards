@@ -9,6 +9,6 @@ class CompareFleetRoleRanksByByte < ActiveRecord::Migration[8.1]
   end
 
   def down
-    change_column :fleet_roles, :rank, :text
+    change_column :fleet_roles, :rank, :text, collation: "default"
   end
 end
