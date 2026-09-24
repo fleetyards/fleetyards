@@ -33,12 +33,14 @@ module Api
         sorts = sorting_params(FleetMembership, member_query_params["sorts"],
           allowed: FleetMembership::SQUADRON_ROSTER_SORTING_PARAMS)
         joined_sort, member_query_params["sorts"] = sorts.partition { |sort| sort.start_with?("squadron_membership_created_at ") }
+        joined_from = member_query_params.delete("squadron_membership_created_at_gteq")
+        joined_until = member_query_params.delete("squadron_membership_created_at_lteq")
 
         @q = scope.ransack(member_query_params)
         result = FleetMembership.where(
           FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-        result = order_by_joined_at(result, joined_sort.first) if joined_sort.any?
+        result = by_joined_at(result, sort: joined_sort.first, from: joined_from, until_date: joined_until)
         result = result
           .order(@q.result.order_values)
           .includes(
@@ -90,19 +92,25 @@ module Api
         end
       end
 
-      # Ransack can sort by the join date only through a join it adds to the
-      # inner query, which the outer one cannot see -- and that join covers
-      # every squadron and team the member is on. The outer query joins this
-      # squadron's own row instead, under an alias so the preloaded badges are
-      # left alone.
-      private def order_by_joined_at(result, sort)
+      # The join date belongs to this squadron's own row. Ransack reaches it
+      # only through a join over every squadron and team the member is on --
+      # a team joined last week would pass a filter this squadron's date
+      # fails -- and a sort it adds there is invisible to the outer query. So
+      # the outer query joins this squadron's row itself, under an alias that
+      # leaves the preloaded badges alone, and filters and sorts on that.
+      private def by_joined_at(result, sort:, from:, until_date:)
         rows = FleetSquadronMembership.arel_table.alias("roster_rows")
         members = FleetMembership.arel_table
         join = members.join(rows).on(
           rows[:fleet_membership_id].eq(members[:id]).and(rows[:fleet_squadron_id].eq(@fleet_squadron.id))
         ).join_sources
 
-        result.joins(join).order(sort.end_with?(" desc") ? rows[:created_at].desc : rows[:created_at].asc)
+        result = result.joins(join)
+        result = result.where(rows[:created_at].gteq(Time.zone.parse(from))) if from.present?
+        result = result.where(rows[:created_at].lteq(Time.zone.parse(until_date))) if until_date.present?
+        return result if sort.blank?
+
+        result.order(sort.end_with?(" desc") ? rows[:created_at].desc : rows[:created_at].asc)
       end
 
       private def set_fleet

@@ -86,6 +86,23 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET squadron members filters by when they joined this squadron, not a team" do
+    @squadron.fleet_squadron_memberships.update_all(created_at: 10.days.ago)
+    team = create(:fleet_squadron, fleet: @fleet, team: true)
+    create(:fleet_squadron_membership, fleet_squadron: team, fleet_membership: @membership, created_at: 1.day.ago)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: path_params,
+      params: {q: {squadronMembershipCreatedAtGteq: 3.days.ago.to_date.iso8601}} do
+      assert_empty parsed_body["items"]
+    end
+
+    assert_api_response :get, 200, path_params: path_params,
+      params: {q: {squadronMembershipCreatedAtLteq: 3.days.ago.to_date.iso8601}} do
+      assert_equal [@member.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+  end
+
   test "GET squadron members is readable by a plain member" do
     sign_in @member
 
