@@ -47,7 +47,7 @@ const {
   data: squadrons,
   isLoading,
   refetch,
-} = useFleetSquadrons(fleetSlug, {});
+} = useFleetSquadrons(fleetSlug, { perPage: "all" });
 
 const canSort = computed(
   () => props.membership?.capabilities?.updateSquadrons ?? false,

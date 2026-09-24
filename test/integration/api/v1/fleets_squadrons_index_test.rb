@@ -59,6 +59,15 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "requests for all squadrons include records beyond the default page" do
+    create_list(:fleet_squadron, 31, fleet: @fleet)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {perPage: "all"} do
+      assert_equal 31, parsed_body["items"].size
+    end
+  end
+
   test "GET /fleets/:slug/squadrons lists squadrons for a plain member" do
     create_list(:fleet_squadron, 3, fleet: @fleet)
     sign_in @member

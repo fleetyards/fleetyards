@@ -60,7 +60,7 @@ const {
   data: squadrons,
   isLoading,
   refetch,
-} = useFleetSquadrons(fleetSlug, {});
+} = useFleetSquadrons(fleetSlug, { perPage: "all" });
 
 const allSquadrons = computed<FleetSquadron[]>(
   () => squadrons.value?.items ?? [],

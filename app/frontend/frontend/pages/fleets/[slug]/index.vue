@@ -40,7 +40,7 @@ const showSquadrons = computed(
 
 const { data: squadrons } = useFleetSquadrons(
   computed(() => props.fleet.slug),
-  {},
+  { perPage: "all" },
   { query: { enabled: showSquadrons } },
 );
 
