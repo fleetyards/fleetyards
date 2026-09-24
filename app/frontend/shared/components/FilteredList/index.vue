@@ -214,8 +214,21 @@ const clientError = computed(
 
 const { resetFilter, hasResettableQuery } = useFilters();
 
+const paginationKey = computed(() => (route.name as string) || "");
+
+// A page size is persisted outside the route, and one above the endpoint's
+// maximum is refused the same way a bad filter is.
+const hasStoredPerPage = computed(
+  () => paginationStore.findByKey(paginationKey.value) !== undefined,
+);
+
+const resettable = computed(
+  () => hasResettableQuery.value || hasStoredPerPage.value,
+);
+
 const resetQuery = () => {
   filtersStore.removeFilter(props.name);
+  paginationStore.removeByKey(paginationKey.value);
   resetFilter();
 };
 
@@ -368,7 +381,7 @@ const toggleFilter = () => {
               <Offline v-else-if="offline" :retry="asyncStatus.refetch" />
               <ClientError
                 v-else-if="clientError"
-                :reset="hasResettableQuery ? resetQuery : undefined"
+                :reset="resettable ? resetQuery : undefined"
               />
               <ServerError v-else />
             </transition>

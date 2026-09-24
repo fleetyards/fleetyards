@@ -1,9 +1,10 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { ref } from "vue";
 import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
+import { usePaginationStore } from "@/shared/stores/pagination";
 import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 
 // The filter panel teleports to the off-canvas container the layout provides;
@@ -189,6 +190,34 @@ describe("FilteredList", () => {
     await flushPromises();
 
     expect(router.currentRoute.value.query).toEqual({ tab: "grid" });
+  });
+
+  // Nothing in the route to clear: the saved size alone has to offer a reset.
+  it("clears a saved page size the API refused", async () => {
+    await router.push({ name: "ships" });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400, {
+            code: "pagination.max_per_page_reached",
+          }),
+        },
+        initialState: { pagination: { perPage: { ships: 500 } } },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    // The testing pinia stubs actions, so the call is what is observable.
+    const store = usePaginationStore();
+
+    expect(vi.mocked(store).removeByKey.mock.calls).toEqual([["ships"]]);
   });
 
   it("offers no reset when the route holds nothing to clear", async () => {
