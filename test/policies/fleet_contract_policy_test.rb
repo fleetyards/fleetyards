@@ -35,6 +35,15 @@ class FleetContractPolicyTest < ActiveSupport::TestCase
     refute contract_policy(@outsider, contract).apply(:claim?)
   end
 
+  test "a squadron contract's crew is listed and joined only from inside the squadron" do
+    contract = restricted(:in_progress)
+
+    assert crew_policy(@insider, contract).apply(:index?)
+    assert crew_policy(@insider, contract).apply(:create?)
+    refute crew_policy(@outsider, contract).apply(:index?)
+    refute crew_policy(@outsider, contract).apply(:create?)
+  end
+
   test "a contract for the whole fleet is claimed by anyone who reads the board" do
     contract = create(:fleet_contract, :published, fleet: @fleet)
 
