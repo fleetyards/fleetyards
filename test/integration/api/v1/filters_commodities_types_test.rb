@@ -66,6 +66,10 @@ class Api::V1::FiltersCommoditiesTypesTest < ActionDispatch::IntegrationTest
 
       assert_equal "Konsumgüter", option["label"]
     end
+
+    # The test process reuses its thread the way Puma does, so a locale the
+    # request left behind would reach whichever test runs next.
+    assert_equal I18n.default_locale, I18n.locale
   end
 
   test "GET /filters/commodities/types skips commodities without a type" do
