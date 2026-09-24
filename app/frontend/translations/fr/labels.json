@@ -494,6 +494,7 @@
           "restrictedToHint": "Seuls ces escadrons peuvent le voir",
           "blockedBy": "Déjà dans l'escadron %{squadron}",
           "color": "Couleur",
+          "colorSuggestions": "D'après l'icône :",
           "memberCount": "%{count} membres",
           "members": "Membres",
           "joinedAt": "Date d’adhésion à l’escadron",

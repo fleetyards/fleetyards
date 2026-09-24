@@ -494,6 +494,7 @@
           "restrictedToHint": "Solo estos escuadrones pueden verlo",
           "blockedBy": "Ya está en el escuadrón %{squadron}",
           "color": "Color",
+          "colorSuggestions": "Del icono:",
           "memberCount": "%{count} miembros",
           "members": "Miembros",
           "joinedAt": "Fecha de ingreso al escuadrón",

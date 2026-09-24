@@ -494,6 +494,7 @@
           "restrictedToHint": "Nur diese Staffeln sehen es",
           "blockedBy": "Bereits in der Staffel %{squadron}",
           "color": "Farbe",
+          "colorSuggestions": "Aus dem Symbol:",
           "memberCount": "%{count} Mitglieder",
           "members": "Mitglieder",
           "joinedAt": "Beitritt zum Geschwader",

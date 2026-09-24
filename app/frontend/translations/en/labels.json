@@ -494,6 +494,7 @@
           "restrictedToHint": "Only these squadrons can see it",
           "blockedBy": "Already in the %{squadron} squadron",
           "color": "Colour",
+          "colorSuggestions": "From the icon:",
           "memberCount": "%{count} Members",
           "members": "Members",
           "joinedAt": "Squadron joined at",

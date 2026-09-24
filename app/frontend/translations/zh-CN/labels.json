@@ -494,6 +494,7 @@
           "restrictedToHint": "只有这些中队可见",
           "blockedBy": "已在 %{squadron} 中队中",
           "color": "颜色",
+          "colorSuggestions": "取自图标：",
           "memberCount": "%{count} 名成员",
           "members": "成员",
           "joinedAt": "加入中队时间",

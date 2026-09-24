@@ -198,7 +198,13 @@ onMounted(() => {
   }
 });
 
-const emit = defineEmits(["update:modelValue", "update:presetValue"]);
+const emit = defineEmits<{
+  "update:modelValue": [value: string | null | undefined];
+  "update:presetValue": [value: string | null];
+  // The file itself, for a consumer that wants to read it -- the model value
+  // is only the signed id the upload handed back.
+  uploaded: [file: File];
+}>();
 
 const clear = () => {
   uploadedHere.value = false;
@@ -229,6 +235,7 @@ const onUploadDone = (files: FileUpload[]) => {
   uploadedHere.value = true;
   inputValue.value = files[0].blob.signed_id;
   emit("update:modelValue", files[0].blob.signed_id);
+  emit("uploaded", files[0].file);
 
   // An upload replaces the preset rather than sitting over one that would win
   // back the moment the file were cleared.
