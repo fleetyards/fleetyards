@@ -49,6 +49,12 @@ const missing = computed(
     !channels.value?.items.some((channel) => channel.id === props.modelValue),
 );
 
+const listed = computed(
+  () =>
+    !!props.modelValue &&
+    !!channels.value?.items.some((channel) => channel.id === props.modelValue),
+);
+
 // Discord's own sidebar order, which the API already returns: a list sorted by
 // name would split every category apart.
 const options = computed<FilterOption[]>(() => {
@@ -59,10 +65,15 @@ const options = computed<FilterOption[]>(() => {
       : `#${channel.name}`,
   }));
 
-  if (missing.value && props.modelValue) {
+  // The saved channel stays selectable, and so clearable, whatever Discord
+  // says about it -- a server the bot was removed from would otherwise hold on
+  // to a channel nobody can take off.
+  if (props.modelValue && !listed.value) {
     items.unshift({
       value: props.modelValue,
-      label: t("labels.fleet.discord.missingChannel"),
+      label: missing.value
+        ? t("labels.fleet.discord.missingChannel")
+        : `#${props.modelValue}`,
     });
   }
 
@@ -83,7 +94,7 @@ const selected = computed({
       :name="props.name"
       :label="props.label"
       :info="props.info"
-      :disabled="!connected"
+      :disabled="!connected && !props.modelValue"
       searchable
       unsorted
     />

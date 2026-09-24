@@ -77,4 +77,26 @@ describe("FleetDiscordChannelSelect", () => {
     expect(find(subject, "channel-missing").exists()).toBe(false);
     expect(find(subject, "channel-unavailable").exists()).toBe(true);
   });
+
+  it("keeps a saved channel clearable while Discord is unreachable", async () => {
+    response = {
+      code: FleetDiscordConnectionCodeEnum.BOT_NOT_IN_GUILD,
+      items: [],
+    };
+
+    const subject = await mount("2");
+
+    expect(subject.find("[disabled]").exists()).toBe(false);
+  });
+
+  it("is disabled with nothing saved and nothing to pick from", async () => {
+    response = {
+      code: FleetDiscordConnectionCodeEnum.MISSING_GUILD,
+      items: [],
+    };
+
+    const subject = await mount(null);
+
+    expect(subject.find("[disabled]").exists()).toBe(true);
+  });
 });
