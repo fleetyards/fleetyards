@@ -395,6 +395,8 @@ class Vehicle < ApplicationRecord
   def add_loaners
     return if loaner?
 
+    remove_unlisted_loaners
+
     model.loaners.each do |model_loaner|
       create_loaner(model_loaner)
     end
@@ -403,13 +405,16 @@ class Vehicle < ApplicationRecord
   def remove_loaners
     return if loaner?
 
-    Vehicle.where(loaner: true, vehicle_id: id, user_id:).destroy_all
+    destroy_loaners(Vehicle.where(loaner: true, vehicle_id: id, user_id:))
+  end
 
-    Vehicle.where(loaner: true, model_id:, user_id:).find_each do |loaner_vehicle|
-      loaner_vehicle.update(
-        hidden: Vehicle.where(loaner: true, model_id: loaner_vehicle.model_id, user_id:, hidden: false).where.not(id: loaner_vehicle.id).exists?
-      )
-    end
+  # The loaner import drops a pairing RSI no longer lists, but the rows it
+  # created for this parent would otherwise stay in the hangar and in fleets:
+  # nothing below walks a loaner model the parent's model does not name.
+  def remove_unlisted_loaners
+    destroy_loaners(
+      Vehicle.where(loaner: true, vehicle_id: id, user_id:).where.not(model_id: model.loaners.select(:id))
+    )
   end
 
   def create_loaner(model_loaner)
@@ -417,7 +422,13 @@ class Vehicle < ApplicationRecord
     # `wanted` too only makes it miss the rows written under the previous value:
     # the parent flips, a second set is created, and the first is stranded with
     # a stale flag that then reaches fleets.
-    existing_loaner = Vehicle.where(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id:).first
+    #
+    # A parent can still hold several rows for one loaner model -- the sets the
+    # old lookup stranded. Updating only one would strand the rest again on the
+    # next flip, so the visible or oldest row stays and the others go.
+    existing_loaner, *duplicates = Vehicle.where(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id:)
+      .order(:hidden, :created_at).to_a
+    duplicates.each(&:destroy)
 
     if existing_loaner.present?
       existing_loaner.update(
@@ -425,6 +436,10 @@ class Vehicle < ApplicationRecord
         hidden: Vehicle.where(loaner: true, model_id: model_loaner.id, wanted:, user_id:, hidden: false)
           .where.not(id: existing_loaner.id).exists?
       )
+
+      # A duplicate or the row's old wanted state may have been the only
+      # visible loaner of its group, one another parent's loaner still sits in.
+      reveal_loaner_groups([model_loaner.id]) if duplicates.any? || existing_loaner.saved_change_to_wanted?
 
       return
     end
@@ -438,6 +453,27 @@ class Vehicle < ApplicationRecord
       wanted:,
       hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, wanted:, user_id:)
     )
+  end
+
+  # One loaner of a model stays visible per wanted state. Destroying rows can
+  # take a group's visible one with it, so the oldest remaining row takes over.
+  private def destroy_loaners(scope)
+    model_ids = scope.distinct.pluck(:model_id)
+    return if model_ids.empty?
+
+    scope.destroy_all
+
+    reveal_loaner_groups(model_ids)
+  end
+
+  private def reveal_loaner_groups(model_ids)
+    Vehicle.where(loaner: true, user_id:, model_id: model_ids).to_a
+      .group_by { |loaner| [loaner.model_id, loaner.wanted] }
+      .each_value do |group|
+        next if group.any? { |loaner| !loaner.hidden? }
+
+        group.min_by(&:created_at).update(hidden: false)
+      end
   end
 
   def update_bundled_snub_crafts

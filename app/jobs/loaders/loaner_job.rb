@@ -10,6 +10,20 @@ module Loaders
       # `add_loaners` runs over every vehicle of every loaner-bearing model, so
       # this is the widest machine write there is against the hangar.
       PaperTrail.request(enabled: false) do
+        # A pairing RSI dropped, where the loaner model is still lent by other
+        # ships: the cleanup below keeps these rows, and `add_loaners` never
+        # reaches a parent whose model lends nothing any more. Removed first so
+        # the pass below settles which loaner of each model stays visible.
+        Vehicle.where(loaner: true).where.not(vehicle_id: nil).where(<<~SQL.squish).find_each(&:destroy)
+          NOT EXISTS (
+            SELECT 1 FROM vehicles parents
+            JOIN model_loaners ON model_loaners.model_id = parents.model_id
+            WHERE parents.id = vehicles.vehicle_id
+              AND model_loaners.loaner_model_id = vehicles.model_id
+              AND model_loaners.hidden = FALSE
+          )
+        SQL
+
         model_ids.each do |model_id|
           Vehicle.where(model_id:, loaner: false).find_each(&:add_loaners)
         end

@@ -37,6 +37,24 @@ module Loaders
         "the job did no work, so it proved nothing"
     end
 
+    # The loaner model is still lent by another ship, so the model-wide cleanup
+    # keeps it; only the dropped pairing says this row should go.
+    test "#perform removes a loaner whose pairing RSI dropped" do
+      ModelLoaner.unstub(:pluck)
+      @loader.stubs(:run).returns([[], []])
+
+      user = create(:user)
+      loaner_model = create(:model)
+      parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+      create(:model).tap { |model| model.loaners << loaner_model }
+      parent = create(:vehicle, user:, model: parent_model, wanted: false)
+      ModelLoaner.where(model: parent_model).delete_all
+
+      ::Loaders::LoanerJob.new.perform
+
+      assert_empty Vehicle.where(loaner: true, vehicle_id: parent.id)
+    end
+
     test "#perform creates a GitHub issue when there are missing loaners" do
       missing_loaners = [{loaner: "F7C Hornet", model: "Mole", model_id: "abc-123"}]
       @loader.stubs(:run).returns([missing_loaners, []])
