@@ -143,7 +143,11 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         />
       </div>
       <div v-if="restrictedToSquadrons" class="col-12 col-md-6">
-        <SquadronSelect v-model="fleetSquadronIds" :fleet="fleet" />
+        <SquadronSelect
+          v-model="fleetSquadronIds"
+          :fleet="fleet"
+          warn-without-discord-channel
+        />
       </div>
       <div class="col-12 col-md-6">
         <FormInput
