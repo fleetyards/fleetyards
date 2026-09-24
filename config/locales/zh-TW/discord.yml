@@ -109,5 +109,9 @@ zh-TW:
     ship_on_sale:
       message: 起價 %{price}，未含加值稅
       title: '%{model} 現正特價中！'
+    weekly_digest:
+      heading: '**%{fleet} 本週活動**'
+      more:
+        other: '……還有 %{count} 個：%{url}'
     youtube_video:
       title: 'YouTube 上有新影片！'

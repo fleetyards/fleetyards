@@ -109,5 +109,9 @@ zh-CN:
     ship_on_sale:
       message: 起价 %{price}，不含增值税
       title: '%{model} 现已开售！'
+    weekly_digest:
+      heading: '**%{fleet} 本周活动**'
+      more:
+        other: '……还有 %{count} 个：%{url}'
     youtube_video:
       title: 'YouTube 上有新视频！'

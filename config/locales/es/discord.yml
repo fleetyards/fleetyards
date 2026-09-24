@@ -109,5 +109,10 @@ es:
     ship_on_sale:
       message: Desde %{price} sin IVA
       title: '¡La %{model} ya está en oferta!'
+    weekly_digest:
+      heading: '**La semana en %{fleet}**'
+      more:
+        one: '…y uno más: %{url}'
+        other: '…y %{count} más: %{url}'
     youtube_video:
       title: '¡Nuevo vídeo en YouTube!'
