@@ -94,6 +94,28 @@ module Discord
       assert_equal ["gone"], result.channel_ids
     end
 
+    test "a voice channel takes no posts, whatever its permissions" do
+      roles(ChannelCapability::SEND_MESSAGES)
+      channels({"id" => "c1", "type" => 2, "permission_overwrites" => []})
+
+      result = check("c1")
+
+      assert_equal :unknown_channel, result.code
+      assert_equal ["c1"], result.channel_ids
+    end
+
+    # Re-authorising adds Send Messages, never View Channel in a hidden one.
+    test "a hidden channel is locked even when the install also lacks Send Messages" do
+      roles(0)
+      channels({"id" => "c1", "type" => 0, "permission_overwrites" => [
+        {"id" => GUILD, "type" => 0, "allow" => "0", "deny" => ChannelCapability::VIEW_CHANNEL.to_s}
+      ]})
+
+      result = check("c1")
+
+      assert_equal :channel_locked, result.code
+    end
+
     test "Administrator overrides every overwrite" do
       roles(ChannelCapability::ADMINISTRATOR)
       channels({"id" => "c1", "type" => 0, "permission_overwrites" => [

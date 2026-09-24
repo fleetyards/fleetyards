@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "discord/api_client"
+require "discord/guild_channels"
 
 module Discord
   # Answers "can the bot post in these channels?" before an announcement finds
@@ -37,7 +38,9 @@ module Discord
 
       channels = Array(api.get_guild_channels(@guild_id)).index_by { |channel| channel["id"] }
 
-      unknown = wanted - channels.keys
+      # A voice channel or a category takes no messages, whatever the
+      # permissions say, so it is as good as gone for an announcement.
+      unknown = wanted.reject { |id| GuildChannels::POSTABLE_TYPES.include?(channels[id]&.dig("type")) }
       return Result.new(:unknown_channel, unknown) if unknown.any?
 
       member = api.get_guild_member(@guild_id, ApiClient.application_id)
@@ -49,10 +52,13 @@ module Discord
       blocked = wanted.reject { |id| permissions_in(channels[id], base, member_role_ids).allbits?(POST) }
       return Result.new(:ok, []) if blocked.empty?
 
-      # A channel can grant Send Messages the install never did, so the grant
-      # only needs renewing when that is why the blocked ones are blocked.
-      code = base.allbits?(SEND_MESSAGES) ? :channel_locked : :missing_send_messages
-      Result.new(code, blocked)
+      # Re-authorising only adds Send Messages to the base. Where that alone
+      # would open every blocked channel, it is the fix; a channel whose own
+      # overwrites still shut the bot out needs its settings changed instead.
+      locked = blocked.reject { |id| permissions_in(channels[id], base | SEND_MESSAGES, member_role_ids).allbits?(POST) }
+      return Result.new(:channel_locked, locked) if locked.any?
+
+      Result.new(:missing_send_messages, blocked)
     rescue ApiClient::Error => e
       Result.new(error_code(e.status), [])
     end

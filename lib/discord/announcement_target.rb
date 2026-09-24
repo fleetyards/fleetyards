@@ -56,7 +56,7 @@ module Discord
       return false if setting.blank?
 
       case kind
-      when SQUADRON then channel_post(setting, channel_id, content)
+      when SQUADRON then restricted_post(setting, channel_id, content)
       when FLEET then fleet_post(setting, content)
       when OFFICERS then officers_post(setting, content)
       else false
@@ -78,7 +78,16 @@ module Discord
     private def officers_post(setting, content)
       return false if setting.discord_officers_channel_id.blank?
 
-      channel_post(setting, setting.discord_officers_channel_id, content)
+      restricted_post(setting, setting.discord_officers_channel_id, content)
+    end
+
+    # A squadron's or the officers' channel that is also the fleet's
+    # announcement channel is read by the whole fleet, and the settings page
+    # says so rather than this posting there.
+    private def restricted_post(setting, id, content)
+      return false if id == setting.discord_announcement_channel_id
+
+      channel_post(setting, id, content)
     end
 
     private def channel_post(setting, id, content)

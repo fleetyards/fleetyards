@@ -80,6 +80,11 @@ module Api
 
         return {} if owners.empty?
 
+        announcement = @setting.discord_announcement_channel_id
+        if announcement.present? && owners[announcement].size > 1
+          return {postingOk: false, postingCode: "channel_shared", postingDetail: (owners[announcement] - [owners[announcement].first]).join(", ")}
+        end
+
         result = ::Discord::ChannelCapability.new(@setting.discord_guild_id).check(owners.keys)
 
         {postingOk: result.ok?, postingCode: result.code.to_s}.tap do |payload|

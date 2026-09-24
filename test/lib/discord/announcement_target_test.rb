@@ -83,6 +83,14 @@ module Discord
       assert_not AnnouncementTarget.officers.deliver(@fleet, "hello")
     end
 
+    # That channel is read by the whole fleet.
+    test "a squadron channel that is also the fleet's channel gets no post" do
+      @setting.update!(discord_announcement_channel_id: CHANNEL)
+      @api.expects(:get_channel).never
+
+      assert_not AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
+    end
+
     test "the job's arguments rebuild the same target" do
       target = AnnouncementTarget.squadron(CHANNEL)
 

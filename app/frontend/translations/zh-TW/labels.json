@@ -422,7 +422,8 @@
           "postingCodes": {
             "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
             "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",
-            "unknown_channel": "為 %{names} 選擇的頻道在 Discord 上已不存在。"
+            "unknown_channel": "為 %{names} 選擇的頻道在 Discord 上已不存在或無法再發文。",
+            "channel_shared": "%{names} 使用了所有成員都能閱讀的艦隊公告頻道。在設定專屬頻道之前不會為其發布任何內容。"
           },
           "statusOk": "已連線至 %{name}",
           "statusCodes": {

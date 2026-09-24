@@ -422,7 +422,8 @@
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
             "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",
-            "unknown_channel": "The channel picked for %{names} no longer exists on Discord."
+            "unknown_channel": "The channel picked for %{names} no longer exists on Discord or can no longer take posts.",
+            "channel_shared": "%{names} uses the fleet's announcement channel, which every member reads. Nothing is posted for it until it has a channel of its own."
           },
           "statusOk": "Connected to %{name}",
           "statusCodes": {
