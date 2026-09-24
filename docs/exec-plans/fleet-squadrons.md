@@ -272,15 +272,22 @@ finish the job.
 
 ### D14 — A fleet arranges its own squadrons
 
-Alphabetical is not an order anybody chose. `position` is the default sort and
+Alphabetical is not an order anybody chose. `rank` is the default sort and
 the association's own order, so the strip on the front page, the filter
 segments and the roster badges all follow it rather than only the page it was
 arranged on.
 
-The whole order goes to `PUT …/squadrons/sort` in one call. A position per
-squadron would leave the list half-applied whenever one of the writes failed,
-and dragging is a gesture whose result has to be the arrangement on screen or
-the one before it. A squadron left out of the call keeps the place it had.
+A lexorank, the one `FleetRole` already uses. A drag is one squadron moved,
+so `PUT …/squadrons/:slug/move` writes that row alone; the unique index on
+`(fleet_id, rank)` means two squadrons can never share a place, which a list of
+integer positions written whole could not promise once a client sent part of
+it. The column is collated "C": the ranks are compared byte by byte, and under
+the database's locale collation "g" sorts before "U" and the next rank handed
+out repeats one already taken.
+
+Squadrons and teams are one sequence drawn as two rows, so the page counts a
+move in the sequence -- after the squadron now ahead of it in its row -- and
+not within the row, which would drop it among the other one.
 
 ### D15 — Belonging is the rule; `team` marks the exception
 
