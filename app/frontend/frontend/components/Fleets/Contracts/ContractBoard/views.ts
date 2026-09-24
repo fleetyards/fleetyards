@@ -42,9 +42,12 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
   },
   {
     key: "mine",
-    // The work in hand: a contract is claimed before anybody can deliver
-    // against it, so there is one state a job being worked can be in.
-    states: [FleetContractStateEnum.IN_PROGRESS],
+    // The work in hand: a claimed contract, or an expired one whose deliveries
+    // are still waiting for an answer -- the API drops the settled ones.
+    states: [
+      FleetContractStateEnum.IN_PROGRESS,
+      FleetContractStateEnum.EXPIRED,
+    ],
     mine: true,
     icon: "fa-light fa-user-helmet-safety",
   },

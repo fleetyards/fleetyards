@@ -134,6 +134,13 @@ class FleetContract < ApplicationRecord
       .distinct
   }
 
+  # An expired contract is still work in hand while a delivery filed before the
+  # deadline waits for an answer, because accepting it still counts.
+  scope :without_settled_expiry, -> {
+    where.not(aasm_state: "expired")
+      .or(where(id: InventoryTransfer.pending.where.not(fleet_contract_id: nil).select(:fleet_contract_id)))
+  }
+
   # `whiny_transitions: false` matches the rest of the app's state machines.
   # The two stamps aasm cannot write are written by hand: its timestamp feature
   # derives the column from the *state* name, so `open` would want `open_at` and

@@ -559,6 +559,26 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_equal [done.slug], parsed_body["items"].map { |item| item["slug"] }
   end
 
+  test "GET mine keeps an expired contract only while a delivery is still pending" do
+    waiting = create(:fleet_contract, :in_progress, fleet: @fleet, destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: waiting, user: @crewmate)
+    create(:inventory_transfer, fleet_contract: waiting, recipient_fleet: @fleet)
+    waiting.update!(aasm_state: "expired")
+
+    settled = create(:fleet_contract, :in_progress, fleet: @fleet, destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: settled, user: @crewmate)
+    create(:inventory_transfer, fleet_contract: settled, recipient_fleet: @fleet, aasm_state: "declined")
+    settled.update!(aasm_state: "expired")
+
+    sign_in @crewmate
+
+    get "/api/v1/fleets/#{@fleet.slug}/contracts",
+      params: {mine: true, q: {state_in: ["in_progress", "expired"]}}, as: :json
+
+    assert_response :success
+    assert_equal [waiting.slug], parsed_body["items"].map { |item| item["slug"] }
+  end
+
   test "a non-member cannot see the board at all" do
     sign_in @outsider
 
