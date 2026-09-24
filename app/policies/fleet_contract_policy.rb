@@ -66,11 +66,12 @@ class FleetContractPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(MANAGE)
   end
 
-  # Claiming rides on read. A board only officers may take work off is not a
-  # board, and the claim itself grants nothing beyond the transfers the member
-  # could already make.
+  # Claiming rides on read -- of this contract, so a squadron's work is taken
+  # by that squadron. A board only officers may take work off is not a board,
+  # and the claim itself grants nothing beyond the transfers the member could
+  # already make.
   def claim?
-    return false unless index?
+    return false unless show?
 
     record.open?
   end
