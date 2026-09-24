@@ -46,7 +46,7 @@ FactoryBot.define do
     end
 
     name { Faker::Alphanumeric.alphanumeric(number: 10) }
-    fid { Faker::Alphanumeric.alphanumeric(number: 3).upcase }
+    sequence(:fid) { |n| "#{Faker::Alphanumeric.alphanumeric(number: 3).upcase}#{n}" }
     public_fleet { true }
 
     trait :private do

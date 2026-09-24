@@ -97,7 +97,7 @@ FactoryBot.define do
     end
 
     username { Faker::Alphanumeric.alphanumeric(number: 10) }
-    email { Faker::Internet.email }
+    sequence(:email) { |n| Faker::Internet.email(name: "user#{n}") }
     password { Faker::Internet.password }
     password_confirmation { password }
     confirmed_at { Time.now }
