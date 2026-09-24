@@ -29,7 +29,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 // The keys in the order they now sit in. The caller owns the list, so it is the
 // one that writes the new order and says what to do if that fails.
-const emit = defineEmits<{ sort: [keys: string[]] }>();
+// The new order, and the key of the record that was dragged: an order alone
+// cannot say which of two swapped neighbours moved.
+const emit = defineEmits<{ sort: [keys: string[], moved: string] }>();
 
 const gridClasses = computed(() => {
   if (props.gridBase === "3") {
@@ -118,7 +120,7 @@ const initSortable = () => {
       const [moved] = keys.splice(oldIndex, 1);
       keys.splice(newIndex, 0, moved);
 
-      emit("sort", keys);
+      emit("sort", keys, moved);
     },
   });
 };

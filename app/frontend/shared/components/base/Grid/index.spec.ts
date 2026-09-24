@@ -79,7 +79,7 @@ describe("BaseGrid", () => {
       newIndex: 2,
     } as never);
 
-    expect(wrapper.emitted("sort")?.[0]).toEqual([["b", "c", "a"]]);
+    expect(wrapper.emitted("sort")?.[0]).toEqual([["b", "c", "a"], "a"]);
   });
 
   it("reports a move back up the list", async () => {
@@ -92,7 +92,7 @@ describe("BaseGrid", () => {
       newIndex: 0,
     } as never);
 
-    expect(wrapper.emitted("sort")?.[0]).toEqual([["c", "a", "b"]]);
+    expect(wrapper.emitted("sort")?.[0]).toEqual([["c", "a", "b"], "c"]);
   });
 
   it("says nothing when the card came back where it started", async () => {

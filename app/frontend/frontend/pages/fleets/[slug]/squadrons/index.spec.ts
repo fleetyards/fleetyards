@@ -125,9 +125,19 @@ describe("FleetSquadronsPage", () => {
   it("places a dragged squadron after the one now ahead of it", async () => {
     const subject = await mount();
 
-    grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"]);
+    grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"], "alpha");
 
     expect(moveSent()).toEqual({ slug: "alpha", position: 2 });
+  });
+
+  // The same new row as above, but the other card was the one dragged: the
+  // order alone cannot tell the two apart, so the grid says which it was.
+  it("places a squadron dragged to the front before the one now behind it", async () => {
+    const subject = await mount();
+
+    grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"], "bravo");
+
+    expect(moveSent()).toEqual({ slug: "bravo", position: 0 });
   });
 
   // The half that is easy to get wrong: a team dragged within its row must not
@@ -135,7 +145,7 @@ describe("FleetSquadronsPage", () => {
   it("places a dragged team after the team now ahead of it", async () => {
     const subject = await mount();
 
-    grids(subject)[1].vm.$emit("sort", ["watch", "rota"]);
+    grids(subject)[1].vm.$emit("sort", ["watch", "rota"], "rota");
 
     expect(moveSent()).toEqual({ slug: "rota", position: 3 });
   });
@@ -143,7 +153,7 @@ describe("FleetSquadronsPage", () => {
   it("sends one move per drag", async () => {
     const subject = await mount();
 
-    grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"]);
+    grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"], "alpha");
 
     expect(move).toHaveBeenCalledTimes(1);
   });
@@ -151,7 +161,7 @@ describe("FleetSquadronsPage", () => {
   it("redraws the dragged row without waiting for the server", async () => {
     const subject = await mount();
 
-    grids(subject)[1].vm.$emit("sort", ["watch", "rota"]);
+    grids(subject)[1].vm.$emit("sort", ["watch", "rota"], "rota");
     await nextTick();
 
     expect(grids(subject)[1].props("records")).toMatchObject([

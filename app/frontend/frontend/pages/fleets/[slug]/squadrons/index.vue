@@ -84,33 +84,14 @@ const teamList = computed(() =>
 const moveMutation = useMoveFleetSquadron();
 
 /*
- * A drag moves one squadron, so the one that moved is where the two orders
- * first and last differ: it sits at one end of that window in the old order
- * and at the other end in the new.
- */
-const movedId = (before: string[], after: string[]) => {
-  const first = before.findIndex((id, index) => id !== after[index]);
-  const last = before.findLastIndex((id, index) => id !== after[index]);
-
-  return before[first] === after[last] ? before[first] : after[first];
-};
-
-/*
  * Each row is dragged on its own, but the order is one sequence across the
  * fleet with squadrons and teams interleaved in it. So the move is placed
  * against its new neighbour in that sequence -- after the squadron now ahead
  * of it in the row, or before the one behind it -- and the server is told that
  * place. Counting it within the row alone would put it among the other row.
  */
-const onSort = (rowIds: string[]) => {
+const onSort = (rowIds: string[], id: string) => {
   const previous = orderedSquadrons.value;
-  const isTeamRow =
-    previous.find((squadron) => squadron.id === rowIds[0])?.team ?? false;
-  const previousRow = previous
-    .filter((squadron) => (squadron.team ?? false) === isTeamRow)
-    .map((squadron) => squadron.id);
-
-  const id = movedId(previousRow, rowIds);
   const moved = previous.find((squadron) => squadron.id === id);
 
   if (!moved) return;
