@@ -32,7 +32,7 @@ module Discord
         return message(content: account_not_linked) if user.nil?
         return message(content: I18n.t("discord.commands.fleet.events.not_allowed")) unless allowed?(fleet, user)
 
-        occurrences = upcoming(fleet)
+        occurrences = upcoming(fleet, user)
         return message(content: I18n.t("discord.commands.fleet.events.none")) if occurrences.empty?
 
         message(content: content_for(fleet, occurrences))
@@ -50,11 +50,11 @@ module Discord
       # `starting_after` is what makes the pre-filter safe -- a recurring row
       # whose starts_at is long past still has occurrences ahead of it, so
       # filtering on starts_at would drop it along with all of them.
-      private def upcoming(fleet)
+      private def upcoming(fleet, user)
         from = Time.current
         to = from + LOOKAHEAD
 
-        fleet.fleet_events
+        visible_events(fleet, user)
           .active_status
           .starting_after(from)
           .where(status: LISTED_STATUSES)
@@ -62,6 +62,15 @@ module Discord
           .compact
           .sort_by { |occurrence| occurrence[:starts_at] }
           .first(MAX_EVENTS)
+      end
+
+      # The same narrowing the events endpoint applies: an event held to
+      # squadrons is listed to their members and to whoever runs the fleet's
+      # events, nobody else.
+      private def visible_events(fleet, user)
+        return fleet.fleet_events if ::FleetEventPolicy.new(fleet, user: user).apply(:manage?)
+
+        fleet.fleet_events.for_squadrons_of(fleet.fleet_memberships.kept.find_by(user: user))
       end
 
       private def occurrences_of(event, from, to)

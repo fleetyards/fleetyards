@@ -72,6 +72,26 @@ module Discord
         assert_operator content.index("Sooner Op"), :<, content.index("Later Op")
       end
 
+      test "an event held to a squadron the member is not in is not listed" do
+        squadron = create(:fleet_squadron, fleet: @fleet)
+        event(title: "Wing Op", visibility: "squadron", fleet_squadrons: [squadron])
+        event(title: "Strike Op")
+
+        content = call[:content]
+
+        assert_includes content, "Strike Op"
+        assert_not_includes content, "Wing Op"
+      end
+
+      test "an event held to the member's own squadron is listed" do
+        squadron = create(:fleet_squadron, fleet: @fleet)
+        create(:fleet_squadron_membership, fleet_squadron: squadron,
+          fleet_membership: @fleet.fleet_memberships.find_by(user: @user))
+        event(title: "Wing Op", visibility: "squadron", fleet_squadrons: [squadron])
+
+        assert_includes call[:content], "Wing Op"
+      end
+
       test "a past event is not upcoming" do
         event(title: "Old Op", starts_at: 2.days.ago)
 
