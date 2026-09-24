@@ -34,7 +34,16 @@ is a no-op there, and it is correct if one was missed.
 
 ### D4 — Skip when the same account is linked again
 If the member relinks the same uid before the job runs, the backfill owns that
-account again and the revoke would fight it, so the job returns early.
+account again and the revoke would fight it, so the job returns early. A
+relink that lands while the job runs is caught by a second check at the end,
+which enqueues `BackfillUserMemberRolesJob` so the new link's roles are put
+back.
+
+### D5 — Errors are handled per membership
+A permanent API error in one fleet (400, 403, 404) is logged and skipped so
+the other fleets are still revoked. 429 and 5xx are re-raised for a Sidekiq
+retry; the revoke is idempotent, so redoing fleets that already succeeded is
+harmless.
 
 ## What changed
 1. `lib/discord/member_role_sync.rb` — `discord_uid:` and `revoke:` options.
@@ -50,6 +59,7 @@ account again and the revoke would fight it, so the job returns early.
 - [x] Managed member and rank roles are removed in every fleet with a guild
 - [x] A role the fleet did not configure is never removed
 - [x] Other providers enqueue nothing; relinking the same uid skips the revoke
+- [x] One fleet's permanent error does not stop the others; a mid-run relink is backfilled
 
 ## Key files
 | File | Role |
