@@ -927,7 +927,8 @@
           }
         },
         "contracts": {
-          "deliverHint": "Envoyez les marchandises depuis un de vos inventaires et choisissez ce contrat pour que la livraison compte."
+          "deliverHint": "Envoyez les marchandises depuis un de vos inventaires et choisissez ce contrat pour que la livraison compte.",
+          "expiredHint": "Ce contrat a expiré et n'accepte plus de nouvelles livraisons. Les livraisons déjà en route comptent toujours une fois acceptées."
         }
       },
       "notifications": {
