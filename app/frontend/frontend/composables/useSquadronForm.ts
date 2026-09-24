@@ -14,6 +14,20 @@ import {
 export const SHORT_DESCRIPTION_MAX = 255;
 export const DESCRIPTION_MAX = 5000;
 
+// The picker cannot express "no colour", so it opens on this neutral instead.
+export const NEUTRAL_COLOR = "#8899aa";
+
+/*
+ * The colour a save writes. The neutral the picker opens on is a stand-in, not
+ * a choice: a squadron without a colour keeps having none unless somebody
+ * picked one, or an edit of its name would turn its outlined emblem into a
+ * filled grey tile.
+ */
+export const colorToSubmit = (
+  value: string | null | undefined,
+  { previous, changed }: { previous?: string | null; changed: boolean },
+) => (changed || previous ? value || null : null);
+
 export type SquadronFormFields = ReturnType<typeof useSquadronForm>["fields"];
 
 export type SquadronFormFieldProps = ReturnType<
@@ -47,14 +61,12 @@ export const useSquadronForm = (
     description: `max:${DESCRIPTION_MAX}`,
   };
 
-  const { defineField, handleSubmit, setErrors, meta } = useForm({
+  const { defineField, handleSubmit, setErrors, meta, isFieldDirty } = useForm({
     initialValues: {
       name: squadron?.value?.name ?? "",
       shortDescription: squadron?.value?.shortDescription ?? "",
       description: squadron?.value?.description ?? "",
-      // The picker cannot express "no colour", so a squadron without one opens
-      // on the neutral it is already drawn with rather than on black.
-      color: squadron?.value?.color ?? "#8899aa",
+      color: squadron?.value?.color ?? NEUTRAL_COLOR,
       team: squadron?.value?.team ?? false,
       icon: undefined as string | undefined,
     },
@@ -100,7 +112,10 @@ export const useSquadronForm = (
       name: values.name,
       shortDescription: values.shortDescription || null,
       description: values.description || null,
-      color: values.color || null,
+      color: colorToSubmit(values.color, {
+        previous: squadron?.value?.color,
+        changed: isFieldDirty("color"),
+      }),
       team: values.team,
       // Passed through rather than coerced: `undefined` keeps what is attached,
       // `null` is the field saying it was cleared, and a signed id replaces it.
