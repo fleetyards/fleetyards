@@ -2,6 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { ref } from "vue";
+import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
 import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 
@@ -151,6 +152,64 @@ describe("FilteredList", () => {
 
     expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
+  });
+
+  it("tells a rejected filter or sort apart from an outage", async () => {
+    const wrapper = await mount(400);
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(false);
+  });
+
+  it("keeps a server failure off the client error screen", async () => {
+    const wrapper = await mount(500);
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(false);
+  });
+
+  it("clears the filter and sort a rejected list was asked for", async () => {
+    await router.push({
+      name: "ships",
+      query: { s: "bogus_asc", manufacturerIn: "rsi", page: "2", tab: "grid" },
+    });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ tab: "grid" });
+  });
+
+  it("offers no reset when the route holds nothing to clear", async () => {
+    await router.push({ name: "ships", query: { tab: "grid" } });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        plugins: [router],
+      },
+    );
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(true);
+    expect(wrapper.find('[data-test="client-error-reset"]').exists()).toBe(
+      false,
+    );
   });
 
   it("blames the connection, not the server, when nothing answered", async () => {

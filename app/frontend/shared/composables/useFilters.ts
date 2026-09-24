@@ -124,10 +124,15 @@ export const useFilters = <T>({
       .catch(() => {});
   };
 
+  const hasResettableQuery = computed(() =>
+    Object.keys(route.query).some((key) => !viewStateKeys.includes(key)),
+  );
+
   const filter = debounce(debouncedFilter, 300);
 
   return {
     isFilterSelected,
+    hasResettableQuery,
     resetFilter,
     filter,
     filters,

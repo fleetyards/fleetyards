@@ -12,7 +12,9 @@ import ServerError from "@/shared/components/ServerError/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import SubscriptionRequired from "@/shared/components/SubscriptionRequired/index.vue";
 import Offline from "@/shared/components/Offline/index.vue";
+import ClientError from "@/shared/components/ClientError/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
+import { useFilters } from "@/shared/composables/useFilters";
 import { usePaginationStore } from "@/shared/stores/pagination";
 import { provideListGeometry } from "@/shared/composables/useListGeometry";
 import { useMinimumDuration } from "@/shared/composables/useMinimumDuration";
@@ -204,6 +206,19 @@ const subscriptionRequired = computed(
 // A request that never reached the server is not an outage either.
 const offline = computed(() => errorType.value === ErrorTypesEnum.OFFLINE);
 
+// The API refused a param the route handed it. The params are the reader's
+// filter and sort, so clearing them is the way back to a list.
+const clientError = computed(
+  () => errorType.value === ErrorTypesEnum.CLIENT_ERROR,
+);
+
+const { resetFilter, hasResettableQuery } = useFilters();
+
+const resetQuery = () => {
+  filtersStore.removeFilter(props.name);
+  resetFilter();
+};
+
 const emptyVisible = computed(() => {
   return !!(
     props.asyncStatus?.fetchStatus.value === "idle" && !props.records.length
@@ -351,6 +366,10 @@ const toggleFilter = () => {
               <SubscriptionRequired v-if="subscriptionRequired" />
               <Forbidden v-else-if="forbidden" />
               <Offline v-else-if="offline" :retry="asyncStatus.refetch" />
+              <ClientError
+                v-else-if="clientError"
+                :reset="hasResettableQuery ? resetQuery : undefined"
+              />
               <ServerError v-else />
             </transition>
           </slot>
