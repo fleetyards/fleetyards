@@ -115,11 +115,18 @@ The decisions are recorded in the issue body (#5194, "Decisions"). They are not 
   contractor out of it.
 - The response already models the destination as a nullable `FleetContractEndpoint`, so no response
   property has to become nullable.
+- A disabled vue-query query still returns data an earlier query cached. The transfer form's contract
+  targets and its contract picker both guard on their own condition, not only on `enabled`.
+- `publish?` needs `fleet:contracts:update`, so an author holding only `fleet:contracts:create` can
+  write a draft but not publish it. That is how things already were, and it is left alone. The flow test
+  gives its author both privileges and no inventory rights.
+- The contract jbuilder cache key moved to `v3`, because entries cached before the change have no
+  `holder`.
 
 ## Progress
 
-- [ ] Phase 1: Schema and model
-- [ ] Phase 2: Progress, link and transfer authorization
-- [ ] Phase 3: API and schema
-- [ ] Phase 4: Contract form and display
-- [ ] Phase 5: Transfer form
+- [x] Phase 1: Schema and model
+- [x] Phase 2: Progress, link and transfer authorization
+- [x] Phase 3: API and schema
+- [x] Phase 4: Contract form and display
+- [x] Phase 5: Transfer form
