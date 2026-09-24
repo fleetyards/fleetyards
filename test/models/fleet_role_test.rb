@@ -35,6 +35,13 @@ class FleetRoleTest < ActiveSupport::TestCase
     @officer_role = @fleet.fleet_roles.ranked.second
   end
 
+  test "ranks sort by byte, not by the database collation" do
+    upper = create(:fleet_role, fleet: @fleet, name: "Upper", rank: "B")
+    lower = create(:fleet_role, fleet: @fleet, name: "Lower", rank: "a")
+
+    assert_equal [upper, lower], @fleet.fleet_roles.ranked.last(2)
+  end
+
   test "#destroy is refused while members are still assigned to the role" do
     refute @member_role.destroy
 
