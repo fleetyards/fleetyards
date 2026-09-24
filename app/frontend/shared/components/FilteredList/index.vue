@@ -42,6 +42,9 @@ type Props = {
   // its header and a page of placeholder rows; a list of cards renders nothing
   // from an empty set and brings a `skeleton` slot instead.
   placeholders?: boolean;
+  // Route query keys that select what the list shows rather than narrow it,
+  // on top of the tab/view/direction every list keeps. A reset leaves them be.
+  viewKeys?: string[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   hideLoading: false,
   isFilterSelected: false,
   placeholders: false,
+  viewKeys: () => [],
 });
 
 const fetching = computed(() => {
@@ -212,7 +216,9 @@ const clientError = computed(
   () => errorType.value === ErrorTypesEnum.CLIENT_ERROR,
 );
 
-const { resetFilter, hasResettableQuery } = useFilters();
+const { resetFilter, hasResettableQuery } = useFilters({
+  viewKeys: props.viewKeys,
+});
 
 const paginationKey = computed(() => (route.name as string) || "");
 

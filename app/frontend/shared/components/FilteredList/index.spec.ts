@@ -32,6 +32,7 @@ const ListComponent = Component as unknown as new (...args: unknown[]) => {
     records: unknown[];
     asyncStatus: AsyncStatus;
     placeholders?: boolean;
+    viewKeys?: string[];
   };
   $slots: Record<string, unknown>;
 };
@@ -218,6 +219,31 @@ describe("FilteredList", () => {
     const store = usePaginationStore();
 
     expect(vi.mocked(store).removeByKey.mock.calls).toEqual([["ships"]]);
+  });
+
+  it("keeps a list's own view keys through a reset", async () => {
+    await router.push({
+      name: "ships",
+      query: { t: "archive", s: "bogus asc" },
+    });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+          viewKeys: ["t"],
+        },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ t: "archive" });
   });
 
   it("offers no reset when the route holds nothing to clear", async () => {
