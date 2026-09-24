@@ -70,7 +70,7 @@ module Discord
     # Nothing stops two users from linking the same Discord account, so what
     # the account is owed is the union over every accepted membership linked
     # to it, not only the one that triggered the sync.
-    private def desired_role_ids
+    def desired_role_ids
       owing = fleet.fleet_memberships.kept
         .where(aasm_state: "accepted")
         .where(user_id: OmniauthConnection.discord.where(uid: discord_uid).select(:user_id))

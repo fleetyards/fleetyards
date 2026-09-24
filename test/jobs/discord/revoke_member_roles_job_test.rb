@@ -72,6 +72,13 @@ module Discord
         assert_equal [@fleet.id, other.id].sort, fleet_ids.sort
       end
 
+      test "deleting the account snapshots each fleet's guild and managed roles" do
+        assert @user.destroy
+
+        _uid, _fleet_ids, snapshots = revoke_jobs.first
+        assert_equal [[@fleet.id, "guild-1", [MEMBER_ROLE, RANK_ROLE].sort]], snapshots.map { |id, guild, roles| [id, guild, roles.sort] }
+      end
+
       test "deleting an account without Discord enqueues nothing" do
         @connection.destroy!
         clear_jobs
@@ -106,6 +113,41 @@ module Discord
         @api.expects(:remove_guild_member_role).with("guild-2", UID, "role-other")
 
         perform(fleet_ids)
+      end
+
+      # The sole admin's fleet is destroyed with the account, so only the
+      # snapshot still knows its guild and roles.
+      test "deleting the sole admin removes the destroyed fleet's managed roles" do
+        @membership.update!(fleet_role: @fleet.fleet_roles.find_by(permanent: true))
+        fleet_id = @fleet.id
+        admin_role = @fleet.fleet_roles.find_by(permanent: true)
+        admin_role.update!(discord_role_id: "role-admin")
+
+        assert @user.destroy
+        assert_not Fleet.exists?(fleet_id)
+        args = revoke_jobs.first
+
+        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, "role-admin", FOREIGN_ROLE]})
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE)
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, "role-admin")
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, FOREIGN_ROLE).never
+
+        ::Discord::RevokeMemberRolesJob.new.perform(*args)
+      end
+
+      test "a destroyed fleet keeps a role another fleet in the same guild still owes" do
+        @connection.destroy!
+        sibling = create(:fleet)
+        sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+        other = create(:user)
+        create(:omniauth_connection, user: other, provider: "discord", uid: UID)
+        sibling.fleet_memberships.create!(user: other, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
+
+        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).never
+
+        ::Discord::RevokeMemberRolesJob.new.perform(UID, ["gone-fleet-id"], [["gone-fleet-id", "guild-1", [MEMBER_ROLE, RANK_ROLE]]])
       end
 
       test "keeps the roles another member linked to the same account is owed" do

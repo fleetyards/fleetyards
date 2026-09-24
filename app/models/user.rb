@@ -934,11 +934,22 @@ class User < ApplicationRecord
     errors.add(:supported_fleet, :not_a_fleet_of_the_supporter)
   end
 
-  # Runs before the memberships and connections are destroyed, since the
-  # revoke needs both the Discord uid and every fleet this user was in.
+  # Runs before the memberships, connections and any fleets this user alone
+  # administers are destroyed. A destroyed fleet leaves nothing to read its
+  # guild and roles from, so they are snapshotted here as plain values.
   private def capture_discord_member_roles_revoke
     uid = omniauth_connections.find_by(provider: "discord")&.uid
-    @discord_member_roles_revoke = [uid, fleet_memberships.pluck(:fleet_id).uniq] if uid.present?
+    return if uid.blank?
+
+    fleets = Fleet.where(id: fleet_memberships.select(:fleet_id)).includes(:fleet_notification_setting)
+    snapshots = fleets.filter_map do |fleet|
+      guild_id = fleet.fleet_notification_setting&.discord_guild_id
+      next if guild_id.blank?
+
+      [fleet.id, guild_id, ::Discord::MemberRoleSync.new(fleet: fleet, discord_uid: uid).managed_role_ids]
+    end
+
+    @discord_member_roles_revoke = [uid, fleets.map(&:id), snapshots]
   end
 
   private def revoke_discord_member_roles

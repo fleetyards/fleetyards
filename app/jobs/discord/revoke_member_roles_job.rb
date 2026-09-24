@@ -10,19 +10,31 @@ module Discord
   #
   # Roles another member linked to the same Discord account is still owed are
   # kept; MemberRoleSync works that out per fleet.
+  #
+  # `snapshots` holds `[fleet_id, guild_id, managed_role_ids]` per fleet, for
+  # a fleet that was destroyed along with the account and can no longer be
+  # read.
   class RevokeMemberRolesJob < ::ApplicationJob
     sidekiq_options retry: 2, queue: "notifications"
 
-    def perform(discord_uid, fleet_ids)
+    def perform(discord_uid, fleet_ids, snapshots = [])
       return unless ApiClient.configured?
       return if discord_uid.blank? || fleet_ids.blank?
 
       linked_before = linked_user_ids(discord_uid)
+      fleets = Fleet.where(id: fleet_ids).includes(:fleet_notification_setting).to_a
 
-      Fleet.where(id: fleet_ids).includes(:fleet_notification_setting).find_each do |fleet|
+      fleets.each do |fleet|
         next if fleet.fleet_notification_setting&.discord_guild_id.blank?
 
         revoke(fleet, discord_uid)
+      end
+
+      existing_ids = fleets.map(&:id)
+      Array(snapshots).each do |fleet_id, guild_id, role_ids|
+        next if existing_ids.include?(fleet_id)
+
+        revoke_destroyed(fleet_id, guild_id, Array(role_ids), discord_uid)
       end
 
       # Someone who linked this account while the revoke ran may have lost
@@ -37,7 +49,7 @@ module Discord
     end
 
     private def revoke(fleet, discord_uid)
-      sync = MemberRoleSync.new(fleet: fleet, discord_uid: discord_uid)
+      sync = MemberRoleSync.new(fleet: fleet, discord_uid: discord_uid, api: api)
       return unless sync.runnable?
 
       result = sync.run!
@@ -45,8 +57,40 @@ module Discord
 
       Rails.logger.info("[Discord::RevokeMemberRolesJob] fleet=#{fleet.id} #{result}")
     rescue ApiClient::Error => e
-      Rails.logger.error("[Discord::RevokeMemberRolesJob] fleet=#{fleet.id} failed: #{e.message}")
-      raise if e.status == 429 || e.status >= 500
+      log_and_reraise_retryable(fleet.id, e)
+    end
+
+    # Another fleet may share the guild and map the same role; whatever its
+    # members linked to this account are still owed stays.
+    private def revoke_destroyed(fleet_id, guild_id, role_ids, discord_uid)
+      return if guild_id.blank? || role_ids.empty?
+
+      removable = role_ids - owed_elsewhere(guild_id, discord_uid)
+      return if removable.empty?
+
+      current = Array(api.get_guild_member(guild_id, discord_uid)&.dig("roles"))
+      (removable & current).each { |role_id| api.remove_guild_member_role(guild_id, discord_uid, role_id) }
+    rescue ApiClient::Error => e
+      # 404: the account is not in that Discord server any more.
+      return if e.status == 404
+
+      log_and_reraise_retryable(fleet_id, e)
+    end
+
+    private def owed_elsewhere(guild_id, discord_uid)
+      Fleet.joins(:fleet_notification_setting)
+        .where(fleet_notification_settings: {discord_guild_id: guild_id})
+        .flat_map { |fleet| MemberRoleSync.new(fleet: fleet, discord_uid: discord_uid).desired_role_ids }
+        .uniq
+    end
+
+    private def log_and_reraise_retryable(fleet_id, error)
+      Rails.logger.error("[Discord::RevokeMemberRolesJob] fleet=#{fleet_id} failed: #{error.message}")
+      raise error if error.status == 429 || error.status >= 500
+    end
+
+    private def api
+      @api ||= ApiClient.new
     end
   end
 end
