@@ -17,6 +17,7 @@ module V1
               description: {type: [:string, :null]},
               color: {type: [:string, :null]},
               team: {type: :boolean},
+              discordChannelId: {type: [:string, :null]},
               memberCount: {type: :integer},
               icon: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},

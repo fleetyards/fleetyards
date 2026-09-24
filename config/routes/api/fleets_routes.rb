@@ -62,6 +62,8 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     get "discord-status", action: :discord_status
   end
 
+  resources :fleet_discord_channels, path: "discord-channels", only: %i[index]
+
   resources :fleet_inventory_transfers, path: "inventory-transfers",
     controller: "fleet_inventory_transfers", only: %i[index show create] do
     member do

@@ -44,6 +44,6 @@ class FleetSquadronPolicy < FleetBasePolicy
   end
 
   params_filter do |params|
-    params.permit(:name, :short_description, :description, :color, :team, :icon)
+    params.permit(:name, :short_description, :description, :color, :team, :icon, :discord_channel_id)
   end
 end

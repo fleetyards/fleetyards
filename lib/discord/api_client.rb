@@ -89,6 +89,10 @@ module Discord
       post("channels/#{channel_id}/messages", payload)
     end
 
+    def get_guild_channels(guild_id)
+      request(:get, "guilds/#{guild_id}/channels")
+    end
+
     def get_guild_roles(guild_id)
       request(:get, "guilds/#{guild_id}/roles")
     end

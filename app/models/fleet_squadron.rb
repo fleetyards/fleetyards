@@ -4,17 +4,18 @@
 #
 # Table name: fleet_squadrons
 #
-#  id                :uuid             not null, primary key
-#  color             :string
-#  description       :text
-#  name              :string           not null
-#  rank              :text             not null
-#  short_description :text
-#  slug              :string           not null
-#  team              :boolean          default(FALSE), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  fleet_id          :uuid             not null
+#  id                 :uuid             not null, primary key
+#  color              :string
+#  description        :text
+#  name               :string           not null
+#  rank               :text             not null
+#  short_description  :text
+#  slug               :string           not null
+#  team               :boolean          default(FALSE), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  discord_channel_id :string
+#  fleet_id           :uuid             not null
 #
 # Indexes
 #
@@ -84,6 +85,8 @@ class FleetSquadron < ApplicationRecord
 
   COLOR_FORMAT = /\A#(?:\h{3}|\h{6})\z/
 
+  DISCORD_SNOWFLAKE_FORMAT = /\A\d{15,25}\z/
+
   validates :name,
     presence: true,
     length: {maximum: 255},
@@ -96,6 +99,8 @@ class FleetSquadron < ApplicationRecord
   validates :slug, uniqueness: {scope: :fleet_id}
 
   validates :color, format: {with: COLOR_FORMAT}, allow_blank: true
+
+  validates :discord_channel_id, format: {with: DISCORD_SNOWFLAKE_FORMAT}, allow_nil: true
 
   # The card carries this on a line or two, so it is held to a line or two.
   validates :short_description, length: {maximum: 255}, allow_blank: true
@@ -110,6 +115,7 @@ class FleetSquadron < ApplicationRecord
   validate :exclusivity_is_not_already_broken, if: -> { exclusive? && team_changed? }
 
   before_validation :normalize_color
+  before_validation :normalize_discord_channel_id
   before_validation :update_slugs
 
   # Appended rather than inserted: a squadron somebody has just made belongs at
@@ -214,5 +220,9 @@ class FleetSquadron < ApplicationRecord
 
   private def normalize_color
     self.color = color.presence&.strip&.downcase
+  end
+
+  private def normalize_discord_channel_id
+    self.discord_channel_id = discord_channel_id.presence&.strip
   end
 end
