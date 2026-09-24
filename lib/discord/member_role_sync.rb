@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Discord
-  # Brings one member's Discord roles in line with their Fleetyards membership.
+  # Brings one Discord account's roles in a fleet's guild in line with the
+  # Fleetyards memberships linked to it.
   #
   # The invariant that matters: **only role ids the fleet configured are ever
   # touched.** `managed_role_ids` is the whole universe this class may add or
@@ -19,14 +20,13 @@ module Discord
       end
     end
 
-    # `revoke:` takes every managed role away regardless of membership state.
-    # It comes with an explicit `discord_uid:` because the account it applies
-    # to is no longer linked, so the user can no longer name it.
-    def initialize(membership, api: nil, discord_uid: nil, revoke: false)
+    # Pass `fleet:` and `discord_uid:` instead of a membership for an account
+    # that is no longer linked, whose user can no longer name it.
+    def initialize(membership = nil, fleet: nil, discord_uid: nil, api: nil)
       @membership = membership
-      @api = api
+      @fleet = fleet || membership&.fleet
       @discord_uid = discord_uid.presence
-      @revoke = revoke
+      @api = api
     end
 
     def runnable?
@@ -66,15 +66,20 @@ module Discord
     # An accepted member gets the member role plus the role mapped to their
     # rank. Anyone else -- invited, requested, declined, removed -- gets
     # neither, which is what makes leaving a fleet take the roles away.
+    #
+    # Nothing stops two users from linking the same Discord account, so what
+    # the account is owed is the union over every accepted membership linked
+    # to it, not only the one that triggered the sync.
     private def desired_role_ids
-      return [] if @revoke
-      return [] unless @membership.aasm_state == "accepted"
-      return [] if @membership.discarded_at.present?
+      owing = fleet.fleet_memberships.kept
+        .where(aasm_state: "accepted")
+        .where(user_id: OmniauthConnection.discord.where(uid: discord_uid).select(:user_id))
+        .includes(:fleet_role)
+        .to_a
+      return [] if owing.empty?
 
-      [
-        setting&.discord_member_role_id,
-        @membership.fleet_role&.discord_role_id
-      ].compact_blank.uniq
+      ([setting&.discord_member_role_id] + owing.map { |membership| membership.fleet_role&.discord_role_id })
+        .compact_blank.uniq
     end
 
     private def current_role_ids
@@ -89,9 +94,8 @@ module Discord
       nil
     end
 
-    private def fleet
-      @membership.fleet
-    end
+    attr_reader :fleet
+    private :fleet
 
     private def setting
       fleet&.fleet_notification_setting
@@ -102,7 +106,7 @@ module Discord
     end
 
     private def discord_uid
-      @discord_uid ||= @membership.user
+      @discord_uid ||= @membership&.user
         &.omniauth_connections
         &.find_by(provider: "discord")
         &.uid
