@@ -106,8 +106,8 @@ const to = (record: FleetSquadron) => ({
   <Heading :level="HeadingLevelEnum.H2">Emblem sizes and fallbacks</Heading>
   <p class="vt-note">
     28px, the 56px the card uses, and 72px. Left to right in each row: an icon
-    over a colour, an icon alone, a colour alone, and neither — the last outlined
-    rather than filled, so an emblem nobody chose a colour for does not
+    over a colour, an icon alone, a colour alone, and neither — the last
+    outlined rather than filled, so an emblem nobody chose a colour for does not
     out-shout one somebody did.
   </p>
   <div class="row">
