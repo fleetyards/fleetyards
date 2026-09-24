@@ -5,6 +5,7 @@ require "ipaddr"
 require_relative "../lib/middleware/scrub_header_encoding"
 require_relative "../lib/middleware/reject_malformed_form_body"
 require_relative "../lib/middleware/transform_parameters"
+require_relative "../lib/middleware/reset_locale"
 
 # Backport of Rails 8.2 `Rails.app.creds` — must load before config_for calls.
 # REMOVAL: Delete this line and lib/rails_creds_backport/ when upgrading to Rails 8.2.
@@ -96,6 +97,7 @@ module Fleetyards
 
     config.middleware.use Rack::Deflater
     config.middleware.use Middleware::TransformParameters
+    config.middleware.use Middleware::ResetLocale
 
     config.app = config_for("app/main")
     config.sc_data = config_for("app/sc_data")
