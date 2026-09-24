@@ -258,13 +258,14 @@ segment. Single-select, because "All" is meaningless beside a multi-select.
 
 ### D13 — Creating a squadron and editing one are the same page
 
-Two tabs — what a squadron is, and what it looks like — because three file
-fields under four text fields made a form where neither half was findable.
+Two tabs — what a squadron is, and what it looks like. Details carries the
+name with the team toggle beside it and the two descriptions; Appearance
+carries the icon and the colour, the two things every emblem is drawn from.
 Tabs are a way of reading one form, not two forms: the fields live in a
 composable both layouts share, `keepValuesOnUnmount` keeps the off-screen tab
 from dropping what was typed into it, and the submit writes the lot.
 
-The images half needs no saved record. The direct-upload endpoint hands back a
+The appearance half needs no saved record. The direct-upload endpoint hands back a
 signed blob id before anything exists, so a new squadron is written with its
 emblem already attached rather than redirecting the author into the editor to
 finish the job.
@@ -299,15 +300,20 @@ that was already broken when it was turned on, and every later save of an
 untouched squadron would then fail on a state somebody else created.
 
 The two are drawn as two rows on the front page, the squadrons page and in
-settings. Shown together they read as one list with an invisible rule running
-through half of it.
+settings. Shown toget### D16 — One picture, an avatar
 
-### D16 — Three pictures, two of which must carry their own cut-out
+`icon` only, uploaded and drawn round like a user's avatar. A logo and a header
+were built and dropped before the first release: the logo only repeated the
+icon on the squadron's own page, and the header was decoration on a page that
+since D12 is mostly a member count and three links. Either can come back as an
+optional attachment without a migration.
 
-`icon` 256×256, `logo` 512×256, `header` 1920×480. The icon and the logo are
-marks drawn on whatever surface they land on — a card, a table row, the corner
-of an avatar — so an opaque one is refused and both are cropped to their opaque
-bounds on the way in. The header is a photograph whose edges are the picture,
+The icon is cropped to its opaque bounds on the way in, so an emblem exported
+inside a transparent canvas fills its circle. No transparency is required: a
+round crop suits a photograph as well as a cut-out, and the fleet logo and the
+user avatar accept either.
+
+hotograph whose edges are the picture,
 so it is neither checked nor cropped.
 
 The crop happens in the request where the bytes are already in storage, which
@@ -786,3 +792,8 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
   save touched what it is carrying; a purge is one of those changes and carries
   nothing, which broke clearing a picture on nine admin endpoints until it was
   guarded.
+
+- **2026-09-24** The squadron carries one picture instead of three (D16):
+  the icon, drawn round, beside the colour on a tab now called Appearance. The
+  team toggle moved up beside the name, and the transparency validator went
+  with the pictures that needed it.
