@@ -101,6 +101,21 @@ module Discord
       assert_raises(::Discord::ApiClient::Error) { ::Discord::RevokeUserMemberRolesJob.new.perform(@user.id, UID) }
     end
 
+    test "hands back to the backfill when the account was relinked mid-run" do
+      @connection.destroy!
+      @api.stubs(:get_guild_member).returns({"roles" => [MEMBER_ROLE]})
+      @api.stubs(:remove_guild_member_role).with do
+        # Skips the create hook, so only the job can enqueue the backfill.
+        OmniauthConnection.insert!({user_id: @user.id, provider: "discord", uid: UID})
+        true
+      end
+      ::Discord::BackfillUserMemberRolesJob.jobs.clear
+
+      ::Discord::RevokeUserMemberRolesJob.new.perform(@user.id, UID)
+
+      assert_equal [@user.id], ::Discord::BackfillUserMemberRolesJob.jobs.map { |job| job["args"].first }
+    end
+
     test "does nothing without a bot token" do
       ::Discord::ApiClient.stubs(:configured?).returns(false)
       @connection.destroy!

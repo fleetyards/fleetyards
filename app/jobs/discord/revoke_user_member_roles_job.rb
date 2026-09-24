@@ -22,6 +22,10 @@ module Discord
 
         revoke(membership, discord_uid)
       end
+
+      # A relink that landed while this ran may have had its roles removed
+      # again, so the backfill gets the last word.
+      BackfillUserMemberRolesJob.perform_async(user.id) if relinked?(user, discord_uid)
     end
 
     private def relinked?(user, discord_uid)
