@@ -40,7 +40,8 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
 
   test "GET /components serves the first page given a nested page" do
     assert_api_response :get, 200, params: {page: {"x" => 1}} do
-      assert_equal 2, parsed_body.count
+      assert_equal @components.map(&:id).sort, parsed_body["items"].pluck("id").sort
+      assert_equal 1, parsed_body.dig("meta", "pagination", "currentPage")
     end
   end
 
