@@ -3,6 +3,7 @@ require_relative "boot"
 require "rails/all"
 require "ipaddr"
 require_relative "../lib/middleware/scrub_header_encoding"
+require_relative "../lib/middleware/reject_malformed_form_body"
 require_relative "../lib/middleware/transform_parameters"
 
 # Backport of Rails 8.2 `Rails.app.creds` — must load before config_for calls.
