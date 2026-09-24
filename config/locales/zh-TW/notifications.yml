@@ -85,3 +85,30 @@ zh-TW:
         title: "你已加入 %{title} 的隊伍"
       crew_declined:
         title: "你加入 %{title} 的申請被拒絕"
+    fleet_inventory_item_added:
+      title: "%{fleet} 的庫存新增物品：%{item_name}"
+    fleet_event:
+      published:
+        title: "%{fleet} 有新活動：%{title}"
+        body: "%{fleet} 剛剛發布了一個新活動。"
+      locked:
+        title: "%{title} 的報名已截止"
+      starting_soon:
+        title: "%{title} 即將開始"
+      started:
+        title: "%{title} 已開始"
+      completed:
+        title: "%{title} 已完成"
+      cancelled:
+        title: "%{title} 已取消"
+    fleet_event_signup:
+      added:
+        title: "%{user} 報名了 %{title}"
+      withdrawn:
+        title: "%{user} 退出了 %{title}"
+      confirmed:
+        title: "你對 %{title} 的報名已獲批准"
+      assigned:
+        title: "你已被分配到 %{title} 的 %{slot}"
+      kicked:
+        title: "你已被移出 %{title}"
