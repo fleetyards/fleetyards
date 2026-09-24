@@ -100,6 +100,11 @@ inventories_expire_transfers_job:
   class: 'Inventories::ExpireTransfersJob'
   queue: 'default'
   enabled: <%= Rails.env.production? %>
+fleet_contracts_expire_job:
+  cron: '*/15 * * * *' # Every 15 minutes
+  class: 'FleetContracts::ExpireJob'
+  queue: 'default'
+  enabled: <%= Rails.env.production? %>
 announcements_publish_scheduled_job:
   cron: '*/5 * * * *' # Every 5 Minutes
   class: 'Announcements::PublishScheduledJob'
