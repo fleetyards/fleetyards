@@ -31,6 +31,8 @@ class FleetNotificationSetting < ApplicationRecord
 
   encrypts :discord_webhook_url
 
+  normalizes :discord_announcement_channel_id, with: ->(value) { value.strip.presence }
+
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?

@@ -75,11 +75,21 @@ de:
         missing_query: Bitte gib einen Schiffsnamen an.
         more: '…und weitere. Versuche einen genaueren Namen.'
         not_found: 'Kein Schiff für „%{query}“ gefunden.'
+    channel_capability:
+      announcement_channel: "den Ankündigungskanal der Flotte"
+    direct_message:
     direct_message:
       footer: Gesendet, weil du Discord-Benachrichtigungen auf Fleetyards aktiviert hast
     event_availability:
       signups: '%{count} Anmeldungen'
       slots: '%{open} von %{total} Plätzen frei'
+    event_published:
+      recurrence:
+        biweekly: Alle zwei Wochen
+        daily: Täglich
+        monthly: Monatlich
+        weekly: Wöchentlich
+      title: 'Neues Event: %{title}'
     event_reminder:
       starting_now: Beginnt jetzt
       starts_in: 'Beginnt in %{count} Min.'

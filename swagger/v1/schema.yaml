@@ -21904,6 +21904,12 @@ components:
           type: string
         rolesDetail:
           type: string
+        postingOk:
+          type: boolean
+        postingCode:
+          type: string
+        postingDetail:
+          type: string
       title: FleetNotificationDiscordStatus
     FleetNotificationInAppEventEnum:
       type: string
@@ -21939,6 +21945,10 @@ components:
           type: string
         discordChannelId:
           type: string
+        discordAnnouncementChannelId:
+          type:
+          - string
+          - 'null'
         discordMemberRoleId:
           type: string
         discordWebhookConfigured:
@@ -21957,6 +21967,10 @@ components:
           - string
           - 'null'
         discordChannelId:
+          type:
+          - string
+          - 'null'
+        discordAnnouncementChannelId:
           type:
           - string
           - 'null'

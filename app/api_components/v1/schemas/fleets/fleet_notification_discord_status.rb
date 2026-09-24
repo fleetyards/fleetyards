@@ -18,7 +18,10 @@ module V1
             installUrl: {type: :string},
             rolesOk: {type: :boolean},
             rolesCode: {type: :string},
-            rolesDetail: {type: :string}
+            rolesDetail: {type: :string},
+            postingOk: {type: :boolean},
+            postingCode: {type: :string},
+            postingDetail: {type: :string}
           }
         })
       end

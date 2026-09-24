@@ -75,11 +75,20 @@ en:
         missing_query: Please provide a ship name.
         more: '…and more. Try a more specific name.'
         not_found: 'No ship found for "%{query}".'
+    channel_capability:
+      announcement_channel: "the fleet's announcement channel"
     direct_message:
       footer: Sent because you enabled Discord notifications on Fleetyards
     event_availability:
       signups: '%{count} signed up'
       slots: '%{open} of %{total} slots open'
+    event_published:
+      recurrence:
+        biweekly: Every two weeks
+        daily: Every day
+        monthly: Every month
+        weekly: Every week
+      title: 'New event: %{title}'
     event_reminder:
       starting_now: Starting now
       starts_in: 'Starts in %{count} min'

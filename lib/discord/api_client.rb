@@ -32,18 +32,19 @@ module Discord
       Rails.application.config.app.discord[:client_id].presence
     end
 
-    # Manage Events (1 << 33), View Channel (1 << 10), Connect (1 << 20) and
-    # Manage Roles (1 << 28).
+    # Manage Events (1 << 33), View Channel (1 << 10), Connect (1 << 20),
+    # Manage Roles (1 << 28), Send Messages (1 << 11) and Embed Links (1 << 14).
     #
     # Discord rejects a voice-channel scheduled event without View Channel and
-    # Connect when a fleet sets a discord_channel_id, and role assignment needs
-    # Manage Roles. Must stay in sync with the app's Default Install Settings in
-    # the Discord dev portal.
+    # Connect when a fleet sets a discord_channel_id, role assignment needs
+    # Manage Roles, and announcing an event in a channel needs Send Messages --
+    # plus Embed Links for the event link to unfurl. Must stay in sync with the
+    # app's Default Install Settings in the Discord dev portal.
     #
     # Raising this does NOT upgrade servers that installed under the old mask --
-    # Discord keeps their original grant. Discord::RoleCapability is what tells
-    # a fleet it has to re-authorise.
-    INSTALL_PERMISSIONS = 8_859_419_648
+    # Discord keeps their original grant. Discord::RoleCapability and
+    # Discord::ChannelCapability are what tell a fleet it has to re-authorise.
+    INSTALL_PERMISSIONS = 8_859_438_080
 
     def self.install_url
       return nil if application_id.blank?

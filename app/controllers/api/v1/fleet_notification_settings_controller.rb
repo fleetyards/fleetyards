@@ -38,7 +38,7 @@ module Api
 
         begin
           guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
-          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload)
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload)
         rescue ::Discord::ApiClient::Error => e
           code = case e.status
           when 401 then "invalid_token"
@@ -71,6 +71,37 @@ module Api
         end
       end
 
+      # Only reported once somewhere to post has been picked, for the same
+      # reason as the roles. The detail names who is affected -- the fleet's own
+      # channel or the squadrons -- because a channel id means nothing to
+      # whoever reads the settings page.
+      private def posting_payload
+        owners = posting_channel_owners
+
+        return {} if owners.empty?
+
+        result = ::Discord::ChannelCapability.new(@setting.discord_guild_id).check(owners.keys)
+
+        {postingOk: result.ok?, postingCode: result.code.to_s}.tap do |payload|
+          affected = result.channel_ids.flat_map { |id| owners[id] }.uniq
+          payload[:postingDetail] = affected.join(", ") if affected.any?
+        end
+      end
+
+      private def posting_channel_owners
+        owners = Hash.new { |hash, key| hash[key] = [] }
+
+        if @setting.discord_announcement_channel_id.present?
+          owners[@setting.discord_announcement_channel_id] << I18n.t("discord.channel_capability.announcement_channel")
+        end
+
+        @fleet.fleet_squadrons.where.not(discord_channel_id: nil).order(:rank).each do |squadron|
+          owners[squadron.discord_channel_id] << squadron.name
+        end
+
+        owners
+      end
+
       def update
         authorize! @setting, with: FleetNotificationSettingPolicy
 
@@ -86,6 +117,7 @@ module Api
           :discord_member_role_id,
           :discord_guild_id,
           :discord_channel_id,
+          :discord_announcement_channel_id,
           :discord_webhook_url,
           enabled_in_app_events: []
         ).to_h.symbolize_keys

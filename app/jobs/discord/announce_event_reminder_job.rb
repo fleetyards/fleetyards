@@ -3,11 +3,11 @@
 require "discord/event_reminder"
 
 module Discord
-  # Posts the starting-soon reminder to a fleet's Discord webhook.
+  # Posts the starting-soon reminder wherever the event may be announced.
   #
   # Its own job rather than inline in the subscriber: the subscriber runs inside
   # the request or the scheduler tick that fired the notification, and a slow or
-  # unreachable webhook must not hold either up.
+  # unreachable Discord must not hold either up.
   class AnnounceEventReminderJob < ::ApplicationJob
     sidekiq_options retry: 2, queue: "notifications"
 
@@ -16,9 +16,6 @@ module Discord
       event = FleetEvent.find_by(id: event_id)
       return if event.blank?
       return if event.archived_at.present?
-      # The webhook posts to a channel the whole fleet reads; see
-      # SyncFleetEventJob.
-      return if event.squadron_restricted?
 
       EventReminder.new(
         event: event,

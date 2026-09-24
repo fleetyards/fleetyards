@@ -139,6 +139,40 @@ module Notifications
           notify({event: @event})
         end
       end
+
+      class AnnouncementsTest < FleetEventSubscriberTest
+        def notify
+          ::Notifications::Discord::FleetEventSubscriber
+            .new("fleet_event.published", {event: @event}, action: :announce).call
+        end
+
+        test "announces a published event in the fleet's announcement channel" do
+          @fleet.fleet_notification_setting.update!(discord_announcement_channel_id: "111111111111111111")
+          ::Discord::AnnounceEventPublishedJob.expects(:perform_async).with(@event.id)
+
+          notify
+        end
+
+        test "announces nothing when the fleet has neither a channel nor a webhook" do
+          ::Discord::AnnounceEventPublishedJob.expects(:perform_async).never
+
+          notify
+        end
+
+        test "announces a squadron event only when a squadron has a channel" do
+          @fleet.fleet_notification_setting.update!(discord_webhook_url: "https://discord.com/api/webhooks/1/token")
+          squadron = create(:fleet_squadron, fleet: @fleet)
+          @event.update!(visibility: "squadron", fleet_squadrons: [squadron])
+          ::Discord::AnnounceEventPublishedJob.expects(:perform_async).never
+
+          notify
+
+          squadron.update!(discord_channel_id: "222222222222222222")
+          ::Discord::AnnounceEventPublishedJob.expects(:perform_async).with(@event.id)
+
+          notify
+        end
+      end
     end
   end
 end

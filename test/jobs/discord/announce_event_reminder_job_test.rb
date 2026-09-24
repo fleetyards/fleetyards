@@ -15,11 +15,11 @@ module Discord
       ::Discord::AnnounceEventReminderJob.new.perform(@event.id)
     end
 
-    # The webhook posts to a channel the whole fleet reads.
-    test "does not announce an event held to squadrons" do
+    # Where it goes is Discord::EventAnnouncement's question, not the job's.
+    test "reminds an event held to squadrons as well" do
       squadron = create(:fleet_squadron, fleet: @fleet)
       @event.update!(visibility: "squadron", fleet_squadrons: [squadron])
-      ::Discord::EventReminder.any_instance.expects(:run).never
+      ::Discord::EventReminder.any_instance.expects(:run)
 
       ::Discord::AnnounceEventReminderJob.new.perform(@event.id)
     end
