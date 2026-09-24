@@ -48,14 +48,25 @@ class BackfillVehicleRanksTest < ActiveSupport::TestCase
     assert_equal added, @user.vehicles.ranked.last
   end
 
-  test "a hangar that already has ranks is left alone" do
-    ranked = create(:vehicle, user: @user)
-    unranked = create(:vehicle, user: @user)
-    unrank(unranked)
+  test "a hangar that already has ranks keeps them and gains the unranked at the end" do
+    ranked = create(:vehicle, user: @user, name: "Zulu")
+    late = create(:vehicle, user: @user, name: "Bravo")
+    later = create(:vehicle, user: @user, name: "Charlie")
+    unrank(late, later)
 
     backfill
 
     assert_equal "U", ranked.reload.rank
-    assert_nil unranked.reload.rank
+    assert_equal [ranked, late, later], @user.vehicles.ranked.to_a
+  end
+
+  test "a second run changes nothing" do
+    vehicles = create_list(:vehicle, 3, user: @user)
+    unrank(*vehicles)
+    backfill
+
+    assert_no_changes -> { @user.vehicles.order(:id).pluck(:rank) } do
+      backfill
+    end
   end
 end

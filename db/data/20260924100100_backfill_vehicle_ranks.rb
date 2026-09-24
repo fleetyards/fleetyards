@@ -10,14 +10,18 @@
 # with "z": lexorank treats "z" as the upper bound and raises when asked for a
 # rank after one that begins with it.
 #
-# Users with any ranked vehicle are skipped, so a re-run never reorders a hangar
-# and never collides with the unique index.
+# A hangar that already has ranks is never reordered: its unranked vehicles are
+# appended after the last rank instead. Those are the vehicles the old release
+# creates while this runs, so running it again once the new release is up fills
+# them in.
 class BackfillVehicleRanks < ActiveRecord::Migration[8.1]
   disable_ddl_transaction!
 
   WIDTH = 4
   SPACE = 35 * 36**(WIDTH - 1)
   USER_BATCH = 500
+  DEFAULT_ORDER = "vehicles.flagship DESC, vehicles.name ASC, models.name ASC, " \
+    "vehicles.created_at ASC, vehicles.id ASC"
 
   def up
     user_ids = select_values(<<~SQL.squish)
@@ -30,9 +34,31 @@ class BackfillVehicleRanks < ActiveRecord::Migration[8.1]
     user_ids.each_slice(USER_BATCH) do |batch|
       execute(update_sql(batch))
     end
+
+    append_unranked
   end
 
   def down
+  end
+
+  private def append_unranked
+    unranked = select_rows(<<~SQL.squish)
+      SELECT vehicles.user_id, vehicles.id
+      FROM vehicles
+      LEFT JOIN models ON models.id = vehicles.model_id
+      WHERE vehicles.rank IS NULL
+        AND vehicles.user_id IN (SELECT user_id FROM vehicles WHERE rank IS NOT NULL)
+      ORDER BY vehicles.user_id, #{DEFAULT_ORDER}
+    SQL
+
+    unranked.group_by(&:first).each do |user_id, rows|
+      last = Vehicle.where(user_id: user_id).maximum(:rank)
+
+      rows.each do |(_, id)|
+        last = Vehicle.lexorank_ranking.value_between(last, nil)
+        Vehicle.where(id: id).update_all(rank: last)
+      end
+    end
   end
 
   private def update_sql(user_ids)
@@ -46,8 +72,7 @@ class BackfillVehicleRanks < ActiveRecord::Migration[8.1]
         WHERE vehicles.user_id IN (#{user_ids.map { |id| connection.quote(id) }.join(",")})
         WINDOW w AS (
           PARTITION BY vehicles.user_id
-          ORDER BY vehicles.flagship DESC, vehicles.name ASC, models.name ASC,
-            vehicles.created_at ASC, vehicles.id ASC
+          ORDER BY #{DEFAULT_ORDER}
         )
       )
       UPDATE vehicles
