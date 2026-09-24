@@ -55,11 +55,11 @@
           "members": "成員",
           "create": {
             "details": "詳細資訊",
-            "images": "圖片"
+            "appearance": "外觀"
           },
           "edit": {
             "details": "詳細資訊",
-            "images": "圖片"
+            "appearance": "外觀"
           }
         },
         "stats": "統計",

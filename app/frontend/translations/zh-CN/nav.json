@@ -55,11 +55,11 @@
           "members": "成员",
           "create": {
             "details": "详情",
-            "images": "图片"
+            "appearance": "外观"
           },
           "edit": {
             "details": "详情",
-            "images": "图片"
+            "appearance": "外观"
           }
         },
         "stats": "统计",

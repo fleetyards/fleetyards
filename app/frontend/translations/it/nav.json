@@ -55,11 +55,11 @@
           "members": "Membri",
           "create": {
             "details": "Dettagli",
-            "images": "Immagini"
+            "appearance": "Aspetto"
           },
           "edit": {
             "details": "Dettagli",
-            "images": "Immagini"
+            "appearance": "Aspetto"
           }
         },
         "stats": "Statistiche",

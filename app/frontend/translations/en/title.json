@@ -63,11 +63,11 @@
           "members": "%{fleet} Squadron Members",
           "create": {
             "details": "Create Squadron - %{fleet}",
-            "images": "Squadron Images - %{fleet}"
+            "appearance": "Squadron Appearance - %{fleet}"
           },
           "edit": {
             "details": "Edit Squadron - %{fleet}",
-            "images": "Squadron Images - %{fleet}"
+            "appearance": "Squadron Appearance - %{fleet}"
           }
         },
         "stats": "%{fleet} Stats",

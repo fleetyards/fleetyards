@@ -1,11 +1,14 @@
 <script lang="ts">
 export default {
-  name: "FleetSquadronImagesFields",
+  name: "FleetSquadronAppearanceFields",
 };
 </script>
 
 <script lang="ts" setup>
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import { VSwatches } from "vue3-swatches";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -42,6 +45,16 @@ const { t } = useI18n();
         clearable
         avatar
       />
+    </div>
+    <div class="col-12 col-md-8">
+      <FormInput
+        v-model="props.fields.color"
+        v-bind="props.fieldProps.color"
+        name="color"
+        :type="InputTypesEnum.COLOR"
+        :label="t('labels.fleet.squadrons.color')"
+      />
+      <VSwatches v-model="props.fields.color" :inline="true" />
     </div>
   </div>
 </template>

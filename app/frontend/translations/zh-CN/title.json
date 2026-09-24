@@ -63,11 +63,11 @@
           "members": "%{fleet} 中队成员",
           "create": {
             "details": "创建中队 - %{fleet}",
-            "images": "中队图片 - %{fleet}"
+            "appearance": "中队外观 - %{fleet}"
           },
           "edit": {
             "details": "编辑中队 - %{fleet}",
-            "images": "中队图片 - %{fleet}"
+            "appearance": "中队外观 - %{fleet}"
           }
         },
         "stats": "%{fleet} 统计",

@@ -63,11 +63,11 @@
           "members": "Membres de l'escadron de %{fleet}",
           "create": {
             "details": "Créer un escadron - %{fleet}",
-            "images": "Images de l'escadron - %{fleet}"
+            "appearance": "Apparence de l'escadron - %{fleet}"
           },
           "edit": {
             "details": "Modifier l'escadron - %{fleet}",
-            "images": "Images de l'escadron - %{fleet}"
+            "appearance": "Apparence de l'escadron - %{fleet}"
           }
         },
         "stats": "Statistiques sur %{fleet}",

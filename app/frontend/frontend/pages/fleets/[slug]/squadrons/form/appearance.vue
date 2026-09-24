@@ -1,12 +1,12 @@
 <script lang="ts">
 export default {
-  name: "FleetSquadronFormImagesPage",
+  name: "FleetSquadronFormAppearancePage",
 };
 </script>
 
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
-import SquadronImagesFields from "@/frontend/components/Fleets/Squadrons/SquadronImagesFields/index.vue";
+import SquadronAppearanceFields from "@/frontend/components/Fleets/Squadrons/SquadronAppearanceFields/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type SquadronFormFieldProps,
@@ -26,9 +26,9 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.fleets.squadrons.formImages") }}</Heading>
+  <Heading hero>{{ t("headlines.fleets.squadrons.formAppearance") }}</Heading>
 
-  <SquadronImagesFields
+  <SquadronAppearanceFields
     :fields="props.fields"
     :field-props="props.fieldProps"
     :squadron="props.squadron"

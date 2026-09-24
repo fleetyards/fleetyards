@@ -6,10 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
-import { VSwatches } from "vue3-swatches";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   DESCRIPTION_MAX,
@@ -30,6 +28,9 @@ const { t } = useI18n();
 </script>
 
 <template>
+  <!-- The exception, not the rule: a member belongs to one squadron, and a team
+       is what that member can be on as well. The hint carries it, because a
+       lone toggle reading "Team" says nothing about what it changes. -->
   <div class="row">
     <div class="col-12 col-md-6">
       <FormInput
@@ -40,31 +41,6 @@ const { t } = useI18n();
         :label="t('labels.fleet.squadrons.name')"
       />
     </div>
-  </div>
-
-  <!-- The picker beside the field it writes into rather than under it: the
-       swatches are the quick way to answer the input, not a second question. -->
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <FormInput
-        v-model="props.fields.color"
-        v-bind="props.fieldProps.color"
-        name="color"
-        :type="InputTypesEnum.COLOR"
-        :label="t('labels.fleet.squadrons.color')"
-      />
-    </div>
-    <div class="col-12 col-md-6">
-      <VSwatches v-model="props.fields.color" :inline="true" />
-    </div>
-  </div>
-
-  <hr />
-
-  <!-- The exception, not the rule: a member belongs to one squadron, and a team
-       is what that member can be on as well. The hint carries it, because a
-       lone toggle reading "Team" says nothing about what it changes. -->
-  <div class="row">
     <div class="col-12 col-md-6">
       <FormToggle
         v-model="props.fields.team"
@@ -72,6 +48,7 @@ const { t } = useI18n();
         name="team"
         :label="t('labels.fleet.squadrons.team')"
         :info="t('labels.fleet.squadrons.teamHint')"
+        align-with-fields
       />
     </div>
   </div>
