@@ -39,7 +39,7 @@ json.squadrons do
   # badges them with -- their squadron, not whichever team sorts first.
   squadron_memberships = member.fleet_squadron_memberships.sort_by do |squadron_membership|
     squadron = squadron_membership.fleet_squadron
-    [squadron.team? ? 1 : 0, squadron.position]
+    [squadron.team? ? 1 : 0, squadron.rank]
   end
 
   json.array! squadron_memberships do |squadron_membership|

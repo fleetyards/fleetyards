@@ -10,7 +10,7 @@ require "test_helper"
 #  color             :string
 #  description       :text
 #  name              :string           not null
-#  position          :integer          default(0), not null
+#  rank              :text             not null
 #  short_description :text
 #  slug              :string           not null
 #  team              :boolean          default(FALSE), not null
@@ -21,7 +21,7 @@ require "test_helper"
 # Indexes
 #
 #  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
-#  index_fleet_squadrons_on_fleet_id_and_position    (fleet_id,position)
+#  index_fleet_squadrons_on_fleet_id_and_rank        (fleet_id,rank) UNIQUE
 #  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
 #
 # Foreign Keys
@@ -97,14 +97,14 @@ class FleetSquadronTest < ActiveSupport::TestCase
     second = create(:fleet_squadron, fleet: @fleet, name: "Alpha")
 
     assert_equal %w[Zulu Alpha], ordered_names(first, second)
-    assert_operator second.position, :>, first.position
+    assert_operator second.rank, :>, first.rank
   end
 
   test "the fleet's order is what the association reads in" do
     first = create(:fleet_squadron, fleet: @fleet, name: "Alpha")
     second = create(:fleet_squadron, fleet: @fleet, name: "Bravo")
 
-    second.update!(position: 0)
+    second.move_to_top!
 
     assert_equal %w[Bravo Alpha], ordered_names(first, second)
   end

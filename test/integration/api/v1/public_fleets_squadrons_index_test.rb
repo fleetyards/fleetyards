@@ -43,11 +43,8 @@ class Api::V1::PublicFleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "a public fleet's squadrons follow the order the fleet gave them" do
-    zulu = create(:fleet_squadron, fleet: @fleet, name: "Zulu")
-    alpha = create(:fleet_squadron, fleet: @fleet, name: "Alpha")
-    zulu.update!(position: 0)
-    alpha.update!(position: 1)
-    @squadron.update!(position: 2)
+    create(:fleet_squadron, fleet: @fleet, name: "Zulu").move_to_top!
+    create(:fleet_squadron, fleet: @fleet, name: "Alpha").move_to!(1)
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal ["Zulu", "Alpha", "Combat Wing"], parsed_body["items"].map { |entry| entry["name"] }

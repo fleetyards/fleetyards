@@ -23,7 +23,7 @@ import {
   type FleetMember,
   type FleetSquadron,
   useFleetSquadrons,
-  useSortFleetSquadrons,
+  useMoveFleetSquadron,
 } from "@/services/fyApi";
 
 type Props = {
@@ -81,30 +81,60 @@ const teamList = computed(() =>
   orderedSquadrons.value.filter((squadron) => squadron.team),
 );
 
-const sortMutation = useSortFleetSquadrons();
+const moveMutation = useMoveFleetSquadron();
 
 /*
- * Each row is dragged on its own, but the position is one sequence across the
- * fleet -- so what goes to the server is both rows, in the order they are now
- * drawn in. Sending only the dragged row would renumber it from the front and
- * interleave it with the other.
+ * A drag moves one squadron, so the one that moved is where the two orders
+ * first and last differ: it sits at one end of that window in the old order
+ * and at the other end in the new.
+ */
+const movedId = (before: string[], after: string[]) => {
+  const first = before.findIndex((id, index) => id !== after[index]);
+  const last = before.findLastIndex((id, index) => id !== after[index]);
+
+  return before[first] === after[last] ? before[first] : after[first];
+};
+
+/*
+ * Each row is dragged on its own, but the order is one sequence across the
+ * fleet with squadrons and teams interleaved in it. So the move is placed
+ * against its new neighbour in that sequence -- after the squadron now ahead
+ * of it in the row, or before the one behind it -- and the server is told that
+ * place. Counting it within the row alone would put it among the other row.
  */
 const onSort = (rowIds: string[]) => {
   const previous = orderedSquadrons.value;
-  const held = (id: string) => previous.find((squadron) => squadron.id === id);
-  const row = rowIds.map(held).filter(Boolean) as FleetSquadron[];
-  const isTeamRow = row[0]?.team ?? false;
+  const isTeamRow =
+    previous.find((squadron) => squadron.id === rowIds[0])?.team ?? false;
+  const previousRow = previous
+    .filter((squadron) => (squadron.team ?? false) === isTeamRow)
+    .map((squadron) => squadron.id);
 
-  const kept = previous.filter(
-    (squadron) => (squadron.team ?? false) !== isTeamRow,
-  );
+  const id = movedId(previousRow, rowIds);
+  const moved = previous.find((squadron) => squadron.id === id);
 
-  orderedSquadrons.value = isTeamRow ? [...kept, ...row] : [...row, ...kept];
+  if (!moved) return;
 
-  const ids = orderedSquadrons.value.map((squadron) => squadron.id);
+  const others = previous.filter((squadron) => squadron.id !== id);
+  const rowIndex = rowIds.indexOf(id);
+  const ahead = rowIds[rowIndex - 1];
+  const behind = rowIds[rowIndex + 1];
+  const position = ahead
+    ? others.findIndex((squadron) => squadron.id === ahead) + 1
+    : others.findIndex((squadron) => squadron.id === behind);
 
-  void sortMutation
-    .mutateAsync({ fleetSlug: props.fleet.slug, data: { sorting: ids } })
+  orderedSquadrons.value = [
+    ...others.slice(0, position),
+    moved,
+    ...others.slice(position),
+  ];
+
+  void moveMutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: moved.slug,
+      data: { position },
+    })
     .then(() => {
       comlink.emit("fleet-squadron-updated");
     })

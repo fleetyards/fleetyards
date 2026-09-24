@@ -41,9 +41,9 @@ const records = [
   squadron("watch", true),
 ];
 
-type SortCall = { fleetSlug: string; data: { sorting: string[] } };
+type MoveCall = { fleetSlug: string; slug: string; data: { position: number } };
 
-const sort = vi.fn((_variables: SortCall) => Promise.resolve());
+const move = vi.fn((_variables: MoveCall) => Promise.resolve());
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -56,7 +56,7 @@ vi.mock("@/services/fyApi", async () => {
       isLoading: ref(false),
       refetch: vi.fn(),
     }),
-    useSortFleetSquadrons: () => ({ mutateAsync: sort }),
+    useMoveFleetSquadron: () => ({ mutateAsync: move }),
   };
 });
 
@@ -64,7 +64,7 @@ let wrapper: VueWrapper | undefined;
 let teleportTarget: HTMLElement | undefined;
 
 beforeEach(() => {
-  sort.mockClear();
+  move.mockClear();
   teleportTarget = document.createElement("div");
   teleportTarget.id = "header-right";
   document.body.appendChild(teleportTarget);
@@ -94,13 +94,16 @@ const mount = async () => {
 const grids = (subject: VueWrapper) =>
   subject.findAllComponents({ name: "BaseGrid" });
 
-const sorting = () => sort.mock.calls[0]?.[0]?.data?.sorting;
+const moveSent = () => {
+  const call = move.mock.calls[0]?.[0];
+
+  return call && { slug: call.slug, position: call.data.position };
+};
 
 /*
- * The page draws two rows but the position is one sequence across the fleet.
- * What goes to the server therefore has to be both rows: sending only the one
- * that was dragged would renumber it from the front and interleave it with the
- * other.
+ * The page draws two rows but the order is one sequence across the fleet, with
+ * the two interleaved. A move is therefore counted in that sequence: counted
+ * within its row it would land among the other row.
  */
 describe("FleetSquadronsPage", () => {
   it("splits the stored order into squadrons and teams", async () => {
@@ -117,22 +120,32 @@ describe("FleetSquadronsPage", () => {
     ]);
   });
 
-  it("sends both rows when the squadrons are dragged", async () => {
+  // alpha, rota, bravo, watch: alpha dropped behind bravo goes after bravo in
+  // the whole sequence, past the team between them.
+  it("places a dragged squadron after the one now ahead of it", async () => {
     const subject = await mount();
 
     grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"]);
 
-    expect(sorting()).toEqual(["bravo", "alpha", "rota", "watch"]);
+    expect(moveSent()).toEqual({ slug: "alpha", position: 2 });
   });
 
-  // The half that is easy to get wrong: a dragged team row must not renumber
-  // the squadrons behind it.
-  it("keeps the squadrons in front when the teams are dragged", async () => {
+  // The half that is easy to get wrong: a team dragged within its row must not
+  // land among the squadrons.
+  it("places a dragged team after the team now ahead of it", async () => {
     const subject = await mount();
 
     grids(subject)[1].vm.$emit("sort", ["watch", "rota"]);
 
-    expect(sorting()).toEqual(["alpha", "bravo", "watch", "rota"]);
+    expect(moveSent()).toEqual({ slug: "rota", position: 3 });
+  });
+
+  it("sends one move per drag", async () => {
+    const subject = await mount();
+
+    grids(subject)[0].vm.$emit("sort", ["bravo", "alpha"]);
+
+    expect(move).toHaveBeenCalledTimes(1);
   });
 
   it("redraws the dragged row without waiting for the server", async () => {

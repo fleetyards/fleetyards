@@ -6616,50 +6616,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/squadrons/sort":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    put:
-      summary: Sort Fleet Squadrons
-      tags:
-      - FleetSquadrons
-      operationId: sortFleetSquadrons
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetSquadronSortInput"
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden - a member does not arrange the list
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/members":
     parameters:
     - name: fleetSlug
@@ -6999,6 +6955,62 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadrons/{slug}/move":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Squadron slug
+      required: true
+    put:
+      summary: Move Fleet Squadron
+      tags:
+      - FleetSquadrons
+      operationId: moveFleetSquadron
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronMoveInput"
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - a member does not arrange the list
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/members":
     parameters:
     - name: fleetSlug
@@ -22279,6 +22291,18 @@ components:
       - createdAt
       additionalProperties: false
       title: FleetSquadronMemberUpdateInput
+    FleetSquadronMoveInput:
+      type: object
+      properties:
+        position:
+          type: integer
+          minimum: 0
+          description: Zero-based place in the fleet's order, squadrons and teams
+            counted together
+      required:
+      - position
+      additionalProperties: false
+      title: FleetSquadronMoveInput
     FleetSquadronQuery:
       type: object
       properties:
@@ -22336,18 +22360,6 @@ components:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: FleetSquadronSortEnum
-    FleetSquadronSortInput:
-      type: object
-      properties:
-        sorting:
-          type: array
-          items:
-            type: string
-            format: uuid
-      required:
-      - sorting
-      additionalProperties: false
-      title: FleetSquadronSortInput
     FleetSquadronUpdateInput:
       type: object
       properties:

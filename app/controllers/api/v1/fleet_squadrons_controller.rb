@@ -13,11 +13,11 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy sort]
+        only: %i[create update destroy move]
 
       before_action :set_fleet
       before_action :check_fleet_squadrons_feature
-      before_action :set_fleet_squadron, only: %i[show update destroy]
+      before_action :set_fleet_squadron, only: %i[show update destroy move]
 
       def index
         authorize! with: FleetSquadronPolicy, context: {fleet: @fleet}
@@ -59,21 +59,13 @@ module Api
         end
       end
 
-      # The whole order in one call rather than a position per squadron: the list
-      # is dragged into shape and then written, and sending each move on its own
-      # would leave the order half-applied whenever one of them failed.
-      def sort
-        authorize! FleetSquadron.new(fleet: @fleet), to: :sort?
+      # One squadron to one place in the fleet's order -- squadrons and teams
+      # are a single sequence, so `position` counts both. A lexorank move
+      # writes this row alone and cannot leave two squadrons sharing a place.
+      def move
+        authorize! @fleet_squadron
 
-        sorting = params.permit(sorting: [])[:sorting] || []
-
-        FleetSquadron.transaction do
-          sorting.each_with_index do |id, index|
-            # `updated_at` too: the order is part of every cached fragment that
-            # lists a squadron, and `update_all` would not touch it otherwise.
-            @fleet.fleet_squadrons.where(id: id).update_all(position: index + 1, updated_at: Time.current)
-          end
-        end
+        @fleet_squadron.move_to!(params.require(:position).to_i)
 
         head :no_content
       end

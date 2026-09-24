@@ -8,7 +8,7 @@
 #  color             :string
 #  description       :text
 #  name              :string           not null
-#  position          :integer          default(0), not null
+#  rank              :text             not null
 #  short_description :text
 #  slug              :string           not null
 #  team              :boolean          default(FALSE), not null
@@ -19,7 +19,7 @@
 # Indexes
 #
 #  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
-#  index_fleet_squadrons_on_fleet_id_and_position    (fleet_id,position)
+#  index_fleet_squadrons_on_fleet_id_and_rank        (fleet_id,rank) UNIQUE
 #  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
 #
 # Foreign Keys

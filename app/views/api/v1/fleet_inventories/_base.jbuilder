@@ -41,7 +41,7 @@ json.partial! "api/shared/dates", record: fleet_inventory
 # The squadrons this is held to, if any. The same ref the roster badges with,
 # so a list can draw the emblem without a second request.
 json.fleet_squadrons do
-  json.array! fleet_inventory.fleet_squadrons.sort_by { |squadron| [squadron.team? ? 1 : 0, squadron.position] } do |squadron|
+  json.array! fleet_inventory.fleet_squadrons.sort_by { |squadron| [squadron.team? ? 1 : 0, squadron.rank] } do |squadron|
     json.id squadron.id
     json.name squadron.name
     json.slug squadron.slug

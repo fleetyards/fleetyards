@@ -8,7 +8,7 @@
 #  color             :string
 #  description       :text
 #  name              :string           not null
-#  position          :integer          default(0), not null
+#  rank              :text             not null
 #  short_description :text
 #  slug              :string           not null
 #  team              :boolean          default(FALSE), not null
@@ -19,13 +19,15 @@
 # Indexes
 #
 #  index_fleet_squadrons_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
-#  index_fleet_squadrons_on_fleet_id_and_position    (fleet_id,position)
+#  index_fleet_squadrons_on_fleet_id_and_rank        (fleet_id,rank) UNIQUE
 #  index_fleet_squadrons_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (fleet_id => fleets.id)
 #
+require "lexorank/rankable"
+
 class FleetSquadron < ApplicationRecord
   include ActiveStorageVariants
 
@@ -34,6 +36,10 @@ class FleetSquadron < ApplicationRecord
   paginates_per 30
 
   belongs_to :fleet, touch: true
+
+  # The fleet's own order, a lexorank like FleetRole's: a move writes one row,
+  # and the unique index means two squadrons can never share a place.
+  rank!(group_by: :fleet)
 
   has_many :fleet_squadron_memberships, dependent: :destroy
   has_many :fleet_squadron_assignments, dependent: :destroy
@@ -108,7 +114,7 @@ class FleetSquadron < ApplicationRecord
 
   # Appended rather than inserted: a squadron somebody has just made belongs at
   # the end of the order somebody else arranged, not in the middle of it.
-  before_create :set_position
+  before_create :set_rank
 
   # Collected before the assignments go and answered after, because the
   # question -- "is this record still restricted to anybody?" -- can only be
@@ -118,11 +124,11 @@ class FleetSquadron < ApplicationRecord
 
   # The fleet's own order, which is the point of having one. Sorting by name is
   # still offered; it is simply not what the list opens on.
-  DEFAULT_SORTING_PARAMS = "position asc"
+  DEFAULT_SORTING_PARAMS = "rank asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name slug fleet_id position team created_at updated_at]
+    %w[name slug fleet_id rank team created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -175,10 +181,10 @@ class FleetSquadron < ApplicationRecord
     @restricted_records.to_a.each(&:release_squadron_restriction!)
   end
 
-  private def set_position
-    return if position.to_i.positive?
+  private def set_rank
+    return if rank.present?
 
-    self.position = (fleet&.fleet_squadrons&.maximum(:position) || 0) + 1
+    move_to_end
   end
 
   # The accepted roster only. A squadron row can outlive the membership's
