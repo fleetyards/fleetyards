@@ -2320,6 +2320,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.boolean "name_visible", default: false
     t.boolean "notify", default: true
     t.boolean "public", default: false
+    t.text "rank", collation: "C"
     t.string "rsi_pledge_id"
     t.datetime "rsi_pledge_synced_at"
     t.boolean "sale_notify", default: false
@@ -2333,6 +2334,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["model_paint_id", "hidden", "wanted", "loaner"], name: "index_vehicles_on_model_paint_id_where_painted", where: "(model_paint_id IS NOT NULL)"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
+    t.index ["user_id", "rank"], name: "index_vehicles_on_user_id_and_rank", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
     t.index ["vehicle_id", "bundled"], name: "index_vehicles_on_vehicle_id_and_bundled"
   end
