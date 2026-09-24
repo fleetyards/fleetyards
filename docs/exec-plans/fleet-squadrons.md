@@ -751,11 +751,11 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 ## Not in Scope (deferred)
 
 - **Squadron ranks** — Asked for during review, to come after this PR: a rank held *within* a squadron, the way a fleet role is held within a fleet. Three to begin with — Squadron Leader, Squadron Officer, Member — shared by every squadron rather than defined per squadron, and later the ability to add roles of a fleet's own on top. Worth settling first: whether a rank carries privileges (who may add or remove members of *this* squadron) or is a label; and whether the three are seeded rows per fleet the way `FleetRole` is, or an enum on the join with custom roles arriving as rows later. `FleetSquadronMembership` is where the rank belongs either way
-- **Squadron-scoped contracts and inventories** — Asked for during review: contracts raised for a squadron, and inventories marked as one squadron's. Two questions to settle first — whether "marked for a squadron" is a visibility rule or a label, and whether a record belongs to one squadron (a column) or several (a join table)
+- ~~**Squadron-scoped contracts and inventories**~~ — Done by D19: a visibility rule, and several squadrons through a polymorphic join
 - **Moving a member between squadrons in one step** — D15 makes reassignment two actions, remove and then add. The picker says which squadron holds somebody, and the squadron's members page is where the removal is, but there is no `move`
 - **The public front-page strip** — The public endpoints exist, but the strip is gated on membership, so a signed-out visitor to a public fleet sees nothing
 - **Squadron chat/messaging** — No in-app messaging system exists yet
-- **Squadron events/calendar** — Future feature
+- **Squadron events/calendar** — Events can be held to squadrons (D19); a calendar of a squadron's own is still to come
 - ~~**Squadron fleetchart**~~ — Done by D12: the fleet's own fleetchart takes `q[squadronSlugIn]` like its other lists
 - **Admin squadron management** — Admin panel can manage fleets; squadron admin can be added later
 - **Notification types for squadrons** — e.g., `squadron_member_added`; can be added via the notification center once it's complete
@@ -797,3 +797,10 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
   the icon, drawn round, beside the colour on a tab now called Appearance. The
   team toggle moved up beside the name, and the transparency validator went
   with the pictures that needed it.
+
+  Review found D19 enforced on the lists and on `show?` but not on every rule
+  that reaches a record by its slug: claiming a contract and reading its crew
+  asked the fleet-wide read privilege, and an inventory's manager was listed a
+  squadron store its detail refused. The squadron join date became a sort of
+  the squadron's own roster only -- across the fleet a member has no single
+  answer -- and the public list follows the fleet's order like every other.
