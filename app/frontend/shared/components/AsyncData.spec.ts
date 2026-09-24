@@ -80,6 +80,19 @@ describe("AsyncData", () => {
     expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
   });
 
+  it("reads a rejected request as the client's fault, not an outage", async () => {
+    const wrapper = await mount(400);
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(false);
+  });
+
+  it("keeps a server failure off the client error screen", async () => {
+    const wrapper = await mount(500);
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(false);
+  });
+
   it("blames the connection, not the server, when nothing answered", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { asyncStatus: statusOf(unanswered()) },
