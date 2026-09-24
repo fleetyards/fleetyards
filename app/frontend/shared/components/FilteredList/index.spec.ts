@@ -1,7 +1,8 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
-import { ref } from "vue";
+import { defineComponent, h, ref } from "vue";
+import { useRoute } from "vue-router";
 import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
 import { usePaginationStore } from "@/shared/stores/pagination";
@@ -219,6 +220,92 @@ describe("FilteredList", () => {
     const store = usePaginationStore();
 
     expect(vi.mocked(store).removeByKey.mock.calls).toEqual([["ships"]]);
+  });
+
+  it("keeps a saved page size when something else was refused", async () => {
+    await router.push({ name: "ships", query: { s: "bogus_asc" } });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400, { code: "validation_error" }),
+        },
+        initialState: { pagination: { perPage: { ships: 30 } } },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    const store = usePaginationStore();
+
+    expect(vi.mocked(store).removeByKey.mock.calls).toEqual([]);
+    expect(router.currentRoute.value.query).toEqual({});
+  });
+
+  it("offers no reset for a saved page size the API did not refuse", async () => {
+    await router.push({ name: "ships" });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        initialState: { pagination: { perPage: { ships: 30 } } },
+        plugins: [router],
+      },
+    );
+
+    expect(wrapper.find('[data-test="client-error-reset"]').exists()).toBe(
+      false,
+    );
+  });
+
+  // The forms copy the route into local state on mount and never look again,
+  // so a reset that only clears the URL leaves the rejected value in the form.
+  it("remounts the filter form so it reads the cleared route", async () => {
+    await router.push({ name: "ships", query: { qualityGteq: "bogus" } });
+
+    const FilterForm = defineComponent({
+      setup() {
+        const route = useRoute();
+        const form = ref({ ...route.query });
+
+        return () =>
+          h("span", { "data-test": "form" }, JSON.stringify(form.value));
+      },
+    });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        slots: { filter: () => h(FilterForm) },
+        plugins: [router],
+      },
+    );
+
+    // The filter panel is teleported, so it is not inside the wrapper.
+    const formText = () =>
+      document.querySelector('[data-test="form"]')?.textContent;
+
+    expect(formText()).toContain("bogus");
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(formText()).toBe("{}");
   });
 
   it("keeps a list's own view keys through a reset", async () => {

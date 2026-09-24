@@ -115,22 +115,23 @@ export const useFilters = <T>({
       .catch(() => {});
   };
 
-  const resetFilter = () => {
+  const resetFilter = () =>
     router
       .replace({
         ...route,
         // Clearing the filters is not leaving the view they were set in.
         query: { ...viewState.value },
       })
-
       .catch(() => {});
-  };
 
   const hasResettableQuery = computed(() =>
     Object.keys(route.query).some((key) => !viewStateKeys.includes(key)),
   );
 
   const filter = debounce(debouncedFilter, 300);
+
+  // An edit still in the debounce would otherwise land after its form is gone.
+  if (getCurrentScope()) onScopeDispose(() => filter.cancel());
 
   return {
     isFilterSelected,

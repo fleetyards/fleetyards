@@ -13,7 +13,7 @@ const statusOf = (error: unknown) =>
 // Typed here rather than pulled from the generated client: this file is the
 // one place a raw axios error is read, and it should not need regenerating to
 // keep compiling.
-const codeOf = (error: unknown) =>
+export const errorCodeFrom = (error: unknown) =>
   isAxiosError(error)
     ? (error.response?.data as { code?: string } | undefined)?.code
     : undefined;
@@ -45,7 +45,7 @@ export const errorTypeFrom = (error: unknown): ErrorTypesEnum | undefined => {
   if (status === 400) return ErrorTypesEnum.CLIENT_ERROR;
 
   if (status === 403) {
-    return codeOf(error) === "subscription_required"
+    return errorCodeFrom(error) === "subscription_required"
       ? ErrorTypesEnum.SUBSCRIPTION_REQUIRED
       : ErrorTypesEnum.FORBIDDEN;
   }

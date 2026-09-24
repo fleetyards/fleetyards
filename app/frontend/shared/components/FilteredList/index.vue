@@ -23,7 +23,7 @@ import {
   type AsyncStatus,
   ErrorTypesEnum,
 } from "@/shared/components/AsyncData.types";
-import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
+import { errorCodeFrom, errorTypeFrom } from "@/shared/utils/ErrorTypes";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -222,20 +222,36 @@ const { resetFilter, hasResettableQuery } = useFilters({
 
 const paginationKey = computed(() => (route.name as string) || "");
 
-// A page size is persisted outside the route, and one above the endpoint's
-// maximum is refused the same way a bad filter is.
-const hasStoredPerPage = computed(
-  () => paginationStore.findByKey(paginationKey.value) !== undefined,
+// A page size is persisted outside the route, so the URL cannot carry it back
+// out. It is only dropped when it is what the API refused.
+const pageSizeRejected = computed(
+  () =>
+    errorCodeFrom(props.asyncStatus.error?.value) ===
+      "pagination.max_per_page_reached" &&
+    paginationStore.findByKey(paginationKey.value) !== undefined,
 );
 
 const resettable = computed(
-  () => hasResettableQuery.value || hasStoredPerPage.value,
+  () => hasResettableQuery.value || pageSizeRejected.value,
 );
 
-const resetQuery = () => {
+// Filter forms copy the route into local state once, on mount. Unmounting the
+// form before the route is cleared drops the rejected values it holds, along
+// with any edit still waiting in its debounce, and the remount reads the
+// cleared route.
+const filterFormReset = ref(false);
+
+const resetQuery = async () => {
+  filterFormReset.value = true;
+  await nextTick();
+
   filtersStore.removeFilter(props.name);
-  paginationStore.removeByKey(paginationKey.value);
-  resetFilter();
+  if (pageSizeRejected.value) {
+    paginationStore.removeByKey(paginationKey.value);
+  }
+  await resetFilter();
+
+  filterFormReset.value = false;
 };
 
 const emptyVisible = computed(() => {
@@ -360,11 +376,11 @@ const toggleFilter = () => {
             @after-leave="toggleFullscreen"
           >
             <div v-show="filterVisible" class="col-12 col-md-3 col-xxl-2">
-              <slot name="filter" />
+              <slot v-if="!filterFormReset" name="filter" />
             </div>
           </transition>
           <div v-else v-show="filterVisible">
-            <slot name="filter" />
+            <slot v-if="!filterFormReset" name="filter" />
           </div>
         </Teleport>
         <div
