@@ -36,8 +36,8 @@ module Discord
       ::Discord::SyncFleetEventJob.new.perform(@event.id)
     end
 
-    # The guild is the whole fleet, and a squadron has no channel of its own
-    # yet: the event is taken down rather than posted or updated there.
+    # A scheduled event is shown to the whole guild, so a squadron's event is
+    # taken down rather than posted or updated there.
     test "an upsert of a squadron event deletes it from the guild instead" do
       squadron = create(:fleet_squadron, fleet: @fleet)
       @event.update!(visibility: "squadron", fleet_squadrons: [squadron])
@@ -48,6 +48,20 @@ module Discord
       ::Discord::ScheduledEventSync.expects(:new).with(@event).returns(sync)
 
       ::Discord::SyncFleetEventJob.new.perform(@event.id, "upsert")
+    end
+
+    test "a delete also takes down the scheduled events of a series' occurrences" do
+      date = 1.week.from_now.to_date
+      @event.fleet_event_occurrence_states.create!(occurrence_date: date, discord_event_id: "occurrence-1")
+      series = mock
+      series.expects(:runnable?).returns(true)
+      series.expects(:delete!)
+      occurrence = mock
+      occurrence.expects(:delete!)
+      ::Discord::ScheduledEventSync.expects(:new).with(@event).returns(series)
+      ::Discord::ScheduledEventSync.expects(:new).with(@event, occurrence_date: date).returns(occurrence)
+
+      ::Discord::SyncFleetEventJob.new.perform(@event.id, "delete")
     end
   end
 end

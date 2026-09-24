@@ -71,6 +71,19 @@ class Api::V1::FleetsEventsSyncToDiscordTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 422, path_params: {fleetSlug: @fleet.slug, slug: fleet_event.slug}
   end
 
+  test "POST /fleets/:slug/events/:slug/sync-to-discord returns 422 for an event held to squadrons" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    fleet_event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin,
+      visibility: "squadron", fleet_squadrons: [squadron])
+    stub_discord_runnable
+    ::Discord::ScheduledEventSync.expects(:new).never
+    sign_in @admin
+
+    assert_api_response :post, 422, path_params: {fleetSlug: @fleet.slug, slug: fleet_event.slug} do
+      assert_equal "discord_squadron_event", parsed_body["code"]
+    end
+  end
+
   test "POST /fleets/:slug/events/:slug/sync-to-discord with OAuth bearer token" do
     fleet_event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)
     stub_discord_runnable

@@ -241,6 +241,11 @@ module Api
       def sync_to_discord
         authorize! @fleet_event, to: :update?
 
+        if @fleet_event.squadron_restricted?
+          render json: {code: "discord_squadron_event", message: "An event held to squadrons is announced in their channels, not as a scheduled event"}, status: :unprocessable_entity
+          return
+        end
+
         sync = ::Discord::ScheduledEventSync.new(@fleet_event)
         unless sync.runnable?
           render json: {code: "discord_not_configured", message: "Discord isn't configured for this fleet"}, status: :unprocessable_entity
