@@ -211,7 +211,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
   <ChipRow
     ref="row"
     :label="label ?? t('labels.groups')"
-    :class="{ 'group-labels--editing': editing }"
+    :class="{ 'group-labels-editing': editing }"
     @keydown.esc="stopEditing"
   >
     <Chip
@@ -251,7 +251,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
         :active="editing"
         :aria-label="editing ? t('actions.done') : t('actions.edit')"
         :aria-pressed="editing"
-        class="group-labels__edit"
+        class="group-labels-edit"
         data-test="group-labels-edit"
         @click="toggleEditing"
       >
@@ -286,7 +286,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
   </ChipRow>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 /*
  * Revealed with the row rather than always shown: the row is a filter first, and
  * a permanent pen beside it reads as a control on every chip. Only where hover
@@ -295,20 +295,22 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
  * focus, which held the button on screen after the pointer had left the row.
  */
 @media (hover: hover) {
-  .group-labels__edit {
+  .group-labels-edit {
     opacity: 0;
     transition: opacity 150ms ease-in-out;
   }
 
-  .chip-row:hover .group-labels__edit,
-  .chip-row:has(:focus-visible) .group-labels__edit,
-  .group-labels--editing .group-labels__edit {
-    opacity: 1;
+  .chip-row:hover,
+  .chip-row:has(:focus-visible),
+  .group-labels-editing {
+    .group-labels-edit {
+      opacity: 1;
+    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .group-labels__edit {
+  .group-labels-edit {
     transition-duration: 1ms;
   }
 }
