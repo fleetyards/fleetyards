@@ -85,8 +85,6 @@ class FleetSquadron < ApplicationRecord
 
   COLOR_FORMAT = /\A#(?:\h{3}|\h{6})\z/
 
-  DISCORD_SNOWFLAKE_FORMAT = /\A\d{15,25}\z/
-
   validates :name,
     presence: true,
     length: {maximum: 255},
@@ -100,7 +98,7 @@ class FleetSquadron < ApplicationRecord
 
   validates :color, format: {with: COLOR_FORMAT}, allow_blank: true
 
-  validates :discord_channel_id, format: {with: DISCORD_SNOWFLAKE_FORMAT}, allow_nil: true
+  validates :discord_channel_id, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT}, allow_nil: true
 
   # The card carries this on a line or two, so it is held to a line or two.
   validates :short_description, length: {maximum: 255}, allow_blank: true

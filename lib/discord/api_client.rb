@@ -46,6 +46,9 @@ module Discord
     # Discord::ChannelCapability are what tell a fleet it has to re-authorise.
     INSTALL_PERMISSIONS = 8_859_438_080
 
+    # Discord ids are 64-bit integers written as decimal strings.
+    SNOWFLAKE_FORMAT = /\A\d{15,25}\z/
+
     def self.install_url
       return nil if application_id.blank?
 
@@ -88,6 +91,10 @@ module Discord
 
     def create_message(channel_id, payload)
       post("channels/#{channel_id}/messages", payload)
+    end
+
+    def get_channel(channel_id)
+      request(:get, "channels/#{channel_id}")
     end
 
     def get_guild_channels(guild_id)

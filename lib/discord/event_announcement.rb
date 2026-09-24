@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require "discord/api_client"
-require "discord/channel_post"
-require "discord/webhook_post"
+require "discord/announcement_target"
 
 module Discord
   # Where a message about one event may be posted.
@@ -20,6 +19,23 @@ module Discord
       new(event).targets.any?
     end
 
+    # Whether the fleet has anywhere at all to post what the whole fleet may
+    # read.
+    def self.fleet_targets(fleet)
+      setting = fleet&.fleet_notification_setting
+      return [] if setting.blank?
+
+      channel = ApiClient.configured? &&
+        setting.discord_guild_id.present? &&
+        setting.discord_announcement_channel_id.present?
+
+      (channel || setting.discord_webhook_url.present?) ? [AnnouncementTarget.fleet] : []
+    end
+
+    def self.enqueue(fleet, target, content)
+      DeliverAnnouncementJob.perform_async(fleet.id, *target.to_args, content)
+    end
+
     attr_reader :event
 
     def initialize(event)
@@ -27,31 +43,22 @@ module Discord
     end
 
     def deliver(content)
-      targets.each { |target| target.deliver(content) }
+      targets.each { |target| self.class.enqueue(event.fleet, target, content) }
     end
 
     def targets
       return squadron_targets if event.squadron_restricted?
 
-      if ApiClient.configured? && setting&.discord_announcement_channel_id.present?
-        [ChannelPost.new(setting.discord_announcement_channel_id)]
-      elsif setting&.discord_webhook_url.present?
-        [WebhookPost.new(setting.discord_webhook_url)]
-      else
-        []
-      end
+      self.class.fleet_targets(event.fleet)
     end
 
     # Two squadrons sharing a channel would otherwise read the same message
     # twice.
     private def squadron_targets
       return [] unless ApiClient.configured?
+      return [] if event.fleet&.fleet_notification_setting&.discord_guild_id.blank?
 
-      event.fleet_squadrons.filter_map(&:discord_channel_id).uniq.map { |channel_id| ChannelPost.new(channel_id) }
-    end
-
-    private def setting
-      event.fleet&.fleet_notification_setting
+      event.fleet_squadrons.filter_map(&:discord_channel_id).uniq.map { |channel_id| AnnouncementTarget.squadron(channel_id) }
     end
   end
 end

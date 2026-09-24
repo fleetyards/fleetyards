@@ -5,24 +5,40 @@ require "discord/api_client"
 module Discord
   # One message to one guild channel, posted by the bot.
   #
-  # A channel somebody deleted or locked the bot out of answers 404 or 403.
-  # Neither changes on a retry, and the fleet finds out from its settings page
-  # rather than from a job that fails every time an event is announced.
+  # The channel is looked up first and has to belong to the fleet's own guild.
+  # An id is only ever a string somebody saved: it can name a channel in
+  # another server the bot is in, or one left behind when the fleet moved to a
+  # new server, and either would hand the fleet's events to strangers.
+  #
+  # A channel that is gone, locked to the bot or not a channel at all answers
+  # 404, 403 or 400. None of them changes on a retry, so the post is dropped and
+  # the fleet finds out from its Discord settings rather than from a job that
+  # fails every time an event is announced.
   class ChannelPost
     MAX_LENGTH = 2000
 
-    def initialize(channel_id, api: nil)
+    UNDELIVERABLE_STATUSES = [400, 403, 404].freeze
+
+    def initialize(channel_id, guild_id:, api: nil)
       @channel_id = channel_id
+      @guild_id = guild_id
       @api = api
     end
 
     def deliver(content)
+      return skip("no guild bound") if @guild_id.blank?
+      return skip("channel belongs to another guild") unless api.get_channel(@channel_id)&.dig("guild_id") == @guild_id
+
       api.create_message(@channel_id, {content: content.to_s.first(MAX_LENGTH), allowed_mentions: {parse: []}})
       true
     rescue ApiClient::Error => e
-      raise unless [403, 404].include?(e.status)
+      raise unless UNDELIVERABLE_STATUSES.include?(e.status)
 
-      Rails.logger.info("[Discord::ChannelPost] channel=#{@channel_id} not delivered: #{e.status}")
+      skip(e.status)
+    end
+
+    private def skip(reason)
+      Rails.logger.warn("[Discord::ChannelPost] channel=#{@channel_id} not delivered: #{reason}")
       false
     end
 
