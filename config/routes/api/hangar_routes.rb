@@ -29,6 +29,8 @@ resource :hangar, only: %i[show destroy] do
     end
   end
 
+  get "contract-destinations", to: "hangar_contract_destinations#index"
+
   get "inventory-items", to: "hangar_all_inventory_items#index"
   get "inventory-stock", to: "hangar_all_inventory_stock#index"
 

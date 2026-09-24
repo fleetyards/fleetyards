@@ -1466,6 +1466,53 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contract-destinations":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Contract Destinations
+      tags:
+      - Contracts
+      operationId: fleetContractDestinations
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDestinationsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/contracts":
     parameters:
     - name: fleetSlug
@@ -8659,6 +8706,39 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/contract-destinations":
+    get:
+      summary: Hangar Contract Destinations
+      tags:
+      - HangarInventoryTransfers
+      operationId: hangarContractDestinations
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ContractDeliveryTargetsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -18617,6 +18697,36 @@ components:
       - SCU_24
       - SCU_32
       title: ContainerSizeEnum
+    ContractDeliveryTarget:
+      type: object
+      properties:
+        contractId:
+          type: string
+          format: uuid
+        contractTitle:
+          type: string
+        contractSlug:
+          type: string
+        fleetSlug:
+          type: string
+        fleetName:
+          type: string
+        destination:
+          "$ref": "#/components/schemas/FleetContractDestination"
+      additionalProperties: false
+      required:
+      - contractId
+      - contractTitle
+      - contractSlug
+      - fleetSlug
+      - fleetName
+      - destination
+      title: ContractDeliveryTarget
+    ContractDeliveryTargetsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ContractDeliveryTarget"
+      title: ContractDeliveryTargetsList
     DockCount:
       type: object
       properties:
@@ -19403,6 +19513,43 @@ components:
       - id
       - username
       title: FleetContractCrewUser
+    FleetContractDestination:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          type:
+          - string
+          - 'null'
+        holder:
+          "$ref": "#/components/schemas/FleetContractDestinationHolderEnum"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - holder
+      title: FleetContractDestination
+    FleetContractDestinationHolderEnum:
+      type: string
+      enum:
+      - fleet
+      - user
+      x-enumNames:
+      - FLEET
+      - USER
+      title: FleetContractDestinationHolderEnum
+    FleetContractDestinationsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetContractDestination"
+      title: FleetContractDestinationsList
     FleetContractDetail:
       type: object
       properties:
@@ -19544,11 +19691,14 @@ components:
           type:
           - string
           - 'null'
+        holder:
+          "$ref": "#/components/schemas/FleetContractDestinationHolderEnum"
       additionalProperties: false
       required:
       - id
       - name
       - slug
+      - holder
       title: FleetContractEndpoint
     FleetContractInput:
       type: object
@@ -19590,7 +19740,14 @@ components:
           - 'null'
           format: uuid
         destinationFleetInventoryId:
-          type: string
+          type:
+          - string
+          - 'null'
+          format: uuid
+        destinationInventoryId:
+          type:
+          - string
+          - 'null'
           format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetContractVisibilityEnum"
@@ -25217,12 +25374,18 @@ components:
           type: string
         fleetSlug:
           type: string
+        destinationInventoryId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       additionalProperties: false
       required:
       - id
       - title
       - slug
       - fleetSlug
+      - destinationInventoryId
       title: InventoryTransferContract
     InventoryTransferCreateInput:
       type: object

@@ -3,15 +3,13 @@
 module V1
   module Schemas
     module Contracts
-      # One of a contract's two inventory ends. Null on the source of anything
-      # but a transport contract, and on either end once that inventory was
-      # deleted -- the foreign keys are ON DELETE SET NULL. Only the destination
-      # can be the author's own inventory.
-      class FleetContractEndpoint
+      # An inventory a contract can deliver into, as a picker offers it. The
+      # holder says which id field a contract form sends it back in.
+      class FleetContractDestination
         include OpenapiRuby::Components::Base
 
         schema({
-          type: [:object, :null],
+          type: :object,
           properties: {
             id: {type: :string, format: :uuid},
             name: {type: :string},

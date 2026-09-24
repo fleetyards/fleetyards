@@ -403,6 +403,7 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
       assert_nil parsed_body["destination"]
       assert_equal "user", parsed_body["recipient"]["kind"]
       assert_equal author.username, parsed_body["recipient"]["name"]
+      assert_equal locker.id, parsed_body["contract"]["destinationInventoryId"]
     end
 
     transfer = InventoryTransfer.find(parsed_body["id"])

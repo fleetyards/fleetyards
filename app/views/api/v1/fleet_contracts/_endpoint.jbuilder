@@ -4,10 +4,7 @@
 # kinds have only a destination, and a deleted inventory nulls either of them.
 json.set! name do
   if inventory.present?
-    json.id inventory.id
-    json.name inventory.name
-    json.slug inventory.slug
-    json.location inventory.location
+    json.partial! "api/v1/fleet_contracts/destination", inventory: inventory
   else
     json.null!
   end

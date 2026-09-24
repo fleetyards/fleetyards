@@ -40,7 +40,8 @@ module Api
         @q = scope.ransack(query_params)
 
         @fleet_contracts = result_with_pagination(
-          @q.result(distinct: true).includes(:destination_fleet_inventory, :source_fleet_inventory,
+          @q.result(distinct: true).includes(:destination_fleet_inventory, :destination_inventory,
+            :source_fleet_inventory,
             :created_by, :fleet_contract_items, {fleet_contract_assignments: :user},
             # The serializer asks every row whether it carries a cover, which is
             # a query each without this, and a second one per row that does.
@@ -62,6 +63,7 @@ module Api
       def create
         @fleet_contract = @fleet.fleet_contracts.new(fleet_contract_params)
         @fleet_contract.created_by = current_resource_owner
+        @fleet_contract.destination_chosen_by = current_resource_owner
 
         authorize! @fleet_contract
 
@@ -75,6 +77,8 @@ module Api
 
       def update
         authorize! @fleet_contract
+
+        @fleet_contract.destination_chosen_by = current_resource_owner
 
         if @fleet_contract.update(fleet_contract_params)
           render :show
@@ -176,6 +180,7 @@ module Api
       private def fleet_contract_params
         permitted = authorized(params, with: FleetContractPolicy)
         items = permitted.delete(:items)
+        clear_other_destination(permitted)
 
         return permitted if items.blank?
 
@@ -183,6 +188,17 @@ module Api
         # rejected line takes the contract down with it rather than leaving a
         # half-built one behind.
         permitted.merge(fleet_contract_items_attributes: items)
+      end
+
+      # A contract has one destination, so naming one of the two kinds replaces
+      # whichever it had. Without this an update that only sends the new kind
+      # would leave both set and be refused for it.
+      private def clear_other_destination(permitted)
+        fleet_given = permitted[:destination_fleet_inventory_id].present?
+        hangar_given = permitted[:destination_inventory_id].present?
+
+        permitted[:destination_inventory_id] = nil if fleet_given && !permitted.key?(:destination_inventory_id)
+        permitted[:destination_fleet_inventory_id] = nil if hangar_given && !permitted.key?(:destination_fleet_inventory_id)
       end
 
       private def set_fleet

@@ -28,7 +28,7 @@ end
 json.partial! "api/v1/fleet_contracts/endpoint",
   inventory: fleet_contract.source_fleet_inventory, name: :source
 json.partial! "api/v1/fleet_contracts/endpoint",
-  inventory: fleet_contract.destination_fleet_inventory, name: :destination
+  inventory: fleet_contract.destination, name: :destination
 
 if fleet_contract.created_by.present?
   json.created_by do

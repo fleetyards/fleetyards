@@ -313,6 +313,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     Flipper.enable("fleet_contracts")
     Flipper.enable("fleet_logistics")
     Flipper.enable("inventory_transfers")
+    Flipper.enable("hangar_inventories")
 
     @officer = create(:user)
     @member = create(:user)
@@ -334,6 +335,73 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       assert_equal @depot.id, parsed_body["destination"]["id"]
       assert_equal false, parsed_body["requiresPickup"]
     end
+  end
+
+  test "POST lets an author without inventory rights deliver into their own inventory" do
+    author = contract_author
+    locker = create(:inventory, holder: author)
+    sign_in author
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", destinationInventoryId: locker.id,
+             destinationFleetInventoryId: nil} do
+      assert_equal locker.id, parsed_body["destination"]["id"]
+      assert_equal "user", parsed_body["destination"]["holder"]
+    end
+
+    assert_equal locker, FleetContract.find(parsed_body["id"]).destination_inventory
+  end
+
+  test "POST refuses a fleet inventory the author cannot accept deliveries into" do
+    sign_in contract_author
+
+    assert_no_difference -> { FleetContract.count } do
+      assert_api_response :post, 400,
+        api_path: COLLECTION_PATH,
+        path_params: {fleetSlug: @fleet.slug},
+        body: {kind: "procurement", destinationFleetInventoryId: @depot.id} do
+        assert_includes parsed_body["errors"].pluck("attribute"), "destinationFleetInventory"
+      end
+    end
+  end
+
+  test "POST refuses somebody else's inventory" do
+    sign_in contract_author
+
+    assert_no_difference -> { FleetContract.count } do
+      assert_api_response :post, 400,
+        api_path: COLLECTION_PATH,
+        path_params: {fleetSlug: @fleet.slug},
+        body: {kind: "procurement", destinationInventoryId: create(:inventory, holder: @member).id}
+    end
+  end
+
+  test "POST lets an officer deliver into their own inventory as well" do
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", destinationInventoryId: create(:inventory, holder: @officer).id} do
+      assert_equal "user", parsed_body["destination"]["holder"]
+    end
+  end
+
+  test "PATCH moving the destination to the author's inventory replaces the fleet one" do
+    contract = create(:fleet_contract, fleet: @fleet, created_by: @officer, destination_fleet_inventory: @depot)
+    locker = create(:inventory, holder: @officer)
+    sign_in @officer
+
+    assert_api_response :patch, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug},
+      body: {destinationInventoryId: locker.id} do
+      assert_equal locker.id, parsed_body["destination"]["id"]
+    end
+
+    assert_nil contract.reload.destination_fleet_inventory
   end
 
   # A contract with nothing to deliver cannot be published, so the create form
@@ -847,5 +915,13 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
       assert_equal ["New Name"], response.parsed_body["items"].first["fleetSquadrons"].pluck("name")
     end
+  end
+
+  private def contract_author
+    author = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: author, aasm_state: :accepted,
+      fleet_role: create(:fleet_role, fleet: @fleet, name: "Quartermaster",
+        resource_access: FleetRole.preset_privileges[:member] + ["fleet:contracts:create"]))
+    author
   end
 end

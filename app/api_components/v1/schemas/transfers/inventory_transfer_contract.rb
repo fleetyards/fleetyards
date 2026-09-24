@@ -16,10 +16,13 @@ module V1
             title: {type: :string},
             slug: {type: :string},
             # The contract lives under its fleet, so a link needs both.
-            fleetSlug: {type: :string}
+            fleetSlug: {type: :string},
+            # The author's inventory the contract delivers into, when it is
+            # one. Accepting there is what makes the delivery count.
+            destinationInventoryId: {type: [:string, :null], format: :uuid}
           },
           additionalProperties: false,
-          required: %w[id title slug fleetSlug]
+          required: %w[id title slug fleetSlug destinationInventoryId]
         })
       end
     end
