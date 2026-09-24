@@ -168,7 +168,7 @@
       "privacyPolicy": "Politique de confidentialité",
       "cookiePolicy": "Politique relative aux cookies",
       "visualTests": {
-        "blueprints": "Plans",
+        "blueprints": "Plans - Tests Visuels",
         "index": "Tests Visuels",
         "panels": "Panneaux - Tests Visuels",
         "buttons": "Boutons - Tests Visuels",
@@ -185,8 +185,9 @@
         "supportHint": "Indicateur de soutien - Tests Visuels",
         "media": "Médias - Tests Visuels",
         "charts": "Graphiques - Tests Visuels",
+        "themes": "Thèmes - Tests Visuels",
         "chips": "Chips - Tests Visuels",
-        "squadrons": "Escadrons",
+        "squadrons": "Escadrons - Tests Visuels",
         "notificationCenter": "Centre de notifications - Tests Visuels"
       },
       "admin": {

@@ -161,7 +161,8 @@
         "groups": {
           "foundations": "Grundlagen",
           "data": "Daten",
-          "feedback": "Feedback"
+          "feedback": "Feedback",
+          "features": "Features"
         },
         "notificationCenter": "Benachrichtigungszentrale",
         "themes": "Themes"

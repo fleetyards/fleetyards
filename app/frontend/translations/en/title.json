@@ -168,7 +168,7 @@
       "privacyPolicy": "Privacy policy",
       "cookiePolicy": "Cookie policy",
       "visualTests": {
-        "blueprints": "Blueprints",
+        "blueprints": "Blueprints - Visual Tests",
         "index": "Visual Tests",
         "panels": "Panels - Visual Tests",
         "buttons": "Buttons - Visual Tests",
@@ -185,8 +185,9 @@
         "supportHint": "Support Hint - Visual Tests",
         "media": "Media - Visual Tests",
         "charts": "Charts - Visual Tests",
+        "themes": "Themes - Visual Tests",
         "chips": "Chips - Visual Tests",
-        "squadrons": "Squadrons",
+        "squadrons": "Squadrons - Visual Tests",
         "notificationCenter": "Notification Center - Visual Tests"
       },
       "admin": {

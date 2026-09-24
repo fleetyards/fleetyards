@@ -168,7 +168,7 @@
       "privacyPolicy": "Datenschutzrichtlinie",
       "cookiePolicy": "Cookie-Richtlinie",
       "visualTests": {
-        "blueprints": "Baupläne",
+        "blueprints": "Baupläne - Visuelle Tests",
         "index": "Visuelle Tests",
         "panels": "Panels - Visuelle Tests",
         "buttons": "Buttons - Visuelle Tests",
@@ -185,8 +185,9 @@
         "supportHint": "Support-Hinweis - Visuelle Tests",
         "media": "Medien - Visuelle Tests",
         "charts": "Diagramme - Visuelle Tests",
+        "themes": "Themes - Visuelle Tests",
         "chips": "Chips - Visuelle Tests",
-        "squadrons": "Staffeln",
+        "squadrons": "Staffeln - Visuelle Tests",
         "notificationCenter": "Benachrichtigungszentrale - Visuelle Tests"
       },
       "admin": {

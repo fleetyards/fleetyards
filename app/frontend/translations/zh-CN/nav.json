@@ -161,7 +161,8 @@
         "groups": {
           "foundations": "基础",
           "data": "数据",
-          "feedback": "反馈"
+          "feedback": "反馈",
+          "features": "功能"
         },
         "notificationCenter": "通知中心",
         "themes": "主题"

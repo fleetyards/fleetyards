@@ -168,7 +168,7 @@
       "privacyPolicy": "Informativa sulla privacy",
       "cookiePolicy": "Informativa sui Cookie",
       "visualTests": {
-        "blueprints": "Progetti",
+        "blueprints": "Progetti - Test Visivi",
         "index": "Test Visivi",
         "panels": "Pannelli - Test Visivi",
         "buttons": "Pulsanti - Test Visivi",
@@ -185,8 +185,9 @@
         "supportHint": "Suggerimento supporto - Test Visivi",
         "media": "Media - Test Visivi",
         "charts": "Grafici - Test Visivi",
+        "themes": "Temi - Test Visivi",
         "chips": "Chips - Test Visivi",
-        "squadrons": "Squadroni",
+        "squadrons": "Squadroni - Test Visivi",
         "notificationCenter": "Centro notifiche - Test Visivi"
       },
       "admin": {

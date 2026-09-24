@@ -161,7 +161,8 @@
         "groups": {
           "foundations": "基礎",
           "data": "資料",
-          "feedback": "回饋"
+          "feedback": "回饋",
+          "features": "功能"
         },
         "notificationCenter": "通知中心",
         "themes": "主題"

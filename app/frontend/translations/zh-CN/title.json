@@ -168,7 +168,7 @@
       "privacyPolicy": "隐私政策",
       "cookiePolicy": "Cookie政策",
       "visualTests": {
-        "blueprints": "蓝图",
+        "blueprints": "蓝图 - 视觉测试",
         "index": "视觉测试",
         "panels": "面板 - 视觉测试",
         "buttons": "按钮 - 视觉测试",
@@ -185,8 +185,9 @@
         "supportHint": "支持提示 - 视觉测试",
         "media": "媒体 - 视觉测试",
         "charts": "图表 - 视觉测试",
+        "themes": "主题 - 视觉测试",
         "chips": "Chips - 视觉测试",
-        "squadrons": "中队",
+        "squadrons": "中队 - 视觉测试",
         "notificationCenter": "通知中心 - 视觉测试"
       },
       "admin": {

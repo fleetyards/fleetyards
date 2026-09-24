@@ -150,8 +150,6 @@ const catalogueBlueprints: Blueprint[] = [
 </script>
 
 <template>
-  <Heading :level="HeadingLevelEnum.H1">Blueprints</Heading>
-
   <Heading :level="HeadingLevelEnum.H2">BlueprintsList</Heading>
   <p>
     The section's second tenant on the same list. Kept directly under the

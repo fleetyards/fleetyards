@@ -161,7 +161,8 @@
         "groups": {
           "foundations": "Fondations",
           "data": "Données",
-          "feedback": "Retours"
+          "feedback": "Retours",
+          "features": "Fonctionnalités"
         },
         "notificationCenter": "Centre de notifications",
         "themes": "Thèmes"

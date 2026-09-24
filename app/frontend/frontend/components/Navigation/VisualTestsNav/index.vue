@@ -41,6 +41,11 @@ const GROUPS = [
       "overlays",
     ],
   },
+  {
+    key: "features",
+    icon: "fadt fa-puzzle-piece",
+    members: ["blueprints", "squadrons"],
+  },
 ];
 
 const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
@@ -119,6 +124,16 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-overlays",
     label: "overlays",
     icon: "fadt fa-window-restore",
+  },
+  blueprints: {
+    route: "visual-tests-blueprints",
+    label: "blueprints",
+    icon: "fadt fa-compass-drafting",
+  },
+  squadrons: {
+    route: "visual-tests-squadrons",
+    label: "squadrons",
+    icon: "fadt fa-people-group",
   },
 };
 
