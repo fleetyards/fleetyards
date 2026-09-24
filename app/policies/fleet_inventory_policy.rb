@@ -52,7 +52,7 @@ class FleetInventoryPolicy < FleetBasePolicy
       relation
     else
       relation.where(visibility: :members_only)
-        .or(relation.where(managed_by: membership.user_id))
+        .or(relation.where(visibility: :officers_only, managed_by: membership.user_id))
         .or(relation.merge(FleetInventory.restricted_to_squadrons_of(membership)))
     end
   end

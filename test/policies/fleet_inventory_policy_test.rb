@@ -70,6 +70,17 @@ class FleetInventoryPolicyTest < ActiveSupport::TestCase
     refute_includes listed, @closed
   end
 
+  # Managing a store lifts the officers-only bar, not the squadron one: the
+  # detail page refuses a manager outside the squadron, so the list must too.
+  test "a manager outside the squadron is not listed its squadron-only store" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    store = create(:fleet_inventory, fleet: @fleet, manager: @manager,
+      visibility: :squadron_only, fleet_squadrons: [squadron])
+
+    refute policy_for(@manager, store).apply(:show?)
+    refute_includes scoped(@manager), store
+  end
+
   test "someone outside the fleet is shown nothing" do
     assert_empty scoped(@stranger)
   end
