@@ -203,6 +203,7 @@
       "accessDenied": "拒絕存取",
       "serverError": "伺服器錯誤",
       "offline": "連線已中斷",
+      "invalidRequest": "無效的請求",
       "comments": "評論",
       "login": "登入",
       "hangar": {

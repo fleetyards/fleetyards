@@ -27,6 +27,8 @@
       "accessDenied": "Non sei autorizzato a visualizzare questa pagina.",
       "serverError": "Il server sta riscontrando difficoltà tecniche. Riprova più tardi.",
       "offline": "La richiesta non ha raggiunto il server. Il tuo dispositivo sembra essere offline oppure il server non è raggiungibile. Controlla la connessione e riprova.",
+      "invalidRequest": "Il server non è riuscito a elaborare questa richiesta. Ricarica la pagina e riprova.",
+      "invalidListRequest": "Questo filtro o ordinamento non è valido. Reimpostalo per visualizzare di nuovo l'elenco.",
       "compare": {
         "ships": {
           "info": "Per iniziare a selezionare almeno due e non più di otto Navi che si desiderano confrontare."

@@ -27,6 +27,8 @@
       "accessDenied": "您無權檢視此頁面。",
       "serverError": "伺服器目前遇到技術問題。請稍後再試。",
       "offline": "請求未能送達伺服器。你的裝置似乎已離線，或者無法連線到伺服器。請檢查網路連線後再試一次。",
+      "invalidRequest": "伺服器無法處理此請求。請重新整理頁面後再試一次。",
+      "invalidListRequest": "此篩選器或排序無效。請重置後重新顯示列表。",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

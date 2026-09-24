@@ -27,6 +27,8 @@
       "accessDenied": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",
       "serverError": "Der Server hat derzeit technische Probleme. Bitte versuchen Sie es später erneut.",
       "offline": "Die Anfrage hat den Server nicht erreicht. Dein Gerät scheint offline zu sein oder der Server war nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
+      "invalidRequest": "Der Server konnte diese Anfrage nicht verarbeiten. Lade die Seite neu und versuche es erneut.",
+      "invalidListRequest": "Dieser Filter oder diese Sortierung ist ungültig. Setze sie zurück, um die Liste wieder anzuzeigen.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
