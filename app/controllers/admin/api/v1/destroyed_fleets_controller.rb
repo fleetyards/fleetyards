@@ -61,7 +61,7 @@ module Admin
             scope = scope.where("fleets.name ILIKE :q OR fleets.fid ILIKE :q", q: "%#{search_term}%")
           end
           scope.order(discarded_at: :desc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Fleet))
         end
 
@@ -81,7 +81,7 @@ module Admin
 
           PaperTrail::Version.from(latest, :versions)
             .order(created_at: :desc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Fleet))
         end
 

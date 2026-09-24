@@ -27,7 +27,7 @@ module Api
         scope.order(created_at: :desc)
 
         @fleet_invite_urls = scope
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(FleetInviteUrl))
       end
 

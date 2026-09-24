@@ -17,7 +17,7 @@ module Admin
 
           @admin_users = AdminUser.all
             .order(username: :asc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(AdminUser))
         end
 

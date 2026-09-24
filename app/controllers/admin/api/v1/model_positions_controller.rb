@@ -14,7 +14,7 @@ module Admin
           @q = authorized_scope(ModelPosition.all).ransack(model_position_query_params)
 
           @model_positions = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 
@@ -54,7 +54,7 @@ module Admin
           ModelPosition.generate_for_model!(model)
 
           @model_positions = model.model_positions.order(position: :asc)
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
 
           render :index

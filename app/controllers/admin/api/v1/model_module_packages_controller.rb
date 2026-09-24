@@ -20,7 +20,7 @@ module Admin
 
           @model_module_packages = @q.result
             .includes(:model, :model_modules)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(ModelModulePackage))
         end
 

@@ -28,7 +28,7 @@ module Admin
 
           @hardpoints = @q.result
             .includes(:component, hardpoints: :component)
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

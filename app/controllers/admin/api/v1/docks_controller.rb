@@ -17,7 +17,7 @@ module Admin
           # per dock on a cache miss.
           @docks = @q.result
             .includes(:capacities)
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

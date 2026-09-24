@@ -22,7 +22,7 @@ module Admin
           # No distinct: nothing here joins, and SELECT DISTINCT cannot order by
           # the computed `unread` expression.
           @notifications = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(AdminNotification))
         end
 

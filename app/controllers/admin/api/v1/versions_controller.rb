@@ -19,7 +19,7 @@ module Admin
             .where(item_type: item.class.name, item_id: item.id)
             .where.not(object_changes: nil)
             .order(created_at: :desc)
-            .page(params[:page])
+            .page(page_params)
             .per(params[:per_page] || params[:perPage])
 
           # `author_id` is only ever written by an admin action, so one lookup
@@ -77,7 +77,7 @@ module Admin
             # heading with nothing under it.
             .where.not(object_changes: nil)
             .order(created_at: :desc)
-            .page(params[:page])
+            .page(page_params)
             .per(params[:per_page] || params[:perPage] || 10)
 
           @authors = AdminUser.where(id: @versions.filter_map(&:author_id).uniq).index_by(&:id)

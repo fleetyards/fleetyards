@@ -23,7 +23,7 @@ module Admin
           q = scope.ransack(manufacturer_query_params)
 
           @manufacturers = q.result(distinct: true)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Manufacturer))
         end
 
@@ -38,7 +38,7 @@ module Admin
           @q = Manufacturer.with_name.ransack(manufacturer_query_params)
 
           @manufacturers = @q.result(distinct: true)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Manufacturer))
         end
 

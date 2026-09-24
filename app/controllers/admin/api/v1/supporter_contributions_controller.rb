@@ -20,7 +20,7 @@ module Admin
 
           @supporter_contributions = q.result(distinct: true)
             .includes(:user, :fleet, :fleet_subscriptions)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(SupporterContribution))
         end
 

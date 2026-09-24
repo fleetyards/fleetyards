@@ -102,7 +102,7 @@ module Api
           .ransack(model_query_params)
 
         @models = @q.result
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Model))
       end
 
@@ -165,7 +165,7 @@ module Api
         @images = model.images
           .enabled
           .order("images.created_at desc")
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Image))
       end
 
@@ -175,7 +175,7 @@ module Api
 
         @videos = model.videos
           .order("videos.created_at desc")
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Video))
       end
 
@@ -199,7 +199,7 @@ module Api
         @q = scope.ransack(model_query_params)
 
         @models = @q.result
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Model))
 
         render "api/v1/models/index"
@@ -227,7 +227,7 @@ module Api
         @q = scope.ransack(model_query_params)
 
         @models = @q.result
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Model))
 
         render "api/v1/models/index"
@@ -245,7 +245,7 @@ module Api
           .visible
           .active
           .order(name: :asc)
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(ModelModule))
 
         @module_slots = model.module_hardpoints
@@ -262,7 +262,7 @@ module Api
           .visible
           .active
           .order(name: :asc)
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(ModelModule))
       end
 

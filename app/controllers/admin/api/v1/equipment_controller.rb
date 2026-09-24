@@ -34,7 +34,7 @@ module Admin
           result = result.order(Equipment.fact_sql(:name).public_send(name_sort.split.last)) if name_sort
 
           @equipment = result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Equipment))
         end
 

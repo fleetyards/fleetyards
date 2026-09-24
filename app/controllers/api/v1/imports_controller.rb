@@ -24,7 +24,7 @@ module Api
         @q = scope.ransack(import_query_params)
         @imports = @q.result
           .includes(:hangar_group)
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Import))
       end
 

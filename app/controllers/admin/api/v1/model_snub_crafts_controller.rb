@@ -12,7 +12,7 @@ module Admin
           @q = authorized_scope(ModelSnubCraft.includes(:model, :snub_craft)).ransack(snub_craft_query_params)
 
           @model_snub_crafts = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

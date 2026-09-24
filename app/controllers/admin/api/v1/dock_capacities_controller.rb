@@ -12,7 +12,7 @@ module Admin
           @q = authorized_scope(DockCapacity.all, with: ::Admin::DockPolicy).ransack(dock_capacity_query_params)
 
           @dock_capacities = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

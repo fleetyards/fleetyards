@@ -14,7 +14,7 @@ module Admin
           @q = authorized_scope(Video.all).ransack(video_query_params)
 
           @videos = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

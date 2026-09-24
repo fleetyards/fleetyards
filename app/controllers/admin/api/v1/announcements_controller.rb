@@ -22,7 +22,7 @@ module Admin
 
           @announcements = q.result(distinct: true)
             .includes(:deliveries, :admin_user)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Announcement))
         end
 

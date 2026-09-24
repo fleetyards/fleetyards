@@ -11,7 +11,7 @@ module Admin
           rsi_request_logs_query.sorts = ["created_at desc"] if rsi_request_logs_query.sorts.empty?
 
           @rsi_request_logs = rsi_request_logs_query.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(RsiRequestLog))
         end
 

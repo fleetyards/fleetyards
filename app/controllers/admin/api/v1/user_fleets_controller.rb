@@ -14,7 +14,7 @@ module Admin
           @memberships = @user.fleet_memberships
             .includes(:fleet, :fleet_role)
             .order(primary: :desc, created_at: :asc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(FleetMembership))
         end
 

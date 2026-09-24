@@ -88,7 +88,7 @@ module Api
           .ransack(components_query_params)
 
         @components = @q.result
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Component))
       end
 

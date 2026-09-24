@@ -14,7 +14,7 @@ module Admin
             .ransack(oauth_application_query_params)
             .result
             .order(created_at: :desc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Oauth::Application))
         end
 

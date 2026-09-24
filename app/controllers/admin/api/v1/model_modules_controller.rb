@@ -16,7 +16,7 @@ module Admin
 
           @model_modules = @q.result
             .includes(:module_hardpoints, :models, :manufacturer)
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

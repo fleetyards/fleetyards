@@ -15,7 +15,7 @@ module Admin
           @inventories = @fleet.fleet_inventories
             .includes(:manager)
             .order(name: :asc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(FleetInventory))
         end
 
