@@ -82,6 +82,30 @@ module Discord
         DeliverAnnouncementJob.jobs.map { |job| job["args"][1, 2] }.sort_by(&:first)
     end
 
+    test "a list that fits is posted whole, without a footer" do
+      3.times { |index| event(title: "Operation #{index}") }
+
+      content = deliveries.fetch("fleet")
+
+      assert_equal 3, content.scan("Operation").size
+      assert_not_includes content, "…"
+    end
+
+    # The footer's own length depends on how many it counts; the one sent has
+    # to be the one measured.
+    test "never exceeds the limit whatever the footer ends up counting" do
+      digest = WeeklyDigest.new(@fleet)
+      heading = I18n.t("discord.weekly_digest.heading", fleet: "Test Wing")
+
+      (1..60).each do |size|
+        listed = Array.new(size) { |index| {event: FleetEvent.new(slug: "e#{index}"), starts_at: Time.current, title: "x" * (20 + (index % 7)), availability: nil} }
+        content = digest.send(:content_for, listed)
+
+        assert_operator content.length, :<=, WeeklyDigest::MAX_LENGTH, "#{size} events"
+        assert content.start_with?(heading)
+      end
+    end
+
     test "a busy week is cut short under Discord's limit and links the rest" do
       40.times { |index| event(title: "Operation #{"x" * 40} #{index}") }
 

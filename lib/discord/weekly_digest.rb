@@ -81,23 +81,20 @@ module Discord
 
     private def content_for(listed)
       heading = I18n.t("discord.weekly_digest.heading", fleet: @fleet.name)
-      more_link = url_for_path("/fleets/#{@fleet.slug}/events/")
+      lines = listed.map { |occurrence| line_for(occurrence) }
 
-      lines = []
-      listed.each_with_index do |occurrence, index|
-        line = line_for(occurrence)
-        rest = listed.size - index
-        more = I18n.t("discord.weekly_digest.more", count: rest, url: more_link)
+      full = [heading, *lines].join("\n")
+      return full if full.length <= MAX_LENGTH
 
-        if [heading, *lines, line].join("\n").length + more.length + 1 > MAX_LENGTH
-          lines << more
-          break
-        end
-
-        lines << line
+      # Drop events from the end until what is left fits beside a footer
+      # counting exactly the ones dropped.
+      shown = lines.size
+      loop do
+        shown -= 1
+        more = I18n.t("discord.weekly_digest.more", count: lines.size - shown, url: url_for_path("/fleets/#{@fleet.slug}/events/"))
+        content = [heading, *lines.first(shown), more].join("\n")
+        return content if content.length <= MAX_LENGTH || shown.zero?
       end
-
-      [heading, *lines].join("\n")
     end
 
     # Discord renders <t:unix:f> in each reader's own timezone.
