@@ -144,6 +144,8 @@ class User < ApplicationRecord
 
   before_destroy :check_fleet_memberships
   before_destroy :preserve_payout_participant_names, prepend: true
+  before_destroy :capture_discord_member_roles_revoke, prepend: true
+  after_destroy_commit :revoke_discord_member_roles
 
   has_many :vehicles, dependent: :destroy
   has_many :purchased_vehicles,
@@ -930,6 +932,19 @@ class User < ApplicationRecord
     return if fleet_memberships.kept.accepted.exists?(fleet_id: supported_fleet_id)
 
     errors.add(:supported_fleet, :not_a_fleet_of_the_supporter)
+  end
+
+  # Runs before the memberships and connections are destroyed, since the
+  # revoke needs both the Discord uid and every fleet this user was in.
+  private def capture_discord_member_roles_revoke
+    uid = omniauth_connections.find_by(provider: "discord")&.uid
+    @discord_member_roles_revoke = [uid, fleet_memberships.pluck(:fleet_id).uniq] if uid.present?
+  end
+
+  private def revoke_discord_member_roles
+    return if @discord_member_roles_revoke.blank?
+
+    ::Discord::RevokeMemberRolesJob.perform_async(*@discord_member_roles_revoke)
   end
 
   private def check_fleet_memberships

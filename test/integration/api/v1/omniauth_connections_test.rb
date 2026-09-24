@@ -44,12 +44,14 @@ class Api::V1::OmniauthConnectionsTest < ActionDispatch::IntegrationTest
   test "DELETE /omniauth-connections/discord revokes the fleet roles of the unlinked account" do
     user = create(:user, password: "enterprise", password_set_manually: true)
     create(:omniauth_connection, user: user, provider: :discord, uid: "discord-uid-unlinked")
+    fleet = create(:fleet)
+    fleet.fleet_memberships.create!(user: user, fleet_role: fleet.fleet_roles.ranked.last)
     sign_in user
-    ::Discord::RevokeUserMemberRolesJob.jobs.clear
+    ::Discord::RevokeMemberRolesJob.jobs.clear
 
     assert_api_response :delete, 200, path_params: {provider: "discord"}
 
-    assert_equal [[user.id, "discord-uid-unlinked"]], ::Discord::RevokeUserMemberRolesJob.jobs.map { |job| job["args"] }
+    assert_equal [["discord-uid-unlinked", [fleet.id]]], ::Discord::RevokeMemberRolesJob.jobs.map { |job| job["args"] }
   end
 
   test "DELETE /omniauth-connections/:provider returns 401 when not signed in" do

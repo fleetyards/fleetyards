@@ -3,45 +3,49 @@
 require "discord/member_role_sync"
 
 module Discord
-  # Takes every managed role of every fleet a member belongs to off a Discord
-  # account they just unlinked. Once the connection is gone the per-membership
-  # sync can no longer find that account, so the uid is handed in.
-  class RevokeUserMemberRolesJob < ::ApplicationJob
+  # Takes the managed roles off a Discord account that is no longer linked to
+  # a member of these fleets -- after an unlink, or after the account was
+  # deleted. Neither the connection nor the user may still exist, so the uid
+  # and the fleets are captured before they go and handed in.
+  #
+  # Roles another member linked to the same Discord account is still owed are
+  # kept; MemberRoleSync works that out per fleet.
+  class RevokeMemberRolesJob < ::ApplicationJob
     sidekiq_options retry: 2, queue: "notifications"
 
-    def perform(user_id, discord_uid)
+    def perform(discord_uid, fleet_ids)
       return unless ApiClient.configured?
-      return if discord_uid.blank?
+      return if discord_uid.blank? || fleet_ids.blank?
 
-      user = User.find_by(id: user_id)
-      return if user.blank?
-      return if relinked?(user, discord_uid)
+      linked_before = linked_user_ids(discord_uid)
 
-      user.fleet_memberships.includes(fleet: :fleet_notification_setting).find_each do |membership|
-        next if membership.fleet&.fleet_notification_setting&.discord_guild_id.blank?
+      Fleet.where(id: fleet_ids).includes(:fleet_notification_setting).find_each do |fleet|
+        next if fleet.fleet_notification_setting&.discord_guild_id.blank?
 
-        revoke(membership, discord_uid)
+        revoke(fleet, discord_uid)
       end
 
-      # A relink that landed while this ran may have had its roles removed
-      # again, so the backfill gets the last word.
-      BackfillUserMemberRolesJob.perform_async(user.id) if relinked?(user, discord_uid)
+      # Someone who linked this account while the revoke ran may have lost
+      # roles they were owed, so the backfill gets the last word.
+      (linked_user_ids(discord_uid) - linked_before).each do |user_id|
+        BackfillUserMemberRolesJob.perform_async(user_id)
+      end
     end
 
-    private def relinked?(user, discord_uid)
-      user.omniauth_connections.exists?(provider: "discord", uid: discord_uid)
+    private def linked_user_ids(discord_uid)
+      OmniauthConnection.discord.where(uid: discord_uid).pluck(:user_id)
     end
 
-    private def revoke(membership, discord_uid)
-      sync = MemberRoleSync.new(membership, discord_uid: discord_uid, revoke: true)
+    private def revoke(fleet, discord_uid)
+      sync = MemberRoleSync.new(fleet: fleet, discord_uid: discord_uid)
       return unless sync.runnable?
 
       result = sync.run!
       return if result.removed.blank?
 
-      Rails.logger.info("[Discord::RevokeUserMemberRolesJob] membership=#{membership.id} #{result}")
+      Rails.logger.info("[Discord::RevokeMemberRolesJob] fleet=#{fleet.id} #{result}")
     rescue ApiClient::Error => e
-      Rails.logger.error("[Discord::RevokeUserMemberRolesJob] membership=#{membership.id} failed: #{e.message}")
+      Rails.logger.error("[Discord::RevokeMemberRolesJob] fleet=#{fleet.id} failed: #{e.message}")
       raise if e.status == 429 || e.status >= 500
     end
   end
