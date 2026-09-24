@@ -266,6 +266,14 @@ en:
               destination_is_source: "cannot be transferred to the inventory it came from"
               already_resolved: "has already been answered"
               forbidden: "is not allowed"
+        fleet_contract:
+          attributes:
+            destination_inventory:
+              not_the_authors: "must be one of your own inventories"
+              not_selectable: "is not an inventory you can choose"
+              only_one_destination: "can only be one inventory"
+            destination_fleet_inventory:
+              not_selectable: "is not an inventory you can choose"
         inventory_transfer_rule:
           attributes:
             base:

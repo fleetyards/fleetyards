@@ -271,6 +271,14 @@ it:
               destination_is_source: "non può essere trasferito nell'inventario da cui proviene"
               already_resolved: "ha già ricevuto una risposta"
               forbidden: "non è consentito"
+        fleet_contract:
+          attributes:
+            destination_inventory:
+              not_the_authors: "deve essere uno dei tuoi inventari"
+              not_selectable: "non è un inventario che puoi scegliere"
+              only_one_destination: "può essere un solo inventario"
+            destination_fleet_inventory:
+              not_selectable: "non è un inventario che puoi scegliere"
         inventory_transfer_rule:
           attributes:
             base:

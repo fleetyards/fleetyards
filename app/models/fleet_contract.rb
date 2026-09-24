@@ -33,11 +33,12 @@
 #  reward                         :decimal(15, 2)   default(0.0), not null
 #  slug                           :string           not null
 #  title                          :string
-#  visibility                     :integer          default(0), not null
+#  visibility                     :integer          default("members_only"), not null
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  created_by_id                  :uuid
 #  destination_fleet_inventory_id :uuid
+#  destination_inventory_id       :uuid
 #  fleet_id                       :uuid             not null
 #  source_fleet_inventory_id      :uuid
 #
@@ -45,6 +46,7 @@
 #
 #  index_fleet_contracts_on_created_by_id                   (created_by_id)
 #  index_fleet_contracts_on_destination_fleet_inventory_id  (destination_fleet_inventory_id)
+#  index_fleet_contracts_on_destination_inventory_id        (destination_inventory_id)
 #  index_fleet_contracts_on_fleet_id_and_aasm_state         (fleet_id,aasm_state)
 #  index_fleet_contracts_on_fleet_id_and_kind               (fleet_id,kind)
 #  index_fleet_contracts_on_fleet_id_and_slug               (fleet_id,slug) UNIQUE
@@ -54,6 +56,7 @@
 #
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (destination_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
+#  fk_rails_...  (destination_inventory_id => inventories.id) ON DELETE => nullify
 #  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (source_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
 #
@@ -87,6 +90,9 @@ class FleetContract < ApplicationRecord
   belongs_to :created_by, class_name: "User", optional: true
   belongs_to :source_fleet_inventory, class_name: "FleetInventory", optional: true
   belongs_to :destination_fleet_inventory, class_name: "FleetInventory", optional: true
+  # The author's own inventory, for an author who cannot accept deliveries into
+  # the fleet's. Deliveries into it are addressed to the author.
+  belongs_to :destination_inventory, class_name: "Inventory", optional: true
 
   has_many :fleet_contract_items, -> { order(:position) }, dependent: :destroy
   accepts_nested_attributes_for :fleet_contract_items
@@ -114,11 +120,13 @@ class FleetContract < ApplicationRecord
   validates :title, uniqueness: {case_sensitive: false, scope: :fleet_id}, allow_blank: true
   validates :reward, numericality: {greater_than_or_equal_to: 0}
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
-  validates :destination_fleet_inventory, presence: true
+  validate :exactly_one_destination
   validates :source_fleet_inventory, presence: true, if: :transport?
   validates :source_fleet_inventory, absence: true, unless: :transport?
   validate :inventories_belong_to_the_fleet
   validate :destination_is_not_the_source
+  validate :hangar_destination_is_the_authors
+  validate :destination_selectable_by_editor, if: :destination_changing?
 
   before_save :update_slug
 
@@ -206,7 +214,27 @@ class FleetContract < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[fleet destination_fleet_inventory source_fleet_inventory]
+    %w[fleet destination_fleet_inventory destination_inventory source_fleet_inventory]
+  end
+
+  # Whoever is setting the destination on this save. Picking one is checked
+  # against *their* rights, which the model cannot know by itself; left unset,
+  # as it is for every save that does not come from the contract form, the
+  # destination is not re-checked.
+  attr_accessor :destination_chosen_by
+
+  def destination
+    destination_inventory || destination_fleet_inventory
+  end
+
+  # Who a delivery the contractor cannot put away themselves is addressed to:
+  # the fleet for one of its inventories, the author for their own.
+  def destination_party
+    ::InventoryTransfer.party_of(destination)
+  end
+
+  def hangar_destination?
+    destination_inventory.present?
   end
 
   # Only a transport contract has somewhere to collect from, so only it has a
@@ -301,14 +329,14 @@ class FleetContract < ApplicationRecord
   # Publishing a contract with nothing to deliver would create a job that is
   # fulfilled the moment it is claimed.
   def ready_to_publish?
-    destination_fleet_inventory.present? && fleet_contract_items.any?
+    destination.present? && fleet_contract_items.any?
   end
 
   # The two inventories this contract's transfers are allowed to touch. Anything
   # else is a transfer that happens to have been made by a contractor, and
   # counts for nothing.
   def tracked_inventory_ids
-    [source_fleet_inventory_id, destination_fleet_inventory_id].compact
+    [source_fleet_inventory_id, destination_fleet_inventory_id, destination_inventory_id].compact
   end
 
   # Claiming is a race: two members pressing the button at once both read an
@@ -382,6 +410,37 @@ class FleetContract < ApplicationRecord
     return unless source_fleet_inventory_id == destination_fleet_inventory_id
 
     errors.add(:destination_fleet_inventory, :same_as_source)
+  end
+
+  # Compared as records rather than ids, so an association assigned but not
+  # yet saved still counts.
+  private def exactly_one_destination
+    case [destination_fleet_inventory, destination_inventory].compact.size
+    when 0 then errors.add(:destination_fleet_inventory, :blank)
+    when 2 then errors.add(:destination_inventory, :only_one_destination)
+    end
+  end
+
+  private def hangar_destination_is_the_authors
+    return if destination_inventory.blank?
+    return if created_by.present? && destination_inventory.holder == created_by
+
+    errors.add(:destination_inventory, :not_the_authors)
+  end
+
+  private def destination_changing?
+    destination_chosen_by.present? &&
+      (will_save_change_to_destination_fleet_inventory_id? || will_save_change_to_destination_inventory_id?)
+  end
+
+  private def destination_selectable_by_editor
+    return if destination.blank?
+
+    options = ::Contracts::DestinationOptions.new(fleet:, editor: destination_chosen_by, author: created_by)
+    return if options.allows?(destination)
+
+    attribute = destination_inventory.present? ? :destination_inventory : :destination_fleet_inventory
+    errors.add(attribute, :not_selectable)
   end
 
   # Only from a real title, and only while there is one. A derived title moves
