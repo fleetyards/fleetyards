@@ -214,10 +214,9 @@ export const useTransferTargets = (options: Options) => {
   // when sending as themselves: a contractor delivers their own goods. The
   // author's inventory is named here and nothing more -- the API resolves it
   // as a target only together with its contract.
-  const offersContracts = computed(
-    () =>
-      !actingFleet.value && isFeatureEnabled(FeatureFlagName.FLEET_CONTRACTS),
-  );
+  // Not gated on the reader's own contracts flag: it is a fleet feature, and
+  // the endpoint already keeps each contract to fleets that have it.
+  const offersContracts = computed(() => !actingFleet.value);
 
   const { data: contractDestinations } = useHangarContractDestinations({
     query: { enabled: offersContracts },

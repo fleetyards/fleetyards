@@ -305,14 +305,15 @@ describe("useTransferTargets", () => {
       expect(contractTargets.value).toEqual([]);
     });
 
-    it("offers none while contracts are switched off", () => {
+    // Contracts are switched on per fleet, and the endpoint filters by that.
+    it("offers them without the reader's own contracts flag", () => {
       enabledFeatures.value = [];
 
       const { contractTargets } = useTransferTargets({
         source: () => undefined,
       });
 
-      expect(contractTargets.value).toEqual([]);
+      expect(contractTargets.value).toHaveLength(2);
     });
   });
 });
