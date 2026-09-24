@@ -179,6 +179,28 @@ const updateSort = async () => {
     });
 };
 
+// The keyboard counterpart to a drag. The moved chip's grip is refocused because
+// Vue re-inserts the keyed element, and a re-inserted node drops its focus.
+const moveGroup = async (
+  group: HangarGroup | HangarGroupPublic,
+  offset: -1 | 1,
+) => {
+  const from = groups.value.findIndex((item) => item.id === group.id);
+  const to = from + offset;
+  if (from < 0 || to < 0 || to >= groups.value.length) return;
+
+  const reordered = [...groups.value];
+  reordered.splice(to, 0, ...reordered.splice(from, 1));
+  groups.value = reordered;
+
+  void updateSort();
+
+  await nextTick();
+  row.value?.itemsEl
+    ?.querySelector<HTMLElement>(`[data-group-id="${group.id}"] .chip__handle`)
+    ?.focus();
+};
+
 const comlink = useComlink();
 
 const openGroupModal = (hangarGroup?: HangarGroup | HangarGroupPublic) => {
@@ -227,6 +249,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       :sort-label="t('actions.reorder')"
       @toggle="filterGroup(group.slug)"
       @edit="openGroupModal(group)"
+      @move="moveGroup(group, $event)"
       @contextmenu.prevent="openGroupModal(group)"
       @mouseenter="highlight(group)"
       @mouseleave="highlight()"

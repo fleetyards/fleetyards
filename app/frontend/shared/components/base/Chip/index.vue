@@ -21,7 +21,8 @@ type Props = {
   /**
    * Draws a leading grip. The consumer binds its drag to `.chip__handle` rather
    * than the whole chip: a toggle that is also a drag target cannot be clicked
-   * without moving it a little first.
+   * without moving it a little first. The grip is focusable and emits `move`
+   * on the arrow keys, which is the keyboard route to the same reorder.
    */
   sortable?: boolean;
   sortLabel?: string;
@@ -48,7 +49,23 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   toggle: [];
   edit: [];
+  move: [offset: -1 | 1];
 }>();
+
+const MOVE_KEYS: Record<string, -1 | 1> = {
+  ArrowLeft: -1,
+  ArrowUp: -1,
+  ArrowRight: 1,
+  ArrowDown: 1,
+};
+
+const onHandleKeydown = (event: KeyboardEvent) => {
+  const offset = MOVE_KEYS[event.key];
+  if (!offset) return;
+
+  event.preventDefault();
+  emit("move", offset);
+};
 
 const { t } = useI18n();
 
@@ -105,12 +122,17 @@ const stateHint = computed(() => {
     :style="dot ? { '--chip-dot': dot } : undefined"
     data-test="chip"
   >
+    <!-- A span, not a button: Firefox starts no native drag from inside a
+         button, and the drag is what this control is mostly for. -->
     <span
       v-if="sortable && !bare"
       v-tooltip="sortLabel"
       class="chip__handle"
-      aria-hidden="true"
+      role="button"
+      tabindex="0"
+      :aria-label="sortLabel"
       data-test="chip-handle"
+      @keydown="onHandleKeydown"
     >
       <i class="fa-regular fa-grip-vertical" />
     </span>
@@ -178,6 +200,7 @@ const stateHint = computed(() => {
 
 /* Inside the frame, so the ring does not straddle the border. */
 .chip__toggle:focus-visible,
+.chip__handle:focus-visible,
 .chip__action:focus-visible {
   @apply outline-primary rounded-control-bare outline-2;
   outline-offset: -2px;
@@ -281,7 +304,8 @@ const stateHint = computed(() => {
 }
 
 /* Qualified by .chip so it outranks the chip-hover rule above. */
-.chip .chip__handle:hover {
+.chip .chip__handle:hover,
+.chip .chip__handle:focus-visible {
   @apply text-lifted;
 }
 
