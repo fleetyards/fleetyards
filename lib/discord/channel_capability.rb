@@ -45,12 +45,14 @@ module Discord
       base = base_permissions(api.get_guild_roles(@guild_id), member_role_ids)
 
       return Result.new(:ok, []) if base.anybits?(ADMINISTRATOR)
-      return Result.new(:missing_send_messages, wanted) unless base.allbits?(SEND_MESSAGES)
 
       blocked = wanted.reject { |id| permissions_in(channels[id], base, member_role_ids).allbits?(POST) }
-      return Result.new(:channel_locked, blocked) if blocked.any?
+      return Result.new(:ok, []) if blocked.empty?
 
-      Result.new(:ok, [])
+      # A channel can grant Send Messages the install never did, so the grant
+      # only needs renewing when that is why the blocked ones are blocked.
+      code = base.allbits?(SEND_MESSAGES) ? :channel_locked : :missing_send_messages
+      Result.new(code, blocked)
     rescue ApiClient::Error => e
       Result.new(error_code(e.status), [])
     end

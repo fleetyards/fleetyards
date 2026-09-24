@@ -48,6 +48,16 @@ module Discord
       assert_equal :missing_send_messages, result.code
     end
 
+    # Posting works there, so re-authorising would fix nothing.
+    test "a channel that grants Send Messages itself needs no new install" do
+      roles(0)
+      channels({"id" => "c1", "type" => 0, "permission_overwrites" => [
+        {"id" => BOT, "type" => 1, "allow" => ChannelCapability::SEND_MESSAGES.to_s, "deny" => "0"}
+      ]})
+
+      assert check("c1").ok?
+    end
+
     test "a channel hidden from @everyone and not reopened for the bot is locked" do
       roles(ChannelCapability::SEND_MESSAGES)
       channels(
