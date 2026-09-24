@@ -15,6 +15,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
+import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibility";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -101,20 +102,28 @@ const restrictedToSquadrons = computed(
 const [location, locationProps] = defineField("location");
 const [managedBy] = defineField("managedBy");
 
-const visibilityOptions: FilterOption[] = [
-  {
-    value: "members_only",
-    label: t("labels.logistics.visibilities.members_only"),
-  },
-  {
-    value: "officers_only",
-    label: t("labels.logistics.visibilities.officers_only"),
-  },
-  {
-    value: "squadron_only",
-    label: t("labels.logistics.visibilities.squadron_only"),
-  },
-];
+const { withSquadronChoice } = useSquadronVisibility(
+  () => props.fleet,
+  "squadron_only",
+  visibility,
+);
+
+const visibilityOptions = computed<FilterOption[]>(() =>
+  withSquadronChoice([
+    {
+      value: "members_only",
+      label: t("labels.logistics.visibilities.members_only"),
+    },
+    {
+      value: "officers_only",
+      label: t("labels.logistics.visibilities.officers_only"),
+    },
+    {
+      value: "squadron_only",
+      label: t("labels.logistics.visibilities.squadron_only"),
+    },
+  ]),
+);
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {

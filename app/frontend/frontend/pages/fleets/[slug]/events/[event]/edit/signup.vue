@@ -11,6 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
+import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibility";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import EventEditFormShell from "@/frontend/components/Fleets/Events/EventEditFormShell/index.vue";
 import {
@@ -60,11 +61,19 @@ const [autoLockMinutesBefore, autoLockMinutesBeforeProps] = defineField(
   "autoLockMinutesBefore",
 );
 
+const { withSquadronChoice } = useSquadronVisibility(
+  () => props.fleet,
+  "squadron",
+  visibility,
+);
+
 const visibilityOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetEventVisibilityEnum).map((value) => ({
-    value,
-    label: t(`labels.fleets.events.visibilities.${value}`),
-  })),
+  withSquadronChoice(
+    Object.values(FleetEventVisibilityEnum).map((value) => ({
+      value,
+      label: t(`labels.fleets.events.visibilities.${value}`),
+    })),
+  ),
 );
 
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>

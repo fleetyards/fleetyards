@@ -17,6 +17,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
+import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibility";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -110,11 +111,19 @@ const [crewLimit, crewLimitProps] = defineField("crewLimit");
 const [visibility, visibilityProps] = defineField("visibility");
 const [fleetSquadronIds] = defineField("fleetSquadronIds");
 
+const { withSquadronChoice } = useSquadronVisibility(
+  () => props.fleet,
+  "squadron_only",
+  visibility,
+);
+
 const visibilityOptions = computed<FilterOption[]>(() =>
-  ["members_only", "squadron_only"].map((value) => ({
-    value,
-    label: t(`labels.fleets.contracts.visibilities.${value}`),
-  })),
+  withSquadronChoice(
+    ["members_only", "squadron_only"].map((value) => ({
+      value,
+      label: t(`labels.fleets.contracts.visibilities.${value}`),
+    })),
+  ),
 );
 
 // The squadron list is the other half of the squadron visibility, so it is

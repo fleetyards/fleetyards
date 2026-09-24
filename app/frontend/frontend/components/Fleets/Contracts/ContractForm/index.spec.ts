@@ -50,6 +50,12 @@ vi.mock("@/shared/composables/useComlink", () => ({
 
 vi.mock("vue-router", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
+vi.mock("@/frontend/composables/useSquadronVisibility", () => ({
+  useSquadronVisibility: () => ({
+    withSquadronChoice: <T>(options: T[]) => options,
+  }),
+}));
+
 import ContractForm from "./index.vue";
 
 const FLEET = { slug: "black-sun", name: "Black Sun" };
