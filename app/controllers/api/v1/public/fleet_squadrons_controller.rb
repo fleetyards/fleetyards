@@ -17,10 +17,10 @@ module Api
           not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
         end
 
+        # In the fleet's own order, the one it arranged for its members.
         def index
           result = @fleet.fleet_squadrons
             .includes(:fleet_memberships, *FleetSquadron.attachment_preloads)
-            .order("name ASC")
 
           @fleet_squadrons = result_with_pagination(result, per_page(FleetSquadron))
         end
