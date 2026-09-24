@@ -96,7 +96,16 @@ module Api
 
         # See the fleet's own list for why an empty list is not the same as no
         # filter at all.
+        #
+        # This list names every ship's owner, so narrowed to a squadron it is
+        # that squadron's roster -- and a roster is only for a reader the fleet
+        # shows its members to. The stats take the same filter freely: a count
+        # names nobody.
         private def narrow_to_squadrons(scope)
+          if vehicle_query_params["squadron_slug_in"].present?
+            authorize! @fleet, to: :show_members?, with: ::Public::FleetPolicy
+          end
+
           user_ids = for_squadrons(@fleet)
 
           return scope if user_ids.nil?
