@@ -55,11 +55,13 @@
           "members": "成员",
           "create": {
             "details": "详情",
-            "appearance": "外观"
+            "appearance": "外观",
+            "discord": "Discord"
           },
           "edit": {
             "details": "详情",
-            "appearance": "外观"
+            "appearance": "外观",
+            "discord": "Discord"
           }
         },
         "stats": "统计",

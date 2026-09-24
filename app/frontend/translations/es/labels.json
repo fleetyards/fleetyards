@@ -413,6 +413,15 @@
           "channelId": "ID del canal de voz (opcional)",
           "webhookUrl": "URL del webhook de anuncios (opcional)",
           "installBotHint": "Abre la página de instalación de Discord en una pestaña nueva — elige el servidor al que quieres reflejar los eventos.",
+          "announcementChannel": "Canal de anuncios",
+          "announcementChannelHint": "Aquí se publican los eventos nuevos y los recordatorios de inicio. Sin canal, se envían por el webhook. Los eventos restringidos a escuadrones se publican en los canales de esos escuadrones.",
+          "channelMissing": "Este canal ya no existe en Discord. No se publica nada hasta elegir otro.",
+          "missingChannel": "Canal eliminado",
+          "postingCodes": {
+            "missing_send_messages": "El bot no puede enviar mensajes en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
+            "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Permítelo en los permisos de ese canal.",
+            "unknown_channel": "El canal elegido para %{names} ya no existe en Discord."
+          },
           "statusOk": "Conectado a %{name}",
           "statusCodes": {
             "missing_token": "El bot de Fleetyards no está configurado en el lado del servidor. Contacta con un administrador.",
@@ -492,6 +501,9 @@
           "team": "Equipo",
           "teamHint": "Un equipo está abierto a todos; de lo contrario, un miembro pertenece a un solo escuadrón",
           "restrictedToHint": "Solo estos escuadrones pueden verlo",
+          "discordChannel": "Canal de Discord",
+          "discordChannelHint": "Los eventos restringidos a este escuadrón se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord.",
+          "notAnnounced": "No se anuncia en Discord para %{names}: no hay un canal de Discord configurado.",
           "blockedBy": "Ya está en el escuadrón %{squadron}",
           "color": "Color",
           "colorSuggestions": "Del icono:",

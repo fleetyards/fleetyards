@@ -35,7 +35,7 @@ export type SquadronFormFieldProps = ReturnType<
 >["fieldProps"];
 
 /*
- * One form across both tabs of the editor. The fields are declared here rather
+ * One form across every tab of the editor. The fields are declared here rather
  * than in the tab that draws them, so switching tabs is a change of view and
  * not a change of form: everything is written in one call, and a squadron is
  * created with its pictures already on it -- the direct upload hands back a
@@ -68,6 +68,7 @@ export const useSquadronForm = (
       description: squadron?.value?.description ?? "",
       color: squadron?.value?.color ?? NEUTRAL_COLOR,
       team: squadron?.value?.team ?? false,
+      discordChannelId: squadron?.value?.discordChannelId ?? null,
       icon: undefined as string | undefined,
     },
     // The tab that is not on screen is unmounted, and its fields go with it.
@@ -82,6 +83,8 @@ export const useSquadronForm = (
   const [description, descriptionProps] = defineField("description");
   const [color, colorProps] = defineField("color");
   const [team, teamProps] = defineField("team");
+  const [discordChannelId, discordChannelIdProps] =
+    defineField("discordChannelId");
   const [icon, iconProps] = defineField("icon");
 
   const fields = reactive({
@@ -90,6 +93,7 @@ export const useSquadronForm = (
     description,
     color,
     team,
+    discordChannelId,
     icon,
   });
 
@@ -99,6 +103,7 @@ export const useSquadronForm = (
     description: descriptionProps,
     color: colorProps,
     team: teamProps,
+    discordChannelId: discordChannelIdProps,
     icon: iconProps,
   });
 
@@ -117,6 +122,7 @@ export const useSquadronForm = (
         changed: isFieldDirty("color"),
       }),
       team: values.team,
+      discordChannelId: values.discordChannelId || null,
       // Passed through rather than coerced: `undefined` keeps what is attached,
       // `null` is the field saying it was cleared, and a signed id replaces it.
       icon: values.icon,

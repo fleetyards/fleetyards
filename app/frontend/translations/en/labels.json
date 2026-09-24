@@ -413,6 +413,15 @@
           "channelId": "Voice Channel ID (optional)",
           "webhookUrl": "Announcement Webhook URL (optional)",
           "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
+          "announcementChannel": "Announcement Channel",
+          "announcementChannelHint": "New events and starting-soon reminders are posted here. Without one, they go through the webhook. Events held to squadrons are posted in the squadrons' own channels instead.",
+          "channelMissing": "This channel no longer exists on Discord. Nothing is posted until another one is picked.",
+          "missingChannel": "Deleted channel",
+          "postingCodes": {
+            "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
+            "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",
+            "unknown_channel": "The channel picked for %{names} no longer exists on Discord."
+          },
           "statusOk": "Connected to %{name}",
           "statusCodes": {
             "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",
@@ -492,6 +501,9 @@
           "team": "Team",
           "teamHint": "A team is open to everyone — otherwise a member belongs to one squadron",
           "restrictedToHint": "Only these squadrons can see it",
+          "discordChannel": "Discord Channel",
+          "discordChannelHint": "Events held to this squadron are announced here and nowhere else on Discord. Without a channel, they are not announced on Discord at all.",
+          "notAnnounced": "Not announced on Discord for %{names}: no Discord channel is set up.",
           "blockedBy": "Already in the %{squadron} squadron",
           "color": "Colour",
           "colorSuggestions": "From the icon:",

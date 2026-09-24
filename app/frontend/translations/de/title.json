@@ -63,11 +63,13 @@
           "members": "%{fleet} Staffel-Mitglieder",
           "create": {
             "details": "Staffel anlegen – %{fleet}",
-            "appearance": "Staffel-Erscheinungsbild – %{fleet}"
+            "appearance": "Staffel-Erscheinungsbild – %{fleet}",
+            "discord": "Staffel-Discord – %{fleet}"
           },
           "edit": {
             "details": "Staffel bearbeiten – %{fleet}",
-            "appearance": "Staffel-Erscheinungsbild – %{fleet}"
+            "appearance": "Staffel-Erscheinungsbild – %{fleet}",
+            "discord": "Staffel-Discord – %{fleet}"
           }
         },
         "stats": "%{fleet} Statistiken",
