@@ -417,6 +417,10 @@
           "announcementChannelHint": "New events and starting-soon reminders are posted here. Without one, they go through the webhook. Events held to squadrons are posted in the squadrons' own channels instead.",
           "officersChannel": "Officers Channel",
           "officersChannelHint": "Events visible only to officers are announced here and nowhere else on Discord. Without one, they are not announced on Discord at all.",
+          "digestWeekday": "Weekly Digest",
+          "digestWeekdayHint": "Once a week, every channel gets a list of the coming seven days' events it may see. Leave empty to turn it off.",
+          "digestTime": "Digest Time",
+          "digestTimeHint": "In the fleet's timezone (%{timezone}).",
           "channelMissing": "This channel no longer exists on Discord or can no longer take posts. Nothing is posted until another one is picked.",
           "missingChannel": "Unavailable channel",
           "postingCodes": {

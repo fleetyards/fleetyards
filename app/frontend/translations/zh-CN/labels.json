@@ -417,6 +417,10 @@
           "announcementChannelHint": "新活动和即将开始的提醒会发布在这里。未设置时通过 Webhook 发送。仅限中队的活动会改为发布在对应中队的频道中。",
           "officersChannel": "军官频道",
           "officersChannelHint": "仅军官可见的活动会在这里公告，不会出现在 Discord 的其他地方。未设置时不会在 Discord 上公告。",
+          "digestWeekday": "每周摘要",
+          "digestWeekdayHint": "每周一次，每个频道会收到它可见的未来七天活动列表。留空即可关闭。",
+          "digestTime": "摘要时间",
+          "digestTimeHint": "使用舰队时区（%{timezone}）。",
           "channelMissing": "该频道在 Discord 上已不存在或无法再发帖。选择其他频道之前不会发布任何内容。",
           "missingChannel": "不可用的频道",
           "postingCodes": {

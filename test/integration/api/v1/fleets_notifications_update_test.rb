@@ -72,15 +72,20 @@ class Api::V1::FleetsNotificationsUpdateTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH /fleets/:slug/notifications sets the officers' channel" do
-
-  test "PATCH /fleets/:slug/notifications schedules and clears the weekly digest" do
     sign_in @admin
 
     assert_api_response :patch, 200,
       path_params: {fleetSlug: @fleet.slug},
       body: {discordOfficersChannelId: "456789012345678901"} do
       assert_equal "456789012345678901", parsed_body["discordOfficersChannelId"]
+    end
+  end
 
+  test "PATCH /fleets/:slug/notifications schedules and clears the weekly digest" do
+    sign_in @admin
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug},
       body: {discordDigestWeekday: 1, discordDigestTime: "18:30"} do
       assert_equal 1, parsed_body["discordDigestWeekday"]
       assert_equal "18:30", parsed_body["discordDigestTime"]

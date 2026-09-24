@@ -11,7 +11,11 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import DiscordChannelSelect from "@/frontend/components/Fleets/DiscordChannelSelect/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import { useI18nStore } from "@/shared/stores/i18n";
 import {
+  type FilterOption,
   type Fleet,
   type FleetMember,
   type FleetNotificationSetting,
@@ -45,6 +49,8 @@ const discordGuildId = ref<string>("");
 const discordChannelId = ref<string>("");
 const discordAnnouncementChannelId = ref<string | null>(null);
 const discordOfficersChannelId = ref<string | null>(null);
+const discordDigestWeekday = ref<string | null>(null);
+const discordDigestTime = ref<string>("");
 const discordWebhookUrl = ref<string>("");
 
 const hydrate = (s: FleetNotificationSetting) => {
@@ -52,6 +58,11 @@ const hydrate = (s: FleetNotificationSetting) => {
   discordChannelId.value = s.discordChannelId ?? "";
   discordAnnouncementChannelId.value = s.discordAnnouncementChannelId ?? null;
   discordOfficersChannelId.value = s.discordOfficersChannelId ?? null;
+  discordDigestWeekday.value =
+    s.discordDigestWeekday === null || s.discordDigestWeekday === undefined
+      ? null
+      : String(s.discordDigestWeekday);
+  discordDigestTime.value = s.discordDigestTime ?? "";
   discordWebhookUrl.value = "";
 };
 
@@ -65,6 +76,31 @@ watch(
 
 const submitting = ref(false);
 
+const i18nStore = useI18nStore();
+
+// A digest needs a time, so picking a day starts from an evening rather than
+// from a save that fails.
+watch(discordDigestWeekday, (weekday) => {
+  if (weekday && !discordDigestTime.value) discordDigestTime.value = "18:00";
+});
+
+/*
+ * Monday first, the way most of the fleets reading this count a week, while
+ * the values stay Ruby's Sunday-first `wday`. The names come from the browser
+ * rather than seven new strings in every locale: 2024-01-07 was a Sunday.
+ */
+const weekdayOptions = computed<FilterOption[]>(() => {
+  const format = new Intl.DateTimeFormat(i18nStore.locale, {
+    weekday: "long",
+    timeZone: "UTC",
+  });
+
+  return [1, 2, 3, 4, 5, 6, 0].map((wday) => ({
+    value: String(wday),
+    label: format.format(new Date(Date.UTC(2024, 0, 7 + wday))),
+  }));
+});
+
 const save = async () => {
   submitting.value = true;
   try {
@@ -73,6 +109,12 @@ const save = async () => {
       discordChannelId: discordChannelId.value || null,
       discordAnnouncementChannelId: discordAnnouncementChannelId.value || null,
       discordOfficersChannelId: discordOfficersChannelId.value || null,
+      discordDigestWeekday: discordDigestWeekday.value
+        ? Number(discordDigestWeekday.value)
+        : null,
+      discordDigestTime: discordDigestWeekday.value
+        ? discordDigestTime.value || null
+        : null,
     };
     if (discordWebhookUrl.value !== "") {
       payload.discordWebhookUrl = discordWebhookUrl.value;
@@ -250,6 +292,34 @@ const postingProblem = computed(() => {
           name="discordOfficersChannelId"
           :label="t('labels.fleet.discord.officersChannel')"
           :info="t('labels.fleet.discord.officersChannelHint')"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <BaseSelect
+          v-model="discordDigestWeekday"
+          :options="weekdayOptions"
+          name="discordDigestWeekday"
+          :label="t('labels.fleet.discord.digestWeekday')"
+          :info="t('labels.fleet.discord.digestWeekdayHint')"
+          :searchable="false"
+          unsorted
+        />
+      </div>
+      <div v-if="discordDigestWeekday" class="col-12 col-md-6">
+        <FormInput
+          v-model="discordDigestTime"
+          name="discordDigestTime"
+          :type="InputTypesEnum.TIME"
+          :step="900"
+          :label="t('labels.fleet.discord.digestTime')"
+          :info="
+            t('labels.fleet.discord.digestTimeHint', {
+              timezone: props.fleet.defaultTimezone,
+            })
+          "
         />
       </div>
     </div>
