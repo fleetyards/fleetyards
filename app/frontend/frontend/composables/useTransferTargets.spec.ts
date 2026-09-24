@@ -13,6 +13,7 @@ const members = ref<{ items: { username: string }[] }[]>([]);
 const allies = ref<{ items: { fleet: { slug: string; name: string } }[] }>();
 const friends = ref<{ items: { user: { username: string } }[] }>();
 const enabledFeatures = ref<string[]>(["friends", "fleet_allies"]);
+const contractDestinations = ref<Record<string, unknown>[] | undefined>();
 
 vi.mock(
   "@/services/fyApi/services/hangar-inventories/hangar-inventories",
@@ -25,6 +26,13 @@ vi.mock(
   "@/services/fyApi/services/fleet-inventories/fleet-inventories",
   () => ({
     useFleetInventories: () => ({ data: fleetInventories }),
+  }),
+);
+
+vi.mock(
+  "@/services/fyApi/services/hangar-inventory-transfers/hangar-inventory-transfers",
+  () => ({
+    useHangarContractDestinations: () => ({ data: contractDestinations }),
   }),
 );
 
@@ -76,6 +84,7 @@ describe("useTransferTargets", () => {
   beforeEach(() => {
     allies.value = undefined;
     friends.value = undefined;
+    contractDestinations.value = undefined;
     enabledFeatures.value = ["friends", "fleet_allies"];
   });
 
@@ -231,5 +240,79 @@ describe("useTransferTargets", () => {
     const asPerson = useTransferTargets({ source: () => undefined });
 
     expect(asPerson.targets.value).toEqual([]);
+  });
+
+  describe("contracts the reader works on", () => {
+    const hangarTarget = {
+      contractId: "c-1",
+      contractTitle: "Buy titanium",
+      contractSlug: "buy-titanium",
+      fleetSlug: "crew",
+      fleetName: "Crew",
+      destination: {
+        id: "locker",
+        name: "Locker",
+        slug: "locker",
+        holder: "user",
+      },
+    };
+    const fleetTarget = {
+      contractId: "c-2",
+      contractTitle: "Haul ore",
+      contractSlug: "haul-ore",
+      fleetSlug: "crew",
+      fleetName: "Crew",
+      destination: {
+        id: "depot",
+        name: "Depot",
+        slug: "depot",
+        holder: "fleet",
+      },
+    };
+
+    beforeEach(() => {
+      hangarInventories.value = { items: [] };
+      fleets.value = [];
+      members.value = [];
+      enabledFeatures.value = ["fleet_contracts"];
+      contractDestinations.value = [hangarTarget, fleetTarget];
+    });
+
+    // The author's inventory is named only together with its contract, which
+    // is the one way the API resolves it as a target.
+    it("offers each destination filed under its contract", () => {
+      const { contractTargets } = useTransferTargets({
+        source: () => undefined,
+      });
+
+      expect(
+        contractTargets.value.map((target) => [target.kind, target.payload]),
+      ).toEqual([
+        ["contract", { inventoryId: "locker", contractId: "c-1" }],
+        ["contract", { recipientFleetSlug: "crew", contractId: "c-2" }],
+      ]);
+      expect(contractTargets.value.every((target) => target.needsAnswer)).toBe(
+        true,
+      );
+    });
+
+    it("offers none when sending for a fleet", () => {
+      const { contractTargets } = useTransferTargets({
+        source: () => undefined,
+        fleetSlug: () => "crew",
+      });
+
+      expect(contractTargets.value).toEqual([]);
+    });
+
+    it("offers none while contracts are switched off", () => {
+      enabledFeatures.value = [];
+
+      const { contractTargets } = useTransferTargets({
+        source: () => undefined,
+      });
+
+      expect(contractTargets.value).toEqual([]);
+    });
   });
 });

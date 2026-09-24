@@ -121,7 +121,13 @@ watchEffect(() => {
 // which is also what a `known` transfer policy means server-side, so the picker
 // and the gate agree on who counts. Arbitrary users and fleets are the API's to
 // accept and are not offered here yet.
-const KINDS: TransferTargetKind[] = ["inventory", "mine", "fleet", "user"];
+const KINDS: TransferTargetKind[] = [
+  "inventory",
+  "mine",
+  "fleet",
+  "user",
+  "contract",
+];
 
 // Every kind is offered whether or not it holds anything, and an empty one says
 // so. A kind that disappears when its list comes back empty leaves the reader
@@ -131,8 +137,17 @@ const KINDS: TransferTargetKind[] = ["inventory", "mine", "fleet", "user"];
 // `mine` is the exception, because it is not a kind so much as a split: the
 // reader's own inventories are only worth separating out when the ones being
 // sent from belong to somebody else. Anywhere else it would list them twice.
+//
+// `contract` is only offered when there is one: most readers work no contract,
+// and an always-empty kind would be noise on every transfer they make.
 const availableKinds = computed(() =>
-  KINDS.filter((kind) => kind !== "mine" || props.actingForFleet),
+  KINDS.filter((kind) => {
+    if (kind === "mine") return props.actingForFleet;
+    if (kind === "contract")
+      return props.targets.some((target) => target.kind === "contract");
+
+    return true;
+  }),
 );
 
 // A person is reached through a group -- a fleet, or the friends list -- so
@@ -265,6 +280,8 @@ const needsAnswer = computed(() => selectedTarget.value?.needsAnswer ?? false);
 const contractFleetSlug = computed(() => {
   const payload = selectedTarget.value?.payload;
   if (!payload) return undefined;
+  // A contract target already names its contract.
+  if (payload.contractId) return undefined;
   if (payload.recipientFleetSlug) return payload.recipientFleetSlug;
 
   return payload.fleetInventoryId ? props.fleetSlug : undefined;
@@ -285,10 +302,15 @@ const { data: openContracts } = useFleetContracts(
 
 const contractOptions = computed<FilterOption[]>(() => [
   { value: "", label: t("labels.logistics.noContract") },
-  ...(openContracts.value?.items ?? []).map((contract) => ({
-    value: contract.id,
-    label: contract.title,
-  })),
+  // Read only while it is being asked for: a disabled query still returns what
+  // an earlier one cached, which would offer a second contract on top of the
+  // one a contract target already names.
+  ...(contractFleetSlug.value ? (openContracts.value?.items ?? []) : []).map(
+    (contract) => ({
+      value: contract.id,
+      label: contract.title,
+    }),
+  ),
 ]);
 
 const contractId = ref<string>("");

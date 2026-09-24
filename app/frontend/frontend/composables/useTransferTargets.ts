@@ -2,9 +2,11 @@ import type { MaybeRefOrGetter } from "vue";
 import {
   type Fleet,
   FeatureFlagName,
+  FleetContractDestinationHolderEnum,
   useFleetAllies,
   useFleetInventories,
   useFriends,
+  useHangarContractDestinations,
   useHangarInventories,
   useMyFleets,
 } from "@/services/fyApi";
@@ -31,6 +33,8 @@ type Options = {
 //   fleet      a fleet you belong to -- has to accept
 //   user       somebody you share a fleet with -- has to accept, and is
 //              picked out of that fleet rather than from one flat list
+//   contract   where a contract you work on delivers -- filed under that
+//              contract, and waits for whoever answers for its destination
 //
 // Who this reaches is kept in step with what `known` means server-side, so the
 // picker and the gate agree on who counts: a fleet in common, a friendship, or
@@ -206,10 +210,58 @@ export const useTransferTargets = (options: Options) => {
     })),
   ]);
 
+  // The contracts the reader holds a seat on, and where each delivers. Only
+  // when sending as themselves: a contractor delivers their own goods. The
+  // author's inventory is named here and nothing more -- the API resolves it
+  // as a target only together with its contract.
+  const offersContracts = computed(
+    () =>
+      !actingFleet.value && isFeatureEnabled(FeatureFlagName.FLEET_CONTRACTS),
+  );
+
+  const { data: contractDestinations } = useHangarContractDestinations({
+    query: { enabled: offersContracts },
+  });
+
+  // Guarded as well as disabled: a disabled query still hands back what an
+  // earlier one cached, and a fleet sending is not a contractor delivering.
+  const contractTargets = computed<TransferTargetOption[]>(() =>
+    (offersContracts.value ? (contractDestinations.value ?? []) : []).map(
+      (target) => ({
+        kind: "contract" as const,
+        value: `contract:${target.contractId}`,
+        label: t("labels.logistics.contractDeliveryTarget", {
+          contract: target.contractTitle,
+          fleet: target.fleetName,
+          destination: target.destination.name,
+        }),
+        needsAnswer: true,
+        payload:
+          target.destination.holder === FleetContractDestinationHolderEnum.USER
+            ? {
+                inventoryId: target.destination.id,
+                contractId: target.contractId,
+              }
+            : {
+                recipientFleetSlug: target.fleetSlug,
+                contractId: target.contractId,
+              },
+      }),
+    ),
+  );
+
   const targets = computed<TransferTargetOption[]>(() => [
     ...ownInventories.value,
     ...fleetTargets.value,
+    ...contractTargets.value,
   ]);
 
-  return { targets, ownInventories, fleetTargets, memberFleets, friendOptions };
+  return {
+    targets,
+    ownInventories,
+    fleetTargets,
+    contractTargets,
+    memberFleets,
+    friendOptions,
+  };
 };

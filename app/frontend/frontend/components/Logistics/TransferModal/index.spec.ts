@@ -395,4 +395,43 @@ describe("TransferModal towards a contract", () => {
       expect.objectContaining({ contractId: undefined }),
     );
   });
+
+  const contractTarget: TransferTargetOption = {
+    kind: "contract",
+    value: "contract:c-1",
+    label: "Buy titanium (Crew): Locker",
+    needsAnswer: true,
+    payload: { inventoryId: "locker", contractId: "c-1" },
+  };
+
+  it("offers the contract kind only when there is a contract to deliver to", async () => {
+    const kinds = (w: ReturnType<typeof mount>) =>
+      (w.vm as unknown as { availableKinds: string[] }).availableKinds;
+
+    const without = await build([position()], [immediateTarget]);
+    expect(kinds(without.wrapper)).not.toContain("contract");
+    without.wrapper.unmount();
+
+    const withContract = await build([position()], [contractTarget]);
+    expect(kinds(withContract.wrapper)).toContain("contract");
+  });
+
+  // The target names its contract, so the separate picker has nothing to add
+  // and must not override it.
+  it("sends a contract target under its own contract", async () => {
+    openContracts.value = [{ id: "other", title: "Something else" }];
+
+    const { wrapper, onSend } = await build([position()], [contractTarget]);
+
+    expect(wrapper.find("[data-test='transfer-contract']").exists()).toBe(
+      false,
+    );
+
+    await wrapper.find("[data-test='transfer-submit']").trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({ inventoryId: "locker", contractId: "c-1" }),
+    );
+  });
 });
