@@ -194,6 +194,24 @@ class VehicleLoanersTest < ActiveSupport::TestCase
     assert_equal true, loaners.first.wanted
   end
 
+  # A parent's duplicates can sit in both wanted groups, each visible there.
+  # Collapsing them must not leave another parent's loaner hidden in the group
+  # that just lost its visible row.
+  test "collapsing duplicates hands a group's visibility to another parent's loaner" do
+    other_parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+    first = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    Vehicle.find_by(loaner: true, vehicle_id: first.id).dup
+      .tap { |row| row.assign_attributes(wanted: true, hidden: false, rank: nil) }.save!
+    second = create(:vehicle, user: @user, model: other_parent_model, wanted: true)
+    second_loaner = Vehicle.find_by(loaner: true, vehicle_id: second.id)
+    assert_equal true, second_loaner.hidden
+
+    first.reload.update!(name: "Renamed")
+
+    assert_equal 1, Vehicle.where(loaner: true, vehicle_id: first.id).count
+    assert_equal false, second_loaner.reload.hidden
+  end
+
   test "saving the parent removes a loaner its model no longer lends" do
     parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
     ModelLoaner.where(model: @parent_model, loaner_model: @loaner_model).delete_all

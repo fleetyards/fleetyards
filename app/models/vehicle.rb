@@ -437,6 +437,10 @@ class Vehicle < ApplicationRecord
           .where.not(id: existing_loaner.id).exists?
       )
 
+      # A duplicate or the row's old wanted state may have been the only
+      # visible loaner of its group, one another parent's loaner still sits in.
+      reveal_loaner_groups([model_loaner.id]) if duplicates.any? || existing_loaner.saved_change_to_wanted?
+
       return
     end
 
@@ -459,6 +463,10 @@ class Vehicle < ApplicationRecord
 
     scope.destroy_all
 
+    reveal_loaner_groups(model_ids)
+  end
+
+  private def reveal_loaner_groups(model_ids)
     Vehicle.where(loaner: true, user_id:, model_id: model_ids).to_a
       .group_by { |loaner| [loaner.model_id, loaner.wanted] }
       .each_value do |group|
