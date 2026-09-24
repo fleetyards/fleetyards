@@ -29,9 +29,12 @@ module Notifications
 
       # A message alongside the scheduled event rather than instead of it: a
       # squadron's event never becomes a scheduled event, so for those this is
-      # the only word Discord gets.
+      # the only word Discord gets. Narrowing or opening up an event hands it
+      # to an audience that has not heard of it yet.
       ANNOUNCE_EVENTS = %w[
         fleet_event.published
+        fleet_event.restricted
+        fleet_event.unrestricted
       ].freeze
 
       def self.register!

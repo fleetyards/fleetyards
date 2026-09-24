@@ -33,6 +33,18 @@ module Discord
       assert_includes content, "<t:#{upcoming.to_i}:F>"
     end
 
+    test "a series that has run out has nothing to announce" do
+      @event.update_columns(starts_at: 3.weeks.ago, recurring: true, recurrence_interval: "weekly", recurrence_count: 2)
+
+      assert_not EventPublished.new(event: @event.reload).upcoming?
+    end
+
+    test "a one-off already over has nothing to announce" do
+      @event.update_columns(starts_at: 1.hour.ago)
+
+      assert_not EventPublished.new(event: @event).upcoming?
+    end
+
     test "a single event says nothing about repeating" do
       assert_not_includes content, I18n.t("discord.event_published.recurrence.weekly")
     end

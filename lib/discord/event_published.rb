@@ -14,6 +14,12 @@ module Discord
       super(event: event, occurrence_date: occurrence_date || next_occurrence_date(event))
     end
 
+    # A series that has run out, or a one-off published after it happened, has
+    # nothing ahead of it to announce.
+    def upcoming?
+      starts_at > Time.current && (!event.recurring? || occurrence_date.present?)
+    end
+
     private def next_occurrence_date(event)
       return nil unless event.recurring?
 
