@@ -11,6 +11,7 @@ module Notifications
         fleet_event.started
         fleet_event.completed
         fleet_event.cancelled
+        fleet_event.unrestricted
       ].freeze
 
       DELETE_EVENTS = %w[
