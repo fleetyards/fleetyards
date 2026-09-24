@@ -33,35 +33,6 @@ json.discord member.user.discord
 json.youtube member.user.youtube
 json.twitch member.user.twitch
 json.guilded member.user.guilded
-json.squadrons do
-  # Ordinary squadrons before teams, then the fleet's own order. A member holds
-  # at most one ordinary squadron, so the first of these is the one the roster
-  # badges them with -- their squadron, not whichever team sorts first.
-  squadron_memberships = member.fleet_squadron_memberships.sort_by do |squadron_membership|
-    squadron = squadron_membership.fleet_squadron
-    [squadron.team? ? 1 : 0, squadron.rank]
-  end
-
-  json.array! squadron_memberships do |squadron_membership|
-    squadron = squadron_membership.fleet_squadron
-    json.id squadron.id
-    json.name squadron.name
-    json.slug squadron.slug
-    json.color squadron.color
-    json.team squadron.team
-    json.membership_created_at squadron_membership.created_at.utc.iso8601
-
-    # The roster draws the mark rather than the name, and at that size the mark
-    # is the square one.
-    if squadron.icon.attached?
-      json.icon do
-        json.partial! "api/v1/shared/file", record: squadron, attr: :icon
-      end
-    else
-      json.icon nil
-    end
-  end
-end
 json.ships_filter member.ships_filter
 json.hangar_group_id member.hangar_group_id
 json.blueprints_filter member.blueprints_filter

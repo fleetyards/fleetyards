@@ -44,7 +44,7 @@ module Api
           .includes(
             :user,
             :fleet_role,
-            fleet_squadron_memberships: :fleet_squadron
+            fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}}
           )
           .joins(:user)
 

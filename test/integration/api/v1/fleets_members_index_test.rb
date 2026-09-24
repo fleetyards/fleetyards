@@ -267,4 +267,26 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
       assert_equal "New Name", badge["name"]
     end
   end
+
+  # Reading the roster and reading squadrons are separate privileges, and the
+  # badges are the squadrons.
+  test "GET /fleets/:slug/members leaves out squadrons for a reader who may not see them" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
+    role = create(:fleet_role, fleet: @fleet, name: "Roster Only", resource_access: ["fleet:memberships:read"])
+    reader = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: reader, fleet_role: role)
+
+    sign_in reader
+    get "/api/v1/fleets/#{@fleet.slug}/members"
+    assert_response :ok
+    assert(response.parsed_body["items"].none? { |entry| entry.key?("squadrons") })
+
+    sign_in @admin
+    get "/api/v1/fleets/#{@fleet.slug}/members"
+    badge = response.parsed_body["items"].find { |entry| entry["username"] == @member.username }["squadrons"]
+    assert_equal [squadron.slug], badge.pluck("slug")
+  end
 end
