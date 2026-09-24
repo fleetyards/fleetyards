@@ -79,7 +79,6 @@ zh-TW:
       fleet: 艦隊
       officers: 軍官
     direct_message:
-    direct_message:
       footer: 因為你在 Fleetyards 上啟用了 Discord 通知
     event_availability:
       signups: '%{count} 人已報名'

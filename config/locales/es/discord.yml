@@ -79,7 +79,6 @@ es:
       fleet: la flota
       officers: los oficiales
     direct_message:
-    direct_message:
       footer: Enviado porque has activado las notificaciones de Discord en Fleetyards
     event_availability:
       signups: '%{count} inscritos'
