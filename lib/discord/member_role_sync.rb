@@ -19,9 +19,14 @@ module Discord
       end
     end
 
-    def initialize(membership, api: nil)
+    # `revoke:` takes every managed role away regardless of membership state.
+    # It comes with an explicit `discord_uid:` because the account it applies
+    # to is no longer linked, so the user can no longer name it.
+    def initialize(membership, api: nil, discord_uid: nil, revoke: false)
       @membership = membership
       @api = api
+      @discord_uid = discord_uid.presence
+      @revoke = revoke
     end
 
     def runnable?
@@ -62,6 +67,7 @@ module Discord
     # rank. Anyone else -- invited, requested, declined, removed -- gets
     # neither, which is what makes leaving a fleet take the roles away.
     private def desired_role_ids
+      return [] if @revoke
       return [] unless @membership.aasm_state == "accepted"
       return [] if @membership.discarded_at.present?
 

@@ -103,6 +103,37 @@ module Discord
       assert_not_includes result.removed, FOREIGN_ROLE
     end
 
+    def revoke(uid = "discord-uid-old")
+      ::Discord::MemberRoleSync.new(@membership.reload, api: @api, discord_uid: uid, revoke: true)
+    end
+
+    test "revoking takes every managed role off an accepted member" do
+      @role.update!(discord_role_id: RANK_ROLE)
+      member_has(MEMBER_ROLE, RANK_ROLE)
+      @api.expects(:add_guild_member_role).never
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", RANK_ROLE)
+
+      assert_equal [MEMBER_ROLE, RANK_ROLE].sort, revoke.run!.removed.sort
+    end
+
+    test "revoking leaves a role the fleet did not put under our control" do
+      member_has(MEMBER_ROLE, FOREIGN_ROLE)
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+
+      assert_equal [MEMBER_ROLE], revoke.run!.removed
+    end
+
+    test "revoking targets the given uid even with no linked account left" do
+      @user.omniauth_connections.destroy_all
+      member_has(MEMBER_ROLE)
+      @api.expects(:get_guild_member).with("guild-1", "discord-uid-old").returns({"roles" => [MEMBER_ROLE]})
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+
+      assert revoke.runnable?
+      revoke.run!
+    end
+
     test "managed roles are exactly what the fleet configured" do
       @role.update!(discord_role_id: RANK_ROLE)
 
