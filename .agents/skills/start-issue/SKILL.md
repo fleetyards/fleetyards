@@ -94,21 +94,18 @@ docs/exec-plans/<branch-slug>.md
 
 Where `<branch-slug>` is the part after the prefix slash (e.g. branch `feat/1234-add-calendar-sync` → `1234-add-calendar-sync`).
 
+The plan is the working file for this branch only — it is deleted before the PR merges (see "Issues, PRs and exec-plans" in `AGENTS.md`). Decisions do not go in the plan: once the user settles one, record it in the `## Decisions` section of the issue body (`gh issue edit <number> --body-file <file>`) as `**Decided: …**` with the reasoning and rejected alternatives. The plan links to the issue instead of restating them.
+
 ```markdown
 # [Issue title]
+
+Working plan for #<number>. Decisions live in the issue body. Deleted before the PR merges.
 
 ## Goal
 One sentence: what will exist when this is done.
 
-## Context
-Why this change is needed. Link to GitHub issue.
-
-Resolves #<number>
-
-## Decisions
-
-### D1 — [Short decision title]
-[What was decided and why. Alternatives considered and rejected.]
+## Open questions
+- [Question the user still has to decide — move the answer to the issue body, then remove it here]
 
 ## What changed
 
@@ -127,7 +124,7 @@ Resolves #<number>
 | `path/to/file` | Brief description |
 
 ## Not in scope (deferred)
-- **[Item]** — Why deferred
+- **[Item]** — Why deferred. Becomes its own issue before the PR merges.
 
 ## Discovery Log
 
@@ -137,7 +134,7 @@ Resolves #<number>
 - [ ] Phase 1
 ```
 
-If the issue is too vague to make concrete decisions, note open questions in the plan and flag them to the user.
+If the issue is too vague to make concrete decisions, list the open questions in the plan and flag them to the user.
 
 ### 8. Summarise the issue
 

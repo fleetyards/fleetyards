@@ -52,6 +52,7 @@ gh issue create \
   --title "<concise title>" \
   --body "<structured body>" \
   --assignee @me \
+  --type <Bug|Feature|Refactoring> \
   [--label "bug" if applicable] \
   [--label "refactoring" if applicable]
 ```
@@ -68,6 +69,10 @@ The issue body should follow this structure:
 - [ ] [Criterion 1]
 - [ ] [Criterion 2]
 
+## Decisions
+
+[Filled in as decisions are made: **Decided: …** with the reasoning and rejected alternatives. Edited in place, never added as a comment.]
+
 ## Notes
 
 [Any additional context from the conversation]
@@ -81,7 +86,7 @@ From here, follow the exact same steps as the `start-issue` skill starting from 
 
 - **Create the branch** (`feat/`, `fix/`, or `refactor/` prefix + issue number + kebab-case description)
 - **Push the branch** and connect it to the issue
-- **Research** the codebase and **create the exec-plan** at `docs/exec-plans/<branch-slug>.md`
+- **Research** the codebase and **create the exec-plan** at `docs/exec-plans/<branch-slug>.md` (decisions go in the issue body; the plan is deleted before the PR merges)
 - **Summarise** the issue with branch name, exec-plan path, and plan overview
 - **Ask about worktree**: "Want me to create a worktree and run setup?"
 - If confirmed: create worktree at `.worktrees/<branch-slug>` and run `bin/setup`
