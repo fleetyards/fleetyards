@@ -77,6 +77,7 @@ zh-TW:
         not_found: '找不到符合「%{query}」的船艦。'
     channel_capability:
       fleet: 艦隊
+      officers: 軍官
     direct_message:
     direct_message:
       footer: 因為你在 Fleetyards 上啟用了 Discord 通知

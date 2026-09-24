@@ -50,6 +50,17 @@ module Discord
       ::Discord::SyncFleetEventJob.new.perform(@event.id, "upsert")
     end
 
+    test "an upsert of an officers' event deletes it from the guild instead" do
+      @event.update!(visibility: "officers")
+      sync = mock
+      sync.expects(:runnable?).returns(true)
+      sync.expects(:upsert!).never
+      sync.expects(:delete!)
+      ::Discord::ScheduledEventSync.expects(:new).with(@event).returns(sync)
+
+      ::Discord::SyncFleetEventJob.new.perform(@event.id, "upsert")
+    end
+
     test "a delete also takes down the scheduled events of a series' occurrences" do
       date = 1.week.from_now.to_date
       @event.fleet_event_occurrence_states.create!(occurrence_date: date, discord_event_id: "occurrence-1")

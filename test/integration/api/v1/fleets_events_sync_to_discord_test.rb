@@ -80,7 +80,7 @@ class Api::V1::FleetsEventsSyncToDiscordTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :post, 422, path_params: {fleetSlug: @fleet.slug, slug: fleet_event.slug} do
-      assert_equal "discord_squadron_event", parsed_body["code"]
+      assert_equal "discord_restricted_event", parsed_body["code"]
     end
   end
 

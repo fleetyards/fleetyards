@@ -7,9 +7,10 @@ module Discord
   # Where a message about one event may be posted.
   #
   # An event held to squadrons goes to those squadrons' channels and nowhere
-  # else. The fleet's channel and webhook are read by the whole fleet, so a
-  # squadron without a channel of its own is simply not announced to rather than
-  # announced to everybody.
+  # else, and one kept to officers goes to the officers' channel. The fleet's
+  # channel and webhook are read by the whole fleet, so without a channel of
+  # their own those events are simply not announced rather than announced to
+  # everybody.
   #
   # Every other event goes to the fleet's announcement channel, or through its
   # webhook when it has picked no channel -- which is all a fleet that never
@@ -32,6 +33,14 @@ module Discord
       (channel || setting.discord_webhook_url.present?) ? [AnnouncementTarget.fleet] : []
     end
 
+    def self.officers_targets(fleet)
+      setting = fleet&.fleet_notification_setting
+      return [] unless ApiClient.configured?
+      return [] if setting&.discord_guild_id.blank? || setting.discord_officers_channel_id.blank?
+
+      [AnnouncementTarget.officers]
+    end
+
     def self.enqueue(fleet, target, content)
       DeliverAnnouncementJob.perform_async(fleet.id, *target.to_args, content)
     end
@@ -48,6 +57,7 @@ module Discord
 
     def targets
       return squadron_targets if event.squadron_restricted?
+      return self.class.officers_targets(event.fleet) if event.officers_only?
 
       self.class.fleet_targets(event.fleet)
     end

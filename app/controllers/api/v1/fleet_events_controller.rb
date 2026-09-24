@@ -96,7 +96,7 @@ module Api
         if @fleet_event.update(event_params)
           # Held to squadrons after the fact, so whatever announced it to the
           # whole fleet takes it back.
-          if @fleet_event.saved_change_to_visibility? && @fleet_event.squadron_restricted?
+          if @fleet_event.saved_change_to_visibility? && !@fleet_event.discord_guild_wide?
             ActiveSupport::Notifications.instrument("fleet_event.restricted", event: @fleet_event)
           end
 
@@ -241,8 +241,8 @@ module Api
       def sync_to_discord
         authorize! @fleet_event, to: :update?
 
-        if @fleet_event.squadron_restricted?
-          render json: {code: "discord_squadron_event", message: "An event held to squadrons is announced in their channels, not as a scheduled event"}, status: :unprocessable_entity
+        unless @fleet_event.discord_guild_wide?
+          render json: {code: "discord_restricted_event", message: "An event held to squadrons or officers is announced in their channels, not as a scheduled event"}, status: :unprocessable_entity
           return
         end
 

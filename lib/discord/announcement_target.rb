@@ -9,18 +9,24 @@ module Discord
   # is posted by its own job, so a retry repeats only the post that failed and
   # never one that already landed in another channel.
   #
-  # The fleet's target is resolved when it is posted, not when it is queued:
-  # the announcement channel if the bot can post there, the webhook otherwise
-  # -- including when the channel has gone or been locked, so a fleet that set
-  # up both still hears about its events.
+  # The fleet's and the officers' targets are resolved when they are posted,
+  # not when they are queued. The fleet's is the announcement channel if the
+  # bot can post there, the webhook otherwise -- including when the channel has
+  # gone or been locked, so a fleet that set up both still hears about its
+  # events.
   class AnnouncementTarget
     FLEET = "fleet"
+    OFFICERS = "officers"
     SQUADRON = "squadron"
 
     attr_reader :kind, :channel_id
 
     def self.fleet
       new(FLEET)
+    end
+
+    def self.officers
+      new(OFFICERS)
     end
 
     def self.squadron(channel_id)
@@ -52,6 +58,7 @@ module Discord
       case kind
       when SQUADRON then channel_post(setting, channel_id, content)
       when FLEET then fleet_post(setting, content)
+      when OFFICERS then officers_post(setting, content)
       else false
       end
     end
@@ -64,6 +71,14 @@ module Discord
       return false if setting.discord_webhook_url.blank?
 
       WebhookPost.new(setting.discord_webhook_url).deliver(content)
+    end
+
+    # Never the fleet's channel or webhook as a fallback: both are read by
+    # every member.
+    private def officers_post(setting, content)
+      return false if setting.discord_officers_channel_id.blank?
+
+      channel_post(setting, setting.discord_officers_channel_id, content)
     end
 
     private def channel_post(setting, id, content)

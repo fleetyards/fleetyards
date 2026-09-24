@@ -74,6 +74,20 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
     assert_equal [@fleet_event.id], restricted.map(&:id)
   end
 
+  test "PUT /fleets/:slug/events/:slug takes an event kept to officers off the guild" do
+    sign_in @admin
+
+    restricted = []
+    callback = ->(*args) { restricted << ActiveSupport::Notifications::Event.new(*args).payload[:event] }
+    ActiveSupport::Notifications.subscribed(callback, "fleet_event.restricted") do
+      assert_api_response :put, 200,
+        path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+        body: {visibility: "officers"}
+    end
+
+    assert_equal [@fleet_event.id], restricted.map(&:id)
+  end
+
   test "PUT /fleets/:slug/events/:slug with OAuth bearer token" do
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},

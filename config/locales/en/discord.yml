@@ -77,6 +77,7 @@ en:
         not_found: 'No ship found for "%{query}".'
     channel_capability:
       fleet: the fleet
+      officers: the officers
     direct_message:
       footer: Sent because you enabled Discord notifications on Fleetyards
     event_availability:

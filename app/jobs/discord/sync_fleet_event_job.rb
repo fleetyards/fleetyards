@@ -22,10 +22,10 @@ module Discord
       return unless sync.runnable?
 
       # A scheduled event is shown to the whole guild -- Discord has no audience
-      # narrower than that -- so an event held to squadrons is announced in
-      # their channels instead, and one that became squadron-only after it was
+      # narrower than that -- so an event held to squadrons or to officers is
+      # announced in their channels instead, and one narrowed after it was
       # posted is taken down.
-      action = "delete" if action.to_s == "upsert" && event.squadron_restricted?
+      action = "delete" if action.to_s == "upsert" && !event.discord_guild_wide?
 
       case action.to_s
       when "upsert" then sync.upsert!

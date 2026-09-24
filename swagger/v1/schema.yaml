@@ -21949,6 +21949,10 @@ components:
           type:
           - string
           - 'null'
+        discordOfficersChannelId:
+          type:
+          - string
+          - 'null'
         discordMemberRoleId:
           type: string
         discordWebhookConfigured:
@@ -21971,6 +21975,10 @@ components:
           - string
           - 'null'
         discordAnnouncementChannelId:
+          type:
+          - string
+          - 'null'
+        discordOfficersChannelId:
           type:
           - string
           - 'null'

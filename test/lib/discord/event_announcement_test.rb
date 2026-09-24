@@ -68,6 +68,27 @@ module Discord
       assert_empty targets
     end
 
+    test "an officers' event goes to the officers' channel" do
+      @setting.update!(
+        discord_announcement_channel_id: "111111111111111111",
+        discord_officers_channel_id: "555555555555555555"
+      )
+      @event.update!(visibility: "officers")
+
+      assert_equal [AnnouncementTarget.officers], targets
+    end
+
+    # Every member reads the fleet's channel and webhook.
+    test "an officers' event without an officers' channel is not announced" do
+      @setting.update!(
+        discord_announcement_channel_id: "111111111111111111",
+        discord_webhook_url: "https://discord.com/api/webhooks/1/token"
+      )
+      @event.update!(visibility: "officers")
+
+      assert_empty targets
+    end
+
     # A retry of one post must not repeat another that already landed.
     test "each target is posted by its own job" do
       hold_to(

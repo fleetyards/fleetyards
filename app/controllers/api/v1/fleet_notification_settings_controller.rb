@@ -95,6 +95,10 @@ module Api
           owners[@setting.discord_announcement_channel_id] << I18n.t("discord.channel_capability.fleet")
         end
 
+        if @setting.discord_officers_channel_id.present?
+          owners[@setting.discord_officers_channel_id] << I18n.t("discord.channel_capability.officers")
+        end
+
         @fleet.fleet_squadrons.where.not(discord_channel_id: nil).order(:rank).each do |squadron|
           owners[squadron.discord_channel_id] << squadron.name
         end
@@ -118,6 +122,7 @@ module Api
           :discord_guild_id,
           :discord_channel_id,
           :discord_announcement_channel_id,
+          :discord_officers_channel_id,
           :discord_webhook_url,
           enabled_in_app_events: []
         ).to_h.symbolize_keys

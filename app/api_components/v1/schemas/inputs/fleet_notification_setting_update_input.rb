@@ -12,6 +12,7 @@ module V1
             discordGuildId: {type: [:string, :null]},
             discordChannelId: {type: [:string, :null]},
             discordAnnouncementChannelId: {type: [:string, :null]},
+            discordOfficersChannelId: {type: [:string, :null]},
             discordMemberRoleId: {type: [:string, :null]},
             discordWebhookUrl: {type: [:string, :null]},
             enabledInAppEvents: {type: :array, items: {type: :string}}

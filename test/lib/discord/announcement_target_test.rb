@@ -75,6 +75,14 @@ module Discord
       assert AnnouncementTarget.fleet.deliver(@fleet, "hello")
     end
 
+    test "the officers post to their own channel and never fall back to the webhook" do
+      @setting.update!(discord_officers_channel_id: CHANNEL, discord_webhook_url: "https://discord.com/api/webhooks/1/token")
+      @api.stubs(:get_channel).raises(ApiClient::Error.new(404, "gone"))
+      WebhookPost.any_instance.expects(:deliver).never
+
+      assert_not AnnouncementTarget.officers.deliver(@fleet, "hello")
+    end
+
     test "the job's arguments rebuild the same target" do
       target = AnnouncementTarget.squadron(CHANNEL)
 

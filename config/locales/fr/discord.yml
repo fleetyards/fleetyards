@@ -77,6 +77,7 @@ fr:
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
     channel_capability:
       fleet: la flotte
+      officers: les officiers
     direct_message:
       footer: Envoyé parce que vous avez activé les notifications Discord sur Fleetyards
     event_availability:
