@@ -41,9 +41,14 @@ const { t } = useI18n();
 
 const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 
+// Skipped while a sort is being saved: a refetch the first request triggers
+// carries that request's order and would undo the moves still queued behind it.
+// The last request triggers one of its own.
 watch(
   () => props.hangarGroups,
   (newGroups) => {
+    if (sortRequest) return;
+
     groups.value = newGroups;
   },
 );
@@ -166,17 +171,37 @@ onUnmounted(() => {
   sortableInstance?.destroy();
 });
 
-const updateSort = async () => {
-  const sorting = groups.value.map((item) => item.id);
-  await sortMutation
-    .mutateAsync({
-      data: { sorting },
-    })
-    .catch((error) => {
-      displayAlert({
-        text: error.response?.data?.message,
-      });
-    });
+// One request at a time, and only the latest order once it settles: the server
+// writes each request's full order, so overlapping requests from quick arrow
+// presses could land out of order and persist an earlier one.
+let sortRequest: Promise<void> | null = null;
+let queuedSorting: string[] | null = null;
+
+const updateSort = () => {
+  queuedSorting = groups.value.map((item) => item.id);
+
+  if (sortRequest) return sortRequest;
+
+  sortRequest = (async () => {
+    while (queuedSorting) {
+      const sorting = queuedSorting;
+      queuedSorting = null;
+
+      await sortMutation
+        .mutateAsync({
+          data: { sorting },
+        })
+        .catch((error) => {
+          displayAlert({
+            text: error.response?.data?.message,
+          });
+        });
+    }
+  })().finally(() => {
+    sortRequest = null;
+  });
+
+  return sortRequest;
 };
 
 // The keyboard counterpart to a drag. The moved chip's grip is refocused because

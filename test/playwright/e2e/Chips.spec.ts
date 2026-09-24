@@ -328,4 +328,53 @@ test.describe("Chips - owner's hangar", () => {
     await page.reload();
     await expect.poll(() => names(page)).toEqual(reversed);
   });
+
+  test("quick moves save one at a time and keep the last order", async ({
+    page,
+  }) => {
+    // Each request writes a full order; overlapping ones could finish out of
+    // order and persist an earlier one.
+    // Counted in the route handler, which releases each response only after
+    // decrementing, so the page cannot start the next request early. The delay
+    // keeps the first request open while every key is pressed.
+    let inFlight = 0;
+    let maxInFlight = 0;
+    let sent = 0;
+
+    await page.route(/\/hangar\/groups\/sort/, async (route) => {
+      sent += 1;
+      inFlight += 1;
+      maxInFlight = Math.max(maxInFlight, inFlight);
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const response = await route.fetch();
+
+      inFlight -= 1;
+      await route.fulfill({ response });
+    });
+
+    const before = await names(page);
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    const handle = groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle");
+
+    await handle.focus();
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("ArrowRight");
+
+    // The first press, then one request carrying the order after the last.
+    await expect.poll(() => sent === 2 && inFlight === 0).toBe(true);
+    expect(maxInFlight).toBe(1);
+    expect(await names(page)).toEqual(before);
+
+    await page.reload();
+    await expect.poll(() => names(page)).toEqual(before);
+  });
 });
