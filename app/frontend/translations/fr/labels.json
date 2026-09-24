@@ -415,6 +415,8 @@
           "installBotHint": "Ouvre la page d'installation Discord dans un nouvel onglet — choisissez le serveur vers lequel refléter les événements.",
           "announcementChannel": "Salon d'annonces",
           "announcementChannelHint": "Les nouveaux événements et les rappels avant le début sont publiés ici. Sans salon, ils passent par le webhook. Les événements réservés à des escadrons sont publiés dans les salons de ces escadrons.",
+          "officersChannel": "Salon des officiers",
+          "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord.",
           "channelMissing": "Ce salon n'existe plus sur Discord. Rien n'est publié tant qu'un autre n'est pas choisi.",
           "missingChannel": "Salon supprimé",
           "postingCodes": {

@@ -44,12 +44,14 @@ const queryClient = useQueryClient();
 const discordGuildId = ref<string>("");
 const discordChannelId = ref<string>("");
 const discordAnnouncementChannelId = ref<string | null>(null);
+const discordOfficersChannelId = ref<string | null>(null);
 const discordWebhookUrl = ref<string>("");
 
 const hydrate = (s: FleetNotificationSetting) => {
   discordGuildId.value = s.discordGuildId ?? "";
   discordChannelId.value = s.discordChannelId ?? "";
   discordAnnouncementChannelId.value = s.discordAnnouncementChannelId ?? null;
+  discordOfficersChannelId.value = s.discordOfficersChannelId ?? null;
   discordWebhookUrl.value = "";
 };
 
@@ -70,6 +72,7 @@ const save = async () => {
       discordGuildId: discordGuildId.value || null,
       discordChannelId: discordChannelId.value || null,
       discordAnnouncementChannelId: discordAnnouncementChannelId.value || null,
+      discordOfficersChannelId: discordOfficersChannelId.value || null,
     };
     if (discordWebhookUrl.value !== "") {
       payload.discordWebhookUrl = discordWebhookUrl.value;
@@ -238,6 +241,15 @@ const postingProblem = computed(() => {
           name="discordAnnouncementChannelId"
           :label="t('labels.fleet.discord.announcementChannel')"
           :info="t('labels.fleet.discord.announcementChannelHint')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <DiscordChannelSelect
+          v-model="discordOfficersChannelId"
+          :fleet-slug="props.fleet.slug"
+          name="discordOfficersChannelId"
+          :label="t('labels.fleet.discord.officersChannel')"
+          :info="t('labels.fleet.discord.officersChannelHint')"
         />
       </div>
     </div>

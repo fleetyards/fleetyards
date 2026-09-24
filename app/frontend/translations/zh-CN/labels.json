@@ -415,6 +415,8 @@
           "installBotHint": "在新标签页中打开 Discord 安装页面 — 选择您希望同步活动的服务器。",
           "announcementChannel": "公告频道",
           "announcementChannelHint": "新活动和即将开始的提醒会发布在这里。未设置时通过 Webhook 发送。仅限中队的活动会改为发布在对应中队的频道中。",
+          "officersChannel": "军官频道",
+          "officersChannelHint": "仅军官可见的活动会在这里公告，不会出现在 Discord 的其他地方。未设置时不会在 Discord 上公告。",
           "channelMissing": "该频道在 Discord 上已不存在。选择其他频道之前不会发布任何内容。",
           "missingChannel": "已删除的频道",
           "postingCodes": {

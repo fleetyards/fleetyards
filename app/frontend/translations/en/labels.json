@@ -415,6 +415,8 @@
           "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
           "announcementChannel": "Announcement Channel",
           "announcementChannelHint": "New events and starting-soon reminders are posted here. Without one, they go through the webhook. Events held to squadrons are posted in the squadrons' own channels instead.",
+          "officersChannel": "Officers Channel",
+          "officersChannelHint": "Events visible only to officers are announced here and nowhere else on Discord. Without one, they are not announced on Discord at all.",
           "channelMissing": "This channel no longer exists on Discord. Nothing is posted until another one is picked.",
           "missingChannel": "Deleted channel",
           "postingCodes": {

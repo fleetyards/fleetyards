@@ -415,6 +415,8 @@
           "installBotHint": "Apre la pagina di installazione di Discord in una nuova scheda — scegli il server su cui vuoi rispecchiare gli eventi.",
           "announcementChannel": "Canale annunci",
           "announcementChannelHint": "Qui vengono pubblicati i nuovi eventi e i promemoria prima dell'inizio. Senza canale passano dal webhook. Gli eventi riservati a squadroni vengono pubblicati nei canali di quegli squadroni.",
+          "officersChannel": "Canale ufficiali",
+          "officersChannelHint": "Gli eventi visibili solo agli ufficiali vengono annunciati qui e in nessun altro punto di Discord. Senza canale non vengono annunciati su Discord.",
           "channelMissing": "Questo canale non esiste più su Discord. Non viene pubblicato nulla finché non ne scegli un altro.",
           "missingChannel": "Canale eliminato",
           "postingCodes": {

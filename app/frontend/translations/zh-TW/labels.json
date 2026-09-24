@@ -415,6 +415,8 @@
           "installBotHint": "會在新分頁開啟 Discord 安裝頁面 — 請選擇你要同步活動的伺服器。",
           "announcementChannel": "公告頻道",
           "announcementChannelHint": "新活動與即將開始的提醒會發布在這裡。未設定時透過 Webhook 發送。僅限中隊的活動會改為發布在該中隊的頻道。",
+          "officersChannel": "軍官頻道",
+          "officersChannelHint": "僅軍官可見的活動會在這裡公告，不會出現在 Discord 的其他地方。未設定時不會在 Discord 上公告。",
           "channelMissing": "此頻道在 Discord 上已不存在。選擇其他頻道之前不會發布任何內容。",
           "missingChannel": "已刪除的頻道",
           "postingCodes": {
