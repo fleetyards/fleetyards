@@ -1,7 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
-import { defineComponent, h } from "vue";
+import { computed, defineComponent, h, ref, watchEffect, type Ref } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import {
   FeatureFlagName,
@@ -23,7 +23,28 @@ let memberAsked: (boolean | undefined)[] = [];
 let publicAsked: (boolean | undefined)[] = [];
 let cachedMember = false;
 
-type QueryOptions = { query?: { enabled?: { value?: boolean } } };
+type QueryOptions = { query?: { enabled?: Ref<boolean> } };
+
+// Tracks `enabled` as it changes, and keeps what it fetched once it is turned
+// off again, the way vue-query holds a result in its cache.
+const queryMock = (
+  options: QueryOptions | undefined,
+  asked: (boolean | undefined)[],
+  items: () => unknown[],
+  cached = false,
+) => {
+  const fetched = ref(cached);
+
+  watchEffect(() => {
+    const enabled = options?.query?.enabled?.value;
+    asked.push(enabled);
+    if (enabled) fetched.value = true;
+  });
+
+  return {
+    data: computed(() => (fetched.value ? { items: items() } : undefined)),
+  };
+};
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -35,26 +56,12 @@ vi.mock("@/services/fyApi", async () => {
       _slug: unknown,
       _params: unknown,
       options?: QueryOptions,
-    ) => {
-      const enabled = options?.query?.enabled?.value;
-      memberAsked.push(enabled);
-
-      return {
-        data: ref(
-          cachedMember || enabled ? { items: memberSquadrons } : undefined,
-        ),
-      };
-    },
+    ) => queryMock(options, memberAsked, () => memberSquadrons, cachedMember),
     usePublicFleetSquadrons: (
       _slug: unknown,
       _params: unknown,
       options?: QueryOptions,
-    ) => {
-      const enabled = options?.query?.enabled?.value;
-      publicAsked.push(enabled);
-
-      return { data: ref(enabled ? { items: publicSquadrons } : undefined) };
-    },
+    ) => queryMock(options, publicAsked, () => publicSquadrons),
   };
 });
 
@@ -190,6 +197,37 @@ describe("FleetShow squadrons", () => {
     const subject = await mount({ fleet: fleet() });
 
     expect(tests(subject, "fleet-squadron-")).toEqual([]);
+  });
+
+  it("swaps the public list for the member strip when the viewer joins", async () => {
+    const subject = await mount({ fleet: fleet() });
+
+    await subject.setProps({ membership: member() });
+
+    expect(tests(subject, "fleet-public-squadron-")).toEqual([]);
+    expect(tests(subject, "fleet-squadron-")).toEqual([
+      "fleet-squadron-combat-wing",
+      "fleet-squadron-rescue-team",
+    ]);
+  });
+
+  it("falls back to the public list when the viewer leaves", async () => {
+    const subject = await mount({ fleet: fleet(), membership: member() });
+
+    await subject.setProps({ membership: undefined });
+
+    expect(tests(subject, "fleet-squadron-")).toEqual([]);
+    expect(tests(subject, "fleet-public-squadron-")).toContain(
+      "fleet-public-squadron-combat-wing",
+    );
+  });
+
+  it("hides both lists when the fleet switches squadrons off", async () => {
+    const subject = await mount({ fleet: fleet() });
+
+    await subject.setProps({ fleet: fleet([]) });
+
+    expect(tests(subject, "fleet-public-squadron-")).toEqual([]);
   });
 
   it("asks for nothing when the fleet has squadrons switched off", async () => {
