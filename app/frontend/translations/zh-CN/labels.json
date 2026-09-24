@@ -417,8 +417,8 @@
           "announcementChannelHint": "新活动和即将开始的提醒会发布在这里。未设置时通过 Webhook 发送。仅限中队的活动会改为发布在对应中队的频道中。",
           "officersChannel": "军官频道",
           "officersChannelHint": "仅军官可见的活动会在这里公告，不会出现在 Discord 的其他地方。未设置时不会在 Discord 上公告。",
-          "channelMissing": "该频道在 Discord 上已不存在。选择其他频道之前不会发布任何内容。",
-          "missingChannel": "已删除的频道",
+          "channelMissing": "该频道在 Discord 上已不存在或无法再发帖。选择其他频道之前不会发布任何内容。",
+          "missingChannel": "不可用的频道",
           "postingCodes": {
             "missing_send_messages": "机器人无权在此服务器发送消息。请通过安装链接重新授权。",
             "channel_locked": "机器人无法在为 %{names} 选择的频道中发帖。请在该频道的权限中允许。",

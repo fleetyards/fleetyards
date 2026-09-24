@@ -417,8 +417,8 @@
           "announcementChannelHint": "Neue Events und Erinnerungen kurz vor dem Start werden hier gepostet. Ohne Kanal laufen sie über den Webhook. Events, die auf Staffeln beschränkt sind, werden stattdessen in den Kanälen der Staffeln gepostet.",
           "officersChannel": "Offizierskanal",
           "officersChannelHint": "Events, die nur Offiziere sehen, werden hier angekündigt und nirgends sonst auf Discord. Ohne Kanal werden sie auf Discord gar nicht angekündigt.",
-          "channelMissing": "Dieser Kanal existiert auf Discord nicht mehr. Bis ein anderer gewählt ist, wird nichts gepostet.",
-          "missingChannel": "Gelöschter Kanal",
+          "channelMissing": "Dieser Kanal existiert auf Discord nicht mehr oder nimmt keine Beiträge mehr an. Bis ein anderer gewählt ist, wird nichts gepostet.",
+          "missingChannel": "Nicht verfügbarer Kanal",
           "postingCodes": {
             "missing_send_messages": "Der Bot darf auf diesem Server keine Nachrichten senden. Autorisiere ihn über den Installationslink neu.",
             "channel_locked": "Der Bot kann nicht im Kanal posten, der für %{names} gewählt ist. Erlaube es in den Berechtigungen des Kanals.",

@@ -417,8 +417,8 @@
           "announcementChannelHint": "新活動與即將開始的提醒會發布在這裡。未設定時透過 Webhook 發送。僅限中隊的活動會改為發布在該中隊的頻道。",
           "officersChannel": "軍官頻道",
           "officersChannelHint": "僅軍官可見的活動會在這裡公告，不會出現在 Discord 的其他地方。未設定時不會在 Discord 上公告。",
-          "channelMissing": "此頻道在 Discord 上已不存在。選擇其他頻道之前不會發布任何內容。",
-          "missingChannel": "已刪除的頻道",
+          "channelMissing": "此頻道在 Discord 上已不存在或無法再發文。選擇其他頻道之前不會發布任何內容。",
+          "missingChannel": "無法使用的頻道",
           "postingCodes": {
             "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
             "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",

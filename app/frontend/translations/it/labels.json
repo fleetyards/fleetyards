@@ -417,8 +417,8 @@
           "announcementChannelHint": "Qui vengono pubblicati i nuovi eventi e i promemoria prima dell'inizio. Senza canale passano dal webhook. Gli eventi riservati a squadroni vengono pubblicati nei canali di quegli squadroni.",
           "officersChannel": "Canale ufficiali",
           "officersChannelHint": "Gli eventi visibili solo agli ufficiali vengono annunciati qui e in nessun altro punto di Discord. Senza canale non vengono annunciati su Discord.",
-          "channelMissing": "Questo canale non esiste più su Discord. Non viene pubblicato nulla finché non ne scegli un altro.",
-          "missingChannel": "Canale eliminato",
+          "channelMissing": "Questo canale non esiste più su Discord o non accetta più pubblicazioni. Non viene pubblicato nulla finché non ne scegli un altro.",
+          "missingChannel": "Canale non disponibile",
           "postingCodes": {
             "missing_send_messages": "Il bot non può inviare messaggi in questo server. Usa il link di installazione per autorizzarlo di nuovo.",
             "channel_locked": "Il bot non può pubblicare nel canale scelto per %{names}. Consentilo nei permessi di quel canale.",

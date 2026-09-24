@@ -417,8 +417,8 @@
           "announcementChannelHint": "Les nouveaux événements et les rappels avant le début sont publiés ici. Sans salon, ils passent par le webhook. Les événements réservés à des escadrons sont publiés dans les salons de ces escadrons.",
           "officersChannel": "Salon des officiers",
           "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord.",
-          "channelMissing": "Ce salon n'existe plus sur Discord. Rien n'est publié tant qu'un autre n'est pas choisi.",
-          "missingChannel": "Salon supprimé",
+          "channelMissing": "Ce salon n'existe plus sur Discord ou n'accepte plus de publications. Rien n'est publié tant qu'un autre n'est pas choisi.",
+          "missingChannel": "Salon indisponible",
           "postingCodes": {
             "missing_send_messages": "Le bot ne peut pas envoyer de messages sur ce serveur. Utilisez le lien d'installation pour l'autoriser à nouveau.",
             "channel_locked": "Le bot ne peut pas publier dans le salon choisi pour %{names}. Autorisez-le dans les permissions de ce salon.",

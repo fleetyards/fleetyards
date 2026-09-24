@@ -417,8 +417,8 @@
           "announcementChannelHint": "New events and starting-soon reminders are posted here. Without one, they go through the webhook. Events held to squadrons are posted in the squadrons' own channels instead.",
           "officersChannel": "Officers Channel",
           "officersChannelHint": "Events visible only to officers are announced here and nowhere else on Discord. Without one, they are not announced on Discord at all.",
-          "channelMissing": "This channel no longer exists on Discord. Nothing is posted until another one is picked.",
-          "missingChannel": "Deleted channel",
+          "channelMissing": "This channel no longer exists on Discord or can no longer take posts. Nothing is posted until another one is picked.",
+          "missingChannel": "Unavailable channel",
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
             "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",
