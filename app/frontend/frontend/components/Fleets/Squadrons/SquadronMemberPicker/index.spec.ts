@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import type {
   Fleet,
   FleetMember,
@@ -42,6 +42,8 @@ const members = [
   }),
 ];
 
+const addMember = vi.hoisted(() => vi.fn());
+
 // The list is the picker's own paged query; the rule under test is what it does
 // with the members once it has them.
 vi.mock("@/services/fyApi", async () => {
@@ -54,7 +56,7 @@ vi.mock("@/services/fyApi", async () => {
       data: ref({ items: members, meta: { pagination: { totalPages: 1 } } }),
       isLoading: ref(false),
     }),
-    useCreateFleetSquadronMember: () => ({ mutateAsync: vi.fn() }),
+    useCreateFleetSquadronMember: () => ({ mutateAsync: addMember }),
   };
 });
 
@@ -125,6 +127,27 @@ describe("FleetSquadronMemberPicker", () => {
     await card(subject, "spoken-for").trigger("click");
 
     expect(card(subject, "spoken-for").classes()).not.toContain(
+      "member-picker__card--selected",
+    );
+  });
+
+  it("keeps only the members that failed selected after a partial add", async () => {
+    addMember.mockImplementation(({ data }: { data: { username: string } }) =>
+      data.username === "free"
+        ? Promise.resolve()
+        : Promise.reject(new Error("taken")),
+    );
+    const subject = await mount(false);
+
+    await card(subject, "free").trigger("click");
+    await card(subject, "on-the-rota").trigger("click");
+    await subject.find("form#fleet-squadron-members-form").trigger("submit");
+    await flushPromises();
+
+    expect(card(subject, "free").classes()).not.toContain(
+      "member-picker__card--selected",
+    );
+    expect(card(subject, "on-the-rota").classes()).toContain(
       "member-picker__card--selected",
     );
   });

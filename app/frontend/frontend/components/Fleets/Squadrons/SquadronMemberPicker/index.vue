@@ -182,6 +182,13 @@ const onSubmit = async () => {
 
   submitting.value = false;
 
+  // Whoever was added leaves the selection, so trying again sends only the
+  // ones that failed rather than a second request for people already in.
+  const attempted = selection.value;
+  selection.value = attempted.filter(
+    (_member, index) => results[index].status === "rejected",
+  );
+
   const added = results.filter(
     (result) => result.status === "fulfilled",
   ).length;
