@@ -83,6 +83,17 @@ module Contracts
       assert_includes DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories, hold
     end
 
+    test "a ship's hold needs only the ship flag, not the hangar one" do
+      hold = Inventory.provision_for(create(:vehicle, user: @author), holder: @author)
+      Flipper.disable(:hangar_inventories)
+      Flipper.enable(:ship_inventories)
+
+      options = DestinationOptions.new(fleet: @fleet, editor: @author)
+
+      assert_equal [hold], options.hangar_inventories
+      assert_not options.allows?(@locker)
+    end
+
     test "a contract refuses a destination its editor may not choose" do
       contract = build(:fleet_contract, fleet: @fleet, created_by: @author,
         destination_fleet_inventory: @depot)

@@ -31,13 +31,14 @@ module Contracts
 
     # Only while the author can actually receive a transfer. Offering an
     # inventory nobody can deliver into would post a contract that can never
-    # be worked -- which for a ship's hold also takes the ship flag, the same
-    # gate the transfer endpoints apply to it.
+    # be worked. Each kind has its own flag, the same one the transfer
+    # endpoints check: a ship's hold takes the ship flag, anything else the
+    # hangar one.
     def hangar_inventories
       return [] unless author_can_receive?
 
       @hangar_inventories ||= @author.inventories.order(:name).to_a
-        .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
+        .select { |inventory| Flipper.enabled?(inventory_flag(inventory), @author) }
     end
 
     def allows?(destination)
@@ -51,7 +52,11 @@ module Contracts
     private def author_can_receive?
       return false if @author.blank? || @author != @editor
 
-      Flipper.enabled?(:inventory_transfers, @author) && Flipper.enabled?(:hangar_inventories, @author)
+      Flipper.enabled?(:inventory_transfers, @author)
+    end
+
+    private def inventory_flag(inventory)
+      inventory.vehicle? ? :ship_inventories : :hangar_inventories
     end
   end
 end
