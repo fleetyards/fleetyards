@@ -182,10 +182,18 @@ module Notifications
             title: target_event.title))
       end
 
+      EVENT_MANAGE_PRIVILEGES = ["fleet:manage", "fleet:events:manage"].freeze
+
       def eligible_users(target_event)
-        memberships = target_event.fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role)
+        memberships = target_event.fleet.fleet_memberships.where(aasm_state: "accepted")
+          .includes(:user, :fleet_role, :fleet_squadrons)
         if target_event.visibility == "officers"
           memberships = memberships.select { |m| m.fleet_role&.rank&.in?(%w[admin officer]) }
+        end
+        # The same people the event page admits: a squadron event is not
+        # announced, title and all, to the members it is kept from.
+        memberships = memberships.select do |m|
+          target_event.visible_to_squadrons_of?(m) || m.has_access?(EVENT_MANAGE_PRIVILEGES)
         end
         memberships.map(&:user).compact
       end

@@ -121,11 +121,16 @@ module Notifications
       end
 
       def memberships
-        contract.fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role)
+        contract.fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role, :fleet_squadrons)
       end
 
+      # Whoever may read this contract: the read privilege, and -- for one held
+      # to squadrons -- a place in one of them, unless they run the board.
       def readers
-        memberships.select { |membership| membership.has_access?(READ_PRIVILEGES) }.filter_map(&:user)
+        memberships.select do |membership|
+          membership.has_access?(READ_PRIVILEGES) &&
+            (contract.visible_to_squadrons_of?(membership) || membership.has_access?(MANAGE_PRIVILEGES))
+        end.filter_map(&:user)
       end
 
       def managers
