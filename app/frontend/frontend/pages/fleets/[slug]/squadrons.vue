@@ -23,11 +23,11 @@ const { isFleetFeatureEnabled } = useFeatures();
 </script>
 
 <template>
+  <!-- The feature only: each child route carries its own `access`, and asking
+       for read here as well would leave a role that may create squadrons but
+       not read them on a blank form. -->
   <router-view
-    v-if="
-      isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS) &&
-      props.membership.capabilities?.readSquadrons
-    "
+    v-if="isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS)"
     :fleet="props.fleet"
     :membership="props.membership"
   />
