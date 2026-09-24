@@ -37,5 +37,25 @@ module Discord
         WeeklyDigestDispatchJob.new.perform
       end
     end
+
+    test "queues nothing for a deleted fleet" do
+      @fleet.update_column(:discarded_at, Time.current)
+
+      travel_to Time.utc(2026, 9, 21, 18, 5) do
+        PostWeeklyDigestJob.expects(:perform_async).never
+
+        WeeklyDigestDispatchJob.new.perform
+      end
+    end
+
+    test "gives the week back when the post cannot be queued" do
+      travel_to Time.utc(2026, 9, 21, 18, 5) do
+        PostWeeklyDigestJob.stubs(:perform_async).raises(RedisClient::CannotConnectError)
+
+        assert_raises(RedisClient::CannotConnectError) { WeeklyDigestDispatchJob.new.perform }
+      end
+
+      assert_nil @setting.reload.discord_digest_sent_at
+    end
   end
 end

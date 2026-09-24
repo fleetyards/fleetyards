@@ -9,12 +9,27 @@ module Discord
     def perform
       now = Time.current
 
-      FleetNotificationSetting.where.not(discord_digest_weekday: nil).includes(:fleet).find_each do |setting|
-        next unless setting.digest_due?(now)
-        next unless claim(setting, setting.digest_slot(now))
+      FleetNotificationSetting
+        .where.not(discord_digest_weekday: nil)
+        .joins(:fleet).merge(Fleet.kept)
+        .includes(:fleet)
+        .find_each do |setting|
+          next unless setting.digest_due?(now)
+          next unless claim(setting, setting.digest_slot(now))
 
-        PostWeeklyDigestJob.perform_async(setting.fleet_id)
-      end
+          begin
+            PostWeeklyDigestJob.perform_async(setting.fleet_id)
+          rescue
+            self.class.release(setting.fleet_id)
+            raise
+          end
+        end
+    end
+
+    # Gives a claimed week back, so a digest that could not be sent is tried
+    # again by the next tick still inside its grace period.
+    def self.release(fleet_id)
+      FleetNotificationSetting.where(fleet_id: fleet_id).update_all(discord_digest_sent_at: nil)
     end
 
     # Stamped before the post is queued, and only by whichever run gets there
