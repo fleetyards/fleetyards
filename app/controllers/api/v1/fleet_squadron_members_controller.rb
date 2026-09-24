@@ -30,12 +30,16 @@ module Api
         scope = @fleet_squadron.accepted_fleet_memberships
 
         normalize_sort_params(member_query_params)
-        member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params["sorts"])
+        sorts = sorting_params(FleetMembership, member_query_params["sorts"],
+          allowed: FleetMembership::SQUADRON_ROSTER_SORTING_PARAMS)
+        joined_sort, member_query_params["sorts"] = sorts.partition { |sort| sort.start_with?("squadron_membership_created_at ") }
 
         @q = scope.ransack(member_query_params)
         result = FleetMembership.where(
           FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
+        result = order_by_joined_at(result, joined_sort.first) if joined_sort.any?
+        result = result
           .order(@q.result.order_values)
           .includes(
             :user,
@@ -84,6 +88,21 @@ module Api
         else
           render json: ValidationError.new("fleet_squadron_members.update", errors: row.errors), status: :bad_request
         end
+      end
+
+      # Ransack can sort by the join date only through a join it adds to the
+      # inner query, which the outer one cannot see -- and that join covers
+      # every squadron and team the member is on. The outer query joins this
+      # squadron's own row instead, under an alias so the preloaded badges are
+      # left alone.
+      private def order_by_joined_at(result, sort)
+        rows = FleetSquadronMembership.arel_table.alias("roster_rows")
+        members = FleetMembership.arel_table
+        join = members.join(rows).on(
+          rows[:fleet_membership_id].eq(members[:id]).and(rows[:fleet_squadron_id].eq(@fleet_squadron.id))
+        ).join_sources
+
+        result.joins(join).order(sort.end_with?(" desc") ? rows[:created_at].desc : rows[:created_at].asc)
       end
 
       private def set_fleet

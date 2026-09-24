@@ -6740,7 +6740,7 @@ paths:
       - name: q
         in: query
         schema:
-          "$ref": "#/components/schemas/FleetMemberQuery"
+          "$ref": "#/components/schemas/FleetSquadronMemberQuery"
         style: deepObject
         explode: true
         required: false
@@ -21498,12 +21498,6 @@ components:
         acceptedAtLteq:
           type: string
           format: date
-        squadronMembershipCreatedAtGteq:
-          type: string
-          format: date
-        squadronMembershipCreatedAtLteq:
-          type: string
-          format: date
         invitedAtGteq:
           type: string
           format: date
@@ -21714,8 +21708,6 @@ components:
       - createdAt desc
       - acceptedAt asc
       - acceptedAt desc
-      - squadronMembershipCreatedAt asc
-      - squadronMembershipCreatedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
       x-enumNames:
@@ -21727,8 +21719,6 @@ components:
       - CREATED_AT_DESC
       - ACCEPTED_AT_ASC
       - ACCEPTED_AT_DESC
-      - SQUADRON_MEMBERSHIP_CREATED_AT_ASC
-      - SQUADRON_MEMBERSHIP_CREATED_AT_DESC
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       title: FleetMembershipSortEnum
@@ -22182,6 +22172,103 @@ components:
       - username
       additionalProperties: false
       title: FleetSquadronMemberCreateInput
+    FleetSquadronMemberQuery:
+      type: object
+      properties:
+        usernameCont:
+          type: string
+        nicknameCont:
+          type: string
+        nameCont:
+          type: string
+          deprecated: true
+          description: Use usernameCont instead
+        roleIn:
+          type: array
+          items:
+            type: string
+        stateIn:
+          type: array
+          items:
+            type: string
+        squadronSlugIn:
+          type: array
+          items:
+            type: string
+        acceptedAtGteq:
+          type: string
+          format: date
+        acceptedAtLteq:
+          type: string
+          format: date
+        invitedAtGteq:
+          type: string
+          format: date
+        invitedAtLteq:
+          type: string
+          format: date
+        requestedAtGteq:
+          type: string
+          format: date
+        requestedAtLteq:
+          type: string
+          format: date
+        declinedAtGteq:
+          type: string
+          format: date
+        declinedAtLteq:
+          type: string
+          format: date
+        squadronMembershipCreatedAtGteq:
+          type: string
+          format: date
+        squadronMembershipCreatedAtLteq:
+          type: string
+          format: date
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetSquadronMemberSortEnum"
+          - "$ref": "#/components/schemas/FleetSquadronMemberSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetSquadronMemberSortEnum"
+          - "$ref": "#/components/schemas/FleetSquadronMemberSortEnum"
+      additionalProperties: false
+      example: {}
+      title: FleetSquadronMemberQuery
+    FleetSquadronMemberSortEnum:
+      type: string
+      enum:
+      - rsiHandle asc
+      - rsiHandle desc
+      - username asc
+      - username desc
+      - createdAt asc
+      - createdAt desc
+      - acceptedAt asc
+      - acceptedAt desc
+      - lastActiveAt asc
+      - lastActiveAt desc
+      - squadronMembershipCreatedAt asc
+      - squadronMembershipCreatedAt desc
+      x-enumNames:
+      - RSI_HANDLE_ASC
+      - RSI_HANDLE_DESC
+      - USERNAME_ASC
+      - USERNAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - ACCEPTED_AT_ASC
+      - ACCEPTED_AT_DESC
+      - LAST_ACTIVE_AT_ASC
+      - LAST_ACTIVE_AT_DESC
+      - SQUADRON_MEMBERSHIP_CREATED_AT_ASC
+      - SQUADRON_MEMBERSHIP_CREATED_AT_DESC
+      title: FleetSquadronMemberSortEnum
     FleetSquadronMemberUpdateInput:
       type: object
       properties:

@@ -109,9 +109,16 @@ class FleetMembership < ApplicationRecord
   ALLOWED_SORTING_PARAMS = [
     "rsiHandle asc", "rsiHandle desc", "username asc", "username desc",
     "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc",
-    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc",
     "lastActiveAt asc", "lastActiveAt desc"
   ]
+
+  # When somebody joined is a question about one squadron, so only that
+  # squadron's roster can sort by it -- across the whole fleet a member has no
+  # single answer, or none.
+  SQUADRON_ROSTER_SORTING_PARAMS = [
+    *ALLOWED_SORTING_PARAMS,
+    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc"
+  ].freeze
 
   ransack_alias :username, :user_username
   ransack_alias :rsi_handle, :user_rsi_handle

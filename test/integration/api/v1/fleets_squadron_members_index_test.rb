@@ -19,7 +19,7 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
-        schema: ::V1::Schemas::Queries::FleetMemberQuery,
+        schema: ::V1::Schemas::Queries::FleetSquadronMemberQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -64,6 +64,25 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: path_params do
       assert_equal [@member.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+  end
+
+  # By when they joined this squadron: a team the member joined in between is a
+  # different date, and must neither decide the order nor list them twice.
+  test "GET squadron members sorts by when they joined this squadron" do
+    @squadron.fleet_squadron_memberships.update_all(created_at: 2.days.ago)
+    later = @fleet.fleet_memberships.kept.find_by(user: @outsider_of_squadron)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: later, created_at: 1.day.ago)
+    team = create(:fleet_squadron, fleet: @fleet, team: true)
+    create(:fleet_squadron_membership, fleet_squadron: team, fleet_membership: @membership, created_at: 1.hour.ago)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: path_params, params: {q: {s: "squadronMembershipCreatedAt asc"}} do
+      assert_equal [@member.username, @outsider_of_squadron.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+
+    assert_api_response :get, 200, path_params: path_params, params: {q: {s: "squadronMembershipCreatedAt desc"}} do
+      assert_equal [@outsider_of_squadron.username, @member.username], parsed_body["items"].map { |entry| entry["username"] }
     end
   end
 

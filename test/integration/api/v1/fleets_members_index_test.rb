@@ -162,6 +162,17 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A member has no single squadron join date across the whole fleet, so the
+  # fleet roster does not offer the sort -- it used to, and answered with a
+  # SQL error.
+  test "GET /fleets/:slug/members does not sort by a squadron join date" do
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/members", params: {q: {s: "squadronMembershipCreatedAt asc"}}
+
+    assert_response :bad_request
+  end
+
   # Only the two members the request does not authenticate as, because
   # `set_last_active_at` refreshes the requesting user's own timestamp.
   test "GET /fleets/:slug/members sorts by lastActiveAt via the s param" do

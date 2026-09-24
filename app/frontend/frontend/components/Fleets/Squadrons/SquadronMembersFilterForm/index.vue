@@ -8,16 +8,16 @@ export default {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import type { FleetMemberQuery } from "@/services/fyApi";
+import type { FleetSquadronMemberQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 const { filter, resetFilter, isFilterSelected, filters } =
-  useFilters<FleetMemberQuery>();
+  useFilters<FleetSquadronMemberQuery>();
 
-const form = ref<FleetMemberQuery>({});
+const form = ref<FleetSquadronMemberQuery>({});
 
 const setupForm = () => {
   form.value = {
