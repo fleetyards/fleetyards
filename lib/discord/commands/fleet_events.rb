@@ -64,13 +64,17 @@ module Discord
           .first(MAX_EVENTS)
       end
 
-      # The same narrowing the events endpoint applies: an event held to
-      # squadrons is listed to their members and to whoever runs the fleet's
-      # events, nobody else.
+      # An event held to squadrons is listed to their members, and one kept to
+      # officers to officers -- plus whoever runs the fleet's events, nobody
+      # else.
       private def visible_events(fleet, user)
         return fleet.fleet_events if ::FleetEventPolicy.new(fleet, user: user).apply(:manage?)
 
-        fleet.fleet_events.for_squadrons_of(fleet.fleet_memberships.kept.find_by(user: user))
+        membership = fleet.fleet_memberships.kept.find_by(user: user)
+
+        # Officers are whoever runs the fleet's events, and those returned
+        # above, so everybody left is kept from an officers' event.
+        fleet.fleet_events.for_squadrons_of(membership).where.not(visibility: "officers")
       end
 
       private def occurrences_of(event, from, to)

@@ -92,6 +92,16 @@ module Discord
         assert_includes call[:content], "Wing Op"
       end
 
+      test "an officers' event is not listed to a member" do
+        event(title: "Staff Meeting", visibility: "officers")
+        event(title: "Strike Op")
+
+        content = call[:content]
+
+        assert_includes content, "Strike Op"
+        assert_not_includes content, "Staff Meeting"
+      end
+
       test "a past event is not upcoming" do
         event(title: "Old Op", starts_at: 2.days.ago)
 
