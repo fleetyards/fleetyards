@@ -772,7 +772,7 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 - ~~**Squadron fleetchart**~~ — Done by D12: the fleet's own fleetchart takes `q[squadronSlugIn]` like its other lists
 - **Admin squadron management** — Admin panel can manage fleets; squadron admin can be added later
 - **Notification types for squadrons** — e.g., `squadron_member_added`; can be added via the notification center once it's complete
-- **A Discord webhook per squadron** — The fleet's guild sync and reminder webhook reach the whole fleet, so an event held to squadrons is kept off both (D19): never posted, and taken down if an edit restricts one that was. Announcing squadron events needs a webhook, or a channel, per squadron
+- **A Discord channel per squadron** (#5157) — The fleet's guild sync and reminder webhook reach the whole fleet, so an event held to squadrons is kept off both (D19): never posted, and taken down if an edit restricts one that was. Announcing squadron events needs a channel per squadron, on the fleet's own server
 
 ## Discovery Log
 
