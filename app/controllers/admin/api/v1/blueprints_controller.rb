@@ -36,7 +36,7 @@ module Admin
             .ransack(blueprint_query_params.except(*HAND_APPLIED))
 
           @blueprints = source_filters(@q.result)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Blueprint))
         end
 

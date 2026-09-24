@@ -20,7 +20,7 @@ module Admin
           @members = @q.result(distinct: true)
             .includes(:user, :fleet_role)
             .joins(:user)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(FleetMembership))
         end
 

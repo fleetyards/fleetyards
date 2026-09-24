@@ -17,7 +17,7 @@ module Admin
           @q = index_scope
 
           @models = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Model))
         end
 
@@ -30,7 +30,7 @@ module Admin
           @q = index_scope
 
           @models = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Model))
         end
 
@@ -48,7 +48,7 @@ module Admin
           @q.sorts = "name asc" if @q.sorts.empty?
 
           @models = @q.result
-            .page(params.fetch(:page) { nil })
+            .page(page_params)
             .per(40)
         end
 

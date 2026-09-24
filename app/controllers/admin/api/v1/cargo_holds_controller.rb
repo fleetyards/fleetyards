@@ -13,7 +13,7 @@ module Admin
 
           @cargo_holds = @q.result
             .order(:name)
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

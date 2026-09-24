@@ -31,7 +31,7 @@ module Api
 
       def index
         @blueprints = filtered_blueprints
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Blueprint))
 
         # After pagination, so it asks about the 60 rows being rendered rather

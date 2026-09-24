@@ -29,7 +29,7 @@ module Api
         # the computed `unread` expression.
         @notifications = @q.result
           .includes(:record)
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Notification))
 
         # `includes` stops at the polymorphic record; the reference reads a slug

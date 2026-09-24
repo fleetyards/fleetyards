@@ -25,7 +25,7 @@ module Admin
           @q = authorized_scope(scope).ransack(query_params)
 
           @sc_data_unlisted_models = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(ScDataUnlistedModel))
         end
 

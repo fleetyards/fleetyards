@@ -16,7 +16,7 @@ module Api
         @q = scope.ransack(model_paint_query_params)
 
         @paints = @q.result
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(ModelPaint))
       end
 

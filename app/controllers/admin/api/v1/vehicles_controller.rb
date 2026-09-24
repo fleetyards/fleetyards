@@ -18,7 +18,7 @@ module Admin
           @q = index_scope
 
           @vehicles = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Model))
         end
 

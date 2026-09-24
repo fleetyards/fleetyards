@@ -38,6 +38,12 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves the first page given a nested page" do
+    assert_api_response :get, 200, params: {page: {"x" => 1}} do
+      assert_equal 2, parsed_body.count
+    end
+  end
+
   test "GET /components filters by nameCont query" do
     assert_api_response :get, 200, params: {q: {"nameCont" => @components.first.name}} do
       items = parsed_body["items"]

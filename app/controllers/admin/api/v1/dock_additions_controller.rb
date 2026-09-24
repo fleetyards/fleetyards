@@ -13,7 +13,7 @@ module Admin
             .ransack(dock_addition_query_params)
 
           @dock_additions = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

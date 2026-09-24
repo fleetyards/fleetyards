@@ -19,7 +19,7 @@ module Admin
 
           @model_upgrades = @q.result
             .includes(:upgrade_kits, :models)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(ModelUpgrade))
         end
 

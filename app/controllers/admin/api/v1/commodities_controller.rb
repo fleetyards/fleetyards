@@ -19,7 +19,7 @@ module Admin
             .ransack(commodity_query_params)
 
           @commodities = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(Commodity))
         end
 

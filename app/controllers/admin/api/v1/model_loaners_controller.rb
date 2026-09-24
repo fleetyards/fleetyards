@@ -12,7 +12,7 @@ module Admin
           @q = authorized_scope(ModelLoaner.includes(:model, :loaner_model)).ransack(loaner_query_params)
 
           @model_loaners = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

@@ -19,7 +19,7 @@ module Admin
           q = FundingGoal.ransack(funding_goal_query_params)
 
           @funding_goals = q.result(distinct: true)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(FundingGoal))
         end
 

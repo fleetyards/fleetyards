@@ -14,7 +14,7 @@ module Admin
         def index
           @items = @inventory.inventory_items
             .order(created_at: :desc)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(InventoryItem))
         end
 

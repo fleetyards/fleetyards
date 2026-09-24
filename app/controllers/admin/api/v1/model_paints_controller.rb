@@ -19,7 +19,7 @@ module Admin
           @q = authorized_scope(ModelPaint.all).ransack(model_paint_query_params)
 
           @model_paints = @q.result
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(ModelPaint))
         end
 

@@ -18,7 +18,7 @@ module Admin
           @q = authorized_scope(Image.all).ransack(image_query_params)
 
           @images = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 

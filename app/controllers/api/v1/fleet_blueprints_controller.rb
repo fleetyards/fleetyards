@@ -24,7 +24,7 @@ module Api
         authorize! with: FleetBlueprintPolicy, context: {fleet: @fleet}
 
         @blueprints = filtered_blueprints(Blueprint.owned_by(sharing_memberships.select(:user_id)))
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Blueprint))
 
         # Both after pagination: the page being rendered is what either of them

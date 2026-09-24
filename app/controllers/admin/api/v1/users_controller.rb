@@ -22,7 +22,7 @@ module Admin
           # the contributions; without this each row asks for its own.
           @users = q.result(distinct: true)
             .includes(:supporter_contributions)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(User))
         end
 
@@ -37,7 +37,7 @@ module Admin
           @q = authorized_scope(User.all).ransack(user_query_params)
 
           @users = @q.result(distinct: true)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(User))
         end
 

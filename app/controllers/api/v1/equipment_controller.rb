@@ -25,7 +25,7 @@ module Api
         # by the name it actually serves.
         @equipment = @q.result
           .order(Equipment.fact_sql(:name).asc)
-          .page(params[:page])
+          .page(page_params)
           .per(per_page(Equipment))
       end
 

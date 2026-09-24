@@ -38,7 +38,7 @@ module Admin
 
           @fleet_subscriptions = q.result(distinct: true)
             .includes(:fleet, supporter_contribution: :user)
-            .page(params[:page])
+            .page(page_params)
             .per(per_page(FleetSubscription))
         end
 

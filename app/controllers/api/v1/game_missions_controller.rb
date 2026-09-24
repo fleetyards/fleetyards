@@ -29,11 +29,6 @@ module Api
       end
 
       def index
-        # `page_params` rather than `params[:page]`: `?page[]=1` arrives as an
-        # Array and `?page[x]=1` as Parameters, and kaminari calls `to_i` on
-        # whatever it is handed, which is a 500 for a malformed query string.
-        # `Pagination` already guards it -- see its own comment -- and nothing
-        # was using the guard.
         @missions = filtered_missions
           .page(page_params)
           .per(per_page(GameMission))

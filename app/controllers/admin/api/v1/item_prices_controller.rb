@@ -14,7 +14,7 @@ module Admin
           @q = authorized_scope(ItemPrice.all).ransack(item_price_query_params)
 
           @item_prices = @q.result
-            .page(params.fetch(:page, nil))
+            .page(page_params)
             .per(params.fetch(:per_page, nil))
         end
 
