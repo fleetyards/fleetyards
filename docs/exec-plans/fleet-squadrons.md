@@ -356,6 +356,12 @@ failure worth catching, so one test runs the same cases over all three.
 Whoever runs the fleet's events or contracts still reaches all of them --
 including squadron ones they are not in, which they may well have created.
 
+The same rule reaches past the pages. An in-app announcement carries the
+title, so a squadron's event or contract is announced to the squadron and to
+whoever runs the board, and to nobody else. Discord cannot be narrowed that
+way -- the guild and the reminder webhook are the whole fleet -- so a squadron
+event is kept off it until a squadron has a channel of its own.
+
 ### D18 — Adding and removing are two tasks, not one modal
 
 The picker briefly did both: the squadron's members opened ticked and the
@@ -766,6 +772,7 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 - ~~**Squadron fleetchart**~~ — Done by D12: the fleet's own fleetchart takes `q[squadronSlugIn]` like its other lists
 - **Admin squadron management** — Admin panel can manage fleets; squadron admin can be added later
 - **Notification types for squadrons** — e.g., `squadron_member_added`; can be added via the notification center once it's complete
+- **A Discord webhook per squadron** — The fleet's guild sync and reminder webhook reach the whole fleet, so an event held to squadrons is kept off both (D19): never posted, and taken down if an edit restricts one that was. Announcing squadron events needs a webhook, or a channel, per squadron
 
 ## Discovery Log
 
