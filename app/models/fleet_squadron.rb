@@ -44,9 +44,6 @@ class FleetSquadron < ApplicationRecord
 
   validates :icon, no_vector_image: true
 
-  # The mark has to carry its own cut-out.
-  validates :icon, transparent_image: true
-
   # Cropped to its opaque bounds before any representation exists. An emblem
   # exported from a design tool usually sits inside a transparent canvas, and
   # every size built from it carries that padding -- so at 20px on an avatar the

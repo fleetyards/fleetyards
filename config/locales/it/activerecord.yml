@@ -213,7 +213,6 @@ it:
           class8: Class 8
     errors:
       messages:
-        not_transparent: deve essere un'immagine trasparente, ad esempio un PNG con lo sfondo ritagliato
         contract_item_already_asked_for: "è già in questo contratto con la stessa categoria e unità"
         entry_goods_in_transit: "non può essere eliminato finché il trasferimento a cui appartiene è ancora in attesa di risposta"
         inventory_goods_in_transit: "non può essere eliminato finché un trasferimento inviato è ancora in attesa di risposta"
