@@ -19,8 +19,11 @@ module Contracts
       @authorizer = ::Inventories::TransferAuthorizer.new(editor)
     end
 
+    # Only while the fleet's logistics are on: the transfer endpoint refuses
+    # every delivery into a fleet inventory otherwise.
     def fleet_inventories
       return [] if @editor.blank?
+      return [] unless Flipper.enabled?(:fleet_logistics, @editor, @fleet)
 
       @fleet_inventories ||= @fleet.fleet_inventories.order(:name).to_a
         .select { |inventory| @authorizer.may_deposit_into?(inventory) }
@@ -28,11 +31,13 @@ module Contracts
 
     # Only while the author can actually receive a transfer. Offering an
     # inventory nobody can deliver into would post a contract that can never
-    # be worked.
+    # be worked -- which for a ship's hold also takes the ship flag, the same
+    # gate the transfer endpoints apply to it.
     def hangar_inventories
       return [] unless author_can_receive?
 
       @hangar_inventories ||= @author.inventories.order(:name).to_a
+        .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
     end
 
     def allows?(destination)

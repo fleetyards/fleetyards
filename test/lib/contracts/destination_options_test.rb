@@ -7,6 +7,7 @@ module Contracts
     setup do
       Flipper.enable(:inventory_transfers)
       Flipper.enable(:hangar_inventories)
+      Flipper.enable(:fleet_logistics)
 
       @officer = create(:user)
       @author = create(:user)
@@ -64,6 +65,22 @@ module Contracts
       Flipper.disable(:inventory_transfers)
 
       assert_empty DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories
+    end
+
+    test "no fleet inventory is offered while the fleet's logistics are off" do
+      Flipper.disable(:fleet_logistics)
+
+      assert_empty DestinationOptions.new(fleet: @fleet, editor: @officer).fleet_inventories
+    end
+
+    test "a ship's hold is offered only while ship inventories are on" do
+      hold = Inventory.provision_for(create(:vehicle, user: @author), holder: @author)
+
+      assert_not_includes DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories, hold
+
+      Flipper.enable(:ship_inventories)
+
+      assert_includes DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories, hold
     end
 
     test "a contract refuses a destination its editor may not choose" do
