@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-# The squadrons are in the key for the reason the member partial gives.
-json.cache! ["v3", fleet_contract, *fleet_contract.fleet_squadrons] do
+# The squadrons are in the key for the reason the member partial gives. The
+# two ends are there because renaming an inventory does not touch the
+# contracts that name it.
+json.cache! ["v3", fleet_contract,
+  *[fleet_contract.source_fleet_inventory, fleet_contract.destination].compact,
+  *fleet_contract.fleet_squadrons] do
   json.partial!("api/v1/fleet_contracts/base", fleet_contract:)
 end
 

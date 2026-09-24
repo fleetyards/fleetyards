@@ -917,6 +917,19 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET the board shows a hangar destination's new name after it is renamed" do
+    contract = create(:fleet_contract, :published, :hangar_destination, fleet: @fleet)
+    sign_in @officer
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/contracts"
+      contract.destination_inventory.update!(name: "Cargo Hold")
+      get "/api/v1/fleets/#{@fleet.slug}/contracts"
+
+      assert_equal "Cargo Hold", response.parsed_body["items"].first["destination"]["name"]
+    end
+  end
+
   private def contract_author
     author = create(:user)
     create(:fleet_membership, fleet: @fleet, user: author, aasm_state: :accepted,
