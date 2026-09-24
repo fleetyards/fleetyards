@@ -163,6 +163,21 @@ module Discord
         perform
       end
 
+      test "keeps a shared role another fleet on the same server still owes" do
+        sibling = create(:fleet)
+        sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+        other = create(:user)
+        create(:omniauth_connection, user: other, provider: "discord", uid: UID)
+        sibling.fleet_memberships.create!(user: other, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
+        @connection.destroy!
+
+        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).never
+
+        perform
+      end
+
       test "skips a fleet with no Discord server" do
         @fleet.fleet_notification_setting.update!(discord_guild_id: nil)
         @connection.destroy!

@@ -164,6 +164,17 @@ module Discord
       assert_empty ::Discord::MemberRoleSync.new(other.reload, api: @api).run!.removed
     end
 
+    test "a member leaving keeps a shared role another fleet on the same server still owes" do
+      sibling = create(:fleet)
+      sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+      sibling.fleet_memberships.create!(user: @user, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
+      @membership.update!(aasm_state: "declined")
+      member_has(MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).never
+
+      assert_empty sync.run!.removed
+    end
+
     test "managed roles are exactly what the fleet configured" do
       @role.update!(discord_role_id: RANK_ROLE)
 

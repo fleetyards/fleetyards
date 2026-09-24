@@ -8,8 +8,9 @@ module Discord
   # deleted. Neither the connection nor the user may still exist, so the uid
   # and the fleets are captured before they go and handed in.
   #
-  # Roles another member linked to the same Discord account is still owed are
-  # kept; MemberRoleSync works that out per fleet.
+  # Roles still owed to the account -- through another member linked to it, or
+  # another fleet on the same Discord server -- are kept; MemberRoleSync works
+  # that out.
   #
   # `snapshots` holds `[fleet_id, guild_id, managed_role_ids]` per fleet, for
   # a fleet that was destroyed along with the account and can no longer be
@@ -60,12 +61,10 @@ module Discord
       log_and_reraise_retryable(fleet.id, e)
     end
 
-    # Another fleet may share the guild and map the same role; whatever its
-    # members linked to this account are still owed stays.
     private def revoke_destroyed(fleet_id, guild_id, role_ids, discord_uid)
       return if guild_id.blank? || role_ids.empty?
 
-      removable = role_ids - owed_elsewhere(guild_id, discord_uid)
+      removable = role_ids - MemberRoleSync.owed_in_guild(guild_id, discord_uid)
       return if removable.empty?
 
       current = Array(api.get_guild_member(guild_id, discord_uid)&.dig("roles"))
@@ -75,13 +74,6 @@ module Discord
       return if e.status == 404
 
       log_and_reraise_retryable(fleet_id, e)
-    end
-
-    private def owed_elsewhere(guild_id, discord_uid)
-      Fleet.joins(:fleet_notification_setting)
-        .where(fleet_notification_settings: {discord_guild_id: guild_id})
-        .flat_map { |fleet| MemberRoleSync.new(fleet: fleet, discord_uid: discord_uid).desired_role_ids }
-        .uniq
     end
 
     private def log_and_reraise_retryable(fleet_id, error)

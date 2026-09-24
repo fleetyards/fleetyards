@@ -29,6 +29,17 @@ module Discord
       @api = api
     end
 
+    # What other fleets sharing this Discord server still owe the account. Two
+    # fleets can map the same server role, so a role one fleet no longer owes
+    # may still be owed through the other.
+    def self.owed_in_guild(guild_id, discord_uid, except_fleet_id: nil)
+      Fleet.joins(:fleet_notification_setting)
+        .where(fleet_notification_settings: {discord_guild_id: guild_id})
+        .where.not(id: except_fleet_id)
+        .flat_map { |fleet| new(fleet: fleet, discord_uid: discord_uid).desired_role_ids }
+        .uniq
+    end
+
     def runnable?
       ApiClient.configured? && guild_id.present? && discord_uid.present? && managed_role_ids.any?
     end
@@ -41,6 +52,7 @@ module Discord
 
       to_add = desired_role_ids - current
       to_remove = (managed_role_ids - desired_role_ids) & current
+      to_remove -= self.class.owed_in_guild(guild_id, discord_uid, except_fleet_id: fleet.id) if to_remove.any?
 
       to_add.each { |role_id| api.add_guild_member_role(guild_id, discord_uid, role_id) }
       to_remove.each { |role_id| api.remove_guild_member_role(guild_id, discord_uid, role_id) }
