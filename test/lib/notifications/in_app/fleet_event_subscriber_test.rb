@@ -25,6 +25,25 @@ module Notifications
         ::Notifications::InApp::FleetEventSubscriber.new(event_name, payload).call
       end
 
+      class PublishedTest < FleetEventSubscriberTest
+        # The announcement carries the title, so it goes to whoever may open the
+        # event and nobody else.
+        test "announces a squadron event to its squadron and to those who run events" do
+          outsider = create(:user)
+          create(:fleet_membership, :accepted, fleet: @fleet, user: outsider)
+          squadron = create(:fleet_squadron, fleet: @fleet)
+          create(:fleet_squadron_membership, fleet_squadron: squadron, fleet_membership: @membership)
+          @event.update!(visibility: "squadron", fleet_squadrons: [squadron])
+
+          deliver("fleet_event.published", event: @event)
+
+          notified = Notification.where(notification_type: "fleet_event_published").pluck(:user_id)
+          assert_includes notified, @member.id
+          assert_includes notified, @admin.id
+          refute_includes notified, outsider.id
+        end
+      end
+
       class StatusChangedTest < FleetEventSubscriberTest
         test "notifies the member when an admin approves a pending signup" do
           @signup.update!(status: "confirmed")

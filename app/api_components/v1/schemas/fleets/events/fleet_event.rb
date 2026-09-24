@@ -24,6 +24,10 @@ module V1
               location: {type: :string},
               meetupLocation: {type: :string},
               visibility: ::V1::Schemas::Enums::FleetEventVisibilityEnum,
+              fleetSquadrons: {
+                type: :array,
+                items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef
+              },
               category: ::V1::Schemas::Enums::MissionCategoryEnum,
               scenario: {type: :string},
               coverImagePreset: {type: :string},

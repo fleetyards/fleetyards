@@ -57,6 +57,8 @@ const {
   blueprintsNavActive,
   showLogisticsNav,
   logisticsNavActive,
+  showSquadronsNav,
+  squadronsNavActive,
   showAlliesNav,
   showContractsNav,
   showEventsNav,
@@ -111,6 +113,17 @@ onMounted(() => {
         :label="t('nav.fleets.members.index')"
         :active="String(route.name).startsWith('fleet-members')"
         icon="fa-duotone fa-users"
+      />
+
+      <!-- Next to Members rather than in a group of its own: a squadron is
+           the roster sub-divided, and somebody looking for one looks where
+           the people are. -->
+      <NavItem
+        v-if="showSquadronsNav"
+        :to="{ name: 'fleet-squadrons', params: { slug: currentFleet.slug } }"
+        :label="t('nav.fleets.squadrons.index')"
+        :active="squadronsNavActive"
+        icon="fa-duotone fa-shield-halved"
       />
 
       <!-- What the fleet holds between its members: the recipes they can make

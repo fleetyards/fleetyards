@@ -162,6 +162,17 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A member has no single squadron join date across the whole fleet, so the
+  # fleet roster does not offer the sort -- it used to, and answered with a
+  # SQL error.
+  test "GET /fleets/:slug/members does not sort by a squadron join date" do
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/members", params: {q: {s: "squadronMembershipCreatedAt asc"}}
+
+    assert_response :bad_request
+  end
+
   # Only the two members the request does not authenticate as, because
   # `set_last_active_at` refreshes the requesting user's own timestamp.
   test "GET /fleets/:slug/members sorts by lastActiveAt via the s param" do
@@ -236,5 +247,46 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
+  end
+
+  # The badge is cached with the member, so a squadron renamed after the first
+  # read must still reach the roster.
+  test "GET /fleets/:slug/members shows a squadron's new name after it is renamed" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Old Name")
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
+    sign_in @admin
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+      squadron.update!(name: "New Name")
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+
+      badge = parsed_body["items"].find { |entry| entry["username"] == @member.username }["squadrons"].first
+      assert_equal "New Name", badge["name"]
+    end
+  end
+
+  # Reading the roster and reading squadrons are separate privileges, and the
+  # badges are the squadrons.
+  test "GET /fleets/:slug/members leaves out squadrons for a reader who may not see them" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
+    role = create(:fleet_role, fleet: @fleet, name: "Roster Only", resource_access: ["fleet:memberships:read"])
+    reader = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: reader, fleet_role: role)
+
+    sign_in reader
+    get "/api/v1/fleets/#{@fleet.slug}/members"
+    assert_response :ok
+    assert(response.parsed_body["items"].none? { |entry| entry.key?("squadrons") })
+
+    sign_in @admin
+    get "/api/v1/fleets/#{@fleet.slug}/members"
+    badge = response.parsed_body["items"].find { |entry| entry["username"] == @member.username }["squadrons"]
+    assert_equal [squadron.slug], badge.pluck("slug")
   end
 end

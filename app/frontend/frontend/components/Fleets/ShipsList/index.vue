@@ -15,6 +15,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
 import FleetVehiclesTable from "@/frontend/components/Fleets/VehiclesTable/index.vue";
 import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
+import SquadronFilter from "@/frontend/components/Fleets/Squadrons/SquadronFilter/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -180,8 +181,10 @@ const fleetVehiclesQueryParams = computed(() => {
 
 const fleetSlug = computed(() => route.params.slug as string);
 
+const statsQueryParams = computed(() => ({ q: getQuery() }));
+
 const { data: fleetStats, refetch: refetchFleetStats } =
-  useFleetVehiclesStatsQuery(fleetSlug);
+  useFleetVehiclesStatsQuery(fleetSlug, statsQueryParams);
 
 const { data: modelCounts, refetch: refetchModelCounts } =
   useFleetModelCountsQuery(fleetSlug, fleetVehiclesQueryParams);
@@ -294,6 +297,10 @@ useSubscription({
         :hide-loading="fleetchartVisible || !gridView"
         :hide-empty="!gridView"
       >
+        <template #actions-left>
+          <SquadronFilter :fleet="props.fleet" />
+        </template>
+
         <template #actions-right>
           <Btn
             :aria-label="t('actions.models.openTableConfiguration')"

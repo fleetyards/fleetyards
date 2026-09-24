@@ -7,6 +7,7 @@ import type {
   TokenParams,
   UsernameParams,
   IdParams,
+  SquadronParams,
 } from "@/types/route-helpers";
 
 type FrontendSimpleRoutes =
@@ -86,6 +87,8 @@ export type FrontendRouteLocation =
   // Fleets (slug)
   | ParamRoute<"fleet", SlugParams>
   | ParamRoute<"fleet-ships", SlugParams>
+  | ParamRoute<"fleet-squadron", SquadronParams>
+  | ParamRoute<"fleet-squadron-members", SquadronParams>
   | ParamRoute<"fleet-fleetchart", SlugParams>
   | ParamRoute<"fleet-members", SlugParams>
   | ParamRoute<"fleet-members-index", SlugParams>

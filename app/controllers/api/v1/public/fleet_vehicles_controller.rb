@@ -25,9 +25,10 @@ module Api
         end
 
         def index
-          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+          scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
           scope = scope.where(loaner: loaner_included?)
+          scope = narrow_to_squadrons(scope)
 
           normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
@@ -79,18 +80,29 @@ module Api
             .all
         end
 
-        def fleetchart
-          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+        # See the fleet's own list for why an empty list is not the same as no
+        # filter at all.
+        #
+        # This list names every ship's owner, so narrowed to a squadron it is
+        # that squadron's roster -- and a roster is only for a reader the fleet
+        # shows its members to. The stats take the same filter freely: a count
+        # names nobody.
+        private def narrow_to_squadrons(scope)
+          if vehicle_query_params["squadron_slug_in"].present?
+            authorize! @fleet, to: :show_members?, with: ::Public::FleetPolicy
+          end
 
-          scope = scope.where(loaner: loaner_included?)
+          user_ids = for_squadrons(@fleet)
 
-          @q = scope.ransack(vehicle_query_params)
-          @vehicles = Vehicle.where(
-            Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
-          )
-            .includes(VEHICLE_RENDER_INCLUDES)
-            .joins(:model)
-            .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+          return scope if user_ids.nil?
+
+          scope.where(user_id: user_ids)
+        end
+
+        # The ships the list starts from. `embed` is the fleet's own surface and
+        # keeps the whole fleet deliberately.
+        private def vehicle_scope
+          @fleet.vehicles
         end
 
         private def set_fleet

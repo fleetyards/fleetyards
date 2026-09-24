@@ -4,14 +4,16 @@
 class FleetContractAssignmentPolicy < FleetBasePolicy
   authorize :fleet_contract, optional: true
 
+  # The crew is part of the contract, so it is read on the terms the contract
+  # is -- a squadron's job does not list its people to the rest of the fleet.
   def index?
-    contract_policy.index?
+    contract_policy.show?
   end
 
-  # Asking to join needs no more than being able to see the board. The lead
+  # Asking to join needs no more than being able to see the contract. The lead
   # decides, not the privilege system.
   def create?
-    return false unless contract_policy.index?
+    return false unless contract_policy.show?
     return false unless contract.in_progress?
 
     contract.accepting_crew?

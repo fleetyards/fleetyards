@@ -14,6 +14,8 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
+import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibility";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -53,6 +55,9 @@ const { defineField, handleSubmit } = useForm({
     name: props.inventory?.name ?? "",
     description: props.inventory?.description ?? "",
     visibility: props.inventory?.visibility ?? "members_only",
+    fleetSquadronIds: (props.inventory?.fleetSquadrons ?? []).map(
+      (squadron) => squadron.id,
+    ),
     location: props.inventory?.location ?? "",
     image: undefined as string | undefined,
     imagePreset: props.inventory?.imagePreset ?? null,
@@ -87,19 +92,38 @@ const defaultImage = computed(() => {
   return inventoryDefaultImage(props.inventory as InventoryPanelRecord);
 });
 const [visibility, visibilityProps] = defineField("visibility");
+const [fleetSquadronIds] = defineField("fleetSquadronIds");
+
+// The squadron list is the other half of the squadron visibility, so it is
+// only asked for when that is what is chosen.
+const restrictedToSquadrons = computed(
+  () => visibility.value === "squadron_only",
+);
 const [location, locationProps] = defineField("location");
 const [managedBy] = defineField("managedBy");
 
-const visibilityOptions: FilterOption[] = [
-  {
-    value: "members_only",
-    label: t("labels.logistics.visibilities.members_only"),
-  },
-  {
-    value: "officers_only",
-    label: t("labels.logistics.visibilities.officers_only"),
-  },
-];
+const { withSquadronChoice } = useSquadronVisibility(
+  () => props.fleet,
+  "squadron_only",
+  visibility,
+);
+
+const visibilityOptions = computed<FilterOption[]>(() =>
+  withSquadronChoice([
+    {
+      value: "members_only",
+      label: t("labels.logistics.visibilities.members_only"),
+    },
+    {
+      value: "officers_only",
+      label: t("labels.logistics.visibilities.officers_only"),
+    },
+    {
+      value: "squadron_only",
+      label: t("labels.logistics.visibilities.squadron_only"),
+    },
+  ]),
+);
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {
@@ -126,7 +150,13 @@ const onSubmit = handleSubmit(async (values) => {
   const data = {
     name: values.name,
     description: values.description || undefined,
-    visibility: values.visibility as "members_only" | "officers_only",
+    visibility: values.visibility as
+      "members_only" | "officers_only" | "squadron_only",
+    // Cleared when the visibility is not the squadron one, so switching away
+    // does not leave a restriction the form no longer shows.
+    fleetSquadronIds: restrictedToSquadrons.value
+      ? (values.fleetSquadronIds ?? [])
+      : [],
     location: values.location || undefined,
     // Passed through rather than coerced: `undefined` keeps what is attached,
     // `null` is the field saying it was cleared, and a signed id replaces it.
@@ -228,6 +258,11 @@ const onSubmit = handleSubmit(async (values) => {
         :options="visibilityOptions"
         :label="t('labels.logistics.visibility')"
         :searchable="false"
+      />
+      <SquadronSelect
+        v-if="restrictedToSquadrons"
+        v-model="fleetSquadronIds"
+        :fleet="props.fleet"
       />
       <BaseSelect
         v-model="managedBy"

@@ -49,6 +49,19 @@
           "worldmap": "Carte du monde",
           "starmap": "Carte stellaire"
         },
+        "squadrons": {
+          "index": "Escadrons",
+          "overview": "Aperçu",
+          "members": "Membres",
+          "create": {
+            "details": "Détails",
+            "appearance": "Apparence"
+          },
+          "edit": {
+            "details": "Détails",
+            "appearance": "Apparence"
+          }
+        },
         "stats": "Statistiques",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +90,7 @@
           "fleet": "Paramètres de Flotte",
           "membership": "Paramètres d'Adhésion",
           "roles": "Rôles",
+          "squadrons": "Escadrons",
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendrier",
@@ -143,10 +157,12 @@
         "media": "Médias",
         "charts": "Graphiques",
         "chips": "Chips",
+        "squadrons": "Escadrons",
         "groups": {
           "foundations": "Fondations",
           "data": "Données",
-          "feedback": "Retours"
+          "feedback": "Retours",
+          "features": "Fonctionnalités"
         },
         "notificationCenter": "Centre de notifications",
         "themes": "Thèmes"

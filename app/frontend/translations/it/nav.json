@@ -49,6 +49,19 @@
           "worldmap": "Mappa mondiale",
           "starmap": "Mappa stellare"
         },
+        "squadrons": {
+          "index": "Squadroni",
+          "overview": "Panoramica",
+          "members": "Membri",
+          "create": {
+            "details": "Dettagli",
+            "appearance": "Aspetto"
+          },
+          "edit": {
+            "details": "Dettagli",
+            "appearance": "Aspetto"
+          }
+        },
         "stats": "Statistiche",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +90,7 @@
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
           "roles": "Ruoli",
+          "squadrons": "Squadroni",
           "notifications": "Notifiche",
           "discord": "Discord",
           "calendar": "Calendario",
@@ -143,10 +157,12 @@
         "media": "Media",
         "charts": "Grafici",
         "chips": "Chips",
+        "squadrons": "Squadroni",
         "groups": {
           "foundations": "Fondamenti",
           "data": "Dati",
-          "feedback": "Feedback"
+          "feedback": "Feedback",
+          "features": "Funzionalità"
         },
         "notificationCenter": "Centro notifiche",
         "themes": "Temi"

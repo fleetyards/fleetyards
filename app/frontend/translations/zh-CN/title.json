@@ -57,6 +57,19 @@
           "worldmap": "%{fleet} 成员世界地图",
           "starmap": "%{fleet} 成员星图"
         },
+        "squadrons": {
+          "index": "%{fleet} 中队",
+          "overview": "%{fleet} 中队概览",
+          "members": "%{fleet} 中队成员",
+          "create": {
+            "details": "创建中队 - %{fleet}",
+            "appearance": "中队外观 - %{fleet}"
+          },
+          "edit": {
+            "details": "编辑中队 - %{fleet}",
+            "appearance": "中队外观 - %{fleet}"
+          }
+        },
         "stats": "%{fleet} 统计",
         "blueprints": "%{fleet} 的蓝图",
         "logistics": {
@@ -96,6 +109,7 @@
           "fleet": "%{fleet} 设置",
           "membership": "%{fleet} 成员资格",
           "roles": "%{fleet} 角色",
+          "squadrons": "%{fleet} 中队",
           "notifications": "%{fleet} 通知设置",
           "discord": "%{fleet} Discord 设置",
           "calendar": "%{fleet} 日历设置",
@@ -154,7 +168,7 @@
       "privacyPolicy": "隐私政策",
       "cookiePolicy": "Cookie政策",
       "visualTests": {
-        "blueprints": "蓝图",
+        "blueprints": "蓝图 - 视觉测试",
         "index": "视觉测试",
         "panels": "面板 - 视觉测试",
         "buttons": "按钮 - 视觉测试",
@@ -171,7 +185,9 @@
         "supportHint": "支持提示 - 视觉测试",
         "media": "媒体 - 视觉测试",
         "charts": "图表 - 视觉测试",
+        "themes": "主题 - 视觉测试",
         "chips": "Chips - 视觉测试",
+        "squadrons": "中队 - 视觉测试",
         "notificationCenter": "通知中心 - 视觉测试"
       },
       "admin": {
@@ -348,9 +364,6 @@
       },
       "blueprints": {
         "index": "蓝图"
-      },
-      "missions": {
-        "index": "任务"
       },
       "missions": {
         "index": "任务"

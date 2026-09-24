@@ -28,11 +28,12 @@ module Api
       def index
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+        scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
         scope = scope.where(loaner: loaner_included?)
 
         scope = scope.where(user_id: for_members) if for_members.present?
+        scope = narrow_to_squadrons(scope)
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
@@ -86,9 +87,10 @@ module Api
       def fleetchart
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
+        scope = vehicle_scope.includes(VEHICLE_RENDER_INCLUDES)
 
         scope = scope.where(loaner: loaner_included?)
+        scope = narrow_to_squadrons(scope)
 
         @q = scope.ransack(vehicle_query_params)
         @vehicles = Vehicle.where(
@@ -100,11 +102,12 @@ module Api
       end
 
       private def export_vehicles
-        scope = @fleet.vehicles
+        scope = vehicle_scope
 
         scope = scope.where(loaner: loaner_included?)
 
         scope = scope.where(user_id: for_members) if for_members.present?
+        scope = narrow_to_squadrons(scope)
 
         vehicle_query_params["sorts"] = "model_name asc"
 
@@ -123,6 +126,24 @@ module Api
             {user: {avatar_attachment: :blob}}
           )
           .joins(:model)
+      end
+
+      # `nil` means no squadron was named and the scope is left alone; an empty
+      # list means the named squadrons hold nobody, which has to answer "no
+      # ships" rather than widening back to the whole fleet.
+      private def narrow_to_squadrons(scope)
+        user_ids = for_squadrons(@fleet)
+
+        return scope if user_ids.nil?
+
+        scope.where(user_id: user_ids)
+      end
+
+      # The ships every action here starts from. A seam rather than
+      # `@fleet.vehicles` inline, so a subclass scoped to part of the fleet --
+      # `FleetSquadronVehiclesController` -- narrows all of them at once.
+      private def vehicle_scope
+        @fleet.vehicles
       end
 
       private def set_fleet

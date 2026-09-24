@@ -324,6 +324,16 @@ en:
           attributes:
             managed_by:
               not_a_member: must be an accepted member of this fleet
+        fleet_squadron:
+          attributes:
+            team:
+              conflicting_members: "cannot be turned off while %{members} are also in another squadron"
+        fleet_squadron_membership:
+          attributes:
+            fleet_membership:
+              not_a_member: "must be an accepted member of this fleet"
+            fleet_squadron:
+              exclusive_conflict: "conflicts with %{squadron} — a member belongs to one squadron unless it is a team"
         fleet_role:
           attributes:
             base:

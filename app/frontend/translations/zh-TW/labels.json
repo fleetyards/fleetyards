@@ -479,11 +479,35 @@
             "invites": "邀請"
           }
         },
+        "squadrons": {
+          "index": "中隊",
+          "name": "名稱",
+          "shortDescription": "簡短描述",
+          "shortDescriptionHint": "一兩行，顯示在卡片上",
+          "description": "描述",
+          "descriptionHint": "中隊頁面上的完整文字",
+          "noDescription": "尚未新增描述。",
+          "icon": "圖示",
+          "iconHint": "正方形圖片，以圓形顯示",
+          "team": "小隊",
+          "teamHint": "小隊對所有人開放；否則成員只能屬於一個中隊",
+          "restrictedToHint": "只有這些中隊可見",
+          "blockedBy": "已在 %{squadron} 中隊中",
+          "color": "顏色",
+          "colorSuggestions": "取自圖示：",
+          "memberCount": "%{count} 位成員",
+          "members": "成員",
+          "joinedAt": "加入中隊時間",
+          "searchMembers": "搜尋成員",
+          "availableMembers": "可新增的成員",
+          "selectedMembers": "已選擇 %{count} 位"
+        },
         "roles": {
           "permanent": "永久",
           "privilegeGroups": {
             "fleet": "艦隊",
             "memberships": "成員",
+            "squadrons": "中隊",
             "invites": "邀請",
             "vehicles": "載具",
             "blueprints": "藍圖",
@@ -507,6 +531,12 @@
             "fleet:memberships:update": "更新成員",
             "fleet:memberships:delete": "移除成員",
             "fleet:memberships:manage": "管理成員",
+            "fleet:squadrons:read": "檢視中隊",
+            "fleet:squadrons:create": "建立中隊",
+            "fleet:squadrons:update": "編輯中隊",
+            "fleet:squadrons:delete": "刪除中隊",
+            "fleet:squadrons:members:manage": "管理中隊成員",
+            "fleet:squadrons:manage": "管理中隊",
             "fleet:invites:read": "檢視邀請",
             "fleet:invites:create": "建立邀請",
             "fleet:invites:update": "更新邀請",
@@ -615,7 +645,8 @@
           "itemsCount": "記錄數",
           "visibilities": {
             "members_only": "僅限成員",
-            "officers_only": "僅限軍官"
+            "officers_only": "僅限軍官",
+            "squadron_only": "僅中隊"
           }
         },
         "allies": "盟友可見艦船",
@@ -2178,7 +2209,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "僅中隊"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",
@@ -2544,7 +2576,8 @@
           "visibilities": {
             "members": "成員",
             "officers": "幹部",
-            "fleet": "公開"
+            "fleet": "公開",
+            "squadron": "僅中隊"
           },
           "statuses": {
             "draft": "草稿",
@@ -2581,6 +2614,11 @@
           "reward": "報酬",
           "deadline": "截止時間",
           "crewLimit": "隊伍上限",
+          "visibility": "可見性",
+          "visibilities": {
+            "members_only": "所有成員",
+            "squadron_only": "僅中隊"
+          },
           "reimburseExpenses": "報銷開支",
           "from": "取貨地點",
           "to": "交付地點",

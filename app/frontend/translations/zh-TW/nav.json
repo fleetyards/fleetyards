@@ -49,6 +49,19 @@
           "worldmap": "世界地圖",
           "starmap": "星圖"
         },
+        "squadrons": {
+          "index": "中隊",
+          "overview": "總覽",
+          "members": "成員",
+          "create": {
+            "details": "詳細資訊",
+            "appearance": "外觀"
+          },
+          "edit": {
+            "details": "詳細資訊",
+            "appearance": "外觀"
+          }
+        },
         "stats": "統計",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +90,7 @@
           "fleet": "艦隊設定",
           "membership": "成員設定",
           "roles": "角色",
+          "squadrons": "中隊",
           "notifications": "通知",
           "discord": "Discord",
           "calendar": "行事曆",
@@ -143,10 +157,12 @@
         "media": "媒體",
         "charts": "圖表",
         "chips": "Chips",
+        "squadrons": "中隊",
         "groups": {
           "foundations": "基礎",
           "data": "資料",
-          "feedback": "回饋"
+          "feedback": "回饋",
+          "features": "功能"
         },
         "notificationCenter": "通知中心",
         "themes": "主題"

@@ -33,6 +33,7 @@
 #  reward                         :decimal(15, 2)   default(0.0), not null
 #  slug                           :string           not null
 #  title                          :string
+#  visibility                     :integer          default(0), not null
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  created_by_id                  :uuid
@@ -97,6 +98,13 @@ class FleetContract < ApplicationRecord
   has_many :inventory_transfers, dependent: :nullify
 
   enum :kind, KINDS
+
+  include SquadronRestrictable
+
+  # A contract had no visibility of its own -- the privilege gate was the whole
+  # of it -- so `members_only` is what it has always done, and `squadron_only`
+  # is the new half.
+  enum :visibility, {members_only: 0, squadron_only: 1}
 
   has_one_attached :cover_image
   validates :cover_image, no_vector_image: true

@@ -72,6 +72,39 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
       "blueprint queries grew from #{for_one} to #{for_many} between 2 and 10 recipes"
   end
 
+  # Each squadron's size is counted outside the cached fragment, so the roster
+  # has to be preloaded or the list issues one count per squadron.
+  test "the squadrons index issues the same number of queries for one squadron as for many" do
+    Flipper.enable("fleet_squadrons")
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    sign_in admin
+
+    squadron_with_members = lambda do
+      squadron = create(:fleet_squadron, fleet:)
+      2.times do
+        create(:fleet_squadron_membership,
+          fleet_squadron: squadron,
+          fleet_membership: create(:fleet_membership, :accepted, fleet:))
+      end
+    end
+
+    squadron_with_members.call
+    path = "/api/v1/fleets/#{fleet.slug}/squadrons"
+
+    get path
+    assert_response :success
+    for_one = count_queries { get path }
+
+    8.times { squadron_with_members.call }
+    for_many = count_queries { get path }
+
+    assert_response :success
+    assert_equal 9, response.parsed_body["items"].size
+    assert_equal for_one, for_many,
+      "squadron queries grew from #{for_one} to #{for_many} between 1 and 9 squadrons"
+  end
+
   test "the models index issues the same number of queries for one ship as for many" do
     create(:model)
     get "/api/v1/models"

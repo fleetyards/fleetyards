@@ -207,6 +207,15 @@
         "leave": "Quitter la flotte %{fleet}",
         "createInviteUrl": "Créer un lien d'invitation",
         "inviteMember": "Inviter un nouveau membre",
+        "squadrons": {
+          "create": "Créer un escadron",
+          "addMember": "Ajouter des membres",
+          "removeMember": "Retirer de l'escadron",
+          "addMembers": "Ajouter %{count}",
+          "viewMembers": "Membres de l'escadron",
+          "viewShips": "Vaisseaux de l'escadron",
+          "viewStats": "Statistiques de l'escadron"
+        },
         "manageInvites": "Invitations",
         "worldmap": "Carte du monde",
         "starmap": "Carte stellaire",

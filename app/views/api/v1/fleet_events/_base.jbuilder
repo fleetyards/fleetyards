@@ -67,3 +67,23 @@ json.parent_event_slug local_assigns[:parent_event_slug]
 json.viewer_event_role local_assigns[:viewer_event_role]
 
 json.partial! "api/shared/dates", record: fleet_event
+
+# The squadrons this is held to, if any. The same ref the roster badges with,
+# so a list can draw the emblem without a second request.
+json.fleet_squadrons do
+  json.array! fleet_event.fleet_squadrons.order(team: :asc, rank: :asc) do |squadron|
+    json.id squadron.id
+    json.name squadron.name
+    json.slug squadron.slug
+    json.color squadron.color
+    json.team squadron.team
+
+    if squadron.icon.attached?
+      json.icon do
+        json.partial! "api/v1/shared/file", record: squadron, attr: :icon
+      end
+    else
+      json.icon nil
+    end
+  end
+end

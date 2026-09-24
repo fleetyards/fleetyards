@@ -6,11 +6,12 @@ module V1
       class FleetInventoryVisibilityEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = %w[members_only officers_only].freeze
+        VALUES = ::FleetInventory.visibilities.keys.freeze
 
         schema({
           type: :string,
           enum: VALUES,
+          "x-extensible-enum": VALUES,
           "x-enumNames": VALUES.map { |value| transform_enum_key(value) }
         })
       end

@@ -22,6 +22,7 @@ class NoVectorImageValidatorTest < ActiveSupport::TestCase
       "FleetInventory#image" => [create(:fleet_inventory), :image],
       "InventoryItem#image" => [create(:inventory_item), :image],
       "FleetInventoryItem#image" => [create(:fleet_inventory_item), :image],
+      "FleetSquadron#icon" => [create(:fleet_squadron), :icon],
       "Imports::HangarImport#import" => [Imports::HangarImport.new(user:), :import]
     }
   end

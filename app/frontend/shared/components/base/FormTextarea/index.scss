@@ -1,4 +1,28 @@
 .base-textarea {
+  /* The message and the count share the line under the field: one is the left
+     of the row and the other its right, so a field that has both does not
+     grow a second line for them. */
+  &__footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__counter {
+    flex-shrink: 0;
+    margin-top: var(--field-message-gap, 4px);
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-text-dim);
+    font-variant-numeric: tabular-nums;
+
+    /* The API rejects it from here on, so it says so before the save does. */
+    &--over {
+      color: var(--color-danger, #dc3545);
+    }
+  }
+
   /*
    * The message, below the control. Its line is not held open: five fields with
    * a permanently reserved line put 120px of almost always empty space into a
@@ -10,6 +34,8 @@
    * own, so a message that wraps animates exactly as far as it needs.
    */
   &__error {
+    flex: 1;
+    min-width: 0;
     display: grid;
     grid-template-rows: 0fr;
     margin: 0;

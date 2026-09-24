@@ -50,6 +50,10 @@ export const useFleetNavAccess = (
     () => membership.value?.capabilities?.readBlueprints ?? false,
   );
 
+  const hasSquadronsAccess = computed(
+    () => membership.value?.capabilities?.readSquadrons ?? false,
+  );
+
   const hasContractsAccess = computed(() =>
     hasResourceAccess(
       FleetRoleResourceAccessEnum.FLEET_MANAGE,
@@ -92,6 +96,13 @@ export const useFleetNavAccess = (
   // top-level rather than joining the Assets group.
   const showShipsNav = computed(
     () => !!membership.value || !!toValue(fleet)?.publicFleet,
+  );
+
+  const showSquadronsNav = computed(
+    () =>
+      !!membership.value &&
+      hasSquadronsAccess.value &&
+      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_SQUADRONS),
   );
 
   const showAlliesNav = computed(
@@ -148,6 +159,10 @@ export const useFleetNavAccess = (
     ["fleet-ships", "fleet-fleetchart"].includes(String(route.name ?? "")),
   );
 
+  const squadronsNavActive = computed(() =>
+    String(route.name ?? "").startsWith("fleet-squadron"),
+  );
+
   const contractsNavActive = computed(() =>
     String(route.name ?? "").startsWith("fleet-contract"),
   );
@@ -199,6 +214,8 @@ export const useFleetNavAccess = (
     blueprintsNavActive,
     showLogisticsNav,
     logisticsNavActive,
+    showSquadronsNav,
+    squadronsNavActive,
     showAlliesNav,
     showContractsNav,
     showEventsNav,

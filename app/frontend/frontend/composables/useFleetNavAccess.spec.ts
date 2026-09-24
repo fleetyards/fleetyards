@@ -276,6 +276,46 @@ describe("useFleetNavAccess", () => {
     expect(useFleetNavAccess(fleetWith()).eventsNavActive.value).toBe(true);
   });
 
+  it("hides squadrons from someone who is not a member", () => {
+    const fleet = fleetWith(FeatureFlagName.FLEET_SQUADRONS);
+
+    expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(false);
+  });
+
+  it("hides squadrons from a member whose role cannot read them", () => {
+    membership.value = memberAbleTo("readMembers");
+
+    const fleet = fleetWith(FeatureFlagName.FLEET_SQUADRONS);
+
+    expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(false);
+  });
+
+  it("hides squadrons while the fleet has no squadrons flag", () => {
+    membership.value = memberAbleTo("readSquadrons");
+
+    expect(useFleetNavAccess(fleetWith()).showSquadronsNav.value).toBe(false);
+  });
+
+  it("shows squadrons to a member who may read them in a flagged fleet", () => {
+    membership.value = memberAbleTo("readSquadrons");
+
+    const fleet = fleetWith(FeatureFlagName.FLEET_SQUADRONS);
+
+    expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(true);
+  });
+
+  // The detail route is `fleet-squadron`, the list `fleet-squadrons`; one
+  // prefix has to light the tab on both.
+  it("marks the squadrons tab active on a squadron detail route", () => {
+    route.value = {
+      name: "fleet-squadron",
+      params: { slug: "merc", squadron: "combat-wing" },
+      path: "/fleets/merc/squadrons/combat-wing",
+    };
+
+    expect(useFleetNavAccess(undefined).squadronsNavActive.value).toBe(true);
+  });
+
   it("marks the contracts tab active on a contract detail route", () => {
     route.value = {
       name: "fleet-contract-edit",

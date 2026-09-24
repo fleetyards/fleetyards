@@ -21,6 +21,27 @@ class Api::V1::FleetEventSignupsUpsertTest < ActionDispatch::IntegrationTest
     assert_equal "interested", JSON.parse(response.body)["status"]
   end
 
+  test "squadron visibility protects both event and slot signups" do
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    @event.update!(visibility: "squadron", fleet_squadrons: [squadron])
+
+    assert_no_difference -> { FleetEventSignup.count } do
+      post "/api/v1/fleets/#{@fleet.slug}/events/#{@event.slug}/signup", params: {}, as: :json
+      assert_response :forbidden
+
+      post "/api/v1/fleet-event-slots/#{@slot.id}/signup", params: {status: "confirmed"}, as: :json
+      assert_response :forbidden
+    end
+
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
+
+    post "/api/v1/fleets/#{@fleet.slug}/events/#{@event.slug}/signup", params: {}, as: :json
+    assert_response :created
+    post "/api/v1/fleet-event-slots/#{@slot.id}/signup", params: {status: "confirmed"}, as: :json
+    assert_response :success
+  end
+
   test "POST /fleets/:fleet/events/:slug/signup upserts existing event-level signup to a different status" do
     post "/api/v1/fleets/#{@fleet.slug}/events/#{@event.slug}/signup", params: {status: "interested"}, as: :json
     assert_equal 201, response.status

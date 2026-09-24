@@ -10212,6 +10212,7 @@ components:
       - equipment
       - commodities
       - item_prices
+      - missions
       - manufacturers
       - vehicles
       - images
@@ -10245,6 +10246,7 @@ components:
       - EQUIPMENT
       - COMMODITIES
       - ITEM_PRICES
+      - MISSIONS
       - MANUFACTURERS
       - VEHICLES
       - IMAGES
@@ -13678,9 +13680,11 @@ components:
       enum:
       - members_only
       - officers_only
+      - squadron_only
       x-enumNames:
       - MEMBERS_ONLY
       - OFFICERS_ONLY
+      - SQUADRON_ONLY
       title: FleetInventoryVisibilityEnum
     FleetMembershipSortEnum:
       type: string
@@ -19385,6 +19389,7 @@ components:
       - FleetInventoryPosition
       - FleetMembership
       - FleetRole
+      - FleetSquadron
       - Inventory
       - InventoryItem
       - InventoryPosition
@@ -19409,6 +19414,7 @@ components:
       - FLEET_INVENTORY_POSITION
       - FLEET_MEMBERSHIP
       - FLEET_ROLE
+      - FLEET_SQUADRON
       - INVENTORY
       - INVENTORY_ITEM
       - INVENTORY_POSITION

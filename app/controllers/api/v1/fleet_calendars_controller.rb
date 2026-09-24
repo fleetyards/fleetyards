@@ -4,6 +4,7 @@ module Api
   module V1
     class FleetCalendarsController < ::Api::BaseController
       include FleetSubscriptionConcern
+      include SquadronVisibilityConcern
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
@@ -28,6 +29,12 @@ module Api
         recurring = @fleet.fleet_events
           .where(archived_at: nil, recurring: true)
           .where("starts_at <= ?", to)
+
+        # The same events the list shows this reader, and no more.
+        unless allowed_to?(:manage?, @fleet, with: FleetEventPolicy)
+          one_off = narrow_to_squadron_access(one_off)
+          recurring = narrow_to_squadron_access(recurring)
+        end
 
         entries = one_off.map { |e| [e, nil] }
         recurring.each do |event|
@@ -77,8 +84,11 @@ module Api
           return
         end
 
+        # The token is the fleet's, not a reader's, so there is nobody to ask
+        # which squadrons may see what: an event held to squadrons stays out.
         now = Time.current
         events = @fleet.fleet_events
+          .not_squadron_restricted
           .includes(:fleet_event_occurrence_states)
           .where(archived_at: nil)
           .starting_after(now - FEED_PAST_HORIZON)

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup generic="T">
+import Sortable from "sortablejs";
 import { useReportListGeometry } from "@/shared/composables/useListGeometry";
 import type { ComponentPublicInstance } from "vue";
 
@@ -13,12 +14,24 @@ type Props = {
   primaryKey: keyof T;
   gridBase?: "2" | "3";
   filterVisible?: boolean;
+  // Drag to rearrange. The handle is a selector inside the card, so the card
+  // itself stays a link rather than becoming something you cannot click.
+  sortable?: boolean;
+  sortHandle?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   gridBase: "3",
   filterVisible: false,
+  sortable: false,
+  sortHandle: undefined,
 });
+
+// The keys in the order they now sit in. The caller owns the list, so it is the
+// one that writes the new order and says what to do if that fails.
+// The new order, and the key of the record that was dragged: an order alone
+// cannot say which of two swapped neighbours moved.
+const emit = defineEmits<{ sort: [keys: string[], moved: string] }>();
 
 const gridClasses = computed(() => {
   if (props.gridBase === "3") {
@@ -70,6 +83,59 @@ const { report } = useReportListGeometry("card", cells, {
 // The filter panel takes a column away from the grid, which makes every card in
 // it narrower and most of them taller.
 watch(() => props.filterVisible, report);
+
+let sortableInstance: Sortable | null = null;
+
+const initSortable = () => {
+  sortableInstance?.destroy();
+  sortableInstance = null;
+
+  const container = cells.value?.$el as HTMLElement | undefined;
+
+  if (!props.sortable || !container) {
+    return;
+  }
+
+  sortableInstance = Sortable.create(container, {
+    animation: 150,
+    handle: props.sortHandle,
+    draggable: ".base-grid__cell",
+    onEnd: (event) => {
+      const { item, oldIndex, newIndex } = event;
+
+      if (oldIndex === undefined || newIndex === undefined) return;
+      if (oldIndex === newIndex) return;
+
+      /*
+       * Sortable moves the node itself, and this list is a transition-group --
+       * two things writing the same children. So the move is undone here and
+       * the order goes out as state instead: the caller re-renders it, and the
+       * cards animate between the two positions rather than jumping because
+       * Vue's idea of where they are disagrees with the DOM's.
+       */
+      item.remove();
+      container.insertBefore(item, container.children[oldIndex] ?? null);
+
+      const keys = props.records.map((record) => String(primaryValue(record)));
+      const [moved] = keys.splice(oldIndex, 1);
+      keys.splice(newIndex, 0, moved);
+
+      emit("sort", keys, moved);
+    },
+  });
+};
+
+watch(
+  [() => props.sortable, () => props.sortHandle, () => props.records.length],
+  () => void nextTick(initSortable),
+);
+
+onMounted(() => void nextTick(initSortable));
+
+onUnmounted(() => {
+  sortableInstance?.destroy();
+  sortableInstance = null;
+});
 </script>
 
 <template>

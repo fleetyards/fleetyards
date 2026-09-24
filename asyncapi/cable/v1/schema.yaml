@@ -1412,6 +1412,10 @@ components:
           type: string
         guilded:
           type: string
+        squadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
         shipsFilter:
           "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
         hangarGroupId:
@@ -1508,6 +1512,16 @@ components:
           type: boolean
         destroyMembers:
           type: boolean
+        readSquadrons:
+          type: boolean
+        createSquadrons:
+          type: boolean
+        updateSquadrons:
+          type: boolean
+        destroySquadrons:
+          type: boolean
+        manageSquadronMembers:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -1548,6 +1562,11 @@ components:
       - createMembers
       - updateMembers
       - destroyMembers
+      - readSquadrons
+      - createSquadrons
+      - updateSquadrons
+      - destroySquadrons
+      - manageSquadronMembers
       - readInvites
       - createInvites
       - destroyInvites
@@ -1621,6 +1640,12 @@ components:
       - fleet:memberships:update
       - fleet:memberships:delete
       - fleet:memberships:manage
+      - fleet:squadrons:read
+      - fleet:squadrons:create
+      - fleet:squadrons:update
+      - fleet:squadrons:delete
+      - fleet:squadrons:members:manage
+      - fleet:squadrons:manage
       - fleet:invites:read
       - fleet:invites:create
       - fleet:invites:update
@@ -1678,6 +1703,12 @@ components:
       - FLEET_MEMBERSHIPS_UPDATE
       - FLEET_MEMBERSHIPS_DELETE
       - FLEET_MEMBERSHIPS_MANAGE
+      - FLEET_SQUADRONS_READ
+      - FLEET_SQUADRONS_CREATE
+      - FLEET_SQUADRONS_UPDATE
+      - FLEET_SQUADRONS_DELETE
+      - FLEET_SQUADRONS_MEMBERS_MANAGE
+      - FLEET_SQUADRONS_MANAGE
       - FLEET_INVITES_READ
       - FLEET_INVITES_CREATE
       - FLEET_INVITES_UPDATE
@@ -1724,6 +1755,35 @@ components:
       - FLEET_PAYOUTS_DELETE
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
+    FleetSquadronRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type:
+          - string
+          - 'null'
+        team:
+          type: boolean
+        membershipCreatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        icon:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - team
     FuelTank:
       type: object
       properties:

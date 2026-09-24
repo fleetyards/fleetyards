@@ -66,6 +66,14 @@ class FleetMembership < ApplicationRecord
   belongs_to :fleet_role, optional: true
   belongs_to :user, touch: true
 
+  has_many :fleet_squadron_memberships, dependent: :destroy
+  has_many :fleet_squadrons, through: :fleet_squadron_memberships
+
+  # A squadron membership can be added after this association was loaded, so
+  # make the dependent destroy callback read the current rows before deleting
+  # the fleet membership.
+  before_destroy -> { association(:fleet_squadron_memberships).reset }, prepend: true
+
   paginates_per 30
 
   enum :ships_filter,
@@ -82,13 +90,13 @@ class FleetMembership < ApplicationRecord
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
-      "blueprints_filter",
+      "blueprints_filter", "squadron_slug", "squadron_membership_created_at",
       "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["fleet", "fleet_role", "user"]
+    ["fleet", "fleet_role", "user", "fleet_squadrons", "fleet_squadron_memberships"]
   end
 
   validate_enum_attributes :ships_filter, :blueprints_filter
@@ -104,11 +112,21 @@ class FleetMembership < ApplicationRecord
     "lastActiveAt asc", "lastActiveAt desc"
   ]
 
+  # When somebody joined is a question about one squadron, so only that
+  # squadron's roster can sort by it -- across the whole fleet a member has no
+  # single answer, or none.
+  SQUADRON_ROSTER_SORTING_PARAMS = [
+    *ALLOWED_SORTING_PARAMS,
+    "squadronMembershipCreatedAt asc", "squadronMembershipCreatedAt desc"
+  ].freeze
+
   ransack_alias :username, :user_username
   ransack_alias :rsi_handle, :user_rsi_handle
   ransack_alias :last_active_at, :user_last_active_at
   ransack_alias :name, :user_username
   ransack_alias :role, :fleet_role_name
+  ransack_alias :squadron_slug, :fleet_squadrons_slug
+  ransack_alias :squadron_membership_created_at, :fleet_squadron_memberships_created_at
   ransack_alias :state, :aasm_state
 
   before_validation :set_default_ships_filter
@@ -156,6 +174,11 @@ class FleetMembership < ApplicationRecord
     create_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:create"],
     update_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"],
     destroy_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:destroy"],
+    read_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:read"],
+    create_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:create"],
+    update_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:update"],
+    destroy_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:delete"],
+    manage_squadron_members: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:members:manage"],
     read_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:read"],
     create_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:create"],
     destroy_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:delete"],

@@ -250,6 +250,16 @@
           "worldmap": "成员世界地图",
           "starmap": "成员星图"
         },
+        "squadrons": {
+          "index": "中队",
+          "create": "创建中队",
+          "edit": "编辑中队",
+          "formDetails": "详情",
+          "formAppearance": "外观",
+          "teams": "小队",
+          "addMembers": "添加成员",
+          "members": "成员"
+        },
         "stats": "统计",
         "preview": {
           "h1": "舰队预览",
@@ -260,6 +270,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "舰队角色",
+          "squadrons": "舰队中队",
           "notifications": "通知设置",
           "inAppNotifications": "应用内通知",
           "discord": "Discord",
@@ -403,6 +414,8 @@
         "buttons": "按钮",
         "media": "媒体",
         "charts": "图表",
+        "blueprints": "蓝图",
+        "squadrons": "中队",
         "chips": "视觉测试 Chips",
         "events": "活动",
         "typography": "排版",

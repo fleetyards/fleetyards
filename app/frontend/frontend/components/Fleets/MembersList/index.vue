@@ -12,6 +12,7 @@ import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue"
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
@@ -27,9 +28,19 @@ type Props = {
   capabilities?: FleetMembershipCapabilities;
   emptyVisible?: boolean;
   loading?: boolean;
+  // Off on a squadron's own page, where every row carries the same badge and
+  // it would say nothing.
+  showSquadrons?: boolean;
+  showMemberActions?: boolean;
+  squadronSlug?: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  capabilities: undefined,
+  showSquadrons: true,
+  showMemberActions: true,
+  squadronSlug: undefined,
+});
 
 const { t, l, timeDistance } = useI18n();
 
@@ -48,6 +59,20 @@ const onRowClick = (member: FleetMember) => {
     props: { member },
   });
 };
+
+const squadronNames = (member: FleetMember) =>
+  (member.squadrons ?? []).map((squadron) => squadron.name).join(", ");
+
+const joinedAt = (member: FleetMember) =>
+  props.squadronSlug
+    ? member.squadrons?.find((squadron) => squadron.slug === props.squadronSlug)
+        ?.membershipCreatedAt
+    : member.acceptedAt;
+
+const joinedAtColumn = computed(() =>
+  props.squadronSlug ? "squadronMembershipCreatedAt" : "acceptedAt",
+);
+const joinedAtSlot = computed(() => `col-${joinedAtColumn.value}`);
 
 const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   {
@@ -69,8 +94,10 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     width: "10%",
   },
   {
-    name: "acceptedAt",
-    label: t("labels.fleet.members.joined"),
+    name: joinedAtColumn.value,
+    label: props.squadronSlug
+      ? t("labels.fleet.squadrons.joinedAt")
+      : t("labels.fleet.members.joined"),
     width: "15%",
     mobile: false,
     sortable: true,
@@ -103,11 +130,20 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   >
     <template #col-username="{ record }">
       <div class="member-username">
-        <Avatar
-          :avatar="record.avatar?.smallUrl"
-          size="small"
-          :online="onlineFor(record)"
-        />
+        <span class="member-avatar">
+          <Avatar
+            :avatar="record.avatar?.smallUrl"
+            size="small"
+            :online="onlineFor(record)"
+          />
+          <SquadronEmblem
+            v-if="props.showSquadrons && record.squadrons?.length"
+            v-tooltip="squadronNames(record)"
+            :squadron="record.squadrons[0]"
+            :size="18"
+            class="member-avatar-squadron"
+          />
+        </span>
         <div class="member-username-inner">
           <MemberName :member="record" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
@@ -132,9 +168,9 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       {{ record.fleetRole?.name }}
     </template>
 
-    <template #col-acceptedAt="{ record }">
-      <span v-if="record.acceptedAt" v-tooltip="l(record.acceptedAt)">
-        {{ l(record.acceptedAt, "datetime.formats.short") }}
+    <template #[joinedAtSlot]="{ record }">
+      <span v-if="joinedAt(record)" v-tooltip="l(joinedAt(record) as string)">
+        {{ l(joinedAt(record) as string, "datetime.formats.short") }}
       </span>
     </template>
 
@@ -152,7 +188,16 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     </template>
 
     <template #actions="{ record }">
-      <MemberActions :member="record" :capabilities="props.capabilities" />
+      <!-- Whatever the page this list is on adds per row -- taking somebody
+           out of a squadron, on the squadron's own page. Passed through rather
+           than built in, so the removal stays with the page that knows which
+           squadron it is about. -->
+      <slot name="row-actions" :member="record" />
+      <MemberActions
+        v-if="props.showMemberActions"
+        :member="record"
+        :capabilities="props.capabilities"
+      />
     </template>
     <template #empty>
       <Empty :name="t('labels.fleet.members.accepted')" inline />
@@ -175,5 +220,19 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 .rsi-handle-inline {
   font-size: 0.85em;
   opacity: 0.8;
+}
+
+.member-avatar {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+// Overhangs the frame the way the presence dot does, on the corner it leaves
+// free.
+.member-avatar-squadron {
+  position: absolute;
+  left: -4px;
+  bottom: -4px;
 }
 </style>

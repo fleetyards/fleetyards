@@ -6,29 +6,35 @@ module V1
       class FleetMemberQuery
         include OpenapiRuby::Components::Base
 
+        # Shared with FleetSquadronMemberQuery, which adds what only a
+        # squadron's own roster can answer: when somebody joined it.
+        FILTERS = {
+          usernameCont: {type: :string},
+          nicknameCont: {type: :string},
+          nameCont: {type: :string, deprecated: true, description: "Use usernameCont instead"},
+          roleIn: {type: :array, items: {type: :string}},
+          stateIn: {type: :array, items: {type: :string}},
+          squadronSlugIn: {type: :array, items: {type: :string}},
+          acceptedAtGteq: {type: :string, format: :date},
+          acceptedAtLteq: {type: :string, format: :date},
+          invitedAtGteq: {type: :string, format: :date},
+          invitedAtLteq: {type: :string, format: :date},
+          requestedAtGteq: {type: :string, format: :date},
+          requestedAtLteq: {type: :string, format: :date},
+          declinedAtGteq: {type: :string, format: :date},
+          declinedAtLteq: {type: :string, format: :date}
+        }.freeze
+
         schema({
           type: :object,
-          properties: {
-            usernameCont: {type: :string},
-            nicknameCont: {type: :string},
-            nameCont: {type: :string, deprecated: true, description: "Use usernameCont instead"},
-            roleIn: {type: :array, items: {type: :string}},
-            stateIn: {type: :array, items: {type: :string}},
-            acceptedAtGteq: {type: :string, format: :date},
-            acceptedAtLteq: {type: :string, format: :date},
-            invitedAtGteq: {type: :string, format: :date},
-            invitedAtLteq: {type: :string, format: :date},
-            requestedAtGteq: {type: :string, format: :date},
-            requestedAtLteq: {type: :string, format: :date},
-            declinedAtGteq: {type: :string, format: :date},
-            declinedAtLteq: {type: :string, format: :date},
+          properties: FILTERS.merge(
             s: {anyOf: [{
               type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
             }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]},
             sorts: {anyOf: [{
               type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
             }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]}
-          },
+          ),
           additionalProperties: false,
           example: {}
         })

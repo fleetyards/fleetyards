@@ -57,6 +57,19 @@
           "worldmap": "%{fleet} Mitglieder-Weltkarte",
           "starmap": "%{fleet} Mitglieder-Sternenkarte"
         },
+        "squadrons": {
+          "index": "%{fleet} Staffeln",
+          "overview": "Staffelübersicht – %{fleet}",
+          "members": "%{fleet} Staffel-Mitglieder",
+          "create": {
+            "details": "Staffel anlegen – %{fleet}",
+            "appearance": "Staffel-Erscheinungsbild – %{fleet}"
+          },
+          "edit": {
+            "details": "Staffel bearbeiten – %{fleet}",
+            "appearance": "Staffel-Erscheinungsbild – %{fleet}"
+          }
+        },
         "stats": "%{fleet} Statistiken",
         "blueprints": "%{fleet} Baupläne",
         "logistics": {
@@ -96,6 +109,7 @@
           "fleet": "%{fleet} Einstellungen",
           "membership": "%{fleet} Mitgliedschaft",
           "roles": "%{fleet} Rollen",
+          "squadrons": "%{fleet} Staffeln",
           "notifications": "%{fleet} Benachrichtigungseinstellungen",
           "discord": "%{fleet} Discord-Einstellungen",
           "calendar": "%{fleet} Kalendereinstellungen",
@@ -154,7 +168,7 @@
       "privacyPolicy": "Datenschutzrichtlinie",
       "cookiePolicy": "Cookie-Richtlinie",
       "visualTests": {
-        "blueprints": "Baupläne",
+        "blueprints": "Baupläne - Visuelle Tests",
         "index": "Visuelle Tests",
         "panels": "Panels - Visuelle Tests",
         "buttons": "Buttons - Visuelle Tests",
@@ -171,7 +185,9 @@
         "supportHint": "Support-Hinweis - Visuelle Tests",
         "media": "Medien - Visuelle Tests",
         "charts": "Diagramme - Visuelle Tests",
+        "themes": "Themes - Visuelle Tests",
         "chips": "Chips - Visuelle Tests",
+        "squadrons": "Staffeln - Visuelle Tests",
         "notificationCenter": "Benachrichtigungszentrale - Visuelle Tests"
       },
       "admin": {
@@ -348,9 +364,6 @@
       },
       "blueprints": {
         "index": "Baupläne"
-      },
-      "missions": {
-        "index": "Missionen"
       },
       "missions": {
         "index": "Missionen"

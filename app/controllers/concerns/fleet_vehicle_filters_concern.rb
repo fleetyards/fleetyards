@@ -8,7 +8,7 @@ module FleetVehicleFiltersConcern
       :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :loaner_eq, :s, :sorts,
       model_slug_in: [], manufacturer_in: [], classification_in: [], classification_not_in: [], focus_in: [],
       size_in: [], price_in: [], pledge_price_in: [],
-      production_status_in: [], sorts: [], member_in: []
+      production_status_in: [], sorts: [], member_in: [], squadron_slug_in: []
     ]).fetch(:q, {})
   end
 
@@ -74,5 +74,33 @@ module FleetVehicleFiltersConcern
     return if vehicle_query_params[:member_in].blank?
 
     @for_members ||= User.where(username: vehicle_query_params[:member_in]).pluck(:id)
+  end
+
+  # The owners whose ships a squadron filter admits. Taken off the fleet rather
+  # than the slugs alone, so one fleet's filter cannot reach another's squadron.
+  #
+  # An empty array when the named squadrons hold nobody, which is what makes the
+  # filter answer "no ships" rather than silently widening to the whole fleet --
+  # the same reason `FleetSquadron#member_user_ids` returns one.
+  #
+  # The param is deleted so ransack never sees it, which is why the answer is
+  # memoised -- `nil` included. Asked again, the params alone would say that no
+  # squadron was named and the second caller would count the whole fleet.
+  private def for_squadrons(fleet)
+    return @for_squadrons if defined?(@for_squadrons)
+
+    slugs = vehicle_query_params.delete("squadron_slug_in")
+
+    @for_squadrons = if slugs.present?
+      ::FleetMembership
+        .kept
+        .accepted
+        .where(fleet_id: fleet.id)
+        .joins(:fleet_squadrons)
+        .where(fleet_squadrons: {slug: slugs})
+        .distinct
+        .pluck(:user_id)
+        .compact
+    end
   end
 end

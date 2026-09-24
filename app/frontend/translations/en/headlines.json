@@ -252,6 +252,16 @@
           "worldmap": "Member Worldmap",
           "starmap": "Member Starmap"
         },
+        "squadrons": {
+          "index": "Squadrons",
+          "create": "Create Squadron",
+          "edit": "Edit Squadron",
+          "formDetails": "Details",
+          "formAppearance": "Appearance",
+          "teams": "Teams",
+          "addMembers": "Add Members",
+          "members": "Members"
+        },
         "stats": "Stats",
         "preview": {
           "h1": "Fleet Preview",
@@ -262,6 +272,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Fleet Roles",
+          "squadrons": "Fleet Squadrons",
           "notifications": "Notification Settings",
           "inAppNotifications": "In-app Notifications",
           "discord": "Discord",
@@ -405,6 +416,8 @@
         "buttons": "Buttons",
         "media": "Media",
         "charts": "Charts",
+        "blueprints": "Blueprints",
+        "squadrons": "Squadrons",
         "chips": "Visual Tests Chips",
         "events": "Events",
         "typography": "Typography",

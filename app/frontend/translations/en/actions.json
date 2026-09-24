@@ -207,6 +207,15 @@
         "leave": "Leave %{fleet}",
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
+        "squadrons": {
+          "create": "Create Squadron",
+          "addMember": "Add Members",
+          "removeMember": "Remove from squadron",
+          "addMembers": "Add %{count}",
+          "viewMembers": "Squadron members",
+          "viewShips": "Squadron ships",
+          "viewStats": "Squadron stats"
+        },
         "manageInvites": "Invites",
         "worldmap": "Worldmap",
         "starmap": "Starmap",

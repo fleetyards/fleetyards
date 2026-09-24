@@ -207,6 +207,15 @@
         "leave": "Abbandona %{fleet}",
         "createInviteUrl": "Crea Urls d'invito",
         "inviteMember": "Invita nuovi membri",
+        "squadrons": {
+          "create": "Crea squadrone",
+          "addMember": "Aggiungi membri",
+          "removeMember": "Rimuovi dallo squadrone",
+          "addMembers": "Aggiungi %{count}",
+          "viewMembers": "Membri dello squadrone",
+          "viewShips": "Navi dello squadrone",
+          "viewStats": "Statistiche dello squadrone"
+        },
         "manageInvites": "Inviti",
         "worldmap": "Mappa mondiale",
         "starmap": "Mappa stellare",

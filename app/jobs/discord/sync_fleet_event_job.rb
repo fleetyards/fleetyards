@@ -21,6 +21,11 @@ module Discord
       sync = Discord::ScheduledEventSync.new(event)
       return unless sync.runnable?
 
+      # The guild is the whole fleet. Until a squadron has a channel of its own,
+      # an event held to squadrons is not posted there -- and one that became
+      # squadron-only after it was posted is taken down.
+      action = "delete" if action.to_s == "upsert" && event.squadron_restricted?
+
       case action.to_s
       when "upsert" then sync.upsert!
       when "delete" then sync.delete!

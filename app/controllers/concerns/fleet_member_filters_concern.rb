@@ -5,10 +5,11 @@ module FleetMemberFiltersConcern
     @member_query_params ||= params.permit(q: [
       :username_cont, :nickname_cont, :name_cont, :s, :sorts,
       :accepted_at_gteq, :accepted_at_lteq,
+      :squadron_membership_created_at_gteq, :squadron_membership_created_at_lteq,
       :invited_at_gteq, :invited_at_lteq,
       :requested_at_gteq, :requested_at_lteq,
       :declined_at_gteq, :declined_at_lteq,
-      role_in: [], state_in: [], s: [], sorts: []
+      role_in: [], state_in: [], squadron_slug_in: [], s: [], sorts: []
     ]).fetch(:q, {})
   end
 end

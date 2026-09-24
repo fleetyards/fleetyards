@@ -144,4 +144,36 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
   test "GET /public/fleets/:fleetSlug/vehicles returns 404 for unknown slug" do
     assert_api_response :get, 404, path_params: {fleetSlug: "unknown-fleet"}
   end
+
+  # Every ship here carries its owner's name, so narrowed to a squadron the list
+  # is that squadron's roster -- which a public fleet does not publish.
+  test "GET /public/fleets/:fleetSlug/vehicles refuses a squadron filter to an outsider" do
+    Flipper.enable("fleet_squadrons")
+    member = create(:user, vehicle_count: 2)
+    fleet = create(:fleet, public_fleet: true, members: [member])
+    squadron = create(:fleet_squadron, fleet: fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: fleet.fleet_memberships.find_by!(user: member))
+
+    assert_api_response :get, 404,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {squadronSlugIn: [squadron.slug]}}
+  end
+
+  test "GET /public/fleets/:fleetSlug/vehicles narrows to a squadron for a member" do
+    Flipper.enable("fleet_squadrons")
+    inside = create(:user, vehicle_count: 2)
+    outside = create(:user, vehicle_count: 1)
+    fleet = create(:fleet, public_fleet: true, members: [inside, outside])
+    squadron = create(:fleet_squadron, fleet: fleet)
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: fleet.fleet_memberships.find_by!(user: inside))
+    sign_in outside
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {squadronSlugIn: [squadron.slug]}} do
+      assert_equal 2, parsed_body["items"].count
+    end
+  end
 end

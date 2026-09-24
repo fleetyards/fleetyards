@@ -13,9 +13,19 @@ class FleetContractPolicy < FleetBasePolicy
   # agreed to pay for.
   def show?
     return false unless index?
+    return false unless reachable_by_squadron?
     return true unless record.try(:draft?)
 
     manage?
+  end
+
+  # A contract raised for a squadron is on the board for that squadron. Whoever
+  # may run the fleet's contracts reaches all of them, which is the same
+  # exception the draft rule above makes.
+  private def reachable_by_squadron?
+    return true if record.blank? || manage?
+
+    record.visible_to_squadrons_of?(accepted_fleet_membership)
   end
 
   def create?
@@ -56,11 +66,12 @@ class FleetContractPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(MANAGE)
   end
 
-  # Claiming rides on read. A board only officers may take work off is not a
-  # board, and the claim itself grants nothing beyond the transfers the member
-  # could already make.
+  # Claiming rides on read -- of this contract, so a squadron's work is taken
+  # by that squadron. A board only officers may take work off is not a board,
+  # and the claim itself grants nothing beyond the transfers the member could
+  # already make.
   def claim?
-    return false unless index?
+    return false unless show?
 
     record.open?
   end
@@ -89,6 +100,7 @@ class FleetContractPolicy < FleetBasePolicy
     params.permit(:title, :description, :kind, :reward, :reimburse_expenses,
       :crew_limit, :deadline, :cover_image, :cover_image_preset,
       :source_fleet_inventory_id, :destination_fleet_inventory_id,
+      :visibility, fleet_squadron_ids: [],
       items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
         :item_id, :position])
   end

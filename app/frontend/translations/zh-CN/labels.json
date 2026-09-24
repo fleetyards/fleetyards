@@ -479,11 +479,35 @@
             "invites": "邀请"
           }
         },
+        "squadrons": {
+          "index": "中队",
+          "name": "名称",
+          "shortDescription": "简短描述",
+          "shortDescriptionHint": "一两行，显示在卡片上",
+          "description": "描述",
+          "descriptionHint": "中队页面上的完整文字",
+          "noDescription": "尚未添加描述。",
+          "icon": "图标",
+          "iconHint": "正方形图片，以圆形显示",
+          "team": "小队",
+          "teamHint": "小队对所有人开放；否则成员只能属于一个中队",
+          "restrictedToHint": "只有这些中队可见",
+          "blockedBy": "已在 %{squadron} 中队中",
+          "color": "颜色",
+          "colorSuggestions": "取自图标：",
+          "memberCount": "%{count} 名成员",
+          "members": "成员",
+          "joinedAt": "加入中队时间",
+          "searchMembers": "搜索成员",
+          "availableMembers": "可添加的成员",
+          "selectedMembers": "已选择 %{count} 位"
+        },
         "roles": {
           "permanent": "永久",
           "privilegeGroups": {
             "fleet": "舰队",
             "memberships": "成员",
+            "squadrons": "中队",
             "invites": "邀请",
             "vehicles": "载具",
             "blueprints": "蓝图",
@@ -507,6 +531,12 @@
             "fleet:memberships:update": "更新成员",
             "fleet:memberships:delete": "移除成员",
             "fleet:memberships:manage": "管理成员",
+            "fleet:squadrons:read": "查看中队",
+            "fleet:squadrons:create": "创建中队",
+            "fleet:squadrons:update": "编辑中队",
+            "fleet:squadrons:delete": "删除中队",
+            "fleet:squadrons:members:manage": "管理中队成员",
+            "fleet:squadrons:manage": "管理中队",
             "fleet:invites:read": "查看邀请",
             "fleet:invites:create": "创建邀请",
             "fleet:invites:update": "更新邀请",
@@ -615,7 +645,8 @@
           "itemsCount": "条目数",
           "visibilities": {
             "members_only": "仅成员",
-            "officers_only": "仅军官"
+            "officers_only": "仅军官",
+            "squadron_only": "仅中队"
           }
         },
         "allies": "盟友可见舰船",
@@ -2178,7 +2209,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "仅中队"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",
@@ -2544,7 +2576,8 @@
           "visibilities": {
             "members": "成员",
             "officers": "军官",
-            "fleet": "公开"
+            "fleet": "公开",
+            "squadron": "仅中队"
           },
           "statuses": {
             "draft": "草稿",
@@ -2581,6 +2614,11 @@
           "reward": "报酬",
           "deadline": "截止时间",
           "crewLimit": "队伍上限",
+          "visibility": "可见性",
+          "visibilities": {
+            "members_only": "所有成员",
+            "squadron_only": "仅中队"
+          },
           "reimburseExpenses": "报销开支",
           "from": "取货地点",
           "to": "交付地点",

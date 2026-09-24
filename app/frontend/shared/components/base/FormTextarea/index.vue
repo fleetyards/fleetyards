@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
-import { useField } from "vee-validate";
+import { type MaybeRef } from "vue";
+import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import {
   InputTypesEnum,
@@ -18,6 +19,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   name: string;
+  rules?: MaybeRef<RuleExpression<string | number | null>>;
   icon?: string;
   modelValue?: string | number | null;
   type?: InputTypesEnum;
@@ -28,6 +30,9 @@ type Props = {
   label?: string;
   min?: number;
   max?: number;
+  // The limit the API enforces. Drawn as a running count under the field, so
+  // the reader learns about it while writing rather than on a rejected save.
+  maxlength?: number;
   // Rendered beside the label, so it is absent when the label is.
   info?: string;
   noLabel?: boolean;
@@ -41,6 +46,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  rules: undefined,
   icon: undefined,
   modelValue: undefined,
   type: InputTypesEnum.TEXT,
@@ -51,6 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   label: undefined,
   min: undefined,
   max: undefined,
+  maxlength: undefined,
   info: undefined,
   noLabel: false,
   noPlaceholder: false,
@@ -87,6 +94,8 @@ const id = ref(`${props.name}-${uuidv4()}`);
 
 const errorId = computed(() => `${id.value}-error`);
 
+const counterId = computed(() => `${id.value}-counter`);
+
 const innerLabel = computed(() => {
   if (props.label) {
     return props.label;
@@ -108,7 +117,7 @@ const {
   handleBlur,
   handleReset,
   resetField,
-} = useField(props.name, undefined, {
+} = useField(props.name, props.rules, {
   initialValue: props.modelValue,
   label: innerLabel.value,
 });
@@ -119,6 +128,29 @@ const {
  */
 const hasErrors = computed(() => {
   return errors.value.length > 0 && meta.touched;
+});
+
+/*
+ * Counted in code points rather than UTF-16 units, because that is what the
+ * API counts -- `"\u{1F680}".length` is 2 in JavaScript and 1 in Ruby, and a
+ * counter that disagreed with the validator about emoji would be worse than
+ * none.
+ */
+const characterCount = computed(
+  () => [...String(inputValue.value ?? "")].length,
+);
+
+const overLimit = computed(
+  () => !!props.maxlength && characterCount.value > props.maxlength,
+);
+
+const describedBy = computed(() => {
+  const ids = [
+    hasErrors.value ? errorId.value : undefined,
+    props.maxlength ? counterId.value : undefined,
+  ].filter(Boolean);
+
+  return ids.length ? ids.join(" ") : undefined;
 });
 
 const innerPlaceholder = computed(() => {
@@ -223,7 +255,7 @@ defineExpose({
     <div class="base-textarea__wrapper">
       <textarea
         :id="id"
-        :aria-describedby="hasErrors ? errorId : undefined"
+        :aria-describedby="describedBy"
         ref="inputElement"
         v-tooltip.right="hasErrors && errorMessage"
         :value="inputValue"
@@ -241,15 +273,29 @@ defineExpose({
         @blur="onBlur"
       />
     </div>
-    <!-- See the note in FormInput: below the control, and always present. -->
-    <p
-      :id="errorId"
-      class="base-textarea__error"
-      :class="{ 'base-textarea__error--shown': hasErrors }"
-      role="alert"
-    >
-      <span>{{ errorMessage }}</span>
-    </p>
+    <div class="base-textarea__footer">
+      <!-- See the note in FormInput: below the control, and always present. -->
+      <p
+        :id="errorId"
+        class="base-textarea__error"
+        :class="{ 'base-textarea__error--shown': hasErrors }"
+        role="alert"
+      >
+        <span>{{ errorMessage }}</span>
+      </p>
+      <!-- Not polite-announced: it changes on every keystroke, and a screen
+           reader reading the count out after each letter is unusable. The
+           limit reaches assistive tech through the field's description. -->
+      <span
+        v-if="maxlength"
+        :id="counterId"
+        class="base-textarea__counter"
+        :class="{ 'base-textarea__counter--over': overLimit }"
+        :data-test="`counter-${name}`"
+      >
+        {{ characterCount }} / {{ maxlength }}
+      </span>
+    </div>
   </div>
 </template>
 

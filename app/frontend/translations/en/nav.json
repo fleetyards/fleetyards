@@ -49,6 +49,19 @@
           "worldmap": "Worldmap",
           "starmap": "Starmap"
         },
+        "squadrons": {
+          "index": "Squadrons",
+          "overview": "Overview",
+          "members": "Members",
+          "create": {
+            "details": "Details",
+            "appearance": "Appearance"
+          },
+          "edit": {
+            "details": "Details",
+            "appearance": "Appearance"
+          }
+        },
         "stats": "Stats",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +90,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles",
+          "squadrons": "Squadrons",
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendar",
@@ -143,10 +157,12 @@
         "media": "Media",
         "charts": "Charts",
         "chips": "Chips",
+        "squadrons": "Squadrons",
         "groups": {
           "foundations": "Foundations",
           "data": "Data",
-          "feedback": "Feedback"
+          "feedback": "Feedback",
+          "features": "Features"
         },
         "notificationCenter": "Notification Center",
         "themes": "Themes"

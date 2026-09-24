@@ -57,6 +57,19 @@
           "worldmap": "Mappa mondiale dei membri di %{fleet}",
           "starmap": "Mappa stellare dei membri di %{fleet}"
         },
+        "squadrons": {
+          "index": "Squadroni di %{fleet}",
+          "overview": "Panoramica dello squadrone di %{fleet}",
+          "members": "Membri dello squadrone di %{fleet}",
+          "create": {
+            "details": "Crea squadrone - %{fleet}",
+            "appearance": "Aspetto dello squadrone - %{fleet}"
+          },
+          "edit": {
+            "details": "Modifica squadrone - %{fleet}",
+            "appearance": "Aspetto dello squadrone - %{fleet}"
+          }
+        },
         "stats": "Statistiche di %{fleet}",
         "blueprints": "Progetti di %{fleet}",
         "logistics": {
@@ -96,6 +109,7 @@
           "fleet": "Impostazioni di %{fleet}",
           "membership": "Appartenenza a %{fleet}",
           "roles": "Ruoli di %{fleet}",
+          "squadrons": "Squadroni di %{fleet}",
           "notifications": "Impostazioni Notifiche di %{fleet}",
           "discord": "Impostazioni Discord di %{fleet}",
           "calendar": "Impostazioni Calendario di %{fleet}",
@@ -154,7 +168,7 @@
       "privacyPolicy": "Informativa sulla privacy",
       "cookiePolicy": "Informativa sui Cookie",
       "visualTests": {
-        "blueprints": "Progetti",
+        "blueprints": "Progetti - Test Visivi",
         "index": "Test Visivi",
         "panels": "Pannelli - Test Visivi",
         "buttons": "Pulsanti - Test Visivi",
@@ -171,7 +185,9 @@
         "supportHint": "Suggerimento supporto - Test Visivi",
         "media": "Media - Test Visivi",
         "charts": "Grafici - Test Visivi",
+        "themes": "Temi - Test Visivi",
         "chips": "Chips - Test Visivi",
+        "squadrons": "Squadroni - Test Visivi",
         "notificationCenter": "Centro notifiche - Test Visivi"
       },
       "admin": {
@@ -348,9 +364,6 @@
       },
       "blueprints": {
         "index": "Progetti"
-      },
-      "missions": {
-        "index": "Missioni"
       },
       "missions": {
         "index": "Missioni"

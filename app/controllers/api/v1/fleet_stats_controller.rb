@@ -15,9 +15,11 @@ module Api
       def members
         # Sorting a grouped count puts the ordered column outside the GROUP BY,
         # which Postgres rejects. Stats never need an order anyway.
-        @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params.except("sorts", "s"))
+        @q = membership_scope.ransack(member_query_params.except("sorts", "s"))
 
-        members = @q.result
+        # By id, because a squadron filter joins a row per squadron matched: a
+        # member in two of the named ones would be counted, and grouped, twice.
+        members = ::FleetMembership.where(id: @q.result.select(:id))
 
         members_by_role = members.joins(:fleet_role).group("fleet_roles.name").count
 
@@ -32,9 +34,10 @@ module Api
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/PerceivedComplexity
       def vehicles
-        scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+        scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
         scope = scope.where(loaner: loaner_included?)
+        scope = narrow_to_squadrons(scope)
 
         @q = scope.ransack(vehicle_query_params)
 
@@ -77,9 +80,10 @@ module Api
       # rubocop:enable Metrics/CyclomaticComplexity
 
       def model_counts
-        scope = @fleet.vehicles.where(loaner: loaner_included?)
+        scope = vehicle_scope.where(loaner: loaner_included?)
 
         scope = scope.where(user_id: for_members) if for_members.present?
+        scope = narrow_to_squadrons(scope)
 
         scope = scope.joins(:model).where(models: {price: price_range}) if price_range.present?
 
@@ -103,7 +107,7 @@ module Api
 
       def vehicles_by_model
         vehicles_by_model = transform_for_bar_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.name").count
         ).take(params[:limit].present? ? params[:limit].to_i : 10)
@@ -113,7 +117,7 @@ module Api
 
       def models_by_size
         models_by_size = transform_for_pie_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.size").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -125,7 +129,7 @@ module Api
 
       def models_by_production_status
         models_by_production_status = transform_for_pie_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.production_status").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -140,7 +144,7 @@ module Api
           @fleet.manufacturers.uniq
               .map do |manufacturer|
                 model_ids = manufacturer.model_ids
-                {manufacturer.name => @fleet.vehicles.visible.where(loaner: false, model_id: model_ids).count}
+                {manufacturer.name => chart_scope.where(model_id: model_ids).count}
               end
               .reduce(:merge) || []
         )
@@ -150,7 +154,7 @@ module Api
 
       def models_by_classification
         models_by_classification = transform_for_pie_chart(
-          @fleet.vehicles.visible.where(loaner: false)
+          chart_scope
                .joins(:model)
                .group("models.classification").count
                .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -158,6 +162,32 @@ module Api
         )
 
         render json: models_by_classification.to_json
+      end
+
+      # What the five charts count. They read `@fleet.vehicles` directly until
+      # now, so a squadron picked on the stats page narrowed the metrics row and
+      # left every chart under it describing the whole fleet.
+      private def chart_scope
+        @chart_scope ||= narrow_to_squadrons(vehicle_scope.visible.where(loaner: false))
+      end
+
+      # The two populations every figure above is drawn from, kept as seams
+      # rather than reaching for `@fleet.vehicles` and `@fleet.fleet_memberships`
+      # inline.
+      def narrow_to_squadrons(scope)
+        user_ids = for_squadrons(@fleet)
+
+        return scope if user_ids.nil?
+
+        scope.where(user_id: user_ids)
+      end
+
+      private def vehicle_scope
+        @fleet.vehicles
+      end
+
+      private def membership_scope
+        @fleet.fleet_memberships.kept.accepted
       end
 
       private

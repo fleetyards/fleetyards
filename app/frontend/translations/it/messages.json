@@ -311,6 +311,35 @@
             "failure": "Impossibile salvare il soprannome."
           }
         },
+        "squadrons": {
+          "create": {
+            "success": "Squadrone creato.",
+            "failure": "Impossibile creare lo squadrone."
+          },
+          "update": {
+            "success": "Squadrone salvato.",
+            "failure": "Impossibile salvare lo squadrone."
+          },
+          "destroy": {
+            "confirm": "Sciogliere lo squadrone «%{name}»? I suoi membri restano nella flotta.",
+            "success": "Squadrone sciolto.",
+            "failure": "Impossibile sciogliere lo squadrone."
+          },
+          "sort": {
+            "failure": "Non è stato possibile salvare l'ordine."
+          },
+          "members": {
+            "add": {
+              "success": "%{count} membri aggiunti.",
+              "failure": "Impossibile aggiungere %{count} membri."
+            },
+            "destroy": {
+              "confirm": "Rimuovere %{username} dallo squadrone %{squadron}? Resterà nella flotta.",
+              "success": "Membro rimosso dallo squadrone.",
+              "failure": "Non è stato possibile rimuovere il membro."
+            }
+          }
+        },
         "calendarSubscription": {
           "enable": {
             "success": "Sottoscrizione al calendario attivata.",

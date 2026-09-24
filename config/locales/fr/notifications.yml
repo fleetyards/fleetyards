@@ -85,3 +85,30 @@ fr:
         title: "Vous avez été ajouté à l'équipage de %{title}"
       crew_declined:
         title: "Votre demande pour rejoindre %{title} a été refusée"
+    fleet_inventory_item_added:
+      title: "Nouvel objet dans l'inventaire de %{fleet} : %{item_name}"
+    fleet_event:
+      published:
+        title: "Nouvel événement dans %{fleet} : %{title}"
+        body: "%{fleet} vient de publier un nouvel événement."
+      locked:
+        title: "Inscriptions closes pour %{title}"
+      starting_soon:
+        title: "%{title} commence bientôt"
+      started:
+        title: "%{title} a commencé"
+      completed:
+        title: "%{title} est terminé"
+      cancelled:
+        title: "%{title} a été annulé"
+    fleet_event_signup:
+      added:
+        title: "%{user} s'est inscrit à %{title}"
+      withdrawn:
+        title: "%{user} s'est désinscrit de %{title}"
+      confirmed:
+        title: "Votre inscription à %{title} a été approuvée"
+      assigned:
+        title: "Vous avez été affecté à %{slot} pour %{title}"
+      kicked:
+        title: "Vous avez été retiré de %{title}"

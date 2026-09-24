@@ -15,6 +15,12 @@ class Api::V1::PublicFleetsStatsVehiclesTest < ActionDispatch::IntegrationTest
       tags "FleetStats"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::FleetVehicleQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
+
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/FleetVehiclesStats"
       end

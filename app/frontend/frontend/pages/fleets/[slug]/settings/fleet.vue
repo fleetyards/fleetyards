@@ -34,6 +34,10 @@ type Props = {
 
 const props = defineProps<Props>();
 
+// What the API accepts. The field draws it as a running count rather than
+// leaving a long description to be turned down on save.
+const DESCRIPTION_MAX = 10_000;
+
 const { t } = useI18n();
 
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
@@ -74,6 +78,7 @@ const initialValues = ref<FleetUpdateInput>({
 const validationSchema = {
   fid: "required|min:3|alpha_dash",
   name: "required|min:3|alpha_dash",
+  description: `max:${DESCRIPTION_MAX}`,
 };
 
 const { defineField, handleSubmit, meta, resetForm, setErrors } = useForm({
@@ -221,6 +226,8 @@ const onDestroy = async () => {
           v-model="description"
           name="description"
           v-bind="descriptionProps"
+          :rules="validationSchema.description"
+          :maxlength="DESCRIPTION_MAX"
         />
       </div>
     </div>

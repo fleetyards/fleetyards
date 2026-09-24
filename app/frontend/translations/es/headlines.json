@@ -250,6 +250,16 @@
           "worldmap": "Mapa mundial de miembros",
           "starmap": "Mapa estelar de miembros"
         },
+        "squadrons": {
+          "index": "Escuadrones",
+          "create": "Crear escuadrón",
+          "edit": "Editar escuadrón",
+          "formDetails": "Detalles",
+          "formAppearance": "Apariencia",
+          "teams": "Equipos",
+          "addMembers": "Añadir miembros",
+          "members": "Miembros"
+        },
         "stats": "Estadísticas",
         "preview": {
           "h1": "Vista previa de flota",
@@ -260,6 +270,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles de flota",
+          "squadrons": "Escuadrones de la flota",
           "notifications": "Configuración de notificaciones",
           "inAppNotifications": "Notificaciones en la app",
           "discord": "Discord",
@@ -403,6 +414,8 @@
         "buttons": "Botones",
         "media": "Multimedia",
         "charts": "Gráficos",
+        "blueprints": "Planos",
+        "squadrons": "Escuadrones",
         "chips": "Chips de pruebas visuales",
         "events": "Eventos",
         "typography": "Tipografía",

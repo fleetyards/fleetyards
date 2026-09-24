@@ -479,11 +479,35 @@
             "invites": "Invitaciones"
           }
         },
+        "squadrons": {
+          "index": "Escuadrones",
+          "name": "Nombre",
+          "shortDescription": "Descripción breve",
+          "shortDescriptionHint": "Una o dos líneas, en la tarjeta",
+          "description": "Descripción",
+          "descriptionHint": "El texto completo en la página del escuadrón",
+          "noDescription": "Todavía no se ha añadido una descripción.",
+          "icon": "Icono",
+          "iconHint": "Imagen cuadrada, se muestra en un círculo",
+          "team": "Equipo",
+          "teamHint": "Un equipo está abierto a todos; de lo contrario, un miembro pertenece a un solo escuadrón",
+          "restrictedToHint": "Solo estos escuadrones pueden verlo",
+          "blockedBy": "Ya está en el escuadrón %{squadron}",
+          "color": "Color",
+          "colorSuggestions": "Del icono:",
+          "memberCount": "%{count} miembros",
+          "members": "Miembros",
+          "joinedAt": "Fecha de ingreso al escuadrón",
+          "searchMembers": "Buscar miembros",
+          "availableMembers": "miembros disponibles",
+          "selectedMembers": "%{count} seleccionados"
+        },
         "roles": {
           "permanent": "Permanente",
           "privilegeGroups": {
             "fleet": "Flota",
             "memberships": "Miembros",
+            "squadrons": "Escuadrones",
             "invites": "Invitaciones",
             "vehicles": "Vehículos",
             "blueprints": "Planos",
@@ -507,6 +531,12 @@
             "fleet:memberships:update": "Actualizar miembros",
             "fleet:memberships:delete": "Eliminar miembros",
             "fleet:memberships:manage": "Administrar miembros",
+            "fleet:squadrons:read": "Ver escuadrones",
+            "fleet:squadrons:create": "Crear escuadrones",
+            "fleet:squadrons:update": "Editar escuadrones",
+            "fleet:squadrons:delete": "Eliminar escuadrones",
+            "fleet:squadrons:members:manage": "Gestionar miembros del escuadrón",
+            "fleet:squadrons:manage": "Gestionar escuadrones",
             "fleet:invites:read": "Ver invitaciones",
             "fleet:invites:create": "Crear invitaciones",
             "fleet:invites:update": "Actualizar invitaciones",
@@ -615,7 +645,8 @@
           "itemsCount": "Entradas",
           "visibilities": {
             "members_only": "Solo miembros",
-            "officers_only": "Solo oficiales"
+            "officers_only": "Solo oficiales",
+            "squadron_only": "Solo escuadrón"
           }
         },
         "allies": "Naves visibles para los aliados",
@@ -2178,7 +2209,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "Solo escuadrón"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",
@@ -2544,7 +2576,8 @@
           "visibilities": {
             "members": "Miembros",
             "officers": "Oficiales",
-            "fleet": "Público"
+            "fleet": "Público",
+            "squadron": "Solo escuadrón"
           },
           "statuses": {
             "draft": "Borrador",
@@ -2581,6 +2614,11 @@
           "reward": "Recompensa",
           "deadline": "Fecha límite",
           "crewLimit": "Límite de tripulación",
+          "visibility": "Visibilidad",
+          "visibilities": {
+            "members_only": "Todos los miembros",
+            "squadron_only": "Solo escuadrón"
+          },
           "reimburseExpenses": "Reembolsar gastos",
           "from": "Recoger en",
           "to": "Entregar en",

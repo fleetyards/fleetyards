@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as membersRoutes } from "@/frontend/pages/fleets/[slug]/members/routes";
+import { routes as squadronsRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/routes";
 import { routes as logisticsRoutes } from "@/frontend/pages/fleets/[slug]/logistics/routes";
 import { routes as alliesRoutes } from "@/frontend/pages/fleets/[slug]/allies/routes";
 import { routes as contractsRoutes } from "@/frontend/pages/fleets/[slug]/contracts/routes";
@@ -58,6 +59,20 @@ export const routes: RouteRecordRaw[] = [
       name: membersRoutes[0].name,
     },
     children: membersRoutes,
+  },
+  {
+    path: "squadrons/",
+    name: "fleet-squadrons-root",
+    component: () => import("@/frontend/pages/fleets/[slug]/squadrons.vue"),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: "bg-8",
+      customTitle: true,
+    },
+    redirect: {
+      name: squadronsRoutes[0].name,
+    },
+    children: squadronsRoutes,
   },
   {
     path: "logistics/",

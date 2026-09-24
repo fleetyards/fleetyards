@@ -57,6 +57,19 @@
           "worldmap": "%{fleet} Member Worldmap",
           "starmap": "%{fleet} Member Starmap"
         },
+        "squadrons": {
+          "index": "%{fleet} Squadrons",
+          "overview": "%{fleet} Squadron Overview",
+          "members": "%{fleet} Squadron Members",
+          "create": {
+            "details": "Create Squadron - %{fleet}",
+            "appearance": "Squadron Appearance - %{fleet}"
+          },
+          "edit": {
+            "details": "Edit Squadron - %{fleet}",
+            "appearance": "Squadron Appearance - %{fleet}"
+          }
+        },
         "stats": "%{fleet} Stats",
         "blueprints": "%{fleet} Blueprints",
         "logistics": {
@@ -96,6 +109,7 @@
           "fleet": "%{fleet} Settings",
           "membership": "%{fleet} Membership",
           "roles": "%{fleet} Roles",
+          "squadrons": "%{fleet} Squadrons",
           "notifications": "%{fleet} Notification Settings",
           "discord": "%{fleet} Discord Settings",
           "calendar": "%{fleet} Calendar Settings",
@@ -154,7 +168,7 @@
       "privacyPolicy": "Privacy policy",
       "cookiePolicy": "Cookie policy",
       "visualTests": {
-        "blueprints": "Blueprints",
+        "blueprints": "Blueprints - Visual Tests",
         "index": "Visual Tests",
         "panels": "Panels - Visual Tests",
         "buttons": "Buttons - Visual Tests",
@@ -171,7 +185,9 @@
         "supportHint": "Support Hint - Visual Tests",
         "media": "Media - Visual Tests",
         "charts": "Charts - Visual Tests",
+        "themes": "Themes - Visual Tests",
         "chips": "Chips - Visual Tests",
+        "squadrons": "Squadrons - Visual Tests",
         "notificationCenter": "Notification Center - Visual Tests"
       },
       "admin": {
@@ -348,9 +364,6 @@
       },
       "blueprints": {
         "index": "Blueprints"
-      },
-      "missions": {
-        "index": "Missions"
       },
       "missions": {
         "index": "Missions"

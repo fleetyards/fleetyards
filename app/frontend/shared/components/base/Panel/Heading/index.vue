@@ -40,6 +40,11 @@ const slots = defineSlots<{
   default: [];
   subtitle: [];
   actions: [];
+  // Something that belongs beside the title *and* its subtitle rather than
+  // inside either -- an emblem, an avatar. `Heading` stacks the two into a
+  // column, so a leading element has to sit outside it or it lands on the
+  // title's line alone and the subtitle wraps underneath it.
+  leading: [];
 }>();
 
 const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
@@ -54,8 +59,13 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
       'panel-heading--metric': isMetric,
       'panel-heading--compact': compact,
       'panel-heading--divider': divider,
+      'panel-heading--leading': slots.leading,
     }"
   >
+    <div v-if="slots.leading" class="panel-heading__leading">
+      <slot name="leading" />
+    </div>
+
     <!--
       The metric tone is its own markup rather than a restyled Heading: the
       tracked uppercase Orbitron label is a span with a status dot, not a
@@ -133,6 +143,28 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
 .panel-heading__title {
   @apply w-full;
   padding: 0;
+}
+
+/*
+ * With something beside it the title block can no longer be the full width, or
+ * it pushes the leading element out of the box. `min-width: 0` as well, so a
+ * long unbroken name truncates inside the column instead of widening it.
+ *
+ * Centred rather than topped: the leading element is an emblem the size of the
+ * whole block, and a title on its own line hung level with the emblem's top
+ * edge with the rest of the mark below it.
+ */
+.panel-heading--leading {
+  @apply items-center;
+  gap: 12px;
+}
+
+.panel-heading--leading .panel-heading__title {
+  @apply w-auto min-w-0 flex-1;
+}
+
+.panel-heading__leading {
+  @apply flex flex-none items-center;
 }
 
 .panel-heading__title--with-actions {

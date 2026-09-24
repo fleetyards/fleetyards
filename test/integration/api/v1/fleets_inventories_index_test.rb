@@ -153,4 +153,19 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_empty JSON.parse(response.body)["items"]
   end
+
+  test "GET inventories shows a squadron's new name after it is renamed" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Old Name")
+    create(:fleet_inventory, fleet: @fleet, visibility: :squadron_only, fleet_squadrons: [squadron])
+    sign_in @admin
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/inventories"
+      squadron.update!(name: "New Name")
+      get "/api/v1/fleets/#{@fleet.slug}/inventories"
+
+      assert_equal ["New Name"], response.parsed_body["items"].first["fleetSquadrons"].pluck("name")
+    end
+  end
 end

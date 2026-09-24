@@ -288,6 +288,16 @@ zh-TW:
           attributes:
             managed_by:
               not_a_member: 必須是該艦隊的正式成員
+        fleet_squadron:
+          attributes:
+            team:
+              conflicting_members: "無法關閉，因為 %{members} 同時還在另一個中隊中"
+        fleet_squadron_membership:
+          attributes:
+            fleet_membership:
+              not_a_member: "必須是該艦隊已接受的成員"
+            fleet_squadron:
+              exclusive_conflict: "與 %{squadron} 衝突：除非是小隊，成員只能屬於一個中隊"
         fleet_role:
           attributes:
             base:

@@ -31,6 +31,14 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_invite_urls, path: "invite-urls", param: :token, only: %i[index create destroy]
 
+  resources :fleet_squadrons, path: "squadrons", param: :slug, only: %i[index show create update destroy] do
+    member do
+      put :move
+    end
+
+    resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create update destroy]
+  end
+
   resources :fleet_roles, path: "roles", only: %i[index]
 
   # Addressed by the other fleet's slug, the same way a friendship is addressed
@@ -178,6 +186,8 @@ namespace :public do
     end
 
     resources :fleet_members, path: "members", only: %i[index]
+
+    resources :fleet_squadrons, path: "squadrons", param: :slug, only: %i[index show]
 
     resource :fleet_stats, path: "stats", only: %i[] do
       get "vehicles", to: "fleet_stats#vehicles"

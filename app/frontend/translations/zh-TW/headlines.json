@@ -250,6 +250,16 @@
           "worldmap": "成員世界地圖",
           "starmap": "成員星圖"
         },
+        "squadrons": {
+          "index": "中隊",
+          "create": "建立中隊",
+          "edit": "編輯中隊",
+          "formDetails": "詳細資訊",
+          "formAppearance": "外觀",
+          "teams": "小隊",
+          "addMembers": "新增成員",
+          "members": "成員"
+        },
         "stats": "統計",
         "preview": {
           "h1": "艦隊預覽",
@@ -260,6 +270,7 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "艦隊角色",
+          "squadrons": "艦隊中隊",
           "notifications": "通知設定",
           "inAppNotifications": "應用內通知",
           "discord": "Discord",
@@ -403,6 +414,8 @@
         "buttons": "按鈕",
         "media": "媒體",
         "charts": "圖表",
+        "blueprints": "藍圖",
+        "squadrons": "中隊",
         "chips": "視覺測試 Chips",
         "events": "活動",
         "typography": "排版",

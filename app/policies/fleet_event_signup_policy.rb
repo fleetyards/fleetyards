@@ -5,6 +5,9 @@ class FleetEventSignupPolicy < FleetBasePolicy
 
   def create?
     return false unless signups_open_for_event?
+    target_event = record.try(:fleet_event) || fleet_event
+    return false if target_event && !FleetEventPolicy.new(target_event, user: user).show?
+
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage", "fleet:events:read"])
   end
 

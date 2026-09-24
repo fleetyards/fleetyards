@@ -57,6 +57,19 @@
           "worldmap": "Mapa mundial de miembros de %{fleet}",
           "starmap": "Mapa estelar de miembros de %{fleet}"
         },
+        "squadrons": {
+          "index": "Escuadrones de %{fleet}",
+          "overview": "Resumen del escuadrón de %{fleet}",
+          "members": "Miembros del escuadrón de %{fleet}",
+          "create": {
+            "details": "Crear escuadrón - %{fleet}",
+            "appearance": "Apariencia del escuadrón - %{fleet}"
+          },
+          "edit": {
+            "details": "Editar escuadrón - %{fleet}",
+            "appearance": "Apariencia del escuadrón - %{fleet}"
+          }
+        },
         "stats": "Estadísticas de %{fleet}",
         "blueprints": "Planos de %{fleet}",
         "logistics": {
@@ -96,6 +109,7 @@
           "fleet": "Configuración de %{fleet}",
           "membership": "Membresía de %{fleet}",
           "roles": "Roles de %{fleet}",
+          "squadrons": "Escuadrones de %{fleet}",
           "notifications": "Configuración de notificaciones de %{fleet}",
           "discord": "Configuración de Discord de %{fleet}",
           "calendar": "Configuración del calendario de %{fleet}",
@@ -154,7 +168,7 @@
       "privacyPolicy": "Política de privacidad",
       "cookiePolicy": "Política de cookies",
       "visualTests": {
-        "blueprints": "Planos",
+        "blueprints": "Planos - Pruebas Visuales",
         "index": "Pruebas Visuales",
         "panels": "Paneles - Pruebas Visuales",
         "buttons": "Botones - Pruebas Visuales",
@@ -171,7 +185,9 @@
         "supportHint": "Aviso de apoyo - Pruebas Visuales",
         "media": "Multimedia - Pruebas Visuales",
         "charts": "Gráficos - Pruebas Visuales",
+        "themes": "Temas - Pruebas Visuales",
         "chips": "Chips - Pruebas Visuales",
+        "squadrons": "Escuadrones - Pruebas Visuales",
         "notificationCenter": "Centro de notificaciones - Pruebas Visuales"
       },
       "admin": {
@@ -348,9 +364,6 @@
       },
       "blueprints": {
         "index": "Planos"
-      },
-      "missions": {
-        "index": "Misiones"
       },
       "missions": {
         "index": "Misiones"

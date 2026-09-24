@@ -479,11 +479,35 @@
             "invites": "Einladungen"
           }
         },
+        "squadrons": {
+          "index": "Staffeln",
+          "name": "Name",
+          "shortDescription": "Kurzbeschreibung",
+          "shortDescriptionHint": "Ein, zwei Zeilen auf der Karte",
+          "description": "Beschreibung",
+          "descriptionHint": "Der vollständige Text auf der Staffelseite",
+          "noDescription": "Es wurde noch keine Beschreibung hinzugefügt.",
+          "icon": "Symbol",
+          "iconHint": "Quadratisches Bild, wird rund angezeigt",
+          "team": "Team",
+          "teamHint": "Teams stehen allen offen – sonst gehört ein Mitglied nur einer Staffel an",
+          "restrictedToHint": "Nur diese Staffeln sehen es",
+          "blockedBy": "Bereits in der Staffel %{squadron}",
+          "color": "Farbe",
+          "colorSuggestions": "Aus dem Symbol:",
+          "memberCount": "%{count} Mitglieder",
+          "members": "Mitglieder",
+          "joinedAt": "Beitritt zum Geschwader",
+          "searchMembers": "Mitglieder suchen",
+          "availableMembers": "verfügbare Mitglieder",
+          "selectedMembers": "%{count} ausgewählt"
+        },
         "roles": {
           "permanent": "Permanent",
           "privilegeGroups": {
             "fleet": "Flotte",
             "memberships": "Mitglieder",
+            "squadrons": "Staffeln",
             "invites": "Einladungen",
             "vehicles": "Fahrzeuge",
             "blueprints": "Baupläne",
@@ -507,6 +531,12 @@
             "fleet:memberships:update": "Mitglieder bearbeiten",
             "fleet:memberships:delete": "Mitglieder entfernen",
             "fleet:memberships:manage": "Mitglieder verwalten",
+            "fleet:squadrons:read": "Staffeln ansehen",
+            "fleet:squadrons:create": "Staffeln anlegen",
+            "fleet:squadrons:update": "Staffeln bearbeiten",
+            "fleet:squadrons:delete": "Staffeln löschen",
+            "fleet:squadrons:members:manage": "Staffelmitglieder verwalten",
+            "fleet:squadrons:manage": "Staffeln verwalten",
             "fleet:invites:read": "Einladungen ansehen",
             "fleet:invites:create": "Einladungen erstellen",
             "fleet:invites:update": "Einladungen bearbeiten",
@@ -615,7 +645,8 @@
           "itemsCount": "Einträge",
           "visibilities": {
             "members_only": "Nur Mitglieder",
-            "officers_only": "Nur Offiziere"
+            "officers_only": "Nur Offiziere",
+            "squadron_only": "Nur eine Staffel"
           }
         },
         "allies": "Schiffe für Verbündete sichtbar",
@@ -2178,7 +2209,8 @@
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
-          "officers_only": "Officers Only"
+          "officers_only": "Officers Only",
+          "squadron_only": "Nur eine Staffel"
         },
         "inventory": "Inventory",
         "notesPlaceholder": "Add notes...",
@@ -2544,7 +2576,8 @@
           "visibilities": {
             "members": "Mitglieder",
             "officers": "Offiziere",
-            "fleet": "Öffentlich"
+            "fleet": "Öffentlich",
+            "squadron": "Nur eine Staffel"
           },
           "statuses": {
             "draft": "Entwurf",
@@ -2581,6 +2614,11 @@
           "reward": "Belohnung",
           "deadline": "Frist",
           "crewLimit": "Crew-Limit",
+          "visibility": "Sichtbarkeit",
+          "visibilities": {
+            "members_only": "Alle Mitglieder",
+            "squadron_only": "Nur eine Staffel"
+          },
           "reimburseExpenses": "Auslagen erstatten",
           "from": "Abholen bei",
           "to": "Liefern an",

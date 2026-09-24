@@ -7,6 +7,10 @@ export interface SlugParams {
   slug: string;
 }
 
+export interface SquadronParams extends SlugParams {
+  squadron: string;
+}
+
 export interface IdParams {
   id: string;
 }

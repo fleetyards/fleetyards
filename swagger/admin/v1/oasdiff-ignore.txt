@@ -155,3 +155,15 @@ POST /supporter-contributions added the new `undefined` enum value to the `sourc
 DELETE /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
 GET /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
 PUT /supporter-contributions/{id} added the new `undefined` enum value to the `source` response property for the response status `200`
+GET /versions added the new `FleetSquadron` enum value to the `items/items/itemType` response property for the response status `200`
+GET /versions/recent added the new `FleetSquadron` enum value to the `items/items/itemType` response property for the response status `200`
+GET /admin_users added the new `missions` enum value to the `items/items/resourceAccess/items/` response property for the response status `200`
+POST /admin_users added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/me added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
+DELETE /admin_users/{id} added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/{id} added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
+PUT /admin_users/{id} added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /fleets/{fleet_id}/inventories added the new `squadron_only` enum value to the `items/items/visibility` response property for the response status `200`
+GET /fleets/{fleet_id}/inventories/{id} added the new `squadron_only` enum value to the `visibility` response property for the response status `200`
+GET /resource-access-catalog added the new `missions` enum value to the `items/privileges/items/` response property for the response status `200`
+POST /sessions added the new `missions` enum value to the `resourceAccess/items/` response property for the response status `200`

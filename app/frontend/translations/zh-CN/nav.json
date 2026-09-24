@@ -49,6 +49,19 @@
           "worldmap": "世界地图",
           "starmap": "星图"
         },
+        "squadrons": {
+          "index": "中队",
+          "overview": "概览",
+          "members": "成员",
+          "create": {
+            "details": "详情",
+            "appearance": "外观"
+          },
+          "edit": {
+            "details": "详情",
+            "appearance": "外观"
+          }
+        },
         "stats": "统计",
         "logistics": {
           "index": "Logistics"
@@ -77,6 +90,7 @@
           "fleet": "舰队设置",
           "membership": "成员设置",
           "roles": "角色",
+          "squadrons": "中队",
           "notifications": "通知",
           "discord": "Discord",
           "calendar": "日历",
@@ -143,10 +157,12 @@
         "media": "媒体",
         "charts": "图表",
         "chips": "Chips",
+        "squadrons": "中队",
         "groups": {
           "foundations": "基础",
           "data": "数据",
-          "feedback": "反馈"
+          "feedback": "反馈",
+          "features": "功能"
         },
         "notificationCenter": "通知中心",
         "themes": "主题"

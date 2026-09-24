@@ -260,4 +260,22 @@ class FleetTest < ActiveSupport::TestCase
 
     refute loaded.subscribed?
   end
+
+  # The form draws the same number as a running count, so the two have to agree
+  # on where the limit is.
+  class DescriptionLengthTest < FleetTest
+    setup do
+      @fleet = create(:fleet, created_by: create(:user).id)
+    end
+
+    test "a description is accepted up to 10000 characters" do
+      assert @fleet.update(description: "a" * 10_000),
+        @fleet.errors.full_messages.to_sentence
+    end
+
+    test "a longer description is refused" do
+      refute @fleet.update(description: "a" * 10_001)
+      assert_includes @fleet.errors.details[:description].pluck(:error), :too_long
+    end
+  end
 end

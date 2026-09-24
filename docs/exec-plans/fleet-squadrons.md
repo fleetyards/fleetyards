@@ -187,22 +187,221 @@ When a squadron is deleted, its memberships are destroyed but the underlying fle
 
 Public fleets expose squadron list and squadron vehicle stats. Squadron member identities are not exposed publicly, consistent with existing public fleet behavior where member counts are shown but usernames are not.
 
+### D8 — Behind a `fleet_squadrons` flag
+
+Every substantial fleet feature on the site is gated — `fleet_allies`,
+`fleet_contracts`, `fleet_logistics`, `fleet_mission_builder`, `fleet_tours` —
+and this is one. The flag is declared in `config/feature_flags.yml`; the REST
+endpoints check it against the fleet actor, and the public ones answer 404
+rather than 403 so a flagged-off fleet gives nothing away.
+
+Not in the original plan; added because 5 of 5 comparable features do it.
+
+### D9 — Privileges seed the way the other resources do
+
+The plan gave Admin `fleet:squadrons:manage` outright. The house pattern seeds
+`admin: []` and lets `fleet:manage` — which the Admin role already holds — stand
+in, because the roles page renders a privilege reached that way as *implied*
+rather than as held. Writing it explicitly would say something different about
+the role. The effective permissions are exactly what the plan asked for:
+
+- **Admin** — everything, through `fleet:manage`
+- **Officer** — `fleet:squadrons:read`, `fleet:squadrons:members:manage`
+- **Member** — `fleet:squadrons:read`
+
+`setup_default_roles!` only runs at fleet creation, so a data migration grants
+the same set to roles that already exist —
+`db/data/20260921120100_grant_squadron_privileges_to_existing_roles.rb`,
+following the mission, contract, payout and blueprint backfills before it.
+
+### D10 — Squadron ships and stats subclass, they do not restate
+
+> **Superseded by D12.** These ten endpoints were deleted; a squadron narrows
+> the fleet's own pages instead of owning copies of them.
+
+`FleetSquadronVehiclesController < FleetVehiclesController` and
+`FleetSquadronStatsController < FleetStatsController`, each overriding a
+`vehicle_scope` / `membership_scope` seam. Everything else — the filters, the
+grouped-by-model branch, the pagination, the metric arithmetic and the
+partials — is identical, and Rails resolves the views through the superclass's
+prefix. The same pair exists under `Public::`.
+
+An empty squadron flies nothing: `where(user_id: [])` is what says so, and
+dropping the condition for a blank list would hand back the whole fleet.
+
+### D11 — The member count is not cached, the rest of the squadron is
+
+A member *leaving the fleet* is a discard, which leaves the join row in place
+and touches nothing on the squadron — so a count inside the cached fragment
+would go stale with no way to notice. It is rendered outside the fragment, and
+the roster is preloaded so the list still issues a constant number of queries;
+`ListEndpointQueryCountsTest` holds that.
+
+### D12 — A squadron is a filter, not a second set of pages
+
+Ten endpoints went, and thirteen test files with them. A squadron is the
+fleet's roster sliced, so the slice belongs on the pages that already own the
+roster, the ships and the numbers: `q[squadronSlugIn]` narrows the fleet's
+member list, ship list, stats, model counts, fleetchart and export.
+
+The alternative was a second ship list and a second stats page carrying the
+same filters, the same grouped-by-model branch and the same metric arithmetic
+— which is what D10 had planned, and which would have drifted from the
+originals the first time either changed.
+
+A squadron's own page keeps only what is its own: the member count, the
+description, and three links out to those pages already narrowed to it.
+
+The segmented control that picks one sits above the list rather than in the
+filter sidebar, on both the roster and the ship list, and carries an "All"
+segment. Single-select, because "All" is meaningless beside a multi-select.
+
+### D13 — Creating a squadron and editing one are the same page
+
+Two tabs — what a squadron is, and what it looks like. Details carries the
+name with the team toggle beside it and the two descriptions; Appearance
+carries the icon and the colour, the two things every emblem is drawn from.
+Tabs are a way of reading one form, not two forms: the fields live in a
+composable both layouts share, `keepValuesOnUnmount` keeps the off-screen tab
+from dropping what was typed into it, and the submit writes the lot.
+
+The appearance half needs no saved record. The direct-upload endpoint hands back a
+signed blob id before anything exists, so a new squadron is written with its
+emblem already attached rather than redirecting the author into the editor to
+finish the job.
+
+### D14 — A fleet arranges its own squadrons
+
+Alphabetical is not an order anybody chose. `rank` is the default sort and
+the association's own order, so the strip on the front page, the filter
+segments and the roster badges all follow it rather than only the page it was
+arranged on.
+
+A lexorank, the one `FleetRole` already uses. A drag is one squadron moved,
+so `PUT …/squadrons/:slug/move` writes that row alone; the unique index on
+`(fleet_id, rank)` means two squadrons can never share a place, which a list of
+integer positions written whole could not promise once a client sent part of
+it. The column is collated "C": the ranks are compared byte by byte, and under
+the database's locale collation "g" sorts before "U" and the next rank handed
+out repeats one already taken.
+
+Squadrons and teams are one sequence drawn as two rows, so the page counts a
+move in the sequence -- after the squadron now ahead of it in its row -- and
+not within the row, which would drop it among the other one.
+
+### D15 — Belonging is the rule; `team` marks the exception
+
+Being in two squadrons at once was possible and meant nothing in particular:
+the roster badged somebody with whichever of their groups sorted first, and the
+member counts added up to more than the fleet had people.
+
+So a member holds at most one squadron in a fleet, and `team` marks the
+exception — a standing rota, a trade wing, a crew that cuts across the roster.
+A team takes anybody however many they are already on, and being on one never
+blocks a squadron: the flag is off on both sides of the rule rather than one.
+
+Refused at the join row, which is what creates the conflict and can therefore
+name the squadron standing in the way. Refused again when a team is turned back
+into a squadron over members who already have one — nothing would repair a rule
+that was already broken when it was turned on, and every later save of an
+untouched squadron would then fail on a state somebody else created.
+
+The two are drawn as two rows on the front page, the squadrons page and in
+settings. Shown toget### D16 — One picture, an avatar
+
+`icon` only, uploaded and drawn round like a user's avatar. A logo and a header
+were built and dropped before the first release: the logo only repeated the
+icon on the squadron's own page, and the header was decoration on a page that
+since D12 is mostly a member count and three links. Either can come back as an
+optional attachment without a migration.
+
+The icon is cropped to its opaque bounds on the way in, so an emblem exported
+inside a transparent canvas fills its circle. No transparency is required: a
+round crop suits a photograph as well as a cut-out, and the fleet logo and the
+user avatar accept either.
+
+hotograph whose edges are the picture,
+so it is neither checked nor cropped.
+
+The crop happens in the request where the bytes are already in storage, which
+is every direct upload: run behind the request, the response is built from the
+padded original and the emblem is drawn inside its transparent canvas until
+something reloads the page.
+
+### D17 — Two descriptions
+
+`short_description` is what the card carries and is held to a line or two;
+`description` is the squadron's own page and is only serialised by `show`.
+Thirty long descriptions would otherwise ride on every grid that renders the
+short one.
+
+### D19 — Squadron access is a value in a vocabulary each record already had
+
+An event, a contract and an inventory can be held to squadrons. The switch is
+the record's own `visibility` -- "squadron" for an event, `squadron_only` for
+an inventory, and for a contract a `visibility` column it never had, at the
+value that keeps today's behaviour. Which squadrons is a polymorphic join,
+because a record can serve more than one and three columns meaning the same
+thing would drift apart.
+
+Both halves are required: a visibility naming no squadron would be visible to
+nobody, which is never what anybody meant. Disbanding a squadron releases what
+it held, for the same reason.
+
+Enforced twice, because these lists are built by hand rather than through
+`authorized_scope`: the scope narrows what is listed and `show?` refuses the
+same records one at a time. A list that serves what opening it refuses is the
+failure worth catching, so one test runs the same cases over all three.
+
+Whoever runs the fleet's events or contracts still reaches all of them --
+including squadron ones they are not in, which they may well have created.
+
+The same rule reaches past the pages. An in-app announcement carries the
+title, so a squadron's event or contract is announced to the squadron and to
+whoever runs the board, and to nobody else. Discord cannot be narrowed that
+way -- the guild and the reminder webhook are the whole fleet -- so a squadron
+event is kept off it until a squadron has a channel of its own.
+
+### D18 — Adding and removing are two tasks, not one modal
+
+The picker briefly did both: the squadron's members opened ticked and the
+submit wrote the difference. It reads as one control doing two jobs, and the
+half that matters most -- seeing who is actually in a squadron -- was buried
+in a modal.
+
+So the picker is a picker again, of people not yet in, and the squadron has a
+members page: the fleet's roster with the squadron fixed rather than a second
+list. Fixed, not filtered -- it is what the page is, not something a reader
+can clear. Removal is a row action there, and says plainly that the member
+stays in the fleet.
+
+This walks back the part of D12 that left a squadron with no member list. The
+rest of D12 stands: the ships and the numbers are still the fleet's own pages
+narrowed, because those are lists this feature has nothing to add to. A roster
+is different -- it is the one list a squadron *is*.
+
 ---
 
 ## Progress
 
-- [ ] Phase 1 — Database migrations and models
-- [ ] Phase 2 — Privileges and policies
-- [ ] Phase 3 — Routes and controllers
-- [ ] Phase 4 — Jbuilder views and API schema
-- [ ] Phase 5 — RSpec request specs
-- [ ] Phase 6 — Frontend: routes, navigation, pages
-- [ ] Phase 7 — Frontend: components and settings UI
-- [ ] Phase 8 — Frontend: member list integration
-- [ ] Phase 9 — Public fleet squadron views
-- [ ] Phase 10 — Linting and final schema generation
+- [x] Phase 1 — Database migrations and models
+- [x] Phase 2 — Privileges and policies
+- [x] Phase 3 — Routes and controllers
+- [x] Phase 4 — Jbuilder views and API schema
+- [x] Phase 5 — Minitest integration tests
+- [x] Phase 6 — Frontend: routes, navigation, pages
+- [x] Phase 7 — Frontend: components and settings UI
+- [x] Phase 8 — Frontend: member list integration
+- [x] Phase 9 — Public fleet squadron views
+- [x] Phase 10 — Linting and final schema generation
 
 ---
+
+> The phases below are the plan as it was written, and the work followed them
+> to a point. Where they and the decision log disagree, the decision log is
+> what shipped — D12 in place of the per-squadron endpoints, and D13 in place
+> of the create/edit modal of Phase 7. `SquadronModal` and `SquadronBadge` were
+> both built and both deleted.
 
 ## Phase 1 — Database Migrations and Models
 
@@ -302,18 +501,25 @@ Add `FleetSquadron` to `all_available_privileges` and `preset_privileges`.
 
 ### Routes
 
-**Create** `config/routes/api/fleet_squadrons_routes.rb`
-
-Nested under the existing fleet resource:
+**Modify** `config/routes/api/fleets_routes.rb` — there is no per-resource route
+file; every nested fleet resource lives in this one, inside the existing
+`resources :fleets` block:
 
 ```ruby
-resources :squadrons, param: :slug, controller: "fleet_squadrons" do
-  resources :members, controller: "fleet_squadron_members", only: [:index, :create, :destroy], param: :username
+resources :fleet_squadrons, path: "squadrons", param: :slug, only: %i[index show create update destroy] do
+  resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create destroy]
+
   get "vehicles", to: "fleet_squadron_vehicles#index"
   get "stats/vehicles", to: "fleet_squadron_stats#vehicles"
   get "stats/members", to: "fleet_squadron_stats#members"
 end
 ```
+
+The nested lookup param is `:fleet_squadron_slug`, which is what the member,
+vehicle and stats controllers read.
+
+The public half goes in the `namespace :public` block of the same file, with
+`only: %i[index show]` and no member routes.
 
 ### Controllers
 
@@ -367,26 +573,48 @@ end
 
 Run `./bin/generate-schema` after adding the openapi-ruby specs.
 
-## Phase 5 — RSpec Request Specs
+## Phase 5 — Minitest Integration Tests
 
-**Create** specs in `spec/requests/api/v1/`:
+There is no `spec/` directory: this project is Minitest, and per AGENTS.md API
+endpoints get `openapi-ruby` integration tests in `test/integration/`
+(`include OpenapiRuby::Adapters::Minitest::DSL`) — the same specs
+`bin/generate-schema` reads the OpenAPI document out of. One file per endpoint,
+named `fleets_<resource>_<action>_test.rb` after the files already there.
 
-- `fleet_squadrons/index_spec.rb`
-- `fleet_squadrons/show_spec.rb`
-- `fleet_squadrons/create_spec.rb`
-- `fleet_squadrons/update_spec.rb`
-- `fleet_squadrons/destroy_spec.rb`
-- `fleet_squadron_members/index_spec.rb`
-- `fleet_squadron_members/create_spec.rb`
-- `fleet_squadron_members/destroy_spec.rb`
-- `fleet_squadron_vehicles/index_spec.rb`
-- `fleet_squadron_stats/vehicles_spec.rb`
-- `fleet_squadron_stats/members_spec.rb`
+**Create** in `test/integration/api/v1/`:
+
+- `fleets_squadrons_index_test.rb`
+- `fleets_squadrons_show_test.rb`
+- `fleets_squadrons_create_test.rb`
+- `fleets_squadrons_update_test.rb`
+- `fleets_squadrons_destroy_test.rb`
+- `fleets_squadron_members_index_test.rb`
+- `fleets_squadron_members_create_test.rb`
+- `fleets_squadron_members_destroy_test.rb`
+- `fleets_squadron_vehicles_index_test.rb`
+- `fleets_squadron_stats_vehicles_test.rb`
+- `fleets_squadron_stats_members_test.rb`
+- `fleets_members_squadrons_test.rb` — the badges and the roster filter, which
+  ride on the existing members endpoint and so document no path of their own
+- `public_fleets_squadrons_index_test.rb`, `public_fleets_squadrons_show_test.rb`,
+  `public_fleets_squadron_vehicles_index_test.rb`,
+  `public_fleets_squadron_stats_vehicles_test.rb`,
+  `public_fleets_squadron_stats_members_test.rb`
+
+**Create** model and policy tests:
+
+- `test/models/fleet_squadron_test.rb`
+- `test/models/fleet_squadron_membership_test.rb`
+- `test/policies/fleet_squadron_policy_test.rb` — the relation scope and `show?`
+  answer alike, which nothing else holds together
+
+**Modify** `test/integration/api/v1/list_endpoint_query_counts_test.rb` — the
+squadron list's query count must not grow with the number of squadrons.
 
 **Create** factories:
 
-- `spec/factories/fleet_squadrons.rb`
-- `spec/factories/fleet_squadron_memberships.rb`
+- `test/factories/fleet_squadrons.rb`
+- `test/factories/fleet_squadron_memberships.rb`
 
 ## Phase 6 — Frontend: Routes, Navigation, Pages
 
@@ -525,19 +753,68 @@ Add "Squadrons" settings tab (visible with `squadrons:manage` or `squadrons:crea
 | `app/controllers/api/v1/fleet_squadron_stats_controller.rb` | Squadron stats |
 | `app/policies/fleet_squadron_policy.rb` | Squadron authorization |
 | `app/policies/fleet_squadron_membership_policy.rb` | Squadron member authorization |
-| `config/routes/api/fleet_squadrons_routes.rb` | API routes |
+| `config/routes/api/fleets_routes.rb` | API routes, public half included |
+| `config/feature_flags.yml` | The `fleet_squadrons` gate |
+| `db/data/…_grant_squadron_privileges_to_existing_roles.rb` | Backfill for roles that already exist |
+| `app/lib/versioned_item.rb` | Makes a squadron's paper-trail history readable |
 | `app/frontend/frontend/pages/fleets/[slug]/squadrons/` | Frontend pages |
-| `app/frontend/frontend/components/Fleets/Squadron*/` | Frontend components |
+| `app/frontend/frontend/components/Fleets/Squadrons/` | Frontend components |
+| `app/frontend/frontend/composables/useFleetNavAccess.ts` | Whether the tab shows |
 
 ## Not in Scope (deferred)
 
-- **Squadron-level roles** — Squadrons inherit fleet roles; a separate squadron role hierarchy could be added later if needed
+- **Squadron ranks** — Asked for during review, to come after this PR: a rank held *within* a squadron, the way a fleet role is held within a fleet. Three to begin with — Squadron Leader, Squadron Officer, Member — shared by every squadron rather than defined per squadron, and later the ability to add roles of a fleet's own on top. Worth settling first: whether a rank carries privileges (who may add or remove members of *this* squadron) or is a label; and whether the three are seeded rows per fleet the way `FleetRole` is, or an enum on the join with custom roles arriving as rows later. `FleetSquadronMembership` is where the rank belongs either way
+- ~~**Squadron-scoped contracts and inventories**~~ — Done by D19: a visibility rule, and several squadrons through a polymorphic join
+- **Moving a member between squadrons in one step** — D15 makes reassignment two actions, remove and then add. The picker says which squadron holds somebody, and the squadron's members page is where the removal is, but there is no `move`
+- **The public front-page strip** — The public endpoints exist, but the strip is gated on membership, so a signed-out visitor to a public fleet sees nothing
 - **Squadron chat/messaging** — No in-app messaging system exists yet
-- **Squadron events/calendar** — Future feature
-- **Squadron fleetchart** — Could reuse existing fleetchart filtered by squadron; deferred to avoid scope creep
+- **Squadron events/calendar** — Events can be held to squadrons (D19); a calendar of a squadron's own is still to come
+- ~~**Squadron fleetchart**~~ — Done by D12: the fleet's own fleetchart takes `q[squadronSlugIn]` like its other lists
 - **Admin squadron management** — Admin panel can manage fleets; squadron admin can be added later
 - **Notification types for squadrons** — e.g., `squadron_member_added`; can be added via the notification center once it's complete
+- **A Discord webhook per squadron** — The fleet's guild sync and reminder webhook reach the whole fleet, so an event held to squadrons is kept off both (D19): never posted, and taken down if an edit restricts one that was. Announcing squadron events needs a webhook, or a channel, per squadron
 
 ## Discovery Log
 
 - **2026-04-22** Initial exec plan
+- **2026-09-21** Implementation. Two corrections to the plan as written: there
+  is no `spec/` directory (Phase 5 is Minitest in `test/integration/`, which is
+  also what generates the OpenAPI document), and nested fleet routes live in
+  `config/routes/api/fleets_routes.rb` rather than a file per resource. Four
+  decisions the plan had not taken are recorded above as D8–D11: the feature
+  flag, how the privileges seed, subclassing for the ship and stat endpoints,
+  and keeping the member count out of the cached fragment.
+- **2026-09-22** The shape changed twice under review, and the phases above
+  describe the first shape rather than the one that shipped. D12 replaces the
+  per-squadron endpoints of D10 with a filter dimension, and D13 replaces the
+  create/edit modal of Phase 7 with a two-tab page. D14–D17 are the rest of
+  what review added: a fleet-chosen order, the squadron/team split, the three
+  pictures, and the two descriptions.
+
+- **2026-09-23** Events, contracts and inventories gained squadron access
+  (D19), and the member list came back as a page of its own (D18). Two things
+  that turned up on the way: `FleetEvent#visibility` has never been enforced
+  anywhere -- no policy, controller or scope reads it -- so the squadron value
+  is the only one that does anything; and the fleet factory built `fid` from
+  three Faker characters, which collides often enough to redden whichever test
+  drew second.
+
+  Two bugs the work turned up in code it did not own. `/fleets/:slug/stats/
+  vehicles` declared no `q` parameter, so the ship list's metrics and
+  classification chips had never followed *any* filter — the squadron filter is
+  only what made it visible. And the inline trim of D16 asks every attachment a
+  save touched what it is carrying; a purge is one of those changes and carries
+  nothing, which broke clearing a picture on nine admin endpoints until it was
+  guarded.
+
+- **2026-09-24** The squadron carries one picture instead of three (D16):
+  the icon, drawn round, beside the colour on a tab now called Appearance. The
+  team toggle moved up beside the name, and the transparency validator went
+  with the pictures that needed it.
+
+  Review found D19 enforced on the lists and on `show?` but not on every rule
+  that reaches a record by its slug: claiming a contract and reading its crew
+  asked the fleet-wide read privilege, and an inventory's manager was listed a
+  squadron store its detail refused. The squadron join date became a sort of
+  the squadron's own roster only -- across the fleet a member has no single
+  answer -- and the public list follows the fleet's order like every other.

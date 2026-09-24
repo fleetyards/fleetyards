@@ -10,6 +10,8 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import SquadronSelect from "@/frontend/components/Fleets/Squadrons/SquadronSelect/index.vue";
+import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibility";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import EventEditFormShell from "@/frontend/components/Fleets/Events/EventEditFormShell/index.vue";
 import {
@@ -36,6 +38,9 @@ const { defineField, handleSubmit, meta, setErrors } =
       location: props.event.location ?? "",
       meetupLocation: props.event.meetupLocation ?? "",
       visibility: props.event.visibility,
+      fleetSquadronIds: (props.event.fleetSquadrons ?? []).map(
+        (squadron) => squadron.id,
+      ),
       maxAttendees: props.event.maxAttendees ?? null,
       autoLockEnabled: props.event.autoLockEnabled ?? true,
       autoLockMinutesBefore: props.event.autoLockMinutesBefore ?? 60,
@@ -45,17 +50,30 @@ const { defineField, handleSubmit, meta, setErrors } =
 const [location, locationProps] = defineField("location");
 const [meetupLocation, meetupLocationProps] = defineField("meetupLocation");
 const [visibility, visibilityProps] = defineField("visibility");
+const [fleetSquadronIds] = defineField("fleetSquadronIds");
 const [maxAttendees, maxAttendeesProps] = defineField("maxAttendees");
+
+// The squadron list is the other half of the squadron visibility, so it is
+// only asked for when that is what is chosen.
+const restrictedToSquadrons = computed(() => visibility.value === "squadron");
 const [autoLockEnabled] = defineField("autoLockEnabled");
 const [autoLockMinutesBefore, autoLockMinutesBeforeProps] = defineField(
   "autoLockMinutesBefore",
 );
 
+const { withSquadronChoice } = useSquadronVisibility(
+  () => props.fleet,
+  "squadron",
+  visibility,
+);
+
 const visibilityOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetEventVisibilityEnum).map((value) => ({
-    value,
-    label: t(`labels.fleets.events.visibilities.${value}`),
-  })),
+  withSquadronChoice(
+    Object.values(FleetEventVisibilityEnum).map((value) => ({
+      value,
+      label: t(`labels.fleets.events.visibilities.${value}`),
+    })),
+  ),
 );
 
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
@@ -68,6 +86,11 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         location: values.location || null,
         meetupLocation: values.meetupLocation || null,
         maxAttendees: values.maxAttendees ? Number(values.maxAttendees) : null,
+        // Cleared when the visibility is not the squadron one, so switching
+        // away does not leave a restriction the form no longer shows.
+        fleetSquadronIds: restrictedToSquadrons.value
+          ? (values.fleetSquadronIds ?? [])
+          : [],
         // The number only means anything while the lock is on, and the API
         // refuses one without it.
         autoLockMinutesBefore: values.autoLockEnabled
@@ -118,6 +141,9 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
           name="visibility"
           :searchable="false"
         />
+      </div>
+      <div v-if="restrictedToSquadrons" class="col-12 col-md-6">
+        <SquadronSelect v-model="fleetSquadronIds" :fleet="fleet" />
       </div>
       <div class="col-12 col-md-6">
         <FormInput

@@ -68,3 +68,25 @@ json.items_count fleet_contract.fleet_contract_items.size
 json.crew_count fleet_contract.fleet_contract_assignments.count { |assignment| assignment.aasm_state == "accepted" }
 
 json.partial! "api/shared/dates", record: fleet_contract
+
+json.visibility fleet_contract.visibility
+
+# The squadrons this is held to, if any. The same ref the roster badges with,
+# so a list can draw the emblem without a second request.
+json.fleet_squadrons do
+  json.array! fleet_contract.fleet_squadrons.sort_by { |squadron| [squadron.team? ? 1 : 0, squadron.rank] } do |squadron|
+    json.id squadron.id
+    json.name squadron.name
+    json.slug squadron.slug
+    json.color squadron.color
+    json.team squadron.team
+
+    if squadron.icon.attached?
+      json.icon do
+        json.partial! "api/v1/shared/file", record: squadron, attr: :icon
+      end
+    else
+      json.icon nil
+    end
+  end
+end

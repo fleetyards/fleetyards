@@ -175,6 +175,7 @@ defineExpose({ clear });
         :disabled="disabled"
         :time-config="timeConfig"
         :formats="{ input: inputFormat, preview: inputFormat }"
+        teleport="body"
         auto-apply
         :min-date="minDate"
         :max-date="maxDate"

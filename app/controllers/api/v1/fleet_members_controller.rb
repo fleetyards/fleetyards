@@ -40,7 +40,7 @@ module Api
           FleetMembership.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(:user)
+          .includes(:user, fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}})
           .joins(:user)
 
         @members = result_with_pagination(result, per_page(FleetMembership))

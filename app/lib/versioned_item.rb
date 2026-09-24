@@ -34,6 +34,7 @@ class VersionedItem
     "FleetInventoryPosition" => [:fleet_inventory, :fleet],
     "FleetMembership" => [:fleet],
     "FleetRole" => [:fleet],
+    "FleetSquadron" => [:fleet],
     "Inventory" => [:holder],
     "InventoryItem" => [:inventory, :holder],
     "InventoryPosition" => [:inventory, :holder],

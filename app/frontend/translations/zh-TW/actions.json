@@ -207,6 +207,15 @@
         "leave": "Leave %{fleet}",
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
+        "squadrons": {
+          "create": "建立中隊",
+          "addMember": "新增成員",
+          "removeMember": "移出中隊",
+          "addMembers": "新增 %{count} 位",
+          "viewMembers": "中隊成員",
+          "viewShips": "中隊艦船",
+          "viewStats": "中隊統計"
+        },
         "manageInvites": "邀請",
         "worldmap": "世界地圖",
         "starmap": "星圖",

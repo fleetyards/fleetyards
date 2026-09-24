@@ -94,7 +94,11 @@ class FleetEvent < ApplicationRecord
     exploration: 7
   }
 
-  VISIBILITIES = %w[members officers fleet].freeze
+  include SquadronRestrictable
+
+  # "squadron" narrows it to the squadrons named in `fleet_squadrons`; see
+  # SquadronRestrictable.
+  VISIBILITIES = %w[members officers fleet squadron].freeze
   SIGNUP_APPROVALS = %w[direct confirmation_required].freeze
   RECURRENCE_INTERVALS = %w[daily weekly biweekly monthly].freeze
 

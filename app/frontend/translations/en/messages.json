@@ -321,6 +321,35 @@
             "failure": "Nickname could not be saved."
           }
         },
+        "squadrons": {
+          "create": {
+            "success": "Squadron created.",
+            "failure": "Squadron could not be created."
+          },
+          "update": {
+            "success": "Squadron saved.",
+            "failure": "Squadron could not be saved."
+          },
+          "destroy": {
+            "confirm": "Disband the squadron \"%{name}\"? Its members stay in the fleet.",
+            "success": "Squadron disbanded.",
+            "failure": "Squadron could not be disbanded."
+          },
+          "sort": {
+            "failure": "The order could not be saved."
+          },
+          "members": {
+            "add": {
+              "success": "%{count} members added.",
+              "failure": "%{count} members could not be added."
+            },
+            "destroy": {
+              "confirm": "Remove %{username} from the %{squadron} squadron? They stay in the fleet.",
+              "success": "Member removed from the squadron.",
+              "failure": "Member could not be removed."
+            }
+          }
+        },
         "calendarSubscription": {
           "enable": {
             "success": "Calendar subscription enabled.",

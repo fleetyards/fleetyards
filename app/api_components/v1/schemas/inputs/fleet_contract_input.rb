@@ -28,6 +28,10 @@ module V1
             # one. The model refuses the other three combinations.
             sourceFleetInventoryId: {type: [:string, :null], format: :uuid},
             destinationFleetInventoryId: {type: :string, format: :uuid},
+            # Who the work is for. `squadronOnly` with the squadrons it names
+            # keeps the board to them; see SquadronRestrictable.
+            visibility: ::V1::Schemas::Enums::FleetContractVisibilityEnum,
+            fleetSquadronIds: {type: :array, items: {type: :string, format: :uuid}},
             # The goods, when a contract arrives with them. Saved with it in one
             # transaction, because a contract with nothing to deliver cannot be
             # published and a second form to add them is the long way round.

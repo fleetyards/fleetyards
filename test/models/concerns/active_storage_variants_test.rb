@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "vips"
 
 class ActiveStorageVariantsTest < ActiveSupport::TestCase
   setup do
@@ -57,6 +58,62 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
 
     assert_equal 1, PreprocessRepresentationsJob.jobs.size
     assert_equal [@model.reload.rsi_store_image.blob.id], PreprocessRepresentationsJob.jobs.first["args"]
+  end
+
+  # An upload that came through the direct-upload endpoint is already in
+  # storage, so the crop can happen before the response rather than behind it --
+  # otherwise the page that follows the save draws the padded original and only
+  # a reload replaces it.
+  class InlineTrimTest < ActiveStorageVariantsTest
+    test "a signed id is trimmed in the request" do
+      @model.top_view.attach(padded_blob.signed_id)
+
+      assert_equal 0, TrimAttachmentJob.jobs.size
+      assert @model.reload.top_view.blob.metadata["trimmed"]
+
+      cropped = Vips::Image.new_from_buffer(@model.top_view.blob.download, "")
+      assert_equal [100, 40], [cropped.width, cropped.height]
+    end
+
+    test "a blob that needed no crop is preprocessed without the job" do
+      @model.top_view.attach(ActiveStorage::Blob.create_and_upload!(
+        io: file_fixture("image.jpg").open, filename: "top.jpg"
+      ))
+
+      assert_equal 0, TrimAttachmentJob.jobs.size
+      assert_equal 1, PreprocessRepresentationsJob.jobs.size
+    end
+
+    # The bytes of a file posted with the form are uploaded in an `after_commit`
+    # of ActiveStorage's own, which may not have run yet.
+    test "a file posted with the form still goes through the job" do
+      @model.top_view.attach(io: StringIO.new(padded_png), filename: "top.png")
+
+      assert_equal 1, TrimAttachmentJob.jobs.size
+    end
+
+    # A purge is a change like any other, and the record asks every change what
+    # it is carrying before anything has decided which attachments are still
+    # there. `DeleteOne` carries no attachable at all.
+    test "purging an attachment raises nothing" do
+      @model.top_view.attach(padded_blob.signed_id)
+
+      assert_nothing_raised { @model.top_view.purge }
+
+      refute_predicate @model.reload.top_view, :attached?
+    end
+
+    private def padded_blob
+      ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new(padded_png), filename: "top.png", content_type: "image/png"
+      )
+    end
+
+    private def padded_png
+      opaque = Vips::Image.black(100, 40, bands: 3).new_from_image([255, 0, 0]).bandjoin(255).cast(:uchar)
+
+      Vips::Image.black(200, 150, bands: 4).cast(:uchar).insert(opaque, 50, 55).write_to_buffer(".png")
+    end
   end
 
   private def attachable

@@ -94,3 +94,39 @@ OpenapiRuby.configure do |config|
 
   config.test_request_validation = false
 end
+
+# Component classes referenced from integration specs register when those
+# specs load. Parameter components therefore used to move within the top-level
+# `components` mapping with test load order, which differed on Linux and macOS.
+# Keep Ruby class references and normalize only the category order when the
+# document is serialized.
+module OpenapiRuby
+  module Core
+    module StableComponentCategoryOrder
+      ORDER = %w[
+        schemas
+        securitySchemes
+        parameters
+        responses
+        requestBodies
+        headers
+        examples
+        links
+        callbacks
+      ].freeze
+
+      def to_h
+        super.tap do |document|
+          components = document["components"]
+          next unless components
+
+          document["components"] = components.sort_by do |name, _|
+            [ORDER.index(name) || ORDER.length, name]
+          end.to_h
+        end
+      end
+    end
+
+    Document.prepend(StableComponentCategoryOrder)
+  end
+end

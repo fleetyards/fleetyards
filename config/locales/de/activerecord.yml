@@ -288,6 +288,16 @@ de:
           attributes:
             managed_by:
               not_a_member: muss ein bestätigtes Mitglied dieser Flotte sein
+        fleet_squadron:
+          attributes:
+            team:
+              conflicting_members: "kann nicht aufgehoben werden, solange %{members} zusätzlich in einer anderen Staffel sind"
+        fleet_squadron_membership:
+          attributes:
+            fleet_membership:
+              not_a_member: "muss ein bestätigtes Mitglied dieser Flotte sein"
+            fleet_squadron:
+              exclusive_conflict: "steht im Widerspruch zu %{squadron} – Mitglieder gehören nur einer Staffel an, sofern sie kein Team ist"
         fleet_role:
           attributes:
             base:

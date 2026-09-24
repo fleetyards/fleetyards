@@ -707,6 +707,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.uuid "source_fleet_inventory_id"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.integer "visibility", default: 0, null: false
     t.index ["created_by_id"], name: "index_fleet_contracts_on_created_by_id"
     t.index ["destination_fleet_inventory_id"], name: "index_fleet_contracts_on_destination_fleet_inventory_id"
     t.index ["fleet_id", "aasm_state"], name: "index_fleet_contracts_on_fleet_id_and_aasm_state"
@@ -988,6 +989,42 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.string "slug"
     t.datetime "updated_at", null: false
     t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
+  end
+
+  create_table "fleet_squadron_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "assignable_id", null: false
+    t.string "assignable_type", null: false
+    t.datetime "created_at", null: false
+    t.uuid "fleet_squadron_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignable_type", "assignable_id"], name: "index_fleet_squadron_assignments_on_assignable"
+    t.index ["fleet_squadron_id", "assignable_type", "assignable_id"], name: "index_fleet_squadron_assignments_uniqueness", unique: true
+    t.index ["fleet_squadron_id"], name: "index_fleet_squadron_assignments_on_fleet_squadron_id"
+  end
+
+  create_table "fleet_squadron_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "fleet_membership_id", null: false
+    t.uuid "fleet_squadron_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_membership_id"], name: "index_fleet_squadron_memberships_on_fleet_membership_id"
+    t.index ["fleet_squadron_id", "fleet_membership_id"], name: "index_fleet_squadron_memberships_on_squadron_and_membership", unique: true
+  end
+
+  create_table "fleet_squadrons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "fleet_id", null: false
+    t.string "name", null: false
+    t.text "rank", null: false, collation: "C"
+    t.text "short_description"
+    t.string "slug", null: false
+    t.boolean "team", default: false, null: false
+    t.datetime "updated_at", null: false
+    t.index "fleet_id, lower((name)::text)", name: "index_fleet_squadrons_on_fleet_id_and_lower_name", unique: true
+    t.index ["fleet_id", "rank"], name: "index_fleet_squadrons_on_fleet_id_and_rank", unique: true
+    t.index ["fleet_id", "slug"], name: "index_fleet_squadrons_on_fleet_id_and_slug", unique: true
   end
 
   create_table "fleet_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2433,6 +2470,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "fleet_squadron_assignments", "fleet_squadrons"
+  add_foreign_key "fleet_squadron_memberships", "fleet_memberships"
+  add_foreign_key "fleet_squadron_memberships", "fleet_squadrons"
+  add_foreign_key "fleet_squadrons", "fleets"
   add_foreign_key "fleet_subscriptions", "fleets", on_delete: :cascade
   add_foreign_key "fleet_subscriptions", "supporter_contributions", on_delete: :nullify
   add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade

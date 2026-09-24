@@ -74,6 +74,10 @@ class Fleet < ApplicationRecord
   has_many :fleet_invite_urls,
     dependent: :destroy
   has_many :fleet_inventories, dependent: :destroy
+  # Ordered here rather than at every call site: the strip on the front page,
+  # the filter segments and the roster badges all read this association, and a
+  # custom order that only the list page honoured would not be one.
+  has_many :fleet_squadrons, -> { order(rank: :asc) }, dependent: :destroy
 
   # The database cascades these, so `dependent:` would only be a second, slower
   # way of doing the same thing -- and a fleet must never fail to delete
@@ -116,7 +120,12 @@ class Fleet < ApplicationRecord
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_. ]{3,}\Z/}
 
+  # A ceiling well clear of anything anybody has written -- the longest
+  # description on record is a little over 5000 characters -- so it bounds the
+  # column without invalidating a fleet that is already there. The form draws
+  # the same number as a running count.
   validates :description,
+    length: {maximum: 10_000},
     format: {
       with: /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú\[\]()\-_'".,?!:;\s]*$/,
       multiline: true

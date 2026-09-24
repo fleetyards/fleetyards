@@ -3,6 +3,8 @@
 module Api
   module V1
     class FleetContractsController < ::Api::BaseController
+      include SquadronVisibilityConcern
+
       include FleetSubscriptionConcern
 
       after_action -> { pagination_header(:fleet_contracts) }, only: %i[index]
@@ -39,7 +41,9 @@ module Api
             :created_by, :fleet_contract_items, {fleet_contract_assignments: :user},
             # The serializer asks every row whether it carries a cover, which is
             # a query each without this, and a second one per row that does.
-            {cover_image_attachment: :blob}),
+            {cover_image_attachment: :blob},
+            # Read for the cache key on every row, hit or miss.
+            {fleet_squadrons: {icon_attachment: :blob}}),
           per_page(FleetContract)
         )
 
@@ -163,7 +167,7 @@ module Api
 
         return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
 
-        scope.where.not(aasm_state: "draft")
+        narrow_to_squadron_access(scope.where.not(aasm_state: "draft"))
       end
 
       private def fleet_contract_params

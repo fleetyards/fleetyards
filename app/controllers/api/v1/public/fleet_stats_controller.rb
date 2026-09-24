@@ -16,7 +16,7 @@ module Api
 
         def model_counts
           count_params = vehicle_query_params.except("sorts", "s")
-          @q = @fleet.vehicles.ransack(count_params)
+          @q = narrow_to_squadrons(vehicle_scope).ransack(count_params)
 
           # No `includes`: this returns a grouped count, so no vehicle is ever
           # instantiated and nothing reads an association off one. Eager loading
@@ -32,9 +32,10 @@ module Api
         end
 
         def members
-          @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params.except("sorts", "s"))
+          @q = membership_scope.ransack(member_query_params.except("sorts", "s"))
 
-          members = @q.result
+          # By id -- see the fleet's own stats controller.
+          members = ::FleetMembership.where(id: @q.result.select(:id))
 
           @quick_stats = QuickStats.new(
             total: members.size
@@ -44,9 +45,10 @@ module Api
         # rubocop:disable Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def vehicles
-          scope = @fleet.vehicles.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
+          scope = vehicle_scope.includes(:model, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules)
 
           scope = scope.where(loaner: loaner_included?)
+          scope = narrow_to_squadrons(scope)
 
           @q = scope.ransack(vehicle_query_params)
 
@@ -82,7 +84,7 @@ module Api
 
         def vehicles_by_model
           vehicles_by_model = transform_for_bar_chart(
-            @fleet.vehicles.visible.where(loaner: false)
+            chart_scope
                  .joins(:model)
                  .group("models.name").count
           ).take(params[:limit].present? ? params[:limit].to_i : 10)
@@ -92,7 +94,7 @@ module Api
 
         def models_by_size
           models_by_size = transform_for_pie_chart(
-            @fleet.vehicles.visible.where(loaner: false)
+            chart_scope
                  .joins(:model)
                  .group("models.size").count
                  .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -104,7 +106,7 @@ module Api
 
         def models_by_production_status
           models_by_production_status = transform_for_pie_chart(
-            @fleet.vehicles.visible.where(loaner: false)
+            chart_scope
                  .joins(:model)
                  .group("models.production_status").count
                  .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -116,7 +118,7 @@ module Api
 
         def models_by_manufacturer
           models_by_manufacturer = transform_for_pie_chart(
-            @fleet.vehicles.visible.where(loaner: false)
+            chart_scope
                  .joins(model: :manufacturer)
                  .group("manufacturers.name").count
           )
@@ -126,7 +128,7 @@ module Api
 
         def models_by_classification
           models_by_classification = transform_for_pie_chart(
-            @fleet.vehicles.visible.where(loaner: false)
+            chart_scope
                  .joins(:model)
                  .group("models.classification").count
                  .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
@@ -169,6 +171,30 @@ module Api
         # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/CyclomaticComplexity
         # rubocop:enable Metrics/MethodLength
+
+        # What the five charts count -- see the note on the fleet's own stats
+        # controller.
+        def chart_scope
+          @chart_scope ||= narrow_to_squadrons(vehicle_scope.visible.where(loaner: false))
+        end
+
+        # The two populations the figures are drawn from, kept as seams rather
+        # than reaching for `@fleet.vehicles` inline.
+        def narrow_to_squadrons(scope)
+          user_ids = for_squadrons(@fleet)
+
+          return scope if user_ids.nil?
+
+          scope.where(user_id: user_ids)
+        end
+
+        def vehicle_scope
+          @fleet.vehicles
+        end
+
+        def membership_scope
+          @fleet.fleet_memberships.kept.accepted
+        end
 
         def set_fleet
           @fleet = Fleet.kept.find_by!(slug: params[:fleet_slug])

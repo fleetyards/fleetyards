@@ -13,6 +13,7 @@ module V1
             description: {type: [:string, :null]},
             managedBy: {type: [:string, :null], format: :uuid},
             visibility: ::V1::Schemas::Enums::FleetInventoryVisibilityEnum,
+            fleetSquadronIds: {type: :array, items: {type: :string, format: :uuid}},
             location: {type: [:string, :null]},
             image: {type: [:string, :null]},
             imagePreset: {type: [:string, :null]}

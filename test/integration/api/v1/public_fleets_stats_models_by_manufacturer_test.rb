@@ -13,6 +13,14 @@ class Api::V1::PublicFleetsStatsModelsByManufacturerTest < ActionDispatch::Integ
     get("Public Fleet Models by Manufacturer") do
       operationId "publicFleetModelsByManufacturer"
       tags "FleetStats"
+
+      # The charts count the same vehicles the metrics row above them does, so
+      # they take the same filter.
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::FleetVehicleQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
       produces "application/json"
 
       response(200, "successful") do

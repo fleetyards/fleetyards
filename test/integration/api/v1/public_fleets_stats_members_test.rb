@@ -49,4 +49,20 @@ class Api::V1::PublicFleetsStatsMembersTest < ActionDispatch::IntegrationTest
   test "GET /public/fleets/:fleetSlug/stats/members returns 404 for unknown slug" do
     assert_api_response :get, 404, path_params: {fleetSlug: "unknown-fleet"}
   end
+
+  test "GET /public/fleets/:fleetSlug/stats/members counts a member in two named squadrons once" do
+    Flipper.enable("fleet_squadrons")
+    member = create(:user)
+    fleet = create(:fleet, public_fleet_stats: true, members: [member])
+    squadron = create(:fleet_squadron, fleet: fleet)
+    team = create(:fleet_squadron, fleet: fleet, team: true)
+    membership = fleet.fleet_memberships.find_by!(user: member)
+    [squadron, team].each { |group| create(:fleet_squadron_membership, fleet_squadron: group, fleet_membership: membership) }
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {squadronSlugIn: [squadron.slug, team.slug]}} do
+      assert_equal 1, parsed_body["total"]
+    end
+  end
 end
