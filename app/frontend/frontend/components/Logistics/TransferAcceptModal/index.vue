@@ -29,7 +29,16 @@ const { t } = useI18n();
 const comlink = useComlink();
 
 const submitting = ref(false);
-const inventoryId = ref<string | undefined>(props.inventories[0]?.id);
+// A delivery towards a contract counts only where that contract collects it,
+// so the author's inventory it names is the one the modal opens on.
+const contractDestination = props.inventories.find(
+  (inventory) =>
+    inventory.id === props.transfer.contract?.destinationInventoryId,
+);
+
+const inventoryId = ref<string | undefined>(
+  contractDestination?.id ?? props.inventories[0]?.id,
+);
 
 const options = computed<FilterOption[]>(() =>
   props.inventories.map((inventory) => ({
