@@ -57,6 +57,10 @@ class FleetSquadronMembership < ApplicationRecord
     return if fleet_squadron.blank? || fleet_membership.blank?
     return unless fleet_squadron.exclusive?
 
+    # Save holds this lock through validation and insertion. Concurrent joins
+    # for the same member must recheck after the preceding join commits.
+    FleetMembership.where(id: fleet_membership_id).lock.take
+
     held = FleetSquadron
       .joins(:fleet_squadron_memberships)
       .where(fleet_id: fleet_squadron.fleet_id, team: false)
