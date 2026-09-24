@@ -46,6 +46,7 @@ class OmniauthConnection < ApplicationRecord
   # already mapped.
   after_create_commit :backfill_discord_member_roles, if: :discord?
   after_create_commit :link_patreon_contributions, if: :patreon?
+  after_destroy_commit :revoke_discord_member_roles, if: :discord?
 
   # Connecting proves which Patreon account this is, which is the one thing a
   # typed address never could -- so a contribution already synced under that
@@ -58,5 +59,9 @@ class OmniauthConnection < ApplicationRecord
 
   private def backfill_discord_member_roles
     ::Discord::BackfillUserMemberRolesJob.perform_async(user_id)
+  end
+
+  private def revoke_discord_member_roles
+    ::Discord::RevokeUserMemberRolesJob.perform_async(user_id, uid)
   end
 end
