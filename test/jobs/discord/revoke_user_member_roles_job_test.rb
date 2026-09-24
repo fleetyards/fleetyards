@@ -80,6 +80,27 @@ module Discord
       ::Discord::RevokeUserMemberRolesJob.new.perform(@user.id, UID)
     end
 
+    test "one fleet's permanent error does not stop the others" do
+      other_fleet = create(:fleet)
+      other_fleet.create_fleet_notification_setting!(discord_guild_id: "guild-2", discord_member_role_id: "role-other")
+      other_fleet.fleet_memberships.create!(user: @user, fleet_role: other_fleet.fleet_roles.ranked.last)
+      @connection.destroy!
+
+      @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE]})
+      @api.stubs(:get_guild_member).with("guild-2", UID).returns({"roles" => ["role-other"]})
+      @api.stubs(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).raises(::Discord::ApiClient::Error.new(400, "Bad Request"))
+      @api.expects(:remove_guild_member_role).with("guild-2", UID, "role-other")
+
+      assert_nothing_raised { ::Discord::RevokeUserMemberRolesJob.new.perform(@user.id, UID) }
+    end
+
+    test "a rate limit is left for the job to retry" do
+      @connection.destroy!
+      @api.stubs(:get_guild_member).raises(::Discord::ApiClient::Error.new(429, "Too Many Requests"))
+
+      assert_raises(::Discord::ApiClient::Error) { ::Discord::RevokeUserMemberRolesJob.new.perform(@user.id, UID) }
+    end
+
     test "does nothing without a bot token" do
       ::Discord::ApiClient.stubs(:configured?).returns(false)
       @connection.destroy!

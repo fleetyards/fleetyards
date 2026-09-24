@@ -15,22 +15,29 @@ module Discord
 
       user = User.find_by(id: user_id)
       return if user.blank?
-      # Relinked the same account before this ran: the backfill owns it again.
-      return if user.omniauth_connections.exists?(provider: "discord", uid: discord_uid)
+      return if relinked?(user, discord_uid)
 
       user.fleet_memberships.includes(fleet: :fleet_notification_setting).find_each do |membership|
         next if membership.fleet&.fleet_notification_setting&.discord_guild_id.blank?
 
-        sync = MemberRoleSync.new(membership, discord_uid: discord_uid, revoke: true)
-        next unless sync.runnable?
-
-        result = sync.run!
-        next if result.removed.blank?
-
-        Rails.logger.info("[Discord::RevokeUserMemberRolesJob] membership=#{membership.id} #{result}")
+        revoke(membership, discord_uid)
       end
+    end
+
+    private def relinked?(user, discord_uid)
+      user.omniauth_connections.exists?(provider: "discord", uid: discord_uid)
+    end
+
+    private def revoke(membership, discord_uid)
+      sync = MemberRoleSync.new(membership, discord_uid: discord_uid, revoke: true)
+      return unless sync.runnable?
+
+      result = sync.run!
+      return if result.removed.blank?
+
+      Rails.logger.info("[Discord::RevokeUserMemberRolesJob] membership=#{membership.id} #{result}")
     rescue ApiClient::Error => e
-      Rails.logger.error("[Discord::RevokeUserMemberRolesJob] user=#{user_id} failed: #{e.message}")
+      Rails.logger.error("[Discord::RevokeUserMemberRolesJob] membership=#{membership.id} failed: #{e.message}")
       raise if e.status == 429 || e.status >= 500
     end
   end
