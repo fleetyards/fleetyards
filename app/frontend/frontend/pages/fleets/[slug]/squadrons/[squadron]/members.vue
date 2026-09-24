@@ -19,13 +19,13 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import {
-  useFleetMembers as useFleetMembersQuery,
+  useFleetSquadronMembers,
   useDestroyFleetSquadronMember,
-  getFleetMembersQueryKey,
+  getFleetSquadronMembersQueryKey,
   type Fleet,
   type FleetMember,
-  type FleetMemberQuery,
-  type FleetMembersParams,
+  type FleetSquadronMemberQuery,
+  type FleetSquadronMembersParams,
   type FleetSquadron,
 } from "@/services/fyApi";
 
@@ -49,37 +49,34 @@ const canManageMembers = computed(
   () => props.membership?.capabilities?.manageSquadronMembers ?? false,
 );
 
-const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
+const { isFilterSelected, getQuery } = useFilters<FleetSquadronMemberQuery>({
   updateCallback: async () => {
     await refetch();
   },
 });
 
 const { perPage, page, updatePerPage } = usePagination(
-  getFleetMembersQueryKey(props.fleet.slug),
+  getFleetSquadronMembersQueryKey(props.fleet.slug, squadronSlug.value),
 );
 
 /*
- * The fleet's roster with the squadron fixed, rather than a list of its own:
- * the filter, the columns and the presence are the roster's, and a second
- * implementation of them would drift. The scope is not a filter anybody can
- * clear -- it is what this page is.
+ * The squadron's own roster endpoint, which renders the fleet's member rows
+ * with the fleet's filters: the columns and the presence are the roster's, and
+ * a second implementation of them would drift. It is also the one list that
+ * can sort by when somebody joined this squadron -- across the whole fleet a
+ * member has no single answer to that.
  */
-const membersQueryParams = computed<FleetMembersParams>(() => ({
+const membersQueryParams = computed<FleetSquadronMembersParams>(() => ({
   page: page.value,
   perPage: perPage.value,
-  q: {
-    ...getQuery(),
-    squadronSlugIn: [squadronSlug.value],
-    stateIn: ["accepted"],
-  } as FleetMemberQuery,
+  q: getQuery() as FleetSquadronMemberQuery,
 }));
 
 const {
   data: members,
   refetch,
   ...asyncStatus
-} = useFleetMembersQuery(fleetSlug, membersQueryParams);
+} = useFleetSquadronMembers(fleetSlug, squadronSlug, membersQueryParams);
 
 const memberItems = computed(() => members.value?.items ?? []);
 
