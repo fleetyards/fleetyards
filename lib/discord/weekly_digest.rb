@@ -29,7 +29,7 @@ module Discord
     end
 
     def run
-      deliveries.each { |target, content| EventAnnouncement.enqueue(@fleet, target, content) }
+      deliveries.each { |target, content| EventAnnouncement.enqueue(@fleet, target, content, digest: true) }
     end
 
     # [[target, content], ...]
@@ -73,7 +73,10 @@ module Discord
     private def occurrences
       @occurrences ||= @fleet.fleet_events
         .active_status
-        .starting_after(@from)
+        # A day early: the scope compares a series' last date with the UTC
+        # date, which is a day ahead of fleets west of it in their evening.
+        # The occurrences themselves are cut to the window below.
+        .starting_after(@from - 1.day)
         .where(status: LISTED_STATUSES)
         .includes(:fleet_squadrons)
         .flat_map { |event| occurrences_of(event) }

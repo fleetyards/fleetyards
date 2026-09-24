@@ -8,9 +8,11 @@ module Discord
     sidekiq_options retry: 3, queue: "notifications"
 
     # Positional on purpose: Sidekiq replays arguments positionally.
-    def perform(fleet_id, kind, channel_id, content, event_id = nil)
-      fleet = Fleet.find_by(id: fleet_id)
+    def perform(fleet_id, kind, channel_id, content, event_id = nil, digest = false)
+      fleet = Fleet.kept.find_by(id: fleet_id)
       return if fleet.blank?
+      # Switched off while its posts waited in the queue.
+      return if digest && !fleet.fleet_notification_setting&.digest_enabled?
       target = AnnouncementTarget.new(kind, channel_id)
       return if event_id.present? && !announceable?(event_id, target)
 

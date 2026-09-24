@@ -97,6 +97,18 @@ module Discord
       assert MessageLength.fits?(content), "#{MessageLength.of(content)} UTF-16 units"
     end
 
+    # Evening in Los Angeles is already tomorrow in UTC.
+    test "a series ending today in its own zone is still listed after UTC midnight" do
+      travel_to Time.utc(2026, 10, 1, 1, 0) do
+        la = ActiveSupport::TimeZone["America/Los_Angeles"]
+        create(:fleet_event, :open, fleet: @fleet, title: "Last Op", timezone: "America/Los_Angeles",
+          starts_at: la.local(2026, 9, 23, 19, 0), recurring: true, recurrence_interval: "weekly",
+          recurrence_until: Date.new(2026, 9, 30))
+
+        assert_includes deliveries.fetch("fleet"), "Last Op"
+      end
+    end
+
     test "drafts and cancelled events are not listed" do
       create(:fleet_event, fleet: @fleet, title: "Draft Op", starts_at: 2.days.from_now)
       event(title: "Called Off").tap { |called_off| called_off.update_column(:status, "cancelled") }

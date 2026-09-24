@@ -16,6 +16,19 @@ module Discord
       DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, "hello", @event.id)
     end
 
+    test "posts no digest once the digest was switched off" do
+      AnnouncementTarget.any_instance.expects(:deliver).never
+
+      DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, "hello", nil, true)
+    end
+
+    test "posts nothing for a deleted fleet" do
+      @fleet.update_column(:discarded_at, Time.current)
+      AnnouncementTarget.any_instance.expects(:deliver).never
+
+      DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, "hello", @event.id)
+    end
+
     test "posts nothing for an event cancelled while the post waited" do
       @event.update_column(:status, "cancelled")
       AnnouncementTarget.any_instance.expects(:deliver).never
