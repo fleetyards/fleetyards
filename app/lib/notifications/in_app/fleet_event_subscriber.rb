@@ -72,7 +72,7 @@ module Notifications
 
         eligible_users(event).each do |user|
           notify(user, :fleet_event_published, event,
-            title: I18n.t("notifications.fleet_event.published.title", title: event.title),
+            title: I18n.t("notifications.fleet_event.published.title", fleet: event.fleet.name, title: event.title),
             body: I18n.t("notifications.fleet_event.published.body", fleet: event.fleet.name))
         end
       end
