@@ -409,8 +409,8 @@ importers:
         specifier: ^2.15.0
         version: 2.15.0(@types/node@26.6.2)(typescript@6.0.3)
       orval:
-        specifier: ^8.34.0
-        version: 8.34.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))(prettier@3.9.8)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2)
+        specifier: ^8.35.0
+        version: 8.35.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))(prettier@3.9.8)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2)
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
@@ -1667,49 +1667,49 @@ packages:
   '@openapi-contrib/openapi-schema-to-json-schema@3.2.0':
     resolution: {integrity: sha512-Gj6C0JwCr8arj0sYuslWXUBSP/KnUlEGnPW4qxlXvAl543oaNQgMgIgkQUA6vs5BCCvwTEiL8m/wdWzfl4UvSw==}
 
-  '@orval/angular@8.34.0':
-    resolution: {integrity: sha512-2jinYTxOlYvWIzaXFNwoO8bCvQ0CPr/pWX/NsbY1v2k2S9pAX5uiJbwLAX1+zV5kzIGC0WRp0AiipyAWBRnT9Q==}
+  '@orval/angular@8.35.0':
+    resolution: {integrity: sha512-KAztvwC2sryQS99EYV11BEH6FSpbpGsO9jGYi/hP39+YeO6A5i+iaJvPaiHLrAGZwrGzyN/eMD+hP8QF+/8n5g==}
 
-  '@orval/axios@8.34.0':
-    resolution: {integrity: sha512-Qjh7S0KkfAAVVV9FqNVCM5NKI6iNgNzc3SUtlIMFxZx8xhZkPo0lZXA5FVEHDFjTht6puPSsqbddErU00dALzw==}
+  '@orval/axios@8.35.0':
+    resolution: {integrity: sha512-WON2p/M7vDaKpAvXVzhuxXPkOC1dWAz+UaMPM0DndX9+caOGvV7NrW43jASg9pgu1KF9v9mcV1bWfyXk07WPzQ==}
 
-  '@orval/core@8.34.0':
-    resolution: {integrity: sha512-g01JYWIXRb1nXoOHnQdn444NTTfQLTcYOeUGBdwVU1Pw8AsRTbZEvofVh8cTLFsap6nnR9tb7JCrhxC+YneD+A==}
+  '@orval/core@8.35.0':
+    resolution: {integrity: sha512-wgOUJr1VY99cCcUpbokEG+YLpK6kZVO2cyAOZPHRyG2sTi/SWrSnnicIfDV+mBo+r9SS2eac4U63z1aYCUdlFw==}
     peerDependencies:
       '@faker-js/faker': '>=8'
     peerDependenciesMeta:
       '@faker-js/faker':
         optional: true
 
-  '@orval/effect@8.34.0':
-    resolution: {integrity: sha512-D3tyq261QPzUVQ6Ut8dE6rU39XmHOYqrHUWn3SUxaKiwzV1VheMQsOK+oJVnq+YjoVSB/gbnBBpTQASH4YO5Xw==}
+  '@orval/effect@8.35.0':
+    resolution: {integrity: sha512-W5jIsvU4GMjNgxuDFWptNtcL8HRkRGjdW0rmVY9ytZ7kDEPN+mHxAJ0MlLgYlUct01Q61IwxekycbdsQZjieYQ==}
     peerDependencies:
       effect: '>=3'
     peerDependenciesMeta:
       effect:
         optional: true
 
-  '@orval/fetch@8.34.0':
-    resolution: {integrity: sha512-vBZAorLULhLpk8nxA/nyBxsjtM+nYtB+Pvb4JP8B+RcXyj5Li7OeEMBjU25LfIolrJM75mNnrJUYbMRwoJF41Q==}
+  '@orval/fetch@8.35.0':
+    resolution: {integrity: sha512-V12eygVk2xKcX3bkO7ysORbjxt8mTToWjCQM+2R6DVdOeYnaf5aZ8dBejRZuMEkl/VrgwTEiJxjmQjlfaR3xww==}
 
-  '@orval/hono@8.34.0':
-    resolution: {integrity: sha512-+siF0VbEykUTF5j+EBhmi/njqn+bWTSsP1Ck76w2IfEpi2HUsvN81TRnj3gosVsI8yFC6dmuhJSeg8bbd7+WUQ==}
+  '@orval/hono@8.35.0':
+    resolution: {integrity: sha512-mWjNdq8lI6B4hEdsprsEJcR5Y1YXF2oLxOaBDu+iT/1s/qRGooII++kHmTtMc4D3MFjhJhbymIS5zKNMrpCGLw==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@orval/mcp@8.34.0':
-    resolution: {integrity: sha512-kN81z+Ny9WKwvcqLgJB4r1SOxsQaSK7l3idZ1lwvZDEgCXGtImn+RjsgUFrY0DvsprnsigjJPesnK/dggHO7zw==}
+  '@orval/mcp@8.35.0':
+    resolution: {integrity: sha512-6ezQAKJ8YG1QhOh1wpWDtRNoMXmtvwwNTKJC2SGCP+bpi84FRRPz69Nsqzw1GRXQ/GD8vWa2By3EO6q/11ztOg==}
     peerDependencies:
       '@modelcontextprotocol/sdk': '>=1'
     peerDependenciesMeta:
       '@modelcontextprotocol/sdk':
         optional: true
 
-  '@orval/mock@8.34.0':
-    resolution: {integrity: sha512-QKQx7BCTk5WS5IVMYeowy22XkDwbck4ohkhEjUD0y35T1Clowl/qg+gGtRXJdeh9dM58HcGYgtgzZDe0j26UHQ==}
+  '@orval/mock@8.35.0':
+    resolution: {integrity: sha512-SdmPbU/gdeS+kK0cObBcXeu9gL3Nqhg14tTUIBYdaUfnjRtWHkIhuI9LEDDMtLD75LuUVtYe9kx8/9u70rQ9qg==}
     peerDependencies:
       '@faker-js/faker': '>=8'
       msw: '>=2'
@@ -1719,16 +1719,16 @@ packages:
       msw:
         optional: true
 
-  '@orval/pinia-colada@8.34.0':
-    resolution: {integrity: sha512-RCa8KDMnaXhzPZyGfxSBFbPegn8IlAZkOOsgUelM7SoJ/ifANN2W+OURbqnROi+6nOJlgpocP70KcVeHoAAl9g==}
+  '@orval/pinia-colada@8.35.0':
+    resolution: {integrity: sha512-rAT2teT0LpgtMRHkpWffiMN4boD9MQPXMXUellP4EuLk0LmQXB8ZKrcnThDUMP+yF7Ra66rieXYp/5IFo8xUFQ==}
     peerDependencies:
       '@pinia/colada': ^1.4.4
     peerDependenciesMeta:
       '@pinia/colada':
         optional: true
 
-  '@orval/query@8.34.0':
-    resolution: {integrity: sha512-LZGiFt20EMb4cX5X5y40AnUchpkfr2KgypryeqKTjPwuVSa6Srh6nA5HzcusY8t4JlFMX5NLHlguGTQSro+8qg==}
+  '@orval/query@8.35.0':
+    resolution: {integrity: sha512-a8q07clqUqlSksbi+I4R8p8B+SH56xnxSgoOddRau5x76Rx/5r9w8Bg9SWqCZcjUZgs687r5i8c0Gfst6BfHrg==}
     peerDependencies:
       '@tanstack/angular-query-experimental': '>=5'
       '@tanstack/react-query': '>=4'
@@ -1747,19 +1747,19 @@ packages:
       '@tanstack/vue-query':
         optional: true
 
-  '@orval/solid-start@8.34.0':
-    resolution: {integrity: sha512-rQLsufbdqYqTS2F9DocC9zwfZ2DqpNTWBWJZWuVVIseqv7rOSCwie3Zzs0gmd3ezQah8oBJnCR3uaDIHlyy2LA==}
+  '@orval/solid-start@8.35.0':
+    resolution: {integrity: sha512-l43vTYJwglr1yg8bM9U/aNTF5fmUQNT5pVY5h4unD+54MoyMfmEWBznGasaZ2TwwOa9XhrdxQWyDaohHYQzdZg==}
 
-  '@orval/swr@8.34.0':
-    resolution: {integrity: sha512-um5nUB9aC70JyxPWvYmVMOtGu8v33EzSt7g4m9Nj0tEeELzwPNF0VBgEGbqrWMKAeGOXp49Nn/gZ1CdU1anKrA==}
+  '@orval/swr@8.35.0':
+    resolution: {integrity: sha512-6dzc0UKcNlG6uiKVzIUTOIfz4i808MhtT9u5cMViZYMLANMBohw21njubmIbaW0HMcDoTv4j1F1QQtsxxq8DBQ==}
     peerDependencies:
       swr: '>=2'
     peerDependenciesMeta:
       swr:
         optional: true
 
-  '@orval/zod@8.34.0':
-    resolution: {integrity: sha512-MI54edHELTAoYCvxi7wmA8PoBJjv4psG1SEeZGfy/IOwEcZsHEvx2p2BcoX+vruZdApxMt5mPQGOo+Q3tDWFbg==}
+  '@orval/zod@8.35.0':
+    resolution: {integrity: sha512-7iy7UuATlFf1cnSqM1JZaGkDcrITG2IPeNbge2MLNRPX1elV3nq9IVXEG2cxzmtDIFmi1Cql3sUUnmC88XQTfg==}
     peerDependencies:
       zod: '>=3'
     peerDependenciesMeta:
@@ -5514,8 +5514,8 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  orval@8.34.0:
-    resolution: {integrity: sha512-rE1cpvNysL3WBv2fkfl1xQG+4bms0M0Hrx7ktA9NKypOOn8KI2jILoor4eBopo9H4xo2JpG5zcDhbo5hbvD7Yw==}
+  orval@8.35.0:
+    resolution: {integrity: sha512-KAVJ4paUCMg1ZPXvfEbvyVxwKBwLT0KF8ty9M0cX0cU5eEckvkUW5Lz9dRccog3mDYDFvsBdMhD2pSpJhQXvwg==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -8562,19 +8562,19 @@ snapshots:
     dependencies:
       fast-deep-equal: 3.1.3
 
-  '@orval/angular@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/angular@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/axios@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/axios@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/core@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/core@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
       '@scalar/openapi-types': 0.9.5
       acorn: 8.18.0
@@ -8589,23 +8589,23 @@ snapshots:
     optionalDependencies:
       '@faker-js/faker': 10.6.0
 
-  '@orval/effect@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/effect@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
       remeda: 2.48.0
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/fetch@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/fetch@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/hono@8.34.0(@faker-js/faker@10.6.0)(typescript@6.0.3)(zod@4.6.2)':
+  '@orval/hono@8.35.0(@faker-js/faker@10.6.0)(typescript@6.0.3)(zod@4.6.2)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/zod': 8.34.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/zod': 8.35.0(@faker-js/faker@10.6.0)(zod@4.6.2)
       fs-extra: 11.4.0
     optionalDependencies:
       typescript: 6.0.3
@@ -8613,57 +8613,57 @@ snapshots:
       - '@faker-js/faker'
       - zod
 
-  '@orval/mcp@8.34.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
+  '@orval/mcp@8.35.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/fetch': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/zod': 8.34.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/fetch': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/zod': 8.35.0(@faker-js/faker@10.6.0)(zod@4.6.2)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - zod
 
-  '@orval/mock@8.34.0(@faker-js/faker@10.6.0)(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))':
+  '@orval/mock@8.35.0(@faker-js/faker@10.6.0)(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
       remeda: 2.48.0
     optionalDependencies:
       '@faker-js/faker': 10.6.0
       msw: 2.15.0(@types/node@26.6.2)(typescript@6.0.3)
 
-  '@orval/pinia-colada@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/pinia-colada@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/axios': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/fetch': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/axios': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/fetch': 8.35.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/query@8.34.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))':
+  '@orval/query@8.35.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/fetch': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/fetch': 8.35.0(@faker-js/faker@10.6.0)
       remeda: 2.48.0
     optionalDependencies:
       '@tanstack/vue-query': 5.103.1(vue@3.5.43(typescript@6.0.3))
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/solid-start@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/solid-start@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/swr@8.34.0(@faker-js/faker@10.6.0)':
+  '@orval/swr@8.35.0(@faker-js/faker@10.6.0)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/fetch': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/fetch': 8.35.0(@faker-js/faker@10.6.0)
     transitivePeerDependencies:
       - '@faker-js/faker'
 
-  '@orval/zod@8.34.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
+  '@orval/zod@8.35.0(@faker-js/faker@10.6.0)(zod@4.6.2)':
     dependencies:
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
       jsesc: 3.1.0
       remeda: 2.48.0
     optionalDependencies:
@@ -12413,22 +12413,22 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@8.34.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))(prettier@3.9.8)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2):
+  orval@8.35.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))(prettier@3.9.8)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
-      '@orval/angular': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/axios': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/core': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/effect': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/fetch': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/hono': 8.34.0(@faker-js/faker@10.6.0)(typescript@6.0.3)(zod@4.6.2)
-      '@orval/mcp': 8.34.0(@faker-js/faker@10.6.0)(zod@4.6.2)
-      '@orval/mock': 8.34.0(@faker-js/faker@10.6.0)(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))
-      '@orval/pinia-colada': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/query': 8.34.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))
-      '@orval/solid-start': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/swr': 8.34.0(@faker-js/faker@10.6.0)
-      '@orval/zod': 8.34.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/angular': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/axios': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/core': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/effect': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/fetch': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/hono': 8.35.0(@faker-js/faker@10.6.0)(typescript@6.0.3)(zod@4.6.2)
+      '@orval/mcp': 8.35.0(@faker-js/faker@10.6.0)(zod@4.6.2)
+      '@orval/mock': 8.35.0(@faker-js/faker@10.6.0)(msw@2.15.0(@types/node@26.6.2)(typescript@6.0.3))
+      '@orval/pinia-colada': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/query': 8.35.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.103.1(vue@3.5.43(typescript@6.0.3)))
+      '@orval/solid-start': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/swr': 8.35.0(@faker-js/faker@10.6.0)
+      '@orval/zod': 8.35.0(@faker-js/faker@10.6.0)(zod@4.6.2)
       '@scalar/json-magic': 0.13.5
       '@scalar/openapi-parser': 0.29.3
       '@scalar/openapi-types': 0.9.5
