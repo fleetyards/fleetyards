@@ -1,6 +1,6 @@
 # Selling Premium Fleet Features in Germany — what the legal form actually requires
 
-Research note for [`premium-fleet-features.md`](../exec-plans/premium-fleet-features.md) D15. Nothing
+Research note for D15 of the premium fleet features epic, [#4959](https://github.com/fleetyards/fleetyards/issues/4959). Nothing
 here is built yet and none of it blocks the plan. It exists so the decisions that *are* being taken now
 are taken with the destination in view.
 

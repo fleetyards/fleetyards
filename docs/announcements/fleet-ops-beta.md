@@ -1,7 +1,7 @@
 # Fleet Ops public beta — announcement copy
 
 Ready-to-post copy for the Events, Inventories, Contracts and Tours beta. Written against
-[`premium-fleet-features.md`](../exec-plans/premium-fleet-features.md), whose D15 constrains what this
+the premium fleet features epic, [#4959](https://github.com/fleetyards/fleetyards/issues/4959), whose D15 constrains what this
 may say: **supporter features, never a purchase.** No price, no checkout, no "buy", no "licence".
 Getting that wrong is a legal-form problem a later migration cannot undo, because it is what the
 customer was told they were doing.
