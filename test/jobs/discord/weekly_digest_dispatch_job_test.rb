@@ -11,7 +11,7 @@ module Discord
 
     test "queues a due digest once, however many ticks find it" do
       travel_to Time.utc(2026, 9, 21, 18, 5) do
-        PostWeeklyDigestJob.expects(:perform_async).with(@fleet.id).once
+        PostWeeklyDigestJob.expects(:perform_async).with(@fleet.id, anything).once
 
         WeeklyDigestDispatchJob.new.perform
         WeeklyDigestDispatchJob.new.perform

@@ -10,10 +10,11 @@ module Discord
     # never went out has to give the mark back -- otherwise the next tick
     # within the grace period would skip it as already done.
     sidekiq_retries_exhausted do |job, _exception|
-      WeeklyDigestDispatchJob.release(job["args"].first)
+      fleet_id, claimed_at = job["args"]
+      WeeklyDigestDispatchJob.release(fleet_id, Time.iso8601(claimed_at)) if claimed_at
     end
 
-    def perform(fleet_id)
+    def perform(fleet_id, _claimed_at = nil)
       fleet = Fleet.kept.find_by(id: fleet_id)
       return if fleet.blank?
 

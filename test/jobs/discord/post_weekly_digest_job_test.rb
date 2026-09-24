@@ -29,12 +29,27 @@ module Discord
       PostWeeklyDigestJob.new.perform(@fleet.id)
     end
 
-    test "gives the week back once its retries are spent" do
-      @setting.update!(discord_digest_sent_at: Time.current)
+    def exhaust(claimed_at)
+      PostWeeklyDigestJob.sidekiq_retries_exhausted_block.call({"args" => [@fleet.id, claimed_at.iso8601(6)]}, StandardError.new)
+    end
 
-      PostWeeklyDigestJob.sidekiq_retries_exhausted_block.call({"args" => [@fleet.id]}, StandardError.new)
+    test "gives its week back once its retries are spent" do
+      claimed_at = Time.current.floor(6)
+      @setting.update!(discord_digest_sent_at: claimed_at)
+
+      exhaust(claimed_at)
 
       assert_nil @setting.reload.discord_digest_sent_at
+    end
+
+    # A job that failed slowly must not reopen a week claimed after it.
+    test "leaves a later week's claim alone" do
+      later = Time.current.floor(6)
+      @setting.update!(discord_digest_sent_at: later)
+
+      exhaust(later - 7.days)
+
+      assert_equal later, @setting.reload.discord_digest_sent_at
     end
   end
 end
