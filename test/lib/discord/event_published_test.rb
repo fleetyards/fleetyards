@@ -26,6 +26,13 @@ module Discord
       assert_includes content, I18n.t("discord.event_published.recurrence.weekly")
     end
 
+    test "a series published after its first date announces its next occurrence" do
+      @event.update_columns(starts_at: 9.days.ago, recurring: true, recurrence_interval: "weekly", recurrence_count: 10)
+      upcoming = @event.reload.occurrences(from: Time.current, to: 2.weeks.from_now).first
+
+      assert_includes content, "<t:#{upcoming.to_i}:F>"
+    end
+
     test "a single event says nothing about repeating" do
       assert_not_includes content, I18n.t("discord.event_published.recurrence.weekly")
     end
