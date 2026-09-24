@@ -46,14 +46,26 @@ module Contracts
     end
 
     # One end has to be somewhere the contract named, or the transfer has to be
-    # addressed to the fleet that posted it. Without this any two inventories
-    # could be filed under any contract the actor happens to work on.
+    # addressed to whoever answers for its destination: the fleet that posted
+    # it, or the author whose own inventory it delivers into. Without this any
+    # two inventories could be filed under any contract the actor happens to
+    # work on.
     private def touches_contract?
       ends = @contract.tracked_inventory_ids
       return true if @source.is_a?(::FleetInventory) && ends.include?(@source.id)
-      return true if @destination.is_a?(::FleetInventory) && ends.include?(@destination.id)
+      return true if @destination.present? && ends.include?(@destination.id)
+      return true if @recipient.is_a?(::Fleet) && @recipient.id == @contract.fleet_id
 
-      @recipient.is_a?(::Fleet) && @recipient.id == @contract.fleet_id
+      addressed_to_author?
+    end
+
+    # Only for the people working it. A fleet manager may otherwise act on any
+    # contract, and this would let one file fleet stock into a member's private
+    # inventory as contract work.
+    private def addressed_to_author?
+      @contract.hangar_destination? &&
+        @recipient.is_a?(::User) && @recipient == @contract.created_by &&
+        @contract.contractor?(@actor)
     end
 
     private def refuse(code)

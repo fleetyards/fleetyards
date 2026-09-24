@@ -47,6 +47,21 @@ module Inventories
       assert_equal closed.message, denied.message
     end
 
+    test "a solicited delivery waives the stance and nothing else" do
+      @recipient.update!(inventory_transfer_policy: :nobody)
+
+      assert gate(solicited: true).allowed?
+
+      create(:inventory_transfer_rule, user: @recipient, subject_user: @sender, effect: :deny)
+
+      assert_equal :policy_closed, gate(solicited: true).refusal.code
+
+      InventoryTransferRule.destroy_all
+      InventoryTransfer::OUTSTANDING_LIMIT.times { create(:inventory_transfer, recipient: @recipient) }
+
+      assert_equal :cap_reached, gate(solicited: true).refusal.code
+    end
+
     test "an allowance overrides a closed policy" do
       @recipient.update!(inventory_transfer_policy: :nobody)
       create(:inventory_transfer_rule, :allow, user: @recipient, subject_user: @sender)
@@ -204,8 +219,8 @@ module Inventories
       Flipper.enable_actor(:fleet_logistics, fleet)
     end
 
-    private def gate
-      TransferGate.new(sender: @sender, recipient: @recipient)
+    private def gate(solicited: false)
+      TransferGate.new(sender: @sender, recipient: @recipient, solicited:)
     end
 
     private def enable_transfers(actor)
