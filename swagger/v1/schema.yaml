@@ -21995,6 +21995,9 @@ components:
           - string
           - 'null'
         discordOfficersChannelId:
+          type:
+          - string
+          - 'null'
         discordDigestWeekday:
           type:
           - integer

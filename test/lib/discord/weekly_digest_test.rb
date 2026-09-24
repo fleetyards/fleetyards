@@ -51,6 +51,24 @@ module Discord
       assert_not_includes result.fetch("222222222222222222"), "Strike Op"
     end
 
+    test "an officers' event is listed in the officers' channel only" do
+      @setting.update!(discord_officers_channel_id: "555555555555555555")
+      event(title: "Strike Op")
+      event(title: "Staff Meeting", visibility: "officers")
+
+      result = deliveries
+
+      assert_not_includes result.fetch("fleet"), "Staff Meeting"
+      assert_includes result.fetch("officers"), "Staff Meeting"
+      assert_not_includes result.fetch("officers"), "Strike Op"
+    end
+
+    test "an officers' event is not listed anywhere without an officers' channel" do
+      event(title: "Staff Meeting", visibility: "officers")
+
+      assert_empty deliveries
+    end
+
     test "a channel with nothing in the week gets no post" do
       squadron("Alpha", "222222222222222222")
 

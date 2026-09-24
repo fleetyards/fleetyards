@@ -6,10 +6,10 @@ require "discord/event_availability"
 module Discord
   # The coming week's events, one list per place they may be announced.
   #
-  # The fleet's channel lists what the whole fleet may see, and each squadron
-  # channel lists the events held to that squadron -- the same split as every
-  # other announcement, so a digest never shows a squadron's event to the rest
-  # of the fleet. A channel with nothing in the week is left alone.
+  # The fleet's channel lists what the whole fleet may see, the officers'
+  # channel what only officers may, and each squadron channel the events held
+  # to that squadron -- the same split as every other announcement, so a digest
+  # never shows an event to people it is kept from. A channel with nothing in the week is left alone.
   class WeeklyDigest
     WINDOW = 7.days
 
@@ -33,18 +33,28 @@ module Discord
 
     # [[target, content], ...]
     def deliveries
-      fleet_occurrences, squadron_occurrences = occurrences.partition { |occurrence| !occurrence[:event].squadron_restricted? }
+      grouped = occurrences.group_by do |occurrence|
+        event = occurrence[:event]
+        if event.squadron_restricted? then :squadron
+        elsif event.officers_only? then :officers
+        else :fleet
+        end
+      end
 
       result = []
 
-      if fleet_occurrences.any?
-        EventAnnouncement.fleet_targets(@fleet).each { |target| result << [target, content_for(fleet_occurrences)] }
+      if grouped[:fleet].present?
+        EventAnnouncement.fleet_targets(@fleet).each { |target| result << [target, content_for(grouped[:fleet])] }
+      end
+
+      if grouped[:officers].present?
+        EventAnnouncement.officers_targets(@fleet).each { |target| result << [target, content_for(grouped[:officers])] }
       end
 
       return result unless ApiClient.configured?
       return result if @fleet.fleet_notification_setting&.discord_guild_id.blank?
 
-      by_channel(squadron_occurrences).each do |channel_id, listed|
+      by_channel(grouped[:squadron].to_a).each do |channel_id, listed|
         result << [AnnouncementTarget.squadron(channel_id), content_for(listed)]
       end
 
