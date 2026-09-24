@@ -24,22 +24,6 @@ describe("SquadronEmblem", () => {
     expect(wrapper.find("img").attributes("src")).toBe("/icon.png");
   });
 
-  // At emblem size a wide lockup letterboxes down to almost nothing, so the
-  // square mark wins wherever both exist.
-  it("prefers the icon over the logo", () => {
-    const wrapper = mountWith(
-      squadron({ icon: file("/icon.png"), logo: file("/logo.png") }),
-    );
-
-    expect(wrapper.find("img").attributes("src")).toBe("/icon.png");
-  });
-
-  it("falls back to the logo when there is no icon", () => {
-    const wrapper = mountWith(squadron({ logo: file("/logo.png") }));
-
-    expect(wrapper.find("img").attributes("src")).toBe("/logo.png");
-  });
-
   it("falls back to initials from up to two words", () => {
     expect(mountWith(squadron()).text()).toBe("CW");
     expect(mountWith(squadron({ name: "Reserves" })).text()).toBe("R");
@@ -67,9 +51,7 @@ describe("SquadronEmblem", () => {
     expect(wrapper.attributes("style")).not.toContain("background-color");
   });
 
-  // A logo never gets a coloured tile behind it: most emblems are transparent
-  // PNGs and a tile turns one into a sticker on a square.
-  it("never paints a tile behind a mark", () => {
+  it("never paints a tile behind an icon", () => {
     const wrapper = mountWith(
       squadron({ icon: file("/icon.png"), color: "#dc3545" }),
     );

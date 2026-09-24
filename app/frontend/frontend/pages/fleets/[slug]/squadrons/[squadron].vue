@@ -157,20 +157,8 @@ const crumbs = computed<Crumb[]>(() => [
   <Loader :loading="isLoading" />
 
   <template v-if="squadron">
-    <div
-      v-if="squadron.header?.mediumUrl"
-      class="squadron-header"
-      :style="{ backgroundImage: `url(${squadron.header.mediumUrl})` }"
-    />
-
     <div class="squadron-identity">
-      <img
-        v-if="squadron.logo?.mediumUrl"
-        :src="squadron.logo.mediumUrl"
-        :alt="squadron.name"
-        class="squadron-logo"
-      />
-      <SquadronEmblem v-else :squadron="squadron" :size="96" />
+      <SquadronEmblem :squadron="squadron" :size="96" />
       <div class="squadron-identity-text">
         <Heading hero size="hero">
           {{ squadron.name }}
@@ -248,28 +236,11 @@ const crumbs = computed<Crumb[]>(() => [
 </template>
 
 <style lang="scss" scoped>
-.squadron-header {
-  height: 220px;
-  margin-bottom: 20px;
-  border-radius: var(--radius-surface, 16px);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .squadron-identity {
   display: flex;
   align-items: flex-start;
   gap: 20px;
   margin-bottom: 20px;
-}
-
-.squadron-logo {
-  width: 192px;
-  max-width: 40vw;
-  height: auto;
-  flex-shrink: 0;
-  object-fit: contain;
 }
 
 .squadron-identity-text {

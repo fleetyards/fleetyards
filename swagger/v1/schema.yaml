@@ -22130,10 +22130,6 @@ components:
           type: integer
         icon:
           "$ref": "#/components/schemas/MediaFile"
-        logo:
-          "$ref": "#/components/schemas/MediaFile"
-        header:
-          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -22170,14 +22166,6 @@ components:
         team:
           type: boolean
         icon:
-          type:
-          - string
-          - 'null'
-        logo:
-          type:
-          - string
-          - 'null'
-        header:
           type:
           - string
           - 'null'
@@ -22293,14 +22281,6 @@ components:
         team:
           type: boolean
         icon:
-          type:
-          - string
-          - 'null'
-        logo:
-          type:
-          - string
-          - 'null'
-        header:
           type:
           - string
           - 'null'
@@ -28507,7 +28487,7 @@ components:
           - 'null'
         memberCount:
           type: integer
-        logo:
+        icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:

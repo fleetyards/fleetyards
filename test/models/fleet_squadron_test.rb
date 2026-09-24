@@ -86,11 +86,8 @@ class FleetSquadronTest < ActiveSupport::TestCase
     assert_predicate build(:fleet_squadron, fleet: @fleet, description: "x" * 5000), :valid?
   end
 
-  # The two marks are cropped to their opaque bounds on the way in; the header
-  # is a photograph whose edges are the picture, so it must stay out of the
-  # list however the others are changed.
-  test "trims the two marks and leaves the header alone" do
-    assert_equal %w[icon logo], FleetSquadron.trimmed_attachment_names
+  test "trims the icon" do
+    assert_equal %w[icon], FleetSquadron.trimmed_attachment_names
   end
 
   # The fleet arranges its own list, so a new squadron goes on the end of it

@@ -14,9 +14,7 @@ module V1
             description: {type: [:string, :null]},
             color: {type: [:string, :null]},
             team: {type: :boolean},
-            icon: {type: [:string, :null]},
-            logo: {type: [:string, :null]},
-            header: {type: [:string, :null]}
+            icon: {type: [:string, :null]}
           },
           required: %w[name],
           additionalProperties: false

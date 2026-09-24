@@ -57,12 +57,10 @@ export const useSquadronForm = (
       color: squadron?.value?.color ?? "#8899aa",
       team: squadron?.value?.team ?? false,
       icon: undefined as string | undefined,
-      logo: undefined as string | undefined,
-      header: undefined as string | undefined,
     },
     // The tab that is not on screen is unmounted, and its fields go with it.
     // Without this a squadron saved from the details tab would clear whatever
-    // pictures were chosen on the other one.
+    // was set on the other one.
     keepValuesOnUnmount: true,
   });
 
@@ -73,8 +71,6 @@ export const useSquadronForm = (
   const [color, colorProps] = defineField("color");
   const [team, teamProps] = defineField("team");
   const [icon, iconProps] = defineField("icon");
-  const [logo, logoProps] = defineField("logo");
-  const [header, headerProps] = defineField("header");
 
   const fields = reactive({
     name,
@@ -83,8 +79,6 @@ export const useSquadronForm = (
     color,
     team,
     icon,
-    logo,
-    header,
   });
 
   const fieldProps = reactive({
@@ -94,8 +88,6 @@ export const useSquadronForm = (
     color: colorProps,
     team: teamProps,
     icon: iconProps,
-    logo: logoProps,
-    header: headerProps,
   });
 
   const createMutation = useCreateFleetSquadron();
@@ -113,8 +105,6 @@ export const useSquadronForm = (
       // Passed through rather than coerced: `undefined` keeps what is attached,
       // `null` is the field saying it was cleared, and a signed id replaces it.
       icon: values.icon,
-      logo: values.logo,
-      header: values.header,
     };
 
     const request = isEdit.value

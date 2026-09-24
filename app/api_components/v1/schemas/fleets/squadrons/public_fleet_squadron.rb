@@ -17,7 +17,7 @@ module V1
               slug: {type: :string},
               color: {type: [:string, :null]},
               memberCount: {type: :integer},
-              logo: ::Shared::V1::Schemas::MediaFile
+              icon: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
             required: %w[id name slug memberCount]

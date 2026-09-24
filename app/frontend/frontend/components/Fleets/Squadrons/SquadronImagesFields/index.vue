@@ -29,10 +29,8 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <!-- The icon and the logo are the same mark at two shapes, and choosing one
-       wants sight of the other. -->
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-4">
       <FormFileInput
         v-model="props.fields.icon"
         v-bind="props.fieldProps.icon"
@@ -42,35 +40,7 @@ const { t } = useI18n();
         :info="t('labels.fleet.squadrons.iconHint')"
         :allowed-types="AllowedFileTypes.IMAGE"
         clearable
-      />
-    </div>
-    <div class="col-12 col-md-6">
-      <FormFileInput
-        v-model="props.fields.logo"
-        v-bind="props.fieldProps.logo"
-        :file="props.squadron?.logo"
-        name="logo"
-        :label="t('labels.fleet.squadrons.logo')"
-        :info="t('labels.fleet.squadrons.logoHint')"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        clearable
-      />
-    </div>
-  </div>
-
-  <hr />
-
-  <div class="row">
-    <div class="col-12">
-      <FormFileInput
-        v-model="props.fields.header"
-        v-bind="props.fieldProps.header"
-        :file="props.squadron?.header"
-        name="header"
-        :label="t('labels.fleet.squadrons.header')"
-        :info="t('labels.fleet.squadrons.headerHint')"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        clearable
+        avatar
       />
     </div>
   </div>

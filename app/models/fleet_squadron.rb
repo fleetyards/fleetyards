@@ -40,26 +40,18 @@ class FleetSquadron < ApplicationRecord
   has_many :fleet_memberships, through: :fleet_squadron_memberships
   has_many :users, through: :fleet_memberships
 
-  ICON_DIMENSIONS = "256x256"
-  LOGO_DIMENSIONS = "512x256"
-  HEADER_DIMENSIONS = "1920x480"
-
   has_one_attached :icon
-  has_one_attached :logo
-  has_one_attached :header
 
-  validates :icon, :logo, :header, no_vector_image: true
+  validates :icon, no_vector_image: true
 
-  # The two marks have to carry their own cut-out; the header is a photograph
-  # behind a heading and has nothing to cut out of.
-  validates :icon, :logo, transparent_image: true
+  # The mark has to carry its own cut-out.
+  validates :icon, transparent_image: true
 
-  # Cropped to their opaque bounds before any representation exists. An emblem
+  # Cropped to its opaque bounds before any representation exists. An emblem
   # exported from a design tool usually sits inside a transparent canvas, and
   # every size built from it carries that padding -- so at 20px on an avatar the
-  # mark itself would be a handful of pixels. The header is left alone: it is a
-  # photograph, and its edges are the picture.
-  trim_attachment :icon, :logo
+  # mark itself would be a handful of pixels.
+  trim_attachment :icon
 
   AVAILABLE_PRIVILEGES = [
     "fleet:squadrons:read",

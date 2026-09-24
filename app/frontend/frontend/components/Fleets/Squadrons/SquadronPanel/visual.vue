@@ -10,17 +10,17 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
-import combatLogo from "@/images/org-icons/security.png";
-import miningLogo from "@/images/org-icons/resources.png";
+import combatIcon from "@/images/org-icons/security.png";
+import miningIcon from "@/images/org-icons/resources.png";
 import type { FleetSquadron, MediaFile } from "@/services/fyApi";
 
 /*
  * The fixtures are the cases that break a card rather than the ones that
  * flatter it: a name with no wrap point, a description long enough to run to
- * three lines, and a squadron carrying neither colour nor logo.
+ * three lines, and a squadron carrying neither colour nor icon.
  */
-const logo = (url: string): MediaFile => ({
-  name: "squadron-logo.png",
+const icon = (url: string): MediaFile => ({
+  name: "squadron-icon.png",
   contentType: "image/png",
   size: 4_682,
   url,
@@ -38,14 +38,14 @@ const squadron = (attributes: Partial<FleetSquadron>): FleetSquadron =>
     ...attributes,
   }) as FleetSquadron;
 
-// One per emblem state: a logo over a colour, a logo alone, a colour alone,
+// One per emblem state: an icon over a colour, an icon alone, a colour alone,
 // and neither.
 const squadrons: FleetSquadron[] = [
   squadron({
     name: "Combat Wing",
     shortDescription: "The pointy end",
     color: "#dc3545",
-    logo: logo(combatLogo),
+    icon: icon(combatIcon),
     memberCount: 12,
   }),
   squadron({
@@ -54,7 +54,7 @@ const squadrons: FleetSquadron[] = [
     description:
       "Everything that pays for the rest of it.\n\nThe division runs the " +
       "survey ships, the refinery runs, and the hauls back to station.",
-    logo: logo(miningLogo),
+    icon: icon(miningIcon),
     memberCount: 4,
   }),
   squadron({
@@ -105,8 +105,8 @@ const to = (record: FleetSquadron) => ({
 
   <Heading :level="HeadingLevelEnum.H2">Emblem sizes and fallbacks</Heading>
   <p class="vt-note">
-    28px, the 56px the card uses, and 72px. Left to right in each row: a logo
-    over a colour, a logo alone, a colour alone, and neither — the last outlined
+    28px, the 56px the card uses, and 72px. Left to right in each row: an icon
+    over a colour, an icon alone, a colour alone, and neither — the last outlined
     rather than filled, so an emblem nobody chose a colour for does not
     out-shout one somebody did.
   </p>
