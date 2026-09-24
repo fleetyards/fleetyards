@@ -58,6 +58,11 @@ class FleetNotificationSetting < ApplicationRecord
   # three days late, and neither is one whose scheduler was down.
   DIGEST_GRACE = 1.hour
 
+  # At most one digest in this span, whatever the schedule says: moving the
+  # time later on the day it was sent, or a local hour that happens twice when
+  # the clocks go back, would otherwise make a second slot the same week.
+  DIGEST_MIN_INTERVAL = 6.days
+
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
@@ -101,7 +106,7 @@ class FleetNotificationSetting < ApplicationRecord
     return false if slot.nil?
     return false if now - slot > DIGEST_GRACE
 
-    discord_digest_sent_at.nil? || discord_digest_sent_at < slot
+    discord_digest_sent_at.nil? || discord_digest_sent_at <= slot - DIGEST_MIN_INTERVAL
   end
 
   def in_app_enabled?(event_name)

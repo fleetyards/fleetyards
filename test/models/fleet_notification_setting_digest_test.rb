@@ -31,6 +31,23 @@ class FleetNotificationSettingDigestTest < ActiveSupport::TestCase
     assert @setting.digest_due?(berlin("2026-09-28 18:05"))
   end
 
+  test "moving the time later on the day it was sent does not send it again" do
+    @setting.update!(discord_digest_sent_at: berlin("2026-09-21 18:01"), discord_digest_time: "18:30")
+
+    assert_not @setting.digest_due?(berlin("2026-09-21 18:31"))
+    assert @setting.digest_due?(berlin("2026-09-28 18:31"))
+  end
+
+  # 02:30 happens twice when the clocks go back.
+  test "the repeated hour at the end of summer time sends once" do
+    @setting.update!(discord_digest_weekday: 0, discord_digest_time: "02:30")
+    zone = ActiveSupport::TimeZone["Europe/Berlin"]
+    first = zone.local(2026, 10, 25, 2, 30)
+    @setting.update!(discord_digest_sent_at: first + 1.minute)
+
+    assert_not @setting.digest_due?(first + 1.hour + 5.minutes)
+  end
+
   test "a UTC evening is the next morning in the fleet's zone" do
     @fleet.update_column(:default_timezone, "Asia/Tokyo")
 

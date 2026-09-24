@@ -47,7 +47,7 @@ module Discord
 
       won = FleetNotificationSetting
         .where(id: setting.id)
-        .where("discord_digest_sent_at IS NULL OR discord_digest_sent_at < ?", slot)
+        .where("discord_digest_sent_at IS NULL OR discord_digest_sent_at <= ?", slot - FleetNotificationSetting::DIGEST_MIN_INTERVAL)
         .update_all(discord_digest_sent_at: claimed_at) == 1
 
       won ? claimed_at : nil
