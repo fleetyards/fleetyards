@@ -7,8 +7,10 @@ module FleetContracts
   # Expiring a contract moves no goods, exactly as cancelling one does not: a
   # delivery already accepted stays in the destination, and a transfer still in
   # flight resolves on its own -- a refused or timed-out one compensates back
-  # into its source through `Inventories::TransferResolver`. What the expiry
-  # does change is that no further transfer can be filed under the contract.
+  # into its source through `Inventories::TransferResolver`, and an accepted one
+  # counts towards the contract, fulfilling it if it lands the last of the
+  # goods. What the expiry does change is that no further transfer can be filed
+  # under the contract.
   class ExpireJob < ::ApplicationJob
     sidekiq_options queue: "default", retry: 3
 

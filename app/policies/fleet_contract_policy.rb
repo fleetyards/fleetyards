@@ -85,9 +85,10 @@ class FleetContractPolicy < FleetBasePolicy
   end
 
   # Forcing a fulfilment early is a manager's call -- it is what makes a
-  # part-delivered or renegotiated job payable at all.
+  # part-delivered or renegotiated job payable at all. An expired contract that
+  # was part-delivered is the same case, so it may be forced as well.
   def fulfil?
-    manage? && record.in_progress?
+    manage? && (record.in_progress? || record.expired?)
   end
 
   alias_rule :progress?, to: :show?

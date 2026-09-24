@@ -665,6 +665,25 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT fulfil pays out an expired contract but not a cancelled one" do
+    expired = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
+    expired.update!(aasm_state: "expired", expired_at: 1.hour.ago)
+    cancelled = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
+    cancelled.update!(aasm_state: "cancelled", cancelled_at: 1.hour.ago)
+
+    sign_in @officer
+
+    assert_api_response :put, 200,
+      api_path: FULFIL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: expired.slug} do
+      assert_equal "fulfilled", parsed_body["state"]
+    end
+
+    assert_api_response :put, 403,
+      api_path: FULFIL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: cancelled.slug}
+  end
+
   test "PUT cancel closes a contract" do
     contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
     sign_in @officer

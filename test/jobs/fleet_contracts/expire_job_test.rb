@@ -134,6 +134,33 @@ module FleetContracts
       assert_equal 0.to_d, contract.progress.lines.first.delivered
     end
 
+    test "an in-flight delivery accepted after the expiry still fulfils the contract" do
+      contractor = create(:user)
+      contract = contract_worked_by(contractor, deadline: 1.hour.ago)
+      source = create(:inventory, holder: contractor)
+      entry = create(:inventory_item, inventory: source, name: "Quantanium",
+        category: :commodity, unit: :scu, quantity: 800)
+
+      builder = ::Inventories::TransferBuilder.new(
+        source: source, actor: contractor, recipient: @fleet, contract: contract,
+        lines: [{position_id: entry.position_id, quantity: 800}]
+      )
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+
+      ExpireJob.new.perform
+
+      assert contract.reload.expired?
+
+      resolver = ::Inventories::TransferResolver.new(builder.transfer.reload, actor: contractor)
+      assert resolver.accept(contract.destination_fleet_inventory), resolver.errors.full_messages.to_sentence
+
+      contract.reload
+      assert contract.fulfilled?
+      assert_not_nil contract.expired_at
+      assert_equal 800.to_d, contract.progress.lines.first.delivered
+    end
+
     private def contract_worked_by(worker, deadline:)
       @fleet = create(:fleet, admins: [worker])
       Flipper.enable("fleet_contracts")

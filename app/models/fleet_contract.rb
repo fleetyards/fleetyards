@@ -164,8 +164,11 @@ class FleetContract < ApplicationRecord
       after { self.claimed_at = nil }
     end
 
+    # From `expired` too: a delivery still in flight at the deadline can be
+    # accepted afterwards, and the goods it lands count the same. `expired_at`
+    # stays, as the record that the deadline was missed.
     event :fulfil do
-      transitions from: :in_progress, to: :fulfilled
+      transitions from: [:in_progress, :expired], to: :fulfilled
     end
 
     event :cancel do

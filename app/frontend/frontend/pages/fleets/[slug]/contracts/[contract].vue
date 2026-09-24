@@ -127,10 +127,16 @@ const canRelease = computed(
     (isLead.value || canManage.value),
 );
 
+const FULFILLABLE_STATES: FleetContractStateEnum[] = [
+  FleetContractStateEnum.IN_PROGRESS,
+  FleetContractStateEnum.EXPIRED,
+];
+
 const canFulfil = computed(
   () =>
-    contract.value?.state === FleetContractStateEnum.IN_PROGRESS &&
-    canManage.value,
+    canManage.value &&
+    contract.value !== undefined &&
+    FULFILLABLE_STATES.includes(contract.value.state),
 );
 
 const canPublish = computed(
