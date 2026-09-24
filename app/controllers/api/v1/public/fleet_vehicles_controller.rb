@@ -80,20 +80,6 @@ module Api
             .all
         end
 
-        def fleetchart
-          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
-
-          scope = scope.where(loaner: loaner_included?)
-
-          @q = scope.ransack(vehicle_query_params)
-          @vehicles = Vehicle.where(
-            Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
-          )
-            .includes(VEHICLE_RENDER_INCLUDES)
-            .joins(:model)
-            .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
-        end
-
         # See the fleet's own list for why an empty list is not the same as no
         # filter at all.
         #
@@ -113,10 +99,8 @@ module Api
           scope.where(user_id: user_ids)
         end
 
-        # The ships the list starts from. A seam rather than `@fleet.vehicles`
-        # inline, so `Public::FleetSquadronVehiclesController` narrows it to one
-        # squadron. `embed` and `fleetchart` are the fleet's own surfaces and
-        # keep the whole fleet deliberately.
+        # The ships the list starts from. `embed` is the fleet's own surface and
+        # keeps the whole fleet deliberately.
         private def vehicle_scope
           @fleet.vehicles
         end
