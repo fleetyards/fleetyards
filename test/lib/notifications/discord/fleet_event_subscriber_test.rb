@@ -32,6 +32,7 @@ module Notifications
       # every enqueued sync raised ArgumentError. This one runs the real job
       # with whatever the subscriber actually sends.
       test "the arguments the subscriber sends can drive the job" do
+        @event.update!(archived_at: Time.current)
         enqueued = nil
         ::Discord::SyncFleetEventJob.stubs(:perform_async).with { |*args|
           enqueued = args

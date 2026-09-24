@@ -61,7 +61,15 @@ module Discord
       ::Discord::SyncFleetEventJob.new.perform(@event.id, "upsert")
     end
 
+    # Narrowed and opened up again, the narrowing's delete can arrive last.
+    test "a delete does not undo an event opened up again meanwhile" do
+      ::Discord::ScheduledEventSync.expects(:new).never
+
+      ::Discord::SyncFleetEventJob.new.perform(@event.id, "delete")
+    end
+
     test "a delete also takes down the scheduled events of a series' occurrences" do
+      @event.update!(archived_at: Time.current)
       date = 1.week.from_now.to_date
       @event.fleet_event_occurrence_states.create!(occurrence_date: date, discord_event_id: "occurrence-1")
       series = mock

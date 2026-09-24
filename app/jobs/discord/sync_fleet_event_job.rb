@@ -17,6 +17,9 @@ module Discord
       # upsert queued before it would otherwise recreate the scheduled event
       # after the delete cleared its id. The event's current state decides.
       return if action.to_s == "upsert" && event.archived_at.present?
+      # The same race the other way: narrowed and opened up again, the delete
+      # from the narrowing can run after the upsert that restored the event.
+      return if action.to_s == "delete" && event.archived_at.blank? && event.discord_guild_wide?
 
       sync = Discord::ScheduledEventSync.new(event)
       return unless sync.runnable?
