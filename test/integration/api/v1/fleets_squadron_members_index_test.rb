@@ -103,6 +103,17 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET squadron members is refused to a role that reads squadrons but not the roster" do
+    role = create(:fleet_role, fleet: @fleet, name: "Squadrons Only", resource_access: ["fleet:squadrons:read"])
+    reader = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: reader, fleet_role: role)
+    sign_in reader
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons/#{@squadron.slug}/members"
+
+    assert_response :forbidden
+  end
+
   test "GET squadron members is readable by a plain member" do
     sign_in @member
 
