@@ -96,6 +96,7 @@ const sortParam = useSortParam<FleetContractSortEnum>();
 
 const queryParams = computed(() => ({
   mine: props.view.mine ? true : undefined,
+  inHand: props.view.inHand ? true : undefined,
   // The states are spelled out rather than sent as "archived", because a
   // contract has five of them and each board means a different few.
   q: { stateIn: props.view.states, ...sortParam.value },

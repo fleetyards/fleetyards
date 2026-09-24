@@ -13,6 +13,7 @@ export type ContractBoardView = {
   key: string;
   states: FleetContractStateEnum[];
   mine: boolean;
+  inHand: boolean;
   icon: string;
 };
 
@@ -27,6 +28,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
       FleetContractStateEnum.IN_PROGRESS,
     ],
     mine: false,
+    inHand: false,
     icon: "fa-light fa-clipboard-list",
   },
   {
@@ -38,6 +40,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
       FleetContractStateEnum.EXPIRED,
     ],
     mine: false,
+    inHand: false,
     icon: "fa-light fa-box-archive",
   },
   {
@@ -49,6 +52,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
       FleetContractStateEnum.EXPIRED,
     ],
     mine: true,
+    inHand: true,
     icon: "fa-light fa-user-helmet-safety",
   },
   {
@@ -57,6 +61,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
     // reader completed.
     states: [FleetContractStateEnum.FULFILLED],
     mine: true,
+    inHand: false,
     icon: "fa-light fa-circle-check",
   },
 ];

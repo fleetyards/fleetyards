@@ -30,6 +30,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       # Not a ransack filter: "am I on this" is a question about the caller,
       # not about a column.
       parameter name: "mine", in: :query, schema: {type: :boolean}, required: false
+      parameter name: "inHand", in: :query, schema: {type: :boolean}, required: false
       parameter name: "page", in: :query, schema: {type: :integer}, required: false
       parameter name: "perPage", in: :query, schema: {type: :integer}, required: false
 
@@ -559,7 +560,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_equal [done.slug], parsed_body["items"].map { |item| item["slug"] }
   end
 
-  test "GET mine keeps an expired contract only while a delivery is still pending" do
+  test "GET inHand keeps an expired contract only while a delivery is still pending" do
     waiting = create(:fleet_contract, :in_progress, fleet: @fleet, destination_fleet_inventory: @depot)
     create(:fleet_contract_assignment, :accepted, fleet_contract: waiting, user: @crewmate)
     create(:inventory_transfer, fleet_contract: waiting, recipient_fleet: @fleet)
@@ -573,10 +574,25 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     sign_in @crewmate
 
     get "/api/v1/fleets/#{@fleet.slug}/contracts",
-      params: {mine: true, q: {state_in: ["in_progress", "expired"]}}, as: :json
+      params: {mine: true, inHand: true, q: {state_in: ["in_progress", "expired"]}}, as: :json
 
     assert_response :success
     assert_equal [waiting.slug], parsed_body["items"].map { |item| item["slug"] }
+  end
+
+  test "GET mine still lists a settled expired contract as history" do
+    settled = create(:fleet_contract, :in_progress, fleet: @fleet, destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: settled, user: @crewmate)
+    create(:inventory_transfer, fleet_contract: settled, recipient_fleet: @fleet, aasm_state: "declined")
+    settled.update!(aasm_state: "expired")
+
+    sign_in @crewmate
+
+    get "/api/v1/fleets/#{@fleet.slug}/contracts",
+      params: {mine: true, q: {state_eq: "expired"}}, as: :json
+
+    assert_response :success
+    assert_equal [settled.slug], parsed_body["items"].map { |item| item["slug"] }
   end
 
   test "a non-member cannot see the board at all" do

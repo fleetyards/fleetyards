@@ -1491,6 +1491,11 @@ paths:
         schema:
           type: boolean
         required: false
+      - name: inHand
+        in: query
+        schema:
+          type: boolean
+        required: false
       - name: page
         in: query
         schema:
