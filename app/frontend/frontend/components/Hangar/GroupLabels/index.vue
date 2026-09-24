@@ -41,15 +41,33 @@ const { t } = useI18n();
 
 const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 
-// Skipped while a sort is being saved: a refetch the first request triggers
-// carries that request's order and would undo the moves still queued behind it.
-// The last request triggers one of its own.
+// One request at a time, and only the latest order once it settles: the server
+// writes each request's full order, so overlapping requests from quick arrow
+// presses could land out of order and persist an earlier one.
+let sortRequest: Promise<void> | null = null;
+let queuedSorting: string[] | null = null;
+let lastSaveFailed = false;
+
+// Every group save broadcasts, so refetches arrive while a sort is still being
+// saved, carrying an intermediate order. Their contents are taken - a rename or
+// a group added in another tab - but in the order on screen, with new groups
+// at the end.
+const inLocalOrder = (incoming: (HangarGroup | HangarGroupPublic)[]) => {
+  const position = new Map(
+    groups.value.map((group, index) => [group.id, index]),
+  );
+
+  return [...incoming].sort(
+    (a, b) =>
+      (position.get(a.id) ?? position.size) -
+      (position.get(b.id) ?? position.size),
+  );
+};
+
 watch(
   () => props.hangarGroups,
   (newGroups) => {
-    if (sortRequest) return;
-
-    groups.value = newGroups;
+    groups.value = sortRequest ? inLocalOrder(newGroups) : newGroups;
   },
 );
 
@@ -171,12 +189,6 @@ onUnmounted(() => {
   sortableInstance?.destroy();
 });
 
-// One request at a time, and only the latest order once it settles: the server
-// writes each request's full order, so overlapping requests from quick arrow
-// presses could land out of order and persist an earlier one.
-let sortRequest: Promise<void> | null = null;
-let queuedSorting: string[] | null = null;
-
 const updateSort = () => {
   queuedSorting = groups.value.map((item) => item.id);
 
@@ -191,7 +203,11 @@ const updateSort = () => {
         .mutateAsync({
           data: { sorting },
         })
+        .then(() => {
+          lastSaveFailed = false;
+        })
         .catch((error) => {
+          lastSaveFailed = true;
           displayAlert({
             text: error.response?.data?.message,
           });
@@ -199,6 +215,13 @@ const updateSort = () => {
     }
   })().finally(() => {
     sortRequest = null;
+
+    // Only the last request decides: a later success saved the full order an
+    // earlier failure could not. Falls back to what the server last returned.
+    if (lastSaveFailed) {
+      lastSaveFailed = false;
+      groups.value = props.hangarGroups;
+    }
   });
 
   return sortRequest;

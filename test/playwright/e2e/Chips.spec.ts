@@ -377,4 +377,31 @@ test.describe("Chips - owner's hangar", () => {
     await page.reload();
     await expect.poll(() => names(page)).toEqual(before);
   });
+
+  test("a failed save puts the saved order back", async ({ page }) => {
+    await page.route(/\/hangar\/groups\/sort/, (route) =>
+      route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ code: "error", message: "Sort failed" }),
+      }),
+    );
+
+    const before = await names(page);
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    await groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle")
+      .focus();
+
+    const request = sorted(page);
+    await page.keyboard.press("ArrowLeft");
+    await request;
+
+    await expect.poll(() => names(page)).toEqual(before);
+  });
 });
