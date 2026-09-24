@@ -35,7 +35,7 @@ There is no fallback. A squadron without a channel gets no post, and the fleet c
 
 ### D4 — What gets posted, for every event
 Three announcements, for fleet-wide and squadron events alike:
-- **published:** a message when an event is published. An edit that restricts an already-published event to squadrons also posts it to their channels.
+- **published:** a message when an event is published. Restricting an event that is already published does not post it again.
 - **starting soon:** the existing `fleet_event.starting_soon` reminder, which `Notifications::FleetEventStartingSoonJob` fires every 5 minutes. It is deduplicated per occurrence by `starting_soon_notified_at`.
 - **weekly digest:** see D10.
 
@@ -74,7 +74,7 @@ The endpoint is authorised for anyone who may update a squadron in the fleet. A 
 With no guild bound, the tab explains that and links to the Discord settings.
 
 ### D7 — A deleted channel is checked live, not persisted
-When the squadron edit page and the settings list load, the channel id is checked against `get_guild_channels`. A missing channel shows as "channel no longer exists on Discord". No flag is stored, so the state heals itself if the channel is re-picked.
+When the squadron's Discord tab loads, the channel id is checked against `get_guild_channels`. A missing channel shows as "channel no longer exists on Discord". The fleet's Discord settings name every squadron whose channel is gone or locked to the bot, through `ChannelCapability` in `discord_status`. No flag is stored, so the state heals itself when a channel is re-picked.
 
 Posting treats 403, 404 and Discord code 10003 as "post nothing". It logs and skips, like `DirectMessage`, and never retries.
 
@@ -110,9 +110,8 @@ The warning also shows when the fleet has no guild bound at all. It covers only 
 ### Phase 4 — Frontend
 1. Add a `DiscordChannelSelect` component and a "Discord" tab in the squadron form, with the no-guild and deleted-channel states.
 2. On `settings/discord.vue`, add the announcement channel picker and the digest weekday and time fields.
-3. Add a channel status hint on `SquadronPanel` in the settings list.
-4. Add the missing-channel warning beside `SquadronSelect` in `events/[event]/edit/signup.vue`.
-5. Translate the new keys in every locale by hand.
+3. Add the missing-channel warning beside `SquadronSelect` in `events/[event]/edit/signup.vue`.
+4. Translate the new keys in every locale by hand.
 
 ### Phase 5 — `/fleetevents` leak
 1. `lib/discord/commands/fleet_events.rb` lists squadron events to every member. Filter it with `for_squadrons_of` for the invoking member's membership.
@@ -174,9 +173,13 @@ The warning also shows when the fleet has no guild bound at all. It covers only 
   - cancellations are not posted
   - fleet-wide events go to a new fleet announcement channel, with the webhook as the fallback
 
+## Delivery
+
+The work ships as two PRs. The first holds Phases 1, 2, 4 and 5. The second holds Phase 3, the weekly digest, stacked on the first.
+
 ## Progress
-- [ ] Phase 1 — Data and API
-- [ ] Phase 2 — Posting
+- [x] Phase 1 — Data and API
+- [x] Phase 2 — Posting
 - [ ] Phase 3 — Weekly digest
-- [ ] Phase 4 — Frontend
-- [ ] Phase 5 — `/fleetevents` leak
+- [x] Phase 4 — Frontend (digest fields follow with Phase 3)
+- [x] Phase 5 — `/fleetevents` leak
