@@ -34,7 +34,8 @@ module Api
         def members
           @q = membership_scope.ransack(member_query_params.except("sorts", "s"))
 
-          members = @q.result
+          # By id -- see the fleet's own stats controller.
+          members = ::FleetMembership.where(id: @q.result.select(:id))
 
           @quick_stats = QuickStats.new(
             total: members.size

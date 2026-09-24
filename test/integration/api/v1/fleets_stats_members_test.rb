@@ -72,4 +72,22 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  # Two squadrons named at once is a hand-written URL rather than anything the
+  # page offers, but somebody in both is still one person.
+  test "GET /fleets/:slug/stats/members counts a member in two named squadrons once" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    team = create(:fleet_squadron, fleet: @fleet, team: true)
+    membership = @fleet.fleet_memberships.find_by!(user: @admin)
+    [squadron, team].each { |group| create(:fleet_squadron_membership, fleet_squadron: group, fleet_membership: membership) }
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {squadronSlugIn: [squadron.slug, team.slug]}} do
+      assert_equal 1, parsed_body["total"]
+      assert_equal [1], parsed_body.dig("metrics", "membersByRole").values
+    end
+  end
 end

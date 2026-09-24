@@ -17,7 +17,9 @@ module Api
         # which Postgres rejects. Stats never need an order anyway.
         @q = membership_scope.ransack(member_query_params.except("sorts", "s"))
 
-        members = @q.result
+        # By id, because a squadron filter joins a row per squadron matched: a
+        # member in two of the named ones would be counted, and grouped, twice.
+        members = ::FleetMembership.where(id: @q.result.select(:id))
 
         members_by_role = members.joins(:fleet_role).group("fleet_roles.name").count
 
