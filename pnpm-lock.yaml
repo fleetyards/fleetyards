@@ -186,8 +186,8 @@ importers:
         specifier: 1.4.7
         version: 1.4.7
       highcharts:
-        specifier: 13.1.0
-        version: 13.1.0
+        specifier: 13.1.1
+        version: 13.1.1
       highlight.js:
         specifier: ^11.12.0
         version: 11.12.0
@@ -4641,8 +4641,8 @@ packages:
   headers-polyfill@5.0.1:
     resolution: {integrity: sha512-1TJ6Fih/b8h5TIcv+1+Hw0PDQWJTKDKzFZzcKOiW1wJza3XoAQlkCuXLbymPYB8+ZQyw8mHvdw560e8zVFIWyA==}
 
-  highcharts@13.1.0:
-    resolution: {integrity: sha512-bBIdIw4WhbwBVa+7qNpTh3ZoMDcLC1kHnPWjndFTOrKXnOA5U1V21olSL1AMeAp0Evzn+/aLLClRpeIYqU9Hpw==}
+  highcharts@13.1.1:
+    resolution: {integrity: sha512-k/smhxCgaqHDsuy9ZCWs8FJNTPrbzc8BmMA4M/8f9JMwv9HgmNZjulyWwZ9q9ly6AzHpskL9mhlW8vgsSqnstg==}
     peerDependencies:
       jspdf: ^4.1.0
       svg2pdf.js: ^2.7.0
@@ -11616,7 +11616,7 @@ snapshots:
       '@types/set-cookie-parser': 2.4.10
       set-cookie-parser: 3.1.2
 
-  highcharts@13.1.0: {}
+  highcharts@13.1.1: {}
 
   highlight.js@10.7.3: {}
 
