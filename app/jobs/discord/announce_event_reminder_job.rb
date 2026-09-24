@@ -16,6 +16,9 @@ module Discord
       event = FleetEvent.find_by(id: event_id)
       return if event.blank?
       return if event.archived_at.present?
+      # The webhook posts to a channel the whole fleet reads; see
+      # SyncFleetEventJob.
+      return if event.squadron_restricted?
 
       EventReminder.new(
         event: event,

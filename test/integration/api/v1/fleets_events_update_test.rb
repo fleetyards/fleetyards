@@ -52,6 +52,28 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Held to squadrons after it was announced, the event has to come back off
+  # the fleet-wide surfaces -- the Discord guild is one.
+  test "PUT /fleets/:slug/events/:slug announces an event becoming squadron-only" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet)
+    sign_in @admin
+
+    restricted = []
+    callback = ->(*args) { restricted << ActiveSupport::Notifications::Event.new(*args).payload[:event] }
+    ActiveSupport::Notifications.subscribed(callback, "fleet_event.restricted") do
+      assert_api_response :put, 200,
+        path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+        body: {description: "Kept open to everyone"}
+
+      assert_api_response :put, 200,
+        path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+        body: {visibility: "squadron", fleetSquadronIds: [squadron.id]}
+    end
+
+    assert_equal [@fleet_event.id], restricted.map(&:id)
+  end
+
   test "PUT /fleets/:slug/events/:slug with OAuth bearer token" do
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},

@@ -94,6 +94,12 @@ module Api
         authorize! @fleet_event
 
         if @fleet_event.update(event_params)
+          # Held to squadrons after the fact, so whatever announced it to the
+          # whole fleet takes it back.
+          if @fleet_event.saved_change_to_visibility? && @fleet_event.squadron_restricted?
+            ActiveSupport::Notifications.instrument("fleet_event.restricted", event: @fleet_event)
+          end
+
           render :show
         else
           render json: ValidationError.new("fleet_events.update", errors: @fleet_event.errors), status: :bad_request

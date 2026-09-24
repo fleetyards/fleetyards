@@ -35,5 +35,19 @@ module Discord
 
       ::Discord::SyncFleetEventJob.new.perform(@event.id)
     end
+
+    # The guild is the whole fleet, and a squadron has no channel of its own
+    # yet: the event is taken down rather than posted or updated there.
+    test "an upsert of a squadron event deletes it from the guild instead" do
+      squadron = create(:fleet_squadron, fleet: @fleet)
+      @event.update!(visibility: "squadron", fleet_squadrons: [squadron])
+      sync = mock
+      sync.expects(:runnable?).returns(true)
+      sync.expects(:upsert!).never
+      sync.expects(:delete!)
+      ::Discord::ScheduledEventSync.expects(:new).with(@event).returns(sync)
+
+      ::Discord::SyncFleetEventJob.new.perform(@event.id, "upsert")
+    end
   end
 end

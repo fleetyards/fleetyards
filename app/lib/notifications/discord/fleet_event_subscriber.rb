@@ -16,6 +16,7 @@ module Notifications
       DELETE_EVENTS = %w[
         fleet_event.archived
         fleet_event.destroyed
+        fleet_event.restricted
       ].freeze
 
       # Not a scheduled-event sync: Discord's own reminder already knows the
