@@ -76,7 +76,7 @@ en:
         more: '…and more. Try a more specific name.'
         not_found: 'No ship found for "%{query}".'
     channel_capability:
-      announcement_channel: "the fleet's announcement channel"
+      fleet: the fleet
     direct_message:
       footer: Sent because you enabled Discord notifications on Fleetyards
     event_availability:

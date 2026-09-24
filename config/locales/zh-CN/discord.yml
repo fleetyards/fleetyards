@@ -76,7 +76,7 @@ zh-CN:
         more: '…还有更多，请使用更精确的名称。'
         not_found: '未找到与“%{query}”匹配的飞船。'
     channel_capability:
-      announcement_channel: "舰队公告频道"
+      fleet: 舰队
     direct_message:
     direct_message:
       footer: 因为你在 Fleetyards 上启用了 Discord 通知

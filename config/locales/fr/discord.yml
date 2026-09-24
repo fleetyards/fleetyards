@@ -76,7 +76,7 @@ fr:
         more: "…et d'autres. Essayez un nom plus précis."
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
     channel_capability:
-      announcement_channel: "le salon d'annonces de la flotte"
+      fleet: la flotte
     direct_message:
       footer: Envoyé parce que vous avez activé les notifications Discord sur Fleetyards
     event_availability:

@@ -92,7 +92,7 @@ module Api
         owners = Hash.new { |hash, key| hash[key] = [] }
 
         if @setting.discord_announcement_channel_id.present?
-          owners[@setting.discord_announcement_channel_id] << I18n.t("discord.channel_capability.announcement_channel")
+          owners[@setting.discord_announcement_channel_id] << I18n.t("discord.channel_capability.fleet")
         end
 
         @fleet.fleet_squadrons.where.not(discord_channel_id: nil).order(:rank).each do |squadron|

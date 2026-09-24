@@ -76,7 +76,7 @@ es:
         more: '…y más. Prueba con un nombre más preciso.'
         not_found: 'No se ha encontrado ninguna nave para «%{query}».'
     channel_capability:
-      announcement_channel: "el canal de anuncios de la flota"
+      fleet: la flota
     direct_message:
     direct_message:
       footer: Enviado porque has activado las notificaciones de Discord en Fleetyards

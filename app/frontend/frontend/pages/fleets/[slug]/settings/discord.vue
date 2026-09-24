@@ -5,15 +5,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import DiscordChannelSelect from "@/frontend/components/Fleets/DiscordChannelSelect/index.vue";
 import {
   type Fleet,
   type FleetMember,
   type FleetNotificationSetting,
   fleetNotificationDiscordStatus,
+  getFleetDiscordChannelsQueryKey,
   useFleetNotificationSetting,
   useUpdateFleetNotificationSetting,
 } from "@/services/fyApi";
@@ -27,7 +30,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
@@ -36,13 +39,17 @@ const { data: setting, refetch } = useFleetNotificationSetting(fleetSlug);
 
 const updateMutation = useUpdateFleetNotificationSetting();
 
+const queryClient = useQueryClient();
+
 const discordGuildId = ref<string>("");
 const discordChannelId = ref<string>("");
+const discordAnnouncementChannelId = ref<string | null>(null);
 const discordWebhookUrl = ref<string>("");
 
 const hydrate = (s: FleetNotificationSetting) => {
   discordGuildId.value = s.discordGuildId ?? "";
   discordChannelId.value = s.discordChannelId ?? "";
+  discordAnnouncementChannelId.value = s.discordAnnouncementChannelId ?? null;
   discordWebhookUrl.value = "";
 };
 
@@ -62,6 +69,7 @@ const save = async () => {
     const payload: Record<string, unknown> = {
       discordGuildId: discordGuildId.value || null,
       discordChannelId: discordChannelId.value || null,
+      discordAnnouncementChannelId: discordAnnouncementChannelId.value || null,
     };
     if (discordWebhookUrl.value !== "") {
       payload.discordWebhookUrl = discordWebhookUrl.value;
@@ -72,6 +80,11 @@ const save = async () => {
     });
     displaySuccess({ text: t("messages.fleets.notifications.update.success") });
     void refetch();
+    // A different server has different channels.
+    void queryClient.invalidateQueries({
+      queryKey: getFleetDiscordChannelsQueryKey(props.fleet.slug),
+    });
+    void fetchStatus();
   } catch {
     displayAlert({ text: t("messages.fleets.notifications.update.failure") });
   } finally {
@@ -90,6 +103,9 @@ type DiscordStatus = {
   guildId?: string;
   guildName?: string;
   installUrl?: string | null;
+  postingOk?: boolean;
+  postingCode?: string;
+  postingDetail?: string;
 };
 
 const discordStatus = ref<DiscordStatus | null>(null);
@@ -121,6 +137,16 @@ const probeDiscord = async () => {
 };
 
 const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
+
+const postingProblem = computed(() => {
+  const status = discordStatus.value;
+  if (!status?.postingCode || status.postingOk) return null;
+
+  const key = `labels.fleet.discord.postingCodes.${status.postingCode}`;
+  return tExists(key)
+    ? t(key, { names: status.postingDetail ?? "" })
+    : t(`labels.fleet.discord.statusCodes.${status.postingCode}`);
+});
 </script>
 
 <template>
@@ -175,6 +201,14 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
           }}
         </span>
       </span>
+      <span
+        v-if="postingProblem"
+        class="discord-status discord-status--err"
+        data-test="posting-problem"
+      >
+        <i class="fa-light fa-triangle-exclamation" />
+        <span>{{ postingProblem }}</span>
+      </span>
     </div>
 
     <div class="row">
@@ -192,6 +226,18 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
           name="discordChannelId"
           icon="fa-brands fa-discord"
           translation-key="fleet.discord.channelId"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <DiscordChannelSelect
+          v-model="discordAnnouncementChannelId"
+          :fleet-slug="props.fleet.slug"
+          name="discordAnnouncementChannelId"
+          :label="t('labels.fleet.discord.announcementChannel')"
+          :info="t('labels.fleet.discord.announcementChannelHint')"
         />
       </div>
     </div>
