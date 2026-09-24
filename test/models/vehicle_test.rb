@@ -181,6 +181,39 @@ class VehicleLoanersTest < ActiveSupport::TestCase
     assert_equal 1, loaners.where(hidden: false).count
   end
 
+  # The old wanted-scoped lookup left parents holding several rows per loaner
+  # model; updating only one of them stranded the others on the next flip.
+  test "a flip collapses duplicate loaners to one, in step with the parent" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    Vehicle.find_by(loaner: true, vehicle_id: parent.id).dup.tap { |row| row.rank = nil }.save!
+
+    parent.update!(wanted: true)
+
+    loaners = Vehicle.where(loaner: true, vehicle_id: parent.id)
+    assert_equal 1, loaners.count
+    assert_equal true, loaners.first.wanted
+  end
+
+  test "saving the parent removes a loaner its model no longer lends" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    ModelLoaner.where(model: @parent_model, loaner_model: @loaner_model).delete_all
+
+    parent.reload.update!(name: "Renamed")
+
+    assert_empty Vehicle.where(loaner: true, vehicle_id: parent.id)
+  end
+
+  test "destroying a parent hands visibility to another parent's loaner of the same model" do
+    other_parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+    first = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    second = create(:vehicle, user: @user, model: other_parent_model, wanted: false)
+    assert_equal false, Vehicle.find_by(loaner: true, vehicle_id: first.id).hidden
+
+    first.destroy
+
+    assert_equal false, Vehicle.find_by(loaner: true, vehicle_id: second.id).hidden
+  end
+
   test "destroys loaners when the parent is destroyed" do
     parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
     assert_equal 1, Vehicle.where(loaner: true, vehicle_id: parent.id).count
