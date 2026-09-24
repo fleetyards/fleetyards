@@ -40,6 +40,10 @@ export const errorTypeFrom = (error: unknown): ErrorTypesEnum | undefined => {
 
   if (status === 404) return ErrorTypesEnum.NOT_FOUND;
 
+  // Request validation refusing a param - an unknown sort key, a malformed
+  // filter. The server is fine; the request is what needs changing.
+  if (status === 400) return ErrorTypesEnum.CLIENT_ERROR;
+
   if (status === 403) {
     return codeOf(error) === "subscription_required"
       ? ErrorTypesEnum.SUBSCRIPTION_REQUIRED
