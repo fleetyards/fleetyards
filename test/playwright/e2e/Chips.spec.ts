@@ -140,3 +140,83 @@ test.describe("Chips", () => {
     expect(await surface("Cargo")).toEqual(await surface("Combat"));
   });
 });
+
+test.describe("Chips - read-only row", () => {
+  test("draws no grip and does not reorder", async ({ page }) => {
+    // The public hangar is someone else's order. Sortable used to be bound here
+    // regardless, so a visitor could drag the row and fire the owner-only sort.
+    await app("clean");
+    await appScenario("chips");
+    await page.goto("/hangar/chips/");
+    await expect(chip(page, "Combat")).toBeVisible();
+
+    await expect(page.getByTestId("chip-handle")).toHaveCount(0);
+    await expect(page.getByTestId("chip-edit")).toHaveCount(0);
+  });
+});
+
+/*
+ * The edit mode, against visual-tests/chips/ - the gallery mirrors GroupLabels'
+ * toggle and Sortable options, and needs no session.
+ */
+test.describe("Chips - edit mode", () => {
+  const editableRow = (page: Page) =>
+    page.getByTestId("chip-row").filter({ hasText: "Groups" }).first();
+
+  const names = (page: Page) =>
+    editableRow(page)
+      .getByTestId("chip")
+      .locator(".chip__label")
+      .allInnerTexts();
+
+  const chips = (page: Page) => editableRow(page).getByTestId("chip");
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/visual-tests/chips/");
+    await expect(chips(page).first()).toBeVisible();
+  });
+
+  test("a row at rest reserves no space for controls", async ({ page }) => {
+    // Hiding them with opacity left an empty slot on every chip.
+    await expect(editableRow(page).getByTestId("chip-handle")).toHaveCount(0);
+    await expect(editableRow(page).getByTestId("chip-edit")).toHaveCount(0);
+  });
+
+  test("edit mode adds a grip and an edit action to every chip", async ({
+    page,
+  }) => {
+    const count = await chips(page).count();
+
+    await editableRow(page).getByTestId("group-labels-edit").click();
+
+    await expect(editableRow(page).getByTestId("chip-handle")).toHaveCount(
+      count,
+    );
+    await expect(editableRow(page).getByTestId("chip-edit")).toHaveCount(count);
+  });
+
+  test("reorders only in edit mode, and only by the grip", async ({ page }) => {
+    const before = await names(page);
+
+    await chips(page)
+      .nth(0)
+      .locator(".chip__toggle")
+      .dragTo(chips(page).nth(2));
+    expect(await names(page)).toEqual(before);
+
+    await editableRow(page).getByTestId("group-labels-edit").click();
+
+    // A toggle that also dragged could not be clicked without moving it.
+    await chips(page)
+      .nth(0)
+      .locator(".chip__toggle")
+      .dragTo(chips(page).nth(2));
+    expect(await names(page)).toEqual(before);
+
+    await chips(page)
+      .nth(0)
+      .getByTestId("chip-handle")
+      .dragTo(chips(page).nth(2));
+    await expect.poll(() => names(page)).not.toEqual(before);
+  });
+});

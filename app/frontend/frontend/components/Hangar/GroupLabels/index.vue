@@ -104,6 +104,18 @@ const { displayAlert } = useAppNotifications();
 
 const sortMutation = useHangarGroupSortMutation();
 
+// Grips and edit actions only appear in edit mode, so a row at rest is plain
+// filter chips with no slots reserved for controls that are not in use.
+const editing = ref(false);
+
+const toggleEditing = () => {
+  editing.value = !editing.value;
+};
+
+const stopEditing = () => {
+  editing.value = false;
+};
+
 const row = ref<{ itemsEl: HTMLElement | null } | null>(null);
 let sortableInstance: Sortable | null = null;
 
@@ -113,10 +125,12 @@ const initSortable = (container?: HTMLElement | null) => {
     sortableInstance = null;
   }
 
-  if (!container) return;
+  if (!container || !props.editable || !editing.value) return;
 
   sortableInstance = Sortable.create(container, {
     animation: 150,
+    handle: ".chip__handle",
+    ghostClass: "chip--ghost",
     onEnd: () => {
       const items = container.querySelectorAll("[data-group-id]");
       if (!items) return;
@@ -143,8 +157,8 @@ onMounted(() => {
 // releases the detached one on the way out - the previous version bound once in
 // onMounted and left dragging silently unavailable after a resize.
 watch(
-  () => row.value?.itemsEl,
-  (container) => initSortable(container),
+  [() => row.value?.itemsEl, () => props.editable, editing],
+  ([container]) => initSortable(container),
   { immediate: true, flush: "post" },
 );
 
@@ -194,7 +208,12 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
 </script>
 
 <template>
-  <ChipRow ref="row" :label="label ?? t('labels.groups')">
+  <ChipRow
+    ref="row"
+    :label="label ?? t('labels.groups')"
+    :class="{ 'group-labels--editing': editing }"
+    @keydown.esc="stopEditing"
+  >
     <Chip
       v-for="group in groups"
       :key="group.id"
@@ -202,8 +221,10 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       :state="groupState(group.slug)"
       :dot="group.color"
       :count="groupCount(group).count"
-      :editable="editable"
+      :editable="editable && editing"
       :edit-label="t('actions.editGroup')"
+      :sortable="editable && editing"
+      :sort-label="t('actions.reorder')"
       @toggle="filterGroup(group.slug)"
       @edit="openGroupModal(group)"
       @contextmenu.prevent="openGroupModal(group)"
@@ -222,6 +243,19 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
         @click="openNewGroupModal"
       >
         <i class="fa-regular fa-plus" />
+      </Btn>
+      <Btn
+        v-if="editable"
+        v-tooltip="editing ? t('actions.done') : t('actions.edit')"
+        :size="BtnSizesEnum.XS"
+        :active="editing"
+        :aria-label="editing ? t('actions.done') : t('actions.edit')"
+        :aria-pressed="editing"
+        class="group-labels__edit"
+        data-test="group-labels-edit"
+        @click="toggleEditing"
+      >
+        <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
       </Btn>
     </template>
 
@@ -251,3 +285,31 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
     </template>
   </ChipRow>
 </template>
+
+<style scoped>
+/*
+ * Revealed with the row rather than always shown: the row is a filter first, and
+ * a permanent pen beside it reads as a control on every chip. Only where hover
+ * exists - a touch screen at desktop width would otherwise never find it.
+ * Keyboard focus reveals it too, but not :focus-within: a clicked chip keeps
+ * focus, which held the button on screen after the pointer had left the row.
+ */
+@media (hover: hover) {
+  .group-labels__edit {
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .chip-row:hover .group-labels__edit,
+  .chip-row:has(:focus-visible) .group-labels__edit,
+  .group-labels--editing .group-labels__edit {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group-labels__edit {
+    transition-duration: 1ms;
+  }
+}
+</style>
