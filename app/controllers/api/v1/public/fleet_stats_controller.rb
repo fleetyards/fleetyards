@@ -172,8 +172,7 @@ module Api
         # rubocop:enable Metrics/MethodLength
 
         # What the five charts count -- see the note on the fleet's own stats
-        # controller. `for_squadrons` deletes the param as it reads it, so this
-        # asks once and each chart action reuses the answer.
+        # controller.
         def chart_scope
           @chart_scope ||= narrow_to_squadrons(vehicle_scope.visible.where(loaner: false))
         end

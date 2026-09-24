@@ -165,9 +165,6 @@ module Api
       # What the five charts count. They read `@fleet.vehicles` directly until
       # now, so a squadron picked on the stats page narrowed the metrics row and
       # left every chart under it describing the whole fleet.
-      #
-      # `for_squadrons` deletes the param as it reads it, so this asks once and
-      # each chart action reuses the answer.
       private def chart_scope
         @chart_scope ||= narrow_to_squadrons(vehicle_scope.visible.where(loaner: false))
       end

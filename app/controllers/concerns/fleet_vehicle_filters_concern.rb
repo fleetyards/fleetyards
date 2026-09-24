@@ -82,19 +82,25 @@ module FleetVehicleFiltersConcern
   # An empty array when the named squadrons hold nobody, which is what makes the
   # filter answer "no ships" rather than silently widening to the whole fleet --
   # the same reason `FleetSquadron#member_user_ids` returns one.
+  #
+  # The param is deleted so ransack never sees it, which is why the answer is
+  # memoised -- `nil` included. Asked again, the params alone would say that no
+  # squadron was named and the second caller would count the whole fleet.
   private def for_squadrons(fleet)
+    return @for_squadrons if defined?(@for_squadrons)
+
     slugs = vehicle_query_params.delete("squadron_slug_in")
 
-    return if slugs.blank?
-
-    @for_squadrons ||= ::FleetMembership
-      .kept
-      .accepted
-      .where(fleet_id: fleet.id)
-      .joins(:fleet_squadrons)
-      .where(fleet_squadrons: {slug: slugs})
-      .distinct
-      .pluck(:user_id)
-      .compact
+    @for_squadrons = if slugs.present?
+      ::FleetMembership
+        .kept
+        .accepted
+        .where(fleet_id: fleet.id)
+        .joins(:fleet_squadrons)
+        .where(fleet_squadrons: {slug: slugs})
+        .distinct
+        .pluck(:user_id)
+        .compact
+    end
   end
 end
