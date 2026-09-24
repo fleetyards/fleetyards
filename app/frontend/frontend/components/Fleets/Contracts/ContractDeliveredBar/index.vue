@@ -26,11 +26,11 @@ const percent = computed(() =>
   Math.round(Math.min(Math.max(props.progress.fraction, 0), 1) * 100),
 );
 
-// Nothing can have landed on a draft, and a cancelled one stopped counting.
+// Nothing can have landed on a draft, and a cancelled one stopped counting. An
+// expired one still shows what it got, since late deliveries keep counting.
 const QUIET_STATES: string[] = [
   FleetContractStateEnum.DRAFT,
   FleetContractStateEnum.CANCELLED,
-  FleetContractStateEnum.EXPIRED,
 ];
 
 const quiet = computed(() => QUIET_STATES.includes(props.state));
