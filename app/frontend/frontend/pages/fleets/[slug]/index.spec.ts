@@ -21,6 +21,7 @@ const memberSquadrons = [
 let publicSquadrons: PublicFleetSquadron[] = [];
 let memberAsked: (boolean | undefined)[] = [];
 let publicAsked: (boolean | undefined)[] = [];
+let cachedMember = false;
 
 type QueryOptions = { query?: { enabled?: { value?: boolean } } };
 
@@ -38,7 +39,11 @@ vi.mock("@/services/fyApi", async () => {
       const enabled = options?.query?.enabled?.value;
       memberAsked.push(enabled);
 
-      return { data: ref(enabled ? { items: memberSquadrons } : undefined) };
+      return {
+        data: ref(
+          cachedMember || enabled ? { items: memberSquadrons } : undefined,
+        ),
+      };
     },
     usePublicFleetSquadrons: (
       _slug: unknown,
@@ -97,6 +102,7 @@ beforeEach(() => {
   ];
   memberAsked = [];
   publicAsked = [];
+  cachedMember = false;
 });
 
 afterEach(() => {
@@ -175,6 +181,14 @@ describe("FleetShow squadrons", () => {
     const subject = await mount({ fleet: fleet(), membership: member(false) });
 
     expect(tests(subject, "fleet-public-squadron-")).toEqual([]);
+    expect(tests(subject, "fleet-squadron-")).toEqual([]);
+  });
+
+  it("ignores a cached member list once the viewer is no member", async () => {
+    cachedMember = true;
+
+    const subject = await mount({ fleet: fleet() });
+
     expect(tests(subject, "fleet-squadron-")).toEqual([]);
   });
 

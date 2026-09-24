@@ -70,7 +70,9 @@ const publicSquadronList = computed(() =>
   showPublicSquadrons.value ? (publicSquadrons.value?.items ?? []) : [],
 );
 
-const allSquadrons = computed(() => squadrons.value?.items ?? []);
+const allSquadrons = computed(() =>
+  showSquadrons.value ? (squadrons.value?.items ?? []) : [],
+);
 
 // Two strips, the same split the squadrons page draws: a member belongs to one
 // squadron and can be on any number of teams.
