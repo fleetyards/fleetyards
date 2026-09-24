@@ -157,7 +157,7 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
       "a comp must have no contribution behind it, or Sync would close it"
   end
 
-  # The whole point of `granted_via: manual` (D2).
+  # The whole point of `granted_via: manual`.
   test "a subscription opened here survives a reconciliation" do
     sign_in @user
 

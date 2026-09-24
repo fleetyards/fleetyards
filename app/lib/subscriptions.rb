@@ -3,10 +3,10 @@
 # What a fleet subscription covers, and what it takes to hold one.
 #
 # One place on purpose: the capability list is read by the enforcement concern
-# (#4957) and the reconciler (#4954), and a second copy would drift from this
+# and the reconciler, and a second copy would drift from this
 # one the first time a capability is added.
 module Subscriptions
-  # Four capabilities, one flat tier (D4). Deliberately not per-capability
+  # Four capabilities, one flat tier. Deliberately not per-capability
   # pricing: splitting them means deciding which of contracts, events,
   # logistics and tours is worth less than the others, before a single fleet
   # has paid for any of them.
@@ -14,7 +14,7 @@ module Subscriptions
   # These are capability keys, not flag names. They map one-to-one onto flags
   # today, and that is a fact about today rather than something to depend on --
   # Flipper answers rollout, this answers entitlement, and the two are asked
-  # separately (D1).
+  # separately.
   PREMIUM_FEATURES = %i[contracts events logistics tours].freeze
 
   # The figure, in the currency the supporter pledged in.

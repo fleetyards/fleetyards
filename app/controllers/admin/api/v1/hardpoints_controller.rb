@@ -5,8 +5,7 @@ module Admin
     module V1
       # The live `hardpoints` table, which the admin had no view of at all: the
       # page it used to have edited `model_hardpoints`, the predecessor table no
-      # load had written since 2024, and that went with the legacy tables in
-      # #4772.
+      # load had written since 2024, and that went with the legacy tables.
       #
       # Read for both halves, write for the curated one only -- see
       # `Admin::HardpointPolicy` for why. A created slot is always `ship_matrix`

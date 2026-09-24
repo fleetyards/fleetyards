@@ -15,8 +15,6 @@ module ScData
   # This is the axis that recorder cannot reach: it diffs a build against the one
   # before it in the *same* environment and so never answers "what does ptu have
   # that live does not", which is the question a preview cycle exists to ask.
-  #
-  # See docs/exec-plans/sc-data-build-compare.md.
   class BuildCompare
     # A record the newer build describes and the older one does not, and the
     # reverse. `vanished` means "has no row for the newer build" rather than

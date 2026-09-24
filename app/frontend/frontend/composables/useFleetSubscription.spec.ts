@@ -31,7 +31,7 @@ describe("useFleetSubscription", () => {
     viewerFeatures.value = [];
   });
 
-  // The whole of D16 as a surface sees it: until the flag is on for a fleet,
+  // Enforcement ships last, as a surface sees it: until the flag is on for a fleet,
   // entitlement is never asked about and nothing changes for anybody.
   it("asks nothing while enforcement is not rolled out", () => {
     const fleet = { features: [], subscribed: false };

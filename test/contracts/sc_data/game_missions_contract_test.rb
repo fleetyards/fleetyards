@@ -53,9 +53,9 @@ module ScData
         assert_operator GameMissionReward.of_kind("currency").count, :>=, 2300
 
         # The split is the point. 8 contracts state a figure and the rest leave
-        # it to the game -- and the exact 8 is asserted because it is the whole
-        # of D3: if it grows, the export has started stating payouts and the
-        # catalogue can start showing them.
+        # it to the game -- and the exact 8 is asserted because it is why the
+        # catalogue shows no aUEC payout: if it grows, the export has started
+        # stating payouts and the catalogue can start showing them.
         assert_equal 8, GameMissionReward.of_kind("currency").where.not(amount: nil).count
         assert_operator GameMissionReward.of_kind("currency").where(amount: nil).count, :>=, 2300
 

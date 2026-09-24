@@ -85,7 +85,7 @@ module Subscriptions
       assert_equal Date.current, @fleet.fleet_subscriptions.sole.reload.ended_at
     end
 
-    # Every comp in #4958 depends on this.
+    # Every comp depends on this, the planned grace for beta fleets included.
     test "a manual subscription is untouched by a sync that would otherwise close it" do
       comp = create(:fleet_subscription, fleet: @fleet, granted_via: "manual")
 
@@ -224,7 +224,7 @@ module Subscriptions
       assert_empty second[:opened], "the second run saw the first's write"
     end
 
-    # D14: the fleet is told before anybody meets a refusal, which means the
+    # The fleet is told before anybody meets a refusal, which means the
     # notification is sent where the subscription is written.
     test "opening a subscription tells the fleet's admins" do
       admin = admin_of(@fleet)

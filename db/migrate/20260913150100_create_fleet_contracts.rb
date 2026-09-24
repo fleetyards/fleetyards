@@ -5,9 +5,9 @@
 #
 # **No progress column.** What has been delivered is a sum over the ledger
 # entries a linked transfer wrote at the destination, and those only exist once
-# a transfer was accepted. A stored copy would be the derived total #4855 D2
-# refused, with the extra failure mode that a contract could then be advanced by
-# writing to it rather than by moving goods.
+# a transfer was accepted. A stored copy would be exactly the derived total
+# `inventory_positions` refuses to store, with the extra failure mode that a
+# contract could then be advanced by writing to it rather than by moving goods.
 #
 # **Both inventory keys are `ON DELETE SET NULL`.** The reasoning
 # `CreateInventoryTransfers` was corrected to, unchanged: a finished contract

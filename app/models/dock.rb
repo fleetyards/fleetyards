@@ -27,7 +27,8 @@
 class Dock < ApplicationRecord
   # A hull or a module, and nothing else. `parent_type` is a plain string
   # column, so without this a dock could end up hanging off a User -- a new way
-  # to grow the orphans #4864 had to delete -- and `touch: true` would keep
+  # to grow orphans like the station docks that once had to be deleted -- and
+  # `touch: true` would keep
   # updating that unrelated row.
   PARENT_TYPES = %w[Model ModelModule].freeze
 
@@ -53,8 +54,8 @@ class Dock < ApplicationRecord
 
   # And the row has to be there. Making the association optional took that check
   # away with the constantizing, so a known type and any UUID at all would have
-  # saved a dock pointing at nothing -- the orphans #4864 deleted, by a new
-  # route. Guarded on the type, so this is the only place that resolves the
+  # saved a dock pointing at nothing -- the orphaned station docks that were
+  # once deleted, by a new route. Guarded on the type, so this is the only place that resolves the
   # association and it only does so for a name that is safe to constantize.
   validates :parent, presence: true, if: -> { parent_type.in?(PARENT_TYPES) }
 
@@ -248,9 +249,9 @@ class Dock < ApplicationRecord
   # what this refuses to say.
   #
   # A berth nobody has described yet falls back to the envelope with clearance,
-  # which is what #4856 shipped. Not as a second opinion but as the only one
-  # there is: the alternative is a catalogue that answers nothing until all 28
-  # berths are curated.
+  # the rule every berth answered by before any was described. Not as a second
+  # opinion but as the only one there is: the alternative is a catalogue that
+  # answers nothing until all 28 berths are curated.
   def fits?(model)
     # A docking port is a connection rather than a place a hull is set down, and
     # nothing stops one carrying entries -- the admin endpoint takes any dock

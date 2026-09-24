@@ -19,9 +19,8 @@ module Maintenance
   # Which build do the current columns describe? Whichever load ran last, which
   # is the configured source: `persist_loadout` destroys every game-file row a
   # run did not touch, so what survives on the table is what the last load wrote.
-  # That premise holds only while nothing can load a second environment, which is
-  # item 3 of docs/exec-plans/sc-data-live-and-ptu.md -- and item 3 is gated on
-  # this work, so the two cannot cross.
+  # That premise holds only while nothing can load a second environment, and the
+  # production load path for one was gated on this work, so the two cannot cross.
   #
   # Re-runnable and additive: it creates or updates the row for the source in
   # force and deletes nothing. No `dry_run` attribute on purpose -- one that

@@ -32,9 +32,9 @@ module ScData
 
       # Specifically about the tree rather than the loader: the parser used to
       # write the whole JSON array as a single string inside the array
-      # (`["[\"flightReady\"]"]`), and a tree parsed before #5007 still carries
-      # those values however current the parser is. `tags` is published now, so a
-      # stale tree has to fail here rather than on the page.
+      # (`["[\"flightReady\"]"]`), and a tree parsed before that was fixed still
+      # carries those values however current the parser is. `tags` is published
+      # now, so a stale tree has to fail here rather than on the page.
       test "the tree carries one entry per tag, not the array's own inspect output" do
         real_tree_loader(::ScData::Loader::ItemsLoader).all
 
@@ -50,7 +50,7 @@ module ScData
         mangled = tagged.where("tags LIKE ?", '%"[%').pluck(:sc_key)
 
         assert_empty mangled,
-          "these carry a re-encoded array rather than tags -- the tree predates #5007"
+          "these carry a re-encoded array rather than tags -- the tree predates the parser fix that stopped re-encoding tag arrays"
       end
     end
   end

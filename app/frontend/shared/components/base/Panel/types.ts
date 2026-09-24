@@ -8,7 +8,7 @@ export enum PanelVariantsEnum {
 }
 
 // What the surface means. Colours the edge only; there is no filled counterpart,
-// see the panel-redesign plan's D9.
+// because a grid of saturated fills was the loudest thing in the UI.
 export enum PanelTonesEnum {
   NEUTRAL = "neutral",
   PRIMARY = "primary",

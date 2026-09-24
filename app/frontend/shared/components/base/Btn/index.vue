@@ -333,7 +333,7 @@ const handleClick = (event: MouseEvent) => {
 }
 /* No caps at chip scale, the call Chip and .panel--slim already make: the inset
    bottoms out at its 10px floor, so on a 29px icon button the cap would be a
-   third of the width - the failure F3 of the label plan names. */
+   third of the width. */
 .btn--xs::before,
 .btn--xs::after {
   content: none;
@@ -363,7 +363,7 @@ const handleClick = (event: MouseEvent) => {
  * the border swapped the entire outline of the control, which in a toolbar reads
  * as the button changing shape rather than responding; the cap is already this
  * component's signature, so it is the piece that answers. Same call the panel
- * made for tone - see docs/exec-plans/panel-redesign.md.
+ * made for tone.
  */
 .btn--solid:hover:not([disabled]),
 .btn--solid.active {

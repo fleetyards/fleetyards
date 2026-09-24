@@ -16,7 +16,7 @@ module Api
         slug = params[:slug].to_s.downcase
 
         # `named`, like the list: a page the list will not offer is a page a
-        # link should not reach either -- the one predicate D7 is about.
+        # link should not reach either.
         @mission = GameMission
           .named(GameMission.served_source)
           .includes(build: :rewards, last_build: :rewards)

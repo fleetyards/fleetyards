@@ -89,7 +89,7 @@ export const routes: RouteRecordRaw[] = [
   },
   ...catalogueTenantRoutes,
   // The paths the pages shipped under before the section existed. Both are
-  // live -- the detail page has been reachable since #5015 and every hardpoint
+  // live -- the detail page has long been reachable and every hardpoint
   // on every ship links to it -- so they redirect rather than 404.
   {
     path: "/components/",

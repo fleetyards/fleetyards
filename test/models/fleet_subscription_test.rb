@@ -96,8 +96,8 @@ class FleetSubscriptionTest < ActiveSupport::TestCase
       subscription.errors.generate_message(:ended_at, :must_be_after_started_at)
   end
 
-  # `seeded` is what D9's reconciler keys on: it closes only what it opened, so
-  # a comp survives a sync that knows nothing about it.
+  # `seeded` is what `Subscriptions::Sync` keys on: it closes only what it
+  # opened, so a comp survives a sync that knows nothing about it.
   test "seeded finds only subscriptions with a contribution behind them" do
     seeded = create(:fleet_subscription, :seeded)
     comped = create(:fleet_subscription)

@@ -357,7 +357,7 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
 
   # The constraint behind that list: the tables it has to remember are the two
   # with no foreign key, so a delete going around this method used to strand
-  # them silently. #4946
+  # them silently.
   test "the database takes the join rows of a vehicle deleted around this method" do
     vehicle = create(:vehicle, user: @user)
     TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))

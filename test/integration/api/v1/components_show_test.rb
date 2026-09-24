@@ -43,7 +43,7 @@ class Api::V1::ComponentsShowTest < ActionDispatch::IntegrationTest
   end
 
   # The two halves of "what fits where". `tags` was held back while the pushed
-  # tree still carried the parser's re-encoded arrays (#5007), so this is also
+  # tree still carried the parser's re-encoded arrays, so this is also
   # the assertion that it is being published at all.
   test "GET /components/{slug} carries both halves of the port match" do
     assert_api_response :get, 200, params: {slug: @component.slug} do

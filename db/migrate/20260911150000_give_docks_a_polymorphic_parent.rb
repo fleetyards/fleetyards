@@ -6,7 +6,8 @@
 # may get one, so a dock hangs off a `ModelModule` just as readily as off a
 # ship. `cargo_holds` already works this way and is the shape copied here.
 #
-# Nullable was never a state that meant anything: #4864 deleted the 391 rows
+# Nullable was never a state that meant anything: `RemoveOrphanedDocks` deleted
+# the 391 rows
 # that had drifted into it, all of them left over from a 2021 station script.
 #
 # `model_id` stays behind for one release. The running containers are migrated
@@ -30,9 +31,9 @@ class GiveDocksAPolymorphicParent < ActiveRecord::Migration[8.1]
       WHERE model_id IS NOT NULL
     SQL
 
-    # #4864 cleared these, so this is a guard rather than a step: a dock with no
-    # parent cannot be expressed once the columns are NOT NULL, and silently
-    # keeping one is not an option the schema leaves open.
+    # `RemoveOrphanedDocks` cleared these, so this is a guard rather than a
+    # step: a dock with no parent cannot be expressed once the columns are NOT
+    # NULL, and silently keeping one is not an option the schema leaves open.
     orphans = select_value("SELECT COUNT(*) FROM docks WHERE parent_id IS NULL").to_i
     if orphans.positive?
       say("deleting #{orphans} dock(s) that belong to nothing")

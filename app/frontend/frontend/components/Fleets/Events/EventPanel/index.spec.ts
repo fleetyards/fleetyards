@@ -91,7 +91,7 @@ describe("FleetEventsPanel", () => {
   it("carries the lifecycle on the panel's tone, not a badge", async () => {
     const wrapper = await mount(event({ status: FleetEventStatusEnum.OPEN }));
 
-    // D1: the cap carries status, the frame stays neutral. EventStatusBadge,
+    // The cap carries status, the frame stays neutral. EventStatusBadge,
     // which painted its own fill and pinned itself to `top: 120px`, is gone.
     expect(wrapper.find(".panel--success").exists()).toBe(true);
     expect(wrapper.find(".event-status-badge").exists()).toBe(false);
@@ -148,7 +148,7 @@ describe("FleetEventsPanel", () => {
   });
 
   it("sets the cover height through Panel's own property", async () => {
-    // D2: the four :deep() rules this replaces reached into Panel's internals,
+    // The four :deep() rules this replaces reached into Panel's internals,
     // and two of them had stopped matching anything at all.
     const wrapper = await mount(event());
 

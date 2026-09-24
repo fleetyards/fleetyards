@@ -17,8 +17,8 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useForm } from "vee-validate";
 
 // The checkbox and the toggle reserve a field label's line so they line up with
-// the fields beside them in these rows -- see D7. Off by default, because on its
-// own a standalone checkbox has no field to line up with.
+// the fields beside them in these rows. Off by default, because on its own a
+// standalone checkbox has no field to line up with.
 //
 // Only FormInput takes a `rules` prop, so the schema lives on the form — that
 // covers every control that calls `useField` without one, which is all of these.

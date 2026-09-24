@@ -101,7 +101,7 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     assert_equal "forbidden", body_code
   end
 
-  # D3: the personal surfaces are not what a fleet subscription buys.
+  # The personal surfaces are not what a fleet subscription buys.
   test "a standalone tour stays free of the fleet subscription" do
     Flipper.enable("fleet_subscriptions")
     tour = create(:tour, created_by: @user)

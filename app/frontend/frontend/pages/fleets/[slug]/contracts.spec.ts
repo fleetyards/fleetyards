@@ -130,7 +130,7 @@ describe("FleetContractsRouterView", () => {
     expect(upsellOf(subject).exists()).toBe(false);
   });
 
-  // D10: a capability that is off is unavailable to subscribed and
+  // A capability that is off is unavailable to subscribed and
   // unsubscribed fleets alike, and must never be answered with an upsell.
   it("does not sell a capability the fleet has not been given", async () => {
     const subject = await mount({

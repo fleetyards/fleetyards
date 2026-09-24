@@ -237,6 +237,22 @@ Follow conventional commits:
 ```
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
+### Issues, PRs and exec-plans
+
+Each fact has one home, so the three never have to be kept in sync:
+
+- **Issue body** — the goal, the decisions (`**Decided: …**`, with the reasoning and rejected alternatives) and acceptance criteria. When a decision changes, edit the body in place; never record one in a comment.
+- **Exec-plan** (`docs/exec-plans/<branch-slug>.md`) — the working plan for one branch: phases, key files, discovery log, progress. It links to the issue for decisions instead of restating them.
+- **PR body** — what changed and `Resolves #<number>`. It links to the issue rather than restating the decisions.
+
+An exec-plan does not outlive its branch. In the PR's last commit before merge:
+
+1. Turn each remaining "Not in scope (deferred)" item into its own issue (with a type), or drop it.
+2. Move anything worth keeping as long-lived reference — research, measurements, a design rationale future work depends on — to `docs/findings/`.
+3. Delete the plan. PRs are squash-merged, so it never lands on `main` and stays readable in the PR's commits.
+
+Code, comments, specs, migrations and config never reference an exec-plan or one of this repo's issues or PRs — no `docs/exec-plans/…`, no `#1234`, no issue or PR URLs. A comment that needs a *why* states it in full, so it still makes sense to someone reading the file cold.
+
 ## API Development Workflow
 
 When adding new API endpoints, follow this order:

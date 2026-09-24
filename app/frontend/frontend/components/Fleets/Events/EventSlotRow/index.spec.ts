@@ -46,7 +46,7 @@ const mount = (record: FleetEventSlot, props: Record<string, unknown> = {}) =>
 
 describe("FleetEventsSlotRow", () => {
   it("is a list row, not a nested card", async () => {
-    // D4: six slots on a ship used to stack six bordered boxes inside a card
+    // Six slots on a ship used to stack six bordered boxes inside a card
     // inside a panel. One hairline per row is the app's repeated-record idiom.
     const wrapper = await mount(slot());
 
@@ -85,9 +85,9 @@ describe("FleetEventsSlotRow", () => {
   });
 
   it("uses chip-scale controls, not the toolbar scale", async () => {
-    // D4: at row density the answer is xs (29px), not the new sm default -
-    // which is the one place F1's mechanical size mapping is deliberately not
-    // mechanical.
+    // At row density the answer is xs (29px), not the new sm default -
+    // which is the one place mapping the old `small` onto the default is
+    // deliberately not mechanical.
     const wrapper = await mount(slot());
 
     expect(wrapper.find("button.btn--xs").exists()).toBe(true);

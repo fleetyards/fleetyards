@@ -14,9 +14,9 @@ module Loaders
 
         # Everything the load touches resolves its build from `ScData::Source`,
         # so the whole of it runs inside the source rather than each loader
-        # being handed a version -- the seam #4590 added, and the reason
-        # `fetch_parsed_tree!` reaches for the right environment's tree without
-        # being told.
+        # being handed a version -- `Source.current` is per-job state, and the
+        # reason `fetch_parsed_tree!` reaches for the right environment's tree
+        # without being told.
         #
         # `to_h` rather than the bare return: a loader set that produced
         # nothing hands back nil, and the report still has to render.

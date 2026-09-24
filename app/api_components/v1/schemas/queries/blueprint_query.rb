@@ -57,7 +57,7 @@ module V1
 
             # The list form, named as `craftableTypeIn` is beside
             # `craftableTypeEq`. A second parameter rather than widening the
-            # first: `consumingCommodity` shipped in #5013 taking one slug, and
+            # first: `consumingCommodity` shipped taking one slug, and
             # every caller written against the published schema keeps working.
             # The two combine, so asking both ways asks for the union.
             consumingCommodityIn: {type: :array, items: {type: :string}},

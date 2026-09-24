@@ -141,7 +141,7 @@ class Api::V1::FleetEventPayoutsCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 401, path_params: path_params
   end
 
-  # The split D3 exists for: every fleet-scoped payout surface behind
+  # The flag split: every fleet-scoped payout surface behind
   # fleet_tours, every personal one behind tour_payouts. Without it the flag
   # that prices a fleet feature would also price the standalone tool.
   test "the ledger on a fleet event needs the fleet flag" do

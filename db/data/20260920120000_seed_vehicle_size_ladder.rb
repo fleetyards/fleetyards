@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# #4868 built the ladder -- the column, the seven values, the admin select, the
-# filter -- and seeded nothing, so it matched no ship. This is the seed.
+# The ground-vehicle size ladder shipped as the column, the seven values, the
+# admin select and the filter -- and seeded nothing, so it matched no ship.
+# This is the seed.
 #
 # Curated, not derived. Volume gets the rough shape right and the boundaries
 # wrong: the Cyclone is recorded 8.75m wide, wider than an Ursa, which would put
@@ -9,7 +10,7 @@
 # exactly where that question is decided. The Dragonfly is Cyclone-sized by
 # volume and a bike by every other measure.
 #
-# Anchors and placement are @mortik's, from docs/exec-plans/4863-berth-model.md.
+# Anchors and placement are @mortik's.
 # Three of them are a first answer rather than a settled one: the Dragonfly
 # (bike, at Cyclone volume), the Storm (alone between the Ursa and the Nova) and
 # the MDC/MTC pair (between the Cyclone and the Ursa with nothing to break the

@@ -30,7 +30,7 @@ json.lines do
   end
 end
 
-# What the reward divides by when the contract settles (D6). Derived here so a
+# What the reward divides by when the contract settles. Derived here so a
 # client never has to re-implement the rule.
 json.shares do
   json.array!(progress.weights.to_a) do |user_id, weight|

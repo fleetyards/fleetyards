@@ -25,9 +25,10 @@ module Maintenance
       end
     end
 
-    # The join-table lines report 0 orphaned and always will: #4946 constrained
-    # both columns. What they still count is the rows an orphaned vehicle
-    # carries, which is the half of those numbers a run actually deletes.
+    # The join-table lines report 0 orphaned and always will: both columns have
+    # carried a foreign key since `AddVehicleForeignKeysToJoinTables`. What they
+    # still count is the rows an orphaned vehicle carries, which is the half of
+    # those numbers a run actually deletes.
     test "#process reports what it would do on a dry run" do
       orphan = orphan_vehicle
       FleetVehicle.create!(fleet: create(:fleet), vehicle: orphan)
@@ -76,10 +77,11 @@ module Maintenance
       assert TaskForce.exists?(task_force.id)
     end
 
-    # Both states this task was written to find are unreachable since #4946: the
-    # delete takes the join row with it, and a row naming no vehicle at all is
-    # refused outright. The scopes stay because `vehicles.vehicle_id` carries no
-    # constraint, and that is the one they still find something in.
+    # Both states this task was written to find are unreachable since
+    # `AddVehicleForeignKeysToJoinTables`: the delete takes the join row with it,
+    # and a row naming no vehicle at all is refused outright. The scopes stay
+    # because `vehicles.vehicle_id` carries no constraint, and that is the one
+    # they still find something in.
     test "the join rows this task was written for cannot be created any more" do
       vehicle = create(:vehicle, user: @user)
       fleet_vehicle = FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)

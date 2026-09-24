@@ -8,8 +8,8 @@ feature flags, replacing hand-written `Flipper.add` data migrations.
 Flags used to be created by a `db/data` migration per flag. That worked, but the
 flag list only existed in the database: there was no reviewable inventory, no
 description of what a flag does, and nothing noticed when a flag outlived the
-code that read it — `hardpoints-v2` sat in Flipper for months after #4176 deleted
-its last reference. A version-controlled registry makes the inventory a PR diff
+code that read it — `hardpoints-v2` sat in Flipper for months after its last
+reference was deleted. A version-controlled registry makes the inventory a PR diff
 and lets a deploy reconcile reality with it.
 
 The registry owns the flag **list**, and nothing else about a flag's behaviour.

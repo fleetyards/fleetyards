@@ -52,8 +52,8 @@ class SeedVehicleSizeLadderTest < ActiveSupport::TestCase
   end
 
   # The validation refuses a ladder value on anything but a vehicle, so a model
-  # that #5062 has not reached yet must come out of this unplaced rather than
-  # invalid.
+  # whose `size` is not yet "vehicle" must come out of this unplaced rather
+  # than invalid.
   test "a model that is not a vehicle is skipped" do
     ship = with_slug(create(:model, size: "small"), "rsi-ursa")
 

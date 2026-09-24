@@ -50,7 +50,8 @@ module WillItFitConcern
   # An undescribed one still answers by its envelope, and the names are added to
   # that rather than replacing it: a berth nobody has described has not said
   # that the ship it names is the only one it takes. `Dock#fits?` reads the same
-  # way, and the two disagreeing is what #4856 existed to end.
+  # way, and the two must not disagree -- the ship list and the hangar once
+  # answered this with different rules.
   private def dock_branch(scope, dock)
     branches = named_branch(scope, dock)
 

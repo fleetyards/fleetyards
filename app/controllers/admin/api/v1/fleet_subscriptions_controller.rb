@@ -6,7 +6,7 @@ module Admin
       # Where a subscription is granted by hand: a comped partner org, an
       # answered support ticket, a revocation.
       #
-      # `granted_via: "manual"` is not an escape hatch (D2) -- it is what keeps
+      # `granted_via: "manual"` is not an escape hatch -- it is what keeps
       # a grant out of the reconciler's reach. `Subscriptions::Sync` closes only
       # what it seeded, so anything opened here survives every import that knows
       # nothing about it.

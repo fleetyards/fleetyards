@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Subscriptions
-  # The importers propose; this decides (D9).
+  # The importers propose; this decides.
   #
   # No importer writes a subscription itself. `Patreon::SupporterImporter` and
   # `Kofi::PaymentImporter` keep doing one job -- recording what was paid -- and
@@ -69,7 +69,7 @@ module Subscriptions
 
     # Only subscriptions this opened. A grant with no contribution behind it is
     # somebody's decision -- a comp, a partner org, an answered support ticket,
-    # a #4958 grace row -- and it closes by hand or by its own `ended_at`.
+    # a beta fleet's grace row -- and it closes by hand or by its own `ended_at`.
     private def close_lapsed
       closed = []
 

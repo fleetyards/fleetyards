@@ -304,7 +304,7 @@ class Notification < ApplicationRecord
     # should still be in the inbox when they do. Mail is not offered because it
     # would arrive at every admin of every fleet whose payer changed their mind,
     # and Discord because a fleet's entitlement is not channel business.
-    # On by default and stated rather than inherited: the whole point of D14 is
+    # On by default and stated rather than inherited: the whole point is
     # that a fleet is told before it meets a 403, and a default that could drift
     # with CHANNEL_DEFAULTS is not something to leave implicit here.
     fleet_subscription_started: {

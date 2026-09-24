@@ -4,7 +4,7 @@
 # **after** the capability's own flag check, and after the doorkeeper callbacks
 # so an unauthenticated request still gets a 401.
 #
-# The order carries meaning (D10). Two questions are asked, and both must pass:
+# The order carries meaning. Two questions are asked, and both must pass:
 #
 #   is this feature rolled out here?  -> Flipper       -> `forbidden`
 #   has this fleet bought it?         -> subscriptions -> `subscription_required`
@@ -21,7 +21,7 @@ module FleetSubscriptionConcern
   # `fleet_subscriptions` gates whether enforcement runs at all, not whether a
   # fleet is entitled. While it is off this is inert and nothing about the four
   # capabilities changes -- which is what lets the whole entitlement half ship
-  # to production before the transition is announced (D16).
+  # to production before the transition is announced.
   #
   # Actor-aware on purpose: enabling it for one fleet enforces there first,
   # rather than for all 13,746 at once on a single switch.
@@ -30,7 +30,7 @@ module FleetSubscriptionConcern
 
     # No fleet, nothing to have bought. A standalone tour under /tools/ and its
     # ledger reach here with none, and they are personal surfaces that stay
-    # free (D3) -- without this they would be the one thing a *fleet*
+    # free -- without this they would be the one thing a *fleet*
     # subscription paywalled.
     fleet = subscription_fleet
     return if fleet.blank?

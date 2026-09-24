@@ -160,7 +160,7 @@ class InventoryTest < ActiveSupport::TestCase
     assert_equal "Port Olisar", inventory.reload.location
   end
   # A rename used to rewrite every entry of a position and file nothing, which
-  # is what #4844 was about. It moves one row now, so one version records it.
+  # left no trace. It moves one row now, so one version records it.
   test "update_stock_item files one version, on the position" do
     stock_item = stock_position(quantity: 100, withdrawn: 30)
 

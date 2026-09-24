@@ -178,7 +178,7 @@ onUnmounted(() => {
       untranslated title="Drag".
     -->
     <!--
-      Slim with a divider, per D6: a team is a titled sub-surface inside a page,
+      Slim with a divider: a team is a titled sub-surface inside a page,
       not a card in its own right. The full frame's 2px edge, 16px radius and
       end-caps made a page of teams read as a stack of competing surfaces.
     -->
@@ -296,7 +296,7 @@ onUnmounted(() => {
 /*
  * The frame is Panel's now. What was here - a rgba(0,0,0,.45) fill at radius 6
  * inside a 1px edge, plus three hand-styled bare buttons with their own hover
- * transitions - is what D6 of the plan replaces wholesale.
+ * transitions - is replaced wholesale by a slim Panel and xs bare Btns.
  */
 .event-team-title-row {
   display: inline-flex;
