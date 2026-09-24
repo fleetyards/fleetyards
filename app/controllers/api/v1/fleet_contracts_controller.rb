@@ -41,7 +41,9 @@ module Api
             :created_by, :fleet_contract_items, {fleet_contract_assignments: :user},
             # The serializer asks every row whether it carries a cover, which is
             # a query each without this, and a second one per row that does.
-            {cover_image_attachment: :blob}),
+            {cover_image_attachment: :blob},
+            # Read for the cache key on every row, hit or miss.
+            {fleet_squadrons: {icon_attachment: :blob}}),
           per_page(FleetContract)
         )
 

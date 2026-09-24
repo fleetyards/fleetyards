@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-json.cache! ["v2", member] do
+# The squadrons are in the key because the fragment carries their names,
+# colours and icons, which change without touching the membership.
+json.cache! ["v3", member, *member.fleet_squadron_memberships.map(&:fleet_squadron)] do
   json.partial! "api/v1/fleet_members/base", member: member
 end
 

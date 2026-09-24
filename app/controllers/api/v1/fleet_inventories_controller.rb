@@ -24,7 +24,9 @@ module Api
       def index
         authorize! with: FleetInventoryPolicy, context: {fleet: @fleet}
 
-        scope = readable_fleet_inventories.includes(manager: [:omniauth_connections])
+        # The squadrons are read for the cache key on every row, hit or miss.
+        scope = readable_fleet_inventories.includes(manager: [:omniauth_connections],
+          fleet_squadrons: {icon_attachment: :blob})
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :visibility_eq, :s)
         normalize_sort_params(query_params)

@@ -58,6 +58,19 @@ class Api::V1::FleetsSquadronsSortTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Every cached fragment that lists a squadron keys on it, and the order is
+  # part of what those fragments show.
+  test "PUT /fleets/:slug/squadrons/sort touches the squadrons it moves" do
+    @third.update_column(:updated_at, 1.day.ago)
+    sign_in @admin
+
+    assert_api_response :put, 204,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {sorting: [@third.id, @first.id, @second.id]}
+
+    assert_operator @third.reload.updated_at, :>, 1.minute.ago
+  end
+
   # The order is one list, so a squadron left out of the call keeps the place it
   # had rather than collapsing to the front with everything else.
   test "PUT /fleets/:slug/squadrons/sort leaves out what it was not sent" do

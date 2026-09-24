@@ -69,7 +69,9 @@ module Api
 
         FleetSquadron.transaction do
           sorting.each_with_index do |id, index|
-            @fleet.fleet_squadrons.where(id: id).update_all(position: index + 1)
+            # `updated_at` too: the order is part of every cached fragment that
+            # lists a squadron, and `update_all` would not touch it otherwise.
+            @fleet.fleet_squadrons.where(id: id).update_all(position: index + 1, updated_at: Time.current)
           end
         end
 

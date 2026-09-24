@@ -248,4 +248,23 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  # The badge is cached with the member, so a squadron renamed after the first
+  # read must still reach the roster.
+  test "GET /fleets/:slug/members shows a squadron's new name after it is renamed" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Old Name")
+    create(:fleet_squadron_membership, fleet_squadron: squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member))
+    sign_in @admin
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+      squadron.update!(name: "New Name")
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+
+      badge = parsed_body["items"].find { |entry| entry["username"] == @member.username }["squadrons"].first
+      assert_equal "New Name", badge["name"]
+    end
+  end
 end

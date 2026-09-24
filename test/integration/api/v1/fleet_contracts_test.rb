@@ -778,4 +778,19 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug}
   end
+
+  test "GET the board shows a squadron's new name after it is renamed" do
+    Flipper.enable("fleet_squadrons")
+    squadron = create(:fleet_squadron, fleet: @fleet, name: "Old Name")
+    create(:fleet_contract, :published, fleet: @fleet, visibility: :squadron_only, fleet_squadrons: [squadron])
+    sign_in @officer
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/contracts"
+      squadron.update!(name: "New Name")
+      get "/api/v1/fleets/#{@fleet.slug}/contracts"
+
+      assert_equal ["New Name"], response.parsed_body["items"].first["fleetSquadrons"].pluck("name")
+    end
+  end
 end
