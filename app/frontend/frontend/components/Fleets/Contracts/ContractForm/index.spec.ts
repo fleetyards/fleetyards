@@ -1,8 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 
 const createMutation = vi.fn(() => Promise.resolve({ slug: "job-1" }));
 const updateMutation = vi.fn(() => Promise.resolve({ slug: "job-1" }));
+
+const destinations = vi.hoisted(() => ({
+  value: [] as Record<string, unknown>[],
+}));
 
 // Mocked as a module, not stubbed at mount: the real one reaches HoloViewer and
 // pulls three.js in, which does not resolve under vitest.
@@ -28,13 +32,18 @@ vi.mock("@/services/fyApi", () => ({
     PROCUREMENT: "procurement",
     CRAFTING: "crafting",
   },
+  FleetContractDestinationHolderEnum: { FLEET: "fleet", USER: "user" },
   useFleetInventories: () => ({ data: { value: { items: [] } } }),
+  useFleetContractDestinations: () => ({ data: destinations }),
   useCreateFleetContract: () => ({ mutateAsync: createMutation }),
   useUpdateFleetContract: () => ({ mutateAsync: updateMutation }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string, params?: Record<string, string>) =>
+      params ? `${key}(${Object.values(params).join(",")})` : key,
+  }),
 }));
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
@@ -208,5 +217,121 @@ describe("ContractForm cover", () => {
     await wrapper.vm.$nextTick();
 
     expect(field(wrapper).props("presetGroup")).toBe("crafting");
+  });
+});
+
+describe("ContractForm destination", () => {
+  const DEPOT = {
+    id: "depot",
+    name: "Depot",
+    slug: "depot",
+    location: "Area 18",
+    holder: "fleet",
+  };
+  const LOCKER = {
+    id: "locker",
+    name: "Locker",
+    slug: "locker",
+    location: null,
+    holder: "user",
+  };
+
+  const destinationSelect = (wrapper: ReturnType<typeof mountForm>) =>
+    wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((select) => select.attributes("name") === "destination")!;
+
+  const submitted = async (wrapper: ReturnType<typeof mountForm>) => {
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    return ((createMutation.mock.calls.at(-1) as unknown[] | undefined) ??
+      (updateMutation.mock.calls.at(-1) as unknown[]))[0] as {
+      data: Record<string, unknown>;
+    };
+  };
+
+  it("offers what the API says the reader may choose, own inventories marked", () => {
+    destinations.value = [DEPOT, LOCKER];
+
+    const options = destinationSelect(mountForm()).props("options") as {
+      value: string;
+      label: string;
+    }[];
+
+    expect(options).toEqual([
+      { value: "fleet:depot", label: "Depot — Area 18" },
+      {
+        value: "user:locker",
+        label: "labels.fleets.contracts.myHangarInventory(Locker)",
+      },
+    ]);
+  });
+
+  it("sends an own inventory as destinationInventoryId and clears the fleet one", async () => {
+    createMutation.mockClear();
+    destinations.value = [LOCKER];
+    const wrapper = mountForm();
+
+    await destinationSelect(wrapper).vm.$emit(
+      "update:modelValue",
+      "user:locker",
+    );
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(true);
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.destinationInventoryId).toBe("locker");
+    expect(data.destinationFleetInventoryId).toBeNull();
+  });
+
+  it("sends a fleet inventory as destinationFleetInventoryId", async () => {
+    createMutation.mockClear();
+    destinations.value = [DEPOT];
+    const wrapper = mountForm();
+
+    await destinationSelect(wrapper).vm.$emit(
+      "update:modelValue",
+      "fleet:depot",
+    );
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(false);
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.destinationFleetInventoryId).toBe("depot");
+    expect(data.destinationInventoryId).toBeNull();
+  });
+
+  // Somebody else editing still sees where it delivers, and keeps it by not
+  // touching the field.
+  it("keeps the author's inventory in the list for another editor", async () => {
+    updateMutation.mockClear();
+    destinations.value = [DEPOT];
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      destination: LOCKER,
+      createdBy: { id: "author", username: "Ada" },
+    });
+
+    const options = destinationSelect(wrapper).props("options") as {
+      value: string;
+      label: string;
+    }[];
+
+    expect(options.at(-1)).toEqual({
+      value: "user:locker",
+      label: "labels.fleets.contracts.authorHangarInventory(Locker,Ada)",
+    });
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.destinationInventoryId).toBe("locker");
   });
 });

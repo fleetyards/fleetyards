@@ -28,7 +28,11 @@ import {
   type FleetContract,
   type FleetContractItemInput,
   type FleetContractDetail,
+  type FleetContractDestination,
+  type FleetContractEndpoint,
+  FleetContractDestinationHolderEnum,
   FleetContractKindEnum,
+  useFleetContractDestinations,
   useFleetInventories,
   useCreateFleetContract,
   useUpdateFleetContract,
@@ -71,6 +75,59 @@ const inventoryOptions = computed<FilterOption[]>(() =>
   })),
 );
 
+// Where the goods can go, as the API answers it for this reader: the fleet
+// inventories they could accept deliveries into, and their own. Deciding that
+// here would mean re-deriving the privilege and visibility rules the API
+// checks the choice against anyway.
+const { data: destinations } = useFleetContractDestinations(fleetSlug);
+
+// One picker over two id fields, so the value carries which one it is.
+const destinationKey = (destination: { holder: string; id: string }) =>
+  `${destination.holder}:${destination.id}`;
+
+const destinationLabel = (
+  destination: FleetContractDestination | NonNullable<FleetContractEndpoint>,
+  offered: boolean,
+) => {
+  if (destination.holder === FleetContractDestinationHolderEnum.FLEET) {
+    return destination.location
+      ? `${destination.name} — ${destination.location}`
+      : destination.name;
+  }
+
+  // Only the author is offered their own inventories. Anybody else editing
+  // the contract still sees the one it delivers into, named as the author's.
+  return offered
+    ? t("labels.fleets.contracts.myHangarInventory", {
+        name: destination.name,
+      })
+    : t("labels.fleets.contracts.authorHangarInventory", {
+        name: destination.name,
+        username: props.contract?.createdBy?.username ?? "",
+      });
+};
+
+const destinationOptions = computed<FilterOption[]>(() => {
+  const offered = destinations.value ?? [];
+  const current = props.contract?.destination;
+  const options = offered.map((destination) => ({
+    value: destinationKey(destination),
+    label: destinationLabel(destination, true),
+  }));
+
+  if (
+    current &&
+    !offered.some((destination) => destination.id === current.id)
+  ) {
+    options.push({
+      value: destinationKey(current),
+      label: destinationLabel(current, false),
+    });
+  }
+
+  return options;
+});
+
 const kindOptions = computed<FilterOption[]>(() =>
   Object.values(FleetContractKindEnum).map((value) => ({
     value,
@@ -92,7 +149,9 @@ const { defineField, handleSubmit, meta, setErrors } = useForm({
     ),
     deadline: props.contract?.deadline ?? null,
     sourceFleetInventoryId: props.contract?.source?.id ?? null,
-    destinationFleetInventoryId: props.contract?.destination?.id ?? null,
+    destination: props.contract?.destination
+      ? destinationKey(props.contract.destination)
+      : null,
     coverImagePreset: props.contract?.coverImagePreset ?? null,
     coverImage: undefined as string | null | undefined,
   },
@@ -135,9 +194,7 @@ const [deadline, deadlineProps] = defineField("deadline");
 const [sourceFleetInventoryId, sourceProps] = defineField(
   "sourceFleetInventoryId",
 );
-const [destinationFleetInventoryId, destinationProps] = defineField(
-  "destinationFleetInventoryId",
-);
+const [destination, destinationProps] = defineField("destination");
 const [coverImagePreset] = defineField("coverImagePreset");
 const [coverImage, coverImageProps] = defineField("coverImage");
 
@@ -153,6 +210,23 @@ const requiresSource = computed(
 watch(requiresSource, (needed) => {
   if (!needed) sourceFleetInventoryId.value = null;
 });
+
+const deliversToHangar = computed(
+  () =>
+    destinationIds(destination.value as string | null)
+      .destinationInventoryId !== null,
+);
+
+const destinationIds = (value: string | null | undefined) => {
+  const [holder, id] = (value ?? "").split(":");
+
+  return {
+    destinationFleetInventoryId:
+      holder === FleetContractDestinationHolderEnum.FLEET ? id : null,
+    destinationInventoryId:
+      holder === FleetContractDestinationHolderEnum.USER ? id : null,
+  };
+};
 
 const createMutation = useCreateFleetContract();
 const updateMutation = useUpdateFleetContract();
@@ -180,7 +254,9 @@ const onSubmit = handleSubmit(async (values) => {
     sourceFleetInventoryId: requiresSource.value
       ? values.sourceFleetInventoryId
       : null,
-    destinationFleetInventoryId: values.destinationFleetInventoryId as string,
+    // Both keys, one of them null: the contract has a single destination and
+    // naming one kind is what clears the other.
+    ...destinationIds(values.destination),
     // The field keeps the two exclusive itself -- an upload retires the preset,
     // a preset clears the upload -- so this is passed on as it stands.
     coverImagePreset: values.coverImagePreset,
@@ -227,7 +303,10 @@ const onSubmit = handleSubmit(async (values) => {
       }
     })
     .catch((error) => {
-      const { message, formErrors } = validationErrorFrom(error);
+      const { message, formErrors } = validationErrorFrom(error, {
+        destinationFleetInventory: "destination",
+        destinationInventory: "destination",
+      });
 
       setErrors(formErrors);
 
@@ -315,7 +394,7 @@ const onSubmit = handleSubmit(async (values) => {
       <FormTab
         id="delivery"
         :label="t('labels.fleets.contracts.tabs.delivery')"
-        :fields="['sourceFleetInventoryId', 'destinationFleetInventoryId']"
+        :fields="['sourceFleetInventoryId', 'destination']"
       >
         <div class="row">
           <!-- Only a transport contract collects from somewhere; the API
@@ -332,12 +411,20 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
           <div class="col-12 col-md-6">
             <BaseSelect
-              v-model="destinationFleetInventoryId"
+              v-model="destination"
               v-bind="destinationProps"
-              :options="inventoryOptions"
+              :options="destinationOptions"
               :label="t('labels.fleets.contracts.to')"
-              name="destinationFleetInventoryId"
+              name="destination"
+              data-test="contract-destination"
             />
+            <p
+              v-if="deliversToHangar"
+              class="contract-destination-hint"
+              data-test="contract-destination-hint"
+            >
+              {{ t("labels.fleets.contracts.toHint") }}
+            </p>
           </div>
         </div>
 
@@ -427,3 +514,11 @@ const onSubmit = handleSubmit(async (values) => {
     </FormTabs>
   </form>
 </template>
+
+<style lang="scss" scoped>
+.contract-destination-hint {
+  margin-top: -0.5rem;
+  color: var(--color-text-dim);
+  font-size: 0.875rem;
+}
+</style>

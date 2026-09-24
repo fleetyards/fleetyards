@@ -2322,9 +2322,11 @@
           "fleet": "A fleet",
           "user": "A person",
           "mine": "My inventories",
-          "fleetInventories": "This fleet"
+          "fleetInventories": "This fleet",
+          "contract": "A contract I work on"
         },
         "transferTargetKind": "Send to",
+        "contractDeliveryTarget": "%{contract} (%{fleet}): %{destination}",
         "transferFromFleet": "From fleet",
         "noTransferTargets": "Nothing to send to here",
         "recordedAt": "Recorded",
@@ -2655,6 +2657,9 @@
           "reimburseExpenses": "Reimburse expenses",
           "from": "Collect from",
           "to": "Deliver to",
+          "toHint": "Deliveries into one of your own inventories are sent to you, and you accept them yourself.",
+          "myHangarInventory": "%{name} (my hangar)",
+          "authorHangarInventory": "%{name} (hangar of %{username})",
           "lead": "Lead",
           "pendingCrew": "Waiting to join",
           "minQuality": "min. quality %{value}",

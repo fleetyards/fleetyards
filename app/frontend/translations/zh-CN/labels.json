@@ -2308,9 +2308,11 @@
           "fleet": "舰队",
           "user": "某人",
           "mine": "我的库存",
-          "fleetInventories": "该舰队"
+          "fleetInventories": "该舰队",
+          "contract": "我参与的合同"
         },
         "transferTargetKind": "发送至",
+        "contractDeliveryTarget": "%{contract}（%{fleet}）：%{destination}",
         "transferFromFleet": "来自舰队",
         "noTransferTargets": "这里没有可发送的目标",
         "recordedAt": "记录时间",
@@ -2641,6 +2643,9 @@
           "reimburseExpenses": "报销开支",
           "from": "取货地点",
           "to": "交付地点",
+          "toHint": "送往你自己库存的交付会发送给你，由你亲自接收。",
+          "myHangarInventory": "%{name}（我的机库）",
+          "authorHangarInventory": "%{name}（%{username} 的机库）",
           "lead": "负责人",
           "pendingCrew": "等待加入",
           "minQuality": "最低品质 %{value}",

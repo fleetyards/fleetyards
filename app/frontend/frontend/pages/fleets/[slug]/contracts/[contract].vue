@@ -36,6 +36,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
@@ -49,6 +50,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, toUEC, l } = useI18n();
+const { destinationName } = useContractRoute();
 const { resolve: resolveCover } = useContractCover();
 
 const cover = computed(() => resolveCover(contract.value, props.fleet));
@@ -432,7 +434,7 @@ const crumbs = computed<Crumb[]>(() => [
               {{ t("labels.fleets.contracts.to") }}
             </div>
             <div class="contract-route__place">
-              {{ contract.destination.name }}
+              {{ destinationName(contract) }}
             </div>
             <div
               v-if="contract.destination.location"

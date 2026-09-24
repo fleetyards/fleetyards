@@ -2308,9 +2308,11 @@
           "fleet": "Una flota",
           "user": "Una persona",
           "mine": "Mis inventarios",
-          "fleetInventories": "Esta flota"
+          "fleetInventories": "Esta flota",
+          "contract": "Un contrato en el que trabajo"
         },
         "transferTargetKind": "Enviar a",
+        "contractDeliveryTarget": "%{contract} (%{fleet}): %{destination}",
         "transferFromFleet": "De la flota",
         "noTransferTargets": "Aquí no hay destino",
         "recordedAt": "Registrado",
@@ -2641,6 +2643,9 @@
           "reimburseExpenses": "Reembolsar gastos",
           "from": "Recoger en",
           "to": "Entregar en",
+          "toHint": "Las entregas en uno de tus propios inventarios se te envían a ti, y tú mismo las aceptas.",
+          "myHangarInventory": "%{name} (mi hangar)",
+          "authorHangarInventory": "%{name} (hangar de %{username})",
           "lead": "Responsable",
           "pendingCrew": "Esperando unirse",
           "minQuality": "calidad mín. %{value}",
