@@ -220,3 +220,112 @@ test.describe("Chips - edit mode", () => {
     await expect.poll(() => names(page)).not.toEqual(before);
   });
 });
+
+/*
+ * The real GroupLabels on the owner's hangar: the hover reveal, and a reorder
+ * that reaches the server by drag and by keyboard. Reuses the chips scenario's
+ * user, whose Combat and Cargo groups are created in that order.
+ */
+test.describe("Chips - owner's hangar", () => {
+  const groupRow = (page: Page) =>
+    page.getByTestId("chip-row").filter({ hasText: "Combat" }).first();
+
+  const names = (page: Page) =>
+    groupRow(page).getByTestId("chip").locator(".chip__label").allInnerTexts();
+
+  const sorted = (page: Page) =>
+    page.waitForResponse(
+      (response) =>
+        response.url().includes("/hangar/groups/sort") &&
+        response.request().method() === "PUT",
+    );
+
+  test.beforeEach(async ({ page }) => {
+    await app("clean");
+    await appScenario("chips");
+
+    await page.goto("/login/");
+    await page.locator("input[name='login']").fill("chips");
+    await page.locator("input[name='password']").fill("password");
+
+    const sessionCreated = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/sessions") &&
+        response.request().method() === "POST",
+    );
+    await page.getByTestId("submit-login").click();
+    await sessionCreated;
+    await expect(page).not.toHaveURL(/\/login/);
+
+    await page.goto("/hangar/");
+    await expect(groupRow(page)).toBeVisible();
+  });
+
+  test("the edit button shows with the row, not after a click", async ({
+    page,
+  }) => {
+    const edit = groupRow(page).getByTestId("group-labels-edit");
+    const opacity = () => edit.evaluate((el) => getComputedStyle(el).opacity);
+
+    await page.mouse.move(0, 0);
+    await expect.poll(opacity).toBe("0");
+
+    await groupRow(page).hover();
+    await expect.poll(opacity).toBe("1");
+
+    // A clicked chip keeps focus; that must not hold the button on screen.
+    await groupRow(page)
+      .getByTestId("chip")
+      .first()
+      .locator(".chip__toggle")
+      .click();
+    await page.mouse.move(0, 0);
+    await expect.poll(opacity).toBe("0");
+  });
+
+  // The scenario's two groups tie on `sort`, so their starting order is not
+  // fixed; each test moves whichever chip is second to the front.
+  test("a drag by the grip persists", async ({ page }) => {
+    const before = await names(page);
+    const reversed = [...before].reverse();
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    const chips = groupRow(page).getByTestId("chip");
+    const request = sorted(page);
+    await chips
+      .nth(1)
+      .getByTestId("chip-handle")
+      .dragTo(chips.nth(0), { targetPosition: { x: 4, y: 4 } });
+    await request;
+
+    await page.reload();
+    await expect.poll(() => names(page)).toEqual(reversed);
+  });
+
+  test("the grip moves a chip from the keyboard", async ({ page }) => {
+    const before = await names(page);
+    const reversed = [...before].reverse();
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    const handle = groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle");
+
+    await handle.focus();
+
+    const request = sorted(page);
+    await page.keyboard.press("ArrowLeft");
+    await request;
+
+    expect(await names(page)).toEqual(reversed);
+    await expect(handle).toBeFocused();
+
+    await page.reload();
+    await expect.poll(() => names(page)).toEqual(reversed);
+  });
+});
