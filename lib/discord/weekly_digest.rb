@@ -2,6 +2,7 @@
 
 require "discord/event_announcement"
 require "discord/event_availability"
+require "discord/message_length"
 
 module Discord
   # The coming week's events, one list per place they may be announced.
@@ -17,9 +18,9 @@ module Discord
     # coming up.
     LISTED_STATUSES = %w[open locked active].freeze
 
-    # Discord cuts a message at 2000 characters; a busy week is shortened and
-    # sends the rest to the events page instead.
-    MAX_LENGTH = 2000
+    # A busy week is shortened to what fits in one message and sends the rest
+    # to the events page instead.
+    MAX_LENGTH = MessageLength::MAX
 
     def initialize(fleet, from: Time.current)
       @fleet = fleet
@@ -85,7 +86,7 @@ module Discord
         availability = EventAvailability.new(event, occurrence_date: date)
         next if availability.cancelled?
 
-        {event: event, starts_at: availability.starts_at, title: availability.title, availability: availability.label}
+        {event: event, date: date, starts_at: availability.starts_at, title: availability.title, availability: availability.label}
       end
     end
 
@@ -94,7 +95,7 @@ module Discord
       lines = listed.map { |occurrence| line_for(occurrence) }
 
       full = [heading, *lines].join("\n")
-      return full if full.length <= MAX_LENGTH
+      return full if MessageLength.fits?(full)
 
       # Drop events from the end until what is left fits beside a footer
       # counting exactly the ones dropped.
@@ -103,21 +104,25 @@ module Discord
         shown -= 1
         more = I18n.t("discord.weekly_digest.more", count: lines.size - shown, url: url_for_path("/fleets/#{@fleet.slug}/events/"))
         content = [heading, *lines.first(shown), more].join("\n")
-        return content if content.length <= MAX_LENGTH || shown.zero?
+        return content if MessageLength.fits?(content) || shown.zero?
       end
     end
 
     # Discord renders <t:unix:f> in each reader's own timezone.
     private def line_for(occurrence)
       [
-        "• [#{occurrence[:title]}](#{event_url(occurrence[:event])})",
+        "• [#{occurrence[:title]}](#{event_url(occurrence[:event], occurrence[:date])})",
         "<t:#{occurrence[:starts_at].to_i}:f>",
         occurrence[:availability]
       ].compact_blank.join(" — ")
     end
 
-    private def event_url(event)
-      url_for_path("/fleets/#{@fleet.slug}/events/#{event.slug}/")
+    # A recurring entry opens its own date; the page reads it from `occurrence`.
+    private def event_url(event, date)
+      path = "/fleets/#{@fleet.slug}/events/#{event.slug}/"
+      path += "?occurrence=#{date.iso8601}" if date
+
+      url_for_path(path)
     end
 
     private def url_for_path(path)

@@ -81,6 +81,22 @@ module Discord
       assert_equal 7, deliveries.fetch("fleet").scan("Weekly Op").size
     end
 
+    test "each occurrence of a series links its own date" do
+      event(title: "Daily Op", starts_at: 1.day.from_now, recurring: true, recurrence_interval: "daily", recurrence_count: 3)
+
+      dates = deliveries.fetch("fleet").scan(/occurrence=(\d{4}-\d{2}-\d{2})/).flatten
+
+      assert_equal 3, dates.uniq.size
+    end
+
+    test "counts length the way Discord does, so emoji cannot push it over" do
+      30.times { |index| event(title: "🚀" * 60 + index.to_s) }
+
+      content = deliveries.fetch("fleet")
+
+      assert MessageLength.fits?(content), "#{MessageLength.of(content)} UTF-16 units"
+    end
+
     test "drafts and cancelled events are not listed" do
       create(:fleet_event, fleet: @fleet, title: "Draft Op", starts_at: 2.days.from_now)
       event(title: "Called Off").tap { |called_off| called_off.update_column(:status, "cancelled") }
