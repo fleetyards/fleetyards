@@ -55,6 +55,15 @@ class Api::V1::PublicFleetsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: fleet.slug}
   end
 
+  test "GET /public/fleets/:slug lists the features switched on for the fleet" do
+    fleet = create(:fleet)
+    Flipper.enable("fleet_squadrons", fleet)
+
+    assert_api_response :get, 200, path_params: {slug: fleet.slug} do
+      assert_includes parsed_body["features"], "fleet_squadrons"
+    end
+  end
+
   test "GET /public/fleets/:slug returns 404 for private fleet" do
     fleet = create(:fleet, :private)
 

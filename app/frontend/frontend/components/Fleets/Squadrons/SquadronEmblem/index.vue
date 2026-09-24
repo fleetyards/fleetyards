@@ -5,10 +5,14 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import type { FleetSquadron, FleetSquadronRef } from "@/services/fyApi";
+import type {
+  FleetSquadron,
+  FleetSquadronRef,
+  PublicFleetSquadron,
+} from "@/services/fyApi";
 
 type Props = {
-  squadron: FleetSquadron | FleetSquadronRef;
+  squadron: FleetSquadron | FleetSquadronRef | PublicFleetSquadron;
   size?: number;
 };
 

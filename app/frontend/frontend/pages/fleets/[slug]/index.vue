@@ -11,7 +11,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   FeatureFlagName,
+  FleetMembershipStatusEnum,
   useFleetSquadrons,
+  usePublicFleetSquadrons,
   type Fleet,
   type FleetMember,
 } from "@/services/fyApi";
@@ -29,13 +31,27 @@ const { isFleetFeatureEnabled } = useFeatures();
 
 /*
  * The fleet's own front page is where somebody meets it, so its sub-units
- * belong here rather than only behind a tab. Gated the way the tab is: the
- * flag, and a role that may read them.
+ * belong here rather than only behind a tab. A member sees them the way the
+ * tab gates them, by a role that may read them; anybody else gets the public
+ * list, which the fleet page being visible to them already admits.
  */
+const squadronsEnabled = computed(() =>
+  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
+);
+
+const isMember = computed(
+  () => props.membership?.status === FleetMembershipStatusEnum.ACCEPTED,
+);
+
 const showSquadrons = computed(
   () =>
-    isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS) &&
+    squadronsEnabled.value &&
+    isMember.value &&
     (props.membership?.capabilities?.readSquadrons ?? false),
+);
+
+const showPublicSquadrons = computed(
+  () => squadronsEnabled.value && !isMember.value,
 );
 
 const { data: squadrons } = useFleetSquadrons(
@@ -44,7 +60,19 @@ const { data: squadrons } = useFleetSquadrons(
   { query: { enabled: showSquadrons } },
 );
 
-const allSquadrons = computed(() => squadrons.value?.items ?? []);
+const { data: publicSquadrons } = usePublicFleetSquadrons(
+  computed(() => props.fleet.slug),
+  { perPage: "all" },
+  { query: { enabled: showPublicSquadrons, retry: false } },
+);
+
+const publicSquadronList = computed(() =>
+  showPublicSquadrons.value ? (publicSquadrons.value?.items ?? []) : [],
+);
+
+const allSquadrons = computed(() =>
+  showSquadrons.value ? (squadrons.value?.items ?? []) : [],
+);
 
 // Two strips, the same split the squadrons page draws: a member belongs to one
 // squadron and can be on any number of teams.
@@ -182,6 +210,34 @@ const description = computed(() => {
       </div>
     </div>
   </div>
+  <!-- Not links: a squadron's own page is for members, and the public list
+       carries no team flag, so squadrons and teams share one row here. -->
+  <div v-if="publicSquadronList.length" class="row md:justify-center">
+    <div class="col-12 col-md-8">
+      <div class="squadrons squadrons--centred">
+        <div
+          v-for="squadron in publicSquadronList"
+          :key="squadron.id"
+          class="squadron"
+          :data-test="`fleet-public-squadron-${squadron.slug}`"
+        >
+          <SquadronEmblem :squadron="squadron" :size="32" />
+          <span class="squadron-name">{{ squadron.name }}</span>
+          <span
+            v-if="squadron.memberCount !== null"
+            class="squadron-count"
+            data-test="fleet-public-squadron-count"
+          >
+            {{
+              t("labels.fleet.squadrons.memberCount", {
+                count: squadron.memberCount,
+              })
+            }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
   <div v-if="teamList.length" class="row md:justify-center">
     <div class="col-12 col-md-8">
       <div class="squadrons squadrons--centred">
@@ -229,11 +285,16 @@ const description = computed(() => {
   text-decoration: none;
   transition: background-color 150ms ease;
 
-  &:hover,
-  &:focus-visible {
+  &:is(a):hover,
+  &:is(a):focus-visible {
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
     color: var(--color-text, #c8c8c8);
   }
+}
+
+.squadron-count {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.85em;
 }
 
 @import "./index.scss";
