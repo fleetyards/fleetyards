@@ -27,17 +27,26 @@ module Discord
     end
 
     # :done, :not_pending or :failed.
+    #
+    # Two officers answering the same request is normal, not an error -- every
+    # officer sees the same buttons, and a double-click is two interactions.
+    # The state is read again under a row lock: both copies would otherwise
+    # still read `requested`, both transitions would save, and a request could
+    # end up declined after its applicant was told they were accepted.
     def call
-      # Two officers answering the same request is normal, not an error: AASM
-      # runs with whiny_transitions off, so the second call would silently
-      # return false and read as a failure.
       return :not_pending unless membership.requested?
 
-      # Recorded on the version, so the audit trail names the officer rather
-      # than nobody.
-      membership.author_id = officer.id
+      membership.with_lock do
+        if membership.requested?
+          # Recorded on the version, so the audit trail names the officer
+          # rather than nobody.
+          membership.author_id = officer.id
 
-      apply ? :done : :failed
+          apply ? :done : :failed
+        else
+          :not_pending
+        end
+      end
     end
 
     # The AASM events carry the rest: accepting notifies the new member and
