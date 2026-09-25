@@ -9,12 +9,14 @@ end
 # ledger, but a participant joining does not change the ledger row at all.
 settlement = Payouts::Settlement.new(payout_ledger)
 
-json.participants_count payout_ledger.payout_participants.size
+# A contract's fleet is the payer: it is on the ledger but divides nothing,
+# so it is neither a head nor a share.
+json.participants_count payout_ledger.payout_participants.where(fleet_id: nil).size
 # What the profit is actually divided by. Worked out here rather than by
 # summing the participants' weights on the client, for the reason the
 # comment above gives about the totals: the arithmetic that decides money
 # has one home, and floats are not it.
-json.total_weight payout_ledger.payout_participants.sum(:weight)
+json.total_weight payout_ledger.payout_participants.where(fleet_id: nil).sum(:weight)
 json.entries_count payout_ledger.payout_entries.size
 json.pending_review_count payout_ledger.payout_entries.review_pending.count
 json.total_income settlement.total_income
