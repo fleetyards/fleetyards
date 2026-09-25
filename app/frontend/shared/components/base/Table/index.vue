@@ -168,11 +168,14 @@ const allSelected = computed(() => {
     .every((recordId) => internalSelected.value.includes(recordId as string));
 });
 
+// Immediate: a table that mounts into a list with rows already picked -- back
+// from the grid view, say -- has to show their boxes ticked.
 watch(
   () => props.selected,
   () => {
     internalSelected.value = props.selected;
   },
+  { immediate: true },
 );
 
 const emit = defineEmits<{
