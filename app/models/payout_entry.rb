@@ -160,12 +160,16 @@ class PayoutEntry < ApplicationRecord
     throw :abort
   end
 
+  # The entry is already saved, so a failing notification is logged rather
+  # than turned into an error on a write that succeeded.
   private def notify_review_change
     if review_pending?
       notify_managers_of_pending
     elsif review_declined?
       notify_recorder_of_decline
     end
+  rescue => e
+    Rails.logger.error("[PayoutEntry] review notification failed: #{e.class}: #{e.message}")
   end
 
   private def notify_managers_of_pending

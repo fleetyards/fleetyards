@@ -292,7 +292,7 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     ledger.settle!(officer)
 
     assert_equal [author, contractor].map(&:id).sort, Notification.fleet_contract_settled.pluck(:user_id).sort
-    assert_equal "/fleets/#{contract.fleet.slug}/contracts/#{contract.slug}", Notification.fleet_contract_settled.first.link
+    assert_equal "/fleets/#{contract.fleet.slug}/contracts/#{contract.slug}/payouts/", Notification.fleet_contract_settled.first.link
   end
 
   test "a refused settle tells nobody" do
@@ -315,5 +315,16 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     ledger = create(:payout_ledger, subject: event)
 
     assert_equal [admin, event_admin].map(&:id).sort, ledger.managers.map(&:id).sort
+  end
+
+  test "settling moves a contract whose terms no longer validate" do
+    contract = create(:fleet_contract, :hangar_destination, :fulfilled)
+    contract.update_column(:created_by_id, nil)
+    ledger = contract.create_payout_ledger!
+
+    assert ledger.settle!
+
+    assert_predicate contract.reload, :settled?
+    assert_not_nil contract.settled_at
   end
 end

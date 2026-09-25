@@ -173,11 +173,22 @@ class PayoutLedger < ApplicationRecord
   #
   # A fleet event has its own lifecycle that means something else entirely, so
   # it does not follow.
+  #
+  # A contract's own validations guard its terms -- where the goods go, where
+  # they come from -- and an inventory deleted since it was fulfilled must not
+  # leave the contract `fulfilled` under a settled ledger. So its transition is
+  # saved without them, as a full save: aasm's own skip-validation path writes
+  # the state column alone and would drop `settled_at`.
   private def carry_status_to_subject(event)
     return unless subject.is_a?(Tour) || subject.is_a?(FleetContract)
     return unless subject.public_send(:"may_#{event}?")
 
-    subject.public_send(:"#{event}!")
+    if subject.is_a?(FleetContract)
+      subject.public_send(event)
+      subject.save!(validate: false)
+    else
+      subject.public_send(:"#{event}!")
+    end
   end
 
   # Seeds the participant list from whoever the subject already knows about.
@@ -226,11 +237,6 @@ class PayoutLedger < ApplicationRecord
     broadcast_change
   end
 
-  # The fleet is the payer and holds the reward; the contractors are weighted
-  # by what they delivered. Only run on create, so it has nothing to preserve.
-  # After the commit, so nobody is told about a payout list that rolled back.
-  # Whoever pressed settle already knows. A contract's author is the client and
-  # is told as well, whether or not they are on the list.
   # Everyone PayoutLedgerPolicy lets manage this ledger. The candidates are
   # narrowed first -- a fleet's privileged members and the people the subject
   # itself hands the ledger to -- and the policy then has the last word, so
@@ -265,12 +271,21 @@ class PayoutLedger < ApplicationRecord
     subject.is_a?(FleetContract) ? subject.display_title : subject.title
   end
 
+  # After the commit, so nobody is told about a payout list that rolled back.
+  # Whoever pressed settle already knows. A contract's author is the client and
+  # is told as well, whether or not they are on the list.
+  #
+  # The ledger is settled by the time this runs, so a failing notification is
+  # logged rather than raised: turning it into a 500 would send the client to
+  # retry a settle that already happened.
   private def notify_settled(settler)
     recipients = User.where(id: payout_participants.where.not(user_id: nil).select(:user_id)).to_a
     recipients << subject.created_by if subject.is_a?(FleetContract)
 
     recipients.compact.uniq.reject { |recipient| recipient == settler }.each do |recipient|
       Notification.notify!(user: recipient, record: subject, icon: "fa-duotone fa-coins", **settled_notification)
+    rescue => e
+      Rails.logger.error("[PayoutLedger] settle notification failed: #{e.class}: #{e.message}")
     end
   end
 
@@ -279,7 +294,7 @@ class PayoutLedger < ApplicationRecord
       {
         type: :fleet_contract_settled,
         title: I18n.t("notifications.fleet_contract.settled.title", title: subject_title),
-        link: "/fleets/#{subject.fleet.slug}/contracts/#{subject.slug}"
+        link: page_link
       }
     else
       {
@@ -290,6 +305,8 @@ class PayoutLedger < ApplicationRecord
     end
   end
 
+  # The fleet is the payer and holds the reward; the contractors are weighted
+  # by what they delivered. Only run on create, so it has nothing to preserve.
   private def seed_contract!
     payer = payout_participants.create!(fleet: subject.fleet)
 
