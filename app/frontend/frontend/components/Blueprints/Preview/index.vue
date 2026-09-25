@@ -9,6 +9,7 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
 import { type Blueprint } from "@/services/fyApi";
+import { craftableRoute as craftableRouteFor } from "@/frontend/components/Blueprints/craftableRoute";
 
 type Props = {
   blueprint: Blueprint;
@@ -24,14 +25,9 @@ const { stats } = useCraftedStats(
   (position) => props.qualityFor(position),
 );
 
-const craftableRoute = computed(() => {
-  const craftable = props.blueprint.craftable;
-  // Only components have a detail page. Equipment and commodities are
-  // list-only endpoints, so linking them would land on the not-found.
-  if (!craftable || craftable.type !== "Component") return undefined;
-
-  return { name: "component", params: { slug: craftable.slug } };
-});
+const craftableRoute = computed(() =>
+  craftableRouteFor(props.blueprint.craftable),
+);
 </script>
 
 <template>
