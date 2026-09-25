@@ -426,6 +426,7 @@ en:
           attributes:
             base:
               has_entries: still has entries recorded against them
+              one_party: cannot be both a user and a fleet
               ledger_settled: cannot be changed once the payouts are settled
         payout_entry:
           attributes:

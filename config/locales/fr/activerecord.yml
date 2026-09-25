@@ -329,6 +329,10 @@ fr:
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
+        payout_participant:
+          attributes:
+            base:
+              one_party: "ne peut pas être à la fois un utilisateur et une flotte"
         dock_capacity:
           attributes:
             display:

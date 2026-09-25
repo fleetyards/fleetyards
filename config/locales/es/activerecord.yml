@@ -329,6 +329,10 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        payout_participant:
+          attributes:
+            base:
+              one_party: "no puede ser a la vez un usuario y una flota"
         dock_capacity:
           attributes:
             display:

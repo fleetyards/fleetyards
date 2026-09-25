@@ -329,6 +329,10 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        payout_participant:
+          attributes:
+            base:
+              one_party: "不能同时是用户和舰队"
         dock_capacity:
           attributes:
             display:

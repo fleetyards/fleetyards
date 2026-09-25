@@ -329,6 +329,10 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        payout_participant:
+          attributes:
+            base:
+              one_party: "kann nicht gleichzeitig ein Benutzer und eine Flotte sein"
         dock_capacity:
           attributes:
             display:

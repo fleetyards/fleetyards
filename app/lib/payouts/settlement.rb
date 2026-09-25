@@ -49,7 +49,7 @@ module Payouts
 
     def initialize(ledger)
       @ledger = ledger
-      @participants = ledger.payout_participants.order(:created_at, :id).to_a
+      @participants = ledger.payout_participants.includes(:user, fleet: {logo_attachment: :blob}).order(:created_at, :id).to_a
       @entries = ledger.payout_entries.to_a
     end
 

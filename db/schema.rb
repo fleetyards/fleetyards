@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2085,13 +2085,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
   create_table "payout_participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "added_by_id"
     t.datetime "created_at", null: false
+    t.uuid "fleet_id"
     t.string "name"
     t.uuid "payout_ledger_id", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.decimal "weight", precision: 5, scale: 2, default: "1.0", null: false
+    t.index ["fleet_id"], name: "index_payout_participants_on_fleet_id"
+    t.index ["payout_ledger_id", "fleet_id"], name: "index_payout_participants_unique_fleet_per_ledger", unique: true, where: "(fleet_id IS NOT NULL)"
     t.index ["payout_ledger_id", "user_id"], name: "index_payout_participants_unique_user_per_ledger", unique: true, where: "(user_id IS NOT NULL)"
     t.index ["payout_ledger_id"], name: "index_payout_participants_on_payout_ledger_id"
+    t.check_constraint "num_nonnulls(user_id, fleet_id) <= 1", name: "payout_participants_one_party"
   end
 
   create_table "payout_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2554,6 +2558,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
   add_foreign_key "payout_entries", "payout_participants"
   add_foreign_key "payout_entries", "users", column: "recorded_by_id"
   add_foreign_key "payout_ledgers", "users", column: "settled_by_id"
+  add_foreign_key "payout_participants", "fleets"
   add_foreign_key "payout_participants", "payout_ledgers"
   add_foreign_key "payout_participants", "users"
   add_foreign_key "payout_participants", "users", column: "added_by_id"

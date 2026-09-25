@@ -329,6 +329,10 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        payout_participant:
+          attributes:
+            base:
+              one_party: "不能同時是使用者和艦隊"
         dock_capacity:
           attributes:
             display:

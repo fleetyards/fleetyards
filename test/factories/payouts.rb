@@ -22,6 +22,11 @@ FactoryBot.define do
       user { nil }
       sequence(:name) { |n| "Guest #{n}" }
     end
+
+    trait :fleet do
+      user { nil }
+      fleet
+    end
   end
 
   factory :payout_entry do

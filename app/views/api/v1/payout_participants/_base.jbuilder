@@ -15,4 +15,18 @@ if payout_participant.user.present?
   end
 end
 
+if payout_participant.fleet.present?
+  json.fleet do
+    json.id payout_participant.fleet.id
+    json.name payout_participant.fleet.name
+    json.slug payout_participant.fleet.slug
+
+    if payout_participant.fleet.logo.attached?
+      json.logo do
+        json.partial! "api/v1/shared/file", record: payout_participant.fleet, attr: :logo
+      end
+    end
+  end
+end
+
 json.partial! "api/shared/dates", record: payout_participant
