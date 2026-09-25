@@ -104,6 +104,7 @@ watch(
   () => sessionStore.currentUser?.hangarDefaultSort,
   (value) => {
     defaultSort.value = value ?? null;
+    savedDefaultSort = value ?? null;
   },
 );
 
@@ -112,22 +113,40 @@ const updateProfile = useUpdateProfile();
 // Every other option here is this browser's alone and applies as it is
 // changed. This one is stored on the account -- the public hangar opens in it
 // too -- but it applies on change the same way, so the modal needs no save.
+//
+// One save at a time, and only for the latest choice: two in flight could land
+// in either order and leave the account on the one picked first. A choice
+// superseded while it waited is never sent at all.
+let savedDefaultSort = defaultSort.value;
+let saving: Promise<void> = Promise.resolve();
+let latestChoice = 0;
+
 const updateDefaultSort = (value: NullableVehicleSortEnum | null) => {
-  const previous = defaultSort.value;
+  const choice = ++latestChoice;
 
   defaultSort.value = value;
 
-  updateProfile
-    .mutateAsync({ data: { hangarDefaultSort: value } })
-    .then(() => {
-      comlink.emit("user-update");
-      comlink.emit("hangar-change");
-    })
-    .catch(() => {
-      defaultSort.value = previous;
+  saving = saving.then(async () => {
+    if (choice !== latestChoice) return;
 
-      displayAlert({ text: t("messages.updateHangar.failure") });
-    });
+    await updateProfile
+      .mutateAsync({ data: { hangarDefaultSort: value } })
+      .then(() => {
+        savedDefaultSort = value;
+
+        comlink.emit("user-update");
+        comlink.emit("hangar-change");
+      })
+      .catch(() => {
+        if (choice !== latestChoice) return;
+
+        defaultSort.value = savedDefaultSort;
+
+        displayAlert({ text: t("messages.updateHangar.failure") });
+      });
+  });
+
+  return saving;
 };
 
 const displayAsGrid = () => {

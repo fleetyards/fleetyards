@@ -55,4 +55,27 @@ describe("HangarDisplayOptionsModal", () => {
     expect(select.props("modelValue")).toBe("rank asc");
     expect(displayAlert).toHaveBeenCalledTimes(1);
   });
+
+  // A choice superseded while the one before it was saving never goes out, so
+  // the account cannot end up on the order picked first.
+  it("saves only the latest of two quick choices", async () => {
+    let finishFirst: () => void = () => undefined;
+    update.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (finishFirst = resolve)),
+    );
+    const select = await defaultSortSelect();
+
+    select.vm.$emit("update:modelValue", "name asc");
+    await flushPromises();
+    select.vm.$emit("update:modelValue", "name desc");
+    select.vm.$emit("update:modelValue", "modelPrice desc");
+    finishFirst();
+    await flushPromises();
+
+    expect(update.mock.calls.map(([call]) => call)).toEqual([
+      { data: { hangarDefaultSort: "name asc" } },
+      { data: { hangarDefaultSort: "modelPrice desc" } },
+    ]);
+    expect(select.props("modelValue")).toBe("modelPrice desc");
+  });
 });
