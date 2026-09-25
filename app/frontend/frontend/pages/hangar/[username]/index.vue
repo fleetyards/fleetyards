@@ -46,13 +46,17 @@ import {
 
 const { t } = useI18n();
 
-const sortFields = useVehicleSortFields();
+const sortFields = useVehicleSortFields({ rank: true });
 
 type Props = {
   user: UserPublic;
 };
 
 const props = defineProps<Props>();
+
+// The owner's chosen order is the one the server answers with while the URL
+// names no sort, so it is the chip shown as chosen.
+const defaultSort = computed(() => props.user.hangarDefaultSort ?? "name asc");
 
 const username = computed(() => {
   return props.user.username;
@@ -309,7 +313,7 @@ useSubscription({
     <template #sort>
       <!-- A public hangar is only ever cards, so this is the whole
       sort control rather than a second way to reach one. -->
-      <SortBar :columns="sortFields" default-sort="name asc" />
+      <SortBar :columns="sortFields" :default-sort="defaultSort" />
     </template>
 
     <template #default="{ records, loading }">
