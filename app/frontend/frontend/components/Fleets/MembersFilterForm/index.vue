@@ -47,7 +47,10 @@ const variantFilters = () =>
 
 function setupForm() {
   form.value = {
-    searchCont: filters.value.searchCont,
+    // A link from before the combined search still carries `usernameCont`; left
+    // in the URL it would narrow every search typed into the box.
+    searchCont: filters.value.searchCont || filters.value.usernameCont,
+    usernameCont: undefined,
     roleIn: filters.value.roleIn || [],
     sorts: filters.value.sorts,
     ...variantFilters(),
@@ -55,6 +58,8 @@ function setupForm() {
 }
 
 const form = ref<FleetMemberQuery>({});
+
+setupForm();
 
 /*
  * The view is not a filter, so it is kept out of `filters` -- which means a
