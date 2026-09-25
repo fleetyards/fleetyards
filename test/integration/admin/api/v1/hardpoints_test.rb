@@ -92,6 +92,19 @@ class Admin::Api::V1::HardpointsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # `source` is an integer enum filtered by its label, and `ship_matrix` is 0 --
+  # asking for each half proves the label is not collapsing to the zero value.
+  test "GET /hardpoints filters each half by its source label" do
+    create(:hardpoint, parent: @model, sc_name: "from_the_files", source: :game_files)
+    create(:hardpoint, :without_build, parent: @model, sc_name: "curated", source: :ship_matrix)
+
+    {"game_files" => ["from_the_files"], "ship_matrix" => ["curated"]}.each do |source, names|
+      assert_api_response :get, 200, params: {q: {"sourceEq" => source}} do
+        assert_equal names, parsed_body["items"].map { |item| item["name"] }, source
+      end
+    end
+  end
+
   # The whole point of the split: the frontend has to know which slots it may
   # offer for editing, and the rule lives here rather than being derived from
   # `source` in the client.

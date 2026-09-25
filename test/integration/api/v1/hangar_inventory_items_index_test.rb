@@ -79,10 +79,11 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
     create(:inventory_item, :component, inventory: @inventory)
     sign_in @user
 
-    get "/api/v1/hangar/inventories/#{@inventory.slug}/items?q[categoryEq]=component"
-
-    assert_response :success
-    assert_equal 1, JSON.parse(response.body)["items"].count
+    assert_api_response :get, 200,
+      path_params: {hangarInventorySlug: @inventory.slug},
+      params: {q: {categoryEq: "component"}} do
+      assert_equal ["component"], parsed_body["items"].map { |item| item["category"] }
+    end
   end
 
   test "GET /hangar/inventories/:slug/items returns 404 for another user's inventory" do
