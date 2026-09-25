@@ -73,6 +73,10 @@ fr:
       title: "Vous participez à %{tour}"
     payout_ledger_settled:
       title: "Les paiements de %{subject} sont arrêtés"
+    payout_entry_pending_review:
+      title: "%{user} a soumis une dépense sur %{subject}"
+    payout_entry_declined:
+      title: "Votre dépense \"%{description}\" sur %{subject} a été refusée"
     fleet_contract:
       published:
         title: "Nouveau contrat dans %{fleet} : %{title}"

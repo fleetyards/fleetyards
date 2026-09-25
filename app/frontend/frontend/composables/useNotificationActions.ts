@@ -65,6 +65,8 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_contract_fulfilled: "openContract",
   fleet_contract_settled: "openContract",
   payout_ledger_settled: "openPayouts",
+  payout_entry_pending_review: "openPayouts",
+  payout_entry_declined: "openPayouts",
   fleet_subscription_started: "openFleet",
   fleet_subscription_ended: "openFleet",
   // The one type whose link an admin writes by hand, so there is nothing more

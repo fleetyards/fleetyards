@@ -2462,7 +2462,9 @@
         "fleet_subscription_ended": "已失去舰队功能",
         "fleet_contract_fulfilled": "合约已完成",
         "fleet_contract_settled": "合同已结算",
-        "payout_ledger_settled": "分账已结算"
+        "payout_ledger_settled": "分账已结算",
+        "payout_entry_pending_review": "支出待审核",
+        "payout_entry_declined": "支出已拒绝"
       },
       "fleets": {
         "missions": {

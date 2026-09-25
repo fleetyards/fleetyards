@@ -68,6 +68,10 @@ en:
       title: "You're on %{tour}"
     payout_ledger_settled:
       title: "The payouts for %{subject} are settled"
+    payout_entry_pending_review:
+      title: "%{user} submitted an expense on %{subject}"
+    payout_entry_declined:
+      title: "Your expense \"%{description}\" on %{subject} was declined"
     inventory_transfer_received:
       title: "%{sender} sent you %{count} item(s)"
       title_fleet: "%{sender} sent %{fleet} %{count} item(s)"

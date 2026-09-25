@@ -73,6 +73,10 @@ it:
       title: "Ora partecipi a %{tour}"
     payout_ledger_settled:
       title: "I pagamenti di %{subject} sono stati definiti"
+    payout_entry_pending_review:
+      title: "%{user} ha inviato una spesa per %{subject}"
+    payout_entry_declined:
+      title: "La tua spesa \"%{description}\" per %{subject} è stata rifiutata"
     fleet_contract:
       published:
         title: "Nuovo contratto in %{fleet}: %{title}"

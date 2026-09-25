@@ -32,6 +32,9 @@ class PayoutLedger < ApplicationRecord
 
   STATUSES = %w[open settled].freeze
 
+  # Every fleet privilege some branch of PayoutLedgerPolicy#manage? accepts.
+  MANAGER_PRIVILEGES = ["fleet:manage", "fleet:payouts:manage", "fleet:contracts:manage"].freeze
+
   AVAILABLE_PRIVILEGES = [
     "fleet:payouts:read",
     "fleet:payouts:create",
@@ -228,6 +231,40 @@ class PayoutLedger < ApplicationRecord
   # After the commit, so nobody is told about a payout list that rolled back.
   # Whoever pressed settle already knows. A contract's author is the client and
   # is told as well, whether or not they are on the list.
+  # Everyone PayoutLedgerPolicy lets manage this ledger. The candidates are
+  # narrowed first -- a fleet's privileged members and the people the subject
+  # itself hands the ledger to -- and the policy then has the last word, so
+  # this cannot drift from who may actually approve an expense.
+  def managers
+    candidates = []
+
+    if fleet.present?
+      candidates += fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role)
+        .select { |membership| membership.has_access?(MANAGER_PRIVILEGES) }
+        .filter_map(&:user)
+    end
+
+    candidates << subject.try(:created_by)
+    candidates += subject.event_admin_users.to_a if subject.is_a?(FleetEvent)
+
+    candidates.compact.uniq.select do |user|
+      PayoutLedgerPolicy.new(self, user: user, payout_ledger: self, fleet: fleet).manage?
+    end
+  end
+
+  # What a notification about this ledger links to and calls it.
+  def page_link
+    case subject
+    when FleetContract then "/fleets/#{subject.fleet.slug}/contracts/#{subject.slug}/payouts/"
+    when FleetEvent then "/fleets/#{subject.fleet.slug}/events/#{subject.slug}/payouts/"
+    when Tour then subject.fleet ? "/fleets/#{subject.fleet.slug}/tours/#{subject.slug}/" : "/tools/tours/#{subject.slug}/"
+    end
+  end
+
+  def subject_title
+    subject.is_a?(FleetContract) ? subject.display_title : subject.title
+  end
+
   private def notify_settled(settler)
     recipients = User.where(id: payout_participants.where.not(user_id: nil).select(:user_id)).to_a
     recipients << subject.created_by if subject.is_a?(FleetContract)
@@ -238,24 +275,17 @@ class PayoutLedger < ApplicationRecord
   end
 
   private def settled_notification
-    case subject
-    when FleetContract
+    if subject.is_a?(FleetContract)
       {
         type: :fleet_contract_settled,
-        title: I18n.t("notifications.fleet_contract.settled.title", title: subject.display_title),
+        title: I18n.t("notifications.fleet_contract.settled.title", title: subject_title),
         link: "/fleets/#{subject.fleet.slug}/contracts/#{subject.slug}"
       }
-    when FleetEvent
+    else
       {
         type: :payout_ledger_settled,
-        title: I18n.t("notifications.payout_ledger_settled.title", subject: subject.title),
-        link: "/fleets/#{subject.fleet.slug}/events/#{subject.slug}/payouts/"
-      }
-    when Tour
-      {
-        type: :payout_ledger_settled,
-        title: I18n.t("notifications.payout_ledger_settled.title", subject: subject.title),
-        link: subject.fleet ? "/fleets/#{subject.fleet.slug}/tours/#{subject.slug}/" : "/tools/tours/#{subject.slug}/"
+        title: I18n.t("notifications.payout_ledger_settled.title", subject: subject_title),
+        link: page_link
       }
     end
   end

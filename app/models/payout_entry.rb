@@ -65,6 +65,9 @@ class PayoutEntry < ApplicationRecord
   # Every participant's page is showing figures derived from this row, so a
   # change here has to reach all of them, not only the tab that made it.
   after_commit :broadcast_ledger_change
+  # Somebody is waiting on the other side of both: a manager has an expense to
+  # look at, or a participant has one that will not be paid back.
+  after_commit :notify_review_change, on: %i[create update], if: :saved_change_to_review_status?
 
   DEFAULT_SORTING_PARAMS = ["createdAt desc"]
   ALLOWED_SORTING_PARAMS = [
@@ -155,6 +158,44 @@ class PayoutEntry < ApplicationRecord
 
     errors.add(:base, :ledger_settled)
     throw :abort
+  end
+
+  private def notify_review_change
+    if review_pending?
+      notify_managers_of_pending
+    elsif review_declined?
+      notify_recorder_of_decline
+    end
+  end
+
+  private def notify_managers_of_pending
+    (payout_ledger.managers - [recorded_by]).each do |manager|
+      Notification.notify!(
+        user: manager,
+        type: :payout_entry_pending_review,
+        title: I18n.t("notifications.payout_entry_pending_review.title",
+          user: payout_participant.display_name, subject: payout_ledger.subject_title),
+        body: description,
+        link: payout_ledger.page_link,
+        icon: "fa-duotone fa-coins",
+        record: payout_ledger.subject
+      )
+    end
+  end
+
+  private def notify_recorder_of_decline
+    ([payout_participant.user, recorded_by].compact.uniq - [reviewed_by]).each do |recipient|
+      Notification.notify!(
+        user: recipient,
+        type: :payout_entry_declined,
+        title: I18n.t("notifications.payout_entry_declined.title",
+          description: description, subject: payout_ledger.subject_title),
+        body: decline_reason,
+        link: payout_ledger.page_link,
+        icon: "fa-duotone fa-coins",
+        record: payout_ledger.subject
+      )
+    end
   end
 
   private def broadcast_ledger_change

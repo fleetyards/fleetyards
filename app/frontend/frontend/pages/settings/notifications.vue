@@ -97,6 +97,8 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.TOUR_JOIN_REQUEST_RECEIVED,
       NotificationTypeEnum.TOUR_JOIN_REQUEST_ACCEPTED,
       NotificationTypeEnum.PAYOUT_LEDGER_SETTLED,
+      NotificationTypeEnum.PAYOUT_ENTRY_PENDING_REVIEW,
+      NotificationTypeEnum.PAYOUT_ENTRY_DECLINED,
     ],
   },
   {

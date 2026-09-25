@@ -77,6 +77,8 @@ class Notification < ApplicationRecord
     fleet_contract_fulfilled: "fleet_contract_fulfilled",
     fleet_contract_settled: "fleet_contract_settled",
     payout_ledger_settled: "payout_ledger_settled",
+    payout_entry_pending_review: "payout_entry_pending_review",
+    payout_entry_declined: "payout_entry_declined",
     fleet_subscription_started: "fleet_subscription_started",
     fleet_subscription_ended: "fleet_subscription_ended",
     announcement: "announcement"
@@ -307,6 +309,16 @@ class Notification < ApplicationRecord
     },
     payout_ledger_settled: {
       retention: 90.days,
+      channels: %i[app]
+    },
+    # Short-lived on purpose: once the expense is answered the notification
+    # has done its job, and the ledger itself shows the outcome.
+    payout_entry_pending_review: {
+      retention: 30.days,
+      channels: %i[app]
+    },
+    payout_entry_declined: {
+      retention: 30.days,
       channels: %i[app]
     },
     # Kept a year rather than 90 days, and both are app-only.

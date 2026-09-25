@@ -132,4 +132,60 @@ class PayoutEntryTest < ActiveSupport::TestCase
     assert_predicate entry, :review_pending?
     assert_nil entry.reviewed_by
   end
+
+  test "a participant's pending expense tells the managers, not the one who recorded it" do
+    organiser = create(:user)
+    member = create(:user)
+    ledger = create(:payout_ledger, subject: create(:tour, created_by: organiser))
+    member_p = create(:payout_participant, payout_ledger: ledger, user: member)
+
+    create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: member_p,
+      recorded_by: member, description: "Refuel")
+
+    notification = Notification.payout_entry_pending_review.sole
+    assert_equal organiser, notification.user
+    assert_equal "Refuel", notification.body
+    assert_equal "/tools/tours/#{ledger.subject.slug}/", notification.link
+  end
+
+  test "a contractor's pending expense reaches the contract's author and managers" do
+    author = create(:user)
+    officer = create(:user)
+    contractor = create(:user)
+    fleet = create(:fleet, admins: [officer], members: [author, contractor])
+    contract = create(:fleet_contract, :fulfilled, fleet: fleet, created_by: author)
+    ledger = contract.create_payout_ledger!
+    contractor_p = create(:payout_participant, payout_ledger: ledger, user: contractor)
+
+    create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: contractor_p, recorded_by: contractor)
+
+    assert_equal [author, officer].map(&:id).sort, Notification.payout_entry_pending_review.pluck(:user_id).sort
+    assert_equal "/fleets/#{fleet.slug}/contracts/#{contract.slug}/payouts/",
+      Notification.payout_entry_pending_review.first.link
+  end
+
+  test "declining tells whoever recorded the expense, with the reason" do
+    organiser = create(:user)
+    member = create(:user)
+    ledger = create(:payout_ledger, subject: create(:tour, created_by: organiser))
+    member_p = create(:payout_participant, payout_ledger: ledger, user: member)
+    entry = create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: member_p, recorded_by: member)
+
+    entry.decline!(organiser, reason: "No receipt")
+
+    notification = Notification.payout_entry_declined.sole
+    assert_equal member, notification.user
+    assert_equal "No receipt", notification.body
+  end
+
+  test "approving an expense tells nobody" do
+    organiser = create(:user)
+    ledger = create(:payout_ledger, subject: create(:tour, created_by: organiser))
+    entry = create(:payout_entry, :pending, payout_ledger: ledger,
+      payout_participant: create(:payout_participant, payout_ledger: ledger))
+
+    assert_no_difference -> { Notification.count } do
+      entry.approve!(organiser)
+    end
+  end
 end

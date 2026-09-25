@@ -304,4 +304,16 @@ class PayoutLedgerTest < ActiveSupport::TestCase
       ledger.settle!
     end
   end
+
+  test "an event ledger's managers are its fleet's payout managers and the event's own admins" do
+    admin = create(:user)
+    event_admin = create(:user)
+    member = create(:user)
+    fleet = create(:fleet, admins: [admin], members: [event_admin, member])
+    event = create(:fleet_event, :active, fleet: fleet, created_by: admin)
+    event.fleet_event_admins.create!(user: event_admin, role: "moderator", granted_by: admin)
+    ledger = create(:payout_ledger, subject: event)
+
+    assert_equal [admin, event_admin].map(&:id).sort, ledger.managers.map(&:id).sort
+  end
 end

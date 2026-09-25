@@ -1451,3 +1451,17 @@ PUT /notifications/{id}/unread added the new `payout_ledger_settled` enum value 
 GET /payouts/{id} added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
 PUT /payouts/{id}/reopen added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
 PUT /payouts/{id}/settle added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
+GET /notification-preferences added the new `payout_entry_declined` enum value to the `items/notificationType` response property for the response status `200`
+GET /notification-preferences added the new `payout_entry_pending_review` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `payout_entry_declined` enum value to the `items/items/notificationType` response property for the response status `200`
+GET /notifications added the new `payout_entry_pending_review` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`

@@ -2476,7 +2476,9 @@
         "fleet_subscription_ended": "Fleet features lost",
         "fleet_contract_fulfilled": "Contract fulfilled",
         "fleet_contract_settled": "Contract paid out",
-        "payout_ledger_settled": "Payouts settled"
+        "payout_ledger_settled": "Payouts settled",
+        "payout_entry_pending_review": "Expense waiting for review",
+        "payout_entry_declined": "Expense declined"
       },
       "fleets": {
         "missions": {

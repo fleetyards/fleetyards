@@ -2462,7 +2462,9 @@
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt",
         "fleet_contract_settled": "Auftrag ausgezahlt",
-        "payout_ledger_settled": "Auszahlung abgerechnet"
+        "payout_ledger_settled": "Auszahlung abgerechnet",
+        "payout_entry_pending_review": "Ausgabe wartet auf Prüfung",
+        "payout_entry_declined": "Ausgabe abgelehnt"
       },
       "fleets": {
         "missions": {

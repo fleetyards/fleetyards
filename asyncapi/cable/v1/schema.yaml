@@ -3312,6 +3312,8 @@ components:
       - fleet_contract_fulfilled
       - fleet_contract_settled
       - payout_ledger_settled
+      - payout_entry_pending_review
+      - payout_entry_declined
       - fleet_subscription_started
       - fleet_subscription_ended
       - announcement
@@ -3355,6 +3357,8 @@ components:
       - FLEET_CONTRACT_FULFILLED
       - FLEET_CONTRACT_SETTLED
       - PAYOUT_LEDGER_SETTLED
+      - PAYOUT_ENTRY_PENDING_REVIEW
+      - PAYOUT_ENTRY_DECLINED
       - FLEET_SUBSCRIPTION_STARTED
       - FLEET_SUBSCRIPTION_ENDED
       - ANNOUNCEMENT

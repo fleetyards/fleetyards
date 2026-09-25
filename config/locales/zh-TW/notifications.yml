@@ -73,6 +73,10 @@ zh-TW:
       title: "你已加入 %{tour}"
     payout_ledger_settled:
       title: "%{subject} 的分帳已結算"
+    payout_entry_pending_review:
+      title: "%{user} 在 %{subject} 提交了一筆支出"
+    payout_entry_declined:
+      title: "你在 %{subject} 的支出「%{description}」已被拒絕"
     fleet_contract:
       published:
         title: "%{fleet} 發布了新合約：%{title}"
