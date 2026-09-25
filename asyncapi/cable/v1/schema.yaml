@@ -1779,6 +1779,10 @@ components:
           - string
           - 'null'
           format: date-time
+        discordChannelId:
+          type:
+          - string
+          - 'null'
         icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false

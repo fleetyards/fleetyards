@@ -21,6 +21,10 @@ module V1
               # they already hold is an ordinary one rather than a team.
               team: {type: :boolean},
               membershipCreatedAt: {type: [:string, :null], format: "date-time"},
+              # Only on an event's squadrons: the editor warns about a squadron
+              # its announcement cannot reach, even once the fleet's own
+              # squadron list is no longer served.
+              discordChannelId: {type: [:string, :null]},
               icon: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,

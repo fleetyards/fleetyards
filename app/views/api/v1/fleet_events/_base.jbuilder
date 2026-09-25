@@ -77,6 +77,7 @@ json.fleet_squadrons do
     json.slug squadron.slug
     json.color squadron.color
     json.team squadron.team
+    json.discord_channel_id squadron.discord_channel_id
 
     if squadron.icon.attached?
       json.icon do
