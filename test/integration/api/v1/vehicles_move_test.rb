@@ -4,6 +4,7 @@ require "openapi_helper"
 
 class Api::V1::VehiclesMoveTest < ActionDispatch::IntegrationTest
   include OpenapiRuby::Adapters::Minitest::DSL
+  include ActionCable::TestHelper
 
   openapi_schema :"v1/schema"
 
@@ -92,6 +93,19 @@ class Api::V1::VehiclesMoveTest < ActionDispatch::IntegrationTest
       path_params: {id: @alpha.id},
       body: {afterId: @charlie.id} do
       assert_equal %w[Bravo Charlie Alpha Wished], names
+    end
+  end
+
+  # An import creates its ships quietly, and a move must still reach every open
+  # hangar of their owner.
+  test "PUT /vehicles/:id/move tells the owner's open hangars about a ship an import created" do
+    @alpha.update_column(:notify, false)
+    sign_in @user
+
+    assert_broadcasts(HangarChannel.broadcasting_for(@user), 1) do
+      assert_api_response :put, 204,
+        path_params: {id: @alpha.id},
+        body: {afterId: @bravo.id}
     end
   end
 

@@ -654,7 +654,11 @@ class Vehicle < ApplicationRecord
       # rubocop:enable Rails/SkipsModelValidations
     end
 
-    broadcast_update
+    # Straight to the channels rather than through `broadcast_update`, which
+    # stays quiet for loaners and for ships an import created: moving either
+    # still changes the order every open hangar shows.
+    WishlistChannel.broadcast_to(user, to_jbuilder_hash)
+    HangarChannel.broadcast_to(user, to_jbuilder_hash)
   end
 
   protected def nil_if_blank
