@@ -591,4 +591,48 @@ test.describe("Chips - owner's hangar on mobile", () => {
       ).toBeFocused();
     });
   }
+
+  test("the menu re-places itself when edit mode makes it bigger", async ({
+    page,
+  }) => {
+    // Placed for the filter list, which only just fits below the trigger. The
+    // edit rows are taller and wider, and run off the bottom and the right
+    // edge unless the menu is re-measured once they render.
+    const trigger = page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .locator("button")
+      .first();
+
+    const filterHeight = (await menu(page).boundingBox())!.height;
+    await trigger.click();
+    await expect(menu(page)).toBeHidden();
+
+    // The trigger sits at the top of the page, so it is pushed down until
+    // the filter list only just fits below it: a 10px offset, 4px to spare,
+    // with the room above it that the taller menu can flip into.
+    const height = 900;
+    const box = (await trigger.boundingBox())!;
+    const push = height - filterHeight - 14 - (box.y + box.height);
+    await page.evaluate((px) => {
+      document.body.style.paddingTop = `${px}px`;
+    }, push);
+
+    await trigger.click();
+    await expect(menu(page)).toBeVisible();
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(2);
+
+    await expect
+      .poll(async () => {
+        const box = (await menu(page).boundingBox())!;
+        return (
+          box.y >= 0 &&
+          box.y + box.height <= height &&
+          box.x >= 0 &&
+          box.x + box.width <= 430
+        );
+      })
+      .toBe(true);
+  });
 });

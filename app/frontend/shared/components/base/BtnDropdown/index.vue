@@ -142,10 +142,20 @@ const placeMenu = () => {
  */
 const reconsiderSide = debounce(placeMenu, 150);
 
+/*
+ * The menu's own size, too. Its content can change while it is open - an item
+ * list that swaps for taller rows - and a menu placed for the shorter content
+ * then runs off the edge it opened towards. Re-placed at once rather than
+ * debounced: nothing is scrolling, so there is no flip to hold back.
+ */
+let menuObserver: ResizeObserver | undefined;
+
 const stopWatching = () => {
   window.removeEventListener("scroll", reconsiderSide, true);
   window.removeEventListener("resize", reconsiderSide);
   reconsiderSide.cancel();
+  menuObserver?.disconnect();
+  menuObserver = undefined;
 };
 
 watch(visible, async (isVisible) => {
@@ -164,6 +174,12 @@ watch(visible, async (isVisible) => {
   // `true` catches the scrollers on the way up, which do not bubble.
   window.addEventListener("scroll", reconsiderSide, true);
   window.addEventListener("resize", reconsiderSide);
+
+  const menu = btnList.value?.$el;
+  if (menu && typeof ResizeObserver !== "undefined") {
+    menuObserver = new ResizeObserver(() => placeMenu());
+    menuObserver.observe(menu);
+  }
 });
 
 const toggle = (event: MouseEvent) => {
