@@ -247,6 +247,15 @@ class FleetMembershipTest < ActiveSupport::TestCase
     assert_equal "accepted", request.reload.aasm_state
   end
 
+  test "a request withdrawn after it was loaded is not answered" do
+    request = create(:fleet_membership, :requested)
+    stale = FleetMembership.find(request.id)
+    request.discard!
+
+    assert_equal :not_pending, stale.answer_request(accept: true)
+    assert_equal "requested", request.reload.aasm_state
+  end
+
   test "answering a request records its author on the version" do
     request = create(:fleet_membership, :requested)
     officer = create(:user)

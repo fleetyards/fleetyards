@@ -388,7 +388,8 @@ class FleetMembership < ApplicationRecord
   # could end up declined after its applicant was told they were accepted.
   def answer_request(accept:, author_id: nil)
     with_lock do
-      next :not_pending unless requested?
+      # Withdrawing discards the membership and leaves its state alone.
+      next :not_pending unless kept? && requested?
 
       self.author_id = author_id if author_id.present?
       if accept ? accept_request! : decline!
