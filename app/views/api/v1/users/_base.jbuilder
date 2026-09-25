@@ -30,6 +30,7 @@ json.public_hangar user.public_hangar
 json.public_hangar_url user.public_hangar_url
 json.public_hangar_loaners user.public_hangar_loaners
 json.public_hangar_stats user.public_hangar_stats
+json.hangar_default_sort user.hangar_default_sort
 json.public_wishlist user.public_wishlist
 json.public_wishlist_url user.public_wishlist_url
 json.friends_hangar user.friends_hangar

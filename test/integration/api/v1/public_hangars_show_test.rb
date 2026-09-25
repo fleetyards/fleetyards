@@ -94,4 +94,14 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "GET /public/hangars/:username shows the vehicles in the owner's default order" do
+    user = create(:user, :public_hangar, hangar_default_sort: "rank asc")
+    alpha, bravo, charlie = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, :public, user:, name:) }
+    charlie.move_next_to!(alpha, after: false)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal [charlie.id, alpha.id, bravo.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
 end

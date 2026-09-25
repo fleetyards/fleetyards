@@ -144,6 +144,26 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar without a sort uses the owner's default order" do
+    user = create(:user, hangar_default_sort: "rank desc")
+    vehicles = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, user:, name:) }
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal vehicles.reverse.map(&:id), parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "GET /hangar with a sort ignores the owner's default order" do
+    user = create(:user, hangar_default_sort: "rank desc")
+    vehicles = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, user:, name:) }
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => "name asc"}} do
+      assert_equal vehicles.map(&:id), parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /hangar returns 400 for invalid query" do
     user = create(:user, vehicle_count: 1)
     sign_in user

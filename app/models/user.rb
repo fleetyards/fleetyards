@@ -27,6 +27,7 @@
 #  friends_hangar_stats      :boolean          default(FALSE), not null
 #  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
+#  hangar_default_sort       :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string
@@ -508,7 +509,18 @@ class User < ApplicationRecord
   }.freeze
 
   validates :date_format, inclusion: {in: DATE_FORMATS.keys}
+  normalizes :hangar_default_sort, with: ->(sort) { sort.presence }
+  validates :hangar_default_sort, inclusion: {in: Vehicle::ALLOWED_SORTING_PARAMS}, allow_nil: true
   validate :supported_fleet_is_one_of_mine
+
+  # The rank is unique per owner, so it breaks the ties any other chosen order
+  # leaves, and a page boundary always falls in the same place.
+  def hangar_sorting_params
+    return if hangar_default_sort.blank?
+
+    sort = hangar_default_sort.underscore
+    sort.start_with?("rank ") ? [sort] : [sort, "rank asc"]
+  end
 
   def discord_uid
     connection_for("discord")&.uid

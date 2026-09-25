@@ -2270,6 +2270,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_140000) do
     t.boolean "friends_hangar_stats", default: false, null: false
     t.boolean "friends_wishlist", default: false, null: false
     t.string "guilded"
+    t.string "hangar_default_sort"
     t.datetime "hangar_updated_at", precision: nil
     t.boolean "hide_owner", default: false, null: false
     t.string "homepage"

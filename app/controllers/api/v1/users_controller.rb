@@ -120,7 +120,7 @@ module Api
           permitted = params.transform_keys(&:underscore)
             .permit(
               :avatar, :remove_avatar, :sale_notify, :date_format, :public_hangar, :public_hangar_stats, :public_wishlist, :rsi_handle,
-              :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner,
+              :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hangar_default_sort, :hide_owner,
               :friends_hangar, :friends_hangar_stats, :friends_wishlist,
               :location, :current_system, :tracking, :show_online_status
             )
