@@ -1490,6 +1490,7 @@
         "hangarDefaultSort": "Default Order",
         "hangarDefaultSortInfo": "Drag a ship by its grip to reorder. Shows while the custom order is active and no filter is set.",
         "hangarDefaultSortOptions": {
+          "standard": "Standard (flagship first, then name)",
           "asc": "%{field}, ascending",
           "desc": "%{field}, descending"
         },

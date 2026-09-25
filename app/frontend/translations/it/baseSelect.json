@@ -1,9 +1,6 @@
 {
   "it": {
     "baseSelect": {
-      "hangarDefaultSort": {
-        "nullablePrompt": "Standard (nave ammiraglia prima, poi nome)"
-      },
       "actions": {
         "fetchMore": "Carica altro"
       },

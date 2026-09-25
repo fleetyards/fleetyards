@@ -92,8 +92,11 @@ const sortFields = useVehicleSortFields({ rank: true });
 
 // The custom order only runs one way: it is the order the ships were dragged
 // into, and reading it backwards is not an order anybody arranged.
-const hangarDefaultSortOptions = computed<FilterOption[]>(() =>
-  sortFields.value.flatMap(({ name, label }) => {
+const hangarDefaultSortOptions = computed<FilterOption[]>(() => [
+  // No stored order: the server leads with the flagship and then sorts by
+  // name, which none of the single sorts below reproduces.
+  { value: null, label: t("labels.user.hangarDefaultSortOptions.standard") },
+  ...sortFields.value.flatMap(({ name, label }) => {
     if (name === "rank") {
       return [{ value: "rank asc", label }];
     }
@@ -105,7 +108,7 @@ const hangarDefaultSortOptions = computed<FilterOption[]>(() =>
       }),
     }));
   }),
-);
+]);
 
 // See `narrowerAudienceDisabled`: a friend is a member of the public, so while
 // the public switch is on the friend one is not consulted at all.
@@ -226,9 +229,8 @@ const onSubmit = handleSubmit(async (values) => {
           :label="t('labels.user.hangarDefaultSort')"
           :info="t('labels.user.hangarDefaultSortInfo')"
           name="hangarDefaultSort"
-          translation-key="hangarDefaultSort"
           :searchable="false"
-          nullable
+          :nullable="false"
           unsorted
         />
       </div>

@@ -1490,6 +1490,7 @@
         "hangarDefaultSort": "Orden predeterminado",
         "hangarDefaultSortInfo": "Arrastra una nave por su asa para reordenarla. Disponible mientras el orden personalizado esté activo y no haya filtros.",
         "hangarDefaultSortOptions": {
+          "standard": "Estándar (nave insignia primero, luego nombre)",
           "asc": "%{field}, ascendente",
           "desc": "%{field}, descendente"
         },

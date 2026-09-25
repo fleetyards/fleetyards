@@ -1,9 +1,6 @@
 {
   "fr": {
     "baseSelect": {
-      "hangarDefaultSort": {
-        "nullablePrompt": "Standard (vaisseau amiral d'abord, puis nom)"
-      },
       "actions": {
         "fetchMore": "Charger plus"
       },

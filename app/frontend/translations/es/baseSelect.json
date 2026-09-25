@@ -1,9 +1,6 @@
 {
   "es": {
     "baseSelect": {
-      "hangarDefaultSort": {
-        "nullablePrompt": "Estándar (nave insignia primero, luego nombre)"
-      },
       "actions": {
         "fetchMore": "Cargar más"
       },

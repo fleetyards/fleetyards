@@ -1490,6 +1490,7 @@
         "hangarDefaultSort": "Standard-Reihenfolge",
         "hangarDefaultSortInfo": "Zieh ein Schiff an seinem Griff, um es umzusortieren. Verfügbar, solange die eigene Reihenfolge aktiv und kein Filter gesetzt ist.",
         "hangarDefaultSortOptions": {
+          "standard": "Standard (Flaggschiff zuerst, dann Name)",
           "asc": "%{field}, aufsteigend",
           "desc": "%{field}, absteigend"
         },

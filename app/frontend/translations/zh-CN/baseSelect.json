@@ -1,9 +1,6 @@
 {
   "zh-CN": {
     "baseSelect": {
-      "hangarDefaultSort": {
-        "nullablePrompt": "标准（旗舰优先，然后按名称）"
-      },
       "actions": {
         "fetchMore": "加载更多"
       },

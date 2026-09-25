@@ -1,9 +1,6 @@
 {
   "zh-TW": {
     "baseSelect": {
-      "hangarDefaultSort": {
-        "nullablePrompt": "標準（旗艦優先，然後依名稱）"
-      },
       "actions": {
         "fetchMore": "載入更多"
       },

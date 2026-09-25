@@ -1490,6 +1490,7 @@
         "hangarDefaultSort": "默认顺序",
         "hangarDefaultSortInfo": "按住舰船的拖动柄即可重新排序。仅在自定义顺序生效且未设置筛选时可用。",
         "hangarDefaultSortOptions": {
+          "standard": "标准（旗舰优先，然后按名称）",
           "asc": "%{field}，升序",
           "desc": "%{field}，降序"
         },
