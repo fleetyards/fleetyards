@@ -63,7 +63,7 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_contract_crew_requested: "openContract",
   fleet_contract_crew_answered: "openContract",
   fleet_contract_fulfilled: "openContract",
-  fleet_contract_settled: "openContract",
+  fleet_contract_settled: "openPayouts",
   payout_ledger_settled: "openPayouts",
   payout_entry_pending_review: "openPayouts",
   payout_entry_declined: "openPayouts",
