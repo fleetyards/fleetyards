@@ -107,4 +107,21 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
     assert_response :created
     assert_equal @author.username, response.parsed_body["recipient"]["name"]
   end
+
+  # Clearing a ship's cargo destroys its hold, which is the other way a user
+  # removes an inventory a contract may deliver into.
+  test "clearing a ship's hold is refused while a contract delivers into it" do
+    Flipper.enable("ship_inventories")
+    vehicle = create(:vehicle, user: @author)
+    hold = Inventory.provision_for(vehicle, holder: @author)
+    create(:fleet_contract, :in_progress, fleet: @fleet, created_by: @author,
+      destination_fleet_inventory: nil, destination_inventory: hold)
+    sign_in @author
+
+    assert_no_difference -> { Inventory.count } do
+      delete "/api/v1/vehicles/#{vehicle.id}/inventory", as: :json
+    end
+
+    assert_response :bad_request
+  end
 end

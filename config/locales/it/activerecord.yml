@@ -216,6 +216,7 @@ it:
         contract_item_already_asked_for: "è già in questo contratto con la stessa categoria e unità"
         entry_goods_in_transit: "non può essere eliminato finché il trasferimento a cui appartiene è ancora in attesa di risposta"
         inventory_goods_in_transit: "non può essere eliminato finché un trasferimento inviato è ancora in attesa di risposta"
+        inventory_contract_destination: "non può essere eliminato finché un contratto di flotta aperto vi consegna"
         position_goods_in_transit: "non può essere eliminato finché un trasferimento che lo contiene è ancora in attesa di risposta"
         blank: non può essere vuoto
         record_invalid: Dati non validi

@@ -219,6 +219,7 @@ en:
         contract_item_already_asked_for: "is already on this contract with the same category and unit"
         entry_goods_in_transit: "cannot be deleted while the transfer it belongs to is still waiting to be answered"
         inventory_goods_in_transit: "cannot be deleted while a transfer it sent is still waiting to be answered"
+        inventory_contract_destination: "cannot be deleted while an open fleet contract delivers into it"
         position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
       models:
         fleet_subscription:

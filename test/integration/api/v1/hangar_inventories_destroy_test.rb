@@ -71,4 +71,33 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
       path_params: {slug: @inventory.slug},
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"])
   end
+
+  # A plain request rather than the DSL: declaring this 400 would replace the
+  # schema-validation 400 the document already carries for the endpoint.
+  test "DELETE /hangar/inventories/:slug is refused while an open contract delivers into it" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") },
+      I18n.t("activerecord.errors.messages.inventory_contract_destination")
+    assert_equal @inventory, contract.reload.destination_inventory
+  end
+
+  test "DELETE /hangar/inventories/:slug goes through once the contract is closed" do
+    create(:fleet_contract, :hangar_destination, created_by: @user, destination_inventory: @inventory,
+      aasm_state: "fulfilled")
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
 end

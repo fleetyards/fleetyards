@@ -216,6 +216,7 @@ es:
         contract_item_already_asked_for: "ya está en este contrato con la misma categoría y unidad"
         entry_goods_in_transit: "no se puede eliminar mientras la transferencia a la que pertenece siga sin respuesta"
         inventory_goods_in_transit: "no se puede eliminar mientras una transferencia enviada siga sin respuesta"
+        inventory_contract_destination: "no se puede eliminar mientras un contrato de flota abierto entregue en él"
         position_goods_in_transit: "no se puede eliminar mientras una transferencia que lo contiene siga sin respuesta"
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos

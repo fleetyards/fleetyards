@@ -216,6 +216,7 @@ de:
         contract_item_already_asked_for: "steht mit derselben Kategorie und Einheit bereits auf diesem Auftrag"
         entry_goods_in_transit: "kann nicht gelöscht werden, solange der zugehörige Transfer noch unbeantwortet ist"
         inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"
+        inventory_contract_destination: "kann nicht gelöscht werden, solange ein offener Flottenauftrag hierher liefert"
         position_goods_in_transit: "kann nicht gelöscht werden, solange ein Transfer damit noch unbeantwortet ist"
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten

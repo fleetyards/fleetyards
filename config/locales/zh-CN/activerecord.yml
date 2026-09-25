@@ -216,6 +216,7 @@ zh-CN:
         contract_item_already_asked_for: "该合约中已有相同类别和单位的这项货物"
         entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"
         inventory_goods_in_transit: "在已发送的转移得到答复之前无法删除"
+        inventory_contract_destination: "在有未完成的舰队合同向其交付期间无法删除"
         position_goods_in_transit: "在包含它的转移得到答复之前无法删除"
         blank: 不能为空字符
         record_invalid: 错误的数据信息

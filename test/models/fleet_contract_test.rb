@@ -161,6 +161,34 @@ class FleetContractTest < ActiveSupport::TestCase
     assert FleetContract.find(fleet_bound.id).cancel!
   end
 
+  # Account deletion destroys the inventories through the association, which
+  # the guard against deleting a contract's destination lets through.
+  test "deleting the author's account still works while a contract delivers to them" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination)
+
+    assert contract.created_by.destroy
+
+    contract = FleetContract.find(contract.id)
+
+    assert_nil contract.destination
+    assert_nil contract.created_by
+    assert contract.cancel!
+  end
+
+  # Removing a ship detaches its hold rather than destroying it, so a contract
+  # delivering into the hold keeps its destination.
+  test "removing the vehicle behind a hangar destination keeps the destination" do
+    author = create(:user)
+    hold = Inventory.provision_for(create(:vehicle, user: author), holder: author)
+    contract = create(:fleet_contract, :in_progress, created_by: author,
+      destination_fleet_inventory: nil, destination_inventory: hold)
+
+    hold.vehicle.destroy!
+
+    assert_equal hold, contract.reload.destination_inventory
+    assert_nil hold.reload.vehicle_id
+  end
+
   test "clearing the destination on purpose is still refused" do
     contract = create(:fleet_contract)
 
