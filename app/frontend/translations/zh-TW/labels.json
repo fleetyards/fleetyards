@@ -413,6 +413,18 @@
           "channelId": "語音頻道 ID（選填）",
           "webhookUrl": "公告 Webhook 網址（選填）",
           "installBotHint": "會在新分頁開啟 Discord 安裝頁面 — 請選擇你要同步活動的伺服器。",
+          "announcementChannel": "公告頻道",
+          "announcementChannelHint": "新活動與即將開始的提醒會發布在這裡。未設定時透過 Webhook 發送。僅限中隊的活動會改為發布在該中隊的頻道。",
+          "officersChannel": "軍官頻道",
+          "officersChannelHint": "僅軍官可見的活動會在這裡公告，不會出現在 Discord 的其他地方。未設定時不會在 Discord 上公告。",
+          "channelMissing": "此頻道在 Discord 上已不存在或無法再發文。選擇其他頻道之前不會發布任何內容。",
+          "missingChannel": "無法使用的頻道",
+          "postingCodes": {
+            "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
+            "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",
+            "unknown_channel": "為 %{names} 選擇的頻道在 Discord 上已不存在或無法再發文。",
+            "channel_shared": "%{names} 與看不到其活動的讀者共用一個頻道。在各自擁有專屬頻道之前，不會在那裡發布任何內容。"
+          },
           "statusOk": "已連線至 %{name}",
           "statusCodes": {
             "missing_token": "伺服器端尚未設定 Fleetyards 機器人。請聯絡管理員。",
@@ -492,6 +504,9 @@
           "team": "小隊",
           "teamHint": "小隊對所有人開放；否則成員只能屬於一個中隊",
           "restrictedToHint": "只有這些中隊可見",
+          "discordChannel": "Discord 頻道",
+          "discordChannelHint": "僅限此中隊的活動會在這裡公告，不會出現在 Discord 的其他地方。未設定頻道時不會在 Discord 上公告。",
+          "notAnnounced": "%{names} 未設定 Discord 頻道，不會在 Discord 上公告。",
           "blockedBy": "已在 %{squadron} 中隊中",
           "color": "顏色",
           "colorSuggestions": "取自圖示：",

@@ -55,11 +55,13 @@
           "members": "Membres",
           "create": {
             "details": "Détails",
-            "appearance": "Apparence"
+            "appearance": "Apparence",
+            "discord": "Discord"
           },
           "edit": {
             "details": "Détails",
-            "appearance": "Apparence"
+            "appearance": "Apparence",
+            "discord": "Discord"
           }
         },
         "stats": "Statistiques",

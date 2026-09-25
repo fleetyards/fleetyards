@@ -38,7 +38,7 @@ module Api
 
         begin
           guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
-          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload)
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload)
         rescue ::Discord::ApiClient::Error => e
           code = case e.status
           when 401 then "invalid_token"
@@ -71,6 +71,66 @@ module Api
         end
       end
 
+      # Only reported once somewhere to post has been picked, for the same
+      # reason as the roles. The detail names who is affected -- the fleet's own
+      # channel or the squadrons -- because a channel id means nothing to
+      # whoever reads the settings page.
+      private def posting_payload
+        owners = posting_channel_owners
+
+        return {} if owners.empty?
+
+        shared = shared_channel_owners
+        if shared.any?
+          return {postingOk: false, postingCode: "channel_shared", postingDetail: shared.join(", ")}
+        end
+
+        result = ::Discord::ChannelCapability.new(@setting.discord_guild_id).check(owners.keys)
+
+        {postingOk: result.ok?, postingCode: result.code.to_s}.tap do |payload|
+          affected = result.channel_ids.flat_map { |id| owners[id] }.uniq
+          payload[:postingDetail] = affected.join(", ") if affected.any?
+        end
+      end
+
+      # The restricted audiences whose channel another audience also reads:
+      # the fleet's channel reaches everybody, and the officers' channel is
+      # kept from the squadrons as theirs is kept from the officers. Squadrons
+      # sharing one channel among themselves are left alone.
+      private def shared_channel_owners
+        announcement = @setting.discord_announcement_channel_id.presence
+        officers = @setting.discord_officers_channel_id.presence
+        squadrons = @fleet.fleet_squadrons.where.not(discord_channel_id: nil).order(:rank)
+        officers_label = I18n.t("discord.channel_capability.officers")
+
+        shared = []
+        shared << officers_label if officers && officers == announcement
+        squadrons.each do |squadron|
+          shared << squadron.name if [announcement, officers].compact.include?(squadron.discord_channel_id)
+        end
+        shared << officers_label if officers && squadrons.any? { |squadron| squadron.discord_channel_id == officers }
+
+        shared.uniq
+      end
+
+      private def posting_channel_owners
+        owners = Hash.new { |hash, key| hash[key] = [] }
+
+        if @setting.discord_announcement_channel_id.present?
+          owners[@setting.discord_announcement_channel_id] << I18n.t("discord.channel_capability.fleet")
+        end
+
+        if @setting.discord_officers_channel_id.present?
+          owners[@setting.discord_officers_channel_id] << I18n.t("discord.channel_capability.officers")
+        end
+
+        @fleet.fleet_squadrons.where.not(discord_channel_id: nil).order(:rank).each do |squadron|
+          owners[squadron.discord_channel_id] << squadron.name
+        end
+
+        owners
+      end
+
       def update
         authorize! @setting, with: FleetNotificationSettingPolicy
 
@@ -86,6 +146,8 @@ module Api
           :discord_member_role_id,
           :discord_guild_id,
           :discord_channel_id,
+          :discord_announcement_channel_id,
+          :discord_officers_channel_id,
           :discord_webhook_url,
           enabled_in_app_events: []
         ).to_h.symbolize_keys

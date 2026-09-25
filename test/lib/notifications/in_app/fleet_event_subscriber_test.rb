@@ -44,6 +44,18 @@ module Notifications
         end
       end
 
+      class OfficersTest < FleetEventSubscriberTest
+        test "announces an officers' event to whoever runs events and to no plain member" do
+          @event.update!(visibility: "officers")
+
+          deliver("fleet_event.published", event: @event)
+
+          notified = Notification.where(notification_type: "fleet_event_published").pluck(:user_id)
+          assert_includes notified, @admin.id
+          refute_includes notified, @member.id
+        end
+      end
+
       class StatusChangedTest < FleetEventSubscriberTest
         test "notifies the member when an admin approves a pending signup" do
           @signup.update!(status: "confirmed")

@@ -55,6 +55,32 @@ class Api::V1::FleetsNotificationsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PATCH /fleets/:slug/notifications sets and clears the announcement channel" do
+    sign_in @admin
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {discordAnnouncementChannelId: "345678901234567890"} do
+      assert_equal "345678901234567890", parsed_body["discordAnnouncementChannelId"]
+    end
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {discordAnnouncementChannelId: ""} do
+      assert_nil parsed_body["discordAnnouncementChannelId"]
+    end
+  end
+
+  test "PATCH /fleets/:slug/notifications sets the officers' channel" do
+    sign_in @admin
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {discordOfficersChannelId: "456789012345678901"} do
+      assert_equal "456789012345678901", parsed_body["discordOfficersChannelId"]
+    end
+  end
+
   test "PATCH /fleets/:slug/notifications with OAuth bearer token" do
     assert_api_response :patch, 200,
       path_params: {fleetSlug: @fleet.slug},

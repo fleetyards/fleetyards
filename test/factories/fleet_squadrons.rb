@@ -4,17 +4,18 @@
 #
 # Table name: fleet_squadrons
 #
-#  id                :uuid             not null, primary key
-#  color             :string
-#  description       :text
-#  name              :string           not null
-#  rank              :text             not null
-#  short_description :text
-#  slug              :string           not null
-#  team              :boolean          default(FALSE), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  fleet_id          :uuid             not null
+#  id                 :uuid             not null, primary key
+#  color              :string
+#  description        :text
+#  name               :string           not null
+#  rank               :text             not null
+#  short_description  :text
+#  slug               :string           not null
+#  team               :boolean          default(FALSE), not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  discord_channel_id :string
+#  fleet_id           :uuid             not null
 #
 # Indexes
 #

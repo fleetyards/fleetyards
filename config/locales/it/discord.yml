@@ -75,11 +75,21 @@ it:
         missing_query: Indica il nome di una nave.
         more: '…e altre. Prova con un nome più preciso.'
         not_found: 'Nessuna nave trovata per «%{query}».'
+    channel_capability:
+      fleet: la flotta
+      officers: gli ufficiali
     direct_message:
       footer: Inviato perché hai attivato le notifiche Discord su Fleetyards
     event_availability:
       signups: '%{count} iscritti'
       slots: '%{open} di %{total} posti liberi'
+    event_published:
+      recurrence:
+        biweekly: Ogni due settimane
+        daily: Ogni giorno
+        monthly: Ogni mese
+        weekly: Ogni settimana
+      title: 'Nuovo evento: %{title}'
     event_reminder:
       starting_now: Inizia ora
       starts_in: 'Inizia tra %{count} min'

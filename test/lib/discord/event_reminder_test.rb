@@ -21,7 +21,9 @@ module Discord
     end
 
     def post(occurrence_date: nil)
-      ::Discord::EventReminder.new(event: @event, occurrence_date: occurrence_date).run
+      Sidekiq::Testing.inline! do
+        ::Discord::EventReminder.new(event: @event, occurrence_date: occurrence_date).run
+      end
       @builder.content
     end
 
@@ -108,7 +110,7 @@ module Discord
       @setting.update!(discord_webhook_url: nil)
       @client.expects(:execute).never
 
-      ::Discord::EventReminder.new(event: @event).run
+      Sidekiq::Testing.inline! { ::Discord::EventReminder.new(event: @event).run }
     end
 
     test "the global announcements webhook is never used for a fleet reminder" do
@@ -116,7 +118,7 @@ module Discord
       Rails.application.credentials.stubs(:discord_updates_endpoint).returns("https://discord.com/api/webhooks/global/token")
       @client.expects(:execute).never
 
-      ::Discord::EventReminder.new(event: @event).run
+      Sidekiq::Testing.inline! { ::Discord::EventReminder.new(event: @event).run }
     end
   end
 end

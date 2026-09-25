@@ -75,11 +75,21 @@ zh-CN:
         missing_query: 请提供飞船名称。
         more: '…还有更多，请使用更精确的名称。'
         not_found: '未找到与“%{query}”匹配的飞船。'
+    channel_capability:
+      fleet: 舰队
+      officers: 军官
     direct_message:
       footer: 因为你在 Fleetyards 上启用了 Discord 通知
     event_availability:
       signups: '%{count} 人已报名'
       slots: '%{total} 个位置中还有 %{open} 个空缺'
+    event_published:
+      recurrence:
+        biweekly: 每两周
+        daily: 每天
+        monthly: 每月
+        weekly: 每周
+      title: '新活动：%{title}'
     event_reminder:
       starting_now: 即将开始
       starts_in: '%{count} 分钟后开始'

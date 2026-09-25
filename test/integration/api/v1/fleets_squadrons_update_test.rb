@@ -98,6 +98,30 @@ class Api::V1::FleetsSquadronsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /fleets/:slug/squadrons/:slug sets and clears the Discord channel" do
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {discordChannelId: "123456789012345678"} do
+      assert_equal "123456789012345678", parsed_body["discordChannelId"]
+    end
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {discordChannelId: ""} do
+      assert_nil parsed_body["discordChannelId"]
+    end
+  end
+
+  test "PUT /fleets/:slug/squadrons/:slug returns 400 for a Discord channel that is not an id" do
+    sign_in @admin
+
+    assert_api_response :put, 400,
+      path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
+      body: {discordChannelId: "#general"}
+  end
+
   test "PUT /fleets/:slug/squadrons/:slug returns 400 for a name another squadron holds" do
     create(:fleet_squadron, fleet: @fleet, name: "Mining Division")
     sign_in @admin

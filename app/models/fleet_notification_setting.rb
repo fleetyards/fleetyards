@@ -4,15 +4,17 @@
 #
 # Table name: fleet_notification_settings
 #
-#  id                     :uuid             not null, primary key
-#  discord_webhook_url    :text
-#  enabled_in_app_events  :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  discord_channel_id     :string
-#  discord_guild_id       :string
-#  discord_member_role_id :string
-#  fleet_id               :uuid             not null
+#  id                              :uuid             not null, primary key
+#  discord_webhook_url             :text
+#  enabled_in_app_events           :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  discord_announcement_channel_id :string
+#  discord_channel_id              :string
+#  discord_guild_id                :string
+#  discord_member_role_id          :string
+#  discord_officers_channel_id     :string
+#  fleet_id                        :uuid             not null
 #
 # Indexes
 #
@@ -29,6 +31,14 @@ class FleetNotificationSetting < ApplicationRecord
   serialize :enabled_in_app_events, coder: YAML
 
   encrypts :discord_webhook_url
+
+  normalizes :discord_announcement_channel_id, with: ->(value) { value.strip.presence }
+
+  validates :discord_announcement_channel_id, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT}, allow_nil: true
+
+  normalizes :discord_officers_channel_id, with: ->(value) { value.strip.presence }
+
+  validates :discord_officers_channel_id, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT}, allow_nil: true
 
   # Mapping a role is a configuration change, not a membership change, so
   # nothing else would apply it to the members the fleet already has.

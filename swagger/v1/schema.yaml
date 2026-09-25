@@ -2269,6 +2269,54 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/discord-channels":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Discord Channels
+      tags:
+      - FleetNotificationSettings
+      operationId: fleetDiscordChannels
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetDiscordChannels"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events":
     parameters:
     - name: fleetSlug
@@ -19900,6 +19948,64 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetDiscordChannel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        parentName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - parentName
+      title: FleetDiscordChannel
+    FleetDiscordChannels:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/FleetDiscordConnectionCodeEnum"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDiscordChannel"
+      additionalProperties: false
+      required:
+      - code
+      - items
+      title: FleetDiscordChannels
+    FleetDiscordConnectionCodeEnum:
+      type: string
+      enum:
+      - ok
+      - missing_token
+      - missing_guild
+      - invalid_token
+      - bot_not_in_guild
+      - guild_not_found
+      - discord_error
+      x-extensible-enum:
+      - ok
+      - missing_token
+      - missing_guild
+      - invalid_token
+      - bot_not_in_guild
+      - guild_not_found
+      - discord_error
+      x-enumNames:
+      - OK
+      - MISSING_TOKEN
+      - MISSING_GUILD
+      - INVALID_TOKEN
+      - BOT_NOT_IN_GUILD
+      - GUILD_NOT_FOUND
+      - DISCORD_ERROR
+      title: FleetDiscordConnectionCodeEnum
     FleetEvent:
       type: object
       properties:
@@ -21803,6 +21909,12 @@ components:
           type: string
         rolesDetail:
           type: string
+        postingOk:
+          type: boolean
+        postingCode:
+          type: string
+        postingDetail:
+          type: string
       title: FleetNotificationDiscordStatus
     FleetNotificationInAppEventEnum:
       type: string
@@ -21838,6 +21950,14 @@ components:
           type: string
         discordChannelId:
           type: string
+        discordAnnouncementChannelId:
+          type:
+          - string
+          - 'null'
+        discordOfficersChannelId:
+          type:
+          - string
+          - 'null'
         discordMemberRoleId:
           type: string
         discordWebhookConfigured:
@@ -21856,6 +21976,14 @@ components:
           - string
           - 'null'
         discordChannelId:
+          type:
+          - string
+          - 'null'
+        discordAnnouncementChannelId:
+          type:
+          - string
+          - 'null'
+        discordOfficersChannelId:
           type:
           - string
           - 'null'
@@ -22133,6 +22261,10 @@ components:
           - 'null'
         team:
           type: boolean
+        discordChannelId:
+          type:
+          - string
+          - 'null'
         memberCount:
           type: integer
         icon:
@@ -22172,6 +22304,10 @@ components:
           - 'null'
         team:
           type: boolean
+        discordChannelId:
+          type:
+          - string
+          - 'null'
         icon:
           type:
           - string
@@ -22384,6 +22520,10 @@ components:
           - 'null'
         team:
           type: boolean
+        discordChannelId:
+          type:
+          - string
+          - 'null'
         icon:
           type:
           - string

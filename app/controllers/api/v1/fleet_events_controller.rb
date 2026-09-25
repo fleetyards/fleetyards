@@ -94,10 +94,14 @@ module Api
         authorize! @fleet_event
 
         if @fleet_event.update(event_params)
-          # Held to squadrons after the fact, so whatever announced it to the
-          # whole fleet takes it back.
-          if @fleet_event.saved_change_to_visibility? && @fleet_event.squadron_restricted?
-            ActiveSupport::Notifications.instrument("fleet_event.restricted", event: @fleet_event)
+          # Narrowed after the fact, so whatever announced it to the whole
+          # fleet takes it back -- and opened up again, it puts it back.
+          if @fleet_event.saved_change_to_visibility?
+            if !@fleet_event.discord_guild_wide?
+              ActiveSupport::Notifications.instrument("fleet_event.restricted", event: @fleet_event)
+            elsif !@fleet_event.draft? && !guild_wide_visibility?(@fleet_event.visibility_before_last_save)
+              ActiveSupport::Notifications.instrument("fleet_event.unrestricted", event: @fleet_event)
+            end
           end
 
           render :show
@@ -241,6 +245,11 @@ module Api
       def sync_to_discord
         authorize! @fleet_event, to: :update?
 
+        unless @fleet_event.discord_guild_wide?
+          render json: {code: "discord_restricted_event", message: "An event held to squadrons or officers is announced in their channels, not as a scheduled event"}, status: :unprocessable_entity
+          return
+        end
+
         sync = ::Discord::ScheduledEventSync.new(@fleet_event)
         unless sync.runnable?
           render json: {code: "discord_not_configured", message: "Discord isn't configured for this fleet"}, status: :unprocessable_entity
@@ -309,6 +318,10 @@ module Api
 
       # Whoever may run the fleet's events reaches all of them -- including the
       # squadron ones they are not in, which they may well have created.
+      private def guild_wide_visibility?(visibility)
+        FleetEvent.new(visibility: visibility).discord_guild_wide?
+      end
+
       private def manages_events?
         allowed_to?(:manage?, @fleet, with: FleetEventPolicy)
       end

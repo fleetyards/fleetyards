@@ -75,11 +75,21 @@ fr:
         missing_query: "Merci d'indiquer le nom d'un vaisseau."
         more: "…et d'autres. Essayez un nom plus précis."
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
+    channel_capability:
+      fleet: la flotte
+      officers: les officiers
     direct_message:
       footer: Envoyé parce que vous avez activé les notifications Discord sur Fleetyards
     event_availability:
       signups: '%{count} inscrits'
       slots: '%{open} places libres sur %{total}'
+    event_published:
+      recurrence:
+        biweekly: Toutes les deux semaines
+        daily: Tous les jours
+        monthly: Tous les mois
+        weekly: Toutes les semaines
+      title: 'Nouvel événement : %{title}'
     event_reminder:
       starting_now: Commence maintenant
       starts_in: 'Commence dans %{count} min'

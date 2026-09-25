@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_24_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -967,9 +967,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
 
   create_table "fleet_notification_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "discord_announcement_channel_id"
     t.string "discord_channel_id"
     t.string "discord_guild_id"
     t.string "discord_member_role_id"
+    t.string "discord_officers_channel_id"
     t.text "discord_webhook_url"
     t.text "enabled_in_app_events", default: "---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn"
     t.uuid "fleet_id", null: false
@@ -1015,6 +1017,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_110000) do
     t.string "color"
     t.datetime "created_at", null: false
     t.text "description"
+    t.string "discord_channel_id"
     t.uuid "fleet_id", null: false
     t.string "name", null: false
     t.text "rank", null: false, collation: "C"

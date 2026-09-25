@@ -1,9 +1,9 @@
 import type { RouteMeta, RouteRecordRaw } from "vue-router";
 
 /*
- * The two halves of one form: what a squadron is, and what it looks like. They
- * are tabs rather than one long page so that neither half gets buried under the
- * other -- not because they are saved separately. One submit writes both, from whichever tab it is pressed
+ * The parts of one form: what a squadron is, what it looks like, and where it
+ * is announced on Discord. They are tabs rather than one long page so that no
+ * part gets buried under the others -- not because they are saved separately. One submit writes both, from whichever tab it is pressed
  * on.
  *
  * Built per mode, since the route names and the document titles differ between
@@ -37,6 +37,13 @@ export const squadronFormRoutes = (
       component: () =>
         import("@/frontend/pages/fleets/[slug]/squadrons/form/appearance.vue"),
       meta: { ...meta, title: `fleets.squadrons.${mode}.appearance` },
+    },
+    {
+      path: "discord/",
+      name: `${name}-discord`,
+      component: () =>
+        import("@/frontend/pages/fleets/[slug]/squadrons/form/discord.vue"),
+      meta: { ...meta, title: `fleets.squadrons.${mode}.discord` },
     },
   ];
 };

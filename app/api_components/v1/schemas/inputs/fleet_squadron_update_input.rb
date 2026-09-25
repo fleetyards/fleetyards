@@ -14,6 +14,7 @@ module V1
             description: {type: [:string, :null]},
             color: {type: [:string, :null]},
             team: {type: :boolean},
+            discordChannelId: {type: [:string, :null]},
             icon: {type: [:string, :null]}
           },
           additionalProperties: false

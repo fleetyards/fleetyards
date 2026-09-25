@@ -462,4 +462,15 @@ class FleetEvent < ApplicationRecord
 
     self.cover_image_preset = category.to_s
   end
+
+  def officers_only?
+    visibility == "officers"
+  end
+
+  # Whether everybody on the fleet's Discord server may read about it. A
+  # scheduled event and the fleet's channel both reach the whole server, so an
+  # event kept to squadrons or to officers goes to their own channels instead.
+  def discord_guild_wide?
+    !squadron_restricted? && !officers_only?
+  end
 end

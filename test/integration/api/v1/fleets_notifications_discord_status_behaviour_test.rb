@@ -182,4 +182,52 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
       assert_includes body["installUrl"], "permissions=#{Discord::ApiClient::INSTALL_PERMISSIONS}"
     end
   end
+  test "reports the squadrons whose channel the bot cannot post in" do
+    setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: "111111111111111111")
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    Discord::ApiClient.stubs(:new).returns(api)
+    capability = mock("Discord::ChannelCapability")
+    capability.expects(:check).with(["111111111111111111"])
+      .returns(Discord::ChannelCapability::Result.new(:unknown_channel, ["111111111111111111"]))
+    Discord::ChannelCapability.expects(:new).with(setting.discord_guild_id).returns(capability)
+
+    get @url, as: :json
+
+    body = JSON.parse(response.body)
+    assert_equal false, body["postingOk"]
+    assert_equal "unknown_channel", body["postingCode"]
+    assert_equal "Alpha", body["postingDetail"]
+  end
+
+  test "says nothing about posting while no channel is picked" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    Discord::ApiClient.stubs(:new).returns(api)
+    Discord::ChannelCapability.expects(:new).never
+
+    get @url, as: :json
+
+    assert_not JSON.parse(response.body).key?("postingOk")
+  end
+
+  test "names a squadron sharing the officers' channel" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_officers_channel_id: "111111111111111111")
+    create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: "111111111111111111")
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    Discord::ApiClient.stubs(:new).returns(api)
+    Discord::ChannelCapability.expects(:new).never
+
+    get @url, as: :json
+
+    body = JSON.parse(response.body)
+    assert_equal "channel_shared", body["postingCode"]
+    assert_equal "Alpha, #{I18n.t("discord.channel_capability.officers")}", body["postingDetail"]
+  end
 end

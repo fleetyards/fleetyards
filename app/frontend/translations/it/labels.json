@@ -413,6 +413,18 @@
           "channelId": "ID del canale vocale (facoltativo)",
           "webhookUrl": "URL del webhook per gli annunci (facoltativo)",
           "installBotHint": "Apre la pagina di installazione di Discord in una nuova scheda — scegli il server su cui vuoi rispecchiare gli eventi.",
+          "announcementChannel": "Canale annunci",
+          "announcementChannelHint": "Qui vengono pubblicati i nuovi eventi e i promemoria prima dell'inizio. Senza canale passano dal webhook. Gli eventi riservati a squadroni vengono pubblicati nei canali di quegli squadroni.",
+          "officersChannel": "Canale ufficiali",
+          "officersChannelHint": "Gli eventi visibili solo agli ufficiali vengono annunciati qui e in nessun altro punto di Discord. Senza canale non vengono annunciati su Discord.",
+          "channelMissing": "Questo canale non esiste più su Discord o non accetta più pubblicazioni. Non viene pubblicato nulla finché non ne scegli un altro.",
+          "missingChannel": "Canale non disponibile",
+          "postingCodes": {
+            "missing_send_messages": "Il bot non può inviare messaggi in questo server. Usa il link di installazione per autorizzarlo di nuovo.",
+            "channel_locked": "Il bot non può pubblicare nel canale scelto per %{names}. Consentilo nei permessi di quel canale.",
+            "unknown_channel": "Il canale scelto per %{names} non esiste più su Discord o non accetta più pubblicazioni.",
+            "channel_shared": "%{names} condivide un canale con lettori a cui i suoi eventi sono nascosti. Non viene pubblicato nulla finché ognuno non ha un canale proprio."
+          },
           "statusOk": "Connesso a %{name}",
           "statusCodes": {
             "missing_token": "Il bot Fleetyards non è configurato lato server. Contatta un amministratore.",
@@ -492,6 +504,9 @@
           "team": "Squadra",
           "teamHint": "Una squadra è aperta a tutti, altrimenti un membro appartiene a un solo squadrone",
           "restrictedToHint": "Solo questi squadroni possono vederlo",
+          "discordChannel": "Canale Discord",
+          "discordChannelHint": "Gli eventi riservati a questo squadrone vengono annunciati qui e in nessun altro punto di Discord. Senza canale non vengono annunciati su Discord.",
+          "notAnnounced": "Nessun annuncio su Discord per %{names}: non è configurato alcun canale Discord.",
           "blockedBy": "Già nello squadrone %{squadron}",
           "color": "Colore",
           "colorSuggestions": "Dall'icona:",

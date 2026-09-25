@@ -19,11 +19,14 @@ type Props = {
   fleet: Fleet;
   modelValue?: string[];
   name?: string;
+  // Only events are announced on Discord, so only their form asks.
+  warnWithoutDiscordChannel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: () => [],
   name: "fleetSquadronIds",
+  warnWithoutDiscordChannel: false,
 });
 
 const emit = defineEmits<{ "update:modelValue": [value: string[]] }>();
@@ -55,6 +58,23 @@ const options = computed<FilterOption[]>(() =>
   })),
 );
 
+/*
+ * A squadron event is announced only in its squadrons' own channels, so a
+ * squadron without one hears nothing -- said here, where it is picked, rather
+ * than discovered from a silent channel.
+ */
+const withoutDiscordChannel = computed(() =>
+  props.warnWithoutDiscordChannel
+    ? (squadrons.value?.items ?? [])
+        .filter(
+          (squadron) =>
+            props.modelValue.includes(squadron.id) &&
+            !squadron.discordChannelId,
+        )
+        .map((squadron) => squadron.name)
+    : [],
+);
+
 const selected = computed({
   get: () => props.modelValue,
   set: (value: string[]) => emit("update:modelValue", value ?? []),
@@ -62,14 +82,28 @@ const selected = computed({
 </script>
 
 <template>
-  <BaseSelect
-    v-model="selected"
-    :options="options"
-    :name="props.name"
-    :label="t('labels.fleet.squadrons.index')"
-    :info="t('labels.fleet.squadrons.restrictedToHint')"
-    multiple
-    :nullable="false"
-    searchable
-  />
+  <div>
+    <BaseSelect
+      v-model="selected"
+      :options="options"
+      :name="props.name"
+      :label="t('labels.fleet.squadrons.index')"
+      :info="t('labels.fleet.squadrons.restrictedToHint')"
+      multiple
+      :nullable="false"
+      searchable
+    />
+    <p
+      v-if="withoutDiscordChannel.length"
+      class="text-warning small"
+      data-test="squadrons-not-announced"
+    >
+      <i class="fa-brands fa-discord" />
+      {{
+        t("labels.fleet.squadrons.notAnnounced", {
+          names: withoutDiscordChannel.join(", "),
+        })
+      }}
+    </p>
+  </div>
 </template>
