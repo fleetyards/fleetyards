@@ -188,4 +188,17 @@ class PayoutEntryTest < ActiveSupport::TestCase
       entry.approve!(organiser)
     end
   end
+
+  test "a contract manager is not asked to review their own claim" do
+    officer = create(:user)
+    other_officer = create(:user)
+    fleet = create(:fleet, admins: [officer, other_officer])
+    contract = create(:fleet_contract, :fulfilled, fleet: fleet, created_by: other_officer)
+    ledger = contract.create_payout_ledger!
+    officer_p = create(:payout_participant, payout_ledger: ledger, user: officer)
+
+    create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: officer_p, recorded_by: other_officer)
+
+    assert_equal [], Notification.payout_entry_pending_review.where(user: officer).pluck(:id)
+  end
 end

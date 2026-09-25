@@ -172,8 +172,14 @@ class PayoutEntry < ApplicationRecord
     Rails.logger.error("[PayoutEntry] review notification failed: #{e.class}: #{e.message}")
   end
 
+  # Not the participant it is for either, on a contract: PayoutEntryPolicy
+  # will not let them answer their own claim, so telling them to would only
+  # lead to a refusal.
   private def notify_managers_of_pending
-    (payout_ledger.managers - [recorded_by]).each do |manager|
+    skipped = [recorded_by]
+    skipped << payout_participant.user if payout_ledger.subject.is_a?(FleetContract)
+
+    (payout_ledger.managers - skipped.compact).each do |manager|
       Notification.notify!(
         user: manager,
         type: :payout_entry_pending_review,
