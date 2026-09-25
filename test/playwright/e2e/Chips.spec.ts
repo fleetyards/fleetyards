@@ -530,6 +530,15 @@ test.describe("Chips - owner's hangar on mobile", () => {
     await expect(menu(page)).toBeVisible();
     expect(await menuNames(page)).toEqual(reversed);
 
+    // Moved to the bottom, so its down arrow is disabled and the up arrow of
+    // the same row takes focus.
+    await expect(
+      menu(page)
+        .getByTestId("group-menu-row")
+        .last()
+        .getByTestId("group-menu-move-up"),
+    ).toBeFocused();
+
     await page.reload();
     await page
       .getByTestId("chip-row")

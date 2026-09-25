@@ -158,14 +158,17 @@ const stopEditing = () => {
 // row's own Escape listener; one wrapper around all of its content catches them.
 // Focus goes to the toggle: the control that had it may be gone with the edit
 // rows.
-const stopEditingInMenu = async () => {
+const stopEditingInMenu = async (event: KeyboardEvent) => {
   if (!editing.value) return;
+
+  // Read before the await: currentTarget is cleared once dispatch ends.
+  const menu = event.currentTarget as HTMLElement | null;
 
   stopEditing();
 
   await nextTick();
-  document
-    .querySelector<HTMLElement>('[data-test="group-menu-edit-toggle"]')
+  menu
+    ?.querySelector<HTMLElement>('[data-test="group-menu-edit-toggle"]')
     ?.focus();
 };
 
@@ -284,16 +287,20 @@ const moveGroup = async (
   focusTarget()?.focus();
 };
 
-// The menu is teleported to the body, so it is looked up in the document. At
-// either end the arrow that was pressed is disabled, so the other one takes it.
+// Looked up from the pressed arrow's own menu, which is teleported to the body
+// and so outside this component's elements. At either end the arrow that was
+// pressed is disabled, so the other one takes it.
 const moveGroupInMenu = (
   group: HangarGroup | HangarGroupPublic,
   offset: -1 | 1,
-) =>
-  moveGroup(group, offset, () => {
-    const menuRow = document.querySelector(
-      `[data-group-menu-id="${group.id}"]`,
-    );
+  event: MouseEvent,
+) => {
+  const menu = (event.currentTarget as HTMLElement | null)?.closest(
+    ".group-labels-menu",
+  );
+
+  return moveGroup(group, offset, () => {
+    const menuRow = menu?.querySelector(`[data-group-menu-id="${group.id}"]`);
     const pressed = offset < 0 ? "up" : "down";
     const other = offset < 0 ? "down" : "up";
 
@@ -306,6 +313,7 @@ const moveGroupInMenu = (
       )
     );
   });
+};
 
 const comlink = useComlink();
 
@@ -414,7 +422,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
                 :aria-label="t('actions.moveUp')"
                 :disabled="index === 0"
                 data-test="group-menu-move-up"
-                @click.stop="moveGroupInMenu(group, -1)"
+                @click.stop="moveGroupInMenu(group, -1, $event)"
               >
                 <i class="fa-regular fa-arrow-up" />
               </Btn>
@@ -422,7 +430,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
                 :aria-label="t('actions.moveDown')"
                 :disabled="index === groups.length - 1"
                 data-test="group-menu-move-down"
-                @click.stop="moveGroupInMenu(group, 1)"
+                @click.stop="moveGroupInMenu(group, 1, $event)"
               >
                 <i class="fa-regular fa-arrow-down" />
               </Btn>
