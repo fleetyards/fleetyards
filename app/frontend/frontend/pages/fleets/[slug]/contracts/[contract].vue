@@ -20,6 +20,7 @@ import ContractCrewList from "@/frontend/components/Fleets/Contracts/ContractCre
 import {
   type Fleet,
   type FleetMember,
+  FeatureFlagName,
   FleetContractStateEnum,
   FleetContractCrewRoleEnum,
   FleetContractCrewStateEnum,
@@ -40,6 +41,7 @@ import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   fleet: Fleet;
@@ -152,10 +154,16 @@ const canFulfil = computed(
 // Only once there is something to pay. Whether the viewer may read the ledger
 // is the API's call; a contractor holds no fleet payout privilege and still
 // has to reach it.
+const { isFleetFeatureEnabled } = useFeatures();
+
+// The ledger is a payouts surface as well, and the API asks for both of its
+// flags -- without them the button would open a page that 403s.
 const hasPayouts = computed(
   () =>
-    contract.value?.state === FleetContractStateEnum.FULFILLED ||
-    contract.value?.state === FleetContractStateEnum.SETTLED,
+    isFleetFeatureEnabled(props.fleet, FeatureFlagName.TOUR_PAYOUTS) &&
+    isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_TOURS) &&
+    (contract.value?.state === FleetContractStateEnum.FULFILLED ||
+      contract.value?.state === FleetContractStateEnum.SETTLED),
 );
 
 const goToPayouts = () => {
