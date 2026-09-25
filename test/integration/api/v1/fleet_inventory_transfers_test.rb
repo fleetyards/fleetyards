@@ -213,6 +213,32 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal 75, @depot.reload.stock_positions.sole.net_quantity
   end
 
+  # A manager may dispatch for the fleet, but the author's own hangar is only
+  # open to the people working the contract, whatever end the stock leaves.
+  test "POST from a transport's source into the author's hangar is refused to a manager off the crew" do
+    Flipper.enable("fleet_contracts")
+    author = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: author)
+    lead = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: lead)
+    contract = create(:fleet_contract, :in_progress, :transport, :hangar_destination,
+      fleet: @fleet, created_by: author, source_fleet_inventory: @depot)
+    contract.fleet_contract_assignments.create!(user: lead, role: :lead,
+      aasm_state: "accepted", accepted_at: Time.current)
+    sign_in @officer
+
+    assert_no_difference -> { InventoryTransfer.count } do
+      assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {
+        sourceInventoryId: @depot.id,
+        inventoryId: contract.destination_inventory_id,
+        contractId: contract.id,
+        lines: [{positionId: @entry.position.id, quantity: 25}]
+      }
+    end
+
+    assert_equal 100, @depot.reload.stock_positions.sole.net_quantity
+  end
+
   test "a member without the inventory privilege cannot send" do
     sign_in @member
 

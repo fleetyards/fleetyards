@@ -51,21 +51,27 @@ module Contracts
     # two inventories could be filed under any contract the actor happens to
     # work on.
     private def touches_contract?
+      # Decided before any of the shortcuts below: a transport's source would
+      # otherwise vouch for a delivery into the author's hangar by somebody
+      # who is not working the contract.
+      return @contract.contractor?(@actor) if into_authors_hangar?
+
       ends = @contract.tracked_inventory_ids
       return true if @source.is_a?(::FleetInventory) && ends.include?(@source.id)
       return true if @destination.present? && ends.include?(@destination.id)
-      return true if @recipient.is_a?(::Fleet) && @recipient.id == @contract.fleet_id
 
-      addressed_to_author?
+      @recipient.is_a?(::Fleet) && @recipient.id == @contract.fleet_id
     end
 
     # Only for the people working it. A fleet manager may otherwise act on any
     # contract, and this would let one file fleet stock into a member's private
-    # inventory as contract work.
-    private def addressed_to_author?
-      @contract.hangar_destination? &&
-        @recipient.is_a?(::User) && @recipient == @contract.created_by &&
-        @contract.contractor?(@actor)
+    # inventory as contract work -- and, addressed to the author, past the
+    # stance they set for who may send to them.
+    private def into_authors_hangar?
+      return false unless @contract.hangar_destination?
+      return true if @destination.present? && @destination == @contract.destination_inventory
+
+      @recipient.is_a?(::User) && @recipient == @contract.created_by
     end
 
     private def refuse(code)

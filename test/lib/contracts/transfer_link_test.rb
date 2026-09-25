@@ -103,6 +103,22 @@ module Contracts
       assert_equal :contract_end_not_involved, subject.error
     end
 
+    test "a manager off the crew cannot address the author from a transport's source" do
+      contract = hangar_contract(transport: true)
+      subject = link(actor: @officer, source: contract.source_fleet_inventory,
+        recipient: contract.created_by, contract:)
+
+      assert_not subject.call
+      assert_equal :contract_end_not_involved, subject.error
+    end
+
+    test "a contractor may address the author from a transport's source" do
+      contract = hangar_contract(transport: true)
+
+      assert link(actor: @lead, source: contract.source_fleet_inventory,
+        recipient: contract.created_by, contract:).call
+    end
+
     test "somebody other than the author is not a target of a hangar-destination contract" do
       subject = link(actor: @lead, source: @hold, recipient: @stranger, contract: hangar_contract)
 
@@ -110,11 +126,13 @@ module Contracts
       assert_equal :contract_end_not_involved, subject.error
     end
 
-    private def hangar_contract
+    private def hangar_contract(transport: false)
       author = create(:user)
       create(:fleet_membership, fleet: @fleet, user: author, aasm_state: :accepted,
         fleet_role: @fleet.fleet_roles.ranked.last)
-      contract = create(:fleet_contract, :in_progress, :hangar_destination, fleet: @fleet, created_by: author)
+      traits = transport ? [:transport] : []
+      contract = create(:fleet_contract, :in_progress, :hangar_destination, *traits,
+        fleet: @fleet, created_by: author)
       create(:fleet_contract_assignment, :lead, fleet_contract: contract, user: @lead)
       contract
     end
