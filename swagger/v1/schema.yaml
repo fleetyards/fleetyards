@@ -2105,6 +2105,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PayoutLedger"
+        '400':
+          description: nobody to pay
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -2117,8 +2123,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Show the payout ledger of a fleet contract
       tags:
@@ -13225,6 +13229,13 @@ paths:
       parameters:
       - "$ref": "#/components/parameters/PageParameter"
       - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/PayoutEntryQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -29363,6 +29374,23 @@ components:
           - 'null'
       additionalProperties: false
       title: PayoutEntryDeclineInput
+    PayoutEntryQuery:
+      type: object
+      properties:
+        descriptionCont:
+          type: string
+        entryTypeEq:
+          "$ref": "#/components/schemas/PayoutEntryTypeEnum"
+        reviewStatusEq:
+          "$ref": "#/components/schemas/PayoutEntryReviewStatusEnum"
+        payoutParticipantIdEq:
+          type: string
+          format: uuid
+        s:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: PayoutEntryQuery
     PayoutEntryReviewStatusEnum:
       type: string
       enum:

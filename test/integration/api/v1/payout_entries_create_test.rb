@@ -48,6 +48,11 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
 
       parameter ::Shared::V1::Parameters::PageParameter
       parameter ::Shared::V1::Parameters::SortingParameter
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::PayoutEntryQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
 
       security [
         {SessionCookie: []},
@@ -220,6 +225,19 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {payoutLedgerId: @ledger.id} do
       assert_equal 1, parsed_body["items"].size
+    end
+  end
+
+  # What the ledger asks for to put every waiting expense in front of a
+  # manager, however far down the paginated list it would otherwise sit.
+  test "GET filters to the expenses waiting for review" do
+    create(:payout_entry, :pending, payout_ledger: @ledger, payout_participant: @member_participant)
+    create(:payout_entry, payout_ledger: @ledger, payout_participant: @member_participant)
+    sign_in @organiser
+
+    assert_api_response :get, 200, path_params: {payoutLedgerId: @ledger.id},
+      params: {q: {reviewStatusEq: "pending"}} do
+      assert_equal ["pending"], parsed_body["items"].map { |item| item["reviewStatus"] }
     end
   end
 

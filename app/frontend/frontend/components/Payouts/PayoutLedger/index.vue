@@ -27,6 +27,8 @@ import {
   usePayoutLedgerBalances,
   usePayoutEntries,
   usePayoutTransfers,
+  PayoutEntryReviewStatusEnum,
+  PayoutLedgerSubjectTypeEnum,
   useSettlePayoutLedger as useSettlePayoutLedgerMutation,
   useReopenPayoutLedger as useReopenPayoutLedgerMutation,
 } from "@/services/fyApi";
@@ -74,6 +76,32 @@ const {
   refetch: refetchEntries,
   isLoading: entriesLoading,
 } = usePayoutEntries(ledgerId);
+
+// The entries are paginated, and a pending expense on the second page would
+// block settling with no way to answer it from here. Every waiting expense is
+// fetched on its own and listed first, so as long as any is pending one of
+// them is in front of the manager.
+const { data: pendingEntries, refetch: refetchPendingEntries } =
+  usePayoutEntries(
+    ledgerId,
+    computed(() => ({
+      q: { reviewStatusEq: PayoutEntryReviewStatusEnum.PENDING },
+    })),
+    { query: { enabled: computed(() => props.manageable) } },
+  );
+
+const shownEntries = computed(() => {
+  const items = entries.value?.items ?? [];
+
+  if (!props.manageable) {
+    return items;
+  }
+
+  const pending = pendingEntries.value?.items ?? [];
+  const pendingIds = new Set(pending.map((entry) => entry.id));
+
+  return [...pending, ...items.filter((entry) => !pendingIds.has(entry.id))];
+});
 const {
   data: transfers,
   refetch: refetchTransfers,
@@ -110,6 +138,21 @@ const recordableParticipants = computed(() => {
 // not exist. Offering the controls anyway sends them to a 403.
 const canRecord = computed(
   () => props.contributable && recordableParticipants.value.length > 0,
+);
+
+// On a contract the client reviews the contractors, so a manager who also
+// worked it cannot answer their own expense -- the API refuses, and the
+// buttons would only hand out 403s.
+const unreviewableParticipantIds = computed(() =>
+  ledger.value?.subjectType === PayoutLedgerSubjectTypeEnum.FLEET_CONTRACT
+    ? participants.value
+        .filter(
+          (participant) =>
+            !!participant.user &&
+            participant.user.id === sessionStore.currentUser?.id,
+        )
+        .map((participant) => participant.id)
+    : [],
 );
 
 // While the ledger is open the transfer list is a live preview recomputed from
@@ -150,6 +193,9 @@ const refetchAll = () => {
   void refetchLedger();
   void refetchBalances();
   void refetchEntries();
+  if (props.manageable) {
+    void refetchPendingEntries();
+  }
   void refetchTransfers();
 };
 
@@ -279,10 +325,11 @@ const onReopen = async () => {
         <PanelBody>
           <PayoutEntryList
             :payout-ledger-id="payoutLedgerId"
-            :entries="entries?.items ?? []"
+            :entries="shownEntries"
             :participants="recordableParticipants"
             :editable="canRecord && !settled"
             :reviewable="manageable && !settled"
+            :unreviewable-participant-ids="unreviewableParticipantIds"
             :expenses-allowed="expensesAllowed"
             :loading="entriesLoading"
           />

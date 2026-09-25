@@ -30,6 +30,9 @@ type Props = {
   // Whether the viewer may approve or decline an expense somebody else is
   // waiting on -- the ledger's managers.
   reviewable?: boolean;
+  // Rows the viewer may not answer even though they review the rest -- their
+  // own claims on a contract.
+  unreviewableParticipantIds?: string[];
   expensesAllowed?: boolean;
   // The entries are a query of their own, answering after the ledger that
   // frames this panel - so without this the panel says "nothing recorded yet"
@@ -40,6 +43,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
   reviewable: false,
+  unreviewableParticipantIds: () => [],
   expensesAllowed: true,
   loading: false,
 });
@@ -63,7 +67,8 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 
 const reviewing = (entry: PayoutEntry) =>
   props.reviewable &&
-  entry.reviewStatus === PayoutEntryReviewStatusEnum.PENDING;
+  entry.reviewStatus === PayoutEntryReviewStatusEnum.PENDING &&
+  !props.unreviewableParticipantIds.includes(entry.payoutParticipantId);
 
 const approvingId = ref<string | null>(null);
 

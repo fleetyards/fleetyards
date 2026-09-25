@@ -31,6 +31,7 @@ const wrappers: Array<{ unmount: () => void }> = [];
 const mount = async (props: {
   entries: PayoutEntry[];
   reviewable?: boolean;
+  unreviewableParticipantIds?: string[];
 }) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: { payoutLedgerId: "ledger-1", participants: [], ...props },
@@ -68,6 +69,19 @@ describe("PayoutEntryList", () => {
     );
     expect(wrapper.find('[data-test="payout-entry-review"]').exists()).toBe(
       true,
+    );
+  });
+
+  // A manager who also worked a contract cannot answer their own claim.
+  it("offers no answers on the reviewer's own claim", async () => {
+    const wrapper = await mount({
+      entries: [entry()],
+      reviewable: true,
+      unreviewableParticipantIds: ["participant-1"],
+    });
+
+    expect(wrapper.find('[data-test="payout-entry-approve"]').exists()).toBe(
+      false,
     );
   });
 
