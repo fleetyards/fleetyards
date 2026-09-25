@@ -64,9 +64,11 @@ Users drag vehicles in their hangar into a custom order, pick the hangar's defau
 ## Discovery Log
 
 - **2026-09-25** Initial research and plan creation. The rank group spans wishlist, hidden and loaners, so a view-relative `position` would be wrong.
+- **2026-09-25** Review round: the standard order became an explicit choice, the modal got the default order, drag moved into the table view too, and every ship list got a selectable sort bar in both views. The fleet ship list only accepted three sorts, so every other chip answered 400; its whitelist now covers the ship's figures in both modes.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
+- [x] Review round: table drag, selectable sort chips on every ship list, fleet sort fix
