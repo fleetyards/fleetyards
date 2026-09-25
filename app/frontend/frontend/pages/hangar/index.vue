@@ -15,6 +15,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
+import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
@@ -167,6 +168,10 @@ const sortFields = useHangarSortFields({ include: activeSort });
 const canSort = computed(
   () => activeSort.value === "rank asc" && !isFilterSelected.value,
 );
+
+// Shared by the table's row boxes and the toolbar's select-all box and bulk
+// actions above it.
+const selected = ref<string[]>([]);
 
 const { orderedVehicles, onSort } = useVehicleReorder(
   computed(() => vehicles.value?.items),
@@ -585,8 +590,23 @@ const openDisplayOptionsModal = () => {
 
     <template #sort>
       <!-- In both views: the custom order has no column heading, so the
-           table alone could never switch to it. -->
-      <SortBar :columns="sortFields" :default-sort="defaultSort" />
+           table alone could never switch to it. The table's rows are picked
+           from here too; the cards have no boxes to pick them by. -->
+      <SortBar
+        v-model:selected="selected"
+        :columns="sortFields"
+        :default-sort="defaultSort"
+        :selectable="!gridView"
+        :record-ids="orderedVehicles.map((vehicle) => vehicle.id)"
+        :selection-disabled="asyncStatus.isLoading.value"
+      >
+        <template #selected-actions>
+          <VehiclesListActions
+            :selected="selected"
+            @reset-selected="selected = []"
+          />
+        </template>
+      </SortBar>
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
@@ -615,8 +635,10 @@ const openDisplayOptionsModal = () => {
         :loading="loading"
         :empty-visible="emptyVisible"
         :vehicles="orderedVehicles"
+        v-model:selected="selected"
         :editable="true"
         :sortable="canSort"
+        :selection-controls="false"
         @sort="onSort"
       />
 

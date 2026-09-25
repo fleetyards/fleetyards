@@ -38,15 +38,22 @@ type Props = {
   emptyVisible?: boolean;
   // Draws a grip beside each name and lets the rows be dragged by it.
   sortable?: boolean;
+  // Off where the list's toolbar carries the select-all box and the bulk
+  // actions; the page then binds `selected` to hand them the picked rows.
+  selectionControls?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  selectionControls: true,
+});
 
 const emit = defineEmits<{ sort: [keys: string[], moved: string] }>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
-const selected = ref<string[]>([]);
+// Held here unless the page binds it: a table on its own keeps its selection
+// to itself, a table under a toolbar shares it.
+const selected = defineModel<string[]>("selected", { default: () => [] });
 
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();
@@ -202,6 +209,7 @@ const resetSelected = () => {
       :empty-visible="emptyVisible"
       :sortable="sortable"
       sort-handle=".vehicles-table-grip"
+      :selection-controls="selectionControls"
       @selected-change="onSelectedChange"
       @sort="(keys, moved) => emit('sort', keys, moved)"
     >
