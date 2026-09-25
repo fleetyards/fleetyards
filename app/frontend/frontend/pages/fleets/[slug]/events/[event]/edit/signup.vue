@@ -146,6 +146,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         <SquadronSelect
           v-model="fleetSquadronIds"
           :fleet="fleet"
+          :assigned="props.event.fleetSquadrons"
           warn-without-discord-channel
         />
       </div>

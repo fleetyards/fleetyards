@@ -511,7 +511,11 @@ const onSubmit = handleSubmit(async (values) => {
             />
           </div>
           <div v-if="restrictedToSquadrons" class="col-12 col-md-6">
-            <SquadronSelect v-model="fleetSquadronIds" :fleet="props.fleet" />
+            <SquadronSelect
+              v-model="fleetSquadronIds"
+              :fleet="props.fleet"
+              :assigned="props.contract?.fleetSquadrons"
+            />
           </div>
         </div>
 

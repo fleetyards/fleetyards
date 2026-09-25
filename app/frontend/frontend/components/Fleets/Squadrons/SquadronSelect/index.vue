@@ -12,11 +12,14 @@ import {
   useFleetSquadrons,
   type Fleet,
   type FilterOption,
+  type FleetSquadronRef,
 } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
   modelValue?: string[];
+  // The squadrons the record being edited is already held to.
+  assigned?: FleetSquadronRef[];
   name?: string;
   // Only events are announced on Discord, so only their form asks.
   warnWithoutDiscordChannel?: boolean;
@@ -24,6 +27,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: () => [],
+  assigned: () => [],
   name: "fleetSquadronIds",
   warnWithoutDiscordChannel: false,
 });
@@ -34,7 +38,7 @@ const { t } = useI18n();
 
 const { isFleetSquadronsEnabled } = useFeatures();
 
-// Same gate the filter uses: no feature, no request and nothing drawn.
+// Same gate the filter uses: no feature, no request.
 const enabled = computed(() => isFleetSquadronsEnabled(props.fleet));
 
 const { data: squadrons } = useFleetSquadrons(
@@ -47,12 +51,18 @@ const { data: squadrons } = useFleetSquadrons(
  * Squadrons before teams, the fleet's own order within each -- the same order
  * every other list of them uses, so the one somebody is looking for is where
  * they last saw it.
+ *
+ * With squadrons switched off the list is neither fetched nor trusted from
+ * cache, but a record still held to squadrons keeps that restriction, so its
+ * own squadrons stay listed to be kept or dropped.
  */
 const options = computed<FilterOption[]>(() =>
-  (squadrons.value?.items ?? []).map((squadron) => ({
-    value: squadron.id,
-    label: squadron.name,
-  })),
+  (enabled.value ? (squadrons.value?.items ?? []) : props.assigned).map(
+    (squadron) => ({
+      value: squadron.id,
+      label: squadron.name,
+    }),
+  ),
 );
 
 /*
@@ -61,7 +71,7 @@ const options = computed<FilterOption[]>(() =>
  * than discovered from a silent channel.
  */
 const withoutDiscordChannel = computed(() =>
-  props.warnWithoutDiscordChannel
+  props.warnWithoutDiscordChannel && enabled.value
     ? (squadrons.value?.items ?? [])
         .filter(
           (squadron) =>

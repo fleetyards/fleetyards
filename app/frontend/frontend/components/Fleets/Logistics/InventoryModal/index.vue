@@ -263,6 +263,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-if="restrictedToSquadrons"
         v-model="fleetSquadronIds"
         :fleet="props.fleet"
+        :assigned="props.inventory?.fleetSquadrons"
       />
       <BaseSelect
         v-model="managedBy"
