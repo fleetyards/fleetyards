@@ -15937,6 +15937,55 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{id}/move":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Vehicle id
+      required: true
+    put:
+      summary: Move Vehicle
+      tags:
+      - Vehicles
+      operationId: moveVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleMoveInput"
+      responses:
+        '204':
+          description: successful
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/vehicles/{vehicle_id}/inventory":
     parameters:
     - name: vehicle_id
@@ -23274,6 +23323,32 @@ components:
       enum:
       - modelName asc
       - modelName desc
+      - modelManufacturerName asc
+      - modelManufacturerName desc
+      - modelLength asc
+      - modelLength desc
+      - modelBeam asc
+      - modelBeam desc
+      - modelHeight asc
+      - modelHeight desc
+      - modelMass asc
+      - modelMass desc
+      - modelCargo asc
+      - modelCargo desc
+      - modelScmSpeed asc
+      - modelScmSpeed desc
+      - modelMaxSpeed asc
+      - modelMaxSpeed desc
+      - modelGroundMaxSpeed asc
+      - modelGroundMaxSpeed desc
+      - modelFocus asc
+      - modelFocus desc
+      - modelProductionStatus asc
+      - modelProductionStatus desc
+      - modelPrice asc
+      - modelPrice desc
+      - modelPledgePrice asc
+      - modelPledgePrice desc
       - createdAt asc
       - createdAt desc
       - updatedAt asc
@@ -23281,6 +23356,32 @@ components:
       x-enumNames:
       - MODEL_NAME_ASC
       - MODEL_NAME_DESC
+      - MODEL_MANUFACTURER_NAME_ASC
+      - MODEL_MANUFACTURER_NAME_DESC
+      - MODEL_LENGTH_ASC
+      - MODEL_LENGTH_DESC
+      - MODEL_BEAM_ASC
+      - MODEL_BEAM_DESC
+      - MODEL_HEIGHT_ASC
+      - MODEL_HEIGHT_DESC
+      - MODEL_MASS_ASC
+      - MODEL_MASS_DESC
+      - MODEL_CARGO_ASC
+      - MODEL_CARGO_DESC
+      - MODEL_SCM_SPEED_ASC
+      - MODEL_SCM_SPEED_DESC
+      - MODEL_MAX_SPEED_ASC
+      - MODEL_MAX_SPEED_DESC
+      - MODEL_GROUND_MAX_SPEED_ASC
+      - MODEL_GROUND_MAX_SPEED_DESC
+      - MODEL_FOCUS_ASC
+      - MODEL_FOCUS_DESC
+      - MODEL_PRODUCTION_STATUS_ASC
+      - MODEL_PRODUCTION_STATUS_DESC
+      - MODEL_PRICE_ASC
+      - MODEL_PRICE_DESC
+      - MODEL_PLEDGE_PRICE_ASC
+      - MODEL_PLEDGE_PRICE_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       - UPDATED_AT_ASC
@@ -28633,6 +28734,91 @@ components:
       - EQUIPMENT
       - 'NULL'
       title: NullableInventoryItemTypeEnum
+    NullableVehicleSortEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - flagship desc
+      - flagship asc
+      - name asc
+      - name desc
+      - modelName asc
+      - modelName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - modelManufacturerName asc
+      - modelManufacturerName desc
+      - modelLength asc
+      - modelLength desc
+      - modelBeam asc
+      - modelBeam desc
+      - modelHeight asc
+      - modelHeight desc
+      - modelMass asc
+      - modelMass desc
+      - modelCargo asc
+      - modelCargo desc
+      - modelPledgePrice asc
+      - modelPledgePrice desc
+      - modelPrice asc
+      - modelPrice desc
+      - modelScmSpeed asc
+      - modelScmSpeed desc
+      - modelMaxSpeed asc
+      - modelMaxSpeed desc
+      - modelGroundMaxSpeed asc
+      - modelGroundMaxSpeed desc
+      - modelProductionStatus asc
+      - modelProductionStatus desc
+      - modelFocus asc
+      - modelFocus desc
+      - rank asc
+      - rank desc
+      -
+      x-enumNames:
+      - FLAGSHIP_DESC
+      - FLAGSHIP_ASC
+      - NAME_ASC
+      - NAME_DESC
+      - MODEL_NAME_ASC
+      - MODEL_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - MODEL_MANUFACTURER_NAME_ASC
+      - MODEL_MANUFACTURER_NAME_DESC
+      - MODEL_LENGTH_ASC
+      - MODEL_LENGTH_DESC
+      - MODEL_BEAM_ASC
+      - MODEL_BEAM_DESC
+      - MODEL_HEIGHT_ASC
+      - MODEL_HEIGHT_DESC
+      - MODEL_MASS_ASC
+      - MODEL_MASS_DESC
+      - MODEL_CARGO_ASC
+      - MODEL_CARGO_DESC
+      - MODEL_PLEDGE_PRICE_ASC
+      - MODEL_PLEDGE_PRICE_DESC
+      - MODEL_PRICE_ASC
+      - MODEL_PRICE_DESC
+      - MODEL_SCM_SPEED_ASC
+      - MODEL_SCM_SPEED_DESC
+      - MODEL_MAX_SPEED_ASC
+      - MODEL_MAX_SPEED_DESC
+      - MODEL_GROUND_MAX_SPEED_ASC
+      - MODEL_GROUND_MAX_SPEED_DESC
+      - MODEL_PRODUCTION_STATUS_ASC
+      - MODEL_PRODUCTION_STATUS_DESC
+      - MODEL_FOCUS_ASC
+      - MODEL_FOCUS_DESC
+      - RANK_ASC
+      - RANK_DESC
+      - 'NULL'
+      title: NullableVehicleSortEnum
     OauthApplication:
       type: object
       properties:
@@ -30289,6 +30475,8 @@ components:
           type: boolean
         publicHangarStats:
           type: boolean
+        hangarDefaultSort:
+          "$ref": "#/components/schemas/NullableVehicleSortEnum"
         publicWishlist:
           type: boolean
         publicWishlistUrl:
@@ -30352,6 +30540,7 @@ components:
       - publicHangar
       - publicHangarLoaners
       - publicHangarStats
+      - hangarDefaultSort
       - publicWishlist
       - friendsHangar
       - friendsHangarStats
@@ -30486,6 +30675,8 @@ components:
           type: boolean
         publicHangarStats:
           type: boolean
+        hangarDefaultSort:
+          "$ref": "#/components/schemas/NullableVehicleSortEnum"
         publicWishlist:
           type: boolean
         supporter:
@@ -30499,6 +30690,7 @@ components:
       - username
       - publicHangarLoaners
       - publicHangarStats
+      - hangarDefaultSort
       - publicWishlist
       - supporter
       - supporterTier
@@ -30584,6 +30776,8 @@ components:
           type: boolean
         publicHangarStats:
           type: boolean
+        hangarDefaultSort:
+          "$ref": "#/components/schemas/NullableVehicleSortEnum"
         publicWishlist:
           type: boolean
         friendsHangar:
@@ -30959,6 +31153,20 @@ components:
       items:
         "$ref": "#/components/schemas/VehicleLoadout"
       title: VehicleLoadoutsList
+    VehicleMoveInput:
+      type: object
+      properties:
+        afterId:
+          type: string
+          format: uuid
+          description: Place the vehicle right after this one of the owner's vehicles
+        beforeId:
+          type: string
+          format: uuid
+          description: Place the vehicle right before this one of the owner's vehicles
+      description: Exactly one of afterId and beforeId
+      additionalProperties: false
+      title: VehicleMoveInput
     VehiclePublic:
       type: object
       properties:
@@ -31077,6 +31285,8 @@ components:
       - modelProductionStatus desc
       - modelFocus asc
       - modelFocus desc
+      - rank asc
+      - rank desc
       x-enumNames:
       - FLAGSHIP_DESC
       - FLAGSHIP_ASC
@@ -31114,6 +31324,8 @@ components:
       - MODEL_PRODUCTION_STATUS_DESC
       - MODEL_FOCUS_ASC
       - MODEL_FOCUS_DESC
+      - RANK_ASC
+      - RANK_DESC
       title: VehicleSortEnum
     VehicleUpdateBulkInput:
       type: object

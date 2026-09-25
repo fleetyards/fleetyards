@@ -25,6 +25,7 @@
 #  friends_hangar_stats      :boolean          default(FALSE), not null
 #  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
+#  hangar_default_sort       :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string

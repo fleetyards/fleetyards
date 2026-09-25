@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
+import { useWishlistSortFields } from "@/frontend/composables/useWishlistSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -20,6 +20,7 @@ import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { format } from "date-fns";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
+import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -47,7 +48,18 @@ import {
 
 const { t } = useI18n();
 
-const sortFields = useVehicleSortFields();
+const route = useRoute();
+
+// The chips picked in the display options, plus whichever sort the list is in
+// right now so the toolbar never hides the one that is chosen.
+const sortFields = useWishlistSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : undefined,
+});
+
+// Shared by the table's row boxes and the toolbar's select-all box and bulk
+// actions above it.
+const selected = ref<string[]>([]);
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 
@@ -102,8 +114,6 @@ const {
 const fetch = async () => {
   await refetch();
 };
-
-const route = useRoute();
 
 watch(
   () => route.query.q,
@@ -333,8 +343,24 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #sort>
-      <!-- Grid view only: the table carries the same sorts on its headings. -->
-      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
+      <!-- In both views. The table's rows are picked from here too; the cards
+           have no boxes to pick them by. -->
+      <ListToolbar
+        v-model:selected="selected"
+        :columns="sortFields"
+        default-sort="name asc"
+        :selectable="!gridView"
+        :record-ids="(vehicles?.items || []).map((vehicle) => vehicle.id)"
+        :selection-disabled="asyncStatus.isLoading.value"
+      >
+        <template #selected-actions>
+          <VehiclesListActions
+            :selected="selected"
+            wishlist
+            @reset-selected="selected = []"
+          />
+        </template>
+      </ListToolbar>
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
@@ -358,8 +384,10 @@ const openDisplayOptionsModal = () => {
         v-else
         :loading="loading"
         :empty-visible="emptyVisible"
+        v-model:selected="selected"
         :vehicles="vehicles?.items || []"
         :editable="true"
+        :selection-controls="false"
         wishlist
       />
 

@@ -28,6 +28,7 @@ it:
       update: La nave non è stata aggiornata.
       bulk_create: Alcune navi non sono state aggiunte.
       bulk_update: Impossibile aggiornare alcune navi.
+      move: La nave non è stata spostata. Indica esattamente un'altra nave accanto a cui posizionarla.
       move_all_ingame_to_wish_list: Impossibile spostare le navi in-game nella lista dei desideri.
       sync: Impossibile sincronizzare l'hangar.
     vehicle_loadout:

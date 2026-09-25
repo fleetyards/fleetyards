@@ -53,10 +53,11 @@ module Api
         if ActiveModel::Type::Boolean.new.cast(params["grouped"])
           model_ids = @q.result.pluck(:model_id)
 
-          result = @fleet.models
-            .where(id: model_ids)
-            .distinct
-            .order(@q.result.order_values.presence || "name ASC")
+          # Plucked from the fleet's own vehicles, so the ids are already scoped, and
+          # a plain lookup needs no DISTINCT that would forbid ordering by a join.
+          result = Model.where(id: model_ids)
+            .ransack(sorts: FleetVehicle.model_sorts(vehicle_query_params["sorts"]))
+            .result
 
           @models = result_with_pagination(result, per_page(FleetVehicle))
 
@@ -66,7 +67,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(VEHICLE_RENDER_INCLUDES).joins(:model)
+            .includes(VEHICLE_RENDER_INCLUDES).joins(model: :manufacturer)
 
           @vehicles = result_with_pagination(result, per_page(FleetVehicle))
         end

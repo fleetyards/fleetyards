@@ -9,13 +9,25 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useHangarDefaultSortOptions } from "@/frontend/composables/useHangarDefaultSortOptions";
+import { useSessionStore } from "@/frontend/stores/session";
+import {
+  useUpdateProfile,
+  type NullableVehicleSortEnum,
+} from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useHangarStore,
   HangarTableViewColsEnum,
   HangarTableViewImageColsEnum,
+  HangarSortFieldsEnum,
 } from "@/frontend/stores/hangar";
+import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
+import SortFieldsFieldset from "@/frontend/components/SortFieldsFieldset/index.vue";
 
 const { t } = useI18n();
 
@@ -35,6 +47,15 @@ onMounted(() => {
 const hangarStore = useHangarStore();
 
 const tableViewCols = ref(hangarStore.tableViewCols);
+
+const allSortFields = useHangarSortFields({ all: true });
+
+// Written straight to the store: unlike the column lists this one has no
+// second place that sets it, so there is nothing to mirror back.
+const sortFields = computed({
+  get: () => hangarStore.sortFields,
+  set: (fields) => hangarStore.setSortFields(fields as HangarSortFieldsEnum[]),
+});
 const tableViewImageCols = ref(hangarStore.tableViewImageCols);
 
 watch(
@@ -64,6 +85,69 @@ watch(
     hangarStore.setTableViewImageCols(tableViewImageCols.value);
   },
 );
+
+const sessionStore = useSessionStore();
+
+const comlink = useComlink();
+
+const { displayAlert } = useAppNotifications();
+
+const defaultSortOptions = useHangarDefaultSortOptions();
+
+// Held here as well as on the user, so the select shows the new choice while
+// the save is in flight rather than the old one until the user is re-read.
+const defaultSort = ref<NullableVehicleSortEnum | null>(
+  sessionStore.currentUser?.hangarDefaultSort ?? null,
+);
+
+watch(
+  () => sessionStore.currentUser?.hangarDefaultSort,
+  (value) => {
+    defaultSort.value = value ?? null;
+    savedDefaultSort = value ?? null;
+  },
+);
+
+const updateProfile = useUpdateProfile();
+
+// Every other option here is this browser's alone and applies as it is
+// changed. This one is stored on the account -- the public hangar opens in it
+// too -- but it applies on change the same way, so the modal needs no save.
+//
+// One save at a time, and only for the latest choice: two in flight could land
+// in either order and leave the account on the one picked first. A choice
+// superseded while it waited is never sent at all.
+let savedDefaultSort = defaultSort.value;
+let saving: Promise<void> = Promise.resolve();
+let latestChoice = 0;
+
+const updateDefaultSort = (value: NullableVehicleSortEnum | null) => {
+  const choice = ++latestChoice;
+
+  defaultSort.value = value;
+
+  saving = saving.then(async () => {
+    if (choice !== latestChoice) return;
+
+    await updateProfile
+      .mutateAsync({ data: { hangarDefaultSort: value } })
+      .then(() => {
+        savedDefaultSort = value;
+
+        comlink.emit("user-update");
+        comlink.emit("hangar-change");
+      })
+      .catch(() => {
+        if (choice !== latestChoice) return;
+
+        defaultSort.value = savedDefaultSort;
+
+        displayAlert({ text: t("messages.updateHangar.failure") });
+      });
+  });
+
+  return saving;
+};
 
 const displayAsGrid = () => {
   hangarStore.gridView = true;
@@ -98,6 +182,27 @@ const displayAsList = () => {
           <i class="fa-duotone fa-list"></i>
           {{ t("actions.showTableView") }}
         </Btn>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <BaseSelect
+          :model-value="defaultSort"
+          :options="defaultSortOptions"
+          :label="t('labels.user.hangarDefaultSort')"
+          :info="t('labels.user.hangarDefaultSortInfo')"
+          name="hangarDefaultSort"
+          :searchable="false"
+          :nullable="false"
+          unsorted
+          @update:model-value="updateDefaultSort"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <SortFieldsFieldset v-model="sortFields" :fields="allSortFields" />
       </div>
     </div>
     <hr />

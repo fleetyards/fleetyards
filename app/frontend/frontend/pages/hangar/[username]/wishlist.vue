@@ -6,10 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useSortParam } from "@/shared/composables/useSortParam";
 import { type VehicleSortEnum } from "@/services/fyApi";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useWishlistSortFields } from "@/frontend/composables/useWishlistSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -30,7 +30,14 @@ import { usePublicWishlist as usePublicWishlistQuery } from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const sortFields = useVehicleSortFields();
+const route = useRoute();
+
+// The chips picked in the display options, plus whichever sort the list is in
+// right now so the toolbar never hides the one that is chosen.
+const sortFields = useWishlistSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : undefined,
+});
 
 type Props = {
   user: UserPublic;
@@ -63,8 +70,6 @@ const mobile = useMobile();
 const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
-
-const route = useRoute();
 
 // `HangarQuery` declares the sort; this call simply sent nothing, so the chip
 // changed its arrow and the cards kept their order.
@@ -215,7 +220,7 @@ onMounted(async () => {
     <template #sort>
       <!-- A public hangar is only ever cards, so this is the whole
       sort control rather than a second way to reach one. -->
-      <SortBar :columns="sortFields" default-sort="name asc" />
+      <ListToolbar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading }">

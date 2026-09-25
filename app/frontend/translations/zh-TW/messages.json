@@ -55,6 +55,7 @@
         "failure": "個人資料無法更新。"
       },
       "updateHangar": {
+        "failure": "無法更新機庫設定。",
         "success": "機庫設定已更新。"
       },
       "updatePrivacy": {
@@ -112,6 +113,9 @@
         "failure": "匯出失敗，請稍後再試。"
       },
       "vehicle": {
+        "move": {
+          "failure": "無法儲存順序。"
+        },
         "add": {
           "success": {
             "noHtml": "您的新%{model}將送達您的機庫",

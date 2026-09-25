@@ -55,6 +55,7 @@
         "failure": "无法更新资料。"
       },
       "updateHangar": {
+        "failure": "无法更新机库设置。",
         "success": "机库设置已更新。"
       },
       "updatePrivacy": {
@@ -112,6 +113,9 @@
         "failure": "导出失败，请稍后再试。"
       },
       "vehicle": {
+        "move": {
+          "failure": "无法保存顺序。"
+        },
         "add": {
           "success": {
             "noHtml": "您的新 %{model} 将被交付到您的机库",

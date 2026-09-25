@@ -1,6 +1,7 @@
 {
   "fr": {
     "labels": {
+      "sortOptions": "Options de tri",
       "loading": "Chargement…",
       "true": "Oui",
       "false": "Non",
@@ -1487,6 +1488,13 @@
         "fleetInvites": "Aucune invitation présente"
       },
       "user": {
+        "hangarDefaultSort": "Ordre par défaut",
+        "hangarDefaultSortInfo": "Faites glisser un vaisseau par sa poignée pour le réordonner. Disponible tant que l'ordre personnalisé est actif et qu'aucun filtre n'est appliqué.",
+        "hangarDefaultSortOptions": {
+          "standard": "Standard (vaisseau amiral d'abord, puis nom)",
+          "asc": "%{field}, croissant",
+          "desc": "%{field}, décroissant"
+        },
         "rsiHandle": "Pseudo",
         "rsiHandleVerified": "Vérifié via Citizen iD",
         "location": "Emplacement",
@@ -1523,6 +1531,7 @@
         "passwordConfirmation": "Confirmation du mot de passe"
       },
       "vehicle": {
+        "customOrder": "Personnalisé",
         "name": "Nom",
         "states": "États",
         "serial": "Série",

@@ -65,7 +65,6 @@ const extraColumns = computed(() => {
     .map((col) => ({
       name: col,
       label: t(`labels.fleetTable.columns.${col}`),
-      sortable: true,
     }))
     .filter((col) => fleetStore.tableViewCols.includes(col.name));
 });
@@ -87,6 +86,8 @@ const manufacturerColumnVisible = computed(() => {
   );
 });
 
+// No column sorts from its heading: the list toolbar above the table is the
+// sort control in both views.
 const tableColumns = computed<BaseTableCol<FleetVehicle>[]>(() => {
   return [
     ...extraImageColumns.value,
@@ -95,7 +96,6 @@ const tableColumns = computed<BaseTableCol<FleetVehicle>[]>(() => {
       attributeKey: "modelName",
       label: t("labels.vehicle.name"),
       width: "auto",
-      sortable: true,
     },
     ...extraColumns.value,
   ];

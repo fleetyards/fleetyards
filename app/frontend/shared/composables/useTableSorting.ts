@@ -1,8 +1,11 @@
+import { type MaybeRefOrGetter } from "vue";
 import { RouteLocationRaw } from "vue-router";
 
 type Props = {
   field: string | number | symbol;
-  fallback?: string;
+  // Read on every render, not once: a list's default can arrive after its
+  // controls do -- the hangar's comes with the signed-in user.
+  fallback?: MaybeRefOrGetter<string | undefined>;
   id?: string;
 };
 
@@ -12,9 +15,12 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
   const currentDirection = computed((): "asc" | "desc" | undefined => {
     const sorts = (route.query.s as string) || "";
     const [sortCol, sortDirection] = sorts.split(" ");
+    const fallbackSort = toValue(fallback);
 
-    if (!sorts && fallback && fallback.includes(String(field))) {
-      return (fallback.split(" ")[1] as "asc" | "desc") || "asc";
+    const [fallbackCol, fallbackDirection] = (fallbackSort || "").split(" ");
+
+    if (!sorts && fallbackCol === String(field)) {
+      return (fallbackDirection as "asc" | "desc") || "asc";
     }
 
     if (sortCol === field) {

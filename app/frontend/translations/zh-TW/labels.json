@@ -1,6 +1,7 @@
 {
   "zh-TW": {
     "labels": {
+      "sortOptions": "排序選項",
       "loading": "載入中…",
       "true": "是",
       "false": "否",
@@ -1487,6 +1488,13 @@
         "fleetInvites": "沒有邀請"
       },
       "user": {
+        "hangarDefaultSort": "預設順序",
+        "hangarDefaultSortInfo": "按住艦船的拖曳柄即可重新排序。僅在自訂順序生效且未設定篩選時可用。",
+        "hangarDefaultSortOptions": {
+          "standard": "標準（旗艦優先，然後依名稱）",
+          "asc": "%{field}，升冪",
+          "desc": "%{field}，降冪"
+        },
         "rsiHandle": "使用者名",
         "rsiHandleVerified": "已透過 Citizen iD 驗證",
         "location": "位置",
@@ -1523,6 +1531,7 @@
         "passwordConfirmation": "確認密碼"
       },
       "vehicle": {
+        "customOrder": "自訂",
         "name": "名稱",
         "states": "狀態",
         "serial": "序號",

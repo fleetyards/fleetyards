@@ -10,7 +10,7 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import FilterForm from "@/frontend/components/Commodities/FilterForm/index.vue";
 import CommoditiesList from "@/frontend/components/Commodities/List/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useCommoditySortFields } from "@/frontend/composables/useCommoditySortFields";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -83,7 +83,7 @@ const sortFields = useCommoditySortFields();
     </template>
 
     <template #sort>
-      <SortBar :columns="sortFields" default-sort="name asc" />
+      <ListToolbar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, emptyVisible: listEmpty }">

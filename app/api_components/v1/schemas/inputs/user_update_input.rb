@@ -22,6 +22,7 @@ module V1
             publicHangar: {type: :boolean},
             publicHangarLoaners: {type: :boolean},
             publicHangarStats: {type: :boolean},
+            hangarDefaultSort: ::V1::Schemas::Enums::NullableVehicleSortEnum,
             publicWishlist: {type: :boolean},
             friendsHangar: {type: :boolean},
             friendsHangarStats: {type: :boolean},

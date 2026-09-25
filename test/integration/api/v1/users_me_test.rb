@@ -167,6 +167,21 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /users/me sets and clears the hangar default order" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 200, body: {hangarDefaultSort: "rank asc"} do
+      assert_equal "rank asc", parsed_body["hangarDefaultSort"]
+    end
+
+    assert_api_response :put, 200, body: {hangarDefaultSort: nil} do
+      assert_nil parsed_body["hangarDefaultSort"]
+    end
+
+    assert_nil user.reload.hangar_default_sort
+  end
+
   test "PUT /users/me returns 401 when not signed in" do
     assert_api_response :put, 401, body: {discord: "x"}
   end

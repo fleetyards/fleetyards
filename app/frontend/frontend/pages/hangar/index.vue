@@ -6,14 +6,16 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
+import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
+import { useVehicleReorder } from "@/frontend/composables/useVehicleReorder";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
+import VehiclesListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import HangarImportBtn from "@/frontend/components/Hangar/ImportBtn/index.vue";
@@ -60,8 +62,6 @@ import {
 } from "@/services/fyApi";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
-
-const sortFields = useVehicleSortFields();
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 
@@ -148,6 +148,40 @@ const shareUrl = computed(() => {
 });
 
 const route = useRoute();
+
+// What the toolbar shows as chosen while the URL names no sort. Unset, the
+// server leads with the flagship and then sorts by name -- an order no chip
+// stands for, so none is shown as chosen.
+const defaultSort = computed(
+  () => currentUser?.value?.hangarDefaultSort ?? undefined,
+);
+
+const activeSort = computed(() =>
+  typeof route.query.s === "string" ? route.query.s : defaultSort.value,
+);
+
+const sortFields = useHangarSortFields({ include: activeSort });
+
+// Dragging writes the owner's order, so it is only offered while that order is
+// the one on screen: under another sort, or with some ships filtered out, a
+// drop would land somewhere the user cannot see. The same holds for the moment
+// after switching to it -- the list still shows the previous sort's ships until
+// the ranked ones arrive, and a drop placed among those would be saved.
+const canSort = computed(
+  () =>
+    activeSort.value === "rank asc" &&
+    !isFilterSelected.value &&
+    !asyncStatus.isPlaceholderData.value,
+);
+
+// Shared by the table's row boxes and the toolbar's select-all box and bulk
+// actions above it.
+const selected = ref<string[]>([]);
+
+const { orderedVehicles, onSort, moveBy } = useVehicleReorder(
+  computed(() => vehicles.value?.items),
+  hangarQueryParams,
+);
 
 watch(
   () => route.query.q,
@@ -442,7 +476,7 @@ const openDisplayOptionsModal = () => {
     key="hangar"
     :hide-loading="fleetchartVisible || !gridView"
     :hide-empty="!gridView"
-    :records="vehicles?.items || []"
+    :records="orderedVehicles"
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
@@ -561,8 +595,24 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #sort>
-      <!-- Grid view only: the table carries the same sorts on its headings. -->
-      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
+      <!-- In both views: the custom order has no column heading, so the
+           table alone could never switch to it. The table's rows are picked
+           from here too; the cards have no boxes to pick them by. -->
+      <ListToolbar
+        v-model:selected="selected"
+        :columns="sortFields"
+        :default-sort="defaultSort"
+        :selectable="!gridView"
+        :record-ids="orderedVehicles.map((vehicle) => vehicle.id)"
+        :selection-disabled="asyncStatus.isLoading.value"
+      >
+        <template #selected-actions>
+          <VehiclesListActions
+            :selected="selected"
+            @reset-selected="selected = []"
+          />
+        </template>
+      </ListToolbar>
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
@@ -571,13 +621,18 @@ const openDisplayOptionsModal = () => {
         :records="records"
         :filter-visible="filterVisible"
         primary-key="id"
+        :sortable="canSort"
+        sort-handle=".vehicle-panel-grip"
+        @sort="onSort"
       >
         <template #default="{ record }">
           <VehiclePanel
             :vehicle="record"
             :details="detailsVisible"
             :editable="true"
+            :sortable="canSort"
             :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+            @move="(offset) => moveBy(record.id, offset)"
           />
         </template>
       </Grid>
@@ -586,8 +641,13 @@ const openDisplayOptionsModal = () => {
         v-else
         :loading="loading"
         :empty-visible="emptyVisible"
-        :vehicles="vehicles?.items || []"
+        :vehicles="orderedVehicles"
+        v-model:selected="selected"
         :editable="true"
+        :sortable="canSort"
+        :selection-controls="false"
+        @sort="onSort"
+        @move="moveBy"
       />
 
       <FleetchartApp

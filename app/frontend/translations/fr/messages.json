@@ -55,6 +55,7 @@
         "failure": "Profile could not be updated."
       },
       "updateHangar": {
+        "failure": "Les paramètres du hangar n'ont pas pu être mis à jour.",
         "success": "Paramètres du Hangar mis à jour."
       },
       "updatePrivacy": {
@@ -112,6 +113,9 @@
         "failure": "Échec de l'exportation, veuillez réessayer plus tard."
       },
       "vehicle": {
+        "move": {
+          "failure": "L'ordre n'a pas pu être enregistré."
+        },
         "add": {
           "success": {
             "noHtml": "Your new %{model} will be delivered to your Hangar",

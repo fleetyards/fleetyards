@@ -11,7 +11,7 @@ module Api
         unless: -> { warden.authenticate?(scope: :user) },
         except: %i[check_serial]
 
-      before_action :set_vehicle, only: %i[show update destroy]
+      before_action :set_vehicle, only: %i[show update destroy move]
 
       def create
         @vehicle = Vehicle.new(
@@ -55,6 +55,22 @@ module Api
         return if @vehicle.update(vehicle_params)
 
         render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
+      end
+
+      def move
+        after_id = vehicle_move_params[:after_id]
+        before_id = vehicle_move_params[:before_id]
+
+        if after_id.blank? == before_id.blank? || [after_id, before_id].include?(@vehicle.id)
+          render json: ValidationError.new("vehicle.move"), status: :bad_request
+          return
+        end
+
+        neighbour = current_resource_owner.vehicles.find(after_id || before_id)
+
+        @vehicle.move_next_to!(neighbour, after: after_id.present?)
+
+        head :no_content
       end
 
       def update_bulk
@@ -142,6 +158,10 @@ module Api
             :model_paint_id, :bought_via,
             hangar_group_ids: [], model_module_ids: [], model_upgrade_ids: [], alternative_names: []
           ).merge(user_id: current_resource_owner.id)
+      end
+
+      private def vehicle_move_params
+        params.transform_keys(&:underscore).permit(:after_id, :before_id)
       end
 
       private def vehicle_create_bulk_params

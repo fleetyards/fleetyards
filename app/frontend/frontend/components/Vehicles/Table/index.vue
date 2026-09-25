@@ -16,7 +16,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 
-import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import {
+  type BaseTableCol,
+  BaseTableColAlignmentEnum,
+} from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
@@ -36,13 +39,28 @@ type Props = {
   wishlist?: boolean;
   loading?: boolean;
   emptyVisible?: boolean;
+  // Draws a grip beside each name and lets the rows be dragged by it.
+  sortable?: boolean;
+  // Off where the list's toolbar carries the select-all box and the bulk
+  // actions; the page then binds `selected` to hand them the picked rows.
+  selectionControls?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  selectionControls: true,
+});
+
+const emit = defineEmits<{
+  sort: [keys: string[], moved: string];
+  // One place up or down, from the grip's arrow keys.
+  move: [id: string, offset: number];
+}>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
-const selected = ref<string[]>([]);
+// Held here unless the page binds it: a table on its own keeps its selection
+// to itself, a table under a toolbar shares it.
+const selected = defineModel<string[]>("selected", { default: () => [] });
 
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();
@@ -54,7 +72,6 @@ const extraColumns = computed(() => {
         return {
           name: col,
           label: t(`labels.hangarTable.columns.${col}`),
-          sortable: true,
         };
       })
       .filter((col) => {
@@ -67,7 +84,6 @@ const extraColumns = computed(() => {
       return {
         name: col,
         label: t(`labels.hangarTable.columns.${col}`),
-        sortable: true,
       };
     })
     .filter((col) => {
@@ -110,14 +126,27 @@ const manufacturerColumnVisible = computed(() => {
   );
 });
 
+// No column sorts from its heading: the list toolbar above the table is the
+// sort control in both views.
 const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
   return [
+    // First after the box, where a row's handle is looked for, and apart from
+    // the name so a grab never lands on its link.
+    ...(props.sortable
+      ? [
+          {
+            name: "grip",
+            label: "",
+            width: "40px",
+            alignment: BaseTableColAlignmentEnum.CENTER,
+          },
+        ]
+      : []),
     ...extraImageColumns.value,
     {
       name: "name",
       label: t("labels.vehicle.name"),
       width: "40%",
-      sortable: true,
     },
     ...extraColumns.value,
     {
@@ -196,7 +225,11 @@ const resetSelected = () => {
       :selected="selected"
       :loading="loading"
       :empty-visible="emptyVisible"
+      :sortable="sortable"
+      sort-handle=".vehicles-table-grip"
+      :selection-controls="selectionControls"
       @selected-change="onSelectedChange"
+      @sort="(keys, moved) => emit('sort', keys, moved)"
     >
       <template #selected-actions>
         <ListActions :selected="selected" :wishlist="wishlist" />
@@ -238,6 +271,22 @@ const resetSelected = () => {
           transparent
           without-fallback
         />
+      </template>
+      <template #col-grip="{ record }">
+        <button
+          v-tooltip="t('actions.reorder')"
+          type="button"
+          class="vehicles-table-grip"
+          :aria-label="t('actions.reorder')"
+          aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight"
+          data-test="vehicles-table-grip"
+          @keydown.up.prevent="emit('move', record.id, -1)"
+          @keydown.left.prevent="emit('move', record.id, -1)"
+          @keydown.down.prevent="emit('move', record.id, 1)"
+          @keydown.right.prevent="emit('move', record.id, 1)"
+        >
+          <i class="fa-duotone fa-grip-vertical" />
+        </button>
       </template>
       <template #col-name="{ record }">
         <div class="name">

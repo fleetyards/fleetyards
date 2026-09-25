@@ -133,6 +133,50 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar sorts by the owner's rank" do
+    user = create(:user)
+    alpha, bravo, charlie = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, user:, name:) }
+    alpha.move_next_to!(charlie, after: true)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => "rank asc"}} do
+      assert_equal [bravo.id, charlie.id, alpha.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  # Until the backfill reaches them, unranked ships come after the ranked ones in
+  # the order the backfill will rank them.
+  test "GET /hangar sorts unranked ships behind the ranked ones in the standard order" do
+    user = create(:user)
+    charlie, alpha, bravo = %w[Charlie Alpha Bravo].map { |name| create(:vehicle, user:, name:) }
+    Vehicle.where(id: [alpha.id, bravo.id]).update_all(rank: nil)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => "rank asc"}} do
+      assert_equal [charlie.id, alpha.id, bravo.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "GET /hangar without a sort uses the owner's default order" do
+    user = create(:user, hangar_default_sort: "rank desc")
+    vehicles = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, user:, name:) }
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal vehicles.reverse.map(&:id), parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  test "GET /hangar with a sort ignores the owner's default order" do
+    user = create(:user, hangar_default_sort: "rank desc")
+    vehicles = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, user:, name:) }
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => "name asc"}} do
+      assert_equal vehicles.map(&:id), parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /hangar returns 400 for invalid query" do
     user = create(:user, vehicle_count: 1)
     sign_in user

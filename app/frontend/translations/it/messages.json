@@ -55,6 +55,7 @@
         "failure": "Il profilo non può essere aggiornato."
       },
       "updateHangar": {
+        "failure": "Impossibile aggiornare le impostazioni dell'hangar.",
         "success": "Impostazioni Hangar aggiornate."
       },
       "updatePrivacy": {
@@ -112,6 +113,9 @@
         "failure": "Esportazione fallita. Per favore riprova più tardi."
       },
       "vehicle": {
+        "move": {
+          "failure": "Impossibile salvare l'ordine."
+        },
         "add": {
           "success": {
             "noHtml": "La tua nuova %{model} sarà consegnata al tuo Hangar",

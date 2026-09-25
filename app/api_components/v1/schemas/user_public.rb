@@ -20,13 +20,14 @@ module V1
           homepage: {type: :string},
           publicHangarLoaners: {type: :boolean},
           publicHangarStats: {type: :boolean},
+          hangarDefaultSort: ::V1::Schemas::Enums::NullableVehicleSortEnum,
           publicWishlist: {type: :boolean},
           supporter: {type: :boolean},
           supporterTier: {type: :integer},
           supporterRecurring: {type: :boolean}
         },
         additionalProperties: false,
-        required: %w[username publicHangarLoaners publicHangarStats publicWishlist supporter supporterTier supporterRecurring]
+        required: %w[username publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist supporter supporterTier supporterRecurring]
       })
     end
   end

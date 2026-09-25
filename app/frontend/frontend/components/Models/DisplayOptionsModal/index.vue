@@ -15,11 +15,21 @@ import {
   useModelsStore,
   ModelTableViewColsEnum,
   ModelTableViewImageColsEnum,
+  ModelSortFieldsEnum,
 } from "@/frontend/stores/models";
+import { useModelSortFields } from "@/frontend/composables/useModelSortFields";
+import SortFieldsFieldset from "@/frontend/components/SortFieldsFieldset/index.vue";
 
 const { t } = useI18n();
 
 const modelsStore = useModelsStore();
+
+const allSortFields = useModelSortFields({ all: true });
+
+const sortFields = computed({
+  get: () => modelsStore.sortFields,
+  set: (fields) => modelsStore.setSortFields(fields as ModelSortFieldsEnum[]),
+});
 
 onMounted(() => {
   tableViewCols.value = modelsStore.tableViewCols;
@@ -98,6 +108,12 @@ const displayAsList = () => {
           <i class="fa-duotone fa-list"></i>
           {{ t("actions.showTableView") }}
         </Btn>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <SortFieldsFieldset v-model="sortFields" :fields="allSortFields" />
       </div>
     </div>
     <hr />

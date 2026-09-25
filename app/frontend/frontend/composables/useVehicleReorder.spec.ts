@@ -1,0 +1,222 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { Vehicle, VehicleMoveInput } from "@/services/fyApi";
+
+type MoveCall = { id: string; data: VehicleMoveInput };
+
+const move = vi.fn((_variables: MoveCall) => Promise.resolve());
+const displayAlert = vi.fn();
+
+vi.mock("@/services/fyApi", () => ({
+  useMoveVehicle: () => ({ mutateAsync: move }),
+}));
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displayAlert }),
+}));
+
+vi.mock("@/shared/composables/useI18n", () => ({
+  useI18n: () => ({ t: (key: string) => key }),
+}));
+
+const { useVehicleReorder } = await import("./useVehicleReorder");
+
+const vehicle = (id: string) => ({ id }) as Vehicle;
+
+const setup = () => {
+  const items = ref<Vehicle[] | undefined>(
+    ["alpha", "bravo", "charlie"].map(vehicle),
+  );
+  const listKey = ref({ page: 1 });
+
+  return { items, listKey, ...useVehicleReorder(items, listKey) };
+};
+
+const ids = (vehicles: Vehicle[]) => vehicles.map((item) => item.id);
+
+describe("useVehicleReorder", () => {
+  beforeEach(() => {
+    move.mockReset();
+    move.mockImplementation(() => Promise.resolve());
+    displayAlert.mockClear();
+  });
+
+  it("starts in the order the server sent", () => {
+    const { orderedVehicles } = setup();
+
+    expect(ids(orderedVehicles.value)).toEqual(["alpha", "bravo", "charlie"]);
+  });
+
+  it("places a dragged ship after the one now ahead of it", async () => {
+    const { onSort } = setup();
+
+    await onSort(["bravo", "charlie", "alpha"], "alpha");
+
+    expect(move).toHaveBeenCalledTimes(1);
+    expect(move).toHaveBeenCalledWith({
+      id: "alpha",
+      data: { afterId: "charlie" },
+    });
+  });
+
+  // Nothing is ahead of a ship dropped at the top of a page, and the ship that
+  // is ahead of it in the whole order sits on the page before.
+  it("places a ship dragged to the top before the one now behind it", async () => {
+    const { onSort } = setup();
+
+    await onSort(["charlie", "alpha", "bravo"], "charlie");
+
+    expect(move).toHaveBeenCalledWith({
+      id: "charlie",
+      data: { beforeId: "alpha" },
+    });
+  });
+
+  it("redraws the order without waiting for the server", () => {
+    move.mockImplementation(() => new Promise(() => undefined));
+    const { onSort, orderedVehicles } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "alpha", "charlie"]);
+  });
+
+  it("puts the ship back and says so when the move fails", async () => {
+    move.mockImplementation(() => Promise.reject(new Error("nope")));
+    const { onSort, orderedVehicles } = setup();
+
+    await onSort(["bravo", "alpha", "charlie"], "alpha");
+
+    expect(ids(orderedVehicles.value)).toEqual(["alpha", "bravo", "charlie"]);
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "messages.vehicle.move.failure",
+    });
+  });
+
+  // A snapshot from before the failed drag would also undo a later one that
+  // landed; the server's own order is what the list goes back to.
+  it("goes back to the server's order when one of two drags fails", async () => {
+    let failFirst: (reason: Error) => void = () => undefined;
+    move.mockImplementationOnce(
+      () => new Promise((_resolve, reject) => (failFirst = reject)),
+    );
+    const { items, onSort, orderedVehicles } = setup();
+
+    const first = onSort(["bravo", "alpha", "charlie"], "alpha");
+    void onSort(["bravo", "charlie", "alpha"], "charlie");
+
+    items.value = ["bravo", "charlie", "alpha"].map(vehicle);
+    await nextTick();
+
+    failFirst(new Error("nope"));
+    await first;
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "charlie", "alpha"]);
+  });
+
+  it("sends the next move only once the one before it has landed", async () => {
+    let finishFirst: () => void = () => undefined;
+    move.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (finishFirst = resolve)),
+    );
+    const { onSort } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+    const second = onSort(["bravo", "charlie", "alpha"], "charlie");
+    await nextTick();
+
+    expect(move).toHaveBeenCalledTimes(1);
+
+    finishFirst();
+    await second;
+
+    expect(move).toHaveBeenCalledTimes(2);
+    expect(move.mock.calls[1][0]).toEqual({
+      id: "charlie",
+      data: { afterId: "bravo" },
+    });
+  });
+
+  // A page read while the move is on its way was answered before it landed.
+  it("keeps the dragged order through a refresh while the move is out", async () => {
+    let finishMove: () => void = () => undefined;
+    move.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (finishMove = resolve)),
+    );
+    const { items, onSort, orderedVehicles } = setup();
+
+    const moved = onSort(["bravo", "alpha", "charlie"], "alpha");
+    items.value = ["alpha", "bravo", "charlie"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "alpha", "charlie"]);
+
+    finishMove();
+    await moved;
+    items.value = ["charlie", "bravo", "alpha"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["charlie", "bravo", "alpha"]);
+  });
+
+  it("moves a ship one place from the keyboard", async () => {
+    const { moveBy, orderedVehicles } = setup();
+
+    await moveBy("alpha", 1);
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "alpha", "charlie"]);
+    expect(move).toHaveBeenCalledWith({
+      id: "alpha",
+      data: { afterId: "bravo" },
+    });
+  });
+
+  it("goes nowhere past either end of the page", async () => {
+    const { moveBy } = setup();
+
+    await moveBy("alpha", -1);
+    await moveBy("charlie", 1);
+
+    expect(move).not.toHaveBeenCalled();
+  });
+
+  // A new page is a different list, not a stale read of this one.
+  it("shows a new page even while a move is out", async () => {
+    move.mockImplementationOnce(() => new Promise<void>(() => undefined));
+    const { items, listKey, onSort, orderedVehicles } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+    listKey.value = { page: 2 };
+    items.value = ["delta", "echo"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["delta", "echo"]);
+  });
+
+  // The second drag named its neighbour in an order that was never saved.
+  it("drops a drag queued behind one that failed", async () => {
+    move.mockImplementationOnce(() => Promise.reject(new Error("nope")));
+    const { onSort } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+    await onSort(["bravo", "charlie", "alpha"], "charlie");
+
+    expect(move).toHaveBeenCalledTimes(1);
+  });
+
+  it("follows the server when it sends a new page", async () => {
+    const { items, orderedVehicles } = setup();
+
+    items.value = ["delta", "echo"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["delta", "echo"]);
+  });
+
+  it("ignores a drop for a ship it does not hold", async () => {
+    const { onSort } = setup();
+
+    await onSort(["alpha", "bravo"], "zulu");
+
+    expect(move).not.toHaveBeenCalled();
+  });
+});

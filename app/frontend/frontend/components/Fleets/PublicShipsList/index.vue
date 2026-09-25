@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
+import { useFleetSortFields } from "@/frontend/composables/useFleetSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -48,6 +50,15 @@ const comlink = useComlink();
 
 const { detailsVisible } = storeToRefs(fleetStore);
 const { grouped, gridView } = storeToRefs(displayStore);
+
+const route = useRoute();
+
+// The fleet list's own pick of chips -- the two share their display options --
+// plus whichever sort the list is in right now.
+const sortFields = useFleetSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : undefined,
+});
 
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
@@ -93,7 +104,7 @@ const vehiclesQueryKey = computed(() => {
   );
 });
 
-const { filters } = useFilters<FleetVehicleQuery>({
+const { getQuery } = useFilters<FleetVehicleQuery>({
   updateCallback: async () => {
     await refetch();
   },
@@ -105,7 +116,9 @@ const vehiclesQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
+    // `getQuery` rather than the bare filters: they leave out `s`, and the
+    // list would not follow its own sort chips.
+    q: getQuery(),
     grouped: grouped.value,
   };
 });
@@ -154,6 +167,10 @@ const refetch = async () => {
       <template #filter>
         <PublicFleetVehiclesFilterForm />
       </template>
+      <template #sort>
+        <ListToolbar :columns="sortFields" default-sort="modelName asc" />
+      </template>
+
       <template v-if="gridView" #skeleton="{ filterVisible }">
         <GridSkeleton
           :details="detailsVisible"

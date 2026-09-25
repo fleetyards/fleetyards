@@ -19326,6 +19326,8 @@ components:
       - modelProductionStatus desc
       - modelFocus asc
       - modelFocus desc
+      - rank asc
+      - rank desc
       x-enumNames:
       - FLAGSHIP_DESC
       - FLAGSHIP_ASC
@@ -19363,6 +19365,8 @@ components:
       - MODEL_PRODUCTION_STATUS_DESC
       - MODEL_FOCUS_ASC
       - MODEL_FOCUS_DESC
+      - RANK_ASC
+      - RANK_DESC
       title: VehicleSortEnum
     Vehicles:
       type: object

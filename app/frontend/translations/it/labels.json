@@ -1,6 +1,7 @@
 {
   "it": {
     "labels": {
+      "sortOptions": "Opzioni di ordinamento",
       "loading": "Caricamento…",
       "true": "Si",
       "false": "No",
@@ -1487,6 +1488,13 @@
         "fleetInvites": "Nessun Invito presente"
       },
       "user": {
+        "hangarDefaultSort": "Ordine predefinito",
+        "hangarDefaultSortInfo": "Trascina una nave per la sua maniglia per riordinarla. Disponibile finché l'ordine personalizzato è attivo e nessun filtro è impostato.",
+        "hangarDefaultSortOptions": {
+          "standard": "Standard (nave ammiraglia prima, poi nome)",
+          "asc": "%{field}, crescente",
+          "desc": "%{field}, decrescente"
+        },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Verificato tramite Citizen iD",
         "location": "Posizione",
@@ -1523,6 +1531,7 @@
         "passwordConfirmation": "Conferma password"
       },
       "vehicle": {
+        "customOrder": "Personalizzato",
         "name": "Nome",
         "states": "Stati",
         "serial": "Seriale",

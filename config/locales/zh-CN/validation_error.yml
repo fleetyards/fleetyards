@@ -28,6 +28,7 @@ zh-CN:
       update: 飞船无法更新。
       bulk_create: 部分舰船无法添加。
       bulk_update: 部分舰船无法更新。
+      move: 舰船无法移动。请指定恰好一艘其他舰船作为放置位置的参照。
       move_all_ingame_to_wish_list: 无法将游戏内舰船移至愿望清单。
       sync: 无法同步机库。
     vehicle_loadout:

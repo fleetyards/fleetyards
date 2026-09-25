@@ -28,6 +28,9 @@ type Props = {
   wishlist?: boolean;
   highlight?: boolean;
   loanersHintVisible?: boolean;
+  // Draws the grip the grid drags by. The card stays a link: a whole card that
+  // is also a drag target cannot be clicked without moving it a little first.
+  sortable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,7 +39,10 @@ const props = withDefaults(defineProps<Props>(), {
   wishlist: false,
   highlight: false,
   loanersHintVisible: false,
+  sortable: false,
 });
+
+const emit = defineEmits<{ move: [offset: number] }>();
 
 const { t } = useI18n();
 
@@ -218,6 +224,23 @@ const tone = computed(() => {
       </span>
     </template>
     <template #heading-actions>
+      <!-- A button, so the keyboard can reach it: the arrow keys move the
+           ship one place, the same move a drag by it makes. -->
+      <button
+        v-if="sortable"
+        v-tooltip="t('actions.reorder')"
+        type="button"
+        class="vehicle-panel-grip"
+        :aria-label="t('actions.reorder')"
+        aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight"
+        data-test="vehicle-panel-grip"
+        @keydown.up.prevent="emit('move', -1)"
+        @keydown.left.prevent="emit('move', -1)"
+        @keydown.down.prevent="emit('move', 1)"
+        @keydown.right.prevent="emit('move', 1)"
+      >
+        <i class="fa-duotone fa-grip-vertical" />
+      </button>
       <VehicleContextMenu
         v-if="editable && !vehicle.loaner"
         :vehicle="vehicle as Vehicle"

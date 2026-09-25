@@ -80,7 +80,11 @@ const router = createRouter({
   ],
 });
 
-const mount = async (props: { vehicle: Vehicle; highlight?: boolean }) => {
+const mount = async (props: {
+  vehicle: Vehicle;
+  highlight?: boolean;
+  sortable?: boolean;
+}) => {
   await router.push({ name: "hangar" });
   await router.isReady();
 
@@ -123,5 +127,31 @@ describe("VehiclesPanel", () => {
     expect(wrapper.find(".panel--primary").exists()).toBe(true);
     expect(wrapper.find(".panel--highlight").exists()).toBe(false);
     expect(wrapper.find(".vehicle-panel-flagship-icon").exists()).toBe(true);
+  });
+
+  it("draws no grip unless the grid can be dragged", async () => {
+    const wrapper = await mount({ vehicle: vehicle() });
+
+    expect(wrapper.find('[data-test="vehicle-panel-grip"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("draws the grip the grid drags by", async () => {
+    const wrapper = await mount({ vehicle: vehicle(), sortable: true });
+
+    expect(
+      wrapper.find('[data-test="vehicle-panel-grip"]').classes(),
+    ).toContain("vehicle-panel-grip");
+  });
+
+  it("moves the ship one place with the arrow keys on its grip", async () => {
+    const wrapper = await mount({ vehicle: vehicle(), sortable: true });
+    const grip = wrapper.find('[data-test="vehicle-panel-grip"]');
+
+    await grip.trigger("keydown", { key: "ArrowUp" });
+    await grip.trigger("keydown", { key: "ArrowRight" });
+
+    expect(wrapper.emitted("move")).toEqual([[-1], [1]]);
   });
 });

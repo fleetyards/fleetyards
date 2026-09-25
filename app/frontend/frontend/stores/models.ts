@@ -29,11 +29,31 @@ export enum ModelTableViewColsEnum {
   PLEDGE_PRICE = "pledgePrice",
 }
 
+// Every sort the ships list can offer as a chip. Crew and fuel have columns
+// but no sort: the server does not order by them.
+export enum ModelSortFieldsEnum {
+  NAME = "name",
+  MANUFACTURER_NAME = "manufacturerName",
+  LENGTH = "length",
+  BEAM = "beam",
+  HEIGHT = "height",
+  MASS = "mass",
+  CARGO = "cargo",
+  SCM_SPEED = "scmSpeed",
+  MAX_SPEED = "maxSpeed",
+  GROUND_MAX_SPEED = "groundMaxSpeed",
+  FOCUS = "focus",
+  PRODUCTION_STATUS = "productionStatus",
+  PRICE = "price",
+  PLEDGE_PRICE = "pledgePrice",
+}
+
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
   modelState: ModelStateEnum;
   tableViewCols: ModelTableViewColsEnum[];
   tableViewImageCols: ModelTableViewImageColsEnum[];
+  sortFields: ModelSortFieldsEnum[];
 }
 
 export const useModelsStore = defineStore("models", {
@@ -54,6 +74,14 @@ export const useModelsStore = defineStore("models", {
       ModelTableViewColsEnum.MASS,
       ModelTableViewColsEnum.CARGO,
       ModelTableViewColsEnum.MIN_CREW,
+    ],
+    sortFields: [
+      ModelSortFieldsEnum.NAME,
+      ModelSortFieldsEnum.MANUFACTURER_NAME,
+      ModelSortFieldsEnum.LENGTH,
+      ModelSortFieldsEnum.CARGO,
+      ModelSortFieldsEnum.PRICE,
+      ModelSortFieldsEnum.PRODUCTION_STATUS,
     ],
   }),
   actions: {
@@ -80,6 +108,9 @@ export const useModelsStore = defineStore("models", {
     setTableViewImageCols(cols: ModelTableViewImageColsEnum[]) {
       this.tableViewImageCols = cols;
     },
+    setSortFields(fields: ModelSortFieldsEnum[]) {
+      this.sortFields = fields;
+    },
   },
   persist: {
     pick: [
@@ -89,6 +120,7 @@ export const useModelsStore = defineStore("models", {
       "gridView",
       "tableViewCols",
       "tableViewImageCols",
+      "sortFields",
     ],
   },
 });

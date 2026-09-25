@@ -27,6 +27,7 @@
 #  friends_hangar_stats      :boolean          default(FALSE), not null
 #  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
+#  hangar_default_sort       :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string
@@ -792,5 +793,26 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     membership.fleet.destroy!
 
     assert_nil membership.user.reload.supported_fleet_id
+  end
+
+  test "the hangar default order accepts a vehicle sort and nothing else" do
+    user = build(:user, hangar_default_sort: "modelPrice desc")
+    assert user.valid?
+
+    user.hangar_default_sort = "password asc"
+    assert_not user.valid?
+    assert user.errors.added?(:hangar_default_sort, :inclusion, value: "password asc")
+  end
+
+  test "a blank hangar default order is stored as none" do
+    user = create(:user, hangar_default_sort: "")
+
+    assert_nil user.reload.hangar_default_sort
+    assert_nil user.hangar_sorting_params
+  end
+
+  test "a chosen hangar default order falls back on the rank for ties" do
+    assert_equal ["model_price desc", "rank asc"], build(:user, hangar_default_sort: "modelPrice desc").hangar_sorting_params
+    assert_equal ["rank desc"], build(:user, hangar_default_sort: "rank desc").hangar_sorting_params
   end
 end

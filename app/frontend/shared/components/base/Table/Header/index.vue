@@ -23,6 +23,7 @@ type Props = {
   allSelected?: boolean;
   hasActions?: boolean;
   defaultSort?: string;
+  selectAllVisible?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   allSelected: false,
   hasActions: false,
   defaultSort: undefined,
+  selectAllVisible: true,
 });
 
 const { t } = useI18n();
@@ -57,6 +59,7 @@ const cssClasses = (column: BaseTableCol<T>) => {
     <TableRow key="header">
       <TableCol v-if="props.selectable" as="th" variant="selection">
         <FormCheckbox
+          v-if="props.selectAllVisible"
           :disabled="props.loading || props.emptyVisible"
           name="all"
           :model-value="props.allSelected"

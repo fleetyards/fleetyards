@@ -28,6 +28,7 @@ zh-TW:
       update: 飛船無法更新。
       bulk_create: 部分艦船無法新增。
       bulk_update: 部分艦船無法更新。
+      move: 艦船無法移動。請指定恰好一艘其他艦船作為放置位置的參照。
       move_all_ingame_to_wish_list: 無法將遊戲內艦船移至願望清單。
       sync: 無法同步機庫。
     vehicle_loadout:

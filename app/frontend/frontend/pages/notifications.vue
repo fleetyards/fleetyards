@@ -11,7 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Empty from "@/shared/components/Empty/index.vue";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
@@ -478,7 +478,7 @@ const destroySelected = () =>
     </template>
 
     <template #sort>
-      <SortBar :columns="sortFields" default-sort="createdAt desc" />
+      <ListToolbar :columns="sortFields" default-sort="createdAt desc" />
     </template>
 
     <template #default="{ records: shown, emptyVisible }">

@@ -14,7 +14,10 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useWishlistStore,
   WishlistTableViewColsEnum,
+  WishlistSortFieldsEnum,
 } from "@/frontend/stores/wishlist";
+import { useWishlistSortFields } from "@/frontend/composables/useWishlistSortFields";
+import SortFieldsFieldset from "@/frontend/components/SortFieldsFieldset/index.vue";
 
 const { t } = useI18n();
 
@@ -35,6 +38,14 @@ onMounted(() => {
 });
 
 const wishlistStore = useWishlistStore();
+
+const allSortFields = useWishlistSortFields({ all: true });
+
+const sortFields = computed({
+  get: () => wishlistStore.sortFields,
+  set: (fields) =>
+    wishlistStore.setSortFields(fields as WishlistSortFieldsEnum[]),
+});
 
 const setupForm = () => {
   form.value = {
@@ -89,6 +100,12 @@ const displayAsList = () => {
           <i class="fa-duotone fa-list"></i>
           {{ t("actions.showTableView") }}
         </Btn>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12">
+        <SortFieldsFieldset v-model="sortFields" :fields="allSortFields" />
       </div>
     </div>
     <hr />

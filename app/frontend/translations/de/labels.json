@@ -1,6 +1,7 @@
 {
   "de": {
     "labels": {
+      "sortOptions": "Sortieroptionen",
       "loading": "Lädt…",
       "true": "Ja",
       "false": "Nein",
@@ -1487,6 +1488,13 @@
         "fleetInvites": "Keine Einladungen vorhanden"
       },
       "user": {
+        "hangarDefaultSort": "Standard-Reihenfolge",
+        "hangarDefaultSortInfo": "Zieh ein Schiff an seinem Griff, um es umzusortieren. Verfügbar, solange die eigene Reihenfolge aktiv und kein Filter gesetzt ist.",
+        "hangarDefaultSortOptions": {
+          "standard": "Standard (Flaggschiff zuerst, dann Name)",
+          "asc": "%{field}, aufsteigend",
+          "desc": "%{field}, absteigend"
+        },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Über Citizen iD verifiziert",
         "location": "Standort",
@@ -1523,6 +1531,7 @@
         "passwordConfirmation": "Passwort bestätigen"
       },
       "vehicle": {
+        "customOrder": "Eigene",
         "name": "Name",
         "states": "Zustände",
         "serial": "Seriennummer",

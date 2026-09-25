@@ -19,6 +19,8 @@ const TableComponent = Component as unknown as new (...args: unknown[]) => {
     primaryKey: keyof Row;
     loading?: boolean;
     skeletonRows?: number;
+    selectable?: boolean;
+    selected?: string[];
   };
 };
 
@@ -26,6 +28,8 @@ const mount = (props: {
   records: Row[];
   loading?: boolean;
   skeletonRows?: number;
+  selectable?: boolean;
+  selected?: string[];
 }) =>
   mountWithDefaults<typeof TableComponent>(TableComponent, {
     props: { columns, primaryKey: "slug", ...props },
@@ -154,5 +158,24 @@ describe("BaseTable", () => {
     });
 
     expect(skeletonRows(wrapper)[0].attributes("aria-hidden")).toBe("true");
+  });
+
+  // Back from the grid view with rows already picked: their boxes are ticked
+  // from the start, not only after the next pick.
+  it("ticks the rows it was handed as picked", async () => {
+    const wrapper = await mount({
+      records: [
+        { slug: "a", name: "A" },
+        { slug: "b", name: "B" },
+      ],
+      selectable: true,
+      selected: ["b"],
+    });
+
+    const ticked = wrapper
+      .findAll('[data-test="checkbox-item"]')
+      .map((box) => (box.element as HTMLInputElement).checked);
+
+    expect(ticked).toEqual([false, true]);
   });
 });

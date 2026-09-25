@@ -175,7 +175,7 @@ class Vehicle < ApplicationRecord
     "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
     "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
     "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
-    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc"
+    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc", "rank asc", "rank desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug
@@ -201,7 +201,7 @@ class Vehicle < ApplicationRecord
       "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
-      "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rsi_pledge_id",
+      "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
       "user_id", "vehicle_id", "wanted"
     ]
@@ -636,6 +636,105 @@ class Vehicle < ApplicationRecord
     return if model.blank? || !model.ingame_only?
 
     self.bought_via = :ingame
+  end
+
+  # `move_to!` takes an index into the owner's whole rank group, which holds the
+  # wishlist, hidden vehicles and loaners as well as whatever the caller is
+  # looking at, so the place is given by a neighbour instead.
+  #
+  # Only the rank is written: a full save would re-run the loaner, snub craft
+  # and fleet callbacks for a change none of them read.
+  def move_next_to!(neighbour, after:)
+    # A neighbour without a rank has no place to be counted from.
+    self.class.rank_unranked!(user_id)
+
+    self.class.lexorank_ranking.with_lock_if_enabled(self) do
+      neighbour_rank = Vehicle.where(id: neighbour.id).pick(:rank)
+      index = Vehicle.ranked.where(user_id:).where.not(id:).where(rank: ...neighbour_rank).count
+
+      # rubocop:disable Rails/SkipsModelValidations
+      update_columns(rank: move_to(after ? index + 1 : index))
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+
+    # Straight to the channels rather than through `broadcast_update`, which
+    # stays quiet for loaners and for ships an import created: moving either
+    # still changes the order every open hangar shows.
+    WishlistChannel.broadcast_to(user, to_jbuilder_hash)
+    HangarChannel.broadcast_to(user, to_jbuilder_hash)
+  end
+
+  RANK_WIDTH = 4
+  RANK_SPACE = 35 * 36**(RANK_WIDTH - 1)
+  RANK_DEFAULT_ORDER = "vehicles.flagship DESC, vehicles.name ASC, models.name ASC, " \
+    "vehicles.created_at ASC, vehicles.id ASC"
+
+  # Gives an owner's unranked vehicles a rank, and leaves every ranked one where
+  # it is.
+  #
+  # A hangar with no ranks at all is ranked in the order it shows by default, so
+  # a custom order starts from what the owner already sees. The ranks are
+  # fixed-width base-36 strings spread evenly below "z000", which leaves a few
+  # hundred values between neighbours for the largest hangar (~6k vehicles)
+  # before lexorank has to grow a rank by a character. Nothing may start with
+  # "z": lexorank treats "z" as the upper bound and raises when asked for a rank
+  # after one that begins with it.
+  #
+  # A hangar that has ranks keeps them, and its unranked vehicles are appended
+  # after the last one in that same default order.
+  # Ships a backfill has not reached yet have no rank, and would come after the
+  # ranked ones in no order at all. Behind the rank they fall into the order the
+  # backfill will give them, so ranking them changes nothing on screen.
+  def self.with_rank_tiebreak(sorts)
+    return sorts unless Array(sorts).any? { |sort| sort.start_with?("rank ") }
+
+    Array(sorts) + ["flagship desc", "name asc", "model_name asc", "created_at asc"]
+  end
+
+  def self.rank_unranked!(user_id)
+    return if user_id.blank? || !where(user_id:, rank: nil).exists?
+
+    transaction do
+      lexorank_ranking.with_lock_if_enabled(new(user_id:), transaction: true) do
+        unranked_ids = where(user_id:, rank: nil)
+          .left_joins(:model)
+          .order(Arel.sql(RANK_DEFAULT_ORDER))
+          .pluck(:id)
+
+        if where(user_id:).where.not(rank: nil).exists?
+          append_ranks(user_id, unranked_ids)
+        else
+          spread_ranks(unranked_ids)
+        end
+      end
+    end
+  end
+
+  private_class_method def self.spread_ranks(ids)
+    ranks = ids.each_with_index.map do |id, index|
+      [id, ((index + 1) * RANK_SPACE / (ids.size + 1)).to_s(36).rjust(RANK_WIDTH, "0")]
+    end
+
+    ranks.each_slice(1000) do |slice|
+      values = slice.map { |id, rank| "(#{connection.quote(id)}::uuid, #{connection.quote(rank)})" }.join(", ")
+
+      connection.execute(<<~SQL.squish)
+        UPDATE vehicles SET rank = ranks.rank
+        FROM (VALUES #{values}) AS ranks(id, rank)
+        WHERE vehicles.id = ranks.id
+      SQL
+    end
+  end
+
+  private_class_method def self.append_ranks(user_id, ids)
+    last = where(user_id:).maximum(:rank)
+
+    ids.each do |id|
+      last = lexorank_ranking.value_between(last, nil)
+      # rubocop:disable Rails/SkipsModelValidations
+      where(id:).update_all(rank: last)
+      # rubocop:enable Rails/SkipsModelValidations
+    end
   end
 
   protected def nil_if_blank

@@ -14,7 +14,9 @@ module Api
 
         def show
           normalize_sort_params(vehicle_query_params)
-          vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts])
+          vehicle_query_params["sorts"] = Vehicle.with_rank_tiebreak(
+            sorting_params(Vehicle, vehicle_query_params[:sorts], @user.hangar_sorting_params)
+          )
 
           scope = @user.vehicles
             .purchased

@@ -1,6 +1,7 @@
 {
   "es": {
     "labels": {
+      "sortOptions": "Opciones de orden",
       "loading": "Cargando…",
       "true": "Sí",
       "false": "No",
@@ -1487,6 +1488,13 @@
         "fleetInvites": "Sin invitaciones presentes"
       },
       "user": {
+        "hangarDefaultSort": "Orden predeterminado",
+        "hangarDefaultSortInfo": "Arrastra una nave por su asa para reordenarla. Disponible mientras el orden personalizado esté activo y no haya filtros.",
+        "hangarDefaultSortOptions": {
+          "standard": "Estándar (nave insignia primero, luego nombre)",
+          "asc": "%{field}, ascendente",
+          "desc": "%{field}, descendente"
+        },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Verificado mediante Citizen iD",
         "location": "Ubicación",
@@ -1523,6 +1531,7 @@
         "passwordConfirmation": "Confirmación de contraseña"
       },
       "vehicle": {
+        "customOrder": "Personalizado",
         "name": "Nombre",
         "states": "Estados",
         "serial": "Serie",

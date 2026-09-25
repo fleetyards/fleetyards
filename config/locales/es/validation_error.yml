@@ -31,6 +31,7 @@ es:
       update: La nave no pudo ser actualizada.
       bulk_create: Algunas naves no se pudieron añadir.
       bulk_update: No se pudieron actualizar algunas naves.
+      move: La nave no pudo ser movida. Indica exactamente otra nave junto a la que colocarla.
       move_all_ingame_to_wish_list: No se pudieron mover las naves del juego a la lista de deseos.
       sync: No se pudo sincronizar el hangar.
     vehicle_loadout:

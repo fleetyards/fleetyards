@@ -9,6 +9,8 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 import { type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { useHangarDefaultSortOptions } from "@/frontend/composables/useHangarDefaultSortOptions";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -35,6 +37,7 @@ const initialValues = ref<UserUpdateInput>({
   friendsHangarStats: sessionStore.currentUser?.friendsHangarStats,
   friendsWishlist: sessionStore.currentUser?.friendsWishlist,
   hideOwner: sessionStore.currentUser?.hideOwner,
+  hangarDefaultSort: sessionStore.currentUser?.hangarDefaultSort ?? null,
 });
 
 const setupForm = () => {
@@ -47,6 +50,7 @@ const setupForm = () => {
     friendsHangarStats: sessionStore.currentUser?.friendsHangarStats,
     friendsWishlist: sessionStore.currentUser?.friendsWishlist,
     hideOwner: sessionStore.currentUser?.hideOwner,
+    hangarDefaultSort: sessionStore.currentUser?.hangarDefaultSort ?? null,
   };
 };
 
@@ -81,6 +85,10 @@ const [friendsHangarStats, friendsHangarStatsProps] =
   defineField("friendsHangarStats");
 const [friendsWishlist, friendsWishlistProps] = defineField("friendsWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
+const [hangarDefaultSort, hangarDefaultSortProps] =
+  defineField("hangarDefaultSort");
+
+const hangarDefaultSortOptions = useHangarDefaultSortOptions();
 
 // See `narrowerAudienceDisabled`: a friend is a member of the public, so while
 // the public switch is on the friend one is not consulted at all.
@@ -188,6 +196,22 @@ const onSubmit = handleSubmit(async (values) => {
           name="hideOwner"
           v-bind="hideOwnerProps"
           :label="t('labels.user.hideOwner')"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <BaseSelect
+          v-model="hangarDefaultSort"
+          v-bind="hangarDefaultSortProps"
+          :options="hangarDefaultSortOptions"
+          :label="t('labels.user.hangarDefaultSort')"
+          :info="t('labels.user.hangarDefaultSortInfo')"
+          name="hangarDefaultSort"
+          :searchable="false"
+          :nullable="false"
+          unsorted
         />
       </div>
     </div>
