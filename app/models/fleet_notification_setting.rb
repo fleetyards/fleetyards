@@ -122,7 +122,7 @@ class FleetNotificationSetting < ApplicationRecord
     digest_enabled? &&
       discord_digest_sent_at == claimed_at &&
       digest_claim_current?(claimed_at) &&
-      now - claimed_at <= DIGEST_GRACE
+      now - digest_slot(claimed_at) <= DIGEST_GRACE
   end
 
   def digest_due?(now = Time.current)
