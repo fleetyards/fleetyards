@@ -76,4 +76,15 @@ describe("BaseListToolbar", () => {
 
     expect(wrapper.text()).toContain("bulk actions");
   });
+
+  // Rows picked on another page say nothing about this one.
+  it("leaves the box empty while only other pages have picked rows", async () => {
+    const wrapper = await mountBar({
+      selectable: true,
+      recordIds: ["a", "b"],
+      selected: ["z"],
+    });
+
+    expect(selectAll(wrapper).props("partial")).toBe(false);
+  });
 });

@@ -58,6 +58,10 @@ const allSelected = computed(
     props.recordIds.every((id) => selected.value.includes(id)),
 );
 
+const someSelected = computed(() =>
+  props.recordIds.some((id) => selected.value.includes(id)),
+);
+
 const onSelectAll = (value?: boolean) => {
   selected.value = value
     ? [...selected.value, ...props.recordIds].filter(uniqArray)
@@ -79,7 +83,7 @@ const onSelectAll = (value?: boolean) => {
       :model-value="allSelected"
       inline
       no-label
-      :partial="selected.length > 0 && !allSelected"
+      :partial="someSelected && !allSelected"
       data-test="list-toolbar-select-all"
       @update:model-value="onSelectAll"
     />
