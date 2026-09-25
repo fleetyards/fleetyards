@@ -423,7 +423,7 @@
             "missing_send_messages": "Le bot ne peut pas envoyer de messages sur ce serveur. Utilisez le lien d'installation pour l'autoriser à nouveau.",
             "channel_locked": "Le bot ne peut pas publier dans le salon choisi pour %{names}. Autorisez-le dans les permissions de ce salon.",
             "unknown_channel": "Le salon choisi pour %{names} n'existe plus sur Discord ou n'accepte plus de publications.",
-            "channel_shared": "%{names} utilise le salon d'annonces de la flotte, que lit chaque membre. Rien n'est publié pour lui tant qu'il n'a pas son propre salon."
+            "channel_shared": "%{names} partage un salon avec des lecteurs à qui ses événements sont cachés. Rien n'y est publié tant que chacun n'a pas son propre salon."
           },
           "statusOk": "Connecté à %{name}",
           "statusCodes": {

@@ -423,7 +423,7 @@
             "missing_send_messages": "Der Bot darf auf diesem Server keine Nachrichten senden. Autorisiere ihn über den Installationslink neu.",
             "channel_locked": "Der Bot kann nicht im Kanal posten, der für %{names} gewählt ist. Erlaube es in den Berechtigungen des Kanals.",
             "unknown_channel": "Der für %{names} gewählte Kanal existiert auf Discord nicht mehr oder nimmt keine Beiträge mehr an.",
-            "channel_shared": "%{names} nutzt den Ankündigungskanal der Flotte, den jedes Mitglied liest. Bis ein eigener Kanal gewählt ist, wird dafür nichts gepostet."
+            "channel_shared": "%{names} teilt einen Kanal mit Lesern, vor denen ihre Events verborgen sind. Dort wird nichts gepostet, bis jede einen eigenen Kanal hat."
           },
           "statusOk": "Verbunden mit %{name}",
           "statusCodes": {

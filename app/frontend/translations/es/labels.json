@@ -423,7 +423,7 @@
             "missing_send_messages": "El bot no puede enviar mensajes en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
             "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Permítelo en los permisos de ese canal.",
             "unknown_channel": "El canal elegido para %{names} ya no existe en Discord o ya no admite publicaciones.",
-            "channel_shared": "%{names} usa el canal de anuncios de la flota, que lee todo miembro. No se publica nada para ello hasta que tenga un canal propio."
+            "channel_shared": "%{names} comparte un canal con lectores a los que no se muestran sus eventos. No se publica nada allí hasta que cada uno tenga un canal propio."
           },
           "statusOk": "Conectado a %{name}",
           "statusCodes": {

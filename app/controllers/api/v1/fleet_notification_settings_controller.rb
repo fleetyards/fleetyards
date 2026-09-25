@@ -80,9 +80,9 @@ module Api
 
         return {} if owners.empty?
 
-        announcement = @setting.discord_announcement_channel_id
-        if announcement.present? && owners[announcement].size > 1
-          return {postingOk: false, postingCode: "channel_shared", postingDetail: (owners[announcement] - [owners[announcement].first]).join(", ")}
+        shared = shared_channel_owners
+        if shared.any?
+          return {postingOk: false, postingCode: "channel_shared", postingDetail: shared.join(", ")}
         end
 
         result = ::Discord::ChannelCapability.new(@setting.discord_guild_id).check(owners.keys)
@@ -91,6 +91,26 @@ module Api
           affected = result.channel_ids.flat_map { |id| owners[id] }.uniq
           payload[:postingDetail] = affected.join(", ") if affected.any?
         end
+      end
+
+      # The restricted audiences whose channel another audience also reads:
+      # the fleet's channel reaches everybody, and the officers' channel is
+      # kept from the squadrons as theirs is kept from the officers. Squadrons
+      # sharing one channel among themselves are left alone.
+      private def shared_channel_owners
+        announcement = @setting.discord_announcement_channel_id.presence
+        officers = @setting.discord_officers_channel_id.presence
+        squadrons = @fleet.fleet_squadrons.where.not(discord_channel_id: nil).order(:rank)
+        officers_label = I18n.t("discord.channel_capability.officers")
+
+        shared = []
+        shared << officers_label if officers && officers == announcement
+        squadrons.each do |squadron|
+          shared << squadron.name if [announcement, officers].compact.include?(squadron.discord_channel_id)
+        end
+        shared << officers_label if officers && squadrons.any? { |squadron| squadron.discord_channel_id == officers }
+
+        shared.uniq
       end
 
       private def posting_channel_owners

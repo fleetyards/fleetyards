@@ -91,6 +91,32 @@ module Discord
       assert_not AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
     end
 
+    # Every member of that squadron reads it.
+    test "the officers post nothing into a squadron's channel" do
+      @setting.update!(discord_officers_channel_id: CHANNEL)
+      create(:fleet_squadron, fleet: @fleet, discord_channel_id: CHANNEL)
+      @api.expects(:get_channel).never
+
+      assert_not AnnouncementTarget.officers.deliver(@fleet, "hello")
+    end
+
+    test "a squadron posts nothing into the officers' channel" do
+      @setting.update!(discord_officers_channel_id: CHANNEL)
+      @api.expects(:get_channel).never
+
+      assert_not AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
+    end
+
+    # They all read it anyway.
+    test "squadrons may share a channel with each other" do
+      create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: CHANNEL)
+      create(:fleet_squadron, fleet: @fleet, name: "Bravo", discord_channel_id: CHANNEL)
+      channel_in(GUILD)
+      @api.expects(:create_message)
+
+      assert AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
+    end
+
     test "the job's arguments rebuild the same target" do
       target = AnnouncementTarget.squadron(CHANNEL)
 

@@ -214,4 +214,20 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
 
     assert_not JSON.parse(response.body).key?("postingOk")
   end
+
+  test "names a squadron sharing the officers' channel" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_officers_channel_id: "111111111111111111")
+    create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: "111111111111111111")
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    Discord::ApiClient.stubs(:new).returns(api)
+    Discord::ChannelCapability.expects(:new).never
+
+    get @url, as: :json
+
+    body = JSON.parse(response.body)
+    assert_equal "channel_shared", body["postingCode"]
+    assert_equal "Alpha, #{I18n.t("discord.channel_capability.officers")}", body["postingDetail"]
+  end
 end

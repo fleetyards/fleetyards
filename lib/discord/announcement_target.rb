@@ -56,7 +56,7 @@ module Discord
       return false if setting.blank?
 
       case kind
-      when SQUADRON then restricted_post(setting, channel_id, content)
+      when SQUADRON then squadron_post(setting, content)
       when FLEET then fleet_post(setting, content)
       when OFFICERS then officers_post(setting, content)
       else false
@@ -78,16 +78,27 @@ module Discord
     private def officers_post(setting, content)
       return false if setting.discord_officers_channel_id.blank?
 
-      restricted_post(setting, setting.discord_officers_channel_id, content)
-    end
-
-    # A squadron's or the officers' channel that is also the fleet's
-    # announcement channel is read by the whole fleet, and the settings page
-    # says so rather than this posting there.
-    private def restricted_post(setting, id, content)
-      return false if id == setting.discord_announcement_channel_id
+      id = setting.discord_officers_channel_id
+      return false if shared_with_fleet?(setting, id)
+      return false if setting.fleet.fleet_squadrons.exists?(discord_channel_id: id)
 
       channel_post(setting, id, content)
+    end
+
+    # Squadrons may share a channel with each other -- both read it anyway --
+    # but not with the fleet or the officers, whose readers the squadron's
+    # events are kept from.
+    private def squadron_post(setting, content)
+      return false if shared_with_fleet?(setting, channel_id)
+      return false if channel_id == setting.discord_officers_channel_id
+
+      channel_post(setting, channel_id, content)
+    end
+
+    # A restricted audience's channel that another audience reads is refused
+    # here and named on the settings page, rather than posted to.
+    private def shared_with_fleet?(setting, id)
+      id == setting.discord_announcement_channel_id
     end
 
     private def channel_post(setting, id, content)
