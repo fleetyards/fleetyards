@@ -141,6 +141,10 @@ describe("HangarGroupLabels save queue", () => {
 
     // The server holds the first request's order; the prop still predates it.
     expect(names()).toEqual(["Bravo", "Alpha", "Charlie"]);
+
+    // Only the order this tab knows of. Another tab may have reordered while
+    // the request failed, so the server's order is fetched again as well.
+    expect(invalidateQueries).toHaveBeenCalledTimes(1);
   });
 
   it("invalidates the groups once the queue settles", async () => {
