@@ -23,6 +23,11 @@ A join request is posted to the fleet's officers channel with Accept and Decline
 ### Phase 3 — Settings copy
 1. `officersChannelHint` mentions join requests, all 7 locales.
 
+### Phase 4 — Keep the message current
+1. `fleet_memberships.discord_request_channel_id` / `discord_request_message_id`, stored by `PostJoinRequestJob` from the created message.
+2. `after_commit` on a request leaving `requested` (answered, discarded, destroyed) enqueues `Discord::RefreshJoinRequestMessageJob`, which edits the message via the bot token.
+3. A request closed while the post was in flight is refreshed by `PostJoinRequestJob` itself.
+
 ## Intent Verification
 
 - [x] **Join-request message carries Accept and Decline buttons**
@@ -39,7 +44,7 @@ A join request is posted to the fleet's officers channel with Accept and Decline
 | `app/models/fleet_membership.rb` | `request` AASM event |
 
 ## Not in scope (deferred)
-- **Updating the message when the request is settled elsewhere** (website, slash command) — needs the message id stored on the membership. Until then a click on a stale message shows the current state and disables the buttons.
+- None.
 
 ## Discovery Log
 
@@ -49,3 +54,4 @@ A join request is posted to the fleet's officers channel with Accept and Decline
 - [x] Phase 1
 - [x] Phase 2
 - [x] Phase 3
+- [x] Phase 4
