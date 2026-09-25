@@ -19106,6 +19106,8 @@ components:
           type: boolean
         alliesFleetMembers:
           type: boolean
+        squadronsEnabled:
+          type: boolean
         defaultTimezone:
           type: string
         calendarFeedToken:
@@ -19141,6 +19143,7 @@ components:
       - alliesFleet
       - alliesFleetStats
       - alliesFleetMembers
+      - squadronsEnabled
       - features
       - subscribed
       - createdAt
@@ -22787,6 +22790,8 @@ components:
         alliesFleetStats:
           type: boolean
         alliesFleetMembers:
+          type: boolean
+        squadronsEnabled:
           type: boolean
         homepage:
           type:

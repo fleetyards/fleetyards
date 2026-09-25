@@ -31,7 +31,7 @@ class Api::V1::PublicFleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_squadrons")
     @owner = create(:user)
-    @fleet = create(:fleet, admins: [@owner])
+    @fleet = create(:fleet, :with_squadrons, admins: [@owner])
     @squadron = create(:fleet_squadron, :with_color, fleet: @fleet, name: "Combat Wing", description: "Kept back")
   end
 
@@ -88,6 +88,12 @@ class Api::V1::PublicFleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
 
   test "squadrons are not readable when fleet_squadrons is disabled" do
     Flipper.disable("fleet_squadrons")
+
+    assert_api_response :get, 404, path_params: {fleetSlug: @fleet.slug}
+  end
+
+  test "squadrons are not readable when the fleet has them switched off" do
+    @fleet.update_column(:squadrons_enabled, false)
 
     assert_api_response :get, 404, path_params: {fleetSlug: @fleet.slug}
   end

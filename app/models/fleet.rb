@@ -25,6 +25,7 @@
 #  rsi_sid                   :string
 #  sid                       :string
 #  slug                      :string
+#  squadrons_enabled         :boolean          default(FALSE), not null
 #  transfers_blocked_at      :datetime
 #  transfers_blocked_reason  :text
 #  ts                        :string

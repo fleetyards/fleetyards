@@ -49,7 +49,7 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @member = create(:user)
     @outsider_of_squadron = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member, @outsider_of_squadron])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@member, @outsider_of_squadron])
     @squadron = create(:fleet_squadron, fleet: @fleet)
     @membership = @fleet.fleet_memberships.kept.find_by(user: @member)
     create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
