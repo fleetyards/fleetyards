@@ -203,6 +203,7 @@
         "colorInvalid": "Il colore non è valido",
         "serialTaken": "Seriale già in uso.",
         "textInvalid": "%{field} non è valido",
+        "fleetNameInvalid": "Il campo %{field} può contenere solo caratteri alfanumerici, spazi, punti, trattini e trattini bassi",
         "hangar": {
           "accountRequired": {
             "noHtml": "Devi registrarti o effettuare il login per aggiungere navi al tuo Hangar.",

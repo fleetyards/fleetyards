@@ -203,6 +203,7 @@
         "colorInvalid": "Color is invalid",
         "serialTaken": "Seriennummer ist bereits vergeben.",
         "textInvalid": "%{field} ist ungültig",
+        "fleetNameInvalid": "Das Feld %{field} darf nur Buchstaben, Zahlen, Leerzeichen, Punkte, Binde- und Unterstriche enthalten",
         "hangar": {
           "accountRequired": {
             "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",

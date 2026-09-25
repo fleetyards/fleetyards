@@ -213,6 +213,7 @@
         "colorInvalid": "Color is invalid",
         "serialTaken": "Serial is already taken.",
         "textInvalid": "%{field} is invalid",
+        "fleetNameInvalid": "The %{field} field may contain alpha-numeric characters, spaces, dots, dashes and underscores",
         "hangar": {
           "accountRequired": {
             "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",

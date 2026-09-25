@@ -80,7 +80,7 @@ const initialValues = ref<FleetUpdateInput>({
 
 const validationSchema = {
   fid: "required|min:3|alpha_dash",
-  name: "required|min:3|alpha_dash",
+  name: "required|min:3|fleetName",
   description: `max:${DESCRIPTION_MAX}`,
 };
 
