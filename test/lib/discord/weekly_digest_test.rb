@@ -128,6 +128,16 @@ module Discord
       assert_includes content, "Wing Op"
     end
 
+    test "a very long fleet name still leaves room for the link to the rest" do
+      @fleet.update_column(:name, "x" * 1990)
+      40.times { |index| event(title: "Operation #{index}") }
+
+      content = deliveries.fetch("fleet")
+
+      assert MessageLength.fits?(content)
+      assert_includes content, "/fleets/#{@fleet.slug}/events/"
+    end
+
     test "drafts and cancelled events are not listed" do
       create(:fleet_event, fleet: @fleet, title: "Draft Op", starts_at: 2.days.from_now)
       event(title: "Called Off").tap { |called_off| called_off.update_column(:status, "cancelled") }

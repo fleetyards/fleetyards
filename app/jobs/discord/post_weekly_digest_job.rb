@@ -33,7 +33,7 @@ module Discord
         end
       end
 
-      WeeklyDigest.new(fleet).run
+      WeeklyDigest.new(fleet, claimed_at: claimed_at).run
     end
   end
 end

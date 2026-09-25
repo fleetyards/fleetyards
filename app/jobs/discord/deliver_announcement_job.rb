@@ -15,8 +15,12 @@ module Discord
       target = AnnouncementTarget.new(kind, channel_id)
 
       if digest
+        setting = fleet.fleet_notification_setting
         # Switched off while its posts waited in the queue.
-        return unless fleet.fleet_notification_setting&.digest_enabled?
+        return unless setting&.digest_enabled?
+        # Waited past its own week: a later claim has its own posts, and this
+        # one would list that week's events a second time.
+        return if digest.is_a?(String) && setting.discord_digest_sent_at != Time.iso8601(digest)
 
         content = WeeklyDigest.new(fleet).content_for_target(target)
         return if content.blank?

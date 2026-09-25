@@ -22,8 +22,11 @@ module Discord
     # to the events page instead.
     MAX_LENGTH = MessageLength::MAX
 
-    def initialize(fleet, from: Time.current)
+    HEADING_NAME_LENGTH = 100
+
+    def initialize(fleet, from: Time.current, claimed_at: nil)
       @fleet = fleet
+      @claimed_at = claimed_at
       @from = from
       @to = from + WINDOW
     end
@@ -31,7 +34,7 @@ module Discord
     # Queued without its text: each channel's list is built when that post
     # runs, so an event cancelled or narrowed while it waited is not listed.
     def run
-      listings.each_key { |target| EventAnnouncement.enqueue(@fleet, target, nil, digest: true) }
+      listings.each_key { |target| EventAnnouncement.enqueue(@fleet, target, nil, digest: @claimed_at&.iso8601(6) || true) }
     end
 
     # Only the one channel's entries are looked up in full: slot counts and
@@ -112,7 +115,9 @@ module Discord
     end
 
     private def content_for(listed)
-      heading = I18n.t("discord.weekly_digest.heading", fleet: @fleet.name)
+      # A fleet name has no length limit, and the footer's link to the rest of
+      # the week has to fit beside it.
+      heading = I18n.t("discord.weekly_digest.heading", fleet: @fleet.name.truncate(HEADING_NAME_LENGTH))
       lines = listed.map { |occurrence| line_for(occurrence) }
 
       full = [heading, *lines].join("\n")

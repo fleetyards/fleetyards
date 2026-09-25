@@ -40,6 +40,15 @@ module Discord
       DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, true)
     end
 
+    # Last week's post, still queued when this week's was claimed.
+    test "posts no digest for a week that has been claimed again since" do
+      last_week = 1.week.ago.floor(6)
+      @fleet.fleet_notification_setting.update!(discord_digest_weekday: 1, discord_digest_time: "18:00", discord_digest_sent_at: Time.current.floor(6))
+      AnnouncementTarget.any_instance.expects(:deliver).never
+
+      DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, last_week.iso8601(6))
+    end
+
     test "posts no digest when nothing is left in the week" do
       @fleet.fleet_notification_setting.update!(discord_digest_weekday: 1, discord_digest_time: "18:00")
       @event.update_column(:status, "cancelled")
