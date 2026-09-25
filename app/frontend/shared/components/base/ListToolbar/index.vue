@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup generic="T">
 import ListToolbarChip from "@/shared/components/base/ListToolbar/Chip/index.vue";
-import BulkActions from "@/shared/components/base/Table/BulkActions/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -32,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const selected = defineModel<string[]>("selected", { default: () => [] });
 
-const slots = defineSlots<{
+defineSlots<{
   "selected-actions"?: (props: { selected: string[] }) => void;
 }>();
 
@@ -67,43 +68,53 @@ const onSelectAll = (value?: boolean) => {
 <template>
   <div
     v-if="sortable.length || props.selectable"
-    class="base-list-toolbar-wrapper"
+    class="base-list-toolbar"
+    :class="{ 'base-list-toolbar--selectable': props.selectable }"
   >
-    <div class="base-list-toolbar">
-      <FormCheckbox
-        v-if="props.selectable"
-        class="base-list-toolbar__select-all"
-        :disabled="props.selectionDisabled || !props.recordIds.length"
-        name="all"
-        :model-value="allSelected"
-        inline
-        no-label
-        :partial="selected.length > 0 && !allSelected"
-        data-test="list-toolbar-select-all"
-        @update:model-value="onSelectAll"
-      />
-      <template v-if="sortable.length">
-        <span class="base-list-toolbar__label">{{ t("actions.sortBy") }}</span>
-        <ListToolbarChip
-          v-for="column in sortable"
-          :key="`sort-chip-${column.name}`"
-          :label="column.label"
-          :field="String(column.attributeKey || column.name)"
-          :fallback="props.defaultSort"
-        />
-      </template>
-    </div>
-    <BulkActions
+    <FormCheckbox
       v-if="props.selectable"
-      :selected="selected"
-      @reset="selected = []"
-    >
-      <slot
-        v-if="slots['selected-actions']"
-        name="selected-actions"
-        :selected="selected"
+      class="base-list-toolbar__select-all"
+      :disabled="props.selectionDisabled || !props.recordIds.length"
+      name="all"
+      :model-value="allSelected"
+      inline
+      no-label
+      :partial="selected.length > 0 && !allSelected"
+      data-test="list-toolbar-select-all"
+      @update:model-value="onSelectAll"
+    />
+    <template v-if="sortable.length">
+      <span class="base-list-toolbar__label">{{ t("actions.sortBy") }}</span>
+      <ListToolbarChip
+        v-for="column in sortable"
+        :key="`sort-chip-${column.name}`"
+        :label="column.label"
+        :field="String(column.attributeKey || column.name)"
+        :fallback="props.defaultSort"
       />
-    </BulkActions>
+    </template>
+    <!-- At the far end of the same line, so picking a row does not push the
+         list down by a row of buttons. -->
+    <transition name="base-list-toolbar-fade">
+      <div
+        v-if="props.selectable && selected.length"
+        class="base-list-toolbar__bulk"
+        data-test="list-toolbar-bulk"
+      >
+        <span class="base-list-toolbar__count">
+          {{ t("filteredTable.labels.selected", { count: selected.length }) }}
+          <Btn
+            v-tooltip="t('filteredTable.actions.unselect')"
+            :variant="BtnVariantsEnum.BARE"
+            :aria-label="t('filteredTable.actions.unselect')"
+            @click="selected = []"
+          >
+            <i class="fa fa-times" />
+          </Btn>
+        </span>
+        <slot name="selected-actions" :selected="selected" />
+      </div>
+    </transition>
   </div>
 </template>
 

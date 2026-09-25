@@ -11,6 +11,33 @@
     margin-right: 6px;
   }
 
+  // As tall as the bulk actions from the start, so picking the first row does
+  // not push the list down. The actions are field-height buttons, and a button
+  // group frames them in one more pixel above and below.
+  &--selectable {
+    min-height: calc(var(--field-h, 43px) + 2px);
+  }
+
+  &__bulk {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  &__count {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    color: var(--color-primary, #428bca);
+
+    :deep(.btn__content) {
+      color: var(--color-primary, #428bca);
+    }
+  }
+
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 9px;
@@ -19,4 +46,16 @@
     color: var(--color-text-dim, #959595);
     margin-right: 2px;
   }
+}
+
+// Quicker than the site's own fade, which waits half a second before it shows
+// anything: these answer a click.
+.base-list-toolbar-fade-enter-active,
+.base-list-toolbar-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.base-list-toolbar-fade-enter-from,
+.base-list-toolbar-fade-leave-to {
+  opacity: 0;
 }
