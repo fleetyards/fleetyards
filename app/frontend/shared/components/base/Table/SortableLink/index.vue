@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { currentDirection, sortableLink } = useTableSorting({
   field: props.field,
-  fallback: props.fallback,
+  fallback: () => props.fallback,
   id: props.id,
 });
 </script>

@@ -4,6 +4,8 @@ import { h } from "vue";
 import Component from "./index.vue";
 
 type BarWrapper = {
+  setProps: (props: Record<string, unknown>) => Promise<void>;
+  findAll: (selector: string) => { classes: () => string[] }[];
   find: (selector: string) => {
     exists: () => boolean;
     find: (selector: string) => { setValue: (value: boolean) => Promise<void> };
@@ -86,5 +88,17 @@ describe("BaseListToolbar", () => {
     });
 
     expect(selectAll(wrapper).props("partial")).toBe(false);
+  });
+
+  // The hangar's default comes with the signed-in user, which can arrive after
+  // the toolbar has mounted.
+  it("marks the default's chip once the default arrives", async () => {
+    const wrapper = await mountBar();
+
+    await wrapper.setProps({ defaultSort: "name asc" });
+
+    expect(wrapper.findAll(".base-list-toolbar-chip")[0].classes()).toContain(
+      "base-list-toolbar-chip--active",
+    );
   });
 });
