@@ -156,6 +156,20 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/inventories sorts by either sort key" do
+    create(:fleet_inventory, fleet: @fleet, name: "Alpha")
+    create(:fleet_inventory, fleet: @fleet, name: "Zebra")
+    sign_in @admin
+
+    %i[s sorts].each do |key|
+      assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
+        params: {q: {key => "name desc"}} do
+        names = parsed_body["items"].map { |entry| entry["name"] }
+        assert_operator names.index("Zebra"), :<, names.index("Alpha"), key
+      end
+    end
+  end
+
   # Ransack runs on top of the authorized scope, so a hand-written filter can
   # only narrow what the scope already allows. Asserted rather than read,
   # because it is the ordering of the two that makes it true.
