@@ -56,6 +56,23 @@ const discordDigestTime = ref<string>("");
 // browser's -- the same way an event takes its own.
 const browserTimezone = () =>
   Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+
+// What is saved, so a save by somebody elsewhere that leaves the day and time
+// alone does not move the digest into their zone.
+const savedDigest = ref<{
+  weekday: string | null;
+  time: string;
+  timezone: string | null;
+}>({ weekday: null, time: "", timezone: null });
+
+const digestTimezone = computed(() => {
+  const saved = savedDigest.value;
+  const unchanged =
+    discordDigestWeekday.value === saved.weekday &&
+    discordDigestTime.value === saved.time;
+
+  return unchanged && saved.timezone ? saved.timezone : browserTimezone();
+});
 const discordWebhookUrl = ref<string>("");
 
 const hydrate = (s: FleetNotificationSetting) => {
@@ -68,6 +85,11 @@ const hydrate = (s: FleetNotificationSetting) => {
       ? null
       : String(s.discordDigestWeekday);
   discordDigestTime.value = s.discordDigestTime ?? "";
+  savedDigest.value = {
+    weekday: discordDigestWeekday.value,
+    time: discordDigestTime.value,
+    timezone: s.discordDigestTimezone ?? null,
+  };
   discordWebhookUrl.value = "";
 };
 
@@ -121,7 +143,7 @@ const save = async () => {
         ? discordDigestTime.value || null
         : null,
       discordDigestTimezone: discordDigestWeekday.value
-        ? browserTimezone()
+        ? digestTimezone.value
         : null,
     };
     if (discordWebhookUrl.value !== "") {
@@ -325,7 +347,7 @@ const postingProblem = computed(() => {
           :label="t('labels.fleet.discord.digestTime')"
           :info="
             t('labels.fleet.discord.digestTimeHint', {
-              timezone: browserTimezone(),
+              timezone: digestTimezone,
             })
           "
         />

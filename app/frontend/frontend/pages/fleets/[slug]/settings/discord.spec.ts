@@ -9,6 +9,7 @@ import {
   type FleetNotificationSetting,
 } from "@/services/fyApi";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Component from "./discord.vue";
 
 let setting: FleetNotificationSetting;
@@ -125,6 +126,44 @@ describe("FleetDiscordSettingsPage digest", () => {
     expect(await save(subject)).toMatchObject({
       discordDigestWeekday: 0,
       discordDigestTime: "09:00",
+    });
+  });
+
+  // Somebody elsewhere saving the page for another reason must not move the
+  // digest into their own zone.
+  it("keeps the saved zone while the day and time are left alone", async () => {
+    setting.discordDigestWeekday = 1;
+    setting.discordDigestTime = "18:00";
+    setting.discordDigestTimezone = "Pacific/Chatham";
+
+    const subject = await mount();
+
+    const timeField = subject
+      .findAllComponents(FormInput)
+      .find(
+        (input) =>
+          (input.props() as { name?: string }).name === "discordDigestTime",
+      )!;
+    expect((timeField.props() as { info?: string }).info).toContain(
+      "Pacific/Chatham",
+    );
+    expect(await save(subject)).toMatchObject({
+      discordDigestTimezone: "Pacific/Chatham",
+    });
+  });
+
+  it("takes this browser's zone once the time is changed", async () => {
+    setting.discordDigestWeekday = 1;
+    setting.discordDigestTime = "18:00";
+    setting.discordDigestTimezone = "Pacific/Chatham";
+
+    const subject = await mount();
+    await subject.find('input[name="discordDigestTime"]').setValue("19:00");
+
+    expect(await save(subject)).toMatchObject({
+      discordDigestTime: "19:00",
+      discordDigestTimezone:
+        Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
     });
   });
 
