@@ -123,7 +123,8 @@
           "index": "合約",
           "create": "建立合約",
           "edit": "編輯合約",
-          "show": "合約"
+          "show": "合約",
+          "payouts": "%{fleet} 合約分帳"
         }
       },
       "roadmap": {

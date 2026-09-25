@@ -29,9 +29,13 @@ type Props = {
   payoutLedgerId: string;
   participants: PayoutParticipant[];
   entry?: PayoutEntry;
+  expensesAllowed?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  entry: undefined,
+  expensesAllowed: true,
+});
 
 const { t } = useI18n();
 const comlink = useComlink();
@@ -48,7 +52,9 @@ const participantOptions = computed(() =>
 );
 
 const entryTypeOptions = computed(() => [
-  { value: "expense", label: t("labels.payouts.expense") },
+  ...(props.expensesAllowed
+    ? [{ value: "expense", label: t("labels.payouts.expense") }]
+    : []),
   { value: "income", label: t("labels.payouts.income") },
 ]);
 
@@ -56,7 +62,8 @@ const { defineField, handleSubmit } = useForm({
   initialValues: {
     payoutParticipantId:
       props.entry?.payoutParticipantId ?? props.participants[0]?.id,
-    entryType: (props.entry?.entryType ?? "expense") as PayoutEntryTypeEnum,
+    entryType: (props.entry?.entryType ??
+      (props.expensesAllowed ? "expense" : "income")) as PayoutEntryTypeEnum,
     amount: props.entry?.amount ?? "",
     description: props.entry?.description ?? "",
     notes: props.entry?.notes ?? "",
@@ -195,6 +202,14 @@ const onDestroy = async () => {
           />
         </div>
       </div>
+      <!-- Said rather than silently counted: whoever manages the ledger decides
+           whether an expense is paid back. -->
+      <p
+        v-if="entryType === 'expense' && !entry"
+        class="payout-entry-modal__hint"
+      >
+        {{ t("texts.payouts.expenseNeedsReview") }}
+      </p>
     </form>
 
     <template #footer>
@@ -216,3 +231,11 @@ const onDestroy = async () => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.payout-entry-modal__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-dim, #959595);
+}
+</style>

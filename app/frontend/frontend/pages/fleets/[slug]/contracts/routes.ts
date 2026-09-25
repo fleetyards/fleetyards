@@ -66,6 +66,27 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: ":contract/payouts/",
+    name: "fleet-contract-payouts",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/contracts/[contract]/payouts.vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.contracts.payouts",
+      needsAuthentication: true,
+      // Reading the board is enough to open the page: a contractor holds no
+      // payout privilege, and the ledger's own policy decides what they see.
+      access: READ_ACCESS,
+      feature: [
+        FeatureFlagName.FLEET_CONTRACTS,
+        FeatureFlagName.TOUR_PAYOUTS,
+        FeatureFlagName.FLEET_TOURS,
+      ],
+      featureScope: "fleet",
+      customTitle: true,
+    },
+  },
+  {
     path: ":contract/",
     name: "fleet-contract",
     component: () =>

@@ -995,7 +995,10 @@
         "joinRequested": "你的申请已发送",
         "joinRequestWithdrawn": "申请已撤回",
         "joinRequestApproved": "申请已通过",
-        "joinRequestDeclined": "申请已拒绝"
+        "joinRequestDeclined": "申请已拒绝",
+        "expenseApproved": "支出已批准",
+        "expenseDeclined": "支出已拒绝",
+        "pendingReview": "%{count} 笔支出待审核"
       },
       "dockAddition": {
         "create": {

@@ -393,7 +393,8 @@
           "remove": "Entfernen",
           "acceptCrew": "Annehmen",
           "declineCrew": "Ablehnen",
-          "addItem": "Waren hinzufügen"
+          "addItem": "Waren hinzufügen",
+          "payouts": "Auszahlung"
         }
       },
       "notifications": {
@@ -449,7 +450,9 @@
         "askToJoin": "Teilnahme anfragen",
         "withdrawJoinRequest": "Anfrage zurückziehen",
         "approveJoinRequest": "Annehmen",
-        "declineJoinRequest": "Ablehnen"
+        "declineJoinRequest": "Ablehnen",
+        "approveExpense": "Freigeben",
+        "declineExpense": "Ablehnen"
       },
       "relationships": {
         "accept": "Annehmen",

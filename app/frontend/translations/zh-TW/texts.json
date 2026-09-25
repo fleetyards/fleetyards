@@ -175,7 +175,10 @@
         "returnedToReview": "修改重新導向 URI 或權限範圍會使已核准的應用程式重新進入審核。"
       },
       "payouts": {
-        "tourInvite": "%{username} 邀請你加入此行程。"
+        "tourInvite": "%{username} 邀請你加入此行程。",
+        "contractReady": "合約已完成。開啟分帳帳本，將報酬支付給承接人。",
+        "contractNotReady": "此合約尚未開啟分帳帳本。",
+        "expenseNeedsReview": "支出需經帳本管理者核准後才會計入。"
       },
       "fleet": {
         "contractCovers": "合約板為每種合約顯示的圖片。留空則使用下方的內建圖片。"

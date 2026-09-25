@@ -2699,7 +2699,8 @@
             "in_progress": "In progress",
             "fulfilled": "Fulfilled",
             "cancelled": "Cancelled",
-            "expired": "Expired"
+            "expired": "Expired",
+            "settled": "Settled"
           },
           "itemTypes": {
             "Commodity": "Commodity",
@@ -2952,7 +2953,14 @@
         "shares": "shares",
         "customWeight": "Any weight",
         "preview": "Preview · moves until you settle",
-        "joinRequestPending": "Request pending"
+        "joinRequestPending": "Request pending",
+        "payer": "Payer",
+        "declineReason": "Reason",
+        "review": {
+          "pending": "Waiting for review",
+          "approved": "Approved",
+          "declined": "Declined"
+        }
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

@@ -175,7 +175,10 @@
         "returnedToReview": "Cambiar la URI de redirección o los permisos devuelve a revisión una aplicación aprobada."
       },
       "payouts": {
-        "tourInvite": "%{username} te invita a unirte a esta expedición."
+        "tourInvite": "%{username} te invita a unirte a esta expedición.",
+        "contractReady": "El contrato está cumplido. Abre su libro de pagos para pagar la recompensa a los contratistas.",
+        "contractNotReady": "Todavía no se ha abierto un libro de pagos para este contrato.",
+        "expenseNeedsReview": "Un gasto cuenta cuando quien gestiona el libro lo aprueba."
       },
       "fleet": {
         "contractCovers": "La imagen que el tablero muestra para cada tipo de contrato. Si dejas una vacía, se usa la imagen incorporada de abajo."

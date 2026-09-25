@@ -475,7 +475,8 @@
           "index": "Tours",
           "create": "Create Tour",
           "join": "Join this tour"
-        }
+        },
+        "declineExpense": "Decline expense"
       },
       "relationships": {
         "user": {

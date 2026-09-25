@@ -2685,7 +2685,8 @@
             "in_progress": "In corso",
             "fulfilled": "Completato",
             "cancelled": "Annullato",
-            "expired": "Scaduto"
+            "expired": "Scaduto",
+            "settled": "Liquidato"
           },
           "itemTypes": {
             "Commodity": "Merce",
@@ -2947,7 +2948,14 @@
         "shares": "quote",
         "customWeight": "Peso personalizzato",
         "preview": "Anteprima · cambia fino al saldo",
-        "joinRequestPending": "Richiesta in attesa"
+        "joinRequestPending": "Richiesta in attesa",
+        "payer": "Pagatore",
+        "declineReason": "Motivo",
+        "review": {
+          "pending": "In attesa di verifica",
+          "approved": "Approvata",
+          "declined": "Rifiutata"
+        }
       },
       "relationships": {
         "party": "Nome",

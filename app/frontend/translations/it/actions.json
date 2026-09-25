@@ -393,7 +393,8 @@
           "remove": "Rimuovi",
           "acceptCrew": "Accetta",
           "declineCrew": "Rifiuta",
-          "addItem": "Aggiungi merci"
+          "addItem": "Aggiungi merci",
+          "payouts": "Pagamenti"
         }
       },
       "notifications": {
@@ -449,7 +450,9 @@
         "askToJoin": "Chiedi di partecipare",
         "withdrawJoinRequest": "Ritira la richiesta",
         "approveJoinRequest": "Accetta",
-        "declineJoinRequest": "Rifiuta"
+        "declineJoinRequest": "Rifiuta",
+        "approveExpense": "Approva",
+        "declineExpense": "Rifiuta"
       },
       "relationships": {
         "accept": "Accetta",

@@ -230,6 +230,9 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
           <span v-if="participant.guest" class="payout-participants__tag">
             {{ t("labels.payouts.guest") }}
           </span>
+          <span v-if="participant.fleet" class="payout-participants__tag">
+            {{ t("labels.payouts.payer") }}
+          </span>
         </span>
 
         <Btn
@@ -252,15 +255,17 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
         </Btn>
       </div>
 
+      <!-- The payer's weight divides nothing: a contract's reward goes to the
+           contractors alone. -->
       <PayoutWeightControl
-        v-if="manageable"
+        v-if="manageable && !participant.fleet"
         :weight="participant.weight"
         :loading="weighingId === participant.id"
         :disabled="weighingId === participant.id"
         @update="onWeight(participant, $event)"
       />
       <span
-        v-else-if="Number(participant.weight) !== 1"
+        v-else-if="!participant.fleet && Number(participant.weight) !== 1"
         class="payout-participants__weight"
       >
         {{ participant.weight }} {{ t("labels.payouts.shares") }}

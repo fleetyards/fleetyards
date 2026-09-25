@@ -27,6 +27,7 @@ const variant = computed(() => {
     case FleetContractStateEnum.IN_PROGRESS:
       return PillVariantsEnum.WARNING;
     case FleetContractStateEnum.FULFILLED:
+    case FleetContractStateEnum.SETTLED:
       return PillVariantsEnum.SUCCESS;
     case FleetContractStateEnum.EXPIRED:
       return PillVariantsEnum.DANGER;

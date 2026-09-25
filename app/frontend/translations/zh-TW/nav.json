@@ -101,7 +101,8 @@
           "contracts": "合約"
         },
         "contracts": {
-          "index": "合約"
+          "index": "合約",
+          "payouts": "分帳"
         }
       },
       "rsiProfile": "RSI 檔案",

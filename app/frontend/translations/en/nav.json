@@ -101,7 +101,8 @@
           "contracts": "Contracts"
         },
         "contracts": {
-          "index": "Contracts"
+          "index": "Contracts",
+          "payouts": "Payouts"
         }
       },
       "rsiProfile": "RSI Profile",

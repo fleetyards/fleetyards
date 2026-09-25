@@ -2685,7 +2685,8 @@
             "in_progress": "进行中",
             "fulfilled": "已完成",
             "cancelled": "已取消",
-            "expired": "已过期"
+            "expired": "已过期",
+            "settled": "已结算"
           },
           "itemTypes": {
             "Commodity": "商品",
@@ -2938,7 +2939,14 @@
         "shares": "份",
         "customWeight": "自定义权重",
         "preview": "预览 · 结算前会变动",
-        "joinRequestPending": "申请待处理"
+        "joinRequestPending": "申请待处理",
+        "payer": "付款方",
+        "declineReason": "原因",
+        "review": {
+          "pending": "待审核",
+          "approved": "已批准",
+          "declined": "已拒绝"
+        }
       },
       "shipSizes": {
         "extra_extra_small": "斯努布克拉夫特 (XXS)",

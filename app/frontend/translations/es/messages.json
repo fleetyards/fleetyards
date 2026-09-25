@@ -995,7 +995,10 @@
         "joinRequested": "Tu solicitud fue enviada",
         "joinRequestWithdrawn": "Solicitud retirada",
         "joinRequestApproved": "Solicitud aceptada",
-        "joinRequestDeclined": "Solicitud rechazada"
+        "joinRequestDeclined": "Solicitud rechazada",
+        "expenseApproved": "Gasto aprobado",
+        "expenseDeclined": "Gasto rechazado",
+        "pendingReview": "%{count} gasto(s) pendientes de revisión"
       },
       "dockAddition": {
         "create": {

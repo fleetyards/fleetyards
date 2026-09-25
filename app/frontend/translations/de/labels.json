@@ -2685,7 +2685,8 @@
             "in_progress": "In Arbeit",
             "fulfilled": "Erfüllt",
             "cancelled": "Abgebrochen",
-            "expired": "Abgelaufen"
+            "expired": "Abgelaufen",
+            "settled": "Ausgezahlt"
           },
           "itemTypes": {
             "Commodity": "Handelsware",
@@ -2947,7 +2948,14 @@
         "shares": "Anteile",
         "customWeight": "Eigene Gewichtung",
         "preview": "Vorschau · ändert sich bis zur Abrechnung",
-        "joinRequestPending": "Anfrage offen"
+        "joinRequestPending": "Anfrage offen",
+        "payer": "Zahler",
+        "declineReason": "Grund",
+        "review": {
+          "pending": "Wartet auf Prüfung",
+          "approved": "Freigegeben",
+          "declined": "Abgelehnt"
+        }
       },
       "relationships": {
         "party": "Name",

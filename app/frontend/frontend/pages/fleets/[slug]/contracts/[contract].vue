@@ -149,6 +149,22 @@ const canFulfil = computed(
     FULFILLABLE_STATES.includes(contract.value.state),
 );
 
+// Only once there is something to pay. Whether the viewer may read the ledger
+// is the API's call; a contractor holds no fleet payout privilege and still
+// has to reach it.
+const hasPayouts = computed(
+  () =>
+    contract.value?.state === FleetContractStateEnum.FULFILLED ||
+    contract.value?.state === FleetContractStateEnum.SETTLED,
+);
+
+const goToPayouts = () => {
+  void router.push({
+    name: "fleet-contract-payouts",
+    params: { slug: props.fleet.slug, contract: contractSlug.value },
+  });
+};
+
 const canPublish = computed(
   () => contract.value?.state === FleetContractStateEnum.DRAFT && mayEdit.value,
 );
@@ -380,6 +396,17 @@ const crumbs = computed<Crumb[]>(() => [
       >
         <i class="fa-duotone fa-circle-check" />
         {{ t("actions.fleets.contracts.fulfil") }}
+      </Btn>
+      <Btn
+        v-if="hasPayouts"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.payouts')"
+        data-test="contract-payouts"
+        mobile-icon-only
+        @click="goToPayouts"
+      >
+        <i class="fa-duotone fa-coins" />
+        {{ t("actions.fleets.contracts.payouts") }}
       </Btn>
       <Btn
         v-if="canEdit"

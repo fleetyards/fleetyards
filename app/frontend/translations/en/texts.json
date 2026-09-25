@@ -175,7 +175,10 @@
         "returnedToReview": "Changing the redirect URI or the scopes returns an approved application to review."
       },
       "payouts": {
-        "tourInvite": "%{username} invites you to join this tour."
+        "tourInvite": "%{username} invites you to join this tour.",
+        "contractReady": "The contract is fulfilled. Open its payout ledger to pay the reward to the contractors.",
+        "contractNotReady": "No payout ledger has been opened for this contract yet.",
+        "expenseNeedsReview": "An expense counts once whoever manages the ledger has approved it."
       },
       "fleet": {
         "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used."

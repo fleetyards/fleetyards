@@ -393,7 +393,8 @@
           "remove": "移除",
           "acceptCrew": "同意",
           "declineCrew": "拒绝",
-          "addItem": "添加货物"
+          "addItem": "添加货物",
+          "payouts": "分账"
         }
       },
       "notifications": {
@@ -449,7 +450,9 @@
         "askToJoin": "申请参加",
         "withdrawJoinRequest": "撤回申请",
         "approveJoinRequest": "通过",
-        "declineJoinRequest": "拒绝"
+        "declineJoinRequest": "拒绝",
+        "approveExpense": "批准",
+        "declineExpense": "拒绝"
       },
       "relationships": {
         "accept": "接受",

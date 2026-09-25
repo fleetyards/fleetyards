@@ -41,12 +41,16 @@ type Props = {
   // Set for a fleet tour's ledger, whose participant list also carries whoever
   // has asked to be on it. A fleet event's ledger leaves it unset.
   tourSlug?: string;
+  // False for a contract that does not reimburse expenses: the reward is the
+  // whole payout, and the API refuses an expense on its ledger.
+  expensesAllowed?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   manageable: false,
   contributable: false,
   tourSlug: undefined,
+  expensesAllowed: true,
 });
 
 const { t } = useI18n();
@@ -79,6 +83,10 @@ const {
 const settled = computed(() => ledger.value?.status === "settled");
 
 const participants = computed(() => ledger.value?.participants ?? []);
+
+// Settling freezes the transfers, so the API refuses it while an expense is
+// still waiting for a manager -- said here before the click rather than after.
+const pendingReview = computed(() => ledger.value?.pendingReviewCount ?? 0);
 
 const sessionStore = useSessionStore();
 
@@ -190,6 +198,7 @@ const onAddEntry = () => {
     props: {
       payoutLedgerId: props.payoutLedgerId,
       participants: recordableParticipants.value,
+      expensesAllowed: props.expensesAllowed,
     },
   });
 };
@@ -273,6 +282,8 @@ const onReopen = async () => {
             :entries="entries?.items ?? []"
             :participants="recordableParticipants"
             :editable="canRecord && !settled"
+            :reviewable="manageable && !settled"
+            :expenses-allowed="expensesAllowed"
             :loading="entriesLoading"
           />
         </PanelBody>
@@ -327,11 +338,26 @@ const onReopen = async () => {
             <span v-if="!settled" class="payout-ledger__preview">
               {{ t("labels.payouts.preview") }}
             </span>
+            <span
+              v-if="!settled && pendingReview > 0"
+              class="payout-ledger__pending"
+              data-test="payout-pending-review"
+            >
+              {{
+                t("messages.payouts.pendingReview", { count: pendingReview })
+              }}
+            </span>
           </span>
           <Btn
             v-if="manageable"
             :size="BtnSizesEnum.SM"
             :loading="settling"
+            :disabled="!settled && pendingReview > 0"
+            :title="
+              !settled && pendingReview > 0
+                ? t('messages.payouts.pendingReview', { count: pendingReview })
+                : undefined
+            "
             :confirm="
               settled
                 ? t('messages.payouts.reopenConfirm')
@@ -390,6 +416,11 @@ const onReopen = async () => {
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+}
+
+.payout-ledger__pending {
+  font-size: 12px;
+  color: var(--color-warning, #ff9800);
 }
 
 .payout-ledger__preview {

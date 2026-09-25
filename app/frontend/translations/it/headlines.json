@@ -473,7 +473,8 @@
           "index": "Spedizioni",
           "create": "Crea spedizione",
           "join": "Unisciti a questa spedizione"
-        }
+        },
+        "declineExpense": "Rifiuta la spesa"
       },
       "relationships": {
         "user": {

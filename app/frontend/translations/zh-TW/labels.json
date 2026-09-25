@@ -2685,7 +2685,8 @@
             "in_progress": "進行中",
             "fulfilled": "已完成",
             "cancelled": "已取消",
-            "expired": "已過期"
+            "expired": "已過期",
+            "settled": "已結算"
           },
           "itemTypes": {
             "Commodity": "商品",
@@ -2938,7 +2939,14 @@
         "shares": "份",
         "customWeight": "自訂權重",
         "preview": "預覽 · 結算前會變動",
-        "joinRequestPending": "申請待處理"
+        "joinRequestPending": "申請待處理",
+        "payer": "付款方",
+        "declineReason": "原因",
+        "review": {
+          "pending": "待審核",
+          "approved": "已核准",
+          "declined": "已拒絕"
+        }
       },
       "shipSizes": {
         "extra_extra_small": "小型飛船 (XXS)",

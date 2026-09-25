@@ -36,6 +36,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
     // Everything the fleet is done with, however it ended.
     states: [
       FleetContractStateEnum.FULFILLED,
+      FleetContractStateEnum.SETTLED,
       FleetContractStateEnum.CANCELLED,
       FleetContractStateEnum.EXPIRED,
     ],
@@ -59,7 +60,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
     key: "completed",
     // Finished work only. A cancelled or expired contract is not something the
     // reader completed.
-    states: [FleetContractStateEnum.FULFILLED],
+    states: [FleetContractStateEnum.FULFILLED, FleetContractStateEnum.SETTLED],
     mine: true,
     inHand: false,
     icon: "fa-light fa-circle-check",

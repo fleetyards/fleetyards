@@ -473,7 +473,8 @@
           "index": "Touren",
           "create": "Tour erstellen",
           "join": "Dieser Tour beitreten"
-        }
+        },
+        "declineExpense": "Ausgabe ablehnen"
       },
       "relationships": {
         "user": {

@@ -2685,7 +2685,8 @@
             "in_progress": "En curso",
             "fulfilled": "Completado",
             "cancelled": "Cancelado",
-            "expired": "Caducado"
+            "expired": "Caducado",
+            "settled": "Liquidado"
           },
           "itemTypes": {
             "Commodity": "Mercancía",
@@ -2947,7 +2948,14 @@
         "shares": "partes",
         "customWeight": "Peso personalizado",
         "preview": "Vista previa · cambia hasta liquidar",
-        "joinRequestPending": "Solicitud pendiente"
+        "joinRequestPending": "Solicitud pendiente",
+        "payer": "Pagador",
+        "declineReason": "Motivo",
+        "review": {
+          "pending": "Pendiente de revisión",
+          "approved": "Aprobado",
+          "declined": "Rechazado"
+        }
       },
       "relationships": {
         "party": "Nombre",

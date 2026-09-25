@@ -101,7 +101,8 @@
           "contracts": "合约"
         },
         "contracts": {
-          "index": "合约"
+          "index": "合约",
+          "payouts": "分账"
         }
       },
       "rsiProfile": "RSI 档案",
