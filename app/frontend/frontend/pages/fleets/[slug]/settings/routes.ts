@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { FeatureFlagName } from "@/services/fyApi";
+import { routes as alliesRoutes } from "@/frontend/pages/fleets/[slug]/settings/allies/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -57,6 +58,23 @@ export const routes: RouteRecordRaw[] = [
       access: ["fleet:roles:read", "fleet:roles:manage", "fleet:manage"],
       customTitle: true,
     },
+  },
+  {
+    path: "allies/",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/allies.vue"),
+    meta: {
+      title: "fleets.settings.allies",
+      needsAuthentication: true,
+      access: ["fleet:allies:read", "fleet:allies:manage", "fleet:manage"],
+      feature: FeatureFlagName.FLEET_ALLIES,
+      featureScope: "fleet",
+      customTitle: true,
+    },
+    redirect: {
+      name: alliesRoutes[0].name,
+    },
+    children: alliesRoutes,
   },
   {
     path: "notifications/",

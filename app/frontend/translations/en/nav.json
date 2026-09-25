@@ -93,13 +93,13 @@
           "membership": "Membership Settings",
           "roles": "Roles",
           "squadrons": "Squadrons",
+          "allies": "Allies",
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendar",
           "features": "Features",
           "contracts": "Contracts"
         },
-        "allies": "Allies",
         "contracts": {
           "index": "Contracts"
         }

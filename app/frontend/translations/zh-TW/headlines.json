@@ -273,6 +273,7 @@
           "membership": "Membership Settings",
           "roles": "艦隊角色",
           "squadrons": "艦隊中隊",
+          "allies": "艦隊盟友",
           "notifications": "通知設定",
           "inAppNotifications": "應用內通知",
           "discord": "Discord",
@@ -480,7 +481,6 @@
           "add": "新增好友"
         },
         "fleet": {
-          "index": "盟友",
           "add": "新增盟友"
         }
       },

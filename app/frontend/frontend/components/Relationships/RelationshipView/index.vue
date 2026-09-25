@@ -9,7 +9,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import RelationshipTable from "@/frontend/components/Relationships/RelationshipTable/index.vue";
@@ -22,8 +21,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
-  crumbs: Crumb[];
-  heading: string;
+  // Both absent inside a shell that already draws them -- the fleet settings
+  // prints its own crumbs and a heading from the tab's title.
+  crumbs?: Crumb[];
+  heading?: string;
   kind: "user" | "fleet";
   tab: RelationshipTab;
   tabs: RelationshipTab[];
@@ -34,16 +35,13 @@ type Props = {
   // Absent when the reader may see the list and not change it -- an officer
   // reading a fleet's allies, for instance.
   canManage?: boolean;
-  // Where the page this view sits on carries its actions. A fleet page carries
-  // them in the app header, as its members, events and logistics pages do; a
-  // settings tab has no header of its own and keeps them over the list.
-  headerAction?: boolean;
   onAdd: (handle: string) => Promise<boolean>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  crumbs: undefined,
+  heading: undefined,
   canManage: true,
-  headerAction: false,
 });
 
 const emit = defineEmits<{
@@ -81,21 +79,9 @@ const openAdd = () => {
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
+  <BreadCrumbs v-if="crumbs" :crumbs="crumbs" />
 
-  <Teleport v-if="canManage && headerAction" to="#header-right">
-    <Btn
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      data-test="relationships-add"
-      @click="openAdd"
-    >
-      <i class="fa-duotone fa-plus" />
-      {{ t(`actions.relationships.${kind}.add`) }}
-    </Btn>
-  </Teleport>
-
-  <Heading size="hero" hero>
+  <Heading v-if="heading" size="hero" hero>
     {{ heading }}
   </Heading>
 
@@ -126,7 +112,7 @@ const openAdd = () => {
       </BtnGroup>
     </template>
 
-    <template v-if="canManage && !headerAction" #actions-right>
+    <template v-if="canManage" #actions-right>
       <Btn data-test="relationships-add" @click="openAdd">
         <i class="fa-duotone fa-plus" />
         {{ t(`actions.relationships.${kind}.add`) }}

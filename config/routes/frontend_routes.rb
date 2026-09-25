@@ -92,12 +92,15 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/ships", to: "fleets#show"
   get "fleets/:slug/fleetchart", to: "fleets#show"
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
-  get "fleets/:slug/allies", to: "fleets#show", as: :fleet_allies
-  get "fleets/:slug/allies/incoming", to: "fleets#show", as: :incoming_fleet_allies
+  # Old links, sent out in notifications before the list moved into settings.
+  get "fleets/:slug/allies", to: "fleets#settings"
+  get "fleets/:slug/allies/incoming", to: "fleets#settings"
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
   get "fleets/:slug/settings/fleet", to: "fleets#settings"
   get "fleets/:slug/settings/membership", to: "fleets#settings"
+  get "fleets/:slug/settings/allies", to: "fleets#settings", as: :fleet_allies
+  get "fleets/:slug/settings/allies/incoming", to: "fleets#settings", as: :incoming_fleet_allies
   get "fleets/:fleet_slug/events/:event_slug", to: "fleets#event", as: :fleet_event
 
   get "password/update/:token", to: "base#password", as: :password_reset

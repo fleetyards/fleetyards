@@ -112,6 +112,7 @@
           "membership": "Membresía de %{fleet}",
           "roles": "Roles de %{fleet}",
           "squadrons": "Escuadrones de %{fleet}",
+          "allies": "Aliados de %{fleet}",
           "notifications": "Configuración de notificaciones de %{fleet}",
           "discord": "Configuración de Discord de %{fleet}",
           "calendar": "Configuración del calendario de %{fleet}",

@@ -112,6 +112,7 @@
           "membership": "%{fleet} 成员资格",
           "roles": "%{fleet} 角色",
           "squadrons": "%{fleet} 中队",
+          "allies": "%{fleet} 盟友",
           "notifications": "%{fleet} 通知设置",
           "discord": "%{fleet} Discord 设置",
           "calendar": "%{fleet} 日历设置",
