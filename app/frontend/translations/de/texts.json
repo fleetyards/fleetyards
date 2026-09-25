@@ -175,7 +175,10 @@
         "returnedToReview": "Wird die Redirect-URI oder werden die Scopes geändert, geht eine freigegebene Anwendung zurück in die Prüfung."
       },
       "payouts": {
-        "tourInvite": "%{username} lädt dich zu dieser Tour ein."
+        "tourInvite": "%{username} lädt dich zu dieser Tour ein.",
+        "contractReady": "Der Auftrag ist erfüllt. Öffne sein Auszahlungsbuch, um die Belohnung an die Auftragnehmer auszuzahlen.",
+        "contractNotReady": "Für diesen Auftrag wurde noch kein Auszahlungsbuch eröffnet.",
+        "expenseNeedsReview": "Eine Ausgabe zählt, sobald sie von der Verwaltung des Buchs freigegeben wurde."
       },
       "fleet": {
         "contractCovers": "Das Bild, das die Auftragstafel je Auftragsart zeigt. Bleibt eines leer, wird das eingebaute Bild darunter verwendet."

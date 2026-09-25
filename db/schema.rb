@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_163000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -705,6 +705,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
     t.datetime "published_at"
     t.boolean "reimburse_expenses", default: true, null: false
     t.decimal "reward", precision: 15, scale: 2, default: "0.0", null: false
+    t.datetime "settled_at"
     t.string "slug", null: false
     t.uuid "source_fleet_inventory_id"
     t.string "title"
@@ -2058,6 +2059,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
   create_table "payout_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "amount", precision: 15, scale: 2, null: false
     t.datetime "created_at", null: false
+    t.text "decline_reason"
     t.string "description", null: false
     t.integer "entry_type", default: 0, null: false
     t.text "notes"
@@ -2065,8 +2067,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
     t.uuid "payout_ledger_id", null: false
     t.uuid "payout_participant_id", null: false
     t.uuid "recorded_by_id"
+    t.integer "review_status", default: 1, null: false
+    t.datetime "reviewed_at"
+    t.uuid "reviewed_by_id"
     t.datetime "updated_at", null: false
     t.index ["payout_ledger_id", "entry_type"], name: "index_payout_entries_on_payout_ledger_id_and_entry_type"
+    t.index ["payout_ledger_id", "review_status"], name: "index_payout_entries_on_payout_ledger_id_and_review_status"
     t.index ["payout_participant_id"], name: "index_payout_entries_on_payout_participant_id"
   end
 
@@ -2085,13 +2091,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
   create_table "payout_participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "added_by_id"
     t.datetime "created_at", null: false
+    t.uuid "fleet_id"
     t.string "name"
     t.uuid "payout_ledger_id", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
-    t.decimal "weight", precision: 5, scale: 2, default: "1.0", null: false
+    t.decimal "weight", precision: 9, scale: 6, default: "1.0", null: false
+    t.index ["fleet_id"], name: "index_payout_participants_on_fleet_id"
+    t.index ["payout_ledger_id", "fleet_id"], name: "index_payout_participants_unique_fleet_per_ledger", unique: true, where: "(fleet_id IS NOT NULL)"
     t.index ["payout_ledger_id", "user_id"], name: "index_payout_participants_unique_user_per_ledger", unique: true, where: "(user_id IS NOT NULL)"
     t.index ["payout_ledger_id"], name: "index_payout_participants_on_payout_ledger_id"
+    t.check_constraint "num_nonnulls(user_id, fleet_id) <= 1", name: "payout_participants_one_party"
   end
 
   create_table "payout_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2553,7 +2563,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_150000) do
   add_foreign_key "payout_entries", "payout_ledgers"
   add_foreign_key "payout_entries", "payout_participants"
   add_foreign_key "payout_entries", "users", column: "recorded_by_id"
+  add_foreign_key "payout_entries", "users", column: "reviewed_by_id"
   add_foreign_key "payout_ledgers", "users", column: "settled_by_id"
+  add_foreign_key "payout_participants", "fleets"
   add_foreign_key "payout_participants", "payout_ledgers"
   add_foreign_key "payout_participants", "users"
   add_foreign_key "payout_participants", "users", column: "added_by_id"

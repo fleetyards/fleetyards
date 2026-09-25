@@ -995,7 +995,10 @@
         "joinRequested": "Deine Anfrage wurde gesendet",
         "joinRequestWithdrawn": "Anfrage zurückgezogen",
         "joinRequestApproved": "Anfrage angenommen",
-        "joinRequestDeclined": "Anfrage abgelehnt"
+        "joinRequestDeclined": "Anfrage abgelehnt",
+        "expenseApproved": "Ausgabe freigegeben",
+        "expenseDeclined": "Ausgabe abgelehnt",
+        "pendingReview": "%{count} Ausgabe(n) warten auf Prüfung"
       },
       "dockAddition": {
         "create": {

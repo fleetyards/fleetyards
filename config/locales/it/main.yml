@@ -95,6 +95,7 @@ it:
         significant: true
         strip_insignificant_zeros: true
   fleet_contracts:
+    payout_reward: "Ricompensa: %{title}"
     units:
       scu: SCU
       units: unità

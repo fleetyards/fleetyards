@@ -101,7 +101,8 @@
           "contracts": "Contratti"
         },
         "contracts": {
-          "index": "Contratti"
+          "index": "Contratti",
+          "payouts": "Pagamenti"
         }
       },
       "rsiProfile": "Profilo RSI",

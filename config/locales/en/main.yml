@@ -32,6 +32,7 @@ en:
       toggle: Toggle Navigation
 
   fleet_contracts:
+    payout_reward: "Reward: %{title}"
     units:
       scu: SCU
       units: units

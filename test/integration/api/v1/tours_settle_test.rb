@@ -64,6 +64,16 @@ class Api::V1::ToursSettleTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT names the pending expense it is waiting on" do
+    create(:payout_entry, :pending, payout_ledger: @ledger,
+      payout_participant: @ledger.payout_participants.find_by!(user: @bob), amount: 50)
+    sign_in @organiser
+
+    assert_api_response :put, 409, path_params: {slug: @tour.slug} do
+      assert_equal "pending_review", parsed_body["code"]
+    end
+  end
+
   test "PUT is refused for a participant" do
     sign_in @bob
 

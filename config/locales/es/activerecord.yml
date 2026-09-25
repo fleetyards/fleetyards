@@ -329,6 +329,18 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "no se reembolsa en este contrato"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "No se puede pagar a nadie con este contrato: nadie entregó y nadie formó parte de la tripulación"
+        payout_participant:
+          attributes:
+            base:
+              one_party: "no puede ser a la vez un usuario y una flota"
         dock_capacity:
           attributes:
             display:

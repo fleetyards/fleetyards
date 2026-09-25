@@ -8,26 +8,32 @@ require "test_helper"
 #
 #  id                    :uuid             not null, primary key
 #  amount                :decimal(15, 2)   not null
+#  decline_reason        :text
 #  description           :string           not null
 #  entry_type            :integer          default("expense"), not null
 #  notes                 :text
 #  occurred_at           :datetime
+#  review_status         :integer          default("approved"), not null
+#  reviewed_at           :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  payout_ledger_id      :uuid             not null
 #  payout_participant_id :uuid             not null
 #  recorded_by_id        :uuid
+#  reviewed_by_id        :uuid
 #
 # Indexes
 #
-#  index_payout_entries_on_payout_ledger_id_and_entry_type  (payout_ledger_id,entry_type)
-#  index_payout_entries_on_payout_participant_id            (payout_participant_id)
+#  index_payout_entries_on_payout_ledger_id_and_entry_type     (payout_ledger_id,entry_type)
+#  index_payout_entries_on_payout_ledger_id_and_review_status  (payout_ledger_id,review_status)
+#  index_payout_entries_on_payout_participant_id               (payout_participant_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (payout_ledger_id => payout_ledgers.id)
 #  fk_rails_...  (payout_participant_id => payout_participants.id)
 #  fk_rails_...  (recorded_by_id => users.id)
+#  fk_rails_...  (reviewed_by_id => users.id)
 #
 class PayoutEntryTest < ActiveSupport::TestCase
   setup do
@@ -102,5 +108,97 @@ class PayoutEntryTest < ActiveSupport::TestCase
 
     assert_not entry.destroy
     assert PayoutEntry.exists?(entry.id)
+  end
+
+  test "refuses an expense on a contract that does not reimburse them" do
+    contract = create(:fleet_contract, :fulfilled, reimburse_expenses: false)
+    ledger = contract.create_payout_ledger!
+    participant = create(:payout_participant, payout_ledger: ledger)
+
+    expense = build(:payout_entry, payout_ledger: ledger, payout_participant: participant)
+    assert_not expense.valid?
+    assert_includes expense.errors.details[:entry_type], {error: :not_reimbursed}
+
+    assert_predicate build(:payout_entry, :income, payout_ledger: ledger, payout_participant: participant), :valid?
+  end
+
+  test "sends an approved expense back to review when its amount changes" do
+    entry = create(:payout_entry)
+    entry.approve!(create(:user))
+
+    entry.amount = 5_000
+    entry.assign_review_status(by_manager: false)
+
+    assert_predicate entry, :review_pending?
+    assert_nil entry.reviewed_by
+  end
+
+  test "a participant's pending expense tells the managers, not the one who recorded it" do
+    organiser = create(:user)
+    member = create(:user)
+    ledger = create(:payout_ledger, subject: create(:tour, created_by: organiser))
+    member_p = create(:payout_participant, payout_ledger: ledger, user: member)
+
+    create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: member_p,
+      recorded_by: member, description: "Refuel")
+
+    notification = Notification.payout_entry_pending_review.sole
+    assert_equal organiser, notification.user
+    assert_equal "Refuel", notification.body
+    assert_equal "/tools/tours/#{ledger.subject.slug}/", notification.link
+  end
+
+  test "a contractor's pending expense reaches the contract's author and managers" do
+    author = create(:user)
+    officer = create(:user)
+    contractor = create(:user)
+    fleet = create(:fleet, admins: [officer], members: [author, contractor])
+    contract = create(:fleet_contract, :fulfilled, fleet: fleet, created_by: author)
+    ledger = contract.create_payout_ledger!
+    contractor_p = create(:payout_participant, payout_ledger: ledger, user: contractor)
+
+    create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: contractor_p, recorded_by: contractor)
+
+    assert_equal [author, officer].map(&:id).sort, Notification.payout_entry_pending_review.pluck(:user_id).sort
+    assert_equal "/fleets/#{fleet.slug}/contracts/#{contract.slug}/payouts/",
+      Notification.payout_entry_pending_review.first.link
+  end
+
+  test "declining tells whoever recorded the expense, with the reason" do
+    organiser = create(:user)
+    member = create(:user)
+    ledger = create(:payout_ledger, subject: create(:tour, created_by: organiser))
+    member_p = create(:payout_participant, payout_ledger: ledger, user: member)
+    entry = create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: member_p, recorded_by: member)
+
+    entry.decline!(organiser, reason: "No receipt")
+
+    notification = Notification.payout_entry_declined.sole
+    assert_equal member, notification.user
+    assert_equal "No receipt", notification.body
+  end
+
+  test "approving an expense tells nobody" do
+    organiser = create(:user)
+    ledger = create(:payout_ledger, subject: create(:tour, created_by: organiser))
+    entry = create(:payout_entry, :pending, payout_ledger: ledger,
+      payout_participant: create(:payout_participant, payout_ledger: ledger))
+
+    assert_no_difference -> { Notification.count } do
+      entry.approve!(organiser)
+    end
+  end
+
+  test "a contract manager is not asked to review their own claim" do
+    officer = create(:user)
+    other_officer = create(:user)
+    fleet = create(:fleet, admins: [officer, other_officer])
+    contract = create(:fleet_contract, :fulfilled, fleet: fleet, created_by: other_officer)
+    ledger = contract.create_payout_ledger!
+    officer_p = create(:payout_participant, payout_ledger: ledger, user: officer)
+
+    create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: officer_p, recorded_by: other_officer)
+
+    assert_equal [], Notification.payout_entry_pending_review.where(user: officer).pluck(:id)
   end
 end

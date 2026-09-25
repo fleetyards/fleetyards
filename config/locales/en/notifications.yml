@@ -66,6 +66,12 @@ en:
       title: "%{username} wants to join %{tour}"
     tour_join_request_accepted:
       title: "You're on %{tour}"
+    payout_ledger_settled:
+      title: "The payouts for %{subject} are settled"
+    payout_entry_pending_review:
+      title: "%{user} submitted an expense on %{subject}"
+    payout_entry_declined:
+      title: "Your expense \"%{description}\" on %{subject} was declined"
     inventory_transfer_received:
       title: "%{sender} sent you %{count} item(s)"
       title_fleet: "%{sender} sent %{fleet} %{count} item(s)"
@@ -81,6 +87,8 @@ en:
         title: "%{user} claimed %{title}"
       fulfilled:
         title: "%{title} has been fulfilled"
+      settled:
+        title: "%{title} has been paid out"
       crew_requested:
         title: "%{user} asked to join %{title}"
       crew_accepted:

@@ -101,7 +101,8 @@
           "contracts": "Aufträge"
         },
         "contracts": {
-          "index": "Aufträge"
+          "index": "Aufträge",
+          "payouts": "Auszahlung"
         }
       },
       "rsiProfile": "RSI-Profil",

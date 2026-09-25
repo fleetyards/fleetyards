@@ -278,6 +278,8 @@ de:
       create: Eintrag konnte nicht erfasst werden.
       update: Eintrag konnte nicht aktualisiert werden.
       destroy: Eintrag konnte nicht entfernt werden.
+      approve: Ausgabe konnte nicht freigegeben werden.
+      decline: Ausgabe konnte nicht abgelehnt werden.
     payout_participants:
       create: Teilnehmer konnte nicht hinzugefügt werden.
       update: Teilnehmer konnte nicht aktualisiert werden.

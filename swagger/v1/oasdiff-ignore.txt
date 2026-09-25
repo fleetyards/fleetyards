@@ -1423,3 +1423,45 @@ PUT /fleets/{fleetSlug}/events/{slug}/start added the new `squadron` enum value 
 POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord added the new `squadron` enum value to the `allOf[subschema #1: FleetEvent]/visibility` response property for the response status `200`
 PUT /fleets/{fleetSlug}/events/{slug}/unarchive added the new `squadron` enum value to the `allOf[subschema #1: FleetEvent]/visibility` response property for the response status `200`
 PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups added the new `squadron` enum value to the `allOf[subschema #1: FleetEvent]/visibility` response property for the response status `200`
+GET /fleets/{fleetSlug}/contracts added the new `settled` enum value to the `items/items/state` response property for the response status `200`
+POST /fleets/{fleetSlug}/contracts added the new `settled` enum value to the `state` response property for the response status `201`
+GET /fleets/{fleetSlug}/contracts/{slug} added the new `settled` enum value to the `state` response property for the response status `200`
+PATCH /fleets/{fleetSlug}/contracts/{slug} added the new `settled` enum value to the `state` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/cancel added the new `settled` enum value to the `state` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/claim added the new `settled` enum value to the `state` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/fulfil added the new `settled` enum value to the `state` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/publish added the new `settled` enum value to the `state` response property for the response status `200`
+PUT /fleets/{fleetSlug}/contracts/{slug}/release added the new `settled` enum value to the `state` response property for the response status `200`
+GET /fleets/{fleetSlug}/events/{fleetEventSlug}/payouts added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/payouts added the new `FleetContract` enum value to the `subjectType` response property for the response status `201`
+GET /notification-preferences added the new `fleet_contract_settled` enum value to the `items/notificationType` response property for the response status `200`
+GET /notification-preferences added the new `payout_ledger_settled` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_contract_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `payout_ledger_settled` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_contract_settled` enum value to the `items/items/notificationType` response property for the response status `200`
+GET /notifications added the new `payout_ledger_settled` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_contract_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `payout_ledger_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_contract_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `payout_ledger_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_contract_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `payout_ledger_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_contract_settled` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `payout_ledger_settled` enum value to the `notificationType` response property for the response status `200`
+GET /payouts/{id} added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
+PUT /payouts/{id}/reopen added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
+PUT /payouts/{id}/settle added the new `FleetContract` enum value to the `subjectType` response property for the response status `200`
+GET /notification-preferences added the new `payout_entry_declined` enum value to the `items/notificationType` response property for the response status `200`
+GET /notification-preferences added the new `payout_entry_pending_review` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `payout_entry_declined` enum value to the `items/items/notificationType` response property for the response status `200`
+GET /notifications added the new `payout_entry_pending_review` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`

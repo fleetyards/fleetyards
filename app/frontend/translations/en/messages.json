@@ -1005,7 +1005,10 @@
         "joinRequested": "Your request was sent",
         "joinRequestWithdrawn": "Request withdrawn",
         "joinRequestApproved": "Request approved",
-        "joinRequestDeclined": "Request declined"
+        "joinRequestDeclined": "Request declined",
+        "expenseApproved": "Expense approved",
+        "expenseDeclined": "Expense declined",
+        "pendingReview": "%{count} expense(s) waiting for review"
       },
       "dockAddition": {
         "create": {

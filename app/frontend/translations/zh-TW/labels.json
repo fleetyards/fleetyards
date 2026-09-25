@@ -2401,7 +2401,8 @@
         "openFriends": "開啟好友",
         "openAllies": "開啟盟友",
         "openTour": "開啟行程",
-        "openContract": "開啟合約"
+        "openContract": "開啟合約",
+        "openPayouts": "打開分帳"
       },
       "notificationTypes": {
         "channels": {
@@ -2460,7 +2461,11 @@
         "fleet_contract_crew_answered": "合約成員申請已處理",
         "fleet_subscription_started": "已獲得艦隊功能",
         "fleet_subscription_ended": "已失去艦隊功能",
-        "fleet_contract_fulfilled": "合約已完成"
+        "fleet_contract_fulfilled": "合約已完成",
+        "fleet_contract_settled": "合約已結算",
+        "payout_ledger_settled": "分帳已結算",
+        "payout_entry_pending_review": "支出待審核",
+        "payout_entry_declined": "支出已拒絕"
       },
       "fleets": {
         "missions": {
@@ -2683,7 +2688,8 @@
             "in_progress": "進行中",
             "fulfilled": "已完成",
             "cancelled": "已取消",
-            "expired": "已過期"
+            "expired": "已過期",
+            "settled": "已結算"
           },
           "itemTypes": {
             "Commodity": "商品",
@@ -2937,7 +2943,14 @@
         "shares": "份",
         "customWeight": "自訂權重",
         "preview": "預覽 · 結算前會變動",
-        "joinRequestPending": "申請待處理"
+        "joinRequestPending": "申請待處理",
+        "payer": "付款方",
+        "declineReason": "原因",
+        "review": {
+          "pending": "待審核",
+          "approved": "已核准",
+          "declined": "已拒絕"
+        }
       },
       "shipSizes": {
         "extra_extra_small": "小型飛船 (XXS)",

@@ -473,7 +473,8 @@
           "index": "Expéditions",
           "create": "Créer une expédition",
           "join": "Rejoindre cette expédition"
-        }
+        },
+        "declineExpense": "Refuser la dépense"
       },
       "relationships": {
         "user": {

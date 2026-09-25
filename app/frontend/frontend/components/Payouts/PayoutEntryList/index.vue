@@ -13,13 +13,27 @@ import {
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import type { PayoutEntry, PayoutParticipant } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  PayoutEntryReviewStatusEnum,
+  useApprovePayoutEntry as useApprovePayoutEntryMutation,
+  type PayoutEntry,
+  type PayoutParticipant,
+} from "@/services/fyApi";
+import type { ApiError } from "@/shared/types/api-error";
 
 type Props = {
   payoutLedgerId: string;
   entries: PayoutEntry[];
   participants: PayoutParticipant[];
   editable?: boolean;
+  // Whether the viewer may approve or decline an expense somebody else is
+  // waiting on -- the ledger's managers.
+  reviewable?: boolean;
+  // Rows the viewer may not answer even though they review the rest -- their
+  // own claims on a contract.
+  unreviewableParticipantIds?: string[];
+  expensesAllowed?: boolean;
   // The entries are a query of their own, answering after the ledger that
   // frames this panel - so without this the panel says "nothing recorded yet"
   // about a ledger that is still being read.
@@ -28,6 +42,9 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
+  reviewable: false,
+  unreviewableParticipantIds: () => [],
+  expensesAllowed: true,
   loading: false,
 });
 
@@ -46,6 +63,41 @@ const editableEntry = (entry: PayoutEntry) =>
 
 const { t, toUEC, l } = useI18n();
 const comlink = useComlink();
+const { displaySuccess, displayAlert } = useAppNotifications();
+
+const reviewing = (entry: PayoutEntry) =>
+  props.reviewable &&
+  entry.reviewStatus === PayoutEntryReviewStatusEnum.PENDING &&
+  !props.unreviewableParticipantIds.includes(entry.payoutParticipantId);
+
+const approvingId = ref<string | null>(null);
+
+const approveMutation = useApprovePayoutEntryMutation();
+
+const onApprove = async (entry: PayoutEntry) => {
+  approvingId.value = entry.id;
+
+  await approveMutation
+    .mutateAsync({ payoutLedgerId: props.payoutLedgerId, id: entry.id })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.expenseApproved") });
+      comlink.emit("payout-ledger-changed");
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      approvingId.value = null;
+    });
+};
+
+const onDecline = (entry: PayoutEntry) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Payouts/PayoutEntryDeclineModal/index.vue"),
+    props: { payoutLedgerId: props.payoutLedgerId, entry },
+  });
+};
 
 const onEdit = (entry: PayoutEntry) => {
   comlink.emit("open-modal", {
@@ -54,6 +106,7 @@ const onEdit = (entry: PayoutEntry) => {
     props: {
       payoutLedgerId: props.payoutLedgerId,
       participants: props.participants,
+      expensesAllowed: props.expensesAllowed,
       entry,
     },
   });
@@ -88,13 +141,51 @@ const onEdit = (entry: PayoutEntry) => {
             · {{ l(entry.occurredAt) }}
           </template>
         </span>
+        <!-- Only the two states that change what the entry means. An approved
+             expense counts like any other, so it carries no mark. -->
+        <span
+          v-if="entry.reviewStatus !== PayoutEntryReviewStatusEnum.APPROVED"
+          class="payout-entries__review"
+          :class="`payout-entries__review--${entry.reviewStatus}`"
+          data-test="payout-entry-review"
+        >
+          {{ t(`labels.payouts.review.${entry.reviewStatus}`) }}
+          <template v-if="entry.declineReason">
+            · {{ entry.declineReason }}
+          </template>
+        </span>
       </div>
 
       <span
         class="payout-entries__amount"
-        :class="`payout-entries__amount--${entry.entryType}`"
+        :class="[
+          `payout-entries__amount--${entry.entryType}`,
+          {
+            'payout-entries__amount--uncounted':
+              entry.reviewStatus !== PayoutEntryReviewStatusEnum.APPROVED,
+          },
+        ]"
         v-html="toUEC(Number(entry.amount ?? 0))"
       />
+
+      <template v-if="reviewing(entry)">
+        <Btn
+          :size="BtnSizesEnum.SM"
+          :loading="approvingId === entry.id"
+          data-test="payout-entry-approve"
+          @click="onApprove(entry)"
+        >
+          {{ t("actions.payouts.approveExpense") }}
+        </Btn>
+        <Btn
+          :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.BARE"
+          data-test="payout-entry-decline"
+          @click="onDecline(entry)"
+        >
+          {{ t("actions.payouts.declineExpense") }}
+        </Btn>
+      </template>
 
       <Btn
         v-if="editableEntry(entry)"
@@ -149,6 +240,23 @@ const onEdit = (entry: PayoutEntry) => {
 .payout-entries__meta {
   font-size: 11px;
   color: var(--color-text-dim, #959595);
+}
+
+.payout-entries__review {
+  font-size: 11px;
+}
+
+.payout-entries__review--pending {
+  color: var(--color-warning, #ff9800);
+}
+
+.payout-entries__review--declined {
+  color: var(--color-danger, #f44336);
+}
+
+.payout-entries__amount--uncounted {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 
 .payout-entries__amount--income {

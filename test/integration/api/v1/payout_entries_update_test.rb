@@ -96,6 +96,25 @@ class Api::V1::PayoutEntriesUpdateTest < ActionDispatch::IntegrationTest
 
   # An entry belongs to whoever recorded it. Another participant editing it
   # would silently move everyone's balance.
+  test "PATCH sends an approved expense back to review when the recorder changes the amount" do
+    @entry.approve!(@organiser)
+    sign_in @member
+
+    assert_api_response :patch, 200, path_params: path_params, body: {amount: "5000"} do
+      assert_equal "pending", parsed_body["reviewStatus"]
+      assert_nil parsed_body["reviewedBy"]
+    end
+  end
+
+  test "PATCH keeps an approved expense approved when only the notes change" do
+    @entry.approve!(@organiser)
+    sign_in @member
+
+    assert_api_response :patch, 200, path_params: path_params, body: {notes: "receipt in discord"} do
+      assert_equal "approved", parsed_body["reviewStatus"]
+    end
+  end
+
   test "PATCH is refused for another participant" do
     sign_in @other
 

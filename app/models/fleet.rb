@@ -68,6 +68,8 @@ class Fleet < ApplicationRecord
     reason_description: :update_reason_description
   }
 
+  before_destroy :preserve_payout_participant_names, prepend: true
+
   has_many :fleet_roles,
     dependent: :destroy
   has_many :fleet_memberships,
@@ -103,6 +105,9 @@ class Fleet < ApplicationRecord
   # turns one back into the standalone tour its organiser and participants can
   # still settle between themselves.
   has_many :tours, dependent: :nullify
+  # Nullified for the same reason: a ledger the fleet paid into still has to
+  # add up, so the row keeps the fleet's name and becomes a named guest.
+  has_many :payout_participants, dependent: :nullify
   has_one :fleet_notification_setting, dependent: :destroy
   has_many :fleet_vehicles, dependent: :destroy
   has_many :vehicles, through: :fleet_vehicles, source: :vehicle
@@ -351,5 +356,9 @@ class Fleet < ApplicationRecord
 
   private def update_slugs
     self.slug = generate_slug(fid)
+  end
+
+  private def preserve_payout_participant_names
+    payout_participants.where(name: nil).update_all(name: name)
   end
 end

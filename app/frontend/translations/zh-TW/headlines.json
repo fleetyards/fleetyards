@@ -473,7 +473,8 @@
           "index": "行程",
           "create": "建立行程",
           "join": "加入此行程"
-        }
+        },
+        "declineExpense": "拒絕支出"
       },
       "relationships": {
         "user": {

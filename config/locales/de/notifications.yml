@@ -71,6 +71,12 @@ de:
       title: "%{username} möchte bei %{tour} mitmachen"
     tour_join_request_accepted:
       title: "Du bist bei %{tour} dabei"
+    payout_ledger_settled:
+      title: "Die Auszahlung für %{subject} steht fest"
+    payout_entry_pending_review:
+      title: "%{user} hat eine Ausgabe für %{subject} eingereicht"
+    payout_entry_declined:
+      title: "Deine Ausgabe \"%{description}\" für %{subject} wurde abgelehnt"
     fleet_contract:
       published:
         title: "Neuer Auftrag in %{fleet}: %{title}"
@@ -79,6 +85,8 @@ de:
         title: "%{user} hat %{title} übernommen"
       fulfilled:
         title: "%{title} wurde erfüllt"
+      settled:
+        title: "Die Auszahlung für %{title} steht fest"
       crew_requested:
         title: "%{user} möchte bei %{title} mitmachen"
       crew_accepted:

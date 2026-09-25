@@ -63,6 +63,21 @@ module Payouts
       assert_settles(settlement, [alice, bob, cara])
     end
 
+    test "leaves out expenses nobody has approved" do
+      alice = create(:payout_participant, payout_ledger: @ledger)
+      bob = create(:payout_participant, payout_ledger: @ledger)
+
+      create(:payout_entry, :income, payout_ledger: @ledger, payout_participant: bob, amount: 1_000)
+      create(:payout_entry, :pending, payout_ledger: @ledger, payout_participant: alice, amount: 400)
+      create(:payout_entry, :declined, payout_ledger: @ledger, payout_participant: alice, amount: 300)
+
+      settlement = Settlement.new(@ledger)
+
+      assert_equal 0, settlement.total_expenses
+      assert_equal 1_000, settlement.profit
+      assert_settles(settlement, [alice, bob])
+    end
+
     test "distributes a profit that does not divide evenly" do
       participants = create_list(:payout_participant, 3, payout_ledger: @ledger)
       create(:payout_entry, :income, payout_ledger: @ledger,

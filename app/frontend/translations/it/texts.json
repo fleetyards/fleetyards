@@ -175,7 +175,10 @@
         "returnedToReview": "Modificare l'URI di reindirizzamento o gli ambiti riporta in revisione un'applicazione approvata."
       },
       "payouts": {
-        "tourInvite": "%{username} ti invita a unirti a questa spedizione."
+        "tourInvite": "%{username} ti invita a unirti a questa spedizione.",
+        "contractReady": "Il contratto è completato. Apri il suo registro dei pagamenti per pagare la ricompensa ai contraenti.",
+        "contractNotReady": "Per questo contratto non è ancora stato aperto un registro dei pagamenti.",
+        "expenseNeedsReview": "Una spesa conta dopo che chi gestisce il registro l'ha approvata."
       },
       "fleet": {
         "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto."

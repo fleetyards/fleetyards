@@ -23,7 +23,7 @@ module Api
       def index
         authorize! with: PayoutParticipantPolicy, context: ledger_context
 
-        @payout_participants = @payout_ledger.payout_participants.includes(:user).order(:created_at)
+        @payout_participants = @payout_ledger.payout_participants.includes(:user, fleet: {logo_attachment: :blob}).order(:created_at)
       end
 
       def create

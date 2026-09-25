@@ -18,6 +18,8 @@ module V1
             participantsCount: {type: :integer},
             totalWeight: {type: :string},
             entriesCount: {type: :integer},
+            # Settling is refused while this is above zero.
+            pendingReviewCount: {type: :integer},
             totalIncome: {type: :string},
             totalExpenses: {type: :string},
             profit: {type: :string},

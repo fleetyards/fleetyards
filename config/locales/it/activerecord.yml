@@ -329,6 +329,18 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "non viene rimborsata in questo contratto"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "Nessuno può essere pagato per questo contratto: nessuno ha consegnato e nessuno era nell'equipaggio"
+        payout_participant:
+          attributes:
+            base:
+              one_party: "non può essere contemporaneamente un utente e una flotta"
         dock_capacity:
           attributes:
             display:

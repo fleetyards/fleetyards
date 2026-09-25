@@ -175,7 +175,10 @@
         "returnedToReview": "Modifier l'URI de redirection ou les portées renvoie une application approuvée à l'examen."
       },
       "payouts": {
-        "tourInvite": "%{username} vous invite à rejoindre cette expédition."
+        "tourInvite": "%{username} vous invite à rejoindre cette expédition.",
+        "contractReady": "Le contrat est rempli. Ouvrez son registre de paiements pour verser la récompense aux prestataires.",
+        "contractNotReady": "Aucun registre de paiements n'a encore été ouvert pour ce contrat.",
+        "expenseNeedsReview": "Une dépense compte une fois approuvée par la personne qui gère le registre."
       },
       "fleet": {
         "contractCovers": "L'image que le tableau affiche pour chaque type de contrat. Laissez-en une vide et l'image intégrée ci-dessous est utilisée."

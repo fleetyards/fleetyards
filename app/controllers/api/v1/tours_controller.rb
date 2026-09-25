@@ -96,7 +96,11 @@ module Api
         # own `subject` instance, which is not the one loaded here, and answers
         # false if another request settled it between the guard and the lock.
         unless ledger.settle!(current_resource_owner)
-          render json: {code: "cannot_settle", message: "This tour cannot be settled"}, status: :conflict
+          if ledger.pending_review?
+            render json: {code: "pending_review", message: "Expenses are still waiting for review"}, status: :conflict
+          else
+            render json: {code: "cannot_settle", message: "This tour cannot be settled"}, status: :conflict
+          end
           return
         end
 

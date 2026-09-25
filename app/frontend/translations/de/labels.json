@@ -2401,7 +2401,8 @@
         "openFriends": "Freunde öffnen",
         "openAllies": "Verbündete öffnen",
         "openTour": "Tour öffnen",
-        "openContract": "Auftrag öffnen"
+        "openContract": "Auftrag öffnen",
+        "openPayouts": "Auszahlung öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -2460,7 +2461,11 @@
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
         "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
-        "fleet_contract_fulfilled": "Auftrag erfüllt"
+        "fleet_contract_fulfilled": "Auftrag erfüllt",
+        "fleet_contract_settled": "Auftrag ausgezahlt",
+        "payout_ledger_settled": "Auszahlung abgerechnet",
+        "payout_entry_pending_review": "Ausgabe wartet auf Prüfung",
+        "payout_entry_declined": "Ausgabe abgelehnt"
       },
       "fleets": {
         "missions": {
@@ -2683,7 +2688,8 @@
             "in_progress": "In Arbeit",
             "fulfilled": "Erfüllt",
             "cancelled": "Abgebrochen",
-            "expired": "Abgelaufen"
+            "expired": "Abgelaufen",
+            "settled": "Ausgezahlt"
           },
           "itemTypes": {
             "Commodity": "Handelsware",
@@ -2946,7 +2952,14 @@
         "shares": "Anteile",
         "customWeight": "Eigene Gewichtung",
         "preview": "Vorschau · ändert sich bis zur Abrechnung",
-        "joinRequestPending": "Anfrage offen"
+        "joinRequestPending": "Anfrage offen",
+        "payer": "Zahler",
+        "declineReason": "Grund",
+        "review": {
+          "pending": "Wartet auf Prüfung",
+          "approved": "Freigegeben",
+          "declined": "Abgelehnt"
+        }
       },
       "relationships": {
         "party": "Name",

@@ -329,6 +329,18 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "wird von diesem Auftrag nicht erstattet"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "Aus diesem Auftrag kann niemand bezahlt werden: niemand hat geliefert und niemand war in der Crew"
+        payout_participant:
+          attributes:
+            base:
+              one_party: "kann nicht gleichzeitig ein Benutzer und eine Flotte sein"
         dock_capacity:
           attributes:
             display:

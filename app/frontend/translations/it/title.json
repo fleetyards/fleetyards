@@ -123,7 +123,8 @@
           "index": "Contratti",
           "create": "Crea contratto",
           "edit": "Modifica contratto",
-          "show": "Contratto"
+          "show": "Contratto",
+          "payouts": "%{fleet} Pagamenti del contratto"
         }
       },
       "roadmap": {

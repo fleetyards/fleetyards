@@ -422,15 +422,22 @@ en:
           attributes:
             vehicle_size:
               not_a_vehicle: only applies to a ground vehicle
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "Nobody can be paid from this contract: nobody delivered and nobody was on the crew"
         payout_participant:
           attributes:
             base:
               has_entries: still has entries recorded against them
+              one_party: cannot be both a user and a fleet
               ledger_settled: cannot be changed once the payouts are settled
         payout_entry:
           attributes:
             base:
               ledger_settled: cannot be changed once the payouts are settled
+            entry_type:
+              not_reimbursed: is not reimbursed on this contract
             payout_participant_id:
               wrong_ledger: is not on this ledger
         payout_transfer:

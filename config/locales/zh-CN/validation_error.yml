@@ -271,6 +271,8 @@ zh-CN:
       create: 无法记录该笔。
       update: 无法更新该笔记录。
       destroy: 无法删除该笔记录。
+      approve: 无法批准该笔支出。
+      decline: 无法拒绝该笔支出。
     payout_participants:
       create: 无法添加参与者。
       update: 无法更新参与者。

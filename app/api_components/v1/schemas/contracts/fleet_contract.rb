@@ -46,6 +46,7 @@ module V1
             publishedAt: {type: [:string, :null], format: "date-time"},
             claimedAt: {type: [:string, :null], format: "date-time"},
             fulfilledAt: {type: [:string, :null], format: "date-time"},
+            settledAt: {type: [:string, :null], format: "date-time"},
             cancelledAt: {type: [:string, :null], format: "date-time"},
             expiredAt: {type: [:string, :null], format: "date-time"},
             createdAt: {type: [:string, :null], format: "date-time"},

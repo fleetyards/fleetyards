@@ -473,7 +473,8 @@
           "index": "Expediciones",
           "create": "Crear expedición",
           "join": "Unirse a esta expedición"
-        }
+        },
+        "declineExpense": "Rechazar gasto"
       },
       "relationships": {
         "user": {

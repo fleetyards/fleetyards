@@ -14,22 +14,22 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write", "user:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy]
+        only: %i[create update destroy approve decline]
 
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
       before_action -> { require_fleet_subscription(:tours) }
-      before_action :set_payout_entry, only: %i[update destroy]
+      before_action :set_payout_entry, only: %i[update destroy approve decline]
 
       def index
         authorize! with: PayoutEntryPolicy, context: ledger_context
 
-        query_params = params.fetch(:q, {}).permit(:description_cont, :entry_type_eq, :payout_participant_id_eq, :s)
+        query_params = params.fetch(:q, {}).permit(:description_cont, :entry_type_eq, :review_status_eq, :payout_participant_id_eq, :s)
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(PayoutEntry, query_params["sorts"])
 
         @q = @payout_ledger.payout_entries
-          .includes(payout_participant: :user)
+          .includes(:reviewed_by, payout_participant: [:user, :fleet])
           .ransack(query_params)
 
         @payout_entries = result_with_pagination(@q.result(distinct: true), per_page(PayoutEntry))
@@ -40,6 +40,8 @@ module Api
         @payout_entry.recorded_by = current_resource_owner
 
         authorize! @payout_entry, with: PayoutEntryPolicy, context: ledger_context
+
+        @payout_entry.assign_review_status(by_manager: ledger_manager?)
 
         if @payout_entry.save
           render :show, status: :created
@@ -57,6 +59,8 @@ module Api
 
         authorize! @payout_entry, with: PayoutEntryPolicy, context: ledger_context
 
+        @payout_entry.assign_review_status(by_manager: ledger_manager?)
+
         if @payout_entry.save
           render :show
         else
@@ -72,6 +76,32 @@ module Api
         else
           render json: ValidationError.new("payout_entries.destroy", errors: @payout_entry.errors), status: :bad_request
         end
+      end
+
+      def approve
+        authorize! @payout_entry, with: PayoutEntryPolicy, context: ledger_context, to: :review?
+
+        @payout_entry.approve!(current_resource_owner)
+
+        render :show
+      rescue ActiveRecord::RecordInvalid
+        render json: ValidationError.new("payout_entries.approve", errors: @payout_entry.errors), status: :bad_request
+      end
+
+      def decline
+        authorize! @payout_entry, with: PayoutEntryPolicy, context: ledger_context, to: :review?
+
+        @payout_entry.decline!(current_resource_owner, reason: params[:reason])
+
+        render :show
+      rescue ActiveRecord::RecordInvalid
+        render json: ValidationError.new("payout_entries.decline", errors: @payout_entry.errors), status: :bad_request
+      end
+
+      private def ledger_manager?
+        return false if PayoutEntryPolicy.new(@payout_entry, user: current_resource_owner, **ledger_context).own_contract_claim?
+
+        PayoutLedgerPolicy.new(@payout_ledger, user: current_resource_owner, **ledger_context).manage?
       end
 
       # Defined here rather than left to PayoutLedgerScoped: both it and

@@ -2401,7 +2401,8 @@
         "openFriends": "Apri gli amici",
         "openAllies": "Apri gli alleati",
         "openTour": "Apri spedizione",
-        "openContract": "Apri contratto"
+        "openContract": "Apri contratto",
+        "openPayouts": "Apri i pagamenti"
       },
       "notificationTypes": {
         "channels": {
@@ -2460,7 +2461,11 @@
         "fleet_contract_crew_answered": "Richiesta di equipaggio gestita",
         "fleet_subscription_started": "Funzioni di flotta attivate",
         "fleet_subscription_ended": "Funzioni di flotta perse",
-        "fleet_contract_fulfilled": "Contratto completato"
+        "fleet_contract_fulfilled": "Contratto completato",
+        "fleet_contract_settled": "Contratto pagato",
+        "payout_ledger_settled": "Pagamenti definiti",
+        "payout_entry_pending_review": "Spesa in attesa di verifica",
+        "payout_entry_declined": "Spesa rifiutata"
       },
       "fleets": {
         "missions": {
@@ -2683,7 +2688,8 @@
             "in_progress": "In corso",
             "fulfilled": "Completato",
             "cancelled": "Annullato",
-            "expired": "Scaduto"
+            "expired": "Scaduto",
+            "settled": "Liquidato"
           },
           "itemTypes": {
             "Commodity": "Merce",
@@ -2946,7 +2952,14 @@
         "shares": "quote",
         "customWeight": "Peso personalizzato",
         "preview": "Anteprima · cambia fino al saldo",
-        "joinRequestPending": "Richiesta in attesa"
+        "joinRequestPending": "Richiesta in attesa",
+        "payer": "Pagatore",
+        "declineReason": "Motivo",
+        "review": {
+          "pending": "In attesa di verifica",
+          "approved": "Approvata",
+          "declined": "Rifiutata"
+        }
       },
       "relationships": {
         "party": "Nome",

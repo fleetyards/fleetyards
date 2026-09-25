@@ -25,7 +25,14 @@ class PayoutLedgerPolicy < FleetBasePolicy
   # event settles money at all, and seeds the participant list everyone's share
   # is divided by. `fleet:payouts:create` is the privilege for recording an
   # entry -- see `contribute?` -- and deliberately does not reach this.
-  def create? = manage?
+  # A contract is paid once it has been delivered, not while it is still a
+  # job on the board -- until then there is nobody to divide the reward across.
+  def create?
+    return false unless manage?
+    return subject.fulfilled? if subject.is_a?(FleetContract)
+
+    true
+  end
 
   def update? = manage?
 
@@ -44,6 +51,8 @@ class PayoutLedgerPolicy < FleetBasePolicy
         subject.event_moderator_or_admin?(user)
     when Tour
       tour_organiser? || tour_fleet_access?(["fleet:manage", "fleet:payouts:manage"])
+    when FleetContract
+      contract_policy.manage? || contract_author?
     else
       false
     end
@@ -60,7 +69,7 @@ class PayoutLedgerPolicy < FleetBasePolicy
     when FleetEvent
       accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:create"]) &&
         participant?
-    when Tour
+    when Tour, FleetContract
       participant?
     else
       false
@@ -76,6 +85,12 @@ class PayoutLedgerPolicy < FleetBasePolicy
     when Tour
       participant? || tour_organiser? ||
         tour_fleet_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])
+    when FleetContract
+      # Through the contract's own visibility, squadron included: a payout
+      # privilege must not reveal the terms of a contract the reader cannot
+      # open.
+      manage? || (contract_policy.show? && (participant? ||
+        accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])))
     else
       false
     end
@@ -111,6 +126,17 @@ class PayoutLedgerPolicy < FleetBasePolicy
     return false unless subject.is_a?(Tour) && subject.fleet_id.present?
 
     accepted_fleet_membership&.has_access?(privileges) || false
+  end
+
+  private def contract_policy
+    @contract_policy ||= FleetContractPolicy.new(subject, user: user, fleet: subject.fleet)
+  end
+
+  # The author is the client, and the client is who reviews what the
+  # contractors claim they spent -- whether or not they also run the fleet's
+  # contracts. Still a member, or it is a stranger approving money.
+  private def contract_author?
+    user.present? && subject.created_by_id == user.id && accepted_fleet_membership.present?
   end
 
   # FleetBasePolicy resolves a membership from `record.fleet_id`, which a

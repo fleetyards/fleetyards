@@ -22,6 +22,11 @@ FactoryBot.define do
       user { nil }
       sequence(:name) { |n| "Guest #{n}" }
     end
+
+    trait :fleet do
+      user { nil }
+      fleet
+    end
   end
 
   factory :payout_entry do
@@ -33,6 +38,14 @@ FactoryBot.define do
 
     trait :income do
       entry_type { "income" }
+    end
+
+    trait :pending do
+      review_status { "pending" }
+    end
+
+    trait :declined do
+      review_status { "declined" }
     end
   end
 

@@ -2401,7 +2401,8 @@
         "openFriends": "Abrir amigos",
         "openAllies": "Abrir aliados",
         "openTour": "Abrir expedición",
-        "openContract": "Abrir contrato"
+        "openContract": "Abrir contrato",
+        "openPayouts": "Abrir pagos"
       },
       "notificationTypes": {
         "channels": {
@@ -2460,7 +2461,11 @@
         "fleet_contract_crew_answered": "Solicitud de tripulación respondida",
         "fleet_subscription_started": "Funciones de flota activadas",
         "fleet_subscription_ended": "Funciones de flota perdidas",
-        "fleet_contract_fulfilled": "Contrato cumplido"
+        "fleet_contract_fulfilled": "Contrato cumplido",
+        "fleet_contract_settled": "Contrato pagado",
+        "payout_ledger_settled": "Pagos cerrados",
+        "payout_entry_pending_review": "Gasto pendiente de revisión",
+        "payout_entry_declined": "Gasto rechazado"
       },
       "fleets": {
         "missions": {
@@ -2683,7 +2688,8 @@
             "in_progress": "En curso",
             "fulfilled": "Completado",
             "cancelled": "Cancelado",
-            "expired": "Caducado"
+            "expired": "Caducado",
+            "settled": "Liquidado"
           },
           "itemTypes": {
             "Commodity": "Mercancía",
@@ -2946,7 +2952,14 @@
         "shares": "partes",
         "customWeight": "Peso personalizado",
         "preview": "Vista previa · cambia hasta liquidar",
-        "joinRequestPending": "Solicitud pendiente"
+        "joinRequestPending": "Solicitud pendiente",
+        "payer": "Pagador",
+        "declineReason": "Motivo",
+        "review": {
+          "pending": "Pendiente de revisión",
+          "approved": "Aprobado",
+          "declined": "Rechazado"
+        }
       },
       "relationships": {
         "party": "Nombre",

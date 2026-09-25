@@ -28,9 +28,12 @@ class PayoutLedger < ApplicationRecord
   # app -- including records the signed-in user cannot see, whose participants
   # would then be seeded onto it. Same reasoning as InventoryLedgerEntry's
   # ITEM_TYPES.
-  SUBJECT_TYPES = %w[FleetEvent Tour].freeze
+  SUBJECT_TYPES = %w[FleetEvent Tour FleetContract].freeze
 
   STATUSES = %w[open settled].freeze
+
+  # Every fleet privilege some branch of PayoutLedgerPolicy#manage? accepts.
+  MANAGER_PRIVILEGES = ["fleet:manage", "fleet:payouts:manage", "fleet:contracts:manage"].freeze
 
   AVAILABLE_PRIVILEGES = [
     "fleet:payouts:read",
@@ -79,6 +82,17 @@ class PayoutLedger < ApplicationRecord
 
   def settled? = status == "settled"
 
+  # Settling freezes the transfers, and an expense still waiting for a manager
+  # would either be left out of them for good or have to be decided on by
+  # whoever happened to press settle.
+  def pending_review? = payout_entries.review_pending.exists?
+
+  # A contract pays its contractors. With none left on the list, settling would
+  # hand the reward back to the fleet and still report the contract paid out.
+  def unpayable?
+    subject.is_a?(FleetContract) && !payout_participants.where(fleet_id: nil).exists?
+  end
+
   # Both subjects can carry one: an event always does, a tour only when it was
   # organised from a fleet's page.
   def fleet
@@ -95,7 +109,7 @@ class PayoutLedger < ApplicationRecord
   # Returns false rather than raising when the ledger is not in a state to be
   # settled, so the caller can answer 409.
   def settle!(user = nil)
-    transaction do
+    settled = transaction do
       # Taken before anything is read. Every path that changes a participant or
       # an entry takes the same lock, so one racing this either lands before the
       # snapshot or finds the ledger already settled -- rather than moving money
@@ -107,6 +121,8 @@ class PayoutLedger < ApplicationRecord
       # pass it and the second would delete and recreate the first's transfers,
       # dropping any confirmation already ticked off against them.
       next false if settled?
+      next false if pending_review?
+      next false if unpayable?
 
       payout_transfers.delete_all
 
@@ -124,6 +140,10 @@ class PayoutLedger < ApplicationRecord
 
       true
     end
+
+    notify_settled(user) if settled
+
+    settled
   end
 
   def reopen!
@@ -155,21 +175,37 @@ class PayoutLedger < ApplicationRecord
   # whether the money is settled. Two endpoints reach this ledger -- the tour's
   # and the ledger's own, which is the one the UI actually calls -- so the
   # transition is carried here rather than in either controller, or the two
-  # paths disagree about whether the tour is settled.
+  # paths disagree about whether the tour is settled. A contract's `settled`
+  # means the same thing and follows for the same reason.
   #
   # A fleet event has its own lifecycle that means something else entirely, so
-  # only a tour follows.
+  # it does not follow.
+  #
+  # A contract's own validations guard its terms -- where the goods go, where
+  # they come from -- and an inventory deleted since it was fulfilled must not
+  # leave the contract `fulfilled` under a settled ledger. So its transition is
+  # saved without them, as a full save: aasm's own skip-validation path writes
+  # the state column alone and would drop `settled_at`.
   private def carry_status_to_subject(event)
-    return unless subject.is_a?(Tour)
+    return unless subject.is_a?(Tour) || subject.is_a?(FleetContract)
     return unless subject.public_send(:"may_#{event}?")
 
-    subject.public_send(:"#{event}!")
+    if subject.is_a?(FleetContract)
+      subject.public_send(event)
+      subject.save!(validate: false)
+    else
+      subject.public_send(:"#{event}!")
+    end
   end
 
   # Seeds the participant list from whoever the subject already knows about.
   # Only ever adds: a participant removed on purpose must not come back the
   # next time this runs.
+  # Returns false, with the reason on `errors`, when there is nobody to seed
+  # a payout for; the caller rolls the ledger back.
   def seed_participants_from_subject!
+    return seed_contract! if subject.is_a?(FleetContract)
+
     existing_user_ids = payout_participants.where.not(user_id: nil).pluck(:user_id)
 
     seed_user_ids_from_subject.uniq.each do |user_id|
@@ -177,6 +213,8 @@ class PayoutLedger < ApplicationRecord
 
       payout_participants.create!(user_id: user_id)
     end
+
+    true
   end
 
   # Everyone on the ledger is reading the same numbers, so a change has to reach
@@ -208,6 +246,123 @@ class PayoutLedger < ApplicationRecord
     return unless saved_change_to_status? || saved_change_to_notes?
 
     broadcast_change
+  end
+
+  # Everyone PayoutLedgerPolicy lets manage this ledger. The candidates are
+  # narrowed first -- a fleet's privileged members and the people the subject
+  # itself hands the ledger to -- and the policy then has the last word, so
+  # this cannot drift from who may actually approve an expense.
+  def managers
+    candidates = []
+
+    if fleet.present?
+      candidates += fleet.fleet_memberships.where(aasm_state: "accepted").includes(:user, :fleet_role)
+        .select { |membership| membership.has_access?(MANAGER_PRIVILEGES) }
+        .filter_map(&:user)
+    end
+
+    candidates << subject.try(:created_by)
+    candidates += subject.event_admin_users.to_a if subject.is_a?(FleetEvent)
+
+    candidates.compact.uniq.select do |user|
+      PayoutLedgerPolicy.new(self, user: user, payout_ledger: self, fleet: fleet).manage?
+    end
+  end
+
+  # What a notification about this ledger links to and calls it.
+  def page_link
+    case subject
+    when FleetContract then "/fleets/#{subject.fleet.slug}/contracts/#{subject.slug}/payouts/"
+    when FleetEvent then "/fleets/#{subject.fleet.slug}/events/#{subject.slug}/payouts/"
+    when Tour then subject.fleet ? "/fleets/#{subject.fleet.slug}/tours/#{subject.slug}/" : "/tools/tours/#{subject.slug}/"
+    end
+  end
+
+  def subject_title
+    subject.is_a?(FleetContract) ? subject.display_title : subject.title
+  end
+
+  # After the commit, so nobody is told about a payout list that rolled back.
+  # Whoever pressed settle already knows. A contract's author is the client and
+  # is told as well, whether or not they are on the list.
+  #
+  # The ledger is settled by the time this runs, so a failing notification is
+  # logged rather than raised: turning it into a 500 would send the client to
+  # retry a settle that already happened.
+  private def notify_settled(settler)
+    recipients = User.where(id: payout_participants.where.not(user_id: nil).select(:user_id)).to_a
+    recipients << subject.created_by if subject.is_a?(FleetContract)
+
+    recipients.compact.uniq.reject { |recipient| recipient == settler }.each do |recipient|
+      Notification.notify!(user: recipient, record: subject, icon: "fa-duotone fa-coins", **settled_notification)
+    rescue => e
+      Rails.logger.error("[PayoutLedger] settle notification failed: #{e.class}: #{e.message}")
+    end
+  end
+
+  private def settled_notification
+    if subject.is_a?(FleetContract)
+      {
+        type: :fleet_contract_settled,
+        title: I18n.t("notifications.fleet_contract.settled.title", title: subject_title),
+        link: page_link
+      }
+    else
+      {
+        type: :payout_ledger_settled,
+        title: I18n.t("notifications.payout_ledger_settled.title", subject: subject_title),
+        link: page_link
+      }
+    end
+  end
+
+  # The fleet is the payer and holds the reward; the contractors are weighted
+  # by what they delivered. Only run on create, so it has nothing to preserve.
+  private def seed_contract!
+    weights = contract_weights
+
+    # Nobody delivered and nobody was on the crew -- an expired contract an
+    # officer forced to fulfilled. There is nobody to pay the reward to.
+    if weights.empty?
+      errors.add(:base, :no_contractors)
+      return false
+    end
+
+    payer = payout_participants.create!(fleet: subject.fleet)
+
+    weights.each do |user_id, weight|
+      payout_participants.create!(user_id: user_id, weight: weight)
+    end
+
+    return true unless subject.reward.positive?
+
+    payout_entries.create!(
+      payout_participant: payer,
+      entry_type: :income,
+      review_status: :approved,
+      amount: subject.reward,
+      description: I18n.t("fleet_contracts.payout_reward", title: subject.display_title)
+    )
+
+    true
+  end
+
+  # Contracts::Progress weights are fractions of a line. Scaled to a
+  # percentage of the whole they read as what they are, and six decimals keep
+  # the proportions of even a single crate out of a large order. A contract
+  # forced to fulfilled with nothing measured divides evenly across whoever
+  # was on it.
+  private def contract_weights
+    weights = subject.progress.weights.select { |_user_id, weight| weight.positive? }
+    total = weights.values.sum(0.to_d)
+
+    if total.zero?
+      return subject.contractor_assignments.pluck(:user_id).uniq.index_with { 1 }
+    end
+
+    weights.transform_values do |weight|
+      (weight * 100 / total).round(6).clamp(BigDecimal("0.000001"), BigDecimal("999.99"))
+    end
   end
 
   private def seed_user_ids_from_subject

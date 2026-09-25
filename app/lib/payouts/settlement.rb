@@ -45,12 +45,19 @@ module Payouts
     # to divide, round and re-add without the remainder going missing.
     SCALE = 100
 
+    # Weights carry six decimals: a contractor's weight is their fraction of
+    # the delivery, and a small one must not be rounded up to a bigger share.
+    WEIGHT_SCALE = 1_000_000
+
     def self.call(ledger) = new(ledger).call
 
-    def initialize(ledger)
+    def initialize(ledger, rule: self.class.rule_for(ledger))
       @ledger = ledger
-      @participants = ledger.payout_participants.order(:created_at, :id).to_a
-      @entries = ledger.payout_entries.to_a
+      @rule = rule
+      @participants = ledger.payout_participants.includes(:user, fleet: {logo_attachment: :blob}).order(:created_at, :id).to_a
+      # A pending or declined expense is a claim nobody has agreed to yet, so
+      # it moves no balance.
+      @entries = ledger.payout_entries.review_approved.to_a
     end
 
     def call
@@ -153,6 +160,20 @@ module Payouts
       end
     end
 
+    private def shares_by_participant_id
+      @rule.shares(participants: @participants, profit_minor: profit_minor, expenses_minor: paid_minor.values.sum)
+    end
+
+    private def to_minor(amount) = self.class.to_minor(amount)
+
+    private def to_decimal(minor)
+      (minor.to_d / SCALE).round(2)
+    end
+
+    def self.to_minor(amount)
+      (amount.to_d * SCALE).round.to_i
+    end
+
     # A split almost never divides evenly, and dropping the remainder would
     # leave the balances summing to something other than zero -- which means a
     # transfer list that cannot exist. The largest-remainder method hands the
@@ -161,48 +182,46 @@ module Payouts
     # remainder is what keeps it stable; ordering by remainder alone would let
     # ties fall wherever the array happened to enumerate.
     #
-    # The weights are scaled to hundredths for the same reason the amounts are:
-    # they are decimal(5, 2) and so exact already, but the division is not, and
-    # integers are the only way to divide, round and re-add without the
-    # remainder going missing.
-    private def shares_by_participant_id
-      return {} if @participants.empty?
+    # The weights are scaled to millionths for the same reason the amounts are
+    # scaled to hundredths: they are decimal(9, 6) and so exact already, but
+    # the division is not, and integers are the only way to divide, round and
+    # re-add without the remainder going missing.
+    #
+    # Returns one share per participant, in the order given.
+    def self.divide(total_minor, participants)
+      return [] if participants.empty?
 
-      weights = @participants.map { |participant| to_minor(participant.weight) }
+      weights = participants.map { |participant| (participant.weight.to_d * WEIGHT_SCALE).round.to_i }
       total_weight = weights.sum
 
       # Unreachable while the weight validation holds -- it is strictly
-      # positive, so any non-empty ledger totals more than zero. Here so a
+      # positive, so any non-empty list totals more than zero. Here so a
       # malformed row cannot divide by zero rather than as a real branch.
-      return {} if total_weight.zero?
+      return Array.new(participants.size, 0) if total_weight.zero?
 
-      # Integer division floors in Ruby, on a negative profit too, so each base
+      # Integer division floors in Ruby, on a negative total too, so each base
       # is already the smaller share and every remainder below is non-negative.
       # That is the same shape the unweighted divmod had, which is why no branch
       # on the sign is needed here either.
-      bases = weights.map { |weight| (profit_minor * weight) / total_weight }
+      bases = weights.map { |weight| (total_minor * weight) / total_weight }
 
       remainders = weights.each_with_index.map do |weight, index|
-        (profit_minor * weight) - (bases[index] * total_weight)
+        (total_minor * weight) - (bases[index] * total_weight)
       end
 
-      leftover = profit_minor - bases.sum
+      leftover = total_minor - bases.sum
       largest_first = remainders.each_with_index.sort_by { |remainder, index| [-remainder, index] }.map(&:last)
 
       shares = bases.dup
       largest_first.first(leftover).each { |index| shares[index] += 1 }
-
-      @participants.each_with_index.to_h do |participant, index|
-        [participant.id, shares[index]]
-      end
+      shares
     end
 
-    private def to_minor(amount)
-      (amount.to_d * SCALE).round.to_i
-    end
-
-    private def to_decimal(minor)
-      (minor.to_d / SCALE).round(2)
+    # How the profit is divided is the one thing that differs by subject. The
+    # rest -- reimbursement, rounding, the transfer pass and the zero-sum
+    # invariant -- is the same money moving the same way.
+    def self.rule_for(ledger)
+      (ledger.subject_type == "FleetContract") ? ContractPayout : EqualShares
     end
   end
 end

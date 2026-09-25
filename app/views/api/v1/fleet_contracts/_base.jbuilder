@@ -42,6 +42,7 @@ end
 json.published_at fleet_contract.published_at&.utc&.iso8601
 json.claimed_at fleet_contract.claimed_at&.utc&.iso8601
 json.fulfilled_at fleet_contract.fulfilled_at&.utc&.iso8601
+json.settled_at fleet_contract.settled_at&.utc&.iso8601
 json.cancelled_at fleet_contract.cancelled_at&.utc&.iso8601
 json.expired_at fleet_contract.expired_at&.utc&.iso8601
 

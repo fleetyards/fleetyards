@@ -8,21 +8,25 @@ require "test_helper"
 #
 #  id               :uuid             not null, primary key
 #  name             :string
-#  weight           :decimal(5, 2)    default(1.0), not null
+#  weight           :decimal(9, 6)    default(1.0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  added_by_id      :uuid
+#  fleet_id         :uuid
 #  payout_ledger_id :uuid             not null
 #  user_id          :uuid
 #
 # Indexes
 #
-#  index_payout_participants_on_payout_ledger_id     (payout_ledger_id)
-#  index_payout_participants_unique_user_per_ledger  (payout_ledger_id,user_id) UNIQUE WHERE (user_id IS NOT NULL)
+#  index_payout_participants_on_fleet_id              (fleet_id)
+#  index_payout_participants_on_payout_ledger_id      (payout_ledger_id)
+#  index_payout_participants_unique_fleet_per_ledger  (payout_ledger_id,fleet_id) UNIQUE WHERE (fleet_id IS NOT NULL)
+#  index_payout_participants_unique_user_per_ledger   (payout_ledger_id,user_id) UNIQUE WHERE (user_id IS NOT NULL)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (added_by_id => users.id)
+#  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (payout_ledger_id => payout_ledgers.id)
 #  fk_rails_...  (user_id => users.id)
 #
@@ -51,6 +55,40 @@ class PayoutParticipantTest < ActiveSupport::TestCase
     participant = create(:payout_participant, payout_ledger: @ledger, user: user, name: "ignored")
 
     assert_equal user.username, participant.display_name
+  end
+
+  test "a fleet is a party of its own, not a guest" do
+    fleet = create(:fleet)
+    participant = PayoutParticipant.new(payout_ledger: @ledger, fleet: fleet)
+
+    assert_predicate participant, :valid?
+    assert_not participant.guest?
+    assert_equal fleet.name, participant.display_name
+  end
+
+  test "refuses a participant that is both a user and a fleet" do
+    participant = PayoutParticipant.new(payout_ledger: @ledger, user: create(:user), fleet: create(:fleet))
+
+    assert_not participant.valid?
+    assert_includes participant.errors.details[:base], {error: :one_party}
+  end
+
+  test "refuses the same fleet twice on one ledger" do
+    fleet = create(:fleet)
+    create(:payout_participant, :fleet, payout_ledger: @ledger, fleet: fleet)
+
+    assert_not PayoutParticipant.new(payout_ledger: @ledger, fleet: fleet).valid?
+  end
+
+  test "keeps the fleet's name when the fleet is deleted" do
+    fleet = create(:fleet, name: "Hauling Co")
+    participant = create(:payout_participant, :fleet, payout_ledger: @ledger, fleet: fleet)
+
+    fleet.destroy!
+
+    participant.reload
+    assert_nil participant.fleet_id
+    assert_equal "Hauling Co", participant.display_name
   end
 
   test "refuses the same user twice on one ledger" do

@@ -201,4 +201,157 @@ class PayoutLedgerTest < ActiveSupport::TestCase
 
     assert_not ledger.reopen!
   end
+
+  test "seeds a contract with the fleet as payer, contractors weighted by what they delivered" do
+    lead = create(:user)
+    crew = create(:user)
+    contract = create(:fleet_contract, :fulfilled, reward: 1_000)
+    Contracts::Progress.any_instance.stubs(:weights).returns({lead.id => BigDecimal("0.75"), crew.id => BigDecimal("0.25")})
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    payer = ledger.payout_participants.find_by!(fleet_id: contract.fleet_id)
+    assert_equal 75, ledger.payout_participants.find_by!(user_id: lead.id).weight
+    assert_equal 25, ledger.payout_participants.find_by!(user_id: crew.id).weight
+
+    reward = ledger.payout_entries.sole
+    assert_predicate reward, :income?
+    assert_predicate reward, :review_approved?
+    assert_equal payer, reward.payout_participant
+    assert_equal 1_000, reward.amount
+  end
+
+  # One crate out of a large order is far below a hundredth of a percent, and
+  # rounding it up to one would pay it many times over.
+  test "keeps a small contractor's weight in proportion" do
+    lead = create(:user)
+    crew = create(:user)
+    contract = create(:fleet_contract, :fulfilled, reward: 1_000_000)
+    Contracts::Progress.any_instance.stubs(:weights).returns({lead.id => 1.to_d, crew.id => BigDecimal("0.000001")})
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    crew_p = ledger.payout_participants.find_by!(user_id: crew.id)
+    assert_equal BigDecimal("0.0001"), crew_p.weight
+
+    share = ledger.settlement.balances.find { |balance| balance.participant == crew_p }.share
+    assert_equal 1, share
+  end
+
+  test "refuses to seed a contract nobody delivered on or worked" do
+    contract = create(:fleet_contract, :fulfilled)
+    ledger = contract.create_payout_ledger!
+
+    assert_not ledger.seed_participants_from_subject!
+    assert_includes ledger.errors.details[:base], {error: :no_contractors}
+    assert_empty ledger.payout_participants
+  end
+
+  test "will not settle a contract ledger with no contractor left on it" do
+    contract = create(:fleet_contract, :fulfilled)
+    ledger = contract.create_payout_ledger!
+    create(:payout_participant, :fleet, payout_ledger: ledger, fleet: contract.fleet)
+
+    assert_predicate ledger, :unpayable?
+    assert_not ledger.settle!
+    assert_predicate contract.reload, :fulfilled?
+  end
+
+  test "divides evenly across the contractors when nothing was measured" do
+    contract = create(:fleet_contract, :fulfilled, reward: 0)
+    create(:fleet_contract_assignment, :lead, fleet_contract: contract)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: contract)
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    assert_equal [1, 1], ledger.payout_participants.where.not(user_id: nil).pluck(:weight)
+    assert_empty ledger.payout_entries
+  end
+
+  test "settling a contract's ledger settles the contract, and reopening puts it back" do
+    contract = create(:fleet_contract, :fulfilled)
+    ledger = contract.create_payout_ledger!
+    create(:payout_participant, payout_ledger: ledger)
+
+    fulfilled_at = contract.fulfilled_at
+
+    assert ledger.settle!
+    assert_predicate contract.reload, :settled?
+    assert_not_nil contract.settled_at
+
+    assert ledger.reopen!
+    assert_predicate contract.reload, :fulfilled?
+    assert_nil contract.settled_at
+    assert_in_delta fulfilled_at, contract.fulfilled_at, 1.second
+  end
+
+  test "settling tells every participant but the one who settled it" do
+    organiser = create(:user)
+    member = create(:user)
+    tour = create(:tour, created_by: organiser)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: organiser)
+    create(:payout_participant, payout_ledger: ledger, user: member)
+    create(:payout_participant, :guest, payout_ledger: ledger)
+
+    assert_difference -> { Notification.payout_ledger_settled.count }, 1 do
+      ledger.settle!(organiser)
+    end
+
+    notification = Notification.payout_ledger_settled.sole
+    assert_equal member, notification.user
+    assert_equal "/tools/tours/#{tour.slug}/", notification.link
+  end
+
+  test "settling a contract tells its contractors and its author" do
+    author = create(:user)
+    contractor = create(:user)
+    officer = create(:user)
+    contract = create(:fleet_contract, :fulfilled, created_by: author)
+    ledger = contract.create_payout_ledger!
+    create(:payout_participant, :fleet, payout_ledger: ledger, fleet: contract.fleet)
+    create(:payout_participant, payout_ledger: ledger, user: contractor)
+
+    ledger.settle!(officer)
+
+    assert_equal [author, contractor].map(&:id).sort, Notification.fleet_contract_settled.pluck(:user_id).sort
+    assert_equal "/fleets/#{contract.fleet.slug}/contracts/#{contract.slug}/payouts/", Notification.fleet_contract_settled.first.link
+  end
+
+  test "a refused settle tells nobody" do
+    ledger = create(:payout_ledger)
+    create(:payout_participant, payout_ledger: ledger)
+    ledger.update!(status: "settled")
+
+    assert_no_difference -> { Notification.count } do
+      ledger.settle!
+    end
+  end
+
+  test "an event ledger's managers are its fleet's payout managers and the event's own admins" do
+    admin = create(:user)
+    event_admin = create(:user)
+    member = create(:user)
+    fleet = create(:fleet, admins: [admin], members: [event_admin, member])
+    event = create(:fleet_event, :active, fleet: fleet, created_by: admin)
+    event.fleet_event_admins.create!(user: event_admin, role: "moderator", granted_by: admin)
+    ledger = create(:payout_ledger, subject: event)
+
+    assert_equal [admin, event_admin].map(&:id).sort, ledger.managers.map(&:id).sort
+  end
+
+  test "settling moves a contract whose terms no longer validate" do
+    contract = create(:fleet_contract, :hangar_destination, :fulfilled)
+    contract.update_column(:created_by_id, nil)
+    ledger = contract.create_payout_ledger!
+    create(:payout_participant, payout_ledger: ledger)
+
+    assert ledger.settle!
+
+    assert_predicate contract.reload, :settled?
+    assert_not_nil contract.settled_at
+  end
 end

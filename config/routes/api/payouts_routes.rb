@@ -6,7 +6,12 @@ resources :payout_ledgers, path: "payouts", only: %i[show] do
   end
 
   resources :payout_participants, path: "participants", only: %i[index create update destroy]
-  resources :payout_entries, path: "entries", only: %i[index create update destroy]
+  resources :payout_entries, path: "entries", only: %i[index create update destroy] do
+    member do
+      put :approve
+      put :decline
+    end
+  end
 
   resources :payout_transfers, path: "transfers", only: %i[index] do
     member do

@@ -272,6 +272,8 @@ it:
       create: Impossibile registrare il movimento.
       update: Impossibile aggiornare il movimento.
       destroy: Impossibile rimuovere il movimento.
+      approve: Impossibile approvare la spesa.
+      decline: Impossibile rifiutare la spesa.
     payout_participants:
       create: Impossibile aggiungere il partecipante.
       update: Impossibile aggiornare il partecipante.

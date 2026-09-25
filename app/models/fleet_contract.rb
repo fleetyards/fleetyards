@@ -31,6 +31,7 @@
 #  published_at                   :datetime
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null
+#  settled_at                     :datetime
 #  slug                           :string           not null
 #  title                          :string
 #  visibility                     :integer          default("members_only"), not null
@@ -103,6 +104,8 @@ class FleetContract < ApplicationRecord
   # the contract it was filed under must not delete the record of that.
   has_many :inventory_transfers, dependent: :nullify
 
+  has_one :payout_ledger, as: :subject, dependent: :destroy
+
   enum :kind, KINDS
 
   include SquadronRestrictable
@@ -131,7 +134,7 @@ class FleetContract < ApplicationRecord
   before_save :update_slug
 
   scope :active, -> { where(aasm_state: %w[open in_progress]) }
-  scope :closed, -> { where(aasm_state: %w[fulfilled cancelled expired]) }
+  scope :closed, -> { where(aasm_state: %w[fulfilled settled cancelled expired]) }
 
   # The contracts somebody is actually working, which is the accepted seats --
   # a withdrawn or refused request is not work they are on. `distinct` because
@@ -200,6 +203,7 @@ class FleetContract < ApplicationRecord
     state :open
     state :in_progress
     state :fulfilled
+    state :settled
     state :cancelled
     state :expired
 
@@ -225,6 +229,19 @@ class FleetContract < ApplicationRecord
     # stays, as the record that the deadline was missed.
     event :fulfil do
       transitions from: [:in_progress, :expired], to: :fulfilled
+    end
+
+    # Carried from the payout ledger rather than called on its own: settling
+    # is what freezes who gets paid what, and the contract only reports it.
+    event :settle do
+      transitions from: :fulfilled, to: :settled
+    end
+
+    # Runs after aasm's own timestamp hook and before the save, so it can undo
+    # that hook restamping `fulfilled_at`: the goods arrived when they arrived,
+    # not when somebody reopened the payout.
+    event :reopen do
+      transitions from: :settled, to: :fulfilled, after: :restore_fulfilment
     end
 
     event :cancel do
@@ -354,6 +371,11 @@ class FleetContract < ApplicationRecord
 
   def progress
     @progress ||= ::Contracts::Progress.new(self)
+  end
+
+  private def restore_fulfilment
+    self.fulfilled_at = fulfilled_at_was
+    self.settled_at = nil
   end
 
   def open_for_work?

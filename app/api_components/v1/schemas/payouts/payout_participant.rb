@@ -17,6 +17,7 @@ module V1
             # A decimal like every other, so it is carried as a string.
             weight: {type: :string},
             user: ::V1::Schemas::UserRef,
+            fleet: ::V1::Schemas::FleetRef,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
