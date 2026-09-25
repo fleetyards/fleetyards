@@ -49,6 +49,18 @@ module Discord
       DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, last_week.iso8601(6))
     end
 
+    test "posts no digest once it was rescheduled after being queued" do
+      claimed_at = Time.utc(2026, 9, 21, 18, 5)
+      @fleet.fleet_notification_setting.update!(
+        discord_digest_weekday: 2, discord_digest_time: "18:00", discord_digest_sent_at: claimed_at
+      )
+      AnnouncementTarget.any_instance.expects(:deliver).never
+
+      travel_to(claimed_at + 1.minute) do
+        DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, claimed_at.iso8601(6))
+      end
+    end
+
     test "posts no digest when nothing is left in the week" do
       @fleet.fleet_notification_setting.update!(discord_digest_weekday: 1, discord_digest_time: "18:00")
       @event.update_column(:status, "cancelled")

@@ -115,6 +115,16 @@ class FleetNotificationSetting < ApplicationRecord
     slot.present? && claimed_at - slot <= DIGEST_GRACE
   end
 
+  # Whether a digest claimed at `claimed_at` may still go out at `now`: it is
+  # still the week's claim, the schedule still points at it, and it is not
+  # later than a digest found due would be sent at all.
+  def digest_claim_live?(claimed_at, now = Time.current)
+    digest_enabled? &&
+      discord_digest_sent_at == claimed_at &&
+      digest_claim_current?(claimed_at) &&
+      now - claimed_at <= DIGEST_GRACE
+  end
+
   def digest_due?(now = Time.current)
     slot = digest_slot(now)
     return false if slot.nil?

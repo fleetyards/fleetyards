@@ -18,9 +18,9 @@ module Discord
         setting = fleet.fleet_notification_setting
         # Switched off while its posts waited in the queue.
         return unless setting&.digest_enabled?
-        # Waited past its own week: a later claim has its own posts, and this
-        # one would list that week's events a second time.
-        return if digest.is_a?(String) && setting.discord_digest_sent_at != Time.iso8601(digest)
+        # Waited past its week, overtaken by a later claim, or rescheduled
+        # meanwhile: the digest it belonged to is not the one due any more.
+        return if digest.is_a?(String) && !setting.digest_claim_live?(Time.iso8601(digest))
 
         content = WeeklyDigest.new(fleet).content_for_target(target)
         return if content.blank?

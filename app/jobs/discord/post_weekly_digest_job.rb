@@ -31,6 +31,10 @@ module Discord
           WeeklyDigestDispatchJob.release(fleet_id, claimed_at)
           return
         end
+
+        # Run too late to be the digest it was: a week's summary days after
+        # its day is not what anybody scheduled.
+        return unless setting.digest_claim_live?(claimed_at)
       end
 
       WeeklyDigest.new(fleet, claimed_at: claimed_at).run

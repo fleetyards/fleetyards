@@ -38,7 +38,15 @@ module Discord
       @setting.update!(discord_digest_sent_at: claimed_at)
       WeeklyDigest.any_instance.expects(:run)
 
-      PostWeeklyDigestJob.new.perform(@fleet.id, claimed_at.iso8601(6))
+      travel_to(claimed_at + 1.minute) { PostWeeklyDigestJob.new.perform(@fleet.id, claimed_at.iso8601(6)) }
+    end
+
+    test "posts nothing when it runs days after its slot" do
+      claimed_at = Time.utc(2026, 9, 21, 18, 5)
+      @setting.update!(discord_digest_sent_at: claimed_at)
+      WeeklyDigest.any_instance.expects(:run).never
+
+      travel_to(claimed_at + 3.days) { PostWeeklyDigestJob.new.perform(@fleet.id, claimed_at.iso8601(6)) }
     end
 
     test "posts nothing for a deleted fleet" do
