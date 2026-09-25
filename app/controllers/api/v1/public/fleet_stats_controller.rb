@@ -14,9 +14,13 @@ module Api
           not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
         end
 
+        # Counted over the same vehicles the ship list shows, loaners included
+        # only when it includes them, so each row's "3x" matches its sort.
         def model_counts
+          scope = narrow_to_squadrons(vehicle_scope.where(loaner: loaner_included?))
+
           count_params = vehicle_query_params.except("sorts", "s")
-          @q = narrow_to_squadrons(vehicle_scope).ransack(count_params)
+          @q = scope.ransack(count_params)
 
           # No `includes`: this returns a grouped count, so no vehicle is ever
           # instantiated and nothing reads an association off one. Eager loading
