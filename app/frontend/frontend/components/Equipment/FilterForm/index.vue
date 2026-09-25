@@ -83,10 +83,11 @@ const { data: itemTypes } = useEquipmentItemTypesFilters(itemTypeParams);
 
 // An item type the control cannot show is one the reader cannot remove, so a
 // type dropped from the selection takes its item types with it. Only once
-// options have arrived: pruning against nothing would clear a selection
-// restored from the URL.
+// options have arrived: pruning before the answer would clear a selection
+// restored from the URL. An answer that is empty still prunes -- a type with
+// no item types leaves nothing selectable.
 watch(itemTypes, (options) => {
-  if (!options?.length) return;
+  if (!options) return;
 
   const available = new Set(options.map((option) => option.value));
   const chosen = form.value.itemTypeIn || [];
