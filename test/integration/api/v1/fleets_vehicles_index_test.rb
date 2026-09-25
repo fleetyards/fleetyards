@@ -148,6 +148,101 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def fleet_with_holdings(holdings)
+    owners = holdings.keys.map { |username| create(:user, username:) }
+    models = holdings.values.flat_map(&:keys).uniq.index_with { |name| create(:model, name:) }
+
+    holdings.each_with_index do |(_username, counts), index|
+      counts.each do |name, count|
+        create_list(:vehicle, count, user: owners[index], model: models[name])
+      end
+    end
+
+    [owners.first, create(:fleet, admins: owners)]
+  end
+
+  test "GET /fleets/:slug/vehicles sorts a grouped list by how many of each ship the fleet holds" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Alpha" => 1, "Bravo" => 3, "Charlie" => 2}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "vehiclesCount desc"}} do
+      assert_equal %w[Bravo Charlie Alpha], parsed_body["items"].map { |item| item["name"] }
+    end
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "vehiclesCount asc"}} do
+      assert_equal %w[Alpha Charlie Bravo], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles breaks a tie in the count by the name" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Charlie" => 2, "Alpha" => 2, "Bravo" => 1}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "vehiclesCount desc"}} do
+      assert_equal %w[Alpha Charlie Bravo], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles keeps the count behind a sort that comes first" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Alpha" => 1, "Bravo" => 3, "Charlie" => 2}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {sorts: ["modelName asc", "vehiclesCount desc"]}} do
+      assert_equal %w[Alpha Bravo Charlie], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles puts the count before a sort that comes after it" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Charlie" => 2, "Alpha" => 2, "Bravo" => 1}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {sorts: ["vehiclesCount desc", "modelName desc"]}} do
+      assert_equal %w[Charlie Alpha Bravo], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles counts only the vehicles the filters admit" do
+    owner, fleet = fleet_with_holdings({
+      "pilot" => {"Alpha" => 1, "Bravo" => 2},
+      "gunner" => {"Alpha" => 3}
+    })
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "vehiclesCount desc"}} do
+      assert_equal %w[Alpha Bravo], parsed_body["items"].map { |item| item["name"] }
+    end
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "vehiclesCount desc", memberIn: ["pilot"]}} do
+      assert_equal %w[Bravo Alpha], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  # Each row of an ungrouped list is one vehicle, so there is nothing to count.
+  test "GET /fleets/:slug/vehicles falls back to the name for an ungrouped list sorted by count" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Charlie" => 1, "Alpha" => 1, "Bravo" => 2}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {s: "vehiclesCount desc"}} do
+      assert_equal %w[Alpha Bravo Bravo Charlie], parsed_body["items"].map { |item| item.dig("model", "name") }
+    end
+  end
+
   test "GET /fleets/:slug/vehicles works for members" do
     sign_in @member
 

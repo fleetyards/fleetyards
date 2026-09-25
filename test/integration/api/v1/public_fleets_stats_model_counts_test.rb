@@ -61,6 +61,22 @@ class Api::V1::PublicFleetsStatsModelCountsTest < ActionDispatch::IntegrationTes
     end
   end
 
+  test "GET /public/fleets/:fleetSlug/stats/model-counts counts loaners only when asked to, like the ship list" do
+    member = create(:user)
+    model = create(:model)
+    create(:vehicle, user: member, model:)
+    create_list(:vehicle, 2, :loaner, user: member, model:)
+    fleet = create(:fleet, public_fleet: true, public_fleet_stats: true, members: [member])
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug} do
+      assert_equal({model.slug => 1}, parsed_body["modelCounts"])
+    end
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: {loanerEq: "true"}} do
+      assert_equal({model.slug => 3}, parsed_body["modelCounts"])
+    end
+  end
+
   test "GET /public/fleets/:fleetSlug/stats/model-counts returns 404 for non-public stats" do
     fleet = create(:fleet, public_fleet_stats: false)
 

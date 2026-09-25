@@ -27,9 +27,11 @@ export enum FleetTableViewColsEnum {
 }
 
 // Every sort the fleet's ship list can offer as a chip. A grouped list holds
-// ships rather than vehicles, so each of these names the ship.
+// ships rather than vehicles, so each of these names the ship -- or, for the
+// count, how many of it the fleet holds.
 export enum FleetSortFieldsEnum {
   NAME = "modelName",
+  COUNT = "vehiclesCount",
   MANUFACTURER_NAME = "modelManufacturerName",
   LENGTH = "modelLength",
   BEAM = "modelBeam",
@@ -74,6 +76,7 @@ export const useFleetStore = defineStore("fleet", {
     ],
     sortFields: [
       FleetSortFieldsEnum.NAME,
+      FleetSortFieldsEnum.COUNT,
       FleetSortFieldsEnum.MANUFACTURER_NAME,
       FleetSortFieldsEnum.LENGTH,
       FleetSortFieldsEnum.CARGO,

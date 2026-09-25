@@ -2194,7 +2194,8 @@
           "modelProductionStatus": "Statut de production",
           "modelPrice": "Prix",
           "modelPledgePrice": "Prix de Pledge",
-          "owner": "Propriétaire"
+          "owner": "Propriétaire",
+          "vehiclesCount": "Nombre"
         }
       },
       "logistics": {
