@@ -32,6 +32,8 @@ export type InventoryStockRecord = {
   qualityMax?: number | null;
   netQuantity: number;
   inventory?: InventoryReference;
+  // Present where every entry in the row names the same catalogue record.
+  item?: { id?: string; type?: string; slug?: string | null } | null;
 };
 
 export type InventoryVehicleReference = {

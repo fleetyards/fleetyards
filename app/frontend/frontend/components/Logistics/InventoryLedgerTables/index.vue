@@ -11,6 +11,7 @@ import BaseTable, {
 } from "@/shared/components/base/Table/index.vue";
 import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import type {
   InventoryLedgerRecord,
@@ -212,6 +213,17 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 
     <template #col-name="{ record }">
       <slot name="stock-name" :record="record">{{ record.name }}</slot>
+      <!-- The name opens the stock position; this opens the catalogue record
+           the position holds, which is a different page. -->
+      <router-link
+        v-if="catalogueItemRoute(record.item)"
+        :to="catalogueItemRoute(record.item)!"
+        class="ledger-catalogue-link"
+        :title="t('labels.logistics.openInCatalogue')"
+        :aria-label="t('labels.logistics.openInCatalogue')"
+      >
+        <i class="fa-light fa-book-open" />
+      </router-link>
     </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>
@@ -284,6 +296,15 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
     <template #col-name="{ record }">
       <slot name="log-name" :record="record">{{ record.name }}</slot>
+      <router-link
+        v-if="catalogueItemRoute(record.item)"
+        :to="catalogueItemRoute(record.item)!"
+        class="ledger-catalogue-link"
+        :title="t('labels.logistics.openInCatalogue')"
+        :aria-label="t('labels.logistics.openInCatalogue')"
+      >
+        <i class="fa-light fa-book-open" />
+      </router-link>
       <BasePill
         v-if="record.item && record.item.available === false"
         :variant="PillVariantsEnum.WARNING"
@@ -340,5 +361,15 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 
 .ledger-date {
   white-space: nowrap;
+}
+
+.ledger-catalogue-link {
+  margin-left: 0.4rem;
+  color: var(--color-muted);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text);
+  }
 }
 </style>

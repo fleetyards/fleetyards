@@ -2325,7 +2325,8 @@
         "transferFromFriends": "我的好友",
         "towardsContract": "计入合约",
         "noContract": "不计入合约",
-        "forContract": "用于"
+        "forContract": "用于",
+        "openInCatalogue": "在目录中打开"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

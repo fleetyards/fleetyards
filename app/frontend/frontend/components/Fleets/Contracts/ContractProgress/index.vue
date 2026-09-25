@@ -11,6 +11,7 @@ import {
   FleetContractQualityMatchEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   progress: FleetContractProgress;
@@ -80,7 +81,14 @@ const pickedWidth = (line: FleetContractProgressLine) => {
       data-test="contract-progress-line"
     >
       <div class="contract-progress__head">
-        <span class="contract-progress__name">{{ line.name }}</span>
+        <router-link
+          v-if="catalogueItemRoute(line.item)"
+          :to="catalogueItemRoute(line.item)!"
+          class="contract-progress__name"
+        >
+          {{ line.name }}
+        </router-link>
+        <span v-else class="contract-progress__name">{{ line.name }}</span>
         <span
           v-if="line.quality != null"
           class="contract-progress__quality"

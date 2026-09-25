@@ -2325,7 +2325,8 @@
         "transferFromFriends": "Mes amis",
         "towardsContract": "Pour un contrat",
         "noContract": "Aucun contrat",
-        "forContract": "pour"
+        "forContract": "pour",
+        "openInCatalogue": "Ouvrir dans le catalogue"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
