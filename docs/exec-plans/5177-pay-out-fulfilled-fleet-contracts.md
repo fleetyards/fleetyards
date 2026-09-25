@@ -104,15 +104,25 @@ notifies its participants.
 
 ## Discovery Log
 
+- **2026-09-25** Settlement stays one concrete class; the share rule is a strategy object
+  (`EqualShares`, `ContractPayout`) picked by subject, so `Settlement.new(ledger)` and its tests are
+  unchanged.
+- **2026-09-25** The contract ledger's weights are seeded as a percentage of `Progress#weights`
+  (a raw per-line fraction does not fit `decimal(5,2)`), clamped to 0.01.
+- **2026-09-25** A reimbursement-refused expense answers 400 (`ValidationError`), not 422: every
+  entry validation in this API does.
+- **2026-09-25** AASM `timestamps: true` restamps `fulfilled_at` on `reopen`; the transition's own
+  `after` restores it.
+- **2026-09-25** Migrations renumbered to `2026092516xxxx` after main landed a `20260925150000`.
 - **2026-09-25** Initial research and plan creation. Design basis is the deleted 4888 plan D5–D7
   (`git show 208983eefe^:docs/exec-plans/4888-fleet-contracts.md`).
 
 ## Progress
-- [ ] Phase 1 — Fleet participants
-- [ ] Phase 2 — Settlement strategies
-- [ ] Phase 2b — Expense review
-- [ ] Phase 3 — Contract as ledger subject
-- [ ] Phase 4 — `settled` state
-- [ ] Phase 5 — Settle notifications
-- [ ] Phase 6 — Frontend
-- [ ] Phase 7 — Regenerate schemas and clients
+- [x] Phase 1 — Fleet participants
+- [x] Phase 2 — Settlement strategies
+- [x] Phase 2b — Expense review
+- [x] Phase 3 — Contract as ledger subject
+- [x] Phase 4 — `settled` state
+- [x] Phase 5 — Settle notifications
+- [x] Phase 6 — Frontend
+- [x] Phase 7 — Regenerate schemas and clients
