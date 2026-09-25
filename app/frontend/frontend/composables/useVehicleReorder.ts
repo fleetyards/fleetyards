@@ -34,8 +34,9 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
    * behind it at the top of a page -- and the server places it there.
    */
   const onSort = (keys: string[], id: string) => {
-    const previous = orderedVehicles.value;
-    const byId = new Map(previous.map((vehicle) => [vehicle.id, vehicle]));
+    const byId = new Map(
+      orderedVehicles.value.map((vehicle) => [vehicle.id, vehicle]),
+    );
 
     if (!byId.has(id)) return;
 
@@ -47,16 +48,22 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
       .map((key) => byId.get(key))
       .filter((vehicle): vehicle is Vehicle => !!vehicle);
 
-    return moveMutation
-      .mutateAsync({
-        id,
-        data: ahead ? { afterId: ahead } : { beforeId: behind },
-      })
-      .catch(() => {
-        orderedVehicles.value = previous;
+    return (
+      moveMutation
+        .mutateAsync({
+          id,
+          data: ahead ? { afterId: ahead } : { beforeId: behind },
+        })
+        // Back to the order the server last sent rather than to the one before
+        // this drag: a second drag may have landed in the meantime, and putting
+        // back a snapshot from before it would undo that one too. A move that
+        // did land is broadcast, and the list is read again with it in place.
+        .catch(() => {
+          orderedVehicles.value = [...(toValue(items) ?? [])];
 
-        displayAlert({ text: t("messages.vehicle.move.failure") });
-      });
+          displayAlert({ text: t("messages.vehicle.move.failure") });
+        })
+    );
   };
 
   return { orderedVehicles, onSort };

@@ -91,6 +91,27 @@ describe("useVehicleReorder", () => {
     });
   });
 
+  // A snapshot from before the failed drag would also undo a later one that
+  // landed; the server's own order is what the list goes back to.
+  it("goes back to the server's order when one of two drags fails", async () => {
+    let failFirst: (reason: Error) => void = () => undefined;
+    move.mockImplementationOnce(
+      () => new Promise((_resolve, reject) => (failFirst = reject)),
+    );
+    const { items, onSort, orderedVehicles } = setup();
+
+    const first = onSort(["bravo", "alpha", "charlie"], "alpha");
+    void onSort(["bravo", "charlie", "alpha"], "charlie");
+
+    items.value = ["bravo", "charlie", "alpha"].map(vehicle);
+    await nextTick();
+
+    failFirst(new Error("nope"));
+    await first;
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "charlie", "alpha"]);
+  });
+
   it("follows the server when it sends a new page", async () => {
     const { items, orderedVehicles } = setup();
 
