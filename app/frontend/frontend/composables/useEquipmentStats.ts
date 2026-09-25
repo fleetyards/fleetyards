@@ -78,41 +78,38 @@ export const useEquipmentStats = (
   const { t, toNumber } = useI18n();
 
   // A figure the build does not carry is left out rather than printed as "N/A"
-  // -- most items carry fewer than half of their type's list.
+  // -- most items carry fewer than half of their type's list. A zero is a
+  // figure, though, and `toNumber` would render it as "N/A", so it is formatted
+  // here.
+  const figure = (value: number | null | undefined, units = "") => {
+    if (value == null) return undefined;
+    if (value !== 0) return String(toNumber(value, units));
+
+    return units ? t(`number.${units}`, { count: 0 }) : "0";
+  };
+
   const read = (item: Equipment, key: StatKey): string | undefined => {
     switch (key) {
       case "damageReduction":
-        return item.damageReduction
-          ? String(toNumber(item.damageReduction, "percent"))
-          : undefined;
+        return figure(item.damageReduction, "percent");
       case "temperatureRating":
         return item.temperatureRating || undefined;
       case "radiationProtection":
-        return item.radiationProtection
-          ? String(toNumber(item.radiationProtection, "rem"))
-          : undefined;
+        return figure(item.radiationProtection, "rem");
       case "radiationScrubRate":
-        return item.radiationScrubRate
-          ? String(toNumber(item.radiationScrubRate, "remPerSecond"))
-          : undefined;
+        return figure(item.radiationScrubRate, "remPerSecond");
       case "gForceTolerance":
-        return item.gForceTolerance
-          ? String(toNumber(item.gForceTolerance))
-          : undefined;
+        return figure(item.gForceTolerance);
       // One column, two meanings: the rounds a magazine holds, or what a suit
       // or jacket can carry. The parser keeps the figure and drops the unit,
       // which is not the same across apparel, so none is guessed here.
       case "carryingCapacity":
       case "magazineSize":
-        return item.storage ? String(toNumber(item.storage)) : undefined;
+        return figure(item.storage);
       case "rateOfFire":
-        return item.rateOfFire
-          ? String(toNumber(item.rateOfFire, "rateOfFire"))
-          : undefined;
+        return figure(item.rateOfFire, "rateOfFire");
       case "range":
-        return item.range
-          ? String(toNumber(item.range, "distance"))
-          : undefined;
+        return figure(item.range, "distance");
       case "weaponClass":
         return item.weaponClassLabel || undefined;
       case "coreCompatibility":
@@ -122,9 +119,10 @@ export const useEquipmentStats = (
       // In µSCU, the unit an inventory grid counts in. As SCU a jacket is
       // 0.0087, which the stat formatter would round to nothing.
       case "volume":
-        return item.volume
-          ? String(toNumber(Math.round(item.volume * 1_000_000), "microScu"))
-          : undefined;
+        return figure(
+          item.volume == null ? undefined : Math.round(item.volume * 1_000_000),
+          "microScu",
+        );
     }
   };
 

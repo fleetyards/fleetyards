@@ -75,6 +75,16 @@ describe("useEquipmentStats", () => {
     expect(stats.value).toEqual([]);
   });
 
+  it("keeps a figure recorded as zero", () => {
+    const stats = useEquipmentStats(
+      equipment({ equipmentType: EquipmentTypeEnum.ARMOR, damageReduction: 0 }),
+    );
+
+    expect(stats.value).toEqual([
+      { label: "Damage Reduction", value: "0%", primary: true },
+    ]);
+  });
+
   // As SCU a jacket is 0.0087, which the stat formatter rounds to nothing.
   it("states volume in µSCU", () => {
     const stats = useEquipmentStats(
