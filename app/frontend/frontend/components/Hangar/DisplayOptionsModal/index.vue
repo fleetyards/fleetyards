@@ -24,8 +24,10 @@ import {
   useHangarStore,
   HangarTableViewColsEnum,
   HangarTableViewImageColsEnum,
+  HangarSortFieldsEnum,
 } from "@/frontend/stores/hangar";
 import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
+import SortFieldsFieldset from "@/frontend/components/SortFieldsFieldset/index.vue";
 
 const { t } = useI18n();
 
@@ -52,7 +54,7 @@ const allSortFields = useHangarSortFields({ all: true });
 // second place that sets it, so there is nothing to mirror back.
 const sortFields = computed({
   get: () => hangarStore.sortFields,
-  set: (fields) => hangarStore.setSortFields(fields),
+  set: (fields) => hangarStore.setSortFields(fields as HangarSortFieldsEnum[]),
 });
 const tableViewImageCols = ref(hangarStore.tableViewImageCols);
 
@@ -181,25 +183,7 @@ const displayAsList = () => {
     </div>
     <div class="row">
       <div class="col-12">
-        <fieldset>
-          <legend>
-            <h3>{{ t("labels.hangarTable.sortOptions") }}:</h3>
-          </legend>
-          <div class="row">
-            <div
-              v-for="field in allSortFields"
-              :key="field.name"
-              class="col-12 col-md-6"
-            >
-              <FormCheckbox
-                v-model="sortFields"
-                :checkbox-value="field.name"
-                :name="`sort-${field.name}`"
-                :label="field.label"
-              />
-            </div>
-          </div>
-        </fieldset>
+        <SortFieldsFieldset v-model="sortFields" :fields="allSortFields" />
       </div>
     </div>
     <hr />

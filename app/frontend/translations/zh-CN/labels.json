@@ -1,6 +1,7 @@
 {
   "zh-CN": {
     "labels": {
+      "sortOptions": "排序选项",
       "loading": "加载中…",
       "true": "是",
       "false": "否",
@@ -2149,7 +2150,6 @@
         }
       },
       "hangarTable": {
-        "sortOptions": "排序选项",
         "extraColumns": "列",
         "columns": {
           "storeImage": "图片",

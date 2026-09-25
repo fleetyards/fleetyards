@@ -1,6 +1,7 @@
 {
   "zh-TW": {
     "labels": {
+      "sortOptions": "排序選項",
       "loading": "載入中…",
       "true": "是",
       "false": "否",
@@ -2149,7 +2150,6 @@
         }
       },
       "hangarTable": {
-        "sortOptions": "排序選項",
         "extraColumns": "欄",
         "columns": {
           "storeImage": "圖片",

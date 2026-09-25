@@ -1,6 +1,7 @@
 {
   "de": {
     "labels": {
+      "sortOptions": "Sortieroptionen",
       "loading": "Lädt…",
       "true": "Ja",
       "false": "Nein",
@@ -2149,7 +2150,6 @@
         }
       },
       "hangarTable": {
-        "sortOptions": "Sortieroptionen",
         "extraColumns": "Spalten",
         "columns": {
           "storeImage": "Bild",

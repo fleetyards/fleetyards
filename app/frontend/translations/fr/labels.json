@@ -1,6 +1,7 @@
 {
   "fr": {
     "labels": {
+      "sortOptions": "Options de tri",
       "loading": "Chargement…",
       "true": "Oui",
       "false": "Non",
@@ -2149,7 +2150,6 @@
         }
       },
       "hangarTable": {
-        "sortOptions": "Options de tri",
         "extraColumns": "Colonnes",
         "columns": {
           "storeImage": "Image",
