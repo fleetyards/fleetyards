@@ -49,8 +49,13 @@ defineProps<Props>();
   justify-content: center;
   align-items: center;
   background-color: $gray;
-  border-radius: 0 10px 10px 0;
   cursor: pointer;
+
+  // Doubled to outrank PanelBody's rounded variants, which round every link
+  // inside the body and would round the edge this sits flush against.
+  &.loadout-marker {
+    border-radius: 0 10px 10px 0;
+  }
 
   i,
   svg {
