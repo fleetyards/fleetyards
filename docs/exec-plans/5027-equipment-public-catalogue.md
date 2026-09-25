@@ -6,84 +6,66 @@ Working plan for #5027. Decisions live in the issue body. Deleted before the PR 
 `/catalogue/equipment` lists the equipment catalogue with search, filters, sort and pagination, and every item has a page showing all the figures we hold for its type.
 
 ## Open questions
-- **D1 — scope.** Everything (4,504), stat gear only (2,722), or gear with a manufacturer? This must be one predicate (a `catalogued` scope, as components has) that both index and show apply. It sizes the D6 translation job.
-- **D4 — sorting.** Should `ransack_alias :name, :name_or_slug` be replaced by an explicit `name_or_slug_cont` predicate (a public-query change; check callers such as `EquipmentPicker`), or should sorting happen outside ransack?
-- **D7 — prices.** Does equipment join the components UEX price phase, or stay out of scope?
-- **History tab.** There is no `EquipmentBuildChange`, so there is no history route like `component-history`. Confirm that is deferred.
+- None. D1 (everything, grouped by type), D4 (explicit `name_or_slug_cont`) and D7 (prices in this PR) are recorded in the issue body.
 
 ## What changed
 
 ### Phase 1 — Unique slug
-1. Migration modelled on `db/migrate/20260917160000_add_unique_slug_to_components.rb`: rows that share a base slug get `-<sc_key>`, leftover collisions get `-2`, `-3` and so on, then `add_index :equipment, :slug, unique: true`.
-2. Port `update_slugs` / `slug_settled?` / `keyed_slug` from `Component` (`component.rb:651-722`) to `Equipment`, or share them through a concern.
-3. Model tests for collision handling.
+1. `KeyedSlug` concern, extracted from `Component`, is now shared by `Equipment`.
+2. The migration backfills slugs with an `sc_key` suffix for every member of a shared base, then adds a unique index. On the production dump: 4,921 rows and 138 shared bases, leaving 0 duplicates, and a save of all 4,921 rows moves no slug.
 
 ### Phase 2 — API: show, filters, sort
-1. `resources :equipment, only: %i[index show], param: :slug`, a `show` action (find by slug, with no `current_version` filter so retired items stay reachable), and `show.jbuilder`.
-2. `test/integration/api/v1/equipment_show_test.rb` modelled on `components_show_test.rb` (200/404), then regenerate the schema.
-3. Add a `catalogued` scope (the D1 predicate) and apply it in index and show.
-4. Permit `sub_type_in`, `weapon_class_in`, `slot_in`, `size_in` and `grade_in` (plus metric `_gteq`/`_lteq` where D3 wants them), and update `EquipmentQuery`.
-5. Filter endpoints `filters/equipment/weapon-classes` and `filters/equipment/slots` that call the existing `weapon_class_filters` / `slot_filters`.
-6. Sorting per D4: `normalize_sort_params` + `sorting_params`, a widened `ALLOWED_SORTING_PARAMS`, fact/metric ransackers, and `sorts` in `EquipmentQuery`.
+1. `GET /api/v1/equipment/:slug` applies `visible(false)`: a hidden item 404s, a retired one still answers.
+2. `ransack_alias :name` is gone. Search goes through `nameOrSlugCont`, and the public and admin indexes both sort through ransack.
+3. New sorts: `equipmentType`, `manufacturerName` and seven metrics. Every metric also has a `Gteq`/`Lteq` range. `EquipmentBuild::FILTERABLE` gains `damage_reduction`, `radiation_protection`, `g_force_tolerance` and `volume`.
+4. New filters: `subTypeIn`, `weaponClassIn`, `slotIn`, `sizeIn` and `gradeIn`. New facet endpoints: `sub-types`, `weapon-classes` and `slots`. `types` is now documented.
+5. The payload gains `*Label` fields for type, item type, sub-type, weapon class, slot and both compatibility fields. They come from `activerecord.attributes.equipment.*`, the same vocabulary as the filter endpoints.
 
-### Phase 3 — Frontend list
-1. Add an `equipment` tenant to `pages/catalogue/tenants.ts` and `nav.catalogue.equipment` in every locale.
-2. `pages/equipment/routes.ts`, `index.vue`, and `[slug]` shell pages mirroring `pages/components/`.
-3. `useEquipmentFilters`, `useEquipmentSortFields`, and an `Equipment/Row` built on `RowListItem`.
+### Phase 3 — Prices
+1. `Uex::ItemPriceSyncer` and `Uex::ItemMatcher` are extracted from the component syncer. `Uex::EquipmentPriceSyncer` covers the sections Armor, Clothing, Personal Weapons and Undersuits.
+2. A daily job at 06:30, an import model, an admin report and a notification type.
 
-### Phase 4 — Frontend detail
-1. `useEquipmentStats`: a field list per `equipment_type` with `primary` marks, rendered through `MetricsCard` hero/rest tiles.
-2. A detail page with breadcrumbs, manufacturer, slot, size and grade, a `retired` chip, and `Availability` with an equipment scope.
-3. A "crafted from" card via `useBlueprintsQuery({ craftableTypeEq: EQUIPMENT, craftableIdEq })`, plus an `Equipment` link branch in `Blueprints/Row` and `Blueprints/Preview`.
-4. The Rails route `catalogue/equipment/:slug` → `base#equipment` meta tags, and a frontend route test.
+### Phase 4 — Frontend
+1. The equipment tenant sits between components and commodities. The list page has typographic rows, a filter form, a sort bar and pagination.
+2. `useEquipmentStats` holds a field list per type with `primary` marks, and drives both the detail page's metrics card and the row's lead metric.
+3. The detail page shows a masthead (slot, size, grade, retired chip), metrics, details, availability and "Crafted from".
+4. A `craftableRoute` helper links a blueprint's row, preview and page to the equipment or commodity it makes.
+5. `catalogue/equipment/:slug` → `base#equipment` meta tags.
 
 ### Phase 5 — Labels in seven locales
-1. `filter.equipment.{type,item_type,slot,weapon_class}_filters` in `config/locales/*/filter.yml`, covering all seven locales and translated by hand.
-2. `labels.equipment.*` (stat names, retired, availability) in `app/frontend/translations/*/labels.json`.
+1. Server: 84 item types, 22 sub-types and `kinetic`, in all seven locales.
+2. Frontend: nav, title, headlines, `labels.equipment.*` (stats, sorts, availability), `labels.filters.equipment.*` and number units. The existing `labels.equipment.*` values outside `en` were English copies and are now translated.
 
 ## Intent Verification
 
-- [ ] **Unique slug.** No duplicate `equipment.slug` exists after the migration, and the unique index is present.
-- [ ] **Show endpoint.** `GET /api/v1/equipment/:slug` is documented in `swagger/v1/schema.yaml` and returns 404 for an unknown slug.
-- [ ] **Filters reachable.** The sub-type, weapon class, slot, size and grade filters work through the public index, and the slot and weapon-class facet endpoints respond.
-- [ ] **Honest sorting.** A sort orders the whole result set across pages, not just the current page.
-- [ ] **List page.** `/catalogue/equipment` renders row lists with search, filters, sort and pagination.
-- [ ] **Detail page.** It shows the figures for the item's type, grouped and labelled, plus manufacturer, slot, size and grade.
-- [ ] **Blueprint link.** The item page lists the blueprints that make it, and blueprint rows link back to the item.
-- [ ] **Retired items.** A retired item's page shows a retired marker.
-- [ ] **Meta tags.** `catalogue/equipment/:slug` serves meta tags from `Frontend::BaseController`.
-- [ ] **Nav.** An Equipment tab appears in the catalogue nav.
-- [ ] **Labels.** Type, item-type, slot and weapon-class labels exist in all seven locales.
-
-## Key files
-
-| File | Role |
-|------|------|
-| `app/models/equipment.rb`, `app/models/equipment_build.rb` | model, facts, ransackers, facets, `FILTERABLE` |
-| `app/controllers/api/v1/equipment_controller.rb` | index today; gains show and sort |
-| `app/controllers/api/v1/filters/equipment_controller.rb` | facet endpoints |
-| `config/routes/api/equipment_routes.rb` | `param: :slug`, new filter routes |
-| `app/views/api/v1/equipment/` | gains `show.jbuilder` |
-| `app/api_components/v1/schemas/queries/equipment_query.rb` | query schema (filters, `sorts`) |
-| `db/migrate/20260917160000_add_unique_slug_to_components.rb` | slug migration to copy |
-| `app/controllers/api/v1/components_controller.rb`, `app/helpers/ransack_helper.rb` | sort pattern |
-| `app/frontend/frontend/pages/catalogue/tenants.ts` | tenant registry / nav |
-| `app/frontend/frontend/pages/components/**`, `composables/useComponentStats.ts` | list/detail/stat pattern |
-| `app/frontend/frontend/components/Blueprints/{Row,Preview}/index.vue` | reverse link branch |
-| `config/routes/frontend_routes.rb`, `app/controllers/frontend/base_controller.rb` | meta-tag route |
-| `config/locales/*/filter.yml`, `app/frontend/translations/*/{labels,nav}.json` | labels |
+- [x] **Unique slug.** No duplicate `equipment.slug` exists after the migration, and the unique index is present.
+- [x] **Show endpoint.** `GET /api/v1/equipment/:slug` is documented in `swagger/v1/schema.yaml` and returns 404 for an unknown slug.
+- [x] **Filters reachable.** The sub-type, weapon class, slot, size and grade filters work through the public index, and the slot and weapon-class facet endpoints respond.
+- [x] **Honest sorting.** A sort orders the whole result set in SQL, with nulls last.
+- [x] **List page.** `/catalogue/equipment` renders row lists with search, filters, sort and pagination.
+- [x] **Detail page.** It shows the figures for the item's type, grouped and labelled, plus manufacturer, slot, size and grade.
+- [x] **Blueprint link.** The item page lists the blueprints that make it, and blueprint rows link back to the item.
+- [x] **Retired items.** A retired item's page shows a retired chip.
+- [x] **Meta tags.** `catalogue/equipment/:slug` serves meta tags from `Frontend::BaseController`.
+- [x] **Nav.** An Equipment tab appears in the catalogue nav.
+- [x] **Labels.** Type, item-type, slot and weapon-class labels exist in all seven locales.
+- [ ] **Browser check.** The pages have not been checked against real data in a browser yet.
 
 ## Not in scope (deferred)
-- **Equipment history tab.** No `EquipmentBuildChange` exists to read.
-- **Prices (D7).** Pending the decision. `Uex::PriceSyncer` syncs models only.
+- **Equipment history tab.** There is no `EquipmentBuildChange` for it to read.
+- **Size and grade selects in the filter form.** Both are reachable through the API, but there are only five sizes and two grades.
+- **`Uex::EquipmentMatcher::MAPPINGS`.** The first run will report four ambiguous skins (`P4-AR`, `Custodian`, `P8-SC` and `Gallant`, each paired with a `_tow` variant).
 
 ## Discovery Log
 
-- **2026-09-25** Initial research and plan creation. Findings: components built the slug backfill inside the schema migration rather than in db/data. `Equipment` has no `has_many :blueprints`, and reverse links go through the Blueprint `craftable_*` query. `_base.jbuilder` already emits `retired`.
+- **2026-09-25** Initial research and plan creation.
+- **2026-09-25** `activerecord.attributes.equipment.*` already held translations for types, item types and slots in every locale. The labels reuse it rather than starting a new `filter.equipment.*` namespace.
+- **2026-09-25** `storage` means different things by type: rounds on a gun or magazine, carrying capacity on apparel. The parser drops the unit, and the apparel figures are not consistent (a core reads 6.4, a jacket 1000), so no unit is shown for it. Volume is shown in µSCU, because in SCU a jacket is 0.0087 and the stat formatter rounds that to 0.
+- **2026-09-25** The equipment price matcher matches against hidden items as well, because weapon skins are real shop items.
 
 ## Progress
-- [ ] Phase 1 — Unique slug
-- [ ] Phase 2 — API: show, filters, sort
-- [ ] Phase 3 — Frontend list
-- [ ] Phase 4 — Frontend detail
-- [ ] Phase 5 — Labels in seven locales
+- [x] Phase 1 — Unique slug
+- [x] Phase 2 — API: show, filters, sort
+- [x] Phase 3 — Prices
+- [x] Phase 4 — Frontend
+- [x] Phase 5 — Labels in seven locales
