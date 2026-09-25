@@ -20,7 +20,7 @@ type Props = {
   // case: what it means for nothing to sell a ship part and nothing to sell a
   // commodity are different sentences, and everything else on the card is the
   // same panel.
-  scope?: "component" | "commodity";
+  scope?: "component" | "commodity" | "equipment";
   // Whether the build the catalogue is on still describes the item. A retired
   // one is never offered to the price sync at all, so silence about it says
   // nothing about what shops stock.

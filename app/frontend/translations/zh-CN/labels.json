@@ -1786,16 +1786,17 @@
           "storeImageBlank": "没有商店图片?"
         },
         "equipment": {
-          "name": "Name",
-          "equipmentType": "Equipment Type",
-          "itemType": "Item Type",
-          "weaponClass": "Weapon Class",
-          "slot": "Slot",
+          "name": "名称",
+          "equipmentType": "装备类型",
+          "itemType": "物品类型",
+          "weaponClass": "武器类别",
+          "slot": "部位",
           "buyPriceGt": "买入价格 >=",
           "buyPriceLt": "买入价格 <=",
           "sellPriceGt": "卖出价格 >=",
           "sellPriceLt": "卖出价格 <=",
-          "storeImageBlank": "没有商店图片?"
+          "storeImageBlank": "没有商店图片?",
+          "subType": "子类型"
         },
         "notifications": {
           "search": "搜索"
@@ -2750,17 +2751,50 @@
         "storeImage": "Store Image"
       },
       "equipment": {
-        "equipmentType": "Equipment Type",
-        "itemType": "Item Type",
-        "subType": "Sub Type",
-        "weaponClass": "Weapon Class",
-        "slot": "Slot",
-        "size": "Size",
-        "grade": "Grade",
+        "equipmentType": "装备类型",
+        "itemType": "物品类型",
+        "subType": "子类型",
+        "weaponClass": "武器类别",
+        "slot": "部位",
+        "size": "尺寸",
+        "grade": "等级",
         "hidden": "Hidden?",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "name": "名称",
+        "manufacturer": "制造商",
+        "retired": "已不在当前版本中",
+        "noMetrics": "该物品没有记录任何数据。",
+        "availability": {
+          "retired": "价格只针对目录当前所在的版本记录，而该物品不在其中。",
+          "craftedOnly": "没有终端出售此物品——它由下方的配方制造。",
+          "none": "没有终端买卖此物品。"
+        },
+        "stats": {
+          "damageReduction": "伤害减免",
+          "temperatureRating": "耐温范围",
+          "radiationProtection": "辐射防护",
+          "radiationScrubRate": "辐射清除速率",
+          "gForceTolerance": "G力耐受",
+          "carryingCapacity": "携带容量",
+          "magazineSize": "弹匣容量",
+          "rateOfFire": "射速",
+          "range": "有效射程",
+          "weaponClass": "武器类别",
+          "coreCompatibility": "核心兼容性",
+          "backpackCompatibility": "背包兼容性",
+          "volume": "体积"
+        },
+        "sorts": {
+          "damageReduction": "伤害减免",
+          "radiationProtection": "辐射防护",
+          "gForceTolerance": "G力耐受",
+          "rateOfFire": "射速",
+          "range": "射程",
+          "storage": "容量",
+          "volume": "体积"
+        }
       },
       "notifications": {
         "inbox": "收件箱",

@@ -338,7 +338,11 @@
         "index": "Katalog",
         "components": "Komponenten",
         "blueprints": "Baupläne",
-        "missions": "Missionen"
+        "missions": "Missionen",
+        "equipment": "Ausrüstung"
+      },
+      "equipment": {
+        "index": "Ausrüstung"
       }
     }
   }

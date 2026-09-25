@@ -338,7 +338,11 @@
         "index": "目錄",
         "components": "部件",
         "blueprints": "藍圖",
-        "missions": "任務"
+        "missions": "任務",
+        "equipment": "裝備"
+      },
+      "equipment": {
+        "index": "裝備"
       }
     }
   }

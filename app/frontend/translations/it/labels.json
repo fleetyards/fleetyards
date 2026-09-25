@@ -1786,16 +1786,17 @@
           "storeImageBlank": "Senza immagine negozio?"
         },
         "equipment": {
-          "name": "Name",
-          "equipmentType": "Equipment Type",
-          "itemType": "Item Type",
-          "weaponClass": "Weapon Class",
+          "name": "Nome",
+          "equipmentType": "Tipo di equipaggiamento",
+          "itemType": "Tipo di oggetto",
+          "weaponClass": "Classe d'arma",
           "slot": "Slot",
           "buyPriceGt": "Prezzo d'acquisto >=",
           "buyPriceLt": "Prezzo d'acquisto <=",
           "sellPriceGt": "Prezzo di vendita >=",
           "sellPriceLt": "Prezzo di vendita <=",
-          "storeImageBlank": "Senza immagine negozio?"
+          "storeImageBlank": "Senza immagine negozio?",
+          "subType": "Sottotipo"
         },
         "notifications": {
           "search": "Cerca"
@@ -2750,17 +2751,50 @@
         "storeImage": "Store Image"
       },
       "equipment": {
-        "equipmentType": "Equipment Type",
-        "itemType": "Item Type",
-        "subType": "Sub Type",
-        "weaponClass": "Weapon Class",
+        "equipmentType": "Tipo di equipaggiamento",
+        "itemType": "Tipo di oggetto",
+        "subType": "Sottotipo",
+        "weaponClass": "Classe d'arma",
         "slot": "Slot",
-        "size": "Size",
-        "grade": "Grade",
+        "size": "Dimensione",
+        "grade": "Grado",
         "hidden": "Hidden?",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "name": "Nome",
+        "manufacturer": "Produttore",
+        "retired": "Non più presente nella build attuale",
+        "noMetrics": "Nessun dato registrato per questo oggetto.",
+        "availability": {
+          "retired": "I prezzi sono rilevati per la build su cui si trova il catalogo, e questo oggetto non ne fa parte.",
+          "craftedOnly": "Nessun terminale lo vende: si produce con la ricetta qui sotto.",
+          "none": "Nessun terminale lo compra o lo vende."
+        },
+        "stats": {
+          "damageReduction": "Riduzione danni",
+          "temperatureRating": "Intervallo di temperatura",
+          "radiationProtection": "Protezione dalle radiazioni",
+          "radiationScrubRate": "Velocità di smaltimento radiazioni",
+          "gForceTolerance": "Tolleranza alla forza G",
+          "carryingCapacity": "Capacità di carico",
+          "magazineSize": "Capacità caricatore",
+          "rateOfFire": "Cadenza di tiro",
+          "range": "Portata effettiva",
+          "weaponClass": "Classe d'arma",
+          "coreCompatibility": "Compatibilità del nucleo",
+          "backpackCompatibility": "Compatibilità zaino",
+          "volume": "Volume"
+        },
+        "sorts": {
+          "damageReduction": "Riduzione danni",
+          "radiationProtection": "Protezione dalle radiazioni",
+          "gForceTolerance": "Tolleranza alla forza G",
+          "rateOfFire": "Cadenza di tiro",
+          "range": "Portata",
+          "storage": "Capacità",
+          "volume": "Volume"
+        }
       },
       "notifications": {
         "inbox": "In arrivo",

@@ -514,6 +514,12 @@
       },
       "missions": {
         "index": "Missions"
+      },
+      "equipment": {
+        "index": "Équipement",
+        "metrics": "Caractéristiques",
+        "identity": "Détails",
+        "craftedFrom": "Fabriqué à partir de"
       }
     }
   }

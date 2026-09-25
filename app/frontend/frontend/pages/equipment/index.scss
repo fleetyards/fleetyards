@@ -1,0 +1,116 @@
+// Slotted markup lives in the consumer's scope, so the metrics-card content
+// primitives have to be imported here rather than inherited from the card.
+@import "@/shared/components/metricsCard";
+
+.equipment-page {
+  &__masthead {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  // Qualified by the masthead so it outranks the icon's own row-sized rule,
+  // whatever order the two scoped stylesheets are emitted in.
+  &__masthead &__icon {
+    width: 52px;
+    height: 52px;
+    flex: none;
+    margin-top: 2px;
+    font-size: 34px;
+  }
+
+  &__title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__name {
+    font-family: "Orbitron", tahoma, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 6px;
+  }
+
+  &__sub {
+    color: var(--color-muted, #7a8288);
+    font-size: 14px;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 8px;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 5px 11px;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  &__badge-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted, #7a8288);
+  }
+
+  &__badge-value {
+    font-family: "Open Sans", tahoma, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__description {
+    color: var(--color-text-dim, #959595);
+    max-width: 70ch;
+    margin: 0 0 24px;
+  }
+
+  &__empty {
+    color: var(--color-text-dim, #959595);
+    margin: 0;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+
+    @media (min-width: 992px) {
+      grid-template-columns: minmax(0, 1fr) 340px;
+    }
+  }
+
+  &__rail {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+  }
+
+  &__link-row {
+    transition: color 150ms ease;
+
+    &:hover .metrics-card__row__value,
+    &:focus-visible .metrics-card__row__value {
+      color: var(--color-lifted, #eee);
+    }
+  }
+}

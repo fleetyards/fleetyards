@@ -514,6 +514,12 @@
       },
       "missions": {
         "index": "任務"
+      },
+      "equipment": {
+        "index": "裝備",
+        "metrics": "數據",
+        "identity": "詳情",
+        "craftedFrom": "製造配方"
       }
     }
   }

@@ -1795,7 +1795,8 @@
           "buyPriceLt": "Buy Price <=",
           "sellPriceGt": "Sell Price >=",
           "sellPriceLt": "Sell Price <=",
-          "storeImageBlank": "Without Store Image?"
+          "storeImageBlank": "Without Store Image?",
+          "subType": "Sub Type"
         },
         "notifications": {
           "search": "Search"
@@ -2774,7 +2775,40 @@
         "hidden": "Hidden?",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "name": "Name",
+        "manufacturer": "Manufacturer",
+        "retired": "No longer in the current build",
+        "noMetrics": "No figures are recorded for this item.",
+        "availability": {
+          "retired": "Prices are tracked for the build the catalogue is on, and this item is not in it.",
+          "craftedOnly": "No terminal sells this — it is made from the recipe below.",
+          "none": "No terminal buys or sells this."
+        },
+        "stats": {
+          "damageReduction": "Damage Reduction",
+          "temperatureRating": "Temperature Rating",
+          "radiationProtection": "Radiation Protection",
+          "radiationScrubRate": "Radiation Scrub Rate",
+          "gForceTolerance": "G-Force Tolerance",
+          "carryingCapacity": "Carrying Capacity",
+          "magazineSize": "Magazine Size",
+          "rateOfFire": "Rate of Fire",
+          "range": "Effective Range",
+          "weaponClass": "Weapon Class",
+          "coreCompatibility": "Core Compatibility",
+          "backpackCompatibility": "Backpack Compatibility",
+          "volume": "Volume"
+        },
+        "sorts": {
+          "damageReduction": "Damage Reduction",
+          "radiationProtection": "Radiation Protection",
+          "gForceTolerance": "G-Force Tolerance",
+          "rateOfFire": "Rate of Fire",
+          "range": "Range",
+          "storage": "Capacity",
+          "volume": "Volume"
+        }
       },
       "notifications": {
         "inbox": "Inbox",

@@ -338,7 +338,11 @@
         "index": "目录",
         "components": "部件",
         "blueprints": "蓝图",
-        "missions": "任务"
+        "missions": "任务",
+        "equipment": "装备"
+      },
+      "equipment": {
+        "index": "装备"
       }
     }
   }

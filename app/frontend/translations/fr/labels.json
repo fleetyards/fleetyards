@@ -1786,16 +1786,17 @@
           "storeImageBlank": "Sans image de boutique ?"
         },
         "equipment": {
-          "name": "Name",
-          "equipmentType": "Equipment Type",
-          "itemType": "Item Type",
-          "weaponClass": "Weapon Class",
-          "slot": "Slot",
+          "name": "Nom",
+          "equipmentType": "Type d'équipement",
+          "itemType": "Type d'objet",
+          "weaponClass": "Classe d'arme",
+          "slot": "Emplacement",
           "buyPriceGt": "Prix d'achat >=",
           "buyPriceLt": "Prix d'achat <=",
           "sellPriceGt": "Prix de vente >=",
           "sellPriceLt": "Prix de vente <=",
-          "storeImageBlank": "Sans image de boutique ?"
+          "storeImageBlank": "Sans image de boutique ?",
+          "subType": "Sous-type"
         },
         "notifications": {
           "search": "Rechercher"
@@ -2750,17 +2751,50 @@
         "storeImage": "Store Image"
       },
       "equipment": {
-        "equipmentType": "Equipment Type",
-        "itemType": "Item Type",
-        "subType": "Sub Type",
-        "weaponClass": "Weapon Class",
-        "slot": "Slot",
-        "size": "Size",
+        "equipmentType": "Type d'équipement",
+        "itemType": "Type d'objet",
+        "subType": "Sous-type",
+        "weaponClass": "Classe d'arme",
+        "slot": "Emplacement",
+        "size": "Taille",
         "grade": "Grade",
         "hidden": "Hidden?",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "name": "Nom",
+        "manufacturer": "Fabricant",
+        "retired": "Absent de la version actuelle",
+        "noMetrics": "Aucune donnée n'est enregistrée pour cet objet.",
+        "availability": {
+          "retired": "Les prix sont suivis pour la version sur laquelle est le catalogue, et cet objet n'en fait pas partie.",
+          "craftedOnly": "Aucun terminal ne le vend : il se fabrique à partir de la recette ci-dessous.",
+          "none": "Aucun terminal ne l'achète ni ne le vend."
+        },
+        "stats": {
+          "damageReduction": "Réduction des dégâts",
+          "temperatureRating": "Plage de température",
+          "radiationProtection": "Protection contre les radiations",
+          "radiationScrubRate": "Taux d'élimination des radiations",
+          "gForceTolerance": "Tolérance aux G",
+          "carryingCapacity": "Capacité de transport",
+          "magazineSize": "Capacité du chargeur",
+          "rateOfFire": "Cadence de tir",
+          "range": "Portée effective",
+          "weaponClass": "Classe d'arme",
+          "coreCompatibility": "Compatibilité du noyau",
+          "backpackCompatibility": "Compatibilité sac à dos",
+          "volume": "Volume"
+        },
+        "sorts": {
+          "damageReduction": "Réduction des dégâts",
+          "radiationProtection": "Protection contre les radiations",
+          "gForceTolerance": "Tolérance aux G",
+          "rateOfFire": "Cadence de tir",
+          "range": "Portée",
+          "storage": "Capacité",
+          "volume": "Volume"
+        }
       },
       "notifications": {
         "inbox": "Boîte de réception",

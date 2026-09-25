@@ -370,7 +370,11 @@
       },
       "missions": {
         "index": "任务"
-      }
+      },
+      "equipment": {
+        "index": "装备"
+      },
+      "equipmentItem": "%{name}"
     }
   }
 }
