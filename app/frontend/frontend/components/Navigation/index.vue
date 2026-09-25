@@ -86,7 +86,9 @@ const isHangarRoute = computed(() => {
     return false;
   }
 
-  return String(route.name).includes("hangar");
+  // Every hangar route is named from its path, so they all lead with it. A
+  // match anywhere in the name also lit the hangar up on `settings-hangar`.
+  return String(route.name).startsWith("hangar");
 });
 
 const filterFor = (routeName: string) => {
