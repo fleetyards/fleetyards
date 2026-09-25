@@ -378,6 +378,48 @@ test.describe("Chips - owner's hangar", () => {
     await expect.poll(() => names(page)).toEqual(before);
   });
 
+  test("a failure after a success shows what the server saved", async ({
+    page,
+  }) => {
+    // The first request is held and succeeds, the one queued behind it fails.
+    // The page's own group list still predates both - no refetch arrives in
+    // the test environment - so falling back to it would show neither.
+    let calls = 0;
+    await page.route(/\/hangar\/groups\/sort/, async (route) => {
+      calls += 1;
+
+      if (calls === 1) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        await route.continue();
+        return;
+      }
+
+      await route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ code: "error", message: "Sort failed" }),
+      });
+    });
+
+    const before = await names(page);
+    const reversed = [...before].reverse();
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    await groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle")
+      .focus();
+
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("ArrowRight");
+
+    await expect.poll(() => calls).toBe(2);
+    await expect.poll(() => names(page)).toEqual(reversed);
+  });
+
   test("a failed save puts the saved order back", async ({ page }) => {
     await page.route(/\/hangar\/groups\/sort/, (route) =>
       route.fulfill({

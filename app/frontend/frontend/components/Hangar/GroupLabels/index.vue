@@ -48,15 +48,20 @@ const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 let sortRequest: Promise<void> | null = null;
 let queuedSorting: string[] | null = null;
 let lastSaveFailed = false;
+// The order the server is known to hold: what it last returned, or what it last
+// accepted since. A failed save falls back to this, not to the prop - after an
+// earlier save in the same run succeeded, the prop predates it.
+let savedOrder: string[] = [];
 
 // Every group save broadcasts, so refetches arrive while a sort is still being
 // saved, carrying an intermediate order. Their contents are taken - a rename or
 // a group added in another tab - but in the order on screen, with new groups
 // at the end.
-const inLocalOrder = (incoming: (HangarGroup | HangarGroupPublic)[]) => {
-  const position = new Map(
-    groups.value.map((group, index) => [group.id, index]),
-  );
+const inOrder = (
+  incoming: (HangarGroup | HangarGroupPublic)[],
+  order: string[],
+) => {
+  const position = new Map(order.map((id, index) => [id, index]));
 
   return [...incoming].sort(
     (a, b) =>
@@ -68,7 +73,16 @@ const inLocalOrder = (incoming: (HangarGroup | HangarGroupPublic)[]) => {
 watch(
   () => props.hangarGroups,
   (newGroups) => {
-    groups.value = sortRequest ? inLocalOrder(newGroups) : newGroups;
+    if (sortRequest) {
+      groups.value = inOrder(
+        newGroups,
+        groups.value.map((group) => group.id),
+      );
+      return;
+    }
+
+    groups.value = newGroups;
+    savedOrder = newGroups.map((group) => group.id);
   },
 );
 
@@ -173,6 +187,7 @@ const initSortable = (container?: HTMLElement | null) => {
 
 onMounted(() => {
   groups.value = props.hangarGroups;
+  savedOrder = props.hangarGroups.map((group) => group.id);
 });
 
 // Bound to the element, not to mount: the row swaps its desktop branch for a
@@ -206,6 +221,7 @@ const updateSort = () => {
         })
         .then(() => {
           lastSaveFailed = false;
+          savedOrder = sorting;
         })
         .catch((error) => {
           lastSaveFailed = true;
@@ -218,10 +234,10 @@ const updateSort = () => {
     sortRequest = null;
 
     // Only the last request decides: a later success saved the full order an
-    // earlier failure could not. Falls back to what the server last returned.
+    // earlier failure could not.
     if (lastSaveFailed) {
       lastSaveFailed = false;
-      groups.value = props.hangarGroups;
+      groups.value = inOrder(groups.value, savedOrder);
     }
   });
 
