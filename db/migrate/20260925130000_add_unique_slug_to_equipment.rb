@@ -19,8 +19,11 @@ class AddUniqueSlugToEquipment < ActiveRecord::Migration[8.1]
   end
 
   private def backfill
+    # Ordered so the counter that settles a leftover collision lands the same
+    # way on every copy of the data.
     rows = select_all(<<~SQL).to_a
       SELECT id, name, sc_key FROM equipment WHERE name IS NOT NULL AND name <> ''
+      ORDER BY sc_key, id
     SQL
 
     # A base shared by more than one row gives every one of its members a
