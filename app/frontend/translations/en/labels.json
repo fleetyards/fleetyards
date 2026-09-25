@@ -2660,6 +2660,7 @@
           "toHint": "Deliveries into one of your own inventories are sent to you, and you accept them yourself.",
           "myHangarInventory": "%{name} (my hangar)",
           "authorHangarInventory": "%{name} (hangar of %{username})",
+          "destinationRemoved": "No longer available",
           "lead": "Lead",
           "pendingCrew": "Waiting to join",
           "minQuality": "min. quality %{value}",

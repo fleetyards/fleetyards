@@ -48,7 +48,9 @@ describe("useContractRoute", () => {
     );
   });
 
-  it("has no route without a destination", () => {
-    expect(routeLabel({ destination: null } as never)).toBeUndefined();
+  it("says the destination is gone once it was deleted", () => {
+    expect(routeLabel({ destination: null } as never)).toBe(
+      "labels.fleets.contracts.destinationRemoved()",
+    );
   });
 });

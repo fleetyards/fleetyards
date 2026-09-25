@@ -407,7 +407,7 @@ const crumbs = computed<Crumb[]>(() => [
     </p>
 
     <!-- A haul has two ends, so it reads as one leg rather than two facts. -->
-    <Panel v-if="contract.source || contract.destination">
+    <Panel>
       <PanelBody>
         <div class="contract-route">
           <div v-if="contract.source" class="contract-route__end">
@@ -426,10 +426,7 @@ const crumbs = computed<Crumb[]>(() => [
             <span class="contract-route__rule" />
           </div>
 
-          <div
-            v-if="contract.destination"
-            class="contract-route__end contract-route__end--to"
-          >
+          <div class="contract-route__end contract-route__end--to">
             <div class="contract-route__label">
               {{ t("labels.fleets.contracts.to") }}
             </div>
@@ -437,10 +434,10 @@ const crumbs = computed<Crumb[]>(() => [
               {{ destinationName(contract) }}
             </div>
             <div
-              v-if="contract.destination.location"
+              v-if="contract.destination?.location"
               class="contract-route__where"
             >
-              {{ contract.destination.location }}
+              {{ contract.destination?.location }}
             </div>
           </div>
         </div>

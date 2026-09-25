@@ -2646,6 +2646,7 @@
           "toHint": "Las entregas en uno de tus propios inventarios se te envían a ti, y tú mismo las aceptas.",
           "myHangarInventory": "%{name} (mi hangar)",
           "authorHangarInventory": "%{name} (hangar de %{username})",
+          "destinationRemoved": "Ya no está disponible",
           "lead": "Responsable",
           "pendingCrew": "Esperando unirse",
           "minQuality": "calidad mín. %{value}",

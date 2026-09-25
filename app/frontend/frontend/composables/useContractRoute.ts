@@ -12,9 +12,11 @@ type ContractEnds = Pick<FleetContract, "source" | "destination" | "createdBy">;
 export const useContractRoute = () => {
   const { t } = useI18n();
 
+  // Every contract is written with a destination, so a missing one was
+  // deleted since; saying so beats a route that quietly stops at the source.
   const destinationName = (contract: ContractEnds) => {
     const destination = contract.destination;
-    if (!destination) return undefined;
+    if (!destination) return t("labels.fleets.contracts.destinationRemoved");
 
     if (destination.holder !== FleetContractDestinationHolderEnum.USER) {
       return destination.name;
@@ -30,8 +32,6 @@ export const useContractRoute = () => {
   const routeLabel = (contract: ContractEnds) => {
     const to = destinationName(contract);
     const from = contract.source?.name;
-
-    if (!to) return undefined;
 
     return from ? `${from} → ${to}` : to;
   };

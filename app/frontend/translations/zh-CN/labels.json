@@ -2646,6 +2646,7 @@
           "toHint": "送往你自己库存的交付会发送给你，由你亲自接收。",
           "myHangarInventory": "%{name}（我的机库）",
           "authorHangarInventory": "%{name}（%{username} 的机库）",
+          "destinationRemoved": "已不可用",
           "lead": "负责人",
           "pendingCrew": "等待加入",
           "minQuality": "最低品质 %{value}",
