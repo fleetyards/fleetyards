@@ -56,6 +56,10 @@
             "active": "A mission is a reusable plan — teams, ships and slots — that you spawn events from.",
             "archived": "Archiving a mission takes it off the list without deleting it."
           }
+        },
+        "squadrons": {
+          "headline": "No squadrons yet",
+          "info": "Squadrons split the fleet into groups, each with its own members, emblem and colours. Teams sit alongside them for members who belong to more than one group."
         }
       }
     }

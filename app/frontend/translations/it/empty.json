@@ -53,6 +53,10 @@
             "active": "Una missione è un piano riutilizzabile — squadre, navi e posti — da cui generi eventi.",
             "archived": "Archiviare toglie una missione dalla lista senza eliminarla."
           }
+        },
+        "squadrons": {
+          "headline": "Ancora nessuno squadrone",
+          "info": "Gli squadroni dividono la flotta in gruppi, ognuno con i propri membri, emblema e colori. Accanto ci sono le squadre, per i membri che appartengono a più gruppi."
         }
       }
     }

@@ -53,6 +53,10 @@
             "active": "Une mission est un plan réutilisable — équipes, vaisseaux et postes — à partir duquel vous créez des événements.",
             "archived": "Archiver retire une mission de la liste sans la supprimer."
           }
+        },
+        "squadrons": {
+          "headline": "Aucun escadron",
+          "info": "Les escadrons répartissent la flotte en groupes, chacun avec ses membres, son emblème et ses couleurs. Les équipes s'y ajoutent pour les membres qui appartiennent à plusieurs groupes."
         }
       }
     }

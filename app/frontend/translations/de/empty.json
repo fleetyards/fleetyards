@@ -53,6 +53,10 @@
             "active": "Eine Mission ist ein wiederverwendbarer Plan — Teams, Schiffe und Slots — aus dem du Events erzeugst.",
             "archived": "Archivieren nimmt eine Mission von der Liste, ohne sie zu löschen."
           }
+        },
+        "squadrons": {
+          "headline": "Noch keine Staffeln",
+          "info": "Staffeln teilen die Flotte in Gruppen mit eigenen Mitgliedern, Emblem und Farben. Daneben gibt es Teams für Mitglieder, die zu mehreren Gruppen gehören."
         }
       }
     }

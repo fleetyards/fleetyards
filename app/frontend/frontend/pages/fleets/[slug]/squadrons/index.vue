@@ -14,6 +14,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -223,8 +224,24 @@ const crumbs = computed<Crumb[]>(() => [
   </template>
 
   <Empty
-    v-else-if="!isLoading && !squadronList.length"
-    :name="t('labels.fleet.squadrons.index')"
+    v-if="!isLoading && !orderedSquadrons.length"
+    :variant="EmptyVariantsEnum.BOX"
+    hide-actions
     data-test="squadrons-empty"
-  />
+  >
+    <template #headline>
+      {{ t("empty.fleets.squadrons.headline") }}
+    </template>
+
+    <template #info>
+      <p>{{ t("empty.fleets.squadrons.info") }}</p>
+      <Btn
+        v-if="canCreate"
+        :to="{ name: 'fleet-squadron-new', params: { slug: fleet.slug } }"
+      >
+        <i class="fa-light fa-plus" />
+        <span>{{ t("actions.fleet.squadrons.create") }}</span>
+      </Btn>
+    </template>
+  </Empty>
 </template>
