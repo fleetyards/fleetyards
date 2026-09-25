@@ -78,9 +78,10 @@ const {
 } = usePayoutEntries(ledgerId);
 
 // The entries are paginated, and a pending expense on the second page would
-// block settling with no way to answer it from here. Every waiting expense is
-// fetched on its own and listed first, so as long as any is pending one of
-// them is in front of the manager.
+// block settling with no way to answer it from here. The waiting expenses are
+// fetched as a query of their own and listed first -- a page of them at a
+// time, which is enough: as long as any is pending, one of them is in front
+// of the manager, and answering it brings up the next.
 const { data: pendingEntries, refetch: refetchPendingEntries } =
   usePayoutEntries(
     ledgerId,
