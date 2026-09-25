@@ -151,7 +151,23 @@ class FleetContract < ApplicationRecord
 
   # Everything a delivery can still land on: on the board, being worked, or
   # expired while a delivery filed before the deadline waits for an answer.
-  scope :still_receiving, -> { where(aasm_state: %w[open in_progress expired]).without_settled_expiry }
+  # Only a transfer that can end up in the destination keeps an expired one
+  # here -- a transport's pickup waiting on its crew does not.
+  scope :still_receiving, -> {
+    pending_delivery = InventoryTransfer.pending
+      .where("inventory_transfers.fleet_contract_id = fleet_contracts.id")
+      .where(<<~SQL.squish)
+        inventory_transfers.destination_inventory_id = fleet_contracts.destination_inventory_id
+        OR inventory_transfers.destination_fleet_inventory_id = fleet_contracts.destination_fleet_inventory_id
+        OR (fleet_contracts.destination_inventory_id IS NOT NULL
+          AND inventory_transfers.recipient_id = fleet_contracts.created_by_id)
+        OR (fleet_contracts.destination_fleet_inventory_id IS NOT NULL
+          AND inventory_transfers.recipient_fleet_id = fleet_contracts.fleet_id)
+      SQL
+
+    where(aasm_state: %w[open in_progress])
+      .or(where(aasm_state: "expired").where(pending_delivery.arel.exists))
+  }
 
   # `whiny_transitions: false` matches the rest of the app's state machines.
   # The two stamps aasm cannot write are written by hand: its timestamp feature

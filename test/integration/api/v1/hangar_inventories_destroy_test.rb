@@ -117,6 +117,21 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
     assert_response :no_content
   end
 
+  # A transport's pickup waits on its crew and can never land in the hangar.
+  test "DELETE /hangar/inventories/:slug is not held up by an expired contract's pending pickup" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @other_user)
+    contract.update_columns(aasm_state: "expired")
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
   test "DELETE /hangar/inventories/:slug goes through once the contract is closed" do
     create(:fleet_contract, :hangar_destination, created_by: @user, destination_inventory: @inventory,
       aasm_state: "fulfilled")
