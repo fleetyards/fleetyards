@@ -52,10 +52,10 @@ module Discord
       end
 
       private def decide(membership, user)
-        case JoinRequestDecision.new(@decision, membership, officer: user).call
-        when :done then {update: JoinRequestMessage.new(membership).settled_payload(officer: user)}
-        when :not_pending then {update: JoinRequestMessage.new(membership).settled_payload}
-        else reply(I18n.t("discord.commands.fleet.requests.failed"))
+        if JoinRequestDecision.new(@decision, membership, officer: user).call == :failed
+          reply(I18n.t("discord.commands.fleet.requests.failed"))
+        else
+          {update: JoinRequestMessage.new(membership).settled_payload}
         end
       end
 

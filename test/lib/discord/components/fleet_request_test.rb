@@ -63,6 +63,18 @@ module Discord
         assert disabled?(result[:update])
       end
 
+      test "a second click keeps the name of the officer who answered first" do
+        click("accept")
+        second = create(:user, username: "Second")
+        create(:omniauth_connection, user: second, provider: "discord", uid: "second-uid")
+        join(@fleet, second, "Officer", "accepted")
+
+        result = click("decline", discord_user_id: "second-uid")
+
+        assert_equal "accepted", @request.reload.aasm_state
+        assert_includes result[:update][:content], I18n.t("discord.join_request.accepted_by", officer: "Officer")
+      end
+
       test "a member without the privilege is told privately and the message is left alone" do
         member = create(:user)
         create(:omniauth_connection, user: member, provider: "discord", uid: "member-uid")

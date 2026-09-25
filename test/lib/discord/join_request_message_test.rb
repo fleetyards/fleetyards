@@ -39,18 +39,29 @@ module Discord
 
     test "a settled request names the outcome and who answered, and disables the buttons" do
       officer = create(:user, username: "Officer")
-      @membership.update!(aasm_state: "accepted")
+      @membership.answer_request(accept: true, author_id: officer.id)
 
-      payload = JoinRequestMessage.new(@membership).settled_payload(officer: officer)
+      payload = JoinRequestMessage.new(@membership).settled_payload
 
       assert_includes payload[:content], I18n.t("discord.join_request.accepted_by", officer: "Officer")
       assert buttons(payload).all? { |button| button[:disabled] }
     end
 
-    test "a request settled elsewhere reads without a name" do
+    test "a request settled without an author on record reads without a name" do
       @membership.update!(aasm_state: "declined")
 
       assert_includes JoinRequestMessage.new(@membership).settled_payload[:content], I18n.t("discord.join_request.declined")
+    end
+
+    # A later edit of the membership must not take over the name.
+    test "the name is the author of the decision, not of the latest change" do
+      officer = create(:user, username: "Officer")
+      @membership.answer_request(accept: true, author_id: officer.id)
+      @membership.author_id = create(:user, username: "Someone").id
+      @membership.update!(nickname: "Newbie")
+
+      assert_includes JoinRequestMessage.new(@membership).settled_payload[:content],
+        I18n.t("discord.join_request.accepted_by", officer: "Officer")
     end
 
     test "a request neither accepted nor declined reads as no longer pending" do

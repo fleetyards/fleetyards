@@ -46,11 +46,9 @@ module Discord
       {content: summary, components: buttons(membership.id, disabled: false)}
     end
 
-    # The officer is who answered through this message; a request settled
-    # somewhere else reads without a name, because nothing here knows it.
-    def settled_payload(officer: nil)
+    def settled_payload
       {
-        content: [summary, outcome(officer)].join("\n"),
+        content: [summary, outcome].join("\n"),
         components: buttons(membership.id, disabled: true),
         allowed_mentions: {parse: []}
       }
@@ -83,7 +81,7 @@ module Discord
         url: "https://#{Rails.configuration.app.domain}/fleets/#{membership.fleet.slug}/members/")
     end
 
-    private def outcome(officer)
+    private def outcome
       state = if membership.accepted?
         "accepted"
       elsif membership.declined?
@@ -92,9 +90,23 @@ module Discord
         return t("closed")
       end
 
+      officer = decided_by
       return t(state) if officer.nil?
 
       t("#{state}_by", officer: Markdown.escape(officer.username))
+    end
+
+    # Read from the version rather than handed in, so every edit of the
+    # message names the same officer: a second click on a settled request,
+    # or a retry after the first edit failed, would otherwise overwrite the
+    # name. Nil when the request was settled without an author on record.
+    private def decided_by
+      author_id = membership.versions
+        .where("jsonb_exists(object_changes::jsonb, ?)", "aasm_state")
+        .reorder(created_at: :desc)
+        .pick(:author_id)
+
+      author_id && User.find_by(id: author_id)
     end
 
     private def t(key, **)
