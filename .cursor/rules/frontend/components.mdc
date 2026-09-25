@@ -34,7 +34,7 @@ Fleetyards frontend. Components here should be:
 
 - **OauthBtn/** — OAuth login button (with types and styles)
 - **SocialLogins/** — Social login button group
-- **base/** — Primitives: Button, Input, Table, Panel, etc.
+- **base/** — Primitives: Button, Input, Table, Panel, ListToolbar (a list's sort chips, select-all box and bulk actions above it), etc.
 - **ViewImage/** — Image viewer/modal
 - **Box/** — Generic container box
 - **LazyImage/** — Lazy-loading image
