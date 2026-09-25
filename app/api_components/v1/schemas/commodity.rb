@@ -35,7 +35,12 @@ module V1
           containerSizes: {type: :array, items: {type: :number}},
 
           # The refined good an ore or raw form becomes, where it becomes one.
-          refinesInto: ::Shared::V1::Schemas::CommodityRef,
+          refinesInto: ::Shared::V1::Schemas::NullableCommodityRef,
+
+          # The raw forms that refine into this one, still in the build we are
+          # on. Only the detail payload carries it: the list's cache fragment is
+          # keyed on the commodity row, and these are other rows pointing at it.
+          refinedFrom: {type: :array, items: ::Shared::V1::Schemas::CommodityRef},
 
           # Whether the build we are on still describes this commodity. Until now
           # the API served one the export had dropped as though it were current.

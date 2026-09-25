@@ -3,8 +3,8 @@
 module Shared
   module V1
     module Schemas
-      # One commodity named from somewhere else in the catalogue. Nullable,
-      # because every use of it so far is a link a commodity may not have.
+      # One commodity named from somewhere else in the catalogue. A single link
+      # a commodity may not have uses `NullableCommodityRef`.
       #
       # In `shared/v1` because the admin commodity payload subclasses the public
       # one and inherits every reference it makes.
@@ -12,7 +12,7 @@ module Shared
         include OpenapiRuby::Components::Base
 
         schema({
-          type: [:object, :null],
+          type: :object,
           properties: {
             id: {type: :string, format: :uuid},
             name: {type: :string},

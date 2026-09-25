@@ -75,6 +75,26 @@ class Api::V1::CommoditiesShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /commodities/{slug} lists the raw forms that refine into it" do
+    create(:commodity, name: "Gold (Raw)", refines_into: @gold)
+    create(:commodity, name: "Gold (Ore)", refines_into: @gold)
+    create(:commodity, name: "Gold (Old Ore)", refines_into: @gold, version: "0.0.1-live.1")
+
+    assert_api_response :get, 200, params: {slug: @gold.slug} do
+      assert_equal ["Gold (Ore)", "Gold (Raw)"], parsed_body["refinedFrom"].map { |source| source["name"] }
+      assert_nil parsed_body["refinesInto"]
+    end
+  end
+
+  test "GET /commodities/{slug} leaves refinedFrom empty for a raw form" do
+    ore = create(:commodity, name: "Gold (Ore)", refines_into: @gold)
+
+    assert_api_response :get, 200, params: {slug: ore.slug} do
+      assert_empty parsed_body["refinedFrom"]
+      assert_equal @gold.slug, parsed_body["refinesInto"]["slug"]
+    end
+  end
+
   # A literal slug rather than a generated one: the factory names commodities
   # from Faker, which has drawn a name containing the probe string before.
   test "GET /commodities/{slug} 404s for a slug nobody has" do
