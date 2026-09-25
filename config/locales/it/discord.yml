@@ -94,6 +94,17 @@ it:
       starting_now: Inizia ora
       starts_in: 'Inizia tra %{count} min'
       title: 'Promemoria: %{title}'
+    join_request:
+      accepted: Accettata.
+      accepted_by: 'Accettata da %{officer}.'
+      buttons:
+        accept: Accetta
+        decline: Rifiuta
+      closed: Questa richiesta non è più in attesa.
+      declined: Rifiutata.
+      declined_by: 'Rifiutata da %{officer}.'
+      gone: Questa richiesta non esiste più.
+      summary: '**%{username}** ha chiesto di unirsi a [%{fleet}](%{url}).'
     new_ship:
       message: 'Permettetemi di presentarvi: %{manufacturer} %{model}'
       title: Nuova nave/veicolo aggiunto

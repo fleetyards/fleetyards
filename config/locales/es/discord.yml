@@ -94,6 +94,17 @@ es:
       starting_now: Empieza ahora
       starts_in: 'Empieza en %{count} min'
       title: 'Recordatorio: %{title}'
+    join_request:
+      accepted: Aceptada.
+      accepted_by: 'Aceptada por %{officer}.'
+      buttons:
+        accept: Aceptar
+        decline: Rechazar
+      closed: Esta solicitud ya no está pendiente.
+      declined: Rechazada.
+      declined_by: 'Rechazada por %{officer}.'
+      gone: Esta solicitud ya no existe.
+      summary: '**%{username}** ha solicitado unirse a [%{fleet}](%{url}).'
     new_ship:
       message: 'Permitidme presentaros: %{manufacturer} %{model}'
       title: Nueva nave/vehículo añadido

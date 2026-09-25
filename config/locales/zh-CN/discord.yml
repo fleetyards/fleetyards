@@ -94,6 +94,17 @@ zh-CN:
       starting_now: 即将开始
       starts_in: '%{count} 分钟后开始'
       title: '提醒：%{title}'
+    join_request:
+      accepted: 已接受。
+      accepted_by: '已由 %{officer} 接受。'
+      buttons:
+        accept: 接受
+        decline: 拒绝
+      closed: 此申请已不再等待处理。
+      declined: 已拒绝。
+      declined_by: '已由 %{officer} 拒绝。'
+      gone: 此申请已不存在。
+      summary: '**%{username}** 申请加入 [%{fleet}](%{url})。'
     new_ship:
       message: '请允许我介绍：%{manufacturer} %{model}'
       title: 新增飞船／载具

@@ -220,7 +220,7 @@ class FleetMembership < ApplicationRecord
       transitions from: :created, to: :invited
     end
 
-    event :request, after_commit: :notify_fleet_admins do
+    event :request, after_commit: %i[notify_fleet_admins post_discord_join_request] do
       transitions from: :created, to: :requested
     end
 
@@ -376,6 +376,12 @@ class FleetMembership < ApplicationRecord
         record: self
       )
     end
+  end
+
+  def post_discord_join_request
+    return if ::Discord::EventAnnouncement.officers_targets(fleet).empty?
+
+    ::Discord::PostJoinRequestJob.perform_async(id)
   end
 
   def on_accept_request

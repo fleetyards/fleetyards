@@ -51,14 +51,14 @@ module Discord
       to_args.hash
     end
 
-    def deliver(fleet, content)
+    def deliver(fleet, content, components: nil)
       setting = fleet.fleet_notification_setting
       return false if setting.blank?
 
       case kind
       when SQUADRON then squadron_post(setting, content)
       when FLEET then fleet_post(setting, content)
-      when OFFICERS then officers_post(setting, content)
+      when OFFICERS then officers_post(setting, content, components)
       else false
       end
     end
@@ -75,14 +75,14 @@ module Discord
 
     # Never the fleet's channel or webhook as a fallback: both are read by
     # every member.
-    private def officers_post(setting, content)
+    private def officers_post(setting, content, components)
       return false if setting.discord_officers_channel_id.blank?
 
       id = setting.discord_officers_channel_id
       return false if shared_with_fleet?(setting, id)
       return false if setting.fleet.fleet_squadrons.exists?(discord_channel_id: id)
 
-      channel_post(setting, id, content)
+      channel_post(setting, id, content, components)
     end
 
     # Squadrons may share a channel with each other -- both read it anyway --
@@ -101,10 +101,10 @@ module Discord
       id == setting.discord_announcement_channel_id
     end
 
-    private def channel_post(setting, id, content)
+    private def channel_post(setting, id, content, components = nil)
       return false unless ApiClient.configured?
 
-      ChannelPost.new(id, guild_id: setting.discord_guild_id).deliver(content)
+      ChannelPost.new(id, guild_id: setting.discord_guild_id).deliver(content, components: components)
     end
   end
 end
