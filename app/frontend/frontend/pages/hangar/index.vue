@@ -584,12 +584,9 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #sort>
-      <!-- Grid view only: the table carries the same sorts on its headings. -->
-      <SortBar
-        v-if="gridView"
-        :columns="sortFields"
-        :default-sort="defaultSort"
-      />
+      <!-- In both views: the custom order has no column heading, so the
+           table alone could never switch to it. -->
+      <SortBar :columns="sortFields" :default-sort="defaultSort" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
