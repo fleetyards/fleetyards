@@ -72,8 +72,8 @@ vi.mock("@/shared/composables/useSubscription", () => ({
   useSubscription: vi.fn(),
 }));
 
-vi.mock("@/frontend/composables/useVehicleSortFields", () => ({
-  useVehicleSortFields: () => [],
+vi.mock("@/frontend/composables/useFleetSortFields", () => ({
+  useFleetSortFields: () => [],
 }));
 
 import Component from "./index.vue";

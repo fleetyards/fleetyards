@@ -9,7 +9,7 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useFleetSortFields } from "@/frontend/composables/useFleetSortFields";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
@@ -53,7 +53,14 @@ const props = defineProps<Props>();
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
-const sortFields = useVehicleSortFields();
+const route = useRoute();
+
+// The chips picked in the display options, plus whichever sort the list is in
+// right now so the bar never hides the one that is chosen.
+const sortFields = useFleetSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : undefined,
+});
 
 const { displayAlert } = useAppNotifications();
 
@@ -152,8 +159,6 @@ const downloadExport = (data: VehicleExport[] | undefined, suffix: string) => {
 
   document.body.removeChild(link);
 };
-
-const route = useRoute();
 
 const fleetVehiclesQueryKey = computed(() => {
   return getFleetVehiclesQueryKey(
@@ -335,12 +340,7 @@ useSubscription({
         </template>
 
         <template #sort>
-          <!-- Grid view only: the table carries the same sorts on its headings. -->
-          <SortBar
-            v-if="gridView"
-            :columns="sortFields"
-            default-sort="name asc"
-          />
+          <SortBar :columns="sortFields" default-sort="modelName asc" />
         </template>
 
         <template #default="{ records, loading, filterVisible, emptyVisible }">

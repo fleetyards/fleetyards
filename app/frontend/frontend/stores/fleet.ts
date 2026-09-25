@@ -26,6 +26,25 @@ export enum FleetTableViewColsEnum {
   OWNER = "owner",
 }
 
+// Every sort the fleet's ship list can offer as a chip. A grouped list holds
+// ships rather than vehicles, so each of these names the ship.
+export enum FleetSortFieldsEnum {
+  NAME = "modelName",
+  MANUFACTURER_NAME = "modelManufacturerName",
+  LENGTH = "modelLength",
+  BEAM = "modelBeam",
+  HEIGHT = "modelHeight",
+  MASS = "modelMass",
+  CARGO = "modelCargo",
+  SCM_SPEED = "modelScmSpeed",
+  MAX_SPEED = "modelMaxSpeed",
+  GROUND_MAX_SPEED = "modelGroundMaxSpeed",
+  FOCUS = "modelFocus",
+  PRODUCTION_STATUS = "modelProductionStatus",
+  PRICE = "modelPrice",
+  PLEDGE_PRICE = "modelPledgePrice",
+}
+
 interface FleetState extends ShipListState {
   grouped: boolean;
   preview: boolean;
@@ -33,6 +52,7 @@ interface FleetState extends ShipListState {
   money: boolean;
   tableViewImageCols: FleetTableViewImageColsEnum[];
   tableViewCols: FleetTableViewColsEnum[];
+  sortFields: FleetSortFieldsEnum[];
 }
 
 export const useFleetStore = defineStore("fleet", {
@@ -51,6 +71,14 @@ export const useFleetStore = defineStore("fleet", {
     tableViewCols: [
       FleetTableViewColsEnum.MANUFACTURER_NAME,
       FleetTableViewColsEnum.OWNER,
+    ],
+    sortFields: [
+      FleetSortFieldsEnum.NAME,
+      FleetSortFieldsEnum.MANUFACTURER_NAME,
+      FleetSortFieldsEnum.LENGTH,
+      FleetSortFieldsEnum.CARGO,
+      FleetSortFieldsEnum.PRICE,
+      FleetSortFieldsEnum.PRODUCTION_STATUS,
     ],
   }),
   actions: {
@@ -84,6 +112,9 @@ export const useFleetStore = defineStore("fleet", {
     setTableViewImageCols(cols: FleetTableViewImageColsEnum[]) {
       this.tableViewImageCols = cols;
     },
+    setSortFields(fields: FleetSortFieldsEnum[]) {
+      this.sortFields = fields;
+    },
   },
   persist: {
     pick: [
@@ -95,6 +126,7 @@ export const useFleetStore = defineStore("fleet", {
       "gridView",
       "tableViewImageCols",
       "tableViewCols",
+      "sortFields",
     ],
   },
 });
