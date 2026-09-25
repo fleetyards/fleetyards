@@ -55,8 +55,9 @@ type Props = {
 const props = defineProps<Props>();
 
 // The owner's chosen order is the one the server answers with while the URL
-// names no sort, so it is the chip shown as chosen.
-const defaultSort = computed(() => props.user.hangarDefaultSort ?? "name asc");
+// names no sort, so it is the chip shown as chosen. Without one the server
+// leads with the flagship, which no chip stands for.
+const defaultSort = computed(() => props.user.hangarDefaultSort ?? undefined);
 
 const username = computed(() => {
   return props.user.username;

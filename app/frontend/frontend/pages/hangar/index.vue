@@ -151,10 +151,10 @@ const shareUrl = computed(() => {
 const route = useRoute();
 
 // What the sort bar shows as chosen while the URL names no sort. Unset, the
-// server leads with the flagship and then sorts by name, and flagship has no
-// chip of its own.
+// server leads with the flagship and then sorts by name -- an order no chip
+// stands for, so none is shown as chosen.
 const defaultSort = computed(
-  () => currentUser?.value?.hangarDefaultSort ?? "name asc",
+  () => currentUser?.value?.hangarDefaultSort ?? undefined,
 );
 
 const activeSort = computed(() =>
