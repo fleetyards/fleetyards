@@ -57,6 +57,10 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
 
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(404, "no ledger yet") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -88,6 +92,9 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201, path_params: path_params do
       assert_equal "FleetContract", parsed_body["subjectType"]
       assert_equal "90000.0", parsed_body["totalIncome"]
+      # The fleet payer is on the ledger but divides nothing.
+      assert_equal 2, parsed_body["participantsCount"]
+      assert_equal "2.0", parsed_body["totalWeight"]
 
       ledger = PayoutLedger.find(parsed_body["id"])
       assert_equal @fleet.id, ledger.payout_participants.find_by!(user_id: nil).fleet_id
@@ -140,5 +147,15 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
 
   test "GET returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: path_params
+  end
+
+  # A payout privilege must not reveal a contract the reader cannot open --
+  # a squadron-only one outside their squadron, say.
+  test "GET is refused to a payout reader who cannot see the contract" do
+    create(:payout_ledger, subject: @contract)
+    FleetContractPolicy.any_instance.stubs(:show?).returns(false)
+    sign_in @member
+
+    assert_api_response :get, 403, path_params: path_params
   end
 end

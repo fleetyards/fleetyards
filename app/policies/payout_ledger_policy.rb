@@ -86,8 +86,11 @@ class PayoutLedgerPolicy < FleetBasePolicy
       participant? || tour_organiser? ||
         tour_fleet_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])
     when FleetContract
-      manage? || (participant? && contract_policy.show?) ||
-        accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])
+      # Through the contract's own visibility, squadron included: a payout
+      # privilege must not reveal the terms of a contract the reader cannot
+      # open.
+      manage? || (contract_policy.show? && (participant? ||
+        accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])))
     else
       false
     end

@@ -2145,6 +2145,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: no ledger yet
           content:
