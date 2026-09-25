@@ -21763,6 +21763,9 @@ components:
     FleetMemberQuery:
       type: object
       properties:
+        searchCont:
+          type: string
+          description: Matches the username or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
@@ -22525,6 +22528,9 @@ components:
     FleetSquadronMemberQuery:
       type: object
       properties:
+        searchCont:
+          type: string
+          description: Matches the username or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
