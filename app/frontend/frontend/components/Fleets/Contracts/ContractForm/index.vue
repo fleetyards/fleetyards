@@ -217,11 +217,23 @@ watch(requiresSource, (needed) => {
   if (!needed) sourceFleetInventoryId.value = null;
 });
 
-const deliversToHangar = computed(
-  () =>
-    destinationIds(destination.value as string | null)
-      .destinationInventoryId !== null,
-);
+// Which hint the picked hangar destination earns. The API offers the reader
+// only their own, so one it did not offer is the author's, kept from before --
+// and a delivery there waits for the author, not for whoever is editing.
+const hangarDestinationOwner = computed<"self" | "author" | null>(() => {
+  const { destinationInventoryId } = destinationIds(
+    destination.value as string | null,
+  );
+  if (!destinationInventoryId) return null;
+
+  const offered = (destinations.value ?? []).some(
+    (option) =>
+      option.holder === FleetContractDestinationHolderEnum.USER &&
+      option.id === destinationInventoryId,
+  );
+
+  return offered ? "self" : "author";
+});
 
 const destinationIds = (value: string | null | undefined) => {
   const [holder, id] = (value ?? "").split(":");
@@ -425,11 +437,22 @@ const onSubmit = handleSubmit(async (values) => {
               data-test="contract-destination"
             />
             <p
-              v-if="deliversToHangar"
+              v-if="hangarDestinationOwner === 'self'"
               class="contract-destination-hint"
               data-test="contract-destination-hint"
             >
               {{ t("labels.fleets.contracts.toHint") }}
+            </p>
+            <p
+              v-else-if="hangarDestinationOwner === 'author'"
+              class="contract-destination-hint"
+              data-test="contract-destination-author-hint"
+            >
+              {{
+                t("labels.fleets.contracts.toAuthorHint", {
+                  username: props.contract?.createdBy?.username ?? "",
+                })
+              }}
             </p>
           </div>
         </div>

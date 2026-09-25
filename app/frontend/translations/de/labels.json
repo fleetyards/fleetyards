@@ -2644,6 +2644,7 @@
           "from": "Abholen bei",
           "to": "Liefern an",
           "toHint": "Lieferungen in eines deiner eigenen Inventare werden an dich gesendet, und du nimmst sie selbst an.",
+          "toAuthorHint": "Lieferungen gehen an %{username}, der sie annimmt.",
           "myHangarInventory": "%{name} (mein Hangar)",
           "authorHangarInventory": "%{name} (Hangar von %{username})",
           "destinationRemoved": "Nicht mehr verfügbar",

@@ -2644,6 +2644,7 @@
           "from": "Ritira da",
           "to": "Consegna a",
           "toHint": "Le consegne in uno dei tuoi inventari vengono inviate a te, e sei tu ad accettarle.",
+          "toAuthorHint": "Le consegne vanno a %{username}, che le accetta.",
           "myHangarInventory": "%{name} (il mio hangar)",
           "authorHangarInventory": "%{name} (hangar di %{username})",
           "destinationRemoved": "Non più disponibile",

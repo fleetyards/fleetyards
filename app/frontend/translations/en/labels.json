@@ -2658,6 +2658,7 @@
           "from": "Collect from",
           "to": "Deliver to",
           "toHint": "Deliveries into one of your own inventories are sent to you, and you accept them yourself.",
+          "toAuthorHint": "Deliveries go to %{username}, who accepts them.",
           "myHangarInventory": "%{name} (my hangar)",
           "authorHangarInventory": "%{name} (hangar of %{username})",
           "destinationRemoved": "No longer available",

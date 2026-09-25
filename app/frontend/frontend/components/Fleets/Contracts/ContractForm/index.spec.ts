@@ -330,9 +330,29 @@ describe("ContractForm destination", () => {
     expect(destinationParams.value?.value).toEqual({});
   });
 
+  // The own-inventory hint promises the reader accepts the deliveries, which
+  // is only true of an inventory the API offered them.
+  it("tells another editor the author accepts deliveries into a kept hangar", () => {
+    destinations.value = [DEPOT];
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      destination: LOCKER,
+      createdBy: { id: "author", username: "Ada" },
+    });
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find("[data-test='contract-destination-author-hint']").text(),
+    ).toBe("labels.fleets.contracts.toAuthorHint(Ada)");
+  });
+
   // Somebody else editing still sees where it delivers, and keeps it by not
   // touching the field.
   it("keeps the author's inventory in the list for another editor", async () => {
+    createMutation.mockClear();
     updateMutation.mockClear();
     destinations.value = [DEPOT];
     const wrapper = mountForm({

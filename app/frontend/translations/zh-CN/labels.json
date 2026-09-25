@@ -2644,6 +2644,7 @@
           "from": "取货地点",
           "to": "交付地点",
           "toHint": "送往你自己库存的交付会发送给你，由你亲自接收。",
+          "toAuthorHint": "交付会发送给 %{username}，由其接收。",
           "myHangarInventory": "%{name}（我的机库）",
           "authorHangarInventory": "%{name}（%{username} 的机库）",
           "destinationRemoved": "已不可用",
