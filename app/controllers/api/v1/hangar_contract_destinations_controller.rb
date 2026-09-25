@@ -28,10 +28,14 @@ module Api
           .includes(:fleet, :destination_fleet_inventory, :destination_inventory, :fleet_contract_items)
           .order(:created_at)
 
+        # Each destination by its own inventory's flag as well, the one the
+        # transfer endpoints ask: a target a delivery would be refused at is
+        # not a target.
         @targets = contracts.select do |contract|
           contract.destination.present? &&
             contract.destination_party != current_resource_owner &&
-            feature_enabled?("fleet_contracts", contract.fleet)
+            feature_enabled?("fleet_contracts", contract.fleet) &&
+            inventory_feature_enabled?(contract.destination)
         end
       end
     end

@@ -37,6 +37,7 @@ class Api::V1::HangarContractDestinationsTest < ActionDispatch::IntegrationTest
     Flipper.enable("fleet_contracts")
     Flipper.enable("inventory_transfers")
     Flipper.enable("hangar_inventories")
+    Flipper.enable("fleet_logistics")
 
     @author = create(:user)
     @contractor = create(:user)
@@ -69,6 +70,30 @@ class Api::V1::HangarContractDestinationsTest < ActionDispatch::IntegrationTest
     requested.fleet_contract_assignments.create!(user: @contractor, role: :crew, aasm_state: "requested")
     finished = contract(:in_progress, crew: @contractor)
     finished.update!(aasm_state: "fulfilled")
+    sign_in @contractor
+
+    assert_api_response :get, 200 do
+      assert_empty parsed_body
+    end
+  end
+
+  test "leaves out a fleet destination while the fleet's logistics are off" do
+    Flipper.disable("fleet_logistics")
+    hangar = contract(:in_progress, crew: @contractor)
+    fleet_bound = create(:fleet_contract, :in_progress, fleet: @fleet, created_by: @author)
+    fleet_bound.fleet_contract_assignments.create!(user: @contractor, role: :lead,
+      aasm_state: "accepted", accepted_at: Time.current)
+    sign_in @contractor
+
+    assert_api_response :get, 200 do
+      assert_equal [hangar.id], parsed_body.pluck("contractId")
+    end
+  end
+
+  test "leaves out a hangar destination whose author has no hangar inventories" do
+    contract(:in_progress, crew: @contractor)
+    Flipper.disable("hangar_inventories")
+    Flipper.enable_actor("hangar_inventories", @contractor)
     sign_in @contractor
 
     assert_api_response :get, 200 do
