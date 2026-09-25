@@ -154,6 +154,18 @@ const stopEditing = () => {
   editing.value = false;
 };
 
+// The mobile menu is teleported to the body, so its key events never reach the
+// row's own Escape listener. Focus goes to the toggle: the control that had it
+// is gone with the edit rows.
+const stopEditingInMenu = async () => {
+  stopEditing();
+
+  await nextTick();
+  document
+    .querySelector<HTMLElement>('[data-test="group-menu-edit-toggle"]')
+    ?.focus();
+};
+
 const row = ref<{ itemsEl: HTMLElement | null } | null>(null);
 let sortableInstance: Sortable | null = null;
 
@@ -387,6 +399,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
           :data-group-menu-id="group.id"
           class="group-labels-menu-row"
           data-test="group-menu-row"
+          @keydown.esc="stopEditingInMenu"
         >
           <Chip bare :dot="group.color" class="group-labels-menu-name">
             {{ group.name }}
@@ -441,7 +454,11 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
           <i class="fa-regular fa-plus" />
           {{ t("actions.addGroup") }}
         </Btn>
-        <Btn data-test="group-menu-edit-toggle" @click.stop="toggleEditing">
+        <Btn
+          data-test="group-menu-edit-toggle"
+          @click.stop="toggleEditing"
+          @keydown.esc="stopEditingInMenu"
+        >
           <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
           {{ editing ? t("actions.done") : t("actions.edit") }}
         </Btn>

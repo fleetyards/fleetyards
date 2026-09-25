@@ -540,4 +540,21 @@ test.describe("Chips - owner's hangar on mobile", () => {
     await menu(page).getByTestId("group-menu-edit-toggle").click();
     await expect.poll(() => menuNames(page)).toEqual(reversed);
   });
+
+  test("Escape inside the menu leaves edit mode", async ({ page }) => {
+    // The menu is teleported to the body, out of reach of the row's listener.
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+
+    await menu(page)
+      .getByTestId("group-menu-row")
+      .first()
+      .getByTestId("group-menu-move-down")
+      .focus();
+    await page.keyboard.press("Escape");
+
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(0);
+    await expect(
+      menu(page).getByTestId("group-menu-edit-toggle"),
+    ).toBeFocused();
+  });
 });
