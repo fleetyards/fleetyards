@@ -47,7 +47,7 @@ const variantFilters = () =>
 
 function setupForm() {
   form.value = {
-    usernameCont: filters.value.usernameCont,
+    searchCont: filters.value.searchCont,
     roleIn: filters.value.roleIn || [],
     sorts: filters.value.sorts,
     ...variantFilters(),
@@ -110,11 +110,11 @@ const stateOptions: FilterOption[] = [
          the sidebar is collapsed by default. -->
     <Teleport to="#header-left">
       <FormInput
-        id="username"
-        name="username"
+        id="member-search"
+        name="member-search"
         :size="InputSizesEnum.MEDIUM"
-        v-model="form.usernameCont"
-        translation-key="filters.fleets.members.username"
+        v-model="form.searchCont"
+        translation-key="filters.fleets.members.search"
         :no-label="true"
         :clearable="true"
       />

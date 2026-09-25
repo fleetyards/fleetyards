@@ -1752,6 +1752,7 @@
           "fid": "FID",
           "member": "成員",
           "members": {
+            "search": "使用者名稱或暱稱",
             "role": "角色",
             "state": "狀態",
             "acceptedAtGt": "Joined from",

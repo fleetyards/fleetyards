@@ -37,7 +37,7 @@ describe("useMembersView", () => {
   it("carries what both lists share, and drops the page number", () => {
     route.value = {
       query: {
-        usernameCont: "mo",
+        searchCont: "mo",
         roleIn: ["admin"],
         sorts: "username",
         page: "3",
@@ -45,7 +45,7 @@ describe("useMembersView", () => {
     };
 
     expect(useMembersView(true).viewQuery("invites")).toEqual({
-      usernameCont: "mo",
+      searchCont: "mo",
       roleIn: ["admin"],
       sorts: "username",
       view: "invites",
@@ -55,14 +55,14 @@ describe("useMembersView", () => {
   it("leaves the roster's own filters behind on the way to the invites", () => {
     route.value = {
       query: {
-        usernameCont: "mo",
+        searchCont: "mo",
         acceptedAtGteq: "2026-01-01",
         acceptedAtLteq: "2026-02-01",
       },
     };
 
     expect(useMembersView(true).viewQuery("invites")).toEqual({
-      usernameCont: "mo",
+      searchCont: "mo",
       view: "invites",
     });
   });
@@ -71,7 +71,7 @@ describe("useMembersView", () => {
     route.value = {
       query: {
         view: "invites",
-        usernameCont: "mo",
+        searchCont: "mo",
         stateIn: ["declined"],
         invitedAtGteq: "2026-01-01",
         requestedAtLteq: "2026-02-01",
@@ -80,7 +80,7 @@ describe("useMembersView", () => {
     };
 
     expect(useMembersView(true).viewQuery("members")).toEqual({
-      usernameCont: "mo",
+      searchCont: "mo",
     });
   });
 
@@ -96,11 +96,11 @@ describe("useMembersView", () => {
 
     expect(
       scopedFilters({
-        usernameCont: "mo",
+        searchCont: "mo",
         acceptedAtGteq: "2026-01-01",
         stateIn: ["invited"],
       }),
-    ).toEqual({ usernameCont: "mo", stateIn: ["invited"] });
+    ).toEqual({ searchCont: "mo", stateIn: ["invited"] });
   });
 
   it("leaves the open list's own filters alone", () => {

@@ -21,7 +21,7 @@ const form = ref<FleetSquadronMemberQuery>({});
 
 const setupForm = () => {
   form.value = {
-    usernameCont: filters.value.usernameCont,
+    searchCont: filters.value.searchCont,
     roleIn: undefined,
     acceptedAtGteq: undefined,
     acceptedAtLteq: undefined,
@@ -41,12 +41,11 @@ watch(form, () => filter(form.value), { deep: true });
 <template>
   <form @submit.prevent="filter(form)">
     <FormInput
-      id="squadron-member-username"
-      v-model="form.usernameCont"
-      name="username"
+      id="squadron-member-search"
+      v-model="form.searchCont"
+      name="member-search"
       :size="InputSizesEnum.MEDIUM"
-      :label="t('labels.username')"
-      :placeholder="t('placeholders.filters.fleets.members.username')"
+      translation-key="filters.fleets.members.search"
       :clearable="true"
     />
 

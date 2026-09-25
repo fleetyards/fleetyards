@@ -1752,6 +1752,7 @@
           "fid": "FID",
           "member": "Membre",
           "members": {
+            "search": "Nom d'utilisateur ou surnom",
             "role": "Rôle",
             "state": "Statut",
             "acceptedAtGt": "Rejoint depuis",
