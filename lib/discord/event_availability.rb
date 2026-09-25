@@ -22,10 +22,8 @@ module Discord
     def starts_at
       return @event.starts_at if @occurrence_date.blank?
 
-      # A recurring occurrence keeps the parent's local time of day on its own
-      # date. Changed in the event's own zone, or a series crossing a
-      # daylight-saving change would move by an hour.
-      @event.starts_at.in_time_zone(@event.timezone.presence || "UTC").change(
+      # A recurring occurrence keeps the parent's time of day on its own date.
+      @event.starts_at.change(
         year: @occurrence_date.year,
         month: @occurrence_date.month,
         day: @occurrence_date.day
