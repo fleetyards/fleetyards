@@ -17,7 +17,6 @@ module Api
       before_action :set_payout_ledger, only: %i[show balances settle reopen]
       before_action :check_tour_payouts_feature
       before_action -> { require_fleet_subscription(:tours) }
-      before_action -> { require_fleet_subscription(:contracts) }, if: :contract_subject?
 
       # GET /fleets/:fleet_slug/events/:slug/payouts
       # GET /tours/:tour_slug/payouts

@@ -17,7 +17,6 @@ module Api
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
       before_action -> { require_fleet_subscription(:tours) }
-      before_action :check_contract_subscription
       before_action :set_payout_transfer, only: %i[confirm unconfirm]
 
       def index

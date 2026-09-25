@@ -40,14 +40,6 @@ module PayoutLedgerScoped
     render_payouts_unavailable
   end
 
-  # A contract's ledger is a contracts surface as well as a payouts one, so it
-  # is also gated the way the contract itself is.
-  private def check_contract_subscription
-    return unless contract_ledger?
-
-    require_fleet_subscription(:contracts)
-  end
-
   private def contract_ledger?
     @payout_ledger&.subject.is_a?(FleetContract)
   end
