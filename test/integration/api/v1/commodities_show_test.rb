@@ -86,6 +86,16 @@ class Api::V1::CommoditiesShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /commodities/{slug} orders refinedFrom by the names the build carries" do
+    renamed = create(:commodity, name: "Zzz Column", refines_into: @gold)
+    create(:commodity, name: "Mmm Column", refines_into: @gold)
+    renamed.build.update!(name: "Aaa Build")
+
+    assert_api_response :get, 200, params: {slug: @gold.slug} do
+      assert_equal ["Aaa Build", "Mmm Column"], parsed_body["refinedFrom"].map { |source| source["name"] }
+    end
+  end
+
   test "GET /commodities/{slug} leaves refinedFrom empty for a raw form" do
     ore = create(:commodity, name: "Gold (Ore)", refines_into: @gold)
 
