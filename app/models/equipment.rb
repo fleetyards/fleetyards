@@ -207,6 +207,14 @@ class Equipment < ApplicationRecord
     end
   end
 
+  %i[equipment_type item_type sub_type weapon_class].each do |fact|
+    define_method(:"#{fact}_label") { self.class.fact_label(fact, public_send(fact)) }
+  end
+
+  def slot_label
+    self.class.human_enum_name(:slot, slot) if slot.present?
+  end
+
   # Nothing fills this from the game files: the loadout icons the records name
   # are art the export leaves out on purpose. It is here for the same reason
   # every other catalogue has one -- an upload, and the ledger's fallback to
@@ -330,7 +338,7 @@ class Equipment < ApplicationRecord
     equipment_types.map do |item|
       Filter.new(
         category: "equipment_type",
-        label: I18n.t("filter.equipment.equipment_type.items.#{item}", default: item.humanize),
+        label: fact_label(:equipment_type, item),
         value: item
       )
     end
@@ -347,17 +355,28 @@ class Equipment < ApplicationRecord
     weapon_classes.map do |item|
       Filter.new(
         category: "weapon_class",
-        label: I18n.t("filter.equipment.weapon_class.items.#{item}", default: item.humanize),
+        label: fact_label(:weapon_class, item),
         value: item
       )
     end
+  end
+
+  # One vocabulary for a filter option and the payload's label beside the raw
+  # value, so the chip a row shows and the option it filters by always read the
+  # same. A value a patch introduces before anyone writes a label for it falls
+  # back to the raw string, spaced and capitalised.
+  def self.fact_label(fact, value)
+    return if value.blank?
+
+    value = value.to_s
+    I18n.t("activerecord.attributes.equipment.#{fact.to_s.pluralize}.#{value.underscore}", default: value.underscore.titleize)
   end
 
   def self.sub_type_filters
     build_facet(:sub_type).map do |item|
       Filter.new(
         category: "sub_type",
-        label: I18n.t("filter.equipment.sub_type.items.#{item.underscore}", default: item.titleize),
+        label: fact_label(:sub_type, item),
         value: item
       )
     end
@@ -386,7 +405,7 @@ class Equipment < ApplicationRecord
     item_types(equipment_types).map do |item|
       Filter.new(
         category: "item_type",
-        label: I18n.t("filter.equipment.item_type.items.#{item}", default: item.humanize),
+        label: fact_label(:item_type, item),
         value: item
       )
     end

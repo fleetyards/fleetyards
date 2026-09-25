@@ -19,6 +19,14 @@ module Shared
             subType: {type: [:string, :null]},
             weaponClass: {type: [:string, :null]},
 
+            # In the caller's locale, from the same vocabulary the filter
+            # endpoints answer with.
+            equipmentTypeLabel: {type: [:string, :null]},
+            itemTypeLabel: {type: [:string, :null]},
+            subTypeLabel: {type: [:string, :null]},
+            weaponClassLabel: {type: [:string, :null]},
+            slotLabel: {type: [:string, :null]},
+
             slot: {type: [:string, :null]},
             size: {type: [:string, :null]},
             grade: {type: [:string, :null]},

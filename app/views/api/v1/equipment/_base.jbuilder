@@ -6,11 +6,16 @@ json.slug equipment.slug
 json.description equipment.description
 
 json.equipment_type equipment.equipment_type
+json.equipment_type_label equipment.equipment_type_label
 json.item_type equipment.item_type
+json.item_type_label equipment.item_type_label
 json.sub_type equipment.sub_type
+json.sub_type_label equipment.sub_type_label
 json.weapon_class equipment.weapon_class
+json.weapon_class_label equipment.weapon_class_label
 
 json.slot equipment.slot
+json.slot_label equipment.slot_label
 json.size equipment.size
 json.grade equipment.grade
 json.rate_of_fire equipment.rate_of_fire&.to_f

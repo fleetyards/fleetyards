@@ -12873,6 +12873,26 @@ components:
           type:
           - string
           - 'null'
+        equipmentTypeLabel:
+          type:
+          - string
+          - 'null'
+        itemTypeLabel:
+          type:
+          - string
+          - 'null'
+        subTypeLabel:
+          type:
+          - string
+          - 'null'
+        weaponClassLabel:
+          type:
+          - string
+          - 'null'
+        slotLabel:
+          type:
+          - string
+          - 'null'
         slot:
           type:
           - string

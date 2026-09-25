@@ -58,13 +58,13 @@ class Api::V1::FiltersEquipmentItemTypesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /filters/equipment/item-types humanises a type with no translation" do
+  test "GET /filters/equipment/item-types title-cases a type with no translation" do
     create(:equipment, item_type: "newfangled_blaster")
 
     assert_api_response :get, 200 do
       option = parsed_body.find { |filter| filter["value"] == "newfangled_blaster" }
 
-      assert_equal "Newfangled blaster", option["label"]
+      assert_equal "Newfangled Blaster", option["label"]
     end
   end
 end
