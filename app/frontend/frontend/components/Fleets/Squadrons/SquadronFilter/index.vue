@@ -33,7 +33,11 @@ const { data: squadrons } = useFleetSquadrons(
   { query: { enabled } },
 );
 
-const squadronList = computed(() => squadrons.value?.items ?? []);
+// Switching the feature off only stops the query; the list it already fetched
+// stays cached and would keep offering squadrons the fleet no longer uses.
+const squadronList = computed(() =>
+  enabled.value ? (squadrons.value?.items ?? []) : [],
+);
 
 /*
  * Its own `useFilters` rather than a prop from the page: the composable watches
