@@ -55,6 +55,22 @@ class Api::V1::FleetsEventsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Squadrons switched off leave the restriction and its announcements in
+  # place, so the editor still needs to know which squadron is unreachable.
+  test "GET /fleets/:slug/events/:slug names its squadrons' Discord channels" do
+    announced = create(:fleet_squadron, fleet: @fleet, discord_channel_id: "123456789012345678")
+    silent = create(:fleet_squadron, fleet: @fleet)
+    restricted = create(:fleet_event, fleet: @fleet, created_by: @admin,
+      visibility: "squadron", fleet_squadrons: [announced, silent])
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: restricted.slug} do
+      channels = parsed_body["fleetSquadrons"].to_h { [it["id"], it["discordChannelId"]] }
+
+      assert_equal({announced.id => "123456789012345678", silent.id => nil}, channels)
+    end
+  end
+
   test "GET /fleets/:slug/events/:slug with occurrence scopes the response" do
     recurring = create(:fleet_event, :open,
       fleet: @fleet, created_by: @admin,

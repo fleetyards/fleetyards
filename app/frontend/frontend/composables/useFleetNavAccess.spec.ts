@@ -47,11 +47,13 @@ const { useFleetNavAccess } = await import("./useFleetNavAccess");
 const fleetWith = (...features: string[]) => ({
   features,
   publicFleet: false,
+  squadronsEnabled: true,
 });
 
 const publicFleetWith = (...features: string[]) => ({
   features,
   publicFleet: true,
+  squadronsEnabled: true,
 });
 
 const memberWith = (...resourceAccess: string[]) => ({
@@ -294,6 +296,17 @@ describe("useFleetNavAccess", () => {
     membership.value = memberAbleTo("readSquadrons");
 
     expect(useFleetNavAccess(fleetWith()).showSquadronsNav.value).toBe(false);
+  });
+
+  it("hides squadrons while the fleet has them switched off", () => {
+    membership.value = memberAbleTo("readSquadrons");
+
+    const fleet = {
+      ...fleetWith(FeatureFlagName.FLEET_SQUADRONS),
+      squadronsEnabled: false,
+    };
+
+    expect(useFleetNavAccess(fleet).showSquadronsNav.value).toBe(false);
   });
 
   it("shows squadrons to a member who may read them in a flagged fleet", () => {

@@ -671,6 +671,7 @@
         "allies": "Schiffe für Verbündete sichtbar",
         "alliesStats": "Statistiken für Verbündete sichtbar",
         "alliesMembers": "Mitgliederliste für Verbündete sichtbar",
+        "squadronsEnabled": "Staffeln verwenden",
         "contractCovers": {
           "transport": "Transport-Titelbild",
           "procurement": "Beschaffungs-Titelbild",
@@ -1751,6 +1752,7 @@
           "fid": "FID",
           "member": "Mitglied",
           "members": {
+            "search": "Benutzername oder Spitzname",
             "role": "Rolle",
             "state": "Status",
             "acceptedAtGt": "Beigetreten ab",

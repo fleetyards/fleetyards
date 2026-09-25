@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1083,6 +1083,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_100000) do
     t.string "rsi_sid"
     t.string "sid"
     t.string "slug"
+    t.boolean "squadrons_enabled", default: false, null: false
     t.datetime "transfers_blocked_at"
     t.text "transfers_blocked_reason"
     t.string "ts"

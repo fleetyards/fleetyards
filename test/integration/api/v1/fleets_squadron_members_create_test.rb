@@ -52,7 +52,7 @@ class Api::V1::FleetsSquadronMembersCreateTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @officer = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], officers: [@officer], members: [@member])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], officers: [@officer], members: [@member])
     @squadron = create(:fleet_squadron, fleet: @fleet)
   end
 

@@ -1,7 +1,7 @@
 import {
+  FeatureFlagName,
   getFeaturesQueryOptions,
   useFeatures as useFeaturesQuery,
-  type FeatureFlagName,
   type Fleet,
 } from "@/services/fyApi";
 import { usePrefetch } from "@/shared/composables/usePrefetch";
@@ -44,9 +44,18 @@ export const useFeatures = () => {
     feature: FeatureFlagName,
   ) => isFeatureEnabled(feature) || fleet?.features?.includes(feature) || false;
 
+  // The flag rolls squadrons out to a fleet; its admins still decide whether
+  // the fleet uses them. Mirrors `FleetSquadronScoped#check_fleet_squadrons_feature`.
+  const isFleetSquadronsEnabled = (
+    fleet: Pick<Fleet, "features" | "squadronsEnabled"> | undefined | null,
+  ) =>
+    isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_SQUADRONS) &&
+    !!fleet?.squadronsEnabled;
+
   return {
     features,
     isFeatureEnabled,
     isFleetFeatureEnabled,
+    isFleetSquadronsEnabled,
   };
 };

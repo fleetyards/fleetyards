@@ -47,7 +47,10 @@ const variantFilters = () =>
 
 function setupForm() {
   form.value = {
-    usernameCont: filters.value.usernameCont,
+    // A link from before the combined search still carries `usernameCont`; left
+    // in the URL it would narrow every search typed into the box.
+    searchCont: filters.value.searchCont || filters.value.usernameCont,
+    usernameCont: undefined,
     roleIn: filters.value.roleIn || [],
     sorts: filters.value.sorts,
     ...variantFilters(),
@@ -55,6 +58,8 @@ function setupForm() {
 }
 
 const form = ref<FleetMemberQuery>({});
+
+setupForm();
 
 /*
  * The view is not a filter, so it is kept out of `filters` -- which means a
@@ -110,11 +115,11 @@ const stateOptions: FilterOption[] = [
          the sidebar is collapsed by default. -->
     <Teleport to="#header-left">
       <FormInput
-        id="username"
-        name="username"
+        id="member-search"
+        name="member-search"
         :size="InputSizesEnum.MEDIUM"
-        v-model="form.usernameCont"
-        translation-key="filters.fleets.members.username"
+        v-model="form.searchCont"
+        translation-key="filters.fleets.members.search"
         :no-label="true"
         :clearable="true"
       />

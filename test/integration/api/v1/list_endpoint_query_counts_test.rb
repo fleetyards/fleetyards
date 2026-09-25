@@ -77,7 +77,7 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
   test "the squadrons index issues the same number of queries for one squadron as for many" do
     Flipper.enable("fleet_squadrons")
     admin = create(:user)
-    fleet = create(:fleet, admins: [admin])
+    fleet = create(:fleet, :with_squadrons, admins: [admin])
     sign_in admin
 
     squadron_with_members = lambda do

@@ -9,6 +9,7 @@ module V1
         # Shared with FleetSquadronMemberQuery, which adds what only a
         # squadron's own roster can answer: when somebody joined it.
         FILTERS = {
+          searchCont: {type: :string, description: "Matches the username or the fleet nickname"},
           usernameCont: {type: :string},
           nicknameCont: {type: :string},
           nameCont: {type: :string, deprecated: true, description: "Use usernameCont instead"},

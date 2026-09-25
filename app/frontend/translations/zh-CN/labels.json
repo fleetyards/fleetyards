@@ -671,6 +671,7 @@
         "allies": "盟友可见舰船",
         "alliesStats": "盟友可见统计",
         "alliesMembers": "盟友可见成员列表",
+        "squadronsEnabled": "使用中队",
         "contractCovers": {
           "transport": "运送封面图",
           "procurement": "采购封面图",
@@ -1751,6 +1752,7 @@
           "fid": "FID",
           "member": "成员",
           "members": {
+            "search": "用户名或昵称",
             "role": "角色",
             "state": "状态",
             "acceptedAtGt": "Joined from",

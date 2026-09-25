@@ -47,7 +47,7 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
     Flipper.enable("fleet_squadrons")
     @admin = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@member])
   end
 
   test "GET /fleets/:slug/squadrons lists squadrons for an admin" do
@@ -136,6 +136,15 @@ class Api::V1::FleetsSquadronsIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /fleets/:slug/squadrons is forbidden when fleet_squadrons is disabled" do
     Flipper.disable("fleet_squadrons")
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/squadrons"
+
+    assert_response :forbidden
+  end
+
+  test "GET /fleets/:slug/squadrons is forbidden when the fleet has squadrons switched off" do
+    @fleet.update_column(:squadrons_enabled, false)
     sign_in @admin
 
     get "/api/v1/fleets/#{@fleet.slug}/squadrons"

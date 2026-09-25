@@ -92,6 +92,7 @@ const fleet = (features: string[] = [FeatureFlagName.FLEET_SQUADRONS]) =>
     name: "Maru",
     fid: "MARU",
     features,
+    squadronsEnabled: true,
   }) as unknown as Fleet;
 
 const member = (readSquadrons = true) =>

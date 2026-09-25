@@ -12,7 +12,7 @@ class Api::V1::FleetsMembersSquadronsTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @pilot = create(:user)
     @miner = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@pilot, @miner])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@pilot, @miner])
 
     @combat = create(:fleet_squadron, fleet: @fleet, name: "Combat Wing", color: "#ff0000")
     @mining = create(:fleet_squadron, fleet: @fleet, name: "Mining Division")

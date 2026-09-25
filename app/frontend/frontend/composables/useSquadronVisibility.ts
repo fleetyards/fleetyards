@@ -1,9 +1,5 @@
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import {
-  FeatureFlagName,
-  type Fleet,
-  type FilterOption,
-} from "@/services/fyApi";
+import { type Fleet, type FilterOption } from "@/services/fyApi";
 
 /*
  * The squadron-only choice in a visibility select, offered only where a fleet
@@ -16,10 +12,10 @@ export const useSquadronVisibility = (
   squadronValue: string,
   current: MaybeRefOrGetter<string | null | undefined>,
 ) => {
-  const { isFleetFeatureEnabled } = useFeatures();
+  const { isFleetSquadronsEnabled } = useFeatures();
 
   const squadronsEnabled = computed(() =>
-    isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_SQUADRONS),
+    isFleetSquadronsEnabled(toValue(fleet)),
   );
 
   const withSquadronChoice = (options: FilterOption[]) =>

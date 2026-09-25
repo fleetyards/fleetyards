@@ -19106,6 +19106,8 @@ components:
           type: boolean
         alliesFleetMembers:
           type: boolean
+        squadronsEnabled:
+          type: boolean
         defaultTimezone:
           type: string
         calendarFeedToken:
@@ -19141,6 +19143,7 @@ components:
       - alliesFleet
       - alliesFleetStats
       - alliesFleetMembers
+      - squadronsEnabled
       - features
       - subscribed
       - createdAt
@@ -21760,6 +21763,9 @@ components:
     FleetMemberQuery:
       type: object
       properties:
+        searchCont:
+          type: string
+          description: Matches the username or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
@@ -22522,6 +22528,9 @@ components:
     FleetSquadronMemberQuery:
       type: object
       properties:
+        searchCont:
+          type: string
+          description: Matches the username or the fleet nickname
         usernameCont:
           type: string
         nicknameCont:
@@ -22673,6 +22682,10 @@ components:
           - string
           - 'null'
           format: date-time
+        discordChannelId:
+          type:
+          - string
+          - 'null'
         icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -22787,6 +22800,8 @@ components:
         alliesFleetStats:
           type: boolean
         alliesFleetMembers:
+          type: boolean
+        squadronsEnabled:
           type: boolean
         homepage:
           type:

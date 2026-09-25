@@ -49,7 +49,7 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @member = create(:user)
     @outsider_of_squadron = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member, @outsider_of_squadron])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@member, @outsider_of_squadron])
     @squadron = create(:fleet_squadron, fleet: @fleet)
     @membership = @fleet.fleet_memberships.kept.find_by(user: @member)
     create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
@@ -99,6 +99,17 @@ class Api::V1::FleetsSquadronMembersIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: path_params,
       params: {q: {squadronMembershipCreatedAtLteq: 3.days.ago.to_date.iso8601}} do
+      assert_equal [@member.username], parsed_body["items"].map { |entry| entry["username"] }
+    end
+  end
+
+  test "GET squadron members searches by nickname" do
+    outsider = @fleet.fleet_memberships.kept.find_by(user: @outsider_of_squadron)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: outsider)
+    @membership.update!(nickname: "Wingman Zed")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: path_params, params: {q: {"searchCont" => "wingman"}} do
       assert_equal [@member.username], parsed_body["items"].map { |entry| entry["username"] }
     end
   end

@@ -52,6 +52,21 @@ const ensureQueryData = <TData, TError>(
 // be enabled for a fleet rather than for the viewer. Only that fleet — reading
 // every fleet the viewer belongs to is what used to show one fleet's features on
 // another fleet's page.
+// A flag decides whether a fleet may use a feature, and some features then
+// still wait for the fleet's admins to switch them on.
+const fleetSettingEnabled = async (
+  setting: NonNullable<RouteLocation["meta"]["fleetSetting"]>,
+  fleetSlug: string,
+) => {
+  try {
+    const fleet = await ensureQueryData(getFleetQueryOptions(fleetSlug));
+
+    return !!fleet?.[setting];
+  } catch {
+    return true;
+  }
+};
+
 const featureEnabled = async (feature: FeatureFlagName, fleetSlug?: string) => {
   try {
     const [features, fleet] = await Promise.all([
@@ -107,6 +122,19 @@ export const beforeResolve = async (
     return {
       routeName: "404",
     };
+  }
+
+  if (to.meta.fleetSetting && fleetSlug) {
+    const settingEnabled = await fleetSettingEnabled(
+      to.meta.fleetSetting,
+      fleetSlug,
+    );
+
+    if (!settingEnabled) {
+      return {
+        routeName: "404",
+      };
+    }
   }
 };
 
