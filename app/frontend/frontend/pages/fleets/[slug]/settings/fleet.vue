@@ -16,6 +16,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
+  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetUpdateInput,
@@ -26,6 +27,7 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   fleet: Fleet;
@@ -73,6 +75,7 @@ const initialValues = ref<FleetUpdateInput>({
   alliesFleet: props.fleet.alliesFleet,
   alliesFleetStats: props.fleet.alliesFleetStats,
   alliesFleetMembers: props.fleet.alliesFleetMembers,
+  squadronsEnabled: props.fleet.squadronsEnabled,
 });
 
 const validationSchema = {
@@ -103,12 +106,21 @@ const [alliesFleetStats, alliesFleetStatsProps] =
   defineField("alliesFleetStats");
 const [alliesFleetMembers, alliesFleetMembersProps] =
   defineField("alliesFleetMembers");
+const [squadronsEnabled, squadronsEnabledProps] =
+  defineField("squadronsEnabled");
 const [logo, logoProps] = defineField("logo");
 
 // See `narrowerAudienceDisabled`. The roster has no public form at all, which
 // is why the third toggle is never passed one.
 const alliesDisabled = (isPublic: unknown) =>
   narrowerAudienceDisabled(isPublic, submitting.value);
+
+const { isFleetFeatureEnabled } = useFeatures();
+
+// Until squadrons are rolled out to the fleet there is nothing to switch on.
+const squadronsAvailable = computed(() =>
+  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
+);
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -290,6 +302,20 @@ const onDestroy = async () => {
         />
       </div>
     </div>
+    <template v-if="squadronsAvailable">
+      <hr />
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <FormToggle
+            v-model="squadronsEnabled"
+            name="squadronsEnabled"
+            translation-key="fleet.squadronsEnabled"
+            v-bind="squadronsEnabledProps"
+            :disabled="submitting"
+          />
+        </div>
+      </div>
+    </template>
     <hr />
     <div class="row">
       <div class="col-12 col-md-6">

@@ -24,6 +24,8 @@ declare module "vue-router" {
     feature?: FeatureFlagName | FeatureFlagName[];
     // Read `feature` against the fleet in the route rather than the viewer.
     featureScope?: "fleet";
+    // A fleet setting that has to be on as well, read from the route's fleet.
+    fleetSetting?: "squadronsEnabled";
     hideWhenAuthenticated?: boolean;
     needsNoAuthentication?: boolean;
   }

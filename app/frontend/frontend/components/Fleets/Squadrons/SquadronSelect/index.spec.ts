@@ -46,6 +46,7 @@ const mount = async (props: Record<string, unknown>) => {
       fleet: {
         slug: "maru",
         features: [FeatureFlagName.FLEET_SQUADRONS],
+        squadronsEnabled: true,
       } as Fleet,
       ...props,
     },
@@ -53,6 +54,13 @@ const mount = async (props: Record<string, unknown>) => {
 
   return wrapper;
 };
+
+const options = (subject: VueWrapper) =>
+  (
+    subject.findComponent({ name: "BaseSelect" }).props("options") as {
+      label: string;
+    }[]
+  ).map((option) => option.label);
 
 const warning = (subject: VueWrapper) =>
   subject.find('[data-test="squadrons-not-announced"]');
@@ -82,5 +90,38 @@ describe("FleetSquadronSelect", () => {
     const subject = await mount({ modelValue: ["b"] });
 
     expect(warning(subject).exists()).toBe(false);
+  });
+
+  it("offers the fleet's squadrons while squadrons are on", async () => {
+    const subject = await mount({});
+
+    expect(options(subject)).toEqual(["Alpha", "Bravo", "Rota"]);
+  });
+
+  // The fleet switched squadrons off after the record was restricted; the
+  // restriction stands and the event is still announced to its squadrons, so
+  // they stay listed and warned about rather than read from the cache.
+  it("offers only the record's own squadrons once squadrons are off", async () => {
+    const subject = await mount({
+      fleet: {
+        slug: "maru",
+        features: [FeatureFlagName.FLEET_SQUADRONS],
+        squadronsEnabled: false,
+      } as Fleet,
+      modelValue: ["b"],
+      assigned: [
+        {
+          id: "b",
+          name: "Bravo",
+          slug: "bravo",
+          team: false,
+          discordChannelId: null,
+        },
+      ],
+      warnWithoutDiscordChannel: true,
+    });
+
+    expect(options(subject)).toEqual(["Bravo"]);
+    expect(warning(subject).text()).toContain("Bravo");
   });
 });

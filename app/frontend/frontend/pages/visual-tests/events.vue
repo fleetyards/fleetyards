@@ -51,6 +51,7 @@ const fleet: Fleet = {
   alliesFleet: false,
   alliesFleetStats: false,
   alliesFleetMembers: false,
+  squadronsEnabled: false,
   createdAt: NOW,
   updatedAt: NOW,
 };

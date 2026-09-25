@@ -41,7 +41,7 @@ module Api
         end
 
         private def check_fleet_squadrons_feature
-          return if feature_enabled?("fleet_squadrons", @fleet)
+          return if feature_enabled?("fleet_squadrons", @fleet) && @fleet.squadrons_enabled?
 
           not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
         end

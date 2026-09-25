@@ -58,6 +58,18 @@ class Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /fleets/:slug switches squadrons on" do
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {slug: @fleet.slug},
+      body: {squadronsEnabled: true} do
+      assert parsed_body["squadronsEnabled"]
+    end
+
+    assert @fleet.reload.squadrons_enabled?
+  end
+
   test "PUT /fleets/:slug returns 404 for unknown slug" do
     sign_in @admin
 

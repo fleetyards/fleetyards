@@ -23,6 +23,7 @@
 #  rsi_sid                   :string
 #  sid                       :string
 #  slug                      :string
+#  squadrons_enabled         :boolean          default(FALSE), not null
 #  transfers_blocked_at      :datetime
 #  transfers_blocked_reason  :text
 #  ts                        :string
@@ -55,6 +56,10 @@ FactoryBot.define do
 
     trait :with_public_stats do
       public_fleet_stats { true }
+    end
+
+    trait :with_squadrons do
+      squadrons_enabled { true }
     end
 
     trait :with_description do

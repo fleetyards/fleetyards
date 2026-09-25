@@ -28,7 +28,7 @@ class Api::V1::PublicFleetsSquadronsShowTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("fleet_squadrons")
-    @fleet = create(:fleet, admins: [create(:user)])
+    @fleet = create(:fleet, :with_squadrons, admins: [create(:user)])
     @squadron = create(:fleet_squadron, fleet: @fleet, name: "Combat Wing")
   end
 

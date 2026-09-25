@@ -49,6 +49,9 @@ const { isFleetFeatureEnabled } = useFeatures();
 const visibleRoutes = computed(() =>
   fleetRoutes.filter((settingsRoute) => {
     const feature = settingsRoute.meta?.feature;
+    const fleetSetting = settingsRoute.meta?.fleetSetting;
+
+    if (fleetSetting && !props.fleet[fleetSetting]) return false;
 
     if (!feature) return true;
 

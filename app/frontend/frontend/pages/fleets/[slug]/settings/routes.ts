@@ -44,6 +44,7 @@ export const routes: RouteRecordRaw[] = [
       ],
       feature: FeatureFlagName.FLEET_SQUADRONS,
       featureScope: "fleet",
+      fleetSetting: "squadronsEnabled",
       customTitle: true,
     },
   },

@@ -47,7 +47,7 @@ class Api::V1::FleetsSquadronMembersUpdateTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @officer = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], officers: [@officer], members: [@member])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], officers: [@officer], members: [@member])
     @squadron = create(:fleet_squadron, fleet: @fleet)
     membership = @fleet.fleet_memberships.kept.find_by(user: @member)
     @squadron_membership = create(

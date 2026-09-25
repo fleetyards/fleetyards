@@ -47,7 +47,7 @@ class Api::V1::FleetsSquadronsCreateTest < ActionDispatch::IntegrationTest
     @admin = create(:user)
     @officer = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], officers: [@officer], members: [@member])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], officers: [@officer], members: [@member])
   end
 
   test "POST /fleets/:slug/squadrons creates a squadron" do

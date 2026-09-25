@@ -40,7 +40,7 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
     Flipper.enable("fleet_squadrons")
     @admin = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member])
+    @fleet = create(:fleet, :with_squadrons, admins: [@admin], members: [@member])
     @squadron = create(:fleet_squadron, :with_color, fleet: @fleet, name: "Combat Wing",
       short_description: "The pointy end", description: "Everything the wing does, at length.")
   end

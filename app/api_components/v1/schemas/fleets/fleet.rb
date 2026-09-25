@@ -26,6 +26,7 @@ module V1
             alliesFleet: {type: :boolean},
             alliesFleetStats: {type: :boolean},
             alliesFleetMembers: {type: :boolean},
+            squadronsEnabled: {type: :boolean},
             defaultTimezone: {type: :string},
             calendarFeedToken: {type: :string},
             logo: ::Shared::V1::Schemas::MediaFile,
@@ -41,7 +42,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers features subscribed createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled features subscribed createdAt updatedAt]
         })
       end
     end

@@ -18,6 +18,8 @@ const all = [
 // from issuing a request on every page the control is drawn on.
 let items: FleetSquadron[] = all;
 let askedWith: (boolean | undefined)[] = [];
+// A query that was switched off still hands back what it fetched before.
+let cached = false;
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -34,7 +36,7 @@ vi.mock("@/services/fyApi", async () => {
       askedWith.push(enabled?.value);
 
       return {
-        data: ref(enabled?.value ? { items } : undefined),
+        data: ref(enabled?.value || cached ? { items } : undefined),
         isLoading: ref(false),
       };
     },
@@ -46,6 +48,7 @@ let wrapper: VueWrapper | undefined;
 beforeEach(() => {
   items = all;
   askedWith = [];
+  cached = false;
 });
 
 afterEach(() => {
@@ -53,9 +56,11 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (features: string[]) => {
+const mount = async (features: string[], squadronsEnabled = true) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru", features } as Fleet },
+    props: {
+      fleet: { slug: "maru", features, squadronsEnabled } as Fleet,
+    },
   });
 
   return wrapper;
@@ -78,6 +83,14 @@ describe("FleetSquadronFilter", () => {
 
     expect(subject.find("[data-test]").exists()).toBe(false);
     expect(askedWith).toEqual([false]);
+  });
+
+  it("draws nothing once the fleet switches squadrons off, even from cache", async () => {
+    cached = true;
+
+    const subject = await mount([FeatureFlagName.FLEET_SQUADRONS], false);
+
+    expect(subject.find("[data-test]").exists()).toBe(false);
   });
 
   it("draws nothing for a fleet that has no squadrons", async () => {

@@ -17,8 +17,10 @@ module FleetSquadronScoped
     @fleet_squadron = readable_fleet_squadrons.find_by!(slug: params[:slug] || params[:fleet_squadron_slug])
   end
 
+  # The flag decides whether squadrons are rolled out to the fleet, the setting
+  # whether its admins switched them on.
   private def check_fleet_squadrons_feature
-    return if feature_enabled?("fleet_squadrons", @fleet)
+    return if feature_enabled?("fleet_squadrons", @fleet) && @fleet.squadrons_enabled?
 
     render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
   end

@@ -671,6 +671,7 @@
         "allies": "Ships visible to allies",
         "alliesStats": "Stats visible to allies",
         "alliesMembers": "Member list visible to allies",
+        "squadronsEnabled": "Use squadrons",
         "contractCovers": {
           "transport": "Transport cover",
           "procurement": "Procurement cover",

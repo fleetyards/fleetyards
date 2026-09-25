@@ -671,6 +671,7 @@
         "allies": "Naves visibles para los aliados",
         "alliesStats": "Estadísticas visibles para los aliados",
         "alliesMembers": "Lista de miembros visible para los aliados",
+        "squadronsEnabled": "Usar escuadrones",
         "contractCovers": {
           "transport": "Portada de transporte",
           "procurement": "Portada de adquisición",

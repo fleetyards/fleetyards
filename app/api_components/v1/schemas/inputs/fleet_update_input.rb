@@ -25,6 +25,7 @@ module V1
             alliesFleet: {type: :boolean},
             alliesFleetStats: {type: :boolean},
             alliesFleetMembers: {type: :boolean},
+            squadronsEnabled: {type: :boolean},
             homepage: {type: [:string, :null]},
             rsiSid: {type: [:string, :null]},
             discord: {type: [:string, :null]},
