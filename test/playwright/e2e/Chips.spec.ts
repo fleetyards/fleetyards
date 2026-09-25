@@ -226,6 +226,32 @@ test.describe("Chips - edit mode", () => {
  * that reaches the server by drag and by keyboard. Reuses the chips scenario's
  * user, whose Combat and Cargo groups are created in that order.
  */
+test.describe("Chips - grip semantics", () => {
+  test("the grip says how it moves, and Space does not scroll", async ({
+    page,
+  }) => {
+    // Exposed as a button, but with no single action to activate - so the
+    // arrow keys have to be announced, and Space must not fall through to the
+    // page.
+    await page.goto("/visual-tests/chips/");
+    const row = page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .first();
+    await row.getByTestId("group-labels-edit").click();
+
+    const handle = row.getByTestId("chip-handle").first();
+    await expect(handle).toHaveAccessibleDescription(
+      "Use the arrow keys to move",
+    );
+
+    await handle.focus();
+    const before = await page.evaluate(() => window.scrollY);
+    await page.keyboard.press(" ");
+    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+  });
+});
+
 test.describe("Chips - owner's hangar", () => {
   const groupRow = (page: Page) =>
     page.getByTestId("chip-row").filter({ hasText: "Combat" }).first();

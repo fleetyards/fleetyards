@@ -4,7 +4,8 @@
       "states": {
         "included": "included",
         "excluded": "excluded"
-      }
+      },
+      "sortHint": "Use the arrow keys to move"
     }
   }
 }

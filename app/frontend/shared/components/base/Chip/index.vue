@@ -59,13 +59,23 @@ const MOVE_KEYS: Record<string, -1 | 1> = {
   ArrowDown: 1,
 };
 
+// Enter and Space are swallowed, not acted on: the grip has no single action to
+// activate, and Space would otherwise scroll the page. What it does instead is
+// announced through the sort hint.
 const onHandleKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    return;
+  }
+
   const offset = MOVE_KEYS[event.key];
   if (!offset) return;
 
   event.preventDefault();
   emit("move", offset);
 };
+
+const sortHintId = useId();
 
 const { t } = useI18n();
 
@@ -131,10 +141,14 @@ const stateHint = computed(() => {
       role="button"
       tabindex="0"
       :aria-label="sortLabel"
+      :aria-describedby="sortHintId"
       data-test="chip-handle"
       @keydown="onHandleKeydown"
     >
       <i class="fa-regular fa-grip-vertical" />
+      <span :id="sortHintId" class="chip__state">
+        {{ t("baseChip.sortHint") }}
+      </span>
     </span>
     <component
       :is="bare ? 'span' : 'button'"
