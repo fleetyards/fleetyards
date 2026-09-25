@@ -121,4 +121,31 @@ class Api::V1::PayoutEntriesReviewTest < ActionDispatch::IntegrationTest
   test "PUT decline returns 401 when not signed in" do
     assert_api_response :put, 401, api_path: "/payouts/{payoutLedgerId}/entries/{id}/decline", path_params: {payoutLedgerId: @ledger.id, id: @entry.id}
   end
+
+  # The client reviews what the contractors claim, whether or not they also
+  # run the fleet's contracts.
+  test "PUT approve lets a contract's author review a contractor's expense" do
+    Flipper.enable("fleet_tours")
+    Flipper.enable("fleet_contracts")
+
+    author = create(:user)
+    contractor = create(:user)
+    fleet = create(:fleet, members: [author, contractor])
+    contract = create(:fleet_contract, :fulfilled, fleet: fleet, created_by: author)
+    ledger = contract.create_payout_ledger!
+    contractor_p = create(:payout_participant, payout_ledger: ledger, user: contractor)
+    expense = create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: contractor_p)
+
+    sign_in contractor
+
+    assert_api_response :put, 403, api_path: "/payouts/{payoutLedgerId}/entries/{id}/approve",
+      path_params: {payoutLedgerId: ledger.id, id: expense.id}
+
+    sign_in author
+
+    assert_api_response :put, 200, api_path: "/payouts/{payoutLedgerId}/entries/{id}/approve",
+      path_params: {payoutLedgerId: ledger.id, id: expense.id} do
+      assert_equal "approved", parsed_body["reviewStatus"]
+    end
+  end
 end

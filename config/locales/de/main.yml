@@ -33,6 +33,7 @@ de:
     header:
       toggle: Navigation umschalten
   fleet_contracts:
+    payout_reward: "Belohnung: %{title}"
     units:
       scu: SCU
       units: Stück

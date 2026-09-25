@@ -11,7 +11,7 @@
 #  entry_type            :integer          default("expense"), not null
 #  notes                 :text
 #  occurred_at           :datetime
-#  review_status         :integer          default(1), not null
+#  review_status         :integer          default("approved"), not null
 #  reviewed_at           :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -58,6 +58,7 @@ class PayoutEntry < ApplicationRecord
   validates :description, presence: true
   validate :participant_belongs_to_ledger
   validate :ledger_is_open
+  validate :expenses_reimbursed
 
   before_destroy :ledger_must_be_open, prepend: true
 
@@ -109,6 +110,19 @@ class PayoutEntry < ApplicationRecord
   private def claim_changed?
     will_save_change_to_amount? || will_save_change_to_entry_type? ||
       will_save_change_to_payout_participant_id? || will_save_change_to_description?
+  end
+
+  # A contract that said it does not reimburse expenses pays the reward and
+  # nothing else, so an expense on its ledger would be a claim it already
+  # refused.
+  private def expenses_reimbursed
+    return unless expense?
+
+    contract = payout_ledger&.subject
+    return unless contract.is_a?(FleetContract)
+    return if contract.reimburse_expenses?
+
+    errors.add(:entry_type, :not_reimbursed)
   end
 
   private def participant_belongs_to_ledger

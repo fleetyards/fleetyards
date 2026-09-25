@@ -329,6 +329,10 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "在此合約中不予報銷"
         payout_participant:
           attributes:
             base:

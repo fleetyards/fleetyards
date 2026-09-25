@@ -329,6 +329,10 @@ fr:
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "n'est pas remboursée sur ce contrat"
         payout_participant:
           attributes:
             base:

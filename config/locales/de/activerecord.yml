@@ -329,6 +329,10 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "wird von diesem Auftrag nicht erstattet"
         payout_participant:
           attributes:
             base:

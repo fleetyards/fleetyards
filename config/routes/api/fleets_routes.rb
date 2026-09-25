@@ -104,6 +104,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       get :progress
     end
 
+    get "payouts", to: "payout_ledgers#show_for_subject"
+    post "payouts", to: "payout_ledgers#create"
+
     resources :fleet_contract_items, path: "items", only: %i[create update destroy]
 
     resources :fleet_contract_assignments, path: "crew", only: %i[index create destroy] do

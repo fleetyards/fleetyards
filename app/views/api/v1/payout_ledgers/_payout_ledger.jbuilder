@@ -16,6 +16,7 @@ json.participants_count payout_ledger.payout_participants.size
 # has one home, and floats are not it.
 json.total_weight payout_ledger.payout_participants.sum(:weight)
 json.entries_count payout_ledger.payout_entries.size
+json.pending_review_count payout_ledger.payout_entries.review_pending.count
 json.total_income settlement.total_income
 json.total_expenses settlement.total_expenses
 json.profit settlement.profit

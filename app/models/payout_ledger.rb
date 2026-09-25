@@ -28,7 +28,7 @@ class PayoutLedger < ApplicationRecord
   # app -- including records the signed-in user cannot see, whose participants
   # would then be seeded onto it. Same reasoning as InventoryLedgerEntry's
   # ITEM_TYPES.
-  SUBJECT_TYPES = %w[FleetEvent Tour].freeze
+  SUBJECT_TYPES = %w[FleetEvent Tour FleetContract].freeze
 
   STATUSES = %w[open settled].freeze
 
@@ -161,12 +161,13 @@ class PayoutLedger < ApplicationRecord
   # whether the money is settled. Two endpoints reach this ledger -- the tour's
   # and the ledger's own, which is the one the UI actually calls -- so the
   # transition is carried here rather than in either controller, or the two
-  # paths disagree about whether the tour is settled.
+  # paths disagree about whether the tour is settled. A contract's `settled`
+  # means the same thing and follows for the same reason.
   #
   # A fleet event has its own lifecycle that means something else entirely, so
-  # only a tour follows.
+  # it does not follow.
   private def carry_status_to_subject(event)
-    return unless subject.is_a?(Tour)
+    return unless subject.is_a?(Tour) || subject.is_a?(FleetContract)
     return unless subject.public_send(:"may_#{event}?")
 
     subject.public_send(:"#{event}!")
@@ -176,6 +177,8 @@ class PayoutLedger < ApplicationRecord
   # Only ever adds: a participant removed on purpose must not come back the
   # next time this runs.
   def seed_participants_from_subject!
+    return seed_contract! if subject.is_a?(FleetContract)
+
     existing_user_ids = payout_participants.where.not(user_id: nil).pluck(:user_id)
 
     seed_user_ids_from_subject.uniq.each do |user_id|
@@ -214,6 +217,44 @@ class PayoutLedger < ApplicationRecord
     return unless saved_change_to_status? || saved_change_to_notes?
 
     broadcast_change
+  end
+
+  # The fleet is the payer and holds the reward; the contractors are weighted
+  # by what they delivered. Only run on create, so it has nothing to preserve.
+  private def seed_contract!
+    payer = payout_participants.create!(fleet: subject.fleet)
+
+    contract_weights.each do |user_id, weight|
+      payout_participants.create!(user_id: user_id, weight: weight)
+    end
+
+    return unless subject.reward.positive?
+
+    payout_entries.create!(
+      payout_participant: payer,
+      entry_type: :income,
+      review_status: :approved,
+      amount: subject.reward,
+      description: I18n.t("fleet_contracts.payout_reward", title: subject.display_title)
+    )
+  end
+
+  # Contracts::Progress weights are fractions of a line, which a two-decimal
+  # column cannot hold for somebody who delivered one crate of eight hundred.
+  # Scaled to a percentage of the whole, they keep their proportions and read
+  # as what they are. A contract forced to fulfilled with nothing measured
+  # divides evenly across whoever was on it.
+  private def contract_weights
+    weights = subject.progress.weights.select { |_user_id, weight| weight.positive? }
+    total = weights.values.sum(0.to_d)
+
+    if total.zero?
+      return subject.contractor_assignments.pluck(:user_id).uniq.index_with { 1 }
+    end
+
+    weights.transform_values do |weight|
+      (weight * 100 / total).round(2).clamp(BigDecimal("0.01"), BigDecimal("999.99"))
+    end
   end
 
   private def seed_user_ids_from_subject

@@ -17,9 +17,11 @@ module Api
       before_action :set_payout_ledger, only: %i[show balances settle reopen]
       before_action :check_tour_payouts_feature
       before_action -> { require_fleet_subscription(:tours) }
+      before_action -> { require_fleet_subscription(:contracts) }, if: :contract_subject?
 
       # GET /fleets/:fleet_slug/events/:slug/payouts
       # GET /tours/:tour_slug/payouts
+      # GET /fleets/:fleet_slug/contracts/:slug/payouts
       #
       # A subject has at most one ledger, so this is the lookup that tells the
       # frontend whether to show the ledger or an offer to open one.
@@ -101,7 +103,12 @@ module Api
           else
             fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
             authorize! fleet, to: :show?
-            fleet.fleet_events.find_by!(slug: params[:fleet_event_slug])
+
+            if params[:fleet_contract_slug].present?
+              fleet.fleet_contracts.find_by!(slug: params[:fleet_contract_slug])
+            else
+              fleet.fleet_events.find_by!(slug: params[:fleet_event_slug])
+            end
           end
       end
 
@@ -119,16 +126,21 @@ module Api
         @subject.try(:fleet)
       end
 
-      # See PayoutLedgerScoped for why there are two flags. Resolved from the
+      # See PayoutLedgerScoped for which flags apply. Resolved from the
       # subject as well, because create runs before a ledger exists.
       private def check_tour_payouts_feature
         fleet = @payout_ledger&.fleet || subject_fleet
         actors = fleet ? [fleet] : []
 
         return render_payouts_unavailable unless feature_enabled?("tour_payouts", *actors)
-        return if fleet.blank? || feature_enabled?("fleet_tours", *actors)
+        return render_payouts_unavailable if fleet.present? && !feature_enabled?("fleet_tours", *actors)
+        return if !contract_subject? || feature_enabled?("fleet_contracts", *actors)
 
         render_payouts_unavailable
+      end
+
+      private def contract_subject?
+        (@payout_ledger&.subject || @subject).is_a?(FleetContract)
       end
 
       private def render_payouts_unavailable

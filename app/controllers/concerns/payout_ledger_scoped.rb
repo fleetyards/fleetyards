@@ -20,7 +20,8 @@ module PayoutLedgerScoped
     authorize! @payout_ledger, with: PayoutLedgerPolicy, to: :show?
   end
 
-  # Two flags, and which apply depends on what the ledger hangs off.
+  # Two flags, and which apply depends on what the ledger hangs off -- three
+  # for a contract, which also needs `fleet_contracts`.
   #
   # `tour_payouts` is what makes a ledger exist at all and gates every one of
   # them. A ledger that belongs to a fleet -- an event always, a tour when it
@@ -33,9 +34,22 @@ module PayoutLedgerScoped
     actors = fleet ? [fleet] : []
 
     return render_payouts_unavailable unless feature_enabled?("tour_payouts", *actors)
-    return if fleet.blank? || feature_enabled?("fleet_tours", *actors)
+    return render_payouts_unavailable if fleet.present? && !feature_enabled?("fleet_tours", *actors)
+    return if !contract_ledger? || feature_enabled?("fleet_contracts", *actors)
 
     render_payouts_unavailable
+  end
+
+  # A contract's ledger is a contracts surface as well as a payouts one, so it
+  # is also gated the way the contract itself is.
+  private def check_contract_subscription
+    return unless contract_ledger?
+
+    require_fleet_subscription(:contracts)
+  end
+
+  private def contract_ledger?
+    @payout_ledger&.subject.is_a?(FleetContract)
   end
 
   private def render_payouts_unavailable

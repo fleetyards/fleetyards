@@ -432,6 +432,8 @@ en:
           attributes:
             base:
               ledger_settled: cannot be changed once the payouts are settled
+            entry_type:
+              not_reimbursed: is not reimbursed on this contract
             payout_participant_id:
               wrong_ledger: is not on this ledger
         payout_transfer:

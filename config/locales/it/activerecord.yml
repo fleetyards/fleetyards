@@ -329,6 +329,10 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "non viene rimborsata in questo contratto"
         payout_participant:
           attributes:
             base:

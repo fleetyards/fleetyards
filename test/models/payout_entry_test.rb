@@ -13,7 +13,7 @@ require "test_helper"
 #  entry_type            :integer          default("expense"), not null
 #  notes                 :text
 #  occurred_at           :datetime
-#  review_status         :integer          default(1), not null
+#  review_status         :integer          default("approved"), not null
 #  reviewed_at           :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -108,5 +108,28 @@ class PayoutEntryTest < ActiveSupport::TestCase
 
     assert_not entry.destroy
     assert PayoutEntry.exists?(entry.id)
+  end
+
+  test "refuses an expense on a contract that does not reimburse them" do
+    contract = create(:fleet_contract, :fulfilled, reimburse_expenses: false)
+    ledger = contract.create_payout_ledger!
+    participant = create(:payout_participant, payout_ledger: ledger)
+
+    expense = build(:payout_entry, payout_ledger: ledger, payout_participant: participant)
+    assert_not expense.valid?
+    assert_includes expense.errors.details[:entry_type], {error: :not_reimbursed}
+
+    assert_predicate build(:payout_entry, :income, payout_ledger: ledger, payout_participant: participant), :valid?
+  end
+
+  test "sends an approved expense back to review when its amount changes" do
+    entry = create(:payout_entry)
+    entry.approve!(create(:user))
+
+    entry.amount = 5_000
+    entry.assign_review_status(by_manager: false)
+
+    assert_predicate entry, :review_pending?
+    assert_nil entry.reviewed_by
   end
 end

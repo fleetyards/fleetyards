@@ -1611,6 +1611,23 @@ components:
       - REQUESTED
       - ACCEPTED
       - DECLINED
+    FleetRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
     FleetRole:
       type: object
       properties:
@@ -3365,6 +3382,8 @@ components:
           type: string
         entriesCount:
           type: integer
+        pendingReviewCount:
+          type: integer
         totalIncome:
           type: string
         totalExpenses:
@@ -3400,9 +3419,11 @@ components:
       enum:
       - FleetEvent
       - Tour
+      - FleetContract
       x-enumNames:
       - FLEET_EVENT
       - TOUR
+      - FLEET_CONTRACT
     PayoutParticipant:
       type: object
       properties:
@@ -3420,6 +3441,8 @@ components:
           type: string
         user:
           "$ref": "#/components/schemas/UserRef"
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
         createdAt:
           type: string
           format: date-time

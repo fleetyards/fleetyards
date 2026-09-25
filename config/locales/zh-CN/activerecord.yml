@@ -329,6 +329,10 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        payout_entry:
+          attributes:
+            entry_type:
+              not_reimbursed: "在此合同中不予报销"
         payout_participant:
           attributes:
             base:

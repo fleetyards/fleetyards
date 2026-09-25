@@ -201,4 +201,64 @@ class PayoutLedgerTest < ActiveSupport::TestCase
 
     assert_not ledger.reopen!
   end
+
+  test "seeds a contract with the fleet as payer, contractors weighted by what they delivered" do
+    lead = create(:user)
+    crew = create(:user)
+    contract = create(:fleet_contract, :fulfilled, reward: 1_000)
+    Contracts::Progress.any_instance.stubs(:weights).returns({lead.id => BigDecimal("0.75"), crew.id => BigDecimal("0.25")})
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    payer = ledger.payout_participants.find_by!(fleet_id: contract.fleet_id)
+    assert_equal 75, ledger.payout_participants.find_by!(user_id: lead.id).weight
+    assert_equal 25, ledger.payout_participants.find_by!(user_id: crew.id).weight
+
+    reward = ledger.payout_entries.sole
+    assert_predicate reward, :income?
+    assert_predicate reward, :review_approved?
+    assert_equal payer, reward.payout_participant
+    assert_equal 1_000, reward.amount
+  end
+
+  test "keeps a contractor whose share rounds below a hundredth on the list" do
+    lead = create(:user)
+    crew = create(:user)
+    contract = create(:fleet_contract, :fulfilled)
+    Contracts::Progress.any_instance.stubs(:weights).returns({lead.id => 1.to_d, crew.id => BigDecimal("0.00001")})
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    assert_equal BigDecimal("0.01"), ledger.payout_participants.find_by!(user_id: crew.id).weight
+  end
+
+  test "divides evenly across the contractors when nothing was measured" do
+    contract = create(:fleet_contract, :fulfilled, reward: 0)
+    create(:fleet_contract_assignment, :lead, fleet_contract: contract)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: contract)
+
+    ledger = contract.create_payout_ledger!
+    ledger.seed_participants_from_subject!
+
+    assert_equal [1, 1], ledger.payout_participants.where.not(user_id: nil).pluck(:weight)
+    assert_empty ledger.payout_entries
+  end
+
+  test "settling a contract's ledger settles the contract, and reopening puts it back" do
+    contract = create(:fleet_contract, :fulfilled)
+    ledger = contract.create_payout_ledger!
+
+    fulfilled_at = contract.fulfilled_at
+
+    assert ledger.settle!
+    assert_predicate contract.reload, :settled?
+    assert_not_nil contract.settled_at
+
+    assert ledger.reopen!
+    assert_predicate contract.reload, :fulfilled?
+    assert_nil contract.settled_at
+    assert_in_delta fulfilled_at, contract.fulfilled_at, 1.second
+  end
 end

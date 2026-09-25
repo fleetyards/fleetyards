@@ -46,6 +46,7 @@ zh-TW:
         significant: true
         strip_insignificant_zeros: true
   fleet_contracts:
+    payout_reward: "報酬：%{title}"
     units:
       scu: SCU
       units: 件

@@ -2067,6 +2067,92 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/payouts":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Open a payout ledger on a fulfilled fleet contract
+      tags:
+      - Payouts
+      operationId: createFleetContractPayoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutLedgerCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show the payout ledger of a fleet contract
+      tags:
+      - Payouts
+      operationId: fleetContractPayoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: no ledger yet
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/contracts/{slug}":
     parameters:
     - name: fleetSlug
@@ -19754,6 +19840,11 @@ components:
           - string
           - 'null'
           format: date-time
+        settledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         cancelledAt:
           type:
           - string
@@ -20043,6 +20134,11 @@ components:
           - 'null'
           format: date-time
         fulfilledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        settledAt:
           type:
           - string
           - 'null'
@@ -20462,6 +20558,7 @@ components:
       - open
       - in_progress
       - fulfilled
+      - settled
       - cancelled
       - expired
       x-enumNames:
@@ -20469,6 +20566,7 @@ components:
       - OPEN
       - IN_PROGRESS
       - FULFILLED
+      - SETTLED
       - CANCELLED
       - EXPIRED
       title: FleetContractStateEnum
@@ -29324,6 +29422,8 @@ components:
           type: string
         entriesCount:
           type: integer
+        pendingReviewCount:
+          type: integer
         totalIncome:
           type: string
         totalExpenses:
@@ -29370,9 +29470,11 @@ components:
       enum:
       - FleetEvent
       - Tour
+      - FleetContract
       x-enumNames:
       - FLEET_EVENT
       - TOUR
+      - FLEET_CONTRACT
       title: PayoutLedgerSubjectTypeEnum
     PayoutParticipant:
       type: object
