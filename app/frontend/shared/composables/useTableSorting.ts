@@ -42,17 +42,23 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
     return undefined;
   };
 
-  const sortableLink = computed(() => {
-    const direction = sortableDirection();
-
-    if (!direction) {
-      return {
+  // Where the third press goes, after ascending and descending.
+  const resetLink = computed(
+    () =>
+      ({
         query: {
           ...route.query,
           s: undefined,
         },
         hash: id ? `#${id}` : undefined,
-      } as RouteLocationRaw;
+      }) as RouteLocationRaw,
+  );
+
+  const sortableLink = computed(() => {
+    const direction = sortableDirection();
+
+    if (!direction) {
+      return resetLink.value;
     }
 
     return {
@@ -67,5 +73,6 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
   return {
     currentDirection,
     sortableLink,
+    resetLink,
   };
 };

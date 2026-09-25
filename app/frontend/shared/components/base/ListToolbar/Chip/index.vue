@@ -18,10 +18,28 @@ const props = withDefaults(defineProps<Props>(), { fallback: undefined });
 // The same composable the column headings use, so the two controls cannot
 // disagree: both read and write `route.query.s`, and pressing either cycles
 // none, ascending, descending in the same order.
-const { currentDirection, sortableLink } = useTableSorting({
+const { currentDirection, sortableLink, resetLink } = useTableSorting({
   field: props.field,
   fallback: () => props.fallback,
 });
+
+const route = useRoute();
+const router = useRouter();
+
+// A shortcut to the third press. Only the sort the URL names has one; a chip
+// lit by the default, or not lit at all, keeps the browser's own menu.
+const resettable = computed(
+  () => ((route.query.s as string) || "").split(" ")[0] === props.field,
+);
+
+const onContextMenu = (event: MouseEvent) => {
+  if (!resettable.value) {
+    return;
+  }
+
+  event.preventDefault();
+  void router.push(resetLink.value);
+};
 </script>
 
 <template>
@@ -29,6 +47,7 @@ const { currentDirection, sortableLink } = useTableSorting({
     :to="sortableLink"
     class="base-list-toolbar-chip"
     :class="{ 'base-list-toolbar-chip--active': !!currentDirection }"
+    @contextmenu="onContextMenu"
   >
     {{ props.label }}
     <!-- Matching `SortableLink`'s own arrows rather than picking a pair: the
