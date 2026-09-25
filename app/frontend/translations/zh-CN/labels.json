@@ -416,7 +416,7 @@
           "announcementChannel": "公告频道",
           "announcementChannelHint": "新活动和即将开始的提醒会发布在这里。未设置时通过 Webhook 发送。仅限中队的活动会改为发布在对应中队的频道中。",
           "officersChannel": "军官频道",
-          "officersChannelHint": "仅军官可见的活动会在这里公告，不会出现在 Discord 的其他地方。未设置时不会在 Discord 上公告。",
+          "officersChannelHint": "仅军官可见的活动会在这里公告，不会出现在 Discord 的其他地方。未设置时不会在 Discord 上公告。加入申请也会发布在这里，并附有接受或拒绝的按钮。",
           "digestWeekday": "每周摘要",
           "digestWeekdayHint": "每周一次，每个频道会收到它可见的未来七天活动列表。留空即可关闭。",
           "digestTime": "摘要时间",
