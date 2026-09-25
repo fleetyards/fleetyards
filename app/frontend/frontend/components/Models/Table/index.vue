@@ -46,7 +46,6 @@ const extraColumns = computed<BaseTableCol<Model>[]>(() => {
       return {
         name: col,
         label: t(`labels.models.table.columns.${col}`),
-        sortable: true,
       };
     })
     .filter((col) => {
@@ -78,6 +77,8 @@ const manufacturerColumnVisible = computed(() => {
   );
 });
 
+// No column sorts from its heading: the list toolbar above the table is the
+// sort control in both views.
 const tableColumns = computed<BaseTableCol<Model>[]>(() => {
   return [
     ...extraImageColumns.value,
@@ -85,7 +86,6 @@ const tableColumns = computed<BaseTableCol<Model>[]>(() => {
       name: "name",
       label: t("labels.vehicle.name"),
       width: "auto",
-      sortable: true,
     },
     ...extraColumns.value,
   ];
@@ -105,7 +105,6 @@ const angledImage = (record: Model) => {
     <BaseTable
       :records="models"
       primary-key="slug"
-      default-sort="name asc"
       :columns="tableColumns"
       :loading="loading"
       :empty-visible="emptyVisible"

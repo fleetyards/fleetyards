@@ -65,7 +65,6 @@ const extraColumns = computed(() => {
         return {
           name: col,
           label: t(`labels.hangarTable.columns.${col}`),
-          sortable: true,
         };
       })
       .filter((col) => {
@@ -78,7 +77,6 @@ const extraColumns = computed(() => {
       return {
         name: col,
         label: t(`labels.hangarTable.columns.${col}`),
-        sortable: true,
       };
     })
     .filter((col) => {
@@ -121,6 +119,8 @@ const manufacturerColumnVisible = computed(() => {
   );
 });
 
+// No column sorts from its heading: the list toolbar above the table is the
+// sort control in both views.
 const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
   return [
     ...extraImageColumns.value,
@@ -128,7 +128,6 @@ const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
       name: "name",
       label: t("labels.vehicle.name"),
       width: "40%",
-      sortable: true,
     },
     ...extraColumns.value,
     {
