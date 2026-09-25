@@ -1523,6 +1523,7 @@
         "passwordConfirmation": "确认密码"
       },
       "vehicle": {
+        "customOrder": "自定义顺序",
         "name": "名称",
         "states": "状态",
         "serial": "序列号",

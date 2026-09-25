@@ -15,13 +15,19 @@ import { type Vehicle } from "@/services/fyApi";
  *
  * `flagship` is deliberately absent even though it leads the default order: it
  * is a yes/no, so sorting by it is a filter wearing the wrong clothes.
+ *
+ * `rank` is the order the owner dragged their hangar into. A wishlist or a
+ * fleet has no such order of its own, so only a hangar asks for it.
  */
-export const useVehicleSortFields = () => {
+export const useVehicleSortFields = ({
+  rank = false,
+}: { rank?: boolean } = {}) => {
   const { t } = useI18n();
 
   return computed<BaseTableCol<Vehicle>[]>(() =>
     (
       [
+        ...(rank ? [["rank", t("labels.vehicle.customOrder")]] : []),
         ["name", t("labels.vehicle.name")],
         [
           "modelManufacturerName",

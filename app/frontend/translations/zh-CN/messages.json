@@ -112,6 +112,9 @@
         "failure": "导出失败，请稍后再试。"
       },
       "vehicle": {
+        "move": {
+          "failure": "无法保存顺序。"
+        },
         "add": {
           "success": {
             "noHtml": "您的新 %{model} 将被交付到您的机库",

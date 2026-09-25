@@ -12,6 +12,20 @@
     justify-content: flex-start;
   }
 
+  // The one control that is not a button: it does nothing on click, and what it
+  // affords is the drag.
+  &-grip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 18px;
+    color: var(--color-muted);
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
   &-flagship-icon {
     color: $gold;
   }

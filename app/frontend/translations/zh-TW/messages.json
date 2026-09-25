@@ -112,6 +112,9 @@
         "failure": "匯出失敗，請稍後再試。"
       },
       "vehicle": {
+        "move": {
+          "failure": "無法儲存順序。"
+        },
         "add": {
           "success": {
             "noHtml": "您的新%{model}將送達您的機庫",

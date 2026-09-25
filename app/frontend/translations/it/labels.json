@@ -1523,6 +1523,7 @@
         "passwordConfirmation": "Conferma password"
       },
       "vehicle": {
+        "customOrder": "Ordine personalizzato",
         "name": "Nome",
         "states": "Stati",
         "serial": "Seriale",

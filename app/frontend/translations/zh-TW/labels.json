@@ -1523,6 +1523,7 @@
         "passwordConfirmation": "確認密碼"
       },
       "vehicle": {
+        "customOrder": "自訂順序",
         "name": "名稱",
         "states": "狀態",
         "serial": "序號",

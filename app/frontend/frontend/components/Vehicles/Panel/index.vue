@@ -28,6 +28,9 @@ type Props = {
   wishlist?: boolean;
   highlight?: boolean;
   loanersHintVisible?: boolean;
+  // Draws the grip the grid drags by. The card stays a link: a whole card that
+  // is also a drag target cannot be clicked without moving it a little first.
+  sortable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   wishlist: false,
   highlight: false,
   loanersHintVisible: false,
+  sortable: false,
 });
 
 const { t } = useI18n();
@@ -218,6 +222,15 @@ const tone = computed(() => {
       </span>
     </template>
     <template #heading-actions>
+      <span
+        v-if="sortable"
+        v-tooltip="t('actions.reorder')"
+        class="vehicle-panel-grip"
+        :aria-label="t('actions.reorder')"
+        data-test="vehicle-panel-grip"
+      >
+        <i class="fa-duotone fa-grip-vertical" />
+      </span>
       <VehicleContextMenu
         v-if="editable && !vehicle.loaner"
         :vehicle="vehicle as Vehicle"

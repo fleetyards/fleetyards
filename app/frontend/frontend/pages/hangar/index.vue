@@ -8,6 +8,7 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
 import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useVehicleReorder } from "@/frontend/composables/useVehicleReorder";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -61,7 +62,7 @@ import {
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
-const sortFields = useVehicleSortFields();
+const sortFields = useVehicleSortFields({ rank: true });
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 
@@ -148,6 +149,31 @@ const shareUrl = computed(() => {
 });
 
 const route = useRoute();
+
+// What the sort bar shows as chosen while the URL names no sort. Unset, the
+// server leads with the flagship and then sorts by name, and flagship has no
+// chip of its own.
+const defaultSort = computed(
+  () => currentUser?.value?.hangarDefaultSort ?? "name asc",
+);
+
+const activeSort = computed(() =>
+  typeof route.query.s === "string" ? route.query.s : defaultSort.value,
+);
+
+// Dragging writes the owner's order, so it is only offered while that order is
+// the one on screen: under another sort, or with some ships filtered out, a
+// drop would land somewhere the user cannot see.
+const canSort = computed(
+  () =>
+    gridView.value &&
+    activeSort.value === "rank asc" &&
+    !isFilterSelected.value,
+);
+
+const { orderedVehicles, onSort } = useVehicleReorder(
+  computed(() => vehicles.value?.items),
+);
 
 watch(
   () => route.query.q,
@@ -442,7 +468,7 @@ const openDisplayOptionsModal = () => {
     key="hangar"
     :hide-loading="fleetchartVisible || !gridView"
     :hide-empty="!gridView"
-    :records="vehicles?.items || []"
+    :records="orderedVehicles"
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
@@ -562,7 +588,11 @@ const openDisplayOptionsModal = () => {
 
     <template #sort>
       <!-- Grid view only: the table carries the same sorts on its headings. -->
-      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
+      <SortBar
+        v-if="gridView"
+        :columns="sortFields"
+        :default-sort="defaultSort"
+      />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
@@ -571,12 +601,16 @@ const openDisplayOptionsModal = () => {
         :records="records"
         :filter-visible="filterVisible"
         primary-key="id"
+        :sortable="canSort"
+        sort-handle=".vehicle-panel-grip"
+        @sort="onSort"
       >
         <template #default="{ record }">
           <VehiclePanel
             :vehicle="record"
             :details="detailsVisible"
             :editable="true"
+            :sortable="canSort"
             :highlight="record.hangarGroupIds.includes(highlightedGroup)"
           />
         </template>

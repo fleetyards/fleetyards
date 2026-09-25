@@ -1523,6 +1523,7 @@
         "passwordConfirmation": "Passwort bestätigen"
       },
       "vehicle": {
+        "customOrder": "Eigene Reihenfolge",
         "name": "Name",
         "states": "Zustände",
         "serial": "Seriennummer",

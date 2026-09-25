@@ -112,6 +112,9 @@
         "failure": "Esportazione fallita. Per favore riprova più tardi."
       },
       "vehicle": {
+        "move": {
+          "failure": "Impossibile salvare l'ordine."
+        },
         "add": {
           "success": {
             "noHtml": "La tua nuova %{model} sarà consegnata al tuo Hangar",

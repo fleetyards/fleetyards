@@ -122,6 +122,9 @@
         "failure": "Export failed, Please try again later."
       },
       "vehicle": {
+        "move": {
+          "failure": "The order could not be saved."
+        },
         "add": {
           "success": {
             "noHtml": "Your new %{model} will be delivered to your Hangar",
