@@ -1,8 +1,11 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
-import { ref } from "vue";
+import { defineComponent, h, ref } from "vue";
+import { useRoute } from "vue-router";
+import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
+import { usePaginationStore } from "@/shared/stores/pagination";
 import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 
 // The filter panel teleports to the off-canvas container the layout provides;
@@ -30,6 +33,7 @@ const ListComponent = Component as unknown as new (...args: unknown[]) => {
     records: unknown[];
     asyncStatus: AsyncStatus;
     placeholders?: boolean;
+    viewKeys?: string[];
   };
   $slots: Record<string, unknown>;
 };
@@ -151,6 +155,203 @@ describe("FilteredList", () => {
 
     expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
+  });
+
+  it("tells a rejected filter or sort apart from an outage", async () => {
+    const wrapper = await mount(400);
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(false);
+  });
+
+  it("keeps a server failure off the client error screen", async () => {
+    const wrapper = await mount(500);
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(false);
+  });
+
+  it("clears the filter and sort a rejected list was asked for", async () => {
+    await router.push({
+      name: "ships",
+      query: { s: "bogus_asc", manufacturerIn: "rsi", page: "2", tab: "grid" },
+    });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ tab: "grid" });
+  });
+
+  // Nothing in the route to clear: the saved size alone has to offer a reset.
+  it("clears a saved page size the API refused", async () => {
+    await router.push({ name: "ships" });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400, {
+            code: "pagination.max_per_page_reached",
+          }),
+        },
+        initialState: { pagination: { perPage: { ships: 500 } } },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    // The testing pinia stubs actions, so the call is what is observable.
+    const store = usePaginationStore();
+
+    expect(vi.mocked(store).removeByKey.mock.calls).toEqual([["ships"]]);
+  });
+
+  it("keeps a saved page size when something else was refused", async () => {
+    await router.push({ name: "ships", query: { s: "bogus_asc" } });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400, { code: "validation_error" }),
+        },
+        initialState: { pagination: { perPage: { ships: 30 } } },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    const store = usePaginationStore();
+
+    expect(vi.mocked(store).removeByKey.mock.calls).toEqual([]);
+    expect(router.currentRoute.value.query).toEqual({});
+  });
+
+  it("offers no reset for a saved page size the API did not refuse", async () => {
+    await router.push({ name: "ships" });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        initialState: { pagination: { perPage: { ships: 30 } } },
+        plugins: [router],
+      },
+    );
+
+    expect(wrapper.find('[data-test="client-error-reset"]').exists()).toBe(
+      false,
+    );
+  });
+
+  // The forms copy the route into local state on mount and never look again,
+  // so a reset that only clears the URL leaves the rejected value in the form.
+  it("remounts the filter form so it reads the cleared route", async () => {
+    await router.push({ name: "ships", query: { qualityGteq: "bogus" } });
+
+    const FilterForm = defineComponent({
+      setup() {
+        const route = useRoute();
+        const form = ref({ ...route.query });
+
+        return () =>
+          h("span", { "data-test": "form" }, JSON.stringify(form.value));
+      },
+    });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        slots: { filter: () => h(FilterForm) },
+        plugins: [router],
+      },
+    );
+
+    // The filter panel is teleported, so it is not inside the wrapper.
+    const formText = () =>
+      document.querySelector('[data-test="form"]')?.textContent;
+
+    expect(formText()).toContain("bogus");
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(formText()).toBe("{}");
+  });
+
+  it("keeps a list's own view keys through a reset", async () => {
+    await router.push({
+      name: "ships",
+      query: { t: "archive", s: "bogus asc" },
+    });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+          viewKeys: ["t"],
+        },
+        plugins: [router],
+      },
+    );
+
+    await wrapper.get('[data-test="client-error-reset"]').trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toEqual({ t: "archive" });
+  });
+
+  it("offers no reset when the route holds nothing to clear", async () => {
+    await router.push({ name: "ships", query: { tab: "grid" } });
+
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: {
+          name: "test-list",
+          records: [],
+          asyncStatus: failedWith(400),
+        },
+        plugins: [router],
+      },
+    );
+
+    expect(wrapper.findComponent({ name: "ClientError" }).exists()).toBe(true);
+    expect(wrapper.find('[data-test="client-error-reset"]').exists()).toBe(
+      false,
+    );
   });
 
   it("blames the connection, not the server, when nothing answered", async () => {

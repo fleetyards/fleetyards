@@ -47,6 +47,10 @@ describe("errorTypeFrom", () => {
     expect(errorTypeFrom(failedWith(404))).toBe(ErrorTypesEnum.NOT_FOUND);
   });
 
+  it("reads a request the API refused to validate as a client error", () => {
+    expect(errorTypeFrom(failedWith(400))).toBe(ErrorTypesEnum.CLIENT_ERROR);
+  });
+
   it("reads everything else as an error", () => {
     expect(errorTypeFrom(failedWith(500))).toBe(ErrorTypesEnum.ERROR);
     expect(errorTypeFrom(failedWith(422))).toBe(ErrorTypesEnum.ERROR);

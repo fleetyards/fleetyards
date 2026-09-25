@@ -52,6 +52,7 @@ Fleetyards frontend. Components here should be:
 - **Video/** — Video player
 - **PrimaryAction/** — Primary action button
 - **ServerError/** — Server error message
+- **ClientError/** — Rejected-request message (400), with an optional filter reset
 - **Loader/** — General loading spinner
 - **MetricsList/** — Metrics/statistics list
 - **NotFound/** — Not found/404 message

@@ -203,6 +203,7 @@
       "accessDenied": "Acceso denegado",
       "serverError": "Error del servidor",
       "offline": "Conexión perdida",
+      "invalidRequest": "Solicitud no válida",
       "comments": "Comentarios",
       "login": "Iniciar sesión",
       "hangar": {

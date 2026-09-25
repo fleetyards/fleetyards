@@ -27,6 +27,8 @@
       "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
       "offline": "The request never reached the server. Your device appears to be offline, or the server could not be reached. Check your connection and try again.",
+      "invalidRequest": "The server could not process this request. Reload the page and try again.",
+      "invalidListRequest": "This filter or sort isn't valid. Reset it to show the list again.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

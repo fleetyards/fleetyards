@@ -17,6 +17,9 @@ export const usePaginationStore = defineStore("pagination", {
     setBykey(key: string, value: string | number) {
       this.perPage[key] = value;
     },
+    removeByKey(key: string) {
+      delete this.perPage[key];
+    },
   },
   persist: {
     pick: ["perPage"],

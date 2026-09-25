@@ -27,6 +27,8 @@
       "accessDenied": "您无权查看此页面。",
       "serverError": "服务器当前遇到技术问题。请稍后再试。",
       "offline": "请求未能到达服务器。你的设备似乎已离线，或者无法连接到服务器。请检查网络连接后重试。",
+      "invalidRequest": "服务器无法处理此请求。请刷新页面后重试。",
+      "invalidListRequest": "此过滤器或排序无效。请重置后重新显示列表。",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

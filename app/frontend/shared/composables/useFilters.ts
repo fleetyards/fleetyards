@@ -2,9 +2,11 @@ import debounce from "lodash.debounce";
 
 export const useFilters = <T>({
   ignoreKeys,
+  viewKeys = [],
   updateCallback,
 }: {
   ignoreKeys?: string[];
+  viewKeys?: string[];
   updateCallback?: (() => void) | (() => Promise<void>);
 } = {}) => {
   const route = useRoute();
@@ -16,7 +18,7 @@ export const useFilters = <T>({
   // route query into `q`, and the query schemas are `additionalProperties:
   // false` -- so a key like this reaches the API as an unknown filter and comes
   // back a 400, which reads as a server error.
-  const viewStateKeys = ["tab", "view", "direction"];
+  const viewStateKeys = ["tab", "view", "direction", ...viewKeys];
 
   const excludeKeys = [
     ...defaultIgnoreKeys,
@@ -113,21 +115,27 @@ export const useFilters = <T>({
       .catch(() => {});
   };
 
-  const resetFilter = () => {
+  const resetFilter = () =>
     router
       .replace({
         ...route,
         // Clearing the filters is not leaving the view they were set in.
         query: { ...viewState.value },
       })
-
       .catch(() => {});
-  };
+
+  const hasResettableQuery = computed(() =>
+    Object.keys(route.query).some((key) => !viewStateKeys.includes(key)),
+  );
 
   const filter = debounce(debouncedFilter, 300);
 
+  // An edit still in the debounce would otherwise land after its form is gone.
+  if (getCurrentScope()) onScopeDispose(() => filter.cancel());
+
   return {
     isFilterSelected,
+    hasResettableQuery,
     resetFilter,
     filter,
     filters,

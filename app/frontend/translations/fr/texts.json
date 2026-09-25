@@ -27,6 +27,8 @@
       "accessDenied": "Vous n'êtes pas autorisé à consulter cette page.",
       "serverError": "Le serveur rencontre actuellement des difficultés techniques. Veuillez réessayer plus tard.",
       "offline": "La requête n'a pas atteint le serveur. Votre appareil semble hors ligne ou le serveur est injoignable. Vérifiez votre connexion et réessayez.",
+      "invalidRequest": "Le serveur n'a pas pu traiter cette requête. Rechargez la page et réessayez.",
+      "invalidListRequest": "Ce filtre ou ce tri n'est pas valide. Réinitialisez-le pour afficher à nouveau la liste.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

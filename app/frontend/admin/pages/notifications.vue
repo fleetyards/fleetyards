@@ -398,6 +398,7 @@ const destroySelected = () =>
     :records="records"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    :view-keys="[NOTIFICATION_TAB_QUERY_KEY]"
     hide-empty
   >
     <template #filter>

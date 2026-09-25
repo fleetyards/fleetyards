@@ -203,6 +203,7 @@
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",
       "offline": "Verbindung verloren",
+      "invalidRequest": "Ungültige Anfrage",
       "comments": "Kommentare",
       "login": "Anmelden",
       "hangar": {

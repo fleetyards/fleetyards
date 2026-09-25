@@ -73,4 +73,23 @@ describe("useFilters navigation", () => {
       }),
     );
   });
+
+  it("keeps a list's own view keys when the filters are cleared", () => {
+    query.value = { t: "archive", s: "bogus asc", tab: "log" };
+
+    useFilters({ viewKeys: ["t"] }).resetFilter();
+
+    expect(replace).toHaveBeenCalledWith(
+      expect.objectContaining({ query: { t: "archive", tab: "log" } }),
+    );
+  });
+
+  it("has nothing to reset when the route holds only view state", () => {
+    query.value = { t: "archive", tab: "log" };
+
+    expect(useFilters({ viewKeys: ["t"] }).hasResettableQuery.value).toBe(
+      false,
+    );
+    expect(useFilters().hasResettableQuery.value).toBe(true);
+  });
 });
