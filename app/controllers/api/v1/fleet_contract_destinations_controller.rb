@@ -19,9 +19,21 @@ module Api
       def index
         authorize! with: FleetContractPolicy, to: :choose_destination?, context: {fleet: @fleet}
 
-        options = ::Contracts::DestinationOptions.new(fleet: @fleet, editor: current_resource_owner)
+        options = ::Contracts::DestinationOptions.new(fleet: @fleet, editor: current_resource_owner,
+          author: contract_author)
 
         @destinations = options.fleet_inventories + options.hangar_inventories
+      end
+
+      # Editing an existing contract, the hangar half is the author's and only
+      # theirs to pick: anybody else is offered none of their own, which the
+      # model would refuse. Unscoped, the caller is writing a new contract and
+      # is its author.
+      private def contract_author
+        slug = params[:contract_slug] || params[:contractSlug]
+        return current_resource_owner if slug.blank?
+
+        @fleet.fleet_contracts.find_by!(slug:).created_by
       end
 
       private def set_fleet

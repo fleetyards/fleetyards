@@ -1478,6 +1478,14 @@ paths:
       tags:
       - Contracts
       operationId: fleetContractDestinations
+      parameters:
+      - name: contractSlug
+        in: query
+        schema:
+          type: string
+        required: false
+        description: The contract being edited. Its author's inventories are offered
+          only to its author.
       security:
       - SessionCookie: []
       - Oauth2:

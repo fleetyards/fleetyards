@@ -11,6 +11,9 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
     parameter name: "fleetSlug", in: :path, schema: {type: :string}
 
     get("Fleet Contract Destinations") do
+      parameter name: "contractSlug", in: :query, schema: {type: :string}, required: false,
+        description: "The contract being edited. Its author's inventories are offered only to its author."
+
       operationId "fleetContractDestinations"
       tags "Contracts"
       produces "application/json"
@@ -76,6 +79,35 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
       assert_equal [@depot.id, @vault.id, own.id], parsed_body.pluck("id")
       assert_equal %w[fleet fleet user], parsed_body.pluck("holder")
     end
+  end
+
+  test "editing somebody else's contract offers none of the editor's own inventories" do
+    create(:inventory, holder: @officer)
+    contract = create(:fleet_contract, :hangar_destination, fleet: @fleet, created_by: @author)
+    sign_in @officer
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
+      params: {contractSlug: contract.slug} do
+      assert_equal [@depot.id, @vault.id], parsed_body.pluck("id")
+    end
+  end
+
+  test "editing their own contract still offers the author their inventories" do
+    locker = create(:inventory, holder: @author)
+    contract = create(:fleet_contract, fleet: @fleet, created_by: @author, destination_fleet_inventory: @depot)
+    sign_in @author
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
+      params: {contractSlug: contract.slug} do
+      assert_equal [locker.id], parsed_body.pluck("id")
+    end
+  end
+
+  test "a contract of another fleet is not found" do
+    sign_in @officer
+
+    assert_api_response :get, 404, path_params: {fleetSlug: @fleet.slug},
+      params: {contractSlug: create(:fleet_contract).slug}
   end
 
   test "a member who cannot write contracts is refused" do

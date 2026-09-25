@@ -79,7 +79,13 @@ const inventoryOptions = computed<FilterOption[]>(() =>
 // inventories they could accept deliveries into, and their own. Deciding that
 // here would mean re-deriving the privilege and visibility rules the API
 // checks the choice against anyway.
-const { data: destinations } = useFleetContractDestinations(fleetSlug);
+//
+// Editing, the API is told which contract: its hangar half belongs to the
+// author, so anybody else is offered none of their own.
+const { data: destinations } = useFleetContractDestinations(
+  fleetSlug,
+  computed(() => (props.contract ? { contractSlug: props.contract.slug } : {})),
+);
 
 // One picker over two id fields, so the value carries which one it is.
 const destinationKey = (destination: { holder: string; id: string }) =>

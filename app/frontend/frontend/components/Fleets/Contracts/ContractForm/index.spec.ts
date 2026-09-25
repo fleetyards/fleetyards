@@ -7,6 +7,9 @@ const updateMutation = vi.fn(() => Promise.resolve({ slug: "job-1" }));
 const destinations = vi.hoisted(() => ({
   value: [] as Record<string, unknown>[],
 }));
+const destinationParams = vi.hoisted(() => ({
+  value: undefined as { value: Record<string, unknown> } | undefined,
+}));
 
 // Mocked as a module, not stubbed at mount: the real one reaches HoloViewer and
 // pulls three.js in, which does not resolve under vitest.
@@ -34,7 +37,13 @@ vi.mock("@/services/fyApi", () => ({
   },
   FleetContractDestinationHolderEnum: { FLEET: "fleet", USER: "user" },
   useFleetInventories: () => ({ data: { value: { items: [] } } }),
-  useFleetContractDestinations: () => ({ data: destinations }),
+  useFleetContractDestinations: (
+    _fleetSlug: unknown,
+    params: { value: Record<string, unknown> },
+  ) => {
+    destinationParams.value = params;
+    return { data: destinations };
+  },
   useCreateFleetContract: () => ({ mutateAsync: createMutation }),
   useUpdateFleetContract: () => ({ mutateAsync: updateMutation }),
 }));
@@ -306,6 +315,19 @@ describe("ContractForm destination", () => {
 
     expect(data.destinationFleetInventoryId).toBe("depot");
     expect(data.destinationInventoryId).toBeNull();
+  });
+
+  // The API decides whose inventories are offered, so it has to know which
+  // contract is being edited -- without it an editor would be offered their
+  // own, which the model refuses on another author's contract.
+  it("names the contract being edited when asking for destinations", () => {
+    mountForm({ slug: "job-1", kind: "procurement" });
+
+    expect(destinationParams.value?.value).toEqual({ contractSlug: "job-1" });
+
+    mountForm();
+
+    expect(destinationParams.value?.value).toEqual({});
   });
 
   // Somebody else editing still sees where it delivers, and keeps it by not
