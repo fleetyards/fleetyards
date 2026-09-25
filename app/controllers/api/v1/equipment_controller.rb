@@ -14,8 +14,11 @@ module Api
       end.freeze
 
       def index
+        # `id` last so equal values have one order: names repeat across
+        # colourways, and without it a page boundary through a run of them could
+        # show one item twice and skip another.
         normalize_sort_params(equipment_query_params)
-        equipment_query_params["sorts"] = sorting_params(Equipment, equipment_query_params["sorts"])
+        equipment_query_params["sorts"] = sorting_params(Equipment, equipment_query_params["sorts"]) + ["id asc"]
 
         # Skins, NPC loadouts and event copies carry their own record but are
         # not something a player holds, so the list leaves them out. So does

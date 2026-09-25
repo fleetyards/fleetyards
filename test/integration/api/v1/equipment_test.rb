@@ -124,6 +124,36 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Colourways share a name, so ordering by name alone left a run of equals in
+  # whatever order Postgres chose per query -- a page boundary through it could
+  # show one twice and skip the other.
+  test "GET /equipment pages through items sharing a name without repeating one" do
+    create(:equipment, name: "Concept Shirt", sc_key: "fio_shirt_01")
+    create(:equipment, name: "Concept Shirt", sc_key: "fio_shirt_02")
+
+    ids = [1, 2].flat_map do |page|
+      get "/api/v1/equipment", params: {q: {"nameOrSlugCont" => "concept"}, perPage: 1, page:}
+      response.parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_equal 2, ids.uniq.size
+  end
+
+  # The labels are translated, so a fragment filled by a German reader must not
+  # be what an English one is served.
+  test "GET /equipment serves labels in each reader's language from the cache" do
+    with_fragment_caching do
+      get "/api/v1/equipment", params: {q: {"nameCont" => "P4-AR Rifle"}}, headers: {"Accept-Language" => "de"}
+      german = response.parsed_body["items"].first["equipmentTypeLabel"]
+
+      get "/api/v1/equipment", params: {q: {"nameCont" => "P4-AR Rifle"}}, headers: {"Accept-Language" => "en"}
+      english = response.parsed_body["items"].first["equipmentTypeLabel"]
+
+      assert_equal "Weapon", english
+      refute_equal english, german
+    end
+  end
+
   test "GET /equipment exposes the armour stats the spec block carries" do
     create(:equipment, :armor, name: "Novikov Exploration Suit")
 
