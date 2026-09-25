@@ -26,10 +26,30 @@ export enum WishlistTableViewColsEnum {
   PLEDGE_PRICE = "modelPledgePrice",
 }
 
+// Every sort the wishlist can offer as a chip. No custom order: that is the
+// hangar's, and a wishlist has none of its own.
+export enum WishlistSortFieldsEnum {
+  NAME = "name",
+  MANUFACTURER_NAME = "modelManufacturerName",
+  LENGTH = "modelLength",
+  BEAM = "modelBeam",
+  HEIGHT = "modelHeight",
+  MASS = "modelMass",
+  CARGO = "modelCargo",
+  SCM_SPEED = "modelScmSpeed",
+  MAX_SPEED = "modelMaxSpeed",
+  GROUND_MAX_SPEED = "modelGroundMaxSpeed",
+  FOCUS = "modelFocus",
+  PRODUCTION_STATUS = "modelProductionStatus",
+  PRICE = "modelPrice",
+  PLEDGE_PRICE = "modelPledgePrice",
+}
+
 interface WishlistState extends ShipListState {
   ships: string[];
   tableViewImageCols: WishlistTableViewImageColsEnum[];
   tableViewCols: WishlistTableViewColsEnum[];
+  sortFields: WishlistSortFieldsEnum[];
 }
 
 export const useWishlistStore = defineStore("wishlist", {
@@ -40,6 +60,14 @@ export const useWishlistStore = defineStore("wishlist", {
     ships: [],
     tableViewImageCols: [WishlistTableViewImageColsEnum.STORE_IMAGE],
     tableViewCols: [WishlistTableViewColsEnum.MANUFACTURER_NAME],
+    sortFields: [
+      WishlistSortFieldsEnum.NAME,
+      WishlistSortFieldsEnum.MANUFACTURER_NAME,
+      WishlistSortFieldsEnum.LENGTH,
+      WishlistSortFieldsEnum.CARGO,
+      WishlistSortFieldsEnum.PRICE,
+      WishlistSortFieldsEnum.PRODUCTION_STATUS,
+    ],
   }),
   getters: {
     empty(state) {
@@ -65,6 +93,9 @@ export const useWishlistStore = defineStore("wishlist", {
     setTableViewCols(cols: WishlistTableViewColsEnum[]) {
       this.tableViewCols = cols;
     },
+    setSortFields(fields: WishlistSortFieldsEnum[]) {
+      this.sortFields = fields;
+    },
   },
   persist: {
     pick: [
@@ -73,6 +104,7 @@ export const useWishlistStore = defineStore("wishlist", {
       "gridView",
       "tableViewImageCols",
       "tableViewCols",
+      "sortFields",
     ],
   },
 });
