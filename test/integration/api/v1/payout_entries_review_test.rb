@@ -148,4 +148,23 @@ class Api::V1::PayoutEntriesReviewTest < ActionDispatch::IntegrationTest
       assert_equal "approved", parsed_body["reviewStatus"]
     end
   end
+
+  # The client reviews what the contractors claim, so an author who also
+  # worked their own contract cannot wave their own expense through.
+  test "an author's own expense on their contract waits for somebody else" do
+    Flipper.enable("fleet_tours")
+    Flipper.enable("fleet_contracts")
+
+    author = create(:user)
+    fleet = create(:fleet, members: [author])
+    contract = create(:fleet_contract, :fulfilled, fleet: fleet, created_by: author)
+    ledger = contract.create_payout_ledger!
+    author_p = create(:payout_participant, payout_ledger: ledger, user: author)
+    expense = create(:payout_entry, :pending, payout_ledger: ledger, payout_participant: author_p, recorded_by: author)
+
+    sign_in author
+
+    assert_api_response :put, 403, api_path: "/payouts/{payoutLedgerId}/entries/{id}/approve",
+      path_params: {payoutLedgerId: ledger.id, id: expense.id}
+  end
 end

@@ -28,8 +28,20 @@ class PayoutEntryPolicy < FleetBasePolicy
   def review?
     return false unless ledger&.open?
     return false unless record.respond_to?(:expense?) && record.expense?
+    return false if own_contract_claim?
 
     ledger_policy.manage?
+  end
+
+  # On a contract the client reviews what the contractors claim. Somebody who
+  # manages the ledger and also worked the contract -- an author who claimed
+  # their own job, an officer on the crew -- is a contractor for their own
+  # expenses, and one of the others has to answer them.
+  def own_contract_claim?
+    return false unless ledger&.subject.is_a?(FleetContract)
+    return false if user.blank?
+
+    record.try(:payout_participant)&.user_id == user.id
   end
 
   params_filter do |params|
