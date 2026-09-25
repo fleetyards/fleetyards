@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useSortParam } from "@/shared/composables/useSortParam";
 import { type FleetContractSortEnum } from "@/services/fyApi";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -164,7 +164,7 @@ onUnmounted(() => {
     </template>
 
     <template #sort>
-      <SortBar
+      <ListToolbar
         v-if="gridView"
         :columns="sortFields"
         default-sort="deadline asc"

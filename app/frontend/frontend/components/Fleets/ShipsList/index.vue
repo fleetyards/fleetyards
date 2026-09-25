@@ -8,7 +8,7 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useFleetSortFields } from "@/frontend/composables/useFleetSortFields";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
@@ -340,7 +340,7 @@ useSubscription({
         </template>
 
         <template #sort>
-          <SortBar :columns="sortFields" default-sort="modelName asc" />
+          <ListToolbar :columns="sortFields" default-sort="modelName asc" />
         </template>
 
         <template #default="{ records, loading, filterVisible, emptyVisible }">

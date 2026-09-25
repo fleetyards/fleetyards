@@ -1,7 +1,7 @@
 /**
  * The sort the list is ordered by, shaped for an API request.
  *
- * The sort lives in the route as `q[s]` -- `SortBar` and the table headings
+ * The sort lives in the route as `q[s]` -- `ListToolbar` and the table headings
  * both write it there -- but `useFilters` strips `s` out of `filters`, and a
  * page that builds its request from `filters` (or from nothing but pagination)
  * drops it. The chip then toggles its arrow while the list keeps its old order.

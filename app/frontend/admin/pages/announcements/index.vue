@@ -11,7 +11,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import RowList from "@/shared/components/RowList/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import AnnouncementRow from "@/admin/components/Announcements/Row/index.vue";
 import {
   useAnnouncements,
@@ -110,7 +110,7 @@ const sortFields = useAnnouncementSortFields();
     </template>
 
     <template #sort>
-      <SortBar :columns="sortFields" default-sort="createdAt desc" />
+      <ListToolbar :columns="sortFields" default-sort="createdAt desc" />
     </template>
 
     <!-- No `hide-empty`: the table used to draw its own empty row so the column

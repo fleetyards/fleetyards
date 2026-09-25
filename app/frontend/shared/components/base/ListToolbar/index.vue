@@ -1,11 +1,11 @@
 <script lang="ts">
 export default {
-  name: "BaseTableSortBar",
+  name: "BaseListToolbar",
 };
 </script>
 
 <script lang="ts" setup generic="T">
-import SortChip from "@/shared/components/base/Table/SortBar/Chip/index.vue";
+import ListToolbarChip from "@/shared/components/base/ListToolbar/Chip/index.vue";
 import BulkActions from "@/shared/components/base/Table/BulkActions/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { uniq as uniqArray } from "@/shared/utils/Array";
@@ -67,26 +67,24 @@ const onSelectAll = (value?: boolean) => {
 <template>
   <div
     v-if="sortable.length || props.selectable"
-    class="base-table-sort-bar-wrapper"
+    class="base-list-toolbar-wrapper"
   >
-    <div class="base-table-sort-bar">
+    <div class="base-list-toolbar">
       <FormCheckbox
         v-if="props.selectable"
-        class="base-table-sort-bar__select-all"
+        class="base-list-toolbar__select-all"
         :disabled="props.selectionDisabled || !props.recordIds.length"
         name="all"
         :model-value="allSelected"
         inline
         no-label
         :partial="selected.length > 0 && !allSelected"
-        data-test="sort-bar-select-all"
+        data-test="list-toolbar-select-all"
         @update:model-value="onSelectAll"
       />
       <template v-if="sortable.length">
-        <span class="base-table-sort-bar__label">{{
-          t("actions.sortBy")
-        }}</span>
-        <SortChip
+        <span class="base-list-toolbar__label">{{ t("actions.sortBy") }}</span>
+        <ListToolbarChip
           v-for="column in sortable"
           :key="`sort-chip-${column.name}`"
           :label="column.label"

@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -334,7 +334,11 @@ const openDisplayOptionsModal = () => {
 
     <template #sort>
       <!-- Grid view only: the table carries the same sorts on its headings. -->
-      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
+      <ListToolbar
+        v-if="gridView"
+        :columns="sortFields"
+        default-sort="name asc"
+      />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">

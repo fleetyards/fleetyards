@@ -11,7 +11,7 @@ import Grid from "@/shared/components/base/Grid/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useModelSortFields } from "@/frontend/composables/useModelSortFields";
 import Empty from "@/shared/components/Empty/index.vue";
 import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
@@ -160,7 +160,7 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #sort>
-      <SortBar :columns="sortFields" default-sort="name asc" />
+      <ListToolbar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">

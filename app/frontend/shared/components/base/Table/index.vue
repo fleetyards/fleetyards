@@ -55,7 +55,7 @@ type Props = {
   // contract as BaseGrid's, so a list can offer it in either view.
   sortable?: boolean;
   sortHandle?: string;
-  // Off where the list's sort bar carries the select-all box and the bulk
+  // Off where the list's toolbar carries the select-all box and the bulk
   // actions: the rows keep their boxes, the table drops its own copies.
   selectionControls?: boolean;
 };

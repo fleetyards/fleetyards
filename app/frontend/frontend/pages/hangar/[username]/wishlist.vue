@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useSortParam } from "@/shared/composables/useSortParam";
 import { type VehicleSortEnum } from "@/services/fyApi";
 import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
@@ -215,7 +215,7 @@ onMounted(async () => {
     <template #sort>
       <!-- A public hangar is only ever cards, so this is the whole
       sort control rather than a second way to reach one. -->
-      <SortBar :columns="sortFields" default-sort="name asc" />
+      <ListToolbar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading }">

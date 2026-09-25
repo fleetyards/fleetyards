@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
 import { useVehicleReorder } from "@/frontend/composables/useVehicleReorder";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
@@ -149,7 +149,7 @@ const shareUrl = computed(() => {
 
 const route = useRoute();
 
-// What the sort bar shows as chosen while the URL names no sort. Unset, the
+// What the toolbar shows as chosen while the URL names no sort. Unset, the
 // server leads with the flagship and then sorts by name -- an order no chip
 // stands for, so none is shown as chosen.
 const defaultSort = computed(
@@ -592,7 +592,7 @@ const openDisplayOptionsModal = () => {
       <!-- In both views: the custom order has no column heading, so the
            table alone could never switch to it. The table's rows are picked
            from here too; the cards have no boxes to pick them by. -->
-      <SortBar
+      <ListToolbar
         v-model:selected="selected"
         :columns="sortFields"
         :default-sort="defaultSort"
@@ -606,7 +606,7 @@ const openDisplayOptionsModal = () => {
             @reset-selected="selected = []"
           />
         </template>
-      </SortBar>
+      </ListToolbar>
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">

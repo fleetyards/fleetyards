@@ -13,7 +13,7 @@ type Props = {
 
 defineProps<Props>();
 
-// The sorts the list's sort bar offers, picked the same way as its columns.
+// The sorts the list's toolbar offers as chips, picked the same way as its columns.
 const picked = defineModel<string[]>({ required: true });
 
 const { t } = useI18n();

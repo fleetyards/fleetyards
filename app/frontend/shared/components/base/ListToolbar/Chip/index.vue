@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "BaseTableSortChip",
+  name: "BaseListToolbarChip",
 };
 </script>
 
@@ -27,8 +27,8 @@ const { currentDirection, sortableLink } = useTableSorting({
 <template>
   <router-link
     :to="sortableLink"
-    class="base-table-sort-chip"
-    :class="{ 'base-table-sort-chip--active': !!currentDirection }"
+    class="base-list-toolbar-chip"
+    :class="{ 'base-list-toolbar-chip--active': !!currentDirection }"
   >
     {{ props.label }}
     <!-- Matching `SortableLink`'s own arrows rather than picking a pair: the

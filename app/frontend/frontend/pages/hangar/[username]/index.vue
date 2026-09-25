@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -314,7 +314,7 @@ useSubscription({
     <template #sort>
       <!-- A public hangar is only ever cards, so this is the whole
       sort control rather than a second way to reach one. -->
-      <SortBar :columns="sortFields" :default-sort="defaultSort" />
+      <ListToolbar :columns="sortFields" :default-sort="defaultSort" />
     </template>
 
     <template #default="{ records, loading }">

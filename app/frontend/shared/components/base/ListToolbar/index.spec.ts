@@ -30,11 +30,11 @@ const mountBar = async (props: Record<string, unknown> = {}) =>
 const selectAll = (wrapper: BarWrapper) =>
   wrapper.findComponent({ name: "FormCheckbox" });
 
-describe("BaseTableSortBar", () => {
+describe("BaseListToolbar", () => {
   it("offers no selection to a list whose rows cannot be picked", async () => {
     const wrapper = await mountBar();
 
-    expect(wrapper.find('[data-test="sort-bar-select-all"]').exists()).toBe(
+    expect(wrapper.find('[data-test="list-toolbar-select-all"]').exists()).toBe(
       false,
     );
     expect(wrapper.text()).not.toContain("bulk actions");
