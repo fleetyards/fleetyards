@@ -61,6 +61,7 @@ if inventory_item.item.present?
     json.type inventory_item.item_type
     json.name inventory_item.item.name
     json.slug inventory_item.item.slug
+    json.listed inventory_item.item.try(:listed?) != false
     json.counted inventory_item.item.try(:counted?) || false
     json.available inventory_item.item_available?
   end

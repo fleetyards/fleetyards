@@ -21,7 +21,9 @@ if position.respond_to?(:item_id) && position.item_id.present?
   json.item do
     json.id position.item_id
     json.type position.item_type
-    json.slug local_assigns.fetch(:item_slugs, {})[[position.item_type, position.item_id]]
+    linked = local_assigns.fetch(:linked_items, {})[[position.item_type, position.item_id]]
+    json.slug linked&.slug
+    json.listed linked.try(:listed?) != false
   end
 else
   json.item nil

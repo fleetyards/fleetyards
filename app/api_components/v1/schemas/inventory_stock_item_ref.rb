@@ -17,7 +17,9 @@ module V1
         properties: {
           id: {type: :string, format: :uuid},
           type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
-          slug: {type: [:string, :null]}
+          slug: {type: [:string, :null]},
+          # Whether the record has a public page to link to.
+          listed: {type: :boolean}
         }
       })
     end

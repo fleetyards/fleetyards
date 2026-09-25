@@ -7,7 +7,7 @@
 # those rows in place without touching the blueprint or moving the version
 # string. Keyed on the source alone, a re-import would go on serving the
 # previous values until something else happened to touch the row.
-json.cache! ["v1", blueprint, blueprint.facts, ::ScData::Source.current] do
+json.cache! ["v2", blueprint, blueprint.facts, ::ScData::Source.current] do
   json.partial! "api/v1/blueprints/base", blueprint:
 end
 

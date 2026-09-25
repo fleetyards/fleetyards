@@ -852,6 +852,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
       assert_equal "Commodity", lines["Titanium"].dig("item", "type")
       assert_equal titanium.slug, lines["Titanium"].dig("item", "slug")
+      assert_equal true, lines["Titanium"].dig("item", "listed")
       assert_nil lines["Hand-typed crate"]["item"]
     end
   end

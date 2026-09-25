@@ -68,7 +68,21 @@ class Api::V1::HangarInventoryStockIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
       position = parsed_body.find { |d| d["name"] == "P4-AR Rifle" }
 
-      assert_equal({"id" => rifle.id, "type" => "Equipment", "slug" => "p4-ar-rifle"}, position["item"])
+      assert_equal({"id" => rifle.id, "type" => "Equipment", "slug" => "p4-ar-rifle", "listed" => true}, position["item"])
+    end
+  end
+
+  # A hidden variant has no public page, so the row must not offer a link to one.
+  test "GET /hangar/inventories/:slug/stock marks an item the catalogue leaves out" do
+    skin = create(:equipment, :hidden, name: "P4-AR Boneyard")
+    create(:inventory_item, inventory: @inventory, name: "P4-AR Boneyard", category: :weapon, quantity: 1,
+      unit: :units, entry_type: :deposit, item: skin)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
+      position = parsed_body.find { |d| d["name"] == "P4-AR Boneyard" }
+
+      assert_equal false, position.dig("item", "listed")
     end
   end
 

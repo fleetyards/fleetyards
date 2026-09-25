@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-item_slugs = InventoryLedgerEntry.item_slugs(@stock)
+linked_items = InventoryLedgerEntry.linked_items(@stock)
 
-json.array! @stock, partial: "api/v1/shared/stock_position", as: :position, item_slugs:
+json.array! @stock, partial: "api/v1/shared/stock_position", as: :position, linked_items:

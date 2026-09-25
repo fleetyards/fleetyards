@@ -23,4 +23,15 @@ describe("catalogueItemRoute", () => {
     expect(catalogueItemRoute({ type: "Vehicle", slug: "x" })).toBeUndefined();
     expect(catalogueItemRoute(null)).toBeUndefined();
   });
+
+  // A hidden equipment variant has no page, and a link to it would 404.
+  it("gives no route for a record the catalogue leaves out", () => {
+    expect(
+      catalogueItemRoute({
+        type: "Equipment",
+        slug: "p4-ar-boneyard",
+        listed: false,
+      }),
+    ).toBeUndefined();
+  });
 });

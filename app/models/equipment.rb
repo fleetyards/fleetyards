@@ -170,6 +170,14 @@ class Equipment < ApplicationRecord
     build.blank?
   end
 
+  # Whether the item has a public page. Hidden variants -- skins, NPC loadouts,
+  # event copies -- stay out of the catalogue, so a reference to one says so
+  # rather than linking to a 404. The column rather than the build: the load
+  # writes both, and a list of references would otherwise load a build per row.
+  def listed?
+    !hidden
+  end
+
   # The build we are on, or the last one that described the item.
   def facts
     build || last_build

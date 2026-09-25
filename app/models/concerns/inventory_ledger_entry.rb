@@ -54,18 +54,16 @@ module InventoryLedgerEntry
     item.try(:counted?) ? allowed | [UNITS.keys.last.to_s] : allowed
   end
 
-  # The slug of each catalogue record a list of stock positions points at, keyed
-  # by `[item_type, item_id]`, so a row can link to the item's page. One query
-  # per catalogue rather than one per row.
-  def self.item_slugs(positions)
+  # Each catalogue record a list of stock positions points at, keyed by
+  # `[item_type, item_id]`, so a row can link to the item's page. One query per
+  # catalogue rather than one per row.
+  def self.linked_items(positions)
     positions
       .filter_map { |position| [position.item_type, position.item_id] if position.try(:item_id).present? }
       .select { |item_type, _| item_type.in?(ITEM_TYPES) }
       .group_by(&:first)
-      .flat_map do |item_type, pairs|
-        item_type.constantize.where(id: pairs.map(&:last)).pluck(:id, :slug).map { |id, slug| [[item_type, id], slug] }
-      end
-      .to_h
+      .flat_map { |item_type, pairs| item_type.constantize.where(id: pairs.map(&:last)).to_a }
+      .index_by { |record| [record.class.name, record.id] }
   end
 
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze

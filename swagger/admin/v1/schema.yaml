@@ -10760,6 +10760,8 @@ components:
           - 'null'
         slug:
           type: string
+        listed:
+          type: boolean
       additionalProperties: false
       required:
       - type

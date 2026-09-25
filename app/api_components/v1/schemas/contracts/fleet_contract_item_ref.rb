@@ -16,6 +16,8 @@ module V1
             type: {type: :string},
             name: {type: :string},
             slug: {type: [:string, :null]},
+            # Whether the record has a public page to link to.
+            listed: {type: :boolean},
 
             # Whether the game counts this one in pieces. Editing a line has to
             # keep offering the unit the line was written in.

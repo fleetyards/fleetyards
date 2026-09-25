@@ -13,6 +13,7 @@ export type InventoryItemReference = {
   type?: string;
   name?: string;
   slug?: string;
+  listed?: boolean;
   available?: boolean;
 };
 
@@ -33,7 +34,12 @@ export type InventoryStockRecord = {
   netQuantity: number;
   inventory?: InventoryReference;
   // Present where every entry in the row names the same catalogue record.
-  item?: { id?: string; type?: string; slug?: string | null } | null;
+  item?: {
+    id?: string;
+    type?: string;
+    slug?: string | null;
+    listed?: boolean;
+  } | null;
 };
 
 export type InventoryVehicleReference = {
