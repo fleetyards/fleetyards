@@ -2351,6 +2351,7 @@
           "uex_prices_import": "UEX 价格同步",
           "uex_commodity_prices_import": "UEX 商品同步",
           "uex_component_prices_import": "UEX 部件同步",
+          "uex_equipment_prices_import": "UEX 装备同步",
           "new_supporter": "新支持者",
           "rsi_api_blocked": "RSI API 被封锁",
           "rsi_api_unblocked": "RSI API 已恢复",

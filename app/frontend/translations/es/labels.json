@@ -2351,6 +2351,7 @@
           "uex_prices_import": "Sincronización de precios UEX",
           "uex_commodity_prices_import": "Sincronización de materias primas UEX",
           "uex_component_prices_import": "Sincronización de componentes UEX",
+          "uex_equipment_prices_import": "Sincronización de equipamiento UEX",
           "new_supporter": "Nuevo patrocinador",
           "rsi_api_blocked": "API de RSI bloqueada",
           "rsi_api_unblocked": "API de RSI restaurada",

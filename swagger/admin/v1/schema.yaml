@@ -10003,6 +10003,7 @@ components:
       - uex_prices_import
       - uex_commodity_prices_import
       - uex_component_prices_import
+      - uex_equipment_prices_import
       - new_supporter
       - rsi_api_blocked
       - rsi_api_unblocked
@@ -10020,6 +10021,7 @@ components:
       - UEX_PRICES_IMPORT
       - UEX_COMMODITY_PRICES_IMPORT
       - UEX_COMPONENT_PRICES_IMPORT
+      - UEX_EQUIPMENT_PRICES_IMPORT
       - NEW_SUPPORTER
       - RSI_API_BLOCKED
       - RSI_API_UNBLOCKED
@@ -15037,6 +15039,7 @@ components:
       - Imports::UexPricesImport
       - Imports::UexCommodityPricesImport
       - Imports::UexComponentPricesImport
+      - Imports::UexEquipmentPricesImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -15050,6 +15053,7 @@ components:
       - IMPORTS_UEX_PRICES_IMPORT
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT
+      - IMPORTS_UEX_EQUIPMENT_PRICES_IMPORT
       title: ImportTypeEnum
     Imports:
       type: object

@@ -169,6 +169,7 @@ class Import < ApplicationRecord
     Imports::UexPricesImport
     Imports::UexCommodityPricesImport
     Imports::UexComponentPricesImport
+    Imports::UexEquipmentPricesImport
     Imports::ScData::AllImport
   ].freeze
 

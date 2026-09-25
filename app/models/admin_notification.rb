@@ -48,6 +48,7 @@ class AdminNotification < ApplicationRecord
     uex_prices_import: "uex_prices_import",
     uex_commodity_prices_import: "uex_commodity_prices_import",
     uex_component_prices_import: "uex_component_prices_import",
+    uex_equipment_prices_import: "uex_equipment_prices_import",
     new_supporter: "new_supporter",
     rsi_api_blocked: "rsi_api_blocked",
     rsi_api_unblocked: "rsi_api_unblocked",
@@ -96,6 +97,11 @@ class AdminNotification < ApplicationRecord
       retention: 30.days,
       access: [:models],
       icon: "fa-duotone fa-microchip"
+    },
+    uex_equipment_prices_import: {
+      retention: 30.days,
+      access: [:models],
+      icon: "fa-duotone fa-helmet-battle"
     },
     new_supporter: {
       retention: 90.days,
