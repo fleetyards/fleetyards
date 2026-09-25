@@ -661,6 +661,70 @@ class Vehicle < ApplicationRecord
     HangarChannel.broadcast_to(user, to_jbuilder_hash)
   end
 
+  RANK_WIDTH = 4
+  RANK_SPACE = 35 * 36**(RANK_WIDTH - 1)
+  RANK_DEFAULT_ORDER = "vehicles.flagship DESC, vehicles.name ASC, models.name ASC, " \
+    "vehicles.created_at ASC, vehicles.id ASC"
+
+  # Gives an owner's unranked vehicles a rank, and leaves every ranked one where
+  # it is.
+  #
+  # A hangar with no ranks at all is ranked in the order it shows by default, so
+  # a custom order starts from what the owner already sees. The ranks are
+  # fixed-width base-36 strings spread evenly below "z000", which leaves a few
+  # hundred values between neighbours for the largest hangar (~6k vehicles)
+  # before lexorank has to grow a rank by a character. Nothing may start with
+  # "z": lexorank treats "z" as the upper bound and raises when asked for a rank
+  # after one that begins with it.
+  #
+  # A hangar that has ranks keeps them, and its unranked vehicles are appended
+  # after the last one in that same default order.
+  def self.rank_unranked!(user_id)
+    return if user_id.blank? || !where(user_id:, rank: nil).exists?
+
+    transaction do
+      lexorank_ranking.with_lock_if_enabled(new(user_id:), transaction: true) do
+        unranked_ids = where(user_id:, rank: nil)
+          .left_joins(:model)
+          .order(Arel.sql(RANK_DEFAULT_ORDER))
+          .pluck(:id)
+
+        if where(user_id:).where.not(rank: nil).exists?
+          append_ranks(user_id, unranked_ids)
+        else
+          spread_ranks(unranked_ids)
+        end
+      end
+    end
+  end
+
+  private_class_method def self.spread_ranks(ids)
+    ranks = ids.each_with_index.map do |id, index|
+      [id, ((index + 1) * RANK_SPACE / (ids.size + 1)).to_s(36).rjust(RANK_WIDTH, "0")]
+    end
+
+    ranks.each_slice(1000) do |slice|
+      values = slice.map { |id, rank| "(#{connection.quote(id)}::uuid, #{connection.quote(rank)})" }.join(", ")
+
+      connection.execute(<<~SQL.squish)
+        UPDATE vehicles SET rank = ranks.rank
+        FROM (VALUES #{values}) AS ranks(id, rank)
+        WHERE vehicles.id = ranks.id
+      SQL
+    end
+  end
+
+  private_class_method def self.append_ranks(user_id, ids)
+    last = where(user_id:).maximum(:rank)
+
+    ids.each do |id|
+      last = lexorank_ranking.value_between(last, nil)
+      # rubocop:disable Rails/SkipsModelValidations
+      where(id:).update_all(rank: last)
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+  end
+
   protected def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
   end
