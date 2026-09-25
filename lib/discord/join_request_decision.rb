@@ -26,37 +26,17 @@ module Discord
       @officer = officer
     end
 
-    # :done, :not_pending or :failed.
+    # :done, :not_pending or :failed. The early exit is only a shortcut; the
+    # state that counts is read again under the lock.
     #
     # Two officers answering the same request is normal, not an error -- every
     # officer sees the same buttons, and a double-click is two interactions.
-    # The state is read again under a row lock: both copies would otherwise
-    # still read `requested`, both transitions would save, and a request could
-    # end up declined after its applicant was told they were accepted.
+    # Recording the officer puts their name on the version, so the audit trail
+    # and the settled message both say who answered.
     def call
       return :not_pending unless membership.requested?
 
-      membership.with_lock do
-        if membership.requested?
-          # Recorded on the version, so the audit trail names the officer
-          # rather than nobody.
-          membership.author_id = officer.id
-
-          apply ? :done : :failed
-        else
-          :not_pending
-        end
-      end
-    end
-
-    # The AASM events carry the rest: accepting notifies the new member and
-    # broadcasts the hangar change to everyone already in the fleet.
-    private def apply
-      case decision
-      when ACCEPT then membership.accept_request!
-      when DECLINE then membership.decline!
-      else raise ArgumentError, "unknown decision #{decision.inspect}"
-      end
+      membership.answer_request(accept: decision == ACCEPT, author_id: officer.id)
     end
   end
 end

@@ -73,13 +73,13 @@ module Api
       end
 
       def accept_request
-        unless @member.accept_request!
+        unless @member.answer_request(accept: true, author_id: current_resource_owner.id) == :done
           render json: ValidationError.new("fleet_members.accept", errors: @member.errors), status: :bad_request
         end
       end
 
       def decline_request
-        unless @member.decline!
+        unless @member.answer_request(accept: false, author_id: current_resource_owner.id) == :done
           render json: ValidationError.new("fleet_members.decline", errors: @member.errors), status: :bad_request
         end
       end

@@ -378,6 +378,24 @@ class FleetMembership < ApplicationRecord
     end
   end
 
+  # Answers a join request under a row lock and returns :done, :not_pending or
+  # :failed. Every path that accepts or declines one goes through here: two
+  # officers answering at once each hold a copy that still reads `requested`,
+  # and with whiny_transitions off both transitions would save -- a request
+  # could end up declined after its applicant was told they were accepted.
+  def answer_request(accept:, author_id: nil)
+    with_lock do
+      next :not_pending unless requested?
+
+      self.author_id = author_id if author_id.present?
+      if accept ? accept_request! : decline!
+        :done
+      else
+        :failed
+      end
+    end
+  end
+
   def post_discord_join_request
     return if ::Discord::EventAnnouncement.officers_targets(fleet).empty?
 

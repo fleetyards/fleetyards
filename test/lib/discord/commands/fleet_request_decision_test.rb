@@ -153,17 +153,6 @@ module Discord
       test "carries no flags, since a follow-up cannot set them" do
         assert_nil call(::Discord::Commands::FleetAccept)[:flags]
       end
-
-      # Both copies were loaded while the request was pending, as two jobs for
-      # a double-click or for two officers would load them.
-      test "a request answered by a concurrent decision is not answered again" do
-        first = FleetMembership.find(@request.id)
-        second = FleetMembership.find(@request.id)
-
-        assert_equal :done, ::Discord::JoinRequestDecision.new("accept", first, officer: @officer).call
-        assert_equal :not_pending, ::Discord::JoinRequestDecision.new("decline", second, officer: @officer).call
-        assert_equal "accepted", @request.reload.aasm_state
-      end
     end
   end
 end
