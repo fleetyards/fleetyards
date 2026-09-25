@@ -17,9 +17,16 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
 
   const orderedVehicles = ref<Vehicle[]>([]);
 
+  // Moves sent and not yet answered. A page read in the meantime may have been
+  // answered before they landed, and taking it would put the dragged ships
+  // back; the read that follows a landed move is broadcast and taken instead.
+  let pendingMoves = 0;
+
   watch(
     items,
     (vehicles) => {
+      if (pendingMoves) return;
+
       orderedVehicles.value = [...(vehicles ?? [])];
     },
     { immediate: true },
@@ -56,9 +63,14 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
 
     const data = ahead ? { afterId: ahead } : { beforeId: behind };
 
+    pendingMoves += 1;
+
     moving = moving.then(() =>
       moveMutation
         .mutateAsync({ id, data })
+        .finally(() => {
+          pendingMoves -= 1;
+        })
         // Back to the order the server last sent rather than to the one before
         // this drag: a second drag may have landed in the meantime, and putting
         // back a snapshot from before it would undo that one too. A move that

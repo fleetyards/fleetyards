@@ -135,6 +135,28 @@ describe("useVehicleReorder", () => {
     });
   });
 
+  // A page read while the move is on its way was answered before it landed.
+  it("keeps the dragged order through a refresh while the move is out", async () => {
+    let finishMove: () => void = () => undefined;
+    move.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (finishMove = resolve)),
+    );
+    const { items, onSort, orderedVehicles } = setup();
+
+    const moved = onSort(["bravo", "alpha", "charlie"], "alpha");
+    items.value = ["alpha", "bravo", "charlie"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "alpha", "charlie"]);
+
+    finishMove();
+    await moved;
+    items.value = ["charlie", "bravo", "alpha"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["charlie", "bravo", "alpha"]);
+  });
+
   it("follows the server when it sends a new page", async () => {
     const { items, orderedVehicles } = setup();
 
