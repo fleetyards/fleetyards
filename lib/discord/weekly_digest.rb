@@ -31,41 +31,49 @@ module Discord
     # Queued without its text: each channel's list is built when that post
     # runs, so an event cancelled or narrowed while it waited is not listed.
     def run
-      deliveries.each { |target, _content| EventAnnouncement.enqueue(@fleet, target, nil, digest: true) }
+      listings.each_key { |target| EventAnnouncement.enqueue(@fleet, target, nil, digest: true) }
     end
 
+    # Only the one channel's entries are looked up in full: slot counts and
+    # occurrence overrides are the expensive part, and a fleet with many
+    # squadron channels would otherwise pay for all of them once per channel.
     def content_for_target(target)
-      deliveries.find { |candidate, _content| candidate == target }&.last
+      entries = detailed(listings[target].to_a)
+      entries.any? ? content_for(entries) : nil
     end
 
     # [[target, content], ...]
     def deliveries
-      grouped = occurrences.group_by do |occurrence|
-        event = occurrence[:event]
-        if event.squadron_restricted? then :squadron
-        elsif event.officers_only? then :officers
-        else :fleet
+      listings.filter_map do |target, listed|
+        entries = detailed(listed)
+        [target, content_for(entries)] if entries.any?
+      end
+    end
+
+    # Each target with the occurrences it may list, before anything about them
+    # is looked up.
+    private def listings
+      @listings ||= begin
+        grouped = occurrences.group_by do |occurrence|
+          event = occurrence[:event]
+          if event.squadron_restricted? then :squadron
+          elsif event.officers_only? then :officers
+          else :fleet
+          end
         end
+
+        result = {}
+        EventAnnouncement.fleet_targets(@fleet).each { |target| result[target] = grouped[:fleet] } if grouped[:fleet].present?
+        EventAnnouncement.officers_targets(@fleet).each { |target| result[target] = grouped[:officers] } if grouped[:officers].present?
+
+        if ApiClient.configured? && @fleet.fleet_notification_setting&.discord_guild_id.present?
+          by_channel(grouped[:squadron].to_a).each do |channel_id, listed|
+            result[AnnouncementTarget.squadron(channel_id)] = listed
+          end
+        end
+
+        result
       end
-
-      result = []
-
-      if grouped[:fleet].present?
-        EventAnnouncement.fleet_targets(@fleet).each { |target| result << [target, content_for(grouped[:fleet])] }
-      end
-
-      if grouped[:officers].present?
-        EventAnnouncement.officers_targets(@fleet).each { |target| result << [target, content_for(grouped[:officers])] }
-      end
-
-      return result unless ApiClient.configured?
-      return result if @fleet.fleet_notification_setting&.discord_guild_id.blank?
-
-      by_channel(grouped[:squadron].to_a).each do |channel_id, listed|
-        result << [AnnouncementTarget.squadron(channel_id), content_for(listed)]
-      end
-
-      result
     end
 
     private def by_channel(squadron_occurrences)
@@ -85,17 +93,21 @@ module Discord
         .starting_after(@from - 1.day)
         .where(status: LISTED_STATUSES)
         .includes(:fleet_squadrons)
-        .flat_map { |event| occurrences_of(event) }
-        .sort_by { |occurrence| occurrence[:starts_at] }
+        .flat_map { |event| event.occurrences(from: @from, to: @to).map { |time| {event: event, time: time} } }
+        .sort_by { |occurrence| occurrence[:time] }
     end
 
-    private def occurrences_of(event)
-      event.occurrences(from: @from, to: @to).filter_map do |time|
-        date = event.recurring? ? time.to_date : nil
+    # The start is the occurrence's own instant, the one the window was cut
+    # on and the event page shows, so the list and the site cannot disagree.
+    # The date is the key occurrence overrides are stored under.
+    private def detailed(listed)
+      listed.filter_map do |occurrence|
+        event = occurrence[:event]
+        date = event.recurring? ? occurrence[:time].to_date : nil
         availability = EventAvailability.new(event, occurrence_date: date)
         next if availability.cancelled?
 
-        {event: event, date: date, starts_at: availability.starts_at, title: availability.title, availability: availability.label}
+        {event: event, date: date, starts_at: occurrence[:time], title: availability.title, availability: availability.label}
       end
     end
 

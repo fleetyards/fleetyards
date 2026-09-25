@@ -109,6 +109,25 @@ module Discord
       end
     end
 
+    # The instant the event page shows, not one rebuilt from a date.
+    test "lists each occurrence at its own start" do
+      series = event(title: "Weekly Op", starts_at: 1.day.from_now, recurring: true, recurrence_interval: "weekly", recurrence_count: 3)
+      start = series.occurrences(from: Time.current, to: 8.days.from_now).first
+
+      assert_includes deliveries.fetch("fleet"), "<t:#{start.to_i}:f>"
+    end
+
+    test "a channel's post looks up only its own events" do
+      alpha = squadron("Alpha", "222222222222222222")
+      event(title: "Strike Op")
+      event(title: "Wing Op", visibility: "squadron", fleet_squadrons: [alpha])
+      EventAvailability.expects(:new).once.returns(stub(cancelled?: false, title: "Wing Op", label: nil))
+
+      content = WeeklyDigest.new(@fleet).content_for_target(AnnouncementTarget.squadron("222222222222222222"))
+
+      assert_includes content, "Wing Op"
+    end
+
     test "drafts and cancelled events are not listed" do
       create(:fleet_event, fleet: @fleet, title: "Draft Op", starts_at: 2.days.from_now)
       event(title: "Called Off").tap { |called_off| called_off.update_column(:status, "cancelled") }
