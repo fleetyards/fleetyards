@@ -17,7 +17,21 @@ module Discord
       return unless membership.requested?
 
       payload = JoinRequestMessage.new(membership).pending_payload
-      AnnouncementTarget.officers.deliver(membership.fleet, payload[:content], components: payload[:components])
+      message = AnnouncementTarget.officers.deliver(membership.fleet, payload[:content], components: payload[:components])
+      return unless message.is_a?(Hash) && message["id"].present?
+
+      # Not a save: nothing about the membership changed, so neither its
+      # callbacks nor its version history have anything to do with this.
+      membership.update_columns(
+        discord_request_channel_id: message["channel_id"],
+        discord_request_message_id: message["id"]
+      )
+
+      # Answered or withdrawn while the post was on its way, the request found
+      # no message to update when it closed.
+      unless FleetMembership.kept.exists?(id: membership.id, aasm_state: "requested")
+        RefreshJoinRequestMessageJob.perform_async(membership.id)
+      end
     end
   end
 end

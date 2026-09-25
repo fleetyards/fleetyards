@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -949,6 +949,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_120000) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "declined_at", precision: nil
     t.datetime "discarded_at"
+    t.string "discord_request_channel_id"
+    t.string "discord_request_message_id"
     t.uuid "fleet_id"
     t.uuid "fleet_role_id"
     t.uuid "hangar_group_id"

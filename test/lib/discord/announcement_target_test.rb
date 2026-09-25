@@ -22,7 +22,7 @@ module Discord
 
     test "posts to a squadron channel in the fleet's guild without pinging anybody" do
       channel_in(GUILD)
-      @api.expects(:create_message).with(CHANNEL, {content: "hello", allowed_mentions: {parse: []}})
+      @api.expects(:create_message).with(CHANNEL, {content: "hello", allowed_mentions: {parse: []}}).returns({"id" => "1"})
 
       assert AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
     end
@@ -51,7 +51,7 @@ module Discord
     test "the fleet's channel wins over its webhook" do
       @setting.update!(discord_announcement_channel_id: CHANNEL, discord_webhook_url: "https://discord.com/api/webhooks/1/token")
       channel_in(GUILD)
-      @api.expects(:create_message)
+      @api.expects(:create_message).returns({"id" => "1"})
       WebhookPost.any_instance.expects(:deliver).never
 
       assert AnnouncementTarget.fleet.deliver(@fleet, "hello")
@@ -112,7 +112,7 @@ module Discord
       create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: CHANNEL)
       create(:fleet_squadron, fleet: @fleet, name: "Bravo", discord_channel_id: CHANNEL)
       channel_in(GUILD)
-      @api.expects(:create_message)
+      @api.expects(:create_message).returns({"id" => "1"})
 
       assert AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
     end

@@ -93,6 +93,10 @@ module Discord
       post("channels/#{channel_id}/messages", payload)
     end
 
+    def edit_message(channel_id, message_id, payload)
+      patch("channels/#{channel_id}/messages/#{message_id}", payload)
+    end
+
     def get_channel(channel_id)
       request(:get, "channels/#{channel_id}")
     end

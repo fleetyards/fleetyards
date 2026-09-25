@@ -14,6 +14,7 @@ module Discord
       ApiClient.stubs(:new).returns(@api)
       @api.stubs(:get_channel).with(OFFICERS).returns({"guild_id" => "guild-1"})
       PostJoinRequestJob.clear
+      RefreshJoinRequestMessageJob.clear
 
       @membership = @fleet.fleet_memberships.create!(user: create(:user, username: "Newcomer"), fleet_role: @fleet.fleet_roles.find_by(name: "Member"))
     end
@@ -35,14 +36,38 @@ module Discord
     test "the request is posted to the officers channel with both buttons" do
       @membership.update!(aasm_state: "requested")
 
-      @api.expects(:create_message).with do |channel_id, payload|
+      @api.expects(:create_message).with { |channel_id, payload|
         channel_id == OFFICERS &&
           payload[:content].include?("Newcomer") &&
           payload[:components].first[:components].map { |button| button[:custom_id] } ==
             %w[accept decline].map { |decision| JoinRequestMessage.custom_id(decision, @membership.id) }
-      end
+      }.returns({"id" => "777", "channel_id" => OFFICERS})
 
       PostJoinRequestJob.new.perform(@membership.id)
+    end
+
+    test "the posted message is remembered on the membership" do
+      @membership.update!(aasm_state: "requested")
+      @api.stubs(:create_message).returns({"id" => "777", "channel_id" => OFFICERS})
+
+      PostJoinRequestJob.new.perform(@membership.id)
+
+      assert_equal [OFFICERS, "777"], @membership.reload.values_at(:discord_request_channel_id, :discord_request_message_id)
+      assert_empty RefreshJoinRequestMessageJob.jobs
+    end
+
+    # Its answer committed before the message id was stored, so the answer
+    # found nothing to update.
+    test "a request answered while the post was on its way is refreshed right after" do
+      @membership.update!(aasm_state: "requested")
+      RefreshJoinRequestMessageJob.clear
+      @api.stubs(:create_message).with { |*|
+        FleetMembership.where(id: @membership.id).update_all(aasm_state: "declined")
+      }.returns({"id" => "777", "channel_id" => OFFICERS})
+
+      PostJoinRequestJob.new.perform(@membership.id)
+
+      assert_equal [@membership.id], RefreshJoinRequestMessageJob.jobs.map { |job| job["args"].first }
     end
 
     test "a request answered while the job waited is not posted" do
