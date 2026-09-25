@@ -15,6 +15,8 @@ module Discord
       return if membership.blank? || membership.fleet.blank? || membership.fleet.discarded?
       # Answered on the website while this waited in the queue.
       return unless membership.requested?
+      # A retry after the message was already posted and remembered.
+      return if membership.discord_request_message_id.present?
 
       payload = JoinRequestMessage.new(membership).pending_payload
       message = AnnouncementTarget.officers.deliver(membership.fleet, payload[:content], components: payload[:components])

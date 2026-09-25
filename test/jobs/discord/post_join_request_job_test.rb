@@ -70,6 +70,14 @@ module Discord
       assert_equal [@membership.id], RefreshJoinRequestMessageJob.jobs.map { |job| job["args"].first }
     end
 
+    test "a request already posted is not posted again" do
+      @membership.update!(aasm_state: "requested")
+      @membership.update_columns(discord_request_channel_id: OFFICERS, discord_request_message_id: "777")
+      @api.expects(:create_message).never
+
+      PostJoinRequestJob.new.perform(@membership.id)
+    end
+
     test "a request answered while the job waited is not posted" do
       @membership.update!(aasm_state: "accepted")
       @api.expects(:create_message).never
