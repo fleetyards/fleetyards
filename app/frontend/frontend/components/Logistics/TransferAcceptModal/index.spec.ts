@@ -36,7 +36,6 @@ const selected = (wrapper: ReturnType<typeof mountModal>) =>
   (wrapper.vm as unknown as { inventoryId?: string }).inventoryId;
 
 describe("TransferAcceptModal", () => {
-  // A contract delivery only counts where the contract collects it.
   it("opens on the inventory the contract delivers into", () => {
     expect(
       selected(mountModal({ id: "c-1", destinationInventoryId: "locker" })),

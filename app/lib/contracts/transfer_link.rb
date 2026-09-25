@@ -5,8 +5,7 @@ module Contracts
   #
   # Deliberately narrow. This decides only that the link is *allowed*; whether
   # the goods actually count is `Progress`'s question, asked later against the
-  # entries, so a transfer addressed to the fleet that gets accepted into the
-  # wrong inventory is refused nothing here and simply counts for nothing.
+  # entries.
   #
   # A refused link is an error, never a silently unlinked transfer: a contractor
   # who filed a delivery under a contract and got an ordinary transfer back

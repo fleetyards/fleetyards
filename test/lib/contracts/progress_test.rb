@@ -33,11 +33,49 @@ module Contracts
       assert_equal 0.to_d, progress.lines.first.delivered
     end
 
-    test "a deposit into another inventory counts for nothing" do
+    test "a direct deposit into another inventory counts for nothing" do
       other = create(:fleet_inventory, fleet: @fleet)
       transfer = linked_transfer(destination: other)
       create(:fleet_inventory_item, fleet_inventory: other, inventory_transfer: transfer,
         name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+
+      assert_equal 0.to_d, progress.lines.first.delivered
+    end
+
+    test "a transfer addressed to the fleet counts wherever it was accepted" do
+      other = create(:fleet_inventory, fleet: @fleet)
+      transfer = linked_transfer(destination: other)
+      transfer.update_columns(recipient_fleet_id: @fleet.id)
+      create(:fleet_inventory_item, fleet_inventory: other, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 300)
+
+      assert_equal 300.to_d, progress.lines.first.delivered
+      assert_equal 300.to_d,
+        Contracts::Progress.for_all([@contract.reload]).fetch(@contract.id).lines.first.delivered
+    end
+
+    test "a transfer addressed to the author counts in whichever of their inventories took it" do
+      locker = create(:inventory, holder: @contract.created_by)
+      shelf = create(:inventory, holder: @contract.created_by)
+      @contract.update!(destination_fleet_inventory: nil, destination_inventory: locker)
+      transfer = linked_transfer(destination: nil, recipient: @contract.created_by)
+      transfer.update!(destination_inventory: shelf)
+      create(:inventory_item, inventory: shelf, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 300)
+
+      assert_equal 300.to_d, progress.lines.first.delivered
+      assert_equal 300.to_d,
+        Contracts::Progress.for_all([@contract.reload]).fetch(@contract.id).lines.first.delivered
+    end
+
+    test "a pickup addressed to its courier is not a delivery" do
+      locker = create(:inventory, holder: @contract.created_by)
+      @contract.update!(destination_fleet_inventory: nil, destination_inventory: locker)
+      hold = create(:inventory, holder: @contractor)
+      transfer = linked_transfer(destination: nil, recipient: @contractor)
+      transfer.update!(destination_inventory: hold)
+      create(:inventory_item, inventory: hold, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 300)
 
       assert_equal 0.to_d, progress.lines.first.delivered
     end

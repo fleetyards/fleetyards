@@ -29,8 +29,8 @@ const { t } = useI18n();
 const comlink = useComlink();
 
 const submitting = ref(false);
-// A delivery towards a contract counts only where that contract collects it,
-// so the author's inventory it names is the one the modal opens on.
+// A delivery towards a contract counts wherever it is accepted, but the
+// author's inventory the contract names is where they asked for it.
 const contractDestination = props.inventories.find(
   (inventory) =>
     inventory.id === props.transfer.contract?.destinationInventoryId,

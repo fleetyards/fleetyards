@@ -320,7 +320,9 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal 40.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
   end
 
-  test "a delivery the fleet lands somewhere else counts for nothing" do
+  # The fleet decides where goods addressed to it go, so where it accepted
+  # them is not the contractor's to answer for.
+  test "a delivery the fleet lands somewhere else still counts" do
     contract, _depot = contract_for(@user)
     elsewhere = create(:fleet_inventory, fleet: contract.fleet)
     sign_in @user
@@ -334,7 +336,7 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     transfer = InventoryTransfer.find(parsed_body["id"])
     Inventories::TransferResolver.new(transfer, actor: @user).accept(elsewhere)
 
-    assert_equal 0.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
+    assert_equal 40.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
   end
 
   # Attribution is certain only while the source still exists, so the link

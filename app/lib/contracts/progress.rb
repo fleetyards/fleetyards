@@ -4,10 +4,16 @@ module Contracts
   # How far a contract has actually got, read out of the transfer ledger.
   #
   # Nothing is stored. Delivered quantity is a sum over the deposits that
-  # transfers naming this contract wrote into its destination inventory, and
+  # transfers naming this contract wrote into where they were delivered, and
   # those deposits only exist once a transfer was accepted -- a declined,
   # cancelled or expired one compensates back into its *source*, so
   # it contributes nothing here without any state having to be consulted.
+  #
+  # Where a delivery landed matters only for a transfer made straight into an
+  # inventory: that one counts when it is the contract's destination. A
+  # transfer addressed to whoever answers for the destination counts wherever
+  # they accepted it, because the inventory was theirs to choose. A pickup is
+  # addressed to its courier, so it never counts as delivered.
   #
   # Two queries, not two per line: the entries are aggregated in the database
   # down to one row per (position, quality, transfer) and bucketed into lines in
@@ -54,11 +60,13 @@ module Contracts
         .includes(source_inventory: {}, source_fleet_inventory: {})
         .group_by(&:fleet_contract_id)
 
-      transfer_ids = transfers.values.flatten.map(&:id)
-      fleet_inventory_ids = contracts.flat_map do |contract|
+      all_transfers = transfers.values.flatten
+      transfer_ids = all_transfers.map(&:id)
+      fleet_inventory_ids = (contracts.flat_map do |contract|
         [contract.destination_fleet_inventory_id, contract.source_fleet_inventory_id]
-      end.compact.uniq
-      hangar_inventory_ids = contracts.filter_map(&:destination_inventory_id).uniq
+      end + all_transfers.map(&:destination_fleet_inventory_id)).compact.uniq
+      hangar_inventory_ids = (contracts.map(&:destination_inventory_id) +
+        all_transfers.map(&:destination_inventory_id)).compact.uniq
 
       # Keyed by inventory id, and the two ledgers' ids never collide, so the
       # halves merge into one lookup.
@@ -224,10 +232,43 @@ module Contracts
     end
 
     private def deposits
-      @deposits ||= if @contract.destination_inventory_id.present?
-        rollup(@contract.destination_inventory_id, :deposit, ledger: ::InventoryItem)
+      @deposits ||= delivered_into.each_with_object({}) do |(inventory_id, transfer_ids), result|
+        ledger = @contract.hangar_destination? ? ::InventoryItem : ::FleetInventoryItem
+
+        rollup(inventory_id, :deposit, ledger: ledger).each do |identity, rows|
+          own = rows.select { |row| transfer_ids.include?(row[:inventory_transfer_id]) }
+          (result[identity] ||= []).concat(own) if own.any?
+        end
+      end
+    end
+
+    # Each inventory deliveries count in, with the transfers whose deposits
+    # there count. Only the destination's own ledger: an addressed transfer is
+    # accepted by its recipient, and the resolver keeps that inside the
+    # recipient's inventories.
+    private def delivered_into
+      transfers_by_id.values.each_with_object({}) do |transfer, result|
+        inventory_id = if @contract.hangar_destination?
+          transfer.destination_inventory_id
+        else
+          transfer.destination_fleet_inventory_id
+        end
+        next if inventory_id.blank?
+        next unless inventory_id == destination_id || addressed_to_destination?(transfer)
+
+        (result[inventory_id] ||= Set.new) << transfer.id
+      end
+    end
+
+    private def destination_id
+      @contract.destination_inventory_id || @contract.destination_fleet_inventory_id
+    end
+
+    private def addressed_to_destination?(transfer)
+      if @contract.hangar_destination?
+        transfer.recipient_id.present? && transfer.recipient_id == @contract.created_by_id
       else
-        rollup(@contract.destination_fleet_inventory_id, :deposit)
+        transfer.recipient_fleet_id.present? && transfer.recipient_fleet_id == @contract.fleet_id
       end
     end
 
