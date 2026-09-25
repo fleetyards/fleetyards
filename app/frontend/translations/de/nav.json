@@ -93,13 +93,13 @@
           "membership": "Mitgliedschaftseinstellungen",
           "roles": "Rollen",
           "squadrons": "Staffeln",
+          "allies": "Verbündete",
           "notifications": "Benachrichtigungen",
           "discord": "Discord",
           "calendar": "Kalender",
           "features": "Funktionen",
           "contracts": "Aufträge"
         },
-        "allies": "Verbündete",
         "contracts": {
           "index": "Aufträge"
         }

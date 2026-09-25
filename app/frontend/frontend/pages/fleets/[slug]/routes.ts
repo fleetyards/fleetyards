@@ -2,7 +2,6 @@ import type { RouteRecordRaw } from "vue-router";
 import { routes as membersRoutes } from "@/frontend/pages/fleets/[slug]/members/routes";
 import { routes as squadronsRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/routes";
 import { routes as logisticsRoutes } from "@/frontend/pages/fleets/[slug]/logistics/routes";
-import { routes as alliesRoutes } from "@/frontend/pages/fleets/[slug]/allies/routes";
 import { routes as contractsRoutes } from "@/frontend/pages/fleets/[slug]/contracts/routes";
 import { routes as missionsRoutes } from "@/frontend/pages/fleets/[slug]/missions/routes";
 import { routes as eventsRoutes } from "@/frontend/pages/fleets/[slug]/events/routes";
@@ -89,18 +88,14 @@ export const routes: RouteRecordRaw[] = [
     children: logisticsRoutes,
   },
   {
-    path: "allies/",
-    name: "fleet-allies-root",
-    component: () => import("@/frontend/pages/fleets/[slug]/allies.vue"),
-    meta: {
-      needsAuthentication: true,
-      backgroundImage: "bg-8",
-      customTitle: true,
-    },
-    redirect: {
-      name: alliesRoutes[0].name,
-    },
-    children: alliesRoutes,
+    path: "allies/:list(incoming|outgoing|ignored)?/",
+    name: "fleet-allies",
+    redirect: (to) => ({
+      name: to.params.list
+        ? `fleet-settings-allies-${String(to.params.list)}`
+        : "fleet-settings-allies",
+      params: { slug: to.params.slug },
+    }),
   },
   {
     path: "contracts/",

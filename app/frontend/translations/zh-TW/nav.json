@@ -93,13 +93,13 @@
           "membership": "成員設定",
           "roles": "角色",
           "squadrons": "中隊",
+          "allies": "盟友",
           "notifications": "通知",
           "discord": "Discord",
           "calendar": "行事曆",
           "features": "功能",
           "contracts": "合約"
         },
-        "allies": "盟友",
         "contracts": {
           "index": "合約"
         }

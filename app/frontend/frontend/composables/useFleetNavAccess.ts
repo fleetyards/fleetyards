@@ -42,10 +42,6 @@ export const useFleetNavAccess = (
     () => membership.value?.capabilities?.readInventories ?? false,
   );
 
-  const hasAlliesAccess = computed(
-    () => membership.value?.capabilities?.readAllies ?? false,
-  );
-
   const hasBlueprintsAccess = computed(
     () => membership.value?.capabilities?.readBlueprints ?? false,
   );
@@ -103,13 +99,6 @@ export const useFleetNavAccess = (
       !!membership.value &&
       hasSquadronsAccess.value &&
       isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_SQUADRONS),
-  );
-
-  const showAlliesNav = computed(
-    () =>
-      !!membership.value &&
-      hasAlliesAccess.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_ALLIES),
   );
 
   const showContractsNav = computed(
@@ -216,7 +205,6 @@ export const useFleetNavAccess = (
     logisticsNavActive,
     showSquadronsNav,
     squadronsNavActive,
-    showAlliesNav,
     showContractsNav,
     showEventsNav,
     eventsNavRoute,

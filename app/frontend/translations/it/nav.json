@@ -93,13 +93,13 @@
           "membership": "Impostazioni dei Membri",
           "roles": "Ruoli",
           "squadrons": "Squadroni",
+          "allies": "Alleati",
           "notifications": "Notifiche",
           "discord": "Discord",
           "calendar": "Calendario",
           "features": "Funzionalità",
           "contracts": "Contratti"
         },
-        "allies": "Alleati",
         "contracts": {
           "index": "Contratti"
         }

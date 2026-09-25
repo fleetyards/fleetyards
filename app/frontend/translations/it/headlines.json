@@ -273,6 +273,7 @@
           "membership": "Impostazioni dei Membri",
           "roles": "Ruoli flotta",
           "squadrons": "Squadroni della flotta",
+          "allies": "Alleati della flotta",
           "notifications": "Impostazioni Notifiche",
           "inAppNotifications": "Notifiche in-app",
           "discord": "Discord",
@@ -480,7 +481,6 @@
           "add": "Aggiungi un amico"
         },
         "fleet": {
-          "index": "Alleati",
           "add": "Aggiungi un alleato"
         }
       },

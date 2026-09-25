@@ -93,13 +93,13 @@
           "membership": "Paramètres d'Adhésion",
           "roles": "Rôles",
           "squadrons": "Escadrons",
+          "allies": "Alliés",
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendrier",
           "features": "Fonctionnalités",
           "contracts": "Contrats"
         },
-        "allies": "Alliés",
         "contracts": {
           "index": "Contrats"
         }

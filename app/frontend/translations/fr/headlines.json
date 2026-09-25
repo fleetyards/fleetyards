@@ -273,6 +273,7 @@
           "membership": "Paramètres des membres",
           "roles": "Rôles de flotte",
           "squadrons": "Escadrons de la flotte",
+          "allies": "Alliés de la flotte",
           "notifications": "Paramètres de notification",
           "inAppNotifications": "Notifications dans l'application",
           "discord": "Discord",
@@ -480,7 +481,6 @@
           "add": "Ajouter un ami"
         },
         "fleet": {
-          "index": "Alliés",
           "add": "Ajouter un allié"
         }
       },

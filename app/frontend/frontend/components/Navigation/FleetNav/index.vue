@@ -59,7 +59,6 @@ const {
   logisticsNavActive,
   showSquadronsNav,
   squadronsNavActive,
-  showAlliesNav,
   showContractsNav,
   showEventsNav,
   eventsNavRoute,
@@ -184,20 +183,6 @@ onMounted(() => {
         icon="fa-duotone fa-calendar-day"
       />
 
-      <!-- Every membership-only row carries its own guard rather than sharing
-           a wrapper: they no longer sit together, and Stats between them is
-           not one of them -- a fleet publishing its stats shows them to a
-           stranger. -->
-      <NavItem
-        v-if="showAlliesNav"
-        :to="{
-          name: 'fleet-allies',
-          params: { slug: currentFleet.slug },
-        }"
-        :label="t('nav.fleets.allies')"
-        :active="String(route.name).startsWith('fleet-allies')"
-        icon="fa-duotone fa-handshake"
-      />
       <NavItem
         v-if="currentFleet.publicFleetStats || membership"
         :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"

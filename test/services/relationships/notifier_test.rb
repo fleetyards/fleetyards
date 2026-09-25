@@ -125,7 +125,7 @@ class Relationships::NotifierTest < ActiveSupport::TestCase
     assert_empty notifications_for(member)
   end
 
-  test "an alliance notification names the other fleet and points at the allies page" do
+  test "an alliance notification names the other fleet and points at the allies settings" do
     admin = create(:user)
     fleet = create(:fleet, admins: [admin])
     other_fleet = create(:fleet, created_by: create(:user).id)
@@ -136,6 +136,6 @@ class Relationships::NotifierTest < ActiveSupport::TestCase
 
     assert_includes notification.title, other_fleet.name
     assert_includes notification.title, fleet.name
-    assert_equal "/fleets/#{fleet.slug}/allies/incoming/", notification.link
+    assert_equal "/fleets/#{fleet.slug}/settings/allies/incoming/", notification.link
   end
 end

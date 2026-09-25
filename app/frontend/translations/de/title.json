@@ -112,6 +112,7 @@
           "membership": "%{fleet} Mitgliedschaft",
           "roles": "%{fleet} Rollen",
           "squadrons": "%{fleet} Staffeln",
+          "allies": "%{fleet} Verbündete",
           "notifications": "%{fleet} Benachrichtigungseinstellungen",
           "discord": "%{fleet} Discord-Einstellungen",
           "calendar": "%{fleet} Kalendereinstellungen",

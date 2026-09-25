@@ -9,11 +9,14 @@ export const routes: RouteRecordRaw[] = [
   "ignored/",
 ].map((suffix) => ({
   path: suffix,
-  name: suffix ? `fleet-allies-${suffix.replace("/", "")}` : "fleet-allies",
-  component: () => import("@/frontend/pages/fleets/[slug]/allies/index.vue"),
+  name: suffix
+    ? `fleet-settings-allies-${suffix.replace("/", "")}`
+    : "fleet-settings-allies",
+  component: () =>
+    import("@/frontend/pages/fleets/[slug]/settings/allies/index.vue"),
   meta: {
+    title: "fleets.settings.allies",
     needsAuthentication: true,
-    backgroundImage: "bg-8",
     customTitle: true,
   },
 }));
