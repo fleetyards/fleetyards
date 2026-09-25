@@ -1487,6 +1487,12 @@
         "fleetInvites": "Sin invitaciones presentes"
       },
       "user": {
+        "hangarDefaultSort": "Orden predeterminado",
+        "hangarDefaultSortInfo": "Arrastra una nave por su asa para reordenarla. Disponible mientras el orden personalizado esté activo y no haya filtros.",
+        "hangarDefaultSortOptions": {
+          "asc": "%{field}, ascendente",
+          "desc": "%{field}, descendente"
+        },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Verificado mediante Citizen iD",
         "location": "Ubicación",

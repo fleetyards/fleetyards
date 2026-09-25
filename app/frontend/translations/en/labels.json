@@ -1487,6 +1487,12 @@
         "fleetInvites": "No Invites present"
       },
       "user": {
+        "hangarDefaultSort": "Default Order",
+        "hangarDefaultSortInfo": "Drag a ship by its grip to reorder. Shows while the custom order is active and no filter is set.",
+        "hangarDefaultSortOptions": {
+          "asc": "%{field}, ascending",
+          "desc": "%{field}, descending"
+        },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Verified via Citizen iD",
         "location": "Location",

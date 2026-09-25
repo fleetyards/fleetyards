@@ -1487,6 +1487,12 @@
         "fleetInvites": "Keine Einladungen vorhanden"
       },
       "user": {
+        "hangarDefaultSort": "Standard-Reihenfolge",
+        "hangarDefaultSortInfo": "Zieh ein Schiff an seinem Griff, um es umzusortieren. Verfügbar, solange die eigene Reihenfolge aktiv und kein Filter gesetzt ist.",
+        "hangarDefaultSortOptions": {
+          "asc": "%{field}, aufsteigend",
+          "desc": "%{field}, absteigend"
+        },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Über Citizen iD verifiziert",
         "location": "Standort",

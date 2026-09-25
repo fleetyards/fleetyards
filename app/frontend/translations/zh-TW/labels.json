@@ -1487,6 +1487,12 @@
         "fleetInvites": "沒有邀請"
       },
       "user": {
+        "hangarDefaultSort": "預設順序",
+        "hangarDefaultSortInfo": "按住艦船的拖曳柄即可重新排序。僅在自訂順序生效且未設定篩選時可用。",
+        "hangarDefaultSortOptions": {
+          "asc": "%{field}，升冪",
+          "desc": "%{field}，降冪"
+        },
         "rsiHandle": "使用者名",
         "rsiHandleVerified": "已透過 Citizen iD 驗證",
         "location": "位置",
