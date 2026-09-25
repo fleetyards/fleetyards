@@ -20,7 +20,7 @@ module Contracts
       return false if @contract.blank?
 
       @contract.with_lock do
-        return false unless @contract.in_progress?
+        return false unless @contract.in_progress? || @contract.expired?
         return false unless Progress.new(@contract).complete?
 
         next false unless @contract.fulfil!

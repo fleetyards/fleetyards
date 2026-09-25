@@ -45,6 +45,47 @@ module Contracts
       assert @contract.reload.open?
     end
 
+    test "a late delivery completing an expired contract fulfils it" do
+      transfer = pending_transfer
+      deposit(transfer, 800)
+      @contract.update!(aasm_state: "expired", expired_at: 1.hour.ago)
+
+      events = []
+      subscriber = ActiveSupport::Notifications.subscribe("fleet_contract.fulfilled") { events << 1 }
+
+      transfer.accept!
+
+      @contract.reload
+      assert @contract.fulfilled?
+      assert_not_nil @contract.fulfilled_at
+      assert_not_nil @contract.expired_at
+      assert_equal 1, events.size
+    ensure
+      ActiveSupport::Notifications.unsubscribe(subscriber) if subscriber
+    end
+
+    test "a late part delivery leaves an expired contract expired, and counts" do
+      transfer = pending_transfer
+      deposit(transfer, 400)
+      @contract.update!(aasm_state: "expired", expired_at: 1.hour.ago)
+
+      transfer.accept!
+
+      @contract.reload
+      assert @contract.expired?
+      assert_equal 400.to_d, @contract.progress.lines.first.delivered
+    end
+
+    test "a cancelled contract is not fulfilled by a late delivery" do
+      transfer = pending_transfer
+      deposit(transfer, 800)
+      @contract.update!(aasm_state: "cancelled", cancelled_at: 1.hour.ago)
+
+      transfer.accept!
+
+      assert @contract.reload.cancelled?
+    end
+
     test "fulfilling announces itself once" do
       transfer = pending_transfer
       deposit(transfer, 800)

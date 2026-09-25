@@ -937,7 +937,8 @@
           }
         },
         "contracts": {
-          "deliverHint": "Send the goods from one of your own inventories and pick this contract, so the delivery counts towards it."
+          "deliverHint": "Send the goods from one of your own inventories and pick this contract, so the delivery counts towards it.",
+          "expiredHint": "This contract has expired and takes no new deliveries. Deliveries already on their way still count once they are accepted."
         }
       },
       "notifications": {

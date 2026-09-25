@@ -13,6 +13,7 @@ export type ContractBoardView = {
   key: string;
   states: FleetContractStateEnum[];
   mine: boolean;
+  inHand: boolean;
   icon: string;
 };
 
@@ -27,6 +28,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
       FleetContractStateEnum.IN_PROGRESS,
     ],
     mine: false,
+    inHand: false,
     icon: "fa-light fa-clipboard-list",
   },
   {
@@ -38,14 +40,19 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
       FleetContractStateEnum.EXPIRED,
     ],
     mine: false,
+    inHand: false,
     icon: "fa-light fa-box-archive",
   },
   {
     key: "mine",
-    // The work in hand: a contract is claimed before anybody can deliver
-    // against it, so there is one state a job being worked can be in.
-    states: [FleetContractStateEnum.IN_PROGRESS],
+    // The work in hand: a claimed contract, or an expired one whose deliveries
+    // are still waiting for an answer -- the API drops the settled ones.
+    states: [
+      FleetContractStateEnum.IN_PROGRESS,
+      FleetContractStateEnum.EXPIRED,
+    ],
     mine: true,
+    inHand: true,
     icon: "fa-light fa-user-helmet-safety",
   },
   {
@@ -54,6 +61,7 @@ export const CONTRACT_BOARD_VIEWS: ContractBoardView[] = [
     // reader completed.
     states: [FleetContractStateEnum.FULFILLED],
     mine: true,
+    inHand: false,
     icon: "fa-light fa-circle-check",
   },
 ];

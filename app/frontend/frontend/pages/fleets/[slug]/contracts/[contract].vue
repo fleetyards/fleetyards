@@ -111,6 +111,14 @@ const isContractor = computed(
   () => myAssignment.value?.state === FleetContractCrewStateEnum.ACCEPTED,
 );
 
+const isInProgress = computed(
+  () => contract.value?.state === FleetContractStateEnum.IN_PROGRESS,
+);
+
+const isExpired = computed(
+  () => contract.value?.state === FleetContractStateEnum.EXPIRED,
+);
+
 const canClaim = computed(
   () => contract.value?.state === FleetContractStateEnum.OPEN,
 );
@@ -127,10 +135,16 @@ const canRelease = computed(
     (isLead.value || canManage.value),
 );
 
+const FULFILLABLE_STATES: FleetContractStateEnum[] = [
+  FleetContractStateEnum.IN_PROGRESS,
+  FleetContractStateEnum.EXPIRED,
+];
+
 const canFulfil = computed(
   () =>
-    contract.value?.state === FleetContractStateEnum.IN_PROGRESS &&
-    canManage.value,
+    canManage.value &&
+    contract.value !== undefined &&
+    FULFILLABLE_STATES.includes(contract.value.state),
 );
 
 const canPublish = computed(
@@ -441,9 +455,21 @@ const crumbs = computed<Crumb[]>(() => [
             :show-pickup="contract.requiresPickup"
           />
 
-          <p v-if="isContractor" class="contract-detail__hint">
+          <p
+            v-if="isContractor && isInProgress"
+            class="contract-detail__hint"
+            data-test="contract-deliver-hint"
+          >
             <i class="fa-duotone fa-circle-info" />
             {{ t("messages.fleets.contracts.deliverHint") }}
+          </p>
+          <p
+            v-else-if="isContractor && isExpired"
+            class="contract-detail__hint"
+            data-test="contract-expired-hint"
+          >
+            <i class="fa-duotone fa-circle-info" />
+            {{ t("messages.fleets.contracts.expiredHint") }}
           </p>
         </PanelBody>
       </Panel>

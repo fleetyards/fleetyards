@@ -927,7 +927,8 @@
           }
         },
         "contracts": {
-          "deliverHint": "Sende die Waren aus einem deiner Inventare und wähle diesen Auftrag aus, damit die Lieferung zählt."
+          "deliverHint": "Sende die Waren aus einem deiner Inventare und wähle diesen Auftrag aus, damit die Lieferung zählt.",
+          "expiredHint": "Dieser Auftrag ist abgelaufen und nimmt keine neuen Lieferungen mehr an. Lieferungen, die schon unterwegs sind, zählen weiterhin, sobald sie angenommen werden."
         }
       },
       "notifications": {

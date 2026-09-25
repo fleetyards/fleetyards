@@ -927,7 +927,8 @@
           }
         },
         "contracts": {
-          "deliverHint": "Envía las mercancías desde uno de tus inventarios y elige este contrato para que la entrega cuente."
+          "deliverHint": "Envía las mercancías desde uno de tus inventarios y elige este contrato para que la entrega cuente.",
+          "expiredHint": "Este contrato ha caducado y no admite nuevas entregas. Las entregas que ya están en camino siguen contando cuando se aceptan."
         }
       },
       "notifications": {
