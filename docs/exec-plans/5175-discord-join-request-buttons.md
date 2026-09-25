@@ -17,17 +17,17 @@ A join request is posted to the fleet's officers channel with Accept and Decline
 2. `Discord::Components::FleetRequest` re-checks guild binding, account link and policy on every click, then looks the membership up *within the guild's fleet*.
    - settled now or earlier → edit the original message (outcome, disabled buttons)
    - refusal → ephemeral follow-up to the clicker, message untouched
-3. `InteractionClient#create_followup`.
-4. Decision logic shared with `FleetRequestDecision`.
+3. `InteractionClient#create_followup`, and `InteractionClient.expired?` shared with `CommandJob`.
+4. Decision logic shared with the slash commands via `Discord::JoinRequestDecision`.
 
 ### Phase 3 — Settings copy
 1. `officersChannelHint` mentions join requests, all 7 locales.
 
 ## Intent Verification
 
-- [ ] **Join-request message carries Accept and Decline buttons**
-- [ ] **A click is a type-3 interaction whose custom_id identifies the request; link and privilege re-checked on every click**
-- [ ] **The message updates to show the outcome and disables the buttons**
+- [x] **Join-request message carries Accept and Decline buttons**
+- [x] **A click is a type-3 interaction whose custom_id identifies the request; link and privilege re-checked on every click**
+- [x] **The message updates to show the outcome and disables the buttons**
 
 ## Key files
 
@@ -46,6 +46,6 @@ A join request is posted to the fleet's officers channel with Accept and Decline
 - **2026-09-25** No join-request message existed on Discord at all (`fleet_member_requested` is app + mail only); the officers channel from #5192 is the bot-posted, officers-only target. Buttons need a bot-sent message, so webhook-only fleets get none.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
