@@ -2149,6 +2149,7 @@
         }
       },
       "hangarTable": {
+        "sortOptions": "排序選項",
         "extraColumns": "欄",
         "columns": {
           "storeImage": "圖片",

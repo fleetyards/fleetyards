@@ -25,6 +25,7 @@ import {
   HangarTableViewColsEnum,
   HangarTableViewImageColsEnum,
 } from "@/frontend/stores/hangar";
+import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
 
 const { t } = useI18n();
 
@@ -44,6 +45,15 @@ onMounted(() => {
 const hangarStore = useHangarStore();
 
 const tableViewCols = ref(hangarStore.tableViewCols);
+
+const allSortFields = useHangarSortFields({ all: true });
+
+// Written straight to the store: unlike the column lists this one has no
+// second place that sets it, so there is nothing to mirror back.
+const sortFields = computed({
+  get: () => hangarStore.sortFields,
+  set: (fields) => hangarStore.setSortFields(fields),
+});
 const tableViewImageCols = ref(hangarStore.tableViewImageCols);
 
 watch(
@@ -169,6 +179,30 @@ const displayAsList = () => {
         />
       </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <fieldset>
+          <legend>
+            <h3>{{ t("labels.hangarTable.sortOptions") }}:</h3>
+          </legend>
+          <div class="row">
+            <div
+              v-for="field in allSortFields"
+              :key="field.name"
+              class="col-12 col-md-6"
+            >
+              <FormCheckbox
+                v-model="sortFields"
+                :checkbox-value="field.name"
+                :name="`sort-${field.name}`"
+                :label="field.label"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <hr />
     <div v-if="hangarStore.gridView" class="row">
       <div class="col-12">
         <FormToggle

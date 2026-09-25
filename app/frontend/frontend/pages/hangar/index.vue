@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
 import { useVehicleReorder } from "@/frontend/composables/useVehicleReorder";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -61,8 +61,6 @@ import {
 } from "@/services/fyApi";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
-
-const sortFields = useVehicleSortFields({ rank: true });
 
 const { displayAlert, displayConfirm } = useAppNotifications();
 
@@ -160,6 +158,8 @@ const defaultSort = computed(
 const activeSort = computed(() =>
   typeof route.query.s === "string" ? route.query.s : defaultSort.value,
 );
+
+const sortFields = useHangarSortFields({ include: activeSort });
 
 // Dragging writes the owner's order, so it is only offered while that order is
 // the one on screen: under another sort, or with some ships filtered out, a

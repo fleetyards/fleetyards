@@ -1,6 +1,6 @@
 import { type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
 
 /**
  * The orders a hangar can open in, for every place the owner picks one.
@@ -14,7 +14,7 @@ import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortField
 export const useHangarDefaultSortOptions = () => {
   const { t } = useI18n();
 
-  const sortFields = useVehicleSortFields({ rank: true });
+  const sortFields = useHangarSortFields({ all: true });
 
   return computed<FilterOption[]>(() => [
     { value: null, label: t("labels.user.hangarDefaultSortOptions.standard") },

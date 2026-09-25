@@ -2149,6 +2149,7 @@
         }
       },
       "hangarTable": {
+        "sortOptions": "Opzioni di ordinamento",
         "extraColumns": "Colonne",
         "columns": {
           "storeImage": "Immagine",

@@ -30,6 +30,26 @@ export enum HangarTableViewColsEnum {
   PLEDGE_PRICE = "modelPledgePrice",
 }
 
+// Every sort the hangar can offer as a chip. Crew has a column but no sort: the
+// server does not order by it.
+export enum HangarSortFieldsEnum {
+  RANK = "rank",
+  NAME = "name",
+  MANUFACTURER_NAME = "modelManufacturerName",
+  LENGTH = "modelLength",
+  BEAM = "modelBeam",
+  HEIGHT = "modelHeight",
+  MASS = "modelMass",
+  CARGO = "modelCargo",
+  SCM_SPEED = "modelScmSpeed",
+  MAX_SPEED = "modelMaxSpeed",
+  GROUND_MAX_SPEED = "modelGroundMaxSpeed",
+  FOCUS = "modelFocus",
+  PRODUCTION_STATUS = "modelProductionStatus",
+  PRICE = "modelPrice",
+  PLEDGE_PRICE = "modelPledgePrice",
+}
+
 interface HangarState extends ShipListState {
   ships: string[];
   preview: boolean;
@@ -43,6 +63,7 @@ interface HangarState extends ShipListState {
   syncUnmatchedHangarGroupId?: string;
   tableViewImageCols: HangarTableViewImageColsEnum[];
   tableViewCols: HangarTableViewColsEnum[];
+  sortFields: HangarSortFieldsEnum[];
 }
 
 export const useHangarStore = defineStore("hangar", {
@@ -65,6 +86,15 @@ export const useHangarStore = defineStore("hangar", {
       HangarTableViewImageColsEnum.ANGLED_VIEW,
     ],
     tableViewCols: [HangarTableViewColsEnum.MANUFACTURER_NAME],
+    sortFields: [
+      HangarSortFieldsEnum.RANK,
+      HangarSortFieldsEnum.NAME,
+      HangarSortFieldsEnum.MANUFACTURER_NAME,
+      HangarSortFieldsEnum.LENGTH,
+      HangarSortFieldsEnum.CARGO,
+      HangarSortFieldsEnum.PRICE,
+      HangarSortFieldsEnum.PRODUCTION_STATUS,
+    ],
   }),
   getters: {
     empty(state) {
@@ -113,6 +143,9 @@ export const useHangarStore = defineStore("hangar", {
     setTableViewImageCols(cols: HangarTableViewImageColsEnum[]) {
       this.tableViewImageCols = cols;
     },
+    setSortFields(fields: HangarSortFieldsEnum[]) {
+      this.sortFields = fields;
+    },
   },
   persist: {
     pick: [
@@ -124,6 +157,7 @@ export const useHangarStore = defineStore("hangar", {
       "gridView",
       "tableViewImageCols",
       "tableViewCols",
+      "sortFields",
       "syncAddBundledVehicles",
       "syncUnmatchedVehiclesAction",
       "syncUnmatchedHangarGroupId",
