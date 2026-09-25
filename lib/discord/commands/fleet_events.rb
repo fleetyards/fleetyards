@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "discord/markdown"
 require "discord/event_availability"
 
 module Discord
@@ -103,7 +104,7 @@ module Discord
       # only correct answer for a fleet whose members are spread across several.
       private def line_for(occurrence)
         [
-          "• [#{occurrence[:title]}](#{event_url(occurrence[:event])})",
+          "• [#{Markdown.escape(occurrence[:title])}](#{event_url(occurrence[:event])})",
           "<t:#{occurrence[:starts_at].to_i}:f>",
           occurrence[:availability]
         ].compact_blank.join(" — ")

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "discord/markdown"
 require "discord/event_announcement"
 require "discord/event_availability"
 require "discord/message_length"
@@ -137,7 +138,7 @@ module Discord
     # Discord renders <t:unix:f> in each reader's own timezone.
     private def line_for(occurrence)
       [
-        "• [#{occurrence[:title]}](#{event_url(occurrence[:event], occurrence[:date])})",
+        "• [#{Markdown.escape(occurrence[:title])}](#{event_url(occurrence[:event], occurrence[:date])})",
         "<t:#{occurrence[:starts_at].to_i}:f>",
         occurrence[:availability]
       ].compact_blank.join(" — ")
