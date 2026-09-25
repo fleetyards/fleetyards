@@ -12,7 +12,7 @@ import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import SortBar from "@/shared/components/base/Table/SortBar/index.vue";
-import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import { useModelSortFields } from "@/frontend/composables/useModelSortFields";
 import Empty from "@/shared/components/Empty/index.vue";
 import FilterForm from "@/frontend/components/Models/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
@@ -31,7 +31,6 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   useModels as useModelsQuery,
   getModelsQueryKey,
-  type Model,
 } from "@/services/fyApi";
 
 useHangarItems();
@@ -44,23 +43,14 @@ const fleetchartsStore = useFleetchartStore();
 
 const { detailsVisible, gridView } = storeToRefs(modelsStore);
 
-// Grid view had no way to sort at all: the headings are the only sort control
-// the site has, and switching out of the table takes all sixteen of them away.
-// The same page could order ships by length in one view and not the other.
-//
-// A chosen few rather than all sixteen -- a line of sixteen chips is a wall,
-// and these are the ones a card already shows. The labels are the table's own,
-// so the two views name a sort the same way.
-const sortFields = computed<BaseTableCol<Model>[]>(() =>
-  [
-    ["name", t("labels.vehicle.name")],
-    ["manufacturerName", t("labels.models.table.columns.manufacturerName")],
-    ["length", t("labels.models.table.columns.length")],
-    ["cargo", t("labels.models.table.columns.cargo")],
-    ["price", t("labels.models.table.columns.price")],
-    ["productionStatus", t("labels.models.table.columns.productionStatus")],
-  ].map(([name, label]) => ({ name, label, sortable: true })),
-);
+const route = useRoute();
+
+// The chips picked in the display options, plus whichever sort the list is in
+// right now so the bar never hides the one that is chosen.
+const sortFields = useModelSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : undefined,
+});
 
 const fleetchartVisible = computed(() => {
   return fleetchartsStore.isVisible("models");
@@ -170,8 +160,7 @@ const openDisplayOptionsModal = () => {
     </template>
 
     <template #sort>
-      <!-- Grid view only: the table carries the same sorts on its headings. -->
-      <SortBar v-if="gridView" :columns="sortFields" default-sort="name asc" />
+      <SortBar :columns="sortFields" default-sort="name asc" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
