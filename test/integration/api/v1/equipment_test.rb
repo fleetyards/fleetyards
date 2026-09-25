@@ -94,6 +94,14 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Published clients searched the slug through `nameCont` while `name` was
+  # aliased to `name_or_slug`, so it keeps doing that.
+  test "GET /equipment still matches the slug through nameCont" do
+    assert_api_response :get, 200, params: {q: {"nameCont" => "p4-ar-rif"}} do
+      assert_equal ["P4-AR Rifle"], parsed_body["items"].map { |i| i["name"] }
+    end
+  end
+
   test "GET /equipment sorts by name descending" do
     assert_api_response :get, 200, params: {q: {"s" => "name desc"}} do
       assert_equal ["P4-AR Rifle", "P4-AR Magazine", "Omarof Scope"], parsed_body["items"].map { |i| i["name"] }

@@ -17062,6 +17062,8 @@ components:
           - 'null'
         slug:
           type: string
+        listed:
+          type: boolean
       additionalProperties: false
       required:
       - type
@@ -19002,6 +19004,7 @@ components:
       properties:
         nameCont:
           type: string
+          deprecated: true
         nameOrSlugCont:
           type: string
         currentVersion:
@@ -19039,20 +19042,7 @@ components:
         slotIn:
           type: array
           items:
-            type: string
-            enum:
-            - undersuit
-            - arms
-            - helmet
-            - torso
-            - legs
-            - footwear
-            - hat
-            - gloves
-            - pants
-            - shirt
-            - jacket
-            - backpack
+            "$ref": "#/components/schemas/EquipmentSlotEnum"
         sizeIn:
           type: array
           items:
@@ -19094,68 +19084,100 @@ components:
         volumeLteq:
           type: number
         s:
-          type: string
-          enum:
-          - name asc
-          - name desc
-          - equipmentType asc
-          - equipmentType desc
-          - itemType asc
-          - itemType desc
-          - manufacturerName asc
-          - manufacturerName desc
-          - createdAt asc
-          - createdAt desc
-          - updatedAt asc
-          - updatedAt desc
-          - damageReduction asc
-          - damageReduction desc
-          - radiationProtection asc
-          - radiationProtection desc
-          - gForceTolerance asc
-          - gForceTolerance desc
-          - storage asc
-          - storage desc
-          - range asc
-          - range desc
-          - rateOfFire asc
-          - rateOfFire desc
-          - volume asc
-          - volume desc
+          "$ref": "#/components/schemas/EquipmentSortingEnum"
         sorts:
           type: array
           items:
-            type: string
-            enum:
-            - name asc
-            - name desc
-            - equipmentType asc
-            - equipmentType desc
-            - itemType asc
-            - itemType desc
-            - manufacturerName asc
-            - manufacturerName desc
-            - createdAt asc
-            - createdAt desc
-            - updatedAt asc
-            - updatedAt desc
-            - damageReduction asc
-            - damageReduction desc
-            - radiationProtection asc
-            - radiationProtection desc
-            - gForceTolerance asc
-            - gForceTolerance desc
-            - storage asc
-            - storage desc
-            - range asc
-            - range desc
-            - rateOfFire asc
-            - rateOfFire desc
-            - volume asc
-            - volume desc
+            "$ref": "#/components/schemas/EquipmentSortingEnum"
       additionalProperties: false
       example: {}
       title: EquipmentQuery
+    EquipmentSlotEnum:
+      type: string
+      enum:
+      - undersuit
+      - arms
+      - helmet
+      - torso
+      - legs
+      - footwear
+      - hat
+      - gloves
+      - pants
+      - shirt
+      - jacket
+      - backpack
+      x-enumNames:
+      - UNDERSUIT
+      - ARMS
+      - HELMET
+      - TORSO
+      - LEGS
+      - FOOTWEAR
+      - HAT
+      - GLOVES
+      - PANTS
+      - SHIRT
+      - JACKET
+      - BACKPACK
+      title: EquipmentSlotEnum
+    EquipmentSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - equipmentType asc
+      - equipmentType desc
+      - itemType asc
+      - itemType desc
+      - manufacturerName asc
+      - manufacturerName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - damageReduction asc
+      - damageReduction desc
+      - radiationProtection asc
+      - radiationProtection desc
+      - gForceTolerance asc
+      - gForceTolerance desc
+      - storage asc
+      - storage desc
+      - range asc
+      - range desc
+      - rateOfFire asc
+      - rateOfFire desc
+      - volume asc
+      - volume desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - EQUIPMENT_TYPE_ASC
+      - EQUIPMENT_TYPE_DESC
+      - ITEM_TYPE_ASC
+      - ITEM_TYPE_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - DAMAGE_REDUCTION_ASC
+      - DAMAGE_REDUCTION_DESC
+      - RADIATION_PROTECTION_ASC
+      - RADIATION_PROTECTION_DESC
+      - G_FORCE_TOLERANCE_ASC
+      - G_FORCE_TOLERANCE_DESC
+      - STORAGE_ASC
+      - STORAGE_DESC
+      - RANGE_ASC
+      - RANGE_DESC
+      - RATE_OF_FIRE_ASC
+      - RATE_OF_FIRE_DESC
+      - VOLUME_ASC
+      - VOLUME_DESC
+      title: EquipmentSortingEnum
     EquipmentTypeEnum:
       type: string
       enum:
@@ -20104,6 +20126,8 @@ components:
           type:
           - string
           - 'null'
+        listed:
+          type: boolean
         counted:
           type: boolean
       additionalProperties: false
@@ -25385,6 +25409,8 @@ components:
           type: string
         slug:
           type: string
+        listed:
+          type: boolean
         counted:
           type: boolean
         available:
@@ -25453,6 +25479,8 @@ components:
           type:
           - string
           - 'null'
+        listed:
+          type: boolean
       title: InventoryStockItemRef
     InventoryStockPosition:
       type: object
@@ -25501,6 +25529,8 @@ components:
               type: string
             slug:
               type: string
+            listed:
+              type: boolean
             counted:
               type: boolean
             available:

@@ -53,8 +53,18 @@ module Api
         equipment_query_params.delete(:current_version) { true }
       end
 
+      # `nameCont` matched the slug as well while `name` was aliased to
+      # `name_or_slug`, and published clients rely on that, so it keeps meaning
+      # it now that `name` is its own attribute.
       private def equipment_query_params
-        @equipment_query_params ||= params.permit(q: [
+        @equipment_query_params ||= permitted_query_params.tap do |query|
+          term = query.delete(:name_cont)
+          query[:name_or_slug_cont] ||= term if term.present?
+        end
+      end
+
+      private def permitted_query_params
+        params.permit(q: [
           :s, :sorts, :name_cont, :name_or_slug_cont, :current_version, *RANGE_PREDICATES,
           sorts: [], id_in: [], name_in: [], slug_in: [], equipment_type_in: [], item_type_in: [],
           sub_type_in: [], weapon_class_in: [], slot_in: [], size_in: [], grade_in: [],
