@@ -106,6 +106,15 @@ class FleetNotificationSetting < ApplicationRecord
     (slot > local) ? slot - 7.days : slot
   end
 
+  # Whether a claim made at `claimed_at` still answers the schedule as it is
+  # now. Moved to another day or time after the claim, it does not, and the
+  # digest belongs to the new slot instead.
+  def digest_claim_current?(claimed_at)
+    slot = digest_slot(claimed_at)
+
+    slot.present? && claimed_at - slot <= DIGEST_GRACE
+  end
+
   def digest_due?(now = Time.current)
     slot = digest_slot(now)
     return false if slot.nil?

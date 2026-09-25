@@ -22,6 +22,25 @@ module Discord
       PostWeeklyDigestJob.new.perform(@fleet.id)
     end
 
+    # Monday's claim, but the digest was moved to Tuesday before it ran.
+    test "drops a claim the schedule has moved away from, and gives it back" do
+      claimed_at = Time.utc(2026, 9, 21, 18, 5)
+      @setting.update!(discord_digest_sent_at: claimed_at, discord_digest_weekday: 2)
+      WeeklyDigest.any_instance.expects(:run).never
+
+      PostWeeklyDigestJob.new.perform(@fleet.id, claimed_at.iso8601(6))
+
+      assert_nil @setting.reload.discord_digest_sent_at
+    end
+
+    test "posts a claim the schedule still answers" do
+      claimed_at = Time.utc(2026, 9, 21, 18, 5)
+      @setting.update!(discord_digest_sent_at: claimed_at)
+      WeeklyDigest.any_instance.expects(:run)
+
+      PostWeeklyDigestJob.new.perform(@fleet.id, claimed_at.iso8601(6))
+    end
+
     test "posts nothing for a deleted fleet" do
       @fleet.update_column(:discarded_at, Time.current)
       WeeklyDigest.any_instance.expects(:run).never

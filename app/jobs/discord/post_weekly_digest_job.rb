@@ -14,12 +14,24 @@ module Discord
       WeeklyDigestDispatchJob.release(fleet_id, Time.iso8601(claimed_at)) if claimed_at
     end
 
-    def perform(fleet_id, _claimed_at = nil)
+    def perform(fleet_id, claimed_at = nil)
       fleet = Fleet.kept.find_by(id: fleet_id)
       return if fleet.blank?
 
+      setting = fleet.fleet_notification_setting
       # Switched off between being queued and being run.
-      return unless fleet.fleet_notification_setting&.digest_enabled?
+      return unless setting&.digest_enabled?
+
+      # Rescheduled meanwhile: the old slot is abandoned, and its claim is
+      # given back so the new one is not held off by it.
+      if claimed_at.present?
+        claimed_at = Time.iso8601(claimed_at)
+
+        unless setting.digest_claim_current?(claimed_at)
+          WeeklyDigestDispatchJob.release(fleet_id, claimed_at)
+          return
+        end
+      end
 
       WeeklyDigest.new(fleet).run
     end
