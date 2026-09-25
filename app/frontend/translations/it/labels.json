@@ -1531,7 +1531,7 @@
         "passwordConfirmation": "Conferma password"
       },
       "vehicle": {
-        "customOrder": "Ordine personalizzato",
+        "customOrder": "Personalizzato",
         "name": "Nome",
         "states": "Stati",
         "serial": "Seriale",

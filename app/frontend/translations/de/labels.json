@@ -1531,7 +1531,7 @@
         "passwordConfirmation": "Passwort bestätigen"
       },
       "vehicle": {
-        "customOrder": "Eigene Reihenfolge",
+        "customOrder": "Eigene",
         "name": "Name",
         "states": "Zustände",
         "serial": "Seriennummer",
