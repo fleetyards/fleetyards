@@ -204,12 +204,12 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_equal %w[assault_rifle weapon_scope], Equipment.item_types
   end
 
-  test ".item_type_filters falls back to a humanised label without a translation" do
+  test ".item_type_filters falls back to a title-cased label without a translation" do
     create(:equipment, item_type: "newfangled_blaster")
 
     filter = Equipment.item_type_filters.find { |f| f.value == "newfangled_blaster" }
 
-    assert_equal "Newfangled blaster", filter.label
+    assert_equal "Newfangled Blaster", filter.label
     assert_equal "item_type", filter.category
   end
 
