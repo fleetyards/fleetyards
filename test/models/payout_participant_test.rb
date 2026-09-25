@@ -8,7 +8,7 @@ require "test_helper"
 #
 #  id               :uuid             not null, primary key
 #  name             :string
-#  weight           :decimal(5, 2)    default(1.0), not null
+#  weight           :decimal(9, 6)    default(1.0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  added_by_id      :uuid

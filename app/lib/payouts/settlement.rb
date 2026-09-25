@@ -45,6 +45,10 @@ module Payouts
     # to divide, round and re-add without the remainder going missing.
     SCALE = 100
 
+    # Weights carry six decimals: a contractor's weight is their fraction of
+    # the delivery, and a small one must not be rounded up to a bigger share.
+    WEIGHT_SCALE = 1_000_000
+
     def self.call(ledger) = new(ledger).call
 
     def initialize(ledger, rule: self.class.rule_for(ledger))
@@ -178,16 +182,16 @@ module Payouts
     # remainder is what keeps it stable; ordering by remainder alone would let
     # ties fall wherever the array happened to enumerate.
     #
-    # The weights are scaled to hundredths for the same reason the amounts are:
-    # they are decimal(5, 2) and so exact already, but the division is not, and
-    # integers are the only way to divide, round and re-add without the
-    # remainder going missing.
+    # The weights are scaled to millionths for the same reason the amounts are
+    # scaled to hundredths: they are decimal(9, 6) and so exact already, but
+    # the division is not, and integers are the only way to divide, round and
+    # re-add without the remainder going missing.
     #
     # Returns one share per participant, in the order given.
     def self.divide(total_minor, participants)
       return [] if participants.empty?
 
-      weights = participants.map { |participant| to_minor(participant.weight) }
+      weights = participants.map { |participant| (participant.weight.to_d * WEIGHT_SCALE).round.to_i }
       total_weight = weights.sum
 
       # Unreachable while the weight validation holds -- it is strictly
