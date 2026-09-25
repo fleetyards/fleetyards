@@ -28,7 +28,7 @@ module Api
         # the default it joins the build we are on, and an inner join to it
         # already leaves out what that build does not describe.
         @q = Equipment.visible(current_version)
-          .includes(:manufacturer)
+          .includes(:manufacturer, :item_prices)
           .ransack(equipment_query_params)
 
         @equipment = @q.result
@@ -43,7 +43,7 @@ module Api
       # entry.
       def show
         @equipment = Equipment.visible(false)
-          .includes(:manufacturer)
+          .includes(:manufacturer, :item_prices)
           .find_by!(slug: params[:slug].to_s.downcase)
       end
 
