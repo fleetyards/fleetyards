@@ -27,6 +27,12 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
 
   const moveMutation = useMoveVehicle();
 
+  // One move at a time, in the order the drags happened: each names its
+  // neighbour as it stood after the drag before it, so a later move reaching
+  // the server first would place its ship against an order that is not there
+  // yet.
+  let moving: Promise<void> = Promise.resolve();
+
   /*
    * The page is a slice of the owner's order, and that order also holds the
    * wishlist and hidden ships this page never shows. So the move names the
@@ -48,12 +54,11 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
       .map((key) => byId.get(key))
       .filter((vehicle): vehicle is Vehicle => !!vehicle);
 
-    return (
+    const data = ahead ? { afterId: ahead } : { beforeId: behind };
+
+    moving = moving.then(() =>
       moveMutation
-        .mutateAsync({
-          id,
-          data: ahead ? { afterId: ahead } : { beforeId: behind },
-        })
+        .mutateAsync({ id, data })
         // Back to the order the server last sent rather than to the one before
         // this drag: a second drag may have landed in the meantime, and putting
         // back a snapshot from before it would undo that one too. A move that
@@ -62,8 +67,10 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
           orderedVehicles.value = [...(toValue(items) ?? [])];
 
           displayAlert({ text: t("messages.vehicle.move.failure") });
-        })
+        }),
     );
+
+    return moving;
   };
 
   return { orderedVehicles, onSort };

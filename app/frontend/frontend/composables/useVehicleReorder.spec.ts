@@ -112,6 +112,29 @@ describe("useVehicleReorder", () => {
     expect(ids(orderedVehicles.value)).toEqual(["bravo", "charlie", "alpha"]);
   });
 
+  it("sends the next move only once the one before it has landed", async () => {
+    let finishFirst: () => void = () => undefined;
+    move.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (finishFirst = resolve)),
+    );
+    const { onSort } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+    const second = onSort(["bravo", "charlie", "alpha"], "charlie");
+    await nextTick();
+
+    expect(move).toHaveBeenCalledTimes(1);
+
+    finishFirst();
+    await second;
+
+    expect(move).toHaveBeenCalledTimes(2);
+    expect(move.mock.calls[1][0]).toEqual({
+      id: "charlie",
+      data: { afterId: "bravo" },
+    });
+  });
+
   it("follows the server when it sends a new page", async () => {
     const { items, orderedVehicles } = setup();
 
