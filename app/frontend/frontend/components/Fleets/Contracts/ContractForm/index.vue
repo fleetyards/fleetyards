@@ -38,6 +38,7 @@ import {
   useUpdateFleetContract,
 } from "@/services/fyApi";
 import { useRouter } from "vue-router";
+import { useSessionStore } from "@/frontend/stores/session";
 
 type Props = {
   fleet: Fleet;
@@ -217,22 +218,24 @@ watch(requiresSource, (needed) => {
   if (!needed) sourceFleetInventoryId.value = null;
 });
 
-// Which hint the picked hangar destination earns. The API offers the reader
-// only their own, so one it did not offer is the author's, kept from before --
-// and a delivery there waits for the author, not for whoever is editing.
+const sessionStore = useSessionStore();
+
+// Which hint the picked hangar destination earns. A hangar destination is
+// always the author's, and a delivery there waits for the author, not for
+// whoever is editing. Decided from who the reader is rather than from the
+// offered options, which are empty until their request answers.
 const hangarDestinationOwner = computed<"self" | "author" | null>(() => {
   const { destinationInventoryId } = destinationIds(
     destination.value as string | null,
   );
   if (!destinationInventoryId) return null;
 
-  const offered = (destinations.value ?? []).some(
-    (option) =>
-      option.holder === FleetContractDestinationHolderEnum.USER &&
-      option.id === destinationInventoryId,
-  );
+  // A new contract is written by the reader, and only their own are offered.
+  if (!props.contract) return "self";
 
-  return offered ? "self" : "author";
+  return props.contract.createdBy?.id === sessionStore.currentUser?.id
+    ? "self"
+    : "author";
 });
 
 const destinationIds = (value: string | null | undefined) => {

@@ -68,6 +68,12 @@ vi.mock("@/shared/composables/useComlink", () => ({
 
 vi.mock("vue-router", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
+const session = vi.hoisted(() => ({ currentUser: { id: "reader" } }));
+
+vi.mock("@/frontend/stores/session", () => ({
+  useSessionStore: () => session,
+}));
+
 vi.mock("@/frontend/composables/useSquadronVisibility", () => ({
   useSquadronVisibility: () => ({
     withSquadronChoice: <T>(options: T[]) => options,
@@ -347,6 +353,25 @@ describe("ContractForm destination", () => {
     expect(
       wrapper.find("[data-test='contract-destination-author-hint']").text(),
     ).toBe("labels.fleets.contracts.toAuthorHint(Ada)");
+  });
+
+  // The options arrive in their own request, so being missing from them
+  // says nothing about who the reader is.
+  it("tells the author they accept deliveries before the options load", () => {
+    destinations.value = [];
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      destination: LOCKER,
+      createdBy: { id: "reader", username: "Ada" },
+    });
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='contract-destination-author-hint']").exists(),
+    ).toBe(false);
   });
 
   // Somebody else editing still sees where it delivers, and keeps it by not
