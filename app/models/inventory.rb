@@ -49,8 +49,6 @@ class Inventory < ApplicationRecord
   has_many :destined_fleet_contracts, class_name: "FleetContract",
     foreign_key: :destination_inventory_id, inverse_of: :destination_inventory, dependent: nil
 
-  before_destroy :refuse_while_a_contract_delivers_here, prepend: true
-
   # The inventories a user created by hand, as opposed to the ones a ship
   # provisioned for itself.
   scope :hand_made, -> { where(vehicle_id: nil) }
@@ -145,19 +143,5 @@ class Inventory < ApplicationRecord
     # which is one of the two indexes this exists to keep clear. `slug_for` is the
     # derivation that callback uses.
     update_columns(name: claimed, slug: self.class.slug_for(claimed), updated_at: Time.zone.now)
-  end
-
-  # The holder removing it on purpose, while somebody is still delivering into
-  # it for them: the contract would lose its destination with work under way,
-  # and an expired one still counts a delivery that was already on its way.
-  # Deleting the account destroys it through the association and is let
-  # through; the contract then keeps working without one.
-  private def refuse_while_a_contract_delivers_here
-    return if destroyed_by_association
-    return unless destined_fleet_contracts.still_receiving.exists?
-
-    errors.add(:base, :contract_destination,
-      message: I18n.t("activerecord.errors.messages.inventory_contract_destination"))
-    throw(:abort)
   end
 end

@@ -117,6 +117,34 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
     assert_response :no_content
   end
 
+  # Progress reads the deposit out of whichever inventory took it, so that one
+  # has to stay as long as the contract counts it.
+  test "DELETE /hangar/inventories/:slug is refused while an accepted contract delivery counts here" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user,
+      aasm_state: "completed", destination_inventory: @inventory)
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+  end
+
+  test "DELETE /hangar/inventories/:slug is not held up by a pickup its holder took as courier" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @other_user)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user,
+      aasm_state: "completed", destination_inventory: @inventory)
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
   # A transport's pickup waits on its crew and can never land in the hangar.
   test "DELETE /hangar/inventories/:slug is not held up by an expired contract's pending pickup" do
     contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,

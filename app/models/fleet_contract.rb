@@ -169,6 +169,27 @@ class FleetContract < ApplicationRecord
       .or(where(aasm_state: "expired").where(pending_delivery.arel.exists))
   }
 
+  # The contracts still receiving whose progress reads deposits out of this
+  # inventory: the ones delivering into it, and the ones an addressed delivery
+  # was accepted into it for -- the same two cases `Contracts::Progress`
+  # counts. Deleting it would take those deposits, and the progress, with it.
+  scope :counting_deliveries_in, ->(inventory) {
+    fleet = inventory.is_a?(::FleetInventory)
+    column = fleet ? :destination_fleet_inventory_id : :destination_inventory_id
+    addressed = if fleet
+      "inventory_transfers.recipient_fleet_id = fleet_contracts.fleet_id"
+    else
+      "inventory_transfers.recipient_id = fleet_contracts.created_by_id"
+    end
+    accepted_here = InventoryTransfer.completed
+      .where("inventory_transfers.fleet_contract_id = fleet_contracts.id")
+      .where(column => inventory.id)
+      .where(addressed)
+
+    still_receiving.where(column => inventory.id)
+      .or(still_receiving.where.not(column => nil).where(accepted_here.arel.exists))
+  }
+
   # `whiny_transitions: false` matches the rest of the app's state machines.
   # The two stamps aasm cannot write are written by hand: its timestamp feature
   # derives the column from the *state* name, so `open` would want `open_at` and
