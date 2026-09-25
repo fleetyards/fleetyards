@@ -645,6 +645,9 @@ class Vehicle < ApplicationRecord
   # Only the rank is written: a full save would re-run the loaner, snub craft
   # and fleet callbacks for a change none of them read.
   def move_next_to!(neighbour, after:)
+    # A neighbour without a rank has no place to be counted from.
+    self.class.rank_unranked!(user_id)
+
     self.class.lexorank_ranking.with_lock_if_enabled(self) do
       neighbour_rank = Vehicle.where(id: neighbour.id).pick(:rank)
       index = Vehicle.ranked.where(user_id:).where.not(id:).where(rank: ...neighbour_rank).count

@@ -109,6 +109,20 @@ class Api::V1::VehiclesMoveTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Until the backfill has run, a hangar can still hold vehicles with no rank:
+  # the move ranks them first, so the neighbour has a place to be counted from.
+  test "PUT /vehicles/:id/move ranks a hangar that has none yet before placing the vehicle" do
+    Vehicle.where(user: @user).update_all(rank: nil)
+    sign_in @user
+
+    assert_api_response :put, 204,
+      path_params: {id: @alpha.id},
+      body: {afterId: @charlie.id} do
+      assert_equal %w[Bravo Charlie Alpha], names
+      assert_empty @user.vehicles.where(rank: nil)
+    end
+  end
+
   test "PUT /vehicles/:id/move needs exactly one neighbour" do
     sign_in @user
 
