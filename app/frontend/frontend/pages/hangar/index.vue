@@ -164,9 +164,14 @@ const sortFields = useHangarSortFields({ include: activeSort });
 
 // Dragging writes the owner's order, so it is only offered while that order is
 // the one on screen: under another sort, or with some ships filtered out, a
-// drop would land somewhere the user cannot see.
+// drop would land somewhere the user cannot see. The same holds for the moment
+// after switching to it -- the list still shows the previous sort's ships until
+// the ranked ones arrive, and a drop placed among those would be saved.
 const canSort = computed(
-  () => activeSort.value === "rank asc" && !isFilterSelected.value,
+  () =>
+    activeSort.value === "rank asc" &&
+    !isFilterSelected.value &&
+    !asyncStatus.isPlaceholderData.value,
 );
 
 // Shared by the table's row boxes and the toolbar's select-all box and bulk
