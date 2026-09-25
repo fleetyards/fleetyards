@@ -103,4 +103,30 @@ module FleetVehicleFiltersConcern
         .compact
     end
   end
+
+  # The ships behind a fleet's filtered vehicles, in the order `sorts` asks for.
+  #
+  # Plucked from the fleet's own vehicles, so the ids are already scoped, and a
+  # plain lookup needs no DISTINCT that would forbid ordering by a join. The
+  # count is taken over the same filtered vehicles, so it matches the "3x" the
+  # model-counts endpoint shows on each row.
+  #
+  # Ransack drops any order it is handed, so the count goes in front afterwards,
+  # with the ship's own sorts left to break a tie.
+  private def grouped_models(query, sorts)
+    models = Model.where(id: query.result.pluck(:model_id))
+      .ransack(sorts: FleetVehicle.model_sorts(sorts))
+      .result
+
+    direction = FleetVehicle.count_sort_direction(sorts)
+    return models if direction.blank?
+
+    counts = Vehicle.where(id: query.result(distinct: true).reorder(nil).select(:id))
+      .group(:model_id)
+      .select(:model_id, "COUNT(*) AS vehicles_count")
+
+    models
+      .joins("INNER JOIN (#{counts.to_sql}) fleet_counts ON fleet_counts.model_id = models.id")
+      .reorder(Arel::Table.new(:fleet_counts)[:vehicles_count].public_send(direction), *models.order_values)
+  end
 end

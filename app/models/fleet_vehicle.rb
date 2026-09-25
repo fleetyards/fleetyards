@@ -49,7 +49,7 @@ class FleetVehicle < ApplicationRecord
     modelScmSpeed modelMaxSpeed modelGroundMaxSpeed modelFocus modelProductionStatus modelPrice
     modelPledgePrice
   ].freeze
-  ALLOWED_SORTING_PARAMS = (MODEL_SORT_FIELDS + %w[createdAt updatedAt])
+  ALLOWED_SORTING_PARAMS = (MODEL_SORT_FIELDS + %w[createdAt updatedAt vehiclesCount])
     .flat_map { |field| ["#{field} asc", "#{field} desc"] }
 
   # A grouped list is a list of ships rather than of vehicles, so it can only
@@ -58,5 +58,19 @@ class FleetVehicle < ApplicationRecord
   def self.model_sorts(sorts)
     Array(sorts).filter_map { |sort| sort.delete_prefix("model_") if sort.start_with?("model_") }
       .presence || ["name asc"]
+  end
+
+  # How many of a ship the fleet holds only means something once the list is
+  # grouped by ship, so this is the one sort a grouped list follows that is not
+  # the ship's own. Returns the direction, or nil when it was not asked for.
+  def self.count_sort_direction(sorts)
+    Array(sorts).find { |sort| sort.start_with?("vehicles_count ") }&.split&.last
+  end
+
+  # The sorts a list of vehicles can follow. Each row is one vehicle, so the
+  # count sort falls back to the default like any other it cannot answer.
+  def self.vehicle_sorts(sorts)
+    Array(sorts).reject { |sort| sort.start_with?("vehicles_count ") }
+      .presence || DEFAULT_SORTING_PARAMS
   end
 end

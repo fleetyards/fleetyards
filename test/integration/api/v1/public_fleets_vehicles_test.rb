@@ -82,6 +82,20 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/fleets/:fleetSlug/vehicles sorts a grouped list by how many of each ship the fleet holds" do
+    member = create(:user)
+    {"Alpha" => 1, "Bravo" => 3, "Charlie" => 2}.each do |name, count|
+      create_list(:vehicle, count, user: member, model: create(:model, name:))
+    end
+    fleet = create(:fleet, public_fleet: true, members: [member])
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "vehiclesCount desc"}} do
+      assert_equal %w[Bravo Charlie Alpha], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /public/fleets/:fleetSlug/vehicles is open to an allied fleet" do
     member = create(:user, vehicle_count: 2)
     fleet = create(:fleet, public_fleet: false, allies_fleet: true, members: [member])

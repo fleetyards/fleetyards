@@ -23353,6 +23353,8 @@ components:
       - createdAt desc
       - updatedAt asc
       - updatedAt desc
+      - vehiclesCount asc
+      - vehiclesCount desc
       x-enumNames:
       - MODEL_NAME_ASC
       - MODEL_NAME_DESC
@@ -23386,6 +23388,8 @@ components:
       - CREATED_AT_DESC
       - UPDATED_AT_ASC
       - UPDATED_AT_DESC
+      - VEHICLES_COUNT_ASC
+      - VEHICLES_COUNT_DESC
       title: FleetVehicleSortEnum
     FleetVehicles:
       type: object
