@@ -28,7 +28,7 @@ module Api
         scope = readable_fleet_inventories.includes(manager: [:omniauth_connections],
           fleet_squadrons: {icon_attachment: :blob})
 
-        query_params = params.fetch(:q, {}).permit(:name_cont, :visibility_eq, :s)
+        query_params = params.fetch(:q, {}).permit(:name_cont, :visibility_eq, :s, :sorts)
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(FleetInventory, query_params["sorts"])
 

@@ -25,7 +25,7 @@ module Api
         scope = current_resource_owner.inventories
         scope = scope.hand_made unless ship_inventories_enabled?
 
-        query_params = params.fetch(:q, {}).permit(:name_cont, :s)
+        query_params = params.fetch(:q, {}).permit(:name_cont, :s, :sorts)
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(Inventory, query_params["sorts"])
 

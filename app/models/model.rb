@@ -588,7 +588,7 @@ class Model < ApplicationRecord
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
       "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
-      "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
+      "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height", "sc_key",
       "sc_length", "scm_speed", "search",
       "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"

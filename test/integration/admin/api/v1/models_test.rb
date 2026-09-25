@@ -238,6 +238,18 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by scKeyBlank" do
+    keyed = create(:model, sc_key: "AEGS_Idris_M")
+    unkeyed = create(:model, sc_key: nil)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"scKeyBlank" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, unkeyed.name
+      assert_not_includes names, keyed.name
+    end
+  end
+
   test "GET /models honours perPage and totals" do
     create_list(:model, 10)
     sign_in @user
