@@ -377,6 +377,33 @@ paths:
                 "$ref": "#/components/schemas/Equipments"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment/{slug}":
+    get:
+      summary: Equipment detail
+      tags:
+      - Equipment
+      operationId: equipmentItem
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipment"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -501,6 +528,58 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/equipment/slots":
+    get:
+      summary: Equipment Slot Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentSlotsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/equipment/sub-types":
+    get:
+      summary: Equipment Sub Type Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentSubTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/equipment/types":
+    get:
+      summary: Equipment Type Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/equipment/weapon-classes":
+    get:
+      summary: Equipment Weapon Class Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentWeaponClassesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -18895,6 +18974,8 @@ components:
       properties:
         nameCont:
           type: string
+        nameOrSlugCont:
+          type: string
         currentVersion:
           type: boolean
           default: true
@@ -18919,10 +19000,131 @@ components:
           type: array
           items:
             type: string
+        subTypeIn:
+          type: array
+          items:
+            type: string
+        weaponClassIn:
+          type: array
+          items:
+            type: string
+        slotIn:
+          type: array
+          items:
+            type: string
+            enum:
+            - undersuit
+            - arms
+            - helmet
+            - torso
+            - legs
+            - footwear
+            - hat
+            - gloves
+            - pants
+            - shirt
+            - jacket
+            - backpack
+        sizeIn:
+          type: array
+          items:
+            type: string
+        gradeIn:
+          type: array
+          items:
+            type: string
         manufacturerSlugIn:
           type: array
           items:
             type: string
+        damageReductionGteq:
+          type: number
+        radiationProtectionGteq:
+          type: number
+        gForceToleranceGteq:
+          type: number
+        storageGteq:
+          type: number
+        rangeGteq:
+          type: number
+        rateOfFireGteq:
+          type: number
+        volumeGteq:
+          type: number
+        damageReductionLteq:
+          type: number
+        radiationProtectionLteq:
+          type: number
+        gForceToleranceLteq:
+          type: number
+        storageLteq:
+          type: number
+        rangeLteq:
+          type: number
+        rateOfFireLteq:
+          type: number
+        volumeLteq:
+          type: number
+        s:
+          type: string
+          enum:
+          - name asc
+          - name desc
+          - equipmentType asc
+          - equipmentType desc
+          - itemType asc
+          - itemType desc
+          - manufacturerName asc
+          - manufacturerName desc
+          - createdAt asc
+          - createdAt desc
+          - updatedAt asc
+          - updatedAt desc
+          - damageReduction asc
+          - damageReduction desc
+          - radiationProtection asc
+          - radiationProtection desc
+          - gForceTolerance asc
+          - gForceTolerance desc
+          - storage asc
+          - storage desc
+          - range asc
+          - range desc
+          - rateOfFire asc
+          - rateOfFire desc
+          - volume asc
+          - volume desc
+        sorts:
+          type: array
+          items:
+            type: string
+            enum:
+            - name asc
+            - name desc
+            - equipmentType asc
+            - equipmentType desc
+            - itemType asc
+            - itemType desc
+            - manufacturerName asc
+            - manufacturerName desc
+            - createdAt asc
+            - createdAt desc
+            - updatedAt asc
+            - updatedAt desc
+            - damageReduction asc
+            - damageReduction desc
+            - radiationProtection asc
+            - radiationProtection desc
+            - gForceTolerance asc
+            - gForceTolerance desc
+            - storage asc
+            - storage desc
+            - range asc
+            - range desc
+            - rateOfFire asc
+            - rateOfFire desc
+            - volume asc
+            - volume desc
       additionalProperties: false
       example: {}
       title: EquipmentQuery

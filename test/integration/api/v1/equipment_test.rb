@@ -85,6 +85,45 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # `name` used to be aliased to `name_or_slug`, which made a search match
+  # either and left ransack unable to sort by name at all. The search is its
+  # own predicate now.
+  test "GET /equipment searches name or slug with nameOrSlugCont" do
+    assert_api_response :get, 200, params: {q: {"nameOrSlugCont" => "p4-ar-rif"}} do
+      assert_equal ["P4-AR Rifle"], parsed_body["items"].map { |i| i["name"] }
+    end
+  end
+
+  test "GET /equipment sorts by name descending" do
+    assert_api_response :get, 200, params: {q: {"s" => "name desc"}} do
+      assert_equal ["P4-AR Rifle", "P4-AR Magazine", "Omarof Scope"], parsed_body["items"].map { |i| i["name"] }
+    end
+  end
+
+  # Across the whole result rather than the page: the sort is SQL, and a row
+  # with no figure goes last whichever way round.
+  test "GET /equipment sorts by a metric, putting items without one last" do
+    create(:equipment, :armor, name: "Heavy Plate", damage_reduction: 40)
+    create(:equipment, :armor, name: "Light Plate", damage_reduction: 10)
+
+    assert_api_response :get, 200, params: {q: {"s" => "damageReduction desc"}, perPage: 2} do
+      assert_equal ["Heavy Plate", "Light Plate"], parsed_body["items"].map { |i| i["name"] }
+    end
+  end
+
+  test "GET /equipment filters by weaponClassIn, slotIn and a metric range" do
+    create(:equipment, name: "Karna Rifle", weapon_class: "energy")
+    create(:equipment, :armor, name: "Novikov Exploration Suit")
+
+    assert_api_response :get, 200, params: {q: {"weaponClassIn" => ["energy"]}} do
+      assert_equal ["Karna Rifle"], parsed_body["items"].map { |i| i["name"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {"slotIn" => ["torso"], "damageReductionGteq" => 20}} do
+      assert_equal ["Novikov Exploration Suit"], parsed_body["items"].map { |i| i["name"] }
+    end
+  end
+
   test "GET /equipment exposes the armour stats the spec block carries" do
     create(:equipment, :armor, name: "Novikov Exploration Suit")
 

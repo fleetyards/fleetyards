@@ -219,8 +219,6 @@ class Equipment < ApplicationRecord
 
   before_save :update_slugs
 
-  ransack_alias :name, :name_or_slug
-
   # The game's own split, from AttachDef Type. Armour and clothing join these
   # when the character trees land; they are the same kind of thing worn or
   # carried by a player, and share this table.
@@ -233,13 +231,22 @@ class Equipment < ApplicationRecord
   # Commodity#commodity_type.
   WEAPON_CLASSES = %w[ballistic energy kinetic frag].freeze
 
+  # The figures a catalogue reader ranks by. An armour piece has no rate of
+  # fire, so those sort after everything that has one rather than ahead of it --
+  # ransack puts nulls last on either direction.
+  SORTABLE_METRICS = %w[
+    damageReduction radiationProtection gForceTolerance storage range rateOfFire volume
+  ].freeze
+
   DEFAULT_SORTING_PARAMS = ["name asc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
+    "equipmentType asc", "equipmentType desc",
     "itemType asc", "itemType desc",
+    "manufacturerName asc", "manufacturerName desc",
     "createdAt asc", "createdAt desc",
     "updatedAt asc", "updatedAt desc"
-  ]
+  ] + SORTABLE_METRICS.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
 
   enum :slot,
     {
@@ -253,7 +260,9 @@ class Equipment < ApplicationRecord
   # `type` is what makes a comparison numeric or boolean rather than string-wise,
   # the same reason ItemPriceConcern passes it.
   FACT_RANSACK_TYPES = {
-    rate_of_fire: :decimal, range: :decimal, storage: :decimal, hidden: :boolean
+    rate_of_fire: :decimal, range: :decimal, storage: :decimal, damage_reduction: :decimal,
+    radiation_protection: :decimal, g_force_tolerance: :decimal, volume: :decimal,
+    hidden: :boolean
   }.freeze
 
   (EquipmentBuild::FILTERABLE - [:slot]).each do |fact|
@@ -280,7 +289,8 @@ class Equipment < ApplicationRecord
     # a word. Removing a name from this list silently disables a filter.
     %w[
       id name slug sc_key equipment_type item_type sub_type weapon_class size grade
-      slot hidden manufacturer_id range rate_of_fire storage store_image created_at updated_at
+      slot hidden manufacturer_id range rate_of_fire storage damage_reduction
+      radiation_protection g_force_tolerance volume store_image created_at updated_at
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 
@@ -338,6 +348,16 @@ class Equipment < ApplicationRecord
       Filter.new(
         category: "weapon_class",
         label: I18n.t("filter.equipment.weapon_class.items.#{item}", default: item.humanize),
+        value: item
+      )
+    end
+  end
+
+  def self.sub_type_filters
+    build_facet(:sub_type).map do |item|
+      Filter.new(
+        category: "sub_type",
+        label: I18n.t("filter.equipment.sub_type.items.#{item.underscore}", default: item.titleize),
         value: item
       )
     end
