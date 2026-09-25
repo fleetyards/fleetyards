@@ -90,30 +90,137 @@ zh-CN:
           weapon_attachment: 武器附件
         hidden: 隐藏
         item_types:
+          ammo: 弹药
+          ammo_carrier: 弹药携行具
+          apron: 围裙
+          armor: 护甲
+          armored_flight_suit: 装甲飞行服
           assault_rifle: 突击步枪
           backpack: 背包
+          bandana: 头巾
+          bar: 酒吧员工
+          barrel: 枪管配件
           battery: 电池
+          binoculars: 双筒望远镜
+          bioticorp: Bioticorp
+          boots: 靴子
+          bouncer: 保镖
+          business: 商务
+          chef: 厨师
+          combat: 战斗
+          crossbow: 弩
+          data_drive: 数据驱动器
+          displaycore: 展示核心
+          displayhelmet: 展示头盔
+          doctor: 医生
+          dress: 连衣裙
+          executive: 高管
+          extinguisher_refill: 灭火器补充剂
+          fashion: 时装
+          fio: Fio
+          fire_extinguisher: 灭火器
+          flight_helmet: 飞行头盔
+          flight_suit: 飞行服
           flightsuit: 飞行套装
+          frag_pistol: 破片手枪
+          frontier: 边疆
+          gloves: 手套
+          gren: 手榴弹
           grenade: 手雷
           grenade_launcher: 榴弹发射器
+          hat: 帽子
+          hathor: Hathor
           heavy_armor: 重型装甲
           heavy_backpack: 越野背包
+          heavy_utility: 重型工具装
+          helmet: 头盔
+          hmg: 重机枪
+          jacket: 夹克
+          jumpsuit: 连体服
+          keycard: 钥匙卡
           knife: 匕首
+          launcher: 发射器
           light_armor: 轻型装甲
           light_backpack: 淡蓝色的背包
+          light_helmet: 轻型头盔
           lmg: LMG
+          lum: Lum
           magazine: 弹匣
+          mask: 面罩
+          medgel_refill: 医疗凝胶补充剂
+          medical: 医疗
+          medical_consumable: 医疗消耗品
+          medical_device: 医疗设备
+          medium: 中型
           medium_armor: 中型装甲
           medium_backpack: 中型背包
+          mining_tool: 采矿工具
+          missile_launcher: 导弹发射器
+          multitool: 多功能工具
+          nurse: 护士
+          nvtc: NVTC
+          nvy: 海军
+          pants: 裤子
+          pilot: 飞行员
           pistol: 枪械
+          racing_flight_suit: 竞速飞行服
+          racing_helmet: 竞速头盔
+          railgun: 轨道炮
+          refinery: 精炼厂
           rifle: 步枪
+          rmc_canister_large: RMC罐（大）
+          rmc_canister_small: RMC罐（小）
+          rocket: 火箭弹
           rocket_launcher: 火箭筒
+          security: 安保
+          service: 服务
+          shirt: 衬衫
+          shoes: 鞋子
           shotgun: 霰弹枪
           smg: SMG
           sniper_rifle: 狙击步枪
           special_railgun: Special - Railgun
+          specialist: 专家
+          suit: 西装
+          super_heavy_armor: 超重型护甲
+          surgeon: 外科医生
+          tiesim: Tiesim
+          tophat: 高顶礼帽
+          toxic: 防化服
+          toy_pistol: 玩具手枪
+          tractor_beam: 牵引光束
+          training: 训练
+          trenchcoat: 风衣
+          underbarrel: 下挂配件
+          undersuit: 内衬服
           utility: 实用
+          vest: 背心
           weapon_scope: 瞄准镜
+          worksuit: 工作服
+          worksuit_helmet: 工作服头盔
+        sub_types:
+          barrel: 枪管
+          bottom_attachment: 下挂
+          gadget: 小工具
+          grenade: 手榴弹
+          hacking: 黑客
+          heavy: 重型
+          helmet: 头盔
+          iron_sight: 瞄具
+          knife: 刀
+          large: 大型
+          light: 轻型
+          light_armor: 轻型护甲
+          magazine: 弹匣
+          med_pack: 医疗包
+          medical: 医疗
+          medium: 中型
+          missile: 导弹
+          oxygen_cap: 氧气胶囊
+          personal: 个人
+          small: 小型
+          system_access: 系统访问
+          utility: 工具
         slots:
           arms: 手臂
           backpack: 背包
@@ -138,6 +245,7 @@ zh-CN:
           ballistic: 弹道
           energy: 能量
           frag: Frag
+          kinetic: 动能
       fleet_membership:
         roles:
           admin: 管理员
