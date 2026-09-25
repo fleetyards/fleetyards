@@ -37,7 +37,7 @@
     "@anycable/web": "^1.1.1",
     "@appsignal/javascript": "^1.6.1",
     "@appsignal/vue": "^1.1.7",
-    "@event-calendar/core": "^5.13.1",
+    "@event-calendar/core": "^5.14.0",
     "@number-flow/vue": "^0.5.2",
     "@rails/activestorage": "^8.1.301",
     "@tanstack/vue-query": "^5.103.1",

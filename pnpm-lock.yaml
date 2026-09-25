@@ -135,8 +135,8 @@ importers:
         specifier: ^1.1.7
         version: 1.1.7(vue@3.5.43(typescript@6.0.3))
       '@event-calendar/core':
-        specifier: ^5.13.1
-        version: 5.13.1(@typescript-eslint/types@8.70.0)
+        specifier: ^5.14.0
+        version: 5.14.0(@typescript-eslint/types@8.70.0)
       '@number-flow/vue':
         specifier: ^0.5.2
         version: 0.5.2(vue@3.5.43(typescript@6.0.3))
@@ -1434,8 +1434,8 @@ packages:
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@event-calendar/core@5.13.1':
-    resolution: {integrity: sha512-uh9rtBmQ9wgt7ELqI0PBwCeUMJWLxerPYL1WAF+LFGAcL2VPdVmhG6G2L82ZB+bIxC73sLrCLHRGHlkThPOhcw==}
+  '@event-calendar/core@5.14.0':
+    resolution: {integrity: sha512-WQqK3aXhaVO9Pksfnx4x82B4G1GbCoqWgYt2VjjjLyiU5M/lGC39LfkU76Qu2+GnFMOVbxcysMpa/vf7b/Da7Q==}
 
   '@exodus/bytes@1.15.1':
     resolution: {integrity: sha512-S6mL0yNB/Abt9Ei4tq8gDhcczc4S3+vQ4ra7vxnAf+YHC02srtqxKKZghx2Dq6p0e66THKwR6r8N6P95wEty7Q==}
@@ -8307,7 +8307,7 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@event-calendar/core@5.13.1(@typescript-eslint/types@8.70.0)':
+  '@event-calendar/core@5.14.0(@typescript-eslint/types@8.70.0)':
     dependencies:
       svelte: 5.57.0(@typescript-eslint/types@8.70.0)
     transitivePeerDependencies:
