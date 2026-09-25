@@ -1,4 +1,4 @@
-import { type Ref } from "vue";
+import { type MaybeRefOrGetter, type Ref } from "vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMoveVehicle, type Vehicle } from "@/services/fyApi";
@@ -10,23 +10,34 @@ import { useMoveVehicle, type Vehicle } from "@/services/fyApi";
  * re-reading the server between the drop and the response would snap the card
  * back to where it was dragged from.
  */
-export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
+export const useVehicleReorder = (
+  items: Ref<Vehicle[] | undefined>,
+  // What the list is a page of -- page, sort and filters. A new one is always
+  // shown, move or no move: it is a different list, not a stale read of this one.
+  listKey?: MaybeRefOrGetter<unknown>,
+) => {
   const { t } = useI18n();
 
   const { displayAlert } = useAppNotifications();
 
   const orderedVehicles = ref<Vehicle[]>([]);
 
-  // Moves sent and not yet answered. A page read in the meantime may have been
-  // answered before they landed, and taking it would put the dragged ships
-  // back; the read that follows a landed move is broadcast and taken instead.
+  // Moves sent and not yet answered. A read of the same list in the meantime
+  // may have been answered before they landed, and taking it would put the
+  // dragged ships back; the read that follows a landed move is broadcast and
+  // taken instead.
   let pendingMoves = 0;
+
+  let shownKey = JSON.stringify(toValue(listKey));
 
   watch(
     items,
     (vehicles) => {
-      if (pendingMoves) return;
+      const key = JSON.stringify(toValue(listKey));
 
+      if (pendingMoves && key === shownKey) return;
+
+      shownKey = key;
       orderedVehicles.value = [...(vehicles ?? [])];
     },
     { immediate: true },
@@ -39,6 +50,11 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
   // the server first would place its ship against an order that is not there
   // yet.
   let moving: Promise<void> = Promise.resolve();
+
+  // Counts failed moves. A drag queued behind one that failed named its
+  // neighbour in an order that was never saved, so it is dropped rather than
+  // sent.
+  let failures = 0;
 
   /*
    * The page is a slice of the owner's order, and that order also holds the
@@ -62,25 +78,32 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
       .filter((vehicle): vehicle is Vehicle => !!vehicle);
 
     const data = ahead ? { afterId: ahead } : { beforeId: behind };
+    const failuresBefore = failures;
 
     pendingMoves += 1;
 
-    moving = moving.then(() =>
-      moveMutation
+    moving = moving.then(async () => {
+      if (failures !== failuresBefore) {
+        pendingMoves -= 1;
+        return;
+      }
+
+      await moveMutation
         .mutateAsync({ id, data })
         .finally(() => {
           pendingMoves -= 1;
         })
-        // Back to the order the server last sent rather than to the one before
-        // this drag: a second drag may have landed in the meantime, and putting
-        // back a snapshot from before it would undo that one too. A move that
-        // did land is broadcast, and the list is read again with it in place.
+        // Back to the order the server last sent rather than to the one
+        // before this drag: a drag before it may have landed, and putting back
+        // a snapshot from before that would undo it too. A move that did land
+        // is broadcast, and the list is read again with it in place.
         .catch(() => {
+          failures += 1;
           orderedVehicles.value = [...(toValue(items) ?? [])];
 
           displayAlert({ text: t("messages.vehicle.move.failure") });
-        }),
-    );
+        });
+    });
 
     return moving;
   };

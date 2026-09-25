@@ -180,6 +180,7 @@ const selected = ref<string[]>([]);
 
 const { orderedVehicles, onSort, moveBy } = useVehicleReorder(
   computed(() => vehicles.value?.items),
+  hangarQueryParams,
 );
 
 watch(

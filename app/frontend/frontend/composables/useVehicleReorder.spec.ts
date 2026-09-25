@@ -26,8 +26,9 @@ const setup = () => {
   const items = ref<Vehicle[] | undefined>(
     ["alpha", "bravo", "charlie"].map(vehicle),
   );
+  const listKey = ref({ page: 1 });
 
-  return { items, ...useVehicleReorder(items) };
+  return { items, listKey, ...useVehicleReorder(items, listKey) };
 };
 
 const ids = (vehicles: Vehicle[]) => vehicles.map((item) => item.id);
@@ -176,6 +177,30 @@ describe("useVehicleReorder", () => {
     await moveBy("charlie", 1);
 
     expect(move).not.toHaveBeenCalled();
+  });
+
+  // A new page is a different list, not a stale read of this one.
+  it("shows a new page even while a move is out", async () => {
+    move.mockImplementationOnce(() => new Promise<void>(() => undefined));
+    const { items, listKey, onSort, orderedVehicles } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+    listKey.value = { page: 2 };
+    items.value = ["delta", "echo"].map(vehicle);
+    await nextTick();
+
+    expect(ids(orderedVehicles.value)).toEqual(["delta", "echo"]);
+  });
+
+  // The second drag named its neighbour in an order that was never saved.
+  it("drops a drag queued behind one that failed", async () => {
+    move.mockImplementationOnce(() => Promise.reject(new Error("nope")));
+    const { onSort } = setup();
+
+    void onSort(["bravo", "alpha", "charlie"], "alpha");
+    await onSort(["bravo", "charlie", "alpha"], "charlie");
+
+    expect(move).toHaveBeenCalledTimes(1);
   });
 
   it("follows the server when it sends a new page", async () => {
