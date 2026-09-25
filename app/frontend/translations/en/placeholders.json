@@ -266,7 +266,7 @@
           "name": "Name",
           "fid": "FID",
           "members": {
-            "username": "Username"
+            "search": "Username or nickname"
           }
         },
         "destroyedFleets": {

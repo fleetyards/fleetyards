@@ -72,6 +72,27 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members searches by nickname" do
+    @fleet.fleet_memberships.find_by(user: @member).update!(nickname: "Wingman Zed")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"searchCont" => "wingman"}} do
+      assert_equal [@member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members searches by username" do
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"searchCont" => @another_member.username}} do
+      assert_equal [@another_member.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
   test "GET /fleets/:slug/members honours perPage" do
     sign_in @admin
 
