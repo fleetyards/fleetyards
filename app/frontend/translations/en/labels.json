@@ -2732,6 +2732,7 @@
         "pieceVolume": "Volume per piece (SCU)",
         "consumable": "Consumable",
         "refinesInto": "Refines into",
+        "refinedFrom": "Refined from",
         "availability": {
           "retired": "Prices are tracked for the build the catalogue is on, and this commodity is not in it.",
           "craftedOnly": "No terminal trades this — it is a crafting material.",

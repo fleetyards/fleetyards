@@ -2718,6 +2718,7 @@
         "pieceVolume": "Volumen pro Stück (SCU)",
         "consumable": "Verzehrbar",
         "refinesInto": "Wird raffiniert zu",
+        "refinedFrom": "Raffiniert aus",
         "availability": {
           "retired": "Preise werden für den Build erfasst, auf dem der Katalog steht, und diese Handelsware ist nicht darin.",
           "craftedOnly": "Kein Terminal handelt damit — es ist ein Herstellungsmaterial.",

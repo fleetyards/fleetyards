@@ -200,7 +200,11 @@ watch(
 
           <div class="commodity-page__rail">
             <MetricsCard
-              v-if="details.length"
+              v-if="
+                details.length ||
+                commodity.refinesInto ||
+                commodity.refinedFrom?.length
+              "
               :title="t('headlines.commodity.identity')"
               variant="slim"
             >
@@ -232,6 +236,22 @@ watch(
                   </span>
                   <span class="metrics-card__row__value">
                     {{ commodity.refinesInto.name }}
+                  </span>
+                </router-link>
+
+                <!-- One row per raw form, labelled once: construction
+                     materials have three that share a target. -->
+                <router-link
+                  v-for="(source, index) in commodity.refinedFrom"
+                  :key="source.id"
+                  :to="{ name: 'commodity', params: { slug: source.slug } }"
+                  class="metrics-card__row commodity-page__link-row"
+                >
+                  <span class="metrics-card__row__label">
+                    {{ index === 0 ? t("labels.commodity.refinedFrom") : "" }}
+                  </span>
+                  <span class="metrics-card__row__value">
+                    {{ source.name }}
                   </span>
                 </router-link>
               </div>
