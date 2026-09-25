@@ -1786,16 +1786,17 @@
           "storeImageBlank": "¿Sin imagen de tienda?"
         },
         "equipment": {
-          "name": "Name",
-          "equipmentType": "Equipment Type",
-          "itemType": "Item Type",
-          "weaponClass": "Weapon Class",
-          "slot": "Slot",
+          "name": "Nombre",
+          "equipmentType": "Tipo de equipo",
+          "itemType": "Tipo de objeto",
+          "weaponClass": "Clase de arma",
+          "slot": "Ranura",
           "buyPriceGt": "Precio de compra >=",
           "buyPriceLt": "Precio de compra <=",
           "sellPriceGt": "Precio de venta >=",
           "sellPriceLt": "Precio de venta <=",
-          "storeImageBlank": "¿Sin imagen de tienda?"
+          "storeImageBlank": "¿Sin imagen de tienda?",
+          "subType": "Subtipo"
         },
         "notifications": {
           "search": "Buscar"
@@ -2324,7 +2325,8 @@
         "transferFromFriends": "Mis amigos",
         "towardsContract": "Para un contrato",
         "noContract": "Ningún contrato",
-        "forContract": "para"
+        "forContract": "para",
+        "openInCatalogue": "Abrir en el catálogo"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -2350,6 +2352,7 @@
           "uex_prices_import": "Sincronización de precios UEX",
           "uex_commodity_prices_import": "Sincronización de materias primas UEX",
           "uex_component_prices_import": "Sincronización de componentes UEX",
+          "uex_equipment_prices_import": "Sincronización de equipamiento UEX",
           "new_supporter": "Nuevo patrocinador",
           "rsi_api_blocked": "API de RSI bloqueada",
           "rsi_api_unblocked": "API de RSI restaurada",
@@ -2750,17 +2753,50 @@
         "storeImage": "Store Image"
       },
       "equipment": {
-        "equipmentType": "Equipment Type",
-        "itemType": "Item Type",
-        "subType": "Sub Type",
-        "weaponClass": "Weapon Class",
-        "slot": "Slot",
-        "size": "Size",
-        "grade": "Grade",
+        "equipmentType": "Tipo de equipo",
+        "itemType": "Tipo de objeto",
+        "subType": "Subtipo",
+        "weaponClass": "Clase de arma",
+        "slot": "Ranura",
+        "size": "Tamaño",
+        "grade": "Grado",
         "hidden": "Hidden?",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "name": "Nombre",
+        "manufacturer": "Fabricante",
+        "retired": "Ya no está en la compilación actual",
+        "noMetrics": "No hay métricas registradas para este objeto.",
+        "availability": {
+          "retired": "Los precios se registran para la versión en la que está el catálogo, y este objeto no está en ella.",
+          "craftedOnly": "Ninguna terminal lo vende: se fabrica con la receta de abajo.",
+          "none": "Ninguna terminal lo compra ni lo vende."
+        },
+        "stats": {
+          "damageReduction": "Reducción de daño",
+          "temperatureRating": "Rango de temperatura",
+          "radiationProtection": "Protección contra radiación",
+          "radiationScrubRate": "Tasa de depuración de radiación",
+          "gForceTolerance": "Tolerancia a la fuerza G",
+          "carryingCapacity": "Capacidad de carga",
+          "magazineSize": "Capacidad del cargador",
+          "rateOfFire": "Cadencia de fuego",
+          "range": "Alcance efectivo",
+          "weaponClass": "Clase de arma",
+          "coreCompatibility": "Compatibilidad de núcleo",
+          "backpackCompatibility": "Compatibilidad de mochila",
+          "volume": "Volumen"
+        },
+        "sorts": {
+          "damageReduction": "Reducción de daño",
+          "radiationProtection": "Protección contra radiación",
+          "gForceTolerance": "Tolerancia a la fuerza G",
+          "rateOfFire": "Cadencia de fuego",
+          "range": "Alcance",
+          "storage": "Capacidad",
+          "volume": "Volumen"
+        }
       },
       "notifications": {
         "inbox": "Bandeja de entrada",

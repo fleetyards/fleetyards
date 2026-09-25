@@ -22,6 +22,7 @@ if stock_item.item.present?
     json.type stock_item.reference_entry.item_type
     json.name stock_item.item.name
     json.slug stock_item.item.slug
+    json.listed stock_item.item.try(:listed?) != false
     json.counted stock_item.item.try(:counted?) || false
     json.available stock_item.item_available?
   end

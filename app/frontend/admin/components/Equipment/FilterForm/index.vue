@@ -28,7 +28,7 @@ const { booleanOptions } = useFilterOptions();
 
 const prefillFormValues = () => {
   return {
-    nameCont: filters.value.nameCont,
+    nameOrSlugCont: filters.value.nameOrSlugCont,
     equipmentTypeIn: filters.value.equipmentTypeIn || [],
     itemTypeIn: filters.value.itemTypeIn || [],
     weaponClassIn: filters.value.weaponClassIn || [],
@@ -69,7 +69,7 @@ watch(
     <Teleport to="#header-left">
       <FormInput
         :size="InputSizesEnum.MEDIUM"
-        v-model="form.nameCont"
+        v-model="form.nameOrSlugCont"
         name="search"
         translation-key="filters.equipment.name"
         :no-label="true"

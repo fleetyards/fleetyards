@@ -80,10 +80,12 @@ class EquipmentBuild < ApplicationRecord
   # The facts Equipment filters and sorts by. One list, so a ransacker and the
   # fallback join's column list cannot drift apart. The free-text and jsonb facts
   # are left out: nothing filters on them, and each one widens the fallback
-  # subquery for no gain.
+  # subquery for no gain. `temperature_rating` is free text ("-30 / 60 °C"), so
+  # it has no order to sort by.
   FILTERABLE = %i[
     name equipment_type item_type sub_type weapon_class size grade slot hidden
-    rate_of_fire range storage
+    rate_of_fire range storage damage_reduction radiation_protection
+    g_force_tolerance volume
   ].freeze
 
   # The same enums Equipment declares, because a build row holding `0` has to

@@ -22,6 +22,34 @@
       "name": "Legwear",
       "is_game_related": 1,
       "type": null
+    },
+    {
+      "id": 5,
+      "section": "Armor",
+      "name": "Torso",
+      "is_game_related": 1,
+      "type": null
+    },
+    {
+      "id": 18,
+      "section": "Personal Weapons",
+      "name": "Personal Weapons",
+      "is_game_related": 1,
+      "type": null
+    },
+    {
+      "id": 24,
+      "section": "Undersuits",
+      "name": "Undersuits",
+      "is_game_related": 1,
+      "type": null
+    },
+    {
+      "id": 63,
+      "section": "Miscellaneous",
+      "name": "Foods",
+      "is_game_related": 1,
+      "type": null
     }
   ]
 }

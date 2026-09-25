@@ -69,6 +69,20 @@ module Frontend
       render_frontend
     end
 
+    # The rule the API's detail endpoint applies, so a hidden variant does not
+    # get a card for a page that 404s.
+    def equipment
+      @equipment = Equipment.visible(false).includes(:manufacturer).find_by(slug: params[:slug].to_s.downcase)
+
+      if @equipment.present?
+        @title = [@equipment.name, @equipment.manufacturer&.name].compact.join(" - ")
+        @description = @equipment.description
+        @og_type = "article"
+      end
+
+      render_frontend
+    end
+
     # The run-time spans the game fills in are stripped to a bracketed name
     # rather than passed through: a card title is plain text, and
     # `~mission(TargetName)` in a link preview reads as a bug rather than as

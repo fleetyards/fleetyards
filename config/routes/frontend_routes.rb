@@ -30,6 +30,10 @@ namespace :frontend, **frontend_options do
   # page for one to come from.
   get "catalogue/commodities/:slug", to: "base#commodity", as: :commodity
 
+  # No `og_image` and no legacy redirect: no equipment carries a picture, and
+  # there has never been a public equipment page anywhere else.
+  get "catalogue/equipment/:slug", to: "base#equipment", as: :equipment_item
+
   # The same, for a mission. No `og_image` and no pre-section redirect: the
   # export ships no artwork for a contract, and these pages have never lived
   # anywhere else.

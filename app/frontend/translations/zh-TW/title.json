@@ -370,7 +370,11 @@
       },
       "missions": {
         "index": "任務"
-      }
+      },
+      "equipment": {
+        "index": "裝備"
+      },
+      "equipmentItem": "%{name}"
     }
   }
 }

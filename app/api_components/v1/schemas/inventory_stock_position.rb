@@ -26,6 +26,8 @@ module V1
               type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
               name: {type: :string},
               slug: {type: :string},
+              # Whether the record has a public page to link to.
+              listed: {type: :boolean},
 
               # Whether the game counts this one in pieces. Renaming a position
               # offers `units` only where the API would take it.

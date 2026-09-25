@@ -71,6 +71,25 @@ module UexFixtures
     }
   end
 
+  # The equipment the fixture gear prices are expected to resolve to. The first
+  # carries a name UEX does not use, so only its `sc_ref` can have matched it.
+  def create_uex_priced_equipment
+    {
+      ref_match: create(:equipment, name: "P4-AR Assault Rifle", sc_key: "behr_rifle_ballistic_01",
+        sc_ref: "aaaaaaaa-1111-0000-0000-000000000001"),
+      name_match: create(:equipment, :armor, equipment_type: "clothing", name: "Lillo Pants Violet",
+        sc_key: "lillo_pants_01_violet", sc_ref: nil),
+      hidden_skin: create(:equipment, :hidden, name: "P4-AR \"Boneyard\" Rifle",
+        sc_key: "behr_rifle_ballistic_01_white02", sc_ref: nil),
+      # Two colourway records under one name, so nothing says which one the shop stocks.
+      ambiguous: [
+        create(:equipment, equipment_type: "undersuit", name: "Beacon Undersuit", sc_key: "beacon_undersuit_01", sc_ref: nil),
+        create(:equipment, equipment_type: "undersuit", name: "Beacon Undersuit", sc_key: "beacon_undersuit_01_02", sc_ref: nil)
+      ],
+      free: create(:equipment, equipment_type: "clothing", name: "Free Sample Shirt", sc_key: "free_shirt_01", sc_ref: nil)
+    }
+  end
+
   def create_uex_priced_commodities
     {
       gold: create(:commodity, name: "Gold", sc_key: "items_commodities_gold", uex_id: 33, uex_code: "GOLD"),

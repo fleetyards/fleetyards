@@ -16,7 +16,10 @@ module V1
         type: [:object, :null],
         properties: {
           id: {type: :string, format: :uuid},
-          type: ::V1::Schemas::Enums::InventoryItemTypeEnum
+          type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
+          slug: {type: [:string, :null]},
+          # Whether the record has a public page to link to.
+          listed: {type: :boolean}
         }
       })
     end

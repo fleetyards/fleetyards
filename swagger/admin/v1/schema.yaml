@@ -10003,6 +10003,7 @@ components:
       - uex_prices_import
       - uex_commodity_prices_import
       - uex_component_prices_import
+      - uex_equipment_prices_import
       - new_supporter
       - rsi_api_blocked
       - rsi_api_unblocked
@@ -10020,6 +10021,7 @@ components:
       - UEX_PRICES_IMPORT
       - UEX_COMMODITY_PRICES_IMPORT
       - UEX_COMPONENT_PRICES_IMPORT
+      - UEX_EQUIPMENT_PRICES_IMPORT
       - NEW_SUPPORTER
       - RSI_API_BLOCKED
       - RSI_API_UNBLOCKED
@@ -10758,6 +10760,8 @@ components:
           - 'null'
         slug:
           type: string
+        listed:
+          type: boolean
       additionalProperties: false
       required:
       - type
@@ -12873,6 +12877,26 @@ components:
           type:
           - string
           - 'null'
+        equipmentTypeLabel:
+          type:
+          - string
+          - 'null'
+        itemTypeLabel:
+          type:
+          - string
+          - 'null'
+        subTypeLabel:
+          type:
+          - string
+          - 'null'
+        weaponClassLabel:
+          type:
+          - string
+          - 'null'
+        slotLabel:
+          type:
+          - string
+          - 'null'
         slot:
           type:
           - string
@@ -12937,7 +12961,15 @@ components:
           type:
           - string
           - 'null'
+        coreCompatibilityLabel:
+          type:
+          - string
+          - 'null'
         backpackCompatibility:
+          type:
+          - string
+          - 'null'
+        backpackCompatibilityLabel:
           type:
           - string
           - 'null'
@@ -13087,6 +13119,8 @@ components:
       properties:
         nameCont:
           type: string
+        nameOrSlugCont:
+          type: string
         equipmentTypeCont:
           type: string
         itemTypeCont:
@@ -13186,21 +13220,57 @@ components:
       enum:
       - name asc
       - name desc
+      - equipmentType asc
+      - equipmentType desc
       - itemType asc
       - itemType desc
+      - manufacturerName asc
+      - manufacturerName desc
       - createdAt asc
       - createdAt desc
       - updatedAt asc
       - updatedAt desc
+      - damageReduction asc
+      - damageReduction desc
+      - radiationProtection asc
+      - radiationProtection desc
+      - gForceTolerance asc
+      - gForceTolerance desc
+      - storage asc
+      - storage desc
+      - range asc
+      - range desc
+      - rateOfFire asc
+      - rateOfFire desc
+      - volume asc
+      - volume desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
+      - EQUIPMENT_TYPE_ASC
+      - EQUIPMENT_TYPE_DESC
       - ITEM_TYPE_ASC
       - ITEM_TYPE_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       - UPDATED_AT_ASC
       - UPDATED_AT_DESC
+      - DAMAGE_REDUCTION_ASC
+      - DAMAGE_REDUCTION_DESC
+      - RADIATION_PROTECTION_ASC
+      - RADIATION_PROTECTION_DESC
+      - G_FORCE_TOLERANCE_ASC
+      - G_FORCE_TOLERANCE_DESC
+      - STORAGE_ASC
+      - STORAGE_DESC
+      - RANGE_ASC
+      - RANGE_DESC
+      - RATE_OF_FIRE_ASC
+      - RATE_OF_FIRE_DESC
+      - VOLUME_ASC
+      - VOLUME_DESC
       title: EquipmentSortEnum
     EquipmentTypeEnum:
       type: string
@@ -14971,6 +15041,7 @@ components:
       - Imports::UexPricesImport
       - Imports::UexCommodityPricesImport
       - Imports::UexComponentPricesImport
+      - Imports::UexEquipmentPricesImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -14984,6 +15055,7 @@ components:
       - IMPORTS_UEX_PRICES_IMPORT
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       - IMPORTS_UEX_COMPONENT_PRICES_IMPORT
+      - IMPORTS_UEX_EQUIPMENT_PRICES_IMPORT
       title: ImportTypeEnum
     Imports:
       type: object

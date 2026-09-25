@@ -16,6 +16,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { type Blueprint, type FleetBlueprintOwner } from "@/services/fyApi";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   blueprint: Blueprint;
@@ -86,19 +87,9 @@ const tags = computed<RowListItemTag[]>(() =>
 // current build resolve to no catalogue row at all -- four mission carryables
 // and one entity class present in no file -- so this is genuinely absent
 // rather than merely unset.
-const craftableRoute = computed(() => {
-  const craftable = props.blueprint.craftable;
-  if (!craftable) return undefined;
-
-  if (craftable.type === "Component") {
-    return { name: "component", params: { slug: craftable.slug } };
-  }
-
-  // Equipment and commodities have no detail page yet -- they are list-only
-  // endpoints. Linking them would land on the app's not-found, so they read
-  // as plain text until those tenants exist.
-  return undefined;
-});
+const craftableRoute = computed(() =>
+  catalogueItemRoute(props.blueprint.craftable),
+);
 
 const badges = computed<RowListItemBadge[]>(() => {
   const list: RowListItemBadge[] = [];

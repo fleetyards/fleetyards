@@ -19,6 +19,7 @@ import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import { useBlueprint as useBlueprintQuery } from "@/services/fyApi";
 import { useMaterialStockUpdates } from "@/frontend/composables/useMaterialStock";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 const { t } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -63,18 +64,9 @@ const setEveryQuality = (value: number) => {
   qualities.value = next;
 };
 
-const craftableRoute = computed(() => {
-  const craftable = blueprint.value?.craftable;
-  if (!craftable) return undefined;
-
-  // Only components have a detail page. Equipment and commodities are
-  // list-only endpoints, so linking them would land on the not-found.
-  if (craftable.type === "Component") {
-    return { name: "component", params: { slug: craftable.slug } };
-  }
-
-  return undefined;
-});
+const craftableRoute = computed(() =>
+  catalogueItemRoute(blueprint.value?.craftable),
+);
 
 const qualitySummary = computed(() => {
   const slots = blueprint.value?.costSlots || [];

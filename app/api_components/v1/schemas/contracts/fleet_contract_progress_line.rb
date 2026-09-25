@@ -11,6 +11,9 @@ module V1
           properties: {
             itemId: {type: :string, format: :uuid},
             name: {type: :string},
+            # The catalogue record the line asks for, so the line can link to
+            # it. Absent for a line somebody typed by hand.
+            item: ::V1::Schemas::Contracts::FleetContractItemRef,
             category: ::V1::Schemas::Enums::InventoryCategoryEnum,
             unit: ::V1::Schemas::Enums::InventoryUnitEnum,
             quality: {type: [:integer, :null]},

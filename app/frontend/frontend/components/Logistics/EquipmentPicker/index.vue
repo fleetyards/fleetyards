@@ -69,7 +69,7 @@ const equipmentQuery = ({ search, page }: { search?: string; page?: number }) =>
     q: {
       ...equipmentTypeQuery.value,
       ...(itemType.value ? { itemTypeIn: [itemType.value] } : {}),
-      ...(search ? { nameCont: search } : {}),
+      ...(search ? { nameOrSlugCont: search } : {}),
     },
   });
 

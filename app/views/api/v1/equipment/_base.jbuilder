@@ -6,11 +6,16 @@ json.slug equipment.slug
 json.description equipment.description
 
 json.equipment_type equipment.equipment_type
+json.equipment_type_label equipment.equipment_type_label
 json.item_type equipment.item_type
+json.item_type_label equipment.item_type_label
 json.sub_type equipment.sub_type
+json.sub_type_label equipment.sub_type_label
 json.weapon_class equipment.weapon_class
+json.weapon_class_label equipment.weapon_class_label
 
 json.slot equipment.slot
+json.slot_label equipment.slot_label
 json.size equipment.size
 json.grade equipment.grade
 json.rate_of_fire equipment.rate_of_fire&.to_f
@@ -26,7 +31,9 @@ json.radiation_protection equipment.radiation_protection&.to_f
 json.radiation_scrub_rate equipment.radiation_scrub_rate&.to_f
 json.g_force_tolerance equipment.g_force_tolerance&.to_f
 json.core_compatibility equipment.core_compatibility
+json.core_compatibility_label equipment.core_compatibility_label
 json.backpack_compatibility equipment.backpack_compatibility
+json.backpack_compatibility_label equipment.backpack_compatibility_label
 
 if equipment.manufacturer.present?
   json.manufacturer do

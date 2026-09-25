@@ -42,6 +42,7 @@
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #  index_equipment_on_sc_key           (sc_key) UNIQUE
 #  index_equipment_on_slot             (slot)
+#  index_equipment_on_slug             (slug) UNIQUE
 #
 class Equipment < ApplicationRecord
   attr_accessor :update_reason, :update_reason_description, :author_id
@@ -71,6 +72,7 @@ class Equipment < ApplicationRecord
     }
   include AttachmentRansackers
   include ItemPriceConcern
+  include KeyedSlug
   include ScDataVersioned
 
   paginates_per 50
@@ -168,6 +170,14 @@ class Equipment < ApplicationRecord
     build.blank?
   end
 
+  # Whether the item has a public page. Hidden variants -- skins, NPC loadouts,
+  # event copies -- stay out of the catalogue, so a reference to one says so
+  # rather than linking to a 404. The column rather than the build: the load
+  # writes both, and a list of references would otherwise load a build per row.
+  def listed?
+    !hidden
+  end
+
   # The build we are on, or the last one that described the item.
   def facts
     build || last_build
@@ -205,6 +215,22 @@ class Equipment < ApplicationRecord
     end
   end
 
+  %i[equipment_type item_type sub_type weapon_class].each do |fact|
+    define_method(:"#{fact}_label") { self.class.fact_label(fact, public_send(fact)) }
+  end
+
+  def slot_label
+    self.class.human_enum_name(:slot, slot)
+  end
+
+  def core_compatibility_label
+    self.class.human_enum_name(:core_compatibility, core_compatibility)
+  end
+
+  def backpack_compatibility_label
+    self.class.human_enum_name(:backpack_compatibility, backpack_compatibility)
+  end
+
   # Nothing fills this from the game files: the loadout icons the records name
   # are art the export leaves out on purpose. It is here for the same reason
   # every other catalogue has one -- an upload, and the ledger's fallback to
@@ -216,8 +242,6 @@ class Equipment < ApplicationRecord
   validates :sc_key, uniqueness: true, allow_nil: true
 
   before_save :update_slugs
-
-  ransack_alias :name, :name_or_slug
 
   # The game's own split, from AttachDef Type. Armour and clothing join these
   # when the character trees land; they are the same kind of thing worn or
@@ -231,13 +255,22 @@ class Equipment < ApplicationRecord
   # Commodity#commodity_type.
   WEAPON_CLASSES = %w[ballistic energy kinetic frag].freeze
 
+  # The figures a catalogue reader ranks by. An armour piece has no rate of
+  # fire, so those sort after everything that has one rather than ahead of it --
+  # ransack puts nulls last on either direction.
+  SORTABLE_METRICS = %w[
+    damageReduction radiationProtection gForceTolerance storage range rateOfFire volume
+  ].freeze
+
   DEFAULT_SORTING_PARAMS = ["name asc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
+    "equipmentType asc", "equipmentType desc",
     "itemType asc", "itemType desc",
+    "manufacturerName asc", "manufacturerName desc",
     "createdAt asc", "createdAt desc",
     "updatedAt asc", "updatedAt desc"
-  ]
+  ] + SORTABLE_METRICS.flat_map { |metric| ["#{metric} asc", "#{metric} desc"] }
 
   enum :slot,
     {
@@ -251,7 +284,9 @@ class Equipment < ApplicationRecord
   # `type` is what makes a comparison numeric or boolean rather than string-wise,
   # the same reason ItemPriceConcern passes it.
   FACT_RANSACK_TYPES = {
-    rate_of_fire: :decimal, range: :decimal, storage: :decimal, hidden: :boolean
+    rate_of_fire: :decimal, range: :decimal, storage: :decimal, damage_reduction: :decimal,
+    radiation_protection: :decimal, g_force_tolerance: :decimal, volume: :decimal,
+    hidden: :boolean
   }.freeze
 
   (EquipmentBuild::FILTERABLE - [:slot]).each do |fact|
@@ -278,7 +313,8 @@ class Equipment < ApplicationRecord
     # a word. Removing a name from this list silently disables a filter.
     %w[
       id name slug sc_key equipment_type item_type sub_type weapon_class size grade
-      slot hidden manufacturer_id range rate_of_fire storage store_image created_at updated_at
+      slot hidden manufacturer_id range rate_of_fire storage damage_reduction
+      radiation_protection g_force_tolerance volume store_image created_at updated_at
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 
@@ -318,7 +354,7 @@ class Equipment < ApplicationRecord
     equipment_types.map do |item|
       Filter.new(
         category: "equipment_type",
-        label: I18n.t("filter.equipment.equipment_type.items.#{item}", default: item.humanize),
+        label: fact_label(:equipment_type, item),
         value: item
       )
     end
@@ -335,7 +371,28 @@ class Equipment < ApplicationRecord
     weapon_classes.map do |item|
       Filter.new(
         category: "weapon_class",
-        label: I18n.t("filter.equipment.weapon_class.items.#{item}", default: item.humanize),
+        label: fact_label(:weapon_class, item),
+        value: item
+      )
+    end
+  end
+
+  # One vocabulary for a filter option and the payload's label beside the raw
+  # value, so the chip a row shows and the option it filters by always read the
+  # same. A value a patch introduces before anyone writes a label for it falls
+  # back to the raw string, spaced and capitalised.
+  def self.fact_label(fact, value)
+    return if value.blank?
+
+    value = value.to_s
+    I18n.t("activerecord.attributes.equipment.#{fact.to_s.pluralize}.#{value.underscore}", default: value.underscore.titleize)
+  end
+
+  def self.sub_type_filters
+    build_facet(:sub_type).map do |item|
+      Filter.new(
+        category: "sub_type",
+        label: fact_label(:sub_type, item),
         value: item
       )
     end
@@ -364,7 +421,7 @@ class Equipment < ApplicationRecord
     item_types(equipment_types).map do |item|
       Filter.new(
         category: "item_type",
-        label: I18n.t("filter.equipment.item_type.items.#{item}", default: item.humanize),
+        label: fact_label(:item_type, item),
         value: item
       )
     end

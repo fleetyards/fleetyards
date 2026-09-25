@@ -370,7 +370,11 @@
       },
       "missions": {
         "index": "Missions"
-      }
+      },
+      "equipment": {
+        "index": "Équipement"
+      },
+      "equipmentItem": "%{name}"
     }
   }
 }

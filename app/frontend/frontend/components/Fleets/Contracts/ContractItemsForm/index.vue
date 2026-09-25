@@ -10,6 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -155,7 +156,14 @@ const qualityLabel = (item: Row) =>
         <BasePill :variant="PillVariantsEnum.NEUTRAL" uppercase margin-right>
           {{ t(`labels.logistics.categories.${item.category}`) }}
         </BasePill>
-        <span class="contract-items__name">{{ item.name }}</span>
+        <router-link
+          v-if="catalogueItemRoute(item.item)"
+          :to="catalogueItemRoute(item.item)!"
+          class="contract-items__name"
+        >
+          {{ item.name }}
+        </router-link>
+        <span v-else class="contract-items__name">{{ item.name }}</span>
         <span class="contract-items__quantity">
           {{ Number(item.quantity) }}
           {{ t(`labels.logistics.units.${item.unit}`) }}

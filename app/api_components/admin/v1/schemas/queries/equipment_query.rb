@@ -11,6 +11,7 @@ module Admin
             type: :object,
             properties: {
               nameCont: {type: :string},
+              nameOrSlugCont: {type: :string},
               equipmentTypeCont: {type: :string},
               itemTypeCont: {type: :string},
               subTypeCont: {type: :string},

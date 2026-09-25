@@ -97,7 +97,7 @@ module InventoryStock
   # position keeps answering.
   def current_stock
     position_scope
-      .select(position_columns, "quality", "#{NET_QUANTITY} AS net_quantity")
+      .select(position_columns, "quality", "#{NET_QUANTITY} AS net_quantity", *agreed_item_columns)
       .group(position_group, :quality)
       .having("#{NET_QUANTITY} > 0")
       .order(position_name)
@@ -294,6 +294,19 @@ module InventoryStock
     # the position's own version is the record of the move now, and one per
     # entry beside it would say the same thing N more times.
     inventory_items.where(position_key => position.id).update_all(changed.column_values)
+  end
+
+  # The catalogue record a row's entries point at, answered only where every
+  # entry names the same one: `COUNT(DISTINCT)` skips nulls, so a row holding
+  # one linked entry and one typed by hand would otherwise claim the link.
+  private def agreed_item_columns
+    table = inventory_items.table_name
+    agreed = "COUNT(*) = COUNT(#{table}.item_id) AND COUNT(DISTINCT #{table}.item_id) = 1"
+
+    [
+      "CASE WHEN #{agreed} THEN MIN(#{table}.item_type) END AS item_type",
+      "CASE WHEN #{agreed} THEN MIN(#{table}.item_id::text) END AS item_id"
+    ]
   end
 
   # The newest entry that carries something worth showing: an uploaded image or

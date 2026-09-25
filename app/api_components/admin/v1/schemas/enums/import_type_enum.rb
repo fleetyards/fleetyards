@@ -12,7 +12,7 @@ module Admin
             Imports::ScData::ModelsImport Imports::ScData::ModelImport Imports::HangarSync
             Imports::HangarImport Imports::ModulesImport Imports::PaintsImport
             Imports::UexPricesImport Imports::UexCommodityPricesImport
-            Imports::UexComponentPricesImport
+            Imports::UexComponentPricesImport Imports::UexEquipmentPricesImport
           ].freeze
 
           schema({

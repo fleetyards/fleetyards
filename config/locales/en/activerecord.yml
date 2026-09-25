@@ -90,30 +90,137 @@ en:
           weapon_attachment: Weapon Attachment
         hidden: hidden?
         item_types:
+          ammo: Ammo
+          ammo_carrier: Ammo Carrier
+          apron: Apron
+          armor: Armor
+          armored_flight_suit: Armored Flight Suit
           assault_rifle: Assault Rifle
           backpack: Backpack
+          bandana: Bandana
+          bar: Bar Staff
+          barrel: Barrel Attachment
           battery: Battery
+          binoculars: Binoculars
+          bioticorp: Bioticorp
+          boots: Boots
+          bouncer: Bouncer
+          business: Business
+          chef: Chef
+          combat: Combat
+          crossbow: Crossbow
+          data_drive: Data Drive
+          displaycore: Display Core
+          displayhelmet: Display Helmet
+          doctor: Doctor
+          dress: Dress
+          executive: Executive
+          extinguisher_refill: Extinguisher Refill
+          fashion: Fashion
+          fio: Fio
+          fire_extinguisher: Fire Extinguisher
+          flight_helmet: Flight Helmet
+          flight_suit: Flight Suit
           flightsuit: Flightsuit
+          frag_pistol: Frag Pistol
+          frontier: Frontier
+          gloves: Gloves
+          gren: Grenade
           grenade: Grenade
           grenade_launcher: Grenade Launcher
+          hat: Hat
+          hathor: Hathor
           heavy_armor: Heavy Armor
           heavy_backpack: Heavy Backpack
+          heavy_utility: Heavy Utility
+          helmet: Helmet
+          hmg: HMG
+          jacket: Jacket
+          jumpsuit: Jumpsuit
+          keycard: Keycard
           knife: Knife
+          launcher: Launcher
           light_armor: Light Armor
           light_backpack: Light Backpack
+          light_helmet: Light Helmet
           lmg: LMG
+          lum: Lum
           magazine: Magazine
+          mask: Mask
+          medgel_refill: MedGel Refill
+          medical: Medical
+          medical_consumable: Medical Consumable
+          medical_device: Medical Device
+          medium: Medium
           medium_armor: Medium Armor
           medium_backpack: Medium Backpack
+          mining_tool: Mining Tool
+          missile_launcher: Missile Launcher
+          multitool: Multitool
+          nurse: Nurse
+          nvtc: NVTC
+          nvy: Navy
+          pants: Pants
+          pilot: Pilot
           pistol: Pistol
+          racing_flight_suit: Racing Flight Suit
+          racing_helmet: Racing Helmet
+          railgun: Railgun
+          refinery: Refinery
           rifle: Rifle
+          rmc_canister_large: RMC Canister (Large)
+          rmc_canister_small: RMC Canister (Small)
+          rocket: Rocket
           rocket_launcher: Rocket Launcher
+          security: Security
+          service: Service
+          shirt: Shirt
+          shoes: Shoes
           shotgun: Shotgun
           smg: SMG
           sniper_rifle: Sniper Rifle
           special_railgun: Special - Railgun
+          specialist: Specialist
+          suit: Suit
+          super_heavy_armor: Super Heavy Armor
+          surgeon: Surgeon
+          tiesim: Tiesim
+          tophat: Top Hat
+          toxic: Hazmat
+          toy_pistol: Toy Pistol
+          tractor_beam: Tractor Beam
+          training: Training
+          trenchcoat: Trench Coat
+          underbarrel: Underbarrel
+          undersuit: Undersuit
           utility: Utility
+          vest: Vest
           weapon_scope: Scope
+          worksuit: Worksuit
+          worksuit_helmet: Worksuit Helmet
+        sub_types:
+          barrel: Barrel
+          bottom_attachment: Underbarrel
+          gadget: Gadget
+          grenade: Grenade
+          hacking: Hacking
+          heavy: Heavy
+          helmet: Helmet
+          iron_sight: Optic
+          knife: Knife
+          large: Large
+          light: Light
+          light_armor: Light Armor
+          magazine: Magazine
+          med_pack: Med Pack
+          medical: Medical
+          medium: Medium
+          missile: Missile
+          oxygen_cap: Oxygen Cap
+          personal: Personal
+          small: Small
+          system_access: System Access
+          utility: Utility
         slots:
           arms: Arms
           backpack: Backpack
@@ -138,6 +245,7 @@ en:
           ballistic: Ballistic
           energy: Energy
           frag: Frag
+          kinetic: Kinetic
       fleet_membership:
         roles:
           admin: Admin

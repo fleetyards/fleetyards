@@ -18,6 +18,24 @@ module Api
           render "api/v1/shared/filters"
         end
 
+        def sub_types
+          @filters = Equipment.sub_type_filters
+
+          render "api/v1/shared/filters"
+        end
+
+        def weapon_classes
+          @filters = Equipment.weapon_class_filters
+
+          render "api/v1/shared/filters"
+        end
+
+        def slots
+          @filters = Equipment.slot_filters
+
+          render "api/v1/shared/filters"
+        end
+
         private def equipment_types
           Array(params.dig(:q, :equipment_type_in)).map(&:to_s) & Equipment::EQUIPMENT_TYPES
         end

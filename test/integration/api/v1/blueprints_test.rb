@@ -55,13 +55,27 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
   end
 
   # The reverse of the craftable link. It lives here rather than embedded in
-  # each catalogue's detail response because two of the three have none:
-  # commodities and equipment are list-only endpoints.
+  # each catalogue's detail response, so all three catalogues ask it the same
+  # way.
   test "GET /blueprints finds the recipes that make one exact thing" do
     create(:blueprint, craftable: create(:component))
 
     assert_api_response :get, 200, params: {q: {"craftableIdEq" => @component.id}} do
       assert_equal [@blueprint.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  # A hidden variant has no public page, so the recipe row must not link to one.
+  test "GET /blueprints says whether what a recipe makes has a page" do
+    skin = create(:equipment, :hidden, name: "P4-AR Boneyard")
+    create(:blueprint, name: "P4-AR Boneyard", craftable: skin)
+
+    assert_api_response :get, 200, params: {q: {"craftableIdEq" => skin.id}} do
+      assert_equal false, parsed_body["items"].first.dig("craftable", "listed")
+    end
+
+    assert_api_response :get, 200, params: {q: {"craftableIdEq" => @component.id}} do
+      assert_equal true, parsed_body["items"].first.dig("craftable", "listed")
     end
   end
 

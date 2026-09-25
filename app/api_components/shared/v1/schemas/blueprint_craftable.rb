@@ -18,7 +18,10 @@ module Shared
             # 5 of the 1607 recipes in the current build point at something the
             # catalogues cannot name.
             name: {type: [:string, :null]},
-            slug: {type: :string}
+            slug: {type: :string},
+            # Whether the record has a public page to link to. False for a
+            # hidden equipment variant, which the catalogue leaves out.
+            listed: {type: :boolean}
           },
           additionalProperties: false,
           required: %w[type id slug]

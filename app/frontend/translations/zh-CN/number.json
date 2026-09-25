@@ -64,7 +64,10 @@
       "people": {
         "one": "%{count} 人",
         "other": "%{count} 人"
-      }
+      },
+      "rem": "%{count} REM",
+      "remPerSecond": "%{count} REM/s",
+      "microScu": "%{count} µSCU"
     }
   }
 }

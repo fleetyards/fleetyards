@@ -41,6 +41,7 @@ if blueprint.craftable.present?
     json.id blueprint.craftable.id
     json.name blueprint.craftable.name
     json.slug blueprint.craftable.slug
+    json.listed blueprint.craftable.try(:listed?) != false
   end
 end
 

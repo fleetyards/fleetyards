@@ -514,6 +514,12 @@
       },
       "missions": {
         "index": "任务"
+      },
+      "equipment": {
+        "index": "装备",
+        "metrics": "数据",
+        "identity": "详情",
+        "craftedFrom": "制造配方"
       }
     }
   }

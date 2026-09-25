@@ -377,6 +377,33 @@ paths:
                 "$ref": "#/components/schemas/Equipments"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment/{slug}":
+    get:
+      summary: Equipment detail
+      tags:
+      - Equipment
+      operationId: equipmentItem
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipment"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -501,6 +528,58 @@ paths:
                 "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/equipment/slots":
+    get:
+      summary: Equipment Slot Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentSlotsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/equipment/sub-types":
+    get:
+      summary: Equipment Sub Type Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentSubTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/equipment/types":
+    get:
+      summary: Equipment Type Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/equipment/weapon-classes":
+    get:
+      summary: Equipment Weapon Class Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentWeaponClassesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -16983,6 +17062,8 @@ components:
           - 'null'
         slug:
           type: string
+        listed:
+          type: boolean
       additionalProperties: false
       required:
       - type
@@ -18788,6 +18869,26 @@ components:
           type:
           - string
           - 'null'
+        equipmentTypeLabel:
+          type:
+          - string
+          - 'null'
+        itemTypeLabel:
+          type:
+          - string
+          - 'null'
+        subTypeLabel:
+          type:
+          - string
+          - 'null'
+        weaponClassLabel:
+          type:
+          - string
+          - 'null'
+        slotLabel:
+          type:
+          - string
+          - 'null'
         slot:
           type:
           - string
@@ -18852,7 +18953,15 @@ components:
           type:
           - string
           - 'null'
+        coreCompatibilityLabel:
+          type:
+          - string
+          - 'null'
         backpackCompatibility:
+          type:
+          - string
+          - 'null'
+        backpackCompatibilityLabel:
           type:
           - string
           - 'null'
@@ -18895,6 +19004,9 @@ components:
       properties:
         nameCont:
           type: string
+          deprecated: true
+        nameOrSlugCont:
+          type: string
         currentVersion:
           type: boolean
           default: true
@@ -18919,13 +19031,153 @@ components:
           type: array
           items:
             type: string
+        subTypeIn:
+          type: array
+          items:
+            type: string
+        weaponClassIn:
+          type: array
+          items:
+            type: string
+        slotIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentSlotEnum"
+        sizeIn:
+          type: array
+          items:
+            type: string
+        gradeIn:
+          type: array
+          items:
+            type: string
         manufacturerSlugIn:
           type: array
           items:
             type: string
+        damageReductionGteq:
+          type: number
+        radiationProtectionGteq:
+          type: number
+        gForceToleranceGteq:
+          type: number
+        storageGteq:
+          type: number
+        rangeGteq:
+          type: number
+        rateOfFireGteq:
+          type: number
+        volumeGteq:
+          type: number
+        damageReductionLteq:
+          type: number
+        radiationProtectionLteq:
+          type: number
+        gForceToleranceLteq:
+          type: number
+        storageLteq:
+          type: number
+        rangeLteq:
+          type: number
+        rateOfFireLteq:
+          type: number
+        volumeLteq:
+          type: number
+        s:
+          "$ref": "#/components/schemas/EquipmentSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentSortingEnum"
       additionalProperties: false
       example: {}
       title: EquipmentQuery
+    EquipmentSlotEnum:
+      type: string
+      enum:
+      - undersuit
+      - arms
+      - helmet
+      - torso
+      - legs
+      - footwear
+      - hat
+      - gloves
+      - pants
+      - shirt
+      - jacket
+      - backpack
+      x-enumNames:
+      - UNDERSUIT
+      - ARMS
+      - HELMET
+      - TORSO
+      - LEGS
+      - FOOTWEAR
+      - HAT
+      - GLOVES
+      - PANTS
+      - SHIRT
+      - JACKET
+      - BACKPACK
+      title: EquipmentSlotEnum
+    EquipmentSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - equipmentType asc
+      - equipmentType desc
+      - itemType asc
+      - itemType desc
+      - manufacturerName asc
+      - manufacturerName desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - damageReduction asc
+      - damageReduction desc
+      - radiationProtection asc
+      - radiationProtection desc
+      - gForceTolerance asc
+      - gForceTolerance desc
+      - storage asc
+      - storage desc
+      - range asc
+      - range desc
+      - rateOfFire asc
+      - rateOfFire desc
+      - volume asc
+      - volume desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - EQUIPMENT_TYPE_ASC
+      - EQUIPMENT_TYPE_DESC
+      - ITEM_TYPE_ASC
+      - ITEM_TYPE_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - DAMAGE_REDUCTION_ASC
+      - DAMAGE_REDUCTION_DESC
+      - RADIATION_PROTECTION_ASC
+      - RADIATION_PROTECTION_DESC
+      - G_FORCE_TOLERANCE_ASC
+      - G_FORCE_TOLERANCE_DESC
+      - STORAGE_ASC
+      - STORAGE_DESC
+      - RANGE_ASC
+      - RANGE_DESC
+      - RATE_OF_FIRE_ASC
+      - RATE_OF_FIRE_DESC
+      - VOLUME_ASC
+      - VOLUME_DESC
+      title: EquipmentSortingEnum
     EquipmentTypeEnum:
       type: string
       enum:
@@ -19874,6 +20126,8 @@ components:
           type:
           - string
           - 'null'
+        listed:
+          type: boolean
         counted:
           type: boolean
       additionalProperties: false
@@ -19923,6 +20177,8 @@ components:
           format: uuid
         name:
           type: string
+        item:
+          "$ref": "#/components/schemas/FleetContractItemRef"
         category:
           "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
@@ -25153,6 +25409,8 @@ components:
           type: string
         slug:
           type: string
+        listed:
+          type: boolean
         counted:
           type: boolean
         available:
@@ -25217,6 +25475,12 @@ components:
           format: uuid
         type:
           "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        slug:
+          type:
+          - string
+          - 'null'
+        listed:
+          type: boolean
       title: InventoryStockItemRef
     InventoryStockPosition:
       type: object
@@ -25265,6 +25529,8 @@ components:
               type: string
             slug:
               type: string
+            listed:
+              type: boolean
             counted:
               type: boolean
             available:

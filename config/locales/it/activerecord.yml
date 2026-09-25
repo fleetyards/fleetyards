@@ -90,30 +90,137 @@ it:
           weapon_attachment: Accessorio arma
         hidden: nascosto?
         item_types:
+          ammo: Munizioni
+          ammo_carrier: Porta munizioni
+          apron: Grembiule
+          armor: Armatura
+          armored_flight_suit: Tuta di volo corazzata
           assault_rifle: Fucile d'assalto
           backpack: Zaino
+          bandana: Bandana
+          bar: Personale del bar
+          barrel: Accessorio per canna
           battery: Batteria
+          binoculars: Binocolo
+          bioticorp: Bioticorp
+          boots: Stivali
+          bouncer: Buttafuori
+          business: Business
+          chef: Chef
+          combat: Combattimento
+          crossbow: Balestra
+          data_drive: Unità dati
+          displaycore: Nucleo da esposizione
+          displayhelmet: Casco da esposizione
+          doctor: Medico
+          dress: Abito
+          executive: Dirigente
+          extinguisher_refill: Ricarica per estintore
+          fashion: Moda
+          fio: Fio
+          fire_extinguisher: Estintore
+          flight_helmet: Casco di volo
+          flight_suit: Tuta di volo
           flightsuit: Tuta di volo
+          frag_pistol: Pistola a frammentazione
+          frontier: Frontiera
+          gloves: Guanti
+          gren: Granata
           grenade: Granata
           grenade_launcher: Lanciagranate
+          hat: Cappello
+          hathor: Hathor
           heavy_armor: Corazza pesante
           heavy_backpack: Zaino pesante
+          heavy_utility: Utilità pesante
+          helmet: Casco
+          hmg: Mitragliatrice pesante
+          jacket: Giacca
+          jumpsuit: Tuta
+          keycard: Tessera d'accesso
           knife: Coltello
+          launcher: Lanciatore
           light_armor: Corazza leggera
           light_backpack: Zaino leggero
+          light_helmet: Casco leggero
           lmg: LMG
+          lum: Lum
           magazine: Caricatore
+          mask: Maschera
+          medgel_refill: Ricarica di MedGel
+          medical: Medico
+          medical_consumable: Consumabile medico
+          medical_device: Dispositivo medico
+          medium: Medio
           medium_armor: Corazza media
           medium_backpack: Medium Backpack
+          mining_tool: Strumento da miniera
+          missile_launcher: Lanciamissili
+          multitool: Multiutensile
+          nurse: Infermiere
+          nvtc: NVTC
+          nvy: Marina
+          pants: Pantaloni
+          pilot: Pilota
           pistol: Pistola
+          racing_flight_suit: Tuta di volo da corsa
+          racing_helmet: Casco da corsa
+          railgun: Cannone a rotaia
+          refinery: Raffineria
           rifle: Fucile
+          rmc_canister_large: Contenitore RMC (grande)
+          rmc_canister_small: Contenitore RMC (piccolo)
+          rocket: Razzo
           rocket_launcher: Lanciarazzi
+          security: Sicurezza
+          service: Servizio
+          shirt: Camicia
+          shoes: Scarpe
           shotgun: Fucile a Pompa
           smg: SMG
           sniper_rifle: Fucile da Cecchino
           special_railgun: Speciale - Railgun
+          specialist: Specialista
+          suit: Completo
+          super_heavy_armor: Armatura superpesante
+          surgeon: Chirurgo
+          tiesim: Tiesim
+          tophat: Cilindro
+          toxic: Tuta anticontaminazione
+          toy_pistol: Pistola giocattolo
+          tractor_beam: Raggio traente
+          training: Addestramento
+          trenchcoat: Trench
+          underbarrel: Sottocanna
+          undersuit: Sottotuta
           utility: Utilità
+          vest: Gilet
           weapon_scope: Mirino
+          worksuit: Tuta da lavoro
+          worksuit_helmet: Casco della tuta da lavoro
+        sub_types:
+          barrel: Canna
+          bottom_attachment: Sottocanna
+          gadget: Gadget
+          grenade: Granata
+          hacking: Hacking
+          heavy: Pesante
+          helmet: Casco
+          iron_sight: Mirino
+          knife: Coltello
+          large: Grande
+          light: Leggero
+          light_armor: Armatura leggera
+          magazine: Caricatore
+          med_pack: Kit medico
+          medical: Medico
+          medium: Medio
+          missile: Missile
+          oxygen_cap: Capsula di ossigeno
+          personal: Personale
+          small: Piccolo
+          system_access: Accesso al sistema
+          utility: Utilità
         slots:
           arms: Braccia
           backpack: Zaino
@@ -138,6 +245,7 @@ it:
           ballistic: Balistico
           energy: Energia
           frag: Frag
+          kinetic: Cinetico
       fleet_membership:
         roles:
           admin: Admin

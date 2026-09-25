@@ -22,7 +22,7 @@ module Api
         scope = FleetInventoryItem
           .joins(:fleet_inventory)
           .where(fleet_inventory_id: visible_fleet_inventories.select(:id))
-          .includes(:fleet_inventory)
+          .includes(:fleet_inventory).preload(:item)
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :category_eq, :quality_gteq, :quality_lteq, :s)
         normalize_sort_params(query_params)

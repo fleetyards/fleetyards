@@ -1787,15 +1787,16 @@
         },
         "equipment": {
           "name": "Name",
-          "equipmentType": "Equipment Type",
-          "itemType": "Item Type",
-          "weaponClass": "Weapon Class",
-          "slot": "Slot",
+          "equipmentType": "Ausrüstungstyp",
+          "itemType": "Gegenstandstyp",
+          "weaponClass": "Waffenklasse",
+          "slot": "Platz",
           "buyPriceGt": "Kaufpreis >=",
           "buyPriceLt": "Kaufpreis <=",
           "sellPriceGt": "Verkaufspreis >=",
           "sellPriceLt": "Verkaufspreis <=",
-          "storeImageBlank": "Ohne Shop-Bild?"
+          "storeImageBlank": "Ohne Shop-Bild?",
+          "subType": "Untertyp"
         },
         "notifications": {
           "search": "Suchen"
@@ -2324,7 +2325,8 @@
         "transferFromFriends": "Meine Freunde",
         "towardsContract": "Für einen Auftrag",
         "noContract": "Kein Auftrag",
-        "forContract": "für"
+        "forContract": "für",
+        "openInCatalogue": "Im Katalog öffnen"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {
@@ -2350,6 +2352,7 @@
           "uex_prices_import": "UEX Preis-Sync",
           "uex_commodity_prices_import": "UEX Waren-Sync",
           "uex_component_prices_import": "UEX Komponenten-Sync",
+          "uex_equipment_prices_import": "UEX Ausrüstungs-Sync",
           "new_supporter": "Neuer Unterstützer",
           "rsi_api_blocked": "RSI-API blockiert",
           "rsi_api_unblocked": "RSI-API wiederhergestellt",
@@ -2750,17 +2753,50 @@
         "storeImage": "Store Image"
       },
       "equipment": {
-        "equipmentType": "Equipment Type",
-        "itemType": "Item Type",
-        "subType": "Sub Type",
-        "weaponClass": "Weapon Class",
-        "slot": "Slot",
-        "size": "Size",
-        "grade": "Grade",
+        "equipmentType": "Ausrüstungstyp",
+        "itemType": "Gegenstandstyp",
+        "subType": "Untertyp",
+        "weaponClass": "Waffenklasse",
+        "slot": "Platz",
+        "size": "Größe",
+        "grade": "Stufe",
         "hidden": "Hidden?",
         "scKey": "SC Key",
         "scRef": "SC Ref",
-        "storeImage": "Store Image"
+        "storeImage": "Store Image",
+        "name": "Name",
+        "manufacturer": "Hersteller",
+        "retired": "Nicht mehr im aktuellen Build",
+        "noMetrics": "Für diesen Gegenstand sind keine Werte hinterlegt.",
+        "availability": {
+          "retired": "Preise werden für den Build erfasst, auf dem der Katalog steht, und dieser Gegenstand ist nicht darin.",
+          "craftedOnly": "Kein Terminal verkauft diesen Gegenstand – er wird nach dem Rezept unten hergestellt.",
+          "none": "Kein Terminal kauft oder verkauft diesen Gegenstand."
+        },
+        "stats": {
+          "damageReduction": "Schadensreduktion",
+          "temperatureRating": "Temperaturbereich",
+          "radiationProtection": "Strahlenschutz",
+          "radiationScrubRate": "Strahlungsabbaurate",
+          "gForceTolerance": "G-Kraft-Toleranz",
+          "carryingCapacity": "Tragekapazität",
+          "magazineSize": "Magazingröße",
+          "rateOfFire": "Feuerrate",
+          "range": "Effektive Reichweite",
+          "weaponClass": "Waffenklasse",
+          "coreCompatibility": "Kern-Kompatibilität",
+          "backpackCompatibility": "Rucksack-Kompatibilität",
+          "volume": "Volumen"
+        },
+        "sorts": {
+          "damageReduction": "Schadensreduktion",
+          "radiationProtection": "Strahlenschutz",
+          "gForceTolerance": "G-Kraft-Toleranz",
+          "rateOfFire": "Feuerrate",
+          "range": "Reichweite",
+          "storage": "Kapazität",
+          "volume": "Volumen"
+        }
       },
       "notifications": {
         "inbox": "Posteingang",
