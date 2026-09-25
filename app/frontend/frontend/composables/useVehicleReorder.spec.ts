@@ -157,6 +157,27 @@ describe("useVehicleReorder", () => {
     expect(ids(orderedVehicles.value)).toEqual(["charlie", "bravo", "alpha"]);
   });
 
+  it("moves a ship one place from the keyboard", async () => {
+    const { moveBy, orderedVehicles } = setup();
+
+    await moveBy("alpha", 1);
+
+    expect(ids(orderedVehicles.value)).toEqual(["bravo", "alpha", "charlie"]);
+    expect(move).toHaveBeenCalledWith({
+      id: "alpha",
+      data: { afterId: "bravo" },
+    });
+  });
+
+  it("goes nowhere past either end of the page", async () => {
+    const { moveBy } = setup();
+
+    await moveBy("alpha", -1);
+    await moveBy("charlie", 1);
+
+    expect(move).not.toHaveBeenCalled();
+  });
+
   it("follows the server when it sends a new page", async () => {
     const { items, orderedVehicles } = setup();
 

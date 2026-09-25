@@ -47,7 +47,11 @@ const props = withDefaults(defineProps<Props>(), {
   selectionControls: true,
 });
 
-const emit = defineEmits<{ sort: [keys: string[], moved: string] }>();
+const emit = defineEmits<{
+  sort: [keys: string[], moved: string];
+  // One place up or down, from the grip's arrow keys.
+  move: [id: string, offset: number];
+}>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
@@ -255,15 +259,21 @@ const resetSelected = () => {
       </template>
       <template #col-name="{ record }">
         <div class="vehicles-table-name">
-          <span
+          <button
             v-if="sortable"
             v-tooltip="t('actions.reorder')"
+            type="button"
             class="vehicles-table-grip"
             :aria-label="t('actions.reorder')"
+            aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight"
             data-test="vehicles-table-grip"
+            @keydown.up.prevent="emit('move', record.id, -1)"
+            @keydown.left.prevent="emit('move', record.id, -1)"
+            @keydown.down.prevent="emit('move', record.id, 1)"
+            @keydown.right.prevent="emit('move', record.id, 1)"
           >
             <i class="fa-duotone fa-grip-vertical" />
-          </span>
+          </button>
           <div class="name">
             <router-link
               :to="{

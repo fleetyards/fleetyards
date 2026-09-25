@@ -144,4 +144,14 @@ describe("VehiclesPanel", () => {
       wrapper.find('[data-test="vehicle-panel-grip"]').classes(),
     ).toContain("vehicle-panel-grip");
   });
+
+  it("moves the ship one place with the arrow keys on its grip", async () => {
+    const wrapper = await mount({ vehicle: vehicle(), sortable: true });
+    const grip = wrapper.find('[data-test="vehicle-panel-grip"]');
+
+    await grip.trigger("keydown", { key: "ArrowUp" });
+    await grip.trigger("keydown", { key: "ArrowRight" });
+
+    expect(wrapper.emitted("move")).toEqual([[-1], [1]]);
+  });
 });

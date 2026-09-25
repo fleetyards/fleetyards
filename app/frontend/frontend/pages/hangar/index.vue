@@ -173,7 +173,7 @@ const canSort = computed(
 // actions above it.
 const selected = ref<string[]>([]);
 
-const { orderedVehicles, onSort } = useVehicleReorder(
+const { orderedVehicles, onSort, moveBy } = useVehicleReorder(
   computed(() => vehicles.value?.items),
 );
 
@@ -626,6 +626,7 @@ const openDisplayOptionsModal = () => {
             :editable="true"
             :sortable="canSort"
             :highlight="record.hangarGroupIds.includes(highlightedGroup)"
+            @move="(offset) => moveBy(record.id, offset)"
           />
         </template>
       </Grid>
@@ -640,6 +641,7 @@ const openDisplayOptionsModal = () => {
         :sortable="canSort"
         :selection-controls="false"
         @sort="onSort"
+        @move="moveBy"
       />
 
       <FleetchartApp

@@ -42,6 +42,8 @@ const props = withDefaults(defineProps<Props>(), {
   sortable: false,
 });
 
+const emit = defineEmits<{ move: [offset: number] }>();
+
 const { t } = useI18n();
 
 const image = computed(() => {
@@ -222,15 +224,23 @@ const tone = computed(() => {
       </span>
     </template>
     <template #heading-actions>
-      <span
+      <!-- A button, so the keyboard can reach it: the arrow keys move the
+           ship one place, the same move a drag by it makes. -->
+      <button
         v-if="sortable"
         v-tooltip="t('actions.reorder')"
+        type="button"
         class="vehicle-panel-grip"
         :aria-label="t('actions.reorder')"
+        aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight"
         data-test="vehicle-panel-grip"
+        @keydown.up.prevent="emit('move', -1)"
+        @keydown.left.prevent="emit('move', -1)"
+        @keydown.down.prevent="emit('move', 1)"
+        @keydown.right.prevent="emit('move', 1)"
       >
         <i class="fa-duotone fa-grip-vertical" />
-      </span>
+      </button>
       <VehicleContextMenu
         v-if="editable && !vehicle.loaner"
         :vehicle="vehicle as Vehicle"

@@ -7,6 +7,9 @@
 // The one control that is not a button: it does nothing on click, and what it
 // affords is the drag.
 .vehicles-table-grip {
+  padding: 0;
+  border: 0;
+  background: none;
   display: inline-flex;
   align-items: center;
   font-size: 18px;

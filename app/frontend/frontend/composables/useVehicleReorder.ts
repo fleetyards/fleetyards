@@ -85,5 +85,20 @@ export const useVehicleReorder = (items: Ref<Vehicle[] | undefined>) => {
     return moving;
   };
 
-  return { orderedVehicles, onSort };
+  // The keyboard's move: one place towards the front or the back, sent the same
+  // way a drag to there would be.
+  const moveBy = (id: string, offset: number) => {
+    const keys = orderedVehicles.value.map((vehicle) => vehicle.id);
+    const from = keys.indexOf(id);
+    const to = from + offset;
+
+    if (from === -1 || to < 0 || to >= keys.length) return;
+
+    keys.splice(from, 1);
+    keys.splice(to, 0, id);
+
+    return onSort(keys, id);
+  };
+
+  return { orderedVehicles, onSort, moveBy };
 };
