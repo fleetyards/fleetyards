@@ -142,6 +142,32 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_not contract.ready_to_publish?
   end
 
+  # The foreign key clears the column in the database, so the row arrives
+  # without a destination nobody chose to remove -- and has to stay closeable.
+  test "a contract whose destination was deleted can still be cancelled or expired" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination)
+    contract.destination_inventory.delete
+
+    contract = FleetContract.find(contract.id)
+
+    assert_nil contract.destination
+    assert contract.update(description: "Still saveable")
+    assert contract.expire!
+    assert_predicate contract.reload, :expired?
+
+    fleet_bound = create(:fleet_contract, :in_progress)
+    fleet_bound.destination_fleet_inventory.delete
+
+    assert FleetContract.find(fleet_bound.id).cancel!
+  end
+
+  test "clearing the destination on purpose is still refused" do
+    contract = create(:fleet_contract)
+
+    assert_not contract.update(destination_fleet_inventory: nil)
+    assert_includes contract.errors.details[:destination_fleet_inventory].pluck(:error), :blank
+  end
+
   test "the database refuses two destinations" do
     contract = create(:fleet_contract)
 

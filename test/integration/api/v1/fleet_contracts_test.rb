@@ -799,6 +799,24 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT cancel closes a contract whose hangar destination was deleted" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, fleet: @fleet)
+    contract.destination_inventory.delete
+    sign_in @officer
+
+    assert_api_response :get, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_nil parsed_body["destination"]
+    end
+
+    assert_api_response :put, 200,
+      api_path: CANCEL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal "cancelled", parsed_body["state"]
+    end
+  end
+
   test "GET progress reports what the ledger holds" do
     contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
     contract.fleet_contract_items.destroy_all

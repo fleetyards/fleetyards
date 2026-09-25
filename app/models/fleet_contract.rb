@@ -120,7 +120,7 @@ class FleetContract < ApplicationRecord
   validates :title, uniqueness: {case_sensitive: false, scope: :fleet_id}, allow_blank: true
   validates :reward, numericality: {greater_than_or_equal_to: 0}
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
-  validate :exactly_one_destination
+  validate :exactly_one_destination, if: :destination_being_set?
   validates :source_fleet_inventory, presence: true, if: :transport?
   validates :source_fleet_inventory, absence: true, unless: :transport?
   validate :inventories_belong_to_the_fleet
@@ -426,6 +426,17 @@ class FleetContract < ApplicationRecord
     return if created_by.present? && destination_inventory.holder == created_by
 
     errors.add(:destination_inventory, :not_the_authors)
+  end
+
+  # Both columns are ON DELETE SET NULL, so deleting the inventory clears the
+  # destination in the database and the loaded row simply arrives without one.
+  # That is not a save choosing no destination, and refusing it would leave the
+  # contract unable to be cancelled or expired -- `whiny_transitions: false`
+  # turns the failed save into a silent `false`.
+  private def destination_being_set?
+    new_record? ||
+      will_save_change_to_destination_fleet_inventory_id? ||
+      will_save_change_to_destination_inventory_id?
   end
 
   private def destination_changing?
