@@ -54,8 +54,10 @@ module Api
           .find_by!(slug: params[:slug].to_s.downcase)
 
         # Only the forms the build we are on still describes: a dropped ore
-        # would link to a page that says it no longer exists.
-        @refined_from = @commodity.refined_from.current_version.order(:name)
+        # would link to a page that says it no longer exists. `build` because
+        # `name` reads through it.
+        @refined_from = @commodity.refined_from.current_version
+          .includes(:build).order(:name)
       end
 
       def price_history
