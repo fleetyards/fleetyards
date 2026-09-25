@@ -8,6 +8,7 @@ export default {
 import Sortable from "sortablejs";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
@@ -227,11 +228,16 @@ const updateSort = () => {
   return sortRequest;
 };
 
-// The keyboard counterpart to a drag. The moved chip's grip is refocused because
-// Vue re-inserts the keyed element, and a re-inserted node drops its focus.
+// The keyboard and mobile counterpart to a drag. The control that moved it is
+// refocused because Vue re-inserts the keyed element, and a re-inserted node
+// drops its focus.
 const moveGroup = async (
   group: HangarGroup | HangarGroupPublic,
   offset: -1 | 1,
+  focusTarget: () => HTMLElement | null | undefined = () =>
+    row.value?.itemsEl?.querySelector<HTMLElement>(
+      `[data-group-id="${group.id}"] .chip__handle`,
+    ),
 ) => {
   const from = groups.value.findIndex((item) => item.id === group.id);
   const to = from + offset;
@@ -244,10 +250,31 @@ const moveGroup = async (
   void updateSort();
 
   await nextTick();
-  row.value?.itemsEl
-    ?.querySelector<HTMLElement>(`[data-group-id="${group.id}"] .chip__handle`)
-    ?.focus();
+  focusTarget()?.focus();
 };
+
+// The menu is teleported to the body, so it is looked up in the document. At
+// either end the arrow that was pressed is disabled, so the other one takes it.
+const moveGroupInMenu = (
+  group: HangarGroup | HangarGroupPublic,
+  offset: -1 | 1,
+) =>
+  moveGroup(group, offset, () => {
+    const menuRow = document.querySelector(
+      `[data-group-menu-id="${group.id}"]`,
+    );
+    const pressed = offset < 0 ? "up" : "down";
+    const other = offset < 0 ? "down" : "up";
+
+    return (
+      menuRow?.querySelector<HTMLElement>(
+        `[data-test="group-menu-move-${pressed}"]:not([disabled])`,
+      ) ??
+      menuRow?.querySelector<HTMLElement>(
+        `[data-test="group-menu-move-${other}"]`,
+      )
+    );
+  });
 
 const comlink = useComlink();
 
@@ -334,25 +361,75 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
          replaces reached at Btn's internals with six !important declarations -
          the override class btn-redesign swept out of 17 files. -->
     <template #menu>
-      <Btn
-        v-for="group in groups"
-        :key="`menu-${group.id}`"
-        :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
-        @click="filterGroup(group.slug)"
-      >
-        <Chip
-          bare
-          :state="groupState(group.slug)"
-          :dot="group.color"
-          :count="groupCount(group).count"
+      <template v-if="editable && editing">
+        <!-- Arrows rather than a drag: a touch drag inside a dropdown fights its
+             scrolling and its outside-tap close. The arrows and the edit mode
+             toggle stop their click, which would otherwise close the menu. -->
+        <div
+          v-for="(group, index) in groups"
+          :key="`menu-edit-${group.id}`"
+          :data-group-menu-id="group.id"
+          class="group-labels-menu-row"
+          data-test="group-menu-row"
         >
-          {{ group.name }}
-        </Chip>
-      </Btn>
-      <Btn v-if="editable" @click="openNewGroupModal">
-        <i class="fa-regular fa-plus" />
-        {{ t("actions.addGroup") }}
-      </Btn>
+          <Chip bare :dot="group.color" class="group-labels-menu-name">
+            {{ group.name }}
+          </Chip>
+          <BtnGroup :size="BtnSizesEnum.SM">
+            <Btn
+              :aria-label="t('actions.moveUp')"
+              :disabled="index === 0"
+              data-test="group-menu-move-up"
+              @click.stop="moveGroupInMenu(group, -1)"
+            >
+              <i class="fa-regular fa-arrow-up" />
+            </Btn>
+            <Btn
+              :aria-label="t('actions.moveDown')"
+              :disabled="index === groups.length - 1"
+              data-test="group-menu-move-down"
+              @click.stop="moveGroupInMenu(group, 1)"
+            >
+              <i class="fa-regular fa-arrow-down" />
+            </Btn>
+            <Btn
+              :aria-label="t('actions.editGroup')"
+              data-test="group-menu-edit"
+              @click="openGroupModal(group)"
+            >
+              <i class="fa-regular fa-pen" />
+            </Btn>
+          </BtnGroup>
+        </div>
+      </template>
+      <template v-else>
+        <Btn
+          v-for="group in groups"
+          :key="`menu-${group.id}`"
+          :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
+          @click="filterGroup(group.slug)"
+        >
+          <Chip
+            bare
+            :state="groupState(group.slug)"
+            :dot="group.color"
+            :count="groupCount(group).count"
+          >
+            {{ group.name }}
+          </Chip>
+        </Btn>
+      </template>
+      <template v-if="editable">
+        <hr />
+        <Btn @click="openNewGroupModal">
+          <i class="fa-regular fa-plus" />
+          {{ t("actions.addGroup") }}
+        </Btn>
+        <Btn data-test="group-menu-edit-toggle" @click.stop="toggleEditing">
+          <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
+          {{ editing ? t("actions.done") : t("actions.edit") }}
+        </Btn>
+      </template>
     </template>
   </ChipRow>
 </template>
@@ -378,6 +455,20 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       opacity: 1;
     }
   }
+}
+
+// A menu row of its own rather than a menu item: it holds three controls, and
+// a Btn in the menu goes full width. Padding matches a menu item's.
+.group-labels-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px 6px 16px;
+}
+
+.group-labels-menu-name {
+  flex: 1;
+  min-width: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

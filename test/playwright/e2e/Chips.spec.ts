@@ -405,3 +405,97 @@ test.describe("Chips - owner's hangar", () => {
     await expect.poll(() => names(page)).toEqual(before);
   });
 });
+
+/*
+ * Below the mobile breakpoint the row is a dropdown. Its edit mode reorders
+ * with arrows instead of a drag, and has to stay open while they are used.
+ */
+test.describe("Chips - owner's hangar on mobile", () => {
+  const menu = (page: Page) =>
+    page.getByTestId("dropdown-list").filter({
+      has: page.getByTestId("group-menu-edit-toggle"),
+    });
+
+  const menuNames = (page: Page) =>
+    menu(page)
+      .getByTestId("group-menu-row")
+      .locator(".chip__label")
+      .allInnerTexts();
+
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 430, height: 900 });
+
+    await app("clean");
+    await appScenario("chips");
+
+    await page.goto("/login/");
+    await page.locator("input[name='login']").fill("chips");
+    await page.locator("input[name='password']").fill("password");
+
+    const sessionCreated = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/sessions") &&
+        response.request().method() === "POST",
+    );
+    await page.getByTestId("submit-login").click();
+    await sessionCreated;
+    await expect(page).not.toHaveURL(/\/login/);
+
+    await page.goto("/hangar/");
+    await page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .locator("button")
+      .first()
+      .click();
+    await expect(menu(page)).toBeVisible();
+  });
+
+  test("edit mode swaps the filters for move and edit controls", async ({
+    page,
+  }) => {
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(0);
+
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+
+    // Still open: the toggle must not close the menu it changes.
+    await expect(menu(page)).toBeVisible();
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(2);
+
+    const first = menu(page).getByTestId("group-menu-row").first();
+    await expect(first.getByTestId("group-menu-move-up")).toBeDisabled();
+    await expect(first.getByTestId("group-menu-move-down")).toBeEnabled();
+  });
+
+  test("an arrow moves a group and the order persists", async ({ page }) => {
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+
+    const before = await menuNames(page);
+    const reversed = [...before].reverse();
+
+    const sortedRequest = page.waitForResponse(
+      (response) =>
+        response.url().includes("/hangar/groups/sort") &&
+        response.request().method() === "PUT",
+    );
+    await menu(page)
+      .getByTestId("group-menu-row")
+      .first()
+      .getByTestId("group-menu-move-down")
+      .click();
+    await sortedRequest;
+
+    await expect(menu(page)).toBeVisible();
+    expect(await menuNames(page)).toEqual(reversed);
+
+    await page.reload();
+    await page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .locator("button")
+      .first()
+      .click();
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+    await expect.poll(() => menuNames(page)).toEqual(reversed);
+  });
+});
