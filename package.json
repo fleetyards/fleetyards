@@ -40,7 +40,7 @@
     "@event-calendar/core": "^5.14.0",
     "@number-flow/vue": "^0.5.2",
     "@rails/activestorage": "^8.1.301",
-    "@tanstack/vue-query": "^5.103.1",
+    "@tanstack/vue-query": "^5.103.2",
     "@tresjs/cientos": "^5.7.2",
     "@tresjs/core": "^5.8.1",
     "@vee-validate/rules": "^4.15.1",
