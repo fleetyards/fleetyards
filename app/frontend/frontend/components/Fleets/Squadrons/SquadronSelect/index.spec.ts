@@ -99,7 +99,8 @@ describe("FleetSquadronSelect", () => {
   });
 
   // The fleet switched squadrons off after the record was restricted; the
-  // restriction stands, so its squadrons stay listed rather than the cache.
+  // restriction stands and the event is still announced to its squadrons, so
+  // they stay listed and warned about rather than read from the cache.
   it("offers only the record's own squadrons once squadrons are off", async () => {
     const subject = await mount({
       fleet: {
@@ -108,11 +109,19 @@ describe("FleetSquadronSelect", () => {
         squadronsEnabled: false,
       } as Fleet,
       modelValue: ["b"],
-      assigned: [{ id: "b", name: "Bravo", slug: "bravo", team: false }],
+      assigned: [
+        {
+          id: "b",
+          name: "Bravo",
+          slug: "bravo",
+          team: false,
+          discordChannelId: null,
+        },
+      ],
       warnWithoutDiscordChannel: true,
     });
 
     expect(options(subject)).toEqual(["Bravo"]);
-    expect(warning(subject).exists()).toBe(false);
+    expect(warning(subject).text()).toContain("Bravo");
   });
 });

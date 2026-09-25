@@ -71,8 +71,8 @@ const options = computed<FilterOption[]>(() =>
  * than discovered from a silent channel.
  */
 const withoutDiscordChannel = computed(() =>
-  props.warnWithoutDiscordChannel && enabled.value
-    ? (squadrons.value?.items ?? [])
+  props.warnWithoutDiscordChannel
+    ? (enabled.value ? (squadrons.value?.items ?? []) : props.assigned)
         .filter(
           (squadron) =>
             props.modelValue.includes(squadron.id) &&
