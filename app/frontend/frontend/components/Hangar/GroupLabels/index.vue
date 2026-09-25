@@ -15,7 +15,9 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useQueryClient } from "@tanstack/vue-query";
 import {
+  getHangarGroupsQueryKey,
   type HangarGroup,
   type HangarGroupPublic,
   type HangarGroupMetric,
@@ -141,6 +143,7 @@ const groupState = (group: string) => {
 const { displayAlert } = useAppNotifications();
 
 const sortMutation = useHangarGroupSortMutation();
+const queryClient = useQueryClient();
 
 // Grips and edit actions only appear in edit mode, so a row at rest is plain
 // filter chips with no slots reserved for controls that are not in use.
@@ -257,6 +260,11 @@ const updateSort = () => {
       lastSaveFailed = false;
       groups.value = inOrder(groups.value, savedOrder);
     }
+
+    // A refetch that read an intermediate order mid-save can still be in flight
+    // here, and nothing would stop it once sortRequest is clear. Invalidating
+    // cancels it and fetches the order the server now holds.
+    void queryClient.invalidateQueries({ queryKey: getHangarGroupsQueryKey() });
   });
 
   return sortRequest;
