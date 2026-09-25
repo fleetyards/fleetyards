@@ -57,6 +57,21 @@ class Api::V1::HangarInventoryStockIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The slug is what a row links to the item's catalogue page with, and it is
+  # looked up once per catalogue rather than once per row.
+  test "GET /hangar/inventories/:slug/stock carries the slug of the item a position holds" do
+    rifle = create(:equipment, name: "P4-AR Rifle")
+    create(:inventory_item, inventory: @inventory, name: "P4-AR Rifle", category: :weapon, quantity: 1,
+      unit: :units, entry_type: :deposit, item: rifle)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
+      position = parsed_body.find { |d| d["name"] == "P4-AR Rifle" }
+
+      assert_equal({"id" => rifle.id, "type" => "Equipment", "slug" => "p4-ar-rifle"}, position["item"])
+    end
+  end
+
   test "GET /hangar/inventories/:slug/stock returns 404 for another user's inventory" do
     sign_in @other_user
 

@@ -20153,6 +20153,8 @@ components:
           format: uuid
         name:
           type: string
+        item:
+          "$ref": "#/components/schemas/FleetContractItemRef"
         category:
           "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
@@ -25447,6 +25449,10 @@ components:
           format: uuid
         type:
           "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        slug:
+          type:
+          - string
+          - 'null'
       title: InventoryStockItemRef
     InventoryStockPosition:
       type: object

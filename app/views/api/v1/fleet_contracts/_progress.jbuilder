@@ -9,6 +9,7 @@ json.lines do
   json.array!(progress.lines) do |line|
     json.item_id line.item.id
     json.name line.item.name
+    json.partial! "api/v1/fleet_contract_items/item_ref", fleet_contract_item: line.item
     json.category line.item.category
     json.unit line.item.unit
     json.quality line.item.quality

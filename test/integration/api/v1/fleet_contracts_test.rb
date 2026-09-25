@@ -834,6 +834,28 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # So a progress line can link to the catalogue record it asks for; one typed
+  # by hand has none.
+  test "GET progress names the catalogue item each line asks for" do
+    contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
+    contract.fleet_contract_items.destroy_all
+    titanium = create(:commodity, name: "Titanium")
+    create(:fleet_contract_item, fleet_contract: contract, name: "Titanium", item: titanium, quantity: 800)
+    create(:fleet_contract_item, fleet_contract: contract, name: "Hand-typed crate", quantity: 10)
+
+    sign_in @member
+
+    assert_api_response :get, 200,
+      api_path: PROGRESS_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      lines = parsed_body["lines"].index_by { |line| line["name"] }
+
+      assert_equal "Commodity", lines["Titanium"].dig("item", "type")
+      assert_equal titanium.slug, lines["Titanium"].dig("item", "slug")
+      assert_nil lines["Hand-typed crate"]["item"]
+    end
+  end
+
   test "GET one is a 404 for a contract in another fleet" do
     other = create(:fleet_contract, :published)
     sign_in @officer

@@ -136,7 +136,7 @@ module Contracts
     end
 
     def lines
-      @lines ||= @contract.fleet_contract_items.ordered.map { |item| build_line(item) }
+      @lines ||= @contract.fleet_contract_items.includes(:item).ordered.map { |item| build_line(item) }
     end
 
     def complete?

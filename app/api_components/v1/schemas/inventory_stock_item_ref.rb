@@ -16,7 +16,8 @@ module V1
         type: [:object, :null],
         properties: {
           id: {type: :string, format: :uuid},
-          type: ::V1::Schemas::Enums::InventoryItemTypeEnum
+          type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
+          slug: {type: [:string, :null]}
         }
       })
     end
