@@ -13,6 +13,7 @@ import ContractDeliveredBar from "@/frontend/components/Fleets/Contracts/Contrac
 import { type Fleet, type FleetContract } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractRoute } from "@/frontend/composables/useContractRoute";
 
 type Props = {
   fleet: Fleet;
@@ -26,16 +27,9 @@ const { resolve } = useContractCover();
 
 const cover = computed(() => resolve(props.contract, props.fleet));
 
-// Where the goods come from and go to. A haul has both ends; the other kinds
-// only have somewhere to deliver.
-const route = computed(() => {
-  const to = props.contract.destination?.name;
-  const from = props.contract.source?.name;
+const { routeLabel } = useContractRoute();
 
-  if (!to) return undefined;
-
-  return from ? `${from} → ${to}` : to;
-});
+const route = computed(() => routeLabel(props.contract));
 </script>
 
 <template>

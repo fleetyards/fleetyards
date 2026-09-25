@@ -216,6 +216,7 @@ de:
         contract_item_already_asked_for: "steht mit derselben Kategorie und Einheit bereits auf diesem Auftrag"
         entry_goods_in_transit: "kann nicht gelöscht werden, solange der zugehörige Transfer noch unbeantwortet ist"
         inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"
+        inventory_contract_destination: "kann nicht gelöscht werden, solange ein offener Flottenauftrag hierher liefert"
         position_goods_in_transit: "kann nicht gelöscht werden, solange ein Transfer damit noch unbeantwortet ist"
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
@@ -271,6 +272,14 @@ de:
               destination_is_source: "kann nicht in das Inventar übertragen werden, aus dem er stammt"
               already_resolved: "wurde bereits beantwortet"
               forbidden: "ist nicht erlaubt"
+        fleet_contract:
+          attributes:
+            destination_inventory:
+              not_the_authors: "muss eines deiner eigenen Inventare sein"
+              not_selectable: "ist kein Inventar, das du auswählen kannst"
+              only_one_destination: "kann nur ein Inventar sein"
+            destination_fleet_inventory:
+              not_selectable: "ist kein Inventar, das du auswählen kannst"
         inventory_transfer_rule:
           attributes:
             base:

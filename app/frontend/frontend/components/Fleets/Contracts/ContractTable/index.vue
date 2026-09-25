@@ -15,6 +15,7 @@ import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { type Fleet, type FleetContract } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useRouter } from "vue-router";
 
 type Props = {
@@ -81,16 +82,7 @@ const columns = computed<BaseTableCol<FleetContract>[]>(() => [
 
 const cover = (contract: FleetContract) => resolve(contract, props.fleet);
 
-// Where the goods come from and go to. A haul has both ends; the other kinds
-// only have somewhere to deliver.
-const route = (contract: FleetContract) => {
-  const to = contract.destination?.name;
-  const from = contract.source?.name;
-
-  if (!to) return undefined;
-
-  return from ? `${from} → ${to}` : to;
-};
+const { routeLabel: route } = useContractRoute();
 
 const openContract = (contract: FleetContract) => {
   void router.push({

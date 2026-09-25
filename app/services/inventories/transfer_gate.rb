@@ -23,10 +23,16 @@ module Inventories
     # throttle: those are not the recipient's to waive.
     OVERRIDABLE = %i[policy cap].freeze
 
-    def initialize(sender:, recipient:, actor: nil)
+    # `solicited` is a delivery the recipient asked for by naming their own
+    # inventory as a contract's destination. That waives their stance, the way
+    # an allowance does, and nothing else: the cap still stands, because a
+    # contract is claimed without the author's say and its lead could otherwise
+    # fill their inbox.
+    def initialize(sender:, recipient:, actor: nil, solicited: false)
       @sender = sender
       @recipient = recipient
       @actor = actor
+      @solicited = solicited
     end
 
     def allowed?
@@ -66,6 +72,7 @@ module Inventories
 
     # 3. The recipient's stance. Named in the refusal, because it is announced.
     private def check_policy
+      return if @solicited
       return if allowed_by_rule?
       return if policy_admits?
 
@@ -152,8 +159,9 @@ module Inventories
 
     # Flipper is per-actor, so "is the feature on" has to be asked of the
     # recipient rather than of the request. A fleet is asked through the flag
-    # its inventories already ride on.
-    private def recipient_feature_enabled?
+    # its inventories already ride on. Public so a destination can be offered
+    # on the same rule a delivery into it will be judged by.
+    def recipient_feature_enabled?
       return false unless Flipper.enabled?(:inventory_transfers, @recipient)
 
       case @recipient

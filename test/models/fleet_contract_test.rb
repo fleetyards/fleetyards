@@ -22,11 +22,12 @@ require "test_helper"
 #  reward                         :decimal(15, 2)   default(0.0), not null
 #  slug                           :string           not null
 #  title                          :string
-#  visibility                     :integer          default(0), not null
+#  visibility                     :integer          default("members_only"), not null
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  created_by_id                  :uuid
 #  destination_fleet_inventory_id :uuid
+#  destination_inventory_id       :uuid
 #  fleet_id                       :uuid             not null
 #  source_fleet_inventory_id      :uuid
 #
@@ -34,6 +35,7 @@ require "test_helper"
 #
 #  index_fleet_contracts_on_created_by_id                   (created_by_id)
 #  index_fleet_contracts_on_destination_fleet_inventory_id  (destination_fleet_inventory_id)
+#  index_fleet_contracts_on_destination_inventory_id        (destination_inventory_id)
 #  index_fleet_contracts_on_fleet_id_and_aasm_state         (fleet_id,aasm_state)
 #  index_fleet_contracts_on_fleet_id_and_kind               (fleet_id,kind)
 #  index_fleet_contracts_on_fleet_id_and_slug               (fleet_id,slug) UNIQUE
@@ -43,6 +45,7 @@ require "test_helper"
 #
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (destination_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
+#  fk_rails_...  (destination_inventory_id => inventories.id) ON DELETE => nullify
 #  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (source_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
 #
@@ -100,6 +103,105 @@ class FleetContractTest < ActiveSupport::TestCase
       source_fleet_inventory: inventory, destination_fleet_inventory: inventory)
 
     assert_not contract.valid?
+  end
+
+  test "a contract names exactly one destination" do
+    author = create(:user)
+    contract = build(:fleet_contract, created_by: author, destination_fleet_inventory: nil)
+
+    assert_not contract.valid?
+    assert_includes contract.errors.details[:destination_fleet_inventory].pluck(:error), :blank
+
+    contract.destination_fleet_inventory = create(:fleet_inventory, fleet: contract.fleet)
+    contract.destination_inventory = create(:inventory, holder: author)
+
+    assert_not contract.valid?
+    assert_includes contract.errors.details[:destination_inventory].pluck(:error), :only_one_destination
+  end
+
+  test "a hangar destination is the author's own inventory" do
+    author = create(:user)
+    contract = build(:fleet_contract, :hangar_destination, created_by: author)
+
+    assert_predicate contract, :valid?
+    assert_predicate contract, :hangar_destination?
+    assert_equal author, contract.destination_party
+
+    contract.destination_inventory = create(:inventory)
+
+    assert_not contract.valid?
+    assert_includes contract.errors.details[:destination_inventory].pluck(:error), :not_the_authors
+  end
+
+  test "deleting the hangar destination leaves the contract without one" do
+    contract = create(:fleet_contract, :hangar_destination)
+
+    contract.destination_inventory.destroy!
+
+    assert_nil contract.reload.destination
+    assert_not contract.ready_to_publish?
+  end
+
+  # The foreign key clears the column in the database, so the row arrives
+  # without a destination nobody chose to remove -- and has to stay closeable.
+  test "a contract whose destination was deleted can still be cancelled or expired" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination)
+    contract.destination_inventory.delete
+
+    contract = FleetContract.find(contract.id)
+
+    assert_nil contract.destination
+    assert contract.update(description: "Still saveable")
+    assert contract.expire!
+    assert_predicate contract.reload, :expired?
+
+    fleet_bound = create(:fleet_contract, :in_progress)
+    fleet_bound.destination_fleet_inventory.delete
+
+    assert FleetContract.find(fleet_bound.id).cancel!
+  end
+
+  # Account deletion destroys the inventories through the association, which
+  # the guard against deleting a contract's destination lets through.
+  test "deleting the author's account still works while a contract delivers to them" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination)
+
+    assert contract.created_by.destroy
+
+    contract = FleetContract.find(contract.id)
+
+    assert_nil contract.destination
+    assert_nil contract.created_by
+    assert contract.cancel!
+  end
+
+  # Removing a ship detaches its hold rather than destroying it, so a contract
+  # delivering into the hold keeps its destination.
+  test "removing the vehicle behind a hangar destination keeps the destination" do
+    author = create(:user)
+    hold = Inventory.provision_for(create(:vehicle, user: author), holder: author)
+    contract = create(:fleet_contract, :in_progress, created_by: author,
+      destination_fleet_inventory: nil, destination_inventory: hold)
+
+    hold.vehicle.destroy!
+
+    assert_equal hold, contract.reload.destination_inventory
+    assert_nil hold.reload.vehicle_id
+  end
+
+  test "clearing the destination on purpose is still refused" do
+    contract = create(:fleet_contract)
+
+    assert_not contract.update(destination_fleet_inventory: nil)
+    assert_includes contract.errors.details[:destination_fleet_inventory].pluck(:error), :blank
+  end
+
+  test "the database refuses two destinations" do
+    contract = create(:fleet_contract)
+
+    assert_raises(ActiveRecord::StatementInvalid) do
+      contract.update_column(:destination_inventory_id, create(:inventory, holder: contract.created_by).id)
+    end
   end
 
   # A contract already says what it wants in its goods; making the author

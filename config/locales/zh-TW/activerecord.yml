@@ -216,6 +216,7 @@ zh-TW:
         contract_item_already_asked_for: "該合約中已有相同類別和單位的這項貨物"
         entry_goods_in_transit: "在其所屬的轉移得到回覆之前無法刪除"
         inventory_goods_in_transit: "在已傳送的轉移得到回覆之前無法刪除"
+        inventory_contract_destination: "在有未完成的艦隊合約向其交付期間無法刪除"
         position_goods_in_transit: "在包含它的轉移得到回覆之前無法刪除"
         blank: 不能為空
         record_invalid: 無效資料
@@ -271,6 +272,14 @@ zh-TW:
               destination_is_source: "不能轉移到其來源庫存"
               already_resolved: "已經被回覆"
               forbidden: "不被允許"
+        fleet_contract:
+          attributes:
+            destination_inventory:
+              not_the_authors: "必須是你自己的庫存之一"
+              not_selectable: "不是你可以選擇的庫存"
+              only_one_destination: "只能是一個庫存"
+            destination_fleet_inventory:
+              not_selectable: "不是你可以選擇的庫存"
         inventory_transfer_rule:
           attributes:
             base:

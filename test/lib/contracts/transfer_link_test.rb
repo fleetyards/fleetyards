@@ -79,8 +79,66 @@ module Contracts
       assert_equal :contract_not_found, subject.error
     end
 
-    private def link(actor:, source:, destination: nil, recipient: nil)
-      TransferLink.new(contract: @contract, actor: actor, source: source,
+    test "a contractor addressing the author of a hangar-destination contract is allowed" do
+      contract = hangar_contract
+
+      assert link(actor: @lead, source: @hold, recipient: contract.created_by, contract:).call
+    end
+
+    test "the author is not a target of a contract that delivers to the fleet" do
+      subject = link(actor: @lead, source: @hold, recipient: @contract.created_by)
+
+      assert_not subject.call
+      assert_equal :contract_end_not_involved, subject.error
+    end
+
+    # A manager may act on any contract, but addressing a member's private
+    # inventory is not dispatching on the fleet's behalf.
+    test "a manager off the crew cannot address the author's hangar" do
+      contract = hangar_contract
+      subject = link(actor: @officer, source: create(:inventory, holder: @officer),
+        recipient: contract.created_by, contract:)
+
+      assert_not subject.call
+      assert_equal :contract_end_not_involved, subject.error
+    end
+
+    test "a manager off the crew cannot address the author from a transport's source" do
+      contract = hangar_contract(transport: true)
+      subject = link(actor: @officer, source: contract.source_fleet_inventory,
+        recipient: contract.created_by, contract:)
+
+      assert_not subject.call
+      assert_equal :contract_end_not_involved, subject.error
+    end
+
+    test "a contractor may address the author from a transport's source" do
+      contract = hangar_contract(transport: true)
+
+      assert link(actor: @lead, source: contract.source_fleet_inventory,
+        recipient: contract.created_by, contract:).call
+    end
+
+    test "somebody other than the author is not a target of a hangar-destination contract" do
+      subject = link(actor: @lead, source: @hold, recipient: @stranger, contract: hangar_contract)
+
+      assert_not subject.call
+      assert_equal :contract_end_not_involved, subject.error
+    end
+
+    private def hangar_contract(transport: false)
+      author = create(:user)
+      create(:fleet_membership, fleet: @fleet, user: author, aasm_state: :accepted,
+        fleet_role: @fleet.fleet_roles.ranked.last)
+      traits = transport ? [:transport] : []
+      contract = create(:fleet_contract, :in_progress, :hangar_destination, *traits,
+        fleet: @fleet, created_by: author)
+      create(:fleet_contract_assignment, :lead, fleet_contract: contract, user: @lead)
+      contract
+    end
+
+    private def link(actor:, source:, destination: nil, recipient: nil, contract: @contract)
+      TransferLink.new(contract: contract, actor: actor, source: source,
         destination: destination, recipient: recipient)
     end
   end

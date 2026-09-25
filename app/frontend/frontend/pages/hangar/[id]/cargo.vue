@@ -35,6 +35,7 @@ import type {
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
@@ -223,9 +224,15 @@ const clearCargo = () => {
         });
 
         await refetch();
-      } catch {
+      } catch (error) {
+        // The API says why when it refuses -- a contract still delivering into
+        // the hold, or a transfer still waiting -- and that is the thing to show.
+        const { errors } = validationErrorFrom(error);
+
         displayAlert({
-          text: t("messages.logistics.vehicleInventory.clear.failure"),
+          text:
+            errors[0]?.messages[0]?.message ??
+            t("messages.logistics.vehicleInventory.clear.failure"),
         });
       }
     },

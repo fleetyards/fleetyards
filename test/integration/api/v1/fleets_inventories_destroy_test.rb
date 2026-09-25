@@ -49,6 +49,47 @@ class Api::V1::FleetsInventoriesDestroyTest < ActionDispatch::IntegrationTest
     assert_nil FleetInventory.find_by(id: @inventory.id)
   end
 
+  # Plain requests rather than the DSL: declaring this 400 would replace the
+  # schema-validation 400 the document already carries for the endpoint.
+  test "DELETE /fleets/:slug/inventories/:slug is refused while an open contract delivers into it" do
+    create(:fleet_contract, :in_progress, fleet: @fleet, destination_fleet_inventory: @inventory)
+    sign_in @admin
+
+    assert_no_difference "FleetInventory.count" do
+      delete "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") },
+      I18n.t("activerecord.errors.messages.inventory_contract_destination")
+  end
+
+  test "DELETE /fleets/:slug/inventories/:slug is refused while an accepted contract delivery counts here" do
+    contract = create(:fleet_contract, :in_progress, fleet: @fleet,
+      destination_fleet_inventory: create(:fleet_inventory, fleet: @fleet))
+    create(:inventory_transfer, fleet_contract: contract, recipient_fleet: @fleet,
+      aasm_state: "completed", destination_fleet_inventory: @inventory)
+    sign_in @admin
+
+    assert_no_difference "FleetInventory.count" do
+      delete "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+  end
+
+  test "DELETE /fleets/:slug/inventories/:slug goes through once the contract is closed" do
+    create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @inventory,
+      aasm_state: "fulfilled")
+    sign_in @admin
+
+    assert_difference "FleetInventory.count", -1 do
+      delete "/api/v1/fleets/#{@fleet.slug}/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
   test "DELETE /fleets/:slug/inventories/:slug returns 403 for non-admin member" do
     sign_in @member
 

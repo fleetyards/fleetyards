@@ -216,6 +216,7 @@ fr:
         contract_item_already_asked_for: "figure déjà sur ce contrat avec la même catégorie et la même unité"
         entry_goods_in_transit: "ne peut pas être supprimé tant que le transfert auquel il appartient est en attente de réponse"
         inventory_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert envoyé est encore en attente de réponse"
+        inventory_contract_destination: "ne peut pas être supprimé tant qu'un contrat de flotte ouvert y livre"
         position_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert le contenant est encore en attente de réponse"
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
@@ -271,6 +272,14 @@ fr:
               destination_is_source: "ne peut pas être transféré vers l'inventaire dont il provient"
               already_resolved: "a déjà reçu une réponse"
               forbidden: "n'est pas autorisé"
+        fleet_contract:
+          attributes:
+            destination_inventory:
+              not_the_authors: "doit être l'un de vos propres inventaires"
+              not_selectable: "n'est pas un inventaire que vous pouvez choisir"
+              only_one_destination: "ne peut être qu'un seul inventaire"
+            destination_fleet_inventory:
+              not_selectable: "n'est pas un inventaire que vous pouvez choisir"
         inventory_transfer_rule:
           attributes:
             base:

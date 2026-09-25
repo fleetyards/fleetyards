@@ -36,6 +36,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
@@ -49,6 +50,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, toUEC, l } = useI18n();
+const { destinationName } = useContractRoute();
 const { resolve: resolveCover } = useContractCover();
 
 const cover = computed(() => resolveCover(contract.value, props.fleet));
@@ -405,7 +407,7 @@ const crumbs = computed<Crumb[]>(() => [
     </p>
 
     <!-- A haul has two ends, so it reads as one leg rather than two facts. -->
-    <Panel v-if="contract.source || contract.destination">
+    <Panel>
       <PanelBody>
         <div class="contract-route">
           <div v-if="contract.source" class="contract-route__end">
@@ -424,21 +426,18 @@ const crumbs = computed<Crumb[]>(() => [
             <span class="contract-route__rule" />
           </div>
 
-          <div
-            v-if="contract.destination"
-            class="contract-route__end contract-route__end--to"
-          >
+          <div class="contract-route__end contract-route__end--to">
             <div class="contract-route__label">
               {{ t("labels.fleets.contracts.to") }}
             </div>
             <div class="contract-route__place">
-              {{ contract.destination.name }}
+              {{ destinationName(contract) }}
             </div>
             <div
-              v-if="contract.destination.location"
+              v-if="contract.destination?.location"
               class="contract-route__where"
             >
-              {{ contract.destination.location }}
+              {{ contract.destination?.location }}
             </div>
           </div>
         </div>

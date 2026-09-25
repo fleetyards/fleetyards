@@ -5,8 +5,7 @@ module Contracts
   #
   # Deliberately narrow. This decides only that the link is *allowed*; whether
   # the goods actually count is `Progress`'s question, asked later against the
-  # entries, so a transfer addressed to the fleet that gets accepted into the
-  # wrong inventory is refused nothing here and simply counts for nothing.
+  # entries.
   #
   # A refused link is an error, never a silently unlinked transfer: a contractor
   # who filed a delivery under a contract and got an ordinary transfer back
@@ -46,14 +45,32 @@ module Contracts
     end
 
     # One end has to be somewhere the contract named, or the transfer has to be
-    # addressed to the fleet that posted it. Without this any two inventories
-    # could be filed under any contract the actor happens to work on.
+    # addressed to whoever answers for its destination: the fleet that posted
+    # it, or the author whose own inventory it delivers into. Without this any
+    # two inventories could be filed under any contract the actor happens to
+    # work on.
     private def touches_contract?
+      # Decided before any of the shortcuts below: a transport's source would
+      # otherwise vouch for a delivery into the author's hangar by somebody
+      # who is not working the contract.
+      return @contract.contractor?(@actor) if into_authors_hangar?
+
       ends = @contract.tracked_inventory_ids
       return true if @source.is_a?(::FleetInventory) && ends.include?(@source.id)
-      return true if @destination.is_a?(::FleetInventory) && ends.include?(@destination.id)
+      return true if @destination.present? && ends.include?(@destination.id)
 
       @recipient.is_a?(::Fleet) && @recipient.id == @contract.fleet_id
+    end
+
+    # Only for the people working it. A fleet manager may otherwise act on any
+    # contract, and this would let one file fleet stock into a member's private
+    # inventory as contract work -- and, addressed to the author, past the
+    # stance they set for who may send to them.
+    private def into_authors_hangar?
+      return false unless @contract.hangar_destination?
+      return true if @destination.present? && @destination == @contract.destination_inventory
+
+      @recipient.is_a?(::User) && @recipient == @contract.created_by
     end
 
     private def refuse(code)

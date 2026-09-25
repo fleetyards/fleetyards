@@ -18,11 +18,14 @@ module InventoryTransfersFeatureConcern
 
   # Both ends of a transfer have to be open, and the two ends may be in
   # different families. Asked of the inventory rather than of the request,
-  # because a crossing transfer is subject to both.
+  # because a crossing transfer is subject to both. A person's inventory is
+  # asked of its holder: that is the caller for their own, and the author for
+  # a contract's hangar destination, which a contractor delivers into.
   private def inventory_feature_enabled?(inventory)
     case inventory
     when ::FleetInventory then feature_enabled?("fleet_logistics", inventory.fleet)
-    when ::Inventory then feature_enabled?(inventory.vehicle? ? "ship_inventories" : "hangar_inventories")
+    when ::Inventory
+      Flipper.enabled?(inventory.vehicle? ? "ship_inventories" : "hangar_inventories", inventory.holder)
     else false
     end
   end

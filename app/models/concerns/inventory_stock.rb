@@ -23,6 +23,11 @@ module InventoryStock
     # is the worst of the three.
     before_destroy :refuse_while_goods_are_in_transit, prepend: true
 
+    # The holder removing it on purpose while a contract still counts what was
+    # delivered into it. Destroyed through an association -- the account or the
+    # fleet going away -- it is let through.
+    before_destroy :refuse_while_a_contract_counts_deliveries_here, prepend: true
+
     # Every write to an inventory's contents touches the inventory itself.
     # `inventory_association` declares `belongs_to ..., touch: true`, and the
     # two bulk paths that bypass entry callbacks touch explicitly afterwards --
@@ -256,6 +261,15 @@ module InventoryStock
 
     errors.add(:base, :goods_in_transit,
       message: I18n.t("activerecord.errors.messages.inventory_goods_in_transit"))
+    throw(:abort)
+  end
+
+  private def refuse_while_a_contract_counts_deliveries_here
+    return if destroyed_by_association
+    return unless ::FleetContract.counting_deliveries_in(self).exists?
+
+    errors.add(:base, :contract_destination,
+      message: I18n.t("activerecord.errors.messages.inventory_contract_destination"))
     throw(:abort)
   end
 

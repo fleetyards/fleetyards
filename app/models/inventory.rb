@@ -44,6 +44,11 @@ class Inventory < ApplicationRecord
   has_one_attached :image
   validates :image, no_vector_image: true
 
+  # The contracts delivering here. Nullified with the row by the foreign key,
+  # which is what account deletion relies on.
+  has_many :destined_fleet_contracts, class_name: "FleetContract",
+    foreign_key: :destination_inventory_id, inverse_of: :destination_inventory, dependent: nil
+
   # The inventories a user created by hand, as opposed to the ones a ship
   # provisioned for itself.
   scope :hand_made, -> { where(vehicle_id: nil) }

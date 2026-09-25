@@ -71,4 +71,104 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
       path_params: {slug: @inventory.slug},
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"])
   end
+
+  # A plain request rather than the DSL: declaring this 400 would replace the
+  # schema-validation 400 the document already carries for the endpoint.
+  test "DELETE /hangar/inventories/:slug is refused while an open contract delivers into it" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") },
+      I18n.t("activerecord.errors.messages.inventory_contract_destination")
+    assert_equal @inventory, contract.reload.destination_inventory
+  end
+
+  test "DELETE /hangar/inventories/:slug is refused while an expired contract still awaits a delivery" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user)
+    contract.update_columns(aasm_state: "expired")
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+  end
+
+  test "DELETE /hangar/inventories/:slug goes through once an expired contract has settled" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user, aasm_state: "declined")
+    contract.update_columns(aasm_state: "expired")
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
+  # Progress reads the deposit out of whichever inventory took it, so that one
+  # has to stay as long as the contract counts it.
+  test "DELETE /hangar/inventories/:slug is refused while an accepted contract delivery counts here" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user,
+      aasm_state: "completed", destination_inventory: @inventory)
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+  end
+
+  test "DELETE /hangar/inventories/:slug is not held up by a pickup its holder took as courier" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @other_user)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user,
+      aasm_state: "completed", destination_inventory: @inventory)
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
+  # A transport's pickup waits on its crew and can never land in the hangar.
+  test "DELETE /hangar/inventories/:slug is not held up by an expired contract's pending pickup" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @other_user)
+    contract.update_columns(aasm_state: "expired")
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
+  test "DELETE /hangar/inventories/:slug goes through once the contract is closed" do
+    create(:fleet_contract, :hangar_destination, created_by: @user, destination_inventory: @inventory,
+      aasm_state: "fulfilled")
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
 end

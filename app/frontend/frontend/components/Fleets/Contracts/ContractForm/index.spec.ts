@@ -1,8 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 
 const createMutation = vi.fn(() => Promise.resolve({ slug: "job-1" }));
 const updateMutation = vi.fn(() => Promise.resolve({ slug: "job-1" }));
+
+const destinations = vi.hoisted(() => ({
+  value: [] as Record<string, unknown>[],
+}));
+const destinationParams = vi.hoisted(() => ({
+  value: undefined as { value: Record<string, unknown> } | undefined,
+}));
 
 // Mocked as a module, not stubbed at mount: the real one reaches HoloViewer and
 // pulls three.js in, which does not resolve under vitest.
@@ -28,13 +35,24 @@ vi.mock("@/services/fyApi", () => ({
     PROCUREMENT: "procurement",
     CRAFTING: "crafting",
   },
+  FleetContractDestinationHolderEnum: { FLEET: "fleet", USER: "user" },
   useFleetInventories: () => ({ data: { value: { items: [] } } }),
+  useFleetContractDestinations: (
+    _fleetSlug: unknown,
+    params: { value: Record<string, unknown> },
+  ) => {
+    destinationParams.value = params;
+    return { data: destinations };
+  },
   useCreateFleetContract: () => ({ mutateAsync: createMutation }),
   useUpdateFleetContract: () => ({ mutateAsync: updateMutation }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string, params?: Record<string, string>) =>
+      params ? `${key}(${Object.values(params).join(",")})` : key,
+  }),
 }));
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
@@ -49,6 +67,12 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 vi.mock("vue-router", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+
+const session = vi.hoisted(() => ({ currentUser: { id: "reader" } }));
+
+vi.mock("@/frontend/stores/session", () => ({
+  useSessionStore: () => session,
+}));
 
 vi.mock("@/frontend/composables/useSquadronVisibility", () => ({
   useSquadronVisibility: () => ({
@@ -208,5 +232,173 @@ describe("ContractForm cover", () => {
     await wrapper.vm.$nextTick();
 
     expect(field(wrapper).props("presetGroup")).toBe("crafting");
+  });
+});
+
+describe("ContractForm destination", () => {
+  const DEPOT = {
+    id: "depot",
+    name: "Depot",
+    slug: "depot",
+    location: "Area 18",
+    holder: "fleet",
+  };
+  const LOCKER = {
+    id: "locker",
+    name: "Locker",
+    slug: "locker",
+    location: null,
+    holder: "user",
+  };
+
+  const destinationSelect = (wrapper: ReturnType<typeof mountForm>) =>
+    wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((select) => select.attributes("name") === "destination")!;
+
+  const submitted = async (wrapper: ReturnType<typeof mountForm>) => {
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    return ((createMutation.mock.calls.at(-1) as unknown[] | undefined) ??
+      (updateMutation.mock.calls.at(-1) as unknown[]))[0] as {
+      data: Record<string, unknown>;
+    };
+  };
+
+  it("offers what the API says the reader may choose, own inventories marked", () => {
+    destinations.value = [DEPOT, LOCKER];
+
+    const options = destinationSelect(mountForm()).props("options") as {
+      value: string;
+      label: string;
+    }[];
+
+    expect(options).toEqual([
+      { value: "fleet:depot", label: "Depot — Area 18" },
+      {
+        value: "user:locker",
+        label: "labels.fleets.contracts.myHangarInventory(Locker)",
+      },
+    ]);
+  });
+
+  it("sends an own inventory as destinationInventoryId and clears the fleet one", async () => {
+    createMutation.mockClear();
+    destinations.value = [LOCKER];
+    const wrapper = mountForm();
+
+    await destinationSelect(wrapper).vm.$emit(
+      "update:modelValue",
+      "user:locker",
+    );
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(true);
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.destinationInventoryId).toBe("locker");
+    expect(data.destinationFleetInventoryId).toBeNull();
+  });
+
+  it("sends a fleet inventory as destinationFleetInventoryId", async () => {
+    createMutation.mockClear();
+    destinations.value = [DEPOT];
+    const wrapper = mountForm();
+
+    await destinationSelect(wrapper).vm.$emit(
+      "update:modelValue",
+      "fleet:depot",
+    );
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(false);
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.destinationFleetInventoryId).toBe("depot");
+    expect(data.destinationInventoryId).toBeNull();
+  });
+
+  // The API decides whose inventories are offered, so it has to know which
+  // contract is being edited -- without it an editor would be offered their
+  // own, which the model refuses on another author's contract.
+  it("names the contract being edited when asking for destinations", () => {
+    mountForm({ slug: "job-1", kind: "procurement" });
+
+    expect(destinationParams.value?.value).toEqual({ contractSlug: "job-1" });
+
+    mountForm();
+
+    expect(destinationParams.value?.value).toEqual({});
+  });
+
+  // The own-inventory hint promises the reader accepts the deliveries, which
+  // is only true of an inventory the API offered them.
+  it("tells another editor the author accepts deliveries into a kept hangar", () => {
+    destinations.value = [DEPOT];
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      destination: LOCKER,
+      createdBy: { id: "author", username: "Ada" },
+    });
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find("[data-test='contract-destination-author-hint']").text(),
+    ).toBe("labels.fleets.contracts.toAuthorHint(Ada)");
+  });
+
+  // The options arrive in their own request, so being missing from them
+  // says nothing about who the reader is.
+  it("tells the author they accept deliveries before the options load", () => {
+    destinations.value = [];
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      destination: LOCKER,
+      createdBy: { id: "reader", username: "Ada" },
+    });
+
+    expect(
+      wrapper.find("[data-test='contract-destination-hint']").exists(),
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='contract-destination-author-hint']").exists(),
+    ).toBe(false);
+  });
+
+  // Somebody else editing still sees where it delivers, and keeps it by not
+  // touching the field.
+  it("keeps the author's inventory in the list for another editor", async () => {
+    createMutation.mockClear();
+    updateMutation.mockClear();
+    destinations.value = [DEPOT];
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      destination: LOCKER,
+      createdBy: { id: "author", username: "Ada" },
+    });
+
+    const options = destinationSelect(wrapper).props("options") as {
+      value: string;
+      label: string;
+    }[];
+
+    expect(options.at(-1)).toEqual({
+      value: "user:locker",
+      label: "labels.fleets.contracts.authorHangarInventory(Locker,Ada)",
+    });
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.destinationInventoryId).toBe("locker");
   });
 });

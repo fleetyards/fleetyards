@@ -57,19 +57,19 @@ module InventoryTransferActions
     return not_found if source.blank?
     return feature_closed unless inventory_feature_enabled?(source)
 
-    # Both ends, not just the one the request came in through. An immediate
-    # transfer never reaches `TransferGate`, which is what checks the recipient's
-    # flags on the waiting path -- so without this a fleet officer could write
-    # into their own hangar or ship inventory while that feature is switched
-    # off, which is exactly the way round the new flag is not allowed to be.
-    destination = find_destination
-    return feature_closed if destination.present? && !inventory_feature_enabled?(destination)
-
     contract = find_contract
     if transfer_params[:contract_id].present? && contract.blank?
       return render json: ValidationError.new("inventory_transfers.create",
         errors: contract_not_found_errors), status: :bad_request
     end
+
+    # Both ends, not just the one the request came in through. An immediate
+    # transfer never reaches `TransferGate`, which is what checks the recipient's
+    # flags on the waiting path -- so without this a fleet officer could write
+    # into their own hangar or ship inventory while that feature is switched
+    # off, which is exactly the way round the new flag is not allowed to be.
+    destination = find_destination(contract)
+    return feature_closed if destination.present? && !inventory_feature_enabled?(destination)
 
     builder = ::Inventories::TransferBuilder.new(
       source:,
@@ -262,9 +262,23 @@ module InventoryTransferActions
   # This does not re-open the diversion hole review found: that was about
   # *accepting*, and `TransferResolver#accept` separately requires the
   # destination to belong to the transfer's recipient.
-  private def find_destination
+  #
+  # The one inventory of somebody else's that can be named is the destination
+  # of the contract the request is filed under, when that is the author's own.
+  # It resolves only by matching that contract, so it says nothing about any
+  # other inventory, and whether the actor may deliver there at all is
+  # `Contracts::TransferLink`'s question.
+  private def find_destination(contract = nil)
     resolve_actor_inventory(transfer_params[:inventory_id]) ||
-      resolve_own_inventory(transfer_params[:fleet_inventory_id])
+      resolve_own_inventory(transfer_params[:fleet_inventory_id]) ||
+      resolve_contract_destination(contract, transfer_params[:inventory_id])
+  end
+
+  private def resolve_contract_destination(contract, id)
+    return if contract.blank? || id.blank?
+    return unless contract.destination_inventory_id == id
+
+    contract.destination_inventory
   end
 
   private def resolve_actor_inventory(id)

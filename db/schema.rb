@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_010000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -696,6 +696,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_010000) do
     t.datetime "deadline"
     t.text "description"
     t.uuid "destination_fleet_inventory_id"
+    t.uuid "destination_inventory_id"
     t.datetime "expired_at"
     t.uuid "fleet_id", null: false
     t.datetime "fulfilled_at"
@@ -710,12 +711,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_010000) do
     t.integer "visibility", default: 0, null: false
     t.index ["created_by_id"], name: "index_fleet_contracts_on_created_by_id"
     t.index ["destination_fleet_inventory_id"], name: "index_fleet_contracts_on_destination_fleet_inventory_id"
+    t.index ["destination_inventory_id"], name: "index_fleet_contracts_on_destination_inventory_id"
     t.index ["fleet_id", "aasm_state"], name: "index_fleet_contracts_on_fleet_id_and_aasm_state"
     t.index ["fleet_id", "kind"], name: "index_fleet_contracts_on_fleet_id_and_kind"
     t.index ["fleet_id", "slug"], name: "index_fleet_contracts_on_fleet_id_and_slug", unique: true
     t.index ["source_fleet_inventory_id"], name: "index_fleet_contracts_on_source_fleet_inventory_id"
     t.check_constraint "crew_limit IS NULL OR crew_limit > 0", name: "fleet_contracts_crew_limit_positive"
     t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
+    t.check_constraint "num_nonnulls(destination_fleet_inventory_id, destination_inventory_id) <= 1", name: "fleet_contracts_single_destination"
     t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
   end
 
@@ -2447,6 +2450,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_010000) do
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "destination_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "fleets"
+  add_foreign_key "fleet_contracts", "inventories", column: "destination_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"

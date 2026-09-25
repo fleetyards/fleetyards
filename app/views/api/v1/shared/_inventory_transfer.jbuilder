@@ -42,6 +42,7 @@ if transfer.fleet_contract.present?
     json.title transfer.fleet_contract.display_title
     json.slug transfer.fleet_contract.slug
     json.fleet_slug transfer.fleet_contract.fleet.slug
+    json.destination_inventory_id transfer.fleet_contract.destination_inventory_id
   end
 else
   json.contract nil

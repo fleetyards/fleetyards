@@ -27,7 +27,10 @@ module V1
             # Only a transport contract may carry a source, and it must carry
             # one. The model refuses the other three combinations.
             sourceFleetInventoryId: {type: [:string, :null], format: :uuid},
-            destinationFleetInventoryId: {type: :string, format: :uuid},
+            # Exactly one destination: a fleet inventory the author may write
+            # to, or one of the author's own. Sending one clears the other.
+            destinationFleetInventoryId: {type: [:string, :null], format: :uuid},
+            destinationInventoryId: {type: [:string, :null], format: :uuid},
             # Who the work is for. `squadronOnly` with the squadrons it names
             # keeps the board to them; see SquadronRestrictable.
             visibility: ::V1::Schemas::Enums::FleetContractVisibilityEnum,

@@ -66,6 +66,12 @@ class FleetContractPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(MANAGE)
   end
 
+  # Asking where a contract can deliver is part of writing one, so it is open to
+  # whoever may create or edit contracts.
+  def choose_destination?
+    create? || may_update?
+  end
+
   # Claiming rides on read -- of this contract, so a squadron's work is taken
   # by that squadron. A board only officers may take work off is not a board,
   # and the claim itself grants nothing beyond the transfers the member could
@@ -100,7 +106,7 @@ class FleetContractPolicy < FleetBasePolicy
   params_filter do |params|
     params.permit(:title, :description, :kind, :reward, :reimburse_expenses,
       :crew_limit, :deadline, :cover_image, :cover_image_preset,
-      :source_fleet_inventory_id, :destination_fleet_inventory_id,
+      :source_fleet_inventory_id, :destination_fleet_inventory_id, :destination_inventory_id,
       :visibility, fleet_squadron_ids: [],
       items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
         :item_id, :position])

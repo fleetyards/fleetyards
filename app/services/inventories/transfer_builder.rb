@@ -27,6 +27,8 @@ module Inventories
       @note = note
       @contract = contract
       @authorizer = TransferAuthorizer.new(actor)
+
+      address_contract_delivery_to_author if contract_hangar_delivery?
     end
 
     def call
@@ -76,6 +78,23 @@ module Inventories
 
     def lines
       @lines ||= @requested_lines.filter_map { |line| resolve_line(line) }
+    end
+
+    # A contractor naming the author's own inventory as a contract's destination
+    # cannot put the goods away themselves, so the shipment is addressed to the
+    # author instead -- with the inventory left off it. A pending transfer never
+    # names a destination, which is what keeps the contractor from reading the
+    # inventory it is headed for; the author chooses it on acceptance.
+    private def contract_hangar_delivery?
+      @contract.present? && @destination.is_a?(::Inventory) &&
+        @destination == @contract.destination_inventory &&
+        !@authorizer.may_deposit_into?(@destination)
+    end
+
+    private def address_contract_delivery_to_author
+      @recipient = @contract.created_by
+      @destination = nil
+      @solicited = true
     end
 
     private def build_transfer
@@ -187,7 +206,8 @@ module Inventories
     private def permitted_by_gate?
       return true if immediate?
 
-      @refusal = TransferGate.new(sender: sender_party, recipient: @recipient, actor: @actor).refusal
+      @refusal = TransferGate.new(sender: sender_party, recipient: @recipient, actor: @actor,
+        solicited: @solicited || false).refusal
 
       return true if @refusal.nil?
 

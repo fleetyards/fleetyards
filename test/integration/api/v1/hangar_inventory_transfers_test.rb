@@ -320,7 +320,9 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal 40.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
   end
 
-  test "a delivery the fleet lands somewhere else counts for nothing" do
+  # The fleet decides where goods addressed to it go, so where it accepted
+  # them is not the contractor's to answer for.
+  test "a delivery the fleet lands somewhere else still counts" do
     contract, _depot = contract_for(@user)
     elsewhere = create(:fleet_inventory, fleet: contract.fleet)
     sign_in @user
@@ -334,7 +336,7 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     transfer = InventoryTransfer.find(parsed_body["id"])
     Inventories::TransferResolver.new(transfer, actor: @user).accept(elsewhere)
 
-    assert_equal 0.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
+    assert_equal 40.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
   end
 
   # Attribution is certain only while the source still exists, so the link
@@ -389,6 +391,107 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
       body: {sourceInventoryId: @source.id, recipientFleetSlug: contract.fleet.slug,
              contractId: contract.id,
              lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  test "POST to a contract's hangar destination waits for the author" do
+    contract, author, locker = hangar_contract_for(@user)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, inventoryId: locker.id, contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]} do
+      assert_equal "pending", parsed_body["state"]
+      assert_nil parsed_body["destination"]
+      assert_equal "user", parsed_body["recipient"]["kind"]
+      assert_equal author.username, parsed_body["recipient"]["name"]
+      assert_equal locker.id, parsed_body["contract"]["destinationInventoryId"]
+    end
+
+    transfer = InventoryTransfer.find(parsed_body["id"])
+
+    assert_equal author, transfer.recipient
+    assert_nil transfer.destination
+  end
+
+  # Naming the inventory as the contract's destination is the author asking
+  # for the goods, so a closed stance does not refuse them.
+  test "POST to a contract's hangar destination reaches an author who takes no transfers" do
+    contract, author, locker = hangar_contract_for(@user)
+    author.update!(inventory_transfer_policy: :nobody)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, inventoryId: locker.id, contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  test "POST to a contract's hangar destination is refused to a member not working it" do
+    contract, _author, locker = hangar_contract_for(@recipient)
+    create(:fleet_membership, fleet: contract.fleet, user: @user, aasm_state: :accepted,
+      fleet_role: contract.fleet.fleet_roles.ranked.last)
+    sign_in @user
+
+    assert_no_difference -> { InventoryTransfer.count } do
+      assert_api_response :post, 400,
+        path_params: {},
+        body: {sourceInventoryId: @source.id, inventoryId: locker.id, contractId: contract.id,
+               lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+    end
+
+    assert_equal 100, @source.reload.stock_positions.sole.net_quantity
+  end
+
+  test "POST to a hangar destination of a contract nobody is working yet is refused" do
+    contract, _author, locker = hangar_contract_for(@user, state: :published)
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, inventoryId: locker.id, contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  # The contract opens exactly one of the author's inventories to its
+  # contractors, and only as a target.
+  test "POST to another of the author's inventories under the contract is refused" do
+    contract, author, _locker = hangar_contract_for(@user)
+    other = create(:inventory, holder: author)
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, inventoryId: other.id, contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  test "POST to a contract's hangar destination without naming the contract is refused" do
+    _contract, _author, locker = hangar_contract_for(@user)
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, inventoryId: locker.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  private def hangar_contract_for(worker, state: :in_progress)
+    author = create(:user)
+    fleet = create(:fleet, members: [author, worker])
+    Flipper.enable("fleet_contracts")
+
+    contract = create(:fleet_contract, state, :hangar_destination, fleet: fleet, created_by: author)
+    contract.fleet_contract_items.destroy_all
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Quantanium", category: :commodity, unit: :scu, quantity: 800)
+
+    if state == :in_progress
+      contract.fleet_contract_assignments.create!(user: worker, role: :lead,
+        aasm_state: "accepted", accepted_at: Time.current)
+    end
+
+    [contract, author, contract.destination_inventory]
   end
 
   private def contract_for(worker, state: :in_progress)
