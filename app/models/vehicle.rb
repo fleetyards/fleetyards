@@ -682,6 +682,15 @@ class Vehicle < ApplicationRecord
   #
   # A hangar that has ranks keeps them, and its unranked vehicles are appended
   # after the last one in that same default order.
+  # Ships a backfill has not reached yet have no rank, and would come after the
+  # ranked ones in no order at all. Behind the rank they fall into the order the
+  # backfill will give them, so ranking them changes nothing on screen.
+  def self.with_rank_tiebreak(sorts)
+    return sorts unless Array(sorts).any? { |sort| sort.start_with?("rank ") }
+
+    Array(sorts) + ["flagship desc", "name asc", "model_name asc", "created_at asc"]
+  end
+
   def self.rank_unranked!(user_id)
     return if user_id.blank? || !where(user_id:, rank: nil).exists?
 
