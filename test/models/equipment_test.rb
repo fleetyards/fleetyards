@@ -44,12 +44,39 @@ require "test_helper"
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #  index_equipment_on_sc_key           (sc_key) UNIQUE
 #  index_equipment_on_slot             (slot)
+#  index_equipment_on_slug             (slug) UNIQUE
 #
 class EquipmentTest < ActiveSupport::TestCase
   test "generates a slug from the name" do
     equipment = create(:equipment, name: "P4-AR Rifle")
 
     assert_equal "p4-ar-rifle", equipment.slug
+  end
+
+  test "a shared name disambiguates on sc_key" do
+    first = create(:equipment, name: "Concept Shirt", sc_key: "fio_shirt_01_01_01")
+    second = create(:equipment, name: "Concept Shirt", sc_key: "fio_tiesim_shirt_01_01_01")
+
+    assert_equal "concept-shirt-fio-tiesim-shirt-01-01-01", second.slug
+    refute_equal first.slug, second.slug
+  end
+
+  test "an incumbent keeps its slug when a duplicate name arrives later" do
+    incumbent = create(:equipment, :without_build, name: "Ambit Coverall", sc_key: "ambit_coverall_01")
+    create(:equipment, :without_build, name: "Ambit Coverall", sc_key: "ambit_coverall_02")
+
+    incumbent.update!(description: "the next import saves it again")
+
+    assert_equal "ambit-coverall", incumbent.reload.slug
+  end
+
+  test "the database refuses two equipment rows on one slug" do
+    first = create(:equipment, name: "P4-AR Rifle")
+    second = create(:equipment, name: "P6-LR Sniper Rifle")
+
+    assert_raises(ActiveRecord::RecordNotUnique) do
+      second.update_column(:slug, first.slug)
+    end
   end
 
   test "requires a name" do

@@ -556,6 +556,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_140000) do
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
     t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true
     t.index ["slot"], name: "index_equipment_on_slot"
+    t.index ["slug"], name: "index_equipment_on_slug", unique: true
   end
 
   create_table "equipment_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

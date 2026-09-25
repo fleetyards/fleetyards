@@ -42,6 +42,7 @@
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #  index_equipment_on_sc_key           (sc_key) UNIQUE
 #  index_equipment_on_slot             (slot)
+#  index_equipment_on_slug             (slug) UNIQUE
 #
 FactoryBot.define do
   factory :equipment do

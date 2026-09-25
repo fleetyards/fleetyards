@@ -42,6 +42,7 @@
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #  index_equipment_on_sc_key           (sc_key) UNIQUE
 #  index_equipment_on_slot             (slot)
+#  index_equipment_on_slug             (slug) UNIQUE
 #
 class Equipment < ApplicationRecord
   attr_accessor :update_reason, :update_reason_description, :author_id
@@ -71,6 +72,7 @@ class Equipment < ApplicationRecord
     }
   include AttachmentRansackers
   include ItemPriceConcern
+  include KeyedSlug
   include ScDataVersioned
 
   paginates_per 50
