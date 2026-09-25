@@ -20,7 +20,7 @@ module Api
         scope = InventoryItem
           .joins(:inventory)
           .where(inventories: {holder: current_resource_owner})
-          .includes(:inventory)
+          .includes(:inventory).preload(:item)
 
         scope = scope.where(inventories: {vehicle_id: nil}) unless ship_inventories_enabled?
 

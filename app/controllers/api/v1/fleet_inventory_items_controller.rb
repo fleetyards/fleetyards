@@ -25,7 +25,7 @@ module Api
       def index
         authorize! with: FleetInventoryItemPolicy, context: {fleet: @fleet}
 
-        scope = @fleet_inventory.fleet_inventory_items
+        scope = @fleet_inventory.fleet_inventory_items.preload(:item)
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :name_eq, :unit_eq, :category_eq, :quality_gteq, :quality_lteq, :position_id_eq, :s)
         normalize_sort_params(query_params)

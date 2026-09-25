@@ -7,7 +7,11 @@
 # those rows in place without touching the blueprint or moving the version
 # string. Keyed on the source alone, a re-import would go on serving the
 # previous values until something else happened to touch the row.
-json.cache! ["v2", blueprint, blueprint.facts, ::ScData::Source.current] do
+#
+# What it makes is in the key for the same reason: the payload carries its
+# name, slug and whether it has a page, and hiding a variant touches the
+# variant, not the recipe.
+json.cache! ["v2", blueprint, blueprint.facts, blueprint.craftable, ::ScData::Source.current] do
   json.partial! "api/v1/blueprints/base", blueprint:
 end
 

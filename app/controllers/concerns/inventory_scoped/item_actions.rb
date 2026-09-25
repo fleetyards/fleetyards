@@ -87,7 +87,7 @@ module InventoryScoped
     private def inventory_items_scope
       return InventoryItem.none unless inventory.persisted?
 
-      inventory.inventory_items
+      inventory.inventory_items.preload(:item)
     end
 
     private def inventory_item_params
