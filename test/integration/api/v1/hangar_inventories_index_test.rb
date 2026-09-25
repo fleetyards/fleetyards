@@ -52,6 +52,18 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/inventories sorts by either sort key" do
+    create(:inventory, holder: @user, name: "Alpha")
+    create(:inventory, holder: @user, name: "Zebra")
+    sign_in @user
+
+    %i[s sorts].each do |key|
+      assert_api_response :get, 200, params: {q: {key => "name desc"}} do
+        assert_equal ["Zebra", "Alpha"], parsed_body["items"].map { |item| item["name"] }, key
+      end
+    end
+  end
+
   test "GET /hangar/inventories does not list other users' inventories" do
     create_list(:inventory, 2, holder: @other_user)
     sign_in @user
