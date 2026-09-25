@@ -930,6 +930,19 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET the board shows the author's new name after they rename" do
+    contract = create(:fleet_contract, :published, fleet: @fleet)
+    sign_in @officer
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/contracts"
+      contract.created_by.update!(username: "renamedauthor")
+      get "/api/v1/fleets/#{@fleet.slug}/contracts"
+
+      assert_equal "renamedauthor", response.parsed_body["items"].first["createdBy"]["username"]
+    end
+  end
+
   private def contract_author
     author = create(:user)
     create(:fleet_membership, fleet: @fleet, user: author, aasm_state: :accepted,
