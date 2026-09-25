@@ -23,6 +23,8 @@ import {
   useListGeometry,
   useReportListGeometry,
 } from "@/shared/composables/useListGeometry";
+import Sortable from "sortablejs";
+import type { ComponentPublicInstance } from "vue";
 import TableHeader from "./Header/index.vue";
 import TableRow from "./Row/index.vue";
 import TableCol from "./Col/index.vue";
@@ -49,6 +51,10 @@ type Props = {
   // records. A table inside a list takes the count from the list instead, so
   // this is only for one standing on its own.
   skeletonRows?: number;
+  // Drag rows to rearrange them, by a handle inside the row -- the same
+  // contract as BaseGrid's, so a list can offer it in either view.
+  sortable?: boolean;
+  sortHandle?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -66,6 +72,8 @@ const props = withDefaults(defineProps<Props>(), {
   rowDisabled: undefined,
   fillHeight: false,
   skeletonRows: undefined,
+  sortable: false,
+  sortHandle: undefined,
 });
 
 const isLoading = computed(() => {
@@ -163,7 +171,11 @@ watch(
   },
 );
 
-const emit = defineEmits(["selected-change", "row-click"]);
+const emit = defineEmits<{
+  "selected-change": [selected: string[]];
+  "row-click": [record: T];
+  sort: [keys: string[], moved: string];
+}>();
 
 watch(
   () => internalSelected.value,
@@ -220,6 +232,57 @@ const columnCount = computed(() => {
 const resetSelected = () => {
   internalSelected.value = [];
 };
+
+// The body is a transition group, so the rows sit under its root element.
+const body = ref<ComponentPublicInstance>();
+
+let sortableInstance: Sortable | null = null;
+
+const initSortable = () => {
+  sortableInstance?.destroy();
+  sortableInstance = null;
+
+  const container = body.value?.$el as HTMLElement | undefined;
+
+  if (!props.sortable || !container) {
+    return;
+  }
+
+  sortableInstance = Sortable.create(container, {
+    animation: 150,
+    handle: props.sortHandle,
+    draggable: ".base-table-row",
+    onEnd: (event) => {
+      const { item, oldIndex, newIndex } = event;
+
+      if (oldIndex === undefined || newIndex === undefined) return;
+      if (oldIndex === newIndex) return;
+
+      // Undone for the same reason as in BaseGrid: Sortable and the transition
+      // group would both be writing the rows, and the render has to own them.
+      item.remove();
+      container.insertBefore(item, container.children[oldIndex] ?? null);
+
+      const keys = props.records.map((record) => String(primaryValue(record)));
+      const [moved] = keys.splice(oldIndex, 1);
+      keys.splice(newIndex, 0, moved);
+
+      emit("sort", keys, moved);
+    },
+  });
+};
+
+watch(
+  [() => props.sortable, () => props.sortHandle, () => props.records.length],
+  () => void nextTick(initSortable),
+);
+
+onMounted(() => void nextTick(initSortable));
+
+onUnmounted(() => {
+  sortableInstance?.destroy();
+  sortableInstance = null;
+});
 </script>
 
 <template>
@@ -256,6 +319,7 @@ const resetSelected = () => {
             @select-all="onAllSelectedChange"
           />
           <transition-group
+            ref="body"
             name="list"
             :class="{
               'base-table__loading': isLoading,
