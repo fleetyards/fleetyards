@@ -19,6 +19,12 @@ module Discord
 
     Error = Class.new(StandardError)
 
+    def self.expired?(requested_at)
+      return false if requested_at.blank?
+
+      Time.current.to_i - requested_at.to_i > TOKEN_TTL.to_i
+    end
+
     def initialize(application_id:, token:)
       @application_id = application_id
       @token = token
@@ -33,6 +39,21 @@ module Discord
       return true if response.status.between?(200, 299)
 
       raise Error, "Discord interaction edit failed: #{response.status} #{response.body}"
+    end
+
+    # A new message rather than an edit. After a deferred *update* there is no
+    # placeholder for the answer to replace, so this is how a click is answered
+    # privately while the message it was on stays as it is -- and unlike the
+    # follow-up to a deferred command, it honours the ephemeral flag.
+    def create_followup(payload)
+      response = connection.post(
+        "webhooks/#{@application_id}/#{@token}",
+        payload.merge(flags: Commands::Base::EPHEMERAL).to_json
+      )
+
+      return true if response.status.between?(200, 299)
+
+      raise Error, "Discord interaction follow-up failed: #{response.status} #{response.body}"
     end
 
     private def connection

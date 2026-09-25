@@ -18,7 +18,7 @@ module Discord
     # arguments positionally, and this payload grows a field per command.
     def perform(context)
       context = context.with_indifferent_access
-      return if expired?(context)
+      return if InteractionClient.expired?(context[:requested_at])
 
       client = InteractionClient.new(
         application_id: context[:application_id],
@@ -52,13 +52,6 @@ module Discord
 
     private def command_name(context)
       [context[:command], context[:subcommand]].compact_blank.join(" ")
-    end
-
-    private def expired?(context)
-      started_at = context[:requested_at]
-      return false if started_at.blank?
-
-      Time.current.to_i - started_at.to_i > InteractionClient::TOKEN_TTL.to_i
     end
 
     private def unknown_command(name)
