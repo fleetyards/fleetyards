@@ -16,7 +16,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 
-import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import {
+  type BaseTableCol,
+  BaseTableColAlignmentEnum,
+} from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import {
@@ -127,6 +130,18 @@ const manufacturerColumnVisible = computed(() => {
 // sort control in both views.
 const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
   return [
+    // First after the box, where a row's handle is looked for, and apart from
+    // the name so a grab never lands on its link.
+    ...(props.sortable
+      ? [
+          {
+            name: "grip",
+            label: "",
+            width: "40px",
+            alignment: BaseTableColAlignmentEnum.CENTER,
+          },
+        ]
+      : []),
     ...extraImageColumns.value,
     {
       name: "name",
@@ -257,50 +272,49 @@ const resetSelected = () => {
           without-fallback
         />
       </template>
+      <template #col-grip="{ record }">
+        <button
+          v-tooltip="t('actions.reorder')"
+          type="button"
+          class="vehicles-table-grip"
+          :aria-label="t('actions.reorder')"
+          aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight"
+          data-test="vehicles-table-grip"
+          @keydown.up.prevent="emit('move', record.id, -1)"
+          @keydown.left.prevent="emit('move', record.id, -1)"
+          @keydown.down.prevent="emit('move', record.id, 1)"
+          @keydown.right.prevent="emit('move', record.id, 1)"
+        >
+          <i class="fa-duotone fa-grip-vertical" />
+        </button>
+      </template>
       <template #col-name="{ record }">
-        <div class="vehicles-table-name">
-          <button
-            v-if="sortable"
-            v-tooltip="t('actions.reorder')"
-            type="button"
-            class="vehicles-table-grip"
-            :aria-label="t('actions.reorder')"
-            aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight"
-            data-test="vehicles-table-grip"
-            @keydown.up.prevent="emit('move', record.id, -1)"
-            @keydown.left.prevent="emit('move', record.id, -1)"
-            @keydown.down.prevent="emit('move', record.id, 1)"
-            @keydown.right.prevent="emit('move', record.id, 1)"
+        <div class="name">
+          <router-link
+            :to="{
+              name: 'ship',
+              params: {
+                slug: record.model.slug,
+              },
+            }"
           >
-            <i class="fa-duotone fa-grip-vertical" />
-          </button>
-          <div class="name">
-            <router-link
-              :to="{
-                name: 'ship',
-                params: {
-                  slug: record.model.slug,
-                },
-              }"
-            >
-              <span v-if="record.name">
-                {{ record.name }}
-              </span>
+            <span v-if="record.name">
+              {{ record.name }}
+            </span>
 
-              <span v-else>{{ record.model.name }}</span>
-            </router-link>
-            <br />
-            <small>
-              <!-- eslint-disable vue/no-v-html -->
-              <span
-                v-if="record.model.manufacturer && !manufacturerColumnVisible"
-                v-html="record.model.manufacturer.name"
-              />
-              <template v-if="record.name">
-                {{ record.model.name }}
-              </template>
-            </small>
-          </div>
+            <span v-else>{{ record.model.name }}</span>
+          </router-link>
+          <br />
+          <small>
+            <!-- eslint-disable vue/no-v-html -->
+            <span
+              v-if="record.model.manufacturer && !manufacturerColumnVisible"
+              v-html="record.model.manufacturer.name"
+            />
+            <template v-if="record.name">
+              {{ record.model.name }}
+            </template>
+          </small>
         </div>
       </template>
       <template #col-modelManufacturerName="{ record }">
