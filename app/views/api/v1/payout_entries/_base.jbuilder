@@ -8,6 +8,16 @@ json.amount payout_entry.amount
 json.description payout_entry.description
 json.notes payout_entry.notes
 json.occurred_at payout_entry.occurred_at&.utc&.iso8601
+json.review_status payout_entry.review_status
+json.reviewed_at payout_entry.reviewed_at&.utc&.iso8601
+json.decline_reason payout_entry.decline_reason
+
+if payout_entry.reviewed_by.present?
+  json.reviewed_by do
+    json.id payout_entry.reviewed_by.id
+    json.username payout_entry.reviewed_by.username
+  end
+end
 
 json.participant do
   json.partial! "api/v1/payout_participants/base", payout_participant: payout_entry.payout_participant

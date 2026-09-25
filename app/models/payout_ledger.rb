@@ -79,6 +79,11 @@ class PayoutLedger < ApplicationRecord
 
   def settled? = status == "settled"
 
+  # Settling freezes the transfers, and an expense still waiting for a manager
+  # would either be left out of them for good or have to be decided on by
+  # whoever happened to press settle.
+  def pending_review? = payout_entries.review_pending.exists?
+
   # Both subjects can carry one: an event always does, a tour only when it was
   # organised from a fleet's page.
   def fleet
@@ -107,6 +112,7 @@ class PayoutLedger < ApplicationRecord
       # pass it and the second would delete and recreate the first's transfers,
       # dropping any confirmation already ticked off against them.
       next false if settled?
+      next false if pending_review?
 
       payout_transfers.delete_all
 

@@ -99,6 +99,36 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST leaves a participant's expense waiting for review" do
+    sign_in @member
+
+    assert_api_response :post, 201,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: entry_body do
+      assert_equal "pending", parsed_body["reviewStatus"]
+    end
+  end
+
+  test "POST approves an expense the organiser records" do
+    sign_in @organiser
+
+    assert_api_response :post, 201,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: entry_body do
+      assert_equal "approved", parsed_body["reviewStatus"]
+    end
+  end
+
+  test "POST never holds income for review" do
+    sign_in @member
+
+    assert_api_response :post, 201,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: entry_body(entryType: "income") do
+      assert_equal "approved", parsed_body["reviewStatus"]
+    end
+  end
+
   test "POST records income" do
     sign_in @member
 

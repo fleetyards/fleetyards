@@ -13232,6 +13232,104 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/entries/{id}/approve":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Approve a payout expense
+      tags:
+      - Payouts
+      operationId: approvePayoutEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutEntry"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/entries/{id}/decline":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Decline a payout expense
+      tags:
+      - Payouts
+      operationId: declinePayoutEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutEntryDeclineInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutEntry"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/payouts/{payoutLedgerId}/participants":
     parameters:
     - name: payoutLedgerId
@@ -29083,6 +29181,19 @@ components:
           - string
           - 'null'
           format: date-time
+        reviewStatus:
+          "$ref": "#/components/schemas/PayoutEntryReviewStatusEnum"
+        reviewedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        reviewedBy:
+          "$ref": "#/components/schemas/UserRef"
+        declineReason:
+          type:
+          - string
+          - 'null'
         participant:
           "$ref": "#/components/schemas/PayoutParticipant"
         createdAt:
@@ -29096,6 +29207,7 @@ components:
       - payoutLedgerId
       - payoutParticipantId
       - entryType
+      - reviewStatus
       - amount
       - description
       additionalProperties: false
@@ -29130,6 +29242,26 @@ components:
       - description
       additionalProperties: false
       title: PayoutEntryCreateInput
+    PayoutEntryDeclineInput:
+      type: object
+      properties:
+        reason:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: PayoutEntryDeclineInput
+    PayoutEntryReviewStatusEnum:
+      type: string
+      enum:
+      - pending
+      - approved
+      - declined
+      x-enumNames:
+      - PENDING
+      - APPROVED
+      - DECLINED
+      title: PayoutEntryReviewStatusEnum
     PayoutEntryTypeEnum:
       type: string
       enum:

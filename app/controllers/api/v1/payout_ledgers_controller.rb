@@ -64,7 +64,11 @@ module Api
         # settle! re-checks under its own lock and answers false, which is what
         # catches two simultaneous requests -- this check alone runs outside it.
         unless @payout_ledger.settle!(current_resource_owner)
-          render json: {code: "already_settled", message: "This ledger is already settled"}, status: :conflict
+          if @payout_ledger.pending_review?
+            render json: {code: "pending_review", message: "Expenses are still waiting for review"}, status: :conflict
+          else
+            render json: {code: "already_settled", message: "This ledger is already settled"}, status: :conflict
+          end
           return
         end
 

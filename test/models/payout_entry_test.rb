@@ -8,26 +8,32 @@ require "test_helper"
 #
 #  id                    :uuid             not null, primary key
 #  amount                :decimal(15, 2)   not null
+#  decline_reason        :text
 #  description           :string           not null
 #  entry_type            :integer          default("expense"), not null
 #  notes                 :text
 #  occurred_at           :datetime
+#  review_status         :integer          default(1), not null
+#  reviewed_at           :datetime
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  payout_ledger_id      :uuid             not null
 #  payout_participant_id :uuid             not null
 #  recorded_by_id        :uuid
+#  reviewed_by_id        :uuid
 #
 # Indexes
 #
-#  index_payout_entries_on_payout_ledger_id_and_entry_type  (payout_ledger_id,entry_type)
-#  index_payout_entries_on_payout_participant_id            (payout_participant_id)
+#  index_payout_entries_on_payout_ledger_id_and_entry_type     (payout_ledger_id,entry_type)
+#  index_payout_entries_on_payout_ledger_id_and_review_status  (payout_ledger_id,review_status)
+#  index_payout_entries_on_payout_participant_id               (payout_participant_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (payout_ledger_id => payout_ledgers.id)
 #  fk_rails_...  (payout_participant_id => payout_participants.id)
 #  fk_rails_...  (recorded_by_id => users.id)
+#  fk_rails_...  (reviewed_by_id => users.id)
 #
 class PayoutEntryTest < ActiveSupport::TestCase
   setup do

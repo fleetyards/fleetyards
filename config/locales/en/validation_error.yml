@@ -278,6 +278,8 @@ en:
       create: Entry could not be recorded.
       update: Entry could not be updated.
       destroy: Entry could not be removed.
+      approve: Expense could not be approved.
+      decline: Expense could not be declined.
     payout_participants:
       create: Participant could not be added.
       update: Participant could not be updated.

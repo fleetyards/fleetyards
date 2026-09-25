@@ -17,11 +17,15 @@ module V1
             description: {type: :string},
             notes: {type: [:string, :null]},
             occurredAt: {type: [:string, :null], format: "date-time"},
+            reviewStatus: ::V1::Schemas::Enums::PayoutEntryReviewStatusEnum,
+            reviewedAt: {type: [:string, :null], format: "date-time"},
+            reviewedBy: ::V1::Schemas::UserRef,
+            declineReason: {type: [:string, :null]},
             participant: PayoutParticipant,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
-          required: %w[id payoutLedgerId payoutParticipantId entryType amount description],
+          required: %w[id payoutLedgerId payoutParticipantId entryType reviewStatus amount description],
           additionalProperties: false
         })
       end

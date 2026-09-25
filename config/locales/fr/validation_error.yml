@@ -272,6 +272,8 @@ fr:
       create: L'écriture n'a pas pu être enregistrée.
       update: L'écriture n'a pas pu être mise à jour.
       destroy: L'écriture n'a pas pu être supprimée.
+      approve: "La dépense n'a pas pu être approuvée."
+      decline: "La dépense n'a pas pu être refusée."
     payout_participants:
       create: Le participant n'a pas pu être ajouté.
       update: Le participant n'a pas pu être mis à jour.

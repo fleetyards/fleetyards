@@ -275,6 +275,8 @@ es:
       create: No se pudo registrar el movimiento.
       update: No se pudo actualizar el movimiento.
       destroy: No se pudo eliminar el movimiento.
+      approve: No se pudo aprobar el gasto.
+      decline: No se pudo rechazar el gasto.
     payout_participants:
       create: No se pudo añadir al participante.
       update: No se pudo actualizar al participante.

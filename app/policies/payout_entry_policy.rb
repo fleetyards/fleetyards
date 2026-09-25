@@ -23,6 +23,15 @@ class PayoutEntryPolicy < FleetBasePolicy
 
   alias_rule :destroy?, to: :update?
 
+  # Only an expense is ever pending, and only someone who could have recorded
+  # it without review may let it count.
+  def review?
+    return false unless ledger&.open?
+    return false unless record.respond_to?(:expense?) && record.expense?
+
+    ledger_policy.manage?
+  end
+
   params_filter do |params|
     params.permit(:payout_participant_id, :entry_type, :amount, :description, :notes, :occurred_at)
   end

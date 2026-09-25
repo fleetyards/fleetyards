@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_161000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2058,6 +2058,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_160000) do
   create_table "payout_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "amount", precision: 15, scale: 2, null: false
     t.datetime "created_at", null: false
+    t.text "decline_reason"
     t.string "description", null: false
     t.integer "entry_type", default: 0, null: false
     t.text "notes"
@@ -2065,8 +2066,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_160000) do
     t.uuid "payout_ledger_id", null: false
     t.uuid "payout_participant_id", null: false
     t.uuid "recorded_by_id"
+    t.integer "review_status", default: 1, null: false
+    t.datetime "reviewed_at"
+    t.uuid "reviewed_by_id"
     t.datetime "updated_at", null: false
     t.index ["payout_ledger_id", "entry_type"], name: "index_payout_entries_on_payout_ledger_id_and_entry_type"
+    t.index ["payout_ledger_id", "review_status"], name: "index_payout_entries_on_payout_ledger_id_and_review_status"
     t.index ["payout_participant_id"], name: "index_payout_entries_on_payout_participant_id"
   end
 
@@ -2557,6 +2562,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_160000) do
   add_foreign_key "payout_entries", "payout_ledgers"
   add_foreign_key "payout_entries", "payout_participants"
   add_foreign_key "payout_entries", "users", column: "recorded_by_id"
+  add_foreign_key "payout_entries", "users", column: "reviewed_by_id"
   add_foreign_key "payout_ledgers", "users", column: "settled_by_id"
   add_foreign_key "payout_participants", "fleets"
   add_foreign_key "payout_participants", "payout_ledgers"

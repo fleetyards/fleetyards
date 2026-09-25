@@ -75,6 +75,16 @@ class Api::V1::PayoutLedgersSettleTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT refuses while an expense is waiting for review" do
+    create(:payout_entry, :pending, payout_ledger: @ledger, payout_participant: @alice_p, amount: 50)
+    sign_in @organiser
+
+    assert_api_response :put, 409, path_params: {id: @ledger.id} do
+      assert_equal "pending_review", parsed_body["code"]
+      assert_predicate @ledger.reload, :open?
+    end
+  end
+
   test "PUT refuses a second settle" do
     @ledger.settle!(@organiser)
     sign_in @organiser

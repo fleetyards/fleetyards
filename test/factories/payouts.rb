@@ -39,6 +39,14 @@ FactoryBot.define do
     trait :income do
       entry_type { "income" }
     end
+
+    trait :pending do
+      review_status { "pending" }
+    end
+
+    trait :declined do
+      review_status { "declined" }
+    end
   end
 
   factory :payout_transfer do
