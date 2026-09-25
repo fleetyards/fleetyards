@@ -420,7 +420,7 @@
           "digestWeekday": "Weekly Digest",
           "digestWeekdayHint": "Once a week, every channel gets a list of the coming seven days' events it may see. Leave empty to turn it off.",
           "digestTime": "Digest Time",
-          "digestTimeHint": "In the fleet's timezone (%{timezone}).",
+          "digestTimeHint": "In your timezone (%{timezone}).",
           "channelMissing": "This channel no longer exists on Discord or can no longer take posts. Nothing is posted until another one is picked.",
           "missingChannel": "Unavailable channel",
           "postingCodes": {

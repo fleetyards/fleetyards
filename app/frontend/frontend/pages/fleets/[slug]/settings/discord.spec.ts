@@ -109,6 +109,8 @@ describe("FleetDiscordSettingsPage digest", () => {
     expect(await save(subject)).toMatchObject({
       discordDigestWeekday: 1,
       discordDigestTime: "18:00",
+      discordDigestTimezone:
+        Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
     });
   });
 
@@ -138,6 +140,7 @@ describe("FleetDiscordSettingsPage digest", () => {
     expect(await save(subject)).toMatchObject({
       discordDigestWeekday: null,
       discordDigestTime: null,
+      discordDigestTimezone: null,
     });
   });
 });

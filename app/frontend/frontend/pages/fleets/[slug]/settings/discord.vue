@@ -51,6 +51,11 @@ const discordAnnouncementChannelId = ref<string | null>(null);
 const discordOfficersChannelId = ref<string | null>(null);
 const discordDigestWeekday = ref<string | null>(null);
 const discordDigestTime = ref<string>("");
+
+// The day and time are read in the zone they were picked in, which is this
+// browser's -- the same way an event takes its own.
+const browserTimezone = () =>
+  Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 const discordWebhookUrl = ref<string>("");
 
 const hydrate = (s: FleetNotificationSetting) => {
@@ -114,6 +119,9 @@ const save = async () => {
         : null,
       discordDigestTime: discordDigestWeekday.value
         ? discordDigestTime.value || null
+        : null,
+      discordDigestTimezone: discordDigestWeekday.value
+        ? browserTimezone()
         : null,
     };
     if (discordWebhookUrl.value !== "") {
@@ -317,7 +325,7 @@ const postingProblem = computed(() => {
           :label="t('labels.fleet.discord.digestTime')"
           :info="
             t('labels.fleet.discord.digestTimeHint', {
-              timezone: props.fleet.defaultTimezone,
+              timezone: browserTimezone(),
             })
           "
         />

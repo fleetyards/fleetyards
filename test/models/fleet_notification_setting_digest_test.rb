@@ -4,9 +4,11 @@ require "test_helper"
 
 class FleetNotificationSettingDigestTest < ActiveSupport::TestCase
   setup do
-    @fleet = create(:fleet, default_timezone: "Europe/Berlin")
+    @fleet = create(:fleet)
     # Mondays at 18:00 Berlin time.
-    @setting = @fleet.create_fleet_notification_setting!(discord_digest_weekday: 1, discord_digest_time: "18:00")
+    @setting = @fleet.create_fleet_notification_setting!(
+      discord_digest_weekday: 1, discord_digest_time: "18:00", discord_digest_timezone: "Europe/Berlin"
+    )
   end
 
   def berlin(string)
@@ -49,10 +51,16 @@ class FleetNotificationSettingDigestTest < ActiveSupport::TestCase
   end
 
   test "a UTC evening is the next morning in the fleet's zone" do
-    @fleet.update_column(:default_timezone, "Asia/Tokyo")
+    @setting.update!(discord_digest_timezone: "Asia/Tokyo")
 
     # Monday 18:00 in Tokyo is Monday 09:00 UTC.
     assert @setting.reload.digest_due?(Time.utc(2026, 9, 21, 9, 5))
+  end
+
+  test "rejects a zone that does not exist" do
+    @setting.discord_digest_timezone = "Mars/Olympus"
+
+    assert_not @setting.valid?
   end
 
   test "off without a weekday" do

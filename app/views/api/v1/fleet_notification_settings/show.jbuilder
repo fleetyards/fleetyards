@@ -9,5 +9,6 @@ json.discord_announcement_channel_id @setting.discord_announcement_channel_id
 json.discord_officers_channel_id @setting.discord_officers_channel_id
 json.discord_digest_weekday @setting.discord_digest_weekday
 json.discord_digest_time @setting.discord_digest_time
+json.discord_digest_timezone @setting.discord_digest_timezone
 json.discord_member_role_id @setting.discord_member_role_id
 json.discord_webhook_configured @setting.discord_webhook_url.present?

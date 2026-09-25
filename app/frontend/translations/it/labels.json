@@ -420,7 +420,7 @@
           "digestWeekday": "Riepilogo settimanale",
           "digestWeekdayHint": "Una volta a settimana ogni canale riceve l'elenco degli eventi dei prossimi sette giorni che può vedere. Lascia vuoto per disattivarlo.",
           "digestTime": "Orario del riepilogo",
-          "digestTimeHint": "Nel fuso orario della flotta (%{timezone}).",
+          "digestTimeHint": "Nel tuo fuso orario (%{timezone}).",
           "channelMissing": "Questo canale non esiste più su Discord o non accetta più pubblicazioni. Non viene pubblicato nulla finché non ne scegli un altro.",
           "missingChannel": "Canale non disponibile",
           "postingCodes": {

@@ -21969,6 +21969,10 @@ components:
           - string
           - 'null'
           pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        discordDigestTimezone:
+          type:
+          - string
+          - 'null'
         discordMemberRoleId:
           type: string
         discordWebhookConfigured:
@@ -22005,6 +22009,10 @@ components:
           minimum: 0
           maximum: 6
         discordDigestTime:
+          type:
+          - string
+          - 'null'
+        discordDigestTimezone:
           type:
           - string
           - 'null'

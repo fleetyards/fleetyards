@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_24_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -971,6 +971,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_200000) do
     t.string "discord_channel_id"
     t.datetime "discord_digest_sent_at"
     t.string "discord_digest_time"
+    t.string "discord_digest_timezone"
     t.integer "discord_digest_weekday"
     t.string "discord_guild_id"
     t.string "discord_member_role_id"

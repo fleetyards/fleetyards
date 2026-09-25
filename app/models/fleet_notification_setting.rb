@@ -7,6 +7,7 @@
 #  id                              :uuid             not null, primary key
 #  discord_digest_sent_at          :datetime
 #  discord_digest_time             :string
+#  discord_digest_timezone         :string
 #  discord_digest_weekday          :integer
 #  discord_webhook_url             :text
 #  enabled_in_app_events           :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
@@ -53,6 +54,10 @@ class FleetNotificationSetting < ApplicationRecord
 
   normalizes :discord_digest_time, with: ->(value) { value.strip.presence }
 
+  # The zone the day and time were picked in. Stored with them rather than
+  # read off the fleet, whose own default nobody can set.
+  validates :discord_digest_timezone, inclusion: {in: ->(_) { TZInfo::Timezone.all_identifiers }}, allow_nil: true
+
   # A digest found due this long after its slot is not sent: a fleet that
   # switches it on on a Thursday for Mondays is not handed Monday's digest
   # three days late, and neither is one whose scheduler was down.
@@ -90,12 +95,12 @@ class FleetNotificationSetting < ApplicationRecord
     discord_digest_weekday.present? && discord_digest_time.present?
   end
 
-  # The most recent moment the digest was scheduled for, in the fleet's own
-  # timezone, at or before `now`.
+  # The most recent moment the digest was scheduled for, in the zone it was
+  # set up in, at or before `now`.
   def digest_slot(now = Time.current)
     return nil unless digest_enabled?
 
-    local = now.in_time_zone(fleet.default_timezone.presence || "UTC")
+    local = now.in_time_zone(discord_digest_timezone.presence || "UTC")
     hour, minute = discord_digest_time.split(":").map(&:to_i)
     slot = (local - ((local.wday - discord_digest_weekday) % 7).days).change(hour: hour, min: minute)
     (slot > local) ? slot - 7.days : slot
