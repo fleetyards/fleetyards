@@ -19,7 +19,7 @@ import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import { useBlueprint as useBlueprintQuery } from "@/services/fyApi";
 import { useMaterialStockUpdates } from "@/frontend/composables/useMaterialStock";
-import { craftableRoute as craftableRouteFor } from "@/frontend/components/Blueprints/craftableRoute";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 const { t } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -65,7 +65,7 @@ const setEveryQuality = (value: number) => {
 };
 
 const craftableRoute = computed(() =>
-  craftableRouteFor(blueprint.value?.craftable),
+  catalogueItemRoute(blueprint.value?.craftable),
 );
 
 const qualitySummary = computed(() => {

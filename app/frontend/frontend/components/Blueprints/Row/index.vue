@@ -16,7 +16,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { type Blueprint, type FleetBlueprintOwner } from "@/services/fyApi";
-import { craftableRoute as craftableRouteFor } from "@/frontend/components/Blueprints/craftableRoute";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   blueprint: Blueprint;
@@ -88,7 +88,7 @@ const tags = computed<RowListItemTag[]>(() =>
 // and one entity class present in no file -- so this is genuinely absent
 // rather than merely unset.
 const craftableRoute = computed(() =>
-  craftableRouteFor(props.blueprint.craftable),
+  catalogueItemRoute(props.blueprint.craftable),
 );
 
 const badges = computed<RowListItemBadge[]>(() => {

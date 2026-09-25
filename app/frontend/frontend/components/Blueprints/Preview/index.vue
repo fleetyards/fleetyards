@@ -9,7 +9,7 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
 import { type Blueprint } from "@/services/fyApi";
-import { craftableRoute as craftableRouteFor } from "@/frontend/components/Blueprints/craftableRoute";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   blueprint: Blueprint;
@@ -26,7 +26,7 @@ const { stats } = useCraftedStats(
 );
 
 const craftableRoute = computed(() =>
-  craftableRouteFor(props.blueprint.craftable),
+  catalogueItemRoute(props.blueprint.craftable),
 );
 </script>
 
