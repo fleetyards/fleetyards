@@ -46,6 +46,9 @@ class OmniauthConnection < ApplicationRecord
   # already mapped.
   after_create_commit :backfill_discord_member_roles, if: :discord?
   after_create_commit :link_patreon_contributions, if: :patreon?
+  # A user being deleted loses its memberships before its connections, so
+  # User captures the fleets itself and this hook stands aside.
+  after_destroy_commit :revoke_discord_member_roles, if: -> { discord? && destroyed_by_association.nil? }
 
   # Connecting proves which Patreon account this is, which is the one thing a
   # typed address never could -- so a contribution already synced under that
@@ -58,5 +61,9 @@ class OmniauthConnection < ApplicationRecord
 
   private def backfill_discord_member_roles
     ::Discord::BackfillUserMemberRolesJob.perform_async(user_id)
+  end
+
+  private def revoke_discord_member_roles
+    ::Discord::RevokeMemberRolesJob.perform_async(uid, user.fleet_memberships.pluck(:fleet_id).uniq)
   end
 end

@@ -144,6 +144,8 @@ class User < ApplicationRecord
 
   before_destroy :check_fleet_memberships
   before_destroy :preserve_payout_participant_names, prepend: true
+  before_destroy :capture_discord_member_roles_revoke, prepend: true
+  after_destroy_commit :revoke_discord_member_roles
 
   has_many :vehicles, dependent: :destroy
   has_many :purchased_vehicles,
@@ -930,6 +932,30 @@ class User < ApplicationRecord
     return if fleet_memberships.kept.accepted.exists?(fleet_id: supported_fleet_id)
 
     errors.add(:supported_fleet, :not_a_fleet_of_the_supporter)
+  end
+
+  # Runs before the memberships, connections and any fleets this user alone
+  # administers are destroyed. A destroyed fleet leaves nothing to read its
+  # guild and roles from, so they are snapshotted here as plain values.
+  private def capture_discord_member_roles_revoke
+    uid = omniauth_connections.find_by(provider: "discord")&.uid
+    return if uid.blank?
+
+    fleets = Fleet.where(id: fleet_memberships.select(:fleet_id)).includes(:fleet_notification_setting)
+    snapshots = fleets.filter_map do |fleet|
+      guild_id = fleet.fleet_notification_setting&.discord_guild_id
+      next if guild_id.blank?
+
+      [fleet.id, guild_id, ::Discord::MemberRoleSync.new(fleet: fleet, discord_uid: uid).managed_role_ids]
+    end
+
+    @discord_member_roles_revoke = [uid, fleets.map(&:id), snapshots]
+  end
+
+  private def revoke_discord_member_roles
+    return if @discord_member_roles_revoke.blank?
+
+    ::Discord::RevokeMemberRolesJob.perform_async(*@discord_member_roles_revoke)
   end
 
   private def check_fleet_memberships

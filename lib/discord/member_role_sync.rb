@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Discord
-  # Brings one member's Discord roles in line with their Fleetyards membership.
+  # Brings one Discord account's roles in a fleet's guild in line with the
+  # Fleetyards memberships linked to it.
   #
   # The invariant that matters: **only role ids the fleet configured are ever
   # touched.** `managed_role_ids` is the whole universe this class may add or
@@ -19,9 +20,24 @@ module Discord
       end
     end
 
-    def initialize(membership, api: nil)
+    # Pass `fleet:` and `discord_uid:` instead of a membership for an account
+    # that is no longer linked, whose user can no longer name it.
+    def initialize(membership = nil, fleet: nil, discord_uid: nil, api: nil)
       @membership = membership
+      @fleet = fleet || membership&.fleet
+      @discord_uid = discord_uid.presence
       @api = api
+    end
+
+    # What other fleets sharing this Discord server still owe the account. Two
+    # fleets can map the same server role, so a role one fleet no longer owes
+    # may still be owed through the other.
+    def self.owed_in_guild(guild_id, discord_uid, except_fleet_id: nil)
+      Fleet.joins(:fleet_notification_setting)
+        .where(fleet_notification_settings: {discord_guild_id: guild_id})
+        .where.not(id: except_fleet_id)
+        .flat_map { |fleet| new(fleet: fleet, discord_uid: discord_uid).desired_role_ids }
+        .uniq
     end
 
     def runnable?
@@ -36,6 +52,7 @@ module Discord
 
       to_add = desired_role_ids - current
       to_remove = (managed_role_ids - desired_role_ids) & current
+      to_remove -= self.class.owed_in_guild(guild_id, discord_uid, except_fleet_id: fleet.id) if to_remove.any?
 
       to_add.each { |role_id| api.add_guild_member_role(guild_id, discord_uid, role_id) }
       to_remove.each { |role_id| api.remove_guild_member_role(guild_id, discord_uid, role_id) }
@@ -61,14 +78,20 @@ module Discord
     # An accepted member gets the member role plus the role mapped to their
     # rank. Anyone else -- invited, requested, declined, removed -- gets
     # neither, which is what makes leaving a fleet take the roles away.
-    private def desired_role_ids
-      return [] unless @membership.aasm_state == "accepted"
-      return [] if @membership.discarded_at.present?
+    #
+    # Nothing stops two users from linking the same Discord account, so what
+    # the account is owed is the union over every accepted membership linked
+    # to it, not only the one that triggered the sync.
+    def desired_role_ids
+      owing = fleet.fleet_memberships.kept
+        .where(aasm_state: "accepted")
+        .where(user_id: OmniauthConnection.discord.where(uid: discord_uid).select(:user_id))
+        .includes(:fleet_role)
+        .to_a
+      return [] if owing.empty?
 
-      [
-        setting&.discord_member_role_id,
-        @membership.fleet_role&.discord_role_id
-      ].compact_blank.uniq
+      ([setting&.discord_member_role_id] + owing.map { |membership| membership.fleet_role&.discord_role_id })
+        .compact_blank.uniq
     end
 
     private def current_role_ids
@@ -83,9 +106,8 @@ module Discord
       nil
     end
 
-    private def fleet
-      @membership.fleet
-    end
+    attr_reader :fleet
+    private :fleet
 
     private def setting
       fleet&.fleet_notification_setting
@@ -96,7 +118,7 @@ module Discord
     end
 
     private def discord_uid
-      @discord_uid ||= @membership.user
+      @discord_uid ||= @membership&.user
         &.omniauth_connections
         &.find_by(provider: "discord")
         &.uid

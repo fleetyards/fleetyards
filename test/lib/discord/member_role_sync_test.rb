@@ -103,6 +103,78 @@ module Discord
       assert_not_includes result.removed, FOREIGN_ROLE
     end
 
+    def revoke(uid = "discord-uid-old")
+      ::Discord::MemberRoleSync.new(fleet: @fleet, discord_uid: uid, api: @api)
+    end
+
+    test "revoking takes every managed role off an accepted member" do
+      @role.update!(discord_role_id: RANK_ROLE)
+      member_has(MEMBER_ROLE, RANK_ROLE)
+      @api.expects(:add_guild_member_role).never
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", RANK_ROLE)
+
+      assert_equal [MEMBER_ROLE, RANK_ROLE].sort, revoke.run!.removed.sort
+    end
+
+    test "revoking leaves a role the fleet did not put under our control" do
+      member_has(MEMBER_ROLE, FOREIGN_ROLE)
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+
+      assert_equal [MEMBER_ROLE], revoke.run!.removed
+    end
+
+    test "revoking targets the given uid even with no linked account left" do
+      @user.omniauth_connections.destroy_all
+      member_has(MEMBER_ROLE)
+      @api.expects(:get_guild_member).with("guild-1", "discord-uid-old").returns({"roles" => [MEMBER_ROLE]})
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+
+      assert revoke.runnable?
+      revoke.run!
+    end
+
+    def second_member_on_the_same_account(state: "accepted", role: @role)
+      other = create(:user)
+      create(:omniauth_connection, user: other, provider: "discord", uid: "discord-uid-1")
+      membership = @fleet.fleet_memberships.create!(user: other, fleet_role: role)
+      membership.update!(aasm_state: state)
+      membership
+    end
+
+    test "revoking keeps the roles another member on the same account is owed" do
+      other_role = @fleet.fleet_roles.ranked.first
+      other_role.update!(discord_role_id: "role-admin")
+      @role.update!(discord_role_id: RANK_ROLE)
+      second_member_on_the_same_account(role: other_role)
+      @user.omniauth_connections.destroy_all
+
+      member_has(MEMBER_ROLE, RANK_ROLE, "role-admin")
+      @api.expects(:add_guild_member_role).never
+      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-1", RANK_ROLE)
+
+      assert_equal [RANK_ROLE], revoke("discord-uid-1").run!.removed
+    end
+
+    test "a member leaving keeps the roles another member on the same account is owed" do
+      other = second_member_on_the_same_account(state: "declined")
+      member_has(MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).never
+
+      assert_empty ::Discord::MemberRoleSync.new(other.reload, api: @api).run!.removed
+    end
+
+    test "a member leaving keeps a shared role another fleet on the same server still owes" do
+      sibling = create(:fleet)
+      sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+      sibling.fleet_memberships.create!(user: @user, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
+      @membership.update!(aasm_state: "declined")
+      member_has(MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).never
+
+      assert_empty sync.run!.removed
+    end
+
     test "managed roles are exactly what the fleet configured" do
       @role.update!(discord_role_id: RANK_ROLE)
 
