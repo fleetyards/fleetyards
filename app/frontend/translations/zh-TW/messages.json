@@ -203,6 +203,7 @@
         "colorInvalid": "顏色無效",
         "serialTaken": "序號已被使用。",
         "textInvalid": "%{field}無效",
+        "fleetNameInvalid": "%{field}只能包含字母、數字、空格、點、連字號和底線",
         "hangar": {
           "accountRequired": {
             "noHtml": "您需要註冊或登入以新增飛船至您的機庫。",

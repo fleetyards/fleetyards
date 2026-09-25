@@ -27,7 +27,7 @@ const initialValues: FleetCreateInput = {
 };
 
 const validationSchema = {
-  name: "required|min:3|alpha_dash",
+  name: "required|min:3|fleetName",
   fid: "required|min:3|fidTaken|alpha_dash",
 };
 

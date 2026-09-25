@@ -5,6 +5,7 @@ import { useRule as usernameTakenRule } from "./rules/usernameTaken";
 import { useRule as hexColorRule } from "./rules/hexColor";
 import { useRule as serialTakenRule } from "./rules/serialTaken";
 import { useRule as fidTakenRule } from "./rules/fidTaken";
+import { useRule as fleetNameRule } from "./rules/fleetName";
 import { useRule as emailTakenRule } from "./rules/emailTaken";
 import {
   required,
@@ -35,6 +36,7 @@ export const setupRules = () => {
 
   defineRule("emailTaken", emailTakenRule());
   defineRule("fidTaken", fidTakenRule());
+  defineRule("fleetName", fleetNameRule());
   defineRule("serialTaken", serialTakenRule());
   defineRule("hexColor", hexColorRule());
   defineRule("user", userRule());
