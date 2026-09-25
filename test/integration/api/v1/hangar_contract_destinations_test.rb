@@ -101,6 +101,19 @@ class Api::V1::HangarContractDestinationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The delivery waits for the author, and the gate refuses a recipient who
+  # cannot receive transfers, whatever their inventory flags say.
+  test "leaves out a hangar destination whose author cannot receive transfers" do
+    contract(:in_progress, crew: @contractor)
+    Flipper.disable("inventory_transfers")
+    Flipper.enable_actor("inventory_transfers", @contractor)
+    sign_in @contractor
+
+    assert_api_response :get, 200 do
+      assert_empty parsed_body
+    end
+  end
+
   # The author working their own contract delivers into it directly.
   test "leaves out a destination the caller holds" do
     contract(:in_progress, crew: @author)

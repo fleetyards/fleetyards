@@ -35,8 +35,22 @@ module Api
           contract.destination.present? &&
             contract.destination_party != current_resource_owner &&
             feature_enabled?("fleet_contracts", contract.fleet) &&
-            inventory_feature_enabled?(contract.destination)
+            inventory_feature_enabled?(contract.destination) &&
+            recipient_can_receive?(contract)
         end
+      end
+
+      # A delivery the caller cannot make directly waits for the recipient, and
+      # the gate refuses it unless the recipient can receive transfers at all.
+      private def recipient_can_receive?(contract)
+        return true if authorizer.may_deposit_into?(contract.destination)
+
+        ::Inventories::TransferGate.new(sender: current_resource_owner, recipient: contract.destination_party)
+          .recipient_feature_enabled?
+      end
+
+      private def authorizer
+        @authorizer ||= ::Inventories::TransferAuthorizer.new(current_resource_owner)
       end
     end
   end
