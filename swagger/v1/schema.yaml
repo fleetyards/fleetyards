@@ -29259,6 +29259,8 @@ components:
           type: string
         user:
           "$ref": "#/components/schemas/UserRef"
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
         createdAt:
           type: string
           format: date-time
