@@ -2,6 +2,64 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.5.0](https://github.com/fleetyards/fleetyards/compare/v8.4.0...v8.5.0) (2026-09-25)
+
+
+### Features
+
+* **commodities:** show what a commodity is refined from ([#5218](https://github.com/fleetyards/fleetyards/issues/5218)) ([044dfe9](https://github.com/fleetyards/fleetyards/commit/044dfe9bdf40ead03316c606d094471aa484cf5b))
+* **contracts:** let authors choose the delivery inventory, including their own hangar ([#5195](https://github.com/fleetyards/fleetyards/issues/5195)) ([9e2ef4a](https://github.com/fleetyards/fleetyards/commit/9e2ef4ab46882910e6a559188e46ab10116c393a))
+* **discord:** Accept and Decline buttons on join requests ([#5213](https://github.com/fleetyards/fleetyards/issues/5213)) ([d800dcd](https://github.com/fleetyards/fleetyards/commit/d800dcd79a3bc3f5aa9bb88bc97a2d68da2a9f5d))
+* **equipment:** a public equipment catalogue with per-type figures ([#5216](https://github.com/fleetyards/fleetyards/issues/5216)) ([e4fa499](https://github.com/fleetyards/fleetyards/commit/e4fa499de2763674b206df199dd7eecff3cba983))
+* **fleets:** make squadrons a per-fleet setting ([#5211](https://github.com/fleetyards/fleetyards/issues/5211)) ([04f9af9](https://github.com/fleetyards/fleetyards/commit/04f9af94ebb4df09e278d1b42dee87fb5477acd3))
+* **fleets:** move the allies list into fleet settings ([#5203](https://github.com/fleetyards/fleetyards/issues/5203)) ([a8e043f](https://github.com/fleetyards/fleetyards/commit/a8e043fac5f04e9b5f2af0bd3582ae7975888437))
+* **fleets:** search members by nickname as well as username ([#5212](https://github.com/fleetyards/fleetyards/issues/5212)) ([c3c9254](https://github.com/fleetyards/fleetyards/commit/c3c9254a137830ee92c3ec1115205b3a6bd9db3a))
+* **fleets:** sort a fleet's grouped ships by how many it holds ([#5219](https://github.com/fleetyards/fleetyards/issues/5219)) ([6365972](https://github.com/fleetyards/fleetyards/commit/6365972a34808946b57176829cda3b709f561ae7))
+* **hangar:** custom hangar order, a default order, and a selectable list toolbar ([#5217](https://github.com/fleetyards/fleetyards/issues/5217)) ([149c251](https://github.com/fleetyards/fleetyards/commit/149c2513f047847f28c7a9089337f6c6ec473445))
+* **hangar:** reorder and edit groups in an edit mode ([#5202](https://github.com/fleetyards/fleetyards/issues/5202)) ([95a99d1](https://github.com/fleetyards/fleetyards/commit/95a99d162936b57b21b7592a3b02da1b5575b08d))
+* **notifications:** post new ships to Bluesky and X ([#5148](https://github.com/fleetyards/fleetyards/issues/5148)) ([9bae2e9](https://github.com/fleetyards/fleetyards/commit/9bae2e9601a02bffc2c64d23077e54236e3dc49f))
+* **payouts:** pay out a fulfilled fleet contract through the payout ledger ([#5220](https://github.com/fleetyards/fleetyards/issues/5220)) ([3340f95](https://github.com/fleetyards/fleetyards/commit/3340f95de6a3e2c49a300ad5792e0f13f39df479))
+* **ui:** reset a list's sort with a right click on its sort chip ([ca2c27c](https://github.com/fleetyards/fleetyards/commit/ca2c27c6aebf2929b6fe984e45665d6945404f13))
+* **vehicles:** rank each hangar's vehicles with lexorank ([#5152](https://github.com/fleetyards/fleetyards/issues/5152)) ([0f676c0](https://github.com/fleetyards/fleetyards/commit/0f676c08d3a6253315c5511bded3f96eb9675b60))
+
+
+### Bug Fixes
+
+* **api:** drop non-scalar page params in every list endpoint ([#5155](https://github.com/fleetyards/fleetyards/issues/5155)) ([e8f4516](https://github.com/fleetyards/fleetyards/commit/e8f4516e730b16a6a0db45d4133413062a9cc0d7))
+* **blueprints:** even the top inset of the where-it-drops groups ([dabeaf9](https://github.com/fleetyards/fleetyards/commit/dabeaf973a12e11635edd653c5dabf314347b50a))
+* **contracts:** expire fleet contracts at their deadline ([#5189](https://github.com/fleetyards/fleetyards/issues/5189)) ([e4dae3b](https://github.com/fleetyards/fleetyards/commit/e4dae3bf12c33912d18083625a849b880a1b16d1))
+* **discord:** remove managed fleet roles when a member unlinks Discord ([#5187](https://github.com/fleetyards/fleetyards/issues/5187)) ([b555d6a](https://github.com/fleetyards/fleetyards/commit/b555d6a69e93ab627ca1ef10f0c872b2745d6edd))
+* **filtered-list:** show a 400 as an invalid filter or sort, not a server error ([#5190](https://github.com/fleetyards/fleetyards/issues/5190)) ([36476b5](https://github.com/fleetyards/fleetyards/commit/36476b5e27e1b5cc3f96a96e29b39f20aee930a4))
+* **fleets:** allow spaces and dots in fleet names on the client ([#5215](https://github.com/fleetyards/fleetyards/issues/5215)) ([7685d9b](https://github.com/fleetyards/fleetyards/commit/7685d9bfaa517cc2e9a35d0f7133441c2f024bda))
+* **fleets:** compare fleet role ranks by byte ([#5153](https://github.com/fleetyards/fleetyards/issues/5153)) ([9d7a2f7](https://github.com/fleetyards/fleetyards/commit/9d7a2f7383543816bad6ad29e57a19f35946bb8f))
+* **fleets:** show a public fleet's squadrons to visitors ([#5191](https://github.com/fleetyards/fleetyards/issues/5191)) ([90e7e9e](https://github.com/fleetyards/fleetyards/commit/90e7e9e15d3829bf99e8cc8cdcddcefca1e5d0ec))
+* **fleets:** use the boxed empty state on the squadrons pages ([e328448](https://github.com/fleetyards/fleetyards/commit/e328448b54555659165e6f4fc338eed1305c30e8))
+* **hangar:** join manufacturers for public vehicle sorting ([14732f2](https://github.com/fleetyards/fleetyards/commit/14732f2bfc58c4c57c586b68bfa7469ae11ad56a))
+* **hangar:** stop loaners drifting — duplicate rows and dropped pairings ([#5201](https://github.com/fleetyards/fleetyards/issues/5201)) ([5d11afe](https://github.com/fleetyards/fleetyards/commit/5d11afe6b5684c9a43bd9ada1e3ebfd7d1cd514b))
+* **middleware:** answer 400 to a form body Rack cannot parse ([#5188](https://github.com/fleetyards/fleetyards/issues/5188)) ([72fd249](https://github.com/fleetyards/fleetyards/commit/72fd24916ae0449404ed095b5563843f72f96b94))
+* pin ransack 5 enum label filters and declare the fleet inventories query ([#5214](https://github.com/fleetyards/fleetyards/issues/5214)) ([cb48ab1](https://github.com/fleetyards/fleetyards/commit/cb48ab1d5f744940cf24d1169eb070501187d7dd))
+* redirect to the existing security settings route ([#5156](https://github.com/fleetyards/fleetyards/issues/5156)) ([aaf20b9](https://github.com/fleetyards/fleetyards/commit/aaf20b90375ad7311748bf861b9421335b5eab88))
+* reset I18n.locale after every request ([#5199](https://github.com/fleetyards/fleetyards/issues/5199)) ([982a8da](https://github.com/fleetyards/fleetyards/commit/982a8daa9dde6bd692b8a3645c61c4812852e9b7))
+* **ui:** keep the loadout marker square against the panel edge ([64db7df](https://github.com/fleetyards/fleetyards/commit/64db7dff2bc56187d440cc90fbe308bd919b141e))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5208](https://github.com/fleetyards/fleetyards/issues/5208)) ([9d9c448](https://github.com/fleetyards/fleetyards/commit/9d9c4484f3269ac7ba4ed7520056a9f24fde46cb))
+* **deps-dev:** bump @typescript-eslint/parser from 8.70.0 to 8.70.1 ([#5209](https://github.com/fleetyards/fleetyards/issues/5209)) ([1160043](https://github.com/fleetyards/fleetyards/commit/1160043449daf517cf04b0bba72d92cbebaaa4d1))
+* **deps-dev:** bump jsdom from 30.1.0 to 30.1.1 ([#5207](https://github.com/fleetyards/fleetyards/issues/5207)) ([0222094](https://github.com/fleetyards/fleetyards/commit/02220949806927f5605e2c3ec9a4abe9d993e257))
+* **deps-dev:** bump orval from 8.34.0 to 8.35.0 ([#5150](https://github.com/fleetyards/fleetyards/issues/5150)) ([0582534](https://github.com/fleetyards/fleetyards/commit/058253468b4a1b8ed1e7ae5b90d4c98e5f6d50b6))
+* **deps-dev:** bump orval from 8.35.0 to 8.36.0 ([#5204](https://github.com/fleetyards/fleetyards/issues/5204)) ([f68440b](https://github.com/fleetyards/fleetyards/commit/f68440bfbc982466a8822de74684749a963cc70c))
+* **deps:** bump @event-calendar/core from 5.13.1 to 5.14.0 ([#5206](https://github.com/fleetyards/fleetyards/issues/5206)) ([f9a7688](https://github.com/fleetyards/fleetyards/commit/f9a7688fb4fceefd4c4f5cf9ed849dc1e1b1b1a9))
+* **deps:** bump @tanstack/vue-query from 5.103.1 to 5.103.2 ([#5210](https://github.com/fleetyards/fleetyards/issues/5210)) ([e3ee3dc](https://github.com/fleetyards/fleetyards/commit/e3ee3dc8ebc15714010608c55c0518981ea8411f))
+* **deps:** bump highcharts from 13.1.0 to 13.1.1 ([#5151](https://github.com/fleetyards/fleetyards/issues/5151)) ([13895d0](https://github.com/fleetyards/fleetyards/commit/13895d0679c4ecc658b274063f6245d3abbe7f26))
+* **deps:** bump ransack from 4.4.1 to 5.0.0 ([#5205](https://github.com/fleetyards/fleetyards/issues/5205)) ([9119bb2](https://github.com/fleetyards/fleetyards/commit/9119bb2a2e3c56683c339e5c18bb7eee33cda0c9))
+* ignore .codex/config.toml ([798d194](https://github.com/fleetyards/fleetyards/commit/798d194d291724125de55408c56930ef45fa3f57))
+* move the premium plan into its epic, drop a stale comment ([#5198](https://github.com/fleetyards/fleetyards/issues/5198)) ([2dd896a](https://github.com/fleetyards/fleetyards/commit/2dd896acfe055dac4389021032a545ab024d33a4))
+* re-annotate fleet memberships ([c410439](https://github.com/fleetyards/fleetyards/commit/c410439dd10d5bd218478069d13fdeb0d0ae22a5))
+* **skills:** move project skills to .agents/skills ([d72ca51](https://github.com/fleetyards/fleetyards/commit/d72ca51ddebdbe912026a6b55ff3c7525a80faae))
+* **skills:** move the issue to In Progress in start-issue ([4b85cb8](https://github.com/fleetyards/fleetyards/commit/4b85cb8369a821df46a14a344bfe859f670cad5b))
+
 ## [8.4.0](https://github.com/fleetyards/fleetyards/compare/v8.3.0...v8.4.0) (2026-09-22)
 
 
