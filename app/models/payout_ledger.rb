@@ -100,7 +100,7 @@ class PayoutLedger < ApplicationRecord
   # Returns false rather than raising when the ledger is not in a state to be
   # settled, so the caller can answer 409.
   def settle!(user = nil)
-    transaction do
+    settled = transaction do
       # Taken before anything is read. Every path that changes a participant or
       # an entry takes the same lock, so one racing this either lands before the
       # snapshot or finds the ledger already settled -- rather than moving money
@@ -130,6 +130,10 @@ class PayoutLedger < ApplicationRecord
 
       true
     end
+
+    notify_settled(user) if settled
+
+    settled
   end
 
   def reopen!
@@ -221,6 +225,41 @@ class PayoutLedger < ApplicationRecord
 
   # The fleet is the payer and holds the reward; the contractors are weighted
   # by what they delivered. Only run on create, so it has nothing to preserve.
+  # After the commit, so nobody is told about a payout list that rolled back.
+  # Whoever pressed settle already knows. A contract's author is the client and
+  # is told as well, whether or not they are on the list.
+  private def notify_settled(settler)
+    recipients = User.where(id: payout_participants.where.not(user_id: nil).select(:user_id)).to_a
+    recipients << subject.created_by if subject.is_a?(FleetContract)
+
+    recipients.compact.uniq.reject { |recipient| recipient == settler }.each do |recipient|
+      Notification.notify!(user: recipient, record: subject, icon: "fa-duotone fa-coins", **settled_notification)
+    end
+  end
+
+  private def settled_notification
+    case subject
+    when FleetContract
+      {
+        type: :fleet_contract_settled,
+        title: I18n.t("notifications.fleet_contract.settled.title", title: subject.display_title),
+        link: "/fleets/#{subject.fleet.slug}/contracts/#{subject.slug}"
+      }
+    when FleetEvent
+      {
+        type: :payout_ledger_settled,
+        title: I18n.t("notifications.payout_ledger_settled.title", subject: subject.title),
+        link: "/fleets/#{subject.fleet.slug}/events/#{subject.slug}/payouts/"
+      }
+    when Tour
+      {
+        type: :payout_ledger_settled,
+        title: I18n.t("notifications.payout_ledger_settled.title", subject: subject.title),
+        link: subject.fleet ? "/fleets/#{subject.fleet.slug}/tours/#{subject.slug}/" : "/tools/tours/#{subject.slug}/"
+      }
+    end
+  end
+
   private def seed_contract!
     payer = payout_participants.create!(fleet: subject.fleet)
 

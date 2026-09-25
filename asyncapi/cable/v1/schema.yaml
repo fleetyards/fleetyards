@@ -3310,6 +3310,8 @@ components:
       - fleet_contract_crew_requested
       - fleet_contract_crew_answered
       - fleet_contract_fulfilled
+      - fleet_contract_settled
+      - payout_ledger_settled
       - fleet_subscription_started
       - fleet_subscription_ended
       - announcement
@@ -3351,6 +3353,8 @@ components:
       - FLEET_CONTRACT_CREW_REQUESTED
       - FLEET_CONTRACT_CREW_ANSWERED
       - FLEET_CONTRACT_FULFILLED
+      - FLEET_CONTRACT_SETTLED
+      - PAYOUT_LEDGER_SETTLED
       - FLEET_SUBSCRIPTION_STARTED
       - FLEET_SUBSCRIPTION_ENDED
       - ANNOUNCEMENT

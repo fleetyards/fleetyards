@@ -2400,7 +2400,8 @@
         "openFriends": "打开好友",
         "openAllies": "打开盟友",
         "openTour": "打开行程",
-        "openContract": "打开合约"
+        "openContract": "打开合约",
+        "openPayouts": "打开分账"
       },
       "notificationTypes": {
         "channels": {
@@ -2459,7 +2460,9 @@
         "fleet_contract_crew_answered": "合约成员申请已处理",
         "fleet_subscription_started": "已获得舰队功能",
         "fleet_subscription_ended": "已失去舰队功能",
-        "fleet_contract_fulfilled": "合约已完成"
+        "fleet_contract_fulfilled": "合约已完成",
+        "fleet_contract_settled": "合同已结算",
+        "payout_ledger_settled": "分账已结算"
       },
       "fleets": {
         "missions": {

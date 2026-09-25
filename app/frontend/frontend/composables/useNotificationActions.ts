@@ -63,6 +63,8 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_contract_crew_requested: "openContract",
   fleet_contract_crew_answered: "openContract",
   fleet_contract_fulfilled: "openContract",
+  fleet_contract_settled: "openContract",
+  payout_ledger_settled: "openPayouts",
   fleet_subscription_started: "openFleet",
   fleet_subscription_ended: "openFleet",
   // The one type whose link an admin writes by hand, so there is nothing more
@@ -85,6 +87,7 @@ const ACTION_ICONS: Record<string, string> = {
   openContract: "fa-duotone fa-clipboard-list",
   openEvent: "fa-duotone fa-calendar-day",
   openTour: "fa-duotone fa-coins",
+  openPayouts: "fa-duotone fa-coins",
   openRoster: "fa-duotone fa-list-check",
   addToCalendar: "fa-duotone fa-calendar-plus",
   open: "fa-duotone fa-arrow-up-right-from-square",

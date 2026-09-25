@@ -2400,7 +2400,8 @@
         "openFriends": "Freunde öffnen",
         "openAllies": "Verbündete öffnen",
         "openTour": "Tour öffnen",
-        "openContract": "Auftrag öffnen"
+        "openContract": "Auftrag öffnen",
+        "openPayouts": "Auszahlung öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -2459,7 +2460,9 @@
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
         "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
-        "fleet_contract_fulfilled": "Auftrag erfüllt"
+        "fleet_contract_fulfilled": "Auftrag erfüllt",
+        "fleet_contract_settled": "Auftrag ausgezahlt",
+        "payout_ledger_settled": "Auszahlung abgerechnet"
       },
       "fleets": {
         "missions": {

@@ -71,6 +71,8 @@ it:
       title: "%{username} vuole partecipare a %{tour}"
     tour_join_request_accepted:
       title: "Ora partecipi a %{tour}"
+    payout_ledger_settled:
+      title: "I pagamenti di %{subject} sono stati definiti"
     fleet_contract:
       published:
         title: "Nuovo contratto in %{fleet}: %{title}"
@@ -79,6 +81,8 @@ it:
         title: "%{user} ha preso %{title}"
       fulfilled:
         title: "%{title} è stato completato"
+      settled:
+        title: "Il pagamento di %{title} è stato definito"
       crew_requested:
         title: "%{user} ha chiesto di unirsi a %{title}"
       crew_accepted:

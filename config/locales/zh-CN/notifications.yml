@@ -71,6 +71,8 @@ zh-CN:
       title: "%{username} 想加入 %{tour}"
     tour_join_request_accepted:
       title: "你已加入 %{tour}"
+    payout_ledger_settled:
+      title: "%{subject} 的分账已结算"
     fleet_contract:
       published:
         title: "%{fleet} 发布了新合约：%{title}"
@@ -79,6 +81,8 @@ zh-CN:
         title: "%{user} 接下了 %{title}"
       fulfilled:
         title: "%{title} 已完成"
+      settled:
+        title: "%{title} 的报酬已结算"
       crew_requested:
         title: "%{user} 申请加入 %{title}"
       crew_accepted:

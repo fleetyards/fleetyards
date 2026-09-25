@@ -75,6 +75,8 @@ class Notification < ApplicationRecord
     fleet_contract_crew_requested: "fleet_contract_crew_requested",
     fleet_contract_crew_answered: "fleet_contract_crew_answered",
     fleet_contract_fulfilled: "fleet_contract_fulfilled",
+    fleet_contract_settled: "fleet_contract_settled",
+    payout_ledger_settled: "payout_ledger_settled",
     fleet_subscription_started: "fleet_subscription_started",
     fleet_subscription_ended: "fleet_subscription_ended",
     announcement: "announcement"
@@ -294,6 +296,16 @@ class Notification < ApplicationRecord
       channels: %i[app]
     },
     fleet_contract_fulfilled: {
+      retention: 90.days,
+      channels: %i[app]
+    },
+    # The payout list is final from here, and it is what people pay against, so
+    # it is kept as long as a fulfilment is.
+    fleet_contract_settled: {
+      retention: 90.days,
+      channels: %i[app]
+    },
+    payout_ledger_settled: {
       retention: 90.days,
       channels: %i[app]
     },

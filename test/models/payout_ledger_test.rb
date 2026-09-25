@@ -261,4 +261,47 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_nil contract.settled_at
     assert_in_delta fulfilled_at, contract.fulfilled_at, 1.second
   end
+
+  test "settling tells every participant but the one who settled it" do
+    organiser = create(:user)
+    member = create(:user)
+    tour = create(:tour, created_by: organiser)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: organiser)
+    create(:payout_participant, payout_ledger: ledger, user: member)
+    create(:payout_participant, :guest, payout_ledger: ledger)
+
+    assert_difference -> { Notification.payout_ledger_settled.count }, 1 do
+      ledger.settle!(organiser)
+    end
+
+    notification = Notification.payout_ledger_settled.sole
+    assert_equal member, notification.user
+    assert_equal "/tools/tours/#{tour.slug}/", notification.link
+  end
+
+  test "settling a contract tells its contractors and its author" do
+    author = create(:user)
+    contractor = create(:user)
+    officer = create(:user)
+    contract = create(:fleet_contract, :fulfilled, created_by: author)
+    ledger = contract.create_payout_ledger!
+    create(:payout_participant, :fleet, payout_ledger: ledger, fleet: contract.fleet)
+    create(:payout_participant, payout_ledger: ledger, user: contractor)
+
+    ledger.settle!(officer)
+
+    assert_equal [author, contractor].map(&:id).sort, Notification.fleet_contract_settled.pluck(:user_id).sort
+    assert_equal "/fleets/#{contract.fleet.slug}/contracts/#{contract.slug}", Notification.fleet_contract_settled.first.link
+  end
+
+  test "a refused settle tells nobody" do
+    ledger = create(:payout_ledger)
+    create(:payout_participant, payout_ledger: ledger)
+    ledger.update!(status: "settled")
+
+    assert_no_difference -> { Notification.count } do
+      ledger.settle!
+    end
+  end
 end

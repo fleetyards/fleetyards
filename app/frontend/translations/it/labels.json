@@ -2400,7 +2400,8 @@
         "openFriends": "Apri gli amici",
         "openAllies": "Apri gli alleati",
         "openTour": "Apri spedizione",
-        "openContract": "Apri contratto"
+        "openContract": "Apri contratto",
+        "openPayouts": "Apri i pagamenti"
       },
       "notificationTypes": {
         "channels": {
@@ -2459,7 +2460,9 @@
         "fleet_contract_crew_answered": "Richiesta di equipaggio gestita",
         "fleet_subscription_started": "Funzioni di flotta attivate",
         "fleet_subscription_ended": "Funzioni di flotta perse",
-        "fleet_contract_fulfilled": "Contratto completato"
+        "fleet_contract_fulfilled": "Contratto completato",
+        "fleet_contract_settled": "Contratto pagato",
+        "payout_ledger_settled": "Pagamenti definiti"
       },
       "fleets": {
         "missions": {

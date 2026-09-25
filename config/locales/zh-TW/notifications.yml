@@ -71,6 +71,8 @@ zh-TW:
       title: "%{username} 想加入 %{tour}"
     tour_join_request_accepted:
       title: "你已加入 %{tour}"
+    payout_ledger_settled:
+      title: "%{subject} 的分帳已結算"
     fleet_contract:
       published:
         title: "%{fleet} 發布了新合約：%{title}"
@@ -79,6 +81,8 @@ zh-TW:
         title: "%{user} 接下了 %{title}"
       fulfilled:
         title: "%{title} 已完成"
+      settled:
+        title: "%{title} 的報酬已結算"
       crew_requested:
         title: "%{user} 申請加入 %{title}"
       crew_accepted:

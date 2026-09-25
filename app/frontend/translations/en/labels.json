@@ -2414,7 +2414,8 @@
         "openFriends": "Open friends",
         "openAllies": "Open allies",
         "openTour": "Open tour",
-        "openContract": "Open contract"
+        "openContract": "Open contract",
+        "openPayouts": "Open payouts"
       },
       "notificationTypes": {
         "channels": {
@@ -2473,7 +2474,9 @@
         "fleet_contract_crew_answered": "Contract crew request answered",
         "fleet_subscription_started": "Fleet features unlocked",
         "fleet_subscription_ended": "Fleet features lost",
-        "fleet_contract_fulfilled": "Contract fulfilled"
+        "fleet_contract_fulfilled": "Contract fulfilled",
+        "fleet_contract_settled": "Contract paid out",
+        "payout_ledger_settled": "Payouts settled"
       },
       "fleets": {
         "missions": {

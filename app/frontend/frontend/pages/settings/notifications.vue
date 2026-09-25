@@ -81,6 +81,7 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.FLEET_CONTRACT_CREW_REQUESTED,
       NotificationTypeEnum.FLEET_CONTRACT_CREW_ANSWERED,
       NotificationTypeEnum.FLEET_CONTRACT_FULFILLED,
+      NotificationTypeEnum.FLEET_CONTRACT_SETTLED,
     ],
   },
   {
@@ -95,6 +96,7 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
     types: [
       NotificationTypeEnum.TOUR_JOIN_REQUEST_RECEIVED,
       NotificationTypeEnum.TOUR_JOIN_REQUEST_ACCEPTED,
+      NotificationTypeEnum.PAYOUT_LEDGER_SETTLED,
     ],
   },
   {
