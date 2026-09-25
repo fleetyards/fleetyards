@@ -55,6 +55,9 @@ type Props = {
   // contract as BaseGrid's, so a list can offer it in either view.
   sortable?: boolean;
   sortHandle?: string;
+  // Off where the list's sort bar carries the select-all box and the bulk
+  // actions: the rows keep their boxes, the table drops its own copies.
+  selectionControls?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -74,6 +77,7 @@ const props = withDefaults(defineProps<Props>(), {
   skeletonRows: undefined,
   sortable: false,
   sortHandle: undefined,
+  selectionControls: true,
 });
 
 const isLoading = computed(() => {
@@ -294,7 +298,11 @@ onUnmounted(() => {
     <PanelHeading v-if="props.title || slots.title" :level="props.titleLevel">
       <slot name="title">{{ props.title }}</slot>
     </PanelHeading>
-    <BulkActions :selected="internalSelected" @reset="resetSelected">
+    <BulkActions
+      v-if="props.selectionControls"
+      :selected="internalSelected"
+      @reset="resetSelected"
+    >
       <slot name="selected-actions" :selected="internalSelected" />
     </BulkActions>
     <div class="base-table__outer-wrapper">
@@ -316,6 +324,7 @@ onUnmounted(() => {
             :has-actions="!!slots.actions"
             :all-selected="allSelected"
             :default-sort="props.defaultSort"
+            :select-all-visible="props.selectionControls"
             @select-all="onAllSelectedChange"
           />
           <transition-group
