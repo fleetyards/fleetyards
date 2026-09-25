@@ -46,7 +46,16 @@ module Api
 
         authorize! @payout_ledger, with: PayoutLedgerPolicy, context: {payout_ledger: @payout_ledger, fleet: subject_fleet}
 
-        if ApplicationRecord.transaction { @payout_ledger.save && @payout_ledger.seed_participants_from_subject! }
+        # Rolled back when seeding finds nobody to pay, so a refused contract
+        # leaves no empty ledger behind to block the next attempt.
+        created = ApplicationRecord.transaction do
+          next false unless @payout_ledger.save
+          next true if @payout_ledger.seed_participants_from_subject!
+
+          raise ActiveRecord::Rollback
+        end
+
+        if created
           render :show, status: :created
         else
           render json: ValidationError.new("payout_ledgers.create", errors: @payout_ledger.errors), status: :bad_request
@@ -67,6 +76,8 @@ module Api
         unless @payout_ledger.settle!(current_resource_owner)
           if @payout_ledger.pending_review?
             render json: {code: "pending_review", message: "Expenses are still waiting for review"}, status: :conflict
+          elsif @payout_ledger.unpayable?
+            render json: {code: "no_contractors", message: "Nobody on this ledger is owed the reward"}, status: :conflict
           else
             render json: {code: "already_settled", message: "This ledger is already settled"}, status: :conflict
           end

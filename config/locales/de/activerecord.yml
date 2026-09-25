@@ -333,6 +333,10 @@ de:
           attributes:
             entry_type:
               not_reimbursed: "wird von diesem Auftrag nicht erstattet"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "Aus diesem Auftrag kann niemand bezahlt werden: niemand hat geliefert und niemand war in der Crew"
         payout_participant:
           attributes:
             base:

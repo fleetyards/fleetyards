@@ -29,6 +29,10 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Payouts::PayoutLedger
       end
 
+      response(400, "nobody to pay") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -110,6 +114,17 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :post, 403, path_params: path_params
+  end
+
+  # An expired contract nobody claimed can be forced to fulfilled, and then
+  # there is nobody to pay the reward to.
+  test "POST is refused when nobody delivered and nobody was on the crew" do
+    @contract.fleet_contract_assignments.delete_all
+    sign_in @admin
+
+    assert_api_response :post, 400, path_params: path_params do
+      assert_not PayoutLedger.exists?(subject: @contract)
+    end
   end
 
   test "POST is refused for a contractor" do

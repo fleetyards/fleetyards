@@ -222,16 +222,41 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_equal 1_000, reward.amount
   end
 
-  test "keeps a contractor whose share rounds below a hundredth on the list" do
+  # One crate out of a large order is far below a hundredth of a percent, and
+  # rounding it up to one would pay it many times over.
+  test "keeps a small contractor's weight in proportion" do
     lead = create(:user)
     crew = create(:user)
-    contract = create(:fleet_contract, :fulfilled)
-    Contracts::Progress.any_instance.stubs(:weights).returns({lead.id => 1.to_d, crew.id => BigDecimal("0.00001")})
+    contract = create(:fleet_contract, :fulfilled, reward: 1_000_000)
+    Contracts::Progress.any_instance.stubs(:weights).returns({lead.id => 1.to_d, crew.id => BigDecimal("0.000001")})
 
     ledger = contract.create_payout_ledger!
     ledger.seed_participants_from_subject!
 
-    assert_equal BigDecimal("0.01"), ledger.payout_participants.find_by!(user_id: crew.id).weight
+    crew_p = ledger.payout_participants.find_by!(user_id: crew.id)
+    assert_equal BigDecimal("0.0001"), crew_p.weight
+
+    share = ledger.settlement.balances.find { |balance| balance.participant == crew_p }.share
+    assert_equal 1, share
+  end
+
+  test "refuses to seed a contract nobody delivered on or worked" do
+    contract = create(:fleet_contract, :fulfilled)
+    ledger = contract.create_payout_ledger!
+
+    assert_not ledger.seed_participants_from_subject!
+    assert_includes ledger.errors.details[:base], {error: :no_contractors}
+    assert_empty ledger.payout_participants
+  end
+
+  test "will not settle a contract ledger with no contractor left on it" do
+    contract = create(:fleet_contract, :fulfilled)
+    ledger = contract.create_payout_ledger!
+    create(:payout_participant, :fleet, payout_ledger: ledger, fleet: contract.fleet)
+
+    assert_predicate ledger, :unpayable?
+    assert_not ledger.settle!
+    assert_predicate contract.reload, :fulfilled?
   end
 
   test "divides evenly across the contractors when nothing was measured" do
@@ -249,6 +274,7 @@ class PayoutLedgerTest < ActiveSupport::TestCase
   test "settling a contract's ledger settles the contract, and reopening puts it back" do
     contract = create(:fleet_contract, :fulfilled)
     ledger = contract.create_payout_ledger!
+    create(:payout_participant, payout_ledger: ledger)
 
     fulfilled_at = contract.fulfilled_at
 
@@ -321,6 +347,7 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     contract = create(:fleet_contract, :hangar_destination, :fulfilled)
     contract.update_column(:created_by_id, nil)
     ledger = contract.create_payout_ledger!
+    create(:payout_participant, payout_ledger: ledger)
 
     assert ledger.settle!
 

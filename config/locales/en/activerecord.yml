@@ -422,6 +422,10 @@ en:
           attributes:
             vehicle_size:
               not_a_vehicle: only applies to a ground vehicle
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "Nobody can be paid from this contract: nobody delivered and nobody was on the crew"
         payout_participant:
           attributes:
             base:

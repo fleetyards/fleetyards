@@ -333,6 +333,10 @@ zh-CN:
           attributes:
             entry_type:
               not_reimbursed: "在此合同中不予报销"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "此合同无人可支付：没有人交付，也没有人在队伍中"
         payout_participant:
           attributes:
             base:

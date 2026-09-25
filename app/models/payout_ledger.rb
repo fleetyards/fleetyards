@@ -87,6 +87,12 @@ class PayoutLedger < ApplicationRecord
   # whoever happened to press settle.
   def pending_review? = payout_entries.review_pending.exists?
 
+  # A contract pays its contractors. With none left on the list, settling would
+  # hand the reward back to the fleet and still report the contract paid out.
+  def unpayable?
+    subject.is_a?(FleetContract) && !payout_participants.where(fleet_id: nil).exists?
+  end
+
   # Both subjects can carry one: an event always does, a tour only when it was
   # organised from a fleet's page.
   def fleet
@@ -116,6 +122,7 @@ class PayoutLedger < ApplicationRecord
       # dropping any confirmation already ticked off against them.
       next false if settled?
       next false if pending_review?
+      next false if unpayable?
 
       payout_transfers.delete_all
 
@@ -194,6 +201,8 @@ class PayoutLedger < ApplicationRecord
   # Seeds the participant list from whoever the subject already knows about.
   # Only ever adds: a participant removed on purpose must not come back the
   # next time this runs.
+  # Returns false, with the reason on `errors`, when there is nobody to seed
+  # a payout for; the caller rolls the ledger back.
   def seed_participants_from_subject!
     return seed_contract! if subject.is_a?(FleetContract)
 
@@ -204,6 +213,8 @@ class PayoutLedger < ApplicationRecord
 
       payout_participants.create!(user_id: user_id)
     end
+
+    true
   end
 
   # Everyone on the ledger is reading the same numbers, so a change has to reach
@@ -308,13 +319,22 @@ class PayoutLedger < ApplicationRecord
   # The fleet is the payer and holds the reward; the contractors are weighted
   # by what they delivered. Only run on create, so it has nothing to preserve.
   private def seed_contract!
+    weights = contract_weights
+
+    # Nobody delivered and nobody was on the crew -- an expired contract an
+    # officer forced to fulfilled. There is nobody to pay the reward to.
+    if weights.empty?
+      errors.add(:base, :no_contractors)
+      return false
+    end
+
     payer = payout_participants.create!(fleet: subject.fleet)
 
-    contract_weights.each do |user_id, weight|
+    weights.each do |user_id, weight|
       payout_participants.create!(user_id: user_id, weight: weight)
     end
 
-    return unless subject.reward.positive?
+    return true unless subject.reward.positive?
 
     payout_entries.create!(
       payout_participant: payer,
@@ -323,13 +343,15 @@ class PayoutLedger < ApplicationRecord
       amount: subject.reward,
       description: I18n.t("fleet_contracts.payout_reward", title: subject.display_title)
     )
+
+    true
   end
 
-  # Contracts::Progress weights are fractions of a line, which a two-decimal
-  # column cannot hold for somebody who delivered one crate of eight hundred.
-  # Scaled to a percentage of the whole, they keep their proportions and read
-  # as what they are. A contract forced to fulfilled with nothing measured
-  # divides evenly across whoever was on it.
+  # Contracts::Progress weights are fractions of a line. Scaled to a
+  # percentage of the whole they read as what they are, and six decimals keep
+  # the proportions of even a single crate out of a large order. A contract
+  # forced to fulfilled with nothing measured divides evenly across whoever
+  # was on it.
   private def contract_weights
     weights = subject.progress.weights.select { |_user_id, weight| weight.positive? }
     total = weights.values.sum(0.to_d)
@@ -339,7 +361,7 @@ class PayoutLedger < ApplicationRecord
     end
 
     weights.transform_values do |weight|
-      (weight * 100 / total).round(2).clamp(BigDecimal("0.01"), BigDecimal("999.99"))
+      (weight * 100 / total).round(6).clamp(BigDecimal("0.000001"), BigDecimal("999.99"))
     end
   end
 

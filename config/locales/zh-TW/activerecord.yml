@@ -333,6 +333,10 @@ zh-TW:
           attributes:
             entry_type:
               not_reimbursed: "在此合約中不予報銷"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "此合約無人可支付：沒有人交付，也沒有人在隊伍中"
         payout_participant:
           attributes:
             base:

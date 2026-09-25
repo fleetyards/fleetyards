@@ -333,6 +333,10 @@ fr:
           attributes:
             entry_type:
               not_reimbursed: "n'est pas remboursée sur ce contrat"
+        payout_ledger:
+          attributes:
+            base:
+              no_contractors: "Personne ne peut être payé pour ce contrat : personne n'a livré et personne n'était dans l'équipage"
         payout_participant:
           attributes:
             base:
