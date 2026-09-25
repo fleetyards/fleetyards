@@ -2194,7 +2194,8 @@
           "modelProductionStatus": "生產狀態",
           "modelPrice": "價格",
           "modelPledgePrice": "質押價格",
-          "owner": "擁有者"
+          "owner": "擁有者",
+          "vehiclesCount": "數量"
         }
       },
       "logistics": {
