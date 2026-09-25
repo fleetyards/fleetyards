@@ -140,3 +140,499 @@ test.describe("Chips", () => {
     expect(await surface("Cargo")).toEqual(await surface("Combat"));
   });
 });
+
+test.describe("Chips - read-only row", () => {
+  test("draws no grip and does not reorder", async ({ page }) => {
+    // The public hangar is someone else's order. Sortable used to be bound here
+    // regardless, so a visitor could drag the row and fire the owner-only sort.
+    await app("clean");
+    await appScenario("chips");
+    await page.goto("/hangar/chips/");
+    await expect(chip(page, "Combat")).toBeVisible();
+
+    await expect(page.getByTestId("chip-handle")).toHaveCount(0);
+    await expect(page.getByTestId("chip-edit")).toHaveCount(0);
+  });
+});
+
+/*
+ * The edit mode, against visual-tests/chips/ - the gallery mirrors GroupLabels'
+ * toggle and Sortable options, and needs no session.
+ */
+test.describe("Chips - edit mode", () => {
+  const editableRow = (page: Page) =>
+    page.getByTestId("chip-row").filter({ hasText: "Groups" }).first();
+
+  const names = (page: Page) =>
+    editableRow(page)
+      .getByTestId("chip")
+      .locator(".chip__label")
+      .allInnerTexts();
+
+  const chips = (page: Page) => editableRow(page).getByTestId("chip");
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/visual-tests/chips/");
+    await expect(chips(page).first()).toBeVisible();
+  });
+
+  test("a row at rest reserves no space for controls", async ({ page }) => {
+    // Hiding them with opacity left an empty slot on every chip.
+    await expect(editableRow(page).getByTestId("chip-handle")).toHaveCount(0);
+    await expect(editableRow(page).getByTestId("chip-edit")).toHaveCount(0);
+  });
+
+  test("edit mode adds a grip and an edit action to every chip", async ({
+    page,
+  }) => {
+    const count = await chips(page).count();
+
+    await editableRow(page).getByTestId("group-labels-edit").click();
+
+    await expect(editableRow(page).getByTestId("chip-handle")).toHaveCount(
+      count,
+    );
+    await expect(editableRow(page).getByTestId("chip-edit")).toHaveCount(count);
+  });
+
+  test("reorders only in edit mode, and only by the grip", async ({ page }) => {
+    const before = await names(page);
+
+    await chips(page)
+      .nth(0)
+      .locator(".chip__toggle")
+      .dragTo(chips(page).nth(2));
+    expect(await names(page)).toEqual(before);
+
+    await editableRow(page).getByTestId("group-labels-edit").click();
+
+    // A toggle that also dragged could not be clicked without moving it.
+    await chips(page)
+      .nth(0)
+      .locator(".chip__toggle")
+      .dragTo(chips(page).nth(2));
+    expect(await names(page)).toEqual(before);
+
+    await chips(page)
+      .nth(0)
+      .getByTestId("chip-handle")
+      .dragTo(chips(page).nth(2));
+    await expect.poll(() => names(page)).not.toEqual(before);
+  });
+});
+
+/*
+ * The real GroupLabels on the owner's hangar: the hover reveal, and a reorder
+ * that reaches the server by drag and by keyboard. Reuses the chips scenario's
+ * user, whose Combat and Cargo groups are created in that order.
+ */
+test.describe("Chips - grip semantics", () => {
+  test("the grip says how it moves, and Space does not scroll", async ({
+    page,
+  }) => {
+    // Exposed as a button, but with no single action to activate - so the
+    // arrow keys have to be announced, and Space must not fall through to the
+    // page.
+    await page.goto("/visual-tests/chips/");
+    const row = page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .first();
+    await row.getByTestId("group-labels-edit").click();
+
+    const handle = row.getByTestId("chip-handle").first();
+    await expect(handle).toHaveAccessibleDescription(
+      "Use the arrow keys to move",
+    );
+
+    await handle.focus();
+    const before = await page.evaluate(() => window.scrollY);
+    await page.keyboard.press(" ");
+    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+  });
+});
+
+test.describe("Chips - owner's hangar", () => {
+  const groupRow = (page: Page) =>
+    page.getByTestId("chip-row").filter({ hasText: "Combat" }).first();
+
+  const names = (page: Page) =>
+    groupRow(page).getByTestId("chip").locator(".chip__label").allInnerTexts();
+
+  const sorted = (page: Page) =>
+    page.waitForResponse(
+      (response) =>
+        response.url().includes("/hangar/groups/sort") &&
+        response.request().method() === "PUT",
+    );
+
+  test.beforeEach(async ({ page }) => {
+    await app("clean");
+    await appScenario("chips");
+
+    await page.goto("/login/");
+    await page.locator("input[name='login']").fill("chips");
+    await page.locator("input[name='password']").fill("password");
+
+    const sessionCreated = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/sessions") &&
+        response.request().method() === "POST",
+    );
+    await page.getByTestId("submit-login").click();
+    await sessionCreated;
+    await expect(page).not.toHaveURL(/\/login/);
+
+    await page.goto("/hangar/");
+    await expect(groupRow(page)).toBeVisible();
+  });
+
+  test("the edit button shows with the row, not after a click", async ({
+    page,
+  }) => {
+    const edit = groupRow(page).getByTestId("group-labels-edit");
+    const opacity = () => edit.evaluate((el) => getComputedStyle(el).opacity);
+
+    await page.mouse.move(0, 0);
+    await expect.poll(opacity).toBe("0");
+
+    await groupRow(page).hover();
+    await expect.poll(opacity).toBe("1");
+
+    // A clicked chip keeps focus; that must not hold the button on screen.
+    await groupRow(page)
+      .getByTestId("chip")
+      .first()
+      .locator(".chip__toggle")
+      .click();
+    await page.mouse.move(0, 0);
+    await expect.poll(opacity).toBe("0");
+  });
+
+  // The scenario's two groups tie on `sort`, so their starting order is not
+  // fixed; each test moves whichever chip is second to the front.
+  test("a drag by the grip persists", async ({ page }) => {
+    const before = await names(page);
+    const reversed = [...before].reverse();
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    const chips = groupRow(page).getByTestId("chip");
+    const request = sorted(page);
+    await chips
+      .nth(1)
+      .getByTestId("chip-handle")
+      .dragTo(chips.nth(0), { targetPosition: { x: 4, y: 4 } });
+    await request;
+
+    await page.reload();
+    await expect.poll(() => names(page)).toEqual(reversed);
+  });
+
+  test("the grip moves a chip from the keyboard", async ({ page }) => {
+    const before = await names(page);
+    const reversed = [...before].reverse();
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    const handle = groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle");
+
+    await handle.focus();
+
+    const request = sorted(page);
+    await page.keyboard.press("ArrowLeft");
+    await request;
+
+    expect(await names(page)).toEqual(reversed);
+    await expect(handle).toBeFocused();
+
+    await page.reload();
+    await expect.poll(() => names(page)).toEqual(reversed);
+  });
+
+  test("quick moves save one at a time and keep the last order", async ({
+    page,
+  }) => {
+    // Each request writes a full order; overlapping ones could finish out of
+    // order and persist an earlier one.
+    // Counted in the route handler, which releases each response only after
+    // decrementing, so the page cannot start the next request early. The delay
+    // keeps the first request open while every key is pressed.
+    let inFlight = 0;
+    let maxInFlight = 0;
+    let sent = 0;
+
+    await page.route(/\/hangar\/groups\/sort/, async (route) => {
+      sent += 1;
+      inFlight += 1;
+      maxInFlight = Math.max(maxInFlight, inFlight);
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const response = await route.fetch();
+
+      inFlight -= 1;
+      await route.fulfill({ response });
+    });
+
+    const before = await names(page);
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    const handle = groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle");
+
+    await handle.focus();
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("ArrowRight");
+
+    // The first press, then one request carrying the order after the last.
+    await expect.poll(() => sent === 2 && inFlight === 0).toBe(true);
+    expect(maxInFlight).toBe(1);
+    expect(await names(page)).toEqual(before);
+
+    await page.reload();
+    await expect.poll(() => names(page)).toEqual(before);
+  });
+
+  test("a failure after a success shows what the server saved", async ({
+    page,
+  }) => {
+    // The first request is held and succeeds, the one queued behind it fails.
+    // The page's own group list still predates both - no refetch arrives in
+    // the test environment - so falling back to it would show neither.
+    let calls = 0;
+    await page.route(/\/hangar\/groups\/sort/, async (route) => {
+      calls += 1;
+
+      if (calls === 1) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        await route.continue();
+        return;
+      }
+
+      await route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ code: "error", message: "Sort failed" }),
+      });
+    });
+
+    const before = await names(page);
+    const reversed = [...before].reverse();
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    await groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle")
+      .focus();
+
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("ArrowRight");
+
+    await expect.poll(() => calls).toBe(2);
+    await expect.poll(() => names(page)).toEqual(reversed);
+  });
+
+  test("a failed save puts the saved order back", async ({ page }) => {
+    await page.route(/\/hangar\/groups\/sort/, (route) =>
+      route.fulfill({
+        status: 500,
+        contentType: "application/json",
+        body: JSON.stringify({ code: "error", message: "Sort failed" }),
+      }),
+    );
+
+    const before = await names(page);
+
+    await groupRow(page).hover();
+    await groupRow(page).getByTestId("group-labels-edit").click();
+
+    await groupRow(page)
+      .getByTestId("chip")
+      .filter({ hasText: before[1] })
+      .getByTestId("chip-handle")
+      .focus();
+
+    const request = sorted(page);
+    await page.keyboard.press("ArrowLeft");
+    await request;
+
+    await expect.poll(() => names(page)).toEqual(before);
+  });
+});
+
+/*
+ * Below the mobile breakpoint the row is a dropdown. Its edit mode reorders
+ * with arrows instead of a drag, and has to stay open while they are used.
+ */
+test.describe("Chips - owner's hangar on mobile", () => {
+  const menu = (page: Page) =>
+    page.getByTestId("dropdown-list").filter({
+      has: page.getByTestId("group-menu-edit-toggle"),
+    });
+
+  const menuNames = (page: Page) =>
+    menu(page)
+      .getByTestId("group-menu-row")
+      .locator(".chip__label")
+      .allInnerTexts();
+
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 430, height: 900 });
+
+    await app("clean");
+    await appScenario("chips");
+
+    await page.goto("/login/");
+    await page.locator("input[name='login']").fill("chips");
+    await page.locator("input[name='password']").fill("password");
+
+    const sessionCreated = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/sessions") &&
+        response.request().method() === "POST",
+    );
+    await page.getByTestId("submit-login").click();
+    await sessionCreated;
+    await expect(page).not.toHaveURL(/\/login/);
+
+    await page.goto("/hangar/");
+    await page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .locator("button")
+      .first()
+      .click();
+    await expect(menu(page)).toBeVisible();
+  });
+
+  test("edit mode swaps the filters for move and edit controls", async ({
+    page,
+  }) => {
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(0);
+
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+
+    // Still open: the toggle must not close the menu it changes.
+    await expect(menu(page)).toBeVisible();
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(2);
+
+    const first = menu(page).getByTestId("group-menu-row").first();
+    await expect(first.getByTestId("group-menu-move-up")).toBeDisabled();
+    await expect(first.getByTestId("group-menu-move-down")).toBeEnabled();
+  });
+
+  test("an arrow moves a group and the order persists", async ({ page }) => {
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+
+    const before = await menuNames(page);
+    const reversed = [...before].reverse();
+
+    const sortedRequest = page.waitForResponse(
+      (response) =>
+        response.url().includes("/hangar/groups/sort") &&
+        response.request().method() === "PUT",
+    );
+    await menu(page)
+      .getByTestId("group-menu-row")
+      .first()
+      .getByTestId("group-menu-move-down")
+      .click();
+    await sortedRequest;
+
+    await expect(menu(page)).toBeVisible();
+    expect(await menuNames(page)).toEqual(reversed);
+
+    // Moved to the bottom, so its down arrow is disabled and the up arrow of
+    // the same row takes focus.
+    await expect(
+      menu(page)
+        .getByTestId("group-menu-row")
+        .last()
+        .getByTestId("group-menu-move-up"),
+    ).toBeFocused();
+
+    await page.reload();
+    await page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .locator("button")
+      .first()
+      .click();
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+    await expect.poll(() => menuNames(page)).toEqual(reversed);
+  });
+
+  // Every control in the menu, not only the edit rows: Add Group sits outside
+  // them, and the menu is teleported out of reach of the row's listener.
+  for (const control of ["group-menu-move-down", "group-menu-add"]) {
+    test(`Escape from ${control} leaves edit mode`, async ({ page }) => {
+      await menu(page).getByTestId("group-menu-edit-toggle").click();
+
+      await menu(page).getByTestId(control).first().focus();
+      await page.keyboard.press("Escape");
+
+      await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(0);
+      await expect(
+        menu(page).getByTestId("group-menu-edit-toggle"),
+      ).toBeFocused();
+    });
+  }
+
+  test("the menu re-places itself when edit mode makes it bigger", async ({
+    page,
+  }) => {
+    // Placed for the filter list, which only just fits below the trigger. The
+    // edit rows are taller and wider, and run off the bottom and the right
+    // edge unless the menu is re-measured once they render.
+    const trigger = page
+      .getByTestId("chip-row")
+      .filter({ hasText: "Groups" })
+      .locator("button")
+      .first();
+
+    const filterHeight = (await menu(page).boundingBox())!.height;
+    await trigger.click();
+    await expect(menu(page)).toBeHidden();
+
+    // The trigger sits at the top of the page, so it is pushed down until
+    // the filter list only just fits below it: a 10px offset, 4px to spare,
+    // with the room above it that the taller menu can flip into.
+    const height = 900;
+    const box = (await trigger.boundingBox())!;
+    const push = height - filterHeight - 14 - (box.y + box.height);
+    await page.evaluate((px) => {
+      document.body.style.paddingTop = `${px}px`;
+    }, push);
+
+    await trigger.click();
+    await expect(menu(page)).toBeVisible();
+    await menu(page).getByTestId("group-menu-edit-toggle").click();
+    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(2);
+
+    await expect
+      .poll(async () => {
+        const box = (await menu(page).boundingBox())!;
+        return (
+          box.y >= 0 &&
+          box.y + box.height <= height &&
+          box.x >= 0 &&
+          box.x + box.width <= 430
+        );
+      })
+      .toBe(true);
+  });
+});

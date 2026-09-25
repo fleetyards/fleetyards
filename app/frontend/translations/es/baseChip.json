@@ -4,7 +4,8 @@
       "states": {
         "included": "incluido",
         "excluded": "excluido"
-      }
+      },
+      "sortHint": "Usa las teclas de flecha para mover"
     }
   }
 }

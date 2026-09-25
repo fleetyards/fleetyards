@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Sortable from "sortablejs";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Chip from "@/shared/components/base/Chip/index.vue";
@@ -43,6 +44,32 @@ const cycle = (name: string) => {
 };
 
 const stateOf = (name: string) => cycled.value[name] ?? ChipStatesEnum.NEUTRAL;
+
+const editableRow = ref<{ itemsEl: HTMLElement | null } | null>(null);
+const editing = ref(false);
+let sortable: Sortable | null = null;
+
+// Live, with the same edit mode GroupLabels has, so the grip and the drop
+// placeholder can be seen doing their job. The DOM order is the only state -
+// nothing here persists.
+watch(
+  [() => editableRow.value?.itemsEl, editing],
+  ([container]) => {
+    sortable?.destroy();
+    sortable = null;
+
+    if (!container || !editing.value) return;
+
+    sortable = Sortable.create(container, {
+      animation: 150,
+      handle: ".chip__handle",
+      ghostClass: "chip--ghost",
+    });
+  },
+  { flush: "post" },
+);
+
+onUnmounted(() => sortable?.destroy());
 
 const longRow = Array.from({ length: 18 }, (_, index) => ({
   name: `Classification ${index + 1}`,
@@ -105,20 +132,32 @@ const longRow = Array.from({ length: 18 }, (_, index) => ({
   <Heading :level="HeadingLevelEnum.H2">Editable — the group row</Heading>
   <div class="row">
     <div class="col-12">
-      <ChipRow label="Groups">
+      <ChipRow ref="editableRow" label="Groups">
         <Chip
           v-for="group in groups"
           :key="`editable-${group.name}`"
           :dot="group.color"
           :count="group.count"
-          editable
+          :editable="editing"
           edit-label="Edit Group"
+          :sortable="editing"
+          sort-label="Reorder"
         >
           {{ group.name }}
         </Chip>
         <template #actions>
           <Btn :size="BtnSizesEnum.XS" aria-label="Add Group">
             <i class="fa-regular fa-plus" />
+          </Btn>
+          <Btn
+            :size="BtnSizesEnum.XS"
+            :active="editing"
+            :aria-label="editing ? 'Done' : 'Edit'"
+            :aria-pressed="editing"
+            data-test="group-labels-edit"
+            @click="editing = !editing"
+          >
+            <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
           </Btn>
         </template>
       </ChipRow>

@@ -4,7 +4,8 @@
       "states": {
         "included": "inclus",
         "excluded": "exclu"
-      }
+      },
+      "sortHint": "Utilisez les flèches du clavier pour déplacer"
     }
   }
 }

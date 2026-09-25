@@ -94,6 +94,8 @@
       "editGroup": "Editar grupo",
       "remove": "Eliminar",
       "reorder": "Reordenar",
+      "moveUp": "Subir",
+      "moveDown": "Bajar",
       "delete": "Borrar",
       "deleteSelected": "Borrar seleccionados",
       "enableSelected": "Activar seleccionados",

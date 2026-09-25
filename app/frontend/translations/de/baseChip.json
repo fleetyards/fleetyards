@@ -4,7 +4,8 @@
       "states": {
         "included": "eingeschlossen",
         "excluded": "ausgeschlossen"
-      }
+      },
+      "sortHint": "Mit den Pfeiltasten verschieben"
     }
   }
 }

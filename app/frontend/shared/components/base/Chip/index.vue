@@ -19,6 +19,14 @@ type Props = {
   editable?: boolean;
   editLabel?: string;
   /**
+   * Draws a leading grip. The consumer binds its drag to `.chip__handle` rather
+   * than the whole chip: a toggle that is also a drag target cannot be clicked
+   * without moving it a little first. The grip is focusable and emits `move`
+   * on the arrow keys, which is the keyboard route to the same reorder.
+   */
+  sortable?: boolean;
+  sortLabel?: string;
+  /**
    * Content only - no frame, no button, no interaction. For a chip's contents
    * inside a control that is already interactive, which is what the mobile
    * dropdown items need: a button may not be nested inside a button.
@@ -33,13 +41,41 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   editable: false,
   editLabel: undefined,
+  sortable: false,
+  sortLabel: undefined,
   bare: false,
 });
 
 const emit = defineEmits<{
   toggle: [];
   edit: [];
+  move: [offset: -1 | 1];
 }>();
+
+const MOVE_KEYS: Record<string, -1 | 1> = {
+  ArrowLeft: -1,
+  ArrowUp: -1,
+  ArrowRight: 1,
+  ArrowDown: 1,
+};
+
+// Enter and Space are swallowed, not acted on: the grip has no single action to
+// activate, and Space would otherwise scroll the page. What it does instead is
+// announced through the sort hint.
+const onHandleKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    return;
+  }
+
+  const offset = MOVE_KEYS[event.key];
+  if (!offset) return;
+
+  event.preventDefault();
+  emit("move", offset);
+};
+
+const sortHintId = useId();
 
 const { t } = useI18n();
 
@@ -47,6 +83,8 @@ const cssClasses = computed(() => ({
   [`chip--${props.state}`]: props.state !== ChipStatesEnum.NEUTRAL,
   "chip--disabled": props.disabled,
   "chip--bare": props.bare,
+  "chip--sortable": props.sortable && !props.bare,
+  "chip--editable": props.editable && !props.bare,
 }));
 
 const toggleProps = computed(() => {
@@ -94,6 +132,24 @@ const stateHint = computed(() => {
     :style="dot ? { '--chip-dot': dot } : undefined"
     data-test="chip"
   >
+    <!-- A span, not a button: Firefox starts no native drag from inside a
+         button, and the drag is what this control is mostly for. -->
+    <span
+      v-if="sortable && !bare"
+      v-tooltip="sortLabel"
+      class="chip__handle"
+      role="button"
+      tabindex="0"
+      :aria-label="sortLabel"
+      :aria-describedby="sortHintId"
+      data-test="chip-handle"
+      @keydown="onHandleKeydown"
+    >
+      <i class="fa-regular fa-grip-vertical" />
+      <span :id="sortHintId" class="chip__state">
+        {{ t("baseChip.sortHint") }}
+      </span>
+    </span>
     <component
       :is="bare ? 'span' : 'button'"
       class="chip__toggle"
@@ -112,6 +168,7 @@ const stateHint = computed(() => {
       type="button"
       class="chip__action"
       :aria-label="editLabel"
+      data-test="chip-edit"
       @click="emit('edit')"
     >
       <i class="fa-regular fa-pen" />
@@ -157,6 +214,7 @@ const stateHint = computed(() => {
 
 /* Inside the frame, so the ring does not straddle the border. */
 .chip__toggle:focus-visible,
+.chip__handle:focus-visible,
 .chip__action:focus-visible {
   @apply outline-primary rounded-control-bare outline-2;
   outline-offset: -2px;
@@ -239,28 +297,86 @@ const stateHint = computed(() => {
   cursor: inherit;
 }
 
-/* ---------- edit action ----------
-   Quiet until wanted: dimmed at rest so a row of a dozen chips does not read as
-   a row of a dozen buttons, full strength on hover or keyboard focus. Right-click
-   still opens the same modal, but is no longer the only way in. */
+/* ---------- edit mode ----------
+   Grip and edit action are rendered only while the consumer is in an edit mode,
+   and are fully shown when they are: a control that is hidden but still
+   reserved leaves every chip in the row padded with an empty slot.
+   The grip takes glyph grey, not text grey - it is a mark, not a label. */
+.chip__handle {
+  @apply flex shrink-0 cursor-grab items-center text-[13px] leading-none;
+  color: var(--color-muted, #7a8288);
+  padding: 0 0 0 9px;
+  transition: color 150ms ease-in-out;
+}
+
+.chip__handle:active {
+  @apply cursor-grabbing;
+}
+
+.chip:hover .chip__handle {
+  color: var(--color-text-dim, #959595);
+}
+
+/* Qualified by .chip so it outranks the chip-hover rule above. */
+.chip .chip__handle:hover,
+.chip .chip__handle:focus-visible {
+  @apply text-lifted;
+}
+
+.chip--sortable .chip__toggle {
+  padding-left: 7px;
+}
+
+/* A segment of its own - a hairline divider and its own fill on hover - so it is
+   plain which part of the chip filters and which part edits. */
 .chip__action {
   @apply flex cursor-pointer items-center;
-  @apply m-0 border-0 bg-transparent text-[12px] text-inherit opacity-0;
-  @apply transition-opacity duration-150 ease-in-out;
-  padding: 0 8px 0 2px;
+  @apply m-0 border-0 bg-transparent text-[12px] text-inherit;
+  @apply transition-[opacity,background-color] duration-150 ease-in-out;
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+  box-shadow: inset 1px 0 0 var(--color-edge-soft);
+  opacity: 0.7;
+  padding: 0 9px;
 }
 
-.chip:hover .chip__action,
+.chip .chip__action:hover,
 .chip__action:focus-visible {
-  @apply opacity-70;
+  opacity: 1;
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
 }
 
-.chip__action:hover {
-  @apply opacity-100;
+.chip--editable .chip__toggle {
+  padding-right: 8px;
+}
+
+/* ---------- drag ----------
+   The placeholder where the chip will land. Dashed rather than filled, so it
+   reads as a slot and not as a second copy of the chip being dragged. */
+.chip--ghost,
+.chip--ghost:hover {
+  border-style: dashed;
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 70%,
+    transparent
+  );
+  /* Mixed into the control fill rather than into transparent: the row sits on
+     the page backdrop, which would show through an empty slot. */
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 12%,
+    var(--color-control)
+  );
+}
+
+.chip--ghost > * {
+  opacity: 0.35;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .chip,
+  .chip__handle,
   .chip__action {
     transition-duration: 1ms;
   }

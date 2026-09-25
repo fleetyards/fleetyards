@@ -8,13 +8,16 @@ export default {
 import Sortable from "sortablejs";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useQueryClient } from "@tanstack/vue-query";
 import {
+  getHangarGroupsQueryKey,
   type HangarGroup,
   type HangarGroupPublic,
   type HangarGroupMetric,
@@ -41,10 +44,47 @@ const { t } = useI18n();
 
 const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 
+// One request at a time, and only the latest order once it settles: the server
+// writes each request's full order, so overlapping requests from quick arrow
+// presses could land out of order and persist an earlier one.
+let sortRequest: Promise<void> | null = null;
+let queuedSorting: string[] | null = null;
+let lastSaveFailed = false;
+// The order the server is known to hold: what it last returned, or what it last
+// accepted since. A failed save falls back to this, not to the prop - after an
+// earlier save in the same run succeeded, the prop predates it.
+let savedOrder: string[] = [];
+
+// Every group save broadcasts, so refetches arrive while a sort is still being
+// saved, carrying an intermediate order. Their contents are taken - a rename or
+// a group added in another tab - but in the order on screen, with new groups
+// at the end.
+const inOrder = (
+  incoming: (HangarGroup | HangarGroupPublic)[],
+  order: string[],
+) => {
+  const position = new Map(order.map((id, index) => [id, index]));
+
+  return [...incoming].sort(
+    (a, b) =>
+      (position.get(a.id) ?? position.size) -
+      (position.get(b.id) ?? position.size),
+  );
+};
+
 watch(
   () => props.hangarGroups,
   (newGroups) => {
+    if (sortRequest) {
+      groups.value = inOrder(
+        newGroups,
+        groups.value.map((group) => group.id),
+      );
+      return;
+    }
+
     groups.value = newGroups;
+    savedOrder = newGroups.map((group) => group.id);
   },
 );
 
@@ -103,6 +143,37 @@ const groupState = (group: string) => {
 const { displayAlert } = useAppNotifications();
 
 const sortMutation = useHangarGroupSortMutation();
+const queryClient = useQueryClient();
+
+// Grips and edit actions only appear in edit mode, so a row at rest is plain
+// filter chips with no slots reserved for controls that are not in use.
+const editing = ref(false);
+
+const toggleEditing = () => {
+  editing.value = !editing.value;
+};
+
+const stopEditing = () => {
+  editing.value = false;
+};
+
+// The mobile menu is teleported to the body, so its key events never reach the
+// row's own Escape listener; one wrapper around all of its content catches them.
+// Focus goes to the toggle: the control that had it may be gone with the edit
+// rows.
+const stopEditingInMenu = async (event: KeyboardEvent) => {
+  if (!editing.value) return;
+
+  // Read before the await: currentTarget is cleared once dispatch ends.
+  const menu = event.currentTarget as HTMLElement | null;
+
+  stopEditing();
+
+  await nextTick();
+  menu
+    ?.querySelector<HTMLElement>('[data-test="group-menu-edit-toggle"]')
+    ?.focus();
+};
 
 const row = ref<{ itemsEl: HTMLElement | null } | null>(null);
 let sortableInstance: Sortable | null = null;
@@ -113,10 +184,12 @@ const initSortable = (container?: HTMLElement | null) => {
     sortableInstance = null;
   }
 
-  if (!container) return;
+  if (!container || !props.editable || !editing.value) return;
 
   sortableInstance = Sortable.create(container, {
     animation: 150,
+    handle: ".chip__handle",
+    ghostClass: "chip--ghost",
     onEnd: () => {
       const items = container.querySelectorAll("[data-group-id]");
       if (!items) return;
@@ -135,6 +208,7 @@ const initSortable = (container?: HTMLElement | null) => {
 
 onMounted(() => {
   groups.value = props.hangarGroups;
+  savedOrder = props.hangarGroups.map((group) => group.id);
 });
 
 // Bound to the element, not to mount: the row swaps its desktop branch for a
@@ -143,8 +217,8 @@ onMounted(() => {
 // releases the detached one on the way out - the previous version bound once in
 // onMounted and left dragging silently unavailable after a resize.
 watch(
-  () => row.value?.itemsEl,
-  (container) => initSortable(container),
+  [() => row.value?.itemsEl, () => props.editable, editing],
+  ([container]) => initSortable(container),
   { immediate: true, flush: "post" },
 );
 
@@ -152,17 +226,101 @@ onUnmounted(() => {
   sortableInstance?.destroy();
 });
 
-const updateSort = async () => {
-  const sorting = groups.value.map((item) => item.id);
-  await sortMutation
-    .mutateAsync({
-      data: { sorting },
-    })
-    .catch((error) => {
-      displayAlert({
-        text: error.response?.data?.message,
-      });
-    });
+const updateSort = () => {
+  queuedSorting = groups.value.map((item) => item.id);
+
+  if (sortRequest) return sortRequest;
+
+  sortRequest = (async () => {
+    while (queuedSorting) {
+      const sorting = queuedSorting;
+      queuedSorting = null;
+
+      await sortMutation
+        .mutateAsync({
+          data: { sorting },
+        })
+        .then(() => {
+          lastSaveFailed = false;
+          savedOrder = sorting;
+        })
+        .catch((error) => {
+          lastSaveFailed = true;
+          displayAlert({
+            text: error.response?.data?.message,
+          });
+        });
+    }
+  })().finally(() => {
+    sortRequest = null;
+
+    // Only the last request decides: a later success saved the full order an
+    // earlier failure could not.
+    if (lastSaveFailed) {
+      lastSaveFailed = false;
+      groups.value = inOrder(groups.value, savedOrder);
+    }
+
+    // A refetch that read an intermediate order mid-save can still be in flight
+    // here, and nothing would stop it once sortRequest is clear. Invalidating
+    // cancels it and fetches the order the server now holds.
+    void queryClient.invalidateQueries({ queryKey: getHangarGroupsQueryKey() });
+  });
+
+  return sortRequest;
+};
+
+// The keyboard and mobile counterpart to a drag. The control that moved it is
+// refocused because Vue re-inserts the keyed element, and a re-inserted node
+// drops its focus.
+const moveGroup = async (
+  group: HangarGroup | HangarGroupPublic,
+  offset: -1 | 1,
+  focusTarget: () => HTMLElement | null | undefined = () =>
+    row.value?.itemsEl?.querySelector<HTMLElement>(
+      `[data-group-id="${group.id}"] .chip__handle`,
+    ),
+) => {
+  const from = groups.value.findIndex((item) => item.id === group.id);
+  const to = from + offset;
+  if (from < 0 || to < 0 || to >= groups.value.length) return;
+
+  const reordered = [...groups.value];
+  reordered.splice(to, 0, ...reordered.splice(from, 1));
+  groups.value = reordered;
+
+  void updateSort();
+
+  await nextTick();
+  focusTarget()?.focus();
+};
+
+// Looked up from the pressed arrow's own menu, which is teleported to the body
+// and so outside this component's elements. At either end the arrow that was
+// pressed is disabled, so the other one takes it.
+const moveGroupInMenu = (
+  group: HangarGroup | HangarGroupPublic,
+  offset: -1 | 1,
+  event: MouseEvent,
+) => {
+  const menu = (event.currentTarget as HTMLElement | null)?.closest(
+    ".group-labels-menu",
+  );
+
+  return moveGroup(group, offset, () => {
+    const menuRow = menu?.querySelector(`[data-group-menu-id="${group.id}"]`);
+    const pressed = offset < 0 ? "up" : "down";
+    const other = offset < 0 ? "down" : "up";
+
+    return (
+      menuRow?.querySelector<HTMLElement>(
+        `[data-test="group-menu-move-${pressed}"]:not([disabled])`,
+      ) ??
+      menuRow?.querySelector<HTMLElement>(
+        `[data-test="group-menu-move-${other}"]`,
+      )
+    );
+  });
 };
 
 const comlink = useComlink();
@@ -194,7 +352,12 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
 </script>
 
 <template>
-  <ChipRow ref="row" :label="label ?? t('labels.groups')">
+  <ChipRow
+    ref="row"
+    :label="label ?? t('labels.groups')"
+    :class="{ 'group-labels-editing': editing }"
+    @keydown.esc="stopEditing"
+  >
     <Chip
       v-for="group in groups"
       :key="group.id"
@@ -202,10 +365,13 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       :state="groupState(group.slug)"
       :dot="group.color"
       :count="groupCount(group).count"
-      :editable="editable"
+      :editable="editable && editing"
       :edit-label="t('actions.editGroup')"
+      :sortable="editable && editing"
+      :sort-label="t('actions.reorder')"
       @toggle="filterGroup(group.slug)"
       @edit="openGroupModal(group)"
+      @move="moveGroup(group, $event)"
       @contextmenu.prevent="openGroupModal(group)"
       @mouseenter="highlight(group)"
       @mouseleave="highlight()"
@@ -223,31 +389,146 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       >
         <i class="fa-regular fa-plus" />
       </Btn>
+      <Btn
+        v-if="editable"
+        v-tooltip="editing ? t('actions.done') : t('actions.edit')"
+        :size="BtnSizesEnum.XS"
+        :active="editing"
+        :aria-label="editing ? t('actions.done') : t('actions.edit')"
+        :aria-pressed="editing"
+        class="group-labels-edit"
+        data-test="group-labels-edit"
+        @click="toggleEditing"
+      >
+        <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
+      </Btn>
     </template>
 
     <!-- The mobile items go through Btn's own `active` prop. The stylesheet this
          replaces reached at Btn's internals with six !important declarations -
          the override class btn-redesign swept out of 17 files. -->
     <template #menu>
-      <Btn
-        v-for="group in groups"
-        :key="`menu-${group.id}`"
-        :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
-        @click="filterGroup(group.slug)"
-      >
-        <Chip
-          bare
-          :state="groupState(group.slug)"
-          :dot="group.color"
-          :count="groupCount(group).count"
-        >
-          {{ group.name }}
-        </Chip>
-      </Btn>
-      <Btn v-if="editable" @click="openNewGroupModal">
-        <i class="fa-regular fa-plus" />
-        {{ t("actions.addGroup") }}
-      </Btn>
+      <!-- display: contents - a box of its own would break the menu's flex
+           column, but key events still bubble through it. -->
+      <div class="group-labels-menu" @keydown.esc="stopEditingInMenu">
+        <template v-if="editable && editing">
+          <!-- Arrows rather than a drag: a touch drag inside a dropdown fights its
+               scrolling and its outside-tap close. The arrows and the edit mode
+               toggle stop their click, which would otherwise close the menu. -->
+          <div
+            v-for="(group, index) in groups"
+            :key="`menu-edit-${group.id}`"
+            :data-group-menu-id="group.id"
+            class="group-labels-menu-row"
+            data-test="group-menu-row"
+          >
+            <Chip bare :dot="group.color" class="group-labels-menu-name">
+              {{ group.name }}
+            </Chip>
+            <BtnGroup :size="BtnSizesEnum.SM">
+              <Btn
+                :aria-label="t('actions.moveUp')"
+                :disabled="index === 0"
+                data-test="group-menu-move-up"
+                @click.stop="moveGroupInMenu(group, -1, $event)"
+              >
+                <i class="fa-regular fa-arrow-up" />
+              </Btn>
+              <Btn
+                :aria-label="t('actions.moveDown')"
+                :disabled="index === groups.length - 1"
+                data-test="group-menu-move-down"
+                @click.stop="moveGroupInMenu(group, 1, $event)"
+              >
+                <i class="fa-regular fa-arrow-down" />
+              </Btn>
+              <Btn
+                :aria-label="t('actions.editGroup')"
+                data-test="group-menu-edit"
+                @click="openGroupModal(group)"
+              >
+                <i class="fa-regular fa-pen" />
+              </Btn>
+            </BtnGroup>
+          </div>
+        </template>
+        <template v-else>
+          <Btn
+            v-for="group in groups"
+            :key="`menu-${group.id}`"
+            :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
+            @click="filterGroup(group.slug)"
+          >
+            <Chip
+              bare
+              :state="groupState(group.slug)"
+              :dot="group.color"
+              :count="groupCount(group).count"
+            >
+              {{ group.name }}
+            </Chip>
+          </Btn>
+        </template>
+        <template v-if="editable">
+          <hr />
+          <Btn data-test="group-menu-add" @click="openNewGroupModal">
+            <i class="fa-regular fa-plus" />
+            {{ t("actions.addGroup") }}
+          </Btn>
+          <Btn data-test="group-menu-edit-toggle" @click.stop="toggleEditing">
+            <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
+            {{ editing ? t("actions.done") : t("actions.edit") }}
+          </Btn>
+        </template>
+      </div>
     </template>
   </ChipRow>
 </template>
+
+<style lang="scss" scoped>
+/*
+ * Revealed with the row rather than always shown: the row is a filter first, and
+ * a permanent pen beside it reads as a control on every chip. Only where hover
+ * exists - a touch screen at desktop width would otherwise never find it.
+ * Keyboard focus reveals it too, but not :focus-within: a clicked chip keeps
+ * focus, which held the button on screen after the pointer had left the row.
+ */
+@media (hover: hover) {
+  .group-labels-edit {
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .chip-row:hover,
+  .chip-row:has(:focus-visible),
+  .group-labels-editing {
+    .group-labels-edit {
+      opacity: 1;
+    }
+  }
+}
+
+.group-labels-menu {
+  display: contents;
+}
+
+// A menu row of its own rather than a menu item: it holds three controls, and
+// a Btn in the menu goes full width. Padding matches a menu item's.
+.group-labels-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px 6px 16px;
+}
+
+.group-labels-menu-name {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group-labels-edit {
+    transition-duration: 1ms;
+  }
+}
+</style>
