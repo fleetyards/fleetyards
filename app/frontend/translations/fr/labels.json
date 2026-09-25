@@ -2718,6 +2718,7 @@
         "pieceVolume": "Volume par pièce (SCU)",
         "consumable": "Consommable",
         "refinesInto": "Se raffine en",
+        "refinedFrom": "Raffiné à partir de",
         "availability": {
           "retired": "Les prix sont suivis pour la version sur laquelle se trouve le catalogue, et cette marchandise n'y figure pas.",
           "craftedOnly": "Aucun terminal ne l'échange — c'est un matériau de fabrication.",

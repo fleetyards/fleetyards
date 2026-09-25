@@ -52,6 +52,14 @@ module Api
         # querying per call.
         @commodity = Commodity.includes(:item_prices, :refines_into)
           .find_by!(slug: params[:slug].to_s.downcase)
+
+        # Only the forms the build we are on still describes: a dropped ore
+        # would link to a page that says it no longer exists. The inner join to
+        # that build is the filter, and ordering by its name keeps the sort on
+        # the names the payload shows -- `name` reads through the build, which
+        # is also why it is preloaded.
+        @refined_from = @commodity.refined_from.with_facts
+          .includes(:build).order(Commodity.fact_sql(:name))
       end
 
       def price_history

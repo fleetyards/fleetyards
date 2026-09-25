@@ -2718,6 +2718,7 @@
         "pieceVolume": "每件體積（SCU）",
         "consumable": "可消耗",
         "refinesInto": "精煉為",
+        "refinedFrom": "精煉自",
         "availability": {
           "retired": "價格僅針對目錄所在的版本記錄，而該商品不在其中。",
           "craftedOnly": "沒有終端交易此商品 —— 它是一種製造材料。",

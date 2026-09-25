@@ -11166,7 +11166,11 @@ components:
           items:
             type: number
         refinesInto:
-          "$ref": "#/components/schemas/CommodityRef"
+          "$ref": "#/components/schemas/NullableCommodityRef"
+        refinedFrom:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CommodityRef"
         retired:
           type: boolean
         storeImage:
@@ -11303,9 +11307,7 @@ components:
       example: {}
       title: CommodityQuery
     CommodityRef:
-      type:
-      - object
-      - 'null'
+      type: object
       properties:
         id:
           type: string
@@ -17936,6 +17938,24 @@ components:
       - OUTLAW
       - 'NULL'
       title: NullableBlueprintSourceAlignmentEnum
+    NullableCommodityRef:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: NullableCommodityRef
     NullableEquipmentBackpackCompatibilityEnum:
       type:
       - string
