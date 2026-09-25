@@ -541,20 +541,19 @@ test.describe("Chips - owner's hangar on mobile", () => {
     await expect.poll(() => menuNames(page)).toEqual(reversed);
   });
 
-  test("Escape inside the menu leaves edit mode", async ({ page }) => {
-    // The menu is teleported to the body, out of reach of the row's listener.
-    await menu(page).getByTestId("group-menu-edit-toggle").click();
+  // Every control in the menu, not only the edit rows: Add Group sits outside
+  // them, and the menu is teleported out of reach of the row's listener.
+  for (const control of ["group-menu-move-down", "group-menu-add"]) {
+    test(`Escape from ${control} leaves edit mode`, async ({ page }) => {
+      await menu(page).getByTestId("group-menu-edit-toggle").click();
 
-    await menu(page)
-      .getByTestId("group-menu-row")
-      .first()
-      .getByTestId("group-menu-move-down")
-      .focus();
-    await page.keyboard.press("Escape");
+      await menu(page).getByTestId(control).first().focus();
+      await page.keyboard.press("Escape");
 
-    await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(0);
-    await expect(
-      menu(page).getByTestId("group-menu-edit-toggle"),
-    ).toBeFocused();
-  });
+      await expect(menu(page).getByTestId("group-menu-row")).toHaveCount(0);
+      await expect(
+        menu(page).getByTestId("group-menu-edit-toggle"),
+      ).toBeFocused();
+    });
+  }
 });

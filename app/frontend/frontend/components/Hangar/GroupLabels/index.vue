@@ -155,9 +155,12 @@ const stopEditing = () => {
 };
 
 // The mobile menu is teleported to the body, so its key events never reach the
-// row's own Escape listener. Focus goes to the toggle: the control that had it
-// is gone with the edit rows.
+// row's own Escape listener; one wrapper around all of its content catches them.
+// Focus goes to the toggle: the control that had it may be gone with the edit
+// rows.
 const stopEditingInMenu = async () => {
+  if (!editing.value) return;
+
   stopEditing();
 
   await nextTick();
@@ -389,80 +392,79 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
          replaces reached at Btn's internals with six !important declarations -
          the override class btn-redesign swept out of 17 files. -->
     <template #menu>
-      <template v-if="editable && editing">
-        <!-- Arrows rather than a drag: a touch drag inside a dropdown fights its
-             scrolling and its outside-tap close. The arrows and the edit mode
-             toggle stop their click, which would otherwise close the menu. -->
-        <div
-          v-for="(group, index) in groups"
-          :key="`menu-edit-${group.id}`"
-          :data-group-menu-id="group.id"
-          class="group-labels-menu-row"
-          data-test="group-menu-row"
-          @keydown.esc="stopEditingInMenu"
-        >
-          <Chip bare :dot="group.color" class="group-labels-menu-name">
-            {{ group.name }}
-          </Chip>
-          <BtnGroup :size="BtnSizesEnum.SM">
-            <Btn
-              :aria-label="t('actions.moveUp')"
-              :disabled="index === 0"
-              data-test="group-menu-move-up"
-              @click.stop="moveGroupInMenu(group, -1)"
-            >
-              <i class="fa-regular fa-arrow-up" />
-            </Btn>
-            <Btn
-              :aria-label="t('actions.moveDown')"
-              :disabled="index === groups.length - 1"
-              data-test="group-menu-move-down"
-              @click.stop="moveGroupInMenu(group, 1)"
-            >
-              <i class="fa-regular fa-arrow-down" />
-            </Btn>
-            <Btn
-              :aria-label="t('actions.editGroup')"
-              data-test="group-menu-edit"
-              @click="openGroupModal(group)"
-            >
-              <i class="fa-regular fa-pen" />
-            </Btn>
-          </BtnGroup>
-        </div>
-      </template>
-      <template v-else>
-        <Btn
-          v-for="group in groups"
-          :key="`menu-${group.id}`"
-          :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
-          @click="filterGroup(group.slug)"
-        >
-          <Chip
-            bare
-            :state="groupState(group.slug)"
-            :dot="group.color"
-            :count="groupCount(group).count"
+      <!-- display: contents - a box of its own would break the menu's flex
+           column, but key events still bubble through it. -->
+      <div class="group-labels-menu" @keydown.esc="stopEditingInMenu">
+        <template v-if="editable && editing">
+          <!-- Arrows rather than a drag: a touch drag inside a dropdown fights its
+               scrolling and its outside-tap close. The arrows and the edit mode
+               toggle stop their click, which would otherwise close the menu. -->
+          <div
+            v-for="(group, index) in groups"
+            :key="`menu-edit-${group.id}`"
+            :data-group-menu-id="group.id"
+            class="group-labels-menu-row"
+            data-test="group-menu-row"
           >
-            {{ group.name }}
-          </Chip>
-        </Btn>
-      </template>
-      <template v-if="editable">
-        <hr />
-        <Btn @click="openNewGroupModal">
-          <i class="fa-regular fa-plus" />
-          {{ t("actions.addGroup") }}
-        </Btn>
-        <Btn
-          data-test="group-menu-edit-toggle"
-          @click.stop="toggleEditing"
-          @keydown.esc="stopEditingInMenu"
-        >
-          <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
-          {{ editing ? t("actions.done") : t("actions.edit") }}
-        </Btn>
-      </template>
+            <Chip bare :dot="group.color" class="group-labels-menu-name">
+              {{ group.name }}
+            </Chip>
+            <BtnGroup :size="BtnSizesEnum.SM">
+              <Btn
+                :aria-label="t('actions.moveUp')"
+                :disabled="index === 0"
+                data-test="group-menu-move-up"
+                @click.stop="moveGroupInMenu(group, -1)"
+              >
+                <i class="fa-regular fa-arrow-up" />
+              </Btn>
+              <Btn
+                :aria-label="t('actions.moveDown')"
+                :disabled="index === groups.length - 1"
+                data-test="group-menu-move-down"
+                @click.stop="moveGroupInMenu(group, 1)"
+              >
+                <i class="fa-regular fa-arrow-down" />
+              </Btn>
+              <Btn
+                :aria-label="t('actions.editGroup')"
+                data-test="group-menu-edit"
+                @click="openGroupModal(group)"
+              >
+                <i class="fa-regular fa-pen" />
+              </Btn>
+            </BtnGroup>
+          </div>
+        </template>
+        <template v-else>
+          <Btn
+            v-for="group in groups"
+            :key="`menu-${group.id}`"
+            :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
+            @click="filterGroup(group.slug)"
+          >
+            <Chip
+              bare
+              :state="groupState(group.slug)"
+              :dot="group.color"
+              :count="groupCount(group).count"
+            >
+              {{ group.name }}
+            </Chip>
+          </Btn>
+        </template>
+        <template v-if="editable">
+          <hr />
+          <Btn data-test="group-menu-add" @click="openNewGroupModal">
+            <i class="fa-regular fa-plus" />
+            {{ t("actions.addGroup") }}
+          </Btn>
+          <Btn data-test="group-menu-edit-toggle" @click.stop="toggleEditing">
+            <i :class="editing ? 'fa-regular fa-check' : 'fa-regular fa-pen'" />
+            {{ editing ? t("actions.done") : t("actions.edit") }}
+          </Btn>
+        </template>
+      </div>
     </template>
   </ChipRow>
 </template>
@@ -488,6 +490,10 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
       opacity: 1;
     }
   }
+}
+
+.group-labels-menu {
+  display: contents;
 }
 
 // A menu row of its own rather than a menu item: it holds three controls, and
