@@ -212,7 +212,15 @@ class Equipment < ApplicationRecord
   end
 
   def slot_label
-    self.class.human_enum_name(:slot, slot) if slot.present?
+    self.class.human_enum_name(:slot, slot)
+  end
+
+  def core_compatibility_label
+    self.class.human_enum_name(:core_compatibility, core_compatibility)
+  end
+
+  def backpack_compatibility_label
+    self.class.human_enum_name(:backpack_compatibility, backpack_compatibility)
   end
 
   # Nothing fills this from the game files: the loadout icons the records name

@@ -12957,7 +12957,15 @@ components:
           type:
           - string
           - 'null'
+        coreCompatibilityLabel:
+          type:
+          - string
+          - 'null'
         backpackCompatibility:
+          type:
+          - string
+          - 'null'
+        backpackCompatibilityLabel:
           type:
           - string
           - 'null'

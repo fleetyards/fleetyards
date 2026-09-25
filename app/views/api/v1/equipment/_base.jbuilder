@@ -31,7 +31,9 @@ json.radiation_protection equipment.radiation_protection&.to_f
 json.radiation_scrub_rate equipment.radiation_scrub_rate&.to_f
 json.g_force_tolerance equipment.g_force_tolerance&.to_f
 json.core_compatibility equipment.core_compatibility
+json.core_compatibility_label equipment.core_compatibility_label
 json.backpack_compatibility equipment.backpack_compatibility
+json.backpack_compatibility_label equipment.backpack_compatibility_label
 
 if equipment.manufacturer.present?
   json.manufacturer do

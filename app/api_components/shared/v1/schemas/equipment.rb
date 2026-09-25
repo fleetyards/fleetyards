@@ -53,7 +53,9 @@ module Shared
             radiationScrubRate: {type: [:number, :null]},
             gForceTolerance: {type: [:number, :null]},
             coreCompatibility: {type: [:string, :null]},
+            coreCompatibilityLabel: {type: [:string, :null]},
             backpackCompatibility: {type: [:string, :null]},
+            backpackCompatibilityLabel: {type: [:string, :null]},
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 

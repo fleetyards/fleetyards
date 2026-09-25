@@ -45,6 +45,7 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
       assert_equal "Heavy Utility", parsed_body["itemTypeLabel"]
       assert_equal "Light Armor", parsed_body["subTypeLabel"]
       assert_equal "Torso", parsed_body["slotLabel"]
+      assert_equal "All", parsed_body["backpackCompatibilityLabel"]
       assert_nil parsed_body["weaponClassLabel"]
     end
   end
