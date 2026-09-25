@@ -175,7 +175,7 @@ class Vehicle < ApplicationRecord
     "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
     "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
     "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
-    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc"
+    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc", "rank asc", "rank desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug
@@ -201,7 +201,7 @@ class Vehicle < ApplicationRecord
       "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
-      "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rsi_pledge_id",
+      "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
       "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
       "user_id", "vehicle_id", "wanted"
     ]

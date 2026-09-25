@@ -133,6 +133,17 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar sorts by the owner's rank" do
+    user = create(:user)
+    alpha, bravo, charlie = %w[Alpha Bravo Charlie].map { |name| create(:vehicle, user:, name:) }
+    alpha.move_next_to!(charlie, after: true)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"sorts" => "rank asc"}} do
+      assert_equal [bravo.id, charlie.id, alpha.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /hangar returns 400 for invalid query" do
     user = create(:user, vehicle_count: 1)
     sign_in user
