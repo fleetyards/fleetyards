@@ -109,5 +109,10 @@ de:
     ship_on_sale:
       message: Ab %{price} zzgl. MwSt.
       title: 'Die %{model} ist jetzt im Angebot!'
+    weekly_digest:
+      heading: '**Die Woche bei %{fleet}**'
+      more:
+        one: '…und eins mehr: %{url}'
+        other: '…und %{count} weitere: %{url}'
     youtube_video:
       title: 'Neues Video auf YouTube!'

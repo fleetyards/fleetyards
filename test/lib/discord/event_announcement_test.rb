@@ -99,8 +99,8 @@ module Discord
       EventAnnouncement.new(@event).deliver("hello")
 
       assert_equal [
-        [@fleet.id, "squadron", "222222222222222222", "hello", @event.id],
-        [@fleet.id, "squadron", "333333333333333333", "hello", @event.id]
+        [@fleet.id, "squadron", "222222222222222222", "hello", @event.id, false],
+        [@fleet.id, "squadron", "333333333333333333", "hello", @event.id, false]
       ], DeliverAnnouncementJob.jobs.map { |job| job["args"] }.sort
     end
   end

@@ -148,6 +148,9 @@ module Api
           :discord_channel_id,
           :discord_announcement_channel_id,
           :discord_officers_channel_id,
+          :discord_digest_weekday,
+          :discord_digest_time,
+          :discord_digest_timezone,
           :discord_webhook_url,
           enabled_in_app_events: []
         ).to_h.symbolize_keys

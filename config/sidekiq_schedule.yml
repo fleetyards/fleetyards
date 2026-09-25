@@ -90,6 +90,10 @@ fleet_events_auto_lock_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'FleetEvents::AutoLockJob'
   queue: 'default'
+discord_weekly_digest_dispatch_job:
+  cron: '*/15 * * * *' # Every 15 minutes
+  class: 'Discord::WeeklyDigestDispatchJob'
+  queue: 'notifications'
 discord_poll_event_rsvps_dispatch_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'Discord::PollEventRsvpsDispatchJob'

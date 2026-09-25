@@ -7,6 +7,7 @@ export enum InputTypesEnum {
   COLOR = "color",
   DATE = "date",
   DATETIME_LOCAL = "datetime-local",
+  TIME = "time",
 }
 
 export enum InputSizesEnum {

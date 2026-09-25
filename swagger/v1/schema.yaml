@@ -21958,6 +21958,21 @@ components:
           type:
           - string
           - 'null'
+        discordDigestWeekday:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          maximum: 6
+        discordDigestTime:
+          type:
+          - string
+          - 'null'
+          pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        discordDigestTimezone:
+          type:
+          - string
+          - 'null'
         discordMemberRoleId:
           type: string
         discordWebhookConfigured:
@@ -21984,6 +21999,20 @@ components:
           - string
           - 'null'
         discordOfficersChannelId:
+          type:
+          - string
+          - 'null'
+        discordDigestWeekday:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          maximum: 6
+        discordDigestTime:
+          type:
+          - string
+          - 'null'
+        discordDigestTimezone:
           type:
           - string
           - 'null'

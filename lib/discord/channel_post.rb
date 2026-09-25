@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "discord/message_length"
 require "discord/api_client"
 
 module Discord
@@ -15,8 +16,6 @@ module Discord
   # the fleet finds out from its Discord settings rather than from a job that
   # fails every time an event is announced.
   class ChannelPost
-    MAX_LENGTH = 2000
-
     UNDELIVERABLE_STATUSES = [400, 403, 404].freeze
 
     def initialize(channel_id, guild_id:, api: nil)
@@ -29,7 +28,7 @@ module Discord
       return skip("no guild bound") if @guild_id.blank?
       return skip("channel belongs to another guild") unless api.get_channel(@channel_id)&.dig("guild_id") == @guild_id
 
-      api.create_message(@channel_id, {content: content.to_s.first(MAX_LENGTH), allowed_mentions: {parse: []}})
+      api.create_message(@channel_id, {content: MessageLength.truncate(content), allowed_mentions: {parse: []}})
       true
     rescue ApiClient::Error => e
       raise unless UNDELIVERABLE_STATUSES.include?(e.status)

@@ -109,5 +109,10 @@ en:
     ship_on_sale:
       message: Starting at %{price} excl. VAT
       title: The %{model} is now on Sale!
+    weekly_digest:
+      heading: '**The week ahead in %{fleet}**'
+      more:
+        one: '…and one more: %{url}'
+        other: '…and %{count} more: %{url}'
     youtube_video:
       title: New Video on Youtube!

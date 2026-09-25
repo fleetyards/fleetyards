@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_24_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -969,6 +969,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_200000) do
     t.datetime "created_at", null: false
     t.string "discord_announcement_channel_id"
     t.string "discord_channel_id"
+    t.datetime "discord_digest_sent_at"
+    t.string "discord_digest_time"
+    t.string "discord_digest_timezone"
+    t.integer "discord_digest_weekday"
     t.string "discord_guild_id"
     t.string "discord_member_role_id"
     t.string "discord_officers_channel_id"
@@ -976,6 +980,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_200000) do
     t.text "enabled_in_app_events", default: "---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn"
     t.uuid "fleet_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["discord_digest_weekday"], name: "index_fleet_notification_settings_on_discord_digest_weekday", where: "(discord_digest_weekday IS NOT NULL)"
     t.index ["discord_guild_id"], name: "index_fleet_notification_settings_on_discord_guild_id"
     t.index ["fleet_id"], name: "index_fleet_notification_settings_on_fleet_id", unique: true
   end

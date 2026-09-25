@@ -109,5 +109,10 @@ it:
     ship_on_sale:
       message: A partire da %{price} IVA esclusa
       title: 'La %{model} è ora in offerta!'
+    weekly_digest:
+      heading: '**La settimana di %{fleet}**'
+      more:
+        one: '…e un altro: %{url}'
+        other: '…e altri %{count}: %{url}'
     youtube_video:
       title: 'Nuovo video su YouTube!'

@@ -417,6 +417,10 @@
           "announcementChannelHint": "Les nouveaux événements et les rappels avant le début sont publiés ici. Sans salon, ils passent par le webhook. Les événements réservés à des escadrons sont publiés dans les salons de ces escadrons.",
           "officersChannel": "Salon des officiers",
           "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord.",
+          "digestWeekday": "Récapitulatif hebdomadaire",
+          "digestWeekdayHint": "Une fois par semaine, chaque salon reçoit la liste des événements des sept prochains jours qu'il peut voir. Laissez vide pour le désactiver.",
+          "digestTime": "Heure du récapitulatif",
+          "digestTimeHint": "Dans votre fuseau horaire (%{timezone}).",
           "channelMissing": "Ce salon n'existe plus sur Discord ou n'accepte plus de publications. Rien n'est publié tant qu'un autre n'est pas choisi.",
           "missingChannel": "Salon indisponible",
           "postingCodes": {

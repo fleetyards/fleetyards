@@ -13,6 +13,9 @@ module V1
             discordChannelId: {type: [:string, :null]},
             discordAnnouncementChannelId: {type: [:string, :null]},
             discordOfficersChannelId: {type: [:string, :null]},
+            discordDigestWeekday: {type: [:integer, :null], minimum: 0, maximum: 6},
+            discordDigestTime: {type: [:string, :null]},
+            discordDigestTimezone: {type: [:string, :null]},
             discordMemberRoleId: {type: [:string, :null]},
             discordWebhookUrl: {type: [:string, :null]},
             enabledInAppEvents: {type: :array, items: {type: :string}}

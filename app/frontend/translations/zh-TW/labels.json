@@ -417,6 +417,10 @@
           "announcementChannelHint": "新活動與即將開始的提醒會發布在這裡。未設定時透過 Webhook 發送。僅限中隊的活動會改為發布在該中隊的頻道。",
           "officersChannel": "軍官頻道",
           "officersChannelHint": "僅軍官可見的活動會在這裡公告，不會出現在 Discord 的其他地方。未設定時不會在 Discord 上公告。",
+          "digestWeekday": "每週摘要",
+          "digestWeekdayHint": "每週一次，每個頻道會收到它可見的未來七天活動清單。留空即可關閉。",
+          "digestTime": "摘要時間",
+          "digestTimeHint": "使用你的時區（%{timezone}）。",
           "channelMissing": "此頻道在 Discord 上已不存在或無法再發文。選擇其他頻道之前不會發布任何內容。",
           "missingChannel": "無法使用的頻道",
           "postingCodes": {

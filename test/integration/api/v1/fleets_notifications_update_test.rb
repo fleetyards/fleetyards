@@ -81,6 +81,24 @@ class Api::V1::FleetsNotificationsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PATCH /fleets/:slug/notifications schedules and clears the weekly digest" do
+    sign_in @admin
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {discordDigestWeekday: 1, discordDigestTime: "18:30"} do
+      assert_equal 1, parsed_body["discordDigestWeekday"]
+      assert_equal "18:30", parsed_body["discordDigestTime"]
+    end
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {discordDigestWeekday: nil, discordDigestTime: ""} do
+      assert_nil parsed_body["discordDigestWeekday"]
+      assert_nil parsed_body["discordDigestTime"]
+    end
+  end
+
   test "PATCH /fleets/:slug/notifications with OAuth bearer token" do
     assert_api_response :patch, 200,
       path_params: {fleetSlug: @fleet.slug},

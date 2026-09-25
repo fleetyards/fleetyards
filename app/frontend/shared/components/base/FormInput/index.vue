@@ -112,9 +112,13 @@ const innerStep = computed(() => {
     return props.step;
   }
 
-  if (props.type === "date" || props.type === "datetime-local") {
+  if (
+    props.type === "date" ||
+    props.type === "datetime-local" ||
+    props.type === "time"
+  ) {
     // Only forward an explicitly set step; the default `0.01` would be
-    // nonsensical for date/datetime-local inputs.
+    // nonsensical for date and time inputs.
     return props.step !== 0.01 ? props.step : undefined;
   }
 
