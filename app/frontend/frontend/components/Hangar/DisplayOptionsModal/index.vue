@@ -9,7 +9,16 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useHangarDefaultSortOptions } from "@/frontend/composables/useHangarDefaultSortOptions";
+import { useSessionStore } from "@/frontend/stores/session";
+import {
+  useUpdateProfile,
+  type NullableVehicleSortEnum,
+} from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useHangarStore,
@@ -65,6 +74,50 @@ watch(
   },
 );
 
+const sessionStore = useSessionStore();
+
+const comlink = useComlink();
+
+const { displayAlert } = useAppNotifications();
+
+const defaultSortOptions = useHangarDefaultSortOptions();
+
+// Held here as well as on the user, so the select shows the new choice while
+// the save is in flight rather than the old one until the user is re-read.
+const defaultSort = ref<NullableVehicleSortEnum | null>(
+  sessionStore.currentUser?.hangarDefaultSort ?? null,
+);
+
+watch(
+  () => sessionStore.currentUser?.hangarDefaultSort,
+  (value) => {
+    defaultSort.value = value ?? null;
+  },
+);
+
+const updateProfile = useUpdateProfile();
+
+// Every other option here is this browser's alone and applies as it is
+// changed. This one is stored on the account -- the public hangar opens in it
+// too -- but it applies on change the same way, so the modal needs no save.
+const updateDefaultSort = (value: NullableVehicleSortEnum | null) => {
+  const previous = defaultSort.value;
+
+  defaultSort.value = value;
+
+  updateProfile
+    .mutateAsync({ data: { hangarDefaultSort: value } })
+    .then(() => {
+      comlink.emit("user-update");
+      comlink.emit("hangar-change");
+    })
+    .catch(() => {
+      defaultSort.value = previous;
+
+      displayAlert({ text: t("messages.updateHangar.failure") });
+    });
+};
+
 const displayAsGrid = () => {
   hangarStore.gridView = true;
 };
@@ -101,6 +154,21 @@ const displayAsList = () => {
       </div>
     </div>
     <hr />
+    <div class="row">
+      <div class="col-12">
+        <BaseSelect
+          :model-value="defaultSort"
+          :options="defaultSortOptions"
+          :label="t('labels.user.hangarDefaultSort')"
+          :info="t('labels.user.hangarDefaultSortInfo')"
+          name="hangarDefaultSort"
+          :searchable="false"
+          :nullable="false"
+          unsorted
+          @update:model-value="updateDefaultSort"
+        />
+      </div>
+    </div>
     <div v-if="hangarStore.gridView" class="row">
       <div class="col-12">
         <FormToggle

@@ -7,10 +7,10 @@ export default {
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
-import { type FilterOption, type UserUpdateInput } from "@/services/fyApi";
+import { type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useHangarDefaultSortOptions } from "@/frontend/composables/useHangarDefaultSortOptions";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -88,27 +88,7 @@ const [hideOwner, hideOwnerProps] = defineField("hideOwner");
 const [hangarDefaultSort, hangarDefaultSortProps] =
   defineField("hangarDefaultSort");
 
-const sortFields = useVehicleSortFields({ rank: true });
-
-// The custom order only runs one way: it is the order the ships were dragged
-// into, and reading it backwards is not an order anybody arranged.
-const hangarDefaultSortOptions = computed<FilterOption[]>(() => [
-  // No stored order: the server leads with the flagship and then sorts by
-  // name, which none of the single sorts below reproduces.
-  { value: null, label: t("labels.user.hangarDefaultSortOptions.standard") },
-  ...sortFields.value.flatMap(({ name, label }) => {
-    if (name === "rank") {
-      return [{ value: "rank asc", label }];
-    }
-
-    return (["asc", "desc"] as const).map((direction) => ({
-      value: `${String(name)} ${direction}`,
-      label: t(`labels.user.hangarDefaultSortOptions.${direction}`, {
-        field: label,
-      }),
-    }));
-  }),
-]);
+const hangarDefaultSortOptions = useHangarDefaultSortOptions();
 
 // See `narrowerAudienceDisabled`: a friend is a member of the public, so while
 // the public switch is on the friend one is not consulted at all.

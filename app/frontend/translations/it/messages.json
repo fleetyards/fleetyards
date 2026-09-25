@@ -55,6 +55,7 @@
         "failure": "Il profilo non può essere aggiornato."
       },
       "updateHangar": {
+        "failure": "Impossibile aggiornare le impostazioni dell'hangar.",
         "success": "Impostazioni Hangar aggiornate."
       },
       "updatePrivacy": {

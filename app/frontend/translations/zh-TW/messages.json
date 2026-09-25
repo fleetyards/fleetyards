@@ -55,6 +55,7 @@
         "failure": "個人資料無法更新。"
       },
       "updateHangar": {
+        "failure": "無法更新機庫設定。",
         "success": "機庫設定已更新。"
       },
       "updatePrivacy": {

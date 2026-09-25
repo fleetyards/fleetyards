@@ -55,6 +55,7 @@
         "failure": "无法更新资料。"
       },
       "updateHangar": {
+        "failure": "无法更新机库设置。",
         "success": "机库设置已更新。"
       },
       "updatePrivacy": {
