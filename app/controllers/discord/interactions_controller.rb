@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Discord
-  # Discord's Interactions Endpoint. Every slash command arrives here as a
-  # POST; there is no session, no cookie and no user.
+  # Discord's Interactions Endpoint. Every slash command and button click
+  # arrives here as a POST; there is no session, no cookie and no user.
   #
   # Inherits ActionController::Base rather than ApplicationController on
   # purpose: ApplicationController adds HTTP basic auth whenever
@@ -14,10 +14,12 @@ module Discord
     # Interaction request types.
     PING = 1
     APPLICATION_COMMAND = 2
+    MESSAGE_COMPONENT = 3
 
     # Interaction response types.
     PONG = 1
     DEFERRED_MESSAGE = 5
+    DEFERRED_UPDATE_MESSAGE = 6
 
     def create
       return head :unauthorized unless verified?
@@ -25,6 +27,7 @@ module Discord
       case payload["type"]
       when PING then render json: {type: PONG}
       when APPLICATION_COMMAND then acknowledge_command
+      when MESSAGE_COMPONENT then acknowledge_component
       else head :no_content
       end
     end
@@ -58,6 +61,15 @@ module Discord
       render json: {type: DEFERRED_MESSAGE, data: data}
     end
 
+    # A click edits the message it came from rather than posting a new one, so
+    # it is deferred as an update: a deferred message would drop a "thinking"
+    # placeholder into the channel and leave the button spinning.
+    private def acknowledge_component
+      Discord::ComponentJob.perform_async(component_context)
+
+      render json: {type: DEFERRED_UPDATE_MESSAGE}
+    end
+
     private def ephemeral_command?
       Discord::Commands::Registry.ephemeral?(command_data["name"], invoked_subcommand&.dig("name"))
     end
@@ -78,6 +90,18 @@ module Discord
         "discord_user_id" => invoking_user_id,
         # Discord tells us the invoking member's own client locale; the guild
         # locale is the fallback for a member who has none.
+        "locale" => payload["locale"] || payload["guild_locale"],
+        "requested_at" => Time.current.to_i
+      }
+    end
+
+    private def component_context
+      {
+        "application_id" => payload["application_id"],
+        "token" => payload["token"],
+        "custom_id" => command_data["custom_id"],
+        "guild_id" => payload["guild_id"],
+        "discord_user_id" => invoking_user_id,
         "locale" => payload["locale"] || payload["guild_locale"],
         "requested_at" => Time.current.to_i
       }

@@ -12,6 +12,7 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
     @key = OpenSSL::PKey.generate_key("ED25519")
     Discord::SignatureVerifier.stubs(:public_key).returns(@key.raw_public_key.unpack1("H*"))
     Discord::CommandJob.jobs.clear
+    Discord::ComponentJob.jobs.clear
   end
 
   def post_signed(payload, timestamp: Time.current.to_i.to_s, signature: nil)
@@ -193,5 +194,29 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
 
     assert_response :no_content
     assert_equal 0, Discord::CommandJob.jobs.size
+  end
+
+  test "a button click is acknowledged as a deferred update of its message" do
+    post_signed({
+      type: 3,
+      application_id: "488788875699945472",
+      token: "interaction-token",
+      guild_id: "123456789",
+      locale: "de",
+      member: {user: {id: "42"}},
+      data: {custom_id: "fleet_request:accept:abc", component_type: 2}
+    })
+
+    assert_response :success
+    assert_equal 6, response.parsed_body["type"]
+    assert_equal 0, Discord::CommandJob.jobs.size
+
+    context = Discord::ComponentJob.jobs.sole["args"].first
+
+    assert_equal "fleet_request:accept:abc", context["custom_id"]
+    assert_equal "interaction-token", context["token"]
+    assert_equal "123456789", context["guild_id"]
+    assert_equal "42", context["discord_user_id"]
+    assert_equal "de", context["locale"]
   end
 end

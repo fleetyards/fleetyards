@@ -416,7 +416,7 @@
           "announcementChannel": "Canal de anuncios",
           "announcementChannelHint": "Aquí se publican los eventos nuevos y los recordatorios de inicio. Sin canal, se envían por el webhook. Los eventos restringidos a escuadrones se publican en los canales de esos escuadrones.",
           "officersChannel": "Canal de oficiales",
-          "officersChannelHint": "Los eventos visibles solo para oficiales se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord.",
+          "officersChannelHint": "Los eventos visibles solo para oficiales se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord. Las solicitudes de ingreso también se publican aquí, con botones para aceptarlas o rechazarlas.",
           "digestWeekday": "Resumen semanal",
           "digestWeekdayHint": "Una vez por semana, cada canal recibe una lista de los eventos de los próximos siete días que puede ver. Déjalo vacío para desactivarlo.",
           "digestTime": "Hora del resumen",

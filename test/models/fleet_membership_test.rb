@@ -4,27 +4,29 @@
 #
 # Table name: fleet_memberships
 #
-#  id                :uuid             not null, primary key
-#  aasm_state        :string
-#  accepted_at       :datetime
-#  blueprints_filter :integer          default("all"), not null
-#  declined_at       :datetime
-#  discarded_at      :datetime
-#  hide_ships        :boolean          default(FALSE)
-#  invited_at        :datetime
-#  invited_by        :uuid
-#  nickname          :string
-#  primary           :boolean          default(FALSE)
-#  requested_at      :datetime
-#  ships_filter      :integer          default("all")
-#  used_invite_token :string
-#  verified          :boolean          default(FALSE), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  fleet_id          :uuid
-#  fleet_role_id     :uuid
-#  hangar_group_id   :uuid
-#  user_id           :uuid
+#  id                         :uuid             not null, primary key
+#  aasm_state                 :string
+#  accepted_at                :datetime
+#  blueprints_filter          :integer          default("all"), not null
+#  declined_at                :datetime
+#  discarded_at               :datetime
+#  discord_request_channel_id :string
+#  discord_request_message_id :string
+#  hide_ships                 :boolean          default(FALSE)
+#  invited_at                 :datetime
+#  invited_by                 :uuid
+#  nickname                   :string
+#  primary                    :boolean          default(FALSE)
+#  requested_at               :datetime
+#  ships_filter               :integer          default("all")
+#  used_invite_token          :string
+#  verified                   :boolean          default(FALSE), not null
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  fleet_id                   :uuid
+#  fleet_role_id              :uuid
+#  hangar_group_id            :uuid
+#  user_id                    :uuid
 #
 # Indexes
 #
@@ -230,5 +232,37 @@ class FleetMembershipTest < ActiveSupport::TestCase
 
     assert_not duplicate.save_without_conflict
     assert_equal [:taken], duplicate.errors.where(:user_id).map(&:type)
+  end
+
+  # Both copies were loaded while the request was pending, as two officers
+  # answering at once -- on the website, in Discord, or one of each -- would
+  # load them.
+  test "a request answered through a stale copy is not answered again" do
+    request = create(:fleet_membership, :requested)
+    first = FleetMembership.find(request.id)
+    second = FleetMembership.find(request.id)
+
+    assert_equal :done, first.answer_request(accept: true)
+    assert_equal :not_pending, second.answer_request(accept: false)
+    assert_equal "accepted", request.reload.aasm_state
+  end
+
+  test "a request withdrawn after it was loaded is not answered" do
+    request = create(:fleet_membership, :requested)
+    stale = FleetMembership.find(request.id)
+    request.discard!
+
+    assert_equal :not_pending, stale.answer_request(accept: true)
+    assert_equal "requested", request.reload.aasm_state
+  end
+
+  test "answering a request records its author on the version" do
+    request = create(:fleet_membership, :requested)
+    officer = create(:user)
+
+    request.answer_request(accept: false, author_id: officer.id)
+
+    assert_equal "declined", request.reload.aasm_state
+    assert_equal officer.id, request.versions.last.author_id
   end
 end

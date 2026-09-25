@@ -94,6 +94,17 @@ de:
       starting_now: Beginnt jetzt
       starts_in: 'Beginnt in %{count} Min.'
       title: 'Erinnerung: %{title}'
+    join_request:
+      accepted: Angenommen.
+      accepted_by: 'Angenommen von %{officer}.'
+      buttons:
+        accept: Annehmen
+        decline: Ablehnen
+      closed: Diese Anfrage ist nicht mehr offen.
+      declined: Abgelehnt.
+      declined_by: 'Abgelehnt von %{officer}.'
+      gone: Diese Anfrage gibt es nicht mehr.
+      summary: '**%{username}** möchte [%{fleet}](%{url}) beitreten.'
     new_ship:
       message: 'Darf ich vorstellen: %{manufacturer} %{model}'
       title: Neues Schiff/Fahrzeug hinzugefügt

@@ -4,27 +4,29 @@
 #
 # Table name: fleet_memberships
 #
-#  id                :uuid             not null, primary key
-#  aasm_state        :string
-#  accepted_at       :datetime
-#  blueprints_filter :integer          default("all"), not null
-#  declined_at       :datetime
-#  discarded_at      :datetime
-#  hide_ships        :boolean          default(FALSE)
-#  invited_at        :datetime
-#  invited_by        :uuid
-#  nickname          :string
-#  primary           :boolean          default(FALSE)
-#  requested_at      :datetime
-#  ships_filter      :integer          default("all")
-#  used_invite_token :string
-#  verified          :boolean          default(FALSE), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  fleet_id          :uuid
-#  fleet_role_id     :uuid
-#  hangar_group_id   :uuid
-#  user_id           :uuid
+#  id                         :uuid             not null, primary key
+#  aasm_state                 :string
+#  accepted_at                :datetime
+#  blueprints_filter          :integer          default("all"), not null
+#  declined_at                :datetime
+#  discarded_at               :datetime
+#  discord_request_channel_id :string
+#  discord_request_message_id :string
+#  hide_ships                 :boolean          default(FALSE)
+#  invited_at                 :datetime
+#  invited_by                 :uuid
+#  nickname                   :string
+#  primary                    :boolean          default(FALSE)
+#  requested_at               :datetime
+#  ships_filter               :integer          default("all")
+#  used_invite_token          :string
+#  verified                   :boolean          default(FALSE), not null
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  fleet_id                   :uuid
+#  fleet_role_id              :uuid
+#  hangar_group_id            :uuid
+#  user_id                    :uuid
 #
 # Indexes
 #
@@ -139,6 +141,7 @@ class FleetMembership < ApplicationRecord
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
   after_commit :sync_discord_roles, on: %i[create update], if: :discord_roles_affected?
+  after_commit :refresh_discord_join_request, if: :join_request_closed?
   before_destroy :check_if_can_be_destroyed
   before_discard :check_if_can_be_destroyed
   after_discard :broadcast_destroy, :remove_fleet_vehicles, :sync_discord_roles
@@ -220,7 +223,7 @@ class FleetMembership < ApplicationRecord
       transitions from: :created, to: :invited
     end
 
-    event :request, after_commit: :notify_fleet_admins do
+    event :request, after_commit: %i[notify_fleet_admins post_discord_join_request] do
       transitions from: :created, to: :requested
     end
 
@@ -376,6 +379,42 @@ class FleetMembership < ApplicationRecord
         record: self
       )
     end
+  end
+
+  # Answers a join request under a row lock and returns :done, :not_pending or
+  # :failed. Every path that accepts or declines one goes through here: two
+  # officers answering at once each hold a copy that still reads `requested`,
+  # and with whiny_transitions off both transitions would save -- a request
+  # could end up declined after its applicant was told they were accepted.
+  def answer_request(accept:, author_id: nil)
+    with_lock do
+      # Withdrawing discards the membership and leaves its state alone.
+      next :not_pending unless kept? && requested?
+
+      self.author_id = author_id if author_id.present?
+      if accept ? accept_request! : decline!
+        :done
+      else
+        :failed
+      end
+    end
+  end
+
+  def post_discord_join_request
+    return if ::Discord::EventAnnouncement.officers_targets(fleet).empty?
+
+    ::Discord::PostJoinRequestJob.perform_async(id)
+  end
+
+  # Answered, withdrawn or removed while it was pending.
+  def join_request_closed?
+    return requested? if destroyed?
+
+    saved_change_to_aasm_state?(from: "requested") || (saved_change_to_discarded_at? && discarded? && requested?)
+  end
+
+  def refresh_discord_join_request
+    ::Discord::RefreshJoinRequestMessageJob.perform_async(id, discord_request_channel_id, discord_request_message_id)
   end
 
   def on_accept_request

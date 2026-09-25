@@ -94,6 +94,17 @@ fr:
       starting_now: Commence maintenant
       starts_in: 'Commence dans %{count} min'
       title: 'Rappel : %{title}'
+    join_request:
+      accepted: Acceptée.
+      accepted_by: 'Acceptée par %{officer}.'
+      buttons:
+        accept: Accepter
+        decline: Refuser
+      closed: 'Cette demande n''est plus en attente.'
+      declined: Refusée.
+      declined_by: 'Refusée par %{officer}.'
+      gone: 'Cette demande n''existe plus.'
+      summary: '**%{username}** demande à rejoindre [%{fleet}](%{url}).'
     new_ship:
       message: 'Permettez-moi de vous présenter : %{manufacturer} %{model}'
       title: Nouveau vaisseau / véhicule ajouté

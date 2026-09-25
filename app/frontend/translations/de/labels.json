@@ -416,7 +416,7 @@
           "announcementChannel": "Ankündigungskanal",
           "announcementChannelHint": "Neue Events und Erinnerungen kurz vor dem Start werden hier gepostet. Ohne Kanal laufen sie über den Webhook. Events, die auf Staffeln beschränkt sind, werden stattdessen in den Kanälen der Staffeln gepostet.",
           "officersChannel": "Offizierskanal",
-          "officersChannelHint": "Events, die nur Offiziere sehen, werden hier angekündigt und nirgends sonst auf Discord. Ohne Kanal werden sie auf Discord gar nicht angekündigt.",
+          "officersChannelHint": "Events, die nur Offiziere sehen, werden hier angekündigt und nirgends sonst auf Discord. Ohne Kanal werden sie auf Discord gar nicht angekündigt. Auch Beitrittsanfragen werden hier gepostet, mit Buttons zum Annehmen oder Ablehnen.",
           "digestWeekday": "Wöchentliche Übersicht",
           "digestWeekdayHint": "Einmal pro Woche bekommt jeder Kanal eine Liste der Events der nächsten sieben Tage, die er sehen darf. Leer lassen, um sie abzuschalten.",
           "digestTime": "Uhrzeit der Übersicht",

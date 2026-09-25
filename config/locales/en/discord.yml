@@ -94,6 +94,17 @@ en:
       starting_now: Starting now
       starts_in: 'Starts in %{count} min'
       title: 'Reminder: %{title}'
+    join_request:
+      accepted: Accepted.
+      accepted_by: 'Accepted by %{officer}.'
+      buttons:
+        accept: Accept
+        decline: Decline
+      closed: This request is no longer pending.
+      declined: Declined.
+      declined_by: 'Declined by %{officer}.'
+      gone: This request no longer exists.
+      summary: '**%{username}** asked to join [%{fleet}](%{url}).'
     new_ship:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added

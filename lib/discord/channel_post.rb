@@ -24,12 +24,15 @@ module Discord
       @api = api
     end
 
-    def deliver(content)
+    # The message Discord created, or false when the post was dropped.
+    def deliver(content, components: nil)
       return skip("no guild bound") if @guild_id.blank?
       return skip("channel belongs to another guild") unless api.get_channel(@channel_id)&.dig("guild_id") == @guild_id
 
-      api.create_message(@channel_id, {content: MessageLength.truncate(content), allowed_mentions: {parse: []}})
-      true
+      payload = {content: MessageLength.truncate(content), allowed_mentions: {parse: []}}
+      payload[:components] = components if components.present?
+
+      api.create_message(@channel_id, payload)
     rescue ApiClient::Error => e
       raise unless UNDELIVERABLE_STATUSES.include?(e.status)
 

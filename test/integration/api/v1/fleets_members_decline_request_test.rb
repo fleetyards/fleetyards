@@ -81,4 +81,21 @@ class Api::V1::FleetsMembersDeclineRequestTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
       body: {}
   end
+
+  test "PUT /fleets/:slug/members/:username/decline withdraws an invitation" do
+    invitee = create(:user)
+    invitation = create(:fleet_membership, fleet: @fleet, user: invitee, aasm_state: :invited)
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, username: invitee.username}, body: {}
+    assert_equal "declined", invitation.reload.aasm_state
+  end
+
+  test "PUT /fleets/:slug/members/:username/decline records the officer as the author" do
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, username: @applicant.username}, body: {}
+    assert_equal "declined", @membership.reload.aasm_state
+    assert_equal @admin.id, @membership.versions.last.author_id
+  end
 end

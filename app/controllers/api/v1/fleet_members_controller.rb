@@ -73,13 +73,21 @@ module Api
       end
 
       def accept_request
-        unless @member.accept_request!
+        unless @member.answer_request(accept: true, author_id: current_resource_owner.id) == :done
           render json: ValidationError.new("fleet_members.accept", errors: @member.errors), status: :bad_request
         end
       end
 
       def decline_request
-        unless @member.decline!
+        # The endpoint also withdraws an invitation, which is not a join
+        # request and keeps its plain transition.
+        declined = if @member.invited?
+          @member.decline!
+        else
+          @member.answer_request(accept: false, author_id: current_resource_owner.id) == :done
+        end
+
+        unless declined
           render json: ValidationError.new("fleet_members.decline", errors: @member.errors), status: :bad_request
         end
       end

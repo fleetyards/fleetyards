@@ -416,7 +416,7 @@
           "announcementChannel": "Salon d'annonces",
           "announcementChannelHint": "Les nouveaux événements et les rappels avant le début sont publiés ici. Sans salon, ils passent par le webhook. Les événements réservés à des escadrons sont publiés dans les salons de ces escadrons.",
           "officersChannel": "Salon des officiers",
-          "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord.",
+          "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord. Les demandes d'adhésion y sont aussi publiées, avec des boutons pour les accepter ou les refuser.",
           "digestWeekday": "Récapitulatif hebdomadaire",
           "digestWeekdayHint": "Une fois par semaine, chaque salon reçoit la liste des événements des sept prochains jours qu'il peut voir. Laissez vide pour le désactiver.",
           "digestTime": "Heure du récapitulatif",
