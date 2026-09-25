@@ -638,6 +638,25 @@ class Vehicle < ApplicationRecord
     self.bought_via = :ingame
   end
 
+  # `move_to!` takes an index into the owner's whole rank group, which holds the
+  # wishlist, hidden vehicles and loaners as well as whatever the caller is
+  # looking at, so the place is given by a neighbour instead.
+  #
+  # Only the rank is written: a full save would re-run the loaner, snub craft
+  # and fleet callbacks for a change none of them read.
+  def move_next_to!(neighbour, after:)
+    self.class.lexorank_ranking.with_lock_if_enabled(self) do
+      neighbour_rank = Vehicle.where(id: neighbour.id).pick(:rank)
+      index = Vehicle.ranked.where(user_id:).where.not(id:).where(rank: ...neighbour_rank).count
+
+      # rubocop:disable Rails/SkipsModelValidations
+      update_columns(rank: move_to(after ? index + 1 : index))
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+
+    broadcast_update
+  end
+
   protected def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
   end

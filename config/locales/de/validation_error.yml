@@ -35,6 +35,7 @@ de:
       update: Schiff konnte nicht aktualisiert werden.
       bulk_create: Einige Schiffe konnten nicht hinzugefügt werden.
       bulk_update: Einige Schiffe konnten nicht aktualisiert werden.
+      move: Schiff konnte nicht verschoben werden. Gib genau ein anderes Schiff an, neben das es gesetzt wird.
       move_all_ingame_to_wish_list: Ingame-Schiffe konnten nicht auf die Wunschliste verschoben werden.
       sync: Hangar konnte nicht synchronisiert werden.
     vehicle_loadout:

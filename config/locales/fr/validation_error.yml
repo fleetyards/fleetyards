@@ -28,6 +28,7 @@ fr:
       update: Le vaisseau n'a pas pu être mis à jour.
       bulk_create: Certains vaisseaux n'ont pas pu être ajoutés.
       bulk_update: Impossible de mettre à jour certains vaisseaux.
+      move: Le vaisseau n'a pas pu être déplacé. Indiquez exactement un autre vaisseau à côté duquel le placer.
       move_all_ingame_to_wish_list: Impossible de déplacer les vaisseaux in-game vers la liste de souhaits.
       sync: Impossible de synchroniser le hangar.
     vehicle_loadout:

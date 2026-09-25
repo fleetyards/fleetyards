@@ -35,6 +35,7 @@ en:
       update: Ship could not be updated.
       bulk_create: Some ships could not be added.
       bulk_update: Some ships could not be updated.
+      move: Ship could not be moved. Give exactly one other ship to place it next to.
       move_all_ingame_to_wish_list: In-game ships could not be moved to the wishlist.
       sync: Hangar could not be synchronised.
     vehicle_loadout:
