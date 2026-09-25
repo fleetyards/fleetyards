@@ -165,10 +165,7 @@ const activeSort = computed(() =>
 // the one on screen: under another sort, or with some ships filtered out, a
 // drop would land somewhere the user cannot see.
 const canSort = computed(
-  () =>
-    gridView.value &&
-    activeSort.value === "rank asc" &&
-    !isFilterSelected.value,
+  () => activeSort.value === "rank asc" && !isFilterSelected.value,
 );
 
 const { orderedVehicles, onSort } = useVehicleReorder(
@@ -620,8 +617,10 @@ const openDisplayOptionsModal = () => {
         v-else
         :loading="loading"
         :empty-visible="emptyVisible"
-        :vehicles="vehicles?.items || []"
+        :vehicles="orderedVehicles"
         :editable="true"
+        :sortable="canSort"
+        @sort="onSort"
       />
 
       <FleetchartApp

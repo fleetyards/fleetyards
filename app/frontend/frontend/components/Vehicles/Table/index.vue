@@ -36,9 +36,13 @@ type Props = {
   wishlist?: boolean;
   loading?: boolean;
   emptyVisible?: boolean;
+  // Draws a grip beside each name and lets the rows be dragged by it.
+  sortable?: boolean;
 };
 
 const props = defineProps<Props>();
+
+const emit = defineEmits<{ sort: [keys: string[], moved: string] }>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
@@ -196,7 +200,10 @@ const resetSelected = () => {
       :selected="selected"
       :loading="loading"
       :empty-visible="emptyVisible"
+      :sortable="sortable"
+      sort-handle=".vehicles-table-grip"
       @selected-change="onSelectedChange"
+      @sort="(keys, moved) => emit('sort', keys, moved)"
     >
       <template #selected-actions>
         <ListActions :selected="selected" :wishlist="wishlist" />
@@ -240,32 +247,43 @@ const resetSelected = () => {
         />
       </template>
       <template #col-name="{ record }">
-        <div class="name">
-          <router-link
-            :to="{
-              name: 'ship',
-              params: {
-                slug: record.model.slug,
-              },
-            }"
+        <div class="vehicles-table-name">
+          <span
+            v-if="sortable"
+            v-tooltip="t('actions.reorder')"
+            class="vehicles-table-grip"
+            :aria-label="t('actions.reorder')"
+            data-test="vehicles-table-grip"
           >
-            <span v-if="record.name">
-              {{ record.name }}
-            </span>
+            <i class="fa-duotone fa-grip-vertical" />
+          </span>
+          <div class="name">
+            <router-link
+              :to="{
+                name: 'ship',
+                params: {
+                  slug: record.model.slug,
+                },
+              }"
+            >
+              <span v-if="record.name">
+                {{ record.name }}
+              </span>
 
-            <span v-else>{{ record.model.name }}</span>
-          </router-link>
-          <br />
-          <small>
-            <!-- eslint-disable vue/no-v-html -->
-            <span
-              v-if="record.model.manufacturer && !manufacturerColumnVisible"
-              v-html="record.model.manufacturer.name"
-            />
-            <template v-if="record.name">
-              {{ record.model.name }}
-            </template>
-          </small>
+              <span v-else>{{ record.model.name }}</span>
+            </router-link>
+            <br />
+            <small>
+              <!-- eslint-disable vue/no-v-html -->
+              <span
+                v-if="record.model.manufacturer && !manufacturerColumnVisible"
+                v-html="record.model.manufacturer.name"
+              />
+              <template v-if="record.name">
+                {{ record.model.name }}
+              </template>
+            </small>
+          </div>
         </div>
       </template>
       <template #col-modelManufacturerName="{ record }">
