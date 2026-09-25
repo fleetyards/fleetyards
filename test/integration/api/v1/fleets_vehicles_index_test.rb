@@ -90,6 +90,64 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def fleet_with_ships(lengths)
+    owner = create(:user)
+    lengths.each_with_index do |length, index|
+      manufacturer = create(:manufacturer, name: "Maker #{("A".ord + index).chr}")
+      create(:vehicle, user: owner, model: create(:model, length:, manufacturer:))
+    end
+
+    [owner, create(:fleet, admins: [owner])]
+  end
+
+  test "GET /fleets/:slug/vehicles sorts by the ship's own figures" do
+    owner, fleet = fleet_with_ships([20, 80, 50])
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {s: "modelLength desc"}} do
+      assert_equal [80, 50, 20], parsed_body["items"].map { |item| item.dig("model", "metrics", "length") }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles sorts by manufacturer" do
+    owner, fleet = fleet_with_ships([20, 80, 50])
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {s: "modelManufacturerName desc"}} do
+      assert_equal ["Maker C", "Maker B", "Maker A"],
+        parsed_body["items"].map { |item| item.dig("model", "manufacturer", "name") }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles sorts a grouped list by the ship" do
+    owner, fleet = fleet_with_ships([20, 80, 50])
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "modelManufacturerName desc"}} do
+      assert_equal ["Maker C", "Maker B", "Maker A"],
+        parsed_body["items"].map { |item| item.dig("manufacturer", "name") }
+    end
+  end
+
+  # A grouped list holds ships, which have no date a vehicle was added on.
+  test "GET /fleets/:slug/vehicles falls back to the name for a grouped list sorted by date" do
+    owner, fleet = fleet_with_ships([20, 80])
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {s: "createdAt desc"}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_equal names.sort, names
+    end
+  end
+
   test "GET /fleets/:slug/vehicles works for members" do
     sign_in @member
 

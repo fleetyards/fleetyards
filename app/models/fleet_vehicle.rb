@@ -44,8 +44,19 @@ class FleetVehicle < ApplicationRecord
   }.freeze
 
   DEFAULT_SORTING_PARAMS = ["model_name asc"]
-  ALLOWED_SORTING_PARAMS = [
-    "modelName asc", "modelName desc", "createdAt asc", "createdAt desc", "updatedAt asc",
-    "updatedAt desc"
-  ]
+  MODEL_SORT_FIELDS = %w[
+    modelName modelManufacturerName modelLength modelBeam modelHeight modelMass modelCargo
+    modelScmSpeed modelMaxSpeed modelGroundMaxSpeed modelFocus modelProductionStatus modelPrice
+    modelPledgePrice
+  ].freeze
+  ALLOWED_SORTING_PARAMS = (MODEL_SORT_FIELDS + %w[createdAt updatedAt])
+    .flat_map { |field| ["#{field} asc", "#{field} desc"] }
+
+  # A grouped list is a list of ships rather than of vehicles, so it can only
+  # follow the sorts that name the ship, restated in Model's own terms. The
+  # vehicle's dates have no counterpart and fall back to the name.
+  def self.model_sorts(sorts)
+    Array(sorts).filter_map { |sort| sort.delete_prefix("model_") if sort.start_with?("model_") }
+      .presence || ["name asc"]
+  end
 end

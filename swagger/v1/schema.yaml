@@ -23323,6 +23323,32 @@ components:
       enum:
       - modelName asc
       - modelName desc
+      - modelManufacturerName asc
+      - modelManufacturerName desc
+      - modelLength asc
+      - modelLength desc
+      - modelBeam asc
+      - modelBeam desc
+      - modelHeight asc
+      - modelHeight desc
+      - modelMass asc
+      - modelMass desc
+      - modelCargo asc
+      - modelCargo desc
+      - modelScmSpeed asc
+      - modelScmSpeed desc
+      - modelMaxSpeed asc
+      - modelMaxSpeed desc
+      - modelGroundMaxSpeed asc
+      - modelGroundMaxSpeed desc
+      - modelFocus asc
+      - modelFocus desc
+      - modelProductionStatus asc
+      - modelProductionStatus desc
+      - modelPrice asc
+      - modelPrice desc
+      - modelPledgePrice asc
+      - modelPledgePrice desc
       - createdAt asc
       - createdAt desc
       - updatedAt asc
@@ -23330,6 +23356,32 @@ components:
       x-enumNames:
       - MODEL_NAME_ASC
       - MODEL_NAME_DESC
+      - MODEL_MANUFACTURER_NAME_ASC
+      - MODEL_MANUFACTURER_NAME_DESC
+      - MODEL_LENGTH_ASC
+      - MODEL_LENGTH_DESC
+      - MODEL_BEAM_ASC
+      - MODEL_BEAM_DESC
+      - MODEL_HEIGHT_ASC
+      - MODEL_HEIGHT_DESC
+      - MODEL_MASS_ASC
+      - MODEL_MASS_DESC
+      - MODEL_CARGO_ASC
+      - MODEL_CARGO_DESC
+      - MODEL_SCM_SPEED_ASC
+      - MODEL_SCM_SPEED_DESC
+      - MODEL_MAX_SPEED_ASC
+      - MODEL_MAX_SPEED_DESC
+      - MODEL_GROUND_MAX_SPEED_ASC
+      - MODEL_GROUND_MAX_SPEED_DESC
+      - MODEL_FOCUS_ASC
+      - MODEL_FOCUS_DESC
+      - MODEL_PRODUCTION_STATUS_ASC
+      - MODEL_PRODUCTION_STATUS_DESC
+      - MODEL_PRICE_ASC
+      - MODEL_PRICE_DESC
+      - MODEL_PLEDGE_PRICE_ASC
+      - MODEL_PLEDGE_PRICE_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       - UPDATED_AT_ASC
