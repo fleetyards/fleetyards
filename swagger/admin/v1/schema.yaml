@@ -13087,6 +13087,8 @@ components:
       properties:
         nameCont:
           type: string
+        nameOrSlugCont:
+          type: string
         equipmentTypeCont:
           type: string
         itemTypeCont:
@@ -13186,21 +13188,57 @@ components:
       enum:
       - name asc
       - name desc
+      - equipmentType asc
+      - equipmentType desc
       - itemType asc
       - itemType desc
+      - manufacturerName asc
+      - manufacturerName desc
       - createdAt asc
       - createdAt desc
       - updatedAt asc
       - updatedAt desc
+      - damageReduction asc
+      - damageReduction desc
+      - radiationProtection asc
+      - radiationProtection desc
+      - gForceTolerance asc
+      - gForceTolerance desc
+      - storage asc
+      - storage desc
+      - range asc
+      - range desc
+      - rateOfFire asc
+      - rateOfFire desc
+      - volume asc
+      - volume desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
+      - EQUIPMENT_TYPE_ASC
+      - EQUIPMENT_TYPE_DESC
       - ITEM_TYPE_ASC
       - ITEM_TYPE_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       - UPDATED_AT_ASC
       - UPDATED_AT_DESC
+      - DAMAGE_REDUCTION_ASC
+      - DAMAGE_REDUCTION_DESC
+      - RADIATION_PROTECTION_ASC
+      - RADIATION_PROTECTION_DESC
+      - G_FORCE_TOLERANCE_ASC
+      - G_FORCE_TOLERANCE_DESC
+      - STORAGE_ASC
+      - STORAGE_DESC
+      - RANGE_ASC
+      - RANGE_DESC
+      - RATE_OF_FIRE_ASC
+      - RATE_OF_FIRE_DESC
+      - VOLUME_ASC
+      - VOLUME_DESC
       title: EquipmentSortEnum
     EquipmentTypeEnum:
       type: string

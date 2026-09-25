@@ -10,9 +10,7 @@ module Admin
           authorize! with: ::Admin::EquipmentPolicy
 
           normalize_sort_params(equipment_query_params)
-          sorts = sorting_params(Equipment, equipment_query_params[:sorts])
-          name_sort = sorts.find { |sort| sort.start_with?("name ") }
-          equipment_query_params["sorts"] = sorts - [name_sort].compact
+          equipment_query_params["sorts"] = sorting_params(Equipment, equipment_query_params["sorts"])
 
           # `with_facts` because the filters resolve against the joined build.
           # Without it a fact condition raises rather than quietly matching the
@@ -25,15 +23,7 @@ module Admin
             .includes(:manufacturer, :item_prices)
             .ransack(equipment_query_params)
 
-          result = @q.result
-
-          # `ransack_alias :name` points name at name_or_slug so a search matches
-          # either, which leaves ransack unable to sort by it -- it drops the
-          # term without erroring. Name ordering is applied here instead, which
-          # also covers DEFAULT_SORTING_PARAMS.
-          result = result.order(Equipment.fact_sql(:name).public_send(name_sort.split.last)) if name_sort
-
-          @equipment = result
+          @equipment = @q.result
             .page(page_params)
             .per(per_page(Equipment))
         end
@@ -117,7 +107,7 @@ module Admin
 
         private def equipment_query_params
           @equipment_query_params ||= params.permit(q: [
-            :name_cont, :name_eq, :id_eq, :equipment_type_eq, :equipment_type_cont,
+            :name_cont, :name_or_slug_cont, :name_eq, :id_eq, :equipment_type_eq, :equipment_type_cont,
             :item_type_eq, :item_type_cont, :sub_type_cont, :weapon_class_cont,
             :hidden_eq, :store_image_blank, :buy_price_gteq, :buy_price_lteq, :sell_price_gteq,
             :sell_price_lteq, :s, :sorts,
