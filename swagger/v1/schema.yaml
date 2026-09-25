@@ -3912,6 +3912,13 @@ paths:
           type: string
           default: 30
         required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetInventoryQuery"
+        style: deepObject
+        explode: true
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -21492,6 +21499,20 @@ components:
           type: string
           format: uri
       title: FleetInventoryManager
+    FleetInventoryQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        visibilityEq:
+          "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
+        s:
+          type: string
+        sorts:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: FleetInventoryQuery
     FleetInventoryStockItem:
       type: object
       properties:

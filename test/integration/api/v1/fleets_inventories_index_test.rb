@@ -17,6 +17,11 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::FleetInventoryQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
 
       security [
         {SessionCookie: []},
@@ -141,6 +146,16 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/inventories filters by visibility" do
+    create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
+      params: {q: {visibilityEq: "officers_only"}} do
+      assert_equal ["Officer Cache"], parsed_body["items"].map { |entry| entry["name"] }
+    end
+  end
+
   # Ransack runs on top of the authorized scope, so a hand-written filter can
   # only narrow what the scope already allows. Asserted rather than read,
   # because it is the ordering of the two that makes it true.
@@ -148,10 +163,10 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
     create(:fleet_inventory, :officers_only, fleet: @fleet, name: "Officer Cache")
     sign_in @member
 
-    get "/api/v1/fleets/#{@fleet.slug}/inventories?q[visibilityEq]=officers_only"
-
-    assert_response :success
-    assert_empty JSON.parse(response.body)["items"]
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
+      params: {q: {visibilityEq: "officers_only"}} do
+      assert_empty parsed_body["items"]
+    end
   end
 
   test "GET inventories shows a squadron's new name after it is renamed" do
