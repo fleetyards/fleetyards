@@ -29,6 +29,25 @@ module Discord
       DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, "hello", @event.id)
     end
 
+    # Built when it posts, so an event cancelled meanwhile is not listed.
+    test "builds a digest post from the week as it is when it runs" do
+      @fleet.fleet_notification_setting.update!(discord_digest_weekday: 1, discord_digest_time: "18:00")
+      @event.update_columns(title: "Strike Op", starts_at: 2.days.from_now)
+      create(:fleet_event, :open, fleet: @fleet, title: "Mining Run", starts_at: 3.days.from_now)
+      @event.update_column(:status, "cancelled")
+      AnnouncementTarget.any_instance.expects(:deliver).with(@fleet, all_of(includes("Mining Run"), Not(includes("Strike Op"))))
+
+      DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, true)
+    end
+
+    test "posts no digest when nothing is left in the week" do
+      @fleet.fleet_notification_setting.update!(discord_digest_weekday: 1, discord_digest_time: "18:00")
+      @event.update_column(:status, "cancelled")
+      AnnouncementTarget.any_instance.expects(:deliver).never
+
+      DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, true)
+    end
+
     test "posts nothing for an event cancelled while the post waited" do
       @event.update_column(:status, "cancelled")
       AnnouncementTarget.any_instance.expects(:deliver).never

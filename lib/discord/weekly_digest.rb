@@ -28,8 +28,14 @@ module Discord
       @to = from + WINDOW
     end
 
+    # Queued without its text: each channel's list is built when that post
+    # runs, so an event cancelled or narrowed while it waited is not listed.
     def run
-      deliveries.each { |target, content| EventAnnouncement.enqueue(@fleet, target, content, digest: true) }
+      deliveries.each { |target, _content| EventAnnouncement.enqueue(@fleet, target, nil, digest: true) }
+    end
+
+    def content_for_target(target)
+      deliveries.find { |candidate, _content| candidate == target }&.last
     end
 
     # [[target, content], ...]

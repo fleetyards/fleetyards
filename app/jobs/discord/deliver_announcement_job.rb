@@ -2,6 +2,7 @@
 
 require "discord/announcement_target"
 require "discord/event_announcement"
+require "discord/weekly_digest"
 
 module Discord
   class DeliverAnnouncementJob < ::ApplicationJob
@@ -11,10 +12,17 @@ module Discord
     def perform(fleet_id, kind, channel_id, content, event_id = nil, digest = false)
       fleet = Fleet.kept.find_by(id: fleet_id)
       return if fleet.blank?
-      # Switched off while its posts waited in the queue.
-      return if digest && !fleet.fleet_notification_setting&.digest_enabled?
       target = AnnouncementTarget.new(kind, channel_id)
-      return if event_id.present? && !announceable?(event_id, target)
+
+      if digest
+        # Switched off while its posts waited in the queue.
+        return unless fleet.fleet_notification_setting&.digest_enabled?
+
+        content = WeeklyDigest.new(fleet).content_for_target(target)
+        return if content.blank?
+      elsif event_id.present?
+        return unless announceable?(event_id, target)
+      end
 
       target.deliver(fleet, content)
     end
