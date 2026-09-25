@@ -89,6 +89,34 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
     assert_equal @inventory, contract.reload.destination_inventory
   end
 
+  test "DELETE /hangar/inventories/:slug is refused while an expired contract still awaits a delivery" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user)
+    contract.update_columns(aasm_state: "expired")
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :bad_request
+  end
+
+  test "DELETE /hangar/inventories/:slug goes through once an expired contract has settled" do
+    contract = create(:fleet_contract, :in_progress, :hangar_destination, created_by: @user,
+      destination_inventory: @inventory)
+    create(:inventory_transfer, fleet_contract: contract, recipient: @user, aasm_state: "declined")
+    contract.update_columns(aasm_state: "expired")
+    sign_in @user
+
+    assert_difference "Inventory.count", -1 do
+      delete "/api/v1/hangar/inventories/#{@inventory.slug}", as: :json
+    end
+
+    assert_response :no_content
+  end
+
   test "DELETE /hangar/inventories/:slug goes through once the contract is closed" do
     create(:fleet_contract, :hangar_destination, created_by: @user, destination_inventory: @inventory,
       aasm_state: "fulfilled")

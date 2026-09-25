@@ -148,12 +148,13 @@ class Inventory < ApplicationRecord
   end
 
   # The holder removing it on purpose, while somebody is still delivering into
-  # it for them: the contract would lose its destination with work under way.
+  # it for them: the contract would lose its destination with work under way,
+  # and an expired one still counts a delivery that was already on its way.
   # Deleting the account destroys it through the association and is let
   # through; the contract then keeps working without one.
   private def refuse_while_a_contract_delivers_here
     return if destroyed_by_association
-    return unless destined_fleet_contracts.active.exists?
+    return unless destined_fleet_contracts.still_receiving.exists?
 
     errors.add(:base, :contract_destination,
       message: I18n.t("activerecord.errors.messages.inventory_contract_destination"))

@@ -149,6 +149,10 @@ class FleetContract < ApplicationRecord
       .or(where(id: InventoryTransfer.pending.where.not(fleet_contract_id: nil).select(:fleet_contract_id)))
   }
 
+  # Everything a delivery can still land on: on the board, being worked, or
+  # expired while a delivery filed before the deadline waits for an answer.
+  scope :still_receiving, -> { where(aasm_state: %w[open in_progress expired]).without_settled_expiry }
+
   # `whiny_transitions: false` matches the rest of the app's state machines.
   # The two stamps aasm cannot write are written by hand: its timestamp feature
   # derives the column from the *state* name, so `open` would want `open_at` and
