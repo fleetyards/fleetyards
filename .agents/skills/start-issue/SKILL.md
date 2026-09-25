@@ -54,6 +54,22 @@ Decide the branch prefix based on issue signals:
 gh issue edit <number> --add-assignee @me
 ```
 
+### 4b. Move the issue to "In Progress" on the project board
+
+Issues live on ProjectV2 #3 ("Fleetyards"). Look up the issue's item on that project and set its Status to **In Progress**:
+
+```bash
+ITEM=$(gh api graphql -f query='{repository(owner:"fleetyards",name:"fleetyards"){issue(number:<number>){projectItems(first:5){nodes{id project{number}}}}}}' \
+  --jq '.data.repository.issue.projectItems.nodes[] | select(.project.number==3).id')
+
+gh api graphql -f item="$ITEM" -f query='mutation($item:ID!){updateProjectV2ItemFieldValue(input:{
+  projectId:"PVT_kwDOAGoNC84AAZg-", itemId:$item,
+  fieldId:"PVTSSF_lADOAGoNC84AAZg-zgANg84",
+  value:{singleSelectOptionId:"47fc9ee4"}}){projectV2Item{id}}}'
+```
+
+If `ITEM` is empty the issue is not on the board — add it with `addProjectV2ItemById` first. If the call fails with a missing `project` scope, ask the user to run `gh auth refresh --hostname github.com --scopes project` in a real terminal, and continue without it.
+
 ### 5. Create the branch
 
 Build the branch name:
