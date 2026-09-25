@@ -30,9 +30,10 @@ class FleetVehicleTest < ActiveSupport::TestCase
     assert_equal ["name asc"], FleetVehicle.model_sorts(["vehicles_count desc"])
   end
 
-  test ".count_sort_direction reads the direction of the count sort" do
-    assert_equal "desc", FleetVehicle.count_sort_direction(["model_name asc", "vehicles_count desc"])
-    assert_nil FleetVehicle.count_sort_direction(["model_name asc"])
+  test ".count_sort? recognises the count sort in either direction" do
+    assert FleetVehicle.count_sort?("vehicles_count desc")
+    assert FleetVehicle.count_sort?("vehicles_count asc")
+    assert_not FleetVehicle.count_sort?("model_name asc")
   end
 
   test ".vehicle_sorts drops the count sort" do

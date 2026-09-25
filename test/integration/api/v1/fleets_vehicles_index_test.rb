@@ -189,6 +189,28 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/vehicles keeps the count behind a sort that comes first" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Alpha" => 1, "Bravo" => 3, "Charlie" => 2}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {sorts: ["modelName asc", "vehiclesCount desc"]}} do
+      assert_equal %w[Alpha Bravo Charlie], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /fleets/:slug/vehicles puts the count before a sort that comes after it" do
+    owner, fleet = fleet_with_holdings({"pilot" => {"Charlie" => 2, "Alpha" => 2, "Bravo" => 1}})
+    sign_in owner
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {grouped: true, q: {sorts: ["vehiclesCount desc", "modelName desc"]}} do
+      assert_equal %w[Charlie Alpha Bravo], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /fleets/:slug/vehicles counts only the vehicles the filters admit" do
     owner, fleet = fleet_with_holdings({
       "pilot" => {"Alpha" => 1, "Bravo" => 2},

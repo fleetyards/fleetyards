@@ -111,22 +111,31 @@ module FleetVehicleFiltersConcern
   # count is taken over the same filtered vehicles, so it matches the "3x" the
   # model-counts endpoint shows on each row.
   #
-  # Ransack drops any order it is handed, so the count goes in front afterwards,
-  # with the ship's own sorts left to break a tie.
+  # Ransack drops any order it is handed, so the count is spliced into the order
+  # afterwards, at the place it held among the sorts. Ransack orders by one
+  # expression per sort, which is what lets the model sorts in front of it be
+  # counted off. When the count is the only sort, the name breaks a tie.
   private def grouped_models(query, sorts)
+    sorts = Array(sorts)
+
     models = Model.where(id: query.result.pluck(:model_id))
       .ransack(sorts: FleetVehicle.model_sorts(sorts))
       .result
 
-    direction = FleetVehicle.count_sort_direction(sorts)
-    return models if direction.blank?
+    count_at = sorts.index { |sort| FleetVehicle.count_sort?(sort) }
+    return models if count_at.nil?
 
     counts = Vehicle.where(id: query.result(distinct: true).reorder(nil).select(:id))
       .group(:model_id)
       .select(:model_id, "COUNT(*) AS vehicles_count")
 
+    direction = sorts[count_at].split.last
+    count_order = Arel::Table.new(:fleet_counts)[:vehicles_count].public_send(direction)
+    leading = sorts.first(count_at).count { |sort| sort.start_with?("model_") }
+    orders = models.order_values
+
     models
       .joins("INNER JOIN (#{counts.to_sql}) fleet_counts ON fleet_counts.model_id = models.id")
-      .reorder(Arel::Table.new(:fleet_counts)[:vehicles_count].public_send(direction), *models.order_values)
+      .reorder(*orders.first(leading), count_order, *orders.drop(leading))
   end
 end
