@@ -31,7 +31,7 @@ module Discord
     end
 
     def cancelled?
-      state&.cancelled_at.present?
+      state&.cancelled? || false
     end
 
     # Slots are the point, but plenty of events have none -- those report the

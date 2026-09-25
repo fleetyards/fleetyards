@@ -138,6 +138,23 @@ module Discord
       assert_includes content, "/fleets/#{@fleet.slug}/events/"
     end
 
+    test "an occurrence cancelled by its status alone is not listed" do
+      series = event(title: "Daily Op", starts_at: 1.day.from_now, recurring: true, recurrence_interval: "daily", recurrence_count: 2)
+      first = series.occurrences(from: Time.current, to: 3.days.from_now).first
+      series.fleet_event_occurrence_states.create!(occurrence_date: first.to_date, status: "cancelled")
+
+      assert_equal 1, deliveries.fetch("fleet").scan("Daily Op").size
+    end
+
+    # A title holding `](` must not open a link of its own.
+    test "a title cannot rewrite the link it sits in" do
+      event(title: "Op](https://evil.example/")
+
+      content = deliveries.fetch("fleet")
+
+      assert_includes content, "[Op\\]\\(https://evil.example/](https://"
+    end
+
     test "drafts and cancelled events are not listed" do
       create(:fleet_event, fleet: @fleet, title: "Draft Op", starts_at: 2.days.from_now)
       event(title: "Called Off").tap { |called_off| called_off.update_column(:status, "cancelled") }
