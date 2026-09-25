@@ -46,6 +46,7 @@ const mount = async (props: Record<string, unknown>) => {
       fleet: {
         slug: "maru",
         features: [FeatureFlagName.FLEET_SQUADRONS],
+        squadronsEnabled: true,
       } as Fleet,
       ...props,
     },

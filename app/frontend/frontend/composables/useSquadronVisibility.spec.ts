@@ -5,7 +5,7 @@ import { useSquadronVisibility } from "./useSquadronVisibility";
 const enabled = ref(false);
 
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFleetFeatureEnabled: () => enabled.value }),
+  useFeatures: () => ({ isFleetSquadronsEnabled: () => enabled.value }),
 }));
 
 const options: FilterOption[] = [

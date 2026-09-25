@@ -9,7 +9,6 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
-  FeatureFlagName,
   useFleetSquadrons,
   type Fleet,
   type FilterOption,
@@ -33,12 +32,10 @@ const emit = defineEmits<{ "update:modelValue": [value: string[]] }>();
 
 const { t } = useI18n();
 
-const { isFleetFeatureEnabled } = useFeatures();
+const { isFleetSquadronsEnabled } = useFeatures();
 
 // Same gate the filter uses: no feature, no request and nothing drawn.
-const enabled = computed(() =>
-  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
-);
+const enabled = computed(() => isFleetSquadronsEnabled(props.fleet));
 
 const { data: squadrons } = useFleetSquadrons(
   computed(() => props.fleet.slug),

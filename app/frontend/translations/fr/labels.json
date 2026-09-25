@@ -671,6 +671,7 @@
         "allies": "Vaisseaux visibles par les alliés",
         "alliesStats": "Statistiques visibles par les alliés",
         "alliesMembers": "Liste des membres visible par les alliés",
+        "squadronsEnabled": "Utiliser les escadrons",
         "contractCovers": {
           "transport": "Visuel transport",
           "procurement": "Visuel approvisionnement",

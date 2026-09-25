@@ -9,13 +9,16 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 export const useFleetNavAccess = (
-  fleet: MaybeRefOrGetter<Pick<Fleet, "features" | "publicFleet"> | undefined>,
+  fleet: MaybeRefOrGetter<
+    Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> | undefined
+  >,
 ) => {
   const route = useRoute();
 
   const sessionStore = useSessionStore();
 
-  const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
+  const { isFeatureEnabled, isFleetFeatureEnabled, isFleetSquadronsEnabled } =
+    useFeatures();
 
   const fleetSlug = computed(() => route.params.slug as string);
 
@@ -102,7 +105,7 @@ export const useFleetNavAccess = (
     () =>
       !!membership.value &&
       hasSquadronsAccess.value &&
-      isFleetFeatureEnabled(toValue(fleet), FeatureFlagName.FLEET_SQUADRONS),
+      isFleetSquadronsEnabled(toValue(fleet)),
   );
 
   const showAlliesNav = computed(

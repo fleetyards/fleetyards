@@ -55,7 +55,9 @@ afterEach(() => {
 
 const mount = async (features: string[]) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props: { fleet: { slug: "maru", features } as Fleet },
+    props: {
+      fleet: { slug: "maru", features, squadronsEnabled: true } as Fleet,
+    },
   });
 
   return wrapper;

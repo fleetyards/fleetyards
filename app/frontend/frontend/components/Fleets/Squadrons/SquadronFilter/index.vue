@@ -11,11 +11,7 @@ import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmble
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import {
-  FeatureFlagName,
-  useFleetSquadrons,
-  type Fleet,
-} from "@/services/fyApi";
+import { useFleetSquadrons, type Fleet } from "@/services/fyApi";
 
 type Props = {
   fleet: Fleet;
@@ -27,11 +23,9 @@ type SquadronFilters = { squadronSlugIn?: string[] };
 
 const { t } = useI18n();
 
-const { isFleetFeatureEnabled } = useFeatures();
+const { isFleetSquadronsEnabled } = useFeatures();
 
-const enabled = computed(() =>
-  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
-);
+const enabled = computed(() => isFleetSquadronsEnabled(props.fleet));
 
 const { data: squadrons } = useFleetSquadrons(
   computed(() => props.fleet.slug),

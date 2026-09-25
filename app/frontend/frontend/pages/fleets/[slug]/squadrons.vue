@@ -5,11 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-  FeatureFlagName,
-  type Fleet,
-  type FleetMember,
-} from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
@@ -19,7 +15,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { isFleetFeatureEnabled } = useFeatures();
+const { isFleetSquadronsEnabled } = useFeatures();
 </script>
 
 <template>
@@ -27,7 +23,7 @@ const { isFleetFeatureEnabled } = useFeatures();
        for read here as well would leave a role that may create squadrons but
        not read them on a blank form. -->
   <router-view
-    v-if="isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS)"
+    v-if="isFleetSquadronsEnabled(props.fleet)"
     :fleet="props.fleet"
     :membership="props.membership"
   />

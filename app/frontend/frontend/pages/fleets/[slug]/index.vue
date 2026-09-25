@@ -10,7 +10,6 @@ import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmble
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
-  FeatureFlagName,
   FleetMembershipStatusEnum,
   useFleetSquadrons,
   usePublicFleetSquadrons,
@@ -27,7 +26,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const { isFleetFeatureEnabled } = useFeatures();
+const { isFleetSquadronsEnabled } = useFeatures();
 
 /*
  * The fleet's own front page is where somebody meets it, so its sub-units
@@ -35,9 +34,7 @@ const { isFleetFeatureEnabled } = useFeatures();
  * tab gates them, by a role that may read them; anybody else gets the public
  * list, which the fleet page being visible to them already admits.
  */
-const squadronsEnabled = computed(() =>
-  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
-);
+const squadronsEnabled = computed(() => isFleetSquadronsEnabled(props.fleet));
 
 const isMember = computed(
   () => props.membership?.status === FleetMembershipStatusEnum.ACCEPTED,
