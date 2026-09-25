@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
-import { useVehicleSortFields } from "@/frontend/composables/useVehicleSortFields";
+import { useHangarSortFields } from "@/frontend/composables/useHangarSortFields";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -46,13 +46,22 @@ import {
 
 const { t } = useI18n();
 
-const sortFields = useVehicleSortFields({ rank: true });
-
 type Props = {
   user: UserPublic;
 };
 
 const props = defineProps<Props>();
+
+const route = useRoute();
+
+// The visitor's own pick of chips, plus the sort the list is in -- the owner's
+// default among them, which may be one the visitor never picked.
+const sortFields = useHangarSortFields({
+  include: () =>
+    typeof route.query.s === "string"
+      ? route.query.s
+      : (props.user.hangarDefaultSort ?? undefined),
+});
 
 // The owner's chosen order is the one the server answers with while the URL
 // names no sort, so it is the chip shown as chosen. Without one the server
@@ -120,8 +129,6 @@ const hangarGroupCounts = computed<HangarGroupMetric[]>(() => {
 
   return hangarStats.value.groups;
 });
-
-const route = useRoute();
 
 watch(
   () => route.query.q,
