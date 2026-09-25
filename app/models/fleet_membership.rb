@@ -10,8 +10,6 @@
 #  blueprints_filter          :integer          default("all"), not null
 #  declined_at                :datetime
 #  discarded_at               :datetime
-#  discord_request_channel_id :string
-#  discord_request_message_id :string
 #  hide_ships                 :boolean          default(FALSE)
 #  invited_at                 :datetime
 #  invited_by                 :uuid
@@ -23,6 +21,8 @@
 #  verified                   :boolean          default(FALSE), not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
+#  discord_request_channel_id :string
+#  discord_request_message_id :string
 #  fleet_id                   :uuid
 #  fleet_role_id              :uuid
 #  hangar_group_id            :uuid
