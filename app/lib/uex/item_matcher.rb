@@ -17,7 +17,7 @@ module Uex
     attr_reader :misses, :ambiguous, :stale_mappings
 
     def initialize(scope:)
-      records = scope.pluck(:id, :name, :sc_ref, :sc_key)
+      records = pluck_records(scope)
 
       @by_sc_key = records.index_by { |_, _, _, sc_key| sc_key }
       @by_sc_ref = records.select { |_, _, sc_ref, _| sc_ref.present? }
@@ -71,6 +71,10 @@ module Uex
       end
 
       candidates.first.first
+    end
+
+    private def pluck_records(scope)
+      scope.pluck(:id, :name, :sc_ref, :sc_key)
     end
 
     # Punctuation and case are the only things that differ for the names that do
