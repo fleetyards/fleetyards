@@ -3,12 +3,10 @@
 module V1
   module Schemas
     module Enums
-      # `fulfilled` is terminal for now. `settled` arrives with the payout,
-      # settled on the event payout ledger.
       class FleetContractStateEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = %w[draft open in_progress fulfilled cancelled expired].freeze
+        VALUES = %w[draft open in_progress fulfilled settled cancelled expired].freeze
 
         schema({
           type: :string,

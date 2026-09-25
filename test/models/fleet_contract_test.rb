@@ -20,6 +20,7 @@ require "test_helper"
 #  published_at                   :datetime
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null
+#  settled_at                     :datetime
 #  slug                           :string           not null
 #  title                          :string
 #  visibility                     :integer          default("members_only"), not null

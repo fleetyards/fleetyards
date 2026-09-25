@@ -18,6 +18,7 @@
 #  published_at                   :datetime
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null
+#  settled_at                     :datetime
 #  slug                           :string           not null
 #  title                          :string
 #  visibility                     :integer          default("members_only"), not null
@@ -96,6 +97,12 @@ FactoryBot.define do
       aasm_state { "in_progress" }
       published_at { Time.current }
       claimed_at { Time.current }
+    end
+
+    trait :fulfilled do
+      in_progress
+      aasm_state { "fulfilled" }
+      fulfilled_at { Time.current }
     end
   end
 end

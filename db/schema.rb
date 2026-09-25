@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_161000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_25_162000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -705,6 +705,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_161000) do
     t.datetime "published_at"
     t.boolean "reimburse_expenses", default: true, null: false
     t.decimal "reward", precision: 15, scale: 2, default: "0.0", null: false
+    t.datetime "settled_at"
     t.string "slug", null: false
     t.uuid "source_fleet_inventory_id"
     t.string "title"
