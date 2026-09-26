@@ -19,6 +19,7 @@ import CatalogueNav from "@/frontend/components/Navigation/CatalogueNav/index.vu
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
 import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
+import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
@@ -39,6 +40,12 @@ const hangarStore = useHangarStore();
 const { count: pendingFriendRequests } = usePendingFriendRequests();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
+
+const { canInstall, install } = useInstallPrompt();
+
+const installApp = async () => {
+  await install();
+};
 
 const { isFleetRoute } = useFleetRouteCheck();
 
@@ -203,6 +210,14 @@ const settingsActive = computed(() => {
     </template>
     <template #footer>
       <ScDataSourceSwitch />
+      <NavItem
+        v-if="canInstall"
+        :action="installApp"
+        menu-key="install-app"
+        :label="t('nav.installApp')"
+        icon="fa-light fa-mobile-screen"
+        data-test="install-app"
+      />
       <template v-if="isAuthenticated && currentUser">
         <NotificationsNav />
         <NavItem
