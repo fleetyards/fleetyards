@@ -25,6 +25,7 @@
         "transfers": "转移"
       },
       "login": "登录",
+      "installApp": "安装应用",
       "logout": "登出",
       "apiV1": "API v1",
       "apiV1Schema": "架构",
@@ -156,6 +157,7 @@
         "notifications": "通知",
         "syncModal": "同步弹窗",
         "overlays": "浮层",
+        "installPrompt": "安装提示",
         "supportHint": "支持提示",
         "media": "媒体",
         "charts": "图表",

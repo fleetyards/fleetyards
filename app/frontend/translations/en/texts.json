@@ -12,6 +12,13 @@
         "subline": "Support us directly",
         "otherWays": "Other ways to help"
       },
+      "installApp": {
+        "eventSignup": "Install FleetYards as an app to get back to your events in one tap.",
+        "iosIntro": "On iPhone and iPad, apps like FleetYards are installed from the share sheet:",
+        "iosShare": "Tap the Share button in the browser toolbar.",
+        "iosAdd": "Choose “Add to Home Screen”. You may have to scroll down to find it.",
+        "iosConfirm": "Tap “Add”. FleetYards now opens from your Home Screen like any other app."
+      },
       "supportHint": {
         "hangarSync": "Background syncs are the biggest item on our hosting bill. FleetYards runs on donations — if you'd like to chip in, every bit helps.",
         "vehicleAdded": "FleetYards is free and ad-free, and runs entirely on donations. If it's useful to you, a small contribution helps keep it that way.",

@@ -93,7 +93,6 @@ RUN cp public/vite/sw.js public/sw.js 2>/dev/null; \
     cp public/vite/sw.js.map public/sw.js.map 2>/dev/null; \
     cp public/vite/workbox-*.js public/ 2>/dev/null; \
     cp public/vite/workbox-*.js.map public/ 2>/dev/null; \
-    cp public/vite/manifest.webmanifest public/manifest.webmanifest 2>/dev/null; \
     true
 
 # Stage 3: Final production image

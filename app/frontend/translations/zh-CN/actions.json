@@ -68,6 +68,10 @@
       "hideLabels": "隐藏标签",
       "resetZoom": "重置缩放",
       "supportUs": "支持FleetYards.net",
+      "installApp": {
+        "cta": "安装应用",
+        "later": "以后再说"
+      },
       "supportHint": {
         "cta": "支持 FleetYards",
         "later": "稍后再说"

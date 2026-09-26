@@ -390,6 +390,10 @@
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "supporters": "感謝我們的支持者",
+      "installApp": {
+        "offer": "隨身攜帶 FleetYards",
+        "ios": "安裝 FleetYards"
+      },
       "supportHint": {
         "hangarSync": "很高興能幫你完成同步",
         "vehicleAdded": "你的機庫在不斷成長",
@@ -430,6 +434,7 @@
         "notifications": "通知",
         "syncModal": "同步彈窗",
         "overlays": "覆蓋層",
+        "installPrompt": "安裝提示",
         "supportHint": "支援提示",
         "notificationCenter": "通知中心",
         "themes": "主題"

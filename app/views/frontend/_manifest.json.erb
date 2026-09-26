@@ -1,13 +1,18 @@
 {
+  "id": "/",
   "name": "<%= I18n.t(:"title.default") %>",
   "short_name": "<%= I18n.t(:"title.default_short") %>",
   "orientation": "any",
   "display": "standalone",
   "start_url": "/",
+  "scope": "/",
   "description": "<%= I18n.t(:"meta.description") %>",
   "background_color": "#000000",
   "theme_color": "#232628",
   "lang": "en",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "icons": [{
     "src": "<%= vite_asset_path('images/favicons/icon-512.png') %>",
     "sizes": "512x512",
@@ -36,5 +41,51 @@
     "src": "<%= vite_asset_path('images/favicons/icon-48.png') %>",
     "sizes": "48x48",
     "type": "image/png"
+  }, {
+    "src": "<%= vite_asset_path('images/favicons/icon-maskable-512.png') %>",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "maskable"
+  }, {
+    "src": "<%= vite_asset_path('images/favicons/icon-maskable-192.png') %>",
+    "sizes": "192x192",
+    "type": "image/png",
+    "purpose": "maskable"
+  }],
+  "screenshots": [{
+    "src": "<%= vite_asset_path('images/pwa/screenshot-wide.webp') %>",
+    "sizes": "1280x720",
+    "type": "image/webp",
+    "form_factor": "wide"
+  }, {
+    "src": "<%= vite_asset_path('images/pwa/screenshot-narrow.webp') %>",
+    "sizes": "412x915",
+    "type": "image/webp",
+    "form_factor": "narrow"
+  }],
+  "shortcuts": [{
+    "name": "<%= I18n.t(:"title.frontend.hangar") %>",
+    "url": "/hangar/",
+    "icons": [{
+      "src": "<%= vite_asset_path('images/favicons/icon-96.png') %>",
+      "sizes": "96x96",
+      "type": "image/png"
+    }]
+  }, {
+    "name": "<%= I18n.t(:"title.frontend.fleet_events") %>",
+    "url": "/events/",
+    "icons": [{
+      "src": "<%= vite_asset_path('images/favicons/icon-96.png') %>",
+      "sizes": "96x96",
+      "type": "image/png"
+    }]
+  }, {
+    "name": "<%= I18n.t(:"title.frontend.compare_ships") %>",
+    "url": "/compare/",
+    "icons": [{
+      "src": "<%= vite_asset_path('images/favicons/icon-96.png') %>",
+      "sizes": "96x96",
+      "type": "image/png"
+    }]
   }]
 }

@@ -129,6 +129,15 @@ export const routes = [
     },
   },
   {
+    path: "install-prompt/",
+    name: "visual-tests-install-prompt",
+    component: () => import("@/frontend/pages/visual-tests/install-prompt.vue"),
+    meta: {
+      title: "visualTests.installPrompt",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "support-hint/",
     name: "visual-tests-support-hint",
     component: () => import("@/frontend/pages/visual-tests/support-hint.vue"),

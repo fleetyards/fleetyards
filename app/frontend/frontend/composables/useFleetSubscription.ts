@@ -8,6 +8,33 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 type SubscribableFleet = Pick<Fleet, "features"> &
   Partial<Pick<Fleet, "subscribed">>;
 
+type FleetFeatureCheck = ReturnType<
+  typeof useFeatures
+>["isFleetFeatureEnabled"];
+
+// While `fleet_subscriptions` is off for a fleet, enforcement does not run and
+// entitlement is never asked about -- this is false and every surface behaves
+// exactly as it did before any of this shipped.
+export const fleetSubscriptionRequired = (
+  fleet: SubscribableFleet | undefined,
+  isFleetFeatureEnabled: FleetFeatureCheck,
+) => {
+  // No fleet, nothing to have subscribed -- the same guard the controller
+  // concern opens with. It has to come first: `isFleetFeatureEnabled` ORs in
+  // the viewer's own flags, so a viewer the rollout is enabled for would
+  // otherwise pass the check below with no fleet at all, and the absent
+  // `subscribed` would then read as unsubscribed.
+  if (!fleet) {
+    return false;
+  }
+
+  if (!isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_SUBSCRIPTIONS)) {
+    return false;
+  }
+
+  return !(fleet.subscribed ?? false);
+};
+
 /**
  * The second of the two questions `FleetSubscriptionConcern` asks, for the
  * surfaces that have to answer it before the API is even called. The first --
@@ -20,29 +47,9 @@ export const useFleetSubscription = (
 ) => {
   const { isFleetFeatureEnabled } = useFeatures();
 
-  // While `fleet_subscriptions` is off for a fleet, enforcement does not run
-  // and entitlement is never asked about -- this is false and every surface
-  // behaves exactly as it did before any of this shipped.
-  const subscriptionRequired = computed(() => {
-    const currentFleet = toValue(fleet);
-
-    // No fleet, nothing to have subscribed -- the same guard the controller
-    // concern opens with. It has to come first: `isFleetFeatureEnabled` ORs in
-    // the viewer's own flags, so a viewer the rollout is enabled for would
-    // otherwise pass the check below with no fleet at all, and the absent
-    // `subscribed` would then read as unsubscribed.
-    if (!currentFleet) {
-      return false;
-    }
-
-    if (
-      !isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_SUBSCRIPTIONS)
-    ) {
-      return false;
-    }
-
-    return !(currentFleet?.subscribed ?? false);
-  });
+  const subscriptionRequired = computed(() =>
+    fleetSubscriptionRequired(toValue(fleet), isFleetFeatureEnabled),
+  );
 
   return { subscriptionRequired };
 };

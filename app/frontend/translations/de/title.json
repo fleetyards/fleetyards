@@ -186,6 +186,7 @@
         "notifications": "Benachrichtigungen - Visuelle Tests",
         "syncModal": "Sync-Modal - Visuelle Tests",
         "overlays": "Overlays - Visuelle Tests",
+        "installPrompt": "Installationshinweis - Visuelle Tests",
         "supportHint": "Support-Hinweis - Visuelle Tests",
         "media": "Medien - Visuelle Tests",
         "charts": "Diagramme - Visuelle Tests",

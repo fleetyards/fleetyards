@@ -28,6 +28,7 @@ import { vehicleMatchesShip } from "@/frontend/composables/useShipMatch";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 
 type Props = {
   slotData: FleetEventSlot;
@@ -74,6 +75,7 @@ const positionTypeLabel = computed(() => {
 });
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
+const installPrompt = useInstallPrompt();
 
 const signupMutation = useSignupFleetEventSlot();
 
@@ -180,6 +182,7 @@ const submitSignup = async () => {
     displaySuccess({ text: t("messages.fleets.eventSignup.create.success") });
     expanded.value = false;
     comlink.emit("fleet-event-signup-changed");
+    installPrompt.offer("eventSignup");
   } catch {
     displayAlert({ text: t("messages.fleets.eventSignup.create.failure") });
   }
