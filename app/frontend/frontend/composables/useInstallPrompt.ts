@@ -14,12 +14,13 @@ export type InstallPromptContext = "eventSignup";
 
 const STORAGE_KEY = "fy.install-prompt";
 const COOLDOWN_DAYS = 90;
-const SESSION_FIRST_VISIT_FLAG = "fy.install-prompt.first-visit";
+// Measured from the first sighting rather than flagged per tab: sessionStorage
+// is per tab, so a second tab opened on the first visit would count as a return.
+const FIRST_VISIT_DAYS = 1;
 
 interface StoredState {
   firstSeenAt?: string;
   lastOfferedAt?: string;
-  installedAt?: string;
 }
 
 const readState = (): StoredState => {
@@ -49,22 +50,6 @@ const daysSince = (iso?: string): number | null => {
   return (Date.now() - parsed) / 86_400_000;
 };
 
-const sessionFlagged = (key: string): boolean => {
-  try {
-    return sessionStorage.getItem(key) === "1";
-  } catch {
-    return false;
-  }
-};
-
-const flagSession = (key: string) => {
-  try {
-    sessionStorage.setItem(key, "1");
-  } catch {
-    // ignore
-  }
-};
-
 const detectStandalone = (): boolean => {
   try {
     return (
@@ -77,11 +62,20 @@ const detectStandalone = (): boolean => {
 };
 
 // iPadOS reports itself as a Mac, so a touch screen is what gives it away.
+// Safari and the other iOS browsers can add to the Home Screen; the in-app
+// browsers of Discord, Instagram and co. cannot, and their user agents drop the
+// Safari token or name the app.
 const detectIos = (): boolean => {
   try {
+    const userAgent = navigator.userAgent;
+    const isAppleMobile =
+      /iPad|iPhone|iPod/.test(userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
     return (
-      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+      isAppleMobile &&
+      /Safari\//.test(userAgent) &&
+      !/FBAN|FBAV|Instagram|Line\/|Discord|Slack|Twitter/i.test(userAgent)
     );
   } catch {
     return false;
@@ -115,7 +109,6 @@ export const captureInstallPrompt = () => {
 
   if (!readState().firstSeenAt) {
     writeState({ firstSeenAt: new Date().toISOString() });
-    flagSession(SESSION_FIRST_VISIT_FLAG);
   }
 
   window.addEventListener("beforeinstallprompt", (event) => {
@@ -123,9 +116,10 @@ export const captureInstallPrompt = () => {
     deferredPrompt.value = event as BeforeInstallPromptEvent;
   });
 
+  // Chrome stops firing `beforeinstallprompt` while the app is installed and
+  // starts again after an uninstall, so nothing about the install is stored.
   window.addEventListener("appinstalled", () => {
     deferredPrompt.value = null;
-    writeState({ installedAt: new Date().toISOString() });
   });
 
   try {
@@ -143,9 +137,9 @@ export const useInstallPrompt = () => {
   const comlink = useComlink();
   const notificationsStore = useNotificationsStore();
 
-  const isStandalone = computed(() => standalone.value);
+  const isStandalone = readonly(standalone);
 
-  const isIos = computed(() => ios.value);
+  const isIos = readonly(ios);
 
   // iOS has no prompt API; every browser there installs through the share
   // sheet, so it can always be explained instead.
@@ -168,7 +162,14 @@ export const useInstallPrompt = () => {
       // app is still installable afterwards.
       deferredPrompt.value = null;
 
-      await event.prompt();
+      try {
+        await event.prompt();
+      } catch {
+        // Refused outside a user gesture; the event is still good for a click.
+        deferredPrompt.value = event;
+        return undefined;
+      }
+
       const { outcome } = await event.userChoice;
 
       if (outcome === "dismissed") {
@@ -188,10 +189,12 @@ export const useInstallPrompt = () => {
   const canOffer = (): boolean => {
     if (!canInstall.value) return false;
     if (isAutomatedBrowser()) return false;
-    if (sessionFlagged(SESSION_FIRST_VISIT_FLAG)) return false;
-
     const state = readState();
-    if (state.installedAt) return false;
+
+    const sinceFirstSeen = daysSince(state.firstSeenAt);
+    if (sinceFirstSeen === null || sinceFirstSeen < FIRST_VISIT_DAYS) {
+      return false;
+    }
 
     const since = daysSince(state.lastOfferedAt);
     return since === null || since > COOLDOWN_DAYS;

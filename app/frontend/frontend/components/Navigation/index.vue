@@ -41,11 +41,7 @@ const { count: pendingFriendRequests } = usePendingFriendRequests();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
-const { canInstall, install } = useInstallPrompt();
-
-const installApp = async () => {
-  await install();
-};
+const { canInstall, install: installApp } = useInstallPrompt();
 
 const { isFleetRoute } = useFleetRouteCheck();
 

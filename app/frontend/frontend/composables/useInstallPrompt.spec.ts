@@ -12,15 +12,26 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 // The prompt state lives at module level, like the browser event it holds, so
-// every test gets a fresh copy of the module.
+// every test gets a fresh copy of the module -- and the listeners the previous
+// copy put on window come off, or they would answer this test's events.
+const listeners: [string, EventListenerOrEventListenerObject][] = [];
+
 const load = async () => {
   vi.resetModules();
   return import("./useInstallPrompt");
 };
 
-const fireBeforeInstallPrompt = (outcome: "accepted" | "dismissed") => {
+const removeListeners = () => {
+  listeners.splice(0).forEach(([type, listener]) => {
+    window.removeEventListener(type, listener);
+  });
+};
+
+const fireBeforeInstallPrompt = (
+  outcome: "accepted" | "dismissed",
+  prompt = vi.fn().mockResolvedValue(undefined),
+) => {
   const event = new Event("beforeinstallprompt", { cancelable: true });
-  const prompt = vi.fn().mockResolvedValue(undefined);
   Object.assign(event, {
     prompt,
     userChoice: Promise.resolve({ outcome }),
@@ -29,7 +40,7 @@ const fireBeforeInstallPrompt = (outcome: "accepted" | "dismissed") => {
   return { event, prompt };
 };
 
-// A visit that is not the first: the stored first sighting predates it.
+// A visit that is not the first: the stored first sighting is days old.
 const returningVisitor = () => {
   localStorage.setItem(
     "fy.install-prompt",
@@ -41,15 +52,26 @@ const setUserAgent = (userAgent: string) => {
   vi.spyOn(navigator, "userAgent", "get").mockReturnValue(userAgent);
 };
 
+const IOS_SAFARI =
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1";
+
 beforeEach(() => {
   localStorage.clear();
-  sessionStorage.clear();
   addMessage.mockReset();
   emit.mockReset();
+
+  const add = window.addEventListener.bind(window);
+  vi.spyOn(window, "addEventListener").mockImplementation(
+    (type: string, listener: EventListenerOrEventListenerObject, options) => {
+      listeners.push([type, listener]);
+      add(type, listener, options);
+    },
+  );
 });
 
 afterEach(() => {
   vi.restoreAllMocks();
+  removeListeners();
 });
 
 describe("useInstallPrompt", () => {
@@ -82,10 +104,22 @@ describe("useInstallPrompt", () => {
     expect(canInstall.value).toBe(false);
   });
 
-  it("explains the share sheet on iOS, which has no prompt", async () => {
-    setUserAgent(
-      "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+  it("keeps the prompt when the browser refuses to show it", async () => {
+    const { captureInstallPrompt, useInstallPrompt } = await load();
+    captureInstallPrompt();
+    fireBeforeInstallPrompt(
+      "accepted",
+      vi.fn().mockRejectedValue(new DOMException("", "NotAllowedError")),
     );
+
+    const { install, canInstall } = useInstallPrompt();
+
+    await expect(install()).resolves.toBeUndefined();
+    expect(canInstall.value).toBe(true);
+  });
+
+  it("explains the share sheet on iOS, which has no prompt", async () => {
+    setUserAgent(IOS_SAFARI);
     const { captureInstallPrompt, useInstallPrompt } = await load();
     captureInstallPrompt();
 
@@ -99,6 +133,16 @@ describe("useInstallPrompt", () => {
       "open-modal",
       expect.objectContaining({ component: expect.any(Function) }),
     );
+  });
+
+  it("offers nothing inside an app's own iOS browser", async () => {
+    setUserAgent(
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Instagram 350.0.0",
+    );
+    const { captureInstallPrompt, useInstallPrompt } = await load();
+    captureInstallPrompt();
+
+    expect(useInstallPrompt().canInstall.value).toBe(false);
   });
 
   it("never offers on the first visit", async () => {
@@ -139,14 +183,27 @@ describe("useInstallPrompt", () => {
     expect(module.useInstallPrompt().offer("eventSignup")).toBe(false);
   });
 
-  it("never offers once the app is installed", async () => {
-    returningVisitor();
+  it("never offers in a second tab of the first visit", async () => {
+    await load().then((module) => module.captureInstallPrompt());
+
     const { captureInstallPrompt, useInstallPrompt } = await load();
     captureInstallPrompt();
-    window.dispatchEvent(new Event("appinstalled"));
     fireBeforeInstallPrompt("accepted");
 
     expect(useInstallPrompt().offer("eventSignup")).toBe(false);
+  });
+
+  it("drops the install action once the app is installed", async () => {
+    returningVisitor();
+    const { captureInstallPrompt, useInstallPrompt } = await load();
+    captureInstallPrompt();
+    fireBeforeInstallPrompt("accepted");
+    window.dispatchEvent(new Event("appinstalled"));
+
+    const { canInstall, offer } = useInstallPrompt();
+
+    expect(canInstall.value).toBe(false);
+    expect(offer("eventSignup")).toBe(false);
   });
 
   it("counts a dismissed browser prompt against the cooldown", async () => {
