@@ -2543,11 +2543,23 @@
           "recurrenceEndOn": "在指定日期",
           "recurrenceEndAfter": "經過",
           "recurrenceEndOccurrences": "場",
+          "recurrenceUnit": {
+            "daily": "天",
+            "weekly": "週",
+            "monthly": "個月"
+          },
+          "recurrenceWeekdays": "重複日",
+          "recurrenceWeekdaysHint": "活動開始的那一天一律包含在內。",
           "recurrence": {
             "daily": "每天",
             "weekly": "每週",
-            "biweekly": "每兩週",
-            "monthly": "每月"
+            "monthly": "每月",
+            "everyN": {
+              "daily": "每%{count}天",
+              "weekly": "每%{count}週",
+              "monthly": "每%{count}個月"
+            },
+            "onDays": "%{interval}（%{days}）"
           },
           "occurrencesSection": "即將到來的場次",
           "skipOccurrence": "略過這一場",
@@ -2555,6 +2567,8 @@
           "overrideOccurrenceShort": "編輯這一場",
           "overrideOccurrenceHint": "只為這一場覆寫欄位。留空則沿用重複活動的設定。",
           "endSeriesHere": "從這裡起停止",
+          "splitSeriesHere": "編輯此場及之後的場次",
+          "splitSeriesConfirm": "從此日期起將該系列作為新活動繼續？此場及之後場次的報名會一併轉移，新活動將開啟以供編輯。",
           "excludedBadge": "已略過",
           "noUpcomingOccurrences": "未來 12 週內沒有即將到來的場次。",
           "endSeriesConfirm": "要在這個日期之後停止重複嗎？之後的場次將不會再產生。",

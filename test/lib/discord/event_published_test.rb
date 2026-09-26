@@ -26,11 +26,26 @@ module Discord
       assert_includes content, I18n.t("discord.event_published.recurrence.weekly")
     end
 
+    test "says every how many weeks and on which days a custom series repeats" do
+      @event.update!(starts_at: Time.zone.parse("2026-10-08 20:00"), timezone: "UTC",
+        recurring: true, recurrence_interval: "weekly", recurrence_every: 3, recurrence_weekdays: [2])
+
+      assert_includes content, "Every 3 weeks on Tue and Thu"
+    end
+
     test "a series published after its first date announces its next occurrence" do
       @event.update_columns(starts_at: 9.days.ago, recurring: true, recurrence_interval: "weekly", recurrence_count: 10)
       upcoming = @event.reload.occurrences(from: Time.current, to: 2.weeks.from_now).first
 
       assert_includes content, "<t:#{upcoming.to_i}:F>"
+    end
+
+    test "a series whose next occurrence is over a year away still announces it" do
+      @event.update_columns(starts_at: 1.day.ago, recurring: true, recurrence_interval: "monthly", recurrence_every: 18)
+      publication = EventPublished.new(event: @event.reload)
+
+      assert_predicate publication, :upcoming?
+      assert_includes publication.content, "<t:#{(@event.starts_at + 18.months).to_i}:F>"
     end
 
     test "a series that has run out has nothing to announce" do

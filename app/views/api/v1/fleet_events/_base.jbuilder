@@ -57,7 +57,9 @@ json.discord_configured(
 )
 
 json.recurring fleet_event.recurring?
-json.recurrence_interval fleet_event.recurrence_interval
+json.recurrence_interval fleet_event.recurrence_frequency
+json.recurrence_every fleet_event.recurrence_step
+json.recurrence_weekdays fleet_event.recurrence_days
 json.recurrence_until fleet_event.recurrence_until
 json.recurrence_count fleet_event.recurrence_count
 json.excluded_dates(fleet_event.excluded_dates || [])
