@@ -20,9 +20,13 @@ module V1
                   unassignedSignups: {
                     type: :array,
                     items: ::V1::Schemas::Fleets::Events::FleetEventSignup
+                  },
+                  upcomingOccurrences: {
+                    type: :array,
+                    items: ::V1::Schemas::Fleets::Events::FleetEventOccurrence
                   }
                 },
-                required: %w[teams unassignedSignups]
+                required: %w[teams unassignedSignups upcomingOccurrences]
               }
             ]
           })

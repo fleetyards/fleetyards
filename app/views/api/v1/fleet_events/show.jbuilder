@@ -59,3 +59,18 @@ json.unassigned_signups do
     partial: "api/v1/fleet_event_signups/fleet_event_signup",
     as: :fleet_event_signup
 end
+
+upcoming = if @fleet_event.recurring?
+  @fleet_event
+    .occurrences(from: Time.current, to: 12.weeks.from_now, include_excluded: true)
+    .first(FleetEvent::UPCOMING_OCCURRENCES_LIMIT)
+else
+  []
+end
+excluded = @fleet_event.excluded_dates.to_set
+
+json.upcoming_occurrences upcoming do |occurrence|
+  json.date occurrence.to_date
+  json.starts_at occurrence
+  json.excluded excluded.include?(occurrence.to_date)
+end

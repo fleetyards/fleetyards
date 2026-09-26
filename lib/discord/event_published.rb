@@ -42,9 +42,22 @@ module Discord
     end
 
     private def recurrence
-      return nil unless event.recurring? && event.recurrence_interval.present?
+      frequency = event.recurrence_frequency
+      return nil unless event.recurring? && frequency.present?
 
-      I18n.t("discord.event_published.recurrence.#{event.recurrence_interval}")
+      interval = if event.recurrence_step > 1
+        I18n.t("discord.event_published.recurrence.every_n.#{frequency}", count: event.recurrence_step)
+      else
+        I18n.t("discord.event_published.recurrence.#{frequency}")
+      end
+
+      days = event.recurrence_days
+      return interval if days.empty?
+
+      names = I18n.t("date.abbr_day_names")
+      I18n.t("discord.event_published.recurrence.on_days",
+        interval: interval,
+        days: days.sort_by { |wday| (wday - 1) % 7 }.map { |wday| names[wday] }.to_sentence)
     end
   end
 end
