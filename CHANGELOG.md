@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.6.0](https://github.com/fleetyards/fleetyards/compare/v8.5.0...v8.6.0) (2026-09-26)
+
+
+### Features
+
+* **stats:** chart in-game price changes and label every chart tooltip ([#5223](https://github.com/fleetyards/fleetyards/issues/5223)) ([9ebe69d](https://github.com/fleetyards/fleetyards/commit/9ebe69d8a126ca1b703659e231ed83c705c70b87))
+
+
+### Bug Fixes
+
+* **uex:** place the component items the sync could not ([#5228](https://github.com/fleetyards/fleetyards/issues/5228)) ([1ef15b9](https://github.com/fleetyards/fleetyards/commit/1ef15b9a1d70f4cbe27d64a82b3dbb11e8903b0a))
+* **uex:** price ten equipment items the name match could not place ([#5227](https://github.com/fleetyards/fleetyards/issues/5227)) ([1e18849](https://github.com/fleetyards/fleetyards/commit/1e18849485bb56d468c8623bca1e4102985f3e83))
+* **uex:** read the duplicate Jaclium entry's prices as the ore's ([#5224](https://github.com/fleetyards/fleetyards/issues/5224)) ([12b85c8](https://github.com/fleetyards/fleetyards/commit/12b85c884f3fe9be9774d26e2e11b9c8f95a0b6a))
+* **uex:** show the sync counts in UEX price notifications ([#5225](https://github.com/fleetyards/fleetyards/issues/5225)) ([6b1a55b](https://github.com/fleetyards/fleetyards/commit/6b1a55ba8f1035e320ef654cce46ec5d238b294a))
+
 ## [8.5.0](https://github.com/fleetyards/fleetyards/compare/v8.4.0...v8.5.0) (2026-09-25)
 
 
