@@ -6,6 +6,12 @@
           "one": "%{label}:<br><b>%{count}</b> Anzeige",
           "other": "%{label}:<br><b>%{count}</b> Anzeigen"
         },
+        "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "wishToOwnRatio": "%{label}:<br><b>%{count}</b> gewünscht pro 100 im Hangar",
+        "patchChange": {
+          "one": "%{label}:<br><b>%{count}</b> Änderung",
+          "other": "%{label}:<br><b>%{count}</b> Änderungen"
+        },
         "ship": {
           "one": "%{label}:<br><b>%{count}</b> Schiff",
           "other": "%{label}:<br><b>%{count}</b> Schiffe"

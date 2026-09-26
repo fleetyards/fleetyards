@@ -6,6 +6,12 @@
           "one": "%{label}:<br><b>%{count}</b> View",
           "other": "%{label}:<br><b>%{count}</b> Views"
         },
+        "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "wishToOwnRatio": "%{label}:<br><b>%{count}</b> wished per 100 owned",
+        "patchChange": {
+          "one": "%{label}:<br><b>%{count}</b> Change",
+          "other": "%{label}:<br><b>%{count}</b> Changes"
+        },
         "ship": {
           "one": "%{label}:<br><b>%{count}</b> Ship",
           "other": "%{label}:<br><b>%{count}</b> Ships"

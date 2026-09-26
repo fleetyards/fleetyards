@@ -6,6 +6,12 @@
           "one": "%{label}:<br><b>%{count}</b> Vista",
           "other": "%{label}:<br><b>%{count}</b> Viste"
         },
+        "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "wishToOwnRatio": "%{label}:<br><b>%{count}</b> desiderate ogni 100 possedute",
+        "patchChange": {
+          "one": "%{label}:<br><b>%{count}</b> modifica",
+          "other": "%{label}:<br><b>%{count}</b> modifiche"
+        },
         "ship": {
           "one": "%{label}:<br><b>%{count}</b> Nave",
           "other": "%{label}:<br><b>%{count}</b> Navi"

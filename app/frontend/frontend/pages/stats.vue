@@ -411,7 +411,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="trending-ships"
             :async-status="trendingShipsStatus"
             :options="trendingShipsOptions"
-            tooltip-type="ship"
+            tooltip-type="view"
             type="bar"
           />
         </PanelBody>
@@ -434,7 +434,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="patch-changes"
             :async-status="patchChangesStatus"
             :options="patchChangesOptions"
-            tooltip-type="ship"
+            tooltip-type="patchChange"
             type="bar"
           />
         </PanelBody>
@@ -509,7 +509,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="wish-to-own-ratio"
             :async-status="wishToOwnRatioStatus"
             :options="wishToOwnRatioOptions"
-            tooltip-type="ship"
+            tooltip-type="wishToOwnRatio"
             type="bar"
           />
         </PanelBody>
@@ -532,7 +532,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="pledge-price-changes"
             :async-status="pledgePriceChangesStatus"
             :options="pledgePriceChangesOptions"
-            tooltip-type="ship"
+            tooltip-type="pledgePrice"
             type="bar"
           />
         </PanelBody>

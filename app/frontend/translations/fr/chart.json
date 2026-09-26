@@ -6,6 +6,12 @@
           "one": "%{label}:<br><b>%{count}</b> Vue",
           "other": "%{label}:<br><b>%{count}</b> Vues"
         },
+        "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "wishToOwnRatio": "%{label}:<br><b>%{count}</b> souhaités pour 100 possédés",
+        "patchChange": {
+          "one": "%{label}:<br><b>%{count}</b> modification",
+          "other": "%{label}:<br><b>%{count}</b> modifications"
+        },
         "ship": {
           "one": "%{label}:<br><b>%{count}</b> Vaisseau",
           "other": "%{label}:<br><b>%{count}</b> Vaisseaux"
