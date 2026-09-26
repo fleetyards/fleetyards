@@ -47,18 +47,32 @@ const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
+const route = useRoute();
+const router = useRouter();
+
 const submitting = ref(false);
 const updateMutation = useUpdateFleetEvent();
 
 const onSubmit = props.handleSubmit(async (values) => {
   submitting.value = true;
   try {
-    await updateMutation.mutateAsync({
+    const updatedEvent = await updateMutation.mutateAsync({
       fleetSlug: props.fleet.slug,
       slug: props.event.slug,
       data: values,
     });
     displaySuccess({ text: t("messages.fleets.event.update.success") });
+
+    // The slug follows the title, so a rename leaves the old one in the URL
+    // and every refetch from it 404s.
+    if (updatedEvent.slug !== route.params.event) {
+      await router.replace({
+        name: route.name,
+        params: { ...route.params, event: updatedEvent.slug },
+        query: route.query,
+      });
+    }
+
     comlink.emit("fleet-event-updated");
   } catch (error) {
     const { message, formErrors } = validationErrorFrom(error);
@@ -72,8 +86,6 @@ const onSubmit = props.handleSubmit(async (values) => {
     submitting.value = false;
   }
 });
-
-const router = useRouter();
 
 const handleCancel = () => {
   void router.push({
