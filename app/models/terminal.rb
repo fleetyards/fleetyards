@@ -35,6 +35,8 @@
 #
 class Terminal < ApplicationRecord
   has_many :item_prices, dependent: :nullify
+  has_many :origin_trade_routes, class_name: "TradeRoute", foreign_key: :origin_terminal_id, dependent: :delete_all, inverse_of: :origin_terminal
+  has_many :destination_trade_routes, class_name: "TradeRoute", foreign_key: :destination_terminal_id, dependent: :delete_all, inverse_of: :destination_terminal
 
   validates :uex_id, presence: true, uniqueness: true
   validates :name, presence: true

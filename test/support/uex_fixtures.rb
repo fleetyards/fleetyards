@@ -15,11 +15,21 @@ module UexFixtures
       commodity_prices: uex_fixture("commodities_prices_all"),
       item_prices: uex_fixture("items_prices_all"),
       item_categories: uex_fixture("categories")
-    }.merge(overrides)
+    }.merge(overrides.except(:commodity_routes))
 
     client = mock("Uex::Client")
     data.each { |method, rows| client.stubs(method).returns(rows) }
+    stub_commodity_routes(client, overrides.fetch(:commodity_routes, uex_fixture("commodities_routes")))
     client
+  end
+
+  # Routes are fetched one commodity at a time, so the stub answers each UEX id
+  # with its own rows and anything else with none.
+  def stub_commodity_routes(client, rows)
+    client.stubs(:commodity_routes).returns([])
+    rows.group_by { |row| row["id_commodity"] }.each do |commodity_id, commodity_rows|
+      client.stubs(:commodity_routes).with(commodity_id).returns(commodity_rows)
+    end
   end
 
   # The four models the fixture vehicles are expected to resolve to, one per

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_26_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_26_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2272,6 +2272,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_100000) do
     t.index ["slug"], name: "index_tours_on_slug", unique: true
   end
 
+  create_table "trade_routes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "commodity_id", null: false
+    t.integer "container_sizes_destination", default: [], null: false, array: true
+    t.integer "container_sizes_origin", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "destination_price_updated_at"
+    t.uuid "destination_terminal_id", null: false
+    t.decimal "distance", precision: 10, scale: 2
+    t.datetime "origin_price_updated_at"
+    t.uuid "origin_terminal_id", null: false
+    t.decimal "price_destination", precision: 15, scale: 2, null: false
+    t.decimal "price_origin", precision: 15, scale: 2, null: false
+    t.integer "scu_destination", default: 0, null: false
+    t.integer "scu_origin", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["commodity_id", "origin_terminal_id", "destination_terminal_id"], name: "index_trade_routes_on_commodity_and_terminals", unique: true
+    t.index ["commodity_id"], name: "index_trade_routes_on_commodity_id"
+    t.index ["destination_terminal_id"], name: "index_trade_routes_on_destination_terminal_id"
+    t.index ["origin_terminal_id"], name: "index_trade_routes_on_origin_terminal_id"
+  end
+
   create_table "upgrade_kits", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.uuid "model_id"
@@ -2616,6 +2637,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_100000) do
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade
   add_foreign_key "tours", "fleets"
   add_foreign_key "tours", "users", column: "created_by_id"
+  add_foreign_key "trade_routes", "commodities", on_delete: :cascade
+  add_foreign_key "trade_routes", "terminals", column: "destination_terminal_id", on_delete: :cascade
+  add_foreign_key "trade_routes", "terminals", column: "origin_terminal_id", on_delete: :cascade
   add_foreign_key "user_blueprints", "blueprints", on_delete: :cascade
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
