@@ -52,7 +52,8 @@ module Uex
         location = terminal["name"].to_s.strip
         next if location.blank?
 
-        commodity = commodities[row["id_commodity"]]
+        commodity_id = Uex::CommodityMatcher::DUPLICATES.fetch(row["id_commodity"], row["id_commodity"])
+        commodity = commodities[commodity_id]
 
         if commodity.blank?
           unknown[row["id_commodity"]] ||= row
@@ -100,8 +101,9 @@ module Uex
     def self.github_issue_body(result)
       lines = ["## Priced UEX Commodities We Do Not Carry (#{result.unknown.size})", ""]
       lines << "UEX prices these at a commodity terminal but they resolve to no `Commodity`,"
-      lines << "so the prices are dropped. Either the game files do not declare them or"
-      lines << "`Uex::CommodityMatcher::MAPPINGS` is missing an entry."
+      lines << "so the prices are dropped. Either the game files do not declare them,"
+      lines << "`Uex::CommodityMatcher::MAPPINGS` is missing an entry, or UEX lists the"
+      lines << "good twice and `Uex::CommodityMatcher::DUPLICATES` is missing one."
       lines << ""
 
       result.unknown.each do |row|

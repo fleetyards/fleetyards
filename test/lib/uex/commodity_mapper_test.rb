@@ -53,6 +53,19 @@ module Uex
       assert_equal 0, result.updated
     end
 
+    test "#run leaves a UEX row listed in DUPLICATES to the row it duplicates" do
+      jaclium = create(:commodity, name: "Jaclium (Ore)", sc_key: "items_commodities_jaclium_ore")
+      rows = uex_fixture("commodities") + [
+        {"id" => 171, "name" => "Jaclium", "code" => "JACL"},
+        {"id" => 173, "name" => "Jaclium (Ore)", "code" => "JACO"}
+      ]
+
+      result = Uex::CommodityMapper.new(client: uex_client_stub(commodities: rows)).run
+
+      assert_equal 173, jaclium.reload.uex_id
+      assert_not_includes result.unmatched.map { |row| row["id"] }, 171
+    end
+
     test "#run reports the second of two UEX rows claiming one commodity" do
       duplicate = uex_fixture("commodities") + [{"id" => 1001, "name" => "gold", "code" => "DUPE"}]
 

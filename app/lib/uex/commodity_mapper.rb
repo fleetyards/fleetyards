@@ -18,6 +18,8 @@ module Uex
       claimed = {}
 
       rows.each do |row|
+        next if Uex::CommodityMatcher::DUPLICATES.key?(row["id"])
+
         commodity = matcher.match(row)
         next if commodity.blank?
 
