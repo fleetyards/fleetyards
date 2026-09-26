@@ -417,6 +417,8 @@ it:
           attributes:
             managed_by:
               not_a_member: deve essere un membro accettato di questa flotta
+        fleet_notification_setting:
+          not_a_discord_id: "deve essere l’ID numerico che Discord copia con «Copia ID», non un nome"
         fleet_squadron:
           attributes:
             team:

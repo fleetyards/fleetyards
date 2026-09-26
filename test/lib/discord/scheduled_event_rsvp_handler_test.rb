@@ -9,7 +9,7 @@ module Discord
       @fleet = create(:fleet)
       @user = create(:user)
       create(:omniauth_connection, user: @user, provider: "discord", uid: "discord-uid-1")
-      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
       @event = create(:fleet_event, :open, fleet: @fleet, discord_event_id: "scheduled-1")
       @membership = @fleet.fleet_memberships.create!(user: @user, fleet_role: @fleet.fleet_roles.ranked.last)
       @membership.update!(aasm_state: "accepted")
@@ -29,7 +29,7 @@ module Discord
 
       def handler
         ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-occurrence-1",
           discord_user_id: "discord-uid-1"
         )
@@ -62,7 +62,7 @@ module Discord
     class RemoveGuardTest < ScheduledEventRsvpHandlerTest
       def handler
         ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )
@@ -83,7 +83,7 @@ module Discord
     class AddTest < ScheduledEventRsvpHandlerTest
       test "creates an event-level interested signup" do
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )
@@ -103,7 +103,7 @@ module Discord
         )
 
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )
@@ -124,7 +124,7 @@ module Discord
         )
 
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )
@@ -136,7 +136,7 @@ module Discord
 
       test "skips when the user has no Discord connection" do
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "unknown"
         )
@@ -155,7 +155,7 @@ module Discord
       test "skips when the user isn't an accepted member" do
         @membership.update!(aasm_state: "invited")
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )
@@ -172,7 +172,7 @@ module Discord
         )
 
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )
@@ -182,7 +182,7 @@ module Discord
 
       test "is a no-op when nothing is signed up" do
         handler = ::Discord::ScheduledEventRsvpHandler.new(
-          guild_id: "guild-1",
+          guild_id: "100000000000000001",
           scheduled_event_id: "scheduled-1",
           discord_user_id: "discord-uid-1"
         )

@@ -6,7 +6,7 @@ module Discord
   class SyncFleetEventJobTest < ActiveSupport::TestCase
     setup do
       @fleet = create(:fleet)
-      @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
       @event = create(:fleet_event, :open, fleet: @fleet)
     end
 

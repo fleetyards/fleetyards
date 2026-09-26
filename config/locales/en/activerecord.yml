@@ -448,6 +448,8 @@ en:
           attributes:
             managed_by:
               not_a_member: must be an accepted member of this fleet
+        fleet_notification_setting:
+          not_a_discord_id: "must be the numeric ID Discord copies with \"Copy ID\", not a name"
         fleet_squadron:
           attributes:
             team:

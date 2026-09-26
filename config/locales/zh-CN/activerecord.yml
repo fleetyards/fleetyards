@@ -417,6 +417,8 @@ zh-CN:
           attributes:
             managed_by:
               not_a_member: 必须是该舰队的正式成员
+        fleet_notification_setting:
+          not_a_discord_id: "必须是 Discord 通过“复制 ID”复制的数字 ID，而不是名称"
         fleet_squadron:
           attributes:
             team:

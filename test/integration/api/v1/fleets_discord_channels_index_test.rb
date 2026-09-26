@@ -46,9 +46,9 @@ class Api::V1::FleetsDiscordChannelsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/discord-channels lists the guild's text and announcement channels in sidebar order" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")
-    api.stubs(:get_guild_channels).with("guild-1").returns([
+    api.stubs(:get_guild_channels).with("100000000000000001").returns([
       {"id" => "c2", "type" => 4, "name" => "Ops", "position" => 1},
       {"id" => "c1", "type" => 4, "name" => "General", "position" => 0},
       {"id" => "t3", "type" => 0, "name" => "mining", "position" => 0, "parent_id" => "c2"},
@@ -79,7 +79,7 @@ class Api::V1::FleetsDiscordChannelsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/discord-channels reports a guild the bot is not in" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")
     api.stubs(:get_guild_channels).raises(Discord::ApiClient::Error.new(403, "missing access"))
     Discord::ApiClient.stubs(:configured?).returns(true)

@@ -7,7 +7,7 @@ module Discord
   class ScheduledEventRsvpSyncTest < ActiveSupport::TestCase
     setup do
       @fleet = create(:fleet)
-      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
       @event = create(:fleet_event, :open, fleet: @fleet, discord_event_id: "scheduled-1")
 
       @user = create(:user)
@@ -29,7 +29,7 @@ module Discord
     end
 
     def sync(event_id: "scheduled-1")
-      ::Discord::ScheduledEventRsvpSync.new(guild_id: "guild-1", discord_event_id: event_id, api: @api)
+      ::Discord::ScheduledEventRsvpSync.new(guild_id: "100000000000000001", discord_event_id: event_id, api: @api)
     end
 
     def signups
@@ -131,10 +131,10 @@ module Discord
         {"user" => {"id" => "uid-#{i}"}}
       end
       @api.expects(:list_guild_scheduled_event_users)
-        .with("guild-1", "scheduled-1", after: nil)
+        .with("100000000000000001", "scheduled-1", after: nil)
         .returns(first_page)
       @api.expects(:list_guild_scheduled_event_users)
-        .with("guild-1", "scheduled-1", after: "uid-#{::Discord::ApiClient::SUBSCRIBER_PAGE_SIZE - 1}")
+        .with("100000000000000001", "scheduled-1", after: "uid-#{::Discord::ApiClient::SUBSCRIBER_PAGE_SIZE - 1}")
         .returns(subscribers("discord-uid-1"))
 
       result = sync.run!

@@ -8,7 +8,7 @@ module Discord
     class FleetMembersTest < ActiveSupport::TestCase
       setup do
         @fleet = create(:fleet, :private, name: "Test Wing")
-        @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+        @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
 
         @officer = create(:user, username: "Aendrax")
         create(:omniauth_connection, user: @officer, provider: "discord", uid: "officer-uid")
@@ -31,7 +31,7 @@ module Discord
           .tap { |membership| membership.update!(aasm_state: "requested", requested_at: requested_at) }
       end
 
-      def call(guild_id: "guild-1", discord_user_id: "officer-uid", options: {})
+      def call(guild_id: "100000000000000001", discord_user_id: "officer-uid", options: {})
         ::Discord::Commands::FleetMembers.new(
           guild_id: guild_id,
           discord_user_id: discord_user_id,

@@ -7,7 +7,7 @@ module Discord
   class EventAnnouncementTest < ActiveSupport::TestCase
     setup do
       @fleet = create(:fleet)
-      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
       @event = create(:fleet_event, :open, fleet: @fleet)
       ApiClient.stubs(:configured?).returns(true)
       DeliverAnnouncementJob.clear
