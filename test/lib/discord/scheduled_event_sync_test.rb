@@ -8,7 +8,7 @@ module Discord
     setup do
       @fleet = create(:fleet)
       @setting = @fleet.create_fleet_notification_setting!(
-        discord_guild_id: "123456789",
+        discord_guild_id: "123456789012345678",
         enabled_in_app_events: FleetNotificationSetting::DEFAULT_IN_APP_EVENTS
       )
       @event = create(:fleet_event, :open,
@@ -40,7 +40,7 @@ module Discord
     class UpsertTest < ScheduledEventSyncTest
       test "creates a Discord scheduled event when discord_event_id is missing" do
         @api.expects(:create_guild_scheduled_event)
-          .with("123456789", has_entries(name: "Strike Op", privacy_level: 2, entity_type: 3))
+          .with("123456789012345678", has_entries(name: "Strike Op", privacy_level: 2, entity_type: 3))
           .returns("id" => "999")
 
         ::Discord::ScheduledEventSync.new(@event).upsert!
@@ -50,9 +50,9 @@ module Discord
       end
 
       test "uses entity_type voice when a channel is configured" do
-        @setting.update!(discord_channel_id: "555")
+        @setting.update!(discord_channel_id: "555555555555555555")
         @api.expects(:create_guild_scheduled_event)
-          .with("123456789", has_entries(entity_type: 2, channel_id: "555"))
+          .with("123456789012345678", has_entries(entity_type: 2, channel_id: "555555555555555555"))
           .returns("id" => "999")
 
         ::Discord::ScheduledEventSync.new(@event).upsert!
@@ -61,7 +61,7 @@ module Discord
       test "patches the existing Discord event when discord_event_id is set" do
         @event.update_column(:discord_event_id, "888")
         @api.expects(:update_guild_scheduled_event)
-          .with("123456789", "888", has_entries(name: "Strike Op"))
+          .with("123456789012345678", "888", has_entries(name: "Strike Op"))
           .returns("id" => "888")
 
         ::Discord::ScheduledEventSync.new(@event).upsert!
@@ -71,7 +71,7 @@ module Discord
       test "marks the event completed when status is cancelled" do
         @event.update!(status: "cancelled")
         @api.expects(:create_guild_scheduled_event)
-          .with("123456789", has_entries(status: 4))
+          .with("123456789012345678", has_entries(status: 4))
           .returns("id" => "999")
 
         ::Discord::ScheduledEventSync.new(@event).upsert!
@@ -173,7 +173,7 @@ module Discord
     class DeleteTest < ScheduledEventSyncTest
       test "deletes the Discord event and clears local references" do
         @event.update_column(:discord_event_id, "777")
-        @api.expects(:delete_guild_scheduled_event).with("123456789", "777")
+        @api.expects(:delete_guild_scheduled_event).with("123456789012345678", "777")
 
         ::Discord::ScheduledEventSync.new(@event).delete!
         assert_nil @event.reload.discord_event_id

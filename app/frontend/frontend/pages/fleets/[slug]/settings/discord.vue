@@ -26,6 +26,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 type Props = {
   fleet: Fleet;
@@ -160,8 +161,16 @@ const save = async () => {
       queryKey: getFleetDiscordChannelsQueryKey(props.fleet.slug),
     });
     void fetchStatus();
-  } catch {
-    displayAlert({ text: t("messages.fleets.notifications.update.failure") });
+  } catch (error) {
+    // The inputs have no form context to show a server error inline.
+    const fieldMessages = validationErrorFrom(error).errors.flatMap(
+      (fieldError) => fieldError.messages.map(({ message }) => message),
+    );
+    displayAlert({
+      text:
+        fieldMessages.join(" ") ||
+        t("messages.fleets.notifications.update.failure"),
+    });
   } finally {
     submitting.value = false;
   }

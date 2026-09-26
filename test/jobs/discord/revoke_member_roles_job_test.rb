@@ -4,7 +4,7 @@ require "test_helper"
 
 module Discord
   class RevokeMemberRolesJobTest < ActiveSupport::TestCase
-    MEMBER_ROLE = "role-member"
+    MEMBER_ROLE = "200000000000000001"
     RANK_ROLE = "role-officer"
     FOREIGN_ROLE = "role-they-earned-elsewhere"
     UID = "discord-uid-1"
@@ -12,7 +12,7 @@ module Discord
     setup do
       ::Discord::ApiClient.stubs(:configured?).returns(true)
       @fleet = create(:fleet)
-      @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+      @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_member_role_id: MEMBER_ROLE)
       @role = @fleet.fleet_roles.ranked.last
       @role.update!(discord_role_id: RANK_ROLE)
 
@@ -41,7 +41,7 @@ module Discord
 
     def second_fleet
       fleet = create(:fleet)
-      fleet.create_fleet_notification_setting!(discord_guild_id: "guild-2", discord_member_role_id: "role-other")
+      fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000002", discord_member_role_id: "200000000000000002")
       fleet.fleet_memberships.create!(user: @user, fleet_role: fleet.fleet_roles.ranked.last)
       fleet
     end
@@ -76,7 +76,7 @@ module Discord
         assert @user.destroy
 
         _uid, _fleet_ids, snapshots = revoke_jobs.first
-        assert_equal [[@fleet.id, "guild-1", [MEMBER_ROLE, RANK_ROLE].sort]], snapshots.map { |id, guild, roles| [id, guild, roles.sort] }
+        assert_equal [[@fleet.id, "100000000000000001", [MEMBER_ROLE, RANK_ROLE].sort]], snapshots.map { |id, guild, roles| [id, guild, roles.sort] }
       end
 
       test "deleting an account without Discord enqueues nothing" do
@@ -92,11 +92,11 @@ module Discord
     class Perform < RevokeMemberRolesJobTest
       test "removes the managed roles and leaves the rest" do
         @connection.destroy!
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE, FOREIGN_ROLE]})
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE, FOREIGN_ROLE]})
         @api.expects(:add_guild_member_role).never
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, FOREIGN_ROLE).never
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, FOREIGN_ROLE).never
 
         perform
       end
@@ -106,11 +106,11 @@ module Discord
         fleet_ids = [@fleet.id, other.id]
         @user.destroy!
 
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
-        @api.stubs(:get_guild_member).with("guild-2", UID).returns({"roles" => ["role-other"]})
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-2", UID, "role-other")
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
+        @api.stubs(:get_guild_member).with("100000000000000002", UID).returns({"roles" => ["200000000000000002"]})
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000002", UID, "200000000000000002")
 
         perform(fleet_ids)
       end
@@ -127,10 +127,10 @@ module Discord
         assert_not Fleet.exists?(fleet_id)
         args = revoke_jobs.first
 
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, "role-admin", FOREIGN_ROLE]})
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, "role-admin")
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, FOREIGN_ROLE).never
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, "role-admin", FOREIGN_ROLE]})
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, "role-admin")
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, FOREIGN_ROLE).never
 
         ::Discord::RevokeMemberRolesJob.new.perform(*args)
       end
@@ -138,16 +138,16 @@ module Discord
       test "a destroyed fleet keeps a role another fleet in the same guild still owes" do
         @connection.destroy!
         sibling = create(:fleet)
-        sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+        sibling.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_member_role_id: MEMBER_ROLE)
         other = create(:user)
         create(:omniauth_connection, user: other, provider: "discord", uid: UID)
         sibling.fleet_memberships.create!(user: other, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
 
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).never
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE).never
 
-        ::Discord::RevokeMemberRolesJob.new.perform(UID, ["gone-fleet-id"], [["gone-fleet-id", "guild-1", [MEMBER_ROLE, RANK_ROLE]]])
+        ::Discord::RevokeMemberRolesJob.new.perform(UID, ["gone-fleet-id"], [["gone-fleet-id", "100000000000000001", [MEMBER_ROLE, RANK_ROLE]]])
       end
 
       test "keeps the roles another member linked to the same account is owed" do
@@ -156,24 +156,24 @@ module Discord
         @fleet.fleet_memberships.create!(user: other, fleet_role: @fleet.fleet_roles.ranked.first).update!(aasm_state: "accepted")
         @connection.destroy!
 
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).never
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE).never
 
         perform
       end
 
       test "keeps a shared role another fleet on the same server still owes" do
         sibling = create(:fleet)
-        sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+        sibling.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_member_role_id: MEMBER_ROLE)
         other = create(:user)
         create(:omniauth_connection, user: other, provider: "discord", uid: UID)
         sibling.fleet_memberships.create!(user: other, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
         @connection.destroy!
 
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, RANK_ROLE)
-        @api.expects(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).never
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE, RANK_ROLE]})
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, RANK_ROLE)
+        @api.expects(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE).never
 
         perform
       end
@@ -199,10 +199,10 @@ module Discord
         second_fleet
         @connection.destroy!
 
-        @api.stubs(:get_guild_member).with("guild-1", UID).returns({"roles" => [MEMBER_ROLE]})
-        @api.stubs(:get_guild_member).with("guild-2", UID).returns({"roles" => ["role-other"]})
-        @api.stubs(:remove_guild_member_role).with("guild-1", UID, MEMBER_ROLE).raises(::Discord::ApiClient::Error.new(400, "Bad Request"))
-        @api.expects(:remove_guild_member_role).with("guild-2", UID, "role-other")
+        @api.stubs(:get_guild_member).with("100000000000000001", UID).returns({"roles" => [MEMBER_ROLE]})
+        @api.stubs(:get_guild_member).with("100000000000000002", UID).returns({"roles" => ["200000000000000002"]})
+        @api.stubs(:remove_guild_member_role).with("100000000000000001", UID, MEMBER_ROLE).raises(::Discord::ApiClient::Error.new(400, "Bad Request"))
+        @api.expects(:remove_guild_member_role).with("100000000000000002", UID, "200000000000000002")
 
         assert_nothing_raised { perform(@user.fleet_memberships.pluck(:fleet_id)) }
       end

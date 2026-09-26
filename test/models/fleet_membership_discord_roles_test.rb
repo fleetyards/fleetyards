@@ -7,8 +7,8 @@ class FleetMembershipDiscordRolesTest < ActiveSupport::TestCase
   setup do
     @fleet = create(:fleet)
     @fleet.create_fleet_notification_setting!(
-      discord_guild_id: "guild-1",
-      discord_member_role_id: "role-member"
+      discord_guild_id: "100000000000000001",
+      discord_member_role_id: "200000000000000001"
     )
     @user = create(:user)
     ::Discord::ApiClient.stubs(:configured?).returns(true)

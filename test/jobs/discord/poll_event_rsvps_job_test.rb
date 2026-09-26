@@ -10,7 +10,7 @@ module Discord
     end
 
     def perform
-      ::Discord::PollEventRsvpsJob.new.perform("scheduled-1", "guild-1")
+      ::Discord::PollEventRsvpsJob.new.perform("scheduled-1", "100000000000000001")
     end
 
     test "runs the sync for the event" do

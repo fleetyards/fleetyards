@@ -5,14 +5,14 @@ require "discord/member_role_sync"
 
 module Discord
   class MemberRoleSyncTest < ActiveSupport::TestCase
-    MEMBER_ROLE = "role-member"
+    MEMBER_ROLE = "200000000000000001"
     RANK_ROLE = "role-officer"
     FOREIGN_ROLE = "role-they-earned-elsewhere"
 
     setup do
       @fleet = create(:fleet)
       @setting = @fleet.create_fleet_notification_setting!(
-        discord_guild_id: "guild-1",
+        discord_guild_id: "100000000000000001",
         discord_member_role_id: MEMBER_ROLE
       )
 
@@ -37,7 +37,7 @@ module Discord
 
     test "gives an accepted member the member role" do
       member_has
-      @api.expects(:add_guild_member_role).with("guild-1", "discord-uid-1", MEMBER_ROLE)
+      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", MEMBER_ROLE)
 
       result = sync.run!
 
@@ -56,7 +56,7 @@ module Discord
     test "gives the role mapped to the member's rank" do
       @role.update!(discord_role_id: RANK_ROLE)
       member_has(MEMBER_ROLE)
-      @api.expects(:add_guild_member_role).with("guild-1", "discord-uid-1", RANK_ROLE)
+      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 
       assert_equal [RANK_ROLE], sync.run!.added
     end
@@ -64,7 +64,7 @@ module Discord
     test "takes the roles away when the member is no longer accepted" do
       @membership.update!(aasm_state: "declined")
       member_has(MEMBER_ROLE)
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-1", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", MEMBER_ROLE)
 
       assert_equal [MEMBER_ROLE], sync.run!.removed
     end
@@ -72,7 +72,7 @@ module Discord
     test "takes the roles away when the membership is discarded" do
       @membership.update!(discarded_at: Time.current)
       member_has(MEMBER_ROLE)
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-1", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", MEMBER_ROLE)
 
       assert_equal [MEMBER_ROLE], sync.run!.removed
     end
@@ -84,8 +84,8 @@ module Discord
       @membership.update!(fleet_role: other)
 
       member_has(MEMBER_ROLE, RANK_ROLE)
-      @api.expects(:add_guild_member_role).with("guild-1", "discord-uid-1", "role-admin")
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-1", RANK_ROLE)
+      @api.expects(:add_guild_member_role).with("100000000000000001", "discord-uid-1", "role-admin")
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 
       sync.run!
     end
@@ -95,7 +95,7 @@ module Discord
     test "never removes a role the fleet did not put under our control" do
       @membership.update!(aasm_state: "declined")
       member_has(MEMBER_ROLE, FOREIGN_ROLE)
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-1", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", MEMBER_ROLE)
 
       result = sync.run!
 
@@ -111,15 +111,15 @@ module Discord
       @role.update!(discord_role_id: RANK_ROLE)
       member_has(MEMBER_ROLE, RANK_ROLE)
       @api.expects(:add_guild_member_role).never
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", RANK_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-old", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-old", RANK_ROLE)
 
       assert_equal [MEMBER_ROLE, RANK_ROLE].sort, revoke.run!.removed.sort
     end
 
     test "revoking leaves a role the fleet did not put under our control" do
       member_has(MEMBER_ROLE, FOREIGN_ROLE)
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-old", MEMBER_ROLE)
 
       assert_equal [MEMBER_ROLE], revoke.run!.removed
     end
@@ -127,8 +127,8 @@ module Discord
     test "revoking targets the given uid even with no linked account left" do
       @user.omniauth_connections.destroy_all
       member_has(MEMBER_ROLE)
-      @api.expects(:get_guild_member).with("guild-1", "discord-uid-old").returns({"roles" => [MEMBER_ROLE]})
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-old", MEMBER_ROLE)
+      @api.expects(:get_guild_member).with("100000000000000001", "discord-uid-old").returns({"roles" => [MEMBER_ROLE]})
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-old", MEMBER_ROLE)
 
       assert revoke.runnable?
       revoke.run!
@@ -151,7 +151,7 @@ module Discord
 
       member_has(MEMBER_ROLE, RANK_ROLE, "role-admin")
       @api.expects(:add_guild_member_role).never
-      @api.expects(:remove_guild_member_role).with("guild-1", "discord-uid-1", RANK_ROLE)
+      @api.expects(:remove_guild_member_role).with("100000000000000001", "discord-uid-1", RANK_ROLE)
 
       assert_equal [RANK_ROLE], revoke("discord-uid-1").run!.removed
     end
@@ -166,7 +166,7 @@ module Discord
 
     test "a member leaving keeps a shared role another fleet on the same server still owes" do
       sibling = create(:fleet)
-      sibling.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_member_role_id: MEMBER_ROLE)
+      sibling.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_member_role_id: MEMBER_ROLE)
       sibling.fleet_memberships.create!(user: @user, fleet_role: sibling.fleet_roles.ranked.last).update!(aasm_state: "accepted")
       @membership.update!(aasm_state: "declined")
       member_has(MEMBER_ROLE)

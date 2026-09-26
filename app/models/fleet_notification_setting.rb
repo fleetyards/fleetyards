@@ -37,13 +37,20 @@ class FleetNotificationSetting < ApplicationRecord
 
   encrypts :discord_webhook_url
 
-  normalizes :discord_announcement_channel_id, with: ->(value) { value.strip.presence }
+  DISCORD_ID_ATTRIBUTES = %i[
+    discord_guild_id
+    discord_channel_id
+    discord_member_role_id
+    discord_announcement_channel_id
+    discord_officers_channel_id
+  ].freeze
 
-  validates :discord_announcement_channel_id, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT}, allow_nil: true
+  # Each one is interpolated into a Discord API path, so a server's name typed
+  # where its id belongs would not even make a valid URL.
+  normalizes(*DISCORD_ID_ATTRIBUTES, with: ->(value) { value.strip.presence })
 
-  normalizes :discord_officers_channel_id, with: ->(value) { value.strip.presence }
+  validates(*DISCORD_ID_ATTRIBUTES, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT, message: :not_a_discord_id}, allow_nil: true)
 
-  validates :discord_officers_channel_id, format: {with: ::Discord::ApiClient::SNOWFLAKE_FORMAT}, allow_nil: true
   DIGEST_TIME_FORMAT = /\A(?:[01]\d|2[0-3]):[0-5]\d\z/
 
   # Ruby's own numbering, Sunday first, so a weekday compares with `wday`

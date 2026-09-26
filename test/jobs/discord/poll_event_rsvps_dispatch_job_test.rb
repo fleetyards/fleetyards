@@ -8,7 +8,7 @@ module Discord
       ::Discord::ApiClient.stubs(:configured?).returns(true)
       ::Discord::PollEventRsvpsJob.jobs.clear
       @fleet = create(:fleet)
-      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     end
 
     def dispatch
@@ -32,7 +32,7 @@ module Discord
 
       dispatch
 
-      assert_equal "guild-1", ::Discord::PollEventRsvpsJob.jobs.first["args"].second
+      assert_equal "100000000000000001", ::Discord::PollEventRsvpsJob.jobs.first["args"].second
     end
 
     test "skips an event that was never synced to Discord" do

@@ -9,7 +9,7 @@ module Notifications
       setup do
         @fleet = create(:fleet)
         @event = create(:fleet_event, :open, fleet: @fleet)
-        @fleet.create_fleet_notification_setting!(discord_guild_id: "123")
+        @fleet.create_fleet_notification_setting!(discord_guild_id: "123456789012345678")
         ::Discord::ApiClient.stubs(:configured?).returns(true)
       end
 

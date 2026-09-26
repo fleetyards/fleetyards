@@ -14,7 +14,7 @@ module Discord
         "application_id" => "488788875699945472",
         "token" => "interaction-token",
         "custom_id" => "fleet_request:accept:#{SecureRandom.uuid}",
-        "guild_id" => "guild-1",
+        "guild_id" => "100000000000000001",
         "discord_user_id" => "officer-uid",
         "locale" => "en",
         "requested_at" => Time.current.to_i
