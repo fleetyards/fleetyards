@@ -9,6 +9,9 @@ import { useComlink } from "@/shared/composables/useComlink";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import AccessCheck from "@/shared/components/AccessCheck.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
+import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
@@ -46,13 +49,31 @@ const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(
   },
 );
 
-const { data: membership, isLoading: isMembershipLoading } =
-  useFleetMembershipQuery(slug, {
+const { data: membership, ...asyncMembershipStatus } = useFleetMembershipQuery(
+  slug,
+  {
     query: {
       enabled: computed(() => !!slug.value && sessionStore.isAuthenticated),
       retry: false,
     },
-  });
+  },
+);
+
+// Not isPending: the query is disabled for guests and stays pending forever.
+const isMembershipLoading = asyncMembershipStatus.isLoading;
+
+// A 404 only means "not a member"; anything else is a real failure.
+const membershipFailed = computed(() => {
+  const error = asyncMembershipStatus.error.value;
+
+  return !!error && errorTypeFrom(error) !== ErrorTypesEnum.NOT_FOUND;
+});
+
+// Public fleet routes are the ones that don't need a session; every other
+// child route reads the membership.
+const membershipRequired = computed(
+  () => !!route.meta.needsAuthentication && !membership.value,
+);
 
 const resolvedFleet = computed(() => fleet.value || publicFleet.value);
 
@@ -80,9 +101,12 @@ useFleetMeta(resolvedFleet);
 <template>
   <AsyncData :async-status="resolvedAsyncFleetStatus">
     <template #resolved>
-      <!-- Not isPending: the membership query is disabled for guests and 404s
-           for non-members, and neither case must hold back a public fleet. -->
       <Loader v-if="isMembershipLoading" :loading="true" />
+      <AsyncData
+        v-else-if="membershipFailed"
+        :async-status="asyncMembershipStatus"
+      />
+      <NotAuthorized v-else-if="membershipRequired" />
       <AccessCheck
         v-else
         :resource-access="membership?.fleetRole?.resourceAccess"
