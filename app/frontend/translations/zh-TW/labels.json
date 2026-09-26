@@ -2559,6 +2559,8 @@
           "noUpcomingOccurrences": "未來 12 週內沒有即將到來的場次。",
           "endSeriesConfirm": "要在這個日期之後停止重複嗎？之後的場次將不會再產生。",
           "skipOccurrenceSuccess": "已略過這一場。",
+          "unskipOccurrence": "恢復這一場",
+          "unskipOccurrenceSuccess": "已恢復這一場。",
           "endSeriesSuccess": "系列已從這個日期起結束。",
           "cancelledReason": "取消原因",
           "createdBy": "建立者",
