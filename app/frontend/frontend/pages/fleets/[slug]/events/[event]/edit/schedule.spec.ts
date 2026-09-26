@@ -10,7 +10,8 @@ import {
   vi,
 } from "vitest";
 import { defineRule } from "vee-validate";
-import { required } from "@vee-validate/rules";
+import { between, required } from "@vee-validate/rules";
+import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import { type Fleet, type FleetEventExtended } from "@/services/fyApi";
 import Component from "./schedule.vue";
 
@@ -30,6 +31,7 @@ let wrapper: VueWrapper | undefined;
 
 beforeAll(() => {
   defineRule("required", required);
+  defineRule("between", between);
 });
 
 beforeEach(() => {
@@ -110,6 +112,18 @@ describe("FleetEventEditSchedulePage recurrence", () => {
     const data = await save(subject);
     expect(data.recurrenceEvery).toBe(2);
     expect(data.recurrenceWeekdays).toEqual([2, 6]);
+  });
+
+  // The start day was implied, not picked, so moving the start takes it along
+  // instead of leaving the old day in the pattern.
+  it("drops the old start day when the start moves", async () => {
+    const subject = await mount(series());
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    startField.vm.$emit("update:modelValue", "2026-10-07T20:00");
+    await flushPromises();
+
+    expect((await save(subject)).recurrenceWeekdays).toEqual([3, 4]);
   });
 
   it("hides the weekdays for a series that is not weekly", async () => {

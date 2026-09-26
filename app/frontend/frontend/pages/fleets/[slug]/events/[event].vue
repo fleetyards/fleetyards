@@ -337,6 +337,9 @@ const editFollowing = (entry: { iso: string; seriesStart: boolean }) => {
           slug: event.value!.slug,
           data: { date: entry.iso },
         });
+        // The original now ends before this date; going back to it must not
+        // show the moved occurrences from the cache.
+        void refetch();
         await goToSeriesEdit(successor.slug);
       } catch {
         displayAlert({ text: t("messages.fleets.event.update.failure") });
