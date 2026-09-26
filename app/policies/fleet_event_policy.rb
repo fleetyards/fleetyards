@@ -53,7 +53,8 @@ class FleetEventPolicy < FleetBasePolicy
       :max_attendees, :auto_lock_enabled, :auto_lock_minutes_before,
       :cover_image, :cover_image_preset, :signup_approval,
       :recurring, :recurrence_interval, :recurrence_until, :recurrence_count,
-      excluded_dates: [], fleet_squadron_ids: []
+      :recurrence_every,
+      excluded_dates: [], fleet_squadron_ids: [], recurrence_weekdays: []
     )
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_163000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_26_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -860,8 +860,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_163000) do
     t.datetime "open_at"
     t.datetime "published_at"
     t.integer "recurrence_count"
+    t.integer "recurrence_every", default: 1, null: false
     t.string "recurrence_interval"
     t.date "recurrence_until"
+    t.integer "recurrence_weekdays", default: [], null: false, array: true
     t.boolean "recurring", default: false, null: false
     t.string "scenario"
     t.string "signup_approval", default: "direct", null: false

@@ -126,6 +126,24 @@ module Calendars
           assert_includes ::Calendars::IcsBuilder.new([event]).to_ics, "RRULE:FREQ=WEEKLY;INTERVAL=2"
         end
 
+        test "emits INTERVAL for an every-N series" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: @thursday, timezone: "UTC",
+            recurring: true, recurrence_interval: "monthly", recurrence_every: 3)
+
+          assert_includes ::Calendars::IcsBuilder.new([event]).to_ics, "RRULE:FREQ=MONTHLY;INTERVAL=3\r\n"
+        end
+
+        test "emits BYDAY for a series on several weekdays" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: @thursday, timezone: "Europe/Berlin",
+            recurring: true, recurrence_interval: "weekly", recurrence_every: 2,
+            recurrence_weekdays: [2], recurrence_count: 6)
+
+          assert_includes ::Calendars::IcsBuilder.new([event]).to_ics,
+            "RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,TH;WKST=MO;COUNT=6"
+        end
+
         test "emits FREQ=DAILY for daily" do
           event = create(:fleet_event, :open,
             fleet: @fleet, starts_at: @thursday, timezone: "UTC",

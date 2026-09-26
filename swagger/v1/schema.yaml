@@ -20795,6 +20795,14 @@ components:
           format: date
         recurrenceCount:
           type: integer
+        recurrenceEvery:
+          type: integer
+        recurrenceWeekdays:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
         excludedDates:
           type: array
           items:
@@ -20966,6 +20974,16 @@ components:
           type:
           - integer
           - 'null'
+        recurrenceEvery:
+          type: integer
+          minimum: 1
+          maximum: 99
+        recurrenceWeekdays:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
       required:
       - title
       - startsAt
@@ -20986,10 +21004,31 @@ components:
             type: array
             items:
               "$ref": "#/components/schemas/FleetEventSignup"
+          upcomingOccurrences:
+            type: array
+            items:
+              "$ref": "#/components/schemas/FleetEventOccurrence"
         required:
         - teams
         - unassignedSignups
+        - upcomingOccurrences
       title: FleetEventExtended
+    FleetEventOccurrence:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        startsAt:
+          type: string
+          format: date-time
+        excluded:
+          type: boolean
+      required:
+      - date
+      - startsAt
+      - excluded
+      title: FleetEventOccurrence
     FleetEventOccurrenceDateInput:
       type: object
       properties:
@@ -21667,6 +21706,16 @@ components:
           type:
           - integer
           - 'null'
+        recurrenceEvery:
+          type: integer
+          minimum: 1
+          maximum: 99
+        recurrenceWeekdays:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
       additionalProperties: false
       title: FleetEventUpdateInput
     FleetEventViewerRoleEnum:

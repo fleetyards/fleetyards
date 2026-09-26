@@ -53,6 +53,8 @@ module V1
               recurrenceInterval: ::V1::Schemas::Enums::FleetEventRecurrenceIntervalEnum,
               recurrenceUntil: {type: :string, format: :date},
               recurrenceCount: {type: :integer},
+              recurrenceEvery: {type: :integer},
+              recurrenceWeekdays: {type: :array, items: {type: :integer, minimum: 0, maximum: 6}},
               excludedDates: {
                 type: :array,
                 items: {type: :string, format: :date}

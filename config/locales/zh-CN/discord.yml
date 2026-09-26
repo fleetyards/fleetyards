@@ -85,9 +85,13 @@ zh-CN:
       slots: '%{total} 个位置中还有 %{open} 个空缺'
     event_published:
       recurrence:
-        biweekly: 每两周
         daily: 每天
+        every_n:
+          daily: '每%{count}天'
+          monthly: '每%{count}个月'
+          weekly: '每%{count}周'
         monthly: 每月
+        on_days: '%{interval}（%{days}）'
         weekly: 每周
       title: '新活动：%{title}'
     event_reminder:

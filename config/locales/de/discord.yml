@@ -85,9 +85,13 @@ de:
       slots: '%{open} von %{total} Plätzen frei'
     event_published:
       recurrence:
-        biweekly: Alle zwei Wochen
         daily: Täglich
+        every_n:
+          daily: 'Alle %{count} Tage'
+          monthly: 'Alle %{count} Monate'
+          weekly: 'Alle %{count} Wochen'
         monthly: Monatlich
+        on_days: '%{interval} am %{days}'
         weekly: Wöchentlich
       title: 'Neues Event: %{title}'
     event_reminder:

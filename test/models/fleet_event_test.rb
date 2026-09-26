@@ -29,8 +29,10 @@ require "test_helper"
 #  open_at                   :datetime
 #  published_at              :datetime
 #  recurrence_count          :integer
+#  recurrence_every          :integer          default(1), not null
 #  recurrence_interval       :string
 #  recurrence_until          :date
+#  recurrence_weekdays       :integer          default([]), not null, is an Array
 #  recurring                 :boolean          default(FALSE), not null
 #  scenario                  :string
 #  signup_approval           :string           default("direct"), not null
@@ -214,6 +216,65 @@ class FleetEventTest < ActiveSupport::TestCase
       refute_includes result.map(&:to_date), Date.parse("2026-05-21")
       assert_equal 4, result.size
     end
+
+    test "honours an every-N interval" do
+      event = create(:fleet_event,
+        fleet: @fleet, starts_at: @thursday,
+        recurring: true, recurrence_interval: "weekly", recurrence_every: 3)
+
+      result = event.occurrences(from: @thursday, to: @thursday + 9.weeks)
+
+      assert_equal [@thursday, @thursday + 3.weeks, @thursday + 6.weeks, @thursday + 9.weeks], result
+    end
+
+    test "expands a weekly series onto several weekdays" do
+      event = create(:fleet_event,
+        fleet: @fleet, starts_at: Time.zone.parse("2026-05-12 20:00"),
+        timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "weekly", recurrence_every: 2,
+        recurrence_weekdays: [2, 4])
+
+      result = event.occurrences(from: Time.zone.parse("2026-05-01"), to: Time.zone.parse("2026-06-10"))
+
+      assert_equal %w[2026-05-12 2026-05-14 2026-05-26 2026-05-28 2026-06-09],
+        result.map { |t| t.to_date.iso8601 }
+      assert_equal [20], result.map(&:hour).uniq
+    end
+
+    test "counts every weekday occurrence against recurrence_count" do
+      event = create(:fleet_event,
+        fleet: @fleet, starts_at: Time.zone.parse("2026-05-12 20:00"),
+        timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "weekly",
+        recurrence_weekdays: [2, 4], recurrence_count: 3,
+        excluded_dates: [Date.parse("2026-05-14")])
+
+      result = event.occurrences(from: @thursday - 1.week, to: @thursday + 8.weeks)
+
+      assert_equal %w[2026-05-12 2026-05-19], result.map { |t| t.to_date.iso8601 }
+    end
+
+    test "keeps a monthly series on the day it started" do
+      event = create(:fleet_event,
+        fleet: @fleet, starts_at: Time.zone.parse("2026-01-31 20:00"),
+        timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "monthly", recurrence_count: 3)
+
+      result = event.occurrences(from: Time.zone.parse("2026-01-01"), to: Time.zone.parse("2026-12-31"))
+
+      assert_equal %w[2026-01-31 2026-02-28 2026-03-31], result.map { |t| t.to_date.iso8601 }
+    end
+
+    test "keeps the event's wall-clock time across a DST change" do
+      event = create(:fleet_event,
+        fleet: @fleet, starts_at: Time.find_zone("America/New_York").parse("2026-10-29 20:00"),
+        timezone: "America/New_York",
+        recurring: true, recurrence_interval: "weekly")
+
+      result = event.occurrences(from: Time.zone.parse("2026-10-28"), to: Time.zone.parse("2026-11-06"))
+
+      assert_equal [20], result.map { |t| t.in_time_zone("America/New_York").hour }.uniq
+    end
   end
 
   class SkipOccurrenceTest < FleetEventTest
@@ -274,6 +335,51 @@ class FleetEventTest < ActiveSupport::TestCase
         recurrence_count: 4, recurrence_until: Date.tomorrow)
 
       refute event.valid?
+    end
+
+    test "stores biweekly as weekly every 2" do
+      event = create(:fleet_event,
+        recurring: true, recurrence_interval: "biweekly")
+
+      assert_equal ["weekly", 2], [event.recurrence_interval, event.recurrence_every]
+    end
+
+    test "adds the start day to the weekdays and drops a lone start day" do
+      thursday = Time.zone.parse("2026-05-14 20:00")
+      several = create(:fleet_event, starts_at: thursday, timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "weekly", recurrence_weekdays: [2])
+      lone = create(:fleet_event, starts_at: thursday, timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "weekly", recurrence_weekdays: [4])
+
+      assert_equal [2, 4], several.recurrence_weekdays
+      assert_equal [], lone.recurrence_weekdays
+    end
+
+    test "clears weekdays and every-N off a weekly series" do
+      event = create(:fleet_event,
+        recurring: true, recurrence_interval: "weekly", recurrence_every: 3, recurrence_weekdays: [1])
+
+      event.update!(recurrence_interval: "daily")
+      assert_equal [], event.recurrence_weekdays
+
+      event.update!(recurring: false, recurrence_interval: nil)
+      assert_equal 1, event.recurrence_every
+    end
+
+    test "rejects an every-N below one" do
+      event = build(:fleet_event,
+        recurring: true, recurrence_interval: "weekly", recurrence_every: 0)
+
+      refute event.valid?
+      assert event.errors[:recurrence_every].present?
+    end
+
+    test "rejects a weekday outside the week" do
+      event = build(:fleet_event,
+        recurring: true, recurrence_interval: "weekly", recurrence_weekdays: [7])
+
+      refute event.valid?
+      assert event.errors[:recurrence_weekdays].present?
     end
   end
 

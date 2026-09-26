@@ -27,8 +27,10 @@
 #  open_at                   :datetime
 #  published_at              :datetime
 #  recurrence_count          :integer
+#  recurrence_every          :integer          default(1), not null
 #  recurrence_interval       :string
 #  recurrence_until          :date
+#  recurrence_weekdays       :integer          default([]), not null, is an Array
 #  recurring                 :boolean          default(FALSE), not null
 #  scenario                  :string
 #  signup_approval           :string           default("direct"), not null
