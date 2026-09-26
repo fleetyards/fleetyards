@@ -90,6 +90,13 @@ const recurringEvent = (excludedDates: string[]): FleetEventExtended =>
     recurring: true,
     recurrenceInterval: "weekly",
     excludedDates,
+    upcomingOccurrences: [
+      {
+        date: firstOccurrence,
+        startsAt: startsAt.toISOString(),
+        excluded: excludedDates.includes(firstOccurrence),
+      },
+    ],
     teams: [],
   }) as unknown as FleetEventExtended;
 
