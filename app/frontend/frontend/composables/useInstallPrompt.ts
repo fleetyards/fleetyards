@@ -5,6 +5,10 @@ import { v4 as uuidv4 } from "uuid";
 
 type InstallOutcome = "accepted" | "dismissed";
 
+// What `install()` put in front of the viewer, if anything: the browser's
+// dialog and its answer, or the iOS steps. Nothing means the prompt was refused.
+export type InstallResult = InstallOutcome | "instructions" | undefined;
+
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: InstallOutcome }>;
@@ -23,10 +27,16 @@ interface StoredState {
   lastOfferedAt?: string;
 }
 
+// This runs before the app mounts, so a stored value of the wrong shape --
+// `null` parses fine -- must not reach a property read.
 const readState = (): StoredState => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StoredState) : {};
+    const parsed: unknown = raw ? JSON.parse(raw) : {};
+
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? (parsed as StoredState)
+      : {};
   } catch {
     return {};
   }
@@ -154,7 +164,7 @@ export const useInstallPrompt = () => {
     });
   };
 
-  const install = async (): Promise<InstallOutcome | undefined> => {
+  const install = async (): Promise<InstallResult> => {
     const event = deferredPrompt.value;
 
     if (event) {
@@ -181,13 +191,20 @@ export const useInstallPrompt = () => {
 
     if (ios.value) {
       openIosInstructions();
+      return "instructions";
     }
 
     return undefined;
   };
 
+  const offerPending = () =>
+    notificationsStore.messages.some(
+      (message) => message.visible && message.componentProps?.installOffer,
+    );
+
   const canOffer = (): boolean => {
     if (!canInstall.value) return false;
+    if (offerPending()) return false;
     if (isAutomatedBrowser()) return false;
     const state = readState();
 
@@ -214,16 +231,21 @@ export const useInstallPrompt = () => {
       componentProps: {
         context,
         notificationId,
+        installOffer: true,
       },
     });
   };
 
-  // Shown or not, an offer counts against the cooldown: closing the message
-  // is as much of an answer as the "not now" button.
+  // The offer starts its cooldown when it is on screen, not when it is queued:
+  // only five messages show at a time, and one waiting behind them has not been
+  // seen. Once shown, closing it is as much of an answer as "not now".
+  const recordOffered = () => {
+    writeState({ lastOfferedAt: new Date().toISOString() });
+  };
+
   const offer = (context: InstallPromptContext) => {
     if (!canOffer()) return false;
 
-    writeState({ lastOfferedAt: new Date().toISOString() });
     dispatchOffer(context);
 
     return true;
@@ -237,6 +259,7 @@ export const useInstallPrompt = () => {
     openIosInstructions,
     canOffer,
     offer,
+    recordOffered,
     forceOffer: dispatchOffer,
   };
 };

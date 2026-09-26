@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { install, canInstall } = useInstallPrompt();
+const { install, canInstall, recordOffered } = useInstallPrompt();
 
 const notificationsStore = useNotificationsStore();
 
@@ -36,6 +36,10 @@ const closeNotification = () => {
   }
 };
 
+onMounted(() => {
+  recordOffered();
+});
+
 // Installed from the nav while the offer was up: it has nothing left to offer.
 watch(canInstall, (installable) => {
   if (!installable) {
@@ -43,10 +47,13 @@ watch(canInstall, (installable) => {
   }
 });
 
+// A refused prompt leaves the offer up, so the viewer can try again.
 const installApp = async (event: MouseEvent) => {
   event.stopPropagation();
-  closeNotification();
-  await install();
+
+  if (await install()) {
+    closeNotification();
+  }
 };
 
 const later = (event: MouseEvent) => {

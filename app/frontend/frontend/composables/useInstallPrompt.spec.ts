@@ -1,10 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const addMessage = vi.fn();
+// The store's queue is what an offer checks for one already waiting.
+const messages: { visible: boolean; componentProps?: unknown }[] = [];
+const addMessage = vi.fn((message: (typeof messages)[number]) => {
+  messages.push(message);
+});
 const emit = vi.fn();
 
 vi.mock("@/shared/stores/notifications", () => ({
-  useNotificationsStore: () => ({ addMessage }),
+  useNotificationsStore: () => ({ addMessage, messages }),
 }));
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -57,7 +61,8 @@ const IOS_SAFARI =
 
 beforeEach(() => {
   localStorage.clear();
-  addMessage.mockReset();
+  addMessage.mockClear();
+  messages.splice(0);
   emit.mockReset();
 
   const add = window.addEventListener.bind(window);
@@ -160,13 +165,40 @@ describe("useInstallPrompt", () => {
     captureInstallPrompt();
     fireBeforeInstallPrompt("accepted");
 
-    const { offer } = useInstallPrompt();
+    const { offer, recordOffered } = useInstallPrompt();
 
     expect(offer("eventSignup")).toBe(true);
     expect(addMessage).toHaveBeenCalledOnce();
 
+    recordOffered();
+    messages.splice(0);
+
     expect(offer("eventSignup")).toBe(false);
     expect(addMessage).toHaveBeenCalledOnce();
+  });
+
+  it("queues one offer at a time without starting the cooldown", async () => {
+    returningVisitor();
+    const { captureInstallPrompt, useInstallPrompt } = await load();
+    captureInstallPrompt();
+    fireBeforeInstallPrompt("accepted");
+
+    const { offer } = useInstallPrompt();
+
+    expect(offer("eventSignup")).toBe(true);
+    expect(offer("eventSignup")).toBe(false);
+
+    // Never shown -- it waited behind other messages and was cleared.
+    messages.splice(0);
+
+    expect(offer("eventSignup")).toBe(true);
+  });
+
+  it("starts with a stored value of the wrong shape", async () => {
+    localStorage.setItem("fy.install-prompt", "null");
+    const { captureInstallPrompt } = await load();
+
+    expect(() => captureInstallPrompt()).not.toThrow();
   });
 
   it("remembers the cooldown across reloads", async () => {
@@ -174,7 +206,7 @@ describe("useInstallPrompt", () => {
     let module = await load();
     module.captureInstallPrompt();
     fireBeforeInstallPrompt("accepted");
-    module.useInstallPrompt().offer("eventSignup");
+    module.useInstallPrompt().recordOffered();
 
     module = await load();
     module.captureInstallPrompt();

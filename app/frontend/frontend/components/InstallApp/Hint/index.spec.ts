@@ -1,10 +1,11 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { ref } from "vue";
 import Component from "./index.vue";
 
 const install = vi.fn();
+const recordOffered = vi.fn();
 const canInstall = ref(true);
 const hideMessage = vi.fn();
 
@@ -13,7 +14,7 @@ vi.mock("@/shared/stores/notifications", () => ({
 }));
 
 vi.mock("@/frontend/composables/useInstallPrompt", () => ({
-  useInstallPrompt: () => ({ install, canInstall }),
+  useInstallPrompt: () => ({ install, canInstall, recordOffered }),
 }));
 
 // A wrapper that is never unmounted leaves its pinia behind, and the next test
@@ -21,7 +22,8 @@ vi.mock("@/frontend/composables/useInstallPrompt", () => ({
 let wrapper: VueWrapper | undefined;
 
 beforeEach(() => {
-  install.mockReset();
+  install.mockReset().mockResolvedValue("accepted");
+  recordOffered.mockReset();
   hideMessage.mockReset();
   canInstall.value = true;
 });
@@ -44,9 +46,26 @@ describe("InstallAppHint", () => {
     const subject = await mount();
 
     await subject.find("[data-test='install-app-hint-cta']").trigger("click");
+    await flushPromises();
 
     expect(install).toHaveBeenCalledOnce();
     expect(hideMessage).toHaveBeenCalledWith("offer-1");
+  });
+
+  it("starts the cooldown once it is on screen", async () => {
+    await mount();
+
+    expect(recordOffered).toHaveBeenCalledOnce();
+  });
+
+  it("stays up when the browser refuses its prompt", async () => {
+    install.mockResolvedValue(undefined);
+    const subject = await mount();
+
+    await subject.find("[data-test='install-app-hint-cta']").trigger("click");
+    await flushPromises();
+
+    expect(hideMessage).not.toHaveBeenCalled();
   });
 
   it("steps aside without installing", async () => {
