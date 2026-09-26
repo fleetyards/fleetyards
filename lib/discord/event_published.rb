@@ -8,8 +8,6 @@ module Discord
   # once, rather than once per week, from its next occurrence: a series can
   # be published well after the date it was first set to start.
   class EventPublished < EventMessage
-    UPCOMING_LOOKAHEAD = 1.year
-
     def initialize(event:, occurrence_date: nil)
       super(event: event, occurrence_date: occurrence_date || next_occurrence_date(event))
     end
@@ -23,8 +21,7 @@ module Discord
     private def next_occurrence_date(event)
       return nil unless event.recurring?
 
-      now = Time.current
-      event.occurrences(from: now, to: now + UPCOMING_LOOKAHEAD).first&.to_date
+      event.next_occurrence&.to_date
     end
 
     private def get_title

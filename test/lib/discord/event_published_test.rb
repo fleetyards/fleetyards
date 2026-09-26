@@ -40,6 +40,14 @@ module Discord
       assert_includes content, "<t:#{upcoming.to_i}:F>"
     end
 
+    test "a series whose next occurrence is over a year away still announces it" do
+      @event.update_columns(starts_at: 1.day.ago, recurring: true, recurrence_interval: "monthly", recurrence_every: 18)
+      publication = EventPublished.new(event: @event.reload)
+
+      assert_predicate publication, :upcoming?
+      assert_includes publication.content, "<t:#{(@event.starts_at + 18.months).to_i}:F>"
+    end
+
     test "a series that has run out has nothing to announce" do
       @event.update_columns(starts_at: 3.weeks.ago, recurring: true, recurrence_interval: "weekly", recurrence_count: 2)
 

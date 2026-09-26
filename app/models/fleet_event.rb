@@ -351,14 +351,15 @@ class FleetEvent < ApplicationRecord
   # Recurring events are expanded forward from `starts_at` honouring
   # `recurrence_until`, `recurrence_count`, and `excluded_dates`; an
   # excluded date still counts towards `recurrence_count`, as EXDATE does
-  # against COUNT in the calendar feed.
-  def occurrences(from:, to:, include_excluded: false)
+  # against COUNT in the calendar feed. Without `to` the range is open-ended,
+  # so it needs `take` or a series that ends.
+  def occurrences(from:, to: nil, include_excluded: false, take: nil)
     from = from.to_time
-    to = to.to_time
+    to = to&.to_time
     return [] if starts_at.blank?
 
     unless recurring?
-      return starts_at.between?(from, to) ? [starts_at] : []
+      return (starts_at >= from && (to.nil? || starts_at <= to)) ? [starts_at] : []
     end
 
     return [] unless RECURRENCE_FREQUENCIES.include?(recurrence_frequency)
@@ -374,7 +375,7 @@ class FleetEvent < ApplicationRecord
     result = []
     emitted = 0
     each_recurrence_start do |local|
-      break if local > to
+      break if to && local > to
       break if limit && emitted >= limit
       break if until_time && local > until_time
 
@@ -387,6 +388,7 @@ class FleetEvent < ApplicationRecord
       next if !include_excluded && excluded.include?(cursor.to_date)
 
       result << cursor
+      break if take && result.size >= take
     end
 
     result
@@ -414,9 +416,10 @@ class FleetEvent < ApplicationRecord
   end
 
   # Returns the soonest occurrence at or after `after`, or nil if the
-  # series has ended.
+  # series has ended. There is no horizon: an every-N series can go years
+  # between occurrences.
   def next_occurrence(after: Time.current)
-    occurrences(from: after, to: 1.year.from_now).first
+    occurrences(from: after, take: 1).first
   end
 
   # Both write the whole array, so the row lock (which also reloads it) keeps a
