@@ -110,8 +110,21 @@ module ScData
         assert_empty parsed_item("armr_untagged")["tags"]
       end
 
-      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil)
-        folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/armor"
+      test "keeps a livery whose colour is light" do
+        write_item("paint_valkyrie_invictus_light_grey", name: "@item_NameValkyrie", category: "paints")
+
+        assert_equal "paint_valkyrie_invictus_light_grey", parsed_item("paint_valkyrie_invictus_light_grey")["key"]
+      end
+
+      test "still drops a light fitted into a hull" do
+        write_item("controller_light", name: "@item_NameLight", category: "controller")
+        @parser.all
+
+        assert_not File.exist?("#{@base_folder}/parsed/test/items/controller_light.json")
+      end
+
+      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor")
+        folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
         FileUtils.mkdir_p(folder)
 

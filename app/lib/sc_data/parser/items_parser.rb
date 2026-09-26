@@ -89,7 +89,10 @@ module ScData
 
       private def parse_item(key, values, category)
         return unless values.dig("Components").present?
-        return if blacklisted_item_key?(key)
+        # The key filter is there for cameras, lights and screens fitted into a
+        # hull. A livery's key names its colours, and "light" is one of them:
+        # the light grey liveries were dropped as though they were lamps.
+        return if category != "paints" && blacklisted_item_key?(key)
 
         type = value_or_nil(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Type"))
 
