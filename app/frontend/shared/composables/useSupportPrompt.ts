@@ -21,10 +21,15 @@ type StoredState = {
   counters?: Counters;
 };
 
+// `null` parses fine, so the shape is checked before a property is read.
 const readState = (): StoredState => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StoredState) : {};
+    const parsed: unknown = raw ? JSON.parse(raw) : {};
+
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? (parsed as StoredState)
+      : {};
   } catch {
     return {};
   }
