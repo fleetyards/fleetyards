@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { install } = useInstallPrompt();
+const { install, canInstall } = useInstallPrompt();
 
 const notificationsStore = useNotificationsStore();
 
@@ -35,6 +35,13 @@ const closeNotification = () => {
     notificationsStore.hideMessage(props.notificationId);
   }
 };
+
+// Installed from the nav while the offer was up: it has nothing left to offer.
+watch(canInstall, (installable) => {
+  if (!installable) {
+    closeNotification();
+  }
+});
 
 const installApp = async (event: MouseEvent) => {
   event.stopPropagation();
