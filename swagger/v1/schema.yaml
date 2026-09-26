@@ -3652,6 +3652,52 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/events/{slug}/split-series":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Split a recurring event series at an occurrence
+      tags:
+      - Fleet Events
+      operationId: splitFleetEventSeries
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventOccurrenceDateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventExtended"
+        '422':
+          description: not an occurrence of a recurring series
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events/{slug}/start":
     parameters:
     - name: fleetSlug

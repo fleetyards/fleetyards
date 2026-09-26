@@ -65,6 +65,7 @@ en:
       update: Event could not be updated.
       destroy: Event could not be deleted.
       update_occurrence: This occurrence of the event could not be updated.
+      split_series: The series could not be split.
     fleet_event_teams:
       create: Event team could not be created.
       update: Event team could not be updated.

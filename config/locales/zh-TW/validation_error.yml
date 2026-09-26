@@ -152,6 +152,7 @@ zh-TW:
       update: 無法更新泊位容量。
     fleet_events:
       update_occurrence: 無法更新該活動場次。
+      split_series: 無法拆分該系列活動。
       create: 無法建立活動。
       destroy: 無法刪除活動。
       update: 無法更新活動。
