@@ -70,6 +70,7 @@ const onSubmit = props.handleSubmit(async (values) => {
         name: route.name,
         params: { ...route.params, event: updatedEvent.slug },
         query: route.query,
+        hash: route.hash,
       });
     }
 
