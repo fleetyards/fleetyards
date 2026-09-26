@@ -78,6 +78,19 @@ module Uex
       assert_equal ["Aslarite"], result.unknown.map { |row| row["commodity_name"] }
     end
 
+    test "#run reads a duplicate UEX id's prices as the id it duplicates" do
+      jaclium = create(:commodity, name: "Jaclium (Ore)", sc_key: "items_commodities_jaclium_ore", uex_id: 173)
+      duplicate = {
+        "id" => 6, "id_commodity" => 171, "id_terminal" => 102, "price_buy" => 0,
+        "price_sell" => 23_000, "commodity_name" => "Jaclium", "terminal_name" => "Admin - ARC-L1"
+      }
+
+      result = sync(commodity_prices: uex_fixture("commodities_prices_all") + [duplicate])
+
+      assert_equal 23_000, prices_for(jaclium).find_by(price_type: "buy").price
+      assert_not_includes result.unknown.map { |row| row["commodity_name"] }, "Jaclium"
+    end
+
     test "#run prices nothing for a commodity that was never mapped" do
       sync
 

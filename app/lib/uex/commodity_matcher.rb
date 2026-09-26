@@ -22,6 +22,14 @@ module Uex
       40 => "items_commodities_hephaestanite_raw"              # Hephaestanite (Raw), ours truncates to (R)
     }.freeze
 
+    # UEX id => the UEX id it duplicates. A commodity carries one uex_id, so a
+    # second UEX row for the same good cannot go in MAPPINGS -- it would claim
+    # the commodity from the canonical row. Its prices are read as the
+    # canonical row's instead.
+    DUPLICATES = {
+      171 => 173 # Jaclium; the game only declares Jaclium (Ore), priced alike
+    }.freeze
+
     attr_reader :misses
 
     def initialize
