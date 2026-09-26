@@ -12,6 +12,7 @@ zh-CN:
       compare_ships: 比较飞船
       confirm: 确认账户
       cookie-policy: Cookie 政策
+      fleet_events: 舰队活动
       fleet_invite: 加入 %{fleet}
       fleet_members: "%{fleet} 成员"
       fleet_members_index: "%{fleet} 成员"

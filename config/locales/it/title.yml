@@ -12,6 +12,7 @@ it:
       compare_ships: Confronta navi
       confirm: Conferma account
       cookie-policy: Politica dei cookie
+      fleet_events: Eventi della flotta
       fleet_invite: Unisciti a %{fleet}
       fleet_members: Membri di %{fleet}
       fleet_members_index: Membri di %{fleet}
