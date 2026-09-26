@@ -13,7 +13,7 @@
         "otherWays": "Other ways to help"
       },
       "installApp": {
-        "eventSignup": "You're signed up. Install FleetYards as an app to get back to your events in one tap.",
+        "eventSignup": "Install FleetYards as an app to get back to your events in one tap.",
         "iosIntro": "On iPhone and iPad, apps like FleetYards are installed from the share sheet:",
         "iosShare": "Tap the Share button in the browser toolbar.",
         "iosAdd": "Choose “Add to Home Screen”. You may have to scroll down to find it.",
