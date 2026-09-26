@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_25_163000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_26_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2205,6 +2205,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_25_163000) do
     t.uuid "vehicle_id", null: false
     t.index ["hangar_group_id"], name: "index_task_forces_on_hangar_group_id"
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
+  end
+
+  create_table "terminals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "available", default: true, null: false
+    t.string "city"
+    t.string "code"
+    t.string "contact_url"
+    t.datetime "created_at", null: false
+    t.string "display_name"
+    t.boolean "has_docking_port", default: false, null: false
+    t.boolean "has_freight_elevator", default: false, null: false
+    t.boolean "has_loading_dock", default: false, null: false
+    t.integer "max_container_size"
+    t.string "moon"
+    t.string "name", null: false
+    t.string "nickname"
+    t.string "orbit"
+    t.string "outpost"
+    t.string "planet"
+    t.boolean "player_owned", default: false, null: false
+    t.datetime "source_updated_at"
+    t.string "space_station"
+    t.string "star_system"
+    t.integer "uex_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["star_system"], name: "index_terminals_on_star_system"
+    t.index ["uex_id"], name: "index_terminals_on_uex_id", unique: true
   end
 
   create_table "tour_join_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
