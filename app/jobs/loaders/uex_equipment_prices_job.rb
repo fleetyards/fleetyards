@@ -17,6 +17,7 @@ module Loaders
         task_type: "uex_equipment_prices_import",
         title: actionable ? "UEX Equipment Sync — Items We Cannot Place" : "UEX Equipment Price Sync Results",
         body: ::Uex::EquipmentPriceSyncer.github_issue_body(result),
+        notification_body: ::Uex::EquipmentPriceSyncer.notification_body(result),
         actionable:,
         record: import,
         report_key: "uex_equipment_prices"

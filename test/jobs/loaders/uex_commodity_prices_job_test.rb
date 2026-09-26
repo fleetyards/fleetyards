@@ -25,6 +25,18 @@ module Loaders
 
     # The mapper has to land first: a commodity the last game-file import added
     # carries no uex_id yet, and the syncer would drop its prices as unknown.
+    test "#perform puts the counts in the notifications of a clean run" do
+      create(:admin_user, :super_admin)
+      stub_run(unmapped: [], unknown: [])
+
+      ::Loaders::UexCommodityPricesJob.new.perform
+
+      bodies = AdminNotification.where(notification_type: "uex_commodity_prices_import").pluck(:body)
+
+      assert(bodies.any? { |body| body.include?("7 newly mapped, 2 remapped") && body.include?("Every commodity carries a UEX mapping.") })
+      assert(bodies.any? { |body| body.include?("4 created, 1 updated, 2 removed") && body.include?("Every priced UEX commodity resolved to one we carry.") })
+    end
+
     test "#perform maps before it syncs" do
       sequence = sequence("mapping before pricing")
 

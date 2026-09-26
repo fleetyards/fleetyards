@@ -19,6 +19,7 @@ module Loaders
         task_type: "uex_commodity_prices_import",
         title: unmapped ? "UEX Commodity Sync — Unmapped Commodities" : "UEX Commodity Mapping Results",
         body: ::Uex::CommodityMapper.github_issue_body(mapping),
+        notification_body: ::Uex::CommodityMapper.notification_body(mapping),
         actionable: unmapped,
         record: import,
         report_key: "uex_commodity_mapping"
@@ -28,6 +29,7 @@ module Loaders
         task_type: "uex_commodity_prices_import",
         title: unknown ? "UEX Commodity Sync — Priced Commodities We Do Not Carry" : "UEX Commodity Price Sync Results",
         body: ::Uex::CommodityPriceSyncer.github_issue_body(result),
+        notification_body: ::Uex::CommodityPriceSyncer.notification_body(result),
         actionable: unknown,
         record: import,
         report_key: "uex_commodity_prices"

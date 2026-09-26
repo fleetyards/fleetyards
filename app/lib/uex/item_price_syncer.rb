@@ -66,6 +66,17 @@ module Uex
       raise NotImplementedError
     end
 
+    def self.notification_body(result)
+      lines = ["## Synced", "", *PriceSnapshot.notification_lines(result)]
+      lines << "- **Priced outside our sections**: #{result.unknown_other.size}, ignored"
+      lines << ""
+
+      actionable = result.unknown.any? || result.ambiguous.any? || result.stale_mappings.any?
+      lines << (actionable ? github_issue_body(result) : "Every priced UEX item in our sections resolved to one we carry.")
+
+      lines.join("\n")
+    end
+
     # Resolved once per item rather than once per price row: the feed carries a
     # row per terminal, so a gun sold at forty shops would otherwise be matched
     # forty times and reported forty times when it misses.
