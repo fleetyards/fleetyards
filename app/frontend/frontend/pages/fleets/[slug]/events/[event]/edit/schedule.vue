@@ -51,9 +51,33 @@ const toLocal = (iso: string | null | undefined) => {
   }
 };
 
+const MAX_RECURRENCE_EVERY = 99;
+
+// The weekday an instant falls on in the event's zone rather than the
+// browser's: that is the day the server always adds to the pattern.
+const wdayIn = (value: string | undefined, zone: string | undefined) => {
+  if (!value) return null;
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return null;
+  try {
+    const name = new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      timeZone: zone || "UTC",
+    }).format(date);
+    return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
+  } catch {
+    return date.getDay();
+  }
+};
+
+// The start day is implied rather than chosen, so it is left out of the
+// selection: moving the start then moves that day with it.
+const initialStartWday = wdayIn(props.event.startsAt, props.event.timezone);
+
 const validationSchema = {
   startsAt: "required",
   timezone: "required",
+  recurrenceEvery: `required|between:1,${MAX_RECURRENCE_EVERY}`,
 };
 
 const { defineField, handleSubmit, meta, setErrors } =
@@ -67,7 +91,9 @@ const { defineField, handleSubmit, meta, setErrors } =
       recurrenceUntil: props.event.recurrenceUntil ?? null,
       recurrenceCount: props.event.recurrenceCount ?? null,
       recurrenceEvery: props.event.recurrenceEvery ?? 1,
-      recurrenceWeekdays: [...(props.event.recurrenceWeekdays ?? [])],
+      recurrenceWeekdays: (props.event.recurrenceWeekdays ?? []).filter(
+        (wday) => wday !== initialStartWday,
+      ),
     },
     validationSchema,
   });
@@ -84,23 +110,9 @@ const [recurrenceEvery] = defineField("recurrenceEvery");
 
 const [recurrenceWeekdays] = defineField("recurrenceWeekdays");
 
-// The weekday the series starts on, in the event's zone rather than the
-// browser's: that is the day the server always adds to the pattern.
-const startWday = computed<number | null>(() => {
-  const value = startsAt.value as string | undefined;
-  if (!value) return null;
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return null;
-  try {
-    const name = new Intl.DateTimeFormat("en-US", {
-      weekday: "short",
-      timeZone: (timezone.value as string) || "UTC",
-    }).format(date);
-    return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
-  } catch {
-    return date.getDay();
-  }
-});
+const startWday = computed(() =>
+  wdayIn(startsAt.value as string | undefined, timezone.value as string),
+);
 
 const weekdayChecked = (wday: number) =>
   wday === startWday.value || (recurrenceWeekdays.value ?? []).includes(wday);
@@ -263,9 +275,10 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
           <FormInput
             v-model="recurrenceEvery"
             name="recurrenceEvery"
+            :rules="validationSchema.recurrenceEvery"
             :type="InputTypesEnum.NUMBER"
             :min="1"
-            :max="99"
+            :max="MAX_RECURRENCE_EVERY"
             :step="1"
             :label="t('labels.fleets.events.recurrenceInterval')"
           >
