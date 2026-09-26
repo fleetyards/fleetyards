@@ -153,6 +153,7 @@ it:
       update: Impossibile aggiornare la capacità dell'attracco.
     fleet_events:
       update_occurrence: Impossibile aggiornare questa ricorrenza dell'evento.
+      split_series: Impossibile dividere la serie.
       create: Impossibile creare l'evento.
       destroy: Impossibile eliminare l'evento.
       update: Impossibile aggiornare l'evento.
