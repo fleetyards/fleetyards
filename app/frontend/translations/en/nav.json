@@ -25,6 +25,7 @@
         "transfers": "Transfers"
       },
       "login": "Login",
+      "installApp": "Install app",
       "logout": "Logout",
       "apiV1": "API v1",
       "apiV1Schema": "Schema",
@@ -156,6 +157,7 @@
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
         "overlays": "Overlays",
+        "installPrompt": "Install Prompt",
         "supportHint": "Support Hint",
         "media": "Media",
         "charts": "Charts",

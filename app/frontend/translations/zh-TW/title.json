@@ -186,6 +186,7 @@
         "notifications": "通知 - 視覺測試",
         "syncModal": "同步彈窗 - 視覺測試",
         "overlays": "覆蓋層 - 視覺測試",
+        "installPrompt": "安裝提示 - 視覺測試",
         "supportHint": "支援提示 - 視覺測試",
         "media": "媒體 - 視覺測試",
         "charts": "圖表 - 視覺測試",
