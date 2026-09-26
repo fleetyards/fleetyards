@@ -91,6 +91,22 @@ module Uex
       assert_not_includes result.unknown.map { |row| row["commodity_name"] }, "Jaclium"
     end
 
+    # UEX prices both entries at the same terminals, so the two collapse into
+    # one row under the same better-price rule as two terminals at one location.
+    test "#run keeps one price when a duplicate and its canonical id share a terminal" do
+      jaclium = create(:commodity, name: "Jaclium (Ore)", sc_key: "items_commodities_jaclium_ore", uex_id: 173)
+      rows = [[6, 171, 23_000], [7, 173, 22_000]].map do |id, commodity_id, price|
+        {
+          "id" => id, "id_commodity" => commodity_id, "id_terminal" => 102, "price_buy" => 0,
+          "price_sell" => price, "commodity_name" => "Jaclium", "terminal_name" => "Admin - ARC-L1"
+        }
+      end
+
+      sync(commodity_prices: uex_fixture("commodities_prices_all") + rows)
+
+      assert_equal [23_000], prices_for(jaclium).where(price_type: "buy").pluck(:price)
+    end
+
     test "#run prices nothing for a commodity that was never mapped" do
       sync
 
