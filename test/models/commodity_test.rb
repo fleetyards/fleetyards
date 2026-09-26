@@ -279,4 +279,16 @@ class CommodityTest < ActiveSupport::TestCase
 
     assert_equal %w[gas], Commodity.commodity_types
   end
+
+  test "#sold_at keeps one price per terminal when two terminals share a name" do
+    commodity = create(:commodity)
+    [100, 120].each do |price|
+      create(:item_price, item: commodity, price_type: "sell", time_range: nil, price:,
+        location: "TDD - Area 18", terminal: create(:terminal, name: "TDD - Area 18"))
+    end
+    create(:item_price, item: commodity, price_type: "sell", time_range: nil, price: 90, location: "Elsewhere")
+    create(:item_price, item: commodity, price_type: "sell", time_range: nil, price: 95, location: "Elsewhere")
+
+    assert_equal [90, 100, 120], commodity.sold_at.map(&:price)
+  end
 end
