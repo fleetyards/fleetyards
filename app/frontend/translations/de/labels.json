@@ -2541,11 +2541,23 @@
           "recurrenceEndOn": "Am Datum",
           "recurrenceEndAfter": "Nach",
           "recurrenceEndOccurrences": "Terminen",
+          "recurrenceUnit": {
+            "daily": "Tage",
+            "weekly": "Wochen",
+            "monthly": "Monate"
+          },
+          "recurrenceWeekdays": "Am",
+          "recurrenceWeekdaysHint": "Der Wochentag, an dem das Event beginnt, ist immer dabei.",
           "recurrence": {
             "daily": "täglich",
             "weekly": "wöchentlich",
-            "biweekly": "alle zwei Wochen",
-            "monthly": "monatlich"
+            "monthly": "monatlich",
+            "everyN": {
+              "daily": "alle %{count} Tage",
+              "weekly": "alle %{count} Wochen",
+              "monthly": "alle %{count} Monate"
+            },
+            "onDays": "%{interval} am %{days}"
           },
           "occurrencesSection": "Anstehende Termine",
           "skipOccurrence": "Diesen Termin überspringen",

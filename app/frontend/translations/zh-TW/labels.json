@@ -2541,11 +2541,23 @@
           "recurrenceEndOn": "在指定日期",
           "recurrenceEndAfter": "經過",
           "recurrenceEndOccurrences": "場",
+          "recurrenceUnit": {
+            "daily": "天",
+            "weekly": "週",
+            "monthly": "個月"
+          },
+          "recurrenceWeekdays": "重複日",
+          "recurrenceWeekdaysHint": "活動開始的那一天一律包含在內。",
           "recurrence": {
             "daily": "每天",
             "weekly": "每週",
-            "biweekly": "每兩週",
-            "monthly": "每月"
+            "monthly": "每月",
+            "everyN": {
+              "daily": "每%{count}天",
+              "weekly": "每%{count}週",
+              "monthly": "每%{count}個月"
+            },
+            "onDays": "%{interval}（%{days}）"
           },
           "occurrencesSection": "即將到來的場次",
           "skipOccurrence": "略過這一場",

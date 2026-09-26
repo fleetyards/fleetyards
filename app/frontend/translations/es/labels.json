@@ -2541,11 +2541,23 @@
           "recurrenceEndOn": "En una fecha",
           "recurrenceEndAfter": "Después de",
           "recurrenceEndOccurrences": "repeticiones",
+          "recurrenceUnit": {
+            "daily": "días",
+            "weekly": "semanas",
+            "monthly": "meses"
+          },
+          "recurrenceWeekdays": "Los días",
+          "recurrenceWeekdaysHint": "El día en que empieza el evento siempre está incluido.",
           "recurrence": {
             "daily": "a diario",
             "weekly": "semanalmente",
-            "biweekly": "cada dos semanas",
-            "monthly": "mensualmente"
+            "monthly": "mensualmente",
+            "everyN": {
+              "daily": "cada %{count} días",
+              "weekly": "cada %{count} semanas",
+              "monthly": "cada %{count} meses"
+            },
+            "onDays": "%{interval} (%{days})"
           },
           "occurrencesSection": "Próximas repeticiones",
           "skipOccurrence": "Omitir esta repetición",

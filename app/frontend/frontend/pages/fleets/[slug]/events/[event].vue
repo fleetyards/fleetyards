@@ -38,6 +38,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
+import { useRecurrence } from "@/frontend/composables/useRecurrence";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName } from "@/services/fyApi";
@@ -264,11 +265,11 @@ const unassignedSignups = computed(
 
 const isRecurring = computed(() => event.value?.recurring === true);
 
-const intervalLabel = computed(() => {
-  const interval = event.value?.recurrenceInterval as string | undefined;
-  if (!interval) return "";
-  return t(`labels.fleets.events.recurrence.${interval}`);
-});
+const { intervalLabel: recurrenceLabel } = useRecurrence();
+
+const intervalLabel = computed(() =>
+  event.value ? recurrenceLabel(event.value) : "",
+);
 
 const recurringChip = computed(() => {
   if (!isRecurring.value) return "";
@@ -288,68 +289,19 @@ const recurringChip = computed(() => {
   return t("labels.fleets.events.recurringSummary", { interval });
 });
 
-const excludedDateSet = computed(() => {
-  const dates = (event.value?.excludedDates ?? []) as string[];
-  return new Set(dates);
-});
-
-const advanceDate = (date: Date, interval: string): Date => {
-  const next = new Date(date);
-  switch (interval) {
-    case "daily":
-      next.setDate(next.getDate() + 1);
-      break;
-    case "weekly":
-      next.setDate(next.getDate() + 7);
-      break;
-    case "biweekly":
-      next.setDate(next.getDate() + 14);
-      break;
-    case "monthly":
-      next.setMonth(next.getMonth() + 1);
-      break;
-  }
-  return next;
-};
-
-const isoDate = (date: Date): string => date.toISOString().slice(0, 10);
-
 const upcomingOccurrences = computed(() => {
-  if (!isRecurring.value || !event.value?.startsAt) return [];
-  const interval = event.value.recurrenceInterval as string | undefined;
-  if (!interval) return [];
+  if (!isRecurring.value || !event.value) return [];
 
-  const start = new Date(event.value.startsAt);
-  const until = event.value.recurrenceUntil
-    ? new Date(`${event.value.recurrenceUntil}T23:59:59Z`)
-    : null;
-  const max = event.value.recurrenceCount ?? null;
-  const now = new Date();
-  const horizon = new Date(now.getTime() + 12 * 7 * 24 * 60 * 60 * 1000);
-
-  const result: { date: string; iso: string; excluded: boolean }[] = [];
-  let cursor = new Date(start);
-  let i = 0;
-  while (cursor <= horizon && (max === null || i < max)) {
-    if (until && cursor > until) break;
-    if (cursor >= now) {
-      const iso = isoDate(cursor);
-      result.push({
-        date: cursor.toLocaleDateString(undefined, {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        }),
-        iso,
-        excluded: excludedDateSet.value.has(iso),
-      });
-    }
-    cursor = advanceDate(cursor, interval);
-    i += 1;
-    if (result.length >= 12) break;
-  }
-  return result;
+  return (event.value.upcomingOccurrences ?? []).map((occurrence) => ({
+    date: new Date(occurrence.startsAt).toLocaleDateString(undefined, {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
+    iso: occurrence.date,
+    excluded: occurrence.excluded,
+  }));
 });
 
 const skipMutation = useSkipFleetEventOccurrence();

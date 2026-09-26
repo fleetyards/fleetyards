@@ -2555,11 +2555,23 @@
           "recurrenceEndOn": "On date",
           "recurrenceEndAfter": "After",
           "recurrenceEndOccurrences": "occurrences",
+          "recurrenceUnit": {
+            "daily": "days",
+            "weekly": "weeks",
+            "monthly": "months"
+          },
+          "recurrenceWeekdays": "On",
+          "recurrenceWeekdaysHint": "The day the event starts on is always included.",
           "recurrence": {
             "daily": "daily",
             "weekly": "weekly",
-            "biweekly": "every two weeks",
-            "monthly": "monthly"
+            "monthly": "monthly",
+            "everyN": {
+              "daily": "every %{count} days",
+              "weekly": "every %{count} weeks",
+              "monthly": "every %{count} months"
+            },
+            "onDays": "%{interval} on %{days}"
           },
           "occurrencesSection": "Upcoming occurrences",
           "skipOccurrence": "Skip this occurrence",
