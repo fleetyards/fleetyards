@@ -95,6 +95,19 @@ module Loaders
         Imports::UexComponentPricesImport.last.output["stale_mappings"]
     end
 
+    test "#perform puts the sync counts in the notification of a clean run" do
+      create(:admin_user, :super_admin)
+      stub_run(unknown_other: [{"id_item" => 14, "item_name" => "Lillo Pants Violet"}])
+
+      ::Loaders::UexComponentPricesJob.new.perform
+
+      body = AdminNotification.where(notification_type: "uex_component_prices_import").last.body
+
+      assert_match "4 created, 1 updated, 2 removed", body
+      assert_match "**Priced outside our sections**: 1, ignored", body
+      assert_match "Every priced UEX item in our sections resolved to one we carry.", body
+    end
+
     test "#perform fails the import and re-raises when the sync raises" do
       syncer = mock("Uex::ComponentPriceSyncer")
       syncer.expects(:run).raises(::Uex::Error, "UEX returned no usable rows for item_prices")

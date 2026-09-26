@@ -20,6 +20,7 @@ module Loaders
         task_type: "uex_component_prices_import",
         title: actionable ? "UEX Component Sync — Items We Cannot Place" : "UEX Component Price Sync Results",
         body: ::Uex::ComponentPriceSyncer.github_issue_body(result),
+        notification_body: ::Uex::ComponentPriceSyncer.notification_body(result),
         actionable:,
         record: import,
         report_key: "uex_component_prices"

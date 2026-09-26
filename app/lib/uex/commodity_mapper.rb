@@ -88,5 +88,14 @@ module Uex
 
       lines.join("\n")
     end
+
+    def self.notification_body(result)
+      lines = ["## Mapped", ""]
+      lines << "- **Commodities**: #{result.mapped} newly mapped, #{result.updated} remapped"
+      lines << "- **UEX commodities matching none of ours**: #{result.unmatched.size}"
+      lines << ""
+      lines << (result.unmapped.any? ? github_issue_body(result) : "Every commodity carries a UEX mapping.")
+      lines.join("\n")
+    end
   end
 end

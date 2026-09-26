@@ -8,15 +8,20 @@
 # `github_issue: false` for a report whose to-do list is already worked through
 # in the admin UI. There the issue is pure duplication: it restates a list that
 # has its own page, and closing it is a second chore on top of the first.
+#
+# `notification_body` for a report whose useful content moves every run, such as
+# sync counts. `body` stays the issue text and the dedupe key, so a volatile
+# notification body neither opens a fresh issue nor a fresh inbox row per run.
 class AdminReport
-  def self.deliver(task_type:, title:, body:, actionable:, link: nil, record: nil, report_key: nil, github_issue: true)
-    new(task_type:, title:, body:, actionable:, link:, record:, report_key:, github_issue:).deliver
+  def self.deliver(task_type:, title:, body:, actionable:, notification_body: nil, link: nil, record: nil, report_key: nil, github_issue: true)
+    new(task_type:, title:, body:, actionable:, notification_body:, link:, record:, report_key:, github_issue:).deliver
   end
 
-  def initialize(task_type:, title:, body:, actionable:, link: nil, record: nil, report_key: nil, github_issue: true)
+  def initialize(task_type:, title:, body:, actionable:, notification_body: nil, link: nil, record: nil, report_key: nil, github_issue: true)
     @task_type = task_type.to_sym
     @title = title
     @body = body
+    @notification_body = notification_body
     @actionable = actionable
     @link = link
     @record = record
@@ -28,7 +33,7 @@ class AdminReport
     AdminNotification.notify!(
       type: @task_type,
       title: @title,
-      body: @body,
+      body: @notification_body || @body,
       severity: @actionable ? :warning : :info,
       link: @link,
       record: @record,

@@ -20,6 +20,35 @@ module Loaders
       )
     end
 
+    test "#perform puts the sync counts in the notification of a clean run" do
+      create(:admin_user, :super_admin)
+      stub_syncer(unmatched: [])
+
+      ::Loaders::UexPricesJob.new.perform
+
+      notification = AdminNotification.where(notification_type: "uex_prices_import").last
+
+      assert_match "4 created, 1 updated, 2 removed", notification.body
+      assert_match "**Models repriced**: 3", notification.body
+      assert_match "Every priced UEX vehicle resolved to a model.", notification.body
+      assert_no_match "Unmatched UEX Vehicles", notification.body
+    end
+
+    test "#perform folds clean runs with different counts into one notification" do
+      create(:admin_user, :super_admin)
+      stub_syncer(unmatched: [])
+      ::Loaders::UexPricesJob.new.perform
+
+      result = ::Uex::PriceSyncer::Result.new(created: 0, updated: 97, removed: 0, skipped_removals: 0, repriced: 0, unmatched: [])
+      ::Uex::PriceSyncer.stubs(:new).returns(stub(run: result))
+
+      assert_no_difference -> { AdminNotification.where(notification_type: "uex_prices_import").count } do
+        ::Loaders::UexPricesJob.new.perform
+      end
+
+      assert_match "0 created, 97 updated", AdminNotification.where(notification_type: "uex_prices_import").last.body
+    end
+
     test "#perform opens a GitHub issue when a vehicle resolves to no model" do
       stub_syncer
 

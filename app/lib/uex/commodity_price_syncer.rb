@@ -112,5 +112,11 @@ module Uex
 
       lines.join("\n")
     end
+
+    def self.notification_body(result)
+      lines = ["## Synced", "", *PriceSnapshot.notification_lines(result), ""]
+      lines << (result.unknown.any? ? github_issue_body(result) : "Every priced UEX commodity resolved to one we carry.")
+      lines.join("\n")
+    end
   end
 end
