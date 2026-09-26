@@ -30,6 +30,12 @@ module Uex
       get("commodities_prices_all")
     end
 
+    # UEX only computes routes per commodity or per origin terminal; there is no
+    # wholesale variant.
+    def commodity_routes(commodity_uex_id)
+      get("commodities_routes", id_commodity: commodity_uex_id)
+    end
+
     # What kind of thing each item is. `section` is the coarse one -- "Systems",
     # "Clothing" -- and is what separates a ship part from a pair of trousers,
     # which the price feed itself gives no way to tell apart.
@@ -45,10 +51,11 @@ module Uex
       get("items_prices_all")
     end
 
-    private def get(path)
+    private def get(path, params = {})
       # UEX answers 403 to requests without a User-Agent, so it is not optional.
       response = Typhoeus.get(
         "#{@base_url}/#{path}/",
+        params:,
         headers: {"User-Agent" => user_agent, "Accept" => "application/json"}
       )
 

@@ -25,6 +25,14 @@ module Uex
       end
     end
 
+    test "fetches the routes of one commodity" do
+      stub_request(:get, "#{BASE}/commodities_routes/")
+        .with(query: {id_commodity: "7"})
+        .to_return(body: {status: "ok", data: [{"id" => 1}]}.to_json)
+
+      assert_equal [{"id" => 1}], @client.commodity_routes(7)
+    end
+
     test "sends a User-Agent, which UEX rejects requests without" do
       stub_request(:get, "#{BASE}/vehicles/")
         .with(headers: {"User-Agent" => /Fleetyards/})
