@@ -27,10 +27,11 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 6. API exposure of terminal/stock/freshness on `ItemPrice` moves to phase 4, together with the `Terminal` component.
 
 ### Phase 3 — Trade routes sync
-1. `TradeRoute` model + migration: commodity, origin/destination terminal, buy/sell price, margin, ROI, distance, `scu_origin`, `scu_destination`, `scu_reachable`, container sizes at both ends, UEX `date_modified` at both ends, synced_at.
-2. `Uex::TradeRouteSyncer`: one call per commodity with a `uex_id`, `CommodityMatcher::DUPLICATES` applied, routes with non-positive margin or no reachable SCU dropped. It replaces the set per commodity only when that commodity's call succeeds.
-3. `Loaders::UexTradeRoutesJob` + `Imports::UexTradeRoutesImport` + `AdminReport` (counts in `notification_body`). Also touches the `AdminNotification` enum/`TYPES`, `Import::SELF_REPORTED_TYPES`, `ImportTypeEnum`, `AdminNotificationExamples` and the `labels.json` import label in all 7 locales.
-4. `config/sidekiq_schedule.yml` entry.
+1. `TradeRoute`: commodity, origin/destination terminal, both prices, `scu_origin`/`scu_destination`, container sizes at both ends (integer arrays), distance, and the price timestamp at each end. Unique on commodity + both terminals. Profit per SCU is computed, not stored.
+2. `Uex::TradeRouteSyncer`: one `commodities_routes` call per commodity with a `uex_id`, one second apart. Routes that lose money, have no reachable SCU, or touch a terminal we don't hold are dropped. Each commodity's set is replaced in its own transaction. A failed call keeps that commodity's previous routes, and the sync raises only if every call fails. Routes of commodities that lost their mapping are removed.
+3. Freshness: routes carry no `date_modified`, so each run makes one `commodities_prices_all` call and reads each end's timestamp from it.
+4. `Loaders::UexTradeRoutesJob`, hourly at :10: `TerminalSyncer`, then `TradeRouteSyncer`. A clean run only logs, with no `Import` record and no notification. Failed commodities raise one `uex_trade_routes_sync` warning (no GitHub issue), whose body lists only the failed commodities, so a repeating failure updates one unread row.
+5. The notification type is registered in the enum and `TYPES`, with labels in 7 locales, the admin swagger and the cable asyncapi.
 
 ### Phase 4 — API
 1. Integration test first: `GET /api/v1/trade-routes` with filters (system, commodity, origin, destination) and `model` slug (+ optional module slugs).
@@ -87,9 +88,11 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 
 - **2026-09-26** Phase 2 dry run on production commodity data (2,595 prices, copied into the worktree DB) against the live feeds, in a rolled-back transaction: 161 terminals created, all 2,595 rows adopted with their ids kept, 6 created, 0 removed. 2,601 linked, 2,260 with stock.
 
+- **2026-09-26** Phase 3 dry run on live UEX (185 mapped commodities, not ~114; ~4,400 calls a day hourly) against the worktree DB, rolled back: 0 failed, 7,759 routes kept, 1,238 dropped as unprofitable, 0 with an unknown terminal. All have both timestamps and a distance. By origin: Stanton 5,151, Pyro 2,276, Nyx 332; about half cross a system boundary, so the system filter must say whether it matches origin, destination or both. Two traps for phase 4: admin terminals report placeholder stock of 250,000 SCU (Waste at the gateways), so stock-times-profit without a ship ranks nonsense first; and gateway pairs have distance 0, so profit per distance needs a guard.
+
 ## Progress
 - [x] Phase 1 — Terminals (model, syncer, client params; not yet scheduled, it runs from the price job in phase 2)
 - [x] Phase 2 — Prices on terminals (API exposure deferred to phase 4)
-- [ ] Phase 3 — Trade routes sync
+- [x] Phase 3 — Trade routes sync
 - [ ] Phase 4 — API
 - [ ] Phase 5 — Frontend
