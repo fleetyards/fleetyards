@@ -62,6 +62,25 @@ module Uex
       assert_equal %w[beacon_undersuit_01 beacon_undersuit_01_02], sc_keys.sort
     end
 
+    test "#run prices the item a mapping names and not its namesake" do
+      sync
+
+      assert_equal 2900, prices_for(@equipment[:mapping_match]).sole.price
+      assert_empty prices_for(@equipment[:mapping_loser])
+    end
+
+    test "#run reports a mapping that points at an item that is gone" do
+      @equipment[:mapping_match].destroy!
+
+      result = sync
+
+      row, sc_key = result.stale_mappings.sole
+
+      assert_equal "P8-SC \"Boneyard\" SMG", row["item_name"]
+      assert_equal "behr_smg_ballistic_01_white02", sc_key
+      assert_empty prices_for(@equipment[:mapping_loser])
+    end
+
     test "#run skips a price of zero and a terminal that does not sell items" do
       sync
 

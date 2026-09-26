@@ -86,6 +86,10 @@ module UexFixtures
         create(:equipment, equipment_type: "undersuit", name: "Beacon Undersuit", sc_key: "beacon_undersuit_01", sc_ref: nil),
         create(:equipment, equipment_type: "undersuit", name: "Beacon Undersuit", sc_key: "beacon_undersuit_01_02", sc_ref: nil)
       ],
+      mapping_match: create(:equipment, name: "P8-SC \"Boneyard\" SMG", sc_key: "behr_smg_ballistic_01_white02", sc_ref: nil),
+      # Shares the name with the mapped one and must lose to it.
+      mapping_loser: create(:equipment, :hidden, name: "P8-SC \"Boneyard\" SMG",
+        sc_key: "behr_smg_ballistic_01_white02_tow", sc_ref: nil),
       free: create(:equipment, equipment_type: "clothing", name: "Free Sample Shirt", sc_key: "free_shirt_01", sc_ref: nil)
     }
   end

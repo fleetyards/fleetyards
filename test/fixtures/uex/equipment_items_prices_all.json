@@ -144,6 +144,19 @@
       "terminal_name": "",
       "date_added": 1703516981,
       "date_modified": 1788031806
+    },
+    {
+      "id": 12,
+      "id_item": 1591,
+      "id_category": 18,
+      "id_terminal": 106,
+      "item_name": "P8-SC \"Boneyard\" SMG",
+      "item_uuid": "cccccccc-1111-0000-0000-000000000012",
+      "price_buy": 2900,
+      "price_sell": 0,
+      "terminal_name": "",
+      "date_added": 1703516981,
+      "date_modified": 1788031806
     }
   ]
 }
