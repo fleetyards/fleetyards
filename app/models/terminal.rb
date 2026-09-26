@@ -34,6 +34,8 @@
 #  index_terminals_on_uex_id       (uex_id) UNIQUE
 #
 class Terminal < ApplicationRecord
+  has_many :item_prices, dependent: :nullify
+
   validates :uex_id, presence: true, uniqueness: true
   validates :name, presence: true
   validates :contact_url, format: {with: %r{\Ahttps?://}}, allow_blank: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_26_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_26_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1484,9 +1484,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_090000) do
     t.decimal "price", precision: 15, scale: 2, null: false
     t.integer "price_type", null: false
     t.date "recorded_on", null: false
+    t.uuid "terminal_id"
     t.integer "time_range"
     t.datetime "updated_at", null: false
-    t.index ["item_type", "item_id", "location", "price_type", "time_range", "recorded_on"], name: "index_item_price_snapshots_on_item_and_day", unique: true, nulls_not_distinct: true
+    t.index ["item_type", "item_id", "location", "terminal_id", "price_type", "time_range", "recorded_on"], name: "index_item_price_snapshots_on_item_and_day", unique: true, nulls_not_distinct: true
     t.index ["item_type", "item_id", "recorded_on"], name: "index_item_price_snapshots_on_item_and_recorded_on"
     t.index ["recorded_on"], name: "index_item_price_snapshots_on_recorded_on"
   end
@@ -1499,9 +1500,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_090000) do
     t.string "location_url"
     t.decimal "price", precision: 15, scale: 2
     t.integer "price_type"
+    t.integer "scu"
+    t.datetime "source_updated_at"
+    t.uuid "terminal_id"
     t.integer "time_range"
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
+    t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
   end
 
   create_table "maintenance_tasks_runs", force: :cascade do |t|
@@ -2564,6 +2569,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_090000) do
   add_foreign_key "inventory_transfers", "users", column: "initiated_by_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
+  add_foreign_key "item_prices", "terminals", on_delete: :nullify
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
   add_foreign_key "mission_ships", "mission_teams"
