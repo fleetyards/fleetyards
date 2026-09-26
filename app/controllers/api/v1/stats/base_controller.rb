@@ -248,6 +248,67 @@ module Api
           render json: pledge_price_changes.sort_by { |point| -point[:count].abs }.take(10).to_json
         end
 
+        # In-game prices move when a patch lands or the economy is rebalanced,
+        # not on a sales calendar, so a month reads as current where a year
+        # would mostly measure the patches before last.
+        INGAME_PRICE_WINDOW = 30.days
+
+        # Percent move per ship between its first and last recorded day in the
+        # window, as a percentage because a flat aUEC figure only ever ranks
+        # the capital ships.
+        #
+        # Compared on the terminals present on both days, and as the median of
+        # those. The cheapest price (`models.price`) is not a price move: it
+        # jumps whenever the cheapest shop stops listing the ship.
+        def ingame_price_changes
+          ingame_price_changes = cached_chart(:ingame_price_changes) do
+            in_window = ItemPriceSnapshot
+              .where(item_type: "Model", price_type: "sell")
+              .recorded_since(INGAME_PRICE_WINDOW.ago.to_date)
+
+            bounds = in_window
+              .group(:item_id)
+              .having("MIN(recorded_on) < MAX(recorded_on)")
+              .select("item_id, MIN(recorded_on) AS first_day, MAX(recorded_on) AS last_day")
+
+            rows = in_window
+              .joins("JOIN (#{bounds.to_sql}) bounds ON bounds.item_id = item_price_snapshots.item_id")
+              .where("item_price_snapshots.recorded_on IN (bounds.first_day, bounds.last_day)")
+              .pluck(:item_id, Arel.sql("item_price_snapshots.recorded_on = bounds.first_day"), :location, :price)
+
+            names = Model.visible.active.where(id: rows.map(&:first).uniq).pluck(:id, :name).to_h
+
+            points = rows.group_by(&:first).filter_map do |model_id, model_rows|
+              next unless names.key?(model_id)
+
+              first_day, last_day = model_rows.partition(&:second).map do |day_rows|
+                day_rows.to_h { |_id, _first, location, price| [location, price] }
+              end
+              shared = first_day.keys & last_day.keys
+              next if shared.empty?
+
+              from = median(first_day.values_at(*shared))
+              next if from.zero?
+
+              change = ((median(last_day.values_at(*shared)) - from) * 100 / from).round
+              next if change.zero?
+
+              {label: names[model_id], count: change, tooltip: names[model_id]}
+            end
+
+            points.sort_by { |point| -point[:count].abs }.take(10)
+          end
+
+          render json: ingame_price_changes.to_json
+        end
+
+        private def median(values)
+          sorted = values.sort
+          middle = sorted.size / 2
+
+          sorted.size.odd? ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2
+        end
+
         # Grouped on `category`, not on the `component_class` this is named for.
         # That column is set on 333 of 8,739 components and `item_class` on 415,
         # so either one renders as a single "Unknown" slice covering 95% of the

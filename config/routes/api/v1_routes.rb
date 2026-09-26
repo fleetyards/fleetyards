@@ -114,6 +114,7 @@ v1_api_routes = lambda do
     get "wish-to-own-ratio", to: "base#wish_to_own_ratio"
     get "top-paints", to: "base#top_paints"
     get "pledge-price-changes", to: "base#pledge_price_changes"
+    get "ingame-price-changes", to: "base#ingame_price_changes"
     get "most-wishlisted", to: "base#most_wishlisted"
     get "patch-changes", to: "base#patch_changes"
   end

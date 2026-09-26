@@ -14736,6 +14736,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/PieChartStatsList"
+  "/stats/ingame-price-changes":
+    get:
+      summary: Stats Ingame Price Changes
+      tags:
+      - Stats
+      operationId: ingamePriceChanges
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/models-by-classification":
     get:
       summary: Stats Models by Classification

@@ -6,6 +6,13 @@
           "one": "%{label}:<br><b>%{count}</b> Vista",
           "other": "%{label}:<br><b>%{count}</b> Vistas"
         },
+        "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "ingamePrice": "%{label}:<br><b>%{count} %</b>",
+        "wishToOwnRatio": "%{label}:<br><b>%{count}</b> deseadas por 100 en posesión",
+        "patchChange": {
+          "one": "%{label}:<br><b>%{count}</b> cambio",
+          "other": "%{label}:<br><b>%{count}</b> cambios"
+        },
         "ship": {
           "one": "%{label}:<br><b>%{count}</b> Nave",
           "other": "%{label}:<br><b>%{count}</b> Naves"

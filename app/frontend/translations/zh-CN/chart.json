@@ -6,6 +6,13 @@
           "one": "%{label}:<br><b>%{count}</b> 浏览",
           "other": "%{label}:<br><b>%{count}</b> 浏览"
         },
+        "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "ingamePrice": "%{label}:<br><b>%{count} %</b>",
+        "wishToOwnRatio": "%{label}:<br>每 100 艘拥有对应的期待数: <b>%{count}</b>",
+        "patchChange": {
+          "one": "%{label}:<br><b>%{count}</b> 处改动",
+          "other": "%{label}:<br><b>%{count}</b> 处改动"
+        },
         "ship": {
           "one": "%{label}:<br><b>%{count}</b> 飞船",
           "other": "%{label}:<br><b>%{count}</b> 飞船"
