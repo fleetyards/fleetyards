@@ -15279,6 +15279,15 @@ components:
         locationUrl:
           type: string
           format: uri
+        scu:
+          type:
+          - integer
+          - 'null'
+        sourceUpdatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         createdAt:
           type: string
           format: date-time

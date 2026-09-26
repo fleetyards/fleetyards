@@ -34,17 +34,20 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 5. The notification type is registered in the enum and `TYPES`, with labels in 7 locales, the admin swagger and the cable asyncapi.
 
 ### Phase 4 — API
-1. Integration test first: `GET /api/v1/trade-routes` with filters (system, commodity, origin, destination) and `model` slug (+ optional module slugs).
-2. Ship fit: loadable SCU = sum over the ship's `CargoHoldContainerCapacity` rows whose container size is ≤ both terminals' max and allowed for the commodity (`container_sizes`), capped by `scu_origin` and `scu_destination`. Profit per run = loadable SCU × margin; also profit per distance and investment.
-3. Sort by profit, profit per distance, margin, ROI; pagination.
-4. Components: `TradeRoute`, `TradeRouteList`/paginated, `Terminal`, query component, sort enum. Facet endpoints for systems and terminals if the filters need them.
+1. `GET /api/v1/trade-routes` (flag `trade_routes`, 403 while off). Filters: `commodityIdIn`/`commoditySlugIn`, `origin`/`destinationTerminalIdIn`, `origin`/`destinationTerminalStarSystemIn`, and `modelSlug` for the ship. Routes touching an unavailable terminal are left out.
+2. Ship fit (`TradeRoutes::ShipCapacity`): each hold (the model's own, plus the best module per slot, as in `CargoFinderSql`) is filled with the single allowed crate size that loads the most, capped at the hold's capacity. Loadable SCU = that sum, capped by origin stock and destination demand.
+3. `TradeRoutes::Ranking` works capacity out once per distinct allowed-size set (~23 live) and hands Postgres a CASE, so sorting and pagination stay in SQL. Adds `loadableScu`, `investment`, `profitPerRun` and `profitPerDistance` (null for a zero distance). Sorts: `profitPerScu` (the default), `distance`, and `profitPerRun`/`profitPerDistance` with a ship only.
+4. The sync stores `container_sizes` = origin ∩ destination ∩ commodity crate sizes, and drops routes nothing fits.
+5. Facets: `/filters/trade-routes/star-systems` and `/filters/trade-routes/terminals` (available terminals some route uses).
+6. `ItemPrice` gains `scu` and `sourceUpdatedAt`. Availability dedupes per terminal instead of per name.
+7. The `trade_routes` flag is in `config/feature_flags.yml`, and the schema is regenerated.
 
 ### Phase 5 — Frontend
 1. `/tools/trade-routes/`: page, route in `pages/tools/routes.ts`, route-name union, ToolsNav item, tools landing card, SSR meta in `config/routes/frontend_routes.rb`. `/trade-routes/` redirects there server-side and in the router.
 2. Ship picker: wrap `Models/PickerModal` like `CargoGrids/Models/PickerModal` (hangar-only toggle when signed in).
 3. Mobile-first route rows: commodity, origin → destination with location, loadable SCU, profit, investment, distance, price freshness from `date_modified`.
 4. Filters for system, commodity, origin, destination. UEX credit.
-5. Behind a `trade_routes` flag in `config/feature_flags.yml`, checked through `FeatureFlagName`.
+5. Behind the `trade_routes` flag, checked through `FeatureFlagName`.
 6. Labels in all 7 locales. Reuse or replace the orphaned `labels.tradeRoutes` / `labels.filters.tradeRoutes` keys.
 
 ## Intent Verification
@@ -77,6 +80,7 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 | `test/support/uex_fixtures.rb`, `test/fixtures/uex/` | UEX client stubs and fixtures |
 
 ## Not in scope (deferred)
+- **Ship size vs terminal**: routes ignore whether the ship can land or dock at a terminal (a Hull C ranks outpost routes first). Terminals carry docking port / freight elevator flags and the ship size is known; it needs a rule per size class.
 - **Multi-leg routes and loops**: out of scope per the issue.
 - **Route → fleet hauling contract**: natural follow-up with fleet contracts/inventories.
 
@@ -90,9 +94,11 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 
 - **2026-09-26** Phase 3 dry run on live UEX (185 mapped commodities, not ~114; ~4,400 calls a day hourly) against the worktree DB, rolled back: 0 failed, 7,759 routes kept, 1,238 dropped as unprofitable, 0 with an unknown terminal. All have both timestamps and a distance. By origin: Stanton 5,151, Pyro 2,276, Nyx 332; about half cross a system boundary, so the system filter must say whether it matches origin, destination or both. Two traps for phase 4: admin terminals report placeholder stock of 250,000 SCU (Waste at the gateways), so stock-times-profit without a ship ranks nonsense first; and gateway pairs have distance 0, so profit per distance needs a guard.
 
+- **2026-09-26** Phase 4 on live routes plus production ship data (worktree DB): 7,735 routes (24 more dropped as unloadable by commodity crate sizes), ranking queries 20–50 ms. Loadable SCU equals cargo for Cutlass Black (46), Freelancer MAX (120), C2 (696) and Hull C (4,608), with stock capping the C2 at 516 on its top route. The Hull C's top routes start at HDMS outposts it could not land at: see Not in scope.
+
 ## Progress
 - [x] Phase 1 — Terminals (model, syncer, client params; not yet scheduled, it runs from the price job in phase 2)
 - [x] Phase 2 — Prices on terminals (API exposure deferred to phase 4)
 - [x] Phase 3 — Trade routes sync
-- [ ] Phase 4 — API
+- [x] Phase 4 — API
 - [ ] Phase 5 — Frontend

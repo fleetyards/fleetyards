@@ -43,4 +43,12 @@ class Terminal < ApplicationRecord
   validates :contact_url, format: {with: %r{\Ahttps?://}}, allow_blank: true
 
   scope :available, -> { where(available: true) }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[id star_system planet]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
+  end
 end

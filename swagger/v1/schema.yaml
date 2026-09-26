@@ -786,6 +786,44 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/trade-routes/star-systems":
+    get:
+      summary: Trade Route Star System Filters
+      tags:
+      - TradeRoutesFilters
+      operationId: tradeRouteStarSystemsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/filters/trade-routes/terminals":
+    get:
+      summary: Trade Route Terminal Filters
+      tags:
+      - TradeRoutesFilters
+      operationId: tradeRouteTerminalsFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/filters/vehicles/bought-via":
     get:
       summary: Vehicles Bought Via Filters
@@ -15557,6 +15595,42 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/trade-routes":
+    get:
+      summary: Trade routes list
+      tags:
+      - TradeRoutes
+      operationId: tradeRoutes
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/TradeRouteQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TradeRoutes"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -19566,6 +19640,7 @@ components:
       - online_status
       - ship_inventories
       - tour_payouts
+      - trade_routes
       x-enumNames:
       - FLEET_ALLIES
       - FLEET_CONTRACTS
@@ -19588,6 +19663,7 @@ components:
       - ONLINE_STATUS
       - SHIP_INVENTORIES
       - TOUR_PAYOUTS
+      - TRADE_ROUTES
       title: FeatureFlagName
     FeatureNamesList:
       type: array
@@ -26366,6 +26442,15 @@ components:
         locationUrl:
           type: string
           format: uri
+        scu:
+          type:
+          - integer
+          - 'null'
+        sourceUpdatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         createdAt:
           type: string
           format: date-time
@@ -30588,6 +30673,80 @@ components:
           type: string
           format: uuid
       title: SyncRsiHangarInput
+    Terminal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        nickname:
+          type:
+          - string
+          - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+        starSystem:
+          type:
+          - string
+          - 'null'
+        planet:
+          type:
+          - string
+          - 'null'
+        orbit:
+          type:
+          - string
+          - 'null'
+        moon:
+          type:
+          - string
+          - 'null'
+        spaceStation:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        outpost:
+          type:
+          - string
+          - 'null'
+        maxContainerSize:
+          type:
+          - integer
+          - 'null'
+        hasFreightElevator:
+          type: boolean
+        hasLoadingDock:
+          type: boolean
+        hasDockingPort:
+          type: boolean
+        available:
+          type: boolean
+        contactUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - hasFreightElevator
+      - hasLoadingDock
+      - hasDockingPort
+      - available
+      title: Terminal
     ThrusterClassEnum:
       type: string
       enum:
@@ -30771,6 +30930,151 @@ components:
       - items
       additionalProperties: false
       title: ToursList
+    TradeRoute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        commodity:
+          "$ref": "#/components/schemas/CommodityRef"
+        originTerminal:
+          "$ref": "#/components/schemas/Terminal"
+        destinationTerminal:
+          "$ref": "#/components/schemas/Terminal"
+        priceOrigin:
+          type: number
+        priceDestination:
+          type: number
+        profitPerScu:
+          type: number
+        scuOrigin:
+          type: integer
+        scuDestination:
+          type: integer
+        containerSizes:
+          type: array
+          items:
+            type: integer
+        distance:
+          type:
+          - number
+          - 'null'
+        originPriceUpdatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        destinationPriceUpdatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        loadableScu:
+          type:
+          - integer
+          - 'null'
+        investment:
+          type:
+          - number
+          - 'null'
+        profitPerRun:
+          type:
+          - number
+          - 'null'
+        profitPerDistance:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - commodity
+      - originTerminal
+      - destinationTerminal
+      - priceOrigin
+      - priceDestination
+      - profitPerScu
+      - scuOrigin
+      - scuDestination
+      - containerSizes
+      title: TradeRoute
+    TradeRouteQuery:
+      type: object
+      properties:
+        commodityIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        commoditySlugIn:
+          type: array
+          items:
+            type: string
+        originTerminalIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        destinationTerminalIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        originTerminalStarSystemIn:
+          type: array
+          items:
+            type: string
+        destinationTerminalStarSystemIn:
+          type: array
+          items:
+            type: string
+        modelSlug:
+          type: string
+        s:
+          "$ref": "#/components/schemas/TradeRouteSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/TradeRouteSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: TradeRouteQuery
+    TradeRouteSortingEnum:
+      type: string
+      enum:
+      - profitPerScu asc
+      - profitPerScu desc
+      - distance asc
+      - distance desc
+      - profitPerRun asc
+      - profitPerRun desc
+      - profitPerDistance asc
+      - profitPerDistance desc
+      x-enumNames:
+      - PROFIT_PER_SCU_ASC
+      - PROFIT_PER_SCU_DESC
+      - DISTANCE_ASC
+      - DISTANCE_DESC
+      - PROFIT_PER_RUN_ASC
+      - PROFIT_PER_RUN_DESC
+      - PROFIT_PER_DISTANCE_ASC
+      - PROFIT_PER_DISTANCE_DESC
+      title: TradeRouteSortingEnum
+    TradeRoutes:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/TradeRoute"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: TradeRoutes
     TransferParty:
       type:
       - object
