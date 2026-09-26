@@ -157,6 +157,18 @@ module Uex
       assert_not_includes result.unknown.map { |row| row["item_name"] }, "Lillo Pants Violet"
     end
 
+    test "#run keeps a Utility item no ship fits out of the gaps" do
+      categories = uex_fixture("categories") + [{"id" => 28, "section" => "Utility", "name" => "Gadgets"}]
+      prices = uex_fixture("items_prices_all") + [
+        uex_fixture("items_prices_all").last.merge("id_item" => 104, "id_category" => 28, "item_name" => "Waveshift", "item_uuid" => nil)
+      ]
+
+      result = sync(item_categories: categories, item_prices: prices)
+
+      assert_includes result.unknown_other.map { |row| row["item_name"] }, "Waveshift"
+      assert_not_includes result.unknown.map { |row| row["item_name"] }, "Waveshift"
+    end
+
     # The bucket that matters: a part filed under a section a ship carries from
     # that we cannot place. A patch renaming a gun lands here and takes its
     # prices with it, which is exactly what somebody has to be told about.

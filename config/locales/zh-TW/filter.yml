@@ -34,6 +34,8 @@ zh-TW:
           waste: 廢棄物
     component:
       category:
+        catalogue_items:
+          controller: 飛行刀片
         items:
           armor: 裝甲
           batteries: 電池

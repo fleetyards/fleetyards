@@ -34,6 +34,8 @@ es:
           waste: Residuos
     component:
       category:
+        catalogue_items:
+          controller: Cuchillas de vuelo
         items:
           armor: Blindaje
           batteries: Baterías

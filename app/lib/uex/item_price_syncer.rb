@@ -9,6 +9,8 @@ module Uex
 
     TERMINAL_TYPE = "item"
     SECTIONS = [].freeze
+    # Categories inside SECTIONS that still hold nothing of this catalogue.
+    FOREIGN_CATEGORIES = [].freeze
 
     # `unknown` is split on purpose. A UEX item in one of our sections that we
     # cannot place is a gap somebody should look at -- an item renamed by a
@@ -36,8 +38,7 @@ module Uex
         @client.terminals.select { |terminal| terminal["type"] == TERMINAL_TYPE }
       ).index_by { |terminal| terminal["id"] }
       prices = require_rows(:item_prices, @client.item_prices)
-      sections = require_rows(:categories, @client.item_categories)
-        .to_h { |category| [category["id"], category["section"]] }
+      categories = require_rows(:categories, @client.item_categories).index_by { |category| category["id"] }
 
       matcher = build_matcher
 
@@ -47,7 +48,10 @@ module Uex
       record_price_history
 
       unknown, unknown_other = matcher.misses.partition do |row|
-        self.class::SECTIONS.include?(sections[row["id_category"]])
+        category = categories[row["id_category"]] || {}
+
+        self.class::SECTIONS.include?(category["section"]) &&
+          self.class::FOREIGN_CATEGORIES.exclude?(category["name"])
       end
 
       Result.new(

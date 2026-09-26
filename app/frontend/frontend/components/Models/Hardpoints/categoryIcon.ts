@@ -70,8 +70,8 @@ export const categoryFaIcons: Record<string, string> = {
 
   paints: "fa-duotone fa-palette",
   doors: "fa-duotone fa-door-open",
-  // Ship subsystem controllers rather than anything a player holds -- the
-  // entries are named after what they drive, "SHIELDS" and the like.
+  // Only flight blades reach the catalogue from this category; the sliders
+  // read as the handling they retune.
   controller: "fa-duotone fa-sliders",
   bombcompartments: "fa-duotone fa-bomb",
   selfdestruct: "fa-duotone fa-explosion",

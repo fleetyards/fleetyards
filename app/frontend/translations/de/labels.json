@@ -1456,6 +1456,7 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Bergungsfüllstation",
           "cargogrid": "Frachtraster",
+          "controller": "Flight Blades",
           "seat": "Sitze",
           "thrusters": "Triebwerke",
           "bombcompartments": "Bombenschächte"

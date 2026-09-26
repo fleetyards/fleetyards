@@ -34,6 +34,8 @@ zh-CN:
           waste: 废弃物
     component:
       category:
+        catalogue_items:
+          controller: 飞行刀片
         items:
           armor: 装甲
           batteries: 电池
