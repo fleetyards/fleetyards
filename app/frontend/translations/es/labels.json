@@ -2565,6 +2565,8 @@
           "overrideOccurrenceShort": "Editar solo esta",
           "overrideOccurrenceHint": "Anula campos solo para esta repetición. Déjalos en blanco para heredarlos del evento recurrente.",
           "endSeriesHere": "Detener a partir de aquí",
+          "splitSeriesHere": "Editar esta y las siguientes",
+          "splitSeriesConfirm": "¿Continuar la serie desde esta fecha como un evento nuevo? Las inscripciones de esta fecha y las posteriores pasan al nuevo evento, que se abre para editarlo.",
           "excludedBadge": "Omitida",
           "noUpcomingOccurrences": "No hay repeticiones próximas en las siguientes 12 semanas.",
           "endSeriesConfirm": "¿Detener la repetición después de esta fecha? No se generarán repeticiones futuras.",

@@ -2565,6 +2565,8 @@
           "overrideOccurrenceShort": "Modifica solo questa",
           "overrideOccurrenceHint": "Sovrascrivi i campi per questa singola occorrenza. Lascia vuoto per ereditarli dall'evento ricorrente.",
           "endSeriesHere": "Interrompi da qui in avanti",
+          "splitSeriesHere": "Modifica questa e le successive",
+          "splitSeriesConfirm": "Continuare la serie da questa data come nuovo evento? Le iscrizioni per questa data e le successive vengono spostate, e il nuovo evento si apre per la modifica.",
           "excludedBadge": "Saltata",
           "noUpcomingOccurrences": "Nessuna occorrenza in programma nelle prossime 12 settimane.",
           "endSeriesConfirm": "Vuoi interrompere la ricorrenza dopo questa data? Le occorrenze future non verranno generate.",

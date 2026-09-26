@@ -33,6 +33,7 @@ import {
   useFleetEvent,
   useSkipFleetEventOccurrence,
   useEndFleetEventSeries,
+  useSplitFleetEventSeries,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -301,11 +302,48 @@ const upcomingOccurrences = computed(() => {
     }),
     iso: occurrence.date,
     excluded: occurrence.excluded,
+    // The first occurrence is the series itself, so "this and following" is
+    // an edit of the whole series rather than a split.
+    seriesStart:
+      new Date(occurrence.startsAt).getTime() ===
+      new Date(event.value?.startsAt ?? 0).getTime(),
   }));
 });
 
 const skipMutation = useSkipFleetEventOccurrence();
 const endMutation = useEndFleetEventSeries();
+const splitMutation = useSplitFleetEventSeries();
+const router = useRouter();
+
+const goToSeriesEdit = (slug: string) =>
+  router.push({
+    name: "fleet-event-edit-schedule",
+    params: { slug: props.fleet.slug, event: slug },
+  });
+
+const editFollowing = (entry: { iso: string; seriesStart: boolean }) => {
+  if (!event.value) return;
+  if (entry.seriesStart) {
+    void goToSeriesEdit(event.value.slug);
+    return;
+  }
+
+  displayConfirm({
+    text: t("labels.fleets.events.splitSeriesConfirm"),
+    onConfirm: async () => {
+      try {
+        const successor = await splitMutation.mutateAsync({
+          fleetSlug: props.fleet.slug,
+          slug: event.value!.slug,
+          data: { date: entry.iso },
+        });
+        await goToSeriesEdit(successor.slug);
+      } catch {
+        displayAlert({ text: t("messages.fleets.event.update.failure") });
+      }
+    },
+  });
+};
 
 const skipOccurrence = async (iso: string) => {
   if (!event.value) return;
@@ -623,6 +661,15 @@ const crumbs = computed<Crumb[]>(() => [
             >
               <i class="fa-light fa-ban" />
               {{ t("labels.fleets.events.skipOccurrence") }}
+            </button>
+            <button
+              type="button"
+              class="event-occurrences__btn"
+              :data-test="`split-series-${entry.iso}`"
+              @click="editFollowing(entry)"
+            >
+              <i class="fa-light fa-code-branch" />
+              {{ t("labels.fleets.events.splitSeriesHere") }}
             </button>
             <button
               type="button"

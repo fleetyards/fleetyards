@@ -2579,6 +2579,8 @@
           "overrideOccurrenceShort": "Edit this one",
           "overrideOccurrenceHint": "Override fields for this single occurrence. Leave blank to inherit from the recurring event.",
           "endSeriesHere": "Stop here and going forward",
+          "splitSeriesHere": "Edit this and following",
+          "splitSeriesConfirm": "Continue the series from this date as a new event? Signups for this and later dates move with it, and the new event opens for editing.",
           "excludedBadge": "Skipped",
           "noUpcomingOccurrences": "No upcoming occurrences in the next 12 weeks.",
           "endSeriesConfirm": "Stop the recurrence after this date? Future occurrences won't be generated.",

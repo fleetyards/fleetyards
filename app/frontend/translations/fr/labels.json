@@ -2565,6 +2565,8 @@
           "overrideOccurrenceShort": "Modifier celle-ci",
           "overrideOccurrenceHint": "Personnalisez des champs pour cette seule occurrence. Laissez vide pour hériter de l'événement récurrent.",
           "endSeriesHere": "Arrêter ici et pour la suite",
+          "splitSeriesHere": "Modifier celle-ci et les suivantes",
+          "splitSeriesConfirm": "Poursuivre la série à partir de cette date sous forme de nouvel événement ? Les inscriptions pour cette date et les suivantes y sont transférées, et le nouvel événement s'ouvre en modification.",
           "excludedBadge": "Ignorée",
           "noUpcomingOccurrences": "Aucune occurrence à venir dans les 12 prochaines semaines.",
           "endSeriesConfirm": "Arrêter la répétition après cette date ? Les occurrences futures ne seront pas générées.",

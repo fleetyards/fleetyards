@@ -2565,6 +2565,8 @@
           "overrideOccurrenceShort": "編輯這一場",
           "overrideOccurrenceHint": "只為這一場覆寫欄位。留空則沿用重複活動的設定。",
           "endSeriesHere": "從這裡起停止",
+          "splitSeriesHere": "編輯此場及之後的場次",
+          "splitSeriesConfirm": "從此日期起將該系列作為新活動繼續？此場及之後場次的報名會一併轉移，新活動將開啟以供編輯。",
           "excludedBadge": "已略過",
           "noUpcomingOccurrences": "未來 12 週內沒有即將到來的場次。",
           "endSeriesConfirm": "要在這個日期之後停止重複嗎？之後的場次將不會再產生。",
