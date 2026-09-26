@@ -152,6 +152,11 @@ class Component < ApplicationRecord
   # files name no category, and reads as caps, scoops and deck plates.
   CATALOGUE_EXCLUDED_CATEGORIES = %w[doors controller seat unknown].freeze
 
+  # The one controller a player does fit: a flight blade is bought in a shop and
+  # swapped in to retune a ship's handling. Shield, missile and weapon
+  # controllers stay internals.
+  CATALOGUED_CONTROLLER_TYPES = %w[FlightController].freeze
+
   # What the public catalogue lists. `with_facts` has to be applied by the
   # caller -- the category is read off the joined build.
   #
@@ -162,9 +167,10 @@ class Component < ApplicationRecord
   # emptied a list somewhere else.
   scope :catalogued, -> {
     category = fact_sql(:category)
+    flight_blade = category.eq("controller").and(fact_sql(:component_type).in(CATALOGUED_CONTROLLER_TYPES))
 
     named.where(
-      category.not_in(CATALOGUE_EXCLUDED_CATEGORIES).or(category.eq(nil))
+      category.not_in(CATALOGUE_EXCLUDED_CATEGORIES).or(category.eq(nil)).or(flight_blade)
     )
   }
 
@@ -227,7 +233,10 @@ class Component < ApplicationRecord
   # Derived from the same constant rather than restated, so the list and the
   # links cannot drift apart.
   def catalogued?
-    name.present? && CATALOGUE_EXCLUDED_CATEGORIES.exclude?(category)
+    return false if name.blank?
+    return CATALOGUED_CONTROLLER_TYPES.include?(component_type) if category == "controller"
+
+    CATALOGUE_EXCLUDED_CATEGORIES.exclude?(category)
   end
 
   # Not in the build we are on. Said out loud in the API, which until now offered
@@ -527,11 +536,16 @@ class Component < ApplicationRecord
   # Categories and sub types come straight out of the game files, so a patch can
   # introduce values we have no label for yet — fall back to the raw value
   # instead of rendering a translation-missing string into the API.
+  # `catalogue_items` first: the catalogue carries only the flight blades of the
+  # controller category, while the stats chart counts every controller.
   def self.category_filters
     Component.categories.map do |item|
       Filter.new(
         category: "category",
-        label: I18n.t("filter.component.category.items.#{item}", default: item.titleize),
+        label: I18n.t(
+          "filter.component.category.catalogue_items.#{item}",
+          default: [:"filter.component.category.items.#{item}", item.titleize]
+        ),
         value: item
       )
     end

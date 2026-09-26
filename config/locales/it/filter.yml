@@ -34,6 +34,8 @@ it:
           waste: Rifiuti
     component:
       category:
+        catalogue_items:
+          controller: Lame di volo
         items:
           armor: Corazza
           batteries: Batterie

@@ -34,6 +34,8 @@ fr:
           waste: Déchets
     component:
       category:
+        catalogue_items:
+          controller: Lames de vol
         items:
           armor: Blindage
           batteries: Batteries

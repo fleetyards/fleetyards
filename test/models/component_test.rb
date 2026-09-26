@@ -215,6 +215,18 @@ class ComponentTest < ActiveSupport::TestCase
     assert_empty Component.with_facts.ransack(item_type_eq: "hand_made").result.pluck(:id)
   end
 
+  test "the catalogue lists a flight blade but no other controller" do
+    blade = create(:component, name: "Gladius PHB Flight Blade", category: "controller", component_type: "FlightController")
+    shield = create(:component, name: "Shield Controller", category: "controller", component_type: "ShieldController")
+
+    catalogued = Component.with_facts(false).catalogued.pluck(:id)
+
+    assert_includes catalogued, blade.id
+    assert_not_includes catalogued, shield.id
+    assert_predicate blade, :catalogued?
+    assert_not_predicate shield, :catalogued?
+  end
+
   test "sorting orders by the name the build carries" do
     first = create(:component, :without_build, name: "Zulu Column")
     second = create(:component, :without_build, name: "Alpha Column")

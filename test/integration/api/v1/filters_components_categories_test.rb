@@ -43,6 +43,16 @@ class Api::V1::FiltersComponentsCategoriesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /filters/components/categories names the controllers the catalogue carries as flight blades" do
+    create(:component, category: "controller", component_type: "FlightController", version: @version)
+
+    assert_api_response :get, 200 do
+      option = parsed_body.find { |filter| filter["value"] == "controller" }
+
+      assert_equal "Flight Blades", option["label"]
+    end
+  end
+
   test "GET /filters/components/categories falls back to the raw value without a translation" do
     create(:component, category: "newfangleddrive", version: @version)
 

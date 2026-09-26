@@ -1455,6 +1455,7 @@
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Estación de llenado de salvamento",
           "cargogrid": "Grilla de carga",
+          "controller": "Cuchillas de vuelo",
           "seat": "Asientos",
           "thrusters": "Propulsores",
           "bombcompartments": "Compartimentos de bombas"
