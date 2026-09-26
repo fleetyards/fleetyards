@@ -34,24 +34,58 @@ module Uex
     test "#run swaps the UEX price directions onto our shop perspective" do
       sync
 
-      gold = prices_for(@commodities[:gold])
+      gold = prices_for(@commodities[:gold]).where(terminal: Terminal.find_by!(uex_id: 105))
 
       assert_equal 26_000, gold.find_by(price_type: "sell").price
       assert_equal 29_000, gold.find_by(price_type: "buy").price
     end
 
-    test "#run keeps the cheaper of two terminals sharing a location for a sell price" do
+    test "#run keeps a price per terminal when two terminals share a name" do
       sync
 
-      assert_equal 26_000, prices_for(@commodities[:gold]).find_by(price_type: "sell").price
+      gold = prices_for(@commodities[:gold]).joins(:terminal).order("terminals.uex_id")
+
+      assert_equal [27_527, 26_000], gold.where(price_type: "sell").pluck(:price)
+      assert_equal [28_270, 29_000], gold.where(price_type: "buy").pluck(:price)
+      assert_equal ["TDD - Trade and Development Division - Area 18"], gold.pluck(:location).uniq
     end
 
-    # The mirror of the rule above: of two shops buying the same cargo the
-    # player wants the better paid, so the higher figure is the one to keep.
-    test "#run keeps the better paid of two terminals sharing a location for a buy price" do
+    test "#run links each price to its terminal" do
       sync
 
-      assert_equal 29_000, prices_for(@commodities[:gold]).find_by(price_type: "buy").price
+      price = prices_for(@commodities[:agricium_ore]).find_by!(price_type: "buy")
+
+      assert_equal 102, price.terminal.uex_id
+    end
+
+    test "#run stores the stock behind each direction and when UEX last saw it" do
+      sync
+
+      annex = Terminal.find_by!(uex_id: 105)
+      gold = prices_for(@commodities[:gold]).where(terminal: annex)
+
+      assert_equal 300, gold.find_by!(price_type: "sell").scu
+      assert_nil gold.find_by!(price_type: "buy").scu
+      assert_equal 85, prices_for(@commodities[:agricium_ore]).find_by!(price_type: "buy").scu
+      assert_equal Time.zone.at(1766171000), gold.find_by!(price_type: "sell").source_updated_at
+    end
+
+    test "#run syncs the terminals first" do
+      result = sync
+
+      assert_equal 3, result.terminals.created
+      assert_equal [102, 104, 105], Terminal.order(:uex_id).pluck(:uex_id)
+    end
+
+    test "#run adopts a price stored before its terminal was known" do
+      legacy = create(:item_price, item: @commodities[:agricium_ore], price_type: "buy", time_range: nil,
+        location: "Admin - ARC-L1", location_url: nil, price: 2000)
+
+      result = sync
+
+      assert_equal 2245, legacy.reload.price
+      assert_equal 102, legacy.terminal.uex_id
+      assert_equal 0, result.removed
     end
 
     test "#run skips a price of zero rather than storing it" do
@@ -120,8 +154,8 @@ module Uex
       })
 
       assert_equal 1, result.updated
-      assert_equal 25_000, prices_for(@commodities[:gold]).find_by(price_type: "sell").price
-      assert_equal 3, ItemPrice.where(item_type: "Commodity").count
+      assert_equal 25_000, prices_for(@commodities[:gold]).find_by(price_type: "sell", terminal: Terminal.find_by!(uex_id: 105)).price
+      assert_equal 5, ItemPrice.where(item_type: "Commodity").count
     end
 
     test "#run is idempotent when nothing changed" do
@@ -156,7 +190,7 @@ module Uex
       error = assert_raises(Uex::Error) { sync(commodity_prices: []) }
 
       assert_match(/refusing to sync/, error.message)
-      assert_equal 3, ItemPrice.where(item_type: "Commodity").count
+      assert_equal 5, ItemPrice.where(item_type: "Commodity").count
     end
 
     test "#run refuses to sync when no terminal trades commodities" do

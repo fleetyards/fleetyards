@@ -44,7 +44,12 @@ module Loaders
           updated: result.updated,
           removed: result.removed,
           skipped_removals: result.skipped_removals,
-          unknown: result.unknown.map { |row| row["commodity_name"] }
+          unknown: result.unknown.map { |row| row["commodity_name"] },
+          terminals: {
+            created: result.terminals.created,
+            updated: result.terminals.updated,
+            retired: result.terminals.retired
+          }
         }
       )
       import.finish!

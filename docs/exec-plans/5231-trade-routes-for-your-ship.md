@@ -19,11 +19,12 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 4. Extend `test/fixtures/uex/terminals.json` with geo and flag fields.
 
 ### Phase 2 — Prices on terminals
-1. Migration: `item_prices.terminal_id` (nullable, since non-UEX prices have no terminal), stock (`scu`) and `source_updated_at` from UEX `date_modified`. The same columns go on `ItemPriceSnapshot` where they matter for history.
-2. `Loaders::UexCommodityPricesJob` runs `Uex::TerminalSyncer` before the price sync. `CommodityPriceSyncer` keys rows by terminal instead of by name, so same-name terminals no longer collapse. `location` stays as the display name.
-3. `PriceSnapshot#persist_prices`: the match key and the updated slice include the terminal, stock and `source_updated_at`. Retention (`deletable?`) works per terminal.
-4. The API exposes the terminal (or its location fields) and freshness on `ItemPrice`. `AvailabilityModal` keeps working with `location`.
-5. Check component/equipment/vehicle price syncers: do they get terminals too, or stay name-only for now?
+1. Migration: `item_prices.terminal_id` (nullable FK, nullify on delete; non-commodity prices have no terminal), `scu` and `source_updated_at` (UEX `date_modified`). `item_price_snapshots.terminal_id`, which joins the unique day index (still `NULLS NOT DISTINCT`).
+2. `CommodityPriceSyncer` runs `Uex::TerminalSyncer` first and keys prices by terminal, so same-name terminals no longer collapse. `location` stays the terminal name for display. Stock follows direction: `scu_buy` on a shop-sell row, `scu_sell_stock` on a shop-buy row.
+3. `PriceSnapshot`: `price_key` adds the terminal as a fifth part (nil for vehicle/component/equipment syncers, so they are unchanged). A name-only row is adopted by its terminal on the first run instead of replaced. Retention and `live` count per terminal where known.
+4. Import output and the notification carry the terminal counts.
+5. Vehicle, component and equipment prices stay name-only: `Terminal` holds commodity terminals only.
+6. API exposure of terminal/stock/freshness on `ItemPrice` moves to phase 4, together with the `Terminal` component.
 
 ### Phase 3 — Trade routes sync
 1. `TradeRoute` model + migration: commodity, origin/destination terminal, buy/sell price, margin, ROI, distance, `scu_origin`, `scu_destination`, `scu_reachable`, container sizes at both ends, UEX `date_modified` at both ends, synced_at.
@@ -84,9 +85,11 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 
 - **2026-09-26** Live UEX: 826 terminals, 161 of type `commodity`. Only those appear in `commodities_prices_all` (2,602 rows) and `commodities_routes`; `commodity_raw` (refinery ore sales) never does. There are no duplicate names among live commodity terminals today, so the same-name merge is latent, not active. `max_container_size` is 0 (unknown) for 56 of them. Price rows carry `scu_buy`, `scu_sell_stock`, `status_buy/sell`, `container_sizes` and `date_modified`. Route rows carry container sizes as comma-separated strings, and negative margins do occur (min −24.7 for Agricium).
 
+- **2026-09-26** Phase 2 dry run on production commodity data (2,595 prices, copied into the worktree DB) against the live feeds, in a rolled-back transaction: 161 terminals created, all 2,595 rows adopted with their ids kept, 6 created, 0 removed. 2,601 linked, 2,260 with stock.
+
 ## Progress
 - [x] Phase 1 — Terminals (model, syncer, client params; not yet scheduled, it runs from the price job in phase 2)
-- [ ] Phase 2 — Prices on terminals
+- [x] Phase 2 — Prices on terminals (API exposure deferred to phase 4)
 - [ ] Phase 3 — Trade routes sync
 - [ ] Phase 4 — API
 - [ ] Phase 5 — Frontend

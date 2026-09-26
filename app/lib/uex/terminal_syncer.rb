@@ -4,7 +4,9 @@ module Uex
   class TerminalSyncer
     TERMINAL_TYPE = "commodity"
 
-    Result = Struct.new(:created, :updated, :retired) do
+    # `terminals` holds every terminal the feed listed, keyed by UEX id, so the
+    # price and route syncers can resolve rows without a second lookup.
+    Result = Struct.new(:created, :updated, :retired, :terminals) do
       def to_s
         "created=#{created} updated=#{updated} retired=#{retired}"
       end
@@ -23,6 +25,7 @@ module Uex
 
       created = 0
       updated = 0
+      terminals = {}
 
       Terminal.transaction do
         existing = Terminal.where(uex_id: rows.pluck("id")).index_by(&:uex_id)
@@ -30,6 +33,7 @@ module Uex
         rows.each do |row|
           terminal = existing[row["id"]] || Terminal.new(uex_id: row["id"])
           terminal.assign_attributes(attributes(row))
+          terminals[row["id"]] = terminal
           next unless terminal.changed?
 
           terminal.new_record? ? created += 1 : updated += 1
@@ -41,7 +45,7 @@ module Uex
       # brings terminals back when a patch restores a location.
       retired = Terminal.available.where.not(uex_id: rows.pluck("id")).update_all(available: false, updated_at: Time.current)
 
-      Result.new(created:, updated:, retired:)
+      Result.new(created:, updated:, retired:, terminals:)
     end
 
     private def attributes(row)

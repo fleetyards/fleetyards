@@ -17,7 +17,8 @@ module Loaders
       assert_equal(
         {
           "mapped" => 7, "remapped" => 2, "unmapped" => [],
-          "created" => 4, "updated" => 1, "removed" => 2, "skipped_removals" => 0, "unknown" => []
+          "created" => 4, "updated" => 1, "removed" => 2, "skipped_removals" => 0, "unknown" => [],
+          "terminals" => {"created" => 3, "updated" => 5, "retired" => 1}
         },
         import.output
       )
@@ -35,6 +36,7 @@ module Loaders
 
       assert(bodies.any? { |body| body.include?("7 newly mapped, 2 remapped") && body.include?("Every commodity carries a UEX mapping.") })
       assert(bodies.any? { |body| body.include?("4 created, 1 updated, 2 removed") && body.include?("Every priced UEX commodity resolved to one we carry.") })
+      assert(bodies.any? { |body| body.include?("**Terminals**: 3 created, 5 updated, 1 retired") })
     end
 
     test "#perform maps before it syncs" do
@@ -119,7 +121,9 @@ module Loaders
     end
 
     private def sync_result(unknown: [{"id_commodity" => 999, "commodity_name" => "Aslarite"}])
-      ::Uex::CommodityPriceSyncer::Result.new(created: 4, updated: 1, removed: 2, skipped_removals: 0, unknown:)
+      terminals = ::Uex::TerminalSyncer::Result.new(created: 3, updated: 5, retired: 1, terminals: {})
+
+      ::Uex::CommodityPriceSyncer::Result.new(created: 4, updated: 1, removed: 2, skipped_removals: 0, unknown:, terminals:)
     end
 
     private def stub_run(unmapped: nil, unknown: nil)
