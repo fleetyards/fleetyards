@@ -110,6 +110,13 @@ const [recurrenceEvery] = defineField("recurrenceEvery");
 
 const [recurrenceWeekdays] = defineField("recurrenceWeekdays");
 
+// The interval input disappears with the recurrence controls, but the form's
+// schema still validates it; a value cleared before unticking would block
+// saving the event as a one-off.
+watch(recurring, (on) => {
+  if (!on) recurrenceEvery.value = 1;
+});
+
 const startWday = computed(() =>
   wdayIn(startsAt.value as string | undefined, timezone.value as string),
 );
