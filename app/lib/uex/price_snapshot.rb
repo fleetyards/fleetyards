@@ -17,7 +17,7 @@ module Uex
       lines = ["- **Shop prices**: #{result.created} created, #{result.updated} updated, #{result.removed} removed"]
 
       if result.skipped_removals.positive?
-        lines << "- **Removals held back**: #{result.skipped_removals} — the snapshot omitted terminals we hold prices for"
+        lines << "- **Removals held back**: #{result.skipped_removals} — live terminals listed under half the prices we hold for them"
       end
 
       lines
