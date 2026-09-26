@@ -265,15 +265,36 @@ class FleetEventTest < ActiveSupport::TestCase
       assert_equal %w[2026-01-31 2026-02-28 2026-03-31], result.map { |t| t.to_date.iso8601 }
     end
 
-    test "keeps the event's wall-clock time across a DST change" do
+    # Stored occurrence dates are keyed in Time.zone, so a plain interval
+    # keeps stepping there: a UTC series late in the evening stays on the
+    # Berlin date it was keyed on before the clocks changed.
+    test "keeps a plain interval on its Time.zone dates across a DST change" do
       event = create(:fleet_event,
-        fleet: @fleet, starts_at: Time.find_zone("America/New_York").parse("2026-10-29 20:00"),
-        timezone: "America/New_York",
+        fleet: @fleet, starts_at: Time.utc(2026, 3, 19, 22, 30), timezone: "UTC",
         recurring: true, recurrence_interval: "weekly")
 
-      result = event.occurrences(from: Time.zone.parse("2026-10-28"), to: Time.zone.parse("2026-11-06"))
+      result = event.occurrences(from: Time.utc(2026, 3, 1), to: Time.utc(2026, 4, 10))
 
-      assert_equal [20], result.map { |t| t.in_time_zone("America/New_York").hour }.uniq
+      assert_equal %w[2026-03-19 2026-03-26 2026-04-02 2026-04-09], result.map { |t| t.to_date.iso8601 }
+    end
+
+    test "reads an unknown timezone as UTC" do
+      event = create(:fleet_event,
+        fleet: @fleet, starts_at: @thursday,
+        recurring: true, recurrence_interval: "weekly", recurrence_weekdays: [2])
+      event.update_column(:timezone, "Foo/Bar")
+
+      assert_equal 3, event.reload.occurrences(from: @thursday, to: @thursday + 7.days).size
+    end
+
+    test "looks far enough ahead to show a series every few months" do
+      travel_to @thursday - 1.day do
+        event = create(:fleet_event,
+          fleet: @fleet, starts_at: @thursday,
+          recurring: true, recurrence_interval: "monthly", recurrence_every: 4)
+
+        assert_equal 4, event.upcoming_occurrences.size
+      end
     end
   end
 
@@ -301,6 +322,21 @@ class FleetEventTest < ActiveSupport::TestCase
   end
 
   class EndSeriesAtTest < FleetEventTest
+    # 19:00 in New York is 01:00 the next day in Berlin, which is the date the
+    # occurrence is keyed on; the local day before is two days before the key.
+    test "ends before an occurrence whose local date differs from its key" do
+      event = create(:fleet_event,
+        starts_at: Time.find_zone("America/New_York").parse("2026-10-01 19:00"),
+        timezone: "America/New_York",
+        recurring: true, recurrence_interval: "weekly")
+
+      event.end_series_at!(Date.parse("2026-10-09"))
+
+      assert_equal Date.parse("2026-10-07"), event.reload.recurrence_until
+      assert_equal %w[2026-10-02], event.occurrences(from: Time.zone.parse("2026-10-01"), to: Time.zone.parse("2026-10-20"))
+        .map { |t| t.to_date.iso8601 }
+    end
+
     test "sets recurrence_until to the day before the given date" do
       event = create(:fleet_event,
         starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),

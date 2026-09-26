@@ -97,6 +97,28 @@ class FleetEvents::SeriesSplitTest < ActiveSupport::TestCase
       successor.occurrences(from: successor.starts_at, to: Time.zone.parse("2026-06-10")).map { |t| t.to_date.iso8601 }
   end
 
+  test "does not count the split occurrence as used when it starts at midnight" do
+    @event.update!(starts_at: Time.zone.parse("2026-05-14 00:00"), ends_at: nil,
+      timezone: "Europe/Berlin", recurrence_interval: "daily", recurrence_count: 10, excluded_dates: [])
+
+    successor = FleetEvents::SeriesSplit.new(@event, "2026-05-17").call
+
+    assert_equal 7, successor.recurrence_count
+  end
+
+  test "keeps the occurrence before the split in the original across zones" do
+    new_york = Time.find_zone("America/New_York")
+    @event.update!(starts_at: new_york.parse("2026-10-01 19:00"), ends_at: nil,
+      timezone: "America/New_York", excluded_dates: [])
+
+    successor = FleetEvents::SeriesSplit.new(@event, "2026-10-16").call
+
+    original = @event.reload.occurrences(from: Time.zone.parse("2026-10-01"), to: Time.zone.parse("2026-11-01"))
+    following = successor.occurrences(from: Time.zone.parse("2026-10-01"), to: Time.zone.parse("2026-11-01"))
+    assert_equal %w[2026-10-02 2026-10-09], original.map { |t| t.to_date.iso8601 }
+    assert_equal %w[2026-10-16 2026-10-23 2026-10-30], following.map { |t| t.to_date.iso8601 }
+  end
+
   test "refuses a date the series has no occurrence on" do
     assert_raises(FleetEvents::SeriesSplit::NotAnOccurrence) do
       FleetEvents::SeriesSplit.new(@event, "2026-06-05").call

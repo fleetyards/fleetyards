@@ -30,13 +30,16 @@ module FleetEvents
     end
 
     def call
-      raise NotRecurring unless event.recurring?
-
-      occurrence = find_occurrence
-      raise NotAnOccurrence if occurrence.nil?
-      raise AtSeriesStart if occurrence.to_date == event.starts_at.to_date
-
       FleetEvent.transaction do
+        # Two splits of the same series at once would each copy the whole
+        # remainder, so the second waits and sees the series already cut.
+        event.lock!
+        raise NotRecurring unless event.recurring?
+
+        occurrence = find_occurrence
+        raise NotAnOccurrence if occurrence.nil?
+        raise AtSeriesStart if occurrence.to_date == event.starts_at.to_date
+
         successor = build_successor(occurrence)
         successor.save!
         copy_cover_image(successor)
@@ -46,7 +49,7 @@ module FleetEvents
         move_occurrence_states(successor)
 
         event.update!(
-          recurrence_until: date - 1.day,
+          recurrence_until: event.until_before(date),
           recurrence_count: nil,
           excluded_dates: event.excluded_dates.select { |d| d < date }
         )
@@ -67,7 +70,7 @@ module FleetEvents
       successor.assign_attributes(
         starts_at: occurrence,
         ends_at: duration && occurrence + duration,
-        recurrence_count: remaining_count,
+        recurrence_count: remaining_count(occurrence),
         excluded_dates: event.excluded_dates.select { |d| d >= date },
         fleet_squadron_ids: event.fleet_squadron_ids
       )
@@ -76,10 +79,10 @@ module FleetEvents
 
     # A count-bounded series keeps the total it promised: whatever the
     # original had not yet used up before the split carries over.
-    private def remaining_count
+    private def remaining_count(occurrence)
       return nil if event.recurrence_count.blank?
 
-      used = event.occurrences(from: event.starts_at, to: date.in_time_zone(Time.zone).beginning_of_day, include_excluded: true).size
+      used = event.occurrences(from: event.starts_at, to: occurrence, include_excluded: true).size - 1
       [event.recurrence_count - used, 1].max
     end
 
