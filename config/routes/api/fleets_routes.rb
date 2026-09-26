@@ -148,6 +148,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :unarchive
       post "sync-to-discord", action: :sync_to_discord
       post "skip-occurrence", action: :skip_occurrence
+      post "unskip-occurrence", action: :unskip_occurrence
       post "end-series", action: :end_series
       patch "update-occurrence", action: :update_occurrence
       post :signup, to: "fleet_event_signups#event_signup"

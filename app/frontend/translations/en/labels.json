@@ -2573,6 +2573,8 @@
           "noUpcomingOccurrences": "No upcoming occurrences in the next 12 weeks.",
           "endSeriesConfirm": "Stop the recurrence after this date? Future occurrences won't be generated.",
           "skipOccurrenceSuccess": "Occurrence skipped.",
+          "unskipOccurrence": "Restore this occurrence",
+          "unskipOccurrenceSuccess": "Occurrence restored.",
           "endSeriesSuccess": "Series ended from this date forward.",
           "cancelledReason": "Cancellation reason",
           "createdBy": "Created by",

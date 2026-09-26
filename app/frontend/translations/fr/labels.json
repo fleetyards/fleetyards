@@ -2559,6 +2559,8 @@
           "noUpcomingOccurrences": "Aucune occurrence à venir dans les 12 prochaines semaines.",
           "endSeriesConfirm": "Arrêter la répétition après cette date ? Les occurrences futures ne seront pas générées.",
           "skipOccurrenceSuccess": "Occurrence ignorée.",
+          "unskipOccurrence": "Rétablir cette occurrence",
+          "unskipOccurrenceSuccess": "Occurrence rétablie.",
           "endSeriesSuccess": "Série arrêtée à partir de cette date.",
           "cancelledReason": "Motif d'annulation",
           "createdBy": "Créé par",

@@ -2559,6 +2559,8 @@
           "noUpcomingOccurrences": "未来 12 周内没有即将到来的场次。",
           "endSeriesConfirm": "要在此日期之后停止重复吗? 将不再生成后续场次。",
           "skipOccurrenceSuccess": "场次已跳过。",
+          "unskipOccurrence": "恢复此场次",
+          "unskipOccurrenceSuccess": "场次已恢复。",
           "endSeriesSuccess": "系列已从该日期起结束。",
           "cancelledReason": "取消原因",
           "createdBy": "创建者",

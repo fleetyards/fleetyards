@@ -2559,6 +2559,8 @@
           "noUpcomingOccurrences": "Keine anstehenden Termine in den nächsten 12 Wochen.",
           "endSeriesConfirm": "Die Wiederholung nach diesem Datum beenden? Zukünftige Termine werden nicht mehr erzeugt.",
           "skipOccurrenceSuccess": "Termin übersprungen.",
+          "unskipOccurrence": "Termin wiederherstellen",
+          "unskipOccurrenceSuccess": "Termin wiederhergestellt.",
           "endSeriesSuccess": "Serie ab diesem Datum beendet.",
           "cancelledReason": "Absagegrund",
           "createdBy": "Erstellt von",

@@ -2559,6 +2559,8 @@
           "noUpcomingOccurrences": "Nessuna occorrenza in programma nelle prossime 12 settimane.",
           "endSeriesConfirm": "Vuoi interrompere la ricorrenza dopo questa data? Le occorrenze future non verranno generate.",
           "skipOccurrenceSuccess": "Occorrenza saltata.",
+          "unskipOccurrence": "Ripristina questa occorrenza",
+          "unskipOccurrenceSuccess": "Occorrenza ripristinata.",
           "endSeriesSuccess": "Serie terminata a partire da questa data.",
           "cancelledReason": "Motivo dell'annullamento",
           "createdBy": "Creato da",
