@@ -8,6 +8,7 @@ export default {
 import { useComlink } from "@/shared/composables/useComlink";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import AccessCheck from "@/shared/components/AccessCheck.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
@@ -45,15 +46,13 @@ const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(
   },
 );
 
-const { data: membership, ...asyncMembershipStatus } = useFleetMembershipQuery(
-  slug,
-  {
+const { data: membership, isLoading: isMembershipLoading } =
+  useFleetMembershipQuery(slug, {
     query: {
       enabled: computed(() => !!slug.value && sessionStore.isAuthenticated),
       retry: false,
     },
-  },
-);
+  });
 
 const resolvedFleet = computed(() => fleet.value || publicFleet.value);
 
@@ -81,15 +80,17 @@ useFleetMeta(resolvedFleet);
 <template>
   <AsyncData :async-status="resolvedAsyncFleetStatus">
     <template #resolved>
-      <AsyncData :async-status="asyncMembershipStatus" :hide-error="true">
-        <template #resolved>
-          <AccessCheck :resource-access="membership?.fleetRole?.resourceAccess">
-            <template #granted>
-              <router-view :fleet="resolvedFleet" :membership="membership" />
-            </template>
-          </AccessCheck>
+      <!-- Not isPending: the membership query is disabled for guests and 404s
+           for non-members, and neither case must hold back a public fleet. -->
+      <Loader v-if="isMembershipLoading" :loading="true" />
+      <AccessCheck
+        v-else
+        :resource-access="membership?.fleetRole?.resourceAccess"
+      >
+        <template #granted>
+          <router-view :fleet="resolvedFleet" :membership="membership" />
         </template>
-      </AsyncData>
+      </AccessCheck>
     </template>
   </AsyncData>
 </template>
