@@ -239,6 +239,31 @@ class FleetEventTest < ActiveSupport::TestCase
     end
   end
 
+  class UnskipOccurrenceTest < FleetEventTest
+    test "removes the date from excluded_dates" do
+      event = create(:fleet_event,
+        starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+        recurring: true, recurrence_interval: "weekly",
+        excluded_dates: [Date.parse("2026-05-21"), Date.parse("2026-05-28")])
+
+      event.unskip_occurrence!(Date.parse("2026-05-21"))
+
+      assert_equal [Date.parse("2026-05-28")], event.reload.excluded_dates
+      assert_includes event.occurrences(from: Time.zone.parse("2026-05-20"), to: Time.zone.parse("2026-05-22")).map(&:to_date), Date.parse("2026-05-21")
+    end
+
+    test "ignores dates that are not excluded" do
+      event = create(:fleet_event,
+        starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+        recurring: true, recurrence_interval: "weekly",
+        excluded_dates: [Date.parse("2026-05-28")])
+
+      event.unskip_occurrence!(Date.parse("2026-05-21"))
+
+      assert_equal [Date.parse("2026-05-28")], event.reload.excluded_dates
+    end
+  end
+
   class EndSeriesAtTest < FleetEventTest
     test "sets recurrence_until to the day before the given date" do
       event = create(:fleet_event,

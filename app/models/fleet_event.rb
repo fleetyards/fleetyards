@@ -391,6 +391,14 @@ class FleetEvent < ApplicationRecord
     update!(excluded_dates: excluded_dates + [parsed])
   end
 
+  def unskip_occurrence!(date)
+    return if date.blank?
+    parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
+    return unless excluded_dates.include?(parsed)
+
+    update!(excluded_dates: excluded_dates - [parsed])
+  end
+
   def end_series_at!(date)
     return if date.blank?
     parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
