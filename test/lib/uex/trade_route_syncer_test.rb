@@ -52,6 +52,32 @@ module Uex
       assert_equal 3, route.distance
     end
 
+    test "#run keeps the container sizes both terminals accept" do
+      sync
+
+      route = TradeRoute.find_by!(origin_terminal: terminal(104), destination_terminal: terminal(105))
+
+      assert_equal [1, 2, 4], route.container_sizes
+    end
+
+    test "#run narrows the container sizes to those the commodity ships in" do
+      @commodities[:gold].update_with_facts(container_sizes: [0.01, 2, 8])
+
+      sync
+
+      route = TradeRoute.find_by!(origin_terminal: terminal(104), destination_terminal: terminal(105))
+      assert_equal [2], route.container_sizes
+    end
+
+    test "#run drops routes no crate size fits" do
+      @commodities[:gold].update_with_facts(container_sizes: [0.01])
+
+      result = sync
+
+      assert_empty routes_for(@commodities[:gold])
+      assert_equal 2, result.unloadable
+    end
+
     test "#run dates each end from the price feed" do
       sync
 

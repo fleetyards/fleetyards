@@ -6,10 +6,10 @@ module Uex
     # syncers and for a retry.
     REQUEST_INTERVAL = 1.second
 
-    Result = Struct.new(:commodities, :routes, :failed, :unprofitable, :unknown_terminals) do
+    Result = Struct.new(:commodities, :routes, :failed, :unprofitable, :unknown_terminals, :unloadable) do
       def to_s
         "commodities=#{commodities} routes=#{routes} failed=#{failed.size} " \
-          "unprofitable=#{unprofitable} unknown_terminals=#{unknown_terminals}"
+          "unprofitable=#{unprofitable} unknown_terminals=#{unknown_terminals} unloadable=#{unloadable}"
       end
     end
 
@@ -20,9 +20,9 @@ module Uex
 
     def run
       terminals = Terminal.pluck(:uex_id, :id).to_h
-      commodities = Commodity.where.not(uex_id: nil).select(:id, :uex_id, :name).order(:uex_id).to_a
+      commodities = Commodity.where.not(uex_id: nil).includes(:build).order(:uex_id).to_a
       freshness = price_freshness
-      result = Result.new(0, 0, [], 0, 0)
+      result = Result.new(0, 0, [], 0, 0, 0)
 
       commodities.each_with_index do |commodity, index|
         @pause.call(REQUEST_INTERVAL) if index.positive?
@@ -66,6 +66,15 @@ module Uex
         return
       end
 
+      origin_sizes = container_sizes(row["container_sizes_origin"])
+      destination_sizes = container_sizes(row["container_sizes_destination"])
+      sizes = origin_sizes & destination_sizes & commodity_sizes(commodity)
+
+      if sizes.empty?
+        result.unloadable += 1
+        return
+      end
+
       {
         commodity_id: commodity.id,
         origin_terminal_id: origin_id,
@@ -74,8 +83,9 @@ module Uex
         price_destination:,
         scu_origin: row["scu_origin"].to_i,
         scu_destination: row["scu_destination"].to_i,
-        container_sizes_origin: container_sizes(row["container_sizes_origin"]),
-        container_sizes_destination: container_sizes(row["container_sizes_destination"]),
+        container_sizes_origin: origin_sizes,
+        container_sizes_destination: destination_sizes,
+        container_sizes: sizes,
         distance: row["distance"].presence&.to_d,
         origin_price_updated_at: freshness[[row["id_commodity"], row["id_terminal_origin"]]],
         destination_price_updated_at: freshness[[row["id_commodity"], row["id_terminal_destination"]]]
@@ -102,6 +112,17 @@ module Uex
         next unless row["date_modified"].to_i.positive?
 
         result[[row["id_commodity"], row["id_terminal"]]] = Time.zone.at(row["date_modified"].to_i)
+      end
+    end
+
+    # The crates the game lets this commodity ship in, below one SCU included.
+    # An empty list is a commodity the game files say nothing about, which
+    # restricts nothing.
+    private def commodity_sizes(commodity)
+      @commodity_sizes ||= {}
+      @commodity_sizes[commodity.id] ||= begin
+        sizes = Array(commodity.container_sizes).map(&:to_d)
+        sizes.empty? ? CargoHoldContainerCapacity::CONTAINER_SIZES : sizes.select { |size| size >= 1 && size.frac.zero? }.map(&:to_i)
       end
     end
 

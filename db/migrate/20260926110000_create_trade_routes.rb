@@ -12,6 +12,7 @@ class CreateTradeRoutes < ActiveRecord::Migration[8.1]
       t.integer :scu_destination, null: false, default: 0
       t.integer :container_sizes_origin, array: true, null: false, default: []
       t.integer :container_sizes_destination, array: true, null: false, default: []
+      t.integer :container_sizes, array: true, null: false, default: []
       t.decimal :distance, precision: 10, scale: 2
       t.datetime :origin_price_updated_at
       t.datetime :destination_price_updated_at

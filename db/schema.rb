@@ -2274,6 +2274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_110000) do
 
   create_table "trade_routes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "commodity_id", null: false
+    t.integer "container_sizes", default: [], null: false, array: true
     t.integer "container_sizes_destination", default: [], null: false, array: true
     t.integer "container_sizes_origin", default: [], null: false, array: true
     t.datetime "created_at", null: false
