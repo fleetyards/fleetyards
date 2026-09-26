@@ -305,9 +305,7 @@ const upcomingOccurrences = computed(() => {
     excluded: occurrence.excluded,
     // The first occurrence is the series itself, so "this and following" is
     // an edit of the whole series rather than a split.
-    seriesStart:
-      new Date(occurrence.startsAt).getTime() ===
-      new Date(event.value?.startsAt ?? 0).getTime(),
+    seriesStart: occurrence.seriesStart,
   }));
 });
 

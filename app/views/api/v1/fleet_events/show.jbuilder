@@ -62,9 +62,11 @@ end
 
 upcoming = @fleet_event.upcoming_occurrences
 excluded = @fleet_event.excluded_dates.to_set
+series_start_date = @fleet_event.starts_at.to_date
 
 json.upcoming_occurrences upcoming do |occurrence|
   json.date occurrence.to_date
   json.starts_at occurrence
   json.excluded excluded.include?(occurrence.to_date)
+  json.series_start occurrence.to_date == series_start_date
 end

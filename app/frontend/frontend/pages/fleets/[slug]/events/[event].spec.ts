@@ -40,6 +40,11 @@ const routerWithRoutes = async () => {
       { path: "/events", name: "fleet-events", component: Stub },
       { path: "/events/:event", name: "fleet-event", component: Stub },
       {
+        path: "/events/:event/edit/schedule",
+        name: "fleet-event-edit-schedule",
+        component: Stub,
+      },
+      {
         path: "/events/:event/payouts",
         name: "fleet-event-payouts",
         component: Stub,
@@ -57,6 +62,15 @@ const current = ref<FleetEventExtended | undefined>();
 const refetch = vi.fn();
 const skip = vi.fn();
 const unskip = vi.fn();
+const displayConfirm = vi.fn();
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displaySuccess: vi.fn(),
+    displayAlert: vi.fn(),
+    displayConfirm,
+  }),
+}));
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -79,7 +93,10 @@ vi.mock("@/services/fyApi", async () => {
 const startsAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 const firstOccurrence = startsAt.toISOString().slice(0, 10);
 
-const recurringEvent = (excludedDates: string[]): FleetEventExtended =>
+const recurringEvent = (
+  excludedDates: string[],
+  seriesStart: boolean,
+): FleetEventExtended =>
   ({
     id: "event",
     slug: "weekly-op",
@@ -95,6 +112,7 @@ const recurringEvent = (excludedDates: string[]): FleetEventExtended =>
         date: firstOccurrence,
         startsAt: startsAt.toISOString(),
         excluded: excludedDates.includes(firstOccurrence),
+        seriesStart,
       },
     ],
     teams: [],
@@ -121,8 +139,8 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const mount = async (excludedDates: string[]) => {
-  current.value = recurringEvent(excludedDates);
+const mount = async (excludedDates: string[], seriesStart = true) => {
+  current.value = recurringEvent(excludedDates, seriesStart);
 
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
@@ -160,5 +178,27 @@ describe("FleetEventPage occurrences", () => {
         .find(`[data-test='unskip-occurrence-${firstOccurrence}']`)
         .exists(),
     ).toBe(false);
+  });
+
+  it("splits a later occurrence even when the page is scoped to it", async () => {
+    // An occurrence-scoped response shifts startsAt onto that occurrence, so
+    // only the server's seriesStart can tell it apart from the series start.
+    const subject = await mount([], false);
+
+    await subject
+      .find(`[data-test='split-series-${firstOccurrence}']`)
+      .trigger("click");
+
+    expect(displayConfirm).toHaveBeenCalled();
+  });
+
+  it("edits the whole series from its first occurrence", async () => {
+    const subject = await mount([]);
+
+    await subject
+      .find(`[data-test='split-series-${firstOccurrence}']`)
+      .trigger("click");
+
+    expect(displayConfirm).not.toHaveBeenCalled();
   });
 });

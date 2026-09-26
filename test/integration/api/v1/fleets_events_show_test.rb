@@ -106,6 +106,25 @@ class Api::V1::FleetsEventsShowTest < ActionDispatch::IntegrationTest
     travel_back
   end
 
+  test "GET /fleets/:slug/events/:slug marks the series start among occurrences scoped to a later date" do
+    travel_to Time.zone.parse("2026-05-20 12:00:00 UTC")
+    recurring = create(:fleet_event, :open,
+      fleet: @fleet, created_by: @admin,
+      starts_at: Time.zone.parse("2026-05-21 20:00:00 UTC"),
+      timezone: "UTC",
+      recurring: true, recurrence_interval: "weekly", recurrence_count: 3)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: recurring.slug},
+      params: {occurrence: "2026-05-28"} do
+      assert_equal [["2026-05-21", true], ["2026-05-28", false], ["2026-06-04", false]],
+        parsed_body["upcomingOccurrences"].map { |entry| [entry["date"], entry["seriesStart"]] }
+    end
+  ensure
+    travel_back
+  end
+
   test "GET /fleets/:slug/events/:slug returns 404 when event missing" do
     sign_in @admin
 

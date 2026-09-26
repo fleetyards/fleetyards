@@ -12,9 +12,10 @@ module V1
             properties: {
               date: {type: :string, format: :date},
               startsAt: {type: :string, format: "date-time"},
-              excluded: {type: :boolean}
+              excluded: {type: :boolean},
+              seriesStart: {type: :boolean}
             },
-            required: %w[date startsAt excluded]
+            required: %w[date startsAt excluded seriesStart]
           })
         end
       end

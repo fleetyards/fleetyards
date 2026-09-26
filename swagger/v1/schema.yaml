@@ -21129,10 +21129,13 @@ components:
           format: date-time
         excluded:
           type: boolean
+        seriesStart:
+          type: boolean
       required:
       - date
       - startsAt
       - excluded
+      - seriesStart
       title: FleetEventOccurrence
     FleetEventOccurrenceDateInput:
       type: object
