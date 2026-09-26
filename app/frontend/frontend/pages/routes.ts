@@ -128,6 +128,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/events/",
+    name: "events",
+    component: () => import("@/frontend/pages/events.vue"),
+    meta: {
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "/images/",
     name: "images",
     component: () => import("@/frontend/pages/images.vue"),
