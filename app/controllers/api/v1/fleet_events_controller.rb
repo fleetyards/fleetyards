@@ -17,12 +17,12 @@ module Api
         only: %i[index show ics]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
+        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series split_series update_occurrence]
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
       before_action -> { require_fleet_subscription(:events) }
-      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
+      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series split_series update_occurrence]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -211,6 +211,39 @@ module Api
 
         @fleet_event.end_series_at!(date)
         render :show
+      end
+
+      # Ends the series the day before `date` and continues it as a new event
+      # from that occurrence on, carrying the later signups over. Editing the
+      # returned event is how "this and following" is changed.
+      def split_series
+        authorize! @fleet_event, to: :update?
+
+        date = params[:date].presence
+        if date.blank?
+          render json: {code: "missing_date", message: "date is required"}, status: :bad_request
+          return
+        end
+
+        successor = ::FleetEvents::SeriesSplit.new(@fleet_event, date).call
+
+        if successor.fleet_event_occurrence_states.where.not(discord_event_id: nil).exists?
+          ::Discord::SyncFleetEventJob.perform_async(successor.id, "upsert_occurrences")
+        end
+
+        @fleet_event = successor
+        @viewer_event_role = compute_viewer_event_role(successor)
+        render :show, status: :created
+      rescue ::FleetEvents::SeriesSplit::NotRecurring
+        render json: {code: "not_recurring", message: "Event is not recurring"}, status: :unprocessable_entity
+      rescue ::FleetEvents::SeriesSplit::NotAnOccurrence
+        render json: {code: "not_an_occurrence", message: "The series has no occurrence on that date"}, status: :unprocessable_entity
+      rescue ::FleetEvents::SeriesSplit::AtSeriesStart
+        render json: {code: "split_at_series_start", message: "The series starts on that date; edit the series instead"}, status: :unprocessable_entity
+      rescue Date::Error
+        render json: {code: "invalid_date", message: "date is not a valid date"}, status: :bad_request
+      rescue ActiveRecord::RecordInvalid => e
+        render json: ValidationError.new("fleet_events.split_series", errors: e.record.errors), status: :bad_request
       end
 
       def unarchive

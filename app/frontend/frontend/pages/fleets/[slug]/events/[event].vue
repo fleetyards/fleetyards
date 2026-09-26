@@ -33,11 +33,13 @@ import {
   useFleetEvent,
   useSkipFleetEventOccurrence,
   useEndFleetEventSeries,
+  useSplitFleetEventSeries,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
+import { useRecurrence } from "@/frontend/composables/useRecurrence";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName } from "@/services/fyApi";
@@ -264,11 +266,11 @@ const unassignedSignups = computed(
 
 const isRecurring = computed(() => event.value?.recurring === true);
 
-const intervalLabel = computed(() => {
-  const interval = event.value?.recurrenceInterval as string | undefined;
-  if (!interval) return "";
-  return t(`labels.fleets.events.recurrence.${interval}`);
-});
+const { intervalLabel: recurrenceLabel } = useRecurrence();
+
+const intervalLabel = computed(() =>
+  event.value ? recurrenceLabel(event.value) : "",
+);
 
 const recurringChip = computed(() => {
   if (!isRecurring.value) return "";
@@ -288,72 +290,63 @@ const recurringChip = computed(() => {
   return t("labels.fleets.events.recurringSummary", { interval });
 });
 
-const excludedDateSet = computed(() => {
-  const dates = (event.value?.excludedDates ?? []) as string[];
-  return new Set(dates);
-});
-
-const advanceDate = (date: Date, interval: string): Date => {
-  const next = new Date(date);
-  switch (interval) {
-    case "daily":
-      next.setDate(next.getDate() + 1);
-      break;
-    case "weekly":
-      next.setDate(next.getDate() + 7);
-      break;
-    case "biweekly":
-      next.setDate(next.getDate() + 14);
-      break;
-    case "monthly":
-      next.setMonth(next.getMonth() + 1);
-      break;
-  }
-  return next;
-};
-
-const isoDate = (date: Date): string => date.toISOString().slice(0, 10);
-
 const upcomingOccurrences = computed(() => {
-  if (!isRecurring.value || !event.value?.startsAt) return [];
-  const interval = event.value.recurrenceInterval as string | undefined;
-  if (!interval) return [];
+  if (!isRecurring.value || !event.value) return [];
 
-  const start = new Date(event.value.startsAt);
-  const until = event.value.recurrenceUntil
-    ? new Date(`${event.value.recurrenceUntil}T23:59:59Z`)
-    : null;
-  const max = event.value.recurrenceCount ?? null;
-  const now = new Date();
-  const horizon = new Date(now.getTime() + 12 * 7 * 24 * 60 * 60 * 1000);
-
-  const result: { date: string; iso: string; excluded: boolean }[] = [];
-  let cursor = new Date(start);
-  let i = 0;
-  while (cursor <= horizon && (max === null || i < max)) {
-    if (until && cursor > until) break;
-    if (cursor >= now) {
-      const iso = isoDate(cursor);
-      result.push({
-        date: cursor.toLocaleDateString(undefined, {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        }),
-        iso,
-        excluded: excludedDateSet.value.has(iso),
-      });
-    }
-    cursor = advanceDate(cursor, interval);
-    i += 1;
-    if (result.length >= 12) break;
-  }
-  return result;
+  return (event.value.upcomingOccurrences ?? []).map((occurrence) => ({
+    date: new Date(occurrence.startsAt).toLocaleDateString(undefined, {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
+    iso: occurrence.date,
+    excluded: occurrence.excluded,
+    // The first occurrence is the series itself, so "this and following" is
+    // an edit of the whole series rather than a split.
+    seriesStart:
+      new Date(occurrence.startsAt).getTime() ===
+      new Date(event.value?.startsAt ?? 0).getTime(),
+  }));
 });
 
 const skipMutation = useSkipFleetEventOccurrence();
 const endMutation = useEndFleetEventSeries();
+const splitMutation = useSplitFleetEventSeries();
+const router = useRouter();
+
+const goToSeriesEdit = (slug: string) =>
+  router.push({
+    name: "fleet-event-edit-schedule",
+    params: { slug: props.fleet.slug, event: slug },
+  });
+
+const editFollowing = (entry: { iso: string; seriesStart: boolean }) => {
+  if (!event.value) return;
+  if (entry.seriesStart) {
+    void goToSeriesEdit(event.value.slug);
+    return;
+  }
+
+  displayConfirm({
+    text: t("labels.fleets.events.splitSeriesConfirm"),
+    onConfirm: async () => {
+      try {
+        const successor = await splitMutation.mutateAsync({
+          fleetSlug: props.fleet.slug,
+          slug: event.value!.slug,
+          data: { date: entry.iso },
+        });
+        // The original now ends before this date; going back to it must not
+        // show the moved occurrences from the cache.
+        void refetch();
+        await goToSeriesEdit(successor.slug);
+      } catch {
+        displayAlert({ text: t("messages.fleets.event.update.failure") });
+      }
+    },
+  });
+};
 
 const skipOccurrence = async (iso: string) => {
   if (!event.value) return;
@@ -671,6 +664,15 @@ const crumbs = computed<Crumb[]>(() => [
             >
               <i class="fa-light fa-ban" />
               {{ t("labels.fleets.events.skipOccurrence") }}
+            </button>
+            <button
+              type="button"
+              class="event-occurrences__btn"
+              :data-test="`split-series-${entry.iso}`"
+              @click="editFollowing(entry)"
+            >
+              <i class="fa-light fa-code-branch" />
+              {{ t("labels.fleets.events.splitSeriesHere") }}
             </button>
             <button
               type="button"

@@ -23,6 +23,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
+import { useRecurrence } from "@/frontend/composables/useRecurrence";
 
 type Props = {
   fleet: Fleet;
@@ -51,11 +52,10 @@ const statusVariant = computed(() =>
   pillVariantFor(props.event.status, props.event.past),
 );
 
-const recurringLabel = computed(() => {
-  const interval = props.event.recurrenceInterval as string | undefined;
-  if (!interval) return t("labels.fleets.events.recurring");
-  return t(`labels.fleets.events.recurrence.${interval}`);
-});
+const { intervalLabel } = useRecurrence();
+const recurringLabel = computed(
+  () => intervalLabel(props.event) || t("labels.fleets.events.recurring"),
+);
 
 // Through the locale's own format rather than a pattern written here: this one
 // said neither the reader's timezone nor anything the other six locales could

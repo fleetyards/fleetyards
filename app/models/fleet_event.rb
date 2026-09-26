@@ -27,8 +27,10 @@
 #  open_at                   :datetime
 #  published_at              :datetime
 #  recurrence_count          :integer
+#  recurrence_every          :integer          default(1), not null
 #  recurrence_interval       :string
 #  recurrence_until          :date
+#  recurrence_weekdays       :integer          default([]), not null, is an Array
 #  recurring                 :boolean          default(FALSE), not null
 #  scenario                  :string
 #  signup_approval           :string           default("direct"), not null
@@ -100,7 +102,12 @@ class FleetEvent < ApplicationRecord
   # SquadronRestrictable.
   VISIBILITIES = %w[members officers fleet squadron].freeze
   SIGNUP_APPROVALS = %w[direct confirmation_required].freeze
+  # "biweekly" predates `recurrence_every` and is still accepted from API
+  # clients; it is stored as weekly every 2.
   RECURRENCE_INTERVALS = %w[daily weekly biweekly monthly].freeze
+  RECURRENCE_FREQUENCIES = %w[daily weekly monthly].freeze
+  MAX_RECURRENCE_EVERY = 99
+  UPCOMING_OCCURRENCES_LIMIT = 12
 
   validates :title, presence: true
   validates :starts_at, presence: true
@@ -111,11 +118,15 @@ class FleetEvent < ApplicationRecord
     inclusion: {in: RECURRENCE_INTERVALS},
     if: :recurring?
   validates :recurrence_interval, absence: true, unless: :recurring?
+  validates :recurrence_every,
+    numericality: {only_integer: true, in: 1..MAX_RECURRENCE_EVERY}
   validate :recurrence_count_or_until
+  validate :recurrence_weekdays_are_weekdays
 
   before_validation :set_external_uid, on: :create
   before_validation :ensure_id, on: :create
   before_validation :default_cover_image_preset
+  before_validation :normalize_recurrence
   before_save :update_slug
   before_save :stamp_published_at, if: :will_save_change_to_status?
 
@@ -338,8 +349,10 @@ class FleetEvent < ApplicationRecord
   # Returns occurrence start times falling within [from, to]. For
   # one-off events this is `[starts_at]` if it lies in the range.
   # Recurring events are expanded forward from `starts_at` honouring
-  # `recurrence_until`, `recurrence_count`, and `excluded_dates`.
-  def occurrences(from:, to:)
+  # `recurrence_until`, `recurrence_count`, and `excluded_dates`; an
+  # excluded date still counts towards `recurrence_count`, as EXDATE does
+  # against COUNT in the calendar feed.
+  def occurrences(from:, to:, include_excluded: false)
     from = from.to_time
     to = to.to_time
     return [] if starts_at.blank?
@@ -348,33 +361,56 @@ class FleetEvent < ApplicationRecord
       return starts_at.between?(from, to) ? [starts_at] : []
     end
 
-    interval_step = recurrence_step
-    return [] if interval_step.nil?
+    return [] unless RECURRENCE_FREQUENCIES.include?(recurrence_frequency)
 
-    result = []
-    cursor = starts_at
     limit = recurrence_count.presence
-    iterations = 0
     # Date#end_of_day resolves in Time.zone, so the cutoff used to follow the
     # server's zone rather than the event's. in_time_zone on the date puts
     # midnight in the event's zone first, so this is the inclusive local
     # end-of-day an organiser means by "repeats until".
-    until_time = recurrence_until&.in_time_zone(timezone || "UTC")&.end_of_day
+    until_time = recurrence_until&.in_time_zone(recurrence_time_zone)&.end_of_day
+    excluded = excluded_dates.map { |d| d.is_a?(String) ? Date.parse(d) : d }.to_set
 
-    while cursor <= to && (limit.nil? || iterations < limit)
-      break if until_time && cursor > until_time
+    result = []
+    emitted = 0
+    each_recurrence_start do |local|
+      break if local > to
+      break if limit && emitted >= limit
+      break if until_time && local > until_time
 
-      excluded = excluded_dates.any? do |d|
-        date = d.is_a?(String) ? Date.parse(d) : d
-        date == cursor.to_date
-      end
+      emitted += 1
+      # Occurrence dates are keyed in Time.zone everywhere they are stored
+      # (signups, occurrence states, excluded dates), so the result is handed
+      # back in that zone rather than the event's.
+      cursor = local.in_time_zone(Time.zone)
+      next if cursor < from
+      next if !include_excluded && excluded.include?(cursor.to_date)
 
-      result << cursor if cursor >= from && !excluded
-      cursor = advance_cursor(cursor, interval_step)
-      iterations += 1
+      result << cursor
     end
 
     result
+  end
+
+  # "biweekly" rows written before `recurrence_every` existed read as weekly
+  # every 2 until their next save normalises them.
+  def recurrence_frequency
+    (recurrence_interval == "biweekly") ? "weekly" : recurrence_interval
+  end
+
+  def recurrence_step
+    (recurrence_interval == "biweekly") ? 2 : recurrence_every.to_i.clamp(1, MAX_RECURRENCE_EVERY)
+  end
+
+  # The weekdays a weekly series falls on, in the event's zone (0 = Sunday).
+  # Empty means the weekday of `starts_at` alone.
+  def recurrence_days
+    return [] unless recurrence_frequency == "weekly"
+
+    days = Array(recurrence_weekdays).map(&:to_i)
+    return [] if days.empty?
+
+    (days + [recurrence_start_wday]).compact.uniq.sort
   end
 
   # Returns the soonest occurrence at or after `after`, or nil if the
@@ -394,7 +430,30 @@ class FleetEvent < ApplicationRecord
   def end_series_at!(date)
     return if date.blank?
     parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
-    update!(recurrence_until: parsed - 1.day)
+    update!(recurrence_until: until_before(parsed))
+  end
+
+  # The `recurrence_until` that ends the series just before its occurrence on
+  # `date`. Occurrence dates are keyed in Time.zone while `recurrence_until` is
+  # read in the event's zone, so for a series whose local date differs from
+  # its key the day before the key would keep that occurrence or drop the one
+  # before it.
+  def until_before(date)
+    day = date.in_time_zone(Time.zone)
+    occurrence = occurrences(from: day.beginning_of_day, to: day.end_of_day, include_excluded: true).first
+    return date - 1.day if occurrence.nil?
+
+    occurrence.in_time_zone(recurrence_time_zone).to_date - 1.day
+  end
+
+  # A window wide enough that a series every few months still shows its next
+  # few dates, while a daily one stops at the limit.
+  def upcoming_occurrences(limit: UPCOMING_OCCURRENCES_LIMIT)
+    return [] unless recurring? && RECURRENCE_FREQUENCIES.include?(recurrence_frequency)
+
+    unit = {"daily" => :days, "weekly" => :weeks, "monthly" => :months}.fetch(recurrence_frequency)
+    horizon = [12.weeks, (recurrence_step * 4).public_send(unit)].max
+    occurrences(from: Time.current, to: horizon.from_now, include_excluded: true).first(limit)
   end
 
   # Find or build the per-occurrence state row for a given date. nil-safe.
@@ -406,17 +465,69 @@ class FleetEvent < ApplicationRecord
     build ? fleet_event_occurrence_states.build(occurrence_date: parsed) : nil
   end
 
-  private def recurrence_step
-    case recurrence_interval
-    when "daily" then {value: 1, unit: :days}
-    when "weekly" then {value: 1, unit: :weeks}
-    when "biweekly" then {value: 2, unit: :weeks}
-    when "monthly" then {value: 1, unit: :months}
+  # `timezone` is only checked for presence, so a name ActiveSupport does not
+  # know falls back to UTC rather than raising on every read of the series.
+  private def recurrence_time_zone
+    ActiveSupport::TimeZone[timezone.to_s] ? timezone : "UTC"
+  end
+
+  private def recurrence_start_wday
+    starts_at&.in_time_zone(recurrence_time_zone)&.wday
+  end
+
+  # Yields every candidate start, in order, without end. Stepping from
+  # `starts_at` rather than from the previous occurrence keeps a monthly series
+  # on the 31st from settling on the 28th after February.
+  #
+  # Weekdays are the event's own, so that pattern is laid out in its zone. A
+  # plain interval still steps in Time.zone: the occurrence dates stored on
+  # signups, overrides and skipped dates were keyed that way, and stepping in
+  # the event's zone would move a series near midnight onto other dates.
+  private def each_recurrence_start
+    step = recurrence_step
+    days = recurrence_days
+
+    if days.any?
+      local_start = starts_at.in_time_zone(recurrence_time_zone)
+      # Weeks start on Monday (WKST=MO in the feed), so "every 2 weeks on
+      # Tue + Thu" pairs the same days in Fleetyards and calendar clients.
+      week_start = local_start.to_date.beginning_of_week(:monday)
+      offsets = days.map { |wday| (wday - 1) % 7 }.sort
+
+      (0..).each do |week|
+        base = week_start + (week * step).weeks
+        offsets.each do |offset|
+          date = base + offset
+          candidate = local_start.change(year: date.year, month: date.month, day: date.day)
+          yield candidate unless candidate < local_start
+        end
+      end
+    else
+      unit = {"daily" => :days, "weekly" => :weeks, "monthly" => :months}.fetch(recurrence_frequency)
+      (0..).each { |index| yield starts_at + (index * step).public_send(unit) }
     end
   end
 
-  private def advance_cursor(cursor, step)
-    cursor + step[:value].public_send(step[:unit])
+  private def normalize_recurrence
+    unless recurring?
+      self.recurrence_every = 1
+      self.recurrence_weekdays = []
+      return
+    end
+
+    if recurrence_interval == "biweekly"
+      self.recurrence_interval = "weekly"
+      self.recurrence_every = 2
+    end
+
+    days = recurrence_days
+    self.recurrence_weekdays = (days == [recurrence_start_wday]) ? [] : days
+  end
+
+  private def recurrence_weekdays_are_weekdays
+    return if Array(recurrence_weekdays).all? { |day| day.is_a?(Integer) && day.between?(0, 6) }
+
+    errors.add(:recurrence_weekdays, :inclusion)
   end
 
   private def recurrence_count_or_until

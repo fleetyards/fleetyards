@@ -52,6 +52,19 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /fleets/:slug/events/:slug sets a custom recurrence" do
+    @fleet_event.update!(starts_at: Time.zone.parse("2026-10-08 20:00"), timezone: "UTC")
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+      body: {recurring: true, recurrenceInterval: "weekly", recurrenceEvery: 2, recurrenceWeekdays: [2, 4]} do
+      assert_equal "weekly", parsed_body["recurrenceInterval"]
+      assert_equal 2, parsed_body["recurrenceEvery"]
+      assert_equal [2, 4], parsed_body["recurrenceWeekdays"]
+    end
+  end
+
   # Held to squadrons after it was announced, the event has to come back off
   # the fleet-wide surfaces -- the Discord guild is one.
   test "PUT /fleets/:slug/events/:slug announces an event becoming squadron-only" do

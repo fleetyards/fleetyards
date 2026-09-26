@@ -2543,11 +2543,23 @@
           "recurrenceEndOn": "Am Datum",
           "recurrenceEndAfter": "Nach",
           "recurrenceEndOccurrences": "Terminen",
+          "recurrenceUnit": {
+            "daily": "Tage",
+            "weekly": "Wochen",
+            "monthly": "Monate"
+          },
+          "recurrenceWeekdays": "Am",
+          "recurrenceWeekdaysHint": "Der Wochentag, an dem das Event beginnt, ist immer dabei.",
           "recurrence": {
             "daily": "täglich",
             "weekly": "wöchentlich",
-            "biweekly": "alle zwei Wochen",
-            "monthly": "monatlich"
+            "monthly": "monatlich",
+            "everyN": {
+              "daily": "alle %{count} Tage",
+              "weekly": "alle %{count} Wochen",
+              "monthly": "alle %{count} Monate"
+            },
+            "onDays": "%{interval} am %{days}"
           },
           "occurrencesSection": "Anstehende Termine",
           "skipOccurrence": "Diesen Termin überspringen",
@@ -2555,6 +2567,8 @@
           "overrideOccurrenceShort": "Diesen einen bearbeiten",
           "overrideOccurrenceHint": "Überschreibe Felder für diesen einzelnen Termin. Leer lassen, um sie vom wiederkehrenden Event zu übernehmen.",
           "endSeriesHere": "Hier und ab jetzt beenden",
+          "splitSeriesHere": "Diesen und folgende bearbeiten",
+          "splitSeriesConfirm": "Die Serie ab diesem Termin als neues Event fortsetzen? Anmeldungen für diesen und spätere Termine werden übernommen, und das neue Event öffnet sich zum Bearbeiten.",
           "excludedBadge": "Übersprungen",
           "noUpcomingOccurrences": "Keine anstehenden Termine in den nächsten 12 Wochen.",
           "endSeriesConfirm": "Die Wiederholung nach diesem Datum beenden? Zukünftige Termine werden nicht mehr erzeugt.",

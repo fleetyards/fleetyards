@@ -2557,11 +2557,23 @@
           "recurrenceEndOn": "On date",
           "recurrenceEndAfter": "After",
           "recurrenceEndOccurrences": "occurrences",
+          "recurrenceUnit": {
+            "daily": "days",
+            "weekly": "weeks",
+            "monthly": "months"
+          },
+          "recurrenceWeekdays": "On",
+          "recurrenceWeekdaysHint": "The day the event starts on is always included.",
           "recurrence": {
             "daily": "daily",
             "weekly": "weekly",
-            "biweekly": "every two weeks",
-            "monthly": "monthly"
+            "monthly": "monthly",
+            "everyN": {
+              "daily": "every %{count} days",
+              "weekly": "every %{count} weeks",
+              "monthly": "every %{count} months"
+            },
+            "onDays": "%{interval} on %{days}"
           },
           "occurrencesSection": "Upcoming occurrences",
           "skipOccurrence": "Skip this occurrence",
@@ -2569,6 +2581,8 @@
           "overrideOccurrenceShort": "Edit this one",
           "overrideOccurrenceHint": "Override fields for this single occurrence. Leave blank to inherit from the recurring event.",
           "endSeriesHere": "Stop here and going forward",
+          "splitSeriesHere": "Edit this and following",
+          "splitSeriesConfirm": "Continue the series from this date as a new event? Signups for this and later dates move with it, and the new event opens for editing.",
           "excludedBadge": "Skipped",
           "noUpcomingOccurrences": "No upcoming occurrences in the next 12 weeks.",
           "endSeriesConfirm": "Stop the recurrence after this date? Future occurrences won't be generated.",

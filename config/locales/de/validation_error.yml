@@ -161,6 +161,7 @@ de:
       update: Liegeplatz-Kapazität konnte nicht aktualisiert werden.
     fleet_events:
       update_occurrence: Dieser Termin der Serie konnte nicht aktualisiert werden.
+      split_series: Die Serie konnte nicht aufgeteilt werden.
       create: Event konnte nicht erstellt werden.
       destroy: Event konnte nicht gelöscht werden.
       update: Event konnte nicht aktualisiert werden.

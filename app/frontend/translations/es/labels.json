@@ -2543,11 +2543,23 @@
           "recurrenceEndOn": "En una fecha",
           "recurrenceEndAfter": "Después de",
           "recurrenceEndOccurrences": "repeticiones",
+          "recurrenceUnit": {
+            "daily": "días",
+            "weekly": "semanas",
+            "monthly": "meses"
+          },
+          "recurrenceWeekdays": "Los días",
+          "recurrenceWeekdaysHint": "El día en que empieza el evento siempre está incluido.",
           "recurrence": {
             "daily": "a diario",
             "weekly": "semanalmente",
-            "biweekly": "cada dos semanas",
-            "monthly": "mensualmente"
+            "monthly": "mensualmente",
+            "everyN": {
+              "daily": "cada %{count} días",
+              "weekly": "cada %{count} semanas",
+              "monthly": "cada %{count} meses"
+            },
+            "onDays": "%{interval} (%{days})"
           },
           "occurrencesSection": "Próximas repeticiones",
           "skipOccurrence": "Omitir esta repetición",
@@ -2555,6 +2567,8 @@
           "overrideOccurrenceShort": "Editar solo esta",
           "overrideOccurrenceHint": "Anula campos solo para esta repetición. Déjalos en blanco para heredarlos del evento recurrente.",
           "endSeriesHere": "Detener a partir de aquí",
+          "splitSeriesHere": "Editar esta y las siguientes",
+          "splitSeriesConfirm": "¿Continuar la serie desde esta fecha como un evento nuevo? Las inscripciones de esta fecha y las posteriores pasan al nuevo evento, que se abre para editarlo.",
           "excludedBadge": "Omitida",
           "noUpcomingOccurrences": "No hay repeticiones próximas en las siguientes 12 semanas.",
           "endSeriesConfirm": "¿Detener la repetición después de esta fecha? No se generarán repeticiones futuras.",

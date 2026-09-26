@@ -156,6 +156,7 @@ es:
       update: No se pudo actualizar la capacidad del atracadero.
     fleet_events:
       update_occurrence: No se pudo actualizar esta repetición del evento.
+      split_series: No se pudo dividir la serie.
       create: No se pudo crear el evento.
       destroy: No se pudo eliminar el evento.
       update: No se pudo actualizar el evento.

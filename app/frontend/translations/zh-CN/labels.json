@@ -2543,11 +2543,23 @@
           "recurrenceEndOn": "指定日期",
           "recurrenceEndAfter": "指定场次后",
           "recurrenceEndOccurrences": "场次",
+          "recurrenceUnit": {
+            "daily": "天",
+            "weekly": "周",
+            "monthly": "个月"
+          },
+          "recurrenceWeekdays": "重复日",
+          "recurrenceWeekdaysHint": "活动开始的那一天始终包含在内。",
           "recurrence": {
             "daily": "每日",
             "weekly": "每周",
-            "biweekly": "每两周",
-            "monthly": "每月"
+            "monthly": "每月",
+            "everyN": {
+              "daily": "每%{count}天",
+              "weekly": "每%{count}周",
+              "monthly": "每%{count}个月"
+            },
+            "onDays": "%{interval}（%{days}）"
           },
           "occurrencesSection": "即将到来的场次",
           "skipOccurrence": "跳过此场次",
@@ -2555,6 +2567,8 @@
           "overrideOccurrenceShort": "仅编辑此场",
           "overrideOccurrenceHint": "为这一场次单独覆盖字段。留空则沿用重复活动的设置。",
           "endSeriesHere": "从此场起停止",
+          "splitSeriesHere": "编辑此场及之后的场次",
+          "splitSeriesConfirm": "从此日期起将该系列作为新活动继续？此场及之后场次的报名会一并转移，新活动将打开以供编辑。",
           "excludedBadge": "已跳过",
           "noUpcomingOccurrences": "未来 12 周内没有即将到来的场次。",
           "endSeriesConfirm": "要在此日期之后停止重复吗? 将不再生成后续场次。",
