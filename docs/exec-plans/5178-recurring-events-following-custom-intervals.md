@@ -51,7 +51,7 @@ A recurring event can repeat every N days/weeks/months and on several weekdays, 
 ## Discovery Log
 
 - **2026-09-26** Initial research. The event page expanded occurrences client-side in UTC while the server keys them by Berlin date, so they are now served by the API. The monthly expansion stepped from the previous occurrence, so Jan 31 drifted to the 28th for good; it now steps from the start.
-- **2026-09-26** Expansion moved to the event's zone. It used to step in Time.zone (Berlin), so a UTC or New York series moved by an hour at Berlin's DST switch. Returned times stay in Time.zone because every stored occurrence date is keyed there.
+- **2026-09-26** Plain intervals keep stepping in Time.zone (Berlin), because stored occurrence dates are keyed there. Stepping in the event's zone would re-key late-evening non-Berlin series. Only weekday patterns (no legacy rows) use the event's zone. Occurrence keys vs. the event-local dates that ICS/Discord/show rebuild from remain a pre-existing mismatch.
 - **2026-09-26** A split copies tree rows with `save!(validate: false)`. A ship whose model left the game would otherwise block the split.
 
 ## Progress
