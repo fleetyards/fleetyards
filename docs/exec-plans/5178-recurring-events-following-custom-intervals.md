@@ -28,10 +28,10 @@ A recurring event can repeat every N days/weeks/months and on several weekdays, 
 
 ## Intent Verification
 
-- [ ] **Split** — splitting at an occurrence ends the old series the day before and creates a new one starting there. Later signups, slot signups included, show up on the new event.
-- [ ] **Every N / weekdays** — "every 3 weeks" and "weekly on Tue + Thu" expand correctly in `occurrences`, the calendar endpoint and the event page.
-- [ ] **ICS** — RRULE carries INTERVAL/BYDAY. After a split, the old VEVENT has an UNTIL and the new event gets its own UID.
-- [ ] **Discord** — `sync_to_discord` pushes the custom-interval occurrences. After a split, moved Discord events are re-upserted under the new event.
+- [x] **Split** — splitting at an occurrence ends the old series the day before and creates a new one starting there. Later signups, slot signups included, show up on the new event.
+- [x] **Every N / weekdays** — "every 3 weeks" and "weekly on Tue + Thu" expand correctly in `occurrences`, the calendar endpoint and the event page.
+- [x] **ICS** — RRULE carries INTERVAL/BYDAY. After a split, the old VEVENT has an UNTIL and the new event gets its own UID.
+- [x] **Discord** — `sync_to_discord` pushes the custom-interval occurrences. After a split, moved Discord events are re-upserted under the new event.
 
 ## Key files
 
@@ -46,13 +46,13 @@ A recurring event can repeat every N days/weeks/months and on several weekdays, 
 | `app/frontend/frontend/pages/fleets/[slug]/events/[event].vue` | occurrence list and actions |
 
 ## Not in scope (deferred)
-- **Monthly by weekday ("second Tuesday")** — not asked for; monthly stays on the day of the month.
+- **Monthly by weekday ("second Tuesday")** — not asked for; monthly stays on the day of the month. Dropped rather than filed.
 
 ## Discovery Log
 
 - **2026-09-26** Initial research. The event page expanded occurrences client-side in UTC while the server keys them by Berlin date, so they are now served by the API. The monthly expansion stepped from the previous occurrence, so Jan 31 drifted to the 28th for good; it now steps from the start.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
