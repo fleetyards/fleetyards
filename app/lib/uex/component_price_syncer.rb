@@ -13,6 +13,11 @@ module Uex
       "Vehicle Weapons", "Systems", "Utility", "Propulsion", "Avionics", "Module", "Liveries"
     ].freeze
 
+    # Filed under Utility, but none of them fits a ship: mining gadgets are
+    # handheld devices, the Stor*All boxes are carryable crates and the item
+    # fabricator is base-building furniture.
+    FOREIGN_CATEGORIES = ["Gadgets", "Container", "Fabricator"].freeze
+
     private def build_matcher
       Uex::ComponentMatcher.new
     end
