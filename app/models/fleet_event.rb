@@ -383,20 +383,24 @@ class FleetEvent < ApplicationRecord
     occurrences(from: after, to: 1.year.from_now).first
   end
 
+  # Both write the whole array, so the row lock (which also reloads it) keeps a
+  # skip and a restore landing at the same time from dropping each other's date.
   def skip_occurrence!(date)
     return if date.blank?
     parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
-    return if excluded_dates.include?(parsed)
 
-    update!(excluded_dates: excluded_dates + [parsed])
+    with_lock do
+      update!(excluded_dates: excluded_dates + [parsed]) unless excluded_dates.include?(parsed)
+    end
   end
 
   def unskip_occurrence!(date)
     return if date.blank?
     parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
-    return unless excluded_dates.include?(parsed)
 
-    update!(excluded_dates: excluded_dates - [parsed])
+    with_lock do
+      update!(excluded_dates: excluded_dates - [parsed]) if excluded_dates.include?(parsed)
+    end
   end
 
   def end_series_at!(date)

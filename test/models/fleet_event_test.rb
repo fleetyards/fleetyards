@@ -262,6 +262,19 @@ class FleetEventTest < ActiveSupport::TestCase
 
       assert_equal [Date.parse("2026-05-28")], event.reload.excluded_dates
     end
+
+    test "keeps a date skipped through another copy of the event" do
+      event = create(:fleet_event,
+        starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+        recurring: true, recurrence_interval: "weekly",
+        excluded_dates: [Date.parse("2026-05-21")])
+      stale = FleetEvent.find(event.id)
+
+      event.skip_occurrence!(Date.parse("2026-05-28"))
+      stale.unskip_occurrence!(Date.parse("2026-05-21"))
+
+      assert_equal [Date.parse("2026-05-28")], event.reload.excluded_dates
+    end
   end
 
   class EndSeriesAtTest < FleetEventTest
