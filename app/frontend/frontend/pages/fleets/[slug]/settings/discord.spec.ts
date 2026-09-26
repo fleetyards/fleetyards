@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { AxiosError, type AxiosResponse } from "axios";
 import {
   FleetDiscordConnectionCodeEnum,
   type FilterOption,
@@ -14,6 +15,11 @@ import Component from "./discord.vue";
 
 let setting: FleetNotificationSetting;
 const mutateAsync = vi.fn();
+const displayAlert = vi.fn();
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displaySuccess: vi.fn(), displayAlert }),
+}));
 
 vi.mock("@/services/fyApi", async () => {
   const actual =
@@ -38,6 +44,7 @@ let wrapper: VueWrapper | undefined;
 
 beforeEach(() => {
   mutateAsync.mockReset().mockResolvedValue({});
+  displayAlert.mockReset();
   setting = {
     id: "setting",
     fleetId: "fleet",
@@ -180,6 +187,47 @@ describe("FleetDiscordSettingsPage digest", () => {
       discordDigestWeekday: null,
       discordDigestTime: null,
       discordDigestTimezone: null,
+    });
+  });
+});
+
+describe("FleetDiscordSettingsPage save", () => {
+  it("shows why the server rejected an id", async () => {
+    const message =
+      'Discord guild must be the numeric ID Discord copies with "Copy ID", not a name';
+    mutateAsync.mockRejectedValue(
+      new AxiosError("request failed", undefined, undefined, undefined, {
+        status: 400,
+        data: {
+          code: "validation_error.fleet_notification_settings.update",
+          message: "Could not update the settings",
+          errors: [
+            {
+              attribute: "discordGuildId",
+              messages: [{ code: "invalid", message }],
+            },
+          ],
+        },
+      } as AxiosResponse),
+    );
+
+    const subject = await mount();
+    await subject
+      .find('input[name="discordGuildId"]')
+      .setValue("Stanton Haulers [SHL]");
+    await save(subject);
+
+    expect(displayAlert).toHaveBeenCalledWith({ text: message });
+  });
+
+  it("falls back to the generic failure without field errors", async () => {
+    mutateAsync.mockRejectedValue(new Error("network"));
+
+    const subject = await mount();
+    await save(subject);
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "Could not save notification settings.",
     });
   });
 });
