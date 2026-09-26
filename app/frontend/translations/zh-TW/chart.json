@@ -7,6 +7,7 @@
           "other": "%{label}:<br><b>%{count}</b> 瀏覽"
         },
         "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "ingamePrice": "%{label}:<br><b>%{count} %</b>",
         "wishToOwnRatio": "%{label}:<br>每 100 艘擁有對應的期待數: <b>%{count}</b>",
         "patchChange": {
           "one": "%{label}:<br><b>%{count}</b> 處改動",

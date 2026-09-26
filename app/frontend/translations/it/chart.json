@@ -7,6 +7,7 @@
           "other": "%{label}:<br><b>%{count}</b> Viste"
         },
         "pledgePrice": "%{label}:<br><b>%{count}</b> USD",
+        "ingamePrice": "%{label}:<br><b>%{count} %</b>",
         "wishToOwnRatio": "%{label}:<br><b>%{count}</b> desiderate ogni 100 possedute",
         "patchChange": {
           "one": "%{label}:<br><b>%{count}</b> modifica",

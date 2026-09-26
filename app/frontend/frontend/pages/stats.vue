@@ -31,6 +31,7 @@ import {
   useShipsOfTheMonth as useShipsOfTheMonthQuery,
   useTrendingShips as useTrendingShipsQuery,
   usePledgePriceChanges as usePledgePriceChangesQuery,
+  useIngamePriceChanges as useIngamePriceChangesQuery,
   useMostWishlisted as useMostWishlistedQuery,
   useWishlistByModel as useWishlistByModelQuery,
   useWishToOwnRatio as useWishToOwnRatioQuery,
@@ -70,6 +71,9 @@ const { data: trendingShipsOptions, ...trendingShipsStatus } =
 
 const { data: pledgePriceChangesOptions, ...pledgePriceChangesStatus } =
   usePledgePriceChangesQuery();
+
+const { data: ingamePriceChangesOptions, ...ingamePriceChangesStatus } =
+  useIngamePriceChangesQuery();
 
 const { data: mostWishlistedOptions, ...mostWishlistedStatus } =
   useMostWishlistedQuery();
@@ -185,6 +189,11 @@ const csvCharts = computed(() => ({
     name: "pledge-price-changes",
     title: t("labels.stats.pledgePriceChanges"),
     points: pledgePriceChangesOptions.value,
+  },
+  "ingame-price-changes": {
+    name: "ingame-price-changes",
+    title: t("labels.stats.ingamePriceChanges"),
+    points: ingamePriceChangesOptions.value,
   },
   "vehicles-by-model": {
     name: "vehicles-by-model",
@@ -492,7 +501,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
   </div>
 
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.wishToOwnRatio") }}
@@ -515,6 +524,9 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelBody>
       </Panel>
     </div>
+  </div>
+
+  <div class="row">
     <div class="col-12 col-md-6">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
@@ -533,6 +545,29 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             :async-status="pledgePriceChangesStatus"
             :options="pledgePriceChangesOptions"
             tooltip-type="pledgePrice"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.ingamePriceChanges") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['ingame-price-changes']"
+            />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            key="ingame-price-changes"
+            name="ingame-price-changes"
+            :async-status="ingamePriceChangesStatus"
+            :options="ingamePriceChangesOptions"
+            tooltip-type="ingamePrice"
             type="bar"
           />
         </PanelBody>
