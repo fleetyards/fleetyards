@@ -8,12 +8,14 @@ module Uex
     # UEX item id => our Equipment sc_key, for the ones no rule resolves.
     # Maintained by hand, the same as Uex::ComponentMatcher::MAPPINGS.
     MAPPINGS = {
-      # Each of these weapon skins has a `_tow` twin under the same name. The
-      # plain record is the one the catalogue lists.
+      # Each of these weapon skins has a hidden `_tow` twin under the same name.
+      # The plain record is the one the catalogue lists.
       1231 => "behr_rifle_ballistic_01_white02",
-      1238 => "ksar_smg_energy_01_black02",
       1591 => "behr_smg_ballistic_01_white02",
       1672 => "klwe_rifle_energy_01_white02",
+      # Both Nightstalker records are hidden, so the catalogue cannot decide
+      # this one; the plain record is taken to match the three above.
+      1238 => "ksar_smg_energy_01_black02",
       # UEX spaces the size ("Emod Stabilizer 1"); the game files do not.
       538 => "arma_barrel_stab_s1",
       62 => "arma_barrel_stab_s2",
