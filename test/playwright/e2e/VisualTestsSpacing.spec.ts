@@ -30,6 +30,7 @@ const routes = [
   "notifications",
   "sync-modal",
   "overlays",
+  "install-prompt",
   "support-hint",
   "chips",
   "media",
