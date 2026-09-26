@@ -14,9 +14,11 @@ import {
 } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { eventsRouteFor } from "@/frontend/composables/useFleetNavAccess";
+import { fleetSubscriptionRequired } from "@/frontend/composables/useFleetSubscription";
 
 // The app shortcut has to be one fixed URL, but events only exist per fleet,
-// so this lands on the first fleet whose events this member may open.
+// so this lands on the first fleet whose events this member may open --
+// preferring one whose events are not behind the subscription wall.
 const router = useRouter();
 
 const {
@@ -49,9 +51,17 @@ const redirect = async () => {
     return router.replace({ name: "fleet-add" });
   }
 
-  const candidates = list.filter((fleet) =>
+  const withEvents = list.filter((fleet) =>
     isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_MISSION_BUILDER),
   );
+
+  const walled = (fleet: Fleet) =>
+    fleetSubscriptionRequired(fleet, isFleetFeatureEnabled);
+
+  const candidates = [
+    ...withEvents.filter((fleet) => !walled(fleet)),
+    ...withEvents.filter(walled),
+  ];
 
   for (const fleet of candidates) {
     const name = await eventsRouteIn(fleet);
