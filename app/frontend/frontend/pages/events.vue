@@ -6,49 +6,71 @@ export default {
 
 <script lang="ts" setup>
 import Loader from "@/shared/components/Loader/index.vue";
-import { FeatureFlagName, useMyFleets } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  fleetMembership,
+  useMyFleets,
+  type Fleet,
+} from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import { type RouteLocationRaw } from "vue-router";
+import { eventsRouteFor } from "@/frontend/composables/useFleetNavAccess";
 
 // The app shortcut has to be one fixed URL, but events only exist per fleet,
-// so this lands on the first fleet that has them.
+// so this lands on the first fleet whose events this member may open.
 const router = useRouter();
 
-const { isFleetFeatureEnabled, features } = useFeatures();
+const {
+  isFleetFeatureEnabled,
+  features,
+  isFetched: featuresFetched,
+} = useFeatures();
 
 const { data: fleets, isSuccess, isError } = useMyFleets();
 
-const target = computed<RouteLocationRaw | undefined>(() => {
-  if (isError.value) {
-    return { name: "fleet-add" };
-  }
+// A failed features request still leaves each fleet's own flags to go on.
+const ready = computed(
+  () => isSuccess.value && (!!features.value || featuresFetched.value),
+);
 
-  if (!isSuccess.value || !features.value) {
+const eventsRouteIn = async (fleet: Fleet) => {
+  try {
+    const membership = await fleetMembership(fleet.slug);
+
+    return eventsRouteFor(membership?.fleetRole?.resourceAccess);
+  } catch {
     return undefined;
   }
+};
 
+const redirect = async () => {
   const list = fleets.value ?? [];
 
   if (!list.length) {
-    return { name: "fleet-add" };
+    return router.replace({ name: "fleet-add" });
   }
 
-  const withEvents = list.find((fleet) =>
+  const candidates = list.filter((fleet) =>
     isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_MISSION_BUILDER),
   );
 
-  if (withEvents) {
-    return { name: "fleet-events", params: { slug: withEvents.slug } };
+  for (const fleet of candidates) {
+    const name = await eventsRouteIn(fleet);
+
+    if (name) {
+      return router.replace({ name, params: { slug: fleet.slug } });
+    }
   }
 
-  return { name: "fleet", params: { slug: list[0].slug } };
-});
+  return router.replace({ name: "fleet", params: { slug: list[0].slug } });
+};
 
 watch(
-  target,
-  (location) => {
-    if (location) {
-      void router.replace(location);
+  [ready, isError],
+  () => {
+    if (isError.value) {
+      void router.replace({ name: "home" });
+    } else if (ready.value) {
+      void redirect();
     }
   },
   { immediate: true },
