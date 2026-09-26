@@ -35,6 +35,34 @@ class Api::V1::FleetsEventsRecurrenceTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/fleets/{fleetSlug}/events/{slug}/unskip-occurrence" do
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
+
+    post("Restore a skipped occurrence of a recurring event") do
+      operationId "unskipFleetEventOccurrence"
+      tags "Fleet Events"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetEventOccurrenceDateInput
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
+      ]
+
+      response(200, "successful") do
+        schema ::V1::Schemas::Fleets::Events::FleetEventExtended
+      end
+
+      response(422, "not recurring") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   setup do
     Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
@@ -50,6 +78,7 @@ class Api::V1::FleetsEventsRecurrenceTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :post, 200,
+      api_path: "/fleets/{fleetSlug}/events/{slug}/skip-occurrence",
       path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
       body: {date: "2026-05-21"}
 
@@ -61,6 +90,29 @@ class Api::V1::FleetsEventsRecurrenceTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :post, 422,
+      api_path: "/fleets/{fleetSlug}/events/{slug}/skip-occurrence",
+      path_params: {fleetSlug: @fleet.slug, slug: non_recurring.slug},
+      body: {date: "2026-05-21"}
+  end
+
+  test "POST /fleets/:slug/events/:slug/unskip-occurrence removes the date from excluded_dates" do
+    @fleet_event.update!(excluded_dates: [Date.parse("2026-05-21")])
+    sign_in @admin
+
+    assert_api_response :post, 200,
+      api_path: "/fleets/{fleetSlug}/events/{slug}/unskip-occurrence",
+      path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+      body: {date: "2026-05-21"}
+
+    assert_empty @fleet_event.reload.excluded_dates
+  end
+
+  test "POST /fleets/:slug/events/:slug/unskip-occurrence returns 422 when event is not recurring" do
+    non_recurring = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, recurring: false)
+    sign_in @admin
+
+    assert_api_response :post, 422,
+      api_path: "/fleets/{fleetSlug}/events/{slug}/unskip-occurrence",
       path_params: {fleetSlug: @fleet.slug, slug: non_recurring.slug},
       body: {date: "2026-05-21"}
   end

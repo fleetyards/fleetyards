@@ -32,6 +32,7 @@ import {
   type FleetEventSignup,
   useFleetEvent,
   useSkipFleetEventOccurrence,
+  useUnskipFleetEventOccurrence,
   useEndFleetEventSeries,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -353,6 +354,7 @@ const upcomingOccurrences = computed(() => {
 });
 
 const skipMutation = useSkipFleetEventOccurrence();
+const unskipMutation = useUnskipFleetEventOccurrence();
 const endMutation = useEndFleetEventSeries();
 
 const skipOccurrence = async (iso: string) => {
@@ -366,6 +368,23 @@ const skipOccurrence = async (iso: string) => {
     await refetch();
     displaySuccess({
       text: t("labels.fleets.events.skipOccurrenceSuccess"),
+    });
+  } catch {
+    displayAlert({ text: t("messages.fleets.event.update.failure") });
+  }
+};
+
+const unskipOccurrence = async (iso: string) => {
+  if (!event.value) return;
+  try {
+    await unskipMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: event.value.slug,
+      data: { date: iso },
+    });
+    await refetch();
+    displaySuccess({
+      text: t("labels.fleets.events.unskipOccurrenceSuccess"),
     });
   } catch {
     displayAlert({ text: t("messages.fleets.event.update.failure") });
@@ -671,6 +690,16 @@ const crumbs = computed<Crumb[]>(() => [
             >
               <i class="fa-light fa-ban" />
               {{ t("labels.fleets.events.skipOccurrence") }}
+            </button>
+            <button
+              v-else
+              type="button"
+              class="event-occurrences__btn"
+              :data-test="`unskip-occurrence-${entry.iso}`"
+              @click="unskipOccurrence(entry.iso)"
+            >
+              <i class="fa-light fa-rotate-left" />
+              {{ t("labels.fleets.events.unskipOccurrence") }}
             </button>
             <button
               type="button"

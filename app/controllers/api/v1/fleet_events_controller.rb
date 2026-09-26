@@ -17,12 +17,12 @@ module Api
         only: %i[index show ics]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
+        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence unskip_occurrence end_series update_occurrence]
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
       before_action -> { require_fleet_subscription(:events) }
-      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
+      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence unskip_occurrence end_series update_occurrence]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -156,6 +156,25 @@ module Api
             Rails.logger.warn("[discord-sync] could not clean up scheduled event after skip: #{e.message}")
           end
         end
+
+        render :show
+      end
+
+      def unskip_occurrence
+        authorize! @fleet_event, to: :update?
+
+        unless @fleet_event.recurring?
+          render json: {code: "not_recurring", message: "Event is not recurring"}, status: :unprocessable_entity
+          return
+        end
+
+        date = params[:date].presence
+        if date.blank?
+          render json: {code: "missing_date", message: "date is required"}, status: :bad_request
+          return
+        end
+
+        @fleet_event.unskip_occurrence!(Date.parse(date.to_s))
 
         render :show
       end
