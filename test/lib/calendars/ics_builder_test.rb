@@ -134,6 +134,15 @@ module Calendars
           assert_includes ::Calendars::IcsBuilder.new([event]).to_ics, "RRULE:FREQ=MONTHLY;INTERVAL=3\r\n"
         end
 
+        test "clamps a month-end series to the last day of shorter months" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: Time.zone.parse("2026-01-31 20:00:00 UTC"), timezone: "UTC",
+            recurring: true, recurrence_interval: "monthly")
+
+          assert_includes ::Calendars::IcsBuilder.new([event]).to_ics,
+            "RRULE:FREQ=MONTHLY;BYMONTHDAY=28,29,30,31;BYSETPOS=-1\r\n"
+        end
+
         test "emits BYDAY for a series on several weekdays" do
           event = create(:fleet_event, :open,
             fleet: @fleet, starts_at: @thursday, timezone: "Europe/Berlin",

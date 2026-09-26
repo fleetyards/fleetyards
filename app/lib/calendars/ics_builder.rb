@@ -74,6 +74,12 @@ module Calendars
       if (days = event.recurrence_days).any?
         rrule << ";BYDAY=#{days.map { |wday| ICS_WEEKDAYS[wday] }.join(",")};WKST=MO"
       end
+      # A monthly series on the 29th to 31st falls on the last day of a
+      # shorter month in Fleetyards, where a bare FREQ=MONTHLY skips that
+      # month. The latest of those days that exists is the same date.
+      if event.recurrence_frequency == "monthly" && (day = event.starts_at.in_time_zone(tz || "UTC").day) > 28
+        rrule << ";BYMONTHDAY=#{(28..day).to_a.join(",")};BYSETPOS=-1"
+      end
       if event.recurrence_until.present?
         # UNTIL has to be UTC when DTSTART carries a TZID, so convert the
         # event's local end-of-day rather than stamping 23:59:59Z, which ends
