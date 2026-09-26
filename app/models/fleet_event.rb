@@ -128,6 +128,7 @@ class FleetEvent < ApplicationRecord
   before_validation :default_cover_image_preset
   before_validation :normalize_recurrence
   before_save :update_slug
+  after_save { @recurrence_weekdays_assigned = false }
   before_save :stamp_published_at, if: :will_save_change_to_status?
 
   scope :upcoming, -> { where("starts_at >= ?", Time.current).order(:starts_at) }
@@ -406,6 +407,11 @@ class FleetEvent < ApplicationRecord
 
   # The weekdays a weekly series falls on, in the event's zone (0 = Sunday).
   # Empty means the weekday of `starts_at` alone.
+  def recurrence_weekdays=(days)
+    @recurrence_weekdays_assigned = true
+    super
+  end
+
   def recurrence_days
     return [] unless recurrence_frequency == "weekly"
 
@@ -535,8 +541,24 @@ class FleetEvent < ApplicationRecord
       self.recurrence_every = 2
     end
 
+    drop_moved_start_wday unless @recurrence_weekdays_assigned
+
     days = recurrence_days
     self.recurrence_weekdays = (days == [recurrence_start_wday]) ? [] : days
+  end
+
+  # A stored multi-day list includes the start weekday, so moving the start
+  # without restating the weekdays would keep the old start day as well. An
+  # assigned list is taken as meant, even when it equals the stored one.
+  private def drop_moved_start_wday
+    return if new_record? || starts_at_in_database.nil?
+    return unless will_save_change_to_starts_at? || will_save_change_to_timezone?
+
+    zone = ActiveSupport::TimeZone[timezone_in_database.to_s] ? timezone_in_database : "UTC"
+    previous_wday = starts_at_in_database.in_time_zone(zone).wday
+    return if previous_wday == recurrence_start_wday
+
+    write_attribute(:recurrence_weekdays, Array(recurrence_weekdays) - [previous_wday])
   end
 
   private def recurrence_weekdays_are_weekdays

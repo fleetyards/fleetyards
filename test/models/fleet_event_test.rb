@@ -429,6 +429,26 @@ class FleetEventTest < ActiveSupport::TestCase
       assert_equal [], lone.recurrence_weekdays
     end
 
+    test "moving the start without restating weekdays drops the old start day" do
+      tuesday = Time.zone.parse("2026-05-19 20:00:00")
+      event = create(:fleet_event, starts_at: tuesday, timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "weekly", recurrence_weekdays: [2, 4])
+
+      event.update!(starts_at: tuesday + 1.day)
+
+      assert_equal [3, 4], event.reload.recurrence_weekdays
+    end
+
+    test "moving the start keeps an old start day the caller restates" do
+      tuesday = Time.zone.parse("2026-05-19 20:00:00")
+      event = create(:fleet_event, starts_at: tuesday, timezone: "Europe/Berlin",
+        recurring: true, recurrence_interval: "weekly", recurrence_weekdays: [2, 4])
+
+      event.update!(starts_at: tuesday + 2.days, recurrence_weekdays: [2, 4])
+
+      assert_equal [2, 4], event.reload.recurrence_weekdays
+    end
+
     test "clears weekdays and every-N off a weekly series" do
       event = create(:fleet_event,
         recurring: true, recurrence_interval: "weekly", recurrence_every: 3, recurrence_weekdays: [1])
