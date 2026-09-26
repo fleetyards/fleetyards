@@ -60,13 +60,7 @@ json.unassigned_signups do
     as: :fleet_event_signup
 end
 
-upcoming = if @fleet_event.recurring?
-  @fleet_event
-    .occurrences(from: Time.current, to: 12.weeks.from_now, include_excluded: true)
-    .first(FleetEvent::UPCOMING_OCCURRENCES_LIMIT)
-else
-  []
-end
+upcoming = @fleet_event.upcoming_occurrences
 excluded = @fleet_event.excluded_dates.to_set
 
 json.upcoming_occurrences upcoming do |occurrence|
