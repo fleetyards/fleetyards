@@ -13,6 +13,16 @@ module Uex
 
     Counts = Struct.new(:created, :updated, :removed, :skipped_removals)
 
+    def self.notification_lines(result)
+      lines = ["- **Shop prices**: #{result.created} created, #{result.updated} updated, #{result.removed} removed"]
+
+      if result.skipped_removals.positive?
+        lines << "- **Removals held back**: #{result.skipped_removals} — the snapshot omitted terminals we hold prices for"
+      end
+
+      lines
+    end
+
     private def persist_prices(desired, live:)
       counts = Counts.new(0, 0, 0, 0)
 

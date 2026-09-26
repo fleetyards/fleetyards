@@ -157,5 +157,13 @@ module Uex
 
       lines.join("\n")
     end
+
+    def self.notification_body(result)
+      lines = ["## Synced", "", *PriceSnapshot.notification_lines(result)]
+      lines << "- **Models repriced**: #{result.repriced}"
+      lines << ""
+      lines << (result.unmatched.any? ? github_issue_body(result) : "Every priced UEX vehicle resolved to a model.")
+      lines.join("\n")
+    end
   end
 end

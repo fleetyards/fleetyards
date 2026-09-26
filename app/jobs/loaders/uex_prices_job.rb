@@ -15,6 +15,7 @@ module Loaders
         task_type: "uex_prices_import",
         title: unmatched ? "UEX Price Sync — Unmatched Vehicles" : "UEX Price Sync Results",
         body: ::Uex::PriceSyncer.github_issue_body(result),
+        notification_body: ::Uex::PriceSyncer.notification_body(result),
         actionable: unmatched,
         record: import
       )
