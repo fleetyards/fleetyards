@@ -35,11 +35,7 @@
   // stack taller at this width, which is the price of seeing a comparison at all.
   @media (max-width: 576px) {
     --compare-rail: 96px;
-    --compare-col: clamp(
-      104px,
-      (100cqw - var(--compare-rail) - 2px) / 2,
-      180px
-    );
+    --compare-col: clamp(92px, (100cqw - var(--compare-rail) - 2px) / 2, 180px);
     --compare-col-max: var(--compare-col);
   }
 
