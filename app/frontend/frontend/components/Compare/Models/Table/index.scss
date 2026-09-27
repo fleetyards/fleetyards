@@ -75,12 +75,19 @@
   padding: 0;
   background: $gray-darker;
   border-bottom: 1px solid rgba($gray-light, 0.28);
-  vertical-align: bottom;
+  // Top, so the art and names line up across columns when one name wraps or
+  // carries the baseline tag.
+  vertical-align: top;
 }
 
 .compare-table__corner {
   left: 0;
   z-index: 4;
+}
+
+// Qualified to outrank `.compare-table thead th` above.
+.compare-table thead th.compare-table__corner {
+  vertical-align: bottom;
 }
 
 .compare-table__count {
