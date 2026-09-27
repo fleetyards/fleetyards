@@ -44,8 +44,9 @@ defineProps<Props>();
   display: block;
   margin-top: 1px;
   color: $gray-light;
+  // Left below the phone floor on purpose: it captions the 15px figure above
+  // it, and a row on a 390px phone has no width to spare for a larger one.
   font-size: 10px;
-  @include phone-font-floor($phone-label-min);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
