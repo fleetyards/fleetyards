@@ -757,6 +757,8 @@
         "onSale": "In Vendita",
         "playerOwnable": "Acquistabile dai giocatori?",
         "ingameOnly": "Solo in gioco",
+        "canLandOnPlanets": "Può atterrare sui pianeti",
+        "cannotLandOnPlanets": "Non può atterrare sui pianeti",
         "salesPage": "Pagina Di Vendita",
         "addons": "Moduli E Kit Di Potenziamento",
         "storeImage": "Immagine negozio",
@@ -1687,6 +1689,7 @@
           "manufacturer": "Produttore",
           "onSale": "In Vendita",
           "ingameOnly": "Solo in gioco",
+          "canLandOnPlanets": "Può atterrare sui pianeti",
           "size": "Dimensione",
           "dockSize": "Dimensione dock",
           "price": "Prezzo",
@@ -1878,6 +1881,12 @@
         "aUecPerScu": "aUEC · %{value} per SCU",
         "load": "Carico",
         "loadOf": "%{load} di %{cargo} SCU",
+        "thisShip": "Questa nave",
+        "unflyable": {
+          "origin": "%{ship} non può atterrare a %{terminal}",
+          "destination": "%{ship} non può atterrare a %{terminal}",
+          "both": "%{ship} non può atterrare a nessuno dei due terminali"
+        },
         "loadLimits": {
           "hold": "Stiva piena",
           "stock": "Limitato dalle scorte",

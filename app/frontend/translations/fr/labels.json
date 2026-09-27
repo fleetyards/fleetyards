@@ -757,6 +757,8 @@
         "onSale": "En Vente",
         "playerOwnable": "Possédable par un joueur ?",
         "ingameOnly": "Uniquement en jeu",
+        "canLandOnPlanets": "Peut se poser sur les planètes",
+        "cannotLandOnPlanets": "Ne peut pas se poser sur les planètes",
         "salesPage": "Page des Ventes",
         "addons": "Kits de Modules et d'Amélioration",
         "storeImage": "Image du magasin",
@@ -1687,6 +1689,7 @@
           "manufacturer": "Fabricant",
           "onSale": "En Vente",
           "ingameOnly": "Uniquement en jeu",
+          "canLandOnPlanets": "Peut se poser sur les planètes",
           "size": "Taille",
           "dockSize": "Taille du quai",
           "price": "Prix",
@@ -1878,6 +1881,12 @@
         "aUecPerScu": "aUEC · %{value} par SCU",
         "load": "Chargement",
         "loadOf": "%{load} sur %{cargo} SCU",
+        "thisShip": "Ce vaisseau",
+        "unflyable": {
+          "origin": "%{ship} ne peut pas se poser à %{terminal}",
+          "destination": "%{ship} ne peut pas se poser à %{terminal}",
+          "both": "%{ship} ne peut se poser à aucun des deux terminaux"
+        },
         "loadLimits": {
           "hold": "Soute pleine",
           "stock": "Limité par le stock",

@@ -757,6 +757,8 @@
         "onSale": "En venta",
         "playerOwnable": "¿Adquirible por jugadores?",
         "ingameOnly": "Solo en el juego",
+        "canLandOnPlanets": "Puede aterrizar en planetas",
+        "cannotLandOnPlanets": "No puede aterrizar en planetas",
         "salesPage": "Página de venta",
         "addons": "Módulos y kits de mejora",
         "storeImage": "Imagen de tienda",
@@ -1687,6 +1689,7 @@
           "manufacturer": "Fabricante",
           "onSale": "En venta",
           "ingameOnly": "Solo en el juego",
+          "canLandOnPlanets": "Puede aterrizar en planetas",
           "size": "Tamaño",
           "dockSize": "Tamaño de muelle",
           "price": "Precio",
@@ -1878,6 +1881,12 @@
         "aUecPerScu": "aUEC · %{value} por SCU",
         "load": "Carga",
         "loadOf": "%{load} de %{cargo} SCU",
+        "thisShip": "Esta nave",
+        "unflyable": {
+          "origin": "%{ship} no puede aterrizar en %{terminal}",
+          "destination": "%{ship} no puede aterrizar en %{terminal}",
+          "both": "%{ship} no puede aterrizar en ningún extremo"
+        },
         "loadLimits": {
           "hold": "Bodega llena",
           "stock": "Limitado por existencias",
