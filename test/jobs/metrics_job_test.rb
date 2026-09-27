@@ -198,6 +198,16 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
   end
 
+  test "#perform keeps an OS rollup day whose visits were already purged" do
+    day = 40.days.ago.to_date
+    Rollup.create!(name: MetricsJob::ROLLUP_VISITS_BY_OS, interval: "day", time: day,
+      dimensions: {os: "Android", installed: true}, value: 3)
+
+    MetricsJob.new.perform
+
+    assert_equal 3, Rollup.where(name: MetricsJob::ROLLUP_VISITS_BY_OS).sole.value
+  end
+
   test "#perform leaves visits from before the installed flag out of the OS rollup" do
     visit_on(2.days.ago, os: "Android", installed: nil)
 
