@@ -49,21 +49,42 @@ const { data: commodities } = useTradeRouteCommoditiesFilters();
 
 const budgetInput = ref(budget.value ? String(budget.value) : "");
 
-watch(budget, (value) => {
-  budgetInput.value = value ? String(value) : "";
-});
+const typedBudget = (value: string) => {
+  const amount = Number(value.replace(/[^\d]/g, ""));
+
+  return amount > 0 ? amount : undefined;
+};
 
 // Typed rather than picked, so the URL follows once the pilot pauses instead
 // of on every keystroke.
 const pushBudget = debounce(async (value: string) => {
-  const amount = Number(value.replace(/[^\d]/g, ""));
+  const amount = typedBudget(value);
+  if (amount === budget.value) return;
 
-  await update({ budget: amount > 0 ? String(amount) : undefined });
+  await update({ budget: amount ? String(amount) : undefined });
 }, 400);
 
+// A budget the URL brought, from a shared link or the back button, wins over
+// an edit still waiting to be pushed.
+watch(budget, (value) => {
+  pushBudget.cancel();
+  budgetInput.value = value ? String(value) : "";
+});
+
 watch(budgetInput, (value) => {
+  if (typedBudget(value) === budget.value) return;
+
   void pushBudget(value);
 });
+
+onUnmounted(() => {
+  pushBudget.cancel();
+});
+
+// A purchase's buyers are one terminal's view: another system leaves it.
+const setSystem = (system?: string) => {
+  void update({ system, origin: undefined });
+};
 
 const commodityValue = computed({
   get: () => commodity.value,
@@ -192,14 +213,14 @@ const priceAges = computed(() => [
             t("labels.tradeRoutes.buyIn")
           }}</span>
           <BtnGroup segmented block>
-            <Btn :active="!starSystem" @click="update({ system: undefined })">
+            <Btn :active="!starSystem" @click="setSystem(undefined)">
               {{ t("labels.tradeRoutes.anySystem") }}
             </Btn>
             <Btn
               v-for="option in starSystems ?? []"
               :key="String(option.value)"
               :active="starSystem === option.value"
-              @click="update({ system: String(option.value) })"
+              @click="setSystem(String(option.value))"
             >
               {{ option.label }}
             </Btn>
