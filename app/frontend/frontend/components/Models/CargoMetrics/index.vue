@@ -134,6 +134,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 9px;
+    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: $gray-light;
@@ -150,6 +151,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
   &__share {
     margin-left: auto;
     font-size: 11px;
+    @include phone-font-floor($phone-text-min);
     color: $gray;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;

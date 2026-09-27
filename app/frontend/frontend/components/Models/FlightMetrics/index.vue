@@ -247,6 +247,7 @@ const rotations = computed(() =>
 
   &__boost {
     font-size: 11px;
+    @include phone-font-floor($phone-text-min);
     font-weight: 600;
     color: $primary;
   }
@@ -254,6 +255,7 @@ const rotations = computed(() =>
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 8.5px;
+    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: $gray;

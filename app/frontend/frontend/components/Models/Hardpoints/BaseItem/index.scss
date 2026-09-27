@@ -30,6 +30,7 @@
   border-radius: 6px;
   color: $gray-light;
   font-size: 11px;
+  @include phone-font-floor($phone-text-min);
   cursor: pointer;
   transition:
     color 0.15s,

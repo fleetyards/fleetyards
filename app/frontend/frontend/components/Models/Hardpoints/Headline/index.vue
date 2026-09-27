@@ -45,6 +45,7 @@ defineProps<Props>();
   margin-top: 1px;
   color: $gray-light;
   font-size: 10px;
+  @include phone-font-floor($phone-label-min);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

@@ -69,6 +69,7 @@
   &__section-label {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10px;
+    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: $gray-light;
@@ -86,6 +87,7 @@
     &-label {
       font-family: "Orbitron", tahoma, sans-serif;
       font-size: 10px;
+      @include phone-font-floor($phone-label-min);
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: $gray-light;
@@ -147,6 +149,7 @@
     &__label {
       font-family: "Orbitron", tahoma, sans-serif;
       font-size: 10px;
+      @include phone-font-floor($phone-label-min);
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: $gray-light;
@@ -193,6 +196,7 @@
   &__toggle {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10px;
+    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 6px 13px;
@@ -211,6 +215,7 @@
 
   &__hint {
     font-size: 11.5px;
+    @include phone-font-floor($phone-text-min);
     color: $gray;
   }
 
@@ -249,6 +254,7 @@
     &__label {
       font-family: "Orbitron", tahoma, sans-serif;
       font-size: 10px;
+      @include phone-font-floor($phone-label-min);
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: $gray-light;
@@ -287,6 +293,7 @@
     &__sub {
       margin-top: 6px;
       font-size: 11px;
+      @include phone-font-floor($phone-text-min);
       color: $gray;
     }
   }

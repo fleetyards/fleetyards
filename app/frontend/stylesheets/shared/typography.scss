@@ -113,6 +113,7 @@ h1,
 
 .price-info {
   font-size: 70%;
+  @include phone-font-floor($phone-text-min);
 }
 
 .panel-title {
