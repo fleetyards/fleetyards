@@ -136,6 +136,12 @@ export const routes: RouteRecordRaw[] = [
       nav: "main",
     },
   },
+  // Where the page lived until the Vue 3 migration; external link lists still
+  // point here. The server answers it too, for a link opened cold.
+  {
+    path: "/trade-routes/",
+    redirect: { name: "trade-routes" },
+  },
   {
     path: "/tools/",
     component: () => import("@/frontend/pages/tools.vue"),

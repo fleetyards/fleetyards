@@ -20,6 +20,7 @@ const active = computed(() => {
     "tools",
     "travel-times",
     "cargo-grids",
+    "trade-routes",
     "tours",
     "tour",
     "tour-add",
@@ -56,6 +57,12 @@ const active = computed(() => {
         :to="{ name: 'cargo-grids' }"
         :label="t('nav.tools.cargoGrids')"
         icon="fa-duotone fa-thin fa-cubes"
+      />
+      <NavItem
+        v-if="isFeatureEnabled(FeatureFlagName.TRADE_ROUTES)"
+        :to="{ name: 'trade-routes' }"
+        :label="t('nav.tools.tradeRoutes')"
+        icon="fa-duotone fa-route"
       />
     </template>
   </NavItem>
