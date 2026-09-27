@@ -695,6 +695,22 @@ const cellHeight = (span: number) =>
     background: transparent;
     padding: 0;
     cursor: pointer;
+
+    // The pips end 6px above, so the touch hit area grows downward only, into
+    // the empty space above the reset button, and never covers the lowest pip.
+    @media (pointer: coarse) {
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 32px;
+        height: 30px;
+        transform: translateX(-50%);
+      }
+    }
   }
 
   &__icon {
