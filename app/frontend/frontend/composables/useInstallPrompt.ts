@@ -2,6 +2,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useNotificationsStore } from "@/shared/stores/notifications";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { v4 as uuidv4 } from "uuid";
+import { isInstalledApp } from "@/shared/utils/DisplayMode";
 
 type InstallOutcome = "accepted" | "dismissed";
 
@@ -60,17 +61,6 @@ const daysSince = (iso?: string): number | null => {
   return (Date.now() - parsed) / 86_400_000;
 };
 
-const detectStandalone = (): boolean => {
-  try {
-    return (
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (navigator as Navigator & { standalone?: boolean }).standalone === true
-    );
-  } catch {
-    return false;
-  }
-};
-
 // iPadOS reports itself as a Mac, so a touch screen is what gives it away.
 // Safari and the other iOS browsers can add to the Home Screen; the in-app
 // browsers of Discord, Instagram and co. cannot, and their user agents drop the
@@ -114,7 +104,7 @@ export const captureInstallPrompt = () => {
   if (captured) return;
   captured = true;
 
-  standalone.value = detectStandalone();
+  standalone.value = isInstalledApp();
   ios.value = detectIos();
 
   if (!readState().firstSeenAt) {
