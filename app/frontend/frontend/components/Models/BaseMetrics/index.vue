@@ -183,7 +183,6 @@ const openAvailability = () => {
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10px;
-    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray-light;

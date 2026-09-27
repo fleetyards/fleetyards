@@ -285,7 +285,6 @@ const openDeflectionCheck = () => {
 
   &__pct {
     font-size: 11px;
-    @include phone-font-floor($phone-text-min);
     color: $gray;
     font-variant-numeric: tabular-nums;
     min-width: 34px;
@@ -338,7 +337,6 @@ const openDeflectionCheck = () => {
 
   &__label {
     font-size: 10.5px;
-    @include phone-font-floor($phone-text-min);
     color: $gray;
   }
 
@@ -379,7 +377,6 @@ const openDeflectionCheck = () => {
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10px;
-    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: lighten($text-color, 10%);
@@ -395,7 +392,6 @@ const openDeflectionCheck = () => {
 
   &__unit {
     font-size: 10px;
-    @include phone-font-floor($phone-text-min);
     font-weight: 400;
     color: $gray;
   }

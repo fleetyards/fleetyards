@@ -454,7 +454,6 @@ const cellHeight = (span: number) =>
     border: 0;
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10px;
-    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -476,7 +475,6 @@ const cellHeight = (span: number) =>
 
   &__budget {
     font-size: 11px;
-    @include phone-font-floor($phone-text-min);
     letter-spacing: 0.08em;
     color: $gray;
     font-variant-numeric: tabular-nums;
@@ -522,7 +520,6 @@ const cellHeight = (span: number) =>
 
   &__axis {
     font-size: 10px;
-    @include phone-font-floor($phone-text-min);
     font-weight: 600;
     color: $gray;
     margin-left: 2px;
@@ -663,7 +660,6 @@ const cellHeight = (span: number) =>
   // erkul-style count inside a merged (span > 1) block.
   &__pip-label {
     font-size: 11px;
-    @include phone-font-floor($phone-text-min);
     font-weight: 600;
     line-height: 1;
     color: $text-color;
@@ -689,7 +685,6 @@ const cellHeight = (span: number) =>
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 8.5px;
-    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.08em;
     color: $gray;
     text-transform: uppercase;

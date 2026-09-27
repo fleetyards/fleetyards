@@ -35,13 +35,12 @@ $tablet-breakpoint: 768px;
 $desktop-breakpoint: 992px;
 $large-desktop-breakpoint: 1800px;
 
-// The smallest text a phone gets. Uppercase, letter-spaced labels read larger
-// than mixed-case text at the same size, so they may sit a pixel lower.
+// The smallest label a phone gets. Only the sizes set below 10px for desktop
+// density are raised to it; the rest read fine at their own size.
 $phone-label-min: 11px;
-$phone-text-min: 12px;
 
-// Raises a size set for desktop density to the phone floor. Placed right after
-// the `font-size` it overrides.
+// Raises a size to the phone floor. Placed right after the `font-size` it
+// overrides.
 @mixin phone-font-floor($size) {
   @media (max-width: $phone-breakpoint) {
     font-size: $size;

@@ -247,7 +247,6 @@ const rotations = computed(() =>
 
   &__boost {
     font-size: 11px;
-    @include phone-font-floor($phone-text-min);
     font-weight: 600;
     color: $primary;
   }

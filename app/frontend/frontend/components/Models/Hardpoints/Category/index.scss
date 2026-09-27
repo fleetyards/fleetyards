@@ -22,7 +22,6 @@
   &__name {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10.5px;
-    @include phone-font-floor($phone-label-min);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;

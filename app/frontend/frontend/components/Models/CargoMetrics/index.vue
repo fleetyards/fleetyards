@@ -151,7 +151,6 @@ const hasData = computed(() => containerCapacities.value.length > 0);
   &__share {
     margin-left: auto;
     font-size: 11px;
-    @include phone-font-floor($phone-text-min);
     color: $gray;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
