@@ -18,6 +18,10 @@ class MetricsJob < ApplicationJob
   # of installed use per platform can be read back after the visits are purged.
   ROLLUP_VISITS_BY_OS = "Visits by OS"
 
+  # A visit's installed flag can only change while the visit lasts, so a day is
+  # settled well within this.
+  VISITS_BY_OS_RECOMPUTE = 2.days
+
   def perform
     User.rollup("Registrations", interval: "month")
     User.rollup("Registrations", interval: "year")
@@ -53,24 +57,25 @@ class MetricsJob < ApplicationJob
     track_visits_by_os(visits)
   end
 
-  # The gem recomputes from the newest stored day and upserts the groups it finds,
-  # so a visit flagged installed after that day was rolled up would leave its old
-  # `installed: false` row behind. That day is cleared before it is recomputed, but
-  # only while all of its visits are still there to rebuild it from. The purge
-  # removes visits oldest first, so any visit older than the day proves the day is
-  # intact; once `Cleanup::VisitsJob` has reached it, the stored counts are all
-  # that is left.
+  # The gem only upserts the groups it finds, so a visit flagged installed after
+  # its day was rolled up would leave its old `installed: false` row behind. The
+  # recent days are therefore cleared and rebuilt as a window rather than left to
+  # the gem's own resume point. The window never reaches past the cleanup cutoff:
+  # every visit newer than that is always still there, and an older day may be
+  # partly purged, so its stored counts are all that is left.
   def track_visits_by_os(visits)
+    stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
+    floor = (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
+    latest = stored.maximum(:time)&.to_date
+    start = [floor, [latest, VISITS_BY_OS_RECOMPUTE.ago.to_date].compact.min].max
+    range = start.in_time_zone(Rollup.time_zone)..Time.current
+
     Rollup.transaction do
-      stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
-      latest = stored.maximum(:time)
-      if latest && Ahoy::Visit.where(started_at: ...latest).exists?
-        stored.where(time: latest).delete_all
-      end
+      stored.where(time: range).delete_all
 
       # A NULL flag is a visit from before it was recorded, not a browser visit.
       visits.where.not(installed: nil).group(:os, :installed)
-        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at)
+        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at, range:)
     end
   end
 
