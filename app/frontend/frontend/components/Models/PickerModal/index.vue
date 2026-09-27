@@ -65,6 +65,8 @@ type Props = {
   // Offers the hangar as a filter. Signed-out visitors have no hangar to filter
   // by, so they never see it.
   hangarFilter?: boolean;
+  // One ship, picked by clicking it: no tray to review and no footer to confirm.
+  single?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -79,6 +81,7 @@ const props = withDefaults(defineProps<Props>(), {
   containerFilter: false,
   containerFit: undefined,
   hangarFilter: false,
+  single: false,
 });
 
 const emit = defineEmits<{
@@ -325,6 +328,13 @@ const quantityFor = (id: string) =>
   selection.value.find((item) => item.option.id === id)?.quantity ?? 1;
 
 const toggle = (option: ModelOption) => {
+  if (props.single) {
+    if (takenSet.value.has(option.slug)) return;
+
+    emit("submit", [{ option, quantity: 1 }]);
+    return;
+  }
+
   if (selectedIds.value.has(option.id)) {
     remove(option.id);
     return;
@@ -488,7 +498,7 @@ const save = () => {
         off the bottom of the viewport. Here it costs the grid height it uses and
         stays in view while you scroll, which is the whole point of it.
       -->
-      <div v-if="selection.length" class="model-picker__tray">
+      <div v-if="!single && selection.length" class="model-picker__tray">
         <Chip
           v-for="item in selection"
           :key="item.option.id"
@@ -501,7 +511,7 @@ const save = () => {
       </div>
     </form>
 
-    <template #footer>
+    <template v-if="!single" #footer>
       <div class="model-picker__actions">
         <span class="model-picker__selected">
           {{ t("modelPicker.labels.selected", { count: selectedTotal }) }}
