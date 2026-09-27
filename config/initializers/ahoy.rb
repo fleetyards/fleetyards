@@ -6,6 +6,22 @@ class Ahoy::Store < Ahoy::DatabaseStore
     data[:accept_language] = request.headers["Accept-Language"]
     super
   end
+
+  # The visit is recorded on the server before any script runs, so only a page
+  # view sent from the browser can say whether it runs as the installed app.
+  def track_event(data)
+    super
+
+    mark_installed if data[:name] == "$view" && installed_view?(data[:properties])
+  end
+
+  private def installed_view?(properties)
+    ActiveModel::Type::Boolean.new.cast(properties.to_h.stringify_keys["installed"]) == true
+  end
+
+  private def mark_installed
+    visit.update_column(:installed, true) if visit && !visit.installed?
+  end
 end
 # rubocop:enable Style/ClassAndModuleChildren
 

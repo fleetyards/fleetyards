@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_26_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -120,6 +120,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_120000) do
     t.string "accept_language"
     t.string "browser"
     t.string "device_type"
+    t.boolean "installed", default: false, null: false
     t.string "ip"
     t.text "landing_page"
     t.string "os"
