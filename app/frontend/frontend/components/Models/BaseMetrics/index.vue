@@ -76,6 +76,15 @@ const openAvailability = () => {
       >
         {{ t("labels.model.ingameOnly") }}
       </span>
+      <!-- Strictly false: a payload cached before the field existed carries
+           no value, and that is not a ship that can't land. -->
+      <span
+        v-if="model.canLandOnPlanets === false"
+        class="base-panel__chip"
+        data-test="model-cannot-land-chip"
+      >
+        {{ t("labels.model.cannotLandOnPlanets") }}
+      </span>
       <span v-if="model.metrics.sizeLabel" class="base-panel__chip">
         {{ model.metrics.sizeLabel }}
       </span>
