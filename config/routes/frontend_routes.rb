@@ -39,6 +39,10 @@ namespace :frontend, **frontend_options do
   # anywhere else.
   get "catalogue/missions/:slug", to: "base#mission", as: :game_mission
 
+  # Where the trade routes page lived until the Vue 3 migration dropped it.
+  # External link lists still point here.
+  get "trade-routes", to: redirect("/tools/trade-routes/", status: 301)
+
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos

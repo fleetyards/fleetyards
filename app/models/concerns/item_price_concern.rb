@@ -40,11 +40,16 @@ module ItemPriceConcern
   end
 
   def sold_at
-    item_prices.sell.order(price: :asc).uniq(&:location)
+    item_prices.sell.order(price: :asc).uniq { |item_price| price_location_key(item_price) }
   end
 
   def bought_at
-    item_prices.buy.order(price: :asc).uniq(&:location)
+    item_prices.buy.order(price: :asc).uniq { |item_price| price_location_key(item_price) }
+  end
+
+  # Two commodity terminals can share a name; the terminal tells them apart.
+  private def price_location_key(item_price)
+    item_price.terminal_id || item_price.location
   end
 
   def buy_price

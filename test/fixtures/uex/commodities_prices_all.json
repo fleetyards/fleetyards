@@ -8,6 +8,9 @@
       "id_terminal": 104,
       "price_buy": 27527,
       "price_sell": 28270,
+      "scu_buy": 1200,
+      "scu_sell_stock": 40,
+      "date_modified": 1766170000,
       "commodity_name": "Gold",
       "terminal_name": "TDD - Trade and Development Division - Area 18"
     },
@@ -17,6 +20,9 @@
       "id_terminal": 105,
       "price_buy": 26000,
       "price_sell": 29000,
+      "scu_buy": 300,
+      "scu_sell_stock": 0,
+      "date_modified": 1766171000,
       "commodity_name": "Gold",
       "terminal_name": "TDD - Trade and Development Division - Area 18"
     },
@@ -26,6 +32,9 @@
       "id_terminal": 102,
       "price_buy": 0,
       "price_sell": 2245,
+      "scu_buy": 0,
+      "scu_sell_stock": 85,
+      "date_modified": 1766172000,
       "commodity_name": "Agricium (Ore)",
       "terminal_name": "Admin - ARC-L1"
     },

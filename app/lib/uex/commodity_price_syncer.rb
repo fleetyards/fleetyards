@@ -7,10 +7,10 @@ module Uex
     ITEM_TYPE = "Commodity"
     TERMINAL_TYPE = "commodity"
 
-    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unknown) do
+    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unknown, :terminals) do
       def to_s
         "created=#{created} updated=#{updated} removed=#{removed} " \
-          "skipped_removals=#{skipped_removals} unknown=#{unknown.size}"
+          "skipped_removals=#{skipped_removals} unknown=#{unknown.size} terminals=(#{terminals})"
       end
     end
 
@@ -19,10 +19,8 @@ module Uex
     end
 
     def run
-      terminals = require_rows(
-        :terminals,
-        @client.terminals.select { |terminal| terminal["type"] == TERMINAL_TYPE }
-      ).index_by { |terminal| terminal["id"] }
+      terminal_sync = Uex::TerminalSyncer.new(client: @client).run
+      terminals = terminal_sync.terminals
       prices = require_rows(:commodity_prices, @client.commodity_prices)
 
       # The mapper has already resolved names to ids, so the price feed needs no
@@ -31,7 +29,7 @@ module Uex
       unknown = {}
 
       desired = collect(prices, commodities:, terminals:, unknown:)
-      counts = persist_prices(desired, live: terminals.values.map { |terminal| terminal["name"].to_s.strip }.to_set)
+      counts = persist_prices(desired, live: terminal_sync.live_ids)
 
       record_price_history
 
@@ -40,7 +38,8 @@ module Uex
         updated: counts.updated,
         removed: counts.removed,
         skipped_removals: counts.skipped_removals,
-        unknown: unknown.values
+        unknown: unknown.values,
+        terminals: terminal_sync
       )
     end
 
@@ -48,9 +47,6 @@ module Uex
       rows.each_with_object({}) do |row, result|
         terminal = terminals[row["id_terminal"]]
         next if terminal.blank?
-
-        location = terminal["name"].to_s.strip
-        next if location.blank?
 
         commodity_id = Uex::CommodityMatcher::DUPLICATES.fetch(row["id_commodity"], row["id_commodity"])
         commodity = commodities[commodity_id]
@@ -60,15 +56,19 @@ module Uex
           next
         end
 
+        updated_at = row["date_modified"].to_i.positive? ? Time.zone.at(row["date_modified"].to_i) : nil
+
         # UEX writes prices from the player's side: what they pay is price_buy,
         # what they receive is price_sell. Ours is shop-perspective, the way
-        # ItemPrice is read everywhere else, so the two swap over.
-        add(result, row["price_buy"], commodity:, location:, terminal:, price_type: "sell")
-        add(result, row["price_sell"], commodity:, location:, terminal:, price_type: "buy")
+        # ItemPrice is read everywhere else, so the two swap over. The stock
+        # follows the price: scu_buy is what the player can buy, scu_sell_stock
+        # what the terminal will take.
+        add(result, row["price_buy"], commodity:, terminal:, price_type: "sell", scu: row["scu_buy"], updated_at:)
+        add(result, row["price_sell"], commodity:, terminal:, price_type: "buy", scu: row["scu_sell_stock"], updated_at:)
       end
     end
 
-    private def add(result, value, commodity:, location:, terminal:, price_type:)
+    private def add(result, value, commodity:, terminal:, price_type:, scu:, updated_at:)
       price = value.to_d
       return if price <= 0
 
@@ -76,20 +76,23 @@ module Uex
         item_type: ITEM_TYPE,
         item_id: commodity.id,
         price_type:,
-        location:,
+        location: terminal.name,
         time_range: nil,
-        location_url: web_url(terminal["contact_url"]),
-        price:
+        terminal_id: terminal.id,
+        location_url: terminal.contact_url,
+        price:,
+        scu: scu.to_i.positive? ? scu.to_i : nil,
+        source_updated_at: updated_at
       }
 
-      key = attributes.values_at(:item_id, :price_type, :location, :time_range)
+      key = price_key(attributes)
       existing = result[key]
 
       return result[key] = attributes if existing.blank?
 
-      # Two UEX terminals can collapse onto one location string, and which of the
-      # pair to keep depends on the direction: of two shops selling the same
-      # cargo the player wants the cheaper, of two buying it the better paid.
+      # Only a UEX duplicate and the id it duplicates share a key, and which of
+      # the pair to keep depends on the direction: of two prices for cargo a
+      # shop sells the player wants the cheaper, of two it buys the better paid.
       better = (price_type == "sell") ? price < existing[:price] : price > existing[:price]
 
       result[key] = attributes if better
@@ -114,7 +117,11 @@ module Uex
     end
 
     def self.notification_body(result)
-      lines = ["## Synced", "", *PriceSnapshot.notification_lines(result), ""]
+      terminals = result.terminals
+      lines = ["## Synced", ""]
+      lines << "- **Terminals**: #{terminals.created} created, #{terminals.updated} updated, #{terminals.retired} retired"
+      lines.concat(PriceSnapshot.notification_lines(result))
+      lines << ""
       lines << (result.unknown.any? ? github_issue_body(result) : "Every priced UEX commodity resolved to one we carry.")
       lines.join("\n")
     end

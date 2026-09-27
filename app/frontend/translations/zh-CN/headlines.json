@@ -383,7 +383,8 @@
       "tools": {
         "index": "工具",
         "travelTimes": "旅行时间",
-        "cargoGrids": "货物网格"
+        "cargoGrids": "货物网格",
+        "tradeRoutes": "贸易路线"
       },
       "rsiVerification": "Verify your RSI-Account",
       "hangarGuideEmpty": "Not much to see here?",

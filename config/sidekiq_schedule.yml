@@ -35,6 +35,11 @@ loaders_uex_equipment_prices_job:
   class: 'Loaders::UexEquipmentPricesJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? %>
+loaders_uex_trade_routes_job:
+  cron: '10 * * * *' # Hourly at :10, clear of the price loaders on the hour and half hour
+  class: 'Loaders::UexTradeRoutesJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
 sc_data_check_job:
   cron: '0 22 */1 * *' # Daily at 22:00
   class: 'ScData::CheckJob'

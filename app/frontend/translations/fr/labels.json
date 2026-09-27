@@ -1680,14 +1680,6 @@
           "bundled": "Snub Crafts inclus",
           "boughtVia": "Acheté via?"
         },
-        "tradeRoutes": {
-          "sortBy": "Trier par",
-          "sortByValues": {
-            "percent": "Pourcentage Max."
-          },
-          "origin": "De ?",
-          "destination": "Vers?"
-        },
         "models": {
           "name": "Nom",
           "classification": "Classification",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Acheter pour: %{uec}",
-        "sell": "Vendre pour: %{uec}"
+        "intro": "Le meilleur trajet entre deux terminaux pour votre vaisseau, votre budget et l'ancienneté des prix que vous acceptez. Les prix viennent d'UEX et sont actualisés toutes les heures.",
+        "yourRun": "Votre trajet",
+        "ship": "Vaisseau",
+        "noShip": "Choisissez un vaisseau pour classer par bénéfice par trajet",
+        "noShipShort": "Aucun vaisseau",
+        "scu": "%{count} SCU",
+        "budget": "Budget",
+        "budgetPlaceholder": "Facultatif",
+        "buyIn": "Acheter dans",
+        "anySystem": "Tous",
+        "commodity": "Marchandise",
+        "allCommodities": "Toutes les marchandises",
+        "priceAge": "Prix de moins de",
+        "priceAges": {
+          "day": "24 h",
+          "threeDays": "3 jours",
+          "any": "Tous"
+        },
+        "bestRun": "Meilleur trajet",
+        "buyAt": "Acheter à",
+        "sellAt": "Vendre à",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "saut vers %{system}",
+        "pricesFrom": "Prix de %{time}",
+        "otherBuyers": {
+          "one": "+%{count} autre acheteur",
+          "other": "+%{count} autres acheteurs"
+        },
+        "profitThisRun": "Bénéfice du trajet",
+        "profitPerScu": "Bénéfice par SCU",
+        "aUecPerScu": "aUEC · %{value} par SCU",
+        "load": "Chargement",
+        "loadOf": "%{load} sur %{cargo} SCU",
+        "loadLimits": {
+          "hold": "Soute pleine",
+          "stock": "Limité par le stock",
+          "demand": "Limité par la demande",
+          "budget": "Limité par le budget"
+        },
+        "youSpend": "Vous dépensez",
+        "pickShipForRun": "Choisissez un vaisseau pour voir le bénéfice d'un trajet.",
+        "moreRuns": "Autres trajets",
+        "runs": "Trajets",
+        "rankBy": "Classer par",
+        "profitPerRun": "Bénéfice par trajet",
+        "profitPerDistance": "Bénéfice par Gm",
+        "shortest": "Le plus court",
+        "buySell": "Achat → vente",
+        "spend": "Dépense",
+        "distance": "Distance",
+        "prices": "Prix",
+        "profit": "Bénéfice",
+        "to": "vers",
+        "everyBuyer": "Tous les acheteurs de %{commodity} depuis %{terminal}",
+        "empty": "Aucun trajet ne correspond. Essayez des prix plus anciens ou un autre système.",
+        "loadExplained": "Le chargement utilise les tailles de caisse acceptées par les deux terminaux et la marchandise, limité par le stock à l'achat, la demande à la vente et votre budget.",
+        "poweredByUex": "Prix fournis par UEX"
       },
       "hardpoints": {
         "prefix": "Essayer les configurations avec",
@@ -2365,6 +2413,7 @@
           "uex_commodity_prices_import": "Synchronisation des marchandises UEX",
           "uex_component_prices_import": "Synchronisation des composants UEX",
           "uex_equipment_prices_import": "Synchronisation de l'équipement UEX",
+          "uex_trade_routes_sync": "Synchronisation des routes commerciales UEX",
           "new_supporter": "Nouveau soutien",
           "rsi_api_blocked": "API RSI bloquée",
           "rsi_api_unblocked": "API RSI rétablie",

@@ -2,20 +2,28 @@
 #
 # Table name: item_prices
 #
-#  id           :uuid             not null, primary key
-#  item_type    :string           not null
-#  location     :string
-#  location_url :string
-#  price        :decimal(15, 2)
-#  price_type   :integer
-#  time_range   :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  item_id      :uuid             not null
+#  id                :uuid             not null, primary key
+#  item_type         :string           not null
+#  location          :string
+#  location_url      :string
+#  price             :decimal(15, 2)
+#  price_type        :integer
+#  scu               :integer
+#  source_updated_at :datetime
+#  time_range        :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  item_id           :uuid             not null
+#  terminal_id       :uuid
 #
 # Indexes
 #
-#  index_item_prices_on_item  (item_type,item_id)
+#  index_item_prices_on_item         (item_type,item_id)
+#  index_item_prices_on_terminal_id  (terminal_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (terminal_id => terminals.id) ON DELETE => nullify
 #
 FactoryBot.define do
   factory :item_price do

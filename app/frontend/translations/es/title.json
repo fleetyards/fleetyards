@@ -160,6 +160,7 @@
         "index": "Herramientas",
         "travelTimes": "Tiempos de Viaje",
         "cargoGrids": "Grillas de carga",
+        "tradeRoutes": "Rutas comerciales",
         "tours": {
           "index": "Expediciones",
           "add": "Crear una expedición",

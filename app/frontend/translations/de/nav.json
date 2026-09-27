@@ -112,6 +112,7 @@
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
         "cargoGrids": "Frachtgitter",
+        "tradeRoutes": "Handelsrouten",
         "tours": "Touren"
       },
       "api": "API-Dokumentation",

@@ -125,7 +125,7 @@ module Uex
         price:
       }
 
-      key = attributes.values_at(:item_id, :price_type, :location, :time_range)
+      key = price_key(attributes)
       existing = result[key]
 
       return result[key] = attributes if existing.blank?

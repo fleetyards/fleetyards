@@ -160,6 +160,7 @@
         "index": "Tools",
         "travelTimes": "Travel Times",
         "cargoGrids": "Cargo Grids",
+        "tradeRoutes": "Trade Routes",
         "tours": {
           "index": "Tours",
           "add": "Create a new Tour",

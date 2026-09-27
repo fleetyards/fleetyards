@@ -13,6 +13,8 @@ module Uex
 
     Counts = Struct.new(:created, :updated, :removed, :skipped_removals)
 
+    UPDATABLE_ATTRIBUTES = %i[price location location_url terminal_id scu source_updated_at].freeze
+
     def self.notification_lines(result)
       lines = ["- **Shop prices**: #{result.created} created, #{result.updated} updated, #{result.removed} removed"]
 
@@ -28,17 +30,15 @@ module Uex
 
       ItemPrice.transaction do
         held = ItemPrice.where(item_type: self.class::ITEM_TYPE).to_a
-        held_per_location = held.group_by(&:location).transform_values(&:size)
-        listed_per_location = desired.values.group_by { |row| row[:location] }.transform_values(&:size)
+        held_per_location = held.group_by { |item_price| location_key(item_price) }.transform_values(&:size)
+        listed_per_location = desired.values.group_by { |row| location_key(row) }.transform_values(&:size)
 
         # Whatever is left in here once every desired row has claimed its match
         # is a location UEX no longer lists.
-        unclaimed = held.index_by do |item_price|
-          [item_price.item_id, item_price.price_type, item_price.location, item_price.time_range]
-        end
+        unclaimed = held.index_by { |item_price| price_key(item_price) }
 
         desired.each do |key, attributes|
-          item_price = unclaimed.delete(key)
+          item_price = unclaimed.delete(key) || unclaimed.delete(unlinked_key(attributes))
 
           if item_price.blank?
             ItemPrice.create!(attributes)
@@ -46,7 +46,7 @@ module Uex
             next
           end
 
-          item_price.assign_attributes(attributes.slice(:price, :location_url))
+          item_price.assign_attributes(attributes.slice(*UPDATABLE_ATTRIBUTES))
           next unless item_price.changed?
 
           item_price.save!
@@ -54,7 +54,7 @@ module Uex
         end
 
         deletable, ambiguous = unclaimed.values.partition do |item_price|
-          deletable?(item_price.location, listed: listed_per_location, held: held_per_location, live:)
+          deletable?(location_key(item_price), listed: listed_per_location, held: held_per_location, live:)
         end
 
         # Upserts have already applied either way, so fresh prices still land and
@@ -87,6 +87,7 @@ module Uex
           item_type: item_price.item_type,
           item_id: item_price.item_id,
           location: item_price.location,
+          terminal_id: item_price.terminal_id,
           price_type: ItemPrice.price_types.fetch(item_price.price_type),
           time_range: item_price.time_range && ItemPrice.time_ranges.fetch(item_price.time_range),
           price: item_price.price,
@@ -108,6 +109,31 @@ module Uex
       )
 
       rows.size
+    end
+
+    # Accepts a desired attributes hash or a held ItemPrice. A row linked to a
+    # terminal is keyed on the terminal alone, so UEX renaming it updates the
+    # row instead of duplicating it. Syncers that know UEX terminals only by
+    # name leave `terminal_id` nil, which keys them on the name.
+    private def price_key(row)
+      row = row.attributes.symbolize_keys if row.is_a?(ItemPrice)
+      location = row[:terminal_id] ? nil : row[:location]
+
+      [row[:item_id], row[:price_type], location, row[:time_range], row[:terminal_id]]
+    end
+
+    # A row stored before its terminal was known carries the name only; the
+    # first sync that knows the terminal adopts it rather than replacing it.
+    private def unlinked_key(attributes)
+      price_key(attributes.merge(terminal_id: nil)) if attributes[:terminal_id].present?
+    end
+
+    # What `live` and the retention floor are counted by: the terminal where
+    # the syncer knows it, its name otherwise.
+    private def location_key(row)
+      row = row.attributes.symbolize_keys if row.is_a?(ItemPrice)
+
+      row[:terminal_id] || row[:location]
     end
 
     # Decided per terminal, because that is the only granularity at which the

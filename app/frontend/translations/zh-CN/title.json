@@ -160,6 +160,7 @@
         "index": "工具",
         "travelTimes": "旅行时间",
         "cargoGrids": "货物网格",
+        "tradeRoutes": "贸易路线",
         "tours": {
           "index": "行程",
           "add": "创建新行程",

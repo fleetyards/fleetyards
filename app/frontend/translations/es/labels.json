@@ -1680,14 +1680,6 @@
           "bundled": "Snub Crafts incluidos en un paquete",
           "boughtVia": "¿Comprado mediante?"
         },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent"
-          },
-          "origin": "From?",
-          "destination": "To?"
-        },
         "models": {
           "name": "Nombre",
           "classification": "Clasificación",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}"
+        "intro": "El mejor viaje entre dos terminales para tu nave, tu presupuesto y la antigüedad de precios que aceptes. Los precios vienen de UEX y se actualizan cada hora.",
+        "yourRun": "Tu viaje",
+        "ship": "Nave",
+        "noShip": "Elige una nave para ordenar por beneficio por viaje",
+        "noShipShort": "Sin nave",
+        "scu": "%{count} SCU",
+        "budget": "Presupuesto",
+        "budgetPlaceholder": "Opcional",
+        "buyIn": "Comprar en",
+        "anySystem": "Todos",
+        "commodity": "Materia prima",
+        "allCommodities": "Todas las materias primas",
+        "priceAge": "Precios de como máximo",
+        "priceAges": {
+          "day": "24 h",
+          "threeDays": "3 días",
+          "any": "Cualquiera"
+        },
+        "bestRun": "Mejor viaje",
+        "buyAt": "Comprar en",
+        "sellAt": "Vender en",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "salto a %{system}",
+        "pricesFrom": "Precios de %{time}",
+        "otherBuyers": {
+          "one": "+%{count} comprador más",
+          "other": "+%{count} compradores más"
+        },
+        "profitThisRun": "Beneficio del viaje",
+        "profitPerScu": "Beneficio por SCU",
+        "aUecPerScu": "aUEC · %{value} por SCU",
+        "load": "Carga",
+        "loadOf": "%{load} de %{cargo} SCU",
+        "loadLimits": {
+          "hold": "Bodega llena",
+          "stock": "Limitado por existencias",
+          "demand": "Limitado por demanda",
+          "budget": "Limitado por presupuesto"
+        },
+        "youSpend": "Gastas",
+        "pickShipForRun": "Elige una nave para ver el beneficio de un viaje.",
+        "moreRuns": "Más viajes",
+        "runs": "Viajes",
+        "rankBy": "Ordenar por",
+        "profitPerRun": "Beneficio por viaje",
+        "profitPerDistance": "Beneficio por Gm",
+        "shortest": "Más corto",
+        "buySell": "Compra → venta",
+        "spend": "Gasto",
+        "distance": "Distancia",
+        "prices": "Precios",
+        "profit": "Beneficio",
+        "to": "a",
+        "everyBuyer": "Todos los compradores de %{commodity} desde %{terminal}",
+        "empty": "Ningún viaje coincide. Prueba con precios más antiguos u otro sistema.",
+        "loadExplained": "La carga usa los tamaños de caja que aceptan ambas terminales y la mercancía, limitada por las existencias donde compras, la demanda donde vendes y tu presupuesto.",
+        "poweredByUex": "Precios de UEX"
       },
       "hardpoints": {
         "prefix": "Probar configuraciones con",
@@ -2365,6 +2413,7 @@
           "uex_commodity_prices_import": "Sincronización de materias primas UEX",
           "uex_component_prices_import": "Sincronización de componentes UEX",
           "uex_equipment_prices_import": "Sincronización de equipamiento UEX",
+          "uex_trade_routes_sync": "Sincronización de rutas comerciales UEX",
           "new_supporter": "Nuevo patrocinador",
           "rsi_api_blocked": "API de RSI bloqueada",
           "rsi_api_unblocked": "API de RSI restaurada",

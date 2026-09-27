@@ -181,6 +181,14 @@
       "cargoGrids": {
         "addShips": "Aggiungi navi"
       },
+      "tradeRoutes": {
+        "pickShip": "Scegli una nave",
+        "changeShip": "Cambia nave",
+        "editRun": "Modifica",
+        "doneEditing": "Fatto",
+        "backToRuns": "Torna a tutti i viaggi",
+        "showMore": "Mostra altri viaggi"
+      },
       "hangar": {
         "editGroups": "Aggiungi o rimuovi gruppo",
         "editName": "Rinomina la nave",

@@ -1487,9 +1487,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
     t.decimal "price", precision: 15, scale: 2, null: false
     t.integer "price_type", null: false
     t.date "recorded_on", null: false
+    t.uuid "terminal_id"
     t.integer "time_range"
     t.datetime "updated_at", null: false
-    t.index ["item_type", "item_id", "location", "price_type", "time_range", "recorded_on"], name: "index_item_price_snapshots_on_item_and_day", unique: true, nulls_not_distinct: true
+    t.index ["item_type", "item_id", "location", "terminal_id", "price_type", "time_range", "recorded_on"], name: "index_item_price_snapshots_on_item_and_day", unique: true, nulls_not_distinct: true
     t.index ["item_type", "item_id", "recorded_on"], name: "index_item_price_snapshots_on_item_and_recorded_on"
     t.index ["recorded_on"], name: "index_item_price_snapshots_on_recorded_on"
   end
@@ -1502,9 +1503,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
     t.string "location_url"
     t.decimal "price", precision: 15, scale: 2
     t.integer "price_type"
+    t.integer "scu"
+    t.datetime "source_updated_at"
+    t.uuid "terminal_id"
     t.integer "time_range"
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
+    t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
   end
 
   create_table "maintenance_tasks_runs", force: :cascade do |t|
@@ -2210,6 +2215,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end
 
+  create_table "terminals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "available", default: true, null: false
+    t.string "city"
+    t.string "code"
+    t.string "contact_url"
+    t.datetime "created_at", null: false
+    t.string "display_name"
+    t.boolean "has_docking_port", default: false, null: false
+    t.boolean "has_freight_elevator", default: false, null: false
+    t.boolean "has_loading_dock", default: false, null: false
+    t.integer "max_container_size"
+    t.string "moon"
+    t.string "name", null: false
+    t.string "nickname"
+    t.string "orbit"
+    t.string "outpost"
+    t.string "planet"
+    t.boolean "player_owned", default: false, null: false
+    t.datetime "source_updated_at"
+    t.string "space_station"
+    t.string "star_system"
+    t.integer "uex_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["star_system"], name: "index_terminals_on_star_system"
+    t.index ["uex_id"], name: "index_terminals_on_uex_id", unique: true
+  end
+
   create_table "tour_join_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "aasm_state", default: "pending", null: false
     t.datetime "created_at", null: false
@@ -2241,6 +2273,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
     t.index ["fleet_id", "status"], name: "index_tours_on_fleet_id_and_status"
     t.index ["invite_token"], name: "index_tours_on_invite_token", unique: true
     t.index ["slug"], name: "index_tours_on_slug", unique: true
+  end
+
+  create_table "trade_routes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "commodity_id", null: false
+    t.integer "container_sizes", default: [], null: false, array: true
+    t.integer "container_sizes_destination", default: [], null: false, array: true
+    t.integer "container_sizes_origin", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "destination_price_updated_at"
+    t.uuid "destination_terminal_id", null: false
+    t.decimal "distance", precision: 10, scale: 2
+    t.datetime "origin_price_updated_at"
+    t.uuid "origin_terminal_id", null: false
+    t.decimal "price_destination", precision: 15, scale: 2, null: false
+    t.decimal "price_origin", precision: 15, scale: 2, null: false
+    t.integer "scu_destination", default: 0, null: false
+    t.integer "scu_origin", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["commodity_id", "origin_terminal_id", "destination_terminal_id"], name: "index_trade_routes_on_commodity_and_terminals", unique: true
+    t.index ["commodity_id"], name: "index_trade_routes_on_commodity_id"
+    t.index ["destination_terminal_id"], name: "index_trade_routes_on_destination_terminal_id"
+    t.index ["origin_terminal_id"], name: "index_trade_routes_on_origin_terminal_id"
   end
 
   create_table "upgrade_kits", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -2540,6 +2594,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
   add_foreign_key "inventory_transfers", "users", column: "initiated_by_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
+  add_foreign_key "item_prices", "terminals", on_delete: :nullify
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
   add_foreign_key "mission_ships", "mission_teams"
@@ -2586,6 +2641,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade
   add_foreign_key "tours", "fleets"
   add_foreign_key "tours", "users", column: "created_by_id"
+  add_foreign_key "trade_routes", "commodities", on_delete: :cascade
+  add_foreign_key "trade_routes", "terminals", column: "destination_terminal_id", on_delete: :cascade
+  add_foreign_key "trade_routes", "terminals", column: "origin_terminal_id", on_delete: :cascade
   add_foreign_key "user_blueprints", "blueprints", on_delete: :cascade
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify

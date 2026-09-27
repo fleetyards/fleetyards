@@ -10004,6 +10004,7 @@ components:
       - uex_commodity_prices_import
       - uex_component_prices_import
       - uex_equipment_prices_import
+      - uex_trade_routes_sync
       - new_supporter
       - rsi_api_blocked
       - rsi_api_unblocked
@@ -10022,6 +10023,7 @@ components:
       - UEX_COMMODITY_PRICES_IMPORT
       - UEX_COMPONENT_PRICES_IMPORT
       - UEX_EQUIPMENT_PRICES_IMPORT
+      - UEX_TRADE_ROUTES_SYNC
       - NEW_SUPPORTER
       - RSI_API_BLOCKED
       - RSI_API_UNBLOCKED
@@ -15277,6 +15279,15 @@ components:
         locationUrl:
           type: string
           format: uri
+        scu:
+          type:
+          - integer
+          - 'null'
+        sourceUpdatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         createdAt:
           type: string
           format: date-time

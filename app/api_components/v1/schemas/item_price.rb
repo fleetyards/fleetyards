@@ -16,6 +16,12 @@ module V1
           itemType: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum,
           location: {type: :string},
           locationUrl: {type: :string, format: :uri},
+
+          # Commodity prices only: the SCU the terminal has to sell or will take
+          # at this price, and when UEX last saw it. Null for everything else,
+          # and for a stock nobody has reported.
+          scu: {type: [:integer, :null]},
+          sourceUpdatedAt: {type: [:string, :null], format: "date-time"},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

@@ -12,4 +12,7 @@ json.price_type item_price.price_type
 json.location item_price.location
 json.location_url item_price.location_url
 
+json.scu item_price.scu
+json.source_updated_at item_price.source_updated_at&.utc&.iso8601
+
 json.partial! "api/shared/dates", record: item_price

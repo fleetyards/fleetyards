@@ -1680,14 +1680,6 @@
           "bundled": "Bundled Snub Crafts",
           "boughtVia": "Bought via?"
         },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent"
-          },
-          "origin": "From?",
-          "destination": "To?"
-        },
         "models": {
           "name": "Name",
           "classification": "Classification",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}"
+        "intro": "The best single run between two terminals for the ship you fly, the money you have and how fresh you want the prices. Prices come from UEX and refresh every hour.",
+        "yourRun": "Your run",
+        "ship": "Ship",
+        "noShip": "Pick a ship to rank by what one run earns",
+        "noShipShort": "No ship",
+        "scu": "%{count} SCU",
+        "budget": "Budget",
+        "budgetPlaceholder": "Optional",
+        "buyIn": "Buy in",
+        "anySystem": "Any",
+        "commodity": "Commodity",
+        "allCommodities": "All commodities",
+        "priceAge": "Prices no older than",
+        "priceAges": {
+          "day": "24 h",
+          "threeDays": "3 days",
+          "any": "Any"
+        },
+        "bestRun": "Best run",
+        "buyAt": "Buy at",
+        "sellAt": "Sell at",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "jump to %{system}",
+        "pricesFrom": "Prices from %{time}",
+        "otherBuyers": {
+          "one": "+%{count} other place buys it",
+          "other": "+%{count} other places buy it"
+        },
+        "profitThisRun": "Profit this run",
+        "profitPerScu": "Profit per SCU",
+        "aUecPerScu": "aUEC · %{value} per SCU",
+        "load": "Load",
+        "loadOf": "%{load} of %{cargo} SCU",
+        "loadLimits": {
+          "hold": "Hold full",
+          "stock": "Limited by stock",
+          "demand": "Limited by demand",
+          "budget": "Limited by budget"
+        },
+        "youSpend": "You spend",
+        "pickShipForRun": "Pick a ship to see what one run earns.",
+        "moreRuns": "More runs",
+        "runs": "Runs",
+        "rankBy": "Rank by",
+        "profitPerRun": "Profit per run",
+        "profitPerDistance": "Profit per Gm",
+        "shortest": "Shortest",
+        "buySell": "Buy → sell",
+        "spend": "Spend",
+        "distance": "Distance",
+        "prices": "Prices",
+        "profit": "Profit",
+        "to": "to",
+        "everyBuyer": "Every place that buys %{commodity} from %{terminal}",
+        "empty": "No runs match. Try older prices or another system.",
+        "loadExplained": "Load uses the crate sizes both terminals and the commodity accept, capped by stock where you buy, demand where you sell and your budget.",
+        "poweredByUex": "Prices powered by UEX"
       },
       "hardpoints": {
         "prefix": "Tryout Loadouts with",
@@ -2379,6 +2427,7 @@
           "uex_commodity_prices_import": "UEX Commodity Sync",
           "uex_component_prices_import": "UEX Component Sync",
           "uex_equipment_prices_import": "UEX Equipment Sync",
+          "uex_trade_routes_sync": "UEX Trade Route Sync",
           "new_supporter": "New Supporter",
           "rsi_api_blocked": "RSI API Blocked",
           "rsi_api_unblocked": "RSI API Restored",

@@ -112,6 +112,9 @@ oauth-twitch:
   description: "Twitch login"
   permanent: true
 
+trade_routes:
+  description: "Trade routes — profitable commodity runs between two terminals, ranked for a chosen ship"
+
 # What makes a payout ledger exist at all, and after the fleet_tours split it
 # owns one surface rather than two: the standalone tour under /tools/ and its
 # ledger. Anything belonging to a fleet -- a fleet's own tours, and the ledger

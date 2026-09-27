@@ -1680,14 +1680,6 @@
           "bundled": "Mitgelieferte Snub Crafts",
           "boughtVia": "Gekauft über?"
         },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent"
-          },
-          "origin": "From?",
-          "destination": "To?"
-        },
         "models": {
           "name": "Name",
           "classification": "Klassifizierung",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}"
+        "intro": "Der beste einzelne Flug zwischen zwei Terminals für dein Schiff, dein Budget und so aktuelle Preise, wie du willst. Die Preise stammen von UEX und werden stündlich aktualisiert.",
+        "yourRun": "Dein Flug",
+        "ship": "Schiff",
+        "noShip": "Wähle ein Schiff, um nach dem Gewinn pro Flug zu sortieren",
+        "noShipShort": "Kein Schiff",
+        "scu": "%{count} SCU",
+        "budget": "Budget",
+        "budgetPlaceholder": "Optional",
+        "buyIn": "Kaufen in",
+        "anySystem": "Alle",
+        "commodity": "Ware",
+        "allCommodities": "Alle Waren",
+        "priceAge": "Preise nicht älter als",
+        "priceAges": {
+          "day": "24 Std.",
+          "threeDays": "3 Tage",
+          "any": "Alle"
+        },
+        "bestRun": "Bester Flug",
+        "buyAt": "Kaufen bei",
+        "sellAt": "Verkaufen bei",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "Sprung nach %{system}",
+        "pricesFrom": "Preise von %{time}",
+        "otherBuyers": {
+          "one": "+%{count} weiterer Abnehmer",
+          "other": "+%{count} weitere Abnehmer"
+        },
+        "profitThisRun": "Gewinn pro Flug",
+        "profitPerScu": "Gewinn pro SCU",
+        "aUecPerScu": "aUEC · %{value} pro SCU",
+        "load": "Ladung",
+        "loadOf": "%{load} von %{cargo} SCU",
+        "loadLimits": {
+          "hold": "Frachtraum voll",
+          "stock": "Begrenzt durch Vorrat",
+          "demand": "Begrenzt durch Nachfrage",
+          "budget": "Begrenzt durch Budget"
+        },
+        "youSpend": "Du gibst aus",
+        "pickShipForRun": "Wähle ein Schiff, um den Gewinn pro Flug zu sehen.",
+        "moreRuns": "Weitere Flüge",
+        "runs": "Flüge",
+        "rankBy": "Sortieren nach",
+        "profitPerRun": "Gewinn pro Flug",
+        "profitPerDistance": "Gewinn pro Gm",
+        "shortest": "Kürzeste",
+        "buySell": "Kauf → Verkauf",
+        "spend": "Einsatz",
+        "distance": "Entfernung",
+        "prices": "Preise",
+        "profit": "Gewinn",
+        "to": "nach",
+        "everyBuyer": "Alle Abnehmer für %{commodity} von %{terminal}",
+        "empty": "Keine passenden Flüge. Versuche ältere Preise oder ein anderes System.",
+        "loadExplained": "Die Ladung nutzt die Kistengrößen, die beide Terminals und die Ware erlauben, begrenzt durch den Vorrat beim Kauf, die Nachfrage beim Verkauf und dein Budget.",
+        "poweredByUex": "Preise von UEX"
       },
       "hardpoints": {
         "prefix": "Konfigurationen testen mit",
@@ -2365,6 +2413,7 @@
           "uex_commodity_prices_import": "UEX Waren-Sync",
           "uex_component_prices_import": "UEX Komponenten-Sync",
           "uex_equipment_prices_import": "UEX Ausrüstungs-Sync",
+          "uex_trade_routes_sync": "UEX Handelsrouten-Sync",
           "new_supporter": "Neuer Unterstützer",
           "rsi_api_blocked": "RSI-API blockiert",
           "rsi_api_unblocked": "RSI-API wiederhergestellt",

@@ -118,7 +118,7 @@ module Uex
           price:
         }
 
-        key = attributes.values_at(:item_id, :price_type, :location, :time_range)
+        key = price_key(attributes)
 
         # Two UEX terminals can collapse onto one location string. Model#sold_at
         # sorts by price then uniqs by location, so the cheapest is the one that
