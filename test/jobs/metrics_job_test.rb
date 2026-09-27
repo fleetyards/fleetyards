@@ -188,6 +188,7 @@ class MetricsJobTest < ActiveJob::TestCase
   end
 
   test "#perform moves a visit flagged installed after its day was rolled up" do
+    visit_on(2.days.ago, os: "iOS")
     visit = visit_on(Time.current, os: "Android")
     MetricsJob.new.perform
 
@@ -196,6 +197,19 @@ class MetricsJobTest < ActiveJob::TestCase
 
     assert_equal 1, visits_by_os_on(Time.current, os: "Android", installed: true)
     assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
+  end
+
+  test "#perform recomputes an old OS rollup day whose visits are still retained" do
+    day = 40.days.ago.beginning_of_day
+    visit_on(day - 1.hour, os: "Android")
+    visit = visit_on(day + 1.hour, os: "Android")
+    MetricsJob.new.perform
+
+    visit.update!(installed: true)
+    MetricsJob.new.perform
+
+    assert_equal 1, visits_by_os_on(day, os: "Android", installed: true)
+    assert_equal 0, visits_by_os_on(day, os: "Android", installed: false)
   end
 
   test "#perform keeps an OS rollup day whose visits were already purged" do

@@ -56,13 +56,15 @@ class MetricsJob < ApplicationJob
   # The gem recomputes from the newest stored day and upserts the groups it finds,
   # so a visit flagged installed after that day was rolled up would leave its old
   # `installed: false` row behind. That day is cleared before it is recomputed, but
-  # only while its visits are still there to rebuild it from: once
-  # `Cleanup::VisitsJob` has purged them, the stored counts are all that is left.
+  # only while all of its visits are still there to rebuild it from. The purge
+  # removes visits oldest first, so any visit older than the day proves the day is
+  # intact; once `Cleanup::VisitsJob` has reached it, the stored counts are all
+  # that is left.
   def track_visits_by_os(visits)
     Rollup.transaction do
       stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
       latest = stored.maximum(:time)
-      if latest && latest.to_date > Cleanup::VisitsJob::RETENTION.ago.to_date
+      if latest && Ahoy::Visit.where(started_at: ...latest).exists?
         stored.where(time: latest).delete_all
       end
 
