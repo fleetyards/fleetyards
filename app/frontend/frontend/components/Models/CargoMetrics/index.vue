@@ -133,7 +133,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: $gray-light;

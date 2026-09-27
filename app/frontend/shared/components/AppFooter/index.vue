@@ -253,6 +253,26 @@ const currentYear = computed(() => new Date().getFullYear());
   @apply flex flex-wrap items-center justify-center gap-x-4 gap-y-2;
 }
 
+/* The links are one line of small text and the icons narrow glyphs; on a touch
+   screen their hit area grows to 32px without moving anything. */
+@media (pointer: coarse) {
+  .app-footer__links :slotted(a),
+  .app-footer__social a {
+    position: relative;
+  }
+
+  .app-footer__links :slotted(a)::after,
+  .app-footer__social a::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 32px);
+    height: max(100%, 32px);
+    transform: translate(-50%, -50%);
+  }
+}
+
 .app-footer__social {
   @apply flex items-start justify-end gap-4 text-3xl;
   grid-area: social;

@@ -439,14 +439,16 @@ const cellHeight = (span: number) =>
     margin-bottom: 18px;
   }
 
+  // The end buttons round their own corners rather than the group clipping
+  // them, since a clip would also cut their touch hit area back to 25px.
   &__seg {
     display: inline-flex;
     border: 1px solid rgba($gray-light, 0.28);
     border-radius: 4px;
-    overflow: hidden;
   }
 
   &__seg-btn {
+    @include touch-tap-target;
     padding: 5px 14px;
     background: transparent;
     border: 0;
@@ -456,6 +458,14 @@ const cellHeight = (span: number) =>
     text-transform: uppercase;
     color: $gray;
     cursor: pointer;
+
+    &:first-child {
+      border-radius: 3px 0 0 3px;
+    }
+
+    &:last-child {
+      border-radius: 0 3px 3px 0;
+    }
 
     &--active {
       background: rgba($primary, 0.18);
@@ -483,6 +493,7 @@ const cellHeight = (span: number) =>
     gap: 8px;
 
     &--toggle {
+      @include touch-tap-target;
       border: 0;
       background: transparent;
       padding: 0;
@@ -523,7 +534,7 @@ const cellHeight = (span: number) =>
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9.5px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -683,6 +694,22 @@ const cellHeight = (span: number) =>
     background: transparent;
     padding: 0;
     cursor: pointer;
+
+    // The pips end 6px above, so the touch hit area grows downward only, into
+    // the empty space above the reset button, and never covers the lowest pip.
+    @media (pointer: coarse) {
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 32px;
+        height: 30px;
+        transform: translateX(-50%);
+      }
+    }
   }
 
   &__icon {

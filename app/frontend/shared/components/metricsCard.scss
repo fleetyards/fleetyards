@@ -191,6 +191,7 @@
   }
 
   &__toggle {
+    @include touch-tap-target;
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 10px;
     letter-spacing: 0.12em;

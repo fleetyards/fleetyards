@@ -34,6 +34,26 @@ $tablet-breakpoint: 768px;
 $desktop-breakpoint: 992px;
 $large-desktop-breakpoint: 1800px;
 
+$tap-target-min: 32px;
+
+// Grows a small control's hit area to the minimum on a touch screen without
+// changing how it looks. The control must not use its own `::after`.
+@mixin touch-tap-target($min: $tap-target-min) {
+  @media (pointer: coarse) {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, #{$min});
+      height: max(100%, #{$min});
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
 // Where the notification center splits into a list and a reading pane. Below
 // it the two panes would each be too narrow to read, so one shows at a time.
 $notifications-two-pane-breakpoint: 1200px;
