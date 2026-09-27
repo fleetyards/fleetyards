@@ -757,6 +757,8 @@
         "onSale": "Im Angebot",
         "playerOwnable": "Für Spieler erwerbbar?",
         "ingameOnly": "Nur im Spiel",
+        "canLandOnPlanets": "Kann auf Planeten landen",
+        "cannotLandOnPlanets": "Kann nicht auf Planeten landen",
         "salesPage": "Verkaufsseite",
         "addons": "Module & Upgrade-Kits",
         "storeImage": "Shop-Bild",
@@ -1687,6 +1689,7 @@
           "manufacturer": "Hersteller",
           "onSale": "Im Angebot",
           "ingameOnly": "Nur im Spiel",
+          "canLandOnPlanets": "Kann auf Planeten landen",
           "size": "Größe",
           "dockSize": "Dock-Größe",
           "price": "Preis",
@@ -1878,6 +1881,12 @@
         "aUecPerScu": "aUEC · %{value} pro SCU",
         "load": "Ladung",
         "loadOf": "%{load} von %{cargo} SCU",
+        "thisShip": "Dieses Schiff",
+        "unflyable": {
+          "origin": "%{ship} kann bei %{terminal} nicht landen",
+          "destination": "%{ship} kann bei %{terminal} nicht landen",
+          "both": "%{ship} kann an keinem Ende landen"
+        },
         "loadLimits": {
           "hold": "Frachtraum voll",
           "stock": "Begrenzt durch Vorrat",

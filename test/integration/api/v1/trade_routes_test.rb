@@ -95,6 +95,48 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /trade-routes ranks the runs a ship that can't land can fly first" do
+    hull = station_only_ship
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => hull.slug}} do
+      assert_equal [@low_stock.id, @best_margin.id, @small_crates.id], ids
+      assert_equal [nil, "destination", "origin"], parsed_body["items"].pluck("unflyableReason")
+    end
+  end
+
+  test "GET /trade-routes keeps the figures of a run a ship can't fly" do
+    hull = station_only_ship
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => hull.slug}} do
+      run = parsed_body["items"].find { |item| item["id"] == @best_margin.id }
+      assert_equal [64, 3200], run.values_at("loadableScu", "profitPerRun")
+    end
+  end
+
+  test "GET /trade-routes marks a run with both ends on a surface" do
+    outpost = create(:terminal, name: "Shubin SM0-10", star_system: "Stanton", outpost: "Shubin SM0-10")
+    both = create_route(@gold, @area18, outpost, price_origin: 100, price_destination: 110)
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => station_only_ship.slug}} do
+      assert_equal "both", parsed_body["items"].find { |item| item["id"] == both.id }["unflyableReason"]
+    end
+  end
+
+  test "GET /trade-routes picks a purchase's best destination among those a ship can fly" do
+    to_station = create_route(@gold, @arc, @ruin, price_origin: 100, price_destination: 130, distance: 20)
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => station_only_ship.slug, "grouped" => true}} do
+      assert_includes ids, to_station.id
+      assert_not_includes ids, @best_margin.id
+    end
+  end
+
+  test "GET /trade-routes marks nothing for a ship that lands" do
+    assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug}} do
+      assert(parsed_body["items"].all? { |item| item["unflyableReason"].nil? })
+    end
+  end
+
   test "GET /trade-routes says what limits each load" do
     assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug}} do
       best, low_stock = parsed_body["items"]
@@ -208,6 +250,16 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
     Flipper.disable("trade_routes")
 
     assert_api_response :get, 403
+  end
+
+  # The same 64 SCU hold as the ship in setup, on a ship that can't land.
+  private def station_only_ship
+    ship = create(:model, name: "Hull C", can_land_on_planets: false)
+    hold = create(:cargo_hold, parent: ship, capacity_scu: 64, max_container_size_scu: 32)
+    {32 => 2, 16 => 4, 8 => 8, 4 => 16, 2 => 32, 1 => 64}.each do |size, quantity|
+      CargoHoldContainerCapacity.create!(cargo_hold: hold, container_size_scu: size, max_quantity: quantity)
+    end
+    ship
   end
 
   private def ids

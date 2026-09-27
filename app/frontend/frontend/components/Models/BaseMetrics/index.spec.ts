@@ -85,3 +85,43 @@ describe("the in-game only chip", () => {
     );
   });
 });
+
+describe("the cannot-land chip", () => {
+  it("names a ship that can't set down on a planet", () => {
+    const wrapper = mountCard(
+      ModelStateEnum.FLIGHT,
+      {},
+      { canLandOnPlanets: false },
+    );
+
+    expect(wrapper.find('[data-test="model-cannot-land-chip"]').text()).toBe(
+      "labels.model.cannotLandOnPlanets",
+    );
+  });
+
+  it("leaves a ship that lands unmarked", () => {
+    const wrapper = mountCard(
+      ModelStateEnum.FLIGHT,
+      {},
+      { canLandOnPlanets: true },
+    );
+
+    expect(wrapper.find('[data-test="model-cannot-land-chip"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("stays hidden for a payload cached before the field existed", () => {
+    const wrapper = mountCard(
+      ModelStateEnum.FLIGHT,
+      {},
+      {
+        canLandOnPlanets: undefined,
+      },
+    );
+
+    expect(wrapper.find('[data-test="model-cannot-land-chip"]').exists()).toBe(
+      false,
+    );
+  });
+});

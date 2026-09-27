@@ -14,6 +14,8 @@ type Props = {
   rank: number;
   // The largest figure in the list, which the profit bar is drawn against.
   topValue: number;
+  // Named in the reason a run can't be flown.
+  shipName?: string;
 };
 
 const props = defineProps<Props>();
@@ -25,6 +27,22 @@ const currentRoute = useRoute();
 const { figure, location, pricesAge, limitLabel } = useTradeRouteFormat();
 
 const hasShip = computed(() => props.route.loadableScu != null);
+
+// Greyed out rather than dropped: the pilot sees why the obvious run is out.
+const unflyable = computed(() => {
+  const reason = props.route.unflyableReason;
+  if (!reason) return undefined;
+
+  const terminal =
+    reason === "destination"
+      ? props.route.destinationTerminal.name
+      : props.route.originTerminal.name;
+
+  return t(`labels.tradeRoutes.unflyable.${reason}`, {
+    ship: props.shipName ?? t("labels.tradeRoutes.thisShip"),
+    terminal,
+  });
+});
 
 const value = computed(() =>
   hasShip.value ? (props.route.profitPerRun ?? 0) : props.route.profitPerScu,
@@ -48,7 +66,11 @@ const othersLink = computed(() => ({
 </script>
 
 <template>
-  <div class="run-row" role="row">
+  <div
+    class="run-row"
+    :class="{ 'run-row--unflyable': !!unflyable }"
+    role="row"
+  >
     <span class="run-row__rank" role="cell">{{ rank }}</span>
 
     <span class="run-row__commodity" role="cell">
@@ -87,6 +109,10 @@ const othersLink = computed(() => ({
         <span class="run-row__where">{{
           location(route.destinationTerminal)
         }}</span>
+      </span>
+      <span v-if="unflyable" class="run-row__unflyable">
+        <i class="fa-light fa-ban" aria-hidden="true" />
+        {{ unflyable }}
       </span>
     </span>
 
@@ -160,6 +186,7 @@ const othersLink = computed(() => ({
 
 .run-row__legs {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   min-width: 0;
@@ -188,6 +215,23 @@ const othersLink = computed(() => ({
 
 .run-row__limit--budget {
   color: #b9a3e3;
+}
+
+// Dimmed, not hidden, and the reason itself stays at full strength: it is
+// the one thing on the row the pilot needs to read.
+.run-row--unflyable > :not(.run-row__legs),
+.run-row--unflyable .run-row__leg,
+.run-row--unflyable .run-row__arrow {
+  opacity: 0.45;
+}
+
+.run-row__unflyable {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  gap: 6px;
+  color: #e0a15c;
+  font-size: 0.8rem;
 }
 
 .run-row__profit {

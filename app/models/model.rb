@@ -8,6 +8,7 @@
 #  active                            :boolean          default(TRUE)
 #  adi_map                           :boolean          default(FALSE)
 #  beam                              :decimal(15, 2)   default(0.0), not null
+#  can_land_on_planets               :boolean          default(TRUE), not null
 #  cargo                             :decimal(15, 2)
 #  cargo_holds                       :string
 #  classification                    :string(255)
@@ -579,7 +580,7 @@ class Model < ApplicationRecord
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
       "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
-      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only",
+      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only", "can_land_on_planets",
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "min_crew", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "positions_need_curation", "price",

@@ -36,6 +36,10 @@ module V1
           loadableScu: {type: [:integer, :null]},
           loadLimit: ::V1::Schemas::Enums::NullableTradeRouteLoadLimitEnum,
 
+          # Set when the chosen ship can't land on a planet and an end of the
+          # run is on one. The figures stay, so the run can still be shown.
+          unflyableReason: ::V1::Schemas::Enums::NullableTradeRouteUnflyableReasonEnum,
+
           # In a grouped list, how many other terminals buy this commodity from
           # the same origin. Null in an ungrouped one.
           otherDestinations: {type: [:integer, :null]},

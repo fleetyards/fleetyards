@@ -70,6 +70,7 @@ class TradeRoute < ApplicationRecord
   }
 
   LOAD_LIMITS = %w[hold stock demand budget].freeze
+  UNFLYABLE_REASONS = %w[origin destination both].freeze
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[commodity_id origin_terminal_id destination_terminal_id]

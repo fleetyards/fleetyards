@@ -23,7 +23,7 @@ module Api
           .ransack(trade_routes_query_params)
 
         @grouped = grouped
-        @trade_routes = ::TradeRoutes::Ranking.new(@q.result, capacity: ship_capacity, budget:)
+        @trade_routes = ::TradeRoutes::Ranking.new(@q.result, capacity: ship_capacity, budget:, lands: ship.nil? || ship.can_land_on_planets)
           .apply(sorts, grouped:)
           .page(page_params)
           .per(per_page(TradeRoute))
@@ -41,13 +41,17 @@ module Api
         TradeRoute::ALLOWED_SORTING_PARAMS - TradeRoute::SHIP_SORTING_PARAMS
       end
 
+      private def ship
+        return @ship if defined?(@ship)
+
+        slug = trade_routes_query_params.delete(:model_slug)
+        @ship = (Model.visible.active.find_by(slug: slug.to_s.downcase) if slug.present?)
+      end
+
       private def ship_capacity
         return @ship_capacity if defined?(@ship_capacity)
 
-        slug = trade_routes_query_params.delete(:model_slug)
-        model = Model.visible.active.find_by(slug: slug.to_s.downcase) if slug.present?
-
-        @ship_capacity = model && ::TradeRoutes::ShipCapacity.new(model)
+        @ship_capacity = ship && ::TradeRoutes::ShipCapacity.new(ship)
       end
 
       private def trade_routes_query_params

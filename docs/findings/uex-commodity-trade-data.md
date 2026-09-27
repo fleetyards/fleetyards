@@ -45,3 +45,7 @@ UEX writes from the player's side, so `price_buy` is what a player pays and `pri
 - **One purchase floods the list.** Taranite bought at Samson & Son's filled six of the top eight rows with different destinations. That is why runs are grouped by commodity and buy terminal.
 - **The hold is rarely the limit.** Among the top runs for a 120 SCU ship with a 2M budget, most loads were capped by stock (52 SCU of Audio-Visual Equipment) or budget, not by the hold. That is why each run says what limits its load.
 - **Stock, demand and budget come in crates.** A 5 SCU stock cannot fill an 8 SCU crate, so these limits round down to whole crates of the smallest allowed size.
+
+## Station or surface
+
+`orbit_name` names the parent body for every terminal: "ArcCorp Lagrange Point 1" for ARC-L1, and "ArcCorp" for a city on ArcCorp. So it cannot tell a station from a surface terminal. What can is the kind of place: `space_station` versus `city` or `outpost`. On 2026-09-26 that split matched UEX's own route flags (`is_space_station_*`, `is_on_ground_*`) on every one of the 8,997 routes: 67 stations and 93 surface terminals, plus one "Admin - UEX Station" with no place recorded and no routes. `Terminal::SURFACE_SQL` encodes the rule. A terminal with no place recorded counts as neither.

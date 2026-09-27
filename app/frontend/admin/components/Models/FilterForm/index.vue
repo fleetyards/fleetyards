@@ -36,6 +36,7 @@ const prefillFormValues = () => {
     frontViewBlank: filters.value.frontViewBlank,
     positionsNeedCurationEq: filters.value.positionsNeedCurationEq,
     ingameOnlyEq: filters.value.ingameOnlyEq,
+    canLandOnPlanetsEq: filters.value.canLandOnPlanetsEq,
     dimensionsDrifted: filters.value.dimensionsDrifted,
     dimensionsMeasuredAtNull: filters.value.dimensionsMeasuredAtNull,
   };
@@ -142,6 +143,14 @@ watch(
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="ingameOnlyEq"
+    />
+
+    <RadioList
+      v-model="form.canLandOnPlanetsEq"
+      :label="t('labels.filters.models.canLandOnPlanets')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="canLandOnPlanetsEq"
     />
 
     <RadioList
