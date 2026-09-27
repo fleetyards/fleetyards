@@ -175,10 +175,24 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 1, visits_rolled_up_on(2.days.ago)
   end
 
-  private def visit_on(time, user: nil)
+  test "#perform rolls up visits per day by OS and installed" do
+    2.times { visit_on(2.days.ago, os: "Android", installed: true) }
+    visit_on(2.days.ago, os: "Android")
+    visit_on(2.days.ago, os: "iOS")
+
+    MetricsJob.new.perform
+
+    assert_equal 2, visits_by_os_on(2.days.ago, os: "Android", installed: true)
+    assert_equal 1, visits_by_os_on(2.days.ago, os: "Android", installed: false)
+    assert_equal 1, visits_by_os_on(2.days.ago, os: "iOS", installed: false)
+  end
+
+  private def visit_on(time, user: nil, os: nil, installed: false)
     Ahoy::Visit.create!(
       started_at: time,
       user:,
+      os:,
+      installed:,
       visit_token: SecureRandom.uuid,
       visitor_token: SecureRandom.uuid
     )
@@ -186,6 +200,15 @@ class MetricsJobTest < ActiveJob::TestCase
 
   private def visits_rolled_up_on(time)
     Rollup.where(name: "Visits", interval: "day", time: time.to_date).sum(:value)
+  end
+
+  private def visits_by_os_on(time, os:, installed:)
+    Rollup.where(
+      name: MetricsJob::ROLLUP_VISITS_BY_OS,
+      interval: "day",
+      time: time.to_date,
+      dimensions: {os:, installed:}
+    ).sum(:value)
   end
 
   private def wishlist_additions(model)

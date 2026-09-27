@@ -14,6 +14,10 @@ class MetricsJob < ApplicationJob
   # the plain series back would have to know to ask for the empty dimensions.
   ROLLUP_WISHLIST_BY_MODEL = "Vehicle Wish by Model"
 
+  # Visits per OS, split by whether they ran as the installed app, so the share
+  # of installed use per platform can be read back after the visits are purged.
+  ROLLUP_VISITS_BY_OS = "Visits by OS"
+
   def perform
     User.rollup("Registrations", interval: "month")
     User.rollup("Registrations", interval: "year")
@@ -43,8 +47,10 @@ class MetricsJob < ApplicationJob
   # is the only safe one here for the reason `track_ship_views` gives: a visit
   # is purged after a month, and a day is always complete before that happens.
   def track_visits
-    Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
-      .rollup("Visits", interval: "day", column: :started_at)
+    visits = Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
+
+    visits.rollup("Visits", interval: "day", column: :started_at)
+    visits.group(:os, :installed).rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at)
   end
 
   # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
