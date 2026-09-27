@@ -50,9 +50,22 @@ class MetricsJob < ApplicationJob
     visits = Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
 
     visits.rollup("Visits", interval: "day", column: :started_at)
-    # A NULL flag is a visit from before it was recorded, not a browser visit.
-    visits.where.not(installed: nil).group(:os, :installed)
-      .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at)
+    track_visits_by_os(visits)
+  end
+
+  # The gem recomputes from the newest stored day and upserts the groups it finds,
+  # so a visit flagged installed after that day was rolled up would leave its old
+  # `installed: false` row behind. That day is cleared before it is recomputed.
+  def track_visits_by_os(visits)
+    Rollup.transaction do
+      stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
+      latest = stored.maximum(:time)
+      stored.where(time: latest).delete_all if latest
+
+      # A NULL flag is a visit from before it was recorded, not a browser visit.
+      visits.where.not(installed: nil).group(:os, :installed)
+        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at)
+    end
   end
 
   # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but

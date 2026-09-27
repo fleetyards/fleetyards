@@ -187,6 +187,17 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 1, visits_by_os_on(2.days.ago, os: "iOS", installed: false)
   end
 
+  test "#perform moves a visit flagged installed after its day was rolled up" do
+    visit = visit_on(Time.current, os: "Android")
+    MetricsJob.new.perform
+
+    visit.update!(installed: true)
+    MetricsJob.new.perform
+
+    assert_equal 1, visits_by_os_on(Time.current, os: "Android", installed: true)
+    assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
+  end
+
   test "#perform leaves visits from before the installed flag out of the OS rollup" do
     visit_on(2.days.ago, os: "Android", installed: nil)
 
