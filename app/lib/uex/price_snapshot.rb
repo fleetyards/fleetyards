@@ -111,13 +111,15 @@ module Uex
       rows.size
     end
 
-    # Accepts a desired attributes hash or a held ItemPrice. Syncers that know
-    # UEX terminals only by name leave `terminal_id` nil, which keys them on the
-    # name alone.
+    # Accepts a desired attributes hash or a held ItemPrice. A row linked to a
+    # terminal is keyed on the terminal alone, so UEX renaming it updates the
+    # row instead of duplicating it. Syncers that know UEX terminals only by
+    # name leave `terminal_id` nil, which keys them on the name.
     private def price_key(row)
       row = row.attributes.symbolize_keys if row.is_a?(ItemPrice)
+      location = row[:terminal_id] ? nil : row[:location]
 
-      row.values_at(:item_id, :price_type, :location, :time_range, :terminal_id)
+      [row[:item_id], row[:price_type], location, row[:time_range], row[:terminal_id]]
     end
 
     # A row stored before its terminal was known carries the name only; the

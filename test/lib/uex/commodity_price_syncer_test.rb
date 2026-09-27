@@ -77,6 +77,20 @@ module Uex
       assert_equal [102, 104, 105], Terminal.order(:uex_id).pluck(:uex_id)
     end
 
+    test "#run updates a price in place when UEX renames its terminal" do
+      sync
+      renamed = uex_fixture("terminals").map do |row|
+        (row["id"] == 102) ? row.merge("name" => "Admin - ARC-L1 Wide Forest") : row
+      end
+
+      result = sync(terminals: renamed)
+
+      price = prices_for(@commodities[:agricium_ore]).sole
+      assert_equal "Admin - ARC-L1 Wide Forest", price.location
+      assert_equal 0, result.created
+      assert_equal 0, result.removed
+    end
+
     test "#run adopts a price stored before its terminal was known" do
       legacy = create(:item_price, item: @commodities[:agricium_ore], price_type: "buy", time_range: nil,
         location: "Admin - ARC-L1", location_url: nil, price: 2000)
