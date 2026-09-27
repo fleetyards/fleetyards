@@ -42,13 +42,12 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 6. `ItemPrice` gains `scu` and `sourceUpdatedAt`. Availability dedupes per terminal instead of per name.
 7. The `trade_routes` flag is in `config/feature_flags.yml`, and the schema is regenerated.
 
-### Phase 5 — Frontend
-1. `/tools/trade-routes/`: page, route in `pages/tools/routes.ts`, route-name union, ToolsNav item, tools landing card, SSR meta in `config/routes/frontend_routes.rb`. `/trade-routes/` redirects there server-side and in the router.
-2. Ship picker: wrap `Models/PickerModal` like `CargoGrids/Models/PickerModal` (hangar-only toggle when signed in).
-3. Mobile-first route rows: commodity, origin → destination with location, loadable SCU, profit, investment, distance, price freshness from `date_modified`.
-4. Filters for system, commodity, origin, destination. UEX credit.
-5. Behind the `trade_routes` flag, checked through `FeatureFlagName`.
-6. Labels in all 7 locales. Reuse or replace the orphaned `labels.tradeRoutes` / `labels.filters.tradeRoutes` keys.
+### Phase 5 — Frontend (run-planner design, decided in the issue body)
+1. `/tools/trade-routes/` (route `trade-routes`, `meta.feature: TRADE_ROUTES`) plus a ToolsNav entry behind the flag. `/trade-routes/` redirects there: server-side with a 301, and in the client router.
+2. The routes show straight away. A two-row run bar: ship (the button opens the standard `Models/PickerModal` via `TradeRoutes/PickerModal`) and budget; buy-in system, commodity and price age (24 h / 3 days (default) / any). On a phone it folds into a summary with chips. State lives in the URL (`ship`, `budget`, `system`, `commodity`, `priceAge`, `origin`, `s`) via `useTradeRouteRun`, which builds the API query.
+3. Best-run card (the first run of page 1): buy/sell legs, distance, jump, price age, profit, a load bar with what limits it, and spend. Then ranked `RunRow`s (a grid on desktop, a card on a phone) with "+N other places buy it", which opens the ungrouped list for that purchase (`origin`).
+4. API additions for it: `budget`, `maxPriceAgeHours`, `grouped` (one row per commodity and buy terminal, `otherDestinations`), and `loadLimit` (hold / stock / demand / budget).
+5. UEX credit and load explanation in the footer. Labels in all 7 locales.
 
 ## Intent Verification
 
@@ -101,4 +100,4 @@ Resolved by research: UEX's terms (https://uexcorp.space/about/terms) do not req
 - [x] Phase 2 — Prices on terminals (API exposure deferred to phase 4)
 - [x] Phase 3 — Trade routes sync
 - [x] Phase 4 — API
-- [ ] Phase 5 — Frontend
+- [x] Phase 5 — Frontend (not yet seen in a running app)
