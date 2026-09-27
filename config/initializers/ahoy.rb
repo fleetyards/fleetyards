@@ -15,8 +15,11 @@ class Ahoy::Store < Ahoy::DatabaseStore
     mark_installed if data[:name] == "$view" && installed_view?(data[:properties])
   end
 
+  # Properties arrive as whatever JSON the client posted, not necessarily an object.
   private def installed_view?(properties)
-    ActiveModel::Type::Boolean.new.cast(properties.to_h.stringify_keys["installed"]) == true
+    return false unless properties.is_a?(Hash)
+
+    ActiveModel::Type::Boolean.new.cast(properties.stringify_keys["installed"]) == true
   end
 
   private def mark_installed

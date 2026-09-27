@@ -28,6 +28,15 @@ class AhoyInstalledVisitTest < ActionDispatch::IntegrationTest
     assert_not_predicate Ahoy::Visit.sole, :installed?
   end
 
+  test "a page view whose properties are not an object is still recorded" do
+    post "/ahoy/events",
+      params: {events: [{id: SecureRandom.uuid, name: "$view", properties: "installed", time: Time.current.iso8601}]}.to_json,
+      headers: {"Content-Type" => "application/json", "User-Agent" => "Mozilla/5.0 (Linux; Android 14)"}
+
+    assert_response :success
+    assert_not_predicate Ahoy::Visit.sole, :installed?
+  end
+
   private def track_view(**properties)
     track_event("$view", page: "/ships/", **properties)
   end
