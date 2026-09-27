@@ -30,14 +30,17 @@ const comlink = useComlink();
 
 const { modelSlug, origin, sort, apiQuery, update } = useTradeRouteRun();
 
-const hasShip = computed(() => !!modelSlug.value);
-
 const { data: ship } = useModel(
   computed(() => modelSlug.value || ""),
   {
-    query: { enabled: hasShip },
+    query: { enabled: computed(() => !!modelSlug.value) },
   },
 );
+
+// The ship as the page resolved it, not the slug in the URL: a link to a ship
+// that is gone gets no ship figures from the API, so it gets no ship-only
+// sorts or columns either.
+const hasShip = computed(() => !!ship.value);
 
 const PER_PAGE = "25";
 

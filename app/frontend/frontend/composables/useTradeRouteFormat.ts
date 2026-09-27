@@ -28,13 +28,16 @@ export const useTradeRouteFormat = () => {
       .filter(Boolean)
       .join(" · ");
 
-  // A run is only as fresh as its older price.
+  // A run is only as fresh as its older price, and one with a price of unknown
+  // age is of unknown age.
   const pricesAge = (route: TradeRoute) => {
-    const stamps = [route.originPriceUpdatedAt, route.destinationPriceUpdatedAt]
-      .filter((stamp): stamp is string => !!stamp)
-      .sort();
+    if (!route.originPriceUpdatedAt || !route.destinationPriceUpdatedAt) {
+      return undefined;
+    }
 
-    return stamps[0] ? timeDistance(stamps[0]) : undefined;
+    return timeDistance(
+      [route.originPriceUpdatedAt, route.destinationPriceUpdatedAt].sort()[0],
+    );
   };
 
   const limitLabel = (route: TradeRoute) =>
