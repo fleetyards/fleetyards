@@ -198,6 +198,19 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
   end
 
+  test "#perform replaces the current day's OS rollup before UTC midnight" do
+    travel_to Time.zone.parse("2026-09-28 00:30") do
+      visit = visit_on(Time.current, os: "Android")
+      MetricsJob.new.perform
+
+      visit.update!(installed: true)
+      MetricsJob.new.perform
+
+      assert_equal 1, visits_by_os_on(Time.current, os: "Android", installed: true)
+      assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
+    end
+  end
+
   test "#perform does not rebuild a day past the cleanup cutoff from its remaining visits" do
     day = 40.days.ago.beginning_of_day
     Rollup.create!(name: MetricsJob::ROLLUP_VISITS_BY_OS, interval: "day", time: day,

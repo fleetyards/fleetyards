@@ -71,7 +71,9 @@ class MetricsJob < ApplicationJob
     range = start.in_time_zone(Rollup.time_zone)..Time.current
 
     Rollup.transaction do
-      stored.where(time: range).delete_all
+      # By day, not by `range`: a day is stored at its midnight UTC, which for the
+      # current day is still ahead of `Time.current` until UTC catches up.
+      stored.where(time: start..).delete_all
 
       # A NULL flag is a visit from before it was recorded, not a browser visit.
       visits.where.not(installed: nil).group(:os, :installed)
