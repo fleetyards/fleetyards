@@ -439,11 +439,12 @@ const cellHeight = (span: number) =>
     margin-bottom: 18px;
   }
 
+  // The end buttons round their own corners rather than the group clipping
+  // them, since a clip would also cut their touch hit area back to 25px.
   &__seg {
     display: inline-flex;
     border: 1px solid rgba($gray-light, 0.28);
     border-radius: 4px;
-    overflow: hidden;
   }
 
   &__seg-btn {
@@ -458,6 +459,14 @@ const cellHeight = (span: number) =>
     text-transform: uppercase;
     color: $gray;
     cursor: pointer;
+
+    &:first-child {
+      border-radius: 3px 0 0 3px;
+    }
+
+    &:last-child {
+      border-radius: 0 3px 3px 0;
+    }
 
     &--active {
       background: rgba($primary, 0.18);
@@ -678,7 +687,6 @@ const cellHeight = (span: number) =>
   }
 
   &__label {
-    @include touch-tap-target;
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 8.5px;
     @include phone-font-floor($phone-label-min);
