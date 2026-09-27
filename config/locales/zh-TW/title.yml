@@ -12,6 +12,7 @@ zh-TW:
       compare_ships: 比較飛船
       confirm: 確認帳戶
       cookie-policy: Cookie 政策
+      fleet_events: 艦隊活動
       fleet_invite: 加入 %{fleet}
       fleet_members: "%{fleet} 成員"
       fleet_members_index: "%{fleet} 成員"

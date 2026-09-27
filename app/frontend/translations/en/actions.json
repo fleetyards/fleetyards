@@ -68,6 +68,10 @@
       "hideLabels": "Hide Labels",
       "resetZoom": "Reset Zoom",
       "supportUs": "Support FleetYards.net",
+      "installApp": {
+        "cta": "Install app",
+        "later": "Not now"
+      },
       "supportHint": {
         "cta": "Support FleetYards",
         "later": "Maybe later"

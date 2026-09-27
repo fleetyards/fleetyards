@@ -10,7 +10,7 @@ module Discord
     setup do
       ::Discord::ApiClient.stubs(:configured?).returns(true)
       @fleet = create(:fleet)
-      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
       @role = @fleet.fleet_roles.ranked.last
       clear_jobs
     end
@@ -121,13 +121,13 @@ module Discord
 
     class Triggers < BackfillMemberRolesTest
       test "mapping the member role backfills the fleet" do
-        @setting.update!(discord_member_role_id: "role-member")
+        @setting.update!(discord_member_role_id: "200000000000000001")
 
         assert_equal [@fleet.id], ::Discord::BackfillFleetMemberRolesJob.jobs.map { |job| job["args"].first }
       end
 
       test "an unrelated setting change does not backfill" do
-        @setting.update!(discord_channel_id: "channel-1")
+        @setting.update!(discord_channel_id: "300000000000000001")
 
         assert_empty ::Discord::BackfillFleetMemberRolesJob.jobs
       end

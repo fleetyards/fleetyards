@@ -21,6 +21,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 
 type Props = {
   fleetSlug: string;
@@ -33,6 +34,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
+const installPrompt = useInstallPrompt();
 
 const submitting = ref(false);
 const vehicleId = ref<string | null>(null);
@@ -46,6 +48,7 @@ const signup = async (status: FleetEventSignupStatusEnum) => {
     });
     displaySuccess({ text: t("messages.fleets.eventSignup.create.success") });
     comlink.emit("fleet-event-signup-changed");
+    installPrompt.offer("eventSignup");
   } catch {
     displayAlert({ text: t("messages.fleets.eventSignup.create.failure") });
   } finally {

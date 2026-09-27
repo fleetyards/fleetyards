@@ -32,9 +32,9 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   end
 
   test "reports ok and the guild name on success" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")
-    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
     Discord::ApiClient.stubs(:configured?).returns(true)
     Discord::ApiClient.stubs(:new).returns(api)
 
@@ -46,7 +46,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   end
 
   test "reports bot_not_in_guild on a 403" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")
     api.stubs(:get_guild).raises(Discord::ApiClient::Error.new(403, "missing access"))
     Discord::ApiClient.stubs(:configured?).returns(true)
@@ -60,7 +60,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   end
 
   test "reports guild_not_found on a 404" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")
     api.stubs(:get_guild).raises(Discord::ApiClient::Error.new(404, "unknown guild"))
     Discord::ApiClient.stubs(:configured?).returns(true)
@@ -73,7 +73,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   end
 
   test "reports invalid_token on a 401" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     api = mock("Discord::ApiClient")
     api.stubs(:get_guild).raises(Discord::ApiClient::Error.new(401, "unauthorized"))
     Discord::ApiClient.stubs(:configured?).returns(true)
@@ -109,15 +109,15 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   class RoleCapabilityTest < Api::V1::FleetsNotificationsDiscordStatusBehaviourTest
     setup do
       @api = mock("Discord::ApiClient")
-      @api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+      @api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
       Discord::ApiClient.stubs(:configured?).returns(true)
       Discord::ApiClient.stubs(:new).returns(@api)
     end
 
     def map_member_role!
       @fleet.create_fleet_notification_setting!(
-        discord_guild_id: "guild-1",
-        discord_member_role_id: "role-member"
+        discord_guild_id: "100000000000000001",
+        discord_member_role_id: "200000000000000001"
       )
     end
 
@@ -129,7 +129,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     # A fleet that never mapped a role is not told to re-authorise for a
     # feature it is not using.
     test "says nothing about roles when the fleet mapped none" do
-      @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
 
       payload = body
 
@@ -183,11 +183,11 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     end
   end
   test "reports the squadrons whose channel the bot cannot post in" do
-    setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: "111111111111111111")
     Discord::ApiClient.stubs(:configured?).returns(true)
     api = mock("Discord::ApiClient")
-    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
     Discord::ApiClient.stubs(:new).returns(api)
     capability = mock("Discord::ChannelCapability")
     capability.expects(:check).with(["111111111111111111"])
@@ -203,10 +203,10 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   end
 
   test "says nothing about posting while no channel is picked" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     Discord::ApiClient.stubs(:configured?).returns(true)
     api = mock("Discord::ApiClient")
-    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
     Discord::ApiClient.stubs(:new).returns(api)
     Discord::ChannelCapability.expects(:new).never
 
@@ -216,11 +216,11 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
   end
 
   test "names a squadron sharing the officers' channel" do
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_officers_channel_id: "111111111111111111")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_officers_channel_id: "111111111111111111")
     create(:fleet_squadron, fleet: @fleet, name: "Alpha", discord_channel_id: "111111111111111111")
     Discord::ApiClient.stubs(:configured?).returns(true)
     api = mock("Discord::ApiClient")
-    api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
     Discord::ApiClient.stubs(:new).returns(api)
     Discord::ChannelCapability.expects(:new).never
 

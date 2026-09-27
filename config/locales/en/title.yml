@@ -11,6 +11,7 @@ en:
       compare_ships: Compare Ships
       confirm: Confirm Account
       cookie-policy: Cookie Policy
+      fleet_events: Fleet Events
       fleet_invite: Join %{fleet}
       fleet_members: "%{fleet} Members"
       fleet_members_index: "%{fleet} Members"

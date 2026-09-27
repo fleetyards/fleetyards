@@ -10,7 +10,7 @@ module Discord
         # The factory defaults to a public fleet; most of what matters here is
         # what a *private* one exposes.
         @fleet = create(:fleet, :private, name: "Test Wing")
-        @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+        @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
 
         @user = create(:user)
         create(:omniauth_connection, user: @user, provider: "discord", uid: "discord-uid-1")
@@ -18,7 +18,7 @@ module Discord
         @membership.update!(aasm_state: "accepted")
       end
 
-      def call(guild_id: "guild-1", discord_user_id: "discord-uid-1")
+      def call(guild_id: "100000000000000001", discord_user_id: "discord-uid-1")
         ::Discord::Commands::Fleet.new(guild_id: guild_id, discord_user_id: discord_user_id).call
       end
 

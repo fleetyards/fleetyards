@@ -36,6 +36,7 @@ const GROUPS = [
       "states",
       "notifications",
       "notification-center",
+      "install-prompt",
       "support-hint",
       "sync-modal",
       "overlays",
@@ -109,6 +110,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-notification-center",
     label: "notificationCenter",
     icon: "fadt fa-inbox",
+  },
+  "install-prompt": {
+    route: "visual-tests-install-prompt",
+    label: "installPrompt",
+    icon: "fadt fa-mobile-screen",
   },
   "support-hint": {
     route: "visual-tests-support-hint",

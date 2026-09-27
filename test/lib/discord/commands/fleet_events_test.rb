@@ -8,7 +8,7 @@ module Discord
     class FleetEventsTest < ActiveSupport::TestCase
       setup do
         @fleet = create(:fleet, :private, name: "Test Wing")
-        @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+        @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
 
         @user = create(:user)
         create(:omniauth_connection, user: @user, provider: "discord", uid: "member-uid")
@@ -17,7 +17,7 @@ module Discord
           .update!(aasm_state: "accepted")
       end
 
-      def call(guild_id: "guild-1", discord_user_id: "member-uid")
+      def call(guild_id: "100000000000000001", discord_user_id: "member-uid")
         ::Discord::Commands::FleetEvents.new(guild_id: guild_id, discord_user_id: discord_user_id).call
       end
 

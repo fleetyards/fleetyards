@@ -11,6 +11,9 @@ import {
   VueQueryPlugin,
   type VueQueryPluginOptions,
 } from "@tanstack/vue-query";
+import { captureInstallPrompt } from "@/frontend/composables/useInstallPrompt";
+
+captureInstallPrompt();
 
 window.addEventListener("vite:preloadError", (event) => {
   event.preventDefault();

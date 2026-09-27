@@ -12,6 +12,7 @@ fr:
       compare_ships: Comparer les vaisseaux
       confirm: Confirmer le compte
       cookie-policy: Politique de cookies
+      fleet_events: Événements de flotte
       fleet_invite: Rejoindre %{fleet}
       fleet_members: Membres de %{fleet}
       fleet_members_index: Membres de %{fleet}

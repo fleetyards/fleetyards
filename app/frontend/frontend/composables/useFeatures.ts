@@ -25,7 +25,7 @@ export const featuresQueryOptions = () =>
   getFeaturesQueryOptions({ query: featuresQueryConfig() });
 
 export const useFeatures = () => {
-  const { data: features } = useFeaturesQuery({
+  const { data: features, isFetched } = useFeaturesQuery({
     query: featuresQueryConfig(),
   });
 
@@ -54,6 +54,7 @@ export const useFeatures = () => {
 
   return {
     features,
+    isFetched,
     isFeatureEnabled,
     isFleetFeatureEnabled,
     isFleetSquadronsEnabled,

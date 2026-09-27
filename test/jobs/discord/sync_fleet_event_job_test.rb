@@ -6,7 +6,7 @@ module Discord
   class SyncFleetEventJobTest < ActiveSupport::TestCase
     setup do
       @fleet = create(:fleet)
-      @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+      @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
       @event = create(:fleet_event, :open, fleet: @fleet)
     end
 
@@ -81,6 +81,21 @@ module Discord
       ::Discord::ScheduledEventSync.expects(:new).with(@event, occurrence_date: date).returns(occurrence)
 
       ::Discord::SyncFleetEventJob.new.perform(@event.id, "delete")
+    end
+
+    test "an occurrence upsert refreshes only the occurrences already pushed" do
+      pushed = 1.week.from_now.to_date
+      @event.fleet_event_occurrence_states.create!(occurrence_date: pushed, discord_event_id: "occurrence-1")
+      @event.fleet_event_occurrence_states.create!(occurrence_date: pushed + 7, title: "Not pushed")
+      series = mock
+      series.expects(:runnable?).returns(true)
+      series.expects(:upsert!).never
+      occurrence = mock
+      occurrence.expects(:upsert!)
+      ::Discord::ScheduledEventSync.expects(:new).with(@event).returns(series)
+      ::Discord::ScheduledEventSync.expects(:new).with(@event, occurrence_date: pushed).returns(occurrence)
+
+      ::Discord::SyncFleetEventJob.new.perform(@event.id, "upsert_occurrences")
     end
   end
 end

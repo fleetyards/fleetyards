@@ -43,7 +43,7 @@ class Api::V1::FleetsEventsSyncToDiscordTest < ActionDispatch::IntegrationTest
   end
 
   def stub_discord_runnable
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     ::Discord::ApiClient.stubs(:configured?).returns(true)
     sync = mock("Discord::ScheduledEventSync")
     sync.stubs(:runnable?).returns(true)
@@ -61,7 +61,7 @@ class Api::V1::FleetsEventsSyncToDiscordTest < ActionDispatch::IntegrationTest
 
   test "POST /fleets/:slug/events/:slug/sync-to-discord returns 422 when Discord is not configured" do
     fleet_event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)
-    @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
     ::Discord::ApiClient.stubs(:configured?).returns(false)
     sync = mock("Discord::ScheduledEventSync")
     sync.stubs(:runnable?).returns(false)

@@ -12,6 +12,13 @@
         "subline": "直接支持我們",
         "otherWays": "其他協助方式"
       },
+      "installApp": {
+        "eventSignup": "將 FleetYards 安裝為應用程式，一鍵回到你的活動。",
+        "iosIntro": "在 iPhone 和 iPad 上，可以透過分享選單安裝 FleetYards 這類應用程式：",
+        "iosShare": "點一下瀏覽器工具列中的「分享」按鈕。",
+        "iosAdd": "選擇「加入主畫面」，可能需要向下捲動才能找到。",
+        "iosConfirm": "點一下「新增」。現在可以像其他應用程式一樣從主畫面開啟 FleetYards。"
+      },
       "supportHint": {
         "hangarSync": "背景同步是我們託管帳單中最大的一項支出。FleetYards 仰賴捐款運作 — 任何支持都很重要。",
         "vehicleAdded": "FleetYards 免費、無廣告,完全靠捐款運作。如果它對你有幫助,一份小小的捐助就能維持它的運轉。",

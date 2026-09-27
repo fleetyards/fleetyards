@@ -16,6 +16,7 @@ const GROUPED = {
   feedback: [
     "states",
     "notifications",
+    "install-prompt",
     "support-hint",
     "sync-modal",
     "overlays",

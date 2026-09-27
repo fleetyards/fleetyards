@@ -8,7 +8,7 @@ module Discord
     class FleetInviteTest < ActiveSupport::TestCase
       setup do
         @fleet = create(:fleet, :private, name: "Test Wing")
-        @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+        @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001")
 
         @user = create(:user)
         create(:omniauth_connection, user: @user, provider: "discord", uid: "officer-uid")
@@ -23,7 +23,7 @@ module Discord
         @fleet.fleet_roles.find_by(name: name)
       end
 
-      def call(guild_id: "guild-1", discord_user_id: "officer-uid", options: {})
+      def call(guild_id: "100000000000000001", discord_user_id: "officer-uid", options: {})
         ::Discord::Commands::FleetInvite.new(
           guild_id: guild_id,
           discord_user_id: discord_user_id,

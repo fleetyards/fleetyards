@@ -102,11 +102,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.equipment.index",
       needsAuthentication: true,
-      // Gear you carry, rather than any one of the things in here: armour is
-      // 2,200 rows and clothing 1,867, so naming either misrepresents the other
-      // half of the table. Weapons are 424 of 4,921 -- the `fa-gun` this
-      // replaces named the smallest tenth of it.
-      icon: "fa-duotone fa-backpack",
+      icon: "fa-duotone fa-shirt",
       access: ["equipment"],
     },
   },

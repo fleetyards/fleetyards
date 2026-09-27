@@ -391,6 +391,10 @@
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "supporters": "Gracias a nuestros patrocinadores",
+      "installApp": {
+        "offer": "Lleva FleetYards contigo",
+        "ios": "Instalar FleetYards"
+      },
       "supportHint": {
         "hangarSync": "Nos alegra haber ayudado con tu sincronización",
         "vehicleAdded": "Tu hangar está creciendo",
@@ -431,6 +435,7 @@
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
         "overlays": "Superposiciones",
+        "installPrompt": "Aviso de instalación",
         "supportHint": "Aviso de apoyo",
         "notificationCenter": "Centro de notificaciones",
         "themes": "Temas"

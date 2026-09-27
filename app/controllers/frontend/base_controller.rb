@@ -196,15 +196,14 @@ module Frontend
       add_to_prefetch(:notifications, messages.to_json)
     end
 
+    # Seeds the same query as GET /api/v1/features, so it answers the same
+    # question: the viewer's own flags. A fleet's flags ride on that fleet's
+    # payload; folding them in here showed one fleet's features on every other
+    # fleet's pages until the first refetch.
     def add_features_to_prefetch
-      user_features = Flipper.features.filter_map do |feature|
+      features = Flipper.features.filter_map do |feature|
         Flipper.enabled?(feature.name, current_user) ? feature.to_s : nil
       end
-      fleet_features = Flipper.features.filter_map do |feature|
-        Flipper.enabled?(feature.name, current_user&.fleets.to_a) ? feature.to_s : nil
-      end
-
-      features = (user_features + fleet_features).uniq
 
       return if features.blank?
 

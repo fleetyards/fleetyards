@@ -26,14 +26,14 @@ module Discord
     end
 
     test "opens a DM channel with the reader's Discord account" do
-      @api.expects(:create_dm_channel).with("discord-uid-1").returns({"id" => "channel-1"})
-      @api.expects(:create_message).with("channel-1", anything)
+      @api.expects(:create_dm_channel).with("discord-uid-1").returns({"id" => "300000000000000001"})
+      @api.expects(:create_message).with("300000000000000001", anything)
 
       assert deliver
     end
 
     test "sends the notification as an embed" do
-      @api.stubs(:create_dm_channel).returns({"id" => "channel-1"})
+      @api.stubs(:create_dm_channel).returns({"id" => "300000000000000001"})
       @api.expects(:create_message).with do |_channel, payload|
         embed = payload[:embeds].first
         embed[:title] == "The Carrack is now on Sale!" && embed[:description] == "Starting at $600.00"
@@ -44,7 +44,7 @@ module Discord
 
     # A notification link is a path, and a DM has no site around it.
     test "makes the notification's link absolute" do
-      @api.stubs(:create_dm_channel).returns({"id" => "channel-1"})
+      @api.stubs(:create_dm_channel).returns({"id" => "300000000000000001"})
       @api.expects(:create_message).with do |_channel, payload|
         payload[:embeds].first[:url] == "https://#{Rails.configuration.app.domain}/ships/carrack"
       end
@@ -53,7 +53,7 @@ module Discord
     end
 
     test "says why the reader is getting a DM" do
-      @api.stubs(:create_dm_channel).returns({"id" => "channel-1"})
+      @api.stubs(:create_dm_channel).returns({"id" => "300000000000000001"})
       @api.expects(:create_message).with do |_channel, payload|
         payload[:embeds].first.dig(:footer, :text) == I18n.t("discord.direct_message.footer")
       end

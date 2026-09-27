@@ -31,7 +31,9 @@ module V1
             recurring: {type: :boolean},
             recurrenceInterval: ::V1::Schemas::Enums::NullableFleetEventRecurrenceIntervalEnum,
             recurrenceUntil: {type: [:string, :null], format: :date},
-            recurrenceCount: {type: [:integer, :null]}
+            recurrenceCount: {type: [:integer, :null]},
+            recurrenceEvery: {type: :integer, minimum: 1, maximum: ::FleetEvent::MAX_RECURRENCE_EVERY},
+            recurrenceWeekdays: {type: :array, items: {type: :integer, minimum: 0, maximum: 6}}
           },
           required: %w[title startsAt timezone visibility],
           additionalProperties: false

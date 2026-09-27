@@ -12,6 +12,13 @@
         "subline": "Apóyanos directamente",
         "otherWays": "Otras formas de ayudar"
       },
+      "installApp": {
+        "eventSignup": "Instala FleetYards como app para volver a tus eventos con un toque.",
+        "iosIntro": "En iPhone y iPad, las apps como FleetYards se instalan desde el menú Compartir:",
+        "iosShare": "Toca el botón Compartir en la barra del navegador.",
+        "iosAdd": "Elige «Añadir a pantalla de inicio». Puede que tengas que desplazarte hacia abajo.",
+        "iosConfirm": "Toca «Añadir». FleetYards se abre ahora desde tu pantalla de inicio como cualquier otra app."
+      },
       "supportHint": {
         "hangarSync": "Las sincronizaciones en segundo plano son el mayor gasto de hosting. FleetYards funciona gracias a las donaciones — cualquier aporte ayuda.",
         "vehicleAdded": "FleetYards es gratuito, sin anuncios, y funciona solo con donaciones. Si te resulta útil, una pequeña aportación ayuda a mantenerlo así.",

@@ -8,11 +8,11 @@ module Discord
 
     setup do
       @fleet = create(:fleet, name: "Test Wing")
-      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1", discord_officers_channel_id: OFFICERS)
+      @setting = @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_officers_channel_id: OFFICERS)
       ApiClient.stubs(:configured?).returns(true)
       @api = mock("Discord::ApiClient")
       ApiClient.stubs(:new).returns(@api)
-      @api.stubs(:get_channel).with(OFFICERS).returns({"guild_id" => "guild-1"})
+      @api.stubs(:get_channel).with(OFFICERS).returns({"guild_id" => "100000000000000001"})
       PostJoinRequestJob.clear
       RefreshJoinRequestMessageJob.clear
 

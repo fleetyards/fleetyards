@@ -187,6 +187,7 @@
         "notifications": "Notifications - Visual Tests",
         "syncModal": "Sync Modal - Visual Tests",
         "overlays": "Overlays - Visual Tests",
+        "installPrompt": "Install Prompt - Visual Tests",
         "supportHint": "Support Hint - Visual Tests",
         "media": "Media - Visual Tests",
         "charts": "Charts - Visual Tests",

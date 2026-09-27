@@ -85,9 +85,13 @@ en:
       slots: '%{open} of %{total} slots open'
     event_published:
       recurrence:
-        biweekly: Every two weeks
         daily: Every day
+        every_n:
+          daily: 'Every %{count} days'
+          monthly: 'Every %{count} months'
+          weekly: 'Every %{count} weeks'
         monthly: Every month
+        on_days: '%{interval} on %{days}'
         weekly: Every week
       title: 'New event: %{title}'
     event_reminder:

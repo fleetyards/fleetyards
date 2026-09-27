@@ -17,7 +17,7 @@ module Discord
     end
 
     def bot_in(*role_ids)
-      @api.stubs(:get_guild_member).with("guild-1", "bot-app-id").returns({"roles" => role_ids})
+      @api.stubs(:get_guild_member).with("100000000000000001", "bot-app-id").returns({"roles" => role_ids})
     end
 
     def role(id:, position:, permissions: 0, name: id)
@@ -25,7 +25,7 @@ module Discord
     end
 
     def check(*wanted)
-      ::Discord::RoleCapability.new("guild-1", api: @api).check(wanted)
+      ::Discord::RoleCapability.new("100000000000000001", api: @api).check(wanted)
     end
 
     test "ok when the bot has Manage Roles and outranks the target" do
