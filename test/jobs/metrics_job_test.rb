@@ -175,10 +175,77 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 1, visits_rolled_up_on(2.days.ago)
   end
 
-  private def visit_on(time, user: nil)
+  test "#perform rolls up visits per day by OS and installed" do
+    2.times { visit_on(2.days.ago, os: "Android", installed: true) }
+    visit_on(2.days.ago, os: "Android")
+    visit_on(2.days.ago, os: "iOS")
+
+    MetricsJob.new.perform
+
+    assert_equal 2, visits_by_os_on(2.days.ago, os: "Android", installed: true)
+    assert_equal 1, visits_by_os_on(2.days.ago, os: "Android", installed: false)
+    assert_equal 1, visits_by_os_on(2.days.ago, os: "iOS", installed: false)
+  end
+
+  test "#perform moves a visit flagged installed after its day was rolled up" do
+    visit = visit_on(Time.current, os: "Android")
+    MetricsJob.new.perform
+
+    visit.update!(installed: true)
+    MetricsJob.new.perform
+
+    assert_equal 1, visits_by_os_on(Time.current, os: "Android", installed: true)
+    assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
+  end
+
+  test "#perform replaces the current day's OS rollup before UTC midnight" do
+    travel_to Time.zone.parse("2026-09-28 00:30") do
+      visit = visit_on(Time.current, os: "Android")
+      MetricsJob.new.perform
+
+      visit.update!(installed: true)
+      MetricsJob.new.perform
+
+      assert_equal 1, visits_by_os_on(Time.current, os: "Android", installed: true)
+      assert_equal 0, visits_by_os_on(Time.current, os: "Android", installed: false)
+    end
+  end
+
+  test "#perform does not rebuild a day past the cleanup cutoff from its remaining visits" do
+    day = 40.days.ago.beginning_of_day
+    Rollup.create!(name: MetricsJob::ROLLUP_VISITS_BY_OS, interval: "day", time: day,
+      dimensions: {os: "Android", installed: false}, value: 3)
+    visit_on(day + 1.hour, os: "Android")
+
+    MetricsJob.new.perform
+
+    assert_equal 3, Rollup.where(name: MetricsJob::ROLLUP_VISITS_BY_OS).where("time < ?", 30.days.ago).sole.value
+  end
+
+  test "#perform keeps an OS rollup day whose visits were already purged" do
+    day = 40.days.ago.to_date
+    Rollup.create!(name: MetricsJob::ROLLUP_VISITS_BY_OS, interval: "day", time: day,
+      dimensions: {os: "Android", installed: true}, value: 3)
+
+    MetricsJob.new.perform
+
+    assert_equal 3, Rollup.where(name: MetricsJob::ROLLUP_VISITS_BY_OS).sole.value
+  end
+
+  test "#perform leaves visits from before the installed flag out of the OS rollup" do
+    visit_on(2.days.ago, os: "Android", installed: nil)
+
+    MetricsJob.new.perform
+
+    assert_equal 0, Rollup.where(name: MetricsJob::ROLLUP_VISITS_BY_OS).count
+  end
+
+  private def visit_on(time, user: nil, os: nil, installed: false)
     Ahoy::Visit.create!(
       started_at: time,
       user:,
+      os:,
+      installed:,
       visit_token: SecureRandom.uuid,
       visitor_token: SecureRandom.uuid
     )
@@ -186,6 +253,15 @@ class MetricsJobTest < ActiveJob::TestCase
 
   private def visits_rolled_up_on(time)
     Rollup.where(name: "Visits", interval: "day", time: time.to_date).sum(:value)
+  end
+
+  private def visits_by_os_on(time, os:, installed:)
+    Rollup.where(
+      name: MetricsJob::ROLLUP_VISITS_BY_OS,
+      interval: "day",
+      time: time.to_date,
+      dimensions: {os:, installed:}
+    ).sum(:value)
   end
 
   private def wishlist_additions(model)

@@ -14,6 +14,14 @@ class MetricsJob < ApplicationJob
   # the plain series back would have to know to ask for the empty dimensions.
   ROLLUP_WISHLIST_BY_MODEL = "Vehicle Wish by Model"
 
+  # Visits per OS, split by whether they ran as the installed app, so the share
+  # of installed use per platform can be read back after the visits are purged.
+  ROLLUP_VISITS_BY_OS = "Visits by OS"
+
+  # A visit's installed flag can only change while the visit lasts, so a day is
+  # settled well within this.
+  VISITS_BY_OS_RECOMPUTE = 2.days
+
   def perform
     User.rollup("Registrations", interval: "month")
     User.rollup("Registrations", interval: "year")
@@ -43,8 +51,34 @@ class MetricsJob < ApplicationJob
   # is the only safe one here for the reason `track_ship_views` gives: a visit
   # is purged after a month, and a day is always complete before that happens.
   def track_visits
-    Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
-      .rollup("Visits", interval: "day", column: :started_at)
+    visits = Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
+
+    visits.rollup("Visits", interval: "day", column: :started_at)
+    track_visits_by_os(visits)
+  end
+
+  # The gem only upserts the groups it finds, so a visit flagged installed after
+  # its day was rolled up would leave its old `installed: false` row behind. The
+  # recent days are therefore cleared and rebuilt as a window rather than left to
+  # the gem's own resume point. The window never reaches past the cleanup cutoff:
+  # every visit newer than that is always still there, and an older day may be
+  # partly purged, so its stored counts are all that is left.
+  def track_visits_by_os(visits)
+    stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
+    floor = (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
+    latest = stored.maximum(:time)&.to_date
+    start = [floor, [latest, VISITS_BY_OS_RECOMPUTE.ago.to_date].compact.min].max
+    range = start.in_time_zone(Rollup.time_zone)..Time.current
+
+    Rollup.transaction do
+      # By day, not by `range`: a day is stored at its midnight UTC, which for the
+      # current day is still ahead of `Time.current` until UTC catches up.
+      stored.where(time: start..).delete_all
+
+      # A NULL flag is a visit from before it was recorded, not a browser visit.
+      visits.where.not(installed: nil).group(:os, :installed)
+        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at, range:)
+    end
   end
 
   # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but

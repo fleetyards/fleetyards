@@ -1,6 +1,7 @@
 import ahoy from "ahoy.js";
 import { useCookiesStore } from "@/frontend/stores/cookies";
 import { useSessionStore } from "@/frontend/stores/session";
+import { isInstalledApp } from "@/shared/utils/DisplayMode";
 
 ahoy.configure({
   cookies: false,
@@ -51,6 +52,6 @@ export const useAhoy = () => {
     { immediate: true },
   );
 
-  ahoy.trackView();
+  ahoy.trackView(isInstalledApp() ? { installed: true } : {});
   ahoy.trackSubmits("form");
 };

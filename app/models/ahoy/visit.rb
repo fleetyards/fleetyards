@@ -8,6 +8,7 @@
 #  accept_language  :string
 #  browser          :string
 #  device_type      :string
+#  installed        :boolean          default(FALSE)
 #  ip               :string
 #  landing_page     :text
 #  os               :string
