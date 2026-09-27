@@ -27316,6 +27316,8 @@ components:
           type: boolean
         ingameOnly:
           type: boolean
+        canLandOnPlanets:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -27362,6 +27364,7 @@ components:
       - hasVideos
       - inGame
       - ingameOnly
+      - canLandOnPlanets
       - loaners
       - manufacturer
       - media
@@ -27528,6 +27531,8 @@ components:
           type: boolean
         ingameOnly:
           type: boolean
+        canLandOnPlanets:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -27600,6 +27605,7 @@ components:
       - hasVideos
       - inGame
       - ingameOnly
+      - canLandOnPlanets
       - loaners
       - manufacturer
       - media
@@ -29257,6 +29263,21 @@ components:
       - BUDGET
       - 'NULL'
       title: NullableTradeRouteLoadLimitEnum
+    NullableTradeRouteUnflyableReasonEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - origin
+      - destination
+      - both
+      -
+      x-enumNames:
+      - ORIGIN
+      - DESTINATION
+      - BOTH
+      - 'NULL'
+      title: NullableTradeRouteUnflyableReasonEnum
     NullableVehicleSortEnum:
       type:
       - string
@@ -31110,6 +31131,8 @@ components:
           - 'null'
         loadLimit:
           "$ref": "#/components/schemas/NullableTradeRouteLoadLimitEnum"
+        unflyableReason:
+          "$ref": "#/components/schemas/NullableTradeRouteUnflyableReasonEnum"
         otherDestinations:
           type:
           - integer

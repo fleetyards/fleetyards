@@ -27,6 +27,7 @@ json.destination_price_updated_at trade_route.destination_price_updated_at&.utc&
 
 json.loadable_scu trade_route.loadable_scu
 json.load_limit trade_route.load_limit
+json.unflyable_reason trade_route.unflyable_reason
 json.other_destinations trade_route.has_attribute?(:group_size) ? trade_route.group_size - 1 : nil
 json.investment trade_route.investment&.to_f
 json.profit_per_run trade_route.profit_per_run&.to_f

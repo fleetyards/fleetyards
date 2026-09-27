@@ -8,10 +8,14 @@ module TradeRoutes
   # per set in Ruby and handed to Postgres as a CASE. That keeps sorting and
   # pagination in the database.
   class Ranking
-    def initialize(scope, capacity: nil, budget: nil)
+    # `lands: false` for a ship that can't set down on a planet: runs touching
+    # a surface terminal get an `unflyable_reason` and rank after every run it
+    # can fly, keeping their figures so the page can say what they'd earn.
+    def initialize(scope, capacity: nil, budget: nil, lands: true)
       @scope = scope
       @capacity = capacity
       @budget = budget&.positive? ? budget : nil
+      @lands = lands
     end
 
     # Grouped, each commodity bought at one terminal appears once, with its best
@@ -59,18 +63,28 @@ module TradeRoutes
         "#{sort_expression(attribute, raw:)} #{direction} NULLS LAST"
       end
 
+      # Flyable first, whatever the requested sort: the best destination of a
+      # purchase, and the best run of all, must be one the ship can fly.
+      unless @lands
+        reason = raw ? unflyable_reason_sql : "trade_routes.unflyable_reason"
+        clauses.unshift("(#{reason} IS NOT NULL) ASC")
+      end
+
       (clauses + ["trade_routes.distance ASC NULLS LAST", "trade_routes.id"]).map { |clause| Arel.sql(clause) }
     end
 
     private def computed_columns
+      reason = "#{@lands ? "NULL::varchar" : unflyable_reason_sql} AS unflyable_reason"
+
       if @capacity.nil?
         return [
           "NULL::integer AS loadable_scu", "NULL::varchar AS load_limit", "NULL::numeric AS profit_per_run",
-          "NULL::numeric AS investment", "NULL::numeric AS profit_per_distance"
+          "NULL::numeric AS investment", "NULL::numeric AS profit_per_distance", reason
         ]
       end
 
       [
+        reason,
         "#{loadable_sql} AS loadable_scu",
         "#{load_limit_sql} AS load_limit",
         "#{profit_sql} AS profit_per_run",
@@ -83,6 +97,19 @@ module TradeRoutes
     # each is rounded down to whole crates of the smallest size the route
     # allows, or 5 SCU of stock would promise a load no 8 SCU crate can carry.
     # The hold needs no rounding, `ShipCapacity` already counts crates.
+    private def unflyable_reason_sql
+      origin = on_surface_sql("trade_routes.origin_terminal_id")
+      destination = on_surface_sql("trade_routes.destination_terminal_id")
+
+      "(CASE WHEN #{origin} AND #{destination} THEN 'both' WHEN #{origin} THEN 'origin' " \
+        "WHEN #{destination} THEN 'destination' END)"
+    end
+
+    private def on_surface_sql(terminal_id)
+      "EXISTS (SELECT 1 FROM terminals WHERE terminals.id = #{terminal_id} AND " \
+        "#{format(Terminal::SURFACE_SQL, table: "terminals")})"
+    end
+
     private def limits
       @limits ||= {
         "hold" => ship_scu_sql,
