@@ -12,6 +12,7 @@
   --compare-col-max: 400px;
 
   position: relative;
+  container-type: inline-size;
   // Whatever the viewport has left below the pane, measured by the component — see
   // `--compare-pane-max` there. The fraction is only the pre-measurement fallback.
   max-height: var(--compare-pane-max, 76dvh);
@@ -22,10 +23,20 @@
   // its edges — square corners would then spill past the panel's rounded border.
   border-radius: var(--radius-surface-inner, 14px);
 
+  // Capped low enough that two ships fit beside the labels from 576px up.
   @media (max-width: $tablet-breakpoint) {
     --compare-rail: 150px;
-    --compare-col: 220px;
-    --compare-col-max: 320px;
+    --compare-col: 180px;
+    --compare-col-max: 190px;
+  }
+
+  // Exactly two ships beside the labels on any phone, sized off the pane rather than
+  // the viewport so the page gutters do not have to be known here. The loadout tiles
+  // stack taller at this width, which is the price of seeing a comparison at all.
+  @media (max-width: 576px) {
+    --compare-rail: 96px;
+    --compare-col: clamp(104px, (100cqw - var(--compare-rail) - 2px) / 2, 180px);
+    --compare-col-max: var(--compare-col);
   }
 
   // Auto layout, deliberately not `fixed`: a fixed-layout table ignores cell
@@ -89,11 +100,20 @@
   // Right-aligned to match every figure in the column beneath it: `th` centres by
   // default, which left short names and their manufacturer disagreeing.
   text-align: right;
+
+  @media (max-width: 576px) {
+    padding: 8px 8px 9px;
+  }
 }
 
 .compare-table__art {
   position: relative;
   height: 150px;
+
+  @media (max-width: 576px) {
+    height: 72px;
+  }
+
   border-radius: $border-radius-base;
   overflow: hidden;
   transition:
@@ -205,6 +225,13 @@
   font-weight: 400;
   text-align: right;
   color: $gray-light;
+
+  @media (max-width: 576px) {
+    padding: 8px;
+    // A long single word ("Countermeasures") would otherwise set the rail's width.
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
 }
 
 // ── section bands: the metrics-card voice without a card frame, which is the box the
@@ -250,6 +277,25 @@
   &[aria-expanded="false"] i {
     transform: rotate(-90deg);
   }
+
+  // The band's data cell holds only a rule, so on a phone the title runs on over
+  // it instead of wrapping inside the narrow rail.
+  @media (max-width: 576px) {
+    width: calc(var(--compare-rail) - 16px);
+    justify-content: flex-start;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+}
+
+@media (max-width: 576px) {
+  .compare-table__band th.compare-table__rail {
+    overflow: visible;
+  }
+
+  .compare-table__band-rule {
+    visibility: hidden;
+  }
 }
 
 .compare-table__dot {
@@ -268,6 +314,10 @@
   border-left: 1px solid rgba($gray-light, 0.14);
   border-bottom: 1px solid rgba($gray-light, 0.14);
   vertical-align: middle;
+
+  @media (max-width: 576px) {
+    padding: 8px;
+  }
 }
 
 .compare-table tbody th.compare-table__rail {
@@ -291,6 +341,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  // Right-aligned flex content that overflows is cut off at the start, so on a
+  // phone a name like "Aegis Dynamics" wraps instead.
+  @media (max-width: 576px) {
+    flex-wrap: wrap;
+    white-space: normal;
+    text-align: right;
+  }
 }
 
 .compare-table__unit {
@@ -481,6 +539,12 @@
   text-transform: uppercase;
   color: $gray-light;
   margin-bottom: 3px;
+
+  // "Composition" has to fit the phone rail whole.
+  @media (max-width: 576px) {
+    letter-spacing: 0;
+    overflow-wrap: normal;
+  }
 }
 
 .compare-table__legend-entry {
