@@ -111,6 +111,7 @@
         "index": "工具",
         "travelTimes": "旅行时间",
         "cargoGrids": "货物网格",
+        "tradeRoutes": "贸易路线",
         "tours": "行程"
       },
       "api": "API 文档",

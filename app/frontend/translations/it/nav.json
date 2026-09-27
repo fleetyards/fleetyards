@@ -111,6 +111,7 @@
         "index": "Strumenti",
         "travelTimes": "Tempi di Viaggio",
         "cargoGrids": "Griglie di Carico",
+        "tradeRoutes": "Rotte commerciali",
         "tours": "Spedizioni"
       },
       "api": "Documentazione delle API",

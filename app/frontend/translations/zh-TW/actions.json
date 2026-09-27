@@ -175,6 +175,14 @@
       "cargoGrids": {
         "addShips": "新增飛船"
       },
+      "tradeRoutes": {
+        "pickShip": "選擇飛船",
+        "changeShip": "更換飛船",
+        "editRun": "編輯",
+        "doneEditing": "完成",
+        "backToRuns": "返回所有航程",
+        "showMore": "顯示更多航程"
+      },
       "hangar": {
         "editGroups": "Add or remove Groups",
         "editName": "Name your Ship",

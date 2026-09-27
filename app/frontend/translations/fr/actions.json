@@ -175,6 +175,14 @@
       "cargoGrids": {
         "addShips": "Ajouter des vaisseaux"
       },
+      "tradeRoutes": {
+        "pickShip": "Choisir un vaisseau",
+        "changeShip": "Changer de vaisseau",
+        "editRun": "Modifier",
+        "doneEditing": "Terminé",
+        "backToRuns": "Retour à tous les trajets",
+        "showMore": "Afficher plus de trajets"
+      },
       "hangar": {
         "editGroups": "Ajouter ou supprimer des groupes",
         "editName": "Nommez votre vaisseau",

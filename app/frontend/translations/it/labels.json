@@ -1680,14 +1680,6 @@
           "bundled": "Snub Craft in bundle",
           "boughtVia": "Acquistato tramite?"
         },
-        "tradeRoutes": {
-          "sortBy": "Ordina per",
-          "sortByValues": {
-            "percent": "Percentuale Max."
-          },
-          "origin": "Da?",
-          "destination": "A?"
-        },
         "models": {
           "name": "Nome",
           "classification": "Classificazione",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Acquista per: %{uec}",
-        "sell": "Vendi per: %{uec}"
+        "intro": "Il miglior viaggio tra due terminali per la tua nave, il tuo budget e quanto recenti vuoi i prezzi. I prezzi provengono da UEX e sono aggiornati ogni ora.",
+        "yourRun": "Il tuo viaggio",
+        "ship": "Nave",
+        "noShip": "Scegli una nave per ordinare per profitto per viaggio",
+        "noShipShort": "Nessuna nave",
+        "scu": "%{count} SCU",
+        "budget": "Budget",
+        "budgetPlaceholder": "Facoltativo",
+        "buyIn": "Acquista in",
+        "anySystem": "Tutti",
+        "commodity": "Merce",
+        "allCommodities": "Tutte le merci",
+        "priceAge": "Prezzi non più vecchi di",
+        "priceAges": {
+          "day": "24 h",
+          "threeDays": "3 giorni",
+          "any": "Tutti"
+        },
+        "bestRun": "Miglior viaggio",
+        "buyAt": "Acquista a",
+        "sellAt": "Vendi a",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "salto verso %{system}",
+        "pricesFrom": "Prezzi di %{time}",
+        "otherBuyers": {
+          "one": "+%{count} altro acquirente",
+          "other": "+%{count} altri acquirenti"
+        },
+        "profitThisRun": "Profitto del viaggio",
+        "profitPerScu": "Profitto per SCU",
+        "aUecPerScu": "aUEC · %{value} per SCU",
+        "load": "Carico",
+        "loadOf": "%{load} di %{cargo} SCU",
+        "loadLimits": {
+          "hold": "Stiva piena",
+          "stock": "Limitato dalle scorte",
+          "demand": "Limitato dalla domanda",
+          "budget": "Limitato dal budget"
+        },
+        "youSpend": "Spendi",
+        "pickShipForRun": "Scegli una nave per vedere il profitto di un viaggio.",
+        "moreRuns": "Altri viaggi",
+        "runs": "Viaggi",
+        "rankBy": "Ordina per",
+        "profitPerRun": "Profitto per viaggio",
+        "profitPerDistance": "Profitto per Gm",
+        "shortest": "Più breve",
+        "buySell": "Acquisto → vendita",
+        "spend": "Spesa",
+        "distance": "Distanza",
+        "prices": "Prezzi",
+        "profit": "Profitto",
+        "to": "verso",
+        "everyBuyer": "Tutti gli acquirenti di %{commodity} da %{terminal}",
+        "empty": "Nessun viaggio corrisponde. Prova prezzi più vecchi o un altro sistema.",
+        "loadExplained": "Il carico usa le dimensioni di cassa accettate da entrambi i terminali e dalla merce, limitato dalle scorte dove acquisti, dalla domanda dove vendi e dal tuo budget.",
+        "poweredByUex": "Prezzi forniti da UEX"
       },
       "hardpoints": {
         "prefix": "Prova le configurazioni con",

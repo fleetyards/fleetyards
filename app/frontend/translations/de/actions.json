@@ -175,6 +175,14 @@
       "cargoGrids": {
         "addShips": "Schiffe hinzufügen"
       },
+      "tradeRoutes": {
+        "pickShip": "Schiff wählen",
+        "changeShip": "Schiff wechseln",
+        "editRun": "Bearbeiten",
+        "doneEditing": "Fertig",
+        "backToRuns": "Zurück zu allen Flügen",
+        "showMore": "Weitere Flüge anzeigen"
+      },
       "hangar": {
         "editGroups": "Gruppen hinzufügen oder löschen",
         "editName": "Benenne dein Schiff",

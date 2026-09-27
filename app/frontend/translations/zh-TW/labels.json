@@ -1680,14 +1680,6 @@
           "bundled": "隨附的 Snub Craft",
           "boughtVia": "購買方式?"
         },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent"
-          },
-          "origin": "From?",
-          "destination": "To?"
-        },
         "models": {
           "name": "名稱",
           "classification": "分類",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}"
+        "intro": "依據你的飛船、預算和可接受的價格時效，找出兩個終端之間最好的一趟運輸。價格來自 UEX，每小時更新。",
+        "yourRun": "你的航程",
+        "ship": "飛船",
+        "noShip": "選擇飛船以依每趟利潤排序",
+        "noShipShort": "未選飛船",
+        "scu": "%{count} SCU",
+        "budget": "預算",
+        "budgetPlaceholder": "選填",
+        "buyIn": "購買星系",
+        "anySystem": "全部",
+        "commodity": "商品",
+        "allCommodities": "全部商品",
+        "priceAge": "價格不早於",
+        "priceAges": {
+          "day": "24 小時",
+          "threeDays": "3 天",
+          "any": "不限"
+        },
+        "bestRun": "最佳航程",
+        "buyAt": "購買地點",
+        "sellAt": "出售地點",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "躍遷至 %{system}",
+        "pricesFrom": "價格來自 %{time}",
+        "otherBuyers": {
+          "one": "另有 %{count} 處收購",
+          "other": "另有 %{count} 處收購"
+        },
+        "profitThisRun": "本趟利潤",
+        "profitPerScu": "每 SCU 利潤",
+        "aUecPerScu": "aUEC · 每 SCU %{value}",
+        "load": "載貨量",
+        "loadOf": "%{load} / %{cargo} SCU",
+        "loadLimits": {
+          "hold": "貨艙已滿",
+          "stock": "受庫存限制",
+          "demand": "受需求限制",
+          "budget": "受預算限制"
+        },
+        "youSpend": "花費",
+        "pickShipForRun": "選擇飛船以查看一趟的利潤。",
+        "moreRuns": "更多航程",
+        "runs": "航程",
+        "rankBy": "排序依據",
+        "profitPerRun": "每趟利潤",
+        "profitPerDistance": "每 Gm 利潤",
+        "shortest": "最短",
+        "buySell": "買入 → 賣出",
+        "spend": "花費",
+        "distance": "距離",
+        "prices": "價格",
+        "profit": "利潤",
+        "to": "至",
+        "everyBuyer": "從 %{terminal} 收購 %{commodity} 的所有地點",
+        "empty": "沒有符合的航程。試試更早的價格或其他星系。",
+        "loadExplained": "載貨量依兩個終端和商品都接受的貨箱尺寸計算，並受購買地庫存、出售地需求和你的預算限制。",
+        "poweredByUex": "價格由 UEX 提供"
       },
       "hardpoints": {
         "prefix": "使用以下工具試用配置",

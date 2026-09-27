@@ -160,6 +160,7 @@
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
         "cargoGrids": "Frachtgitter",
+        "tradeRoutes": "Handelsrouten",
         "tours": {
           "index": "Touren",
           "add": "Neue Tour erstellen",

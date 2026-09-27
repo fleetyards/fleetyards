@@ -175,6 +175,14 @@
       "cargoGrids": {
         "addShips": "Add Ships"
       },
+      "tradeRoutes": {
+        "pickShip": "Pick a ship",
+        "changeShip": "Change ship",
+        "editRun": "Edit",
+        "doneEditing": "Done",
+        "backToRuns": "Back to all runs",
+        "showMore": "Show more runs"
+      },
       "hangar": {
         "editGroups": "Add or remove Groups",
         "editName": "Name your Ship",

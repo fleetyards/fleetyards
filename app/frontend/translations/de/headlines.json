@@ -383,7 +383,8 @@
       "tools": {
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
-        "cargoGrids": "Frachtraster"
+        "cargoGrids": "Frachtraster",
+        "tradeRoutes": "Handelsrouten"
       },
       "rsiVerification": "Verify your RSI-Account",
       "hangarGuideEmpty": "Not much to see here?",

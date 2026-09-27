@@ -383,7 +383,8 @@
       "tools": {
         "index": "Outils",
         "travelTimes": "Temps de trajet",
-        "cargoGrids": "Grilles de cargaison"
+        "cargoGrids": "Grilles de cargaison",
+        "tradeRoutes": "Routes commerciales"
       },
       "rsiVerification": "Vérifier votre compte RSI",
       "hangarGuideEmpty": "Rien à voir ici.",

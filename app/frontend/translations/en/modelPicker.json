@@ -4,6 +4,7 @@
       "hangarTitle": "Add Ships to your Hangar",
       "compareTitle": "Select Ships to Compare",
       "cargoGridsTitle": "Select Ships for the Cargo Grid",
+      "tradeRoutesTitle": "Select a Ship to Rank Trade Routes For",
       "wishlistTitle": "Add Ships to your Wishlist",
       "labels": {
         "search": "Search by name or manufacturer",

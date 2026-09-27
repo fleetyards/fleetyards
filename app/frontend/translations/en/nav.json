@@ -111,6 +111,7 @@
         "index": "Tools",
         "travelTimes": "Travel Times",
         "cargoGrids": "Cargo Grids",
+        "tradeRoutes": "Trade Routes",
         "tours": "Tours"
       },
       "api": "API Docs",

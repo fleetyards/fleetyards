@@ -1680,14 +1680,6 @@
           "bundled": "捆绑的舰载小艇",
           "boughtVia": "购买方式?"
         },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent"
-          },
-          "origin": "From?",
-          "destination": "To?"
-        },
         "models": {
           "name": "名称",
           "classification": "分类",
@@ -1852,8 +1844,64 @@
         }
       },
       "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}"
+        "intro": "根据你的飞船、预算和可接受的价格时效，找出两个终端之间最好的一趟运输。价格来自 UEX，每小时更新。",
+        "yourRun": "你的航程",
+        "ship": "飞船",
+        "noShip": "选择飞船以按每趟利润排序",
+        "noShipShort": "未选飞船",
+        "scu": "%{count} SCU",
+        "budget": "预算",
+        "budgetPlaceholder": "可选",
+        "buyIn": "购买星系",
+        "anySystem": "全部",
+        "commodity": "商品",
+        "allCommodities": "全部商品",
+        "priceAge": "价格不早于",
+        "priceAges": {
+          "day": "24 小时",
+          "threeDays": "3 天",
+          "any": "不限"
+        },
+        "bestRun": "最佳航程",
+        "buyAt": "购买地点",
+        "sellAt": "出售地点",
+        "pricePerScu": "%{price} aUEC / SCU",
+        "distanceValue": "%{count} Gm",
+        "jumpTo": "跃迁至 %{system}",
+        "pricesFrom": "价格来自 %{time}",
+        "otherBuyers": {
+          "one": "另有 %{count} 处收购",
+          "other": "另有 %{count} 处收购"
+        },
+        "profitThisRun": "本趟利润",
+        "profitPerScu": "每 SCU 利润",
+        "aUecPerScu": "aUEC · 每 SCU %{value}",
+        "load": "载货量",
+        "loadOf": "%{load} / %{cargo} SCU",
+        "loadLimits": {
+          "hold": "货舱已满",
+          "stock": "受库存限制",
+          "demand": "受需求限制",
+          "budget": "受预算限制"
+        },
+        "youSpend": "花费",
+        "pickShipForRun": "选择飞船以查看一趟的利润。",
+        "moreRuns": "更多航程",
+        "runs": "航程",
+        "rankBy": "排序依据",
+        "profitPerRun": "每趟利润",
+        "profitPerDistance": "每 Gm 利润",
+        "shortest": "最短",
+        "buySell": "买入 → 卖出",
+        "spend": "花费",
+        "distance": "距离",
+        "prices": "价格",
+        "profit": "利润",
+        "to": "至",
+        "everyBuyer": "从 %{terminal} 收购 %{commodity} 的所有地点",
+        "empty": "没有匹配的航程。试试更早的价格或其他星系。",
+        "loadExplained": "载货量按两个终端和商品都接受的货箱尺寸计算，并受购买地库存、出售地需求和你的预算限制。",
+        "poweredByUex": "价格由 UEX 提供"
       },
       "hardpoints": {
         "prefix": "使用以下工具试用配置",
