@@ -253,8 +253,7 @@ const rotations = computed(() =>
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
-    @include phone-font-floor($phone-label-min);
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: $gray;

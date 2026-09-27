@@ -40,8 +40,7 @@
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
-    @include phone-font-floor($phone-label-min);
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
