@@ -79,13 +79,21 @@ module TradeRoutes
       ]
     end
 
+    # Stock, demand and budget are counted in SCU, but cargo moves in crates:
+    # each is rounded down to whole crates of the smallest size the route
+    # allows, or 5 SCU of stock would promise a load no 8 SCU crate can carry.
+    # The hold needs no rounding, `ShipCapacity` already counts crates.
     private def limits
       @limits ||= {
         "hold" => ship_scu_sql,
-        "stock" => "trade_routes.scu_origin",
-        "demand" => "trade_routes.scu_destination",
-        "budget" => @budget && ActiveRecord::Base.sanitize_sql_array(["FLOOR(?::numeric / trade_routes.price_origin)::integer", @budget])
+        "stock" => whole_crates("trade_routes.scu_origin"),
+        "demand" => whole_crates("trade_routes.scu_destination"),
+        "budget" => @budget && whole_crates(ActiveRecord::Base.sanitize_sql_array(["FLOOR(?::numeric / trade_routes.price_origin)", @budget]))
       }.compact
+    end
+
+    private def whole_crates(scu_sql)
+      "(FLOOR((#{scu_sql})::numeric / trade_routes.container_sizes[1]) * trade_routes.container_sizes[1])::integer"
     end
 
     private def loadable_sql

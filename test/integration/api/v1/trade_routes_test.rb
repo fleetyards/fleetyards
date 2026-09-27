@@ -79,9 +79,19 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
 
       best, low_stock, small_crates = parsed_body["items"]
       assert_equal [64, 3200], best.values_at("loadableScu", "profitPerRun")
-      assert_equal [50, 1500], low_stock.values_at("loadableScu", "profitPerRun")
+      assert_equal [48, 1440], low_stock.values_at("loadableScu", "profitPerRun")
       assert_equal [64, 1280], small_crates.values_at("loadableScu", "profitPerRun")
       assert_equal 6400, best["investment"]
+    end
+  end
+
+  test "GET /trade-routes ranks a ship's runs by profit per run by default" do
+    # 25 per SCU on a full 64 SCU hold earns 1,600; the low-stock route makes
+    # 30 per SCU but only 48 SCU of it, 1,440.
+    full_hold = create_route(@agricium, @area18, @arc, price_origin: 10, price_destination: 35)
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug, "commoditySlugIn" => [@agricium.slug]}} do
+      assert_equal [full_hold.id, @low_stock.id], ids
     end
   end
 
@@ -90,6 +100,15 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
       best, low_stock = parsed_body["items"]
       assert_equal "hold", best["loadLimit"]
       assert_equal "stock", low_stock["loadLimit"]
+    end
+  end
+
+  test "GET /trade-routes loads stock only in whole crates of the sizes allowed" do
+    @low_stock.update!(scu_origin: 5)
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug}} do
+      route = parsed_body["items"].find { |item| item["id"] == @low_stock.id }
+      assert_equal [0, "stock", 0], route.values_at("loadableScu", "loadLimit", "profitPerRun")
     end
   end
 

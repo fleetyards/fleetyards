@@ -11,7 +11,7 @@ module Api
 
       def index
         normalize_sort_params(trade_routes_query_params)
-        sorts = sorting_params(TradeRoute, trade_routes_query_params.delete("sorts"), allowed: allowed_sorts)
+        sorts = sorting_params(TradeRoute, trade_routes_query_params.delete("sorts"), default_sorts, allowed: allowed_sorts)
         budget = trade_routes_query_params.delete(:budget).presence&.to_d
         max_price_age = trade_routes_query_params.delete(:max_price_age_hours).presence&.to_i
         grouped = ActiveModel::Type::Boolean.new.cast(trade_routes_query_params.delete(:grouped))
@@ -27,6 +27,12 @@ module Api
           .apply(sorts, grouped:)
           .page(page_params)
           .per(per_page(TradeRoute))
+      end
+
+      # With a ship, what a run earns is the ranking; per SCU would put a small
+      # high-margin load above a full hold that earns more.
+      private def default_sorts
+        ship_capacity.present? ? TradeRoute::DEFAULT_SHIP_SORTING_PARAMS : TradeRoute::DEFAULT_SORTING_PARAMS
       end
 
       private def allowed_sorts

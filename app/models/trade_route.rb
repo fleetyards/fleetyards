@@ -42,6 +42,7 @@ class TradeRoute < ApplicationRecord
   paginates_per 50
 
   DEFAULT_SORTING_PARAMS = ["profit_per_scu desc"]
+  DEFAULT_SHIP_SORTING_PARAMS = ["profit_per_run desc"]
 
   # Only meaningful once a ship says how much fits; without one they fall back
   # to the default.
