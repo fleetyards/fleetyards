@@ -62,6 +62,14 @@ class TradeRoute < ApplicationRecord
     where(origin_terminal_id: Terminal.available.select(:id), destination_terminal_id: Terminal.available.select(:id))
   }
 
+  # A route is only as fresh as the older of its two prices.
+  scope :priced_within, ->(age) {
+    cutoff = age.ago
+    where(origin_price_updated_at: cutoff.., destination_price_updated_at: cutoff..)
+  }
+
+  LOAD_LIMITS = %w[hold stock demand budget].freeze
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[commodity_id origin_terminal_id destination_terminal_id]
   end

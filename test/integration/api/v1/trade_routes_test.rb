@@ -85,6 +85,58 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /trade-routes says what limits each load" do
+    assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug}} do
+      best, low_stock = parsed_body["items"]
+      assert_equal "hold", best["loadLimit"]
+      assert_equal "stock", low_stock["loadLimit"]
+    end
+  end
+
+  test "GET /trade-routes caps the load at what the budget buys" do
+    assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug, "budget" => 3000}} do
+      best = parsed_body["items"].find { |item| item["id"] == @best_margin.id }
+      assert_equal [30, "budget", 1500], best.values_at("loadableScu", "loadLimit", "profitPerRun")
+      assert_equal 3000, best["investment"]
+    end
+  end
+
+  test "GET /trade-routes leaves out routes with a price older than the maximum age" do
+    @low_stock.update!(origin_price_updated_at: 5.days.ago)
+
+    assert_api_response :get, 200, params: {q: {"maxPriceAgeHours" => 72}} do
+      assert_equal [@best_margin.id, @small_crates.id], ids
+    end
+  end
+
+  test "GET /trade-routes groups routes by commodity and buy terminal" do
+    other = create_route(@gold, @arc, @ruin, price_origin: 100, price_destination: 130, distance: 20)
+
+    assert_api_response :get, 200, params: {q: {"modelSlug" => @ship.slug, "grouped" => true}} do
+      assert_equal [@best_margin.id, @low_stock.id, @small_crates.id], ids
+      assert_equal 1, parsed_body["items"].first["otherDestinations"]
+      assert_equal 0, parsed_body["items"].last["otherDestinations"]
+      assert_not_includes ids, other.id
+    end
+  end
+
+  test "GET /trade-routes keeps a group's best destination by the requested sort" do
+    closer = create_route(@gold, @arc, @ruin, price_origin: 100, price_destination: 130, distance: 5)
+
+    assert_api_response :get, 200, params: {q: {"grouped" => true, "sorts" => ["distance asc"]}} do
+      assert_includes ids, closer.id
+      assert_not_includes ids, @best_margin.id
+    end
+  end
+
+  test "GET /trade-routes counts grouped rows for pagination" do
+    create_route(@gold, @arc, @ruin, price_origin: 100, price_destination: 130, distance: 20)
+
+    assert_api_response :get, 200, params: {q: {"grouped" => true}} do
+      assert_equal 3, parsed_body.dig("meta", "pagination", "totalCount")
+    end
+  end
+
   test "GET /trade-routes loads only the crate sizes both terminals accept" do
     @hold.cargo_hold_container_capacities.where(container_size_scu: [1, 2]).update_all(max_quantity: 0)
 

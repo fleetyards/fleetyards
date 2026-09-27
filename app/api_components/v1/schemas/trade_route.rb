@@ -34,6 +34,11 @@ module V1
           # run of that load costs and earns. A zero distance leaves the profit
           # per distance null rather than infinite.
           loadableScu: {type: [:integer, :null]},
+          loadLimit: ::V1::Schemas::Enums::NullableTradeRouteLoadLimitEnum,
+
+          # In a grouped list, how many other terminals buy this commodity from
+          # the same origin. Null in an ungrouped one.
+          otherDestinations: {type: [:integer, :null]},
           investment: {type: [:number, :null]},
           profitPerRun: {type: [:number, :null]},
           profitPerDistance: {type: [:number, :null]}

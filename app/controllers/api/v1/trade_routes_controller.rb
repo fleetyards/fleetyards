@@ -12,13 +12,19 @@ module Api
       def index
         normalize_sort_params(trade_routes_query_params)
         sorts = sorting_params(TradeRoute, trade_routes_query_params.delete("sorts"), allowed: allowed_sorts)
+        budget = trade_routes_query_params.delete(:budget).presence&.to_d
+        max_price_age = trade_routes_query_params.delete(:max_price_age_hours).presence&.to_i
+        grouped = ActiveModel::Type::Boolean.new.cast(trade_routes_query_params.delete(:grouped))
 
-        @q = TradeRoute.between_available_terminals
-          .includes(:origin_terminal, :destination_terminal, commodity: :build)
+        scope = TradeRoute.between_available_terminals
+        scope = scope.priced_within(max_price_age.hours) if max_price_age&.positive?
+
+        @q = scope.includes(:origin_terminal, :destination_terminal, commodity: :build)
           .ransack(trade_routes_query_params)
 
-        @trade_routes = ::TradeRoutes::Ranking.new(@q.result, capacity: ship_capacity)
-          .apply(sorts)
+        @grouped = grouped
+        @trade_routes = ::TradeRoutes::Ranking.new(@q.result, capacity: ship_capacity, budget:)
+          .apply(sorts, grouped:)
           .page(page_params)
           .per(per_page(TradeRoute))
       end
@@ -40,7 +46,7 @@ module Api
 
       private def trade_routes_query_params
         @trade_routes_query_params ||= params.permit(q: [
-          :s, :sorts, :model_slug,
+          :s, :sorts, :model_slug, :budget, :max_price_age_hours, :grouped,
           sorts: [], commodity_id_in: [], commodity_slug_in: [],
           origin_terminal_id_in: [], destination_terminal_id_in: [],
           origin_terminal_star_system_in: [], destination_terminal_star_system_in: []

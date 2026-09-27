@@ -786,6 +786,25 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/trade-routes/commodities":
+    get:
+      summary: Trade Route Commodity Filters
+      tags:
+      - TradeRoutesFilters
+      operationId: tradeRouteCommoditiesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/filters/trade-routes/star-systems":
     get:
       summary: Trade Route Star System Filters
@@ -29123,6 +29142,23 @@ components:
       - EQUIPMENT
       - 'NULL'
       title: NullableInventoryItemTypeEnum
+    NullableTradeRouteLoadLimitEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - hold
+      - stock
+      - demand
+      - budget
+      -
+      x-enumNames:
+      - HOLD
+      - STOCK
+      - DEMAND
+      - BUDGET
+      - 'NULL'
+      title: NullableTradeRouteLoadLimitEnum
     NullableVehicleSortEnum:
       type:
       - string
@@ -30974,6 +31010,12 @@ components:
           type:
           - integer
           - 'null'
+        loadLimit:
+          "$ref": "#/components/schemas/NullableTradeRouteLoadLimitEnum"
+        otherDestinations:
+          type:
+          - integer
+          - 'null'
         investment:
           type:
           - number
@@ -31031,6 +31073,14 @@ components:
             type: string
         modelSlug:
           type: string
+        budget:
+          type: number
+          minimum: 0
+        maxPriceAgeHours:
+          type: integer
+          minimum: 1
+        grouped:
+          type: boolean
         s:
           "$ref": "#/components/schemas/TradeRouteSortingEnum"
         sorts:
