@@ -40,7 +40,9 @@ const initialValues = ref<ModelUpdateInput>({
   adiMap: props.model.adiMap,
   playerOwnable: props.model.playerOwnable,
   ingameOnly: props.model.ingameOnly,
-  canLandOnPlanets: props.model.canLandOnPlanets,
+  // A payload cached before the field existed carries no value; the column
+  // defaults to true, and the form must not quietly save the opposite.
+  canLandOnPlanets: props.model.canLandOnPlanets ?? true,
   ground: props.model.metrics.isGroundVehicle,
   rsiId: props.model.rsiId,
   scKey: props.model.scKey,
