@@ -50,7 +50,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { useResizeObserver } from "@vueuse/core";
+import { useClampedText } from "@/shared/composables/useClampedText";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
 
@@ -118,27 +118,12 @@ const mobile = useMobile();
 
 // On a phone the description sits between the image and the key figures, so it
 // is cut to a few lines until asked for.
-const descriptionExpanded = ref(false);
 const descriptionEl = ref<HTMLElement>();
-const descriptionOverflows = ref(false);
-
-const measureDescription = () => {
-  const el = descriptionEl.value;
-  descriptionOverflows.value = !!el && el.scrollHeight > el.clientHeight + 1;
-};
-
-useResizeObserver(descriptionEl, measureDescription);
-
-// The page is reused between ships, and a clamped paragraph keeps its height when
-// the text changes, so the observer alone would keep the last ship's answer.
-watch(
-  () => [props.model?.slug, props.model?.description],
-  async () => {
-    descriptionExpanded.value = false;
-    await nextTick();
-    measureDescription();
-  },
-);
+const { expanded: descriptionExpanded, overflows: descriptionOverflows } =
+  useClampedText(descriptionEl, () => [
+    props.model?.slug,
+    props.model?.description,
+  ]);
 
 const modelsStore = useModelsStore();
 
