@@ -104,15 +104,21 @@ const loadMore = () => {
 // An ungrouped list of one purchase's destinations has no single best run.
 const showBestRun = computed(() => !origin.value);
 
-const bestRun = computed(() =>
-  showBestRun.value ? items.value[0] : undefined,
-);
+// Only a run the ship can fly earns the card. The API ranks those first, so
+// when the first one can't be flown, none can, and every run stays a row.
+const bestRun = computed(() => {
+  const first = items.value[0];
+
+  return showBestRun.value && first && !first.unflyableReason
+    ? first
+    : undefined;
+});
 
 const rows = computed(() =>
-  showBestRun.value ? items.value.slice(1) : items.value,
+  bestRun.value ? items.value.slice(1) : items.value,
 );
 
-const firstRank = computed(() => (showBestRun.value ? 2 : 1));
+const firstRank = computed(() => (bestRun.value ? 2 : 1));
 
 const topValue = computed(() =>
   Math.max(
@@ -250,7 +256,7 @@ onUnmounted(() => {
         <div class="trade-routes__more-head">
           <h2 id="more-runs" class="trade-routes__more-title">
             {{
-              showBestRun
+              bestRun
                 ? t("labels.tradeRoutes.moreRuns")
                 : t("labels.tradeRoutes.runs")
             }}
@@ -312,6 +318,7 @@ onUnmounted(() => {
             :route="item"
             :rank="firstRank + index"
             :top-value="topValue"
+            :ship-name="ship?.name"
           />
         </div>
         <div v-if="hasMore" class="trade-routes__more-action">

@@ -5,6 +5,7 @@ import {
   type Terminal,
   type TradeRoute,
   NullableTradeRouteLoadLimitEnum,
+  NullableTradeRouteUnflyableReasonEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -131,5 +132,45 @@ describe("TradeRoutes/RunRow", () => {
     expect(
       wrapper.find(".run-row__profit-value").text().replace(/\s/g, ""),
     ).toBe("+541296");
+  });
+
+  it("greys out a run the ship can't fly and says why", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        route: tradeRoute({
+          loadableScu: 84,
+          profitPerRun: 541296,
+          unflyableReason: NullableTradeRouteUnflyableReasonEnum.ORIGIN,
+        }),
+        rank: 4,
+        topValue: 727792,
+        shipName: "Hull C",
+      },
+      plugins: [await routerOnList()],
+    });
+
+    expect(wrapper.find(".run-row").classes()).toContain("run-row--unflyable");
+    expect(wrapper.find(".run-row__unflyable").text()).toBe(
+      "Hull C can't land at Fallow Field",
+    );
+  });
+
+  it("names the destination when that is the end the ship can't reach", async () => {
+    const wrapper = await mount({
+      unflyableReason: NullableTradeRouteUnflyableReasonEnum.DESTINATION,
+    });
+
+    expect(wrapper.find(".run-row__unflyable").text()).toBe(
+      "This ship can't land at Admin - Endgame",
+    );
+  });
+
+  it("leaves a flyable run as it is", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find(".run-row").classes()).not.toContain(
+      "run-row--unflyable",
+    );
+    expect(wrapper.find(".run-row__unflyable").exists()).toBe(false);
   });
 });
