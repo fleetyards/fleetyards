@@ -68,7 +68,9 @@ watch(budgetInput, (value) => {
 const commodityValue = computed({
   get: () => commodity.value,
   set: (value?: string) => {
-    void update({ commodity: value || undefined });
+    // The buyers of one purchase are a view of one commodity: picking another
+    // leaves that view rather than asking the old terminal for the new cargo.
+    void update({ commodity: value || undefined, origin: undefined });
   },
 });
 
