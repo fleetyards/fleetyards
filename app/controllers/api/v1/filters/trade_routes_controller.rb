@@ -24,6 +24,16 @@ module Api
           render "api/v1/shared/filters"
         end
 
+        def commodities
+          routed = TradeRoute.between_available_terminals.select(:commodity_id)
+
+          @filters = Commodity.where(id: routed).includes(:build).sort_by(&:name).map do |commodity|
+            Filter.new(category: "commodity", label: commodity.name, value: commodity.slug)
+          end
+
+          render "api/v1/shared/filters"
+        end
+
         # Only terminals a route can actually be filtered down to.
         private def routed_terminals
           routes = TradeRoute.between_available_terminals

@@ -5,6 +5,7 @@ namespace :filters do
     collection do
       get :star_systems, path: "star-systems"
       get :terminals
+      get :commodities
     end
   end
 end
