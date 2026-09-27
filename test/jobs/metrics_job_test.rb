@@ -187,6 +187,14 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 1, visits_by_os_on(2.days.ago, os: "iOS", installed: false)
   end
 
+  test "#perform leaves visits from before the installed flag out of the OS rollup" do
+    visit_on(2.days.ago, os: "Android", installed: nil)
+
+    MetricsJob.new.perform
+
+    assert_equal 0, Rollup.where(name: MetricsJob::ROLLUP_VISITS_BY_OS).count
+  end
+
   private def visit_on(time, user: nil, os: nil, installed: false)
     Ahoy::Visit.create!(
       started_at: time,

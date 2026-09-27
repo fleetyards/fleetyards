@@ -50,7 +50,9 @@ class MetricsJob < ApplicationJob
     visits = Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
 
     visits.rollup("Visits", interval: "day", column: :started_at)
-    visits.group(:os, :installed).rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at)
+    # A NULL flag is a visit from before it was recorded, not a browser visit.
+    visits.where.not(installed: nil).group(:os, :installed)
+      .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at)
   end
 
   # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but

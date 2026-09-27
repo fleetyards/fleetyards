@@ -120,7 +120,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
     t.string "accept_language"
     t.string "browser"
     t.string "device_type"
-    t.boolean "installed", default: false, null: false
+    t.boolean "installed", default: false
     t.string "ip"
     t.text "landing_page"
     t.string "os"
