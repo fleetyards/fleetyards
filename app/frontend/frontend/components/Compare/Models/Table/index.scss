@@ -153,6 +153,18 @@
   opacity: 1;
 }
 
+@media (hover: none) {
+  .compare-table__actions {
+    opacity: 1;
+  }
+
+  .compare-table__action {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+}
+
 .compare-table__action {
   display: grid;
   place-items: center;
