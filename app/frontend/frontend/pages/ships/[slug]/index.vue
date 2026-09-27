@@ -122,15 +122,21 @@ const descriptionExpanded = ref(false);
 const descriptionEl = ref<HTMLElement>();
 const descriptionOverflows = ref(false);
 
-useResizeObserver(descriptionEl, () => {
+const measureDescription = () => {
   const el = descriptionEl.value;
   descriptionOverflows.value = !!el && el.scrollHeight > el.clientHeight + 1;
-});
+};
 
+useResizeObserver(descriptionEl, measureDescription);
+
+// The page is reused between ships, and a clamped paragraph keeps its height when
+// the text changes, so the observer alone would keep the last ship's answer.
 watch(
-  () => props.model?.slug,
-  () => {
+  () => [props.model?.slug, props.model?.description],
+  async () => {
     descriptionExpanded.value = false;
+    await nextTick();
+    measureDescription();
   },
 );
 
