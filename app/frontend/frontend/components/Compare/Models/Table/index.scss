@@ -35,7 +35,11 @@
   // stack taller at this width, which is the price of seeing a comparison at all.
   @media (max-width: 576px) {
     --compare-rail: 96px;
-    --compare-col: clamp(104px, (100cqw - var(--compare-rail) - 2px) / 2, 180px);
+    --compare-col: clamp(
+      104px,
+      (100cqw - var(--compare-rail) - 2px) / 2,
+      180px
+    );
     --compare-col-max: var(--compare-col);
   }
 
@@ -153,18 +157,6 @@
   opacity: 1;
 }
 
-@media (hover: none) {
-  .compare-table__actions {
-    opacity: 1;
-  }
-
-  .compare-table__action {
-    width: 32px;
-    height: 32px;
-    font-size: 13px;
-  }
-}
-
 .compare-table__action {
   display: grid;
   place-items: center;
@@ -187,6 +179,20 @@
   &--on {
     color: $gold;
     border-color: rgba($gold, 0.6);
+  }
+}
+
+// After the base rules on purpose: a media query adds no specificity, so an
+// earlier copy loses to them.
+@media (hover: none) {
+  .compare-table__actions {
+    opacity: 1;
+  }
+
+  .compare-table__action {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
   }
 }
 
