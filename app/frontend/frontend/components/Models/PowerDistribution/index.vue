@@ -447,6 +447,7 @@ const cellHeight = (span: number) =>
   }
 
   &__seg-btn {
+    @include touch-tap-target;
     padding: 5px 14px;
     background: transparent;
     border: 0;
@@ -485,6 +486,7 @@ const cellHeight = (span: number) =>
     gap: 8px;
 
     &--toggle {
+      @include touch-tap-target;
       border: 0;
       background: transparent;
       padding: 0;
@@ -676,6 +678,7 @@ const cellHeight = (span: number) =>
   }
 
   &__label {
+    @include touch-tap-target;
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 8.5px;
     @include phone-font-floor($phone-label-min);

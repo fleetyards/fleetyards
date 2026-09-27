@@ -34,6 +34,7 @@
     }
 
     > a {
+      @include touch-tap-target;
       color: $gray-lighter;
 
       &:hover {

@@ -1,6 +1,7 @@
 @import "@/stylesheets/variables.scss";
 
 .base-list-toolbar-chip {
+  @include touch-tap-target;
   display: inline-flex;
   align-items: center;
   gap: 6px;

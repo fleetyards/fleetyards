@@ -49,6 +49,7 @@
   // Tokens rather than @apply: sass preprocesses this file first, so tailwind's
   // at-rules would never reach the minifier (see base/Chip for the same note).
   &__credit-link {
+    @include touch-tap-target;
     display: inline-flex;
     align-items: center;
     gap: 8px;
