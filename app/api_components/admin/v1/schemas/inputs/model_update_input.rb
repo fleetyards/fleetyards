@@ -59,6 +59,7 @@ module Admin
               onSale: {type: :boolean},
               playerOwnable: {type: :boolean},
               ingameOnly: {type: :boolean},
+              canLandOnPlanets: {type: :boolean},
               storeUrl: {type: [:string, :null]},
               salesPageUrl: {type: [:string, :null]},
               price: {type: [:number, :null]},

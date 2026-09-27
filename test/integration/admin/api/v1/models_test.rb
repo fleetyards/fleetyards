@@ -238,6 +238,18 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by canLandOnPlanetsEq" do
+    station_only = create(:model, can_land_on_planets: false)
+    lander = create(:model)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"canLandOnPlanetsEq" => false}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, station_only.name
+      assert_not_includes names, lander.name
+    end
+  end
+
   test "GET /models filters by scKeyBlank" do
     keyed = create(:model, sc_key: "AEGS_Idris_M")
     unkeyed = create(:model, sc_key: nil)
@@ -341,6 +353,16 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: model.id}, body: {ingameOnly: true} do
       assert parsed_body["ingameOnly"]
       assert model.reload.ingame_only?
+    end
+  end
+
+  test "PUT /models/:id marks a ship as unable to land on planets" do
+    model = create(:model)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {canLandOnPlanets: false} do
+      assert_equal false, parsed_body["canLandOnPlanets"]
+      assert_not model.reload.can_land_on_planets?
     end
   end
 

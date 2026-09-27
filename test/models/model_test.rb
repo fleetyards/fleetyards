@@ -10,6 +10,7 @@ require "test_helper"
 #  active                            :boolean          default(TRUE)
 #  adi_map                           :boolean          default(FALSE)
 #  beam                              :decimal(15, 2)   default(0.0), not null
+#  can_land_on_planets               :boolean          default(TRUE), not null
 #  cargo                             :decimal(15, 2)
 #  cargo_holds                       :string
 #  classification                    :string(255)

@@ -25,6 +25,7 @@ module Admin
               frontViewBlank: {type: :boolean},
               positionsNeedCurationEq: {type: :boolean},
               ingameOnlyEq: {type: :boolean},
+              canLandOnPlanetsEq: {type: :boolean},
               dimensionsDrifted: {type: :boolean},
               dimensionsMeasuredAtNull: {type: :boolean},
               s: {anyOf: [{

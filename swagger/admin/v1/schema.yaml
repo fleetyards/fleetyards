@@ -15751,6 +15751,8 @@ components:
           type: boolean
         ingameOnly:
           type: boolean
+        canLandOnPlanets:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -15814,6 +15816,7 @@ components:
       - hasVideos
       - inGame
       - ingameOnly
+      - canLandOnPlanets
       - loaners
       - manufacturer
       - media
@@ -15926,6 +15929,8 @@ components:
         playerOwnable:
           type: boolean
         ingameOnly:
+          type: boolean
+        canLandOnPlanets:
           type: boolean
         storeUrl:
           type: string
@@ -16049,6 +16054,8 @@ components:
           type: boolean
         ingameOnly:
           type: boolean
+        canLandOnPlanets:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -16119,6 +16126,7 @@ components:
       - hasVideos
       - inGame
       - ingameOnly
+      - canLandOnPlanets
       - loaners
       - manufacturer
       - media
@@ -17239,6 +17247,8 @@ components:
           type: boolean
         ingameOnlyEq:
           type: boolean
+        canLandOnPlanetsEq:
+          type: boolean
         dimensionsDrifted:
           type: boolean
         dimensionsMeasuredAtNull:
@@ -17641,6 +17651,8 @@ components:
         playerOwnable:
           type: boolean
         ingameOnly:
+          type: boolean
+        canLandOnPlanets:
           type: boolean
         storeUrl:
           type:

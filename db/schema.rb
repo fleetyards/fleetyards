@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_27_210000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1828,6 +1828,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_100000) do
     t.boolean "adi_map", default: false
     t.uuid "base_model_id"
     t.decimal "beam", precision: 15, scale: 2, default: "0.0", null: false
+    t.boolean "can_land_on_planets", default: true, null: false
     t.decimal "cargo", precision: 15, scale: 2
     t.string "cargo_holds"
     t.string "classification", limit: 255

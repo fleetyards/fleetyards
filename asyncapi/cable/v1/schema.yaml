@@ -2431,6 +2431,8 @@ components:
           type: boolean
         ingameOnly:
           type: boolean
+        canLandOnPlanets:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -2477,6 +2479,7 @@ components:
       - hasVideos
       - inGame
       - ingameOnly
+      - canLandOnPlanets
       - loaners
       - manufacturer
       - media
