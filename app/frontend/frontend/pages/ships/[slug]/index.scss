@@ -77,6 +77,18 @@
   margin: 20px 0;
 }
 
+.description-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+.description-toggle {
+  margin-top: 4px;
+}
+
 .production-status {
   margin-top: 20px;
 }

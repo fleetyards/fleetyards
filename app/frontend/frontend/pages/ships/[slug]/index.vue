@@ -46,7 +46,11 @@ import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { type ModelExtended } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import { useResizeObserver } from "@vueuse/core";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
 
@@ -111,6 +115,24 @@ const updateTitle = () => {
 };
 
 const mobile = useMobile();
+
+// On a phone the description sits between the image and the key figures, so it
+// is cut to a few lines until asked for.
+const descriptionExpanded = ref(false);
+const descriptionEl = ref<HTMLElement>();
+const descriptionOverflows = ref(false);
+
+useResizeObserver(descriptionEl, () => {
+  const el = descriptionEl.value;
+  descriptionOverflows.value = !!el && el.scrollHeight > el.clientHeight + 1;
+});
+
+watch(
+  () => props.model?.slug,
+  () => {
+    descriptionExpanded.value = false;
+  },
+);
 
 const modelsStore = useModelsStore();
 
@@ -379,7 +401,27 @@ const adiMap = computed(() => {
           </div>
           <blockquote class="description">
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <p v-html="model.description" />
+            <p
+              ref="descriptionEl"
+              :class="{
+                'description-clamped': mobile && !descriptionExpanded,
+              }"
+              v-html="model.description"
+            />
+            <Btn
+              v-if="mobile && (descriptionOverflows || descriptionExpanded)"
+              :variant="BtnVariantsEnum.BARE"
+              :size="BtnSizesEnum.SM"
+              :aria-expanded="descriptionExpanded"
+              class="description-toggle"
+              @click="descriptionExpanded = !descriptionExpanded"
+            >
+              {{
+                descriptionExpanded
+                  ? t("actions.readLess")
+                  : t("actions.readMore")
+              }}
+            </Btn>
           </blockquote>
         </div>
         <div class="col-12 col-lg-4">

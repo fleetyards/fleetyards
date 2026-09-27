@@ -57,6 +57,8 @@
       "showDetailPage": "Detail Page",
       "showDetails": "Show Details",
       "hideDetails": "Hide Details",
+      "readMore": "Read more",
+      "readLess": "Show less",
       "showGuide": "Show Guide",
       "showFleetchart": "Fleetchart",
       "hideFleetchart": "Default view",
