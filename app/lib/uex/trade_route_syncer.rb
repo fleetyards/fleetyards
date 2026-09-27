@@ -93,15 +93,25 @@ module Uex
     end
 
     # Replaced per commodity rather than in one pass, so a request that fails
-    # halfway through leaves the other commodities' routes current.
+    # halfway through leaves the other commodities' routes current. Upserted on
+    # the terminal pair so a route keeps its id across refreshes: a reader
+    # paging through the list must not meet the same route under a new id.
     private def replace_routes(commodity, routes)
-      now = Time.current
       rows = routes.uniq { |route| route.values_at(:origin_terminal_id, :destination_terminal_id) }
-        .map { |route| route.merge(created_at: now, updated_at: now) }
 
       TradeRoute.transaction do
-        TradeRoute.where(commodity_id: commodity.id).delete_all
-        TradeRoute.insert_all(rows) if rows.any?
+        kept = if rows.any?
+          TradeRoute.upsert_all(
+            rows,
+            unique_by: :index_trade_routes_on_commodity_and_terminals,
+            update_only: rows.first.keys - %i[commodity_id origin_terminal_id destination_terminal_id],
+            returning: :id
+          ).rows.flatten
+        else
+          []
+        end
+
+        TradeRoute.where(commodity_id: commodity.id).where.not(id: kept).delete_all
       end
     end
 

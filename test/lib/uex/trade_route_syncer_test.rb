@@ -96,6 +96,16 @@ module Uex
       assert_equal [[104, 105]], routes_for(@commodities[:gold])
     end
 
+    test "#run keeps a route's id across refreshes" do
+      sync
+      route = TradeRoute.find_by!(origin_terminal: terminal(104), destination_terminal: terminal(105))
+      rows = uex_fixture("commodities_routes").map { |row| (row["id"] == 2) ? row.merge("price_destination" => 29_500) : row }
+
+      sync(commodity_routes: rows)
+
+      assert_equal 29_500, route.reload.price_destination
+    end
+
     test "#run keeps the routes of a commodity whose request failed" do
       sync
       client = uex_client_stub
