@@ -4,11 +4,18 @@ module Uex
   class TerminalSyncer
     TERMINAL_TYPE = "commodity"
 
+    # How many of the terminals we hold as available a feed must still list
+    # before its omissions are believed. Half the terminals closing between two
+    # runs is not a patch; a feed that came back short looks exactly like that.
+    MIN_RETENTION = 0.5
+
     # `terminals` holds every terminal the feed listed, keyed by UEX id, so the
     # price and route syncers can resolve rows without a second lookup.
-    Result = Struct.new(:created, :updated, :retired, :terminals) do
+    # `live_ids` are the terminals to treat as open: the listed ones, plus the
+    # omitted ones a short feed could not retire.
+    Result = Struct.new(:created, :updated, :retired, :terminals, :live_ids, :short_feed) do
       def to_s
-        "created=#{created} updated=#{updated} retired=#{retired}"
+        "created=#{created} updated=#{updated} retired=#{retired}#{" short_feed" if short_feed}"
       end
     end
 
@@ -22,6 +29,9 @@ module Uex
       # An empty feed would otherwise retire every terminal, and every price and
       # route hanging off one with it.
       raise Uex::Error, "UEX returned no commodity terminals; refusing to sync an empty snapshot" if rows.empty?
+
+      listed_ids = rows.pluck("id")
+      short_feed = short_feed?(listed_ids)
 
       created = 0
       updated = 0
@@ -43,9 +53,28 @@ module Uex
 
       # Kept rather than deleted: prices and routes refer to them, and UEX
       # brings terminals back when a patch restores a location.
-      retired = Terminal.available.where.not(uex_id: rows.pluck("id")).update_all(available: false, updated_at: Time.current)
+      omitted = Terminal.available.where.not(uex_id: listed_ids)
+      retired = short_feed ? 0 : omitted.update_all(available: false, updated_at: Time.current)
+      report_short_feed(listed_ids.size) if short_feed
 
-      Result.new(created:, updated:, retired:, terminals:)
+      live_ids = terminals.values.map(&:id).to_set
+      live_ids.merge(omitted.pluck(:id)) if short_feed
+
+      Result.new(created:, updated:, retired:, terminals:, live_ids:, short_feed:)
+    end
+
+    private def short_feed?(listed_ids)
+      held = Terminal.available.pluck(:uex_id)
+      return false if held.empty?
+
+      (held & listed_ids).size < held.size * MIN_RETENTION
+    end
+
+    private def report_short_feed(listed)
+      message = "UEX listed #{listed} commodity terminals, under half the #{Terminal.available.count} we hold; retired none"
+
+      Rails.logger.warn("[#{self.class.name}] #{message}")
+      Appsignal.report_error(Uex::Error.new(message))
     end
 
     private def attributes(row)

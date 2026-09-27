@@ -29,7 +29,7 @@ module Uex
       unknown = {}
 
       desired = collect(prices, commodities:, terminals:, unknown:)
-      counts = persist_prices(desired, live: terminals.values.map(&:id).to_set)
+      counts = persist_prices(desired, live: terminal_sync.live_ids)
 
       record_price_history
 

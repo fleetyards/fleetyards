@@ -67,6 +67,20 @@ module Uex
       assert_not Terminal.find_by!(uex_id: 102).available
     end
 
+    test "#run retires none of the terminals a short feed omits" do
+      sync
+      create_list(:terminal, 4)
+      only_one = uex_fixture("terminals").reject { |row| [102, 104].include?(row["id"]) }
+      Appsignal.expects(:report_error).once
+
+      result = sync(terminals: only_one)
+
+      assert result.short_feed
+      assert_equal 0, result.retired
+      assert Terminal.find_by!(uex_id: 102).available
+      assert_includes result.live_ids, Terminal.find_by!(uex_id: 102).id
+    end
+
     test "#run brings a retired terminal back when UEX lists it again" do
       create(:terminal, uex_id: 102, available: false)
 

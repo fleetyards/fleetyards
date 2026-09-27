@@ -190,6 +190,18 @@ module Uex
       assert_empty ItemPrice.where(item_type: "Commodity", location: "Admin - ARC-L1")
     end
 
+    test "#run keeps the prices of terminals a short feed omits" do
+      sync
+      create_list(:terminal, 4)
+      only_annex = uex_fixture("terminals").reject { |row| [102, 104].include?(row["id"]) }
+      Appsignal.stubs(:report_error)
+
+      result = sync(terminals: only_annex)
+
+      assert_equal 0, result.removed
+      assert prices_for(@commodities[:agricium_ore]).exists?
+    end
+
     test "#run leaves prices for other item types alone" do
       model_price = create(:item_price, item: create(:model), price_type: "sell", location: "Admin - ARC-L1")
 
