@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.6.0](https://github.com/fleetyards/fleetyards/compare/v8.5.0...v8.6.0) (2026-09-27)
+
+
+### Features
+
+* **analytics:** record whether a visit runs as the installed app ([#5243](https://github.com/fleetyards/fleetyards/issues/5243)) ([d616399](https://github.com/fleetyards/fleetyards/commit/d61639956d443ee2967e840ff373543a9ffcafaa))
+* **events:** restore a skipped occurrence ([#5240](https://github.com/fleetyards/fleetyards/issues/5240)) ([4eae26e](https://github.com/fleetyards/fleetyards/commit/4eae26e3154bc78417a270f27b20d59cf2d649b9))
+* **events:** this-and-following edits and custom recurrence intervals ([#5229](https://github.com/fleetyards/fleetyards/issues/5229)) ([730f3a4](https://github.com/fleetyards/fleetyards/commit/730f3a454259f9c2035a05668628fc3c113c763a))
+* **pwa:** install prompt and a complete web app manifest ([#5242](https://github.com/fleetyards/fleetyards/issues/5242)) ([5903844](https://github.com/fleetyards/fleetyards/commit/590384444392661cb60756b1c090949caed196d9))
+* **stats:** chart in-game price changes and label every chart tooltip ([#5223](https://github.com/fleetyards/fleetyards/issues/5223)) ([9ebe69d](https://github.com/fleetyards/fleetyards/commit/9ebe69d8a126ca1b703659e231ed83c705c70b87))
+* **tools:** trade routes ranked for the ship you fly ([#5245](https://github.com/fleetyards/fleetyards/issues/5245)) ([6e83bf7](https://github.com/fleetyards/fleetyards/commit/6e83bf712d3e5ff1456032dd177f258f53526561))
+
+
+### Bug Fixes
+
+* **admin:** use the shirt icon for equipment, matching the site ([54df72b](https://github.com/fleetyards/fleetyards/commit/54df72b67617c266df15523906af23f26b2a8216))
+* **events:** follow the new slug after renaming an event ([#5239](https://github.com/fleetyards/fleetyards/issues/5239)) ([1f778b7](https://github.com/fleetyards/fleetyards/commit/1f778b7779a3a227dfa94f7d301a01e5274cbf46))
+* **fleets:** reject a Discord server name saved as its guild id ([#5241](https://github.com/fleetyards/fleetyards/issues/5241)) ([5187aee](https://github.com/fleetyards/fleetyards/commit/5187aee9ef82708a9849a0ed2177f6e3d47c6c93))
+* **fleets:** stop the public fleet page spinning for guests and non-members ([#5238](https://github.com/fleetyards/fleetyards/issues/5238)) ([4b2f640](https://github.com/fleetyards/fleetyards/commit/4b2f64013dba3ae556ef06ed3458aa6dbafc0331))
+* **mobile:** two ships on the compare page and a compact ship header on phones ([#5244](https://github.com/fleetyards/fleetyards/issues/5244)) ([4284edb](https://github.com/fleetyards/fleetyards/commit/4284edba71f1247b2bc827a46c718c25d5614305))
+* **uex:** place the component items the sync could not ([#5228](https://github.com/fleetyards/fleetyards/issues/5228)) ([1ef15b9](https://github.com/fleetyards/fleetyards/commit/1ef15b9a1d70f4cbe27d64a82b3dbb11e8903b0a))
+* **uex:** price ten equipment items the name match could not place ([#5227](https://github.com/fleetyards/fleetyards/issues/5227)) ([1e18849](https://github.com/fleetyards/fleetyards/commit/1e18849485bb56d468c8623bca1e4102985f3e83))
+* **uex:** read the duplicate Jaclium entry's prices as the ore's ([#5224](https://github.com/fleetyards/fleetyards/issues/5224)) ([12b85c8](https://github.com/fleetyards/fleetyards/commit/12b85c884f3fe9be9774d26e2e11b9c8f95a0b6a))
+* **uex:** show the sync counts in UEX price notifications ([#5225](https://github.com/fleetyards/fleetyards/issues/5225)) ([6b1a55b](https://github.com/fleetyards/fleetyards/commit/6b1a55ba8f1035e320ef654cce46ec5d238b294a))
+
 ## [8.5.0](https://github.com/fleetyards/fleetyards/compare/v8.4.0...v8.5.0) (2026-09-25)
 
 
