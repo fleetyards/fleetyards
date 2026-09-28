@@ -221,6 +221,13 @@
       "destroyFleet": "解散舰队",
       "restore": "恢复",
       "fleet": {
+        "rsiVerification": {
+          "generateToken": "生成验证码",
+          "regenerateToken": "生成新的验证码",
+          "check": "立即检查",
+          "copyToken": "复制验证码",
+          "revoke": "撤销验证"
+        },
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
         "createInviteUrl": "Create Invite Urls",

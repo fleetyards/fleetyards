@@ -403,6 +403,25 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
+        "rsiVerification": {
+          "title": "RSI verification",
+          "hint": "Prove that your fleet runs its RSI organisation: put the token below anywhere on the organisation's public page (the introduction, history, manifesto or charter), then check. Once the fleet is verified you can remove it again.",
+          "noSid": "Save your organisation's SID above to verify it.",
+          "openOrgPage": "Open the organisation page on RSI",
+          "token": "Verification token",
+          "verified": "Verified RSI organisation",
+          "unverified": "Not verified with RSI",
+          "verifiedSince": "Verified since %{date}",
+          "nextCheck": "You can check again in a minute.",
+          "fidAtRisk": "Your fleet ID %{fid} looks like an RSI SID. If the organisation with that SID verifies another fleet, that fleet can claim this ID and your fleet's address changes. Verify your fleet to keep it.",
+          "statuses": {
+            "pending": "Checking the organisation page…",
+            "token_missing": "The token is not on the organisation page yet. RSI can take a few minutes to show an edit.",
+            "symbol_mismatch": "The page RSI returned belongs to a different organisation.",
+            "not_found": "RSI has no organisation with this SID.",
+            "failed": "The organisation page could not be checked. Try again in a minute."
+          }
+        },
         "description": "Description",
         "public": "Public Fleetview",
         "publicFleet": "Public Fleet",

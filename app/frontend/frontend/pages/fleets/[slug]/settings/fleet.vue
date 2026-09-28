@@ -14,6 +14,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import RsiVerificationPanel from "@/frontend/components/Fleets/RsiVerificationPanel/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
   FeatureFlagName,
@@ -374,6 +375,10 @@ const onDestroy = async () => {
       @cancel="handleCancel"
     />
   </form>
+
+  <hr />
+
+  <RsiVerificationPanel :fleet="fleet" />
 
   <hr />
 

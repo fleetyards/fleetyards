@@ -403,6 +403,25 @@
         "name": "Nome",
         "logo": "Logo",
         "rsiSid": "SID",
+        "rsiVerification": {
+          "title": "Verifica RSI",
+          "hint": "Dimostra che la tua flotta gestisce la sua organizzazione RSI: inserisci il codice qui sotto in un punto qualsiasi della pagina pubblica dell’organizzazione (introduzione, storia, manifesto o statuto), poi controlla. Una volta verificata la flotta puoi rimuoverlo.",
+          "noSid": "Salva qui sopra il SID della tua organizzazione per verificarla.",
+          "openOrgPage": "Apri la pagina dell’organizzazione su RSI",
+          "token": "Codice di verifica",
+          "verified": "Organizzazione RSI verificata",
+          "unverified": "Non verificata su RSI",
+          "verifiedSince": "Verificata dal %{date}",
+          "nextCheck": "Puoi controllare di nuovo tra un minuto.",
+          "fidAtRisk": "L’ID della tua flotta %{fid} sembra un SID RSI. Se l’organizzazione con quel SID verifica un’altra flotta, quella flotta può rivendicare questo ID e l’indirizzo della tua flotta cambia. Verifica la tua flotta per mantenerlo.",
+          "statuses": {
+            "pending": "Controllo della pagina dell’organizzazione…",
+            "token_missing": "Il codice non è ancora sulla pagina dell’organizzazione. RSI può impiegare qualche minuto a mostrare una modifica.",
+            "symbol_mismatch": "La pagina restituita da RSI appartiene a un’altra organizzazione.",
+            "not_found": "RSI non ha nessuna organizzazione con questo SID.",
+            "failed": "Non è stato possibile controllare la pagina dell’organizzazione. Riprova tra un minuto."
+          }
+        },
         "description": "Descrizione",
         "public": "Fleetview Pubblica",
         "publicFleet": "Flotta pubblica",

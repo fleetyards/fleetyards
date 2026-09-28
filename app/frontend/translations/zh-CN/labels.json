@@ -403,6 +403,25 @@
         "name": "名称",
         "logo": "标志",
         "rsiSid": "SID",
+        "rsiVerification": {
+          "title": "RSI 验证",
+          "hint": "证明你的舰队在管理其 RSI 组织：将下方的验证码放到组织公开页面的任意位置（简介、历史、宣言或章程），然后进行检查。舰队验证后即可将其删除。",
+          "noSid": "请先在上方保存你的组织 SID 以进行验证。",
+          "openOrgPage": "在 RSI 上打开组织页面",
+          "token": "验证码",
+          "verified": "已验证的 RSI 组织",
+          "unverified": "未通过 RSI 验证",
+          "verifiedSince": "自 %{date} 起已验证",
+          "nextCheck": "一分钟后可以再次检查。",
+          "fidAtRisk": "你的舰队 ID %{fid} 看起来像一个 RSI SID。如果拥有该 SID 的组织验证了另一支舰队，那支舰队就可以认领这个 ID，你的舰队地址将会改变。验证你的舰队以保留它。",
+          "statuses": {
+            "pending": "正在检查组织页面…",
+            "token_missing": "组织页面上还没有该验证码。RSI 可能需要几分钟才会显示修改。",
+            "symbol_mismatch": "RSI 返回的页面属于另一个组织。",
+            "not_found": "RSI 上没有使用此 SID 的组织。",
+            "failed": "无法检查组织页面。请一分钟后重试。"
+          }
+        },
         "description": "描述",
         "public": "公开舰队视图",
         "publicFleet": "公开舰队",

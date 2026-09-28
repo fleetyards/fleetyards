@@ -221,6 +221,13 @@
       "destroyFleet": "Destruir flota",
       "restore": "Restaurar",
       "fleet": {
+        "rsiVerification": {
+          "generateToken": "Generar código",
+          "regenerateToken": "Generar un código nuevo",
+          "check": "Comprobar ahora",
+          "copyToken": "Copiar código",
+          "revoke": "Revocar la verificación"
+        },
         "join": "¡Unirse a %{fleet}!",
         "leave": "Abandonar %{fleet}",
         "createInviteUrl": "Crear URLs de invitación",
