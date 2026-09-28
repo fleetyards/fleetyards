@@ -194,6 +194,19 @@ describe("FleetRouterView", () => {
     expect((child.vm.$attrs.fleet as Fleet).name).toBe("Member");
   });
 
+  it("does not fall back to the visitor payload when the members' copy fails", async () => {
+    setMembership("member");
+    fleetState.membership.value = { id: "m1" } as FleetMember;
+    fleetState.fleetError.value = httpError(500);
+
+    const wrapper = await mountFleetPage(
+      true,
+      "/fleets/evle/settings/membership/",
+    );
+
+    expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(false);
+  });
+
   it("shows the error screen when the membership request fails", async () => {
     setMembership("failed");
 

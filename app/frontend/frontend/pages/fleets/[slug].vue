@@ -38,10 +38,15 @@ const {
 });
 
 // A signed-in reader falls back to the visitor payload only once the members'
-// copy is refused. Racing the two let a member's page render from the visitor
-// payload, which leaves out what only members see -- a form seeded from it
-// kept the gaps after the members' copy arrived.
-const memberFleetRefused = computed(() => !!asyncFleetStatus.error.value);
+// copy is refused -- a 404, which is how a non-member is told. Racing the two,
+// or falling back on any failure, let a member's page render from the visitor
+// payload, which leaves out what only members see: a settings form seeded from
+// it would save the gaps back.
+const memberFleetRefused = computed(() => {
+  const error = asyncFleetStatus.error.value;
+
+  return !!error && errorTypeFrom(error) === ErrorTypesEnum.NOT_FOUND;
+});
 
 const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(
   slug,
