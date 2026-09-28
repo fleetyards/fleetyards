@@ -197,8 +197,10 @@ class AnnouncementDelivery < ApplicationRecord
     "https://bsky.app/profile/#{did}/post/#{rkey}"
   end
 
+  # The first part that carries its ids: a retry of a thread whose opening
+  # messages predate them records ids only from where it resumed.
   private def discord_url
-    first = first_posted_part || {}
+    first = posted_parts.find { |part| ::Discord::Engagement.readable?(part) } || {}
     guild_id = engagement&.dig("guild_id")
     return nil if [guild_id, first["channel_id"], first["message_id"]].any?(&:blank?)
 

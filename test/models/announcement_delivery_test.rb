@@ -140,6 +140,13 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
         posted_parts: [{"index" => 0, "message_id" => "m", "channel_id" => "c"}], engagement: {"guild_id" => "g"}).post_url
   end
 
+  test "#post_url links a resumed Discord thread from its first message with ids" do
+    delivery = build(:announcement_delivery, channel: "discord", status: "succeeded",
+      posted_parts: [{"index" => 0}, {"index" => 1, "message_id" => "m", "channel_id" => "c"}], engagement: {"guild_id" => "g"})
+
+    assert_equal "https://discord.com/channels/g/c/m", delivery.post_url
+  end
+
   test "#post_url is nil for a Discord post sent before its ids were kept" do
     assert_nil build(:announcement_delivery, channel: "discord", status: "succeeded", posted_parts: [{"index" => 0}]).post_url
   end
