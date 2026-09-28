@@ -11,6 +11,7 @@ import {
   type Fleet,
   type FleetInput,
   useUpdateFleet,
+  useRevokeFleetRsiVerification,
   getFleetsQueryKey,
   getFleetQueryKey,
 } from "@/services/fyAdminApi";
@@ -22,6 +23,8 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   fleet: Fleet;
@@ -92,6 +95,20 @@ const updateMutation = useUpdateFleet({
   },
 });
 
+const revokeMutation = useRevokeFleetRsiVerification({
+  mutation: {
+    onSettled: () => {
+      void queryClient.invalidateQueries({
+        queryKey: getFleetQueryKey(props.fleet.id),
+      });
+    },
+  },
+});
+
+const revokeVerification = async () => {
+  await revokeMutation.mutateAsync({ id: props.fleet.id });
+};
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -140,6 +157,17 @@ const handleCancel = async () => {
           translation-key="fleet.rsiSid"
           name="rsiSid"
         />
+        <p v-if="fleet.rsiVerified" data-test="admin-fleet-rsi-verified">
+          <i class="fa-duotone fa-badge-check" />
+          {{ t("labels.fleet.rsiVerification.verified") }}
+          <BtnConfirm
+            :size="BtnSizesEnum.SM"
+            :disabled="revokeMutation.isPending.value"
+            @confirm="revokeVerification"
+          >
+            {{ t("actions.fleet.rsiVerification.revoke") }}
+          </BtnConfirm>
+        </p>
         <FormFileInput
           v-model="logo"
           v-bind="logoProps"
