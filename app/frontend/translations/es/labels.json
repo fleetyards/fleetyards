@@ -2166,12 +2166,10 @@
           "deliveryPendingCount": "%{count} pendientes",
           "content": "Contenido",
           "engagement": {
-            "title": "Interacción",
             "likes": "Me gusta",
             "reposts": "Reposts",
             "replies": "Respuestas",
             "quotes": "Citas",
-            "reactions": "Reacciones",
             "noReactions": "Aún no hay reacciones.",
             "fetchedAt": "Actualizado %{time}",
             "notFetched": "Las cifras llegan en menos de una hora.",

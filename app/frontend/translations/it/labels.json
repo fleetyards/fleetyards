@@ -2166,12 +2166,10 @@
           "deliveryPendingCount": "%{count} in attesa",
           "content": "Contenuto",
           "engagement": {
-            "title": "Coinvolgimento",
             "likes": "Mi piace",
             "reposts": "Repost",
             "replies": "Risposte",
             "quotes": "Citazioni",
-            "reactions": "Reazioni",
             "noReactions": "Ancora nessuna reazione.",
             "fetchedAt": "Aggiornato %{time}",
             "notFetched": "I numeri arrivano entro un'ora.",

@@ -13,9 +13,9 @@ import {
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   deliveries: AnnouncementDelivery[];
-};
+}
 
 const props = defineProps<Props>();
 

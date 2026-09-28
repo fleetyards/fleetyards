@@ -2166,12 +2166,10 @@
           "deliveryPendingCount": "%{count} 個待處理",
           "content": "內容",
           "engagement": {
-            "title": "互動",
             "likes": "按讚",
             "reposts": "轉發",
             "replies": "回覆",
             "quotes": "引用",
-            "reactions": "表情回應",
             "noReactions": "尚無表情回應。",
             "fetchedAt": "更新於 %{time}",
             "notFetched": "數據將在一小時內送達。",

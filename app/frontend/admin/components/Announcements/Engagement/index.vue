@@ -12,9 +12,9 @@ import {
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   delivery: AnnouncementDelivery;
-};
+}
 
 const props = defineProps<Props>();
 
@@ -49,7 +49,9 @@ const note = computed(() => {
   }
 
   if (!props.delivery.engagementTrackable) {
-    return t("labels.admin.announcements.engagement.untracked");
+    return props.delivery.channel === AnnouncementChannelEnum.DISCORD
+      ? t("labels.admin.announcements.engagement.untracked")
+      : undefined;
   }
 
   return t("labels.admin.announcements.engagement.notFetched");

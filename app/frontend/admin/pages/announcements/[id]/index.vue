@@ -23,9 +23,9 @@ import {
 } from "@/services/fyAdminApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
-type Props = {
+interface Props {
   announcement: Announcement;
-};
+}
 
 const props = defineProps<Props>();
 

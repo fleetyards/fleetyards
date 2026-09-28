@@ -2166,12 +2166,10 @@
           "deliveryPendingCount": "%{count} 个待处理",
           "content": "内容",
           "engagement": {
-            "title": "互动",
             "likes": "点赞",
             "reposts": "转发",
             "replies": "回复",
             "quotes": "引用",
-            "reactions": "表情回应",
             "noReactions": "暂无表情回应。",
             "fetchedAt": "更新于 %{time}",
             "notFetched": "数据将在一小时内到达。",

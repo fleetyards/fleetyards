@@ -107,12 +107,14 @@ const destroy = () => {
   displayConfirm({
     text: t("messages.confirm.announcement.destroy"),
     onConfirm: async () => {
-      await destroyMutation.mutateAsync({ id: props.announcement.id });
-      displaySuccess({ text: t("messages.announcement.destroyed") });
-
+      // Off the detail page first: the delete invalidates its query, and a
+      // page still watching it would refetch a 404 before it could leave.
       if (route.name === "admin-announcement") {
         await router.push({ name: "admin-announcements" });
       }
+
+      await destroyMutation.mutateAsync({ id: props.announcement.id });
+      displaySuccess({ text: t("messages.announcement.destroyed") });
     },
   });
 };

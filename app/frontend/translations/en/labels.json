@@ -2180,12 +2180,10 @@
           "deliveryPendingCount": "%{count} pending",
           "content": "Content",
           "engagement": {
-            "title": "Engagement",
             "likes": "Likes",
             "reposts": "Reposts",
             "replies": "Replies",
             "quotes": "Quotes",
-            "reactions": "Reactions",
             "noReactions": "No reactions yet.",
             "fetchedAt": "Updated %{time}",
             "notFetched": "Counts arrive within the hour.",

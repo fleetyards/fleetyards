@@ -2166,12 +2166,10 @@
           "deliveryPendingCount": "%{count} en attente",
           "content": "Contenu",
           "engagement": {
-            "title": "Engagement",
             "likes": "J'aime",
             "reposts": "Republications",
             "replies": "Réponses",
             "quotes": "Citations",
-            "reactions": "Réactions",
             "noReactions": "Aucune réaction pour l'instant.",
             "fetchedAt": "Mis à jour %{time}",
             "notFetched": "Les chiffres arrivent dans l'heure.",
