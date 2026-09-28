@@ -32,8 +32,13 @@ module Bsky
 
       posts = uris.each_slice(BATCH_SIZE).flat_map { |batch| get_posts(batch) }
 
+      # getPosts leaves out what it cannot resolve. A thread with a deleted
+      # post still counts what is left, but nothing at all is an outage, not
+      # a thread nobody liked, and the last counts stay standing.
+      raise Error, "Bluesky getPosts resolved none of #{uris.size} posts" if posts.empty?
+
       counts = COUNTS.transform_values { |field| posts.sum { |post| post[field].to_i } }
-      counts["replies"] = [counts["replies"] - (posts.size - 1), 0].max if posts.any?
+      counts["replies"] = [counts["replies"] - (posts.size - 1), 0].max
       counts
     end
 

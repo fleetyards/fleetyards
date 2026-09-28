@@ -67,6 +67,12 @@ module Bsky
       assert_raises(Bsky::Engagement::Error) { Bsky::Engagement.new.fetch(["at://1"]) }
     end
 
+    test "#fetch raises rather than record zeros when no post resolves" do
+      stub_posts(["at://1"], [])
+
+      assert_raises(Bsky::Engagement::Error) { Bsky::Engagement.new.fetch(["at://1"]) }
+    end
+
     test "#fetch is nil for a delivery with no posts" do
       assert_nil Bsky::Engagement.new.fetch([])
     end
