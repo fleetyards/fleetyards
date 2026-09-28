@@ -110,6 +110,15 @@ const tags = computed<RowListItemTag[]>(() => {
   return list;
 });
 
+// The same label as the tag, for phones: `RowListItem` hides every tag below
+// 992px, and where a contract takes place is not optional on a phone.
+const locationLabel = computed(() => {
+  const location = props.mission.locationKind;
+  if (!location || location === "unknown") return undefined;
+
+  return t(`labels.gameMission.locationKinds.${location}`);
+});
+
 // Only for a ship that can't land, and only where the work puts a pilot on
 // the ground: ship combat at a surface target is fought in flight. A contract
 // that may roll a space location gets the softer wording.
@@ -176,8 +185,12 @@ const badges = computed<RowListItemBadge[]>(() => {
         {{ mission.org.name }}
       </router-link>
       <span v-if="standing">{{ standing }}</span>
+      <span v-if="locationLabel" class="mission-row__location">
+        {{ locationLabel }}
+      </span>
       <span
         v-if="cannotLand"
+        role="note"
         class="mission-row__cannot-land"
         :class="{ 'mission-row__cannot-land--firm': cannotLand.firm }"
       >
@@ -189,13 +202,19 @@ const badges = computed<RowListItemBadge[]>(() => {
 </template>
 
 <style lang="scss" scoped>
-// Dimmed, not hidden: the contract stays in the list, and the reason stays at
-// full strength because it is the one thing on the row to read.
-.mission-row--cannot-land :deep(> :not(.row-list-item__main)),
+// Dimmed, not hidden, and dimmed by colour rather than opacity: the quiet text
+// colour keeps the name readable, where opacity took it below AA contrast. The
+// reason keeps its own colour, since it is the one thing on the row to read.
 .mission-row--cannot-land :deep(.row-list-item__name),
 .mission-row--cannot-land
   :deep(.row-list-item__sub > :not(.mission-row__cannot-land)) {
-  opacity: 0.45;
+  color: var(--color-text-dim, #959595);
+}
+
+.mission-row__location {
+  @media (min-width: $desktop-breakpoint) {
+    display: none;
+  }
 }
 
 .mission-row__cannot-land {

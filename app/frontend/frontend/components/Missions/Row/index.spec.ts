@@ -141,6 +141,14 @@ describe("MissionRow", () => {
     expect(tag?.attributes("href")).toContain("locationKindIn=surface");
   });
 
+  it("names the location on the sub-line too, for phones", async () => {
+    const wrapper = await mount({
+      locationKind: NullableGameMissionLocationKindEnum.SPACE,
+    });
+
+    expect(wrapper.find(".mission-row__location").text()).toBe("In space");
+  });
+
   it("leaves an unknown location unmarked", async () => {
     const wrapper = await mount({
       locationKind: NullableGameMissionLocationKindEnum.UNKNOWN,
@@ -171,6 +179,7 @@ describe("MissionRow", () => {
     );
 
     const warning = wrapper.find(".mission-row__cannot-land");
+    expect(warning.attributes("role")).toBe("note");
     expect(warning.classes()).toContain("mission-row__cannot-land--firm");
     expect(wrapper.find(".mission-row").classes()).toContain(
       "mission-row--cannot-land",
