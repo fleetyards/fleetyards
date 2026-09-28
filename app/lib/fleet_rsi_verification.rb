@@ -22,9 +22,13 @@ class FleetRsiVerification
     status = status_for(Rsi::OrgPage.fetch(sid), sid:, token:)
 
     # The SID or the token may have changed while the page was loading; the
-    # answer is then about something the fleet no longer asks.
+    # answer is then about something the fleet no longer asks. A check left
+    # pending would keep the settings page waiting on it.
     fleet.reload
-    return if fleet.rsi_sid != sid || fleet.rsi_verification_token != token
+    if fleet.rsi_sid != sid || fleet.rsi_verification_token != token
+      record(nil) if fleet.rsi_verification_pending?
+      return
+    end
 
     (status == :verified) ? verify!(sid) : record(status)
   end
@@ -43,9 +47,21 @@ class FleetRsiVerification
   end
 
   private def verify!(sid)
+    previous = take_over!(sid)
+
+    previous.each { |other| notify_lost(other, sid) }
+
+    :verified
+  end
+
+  # Locking the holders serialises a takeover, but when nobody holds the SID
+  # there is no row to lock, and two fleets proving it at once both write it.
+  # The loser of that race meets the unique index and goes again -- with a
+  # holder to take the SID from this time.
+  private def take_over!(sid, attempts: 2)
     now = Time.current
 
-    previous = Fleet.transaction do
+    Fleet.transaction do
       previous = Fleet.kept.where(rsi_verified_sid: sid).where.not(id: fleet.id).lock.to_a
 
       # rubocop:disable Rails/SkipsModelValidations
@@ -58,14 +74,16 @@ class FleetRsiVerification
 
       previous
     end
+  rescue ActiveRecord::RecordNotUnique
+    raise if (attempts -= 1).zero?
 
-    previous.each { |other| notify_lost(other, sid) }
-
-    :verified
+    retry
   end
 
+  # The SID has already moved by now, so one manager who cannot be told must
+  # not undo that or keep the others from hearing of it.
   private def notify_lost(other, sid)
-    other.rsi_verification_managers.each do |user|
+    other.managers.each do |user|
       Notification.notify!(
         user:,
         type: :fleet_rsi_verification_lost,
@@ -75,6 +93,8 @@ class FleetRsiVerification
         icon: "fa-duotone fa-badge-check",
         record: other
       )
+    rescue => e
+      Appsignal.report_error(e)
     end
   end
 end

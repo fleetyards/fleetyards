@@ -87,4 +87,35 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
     assert_nil verify
     assert_not @fleet.reload.rsi_verified?
   end
+
+  test "a check overtaken by a new token does not stay pending" do
+    @fleet.update_columns(rsi_verification_status: :pending) # rubocop:disable Rails/SkipsModelValidations
+    body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto: @fleet.rsi_verification_token)
+    stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return do
+      @fleet.class.find(@fleet.id).generate_rsi_verification_token!
+      {status: 200, body:}
+    end
+
+    assert_nil verify
+    assert_nil @fleet.reload.rsi_verification_status
+  end
+
+  test "a manager who cannot be told does not undo the takeover" do
+    holder = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
+    holder.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST") # rubocop:disable Rails/SkipsModelValidations
+    stub_org_page(manifesto: @fleet.rsi_verification_token)
+
+    Notification.singleton_class.alias_method(:original_notify!, :notify!)
+    Notification.define_singleton_method(:notify!) { |**| raise "delivery failed" }
+    begin
+      assert_equal :verified, verify
+    ensure
+      Notification.singleton_class.alias_method(:notify!, :original_notify!)
+      Notification.singleton_class.remove_method(:original_notify!)
+    end
+
+    assert @fleet.reload.rsi_verified?
+    assert @fleet.rsi_verification_verified?
+    assert_not holder.reload.rsi_verified?
+  end
 end

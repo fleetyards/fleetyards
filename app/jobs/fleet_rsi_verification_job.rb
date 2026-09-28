@@ -12,6 +12,9 @@ class FleetRsiVerificationJob < ::ApplicationJob
     Appsignal.report_error(e)
 
     # Left at pending, the settings page would wait on a check that never ends.
-    fleet&.update_columns(rsi_verification_status: :failed, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    # Only then: a status the check already wrote is the answer it reached.
+    if fleet&.reload&.rsi_verification_pending?
+      fleet.update_columns(rsi_verification_status: :failed, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+    end
   end
 end

@@ -17,6 +17,7 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import copyText from "@/frontend/utils/CopyText";
 import {
   type Fleet,
+  type FleetRsiVerification,
   NullableFleetRsiVerificationStatusEnum as StatusEnum,
   getFleetQueryKey,
   getFleetRsiVerificationQueryKey,
@@ -44,10 +45,17 @@ const queryClient = useQueryClient();
 // A check is a job, so the answer arrives a second or two after the request.
 const POLL_INTERVAL = 2000;
 
+// A check still pending once the cooldown is over was lost on the way (a
+// deploy, a dropped job); the reader can start another rather than wait.
+const awaitingCheck = (data?: FleetRsiVerification) =>
+  data?.status === StatusEnum.PENDING &&
+  !!data.nextCheckAt &&
+  new Date(data.nextCheckAt).getTime() > Date.now();
+
 const { data: verification } = useFleetRsiVerification(() => props.fleet.slug, {
   query: {
     refetchInterval: (query) =>
-      query.state.data?.status === StatusEnum.PENDING ? POLL_INTERVAL : false,
+      awaitingCheck(query.state.data) ? POLL_INTERVAL : false,
   },
 });
 
@@ -61,10 +69,6 @@ const orgPageUrl = computed(() =>
     : undefined,
 );
 
-const pending = computed(
-  () => verification.value?.status === StatusEnum.PENDING,
-);
-
 const now = useNow({ scheduler: (tick) => useIntervalFn(tick, 1000) });
 
 const coolingDown = computed(() => {
@@ -73,9 +77,16 @@ const coolingDown = computed(() => {
   return !!nextCheckAt && new Date(nextCheckAt) > now.value;
 });
 
+const pending = computed(
+  () => verification.value?.status === StatusEnum.PENDING && coolingDown.value,
+);
+
+// Once verified, the token may have been taken off the page again, so what a
+// later check found there says nothing about the verification.
 const statusText = computed(() => {
   const status = verification.value?.status;
-  if (!status || status === StatusEnum.VERIFIED) return undefined;
+  if (!status || verification.value?.verified) return undefined;
+  if (status === StatusEnum.PENDING && !pending.value) return undefined;
 
   return t(`labels.fleet.rsiVerification.statuses.${status}`);
 });
@@ -219,7 +230,7 @@ const copyToken = () => {
           }}
         </Btn>
         <Btn
-          v-if="verification.token"
+          v-if="verification.token && !verification.verified"
           :size="BtnSizesEnum.SM"
           :loading="checkMutation.isPending.value || pending"
           :disabled="coolingDown && !pending"
@@ -228,7 +239,10 @@ const copyToken = () => {
         >
           {{ t("actions.fleet.rsiVerification.check") }}
         </Btn>
-        <span v-if="coolingDown && !pending" class="text-muted small">
+        <span
+          v-if="coolingDown && !pending && !verification.verified"
+          class="text-muted small"
+        >
           {{ t("labels.fleet.rsiVerification.nextCheck") }}
         </span>
       </div>

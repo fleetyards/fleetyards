@@ -105,4 +105,35 @@ describe("FleetRsiVerificationPanel", () => {
       true,
     );
   });
+
+  it("hides the check and a stale status once the fleet is verified", async () => {
+    verification.value = unverified({
+      verified: true,
+      status: "token_missing",
+    });
+
+    const wrapper = await mountPanel({ fleet: fleet({ rsiVerified: true }) });
+
+    expect(
+      wrapper.find('[data-test="fleet-rsi-verification-check"]').exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find('[data-test="fleet-rsi-verification-status"]').exists(),
+    ).toBe(false);
+  });
+
+  it("lets a check lost past its cooldown be started again", async () => {
+    verification.value = unverified({
+      status: "pending",
+      nextCheckAt: new Date(Date.now() - 1_000).toISOString(),
+    });
+
+    const wrapper = await mountPanel({ fleet: fleet() });
+
+    expect(
+      wrapper
+        .find('[data-test="fleet-rsi-verification-check"]')
+        .attributes("disabled"),
+    ).toBeUndefined();
+  });
 });
