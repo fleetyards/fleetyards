@@ -123,6 +123,11 @@ announcements_publish_scheduled_job:
   cron: '*/5 * * * *' # Every 5 Minutes
   class: 'Announcements::PublishScheduledJob'
   queue: 'notifications'
+announcements_refresh_engagement_sweep_job:
+  cron: '0 * * * *' # Hourly
+  class: 'Announcements::RefreshEngagementSweepJob'
+  queue: 'notifications'
+  enabled: <%= Rails.env.production? %>
 presence_sweep_job:
   cron: '* * * * *' # Every minute
   class: 'Presence::SweepJob'

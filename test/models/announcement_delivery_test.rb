@@ -6,17 +6,19 @@ require "test_helper"
 #
 # Table name: announcement_deliveries
 #
-#  id              :uuid             not null, primary key
-#  attempts        :integer          default(0), not null
-#  channel         :string           not null
-#  delivered_at    :datetime
-#  error           :text
-#  posted_parts    :jsonb            not null
-#  status          :string           default("pending"), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  announcement_id :uuid             not null
-#  external_id     :string
+#  id                    :uuid             not null, primary key
+#  attempts              :integer          default(0), not null
+#  channel               :string           not null
+#  delivered_at          :datetime
+#  engagement            :jsonb
+#  engagement_fetched_at :datetime
+#  error                 :text
+#  posted_parts          :jsonb            not null
+#  status                :string           default("pending"), not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  announcement_id       :uuid             not null
+#  external_id           :string
 #
 # Indexes
 #
@@ -99,5 +101,52 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
     AdminAnnouncementsChannel.expects(:broadcast_to).never
 
     delivery.record_part!({"id" => "1"})
+  end
+
+  test "#engagement_due? refreshes a fresh post hourly and a settled one daily" do
+    freeze_time do
+      fresh = build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 1.day.ago)
+
+      assert fresh.engagement_due?
+
+      fresh.engagement_fetched_at = 30.minutes.ago
+      refute fresh.engagement_due?
+
+      # Refreshed a few seconds past the last hourly sweep: still due at this one.
+      fresh.engagement_fetched_at = 59.minutes.ago
+      assert fresh.engagement_due?
+
+      settled = build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 5.days.ago, engagement_fetched_at: 3.hours.ago)
+      refute settled.engagement_due?
+
+      settled.engagement_fetched_at = 24.hours.ago
+      assert settled.engagement_due?
+    end
+  end
+
+  test "#engagement_due? stops after thirty days and never covers X" do
+    refute build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 31.days.ago).engagement_due?
+    refute build(:announcement_delivery, channel: "x", status: "succeeded", delivered_at: 1.hour.ago).engagement_due?
+    refute build(:announcement_delivery, channel: "discord", status: "failed", delivered_at: 1.hour.ago).engagement_due?
+  end
+
+  test "#post_url links each platform's post" do
+    assert_equal "https://x.com/i/status/42",
+      build(:announcement_delivery, channel: "x", status: "succeeded", external_id: "42").post_url
+    assert_equal "https://bsky.app/profile/did:plc:abc/post/3k",
+      build(:announcement_delivery, channel: "bluesky", status: "succeeded", external_id: "at://did:plc:abc/app.bsky.feed.post/3k").post_url
+    assert_equal "https://discord.com/channels/g/c/m",
+      build(:announcement_delivery, channel: "discord", status: "succeeded",
+        posted_parts: [{"index" => 0, "message_id" => "m", "channel_id" => "c"}], engagement: {"guild_id" => "g"}).post_url
+  end
+
+  test "#post_url is nil for a Discord post sent before its ids were kept" do
+    assert_nil build(:announcement_delivery, channel: "discord", status: "succeeded", posted_parts: [{"index" => 0}]).post_url
+  end
+
+  test "#engagement_trackable? needs a Discord post's message ids" do
+    refute build(:announcement_delivery, channel: "discord", status: "succeeded", posted_parts: [{"index" => 0}]).engagement_trackable?
+    assert build(:announcement_delivery, channel: "discord", status: "succeeded",
+      posted_parts: [{"index" => 0, "message_id" => "m", "channel_id" => "c"}]).engagement_trackable?
   end
 end
