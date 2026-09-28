@@ -72,7 +72,7 @@ module Subscriptions
     # in -- the fleet's admins do not have to share one.
     private def notify(type)
       admins.each do |admin|
-        I18n.with_locale(locale_for(admin)) do
+        I18n.with_locale(admin.notification_locale) do
           Notification.notify!(
             user: admin,
             type:,
@@ -82,16 +82,6 @@ module Subscriptions
           )
         end
       end
-    end
-
-    # `users.locale` already holds one of the app's own locales, so this only
-    # has to survive a blank or a stale one -- I18n raises on an unavailable
-    # locale rather than falling back.
-    private def locale_for(user)
-      stored = user.locale.presence
-      return I18n.default_locale if stored.blank?
-
-      I18n.available_locales.map(&:to_s).include?(stored) ? stored.to_sym : I18n.default_locale
     end
 
     private def fleet
