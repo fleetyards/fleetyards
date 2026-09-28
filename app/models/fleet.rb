@@ -151,6 +151,7 @@ class Fleet < ApplicationRecord
     failed: "failed"
   }, prefix: :rsi_verification
 
+  before_create -> { self.rsi_verification_token ||= self.class.new_rsi_verification_token }
   before_save :reset_rsi_verification, if: :rsi_sid_changed?
   after_update :reset_membership_verification, if: :saved_change_to_rsi_sid?
   # The index keeps one verified SID per kept fleet, so a discarded fleet has to
@@ -263,22 +264,28 @@ class Fleet < ApplicationRecord
   # Written past validation: neither column is something a form edits, and a
   # fleet saved before a later format check must still be able to get a token.
   # rubocop:disable Rails/SkipsModelValidations
+  # Not a secret: it is meant to be pasted on a public page, and all it can
+  # ever prove is that this fleet's managers reached that page.
+  def self.new_rsi_verification_token
+    "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}"
+  end
+
   def generate_rsi_verification_token!
     update_columns(
-      rsi_verification_token: "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}",
+      rsi_verification_token: self.class.new_rsi_verification_token,
       rsi_verification_status: nil,
       updated_at: Time.current
     )
   end
 
-  # The token is dropped too: left in place, the same token still on the org
+  # The token is replaced too: left in place, the same token still on the org
   # page would verify the fleet again on its next check.
   def revoke_rsi_verification!
     update_columns(
       rsi_verified_at: nil,
       rsi_verified_sid: nil,
       rsi_verification_status: nil,
-      rsi_verification_token: nil,
+      rsi_verification_token: self.class.new_rsi_verification_token,
       updated_at: Time.current
     )
   end

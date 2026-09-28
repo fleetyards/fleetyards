@@ -106,15 +106,22 @@ class FleetRsiSidTest < ActiveSupport::TestCase
     assert fleet.reload.rsi_verification_token.present?
   end
 
-  test "revoking drops the token so the old one cannot verify again" do
+  test "revoking replaces the token so the old one cannot verify again" do
     fleet = verified_fleet
-    fleet.generate_rsi_verification_token!
+    token = fleet.rsi_verification_token
 
     fleet.revoke_rsi_verification!
 
     assert_not fleet.reload.rsi_verified?
-    assert_nil fleet.rsi_verification_token
+    assert fleet.rsi_verification_token.present?
+    assert_not_equal token, fleet.rsi_verification_token
     assert_equal "TEST", fleet.rsi_sid
+  end
+
+  test "a new fleet comes with a token" do
+    fleet = create(:fleet, created_by: create(:user).id)
+
+    assert_match(/\AFLEETYARDS-[A-Z0-9]{10}\z/, fleet.rsi_verification_token)
   end
 
   test "a member's Citizen ID flag counts only once the fleet is verified" do
