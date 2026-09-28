@@ -60,7 +60,7 @@ const prefillFormValues = (): GameMissionQuery => ({
     filters.value.rewardingIn ?? filters.value.rewarding,
   ) as GameMissionRewardFilterEnum[],
   locationKindIn: asList(
-    filters.value.locationKindIn,
+    filters.value.locationKindIn ?? filters.value.locationKindEq,
   ) as GameMissionLocationKindEnum[],
   released: filters.value.released,
 });

@@ -24,6 +24,7 @@ const SUPERSEDED_PARAMS = {
   orgNameIn: "orgNameEq",
   minStandingIn: "minStandingEq",
   kindIn: "kindEq",
+  locationKindIn: "locationKindEq",
   rewardingIn: "rewarding",
 } as const;
 
