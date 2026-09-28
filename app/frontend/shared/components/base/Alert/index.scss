@@ -1,0 +1,45 @@
+.base-alert {
+  --alert-tone: var(--color-primary, #428bca);
+
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--alert-tone) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--alert-tone) 45%, transparent);
+  line-height: 1.4;
+
+  &--success {
+    --alert-tone: var(--color-success, #{$success});
+  }
+
+  &--warning {
+    --alert-tone: var(--color-warning, #{$warning});
+  }
+
+  &--danger {
+    --alert-tone: var(--color-danger, #{$danger});
+  }
+
+  &__icon {
+    flex: none;
+    margin-top: 2px;
+    color: var(--alert-tone);
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+
+    :deep(p) {
+      margin: 0;
+    }
+  }
+
+  &__actions {
+    flex: none;
+    align-self: center;
+  }
+}
