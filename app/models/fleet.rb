@@ -136,6 +136,10 @@ class Fleet < ApplicationRecord
     allow_nil: true,
     if: :rsi_sid_changed?
 
+  # A proved SID stays put: it names the org the fleet showed it runs, and its
+  # members' flags were earned against it. An admin revoke is the way out.
+  validate :verified_rsi_sid_locked, if: :rsi_sid_changed?
+
   RSI_VERIFICATION_COOLDOWN = 1.minute
 
   enum :rsi_verification_status, {
@@ -443,6 +447,12 @@ class Fleet < ApplicationRecord
   # The last check time goes too: the cooldown is for asking RSI about one
   # org again, not about a new one, and a check still out for the old SID no
   # longer matches it.
+  private def verified_rsi_sid_locked
+    return if rsi_verified_at_was.blank? || rsi_verified_sid_was.blank?
+
+    errors.add(:rsi_sid, :locked_while_verified)
+  end
+
   private def reset_rsi_verification
     self.rsi_verified_at = nil
     self.rsi_verified_sid = nil

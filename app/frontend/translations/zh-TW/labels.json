@@ -407,6 +407,7 @@
           "hint": "艦隊 ID 是你的艦隊在 Fleetyards 上的網址。SID 將艦隊與其 RSI 組織連結，驗證它可以證明該組織屬於你。"
         },
         "rsiVerification": {
+          "locked": "已驗證的 SID 已鎖定。如需變更，請聯絡支援團隊。",
           "fidAtRiskTitle": "你的艦隊 ID 未受保護",
           "saveFirst": "請先儲存 SID 再進行驗證。",
           "title": "RSI 驗證",

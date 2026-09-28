@@ -36,17 +36,27 @@ class FleetRsiSidTest < ActiveSupport::TestCase
     fleet
   end
 
-  test "changing the SID clears the verification" do
+  test "a verified SID cannot be changed" do
     fleet = verified_fleet
 
-    fleet.update!(rsi_sid: "OTHER")
+    assert_not fleet.update(rsi_sid: "OTHER")
+    assert_includes fleet.errors.messages_for(:rsi_sid),
+      I18n.t("activerecord.errors.models.fleet.locked_while_verified")
+    assert_equal "TEST", fleet.reload.rsi_sid
+  end
 
-    assert_not fleet.reload.rsi_verified?
-    assert_nil fleet.rsi_verified_sid
+  test "once revoked, the SID can change and starts unverified" do
+    fleet = verified_fleet
+    fleet.revoke_rsi_verification!
+
+    fleet.reload.update!(rsi_sid: "OTHER")
+
+    assert_equal "OTHER", fleet.reload.rsi_sid
+    assert_not fleet.rsi_verified?
   end
 
   test "a new SID starts without the old one's cooldown" do
-    fleet = verified_fleet
+    fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
     fleet.update_columns(rsi_verification_checked_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
 
     fleet.update!(rsi_sid: "OTHER")

@@ -407,6 +407,7 @@
           "hint": "The fleet ID is your fleet's address on Fleetyards. The SID links the fleet to its RSI organisation, and verifying it proves the organisation is yours."
         },
         "rsiVerification": {
+          "locked": "A verified SID is locked. Ask support if it needs to change.",
           "fidAtRiskTitle": "Your fleet ID is not protected",
           "saveFirst": "Save the SID before verifying it.",
           "title": "RSI verification",

@@ -421,6 +421,7 @@ zh-CN:
           not_a_discord_id: "必须是 Discord 通过“复制 ID”复制的数字 ID，而不是名称"
         fleet:
           not_an_rsi_sid: "必须是你的组织在 RSI 页面上的 SID，例如 TEST"
+          locked_while_verified: "已验证，无法更改；请先联系支持团队撤销验证"
         fleet_squadron:
           attributes:
             team:

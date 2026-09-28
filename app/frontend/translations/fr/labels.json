@@ -407,6 +407,7 @@
           "hint": "L’ID de flotte est l’adresse de ta flotte sur Fleetyards. Le SID relie la flotte à son organisation RSI, et le vérifier prouve que l’organisation t’appartient."
         },
         "rsiVerification": {
+          "locked": "Un SID vérifié est verrouillé. Contacte le support s’il doit changer.",
           "fidAtRiskTitle": "L’ID de ta flotte n’est pas protégé",
           "saveFirst": "Enregistre le SID avant de le vérifier.",
           "title": "Vérification RSI",

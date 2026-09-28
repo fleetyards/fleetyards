@@ -407,6 +407,7 @@
           "hint": "El ID de flota es la dirección de tu flota en Fleetyards. El SID vincula la flota con su organización de RSI, y verificarlo demuestra que la organización es tuya."
         },
         "rsiVerification": {
+          "locked": "Un SID verificado está bloqueado. Contacta con soporte si necesitas cambiarlo.",
           "fidAtRiskTitle": "El ID de tu flota no está protegido",
           "saveFirst": "Guarda el SID antes de verificarlo.",
           "title": "Verificación de RSI",

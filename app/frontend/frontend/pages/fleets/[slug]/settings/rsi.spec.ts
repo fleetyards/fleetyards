@@ -168,4 +168,13 @@ describe("FleetRsiSettingsPage", () => {
       subject.find('[data-test="fleet-rsi-sid-unverified"]').exists(),
     ).toBe(true);
   });
+
+  it("locks a verified SID", async () => {
+    fleet = { ...fleet, rsiVerified: true };
+    const { wrapper: subject } = await mount();
+
+    expect(
+      subject.find('input[name="rsiSid"]').attributes("disabled"),
+    ).toBeDefined();
+  });
 });

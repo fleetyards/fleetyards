@@ -168,6 +168,7 @@ const openVerification = () => {
             icon="icon icon-rsi icon-label"
             translation-key="fleet.rsiSid"
             v-bind="rsiSidProps"
+            :disabled="fleet.rsiVerified"
           >
             <template #suffix>
               <a
@@ -190,6 +191,9 @@ const openVerification = () => {
                 class="fa-duotone fa-circle-exclamation text-warning"
                 data-test="fleet-rsi-sid-unverified"
               />
+            </template>
+            <template v-if="fleet.rsiVerified" #subline>
+              {{ t("labels.fleet.rsiVerification.locked") }}
             </template>
           </FormInput>
           <Btn

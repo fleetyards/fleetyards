@@ -421,6 +421,7 @@ fr:
           not_a_discord_id: "doit être l’identifiant numérique que Discord copie avec « Copier l’identifiant », pas un nom"
         fleet:
           not_an_rsi_sid: "doit être le SID de la page RSI de ton organisation, par exemple TEST"
+          locked_while_verified: "est vérifié et ne peut pas être modifié ; demande d’abord au support de révoquer la vérification"
         fleet_squadron:
           attributes:
             team:
