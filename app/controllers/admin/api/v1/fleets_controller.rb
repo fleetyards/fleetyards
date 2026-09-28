@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class FleetsController < ::Admin::Api::BaseController
-        before_action :set_fleet, only: %i[show update destroy]
+        before_action :set_fleet, only: %i[show update destroy revoke_rsi_verification]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.base"))
@@ -59,6 +59,12 @@ module Admin
           return if @fleet.discard
 
           render json: ValidationError.new("fleet.destroy", errors: @fleet.errors), status: :bad_request
+        end
+
+        def revoke_rsi_verification
+          @fleet.update!(rsi_verified_at: nil, rsi_verified_sid: nil, rsi_verification_status: nil)
+
+          render :show
         end
 
         private def set_fleet

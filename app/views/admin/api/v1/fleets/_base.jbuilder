@@ -6,6 +6,8 @@ json.name fleet.name
 json.slug fleet.slug
 json.description fleet.description
 json.rsi_sid fleet.rsi_sid
+json.rsi_verified fleet.rsi_verified?
+json.rsi_verified_at fleet.rsi_verified_at&.utc&.iso8601
 json.ts fleet.ts
 json.discord fleet.discord
 json.youtube fleet.youtube

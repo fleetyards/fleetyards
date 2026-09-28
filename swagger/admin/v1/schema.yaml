@@ -3553,6 +3553,47 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{id}/rsi-verification":
+    parameters:
+    - name: id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Revoke a fleet's RSI verification
+      tags:
+      - Fleets
+      operationId: revokeFleetRsiVerification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/funding-goals":
     post:
       summary: Create Funding Goal
@@ -13624,6 +13665,11 @@ components:
           type: string
         rsiSid:
           type: string
+        rsiVerified:
+          type: boolean
+        rsiVerifiedAt:
+          type: string
+          format: date-time
         ts:
           type: string
         discord:

@@ -15,6 +15,8 @@ module Admin
             slug: {type: :string},
             description: {type: :string},
             rsiSid: {type: :string},
+            rsiVerified: {type: :boolean},
+            rsiVerifiedAt: {type: :string, format: "date-time"},
             ts: {type: :string},
             discord: {type: :string},
             youtube: {type: :string},
