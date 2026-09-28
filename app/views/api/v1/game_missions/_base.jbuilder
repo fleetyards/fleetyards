@@ -20,6 +20,9 @@ json.retired mission.retired?
 # `notForRelease` or `workInProgress` -- in the files, in front of nobody.
 json.released mission.released
 
+json.location_kind mission.location_kind
+json.needs_landing mission.needs_landing
+
 # Who offers it. Null on 197: a handler naming no faction takes its generator's
 # org, and only where that generator names exactly one -- a wrong org is worse
 # than none when "who gives me this" is the question the row answers.

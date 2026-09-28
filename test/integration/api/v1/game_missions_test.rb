@@ -79,6 +79,28 @@ class Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions says where a mission takes place and whether it needs landing" do
+    @hit.update!(location_kind: "surface", needs_landing: true)
+    @hit.builds.sole.update!(location_kind: "surface", needs_landing: true)
+
+    assert_api_response :get, 200 do
+      hit = parsed_body["items"].find { |item| item["id"] == @hit.id }
+      ambush = parsed_body["items"].find { |item| item["id"] == @ambush.id }
+
+      assert_equal ["surface", true], hit.values_at("locationKind", "needsLanding")
+      assert_equal [nil, false], ambush.values_at("locationKind", "needsLanding")
+    end
+  end
+
+  test "GET /missions filters by where it takes place" do
+    [@hit, *@hit.builds].each { |record| record.update!(location_kind: "surface") }
+    [@ambush, *@ambush.builds].each { |record| record.update!(location_kind: "space") }
+
+    assert_api_response :get, 200, params: {q: {"locationKindIn" => %w[surface mixed]}} do
+      assert_equal [@hit.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /missions filters by what the mission pays" do
     assert_api_response :get, 200, params: {q: {"rewarding" => "item"}} do
       assert_equal [@hit.id], parsed_body["items"].pluck("id")

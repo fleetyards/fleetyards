@@ -82,7 +82,7 @@ module GameMissionFiltersConcern
   private def missions_query_params
     @missions_query_params ||= params.permit(q: [
       :s, :sorts, :name_cont, :current_version,
-      :kind_eq, :alignment_eq, :org_key_eq, :org_name_eq,
+      :kind_eq, :alignment_eq, :org_key_eq, :org_name_eq, :location_kind_eq,
       :min_standing_eq, :max_standing_eq,
       :difficulty_mechanical_skill_lteq, :difficulty_mechanical_skill_gteq,
       :difficulty_risk_of_loss_lteq, :difficulty_risk_of_loss_gteq,
@@ -91,7 +91,7 @@ module GameMissionFiltersConcern
       # one would silently stop filtering.
       :released, :rewarding, :from_org,
       sorts: [], id_in: [], name_in: [], kind_in: [], alignment_in: [],
-      org_name_in: [], min_standing_in: [], rewarding_in: []
+      org_name_in: [], min_standing_in: [], rewarding_in: [], location_kind_in: []
     ]).fetch(:q, {})
   end
 end

@@ -33,6 +33,14 @@ module Shared
             # front of nobody.
             released: {type: :boolean},
 
+            # Where it takes place: on a planet or moon, in space, or either.
+            # Null for a mission loaded from a tree parsed before this existed.
+            locationKind: ::Shared::V1::Schemas::Enums::NullableGameMissionLocationKindEnum,
+
+            # Whether a pilot has to set down for it. False for ship combat at
+            # a surface target, where the fight happens in flight.
+            needsLanding: {type: :boolean},
+
             # Null on 197: a handler naming no faction takes its generator's
             # org, and only where that generator names exactly one.
             org: {anyOf: [::Shared::V1::Schemas::GameMissionOrg, {type: :null}]},
@@ -80,7 +88,7 @@ module Shared
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id slug scKey scRef retired released rewardKinds createdAt updatedAt]
+          required: %w[id slug scKey scRef retired released needsLanding rewardKinds createdAt updatedAt]
         })
       end
     end

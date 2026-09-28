@@ -14208,6 +14208,10 @@ components:
           type: boolean
         released:
           type: boolean
+        locationKind:
+          "$ref": "#/components/schemas/NullableGameMissionLocationKindEnum"
+        needsLanding:
+          type: boolean
         org:
           anyOf:
           - "$ref": "#/components/schemas/GameMissionOrg"
@@ -14272,6 +14276,7 @@ components:
       - scRef
       - retired
       - released
+      - needsLanding
       - rewardKinds
       - createdAt
       - updatedAt
@@ -14329,6 +14334,19 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLocationKindEnum:
+      type: string
+      enum:
+      - surface
+      - space
+      - mixed
+      - unknown
+      x-enumNames:
+      - SURFACE
+      - SPACE
+      - MIXED
+      - UNKNOWN
+      title: GameMissionLocationKindEnum
     GameMissionOrg:
       type: object
       properties:
@@ -18042,6 +18060,23 @@ components:
       - BACKPACK
       - 'NULL'
       title: NullableEquipmentSlotEnum
+    NullableGameMissionLocationKindEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - surface
+      - space
+      - mixed
+      - unknown
+      -
+      x-enumNames:
+      - SURFACE
+      - SPACE
+      - MIXED
+      - UNKNOWN
+      - 'NULL'
+      title: NullableGameMissionLocationKindEnum
     NullableSupporterContributionSourceEnum:
       type:
       - string
