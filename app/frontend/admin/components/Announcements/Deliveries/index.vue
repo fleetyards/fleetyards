@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import AnnouncementEngagement from "@/admin/components/Announcements/Engagement/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import {
   type Announcement,
@@ -91,6 +92,15 @@ const retry = async (delivery: AnnouncementDelivery) => {
         {{ delivery.error }}
       </span>
       <Btn
+        v-if="delivery.url"
+        :size="BtnSizesEnum.SM"
+        :href="delivery.url"
+        data-test="announcement-delivery-link"
+      >
+        <i class="fa-duotone fa-arrow-up-right-from-square" />
+        {{ t("actions.announcements.openPost") }}
+      </Btn>
+      <Btn
         v-if="retryable(delivery)"
         :size="BtnSizesEnum.SM"
         :aria-label="t('actions.announcements.retry')"
@@ -100,6 +110,10 @@ const retry = async (delivery: AnnouncementDelivery) => {
         <i class="fa-duotone fa-rotate-right" />
         {{ t("actions.announcements.retry") }}
       </Btn>
+      <AnnouncementEngagement
+        class="announcement-deliveries__engagement"
+        :delivery="delivery"
+      />
     </li>
   </ul>
 </template>
@@ -130,7 +144,14 @@ const retry = async (delivery: AnnouncementDelivery) => {
   font-size: 0.875rem;
 }
 
-.announcement-deliveries__error {
+.announcement-deliveries__error,
+.announcement-deliveries__engagement {
   flex-basis: 100%;
+}
+
+.announcement-deliveries__row + .announcement-deliveries__row {
+  border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  padding-top: 10px;
+  margin-top: 4px;
 }
 </style>

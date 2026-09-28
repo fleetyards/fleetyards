@@ -158,7 +158,9 @@
         "published": "公告已开始发送。",
         "publishFailed": "无法发送公告。",
         "retryQueued": "投递已重新排队。",
-        "retryFailed": "无法重试此次投递。"
+        "retryFailed": "无法重试此次投递。",
+        "refreshQueued": "正在刷新数据。",
+        "refreshFailed": "无法刷新数据。"
       },
       "fundingGoal": {
         "created": "筹款目标已创建。",

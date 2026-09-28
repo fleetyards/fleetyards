@@ -2160,7 +2160,24 @@
           "discordPartsInfo": "留空：自動拆分。",
           "socialPartsInfo": "留空：一則貼文，超長截斷。兩則以上：討論串。",
           "recipientsCount": "%{count} 位收件人",
-          "partPosition": "第 %{position} / %{total} 則"
+          "partPosition": "第 %{position} / %{total} 則",
+          "deliverySummary": "已傳送 %{sent}/%{total}",
+          "deliveryFailedCount": "%{count} 個失敗",
+          "deliveryPendingCount": "%{count} 個待處理",
+          "content": "內容",
+          "engagement": {
+            "title": "互動",
+            "likes": "按讚",
+            "reposts": "轉發",
+            "replies": "回覆",
+            "quotes": "引用",
+            "reactions": "表情回應",
+            "noReactions": "尚無表情回應。",
+            "fetchedAt": "更新於 %{time}",
+            "notFetched": "數據將在一小時內送達。",
+            "xUnavailable": "X 讀取數據需要付費。開啟貼文即可查看。",
+            "untracked": "發布時尚未記錄表情回應。"
+          }
         },
         "resourceAccess": {
           "title": "資源存取權",

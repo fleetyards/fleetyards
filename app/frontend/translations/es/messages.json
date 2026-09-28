@@ -158,7 +158,9 @@
         "published": "El anuncio va en camino.",
         "publishFailed": "No se ha podido enviar el anuncio.",
         "retryQueued": "Envío puesto en cola de nuevo.",
-        "retryFailed": "No se ha podido reintentar este envío."
+        "retryFailed": "No se ha podido reintentar este envío.",
+        "refreshQueued": "Las cifras se están actualizando.",
+        "refreshFailed": "No se pudieron actualizar las cifras."
       },
       "fundingGoal": {
         "created": "Objetivo de financiación creado.",

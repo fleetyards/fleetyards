@@ -158,7 +158,9 @@
         "published": "公告已開始發送。",
         "publishFailed": "無法發送公告。",
         "retryQueued": "投遞已重新排入佇列。",
-        "retryFailed": "無法重試此次投遞。"
+        "retryFailed": "無法重試此次投遞。",
+        "refreshQueued": "正在重新整理數據。",
+        "refreshFailed": "無法重新整理數據。"
       },
       "fundingGoal": {
         "created": "募資目標已建立。",

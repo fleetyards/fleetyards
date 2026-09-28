@@ -2174,7 +2174,24 @@
           "discordPartsInfo": "Empty: split automatically.",
           "socialPartsInfo": "Empty: one post, trimmed. Two or more: a thread.",
           "recipientsCount": "%{count} recipients",
-          "partPosition": "%{position} of %{total}"
+          "partPosition": "%{position} of %{total}",
+          "deliverySummary": "%{sent}/%{total} sent",
+          "deliveryFailedCount": "%{count} failed",
+          "deliveryPendingCount": "%{count} pending",
+          "content": "Content",
+          "engagement": {
+            "title": "Engagement",
+            "likes": "Likes",
+            "reposts": "Reposts",
+            "replies": "Replies",
+            "quotes": "Quotes",
+            "reactions": "Reactions",
+            "noReactions": "No reactions yet.",
+            "fetchedAt": "Updated %{time}",
+            "notFetched": "Counts arrive within the hour.",
+            "xUnavailable": "X charges for reading counts. Open the post to see them.",
+            "untracked": "Posted before reactions were tracked."
+          }
         },
         "resourceAccess": {
           "title": "Resource Access",

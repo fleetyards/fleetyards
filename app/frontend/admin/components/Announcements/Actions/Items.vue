@@ -28,6 +28,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
 const { displayConfirm, displaySuccess, displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 
@@ -107,6 +109,10 @@ const destroy = () => {
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.announcement.id });
       displaySuccess({ text: t("messages.announcement.destroyed") });
+
+      if (route.name === "admin-announcement") {
+        await router.push({ name: "admin-announcements" });
+      }
     },
   });
 };

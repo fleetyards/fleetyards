@@ -158,7 +158,9 @@
         "published": "L'annuncio è in viaggio.",
         "publishFailed": "Impossibile inviare l'annuncio.",
         "retryQueued": "Consegna rimessa in coda.",
-        "retryFailed": "Impossibile riprovare questa consegna."
+        "retryFailed": "Impossibile riprovare questa consegna.",
+        "refreshQueued": "I numeri sono in aggiornamento.",
+        "refreshFailed": "Impossibile aggiornare i numeri."
       },
       "fundingGoal": {
         "created": "Obiettivo di finanziamento creato.",

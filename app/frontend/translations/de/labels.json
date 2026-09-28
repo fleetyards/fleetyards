@@ -2160,7 +2160,24 @@
           "discordPartsInfo": "Leer: wird automatisch aufgeteilt.",
           "socialPartsInfo": "Leer: ein gekürzter Post. Ab zwei: ein Thread.",
           "recipientsCount": "%{count} Empfänger",
-          "partPosition": "%{position} von %{total}"
+          "partPosition": "%{position} von %{total}",
+          "deliverySummary": "%{sent}/%{total} gesendet",
+          "deliveryFailedCount": "%{count} fehlgeschlagen",
+          "deliveryPendingCount": "%{count} ausstehend",
+          "content": "Inhalt",
+          "engagement": {
+            "title": "Resonanz",
+            "likes": "Likes",
+            "reposts": "Reposts",
+            "replies": "Antworten",
+            "quotes": "Zitate",
+            "reactions": "Reaktionen",
+            "noReactions": "Noch keine Reaktionen.",
+            "fetchedAt": "Aktualisiert %{time}",
+            "notFetched": "Die Zahlen kommen innerhalb einer Stunde.",
+            "xUnavailable": "X berechnet das Abrufen der Zahlen. Öffne den Beitrag, um sie zu sehen.",
+            "untracked": "Gesendet, bevor Reaktionen erfasst wurden."
+          }
         },
         "resourceAccess": {
           "title": "Ressourcenzugriff",

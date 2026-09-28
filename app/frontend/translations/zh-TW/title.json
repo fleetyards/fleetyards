@@ -248,7 +248,8 @@
         "announcements": {
           "index": "公告",
           "new": "新增公告",
-          "edit": "編輯公告"
+          "edit": "編輯公告",
+          "show": "公告"
         },
         "supporterContributions": {
           "index": "支持者貢獻",

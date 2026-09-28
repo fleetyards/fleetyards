@@ -248,7 +248,8 @@
         "announcements": {
           "index": "Anuncios",
           "new": "Nuevo anuncio",
-          "edit": "Editar anuncio"
+          "edit": "Editar anuncio",
+          "show": "Anuncio"
         },
         "supporterContributions": {
           "index": "Contribuciones de patrocinadores",

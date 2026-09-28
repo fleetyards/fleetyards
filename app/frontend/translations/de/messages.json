@@ -158,7 +158,9 @@
         "published": "Ankündigung ist unterwegs.",
         "publishFailed": "Ankündigung konnte nicht gesendet werden.",
         "retryQueued": "Zustellung erneut eingereiht.",
-        "retryFailed": "Zustellung konnte nicht wiederholt werden."
+        "retryFailed": "Zustellung konnte nicht wiederholt werden.",
+        "refreshQueued": "Die Zahlen werden aktualisiert.",
+        "refreshFailed": "Die Zahlen konnten nicht aktualisiert werden."
       },
       "fundingGoal": {
         "created": "Finanzierungsziel angelegt.",
