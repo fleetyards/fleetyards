@@ -154,6 +154,7 @@ const badges = computed<RowListItemBadge[]>(() => {
 <template>
   <RowListItem
     class="mission-row"
+    :class="{ 'mission-row--cannot-land': cannotLand?.firm }"
     :to="
       mission.slug
         ? { name: 'mission', params: { slug: mission.slug } }
@@ -188,6 +189,15 @@ const badges = computed<RowListItemBadge[]>(() => {
 </template>
 
 <style lang="scss" scoped>
+// Dimmed, not hidden: the contract stays in the list, and the reason stays at
+// full strength because it is the one thing on the row to read.
+.mission-row--cannot-land :deep(> :not(.row-list-item__main)),
+.mission-row--cannot-land :deep(.row-list-item__name),
+.mission-row--cannot-land
+  :deep(.row-list-item__sub > :not(.mission-row__cannot-land)) {
+  opacity: 0.45;
+}
+
 .mission-row__cannot-land {
   display: inline-flex;
   align-items: center;

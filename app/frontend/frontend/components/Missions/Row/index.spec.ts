@@ -172,6 +172,9 @@ describe("MissionRow", () => {
 
     const warning = wrapper.find(".mission-row__cannot-land");
     expect(warning.classes()).toContain("mission-row__cannot-land--firm");
+    expect(wrapper.find(".mission-row").classes()).toContain(
+      "mission-row--cannot-land",
+    );
     expect(warning.text()).toBe(
       "Hull C can't land: this contract is on a planet or moon",
     );
@@ -188,6 +191,9 @@ describe("MissionRow", () => {
 
     const warning = wrapper.find(".mission-row__cannot-land");
     expect(warning.classes()).not.toContain("mission-row__cannot-land--firm");
+    expect(wrapper.find(".mission-row").classes()).not.toContain(
+      "mission-row--cannot-land",
+    );
     expect(warning.text()).toBe(
       "May take Hull C to a planet or moon, where it can't land",
     );
