@@ -270,6 +270,7 @@
         },
         "settings": {
           "fleet": "Paramètres de la Flotte",
+          "rsi": "ID de flotte et RSI",
           "membership": "Paramètres des membres",
           "roles": "Rôles de flotte",
           "squadrons": "Escadrons de la flotte",

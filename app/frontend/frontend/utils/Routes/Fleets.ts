@@ -10,6 +10,7 @@ export const isFleetRoute = function isFleetRoute(routeName: string) {
     "fleet-mission",
     "fleet-settings",
     "fleet-settings-fleet",
+    "fleet-settings-rsi",
     "fleet-settings-membership",
   ].includes(routeName);
 };

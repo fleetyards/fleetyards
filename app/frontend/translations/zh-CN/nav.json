@@ -91,6 +91,7 @@
         "settings": {
           "index": "设置",
           "fleet": "舰队设置",
+          "rsi": "舰队 ID 与 RSI",
           "membership": "成员设置",
           "roles": "角色",
           "squadrons": "中队",

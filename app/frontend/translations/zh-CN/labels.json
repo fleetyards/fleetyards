@@ -403,7 +403,12 @@
         "name": "名称",
         "logo": "标志",
         "rsiSid": "SID",
+        "rsiSettings": {
+          "hint": "舰队 ID 是你的舰队在 Fleetyards 上的地址。SID 将舰队与其 RSI 组织关联，验证它可以证明该组织属于你。"
+        },
         "rsiVerification": {
+          "fidAtRiskTitle": "你的舰队 ID 未受保护",
+          "saveFirst": "请先保存 SID 再进行验证。",
           "title": "RSI 验证",
           "hint": "证明你的舰队在管理其 RSI 组织：将下方的验证码放到组织公开页面的任意位置（简介、历史、宣言或章程），然后进行检查。舰队验证后即可将其删除。",
           "noSid": "请先在上方保存你的组织 SID 以进行验证。",

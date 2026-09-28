@@ -109,6 +109,7 @@
         "settings": {
           "index": "Impostazioni di %{fleet}",
           "fleet": "Impostazioni di %{fleet}",
+          "rsi": "%{fleet} – ID flotta e RSI",
           "membership": "Appartenenza a %{fleet}",
           "roles": "Ruoli di %{fleet}",
           "squadrons": "Squadroni di %{fleet}",

@@ -270,6 +270,7 @@
         },
         "settings": {
           "fleet": "Fleet Settings",
+          "rsi": "ID de flota y RSI",
           "membership": "Membership Settings",
           "roles": "Roles de flota",
           "squadrons": "Escuadrones de la flota",

@@ -91,6 +91,7 @@
         "settings": {
           "index": "設定",
           "fleet": "艦隊設定",
+          "rsi": "艦隊 ID 與 RSI",
           "membership": "成員設定",
           "roles": "角色",
           "squadrons": "中隊",

@@ -48,7 +48,7 @@ const unverified = (
 const mountPanel = (props: { fleet: Fleet }) =>
   mountWithDefaults(Component, { props });
 
-describe("FleetRsiVerificationPanel", () => {
+describe("FleetRsiVerificationModal", () => {
   beforeEach(() => {
     verification.value = unverified();
     checkFleet.mockReset();
@@ -87,20 +87,11 @@ describe("FleetRsiVerificationPanel", () => {
     ).toBeDefined();
   });
 
-  it("warns that an SID-shaped fleet ID can be claimed", async () => {
-    const wrapper = await mountPanel({ fleet: fleet() });
-
-    expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
-  });
-
-  it("drops the warning once the fleet is verified for its fleet ID", async () => {
+  it("shows a verified fleet as verified", async () => {
     verification.value = unverified({ verified: true, status: "verified" });
 
     const wrapper = await mountPanel({ fleet: fleet({ rsiVerified: true }) });
 
-    expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(
-      false,
-    );
     expect(wrapper.find('[data-test="fleet-rsi-verified"]').exists()).toBe(
       true,
     );

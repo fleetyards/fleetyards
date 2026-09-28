@@ -222,6 +222,7 @@
       "restore": "還原",
       "fleet": {
         "rsiVerification": {
+          "verify": "驗證",
           "generateToken": "產生驗證碼",
           "regenerateToken": "產生新的驗證碼",
           "check": "立即檢查",

@@ -135,7 +135,7 @@ const description = computed(() => {
       <p v-if="showFidWarning" data-test="fleet-fid-at-risk">
         {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
         <router-link
-          :to="{ name: 'fleet-settings-fleet', params: { slug: fleet.slug } }"
+          :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
         >
           {{ t("labels.fleet.rsiVerification.title") }}
         </router-link>

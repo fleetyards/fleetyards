@@ -222,6 +222,7 @@
       "restore": "恢复",
       "fleet": {
         "rsiVerification": {
+          "verify": "验证",
           "generateToken": "生成验证码",
           "regenerateToken": "生成新的验证码",
           "check": "立即检查",

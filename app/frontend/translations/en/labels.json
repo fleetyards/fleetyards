@@ -403,7 +403,12 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
+        "rsiSettings": {
+          "hint": "The fleet ID is your fleet's address on Fleetyards. The SID links the fleet to its RSI organisation, and verifying it proves the organisation is yours."
+        },
         "rsiVerification": {
+          "fidAtRiskTitle": "Your fleet ID is not protected",
+          "saveFirst": "Save the SID before verifying it.",
           "title": "RSI verification",
           "hint": "Prove that your fleet runs its RSI organisation: put the token below anywhere on the organisation's public page (the introduction, history, manifesto or charter), then check. Once the fleet is verified you can remove it again.",
           "noSid": "Save your organisation's SID above to verify it.",

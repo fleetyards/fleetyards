@@ -403,7 +403,12 @@
         "name": "Nombre",
         "logo": "Logo",
         "rsiSid": "SID",
+        "rsiSettings": {
+          "hint": "El ID de flota es la dirección de tu flota en Fleetyards. El SID vincula la flota con su organización de RSI, y verificarlo demuestra que la organización es tuya."
+        },
         "rsiVerification": {
+          "fidAtRiskTitle": "El ID de tu flota no está protegido",
+          "saveFirst": "Guarda el SID antes de verificarlo.",
           "title": "Verificación de RSI",
           "hint": "Demuestra que tu flota gestiona su organización de RSI: pon el código de abajo en cualquier parte de la página pública de la organización (la introducción, la historia, el manifiesto o la carta) y luego comprueba. Cuando la flota esté verificada puedes quitarlo.",
           "noSid": "Guarda arriba el SID de tu organización para verificarla.",

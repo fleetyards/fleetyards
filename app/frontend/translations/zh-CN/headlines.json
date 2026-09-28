@@ -270,6 +270,7 @@
         },
         "settings": {
           "fleet": "Fleet Settings",
+          "rsi": "舰队 ID 与 RSI",
           "membership": "Membership Settings",
           "roles": "舰队角色",
           "squadrons": "舰队中队",

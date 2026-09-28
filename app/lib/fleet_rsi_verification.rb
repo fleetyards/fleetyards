@@ -123,7 +123,7 @@ class FleetRsiVerification
           type: :fleet_rsi_verification_lost,
           title: I18n.t("notifications.fleet_rsi_verification_lost.title", fleet: other.name, sid:),
           body: I18n.t("notifications.fleet_rsi_verification_lost.body", sid:),
-          link: Rails.application.routes.url_helpers.frontend_fleet_settings_fleet_path(other.slug),
+          link: Rails.application.routes.url_helpers.frontend_fleet_settings_rsi_path(other.slug),
           icon: "fa-duotone fa-badge-check",
           record: other
         )

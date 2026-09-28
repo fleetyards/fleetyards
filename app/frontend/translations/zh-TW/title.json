@@ -109,6 +109,7 @@
         "settings": {
           "index": "%{fleet} 設定",
           "fleet": "%{fleet} 設定",
+          "rsi": "%{fleet} 艦隊 ID 與 RSI",
           "membership": "%{fleet} 成員資格",
           "roles": "%{fleet} 角色",
           "squadrons": "%{fleet} 中隊",

@@ -91,6 +91,7 @@
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",
+          "rsi": "Fleet ID & RSI",
           "membership": "Membership Settings",
           "roles": "Roles",
           "squadrons": "Squadrons",

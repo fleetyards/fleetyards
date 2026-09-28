@@ -222,6 +222,7 @@
       "restore": "Restaurar",
       "fleet": {
         "rsiVerification": {
+          "verify": "Verificar",
           "generateToken": "Generar código",
           "regenerateToken": "Generar un código nuevo",
           "check": "Comprobar ahora",
