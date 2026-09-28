@@ -60,7 +60,7 @@ describe("AnnouncementDeliveries", () => {
       {
         channel: AnnouncementChannelEnum.X,
         status: AnnouncementDeliveryStatusEnum.FAILED,
-        attempts: 1,
+        attempts: 2,
         error: "X API error 429",
         engagementTrackable: false,
       },
@@ -69,6 +69,9 @@ describe("AnnouncementDeliveries", () => {
     expect(
       wrapper.find("[data-test='announcement-delivery-retry']").exists(),
     ).toBe(true);
+    expect(
+      wrapper.find("[data-test='announcement-delivery-attempts']").text(),
+    ).toBe("2 attempts");
     expect(
       wrapper.find("[data-test='announcement-delivery-link']").exists(),
     ).toBe(false);

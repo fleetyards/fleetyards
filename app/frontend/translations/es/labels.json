@@ -2165,6 +2165,7 @@
           "deliveryFailedCount": "%{count} fallidos",
           "deliveryPendingCount": "%{count} pendientes",
           "deliverySkippedCount": "%{count} omitidos",
+          "attempts": "%{count} intentos",
           "content": "Contenido",
           "engagement": {
             "likes": "Me gusta",

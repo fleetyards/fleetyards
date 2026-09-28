@@ -2165,6 +2165,7 @@
           "deliveryFailedCount": "%{count} 個失敗",
           "deliveryPendingCount": "%{count} 個待處理",
           "deliverySkippedCount": "%{count} 個已略過",
+          "attempts": "嘗試 %{count} 次",
           "content": "內容",
           "engagement": {
             "likes": "按讚",

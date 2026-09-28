@@ -88,6 +88,18 @@ const retry = async (delivery: AnnouncementDelivery) => {
       <span v-if="delivery.deliveredAt" class="announcement-deliveries__meta">
         {{ l(delivery.deliveredAt, "datetime.formats.short") }}
       </span>
+      <!-- One attempt is the normal case; only a retried channel says so. -->
+      <span
+        v-if="delivery.attempts > 1"
+        class="announcement-deliveries__meta"
+        data-test="announcement-delivery-attempts"
+      >
+        {{
+          t("labels.admin.announcements.attempts", {
+            count: delivery.attempts,
+          })
+        }}
+      </span>
       <span v-if="delivery.error" class="announcement-deliveries__error">
         {{ delivery.error }}
       </span>

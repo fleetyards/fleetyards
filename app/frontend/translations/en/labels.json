@@ -2179,6 +2179,7 @@
           "deliveryFailedCount": "%{count} failed",
           "deliveryPendingCount": "%{count} pending",
           "deliverySkippedCount": "%{count} skipped",
+          "attempts": "%{count} attempts",
           "content": "Content",
           "engagement": {
             "likes": "Likes",
