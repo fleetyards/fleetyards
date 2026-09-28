@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The schema promises every key, null or not.
+json.ignore_nil! false
+
 json.sid @fleet.rsi_sid
 json.token @fleet.rsi_verification_token
 json.status @fleet.rsi_verification_status

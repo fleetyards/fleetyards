@@ -48,6 +48,7 @@ class Api::V1::FleetsRsiVerificationShowTest < ActionDispatch::IntegrationTest
 
     assert_equal "TEST", response.parsed_body["sid"]
     assert_equal false, response.parsed_body["verified"]
+    assert_equal %w[checkedAt sid status token verified verifiedAt], response.parsed_body.keys.sort
   end
 
   test "GET /fleets/:slug/rsi-verification with OAuth bearer token" do
