@@ -418,7 +418,7 @@
           "unverified": "Not verified with RSI",
           "verifiedSince": "Verified since %{date}",
           "nextCheck": "You can check again in a minute.",
-          "fidAtRisk": "Your fleet ID %{fid} looks like an RSI SID. If the organisation with that SID verifies another fleet, that fleet can claim this ID and your fleet's address changes. Verify your fleet to keep it.",
+          "fidAtRisk": "Another fleet that verifies the RSI organisation %{fid} can claim it, and your fleet's address changes.",
           "statuses": {
             "pending": "Checking the organisation page…",
             "token_missing": "The token is not on the organisation page yet. RSI can take a few minutes to show an edit.",

@@ -418,7 +418,7 @@
           "unverified": "未通过 RSI 验证",
           "verifiedSince": "自 %{date} 起已验证",
           "nextCheck": "一分钟后可以再次检查。",
-          "fidAtRisk": "你的舰队 ID %{fid} 看起来像一个 RSI SID。如果拥有该 SID 的组织验证了另一支舰队，那支舰队就可以认领这个 ID，你的舰队地址将会改变。验证你的舰队以保留它。",
+          "fidAtRisk": "验证 RSI 组织 %{fid} 的另一支舰队可以认领它，你的舰队地址将会改变。",
           "statuses": {
             "pending": "正在检查组织页面…",
             "token_missing": "组织页面上还没有该验证码。RSI 可能需要几分钟才会显示修改。",

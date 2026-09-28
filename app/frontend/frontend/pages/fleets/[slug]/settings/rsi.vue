@@ -10,13 +10,12 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import {
-  PanelTonesEnum,
-  PanelVariantsEnum,
-} from "@/shared/components/base/Panel/types";
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import { fidAtRisk } from "@/frontend/utils/rsiSid";
 import {
   type Fleet,
@@ -128,21 +127,24 @@ const openVerification = () => {
 </script>
 
 <template>
-  <Panel
+  <Alert
     v-if="showFidWarning"
-    :tone="PanelTonesEnum.ERROR"
-    :variant="PanelVariantsEnum.SLIM"
-    class="fid-warning"
+    :variant="AlertVariantsEnum.WARNING"
     data-test="fleet-fid-at-risk"
   >
-    <PanelBody>
-      <p class="fid-warning__text">
-        <i class="fa-duotone fa-triangle-exclamation" />
-        <strong>{{ t("labels.fleet.rsiVerification.fidAtRiskTitle") }}</strong>
-        {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
-      </p>
-    </PanelBody>
-  </Panel>
+    <strong>{{ t("labels.fleet.rsiVerification.fidAtRiskTitle") }}.</strong>
+    {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
+    <template v-if="canVerify" #actions>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.BARE"
+        @click="openVerification"
+      >
+        {{ t("actions.fleet.rsiVerification.verify") }}
+        <i class="fa-light fa-chevron-right" />
+      </Btn>
+    </template>
+  </Alert>
 
   <form id="fleet-rsi-settings-form" @submit.prevent="onSubmit">
     <p class="text-muted">
@@ -167,8 +169,9 @@ const openVerification = () => {
             translation-key="fleet.rsiSid"
             v-bind="rsiSidProps"
           >
-            <template v-if="fleet.rsiVerified" #suffix>
+            <template #suffix>
               <a
+                v-if="fleet.rsiVerified"
                 :href="`https://robertsspaceindustries.com/orgs/${fleet.rsiSid}`"
                 :aria-label="t('labels.fleet.rsiVerification.verified')"
                 target="_blank"
@@ -180,6 +183,13 @@ const openVerification = () => {
                   class="fa-duotone fa-badge-check text-success"
                 />
               </a>
+              <i
+                v-else
+                v-tooltip="t('labels.fleet.rsiVerification.unverified')"
+                :aria-label="t('labels.fleet.rsiVerification.unverified')"
+                class="fa-duotone fa-circle-exclamation text-warning"
+                data-test="fleet-rsi-sid-unverified"
+              />
             </template>
           </FormInput>
           <Btn
@@ -207,13 +217,3 @@ const openVerification = () => {
     />
   </form>
 </template>
-
-<style lang="scss" scoped>
-.fid-warning {
-  margin-bottom: 20px;
-
-  &__text {
-    margin: 0;
-  }
-}
-</style>

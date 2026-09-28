@@ -160,4 +160,12 @@ describe("FleetRsiSettingsPage", () => {
       subject.find('[data-test="fleet-rsi-verification-open"]').exists(),
     ).toBe(false);
   });
+
+  it("marks an unverified SID as unverified", async () => {
+    const { wrapper: subject } = await mount();
+
+    expect(
+      subject.find('[data-test="fleet-rsi-sid-unverified"]').exists(),
+    ).toBe(true);
+  });
 });

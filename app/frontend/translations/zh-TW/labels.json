@@ -418,7 +418,7 @@
           "unverified": "未通過 RSI 驗證",
           "verifiedSince": "自 %{date} 起已驗證",
           "nextCheck": "一分鐘後可以再次檢查。",
-          "fidAtRisk": "你的艦隊 ID %{fid} 看起來像一個 RSI SID。如果擁有該 SID 的組織驗證了另一支艦隊，那支艦隊就可以認領這個 ID，你的艦隊網址將會改變。驗證你的艦隊以保留它。",
+          "fidAtRisk": "驗證 RSI 組織 %{fid} 的另一支艦隊可以認領它，你的艦隊網址將會改變。",
           "statuses": {
             "pending": "正在檢查組織頁面…",
             "token_missing": "組織頁面上還沒有該驗證碼。RSI 可能需要幾分鐘才會顯示修改。",

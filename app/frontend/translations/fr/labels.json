@@ -418,7 +418,7 @@
           "unverified": "Non vérifiée auprès de RSI",
           "verifiedSince": "Vérifiée depuis le %{date}",
           "nextCheck": "Tu pourras vérifier à nouveau dans une minute.",
-          "fidAtRisk": "L’identifiant de ta flotte %{fid} ressemble à un SID RSI. Si l’organisation qui porte ce SID vérifie une autre flotte, celle-ci peut réclamer cet identifiant et l’adresse de ta flotte change. Vérifie ta flotte pour le garder.",
+          "fidAtRisk": "Une autre flotte qui vérifie l’organisation RSI %{fid} peut le réclamer, et l’adresse de ta flotte change.",
           "statuses": {
             "pending": "Vérification de la page de l’organisation…",
             "token_missing": "Le code n’est pas encore sur la page de l’organisation. RSI peut mettre quelques minutes à afficher une modification.",

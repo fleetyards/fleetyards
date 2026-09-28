@@ -12,6 +12,8 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { fidAtRisk } from "@/frontend/utils/rsiSid";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -132,14 +134,22 @@ const description = computed(() => {
           {{ t("labels.fleet.rsiVerification.unverified") }}
         </Pill>
       </p>
-      <p v-if="showFidWarning" data-test="fleet-fid-at-risk">
+      <Alert
+        v-if="showFidWarning"
+        :variant="AlertVariantsEnum.WARNING"
+        data-test="fleet-fid-at-risk"
+      >
+        <strong>{{ t("labels.fleet.rsiVerification.fidAtRiskTitle") }}.</strong>
         {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
-        <router-link
-          :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
-        >
-          {{ t("labels.fleet.rsiVerification.title") }}
-        </router-link>
-      </p>
+        <template #actions>
+          <router-link
+            :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
+          >
+            {{ t("actions.fleet.rsiVerification.verify") }}
+            <i class="fa-light fa-chevron-right" />
+          </router-link>
+        </template>
+      </Alert>
     </div>
   </div>
   <div class="row">
