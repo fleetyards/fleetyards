@@ -130,9 +130,9 @@ const openVerification = () => {
   <Alert
     v-if="showFidWarning"
     :variant="AlertVariantsEnum.WARNING"
+    :title="t('labels.fleet.rsiVerification.fidAtRiskTitle')"
     data-test="fleet-fid-at-risk"
   >
-    <strong>{{ t("labels.fleet.rsiVerification.fidAtRiskTitle") }}.</strong>
     {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
     <template v-if="canVerify" #actions>
       <Btn
