@@ -254,6 +254,8 @@ zh-TW:
       create: 無法建立活動隊伍。
       destroy: 無法刪除活動隊伍。
       update: 無法更新活動隊伍。
+    fleet_rsi_verification:
+      check: "請先儲存你的組織 SID 並產生驗證碼，然後再檢查。"
     fleet_notification_settings:
       update: 無法更新通知設定。
     version:

@@ -85,6 +85,8 @@ en:
     fleet_event_admins:
       create: Event admin could not be granted.
       destroy: Event admin could not be revoked.
+    fleet_rsi_verification:
+      check: "Save your organisation's SID and generate a verification token before checking."
     fleet_notification_settings:
       update: Notification settings could not be updated.
     hangar_group:

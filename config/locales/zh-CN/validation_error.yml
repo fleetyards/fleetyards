@@ -254,6 +254,8 @@ zh-CN:
       create: 无法创建活动小队。
       destroy: 无法删除活动小队。
       update: 无法更新活动小队。
+    fleet_rsi_verification:
+      check: "请先保存你的组织 SID 并生成验证码，然后再检查。"
     fleet_notification_settings:
       update: 无法更新通知设置。
     version:

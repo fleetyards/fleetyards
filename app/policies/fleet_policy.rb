@@ -33,6 +33,10 @@ class FleetPolicy < FleetBasePolicy
     manage?
   end
 
+  def manage_rsi_verification?
+    manage?
+  end
+
   def update?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"])
   end

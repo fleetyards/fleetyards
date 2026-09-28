@@ -258,6 +258,8 @@ es:
       create: No se pudo crear el equipo del evento.
       destroy: No se pudo eliminar el equipo del evento.
       update: No se pudo actualizar el equipo del evento.
+    fleet_rsi_verification:
+      check: "Guarda el SID de tu organización y genera un código de verificación antes de comprobar."
     fleet_notification_settings:
       update: No se pudieron actualizar los ajustes de notificación.
     version:

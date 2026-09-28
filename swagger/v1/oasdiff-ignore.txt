@@ -1465,3 +1465,10 @@ PUT /notifications/{id}/unarchive added the new `payout_entry_declined` enum val
 PUT /notifications/{id}/unarchive added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `payout_entry_declined` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `payout_entry_pending_review` enum value to the `notificationType` response property for the response status `200`
+GET /notification-preferences added the new `fleet_rsi_verification_lost` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `fleet_rsi_verification_lost` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `fleet_rsi_verification_lost` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `fleet_rsi_verification_lost` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `fleet_rsi_verification_lost` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `fleet_rsi_verification_lost` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `fleet_rsi_verification_lost` enum value to the `notificationType` response property for the response status `200`

@@ -6954,6 +6954,126 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/rsi-verification":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Generate a new RSI verification token
+      tags:
+      - Fleet RSI Verification
+      operationId: createFleetRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetRsiVerification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show the fleet's RSI verification
+      tags:
+      - Fleet RSI Verification
+      operationId: fleetRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetRsiVerification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/rsi-verification/check":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Check the RSI org page for the verification token
+      tags:
+      - Fleet RSI Verification
+      operationId: checkFleetRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetRsiVerification"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/squadrons":
     parameters:
     - name: fleetSlug
@@ -19789,6 +19909,8 @@ components:
           type: string
         rsiSid:
           type: string
+        rsiVerified:
+          type: boolean
         ts:
           type: string
         discord:
@@ -23230,6 +23352,43 @@ components:
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
       title: FleetRoleResourceAccessEnum
+    FleetRsiVerification:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+        token:
+          type:
+          - string
+          - 'null'
+        status:
+          "$ref": "#/components/schemas/NullableFleetRsiVerificationStatusEnum"
+        verified:
+          type: boolean
+        verifiedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        checkedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        nextCheckAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - sid
+      - token
+      - status
+      - verified
+      - verifiedAt
+      - checkedAt
+      title: FleetRsiVerification
     FleetSquadron:
       type: object
       properties:
@@ -24061,10 +24220,6 @@ components:
           type: boolean
         released:
           type: boolean
-        locationKind:
-          "$ref": "#/components/schemas/NullableGameMissionLocationKindEnum"
-        needsLanding:
-          type: boolean
         org:
           anyOf:
           - "$ref": "#/components/schemas/GameMissionOrg"
@@ -24119,7 +24274,6 @@ components:
       - scRef
       - retired
       - released
-      - needsLanding
       - rewardKinds
       - createdAt
       - updatedAt
@@ -24176,19 +24330,6 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
-    GameMissionLocationKindEnum:
-      type: string
-      enum:
-      - surface
-      - space
-      - mixed
-      - unknown
-      x-enumNames:
-      - SURFACE
-      - SPACE
-      - MIXED
-      - UNKNOWN
-      title: GameMissionLocationKindEnum
     GameMissionOrg:
       type: object
       properties:
@@ -24264,12 +24405,6 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
-        locationKindEq:
-          "$ref": "#/components/schemas/GameMissionLocationKindEnum"
-        locationKindIn:
-          type: array
-          items:
-            "$ref": "#/components/schemas/GameMissionLocationKindEnum"
         released:
           type: boolean
         currentVersion:
@@ -29122,6 +29257,7 @@ components:
       - payout_entry_declined
       - fleet_subscription_started
       - fleet_subscription_ended
+      - fleet_rsi_verification_lost
       - announcement
       x-enumNames:
       - HANGAR_CREATE
@@ -29167,6 +29303,7 @@ components:
       - PAYOUT_ENTRY_DECLINED
       - FLEET_SUBSCRIPTION_STARTED
       - FLEET_SUBSCRIPTION_ENDED
+      - FLEET_RSI_VERIFICATION_LOST
       - ANNOUNCEMENT
       title: NotificationTypeEnum
     NotificationUnreadCount:
@@ -29255,23 +29392,27 @@ components:
       - CONFIRMATION_REQUIRED
       - 'NULL'
       title: NullableFleetEventSignupApprovalEnum
-    NullableGameMissionLocationKindEnum:
+    NullableFleetRsiVerificationStatusEnum:
       type:
       - string
       - 'null'
       enum:
-      - surface
-      - space
-      - mixed
-      - unknown
+      - pending
+      - verified
+      - token_missing
+      - symbol_mismatch
+      - not_found
+      - failed
       -
       x-enumNames:
-      - SURFACE
-      - SPACE
-      - MIXED
-      - UNKNOWN
+      - PENDING
+      - VERIFIED
+      - TOKEN_MISSING
+      - SYMBOL_MISMATCH
+      - NOT_FOUND
+      - FAILED
       - 'NULL'
-      title: NullableGameMissionLocationKindEnum
+      title: NullableFleetRsiVerificationStatusEnum
     NullableInventoryItemTypeEnum:
       type:
       - string

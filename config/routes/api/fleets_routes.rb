@@ -58,6 +58,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
+  resource :fleet_rsi_verification, path: "rsi-verification", only: %i[show create] do
+    post :check
+  end
+
   resource :fleet_notification_setting, path: "notifications", only: %i[show update] do
     get "discord-status", action: :discord_status
   end
