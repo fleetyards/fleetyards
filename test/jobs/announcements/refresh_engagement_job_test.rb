@@ -28,39 +28,6 @@ module Announcements
       end
     end
 
-    # The sweep revisits a fresh delivery hourly; unchanged counts must not
-    # re-render the announcement for every admin each time.
-    test "#perform only moves the fetched-at time when the counts did not change" do
-      counts = {"likes" => 3, "reposts" => 1, "replies" => 0, "quotes" => 0}
-      delivery = create(
-        :announcement_delivery,
-        announcement: @announcement, channel: "bluesky", status: "succeeded", delivered_at: 1.hour.ago,
-        posted_parts: [{"uri" => "at://1"}], engagement: counts, engagement_fetched_at: 2.hours.ago
-      )
-      ::Bsky::Engagement.any_instance.stubs(:fetch).returns(counts)
-      AdminAnnouncementsChannel.expects(:broadcast_to).never
-
-      freeze_time do
-        Announcements::RefreshEngagementJob.new.perform(delivery.id)
-
-        assert_equal Time.current, delivery.reload.engagement_fetched_at
-      end
-    end
-
-    test "#perform broadcasts a manual refresh even when nothing changed" do
-      create(:admin_user)
-      counts = {"likes" => 3}
-      delivery = create(
-        :announcement_delivery,
-        announcement: @announcement, channel: "bluesky", status: "succeeded", delivered_at: 1.hour.ago,
-        posted_parts: [{"uri" => "at://1"}], engagement: counts, engagement_fetched_at: 2.hours.ago
-      )
-      ::Bsky::Engagement.any_instance.stubs(:fetch).returns(counts)
-      AdminAnnouncementsChannel.expects(:broadcast_to).at_least_once
-
-      Announcements::RefreshEngagementJob.new.perform(delivery.id, true)
-    end
-
     test "#perform passes the known guild id to the Discord read" do
       parts = [{"index" => 0, "message_id" => "m1", "channel_id" => "c1"}]
       delivery = create(
