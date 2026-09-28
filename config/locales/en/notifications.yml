@@ -50,6 +50,9 @@ en:
       reasons:
         contribution: "the donation supporting it is no longer active"
         manual: "the grant was ended by an administrator"
+    fleet_rsi_verification_lost:
+      title: "%{fleet} is no longer verified for %{sid}"
+      body: "Another fleet proved it runs the RSI organisation %{sid} by putting its verification token on the org's page. Your fleet no longer shows the SID as verified. If %{sid} is your organisation, verify it again from the fleet settings."
     fleet_member_accepted:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:

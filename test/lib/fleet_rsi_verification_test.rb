@@ -1,0 +1,90 @@
+# frozen_string_literal: true
+
+require "test_helper"
+require "webmock/minitest"
+
+class FleetRsiVerificationTest < ActiveSupport::TestCase
+  setup do
+    @manager = create(:user)
+    @fleet = create(:fleet, created_by: @manager.id, rsi_sid: "TEST")
+    @fleet.generate_rsi_verification_token!
+  end
+
+  def stub_org_page(status: 200, symbol: "TEST", manifesto: "")
+    body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto:)
+      .sub('<span class="symbol">TEST</span>', %(<span class="symbol">#{symbol}</span>))
+
+    stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return(status:, body:)
+  end
+
+  def verify(fleet = @fleet)
+    FleetRsiVerification.new(fleet).run
+  end
+
+  test "the token on the org page verifies the fleet" do
+    stub_org_page(manifesto: @fleet.rsi_verification_token)
+
+    assert_equal :verified, verify
+
+    @fleet.reload
+    assert @fleet.rsi_verified?
+    assert_equal "TEST", @fleet.rsi_verified_sid
+    assert_equal "TEST", @fleet.public_rsi_sid
+  end
+
+  test "a page without the token leaves the fleet unverified" do
+    stub_org_page
+
+    assert_equal :token_missing, verify
+    assert_not @fleet.reload.rsi_verified?
+    assert @fleet.rsi_verification_token_missing?
+  end
+
+  test "a page for a different org does not count" do
+    stub_org_page(symbol: "OTHER", manifesto: @fleet.rsi_verification_token)
+
+    assert_equal :symbol_mismatch, verify
+    assert_not @fleet.reload.rsi_verified?
+  end
+
+  test "an org RSI does not know is reported as not found" do
+    stub_org_page(status: 404)
+
+    assert_equal :not_found, verify
+  end
+
+  test "a fleet without a token cannot be checked" do
+    @fleet.update!(rsi_verification_token: nil)
+
+    assert_equal :failed, verify
+  end
+
+  test "the latest proof takes the SID from the fleet that held it" do
+    holder_manager = create(:user)
+    holder = create(:fleet, created_by: holder_manager.id, rsi_sid: "TEST")
+    holder.generate_rsi_verification_token!
+    stub_org_page(manifesto: holder.rsi_verification_token)
+    verify(holder)
+
+    stub_org_page(manifesto: @fleet.rsi_verification_token)
+
+    assert_difference -> { Notification.where(user: holder_manager, notification_type: :fleet_rsi_verification_lost).count }, 1 do
+      verify
+    end
+
+    assert @fleet.reload.rsi_verified?
+    assert_not holder.reload.rsi_verified?
+    assert_nil holder.public_rsi_sid
+  end
+
+  test "an answer about a SID the fleet has since changed is dropped" do
+    body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto: @fleet.rsi_verification_token)
+    stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return do
+      Fleet.where(id: @fleet.id).update_all(rsi_sid: "OTHER") # rubocop:disable Rails/SkipsModelValidations
+      {status: 200, body:}
+    end
+
+    assert_nil verify
+    assert_not @fleet.reload.rsi_verified?
+  end
+end

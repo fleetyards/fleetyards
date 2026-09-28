@@ -2554,6 +2554,7 @@
         "fleet_contract_crew_answered": "Contract crew request answered",
         "fleet_subscription_started": "Fleet features unlocked",
         "fleet_subscription_ended": "Fleet features lost",
+        "fleet_rsi_verification_lost": "Fleet verification lost",
         "fleet_contract_fulfilled": "Contract fulfilled",
         "fleet_contract_settled": "Contract paid out",
         "payout_ledger_settled": "Payouts settled",

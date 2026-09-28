@@ -2540,6 +2540,7 @@
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
         "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
+        "fleet_rsi_verification_lost": "Flottenverifizierung verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt",
         "fleet_contract_settled": "Auftrag ausgezahlt",
         "payout_ledger_settled": "Auszahlung abgerechnet",

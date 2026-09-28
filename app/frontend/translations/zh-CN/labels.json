@@ -2540,6 +2540,7 @@
         "fleet_contract_crew_answered": "合约成员申请已处理",
         "fleet_subscription_started": "已获得舰队功能",
         "fleet_subscription_ended": "已失去舰队功能",
+        "fleet_rsi_verification_lost": "舰队验证已失效",
         "fleet_contract_fulfilled": "合约已完成",
         "fleet_contract_settled": "合同已结算",
         "payout_ledger_settled": "分账已结算",

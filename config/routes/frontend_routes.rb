@@ -105,7 +105,7 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/allies/incoming", to: "fleets#settings"
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
-  get "fleets/:slug/settings/fleet", to: "fleets#settings"
+  get "fleets/:slug/settings/fleet", to: "fleets#settings", as: :fleet_settings_fleet
   get "fleets/:slug/settings/membership", to: "fleets#settings"
   get "fleets/:slug/settings/allies", to: "fleets#settings", as: :fleet_allies
   get "fleets/:slug/settings/allies/incoming", to: "fleets#settings", as: :incoming_fleet_allies

@@ -2540,6 +2540,7 @@
         "fleet_contract_crew_answered": "Richiesta di equipaggio gestita",
         "fleet_subscription_started": "Funzioni di flotta attivate",
         "fleet_subscription_ended": "Funzioni di flotta perse",
+        "fleet_rsi_verification_lost": "Verifica della flotta persa",
         "fleet_contract_fulfilled": "Contratto completato",
         "fleet_contract_settled": "Contratto pagato",
         "payout_ledger_settled": "Pagamenti definiti",
