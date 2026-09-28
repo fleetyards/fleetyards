@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-json.cache! ["v1", fleet] do
-  json.partial!("api/v1/fleets/base", fleet:)
+visitor = local_assigns.fetch(:visitor, false)
+
+json.cache!(visitor ? ["v1", "visitor", fleet] : ["v1", fleet]) do
+  json.partial!("api/v1/fleets/base", fleet:, visitor:)
 end
 
 json.my_fleet(local_assigns.fetch(:my_fleet, false))
