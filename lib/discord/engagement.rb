@@ -7,10 +7,16 @@ module Discord
   # are all Discord has: it exposes no views and no share counts.
   #
   # Read through the bot rather than the webhook that posted them, so the bot
-  # has to be able to see the updates channel.
+  # needs View Channel and Read Message History on the updates channel --
+  # without the second, every read is a 403.
   class Engagement
     def self.configured?
       ::Discord::ApiClient.configured?
+    end
+
+    # What a part needs before its reactions can be read back.
+    def self.readable?(part)
+      part["message_id"].present? && part["channel_id"].present?
     end
 
     def initialize(client: ::Discord::ApiClient.new)
@@ -20,7 +26,7 @@ module Discord
     # Parts are the delivery's `posted_parts`. Those posted before the webhook
     # waited for its message carry no id and are left out; nil when none do.
     def fetch(parts, guild_id: nil)
-      messages = parts.select { |part| part["message_id"].present? && part["channel_id"].present? }
+      messages = parts.select { |part| self.class.readable?(part) }
       return nil if messages.empty?
 
       first = messages.first
@@ -37,12 +43,14 @@ module Discord
       merged = {}
 
       messages.each do |part|
-        message = @client.get_channel_message(part["channel_id"], part["message_id"])
+        message = read(part)
 
         Array(message&.dig("reactions")).each do |reaction|
           emoji = reaction["emoji"] || {}
           key = emoji["id"].presence || emoji["name"]
-          next if key.blank?
+          # A custom emoji deleted from its server comes back without a name,
+          # and there is nothing left to show it as.
+          next if key.blank? || emoji["name"].blank?
 
           merged[key] ||= {"emoji" => emoji["name"], "id" => emoji["id"], "count" => 0}.compact
           merged[key]["count"] += reaction["count"].to_i
@@ -50,6 +58,17 @@ module Discord
       end
 
       merged.values.sort_by { |reaction| -reaction["count"] }
+    end
+
+    # A message a moderator deleted is gone for good. Skipping it keeps the
+    # rest of the announcement's reactions current rather than failing every
+    # refresh for the next thirty days.
+    private def read(part)
+      @client.get_channel_message(part["channel_id"], part["message_id"])
+    rescue ::Discord::ApiClient::Error => e
+      raise unless e.status == 404
+
+      nil
     end
   end
 end
