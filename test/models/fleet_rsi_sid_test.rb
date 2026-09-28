@@ -97,4 +97,26 @@ class FleetRsiSidTest < ActiveSupport::TestCase
     assert_nil fleet.rsi_verification_token
     assert_equal "TEST", fleet.rsi_sid
   end
+
+  test "a member's Citizen ID flag counts only once the fleet is verified" do
+    fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
+    membership = fleet.fleet_memberships.first
+    membership.update_columns(verified: true) # rubocop:disable Rails/SkipsModelValidations
+
+    assert_not membership.reload.rsi_verified?
+
+    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST") # rubocop:disable Rails/SkipsModelValidations
+
+    assert membership.reload.rsi_verified?
+  end
+
+  test "a new SID clears the members' Citizen ID flags" do
+    fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
+    membership = fleet.fleet_memberships.first
+    membership.update_columns(verified: true) # rubocop:disable Rails/SkipsModelValidations
+
+    fleet.update!(rsi_sid: "OTHER")
+
+    assert_not membership.reload.verified?
+  end
 end

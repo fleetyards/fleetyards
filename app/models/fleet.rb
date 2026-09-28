@@ -148,6 +148,7 @@ class Fleet < ApplicationRecord
   }, prefix: :rsi_verification
 
   before_save :reset_rsi_verification, if: :rsi_sid_changed?
+  after_update :reset_membership_verification, if: :saved_change_to_rsi_sid?
   # The index keeps one verified SID per kept fleet, so a discarded fleet has to
   # let go of it: restoring one would otherwise collide with whoever proved the
   # SID since.
@@ -430,6 +431,13 @@ class Fleet < ApplicationRecord
       token = SecureRandom.urlsafe_base64(32)
       break token unless exists?(calendar_feed_token: token)
     end
+  end
+
+  # A member's flag says they are in the org the fleet named then. Kept across a
+  # new SID, it would show them as members of an org they may not be in once
+  # the fleet proves the new one.
+  private def reset_membership_verification
+    fleet_memberships.where(verified: true).update_all(verified: false, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
   end
 
   private def reset_rsi_verification

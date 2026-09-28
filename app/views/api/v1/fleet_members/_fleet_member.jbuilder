@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-json.cache! ["v4", member] do
+# The fleet's verification is in the key: whether the member's own flag is shown
+# depends on it, and proving or losing the SID does not touch the membership.
+json.cache! ["v5", member, member.fleet.rsi_verified?] do
   json.partial! "api/v1/fleet_members/base", member: member
 end
 
