@@ -13,13 +13,13 @@ import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useMissionShip } from "@/frontend/composables/useMissionShip";
 import {
   type GameMissionQuery,
   BlueprintSourceAlignmentEnum,
   GameMissionKindEnum,
   GameMissionLocationKindEnum,
   GameMissionRewardFilterEnum,
-  useModel,
   useFiltersGameMissionsOrgs,
   useFiltersGameMissionsStandings,
 } from "@/services/fyApi";
@@ -125,29 +125,9 @@ const locationKinds = computed(() =>
 
 // The ship a pilot flies, which marks the contracts it can't do rather than
 // hiding them. In the URL beside the filters, never sent to the API.
-const route = useRoute();
-const router = useRouter();
 const comlink = useComlink();
 
-const shipSlug = computed(() => {
-  const value = route.query.ship;
-
-  return typeof value === "string" && value ? value : undefined;
-});
-
-const { data: ship } = useModel(
-  computed(() => shipSlug.value || ""),
-  {
-    query: { enabled: computed(() => !!shipSlug.value) },
-  },
-);
-
-const setShip = async (slug?: string) => {
-  await router.push({
-    name: route.name as string,
-    query: { ...route.query, page: undefined, ship: slug },
-  });
-};
+const { shipSlug, ship, setShip } = useMissionShip();
 
 const openPicker = () => {
   comlink.emit("open-modal", {

@@ -19,27 +19,14 @@ import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
 import {
   useGameMissions as useMissionsQuery,
   getGameMissionsQueryKey,
-  useModel,
 } from "@/services/fyApi";
+import { useMissionShip } from "@/frontend/composables/useMissionShip";
 
 const { t } = useI18n();
 
-const route = useRoute();
-
-// The pilot's ship, from the filter form. It marks contracts it can't do, so
-// it is read here and handed to the rows rather than sent with the query.
-const shipSlug = computed(() => {
-  const value = route.query.ship;
-
-  return typeof value === "string" && value ? value : undefined;
-});
-
-const { data: ship } = useModel(
-  computed(() => shipSlug.value || ""),
-  {
-    query: { enabled: computed(() => !!shipSlug.value) },
-  },
-);
+// The pilot's ship, from the filter form: handed to the rows, never sent
+// with the query.
+const { ship } = useMissionShip();
 
 const missionsQueryParams = computed(() => ({
   page: page.value,
