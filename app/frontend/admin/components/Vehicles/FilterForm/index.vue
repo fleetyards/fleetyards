@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import ModelSelect from "@/shared/components/ModelSelect/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";

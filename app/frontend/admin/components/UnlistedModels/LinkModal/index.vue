@@ -8,7 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import ModelSelect from "@/shared/components/ModelSelect/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import {
   type ScDataUnlistedModel,
   useScDataUnlistedModelLink,

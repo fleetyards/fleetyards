@@ -8,7 +8,7 @@ export default {
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import ModelSelect from "@/shared/components/ModelSelect/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelModuleQuery } from "@/services/fyAdminApi";

@@ -26,9 +26,6 @@ type Props = {
   hideSelected?: boolean;
   valueAttr?: "slug" | "id";
   inline?: boolean;
-  label?: string;
-  // Narrows every search, e.g. to flight-ready ships.
-  query?: ModelQuery;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,8 +36,6 @@ const props = withDefaults(defineProps<Props>(), {
   hideSelected: false,
   valueAttr: "slug",
   inline: false,
-  label: undefined,
-  query: undefined,
 });
 
 const { t } = useI18n();
@@ -79,7 +74,7 @@ const formatter = (response: ModelOptions) => {
 };
 
 const fetch = async (params: BaseSelectParams<ModelOption>) => {
-  const q: ModelQuery = { ...props.query };
+  const q: ModelQuery = {};
 
   if (params.search) {
     q.nameCont = params.search;
@@ -130,7 +125,7 @@ defineExpose({
   <BaseSelect
     ref="baseSelect"
     v-model="internalValue"
-    :label="translationKey ? undefined : (label ?? t('labels.selectModel'))"
+    :label="translationKey ? undefined : t('labels.selectModel')"
     :search-label="translationKey ? undefined : t('labels.findModel')"
     :query-fn="fetch"
     :query-response-formatter="formatter"

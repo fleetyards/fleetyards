@@ -16,7 +16,7 @@ import {
   getListModelModulesQueryKey,
   getModelModuleQueryKey,
 } from "@/services/fyAdminApi";
-import ModelSelect from "@/shared/components/ModelSelect/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";

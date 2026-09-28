@@ -18,7 +18,7 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
-import ModelSelect from "@/shared/components/ModelSelect/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
 import ModelClassificationSelect from "@/frontend/components/base/ModelClassificationSelect/index.vue";
