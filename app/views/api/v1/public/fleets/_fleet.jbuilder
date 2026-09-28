@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-json.cache! ["v1", fleet] do
-  json.partial!("api/v1/fleets/base", fleet:)
+# Its own cache key: the members' copy carries the SID as typed, and a visitor
+# only sees one the fleet has proved -- anyone can type any SID.
+json.cache! ["v1", "public", fleet] do
+  json.partial!("api/v1/fleets/base", fleet:, visitor: true)
 end
 
 # Outside the cache for the reason the fleet's own partial gives. A visitor's

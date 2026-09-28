@@ -55,6 +55,25 @@ class Api::V1::PublicFleetsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: fleet.slug}
   end
 
+  test "GET /public/fleets/:slug hides a SID the fleet has not verified" do
+    fleet = create(:fleet, rsi_sid: "TEST")
+
+    assert_api_response :get, 200, path_params: {slug: fleet.slug}
+
+    assert_nil response.parsed_body["rsiSid"]
+    assert_equal false, response.parsed_body["rsiVerified"]
+  end
+
+  test "GET /public/fleets/:slug names a verified SID" do
+    fleet = create(:fleet, rsi_sid: "TEST")
+    fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST") # rubocop:disable Rails/SkipsModelValidations
+
+    assert_api_response :get, 200, path_params: {slug: fleet.slug}
+
+    assert_equal "TEST", response.parsed_body["rsiSid"]
+    assert_equal true, response.parsed_body["rsiVerified"]
+  end
+
   test "GET /public/fleets/:slug lists the features switched on for the fleet" do
     fleet = create(:fleet)
     Flipper.enable("fleet_squadrons", fleet)
