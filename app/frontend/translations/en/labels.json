@@ -1825,6 +1825,8 @@
           "notOwned": "Not owned"
         },
         "missions": {
+          "location": "Location",
+          "ship": "Your ship",
           "name": "Search missions",
           "org": "Offered by",
           "standing": "Standing",
@@ -3139,6 +3141,17 @@
         }
       },
       "gameMission": {
+        "locationKinds": {
+          "surface": "On a planet or moon",
+          "space": "In space",
+          "mixed": "Planet, moon or space",
+          "unknown": "Location unknown"
+        },
+        "location": "Location",
+        "cannotLand": {
+          "surface": "%{ship} can't land: this contract is on a planet or moon",
+          "mixed": "May take %{ship} to a planet or moon, where it can't land"
+        },
         "calculatedInGame": "Set in game",
         "blueprints": "Blueprints",
         "name": "Name",

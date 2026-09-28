@@ -1825,6 +1825,8 @@
           "notOwned": "未擁有"
         },
         "missions": {
+          "location": "地點",
+          "ship": "你的飛船",
           "name": "搜尋任務",
           "org": "發布方",
           "standing": "聲望",
@@ -3125,6 +3127,17 @@
         }
       },
       "gameMission": {
+        "locationKinds": {
+          "surface": "在行星或衛星上",
+          "space": "在太空中",
+          "mixed": "行星、衛星或太空",
+          "unknown": "地點未知"
+        },
+        "location": "地點",
+        "cannotLand": {
+          "surface": "%{ship} 無法降落：此合約位於行星或衛星上",
+          "mixed": "可能會把 %{ship} 帶到它無法降落的行星或衛星"
+        },
         "calculatedInGame": "由遊戲計算",
         "blueprints": "藍圖",
         "name": "名稱",

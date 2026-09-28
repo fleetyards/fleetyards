@@ -181,6 +181,11 @@
       "cargoGrids": {
         "addShips": "Ajouter des vaisseaux"
       },
+      "missions": {
+        "pickShip": "Choisir un vaisseau",
+        "changeShip": "Changer de vaisseau",
+        "clearShip": "Retirer"
+      },
       "tradeRoutes": {
         "pickShip": "Choisir un vaisseau",
         "changeShip": "Changer de vaisseau",

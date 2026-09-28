@@ -181,6 +181,11 @@
       "cargoGrids": {
         "addShips": "添加飞船"
       },
+      "missions": {
+        "pickShip": "选择飞船",
+        "changeShip": "更换飞船",
+        "clearShip": "清除"
+      },
       "tradeRoutes": {
         "pickShip": "选择飞船",
         "changeShip": "更换飞船",

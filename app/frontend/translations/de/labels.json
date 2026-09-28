@@ -1825,6 +1825,8 @@
           "notOwned": "Nicht im Besitz"
         },
         "missions": {
+          "location": "Ort",
+          "ship": "Dein Schiff",
           "name": "Missionen suchen",
           "org": "Angeboten von",
           "standing": "Ansehen",
@@ -3125,6 +3127,17 @@
         }
       },
       "gameMission": {
+        "locationKinds": {
+          "surface": "Auf Planet oder Mond",
+          "space": "Im Weltraum",
+          "mixed": "Planet, Mond oder Weltraum",
+          "unknown": "Ort unbekannt"
+        },
+        "location": "Ort",
+        "cannotLand": {
+          "surface": "%{ship} kann nicht landen: Dieser Auftrag findet auf einem Planeten oder Mond statt",
+          "mixed": "Kann %{ship} auf einen Planeten oder Mond führen, wo es nicht landen kann"
+        },
         "calculatedInGame": "Vom Spiel berechnet",
         "blueprints": "Baupläne",
         "name": "Name",

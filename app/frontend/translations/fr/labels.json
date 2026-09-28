@@ -1825,6 +1825,8 @@
           "notOwned": "Non possédé"
         },
         "missions": {
+          "location": "Lieu",
+          "ship": "Votre vaisseau",
           "name": "Rechercher des missions",
           "org": "Proposée par",
           "standing": "Réputation",
@@ -3125,6 +3127,17 @@
         }
       },
       "gameMission": {
+        "locationKinds": {
+          "surface": "Sur une planète ou une lune",
+          "space": "Dans l'espace",
+          "mixed": "Planète, lune ou espace",
+          "unknown": "Lieu inconnu"
+        },
+        "location": "Lieu",
+        "cannotLand": {
+          "surface": "%{ship} ne peut pas se poser : ce contrat se déroule sur une planète ou une lune",
+          "mixed": "Peut mener %{ship} sur une planète ou une lune, où il ne peut pas se poser"
+        },
         "calculatedInGame": "Calculé en jeu",
         "blueprints": "Plans",
         "name": "Nom",

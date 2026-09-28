@@ -1825,6 +1825,8 @@
           "notOwned": "Sin poseer"
         },
         "missions": {
+          "location": "Ubicación",
+          "ship": "Tu nave",
           "name": "Buscar misiones",
           "org": "Ofrecida por",
           "standing": "Reputación",
@@ -3125,6 +3127,17 @@
         }
       },
       "gameMission": {
+        "locationKinds": {
+          "surface": "En un planeta o luna",
+          "space": "En el espacio",
+          "mixed": "Planeta, luna o espacio",
+          "unknown": "Ubicación desconocida"
+        },
+        "location": "Ubicación",
+        "cannotLand": {
+          "surface": "%{ship} no puede aterrizar: este contrato es en un planeta o luna",
+          "mixed": "Puede llevar a %{ship} a un planeta o luna, donde no puede aterrizar"
+        },
         "calculatedInGame": "Calculado en el juego",
         "blueprints": "Planos",
         "name": "Nombre",
