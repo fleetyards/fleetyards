@@ -14,10 +14,12 @@ import {
   type RowListItemTag,
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type GameMission } from "@/services/fyApi";
+import { type GameMission, type ModelExtended } from "@/services/fyApi";
 
 type Props = {
   mission: GameMission;
+  // The pilot's ship, when one is chosen: its contracts are marked, not hidden.
+  ship?: Pick<ModelExtended, "name" | "canLandOnPlanets">;
 };
 
 const props = defineProps<Props>();
@@ -83,17 +85,45 @@ const ALIGNMENT_TONES: Record<string, RowListItemTonesEnum> = {
 };
 
 const tags = computed<RowListItemTag[]>(() => {
+  const list: RowListItemTag[] = [];
   const alignment = props.mission.org?.alignment;
-  if (!alignment) return [];
 
-  return [
-    {
+  if (alignment) {
+    list.push({
       key: alignment,
       label: t(`labels.gameMission.alignments.${alignment}`),
       to: filterLink("alignmentIn", [alignment]),
       tone: ALIGNMENT_TONES[alignment],
-    },
-  ];
+    });
+  }
+
+  // Where it takes place, for everyone. Unknown says nothing worth a tag.
+  const location = props.mission.locationKind;
+  if (location && location !== "unknown") {
+    list.push({
+      key: `location-${location}`,
+      label: t(`labels.gameMission.locationKinds.${location}`),
+      to: filterLink("locationKindIn", [location]),
+    });
+  }
+
+  return list;
+});
+
+// Only for a ship that can't land, and only where the work puts a pilot on
+// the ground: ship combat at a surface target is fought in flight. A contract
+// that may roll a space location gets the softer wording.
+const cannotLand = computed(() => {
+  const { ship, mission } = props;
+  if (ship?.canLandOnPlanets !== false || !mission.needsLanding)
+    return undefined;
+
+  const wording = mission.locationKind === "mixed" ? "mixed" : "surface";
+
+  return {
+    firm: wording === "surface",
+    text: t(`labels.gameMission.cannotLand.${wording}`, { ship: ship.name }),
+  };
 });
 
 const badges = computed<RowListItemBadge[]>(() => {
@@ -145,6 +175,28 @@ const badges = computed<RowListItemBadge[]>(() => {
         {{ mission.org.name }}
       </router-link>
       <span v-if="standing">{{ standing }}</span>
+      <span
+        v-if="cannotLand"
+        class="mission-row__cannot-land"
+        :class="{ 'mission-row__cannot-land--firm': cannotLand.firm }"
+      >
+        <i class="fa-light fa-ban" aria-hidden="true" />
+        {{ cannotLand.text }}
+      </span>
     </template>
   </RowListItem>
 </template>
+
+<style lang="scss" scoped>
+.mission-row__cannot-land {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-dim, #959595);
+  font-size: 0.85em;
+}
+
+.mission-row__cannot-land--firm {
+  color: #e0a15c;
+}
+</style>

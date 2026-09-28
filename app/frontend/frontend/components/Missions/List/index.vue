@@ -8,11 +8,12 @@ export default {
 import MissionRow from "@/frontend/components/Missions/Row/index.vue";
 import RowList from "@/shared/components/RowList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type GameMission } from "@/services/fyApi";
+import { type GameMission, type ModelExtended } from "@/services/fyApi";
 
 type Props = {
   missions: GameMission[];
   emptyVisible?: boolean;
+  ship?: ModelExtended;
 };
 
 defineProps<Props>();
@@ -27,7 +28,7 @@ const { t } = useI18n();
     :empty-name="t('labels.filters.missions.name')"
   >
     <template #default="{ record }">
-      <MissionRow :mission="record" />
+      <MissionRow :mission="record" :ship="ship" />
     </template>
   </RowList>
 </template>

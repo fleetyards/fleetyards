@@ -9,13 +9,17 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
+import { useComlink } from "@/shared/composables/useComlink";
 import {
   type GameMissionQuery,
   BlueprintSourceAlignmentEnum,
   GameMissionKindEnum,
+  GameMissionLocationKindEnum,
   GameMissionRewardFilterEnum,
+  useModel,
   useFiltersGameMissionsOrgs,
   useFiltersGameMissionsStandings,
 } from "@/services/fyApi";
@@ -55,6 +59,9 @@ const prefillFormValues = (): GameMissionQuery => ({
   rewardingIn: asList(
     filters.value.rewardingIn ?? filters.value.rewarding,
   ) as GameMissionRewardFilterEnum[],
+  locationKindIn: asList(
+    filters.value.locationKindIn,
+  ) as GameMissionLocationKindEnum[],
   released: filters.value.released,
 });
 
@@ -108,6 +115,57 @@ const rewardKinds = computed(() =>
     label: t(`labels.gameMission.rewardKinds.${value}`),
   })),
 );
+
+const locationKinds = computed(() =>
+  Object.values(GameMissionLocationKindEnum).map((value) => ({
+    value,
+    label: t(`labels.gameMission.locationKinds.${value}`),
+  })),
+);
+
+// The ship a pilot flies, which marks the contracts it can't do rather than
+// hiding them. In the URL beside the filters, never sent to the API.
+const route = useRoute();
+const router = useRouter();
+const comlink = useComlink();
+
+const shipSlug = computed(() => {
+  const value = route.query.ship;
+
+  return typeof value === "string" && value ? value : undefined;
+});
+
+const { data: ship } = useModel(
+  computed(() => shipSlug.value || ""),
+  {
+    query: { enabled: computed(() => !!shipSlug.value) },
+  },
+);
+
+const setShip = async (slug?: string) => {
+  await router.push({
+    name: route.name as string,
+    query: { ...route.query, page: undefined, ship: slug },
+  });
+};
+
+const openPicker = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Missions/PickerModal/index.vue"),
+    wide: true,
+  });
+};
+
+const offShipPicked = ref<() => void>();
+
+onMounted(() => {
+  offShipPicked.value = comlink.on("missions-model-picked", setShip);
+});
+
+onUnmounted(() => {
+  offShipPicked.value?.();
+});
 
 // Three states, not a checkbox: only what the build offers, only what it does
 // not, and no opinion. 349 of the 2,536 are in the middle case, and a checkbox
@@ -182,6 +240,38 @@ const releasedValue = computed({
       multiple
     />
 
+    <div class="missions-ship">
+      <span class="missions-ship__label">
+        {{ t("labels.filters.missions.ship") }}
+      </span>
+      <span v-if="ship" class="missions-ship__name">{{ ship.name }}</span>
+      <div class="missions-ship__actions">
+        <Btn :block="!ship" @click="openPicker">
+          {{
+            ship
+              ? t("actions.missions.changeShip")
+              : t("actions.missions.pickShip")
+          }}
+        </Btn>
+        <Btn
+          v-if="shipSlug"
+          :variant="BtnVariantsEnum.BARE"
+          @click="setShip(undefined)"
+        >
+          {{ t("actions.missions.clearShip") }}
+        </Btn>
+      </div>
+    </div>
+
+    <BaseSelect
+      v-model="form.locationKindIn"
+      name="locationKind"
+      :options="locationKinds"
+      :label="t('labels.filters.missions.location')"
+      :no-label="true"
+      multiple
+    />
+
     <BaseSelect
       v-model="form.alignmentIn"
       name="alignment"
@@ -215,3 +305,30 @@ const releasedValue = computed({
     </Btn>
   </form>
 </template>
+
+<style lang="scss" scoped>
+.missions-ship {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.missions-ship__label {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.missions-ship__name {
+  color: #fff;
+  font-weight: 700;
+}
+
+.missions-ship__actions {
+  display: flex;
+  gap: 8px;
+}
+</style>
