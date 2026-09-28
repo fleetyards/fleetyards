@@ -181,11 +181,6 @@
       "cargoGrids": {
         "addShips": "Añadir naves"
       },
-      "missions": {
-        "pickShip": "Elegir nave",
-        "changeShip": "Cambiar nave",
-        "clearShip": "Quitar"
-      },
       "tradeRoutes": {
         "pickShip": "Elegir nave",
         "changeShip": "Cambiar nave",

@@ -9,13 +9,14 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
-import { useComlink } from "@/shared/composables/useComlink";
+import ModelSelect from "@/shared/components/ModelSelect/index.vue";
 import { useMissionShip } from "@/frontend/composables/useMissionShip";
 import {
   type GameMissionQuery,
+  type ModelQuery,
+  ModelProductionStatusEnum,
   BlueprintSourceAlignmentEnum,
   GameMissionKindEnum,
   GameMissionLocationKindEnum,
@@ -125,26 +126,20 @@ const locationKinds = computed(() =>
 
 // The ship a pilot flies, which marks the contracts it can't do rather than
 // hiding them. In the URL beside the filters, never sent to the API.
-const comlink = useComlink();
+const { shipSlug, setShip } = useMissionShip();
 
-const { shipSlug, ship, setShip } = useMissionShip();
-
-const openPicker = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Missions/PickerModal/index.vue"),
-    wide: true,
-  });
+// A contract is flown in a ship that exists, so concepts are left out.
+const flightReady: ModelQuery = {
+  productionStatusIn: [ModelProductionStatusEnum.FLIGHT_READY],
 };
 
-const offShipPicked = ref<() => void>();
-
-onMounted(() => {
-  offShipPicked.value = comlink.on("missions-model-picked", setShip);
-});
-
-onUnmounted(() => {
-  offShipPicked.value?.();
+// Bound to the URL rather than to the form: the ship marks the list and is
+// never one of the filters sent to the API.
+const shipValue = computed({
+  get: () => shipSlug.value,
+  set: (slug?: string) => {
+    void setShip(slug);
+  },
 });
 
 // Three states, not a checkbox: only what the build offers, only what it does
@@ -220,28 +215,12 @@ const releasedValue = computed({
       multiple
     />
 
-    <div class="missions-ship">
-      <span class="missions-ship__label">
-        {{ t("labels.filters.missions.ship") }}
-      </span>
-      <span v-if="ship" class="missions-ship__name">{{ ship.name }}</span>
-      <div class="missions-ship__actions">
-        <Btn :block="!ship" @click="openPicker">
-          {{
-            ship
-              ? t("actions.missions.changeShip")
-              : t("actions.missions.pickShip")
-          }}
-        </Btn>
-        <Btn
-          v-if="shipSlug"
-          :variant="BtnVariantsEnum.BARE"
-          @click="setShip(undefined)"
-        >
-          {{ t("actions.missions.clearShip") }}
-        </Btn>
-      </div>
-    </div>
+    <ModelSelect
+      v-model="shipValue"
+      name="ship"
+      :label="t('labels.filters.missions.ship')"
+      :query="flightReady"
+    />
 
     <BaseSelect
       v-model="form.locationKindIn"
@@ -285,30 +264,3 @@ const releasedValue = computed({
     </Btn>
   </form>
 </template>
-
-<style lang="scss" scoped>
-.missions-ship {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 1rem;
-}
-
-.missions-ship__label {
-  color: var(--color-text-dim, #959595);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.missions-ship__name {
-  color: #fff;
-  font-weight: 700;
-}
-
-.missions-ship__actions {
-  display: flex;
-  gap: 8px;
-}
-</style>
