@@ -66,7 +66,8 @@ vi.mock("@/services/fyApi", async () => {
 
   return {
     ...actual,
-    useFleet: () => settled(fleetState.fleet, fleetState.fleetError, fleetState.fleetPending),
+    useFleet: () =>
+      settled(fleetState.fleet, fleetState.fleetError, fleetState.fleetPending),
     usePublicFleet: () => settled(fleetState.publicFleet),
     useFleetMembership: () => ({
       data: fleetState.membership,
