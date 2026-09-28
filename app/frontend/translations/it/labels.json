@@ -407,13 +407,16 @@
           "hint": "L’ID flotta è l’indirizzo della tua flotta su Fleetyards. Il SID collega la flotta alla sua organizzazione RSI, e verificarlo dimostra che l’organizzazione è tua."
         },
         "rsiVerification": {
+          "steps": {
+            "copy": "Copia il tuo codice di verifica",
+            "paste": "Incollalo in un punto qualsiasi della pagina RSI pubblica della tua organizzazione: introduzione, storia, manifesto o statuto. Puoi rimuoverlo una volta verificata la flotta.",
+            "check": "Controlla la pagina"
+          },
+          "openOrgPage": "Apri %{sid} su RSI",
           "locked": "Un SID verificato è bloccato. Contatta il supporto se deve cambiare.",
           "fidAtRiskTitle": "L’ID della tua flotta non è protetto",
           "saveFirst": "Salva il SID prima di verificarlo.",
           "title": "Verifica RSI",
-          "hint": "Dimostra che la tua flotta gestisce la sua organizzazione RSI: inserisci il codice qui sotto in un punto qualsiasi della pagina pubblica dell’organizzazione (introduzione, storia, manifesto o statuto), poi controlla. Una volta verificata la flotta puoi rimuoverlo.",
-          "noSid": "Salva qui sopra il SID della tua organizzazione per verificarla.",
-          "openOrgPage": "Apri la pagina dell’organizzazione su RSI",
           "token": "Codice di verifica",
           "verified": "Organizzazione RSI verificata",
           "unverified": "Non verificata su RSI",

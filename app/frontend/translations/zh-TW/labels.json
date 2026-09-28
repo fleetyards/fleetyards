@@ -407,13 +407,16 @@
           "hint": "艦隊 ID 是你的艦隊在 Fleetyards 上的網址。SID 將艦隊與其 RSI 組織連結，驗證它可以證明該組織屬於你。"
         },
         "rsiVerification": {
+          "steps": {
+            "copy": "複製你的驗證碼",
+            "paste": "將它貼到你的組織 RSI 公開頁面的任意位置：簡介、歷史、宣言或章程。艦隊驗證後即可將其刪除。",
+            "check": "檢查頁面"
+          },
+          "openOrgPage": "在 RSI 上開啟 %{sid}",
           "locked": "已驗證的 SID 已鎖定。如需變更，請聯絡支援團隊。",
           "fidAtRiskTitle": "你的艦隊 ID 未受保護",
           "saveFirst": "請先儲存 SID 再進行驗證。",
           "title": "RSI 驗證",
-          "hint": "證明你的艦隊在管理其 RSI 組織：將下方的驗證碼放到組織公開頁面的任意位置（簡介、歷史、宣言或章程），然後進行檢查。艦隊驗證後即可將其刪除。",
-          "noSid": "請先在上方儲存你的組織 SID 以進行驗證。",
-          "openOrgPage": "在 RSI 上開啟組織頁面",
           "token": "驗證碼",
           "verified": "已驗證的 RSI 組織",
           "unverified": "未通過 RSI 驗證",

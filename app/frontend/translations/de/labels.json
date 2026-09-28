@@ -407,13 +407,16 @@
           "hint": "Die Flotten-ID ist die Adresse deiner Flotte auf Fleetyards. Die SID verknüpft die Flotte mit ihrer RSI-Organisation, und die Verifizierung zeigt, dass die Organisation dir gehört."
         },
         "rsiVerification": {
+          "steps": {
+            "copy": "Kopiere deinen Verifizierungscode",
+            "paste": "Füge ihn irgendwo auf der öffentlichen RSI-Seite deiner Organisation ein: in der Einleitung, der Geschichte, dem Manifest oder der Charta. Sobald die Flotte verifiziert ist, kannst du ihn wieder entfernen.",
+            "check": "Prüfe die Seite"
+          },
+          "openOrgPage": "%{sid} auf RSI öffnen",
           "locked": "Eine verifizierte SID ist gesperrt. Wende dich an den Support, wenn sie sich ändern muss.",
           "fidAtRiskTitle": "Deine Flotten-ID ist nicht geschützt",
           "saveFirst": "Speichere die SID, bevor du sie verifizierst.",
           "title": "RSI-Verifizierung",
-          "hint": "Zeige, dass deine Flotte ihre RSI-Organisation verwaltet: Setze den Code unten irgendwo auf die öffentliche Seite der Organisation (Einleitung, Geschichte, Manifest oder Charta) und prüfe dann. Sobald die Flotte verifiziert ist, kannst du ihn wieder entfernen.",
-          "noSid": "Speichere oben die SID deiner Organisation, um sie zu verifizieren.",
-          "openOrgPage": "Organisationsseite auf RSI öffnen",
           "token": "Verifizierungscode",
           "verified": "Verifizierte RSI-Organisation",
           "unverified": "Nicht bei RSI verifiziert",

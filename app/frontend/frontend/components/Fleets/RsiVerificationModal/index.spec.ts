@@ -58,7 +58,10 @@ describe("FleetRsiVerificationModal", () => {
     const wrapper = await mountPanel({ fleet: fleet() });
 
     expect(
-      wrapper.find('[data-test="fleet-rsi-verification-token"]').text(),
+      (
+        wrapper.find('input[name="rsiVerificationToken"]')
+          .element as HTMLInputElement
+      ).value,
     ).toBe("FLEETYARDS-ABCDEFGHIJ");
   });
 

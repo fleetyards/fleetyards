@@ -8,10 +8,17 @@ export default {
 import { useQueryClient } from "@tanstack/vue-query";
 import { useIntervalFn, useNow } from "@vueuse/core";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Pill from "@/shared/components/base/Pill/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import {
+  AlertSizesEnum,
+  AlertVariantsEnum,
+} from "@/shared/components/base/Alert/types";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import {
   type Fleet,
@@ -92,6 +99,26 @@ const statusText = computed(() => {
   return t(`labels.fleet.rsiVerification.statuses.${status}`);
 });
 
+// The answer a check can give, read as the notice it deserves: still looking,
+// something the manager can fix on the page, or a failure on RSI's side.
+const STATUS_VARIANTS: Partial<Record<string, `${AlertVariantsEnum}`>> = {
+  [StatusEnum.PENDING]: AlertVariantsEnum.INFO,
+  [StatusEnum.TOKEN_MISSING]: AlertVariantsEnum.WARNING,
+  [StatusEnum.SYMBOL_MISMATCH]: AlertVariantsEnum.DANGER,
+  [StatusEnum.NOT_FOUND]: AlertVariantsEnum.DANGER,
+  [StatusEnum.FAILED]: AlertVariantsEnum.DANGER,
+};
+
+const statusVariant = computed(
+  () =>
+    STATUS_VARIANTS[verification.value?.status ?? ""] ??
+    AlertVariantsEnum.NEUTRAL,
+);
+
+const close = () => {
+  comlink.emit("close-modal");
+};
+
 const refresh = (data: unknown) => {
   queryClient.setQueryData(
     getFleetRsiVerificationQueryKey(props.fleet.slug),
@@ -137,127 +164,187 @@ const copyToken = () => {
 <template>
   <Modal :title="t('labels.fleet.rsiVerification.title')">
     <section
+      v-if="verification"
       ref="root"
       class="rsi-verification"
       data-test="fleet-rsi-verification"
     >
-      <p class="text-muted">
-        {{ t("labels.fleet.rsiVerification.hint") }}
-      </p>
+      <Alert
+        v-if="verification.verified"
+        :variant="AlertVariantsEnum.SUCCESS"
+        :title="t('labels.fleet.rsiVerification.verified')"
+        data-test="fleet-rsi-verified"
+      >
+        <template v-if="verification.verifiedAt">
+          {{
+            t("labels.fleet.rsiVerification.verifiedSince", {
+              date: l(verification.verifiedAt),
+            })
+          }}
+        </template>
+      </Alert>
 
-      <p v-if="!verification?.sid">
-        {{ t("labels.fleet.rsiVerification.noSid") }}
-      </p>
-
-      <template v-else>
-        <p class="rsi-verification__status">
-          <Pill
-            v-if="verification.verified"
-            :variant="PillVariantsEnum.SUCCESS"
-            data-test="fleet-rsi-verified"
-          >
-            <i class="fa-duotone fa-badge-check" />
-            {{ t("labels.fleet.rsiVerification.verified") }}
-          </Pill>
-          <Pill v-else :variant="PillVariantsEnum.NEUTRAL">
-            {{ t("labels.fleet.rsiVerification.unverified") }}
-          </Pill>
-          <span v-if="verification.verifiedAt" class="text-muted small">
-            {{
-              t("labels.fleet.rsiVerification.verifiedSince", {
-                date: l(verification.verifiedAt),
-              })
-            }}
-          </span>
-        </p>
-
-        <p v-if="statusText" data-test="fleet-rsi-verification-status">
-          <i v-if="pending" class="fa-light fa-spinner fa-spin" />
-          {{ statusText }}
-        </p>
-
-        <div v-if="verification.token" class="rsi-verification__token">
-          <span class="text-muted small">
-            {{ t("labels.fleet.rsiVerification.token") }}
-          </span>
-          <code data-test="fleet-rsi-verification-token">
-            {{ verification.token }}
-          </code>
-          <Btn :size="BtnSizesEnum.SM" variant="bare" @click="copyToken">
-            <i class="fa-light fa-copy" />
-            {{ t("actions.fleet.rsiVerification.copyToken") }}
-          </Btn>
-        </div>
-
-        <p v-if="orgPageUrl">
-          <a :href="orgPageUrl" target="_blank" rel="noopener">
-            <i class="icon icon-rsi" />
-            {{ t("labels.fleet.rsiVerification.openOrgPage") }}
-          </a>
-        </p>
-
-        <div class="rsi-verification__actions">
+      <ol v-else class="rsi-verification__steps">
+        <li class="rsi-verification__step">
+          <div class="rsi-verification__step-title">
+            {{ t("labels.fleet.rsiVerification.steps.copy") }}
+          </div>
+          <template v-if="verification.token">
+            <FormInput
+              name="rsiVerificationToken"
+              :model-value="verification.token"
+              :label="t('labels.fleet.rsiVerification.token')"
+              no-label
+              data-test="fleet-rsi-verification-token"
+            >
+              <template #suffix>
+                <button
+                  type="button"
+                  class="rsi-verification__copy"
+                  :aria-label="t('actions.fleet.rsiVerification.copyToken')"
+                  :title="t('actions.fleet.rsiVerification.copyToken')"
+                  data-test="fleet-rsi-verification-copy"
+                  @click="copyToken"
+                >
+                  <i class="fa-light fa-copy" />
+                </button>
+              </template>
+            </FormInput>
+            <Btn
+              :size="BtnSizesEnum.SM"
+              :variant="BtnVariantsEnum.BARE"
+              :loading="createMutation.isPending.value"
+              data-test="fleet-rsi-verification-generate"
+              @click="generateToken"
+            >
+              {{ t("actions.fleet.rsiVerification.regenerateToken") }}
+            </Btn>
+          </template>
           <Btn
-            :size="BtnSizesEnum.SM"
+            v-else
             :loading="createMutation.isPending.value"
             data-test="fleet-rsi-verification-generate"
             @click="generateToken"
           >
-            {{
-              verification.token
-                ? t("actions.fleet.rsiVerification.regenerateToken")
-                : t("actions.fleet.rsiVerification.generateToken")
-            }}
+            {{ t("actions.fleet.rsiVerification.generateToken") }}
           </Btn>
+        </li>
+
+        <li class="rsi-verification__step">
+          <div class="rsi-verification__step-title">
+            {{ t("labels.fleet.rsiVerification.steps.paste") }}
+          </div>
           <Btn
-            v-if="verification.token && !verification.verified"
+            v-if="orgPageUrl"
+            :href="orgPageUrl"
+            target="_blank"
             :size="BtnSizesEnum.SM"
-            :loading="checkMutation.isPending.value || pending"
-            :disabled="coolingDown && !pending"
-            data-test="fleet-rsi-verification-check"
-            @click="check"
           >
-            {{ t("actions.fleet.rsiVerification.check") }}
+            <i class="icon icon-rsi" />
+            {{
+              t("labels.fleet.rsiVerification.openOrgPage", {
+                sid: verification.sid,
+              })
+            }}
+            <i class="fa-light fa-arrow-up-right-from-square" />
           </Btn>
-          <span
-            v-if="coolingDown && !pending && !verification.verified"
-            class="text-muted small"
+        </li>
+
+        <li class="rsi-verification__step">
+          <div class="rsi-verification__step-title">
+            {{ t("labels.fleet.rsiVerification.steps.check") }}
+          </div>
+          <Alert
+            v-if="statusText"
+            :variant="statusVariant"
+            :icon="pending ? 'fa-duotone fa-spinner-third fa-spin' : undefined"
+            :size="AlertSizesEnum.COMPACT"
+            data-test="fleet-rsi-verification-status"
           >
+            {{ statusText }}
+          </Alert>
+          <p v-else-if="coolingDown" class="text-muted small">
             {{ t("labels.fleet.rsiVerification.nextCheck") }}
-          </span>
-        </div>
-      </template>
+          </p>
+        </li>
+      </ol>
     </section>
+
+    <template #footer>
+      <div class="modal-actions">
+        <Btn :variant="BtnVariantsEnum.GHOST" @click="close">
+          {{ t("actions.close") }}
+        </Btn>
+        <Btn
+          v-if="verification?.token && !verification.verified"
+          :loading="checkMutation.isPending.value || pending"
+          :disabled="coolingDown && !pending"
+          data-test="fleet-rsi-verification-check"
+          @click="check"
+        >
+          {{ t("actions.fleet.rsiVerification.check") }}
+        </Btn>
+      </div>
+    </template>
   </Modal>
 </template>
 
 <style lang="scss" scoped>
 .rsi-verification {
-  &__status {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
+  &__steps {
+    display: grid;
+    gap: 20px;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
   }
 
-  &__token {
-    display: flex;
-    flex-wrap: wrap;
+  &__step {
+    position: relative;
+    display: grid;
     gap: 8px;
-    align-items: center;
-    margin-bottom: 1rem;
+    justify-items: start;
+    // Tall enough for the number: the modal body clips anything above it.
+    min-height: 26px;
+    padding-left: 40px;
+    counter-increment: step;
 
-    code {
-      user-select: all;
-      word-break: break-all;
+    &::before {
+      content: counter(step);
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--color-primary, #428bca);
+      color: var(--color-primary, #428bca);
+      font-weight: 600;
+      font-size: 0.85em;
+    }
+
+    > :deep(.base-input),
+    > :deep(.base-alert) {
+      justify-self: stretch;
+      margin-bottom: 0;
     }
   }
 
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
+  &__step-title {
+    // Level with the middle of the number beside it.
+    padding-top: 3px;
+    font-weight: 600;
+  }
+
+  &__copy {
+    padding: 0 4px;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
   }
 }
 </style>

@@ -407,13 +407,16 @@
           "hint": "The fleet ID is your fleet's address on Fleetyards. The SID links the fleet to its RSI organisation, and verifying it proves the organisation is yours."
         },
         "rsiVerification": {
+          "steps": {
+            "copy": "Copy your verification token",
+            "paste": "Paste it anywhere on your organisation's public RSI page: the introduction, history, manifesto or charter. You can remove it once the fleet is verified.",
+            "check": "Check the page"
+          },
+          "openOrgPage": "Open %{sid} on RSI",
           "locked": "A verified SID is locked. Ask support if it needs to change.",
           "fidAtRiskTitle": "Your fleet ID is not protected",
           "saveFirst": "Save the SID before verifying it.",
           "title": "RSI verification",
-          "hint": "Prove that your fleet runs its RSI organisation: put the token below anywhere on the organisation's public page (the introduction, history, manifesto or charter), then check. Once the fleet is verified you can remove it again.",
-          "noSid": "Save your organisation's SID above to verify it.",
-          "openOrgPage": "Open the organisation page on RSI",
           "token": "Verification token",
           "verified": "Verified RSI organisation",
           "unverified": "Not verified with RSI",
