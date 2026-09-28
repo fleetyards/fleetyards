@@ -72,6 +72,11 @@ module ScData
           # index lookup rather than an exists check per row.
           reward_kinds: reward_kinds(rewards, mission_data["blueprint_pools"]),
           blueprint_pool_refs: Array.wrap(mission_data["blueprint_pools"]).uniq.sort,
+          # Where the contract takes place, and whether a pilot has to set down
+          # for it. A tree parsed before these existed carries neither, which
+          # reads as unknown rather than as "in space".
+          location_kind: mission_data["location_kind"],
+          needs_landing: mission_data.fetch("needs_landing", false),
           version: sc_version
         }
       end

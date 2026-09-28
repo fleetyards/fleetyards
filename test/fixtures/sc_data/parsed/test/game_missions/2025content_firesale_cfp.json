@@ -50,5 +50,7 @@
       "calculated": true
     }
   ],
-  "blueprint_pools": []
+  "blueprint_pools": [],
+  "location_kind": "space",
+  "needs_landing": false
 }

@@ -34,5 +34,7 @@
   ],
   "blueprint_pools": [
     "61b089a0-880c-41da-a2c2-482a1bffe96f"
-  ]
+  ],
+  "location_kind": "space",
+  "needs_landing": false
 }

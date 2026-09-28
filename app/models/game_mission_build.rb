@@ -20,9 +20,11 @@
 #  environment                 :string           not null
 #  generator_key               :string
 #  kind                        :string
+#  location_kind               :string
 #  max_standing                :string
 #  min_standing                :string
 #  name                        :string
+#  needs_landing               :boolean          default(FALSE), not null
 #  org_key                     :string
 #  org_lawful                  :boolean
 #  org_name                    :string
@@ -75,6 +77,7 @@ class GameMissionBuild < ApplicationRecord
     difficulty_profile difficulty_mechanical_skill difficulty_mental_load
     difficulty_risk_of_loss difficulty_game_knowledge
     reward_kinds blueprint_pool_refs
+    location_kind needs_landing
   ].freeze
 
   # Everything: a mission has no associations served off a fact column, so
@@ -98,6 +101,7 @@ class GameMissionBuild < ApplicationRecord
     difficulty_profile difficulty_mechanical_skill difficulty_mental_load
     difficulty_risk_of_loss difficulty_game_knowledge
     debug_name generator_key
+    location_kind needs_landing
   ].freeze
 
   validates :environment, presence: true

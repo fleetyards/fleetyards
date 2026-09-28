@@ -44,6 +44,19 @@ module ScData
           GameMissionBuild.current(fixture_source).distinct.count(:game_mission_id)
       end
 
+      # The prison repair job is on a moon and needs landing; the other five
+      # fixture contracts are in space. Both states, on the build and the row.
+      test "#all keeps where a mission takes place and whether it needs landing" do
+        loader.all
+
+        prison = GameMission.find_by!(sc_key: "klescher_generator_repairo2kiosk")
+        assert_equal ["surface", true], [prison.location_kind, prison.needs_landing]
+        assert_equal "surface", prison.builds.sole.location_kind
+
+        assert_equal ["space"], GameMission.where.not(id: prison.id).distinct.pluck(:location_kind)
+        assert_equal 5, GameMission.where(needs_landing: false).count
+      end
+
       # Both states have to land: a load that wrote `true` everywhere would look
       # exactly like one that read the attribute correctly.
       test "#all keeps the released flag in both states" do

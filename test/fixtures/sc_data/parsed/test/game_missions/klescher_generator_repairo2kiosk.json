@@ -32,5 +32,7 @@
       "org_name": "Klescher Rehabilitation Facilities"
     }
   ],
-  "blueprint_pools": []
+  "blueprint_pools": [],
+  "location_kind": "surface",
+  "needs_landing": true
 }

@@ -23,9 +23,11 @@
 #  difficulty_risk_of_loss     :integer
 #  generator_key               :string
 #  kind                        :string
+#  location_kind               :string
 #  max_standing                :string
 #  min_standing                :string
 #  name                        :string
+#  needs_landing               :boolean          default(FALSE), not null
 #  org_key                     :string
 #  org_lawful                  :boolean
 #  org_name                    :string
@@ -41,11 +43,12 @@
 #
 # Indexes
 #
-#  index_game_missions_on_org_name  (org_name)
-#  index_game_missions_on_sc_key    (sc_key) UNIQUE
-#  index_game_missions_on_sc_ref    (sc_ref) UNIQUE
-#  index_game_missions_on_slug      (slug) UNIQUE
-#  index_game_missions_on_version   (version)
+#  index_game_missions_on_location_kind  (location_kind)
+#  index_game_missions_on_org_name       (org_name)
+#  index_game_missions_on_sc_key         (sc_key) UNIQUE
+#  index_game_missions_on_sc_ref         (sc_ref) UNIQUE
+#  index_game_missions_on_slug           (slug) UNIQUE
+#  index_game_missions_on_version        (version)
 #
 class GameMission < ApplicationRecord
   include SlugConcern
@@ -208,6 +211,8 @@ class GameMission < ApplicationRecord
       :game_mission_builds
     )
   end
+
+  LOCATION_KINDS = %w[surface space mixed unknown].freeze
 
   def self.ransackable_attributes(auth_object = nil)
     %w[created_at id id_value name sc_key slug updated_at version] + GameMissionBuild::FILTERABLE.map(&:to_s)

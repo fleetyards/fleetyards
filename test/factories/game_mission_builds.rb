@@ -17,9 +17,11 @@
 #  environment                 :string           not null
 #  generator_key               :string
 #  kind                        :string
+#  location_kind               :string
 #  max_standing                :string
 #  min_standing                :string
 #  name                        :string
+#  needs_landing               :boolean          default(FALSE), not null
 #  org_key                     :string
 #  org_lawful                  :boolean
 #  org_name                    :string
