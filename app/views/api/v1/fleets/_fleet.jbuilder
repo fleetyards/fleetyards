@@ -2,7 +2,7 @@
 
 visitor = local_assigns.fetch(:visitor, false)
 
-json.cache!(visitor ? ["v1", "visitor", fleet] : ["v1", fleet]) do
+json.cache!(visitor ? ["v2", "visitor", fleet] : ["v2", fleet]) do
   json.partial!("api/v1/fleets/base", fleet:, visitor:)
 end
 
