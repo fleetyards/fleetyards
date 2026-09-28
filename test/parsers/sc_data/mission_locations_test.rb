@@ -88,6 +88,23 @@ module ScData
         assert_equal "space", classify(search(TAG_IDS[:stanton1], TAG_IDS[:space]))[:location_kind]
       end
 
+      test "a pool with a location we can't classify is mixed, not the known kind" do
+        location(TAG_IDS[:surface], TAG_IDS[:stanton1])
+        location(TAG_IDS[:stanton1])
+
+        result = classify(search(TAG_IDS[:stanton1]))
+
+        assert_equal "mixed", result[:location_kind]
+        assert result[:needs_landing]
+      end
+
+      test "a slot the game fills at run time says nothing about the others" do
+        location(TAG_IDS[:space], TAG_IDS[:stanton1])
+        slots = search(TAG_IDS[:stanton1]).merge("DropOff" => {"MissionPropertyValue_Location" => {}})
+
+        assert_equal "space", classify(slots)[:location_kind]
+      end
+
       test "a disabled location is not part of any pool" do
         location(TAG_IDS[:surface], TAG_IDS[:stanton1], disabled: true)
         location(TAG_IDS[:space], TAG_IDS[:stanton1])

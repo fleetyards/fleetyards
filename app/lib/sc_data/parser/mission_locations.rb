@@ -41,6 +41,9 @@ module ScData
       # Lagrange tags are the exception worth keeping: they only ever name space.
       LAGRANGE = "LagrangePoints"
 
+      # A slot whose pool mixes classified and unclassified locations.
+      UNCERTAIN = "uncertain"
+
       # A contract whose only work is in a ship: it spawns ships, and nothing
       # that puts a pilot on foot or at a door. Its location can be a surface
       # point of interest while the fight happens in flight.
@@ -70,10 +73,15 @@ module ScData
         }
       end
 
+      # "unknown" from a slot the game fills at run time, or a search that
+      # matches nothing, says nothing either way and is left out. "uncertain" is
+      # a pool that includes a location we can't classify: the contract could
+      # land on either side, which is what "mixed" means.
       private def contract_kind(kinds)
-        kinds -= ["unknown"]
+        uncertain = kinds.include?(UNCERTAIN)
+        kinds -= ["unknown", UNCERTAIN]
         return "unknown" if kinds.empty?
-        return "mixed" if kinds.include?("surface") && kinds.include?("space")
+        return "mixed" if uncertain || (kinds.include?("surface") && kinds.include?("space"))
 
         kinds.first
       end
@@ -119,6 +127,12 @@ module ScData
         return ["unknown"] if conditions.empty?
 
         kinds = locations.filter_map { |location| matched_kind(location, conditions) }.uniq
+
+        # A pool with classified and unclassified locations: the classified
+        # ones don't vouch for the rest.
+        if kinds.include?("unknown") && kinds.size > 1
+          kinds = kinds - ["unknown"] + [UNCERTAIN]
+        end
 
         # Nothing matched: the search leans on placement tags the export does
         # not link to any record. What its terms name is then the best there is.
