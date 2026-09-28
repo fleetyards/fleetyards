@@ -207,8 +207,17 @@ const badges = computed<RowListItemBadge[]>(() => {
 // reason keeps its own colour, since it is the one thing on the row to read.
 .mission-row--cannot-land :deep(.row-list-item__name),
 .mission-row--cannot-land
-  :deep(.row-list-item__sub > :not(.mission-row__cannot-land)) {
+  :deep(.row-list-item__sub > :not(.mission-row__cannot-land)),
+.mission-row--cannot-land :deep(.row-list-item__chip),
+.mission-row--cannot-land :deep(.row-list-item__tag),
+.mission-row--cannot-land :deep(.row-list-item__badge-value) {
   color: var(--color-text-dim, #959595);
+}
+
+// Rewards drop their raised fill too, so nothing on the row outranks the
+// reason.
+.mission-row--cannot-land :deep(.row-list-item__chip) {
+  background-color: transparent;
 }
 
 .mission-row__location {
