@@ -15,7 +15,7 @@ Two stacked PRs:
 ## What changed
 
 ### Phase 1 — Normalise `rsi_sid`
-1. `Fleet#rsi_sid=`: trim; extract the SID from `robertsspaceindustries.com/(en/)orgs/<SID>` with or without a scheme; strip `[]`, a trailing `/`, a leading `@`; upcase.
+1. `Fleet#rsi_sid=`: trim; extract the SID from `robertsspaceindustries.com/(en/)orgs/<SID>` with or without a scheme; strip `[]` and a trailing `/`; upcase. A leading `@` marks a citizen handle, so it is left in for the format check to reject.
 2. Validate format `/\A[A-Z0-9]{1,10}\z/`, allow blank.
 3. Data migration in `db/data/`: normalise every kept and discarded fleet; set values that still fail the format to nil. Test it in `test/migrations/`.
 4. `verify_fleet_memberships` keeps `UPPER(rsi_sid)` working. Now that the column is canonical, compare it directly.
