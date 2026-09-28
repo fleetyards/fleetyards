@@ -419,6 +419,8 @@ it:
               not_a_member: deve essere un membro accettato di questa flotta
         fleet_notification_setting:
           not_a_discord_id: "deve essere l’ID numerico che Discord copia con «Copia ID», non un nome"
+        fleet:
+          not_an_rsi_sid: "deve essere il SID della pagina RSI della tua organizzazione, ad esempio TEST"
         fleet_squadron:
           attributes:
             team:

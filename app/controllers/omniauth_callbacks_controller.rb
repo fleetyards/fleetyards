@@ -214,7 +214,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     return if public_sids.blank?
 
-    matching_fleets = Fleet.kept.where("UPPER(rsi_sid) IN (?)", public_sids)
+    matching_fleets = Fleet.kept.where(rsi_sid: public_sids)
 
     matching_fleets.each do |fleet|
       membership = user.fleet_memberships.kept.find_by(fleet_id: fleet.id)

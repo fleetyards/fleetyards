@@ -121,6 +121,15 @@ class Fleet < ApplicationRecord
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
 
+  normalizes :rsi_sid, with: ->(sid) { Rsi::Sid.normalize(sid) }
+
+  # Only on change: a row saved before the column was checked must not block an
+  # unrelated edit of the fleet.
+  validates :rsi_sid,
+    format: {with: Rsi::Sid::FORMAT, message: :not_an_rsi_sid},
+    allow_nil: true,
+    if: :rsi_sid_changed?
+
   validates :name,
     length: {minimum: 3},
     presence: true,

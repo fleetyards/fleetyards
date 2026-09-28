@@ -419,6 +419,8 @@ zh-TW:
               not_a_member: 必須是該艦隊的正式成員
         fleet_notification_setting:
           not_a_discord_id: "必須是 Discord 透過「複製 ID」複製的數字 ID，而非名稱"
+        fleet:
+          not_an_rsi_sid: "必須是你的組織在 RSI 頁面上的 SID，例如 TEST"
         fleet_squadron:
           attributes:
             team:
