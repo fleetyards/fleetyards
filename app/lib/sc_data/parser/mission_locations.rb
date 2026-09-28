@@ -118,30 +118,55 @@ module ScData
           .select { |condition| condition.is_a?(Hash) }
         return ["unknown"] if conditions.empty?
 
-        direct = direct_kinds(conditions)
-        return direct if direct.any?
+        kinds = locations.filter_map { |location| matched_kind(location, conditions) }.uniq
 
-        matched = locations.select { |location| conditions.all? { |condition| matches?(location, condition) } }
-        kinds = matched.map { |location| location[:kind] || "unknown" }.uniq
+        # Nothing matched: the search leans on placement tags the export does
+        # not link to any record. What its terms name is then the best there is.
+        kinds = direct_kinds(conditions) if kinds.empty?
 
         kinds.empty? ? ["unknown"] : kinds
       end
 
-      # A search that names the setting, a Lagrange point or a location type
-      # that is only ever one of the two says the kind outright. That also
-      # covers searches that match no record, because the rest of their tags
-      # are placement tags.
+      # The kind a location contributes to a slot, or `nil` if the search can't
+      # pick it. Conditions are AND'd, terms within one OR'd. A term that names
+      # a kind (a setting, a Lagrange point, a one-sided type) only matches
+      # locations of that kind, and lends it to one that states none, so a
+      # hint counts only where the rest of its search can actually be met.
+      private def matched_kind(location, conditions)
+        lent = nil
+
+        matched = conditions.all? do |condition|
+          term = terms(condition).find { |candidate| term_matches?(location, condition, candidate) }
+          lent ||= term_kind(term) if term
+
+          term.present?
+        end
+
+        return unless matched
+
+        location[:kind] || lent || "unknown"
+      end
+
+      # What a term's positive tags say about the setting, when they say one
+      # thing.
+      private def term_kind(term)
+        term.fetch(:kind) do
+          kinds = term[:positive].filter_map { |id| path_kind(tag_path(id)) }.uniq
+
+          term[:kind] = (kinds.first if kinds.one?)
+        end
+      end
+
+      # Used when nothing matched: every kind any term names.
       private def direct_kinds(conditions)
-        conditions.flat_map { |condition| terms(condition) }.flat_map do |term|
-          names = term[:positive].map { |id| tag_path(id) }
+        conditions.flat_map { |condition| terms(condition) }.filter_map { |term| term_kind(term) }.uniq
+      end
 
-          names.filter_map do |path|
-            next "surface" if path == "#{SETTING_PATH}/Surface"
-            next "space" if path == "#{SETTING_PATH}/Space" || path.include?("/#{LAGRANGE}")
+      private def path_kind(path)
+        return "surface" if path == "#{SETTING_PATH}/Surface"
+        return "space" if path == "#{SETTING_PATH}/Space" || path.include?("/#{LAGRANGE}")
 
-            type_kind(path)
-          end
-        end.uniq
+        type_kind(path)
       end
 
       private def type_kind(path)
@@ -153,24 +178,29 @@ module ScData
         "space" if SPACE_TYPES.include?(type)
       end
 
-      # Tags AND'd within a term, terms OR'd; placement-only tags dropped.
-      private def matches?(location, condition)
+      # Tags AND'd within a term; placement-only tags dropped. A term naming a
+      # kind rejects a location of the other kind, which is what makes a
+      # Lagrange tag (itself a placement tag) keep a search in space.
+      private def term_matches?(location, condition, term)
         pool = case condition["tagType"]
         when "Produces" then location[:produces]
         when "Consumes" then location[:consumes]
         else location[:general]
         end
 
-        terms(condition).any? do |term|
-          positive = term[:positive].select { |id| known_tags.include?(id) }
-          negative = term[:negative].select { |id| known_tags.include?(id) }
+        kind = term_kind(term)
+        return false if kind && location[:kind] && location[:kind] != kind
 
-          positive.all? { |id| pool.include?(id) } && negative.none? { |id| pool.include?(id) }
-        end
+        positive = term[:positive].select { |id| known_tags.include?(id) }
+        negative = term[:negative].select { |id| known_tags.include?(id) }
+
+        positive.all? { |id| pool.include?(id) } && negative.none? { |id| pool.include?(id) }
       end
 
+      # Memoised per condition: a slot is checked against every location.
       private def terms(condition)
-        Array.wrap(condition.dig("tagSearch", "TagSearchTerm")).select { |term| term.is_a?(Hash) }.map do |term|
+        @terms ||= {}.compare_by_identity
+        @terms[condition] ||= Array.wrap(condition.dig("tagSearch", "TagSearchTerm")).select { |term| term.is_a?(Hash) }.map do |term|
           {
             positive: refs(term["positiveTags"]),
             negative: refs(term["negativeTags"])

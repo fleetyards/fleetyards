@@ -60,6 +60,34 @@ module ScData
         assert_equal "space", classify(search(TAG_IDS[:stanton1], TAG_IDS[:placement]))[:location_kind]
       end
 
+      test "a kind the rest of the search can't reach does not count" do
+        location(TAG_IDS[:space], TAG_IDS[:mercenary])
+        location(TAG_IDS[:surface], TAG_IDS[:stanton1])
+
+        # Either setting, but only where the mercenary tag is: that is space alone.
+        slots = {
+          "MissionLocation_BP" => {
+            "MissionPropertyValue_Location" => {
+              "matchConditions" => {
+                "DataSetMatchCondition_TagSearch" => [
+                  condition([TAG_IDS[:surface]], [TAG_IDS[:space]]),
+                  condition([TAG_IDS[:mercenary]])
+                ]
+              }
+            }
+          }
+        }
+
+        assert_equal "space", classify(slots)[:location_kind]
+      end
+
+      test "a term naming a kind keeps an unmatched placement search to that kind" do
+        location(TAG_IDS[:surface], TAG_IDS[:stanton1])
+        location(TAG_IDS[:space], TAG_IDS[:stanton1])
+
+        assert_equal "space", classify(search(TAG_IDS[:stanton1], TAG_IDS[:space]))[:location_kind]
+      end
+
       test "a disabled location is not part of any pool" do
         location(TAG_IDS[:surface], TAG_IDS[:stanton1], disabled: true)
         location(TAG_IDS[:space], TAG_IDS[:stanton1])
@@ -136,6 +164,15 @@ module ScData
                 }
               }
             }
+          }
+        }
+      end
+
+      private def condition(*terms)
+        {
+          "tagType" => "General",
+          "tagSearch" => {
+            "TagSearchTerm" => terms.map { |tags| {"positiveTags" => {"Reference" => tags.map { |id| {"value" => id} }}} }
           }
         }
       end
