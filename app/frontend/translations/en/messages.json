@@ -161,6 +161,7 @@
         "created": "Announcement created.",
         "updated": "Announcement updated.",
         "destroyed": "Announcement deleted.",
+        "destroyFailed": "Could not delete the announcement.",
         "createFailed": "Could not create announcement.",
         "updateFailed": "Could not update announcement.",
         "testSent": "Test sent to the admin Discord channel.",

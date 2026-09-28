@@ -27,6 +27,7 @@ const count = (status: AnnouncementDeliveryStatusEnum) =>
 const sent = computed(() => count(AnnouncementDeliveryStatusEnum.SUCCEEDED));
 const failed = computed(() => count(AnnouncementDeliveryStatusEnum.FAILED));
 const pending = computed(() => count(AnnouncementDeliveryStatusEnum.PENDING));
+const skipped = computed(() => count(AnnouncementDeliveryStatusEnum.SKIPPED));
 
 // A failure is the one thing on the list worth stopping for, so it outranks a
 // send still in flight.
@@ -51,6 +52,10 @@ const label = computed(() =>
     pending.value &&
       t("labels.admin.announcements.deliveryPendingCount", {
         count: pending.value,
+      }),
+    skipped.value &&
+      t("labels.admin.announcements.deliverySkippedCount", {
+        count: skipped.value,
       }),
   ]
     .filter(Boolean)

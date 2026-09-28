@@ -2178,6 +2178,7 @@
           "deliverySummary": "%{sent}/%{total} sent",
           "deliveryFailedCount": "%{count} failed",
           "deliveryPendingCount": "%{count} pending",
+          "deliverySkippedCount": "%{count} skipped",
           "content": "Content",
           "engagement": {
             "likes": "Likes",

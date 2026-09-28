@@ -151,6 +151,7 @@
         "created": "Ankündigung erstellt.",
         "updated": "Ankündigung aktualisiert.",
         "destroyed": "Ankündigung gelöscht.",
+        "destroyFailed": "Die Ankündigung konnte nicht gelöscht werden.",
         "createFailed": "Ankündigung konnte nicht erstellt werden.",
         "updateFailed": "Ankündigung konnte nicht aktualisiert werden.",
         "testSent": "Test an den Admin-Discord-Kanal gesendet.",

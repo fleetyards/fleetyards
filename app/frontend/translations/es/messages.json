@@ -151,6 +151,7 @@
         "created": "Anuncio creado.",
         "updated": "Anuncio actualizado.",
         "destroyed": "Anuncio eliminado.",
+        "destroyFailed": "No se pudo eliminar el anuncio.",
         "createFailed": "No se ha podido crear el anuncio.",
         "updateFailed": "No se ha podido actualizar el anuncio.",
         "testSent": "Prueba enviada al canal de Discord de administración.",

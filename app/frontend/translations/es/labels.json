@@ -2164,6 +2164,7 @@
           "deliverySummary": "%{sent}/%{total} enviados",
           "deliveryFailedCount": "%{count} fallidos",
           "deliveryPendingCount": "%{count} pendientes",
+          "deliverySkippedCount": "%{count} omitidos",
           "content": "Contenido",
           "engagement": {
             "likes": "Me gusta",

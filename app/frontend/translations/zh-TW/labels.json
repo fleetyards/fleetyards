@@ -2164,6 +2164,7 @@
           "deliverySummary": "已傳送 %{sent}/%{total}",
           "deliveryFailedCount": "%{count} 個失敗",
           "deliveryPendingCount": "%{count} 個待處理",
+          "deliverySkippedCount": "%{count} 個已略過",
           "content": "內容",
           "engagement": {
             "likes": "按讚",

@@ -151,6 +151,7 @@
         "created": "公告已建立。",
         "updated": "公告已更新。",
         "destroyed": "公告已刪除。",
+        "destroyFailed": "無法刪除公告。",
         "createFailed": "無法建立公告。",
         "updateFailed": "無法更新公告。",
         "testSent": "測試已發送到管理員 Discord 頻道。",

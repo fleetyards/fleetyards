@@ -65,4 +65,25 @@ describe("AnnouncementDeliverySummary", () => {
     expect(wrapper.text()).toBe("1/3 sent · 1 failed · 1 pending");
     expect(wrapper.find(".base-pill--danger").exists()).toBe(true);
   });
+
+  // A channel with no credentials is skipped; the row has to say so, or the
+  // total reads short for no visible reason.
+  it("names skipped channels", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        deliveries: [
+          delivery(
+            AnnouncementChannelEnum.DISCORD,
+            AnnouncementDeliveryStatusEnum.SUCCEEDED,
+          ),
+          delivery(
+            AnnouncementChannelEnum.X,
+            AnnouncementDeliveryStatusEnum.SKIPPED,
+          ),
+        ],
+      },
+    });
+
+    expect(wrapper.text()).toBe("1/2 sent · 1 skipped");
+  });
 });
