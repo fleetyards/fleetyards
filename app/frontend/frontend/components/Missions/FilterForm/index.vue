@@ -11,7 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
-import ModelSelect from "@/shared/components/ModelSelect/index.vue";
+import ModelPickerSelect from "@/frontend/components/Models/PickerSelect/index.vue";
 import { useMissionShip } from "@/frontend/composables/useMissionShip";
 import {
   type GameMissionQuery,
@@ -215,7 +215,7 @@ const releasedValue = computed({
       multiple
     />
 
-    <ModelSelect
+    <ModelPickerSelect
       v-model="shipValue"
       name="ship"
       :label="t('labels.filters.missions.ship')"
