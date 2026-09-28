@@ -55,6 +55,8 @@ class Api::V1::FleetsRsiVerificationCheckTest < ActionDispatch::IntegrationTest
     assert_equal "pending", response.parsed_body["status"]
     assert response.parsed_body["nextCheckAt"].present?
     assert_equal 1, FleetRsiVerificationJob.jobs.size
+    assert_equal [@fleet.id, FleetRsiVerification.generation_of(@fleet.reload.rsi_verification_checked_at)],
+      FleetRsiVerificationJob.jobs.first["args"]
   end
 
   test "POST /fleets/:slug/rsi-verification/check inside the cooldown does not reach RSI again" do

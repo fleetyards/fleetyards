@@ -33,15 +33,19 @@ module Api
         end
 
         unless @fleet.rsi_verification_cooling_down?
+          # To the microsecond the column keeps, so the job's copy of it still
+          # names this check once read back.
+          checked_at = Time.current.floor(6)
+
           # rubocop:disable Rails/SkipsModelValidations
           @fleet.update_columns(
             rsi_verification_status: :pending,
-            rsi_verification_checked_at: Time.current,
+            rsi_verification_checked_at: checked_at,
             updated_at: Time.current
           )
           # rubocop:enable Rails/SkipsModelValidations
 
-          FleetRsiVerificationJob.perform_async(@fleet.id)
+          FleetRsiVerificationJob.perform_async(@fleet.id, FleetRsiVerification.generation_of(checked_at))
         end
 
         render :show

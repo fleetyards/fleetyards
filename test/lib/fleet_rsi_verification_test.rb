@@ -118,4 +118,25 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
     assert @fleet.rsi_verification_verified?
     assert_not holder.reload.rsi_verified?
   end
+
+  test "an older check does not overwrite a newer one" do
+    @fleet.update_columns(rsi_verification_checked_at: 2.minutes.ago.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    older = FleetRsiVerification.new(@fleet.reload)
+    @fleet.update_columns(rsi_verification_checked_at: Time.current.floor(6), rsi_verification_status: :verified) # rubocop:disable Rails/SkipsModelValidations
+    stub_org_page
+
+    assert_nil older.run
+    assert @fleet.reload.rsi_verification_verified?
+  end
+
+  test "a check that outlives an admin revoke leaves the fleet revoked" do
+    body = format(Rails.root.join("test/fixtures/rsi/org_page.html").read, intro: "", manifesto: @fleet.rsi_verification_token)
+    stub_request(:get, "https://robertsspaceindustries.com/en/orgs/TEST").to_return do
+      Fleet.find(@fleet.id).revoke_rsi_verification!
+      {status: 200, body:}
+    end
+
+    assert_nil verify
+    assert_not @fleet.reload.rsi_verified?
+  end
 end
