@@ -37,12 +37,20 @@ const {
   },
 });
 
+// A signed-in reader falls back to the visitor payload only once the members'
+// copy is refused. Racing the two let a member's page render from the visitor
+// payload, which leaves out what only members see -- a form seeded from it
+// kept the gaps after the members' copy arrived.
+const memberFleetRefused = computed(() => !!asyncFleetStatus.error.value);
+
 const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(
   slug,
   {
     query: {
       enabled: computed(
-        () => !!slug.value && (!sessionStore.isAuthenticated || !fleet.value),
+        () =>
+          !!slug.value &&
+          (!sessionStore.isAuthenticated || memberFleetRefused.value),
       ),
       retry: false,
     },
@@ -79,7 +87,9 @@ const resolvedFleet = computed(() => fleet.value || publicFleet.value);
 
 const resolvedAsyncFleetStatus = computed(() => {
   if (fleet.value) return asyncFleetStatus;
-  if (publicFleet.value) return asyncPublicFleetStatus;
+  if (sessionStore.isAuthenticated && !memberFleetRefused.value) {
+    return asyncFleetStatus;
+  }
   return asyncPublicFleetStatus;
 });
 
