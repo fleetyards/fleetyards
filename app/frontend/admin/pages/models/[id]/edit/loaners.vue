@@ -22,7 +22,7 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
+import ModelSelect from "@/shared/components/ModelSelect/index.vue";
 
 type Props = {
   model: ModelExtended;

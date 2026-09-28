@@ -8,7 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
+import ModelSelect from "@/shared/components/ModelSelect/index.vue";
 import {
   type DockAddition,
   useDockAdditions as useDockAdditionsQuery,
