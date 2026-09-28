@@ -23,6 +23,11 @@
 #  public_fleet              :boolean          default(FALSE)
 #  public_fleet_stats        :boolean          default(FALSE)
 #  rsi_sid                   :string
+#  rsi_verification_checked_at :datetime
+#  rsi_verification_status   :string
+#  rsi_verification_token    :string
+#  rsi_verified_at           :datetime
+#  rsi_verified_sid          :string
 #  sid                       :string
 #  slug                      :string
 #  squadrons_enabled         :boolean          default(FALSE), not null
@@ -39,6 +44,7 @@
 #  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
 #  index_fleets_on_discarded_at         (discarded_at)
 #  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
+#  index_fleets_on_rsi_verified_sid     (rsi_verified_sid) UNIQUE WHERE (discarded_at IS NULL)
 #
 class Fleet < ApplicationRecord
   include Discard::Model
@@ -130,6 +136,23 @@ class Fleet < ApplicationRecord
     allow_nil: true,
     if: :rsi_sid_changed?
 
+  RSI_VERIFICATION_COOLDOWN = 1.minute
+
+  enum :rsi_verification_status, {
+    pending: "pending",
+    verified: "verified",
+    token_missing: "token_missing",
+    symbol_mismatch: "symbol_mismatch",
+    not_found: "not_found",
+    failed: "failed"
+  }, prefix: :rsi_verification
+
+  before_save :reset_rsi_verification, if: :rsi_sid_changed?
+  # The index keeps one verified SID per kept fleet, so a discarded fleet has to
+  # let go of it: restoring one would otherwise collide with whoever proved the
+  # SID since.
+  before_discard :reset_rsi_verification
+
   validates :name,
     length: {minimum: 3},
     presence: true,
@@ -220,6 +243,31 @@ class Fleet < ApplicationRecord
 
   def set_normalized_fields
     self.normalized_fid = fid&.downcase
+  end
+
+  def rsi_verified?
+    rsi_verified_at.present? && rsi_sid.present? && rsi_verified_sid == rsi_sid
+  end
+
+  # The public API names the org only once the fleet has shown it runs it:
+  # anyone can type any SID.
+  def public_rsi_sid
+    rsi_sid if rsi_verified?
+  end
+
+  def generate_rsi_verification_token!
+    update!(rsi_verification_token: "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}")
+  end
+
+  def rsi_verification_cooling_down?
+    rsi_verification_checked_at.present? &&
+      rsi_verification_checked_at > RSI_VERIFICATION_COOLDOWN.ago
+  end
+
+  def rsi_verification_managers
+    fleet_memberships.kept.accepted.includes(:fleet_role, :user)
+      .select { |membership| membership.has_access?(["fleet:manage"]) }
+      .map(&:user)
   end
 
   def update_urls(force: false)
@@ -361,6 +409,12 @@ class Fleet < ApplicationRecord
       token = SecureRandom.urlsafe_base64(32)
       break token unless exists?(calendar_feed_token: token)
     end
+  end
+
+  private def reset_rsi_verification
+    self.rsi_verified_at = nil
+    self.rsi_verified_sid = nil
+    self.rsi_verification_status = nil
   end
 
   private def update_slugs
