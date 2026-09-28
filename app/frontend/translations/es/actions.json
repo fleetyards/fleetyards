@@ -223,7 +223,6 @@
       "fleet": {
         "rsiVerification": {
           "verify": "Verificar",
-          "generateToken": "Generar código",
           "regenerateToken": "Generar un código nuevo",
           "check": "Comprobar ahora",
           "copyToken": "Copiar código",

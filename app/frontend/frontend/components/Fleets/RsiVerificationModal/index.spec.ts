@@ -65,8 +65,8 @@ describe("FleetRsiVerificationModal", () => {
     ).toBe("FLEETYARDS-ABCDEFGHIJ");
   });
 
-  it("asks for an SID before anything can be verified", async () => {
-    verification.value = unverified({ sid: null, token: null });
+  it("offers no check without a SID", async () => {
+    verification.value = unverified({ sid: null });
 
     const wrapper = await mountPanel({ fleet: fleet({ rsiSid: undefined }) });
 

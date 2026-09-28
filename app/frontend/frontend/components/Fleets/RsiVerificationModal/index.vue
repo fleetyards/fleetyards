@@ -220,14 +220,6 @@ const copyToken = () => {
               {{ t("actions.fleet.rsiVerification.regenerateToken") }}
             </Btn>
           </template>
-          <Btn
-            v-else
-            :loading="createMutation.isPending.value"
-            data-test="fleet-rsi-verification-generate"
-            @click="generateToken"
-          >
-            {{ t("actions.fleet.rsiVerification.generateToken") }}
-          </Btn>
         </li>
 
         <li class="rsi-verification__step">
@@ -276,7 +268,9 @@ const copyToken = () => {
           {{ t("actions.close") }}
         </Btn>
         <Btn
-          v-if="verification?.token && !verification.verified"
+          v-if="
+            verification?.sid && verification.token && !verification.verified
+          "
           :loading="checkMutation.isPending.value || pending"
           :disabled="coolingDown && !pending"
           data-test="fleet-rsi-verification-check"
