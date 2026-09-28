@@ -36,12 +36,11 @@
 #
 # Indexes
 #
-#  index_game_missions_on_location_kind  (location_kind)
-#  index_game_missions_on_org_name       (org_name)
-#  index_game_missions_on_sc_key         (sc_key) UNIQUE
-#  index_game_missions_on_sc_ref         (sc_ref) UNIQUE
-#  index_game_missions_on_slug           (slug) UNIQUE
-#  index_game_missions_on_version        (version)
+#  index_game_missions_on_org_name  (org_name)
+#  index_game_missions_on_sc_key    (sc_key) UNIQUE
+#  index_game_missions_on_sc_ref    (sc_ref) UNIQUE
+#  index_game_missions_on_slug      (slug) UNIQUE
+#  index_game_missions_on_version   (version)
 #
 FactoryBot.define do
   factory :game_mission do

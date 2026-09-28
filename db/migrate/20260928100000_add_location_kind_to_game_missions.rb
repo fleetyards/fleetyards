@@ -6,7 +6,5 @@ class AddLocationKindToGameMissions < ActiveRecord::Migration[8.1]
       add_column table, :location_kind, :string
       add_column table, :needs_landing, :boolean, default: false, null: false
     end
-
-    add_index :game_missions, :location_kind
   end
 end

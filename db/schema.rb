@@ -1234,7 +1234,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_100000) do
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.string "version"
-    t.index ["location_kind"], name: "index_game_missions_on_location_kind"
     t.index ["org_name"], name: "index_game_missions_on_org_name"
     t.index ["sc_key"], name: "index_game_missions_on_sc_key", unique: true
     t.index ["sc_ref"], name: "index_game_missions_on_sc_ref", unique: true
