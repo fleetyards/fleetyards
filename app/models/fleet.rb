@@ -440,10 +440,14 @@ class Fleet < ApplicationRecord
     fleet_memberships.where(verified: true).update_all(verified: false, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
   end
 
+  # The last check time goes too: the cooldown is for asking RSI about one
+  # org again, not about a new one, and a check still out for the old SID no
+  # longer matches it.
   private def reset_rsi_verification
     self.rsi_verified_at = nil
     self.rsi_verified_sid = nil
     self.rsi_verification_status = nil
+    self.rsi_verification_checked_at = nil
   end
 
   private def update_slugs

@@ -45,6 +45,15 @@ class FleetRsiSidTest < ActiveSupport::TestCase
     assert_nil fleet.rsi_verified_sid
   end
 
+  test "a new SID starts without the old one's cooldown" do
+    fleet = verified_fleet
+    fleet.update_columns(rsi_verification_checked_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+
+    fleet.update!(rsi_sid: "OTHER")
+
+    assert_not fleet.reload.rsi_verification_cooling_down?
+  end
+
   test "an unrelated edit keeps the verification" do
     fleet = verified_fleet
 
