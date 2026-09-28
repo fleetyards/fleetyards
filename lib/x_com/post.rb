@@ -39,13 +39,15 @@ module XCom
       end
     end
 
-    def self.api_key = Rails.application.credentials.x_api_key
+    def self.credentials = Rails.application.credentials.x || {}
 
-    def self.api_secret = Rails.application.credentials.x_api_secret
+    def self.api_key = credentials[:api_key]
 
-    def self.access_token = Rails.application.credentials.x_access_token
+    def self.api_secret = credentials[:api_secret]
 
-    def self.access_token_secret = Rails.application.credentials.x_access_token_secret
+    def self.access_token = credentials[:access_token]
+
+    def self.access_token_secret = credentials[:access_token_secret]
 
     def self.configured?
       [api_key, api_secret, access_token, access_token_secret].all?(&:present?)

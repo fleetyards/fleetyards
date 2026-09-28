@@ -104,10 +104,7 @@ module ActiveSupport
       Rails.application.credentials.stubs(:bsky_handle).returns(nil)
       Rails.application.credentials.stubs(:bsky_app_password).returns(nil)
       Rails.application.credentials.stubs(:bsky_endpoint).returns(nil)
-      Rails.application.credentials.stubs(:x_api_key).returns(nil)
-      Rails.application.credentials.stubs(:x_api_secret).returns(nil)
-      Rails.application.credentials.stubs(:x_access_token).returns(nil)
-      Rails.application.credentials.stubs(:x_access_token_secret).returns(nil)
+      Rails.application.credentials.stubs(:x).returns(nil)
     end
 
     teardown do
