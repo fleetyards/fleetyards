@@ -2160,7 +2160,24 @@
           "discordPartsInfo": "Vuoto: diviso automaticamente.",
           "socialPartsInfo": "Vuoto: un post tagliato. Da due: un thread.",
           "recipientsCount": "%{count} destinatari",
-          "partPosition": "%{position} di %{total}"
+          "partPosition": "%{position} di %{total}",
+          "deliverySummary": "%{sent}/%{total} inviati",
+          "deliveryFailedCount": "%{count} non riusciti",
+          "deliveryPendingCount": "%{count} in attesa",
+          "deliverySkippedCount": "%{count} saltati",
+          "attempts": "%{count} tentativi",
+          "content": "Contenuto",
+          "engagement": {
+            "likes": "Mi piace",
+            "reposts": "Repost",
+            "replies": "Risposte",
+            "quotes": "Citazioni",
+            "noReactions": "Ancora nessuna reazione.",
+            "fetchedAt": "Aggiornato %{time}",
+            "notFetched": "I numeri arrivano entro un'ora.",
+            "xUnavailable": "X fa pagare la lettura dei numeri. Apri il post per vederli.",
+            "untracked": "Pubblicato prima che le reazioni venissero registrate."
+          }
         },
         "resourceAccess": {
           "title": "Accesso alle risorse",

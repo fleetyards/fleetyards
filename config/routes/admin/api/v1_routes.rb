@@ -210,6 +210,7 @@ v1_admin_api_routes = lambda do
       put :publish
       put "send-test", to: "announcements#send_test", as: :send_test
       put "deliveries/:channel/retry", to: "announcements#retry_delivery", as: :retry_delivery
+      put "refresh-engagement", to: "announcements#refresh_engagement", as: :refresh_engagement
     end
   end
 

@@ -22,6 +22,23 @@ module Announcements
       assert_equal 1, delivery.attempts
     end
 
+    test "#perform records each Discord message's id" do
+      ::Discord::Announcement.stubs(:configured?).returns(true)
+      webhook = Object.new
+      webhook.define_singleton_method(:run) do |&block|
+        block.call(0, {"id" => "m1", "channel_id" => "c1", "guild_id" => "g1"})
+        block.call(1, nil)
+      end
+      ::Discord::Announcement.expects(:new).returns(webhook)
+
+      Announcements::PostSocialJob.new.perform(@announcement.id, "discord")
+
+      assert_equal(
+        [{"index" => 0, "message_id" => "m1", "channel_id" => "c1", "guild_id" => "g1"}, {"index" => 1}],
+        @announcement.delivery_for(:discord).reload.posted_parts
+      )
+    end
+
     test "#perform keeps the Bluesky post's AT URI" do
       ::Bsky::Post.stubs(:configured?).returns(true)
       record = ::Bsky::Post::Record.new("at://did/app.bsky.feed.post/1", "cid")

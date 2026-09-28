@@ -14,10 +14,14 @@ module Admin
             externalId: {type: :string},
             error: {type: :string},
             deliveredAt: {type: :string, format: "date-time"},
-            attempts: {type: :integer}
+            attempts: {type: :integer},
+            url: {type: :string, format: :uri},
+            engagementTrackable: {type: :boolean, description: "Whether counts are read back for this delivery"},
+            engagement: ::Admin::V1::Schemas::AnnouncementEngagement,
+            engagementFetchedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[channel status attempts]
+          required: %w[channel status attempts engagementTrackable]
         })
       end
     end

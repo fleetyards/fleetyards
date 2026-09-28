@@ -1,9 +1,9 @@
 @import "@/stylesheets/variables.scss";
 
-// The catalogue row, with a second line under it. Deliberately the same frame,
-// fill and hover as CommodityRow and its two siblings -- an admin row is the
-// same kind of box -- but this one wraps its deliveries rather than a pair of
-// badges, so the head is a row and the whole thing is a column.
+// The catalogue row. Deliberately the same frame, fill and hover as
+// CommodityRow and its two siblings -- an admin row is the same kind of box.
+// The per-channel deliveries live on the detail page; the row only summarises
+// them.
 .announcement-row {
   display: flex;
   flex-direction: column;
@@ -86,12 +86,32 @@
     flex: none;
   }
 
-  // Divided from the head rather than merely spaced: the deliveries are a
-  // second list inside the row, and at 8px alone they read as three more meta
-  // lines hanging off the title.
-  &__deliveries {
-    padding-top: 6px;
-    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  &__badges {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  // Beside the title the pills leave a phone nothing to show it in, so below
+  // the row's desktop width they drop to a line of their own, under the title
+  // and clear of the icon.
+  @media (max-width: 991px) {
+    &__head {
+      flex-wrap: wrap;
+      row-gap: 6px;
+    }
+
+    &__main {
+      flex-basis: 0;
+    }
+
+    &__badges {
+      order: 1;
+      flex-basis: 100%;
+      padding-inline-start: 30px;
+    }
   }
 
   // Inside the row's own padding, the way Chip and Btn keep their ring inside

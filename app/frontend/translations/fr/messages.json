@@ -151,6 +151,7 @@
         "created": "Annonce créée.",
         "updated": "Annonce mise à jour.",
         "destroyed": "Annonce supprimée.",
+        "destroyFailed": "Impossible de supprimer l'annonce.",
         "createFailed": "L'annonce n'a pas pu être créée.",
         "updateFailed": "L'annonce n'a pas pu être mise à jour.",
         "testSent": "Test envoyé sur le canal Discord d'administration.",
@@ -158,7 +159,9 @@
         "published": "L'annonce est en route.",
         "publishFailed": "L'annonce n'a pas pu être envoyée.",
         "retryQueued": "Envoi remis en file.",
-        "retryFailed": "Cet envoi n'a pas pu être relancé."
+        "retryFailed": "Cet envoi n'a pas pu être relancé.",
+        "refreshQueued": "Les chiffres sont en cours d'actualisation.",
+        "refreshFailed": "Impossible d'actualiser les chiffres."
       },
       "fundingGoal": {
         "created": "Objectif de financement créé.",

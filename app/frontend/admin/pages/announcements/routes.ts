@@ -28,7 +28,6 @@ export const routes: RouteRecordRaw[] = [
     path: ":id/",
     component: () => import("@/admin/pages/announcements/[id].vue"),
     children: announcementRoutes,
-    redirect: { name: announcementRoutes[0].name },
     meta: {
       needsAuthentication: true,
       nav: "hidden",

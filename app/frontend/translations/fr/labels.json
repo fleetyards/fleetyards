@@ -2160,7 +2160,24 @@
           "discordPartsInfo": "Vide : découpé automatiquement.",
           "socialPartsInfo": "Vide : un message rogné. Deux ou plus : un fil.",
           "recipientsCount": "%{count} destinataires",
-          "partPosition": "%{position} sur %{total}"
+          "partPosition": "%{position} sur %{total}",
+          "deliverySummary": "%{sent}/%{total} envoyés",
+          "deliveryFailedCount": "%{count} en échec",
+          "deliveryPendingCount": "%{count} en attente",
+          "deliverySkippedCount": "%{count} ignorés",
+          "attempts": "%{count} tentatives",
+          "content": "Contenu",
+          "engagement": {
+            "likes": "J'aime",
+            "reposts": "Republications",
+            "replies": "Réponses",
+            "quotes": "Citations",
+            "noReactions": "Aucune réaction pour l'instant.",
+            "fetchedAt": "Mis à jour %{time}",
+            "notFetched": "Les chiffres arrivent dans l'heure.",
+            "xUnavailable": "X facture la lecture des chiffres. Ouvrez la publication pour les voir.",
+            "untracked": "Publié avant le suivi des réactions."
+          }
         },
         "resourceAccess": {
           "title": "Accès aux ressources",

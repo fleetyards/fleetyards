@@ -8,7 +8,9 @@
         "movePartDown": "下移",
         "sendTest": "發送測試",
         "publish": "發送",
-        "retry": "重試"
+        "retry": "重試",
+        "refreshEngagement": "重新整理數據",
+        "openPost": "開啟貼文"
       },
       "admin": {
         "dashboard": {

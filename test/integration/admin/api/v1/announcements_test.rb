@@ -231,6 +231,32 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/announcements/{id}/refresh-engagement" do
+    parameter name: "id", in: :path, description: "Announcement id", schema: {type: :string, format: :uuid}
+
+    put("Refresh Announcement Engagement") do
+      operationId "refreshAnnouncementEngagement"
+      tags "Announcements"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Announcement
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   setup do
     @admin_user = create(:admin_user, resource_access: [:announcements])
   end
@@ -593,5 +619,74 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :put, 403, path_params: {id: create(:announcement).id, channel: "x"}
+  end
+
+  test "PUT /announcements/:id/refresh-engagement queues a refresh for every channel that has counts" do
+    announcement = create(:announcement, :social, :published)
+    bluesky = create(:announcement_delivery, announcement:, channel: "bluesky", status: "succeeded", delivered_at: 1.hour.ago)
+    discord = create(
+      :announcement_delivery,
+      announcement:, channel: "discord", status: "succeeded", delivered_at: 1.hour.ago,
+      posted_parts: [{"index" => 0, "message_id" => "111", "channel_id" => "222"}]
+    )
+    create(:announcement_delivery, announcement:, channel: "x", status: "succeeded", delivered_at: 1.hour.ago)
+    create(:announcement_delivery, announcement:, channel: "in_app", status: "succeeded", delivered_at: 1.hour.ago)
+    sign_in @admin_user
+
+    ::Discord::Engagement.stubs(:configured?).returns(true)
+
+    queued = []
+    Announcements::RefreshEngagementJob.stubs(:perform_async).with { |id| queued << id }
+
+    assert_api_response :put, 200, api_path: "/announcements/{id}/refresh-engagement", path_params: {id: announcement.id}
+
+    assert_equal [bluesky.id, discord.id].sort, queued.sort
+  end
+
+  test "GET /announcements/:id returns each delivery's engagement and post link" do
+    announcement = create(:announcement, :social, :published)
+    create(
+      :announcement_delivery,
+      announcement:, channel: "bluesky", status: "succeeded", delivered_at: 1.hour.ago,
+      external_id: "at://did:plc:abc/app.bsky.feed.post/3k",
+      engagement: {"likes" => 4, "reposts" => 2, "replies" => 1, "quotes" => 0},
+      engagement_fetched_at: 5.minutes.ago
+    )
+    create(
+      :announcement_delivery,
+      announcement:, channel: "discord", status: "succeeded", delivered_at: 1.hour.ago,
+      posted_parts: [{"index" => 0, "message_id" => "111", "channel_id" => "222"}],
+      engagement: {"reactions" => [{"emoji" => "🚀", "count" => 3}], "guild_id" => "333"},
+      engagement_fetched_at: 5.minutes.ago
+    )
+    create(:announcement_delivery, announcement:, channel: "x", status: "succeeded", delivered_at: 1.hour.ago, external_id: "1234")
+    sign_in @admin_user
+
+    assert_api_response :get, 200, api_path: "/announcements/{id}", path_params: {id: announcement.id} do
+      deliveries = parsed_body["deliveries"].index_by { |row| row["channel"] }
+
+      assert_equal({"likes" => 4, "reposts" => 2, "replies" => 1, "quotes" => 0}, deliveries["bluesky"]["engagement"])
+      assert_equal "https://bsky.app/profile/did:plc:abc/post/3k", deliveries["bluesky"]["url"]
+      assert_equal [{"emoji" => "🚀", "count" => 3}], deliveries["discord"]["engagement"]["reactions"]
+      assert_equal "https://discord.com/channels/333/222/111", deliveries["discord"]["url"]
+      assert_equal "https://x.com/i/status/1234", deliveries["x"]["url"]
+      assert_nil deliveries["x"]["engagement"]
+    end
+  end
+
+  test "PUT /announcements/:id/refresh-engagement returns 401 when not signed in" do
+    assert_api_response :put, 401, api_path: "/announcements/{id}/refresh-engagement", path_params: {id: create(:announcement).id}
+  end
+
+  test "PUT /announcements/:id/refresh-engagement returns 403 for an admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :put, 403, api_path: "/announcements/{id}/refresh-engagement", path_params: {id: create(:announcement).id}
+  end
+
+  test "PUT /announcements/:id/refresh-engagement returns 404 for a missing id" do
+    sign_in @admin_user
+
+    assert_api_response :put, 404, api_path: "/announcements/{id}/refresh-engagement", path_params: {id: SecureRandom.uuid}
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_27_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_28_095352) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -150,6 +150,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_210000) do
     t.string "channel", null: false
     t.datetime "created_at", null: false
     t.datetime "delivered_at"
+    t.jsonb "engagement"
+    t.datetime "engagement_fetched_at"
     t.text "error"
     t.string "external_id"
     t.jsonb "posted_parts", default: [], null: false

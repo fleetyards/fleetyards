@@ -6,7 +6,7 @@ module Admin
   module Api
     module V1
       class AnnouncementsController < ::Admin::Api::BaseController
-        before_action :set_announcement, only: %i[show update destroy publish send_test retry_delivery]
+        before_action :set_announcement, only: %i[show update destroy publish send_test retry_delivery refresh_engagement]
 
         rescue_from ActiveRecord::RecordNotFound do |_exception|
           not_found(I18n.t("messages.record_not_found.announcement"))
@@ -110,6 +110,16 @@ module Admin
           # `pending` reaches the admin who pressed the button in this response
           # and nobody else without this.
           @announcement.broadcast_to_admins
+
+          render :show
+        end
+
+        # Queued rather than fetched inline: a Discord announcement is one
+        # request per message, and the counts reach the page over the cable.
+        def refresh_engagement
+          @announcement.deliveries.select(&:engagement_trackable?).each do |delivery|
+            ::Announcements::RefreshEngagementJob.perform_async(delivery.id)
+          end
 
           render :show
         end

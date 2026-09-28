@@ -151,6 +151,7 @@
         "created": "Annuncio creato.",
         "updated": "Annuncio aggiornato.",
         "destroyed": "Annuncio eliminato.",
+        "destroyFailed": "Impossibile eliminare l'annuncio.",
         "createFailed": "Impossibile creare l'annuncio.",
         "updateFailed": "Impossibile aggiornare l'annuncio.",
         "testSent": "Test inviato al canale Discord di amministrazione.",
@@ -158,7 +159,9 @@
         "published": "L'annuncio è in viaggio.",
         "publishFailed": "Impossibile inviare l'annuncio.",
         "retryQueued": "Consegna rimessa in coda.",
-        "retryFailed": "Impossibile riprovare questa consegna."
+        "retryFailed": "Impossibile riprovare questa consegna.",
+        "refreshQueued": "I numeri sono in aggiornamento.",
+        "refreshFailed": "Impossibile aggiornare i numeri."
       },
       "fundingGoal": {
         "created": "Obiettivo di finanziamento creato.",

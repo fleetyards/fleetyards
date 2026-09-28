@@ -151,6 +151,7 @@
         "created": "公告已建立。",
         "updated": "公告已更新。",
         "destroyed": "公告已刪除。",
+        "destroyFailed": "無法刪除公告。",
         "createFailed": "無法建立公告。",
         "updateFailed": "無法更新公告。",
         "testSent": "測試已發送到管理員 Discord 頻道。",
@@ -158,7 +159,9 @@
         "published": "公告已開始發送。",
         "publishFailed": "無法發送公告。",
         "retryQueued": "投遞已重新排入佇列。",
-        "retryFailed": "無法重試此次投遞。"
+        "retryFailed": "無法重試此次投遞。",
+        "refreshQueued": "正在重新整理數據。",
+        "refreshFailed": "無法重新整理數據。"
       },
       "fundingGoal": {
         "created": "募資目標已建立。",
