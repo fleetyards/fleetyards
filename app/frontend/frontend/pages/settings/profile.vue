@@ -183,6 +183,7 @@ const onSubmit = handleSubmit(async (values) => {
   <Heading hero>{{ t("headlines.settings.profile") }}</Heading>
 
   <SupporterStatus
+    v-if="sessionStore.currentUser?.supporter"
     :supporter="sessionStore.currentUser?.supporter"
     :supporter-tier="sessionStore.currentUser?.supporterTier"
     :supporter-recurring="sessionStore.currentUser?.supporterRecurring"
