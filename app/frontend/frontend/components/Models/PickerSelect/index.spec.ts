@@ -20,12 +20,13 @@ const mount = (modelValue?: string) =>
   });
 
 describe("ModelPickerSelect", () => {
-  it("reads as the label while empty", async () => {
+  it("keeps its label and prompts for a ship while empty", async () => {
     const wrapper = await mount();
 
+    expect(wrapper.find(".field-label").text()).toBe("Your ship");
     expect(
       wrapper.find('[data-test="model-picker-select-trigger"]').text(),
-    ).toBe("Your ship");
+    ).toBe("Select a Ship");
     expect(
       wrapper.find('[data-test="model-picker-select-clear"]').exists(),
     ).toBe(false);
@@ -37,6 +38,8 @@ describe("ModelPickerSelect", () => {
     expect(
       wrapper.find('[data-test="model-picker-select-trigger"]').text(),
     ).toBe("Hull C");
+
+    expect(wrapper.find(".field-label").text()).toBe("Your ship");
 
     await wrapper
       .find('[data-test="model-picker-select-clear"]')

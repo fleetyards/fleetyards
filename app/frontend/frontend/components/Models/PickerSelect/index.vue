@@ -47,8 +47,10 @@ const chosen = computed(() => (props.modelValue ? model.value : undefined));
 
 const image = computed(() => chosen.value?.media.storeImage?.smallUrl);
 
+// The label stays above the field either way, so clearing it doesn't shift
+// the form; an empty field reads as a prompt instead.
 const prompt = computed(() => {
-  if (!props.modelValue) return props.label;
+  if (!props.modelValue) return t("labels.selectModel");
 
   return chosen.value?.name ?? props.modelValue;
 });
@@ -86,7 +88,7 @@ onUnmounted(() => {
     class="base-select model-picker-select"
     :data-test="`model-picker-select-${name}`"
   >
-    <div v-if="modelValue" class="field-label">
+    <div class="field-label">
       <label :for="`${name}-${pickerId}`">{{ label }}</label>
     </div>
     <div class="model-picker-select__row">
@@ -94,7 +96,7 @@ onUnmounted(() => {
         :id="`${name}-${pickerId}`"
         type="button"
         class="base-select-title"
-        :class="{ selected: !!modelValue, hasLabel: !!modelValue }"
+        :class="{ selected: !!modelValue, hasLabel: true }"
         aria-haspopup="dialog"
         :aria-label="label"
         data-test="model-picker-select-trigger"
