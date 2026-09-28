@@ -71,7 +71,8 @@ module Announcements
         delivery.record_part!({
           "index" => index,
           "message_id" => message&.dig("id"),
-          "channel_id" => message&.dig("channel_id")
+          "channel_id" => message&.dig("channel_id"),
+          "guild_id" => message&.dig("guild_id")
         }.compact)
       end
     end

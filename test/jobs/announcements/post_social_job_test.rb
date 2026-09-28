@@ -26,7 +26,7 @@ module Announcements
       ::Discord::Announcement.stubs(:configured?).returns(true)
       webhook = Object.new
       webhook.define_singleton_method(:run) do |&block|
-        block.call(0, {"id" => "m1", "channel_id" => "c1"})
+        block.call(0, {"id" => "m1", "channel_id" => "c1", "guild_id" => "g1"})
         block.call(1, nil)
       end
       ::Discord::Announcement.expects(:new).returns(webhook)
@@ -34,7 +34,7 @@ module Announcements
       Announcements::PostSocialJob.new.perform(@announcement.id, "discord")
 
       assert_equal(
-        [{"index" => 0, "message_id" => "m1", "channel_id" => "c1"}, {"index" => 1}],
+        [{"index" => 0, "message_id" => "m1", "channel_id" => "c1", "guild_id" => "g1"}, {"index" => 1}],
         @announcement.delivery_for(:discord).reload.posted_parts
       )
     end

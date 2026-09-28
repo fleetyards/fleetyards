@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "webmock/minitest"
 require "discord/announcement"
 require "ostruct"
 
@@ -57,11 +58,33 @@ module Discord
       end
       Discordrb::Webhooks::Client.stubs(:new).returns(client)
 
+      stub_request(:get, "https://discord.test/updates").to_return(status: 200, body: {guild_id: "g1"}.to_json)
+
       yielded = []
-      Discord::Announcement.new(announcement:).run { |index, message| yielded << [index, message["id"]] }
+      Discord::Announcement.new(announcement:).run { |index, message| yielded << [index, message["id"], message["guild_id"]] }
 
       assert_equal [true, true], waits
-      assert_equal [[0, "m1"], [1, "m2"]], yielded
+      assert_equal [[0, "m1", "g1"], [1, "m2", "g1"]], yielded
+    end
+
+    # The guild id only builds the jump link; a lookup that fails must not
+    # cost the post.
+    test "#run posts without a guild id when the webhook lookup fails" do
+      announcement = build(:announcement, discord_parts: ["One"])
+      Rails.application.credentials.stubs(:discord_updates_endpoint).returns("https://discord.test/updates")
+
+      client = Object.new
+      client.define_singleton_method(:execute) do |_builder = nil, _wait = false, &block|
+        block.call(OpenStruct.new)
+        OpenStruct.new(body: {id: "m1", channel_id: "c1"}.to_json)
+      end
+      Discordrb::Webhooks::Client.stubs(:new).returns(client)
+      stub_request(:get, "https://discord.test/updates").to_return(status: 500)
+
+      yielded = []
+      Discord::Announcement.new(announcement:).run { |_index, message| yielded << message }
+
+      assert_equal [{"id" => "m1", "channel_id" => "c1"}], yielded
     end
 
     test "#run is a no-op without an updates endpoint" do

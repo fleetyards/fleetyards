@@ -31,7 +31,9 @@ module Announcements
       when "discord"
         return nil unless ::Discord::Engagement.configured?
 
-        ::Discord::Engagement.new.fetch(delivery.posted_parts, guild_id: delivery.engagement&.dig("guild_id"))
+        guild_id = delivery.engagement&.dig("guild_id") || delivery.posted_parts.filter_map { |part| part["guild_id"] }.first
+
+        ::Discord::Engagement.new.fetch(delivery.posted_parts, guild_id:)
       end
     end
   end
