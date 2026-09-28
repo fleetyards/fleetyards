@@ -65,6 +65,7 @@ const sortFields = useMissionSortFields();
     :records="missions?.items || []"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    :view-keys="['ship']"
   >
     <template #filter>
       <FilterForm />
