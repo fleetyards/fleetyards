@@ -11,10 +11,15 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
+import ModelPickerSelect from "@/frontend/components/Models/PickerSelect/index.vue";
+import { useMissionShip } from "@/frontend/composables/useMissionShip";
 import {
   type GameMissionQuery,
+  type ModelQuery,
+  ModelProductionStatusEnum,
   BlueprintSourceAlignmentEnum,
   GameMissionKindEnum,
+  GameMissionLocationKindEnum,
   GameMissionRewardFilterEnum,
   useFiltersGameMissionsOrgs,
   useFiltersGameMissionsStandings,
@@ -55,6 +60,9 @@ const prefillFormValues = (): GameMissionQuery => ({
   rewardingIn: asList(
     filters.value.rewardingIn ?? filters.value.rewarding,
   ) as GameMissionRewardFilterEnum[],
+  locationKindIn: asList(
+    filters.value.locationKindIn ?? filters.value.locationKindEq,
+  ) as GameMissionLocationKindEnum[],
   released: filters.value.released,
 });
 
@@ -108,6 +116,31 @@ const rewardKinds = computed(() =>
     label: t(`labels.gameMission.rewardKinds.${value}`),
   })),
 );
+
+const locationKinds = computed(() =>
+  Object.values(GameMissionLocationKindEnum).map((value) => ({
+    value,
+    label: t(`labels.gameMission.locationKinds.${value}`),
+  })),
+);
+
+// The ship a pilot flies, which marks the contracts it can't do rather than
+// hiding them. In the URL beside the filters, never sent to the API.
+const { shipSlug, setShip } = useMissionShip();
+
+// A contract is flown in a ship that exists, so concepts are left out.
+const flightReady: ModelQuery = {
+  productionStatusIn: [ModelProductionStatusEnum.FLIGHT_READY],
+};
+
+// Bound to the URL rather than to the form: the ship marks the list and is
+// never one of the filters sent to the API.
+const shipValue = computed({
+  get: () => shipSlug.value,
+  set: (slug?: string) => {
+    void setShip(slug);
+  },
+});
 
 // Three states, not a checkbox: only what the build offers, only what it does
 // not, and no opinion. 349 of the 2,536 are in the middle case, and a checkbox
@@ -178,6 +211,22 @@ const releasedValue = computed({
       name="rewarding"
       :options="rewardKinds"
       :label="t('labels.filters.missions.rewarding')"
+      :no-label="true"
+      multiple
+    />
+
+    <ModelPickerSelect
+      v-model="shipValue"
+      name="ship"
+      :label="t('labels.filters.missions.ship')"
+      :query="flightReady"
+    />
+
+    <BaseSelect
+      v-model="form.locationKindIn"
+      name="locationKind"
+      :options="locationKinds"
+      :label="t('labels.filters.missions.location')"
       :no-label="true"
       multiple
     />

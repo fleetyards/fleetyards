@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { type GameMission } from "@/services/fyApi";
+import {
+  type GameMission,
+  NullableGameMissionLocationKindEnum,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
 // The row links to the mission and back into the list it is being read from,
@@ -125,5 +128,107 @@ describe("MissionRow", () => {
 
     expect(link.attributes("href")).toContain("orgNameIn");
     expect(link.text()).toBe("Headhunters");
+  });
+
+  it("marks where the mission takes place, as a filter link", async () => {
+    const wrapper = await mount({
+      locationKind: NullableGameMissionLocationKindEnum.SURFACE,
+    });
+
+    const tag = wrapper
+      .findAll("a")
+      .find((link) => link.text() === "On a planet or moon");
+    expect(tag?.attributes("href")).toContain("locationKindIn=surface");
+  });
+
+  it("names the location on the sub-line too, for phones", async () => {
+    const wrapper = await mount({
+      locationKind: NullableGameMissionLocationKindEnum.SPACE,
+    });
+
+    expect(wrapper.find(".mission-row__location").text()).toBe("In space");
+  });
+
+  it("leaves an unknown location unmarked", async () => {
+    const wrapper = await mount({
+      locationKind: NullableGameMissionLocationKindEnum.UNKNOWN,
+    });
+
+    expect(wrapper.text()).not.toContain("Location unknown");
+  });
+
+  const withShip = async (
+    attrs: Partial<GameMission>,
+    canLandOnPlanets: boolean,
+  ) =>
+    mountWithDefaults(Component, {
+      props: {
+        mission: mission(attrs),
+        ship: { name: "Hull C", canLandOnPlanets },
+      },
+      plugins: [await routerOnList()],
+    });
+
+  it("warns a ship that can't land about a contract on the ground", async () => {
+    const wrapper = await withShip(
+      {
+        locationKind: NullableGameMissionLocationKindEnum.SURFACE,
+        needsLanding: true,
+      },
+      false,
+    );
+
+    const warning = wrapper.find(".mission-row__cannot-land");
+    expect(warning.attributes("role")).toBe("note");
+    expect(warning.classes()).toContain("mission-row__cannot-land--firm");
+    expect(wrapper.find(".mission-row").classes()).toContain(
+      "mission-row--cannot-land",
+    );
+    expect(warning.text()).toBe(
+      "Hull C can't land: this contract is on a planet or moon",
+    );
+  });
+
+  it("warns more softly when the contract may roll a space location", async () => {
+    const wrapper = await withShip(
+      {
+        locationKind: NullableGameMissionLocationKindEnum.MIXED,
+        needsLanding: true,
+      },
+      false,
+    );
+
+    const warning = wrapper.find(".mission-row__cannot-land");
+    expect(warning.classes()).not.toContain("mission-row__cannot-land--firm");
+    expect(wrapper.find(".mission-row").classes()).not.toContain(
+      "mission-row--cannot-land",
+    );
+    expect(warning.text()).toBe(
+      "May take Hull C to a planet or moon, where it can't land",
+    );
+  });
+
+  it("does not warn about ship combat at a surface target", async () => {
+    const wrapper = await withShip(
+      {
+        locationKind: NullableGameMissionLocationKindEnum.SURFACE,
+        needsLanding: false,
+      },
+      false,
+    );
+
+    expect(wrapper.find(".mission-row__cannot-land").exists()).toBe(false);
+  });
+
+  it("does not warn a ship that lands", async () => {
+    const wrapper = await withShip(
+      {
+        locationKind: NullableGameMissionLocationKindEnum.SURFACE,
+        needsLanding: true,
+      },
+      true,
+    );
+
+    expect(wrapper.find(".mission-row__cannot-land").exists()).toBe(false);
   });
 });

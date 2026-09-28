@@ -23,9 +23,11 @@
 #  difficulty_risk_of_loss     :integer
 #  generator_key               :string
 #  kind                        :string
+#  location_kind               :string
 #  max_standing                :string
 #  min_standing                :string
 #  name                        :string
+#  needs_landing               :boolean          default(FALSE), not null
 #  org_key                     :string
 #  org_lawful                  :boolean
 #  org_name                    :string
@@ -208,6 +210,8 @@ class GameMission < ApplicationRecord
       :game_mission_builds
     )
   end
+
+  LOCATION_KINDS = %w[surface space mixed unknown].freeze
 
   def self.ransackable_attributes(auth_object = nil)
     %w[created_at id id_value name sc_key slug updated_at version] + GameMissionBuild::FILTERABLE.map(&:to_s)

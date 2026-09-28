@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_28_095352) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_28_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1165,9 +1165,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_095352) do
     t.uuid "game_mission_id", null: false
     t.string "generator_key"
     t.string "kind"
+    t.string "location_kind"
     t.string "max_standing"
     t.string "min_standing"
     t.string "name"
+    t.boolean "needs_landing", default: false, null: false
     t.string "org_key"
     t.boolean "org_lawful"
     t.string "org_name"
@@ -1218,9 +1220,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_095352) do
     t.integer "difficulty_risk_of_loss"
     t.string "generator_key"
     t.string "kind"
+    t.string "location_kind"
     t.string "max_standing"
     t.string "min_standing"
     t.string "name"
+    t.boolean "needs_landing", default: false, null: false
     t.string "org_key"
     t.boolean "org_lawful"
     t.string "org_name"

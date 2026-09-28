@@ -20,8 +20,13 @@ import {
   useGameMissions as useMissionsQuery,
   getGameMissionsQueryKey,
 } from "@/services/fyApi";
+import { useMissionShip } from "@/frontend/composables/useMissionShip";
 
 const { t } = useI18n();
+
+// The pilot's ship, from the filter form: handed to the rows, never sent
+// with the query.
+const { ship } = useMissionShip();
 
 const missionsQueryParams = computed(() => ({
   page: page.value,
@@ -60,6 +65,7 @@ const sortFields = useMissionSortFields();
     :records="missions?.items || []"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    :view-keys="['ship']"
   >
     <template #filter>
       <FilterForm />
@@ -84,7 +90,11 @@ const sortFields = useMissionSortFields();
     </template>
 
     <template #default="{ records, emptyVisible: listEmpty }">
-      <MissionsList :missions="records" :empty-visible="listEmpty" />
+      <MissionsList
+        :missions="records"
+        :empty-visible="listEmpty"
+        :ship="ship"
+      />
     </template>
 
     <template #pagination-bottom>

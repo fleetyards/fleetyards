@@ -138,6 +138,21 @@ watch(
                 {{ t(`labels.gameMission.kinds.${mission.kind}`) }}
               </span>
             </span>
+
+            <span
+              v-if="mission.locationKind && mission.locationKind !== 'unknown'"
+              class="mission-page__badge"
+              data-test="mission-location"
+            >
+              <span class="mission-page__badge-label">
+                {{ t("labels.gameMission.location") }}
+              </span>
+              <span class="mission-page__badge-value">
+                {{
+                  t(`labels.gameMission.locationKinds.${mission.locationKind}`)
+                }}
+              </span>
+            </span>
           </div>
         </div>
 

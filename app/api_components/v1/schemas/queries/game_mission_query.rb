@@ -51,6 +51,10 @@ module V1
               type: :array, items: ::Shared::V1::Schemas::Enums::GameMissionRewardFilterEnum
             },
 
+            # Where it takes place.
+            locationKindEq: ::Shared::V1::Schemas::Enums::GameMissionLocationKindEnum,
+            locationKindIn: {type: :array, items: ::Shared::V1::Schemas::Enums::GameMissionLocationKindEnum},
+
             # Whether the build is offering it at all. Read by the controller
             # rather than applied through ransack, which skips a scope whose
             # value is false and would answer "what is not released" with the

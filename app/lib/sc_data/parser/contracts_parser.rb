@@ -213,6 +213,7 @@ module ScData
                 generator_key: item[:key].downcase,
                 kind:,
                 contract:,
+                handler:,
                 org_ref:,
                 org: orgs[org_ref] || {}
               }
@@ -259,11 +260,18 @@ module ScData
             released: released?(contract),
             difficulty: difficulty(contract),
             rewards: contract_rewards(contract),
-            blueprint_pools: contract_pools(contract)
+            blueprint_pools: contract_pools(contract),
+            **mission_locations.classify(contract, entry[:handler])
           }.compact
         end
 
         name_item_rewards(parsed)
+      end
+
+      # Built once per parse: it loads the tag database and every location
+      # record, which is the expensive half of classifying any contract.
+      private def mission_locations
+        @mission_locations ||= ScData::Parser::MissionLocations.new(->(path) { load_data(path) })
       end
 
       # Done in one pass over the finished records rather than per award: the

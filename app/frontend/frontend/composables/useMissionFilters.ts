@@ -8,6 +8,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 const LIST_PARAMS = [
   "alignmentIn",
   "kindIn",
+  "locationKindIn",
   "minStandingIn",
   "orgNameIn",
   "rewardingIn",
@@ -23,13 +24,19 @@ const SUPERSEDED_PARAMS = {
   orgNameIn: "orgNameEq",
   minStandingIn: "minStandingEq",
   kindIn: "kindEq",
+  locationKindIn: "locationKindEq",
   rewardingIn: "rewarding",
 } as const;
 
 export const useMissionFilters = (
   updateCallback?: (() => void) | (() => Promise<void>),
 ) => {
-  const filters = useFilters<GameMissionQuery>({ updateCallback });
+  // `ship` marks the list rather than narrowing it, so it lives in the URL and
+  // never reaches the API, which would reject it as an unknown filter.
+  const filters = useFilters<GameMissionQuery>({
+    updateCallback,
+    viewKeys: ["ship"],
+  });
 
   const getQuery = () => {
     const query = { ...filters.getQuery() } as Record<string, unknown>;

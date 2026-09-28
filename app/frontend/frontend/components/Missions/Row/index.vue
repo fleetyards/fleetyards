@@ -14,10 +14,12 @@ import {
   type RowListItemTag,
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type GameMission } from "@/services/fyApi";
+import { type GameMission, type ModelExtended } from "@/services/fyApi";
 
 type Props = {
   mission: GameMission;
+  // The pilot's ship, when one is chosen: its contracts are marked, not hidden.
+  ship?: Pick<ModelExtended, "name" | "canLandOnPlanets">;
 };
 
 const props = defineProps<Props>();
@@ -83,17 +85,54 @@ const ALIGNMENT_TONES: Record<string, RowListItemTonesEnum> = {
 };
 
 const tags = computed<RowListItemTag[]>(() => {
+  const list: RowListItemTag[] = [];
   const alignment = props.mission.org?.alignment;
-  if (!alignment) return [];
 
-  return [
-    {
+  if (alignment) {
+    list.push({
       key: alignment,
       label: t(`labels.gameMission.alignments.${alignment}`),
       to: filterLink("alignmentIn", [alignment]),
       tone: ALIGNMENT_TONES[alignment],
-    },
-  ];
+    });
+  }
+
+  // Where it takes place, for everyone. Unknown says nothing worth a tag.
+  const location = props.mission.locationKind;
+  if (location && location !== "unknown") {
+    list.push({
+      key: `location-${location}`,
+      label: t(`labels.gameMission.locationKinds.${location}`),
+      to: filterLink("locationKindIn", [location]),
+    });
+  }
+
+  return list;
+});
+
+// The same label as the tag, for phones: `RowListItem` hides every tag below
+// 992px, and where a contract takes place is not optional on a phone.
+const locationLabel = computed(() => {
+  const location = props.mission.locationKind;
+  if (!location || location === "unknown") return undefined;
+
+  return t(`labels.gameMission.locationKinds.${location}`);
+});
+
+// Only for a ship that can't land, and only where the work puts a pilot on
+// the ground: ship combat at a surface target is fought in flight. A contract
+// that may roll a space location gets the softer wording.
+const cannotLand = computed(() => {
+  const { ship, mission } = props;
+  if (ship?.canLandOnPlanets !== false || !mission.needsLanding)
+    return undefined;
+
+  const wording = mission.locationKind === "mixed" ? "mixed" : "surface";
+
+  return {
+    firm: wording === "surface",
+    text: t(`labels.gameMission.cannotLand.${wording}`, { ship: ship.name }),
+  };
 });
 
 const badges = computed<RowListItemBadge[]>(() => {
@@ -124,6 +163,7 @@ const badges = computed<RowListItemBadge[]>(() => {
 <template>
   <RowListItem
     class="mission-row"
+    :class="{ 'mission-row--cannot-land': cannotLand?.firm }"
     :to="
       mission.slug
         ? { name: 'mission', params: { slug: mission.slug } }
@@ -145,6 +185,56 @@ const badges = computed<RowListItemBadge[]>(() => {
         {{ mission.org.name }}
       </router-link>
       <span v-if="standing">{{ standing }}</span>
+      <span v-if="locationLabel" class="mission-row__location">
+        {{ locationLabel }}
+      </span>
+      <span
+        v-if="cannotLand"
+        role="note"
+        class="mission-row__cannot-land"
+        :class="{ 'mission-row__cannot-land--firm': cannotLand.firm }"
+      >
+        <i class="fa-light fa-ban" aria-hidden="true" />
+        {{ cannotLand.text }}
+      </span>
     </template>
   </RowListItem>
 </template>
+
+<style lang="scss" scoped>
+// Dimmed, not hidden, and dimmed by colour rather than opacity: the quiet text
+// colour keeps the name readable, where opacity took it below AA contrast. The
+// reason keeps its own colour, since it is the one thing on the row to read.
+.mission-row--cannot-land :deep(.row-list-item__name),
+.mission-row--cannot-land
+  :deep(.row-list-item__sub > :not(.mission-row__cannot-land)),
+.mission-row--cannot-land :deep(.row-list-item__chip),
+.mission-row--cannot-land :deep(.row-list-item__tag),
+.mission-row--cannot-land :deep(.row-list-item__badge-value) {
+  color: var(--color-text-dim, #959595);
+}
+
+// Rewards drop their raised fill too, so nothing on the row outranks the
+// reason.
+.mission-row--cannot-land :deep(.row-list-item__chip) {
+  background-color: transparent;
+}
+
+.mission-row__location {
+  @media (min-width: $desktop-breakpoint) {
+    display: none;
+  }
+}
+
+.mission-row__cannot-land {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-dim, #959595);
+  font-size: 0.85em;
+}
+
+.mission-row__cannot-land--firm {
+  color: #e0a15c;
+}
+</style>
