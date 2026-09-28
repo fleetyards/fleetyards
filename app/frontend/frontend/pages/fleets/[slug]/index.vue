@@ -9,6 +9,9 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { fidAtRisk } from "@/frontend/utils/rsiSid";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -81,6 +84,14 @@ const teamList = computed(() =>
   allSquadrons.value.filter((squadron) => squadron.team),
 );
 
+// Only a manager can act on it: verifying is theirs to do.
+const showFidWarning = computed(
+  () =>
+    isMember.value &&
+    (props.membership?.capabilities?.manageFleet ?? false) &&
+    fidAtRisk(props.fleet),
+);
+
 const description = computed(() => {
   if (!props.fleet || !props.fleet.description) {
     return undefined;
@@ -104,6 +115,31 @@ const description = computed(() => {
         />
         <span class="title">{{ fleet.name }} ({{ fleet.fid }})</span>
       </h1>
+      <p class="rsi-verification-mark">
+        <Pill
+          v-if="fleet.rsiVerified"
+          :variant="PillVariantsEnum.SUCCESS"
+          data-test="fleet-rsi-verified"
+        >
+          <i class="fa-duotone fa-badge-check" />
+          {{ t("labels.fleet.rsiVerification.verified") }}
+        </Pill>
+        <Pill
+          v-else
+          :variant="PillVariantsEnum.NEUTRAL"
+          data-test="fleet-rsi-unverified"
+        >
+          {{ t("labels.fleet.rsiVerification.unverified") }}
+        </Pill>
+      </p>
+      <p v-if="showFidWarning" data-test="fleet-fid-at-risk">
+        {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
+        <router-link
+          :to="{ name: 'fleet-settings-fleet', params: { slug: fleet.slug } }"
+        >
+          {{ t("labels.fleet.rsiVerification.title") }}
+        </router-link>
+      </p>
     </div>
   </div>
   <div class="row">
