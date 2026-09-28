@@ -67,8 +67,12 @@ module Announcements
     end
 
     private def post_discord(announcement, delivery)
-      ::Discord::Announcement.new(announcement:, from: delivery.posted_count).run do |index|
-        delivery.record_part!({"index" => index})
+      ::Discord::Announcement.new(announcement:, from: delivery.posted_count).run do |index, message|
+        delivery.record_part!({
+          "index" => index,
+          "message_id" => message&.dig("id"),
+          "channel_id" => message&.dig("channel_id")
+        }.compact)
       end
     end
 

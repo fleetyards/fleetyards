@@ -38,6 +38,11 @@ module Discord
     private def get_url
       nil
     end
+
+    # The message ids are what its reactions are read back from.
+    private def wait?
+      true
+    end
   end
 end
 # rubocop:enable Naming/AccessorMethodName

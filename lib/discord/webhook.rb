@@ -29,7 +29,8 @@ module Discord
     # `from` resumes a run that died partway. Discord cannot unsend a message,
     # so an attempt that posted the first of three and then failed has to carry
     # on from the second rather than start again. The block is called with each
-    # index as it lands, which is how the caller knows where that is.
+    # index as it lands, which is how the caller knows where that is, and with
+    # the message Discord created when the subclass waits for one.
     def run
       return if @webhook_endpoint.blank?
 
@@ -38,13 +39,25 @@ module Discord
       bodies.each_with_index do |body, index|
         next if index < @from
 
-        client.execute do |builder|
+        response = client.execute(nil, wait?) do |builder|
           builder.content = body
           builder.allowed_mentions = allowed_mentions if allowed_mentions
         end
 
-        yield(index) if block_given?
+        yield(index, wait? ? created_message(response) : nil) if block_given?
       end
+    end
+
+    # Without `wait` Discord answers 204 and the message's id is never known.
+    # Only a subclass that has to find its message again asks for it.
+    private def wait?
+      false
+    end
+
+    private def created_message(response)
+      JSON.parse(response.body.to_s)
+    rescue JSON::ParserError
+      nil
     end
 
     private def contents
