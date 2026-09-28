@@ -28,6 +28,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+const route = useRoute();
+const router = useRouter();
 const { displayConfirm, displaySuccess, displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 
@@ -43,8 +45,13 @@ const publishMutation = usePublishAnnouncement({
   mutation: { onSettled: invalidate },
 });
 
+// The list only: the detail query would refetch a record that is gone. A
+// detail page watching it leaves first, and drops the entry after.
 const destroyMutation = useDestroyAnnouncement({
-  mutation: { onSettled: invalidate },
+  mutation: {
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: getAnnouncementsQueryKey() }),
+  },
 });
 
 const sendTestMutation = useSendAnnouncementTest({
@@ -105,8 +112,23 @@ const destroy = () => {
   displayConfirm({
     text: t("messages.confirm.announcement.destroy"),
     onConfirm: async () => {
-      await destroyMutation.mutateAsync({ id: props.announcement.id });
-      displaySuccess({ text: t("messages.announcement.destroyed") });
+      await destroyMutation
+        .mutateAsync({ id: props.announcement.id })
+        .then(async () => {
+          displaySuccess({ text: t("messages.announcement.destroyed") });
+
+          if (route.name === "admin-announcement") {
+            await router.push({ name: "admin-announcements" });
+          }
+
+          queryClient.removeQueries({
+            queryKey: getAnnouncementQueryKey(props.announcement.id),
+            exact: true,
+          });
+        })
+        .catch(() => {
+          displayAlert({ text: t("messages.announcement.destroyFailed") });
+        });
     },
   });
 };

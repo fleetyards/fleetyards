@@ -2162,7 +2162,24 @@
           "discordPartsInfo": "留空：自动拆分。",
           "socialPartsInfo": "留空：一条帖子，超长截断。两条以上：话题串。",
           "recipientsCount": "%{count} 位收件人",
-          "partPosition": "第 %{position} / %{total} 条"
+          "partPosition": "第 %{position} / %{total} 条",
+          "deliverySummary": "已发送 %{sent}/%{total}",
+          "deliveryFailedCount": "%{count} 个失败",
+          "deliveryPendingCount": "%{count} 个待处理",
+          "deliverySkippedCount": "%{count} 个已跳过",
+          "attempts": "尝试 %{count} 次",
+          "content": "内容",
+          "engagement": {
+            "likes": "点赞",
+            "reposts": "转发",
+            "replies": "回复",
+            "quotes": "引用",
+            "noReactions": "暂无表情回应。",
+            "fetchedAt": "更新于 %{time}",
+            "notFetched": "数据将在一小时内到达。",
+            "xUnavailable": "X 读取数据需要付费。打开帖子即可查看。",
+            "untracked": "发布时尚未记录表情回应。"
+          }
         },
         "resourceAccess": {
           "title": "资源权限",

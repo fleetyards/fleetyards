@@ -9,8 +9,8 @@ import {
 } from "@/services/fyAdminApi";
 import Component from "./index.vue";
 
-// The title links to the edit form, and the actions carry a link of their own,
-// so the default single-route test router resolves neither.
+// The title links to the detail page, and the actions carry a link to the
+// edit form, so the default single-route test router resolves neither.
 const routerOnList = async () => {
   const router = createRouter({
     history: createWebHashHistory(),
@@ -18,6 +18,11 @@ const routerOnList = async () => {
       {
         path: "/announcements",
         name: "admin-announcements",
+        component: { template: "<div />" },
+      },
+      {
+        path: "/announcements/:id/",
+        name: "admin-announcement",
         component: { template: "<div />" },
       },
       {
@@ -61,52 +66,52 @@ const mount = async (attrs: Partial<Announcement> = {}) =>
   });
 
 describe("AnnouncementRow", () => {
-  it("links the title to the edit form while the announcement is still sendable", async () => {
-    const wrapper = await mount();
-
-    expect(wrapper.find("a.announcement-row__title").attributes("href")).toBe(
-      "#/announcements/0f2c0f2c-0f2c-0f2c-0f2c-0f2c0f2c0f2c/edit",
-    );
-  });
-
-  // A published announcement has nothing left to edit, and a link to a form
-  // that refuses the save is worse than no link.
-  it("leaves the title unlinked once it has been sent", async () => {
+  it("links the title to the detail page", async () => {
     const wrapper = await mount({
       status: AnnouncementStatusEnum.PUBLISHED,
       publishable: false,
     });
 
-    expect(wrapper.find("a.announcement-row__title").exists()).toBe(false);
-    expect(wrapper.find(".announcement-row__title").text()).toBe(
-      "Commodities are live",
+    expect(wrapper.find("a.announcement-row__title").attributes("href")).toBe(
+      "#/announcements/0f2c0f2c-0f2c-0f2c-0f2c-0f2c0f2c0f2c/",
     );
   });
 
-  // The column this replaces was `mobile: false`, so the half of the row a send
-  // moves was invisible on a phone exactly while it was moving.
-  it("renders the deliveries in the row rather than in a column", async () => {
+  // The per-channel drill-down lives on the detail page.
+  it("summarises the deliveries instead of listing them", async () => {
     const wrapper = await mount({
+      status: AnnouncementStatusEnum.PUBLISHED,
+      publishable: false,
       deliveries: [
         {
           channel: AnnouncementChannelEnum.DISCORD,
           status: AnnouncementDeliveryStatusEnum.SUCCEEDED,
           attempts: 1,
+          engagementTrackable: true,
+        },
+        {
+          channel: AnnouncementChannelEnum.X,
+          status: AnnouncementDeliveryStatusEnum.SUCCEEDED,
+          attempts: 1,
+          engagementTrackable: false,
         },
       ],
     });
 
+    expect(
+      wrapper.find("[data-test='announcement-delivery-summary']").text(),
+    ).toBe("2/2 sent");
     expect(wrapper.find("[data-test='announcement-deliveries']").exists()).toBe(
-      true,
+      false,
     );
   });
 
   it("says nothing about deliveries before there are any", async () => {
     const wrapper = await mount();
 
-    expect(wrapper.find("[data-test='announcement-deliveries']").exists()).toBe(
-      false,
-    );
+    expect(
+      wrapper.find("[data-test='announcement-delivery-summary']").exists(),
+    ).toBe(false);
   });
 
   it("counts the recipients once the fan-out has sized them", async () => {

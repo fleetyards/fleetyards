@@ -6,17 +6,21 @@ require "x_com/post"
 
 module XCom
   class PostTest < ActiveSupport::TestCase
+    CREDENTIALS = {
+      api_key: "key",
+      api_secret: "secret",
+      access_token: "token",
+      access_token_secret: "token-secret"
+    }.freeze
+
     setup do
-      Rails.application.credentials.stubs(:x_api_key).returns("key")
-      Rails.application.credentials.stubs(:x_api_secret).returns("secret")
-      Rails.application.credentials.stubs(:x_access_token).returns("token")
-      Rails.application.credentials.stubs(:x_access_token_secret).returns("token-secret")
+      Rails.application.credentials.stubs(:x).returns(CREDENTIALS)
     end
 
     test ".configured? needs all four secrets" do
       assert XCom::Post.configured?
 
-      Rails.application.credentials.stubs(:x_access_token_secret).returns(nil)
+      Rails.application.credentials.stubs(:x).returns(CREDENTIALS.except(:access_token_secret))
 
       refute XCom::Post.configured?
     end
@@ -61,7 +65,7 @@ module XCom
     end
 
     test "#create raises rather than posting without credentials" do
-      Rails.application.credentials.stubs(:x_api_key).returns(nil)
+      Rails.application.credentials.stubs(:x).returns(nil)
 
       assert_raises(XCom::Post::Error) { XCom::Post.new.create("Hello") }
     end

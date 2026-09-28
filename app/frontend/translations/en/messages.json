@@ -161,6 +161,7 @@
         "created": "Announcement created.",
         "updated": "Announcement updated.",
         "destroyed": "Announcement deleted.",
+        "destroyFailed": "Could not delete the announcement.",
         "createFailed": "Could not create announcement.",
         "updateFailed": "Could not update announcement.",
         "testSent": "Test sent to the admin Discord channel.",
@@ -168,7 +169,9 @@
         "published": "Announcement is on its way.",
         "publishFailed": "Could not send announcement.",
         "retryQueued": "Delivery queued again.",
-        "retryFailed": "Could not retry this delivery."
+        "retryFailed": "Could not retry this delivery.",
+        "refreshQueued": "Counts are being refreshed.",
+        "refreshFailed": "Could not refresh the counts."
       },
       "fundingGoal": {
         "created": "Funding goal created.",

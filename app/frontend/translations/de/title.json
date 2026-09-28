@@ -248,7 +248,8 @@
         "announcements": {
           "index": "Ankündigungen",
           "new": "Neue Ankündigung",
-          "edit": "Ankündigung bearbeiten"
+          "edit": "Ankündigung bearbeiten",
+          "show": "Ankündigung"
         },
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",

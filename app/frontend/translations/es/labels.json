@@ -2162,7 +2162,24 @@
           "discordPartsInfo": "Vacío: se divide automáticamente.",
           "socialPartsInfo": "Vacío: una publicación recortada. Dos o más: un hilo.",
           "recipientsCount": "%{count} destinatarios",
-          "partPosition": "%{position} de %{total}"
+          "partPosition": "%{position} de %{total}",
+          "deliverySummary": "%{sent}/%{total} enviados",
+          "deliveryFailedCount": "%{count} fallidos",
+          "deliveryPendingCount": "%{count} pendientes",
+          "deliverySkippedCount": "%{count} omitidos",
+          "attempts": "%{count} intentos",
+          "content": "Contenido",
+          "engagement": {
+            "likes": "Me gusta",
+            "reposts": "Reposts",
+            "replies": "Respuestas",
+            "quotes": "Citas",
+            "noReactions": "Aún no hay reacciones.",
+            "fetchedAt": "Actualizado %{time}",
+            "notFetched": "Las cifras llegan en menos de una hora.",
+            "xUnavailable": "X cobra por leer las cifras. Abre la publicación para verlas.",
+            "untracked": "Publicado antes de que se registraran las reacciones."
+          }
         },
         "resourceAccess": {
           "title": "Acceso a recursos",

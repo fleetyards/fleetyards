@@ -248,7 +248,8 @@
         "announcements": {
           "index": "Announcements",
           "new": "New Announcement",
-          "edit": "Edit Announcement"
+          "edit": "Edit Announcement",
+          "show": "Announcement"
         },
         "supporterContributions": {
           "index": "Supporter Contributions",

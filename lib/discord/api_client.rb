@@ -101,6 +101,10 @@ module Discord
       request(:get, "channels/#{channel_id}")
     end
 
+    def get_channel_message(channel_id, message_id)
+      request(:get, "channels/#{channel_id}/messages/#{message_id}")
+    end
+
     def get_guild_channels(guild_id)
       request(:get, "guilds/#{guild_id}/channels")
     end

@@ -8,7 +8,9 @@
         "movePartDown": "Move down",
         "sendTest": "Send test",
         "publish": "Send",
-        "retry": "Retry"
+        "retry": "Retry",
+        "refreshEngagement": "Refresh counts",
+        "openPost": "Open post"
       },
       "admin": {
         "dashboard": {

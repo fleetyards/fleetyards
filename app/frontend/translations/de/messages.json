@@ -151,6 +151,7 @@
         "created": "Ankündigung erstellt.",
         "updated": "Ankündigung aktualisiert.",
         "destroyed": "Ankündigung gelöscht.",
+        "destroyFailed": "Die Ankündigung konnte nicht gelöscht werden.",
         "createFailed": "Ankündigung konnte nicht erstellt werden.",
         "updateFailed": "Ankündigung konnte nicht aktualisiert werden.",
         "testSent": "Test an den Admin-Discord-Kanal gesendet.",
@@ -158,7 +159,9 @@
         "published": "Ankündigung ist unterwegs.",
         "publishFailed": "Ankündigung konnte nicht gesendet werden.",
         "retryQueued": "Zustellung erneut eingereiht.",
-        "retryFailed": "Zustellung konnte nicht wiederholt werden."
+        "retryFailed": "Zustellung konnte nicht wiederholt werden.",
+        "refreshQueued": "Die Zahlen werden aktualisiert.",
+        "refreshFailed": "Die Zahlen konnten nicht aktualisiert werden."
       },
       "fundingGoal": {
         "created": "Finanzierungsziel angelegt.",

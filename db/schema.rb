@@ -150,6 +150,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_100000) do
     t.string "channel", null: false
     t.datetime "created_at", null: false
     t.datetime "delivered_at"
+    t.jsonb "engagement"
+    t.datetime "engagement_fetched_at"
     t.text "error"
     t.string "external_id"
     t.jsonb "posted_parts", default: [], null: false

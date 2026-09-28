@@ -289,11 +289,23 @@ components:
           format: date-time
         attempts:
           type: integer
+        url:
+          type: string
+          format: uri
+        engagementTrackable:
+          type: boolean
+          description: Whether counts are read back for this delivery
+        engagement:
+          "$ref": "#/components/schemas/AnnouncementEngagement"
+        engagementFetchedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - channel
       - status
       - attempts
+      - engagementTrackable
     AnnouncementDeliveryStatusEnum:
       type: string
       enum:
@@ -306,6 +318,38 @@ components:
       - SUCCEEDED
       - SKIPPED
       - FAILED
+    AnnouncementEngagement:
+      type: object
+      description: Bluesky carries the four counts, Discord its reactions
+      properties:
+        likes:
+          type: integer
+        reposts:
+          type: integer
+        replies:
+          type: integer
+        quotes:
+          type: integer
+        reactions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AnnouncementReaction"
+      additionalProperties: false
+    AnnouncementReaction:
+      type: object
+      properties:
+        emoji:
+          type: string
+          description: The unicode emoji, or a custom emoji's name
+        id:
+          type: string
+          description: Set for a custom emoji
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - emoji
+      - count
     AnnouncementStatusEnum:
       type: string
       enum:

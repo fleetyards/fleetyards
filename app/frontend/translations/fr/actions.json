@@ -8,7 +8,9 @@
         "movePartDown": "Descendre",
         "sendTest": "Envoyer un test",
         "publish": "Envoyer",
-        "retry": "Réessayer"
+        "retry": "Réessayer",
+        "refreshEngagement": "Actualiser les chiffres",
+        "openPost": "Ouvrir la publication"
       },
       "admin": {
         "dashboard": {

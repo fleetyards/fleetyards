@@ -248,7 +248,8 @@
         "announcements": {
           "index": "Annunci",
           "new": "Nuovo annuncio",
-          "edit": "Modifica annuncio"
+          "edit": "Modifica annuncio",
+          "show": "Annuncio"
         },
         "supporterContributions": {
           "index": "Contributi dei sostenitori",
