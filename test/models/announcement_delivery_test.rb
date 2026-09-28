@@ -144,9 +144,21 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
     assert_nil build(:announcement_delivery, channel: "discord", status: "succeeded", posted_parts: [{"index" => 0}]).post_url
   end
 
-  test "#engagement_trackable? needs a Discord post's message ids" do
-    refute build(:announcement_delivery, channel: "discord", status: "succeeded", posted_parts: [{"index" => 0}]).engagement_trackable?
-    assert build(:announcement_delivery, channel: "discord", status: "succeeded",
-      posted_parts: [{"index" => 0, "message_id" => "m", "channel_id" => "c"}]).engagement_trackable?
+  test "#engagement_trackable? needs a Discord post's message ids and a bot" do
+    ::Discord::Engagement.stubs(:configured?).returns(true)
+    readable = build(:announcement_delivery, channel: "discord", status: "succeeded", delivered_at: 1.hour.ago,
+      posted_parts: [{"index" => 0, "message_id" => "m", "channel_id" => "c"}])
+
+    refute build(:announcement_delivery, channel: "discord", status: "succeeded", delivered_at: 1.hour.ago,
+      posted_parts: [{"index" => 0}]).engagement_trackable?
+    assert readable.engagement_trackable?
+
+    ::Discord::Engagement.stubs(:configured?).returns(false)
+
+    refute readable.engagement_trackable?
+  end
+
+  test "#engagement_trackable? ends with the refresh window" do
+    refute build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 31.days.ago).engagement_trackable?
   end
 end

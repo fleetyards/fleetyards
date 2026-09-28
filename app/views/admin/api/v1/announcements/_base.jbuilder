@@ -27,7 +27,8 @@ json.deliveries do
     json.error delivery.error if delivery.error.present?
     json.delivered_at delivery.delivered_at.utc.iso8601 if delivery.delivered_at.present?
     json.attempts delivery.attempts
-    json.url delivery.post_url if delivery.post_url.present?
+    post_url = delivery.post_url
+    json.url post_url if post_url.present?
     json.engagement_trackable delivery.engagement_trackable?
 
     if delivery.engagement.present?

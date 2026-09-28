@@ -118,7 +118,7 @@ module Admin
         # request per message, and the counts reach the page over the cable.
         def refresh_engagement
           @announcement.deliveries.select(&:engagement_trackable?).each do |delivery|
-            ::Announcements::RefreshEngagementJob.perform_async(delivery.id)
+            ::Announcements::RefreshEngagementJob.perform_async(delivery.id, true)
           end
 
           render :show

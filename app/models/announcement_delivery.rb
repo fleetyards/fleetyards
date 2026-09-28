@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "discord/engagement"
+
 # == Schema Information
 #
 # Table name: announcement_deliveries
@@ -111,18 +113,20 @@ class AnnouncementDelivery < ApplicationRecord
     save!
   end
 
+  # Whether a refresh can still produce counts. The same answer the sweep, the
+  # manual refresh and the admin's "counts arrive within the hour" all go by.
   # A Discord post sent before the webhook waited for its messages has no id
   # to read reactions back from, and never will.
-  def engagement_trackable?
+  def engagement_trackable?(now = Time.current)
     return false unless status_succeeded? && ENGAGEMENT_CHANNELS.include?(channel)
+    return false if delivered_at.blank? || delivered_at < now - ENGAGEMENT_WINDOW
     return true unless channel_discord?
 
-    posted_parts.any? { |part| part["message_id"].present? }
+    ::Discord::Engagement.configured? && posted_parts.any? { |part| ::Discord::Engagement.readable?(part) }
   end
 
   def engagement_due?(now = Time.current)
-    return false unless engagement_trackable?
-    return false if delivered_at.blank? || delivered_at < now - ENGAGEMENT_WINDOW
+    return false unless engagement_trackable?(now)
     return true if engagement_fetched_at.blank?
 
     interval = (delivered_at > now - ENGAGEMENT_FRESH_AGE) ? ENGAGEMENT_FRESH_INTERVAL : ENGAGEMENT_SETTLED_INTERVAL

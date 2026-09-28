@@ -12,14 +12,23 @@ module Announcements
   class RefreshEngagementJob < Announcements::BaseJob
     sidekiq_options retry: false
 
-    def perform(delivery_id)
+    # `manual` is an admin pressing refresh, who is watching for the time to
+    # move even when the counts did not.
+    def perform(delivery_id, manual = false)
       delivery = AnnouncementDelivery.find_by(id: delivery_id)
       return if delivery.blank? || !delivery.engagement_trackable?
 
       engagement = fetch(delivery)
       return if engagement.nil?
 
-      delivery.update!(engagement:, engagement_fetched_at: Time.current)
+      if engagement == delivery.engagement && !manual
+        # Unchanged counts are not worth a broadcast: every one re-renders the
+        # announcement for every admin, and the sweep touches each delivery
+        # hourly for its first two days.
+        delivery.update_column(:engagement_fetched_at, Time.current) # rubocop:disable Rails/SkipsModelValidations
+      else
+        delivery.update!(engagement:, engagement_fetched_at: Time.current)
+      end
     rescue ::Bsky::Engagement::Error, ::Discord::ApiClient::Error, Faraday::Error => e
       Rails.logger.warn("Announcement engagement refresh failed for #{delivery_id}: #{e.message}")
     end

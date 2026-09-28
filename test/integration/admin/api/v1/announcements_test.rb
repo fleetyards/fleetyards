@@ -633,12 +633,14 @@ class Admin::Api::V1::AnnouncementsTest < ActionDispatch::IntegrationTest
     create(:announcement_delivery, announcement:, channel: "in_app", status: "succeeded", delivered_at: 1.hour.ago)
     sign_in @admin_user
 
+    ::Discord::Engagement.stubs(:configured?).returns(true)
+
     queued = []
-    Announcements::RefreshEngagementJob.stubs(:perform_async).with { |id| queued << id }
+    Announcements::RefreshEngagementJob.stubs(:perform_async).with { |id, manual| queued << [id, manual] }
 
     assert_api_response :put, 200, api_path: "/announcements/{id}/refresh-engagement", path_params: {id: announcement.id}
 
-    assert_equal [bluesky.id, discord.id].sort, queued.sort
+    assert_equal [[bluesky.id, true], [discord.id, true]].sort, queued.sort
   end
 
   test "GET /announcements/:id returns each delivery's engagement and post link" do

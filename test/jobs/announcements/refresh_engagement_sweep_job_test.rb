@@ -5,6 +5,7 @@ require "test_helper"
 module Announcements
   class RefreshEngagementSweepJobTest < ActiveJob::TestCase
     test "#perform queues only the deliveries whose counts are due" do
+      ::Discord::Engagement.stubs(:configured?).returns(true)
       announcement = create(:announcement, :social, :published)
       due = create(:announcement_delivery, announcement:, channel: "bluesky", status: "succeeded", delivered_at: 1.hour.ago)
       create(
