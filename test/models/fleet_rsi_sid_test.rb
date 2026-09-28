@@ -77,4 +77,24 @@ class FleetRsiSidTest < ActiveSupport::TestCase
       assert_not fleet.rsi_verification_cooling_down?
     end
   end
+
+  test "a token can be issued to a fleet that no longer passes validation" do
+    fleet = create(:fleet, created_by: create(:user).id)
+    fleet.update_column(:name, "x") # rubocop:disable Rails/SkipsModelValidations
+
+    fleet.reload.generate_rsi_verification_token!
+
+    assert fleet.reload.rsi_verification_token.present?
+  end
+
+  test "revoking drops the token so the old one cannot verify again" do
+    fleet = verified_fleet
+    fleet.generate_rsi_verification_token!
+
+    fleet.revoke_rsi_verification!
+
+    assert_not fleet.reload.rsi_verified?
+    assert_nil fleet.rsi_verification_token
+    assert_equal "TEST", fleet.rsi_sid
+  end
 end

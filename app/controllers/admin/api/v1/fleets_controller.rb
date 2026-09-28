@@ -62,7 +62,7 @@ module Admin
         end
 
         def revoke_rsi_verification
-          @fleet.update!(rsi_verified_at: nil, rsi_verified_sid: nil, rsi_verification_status: nil)
+          @fleet.revoke_rsi_verification!
 
           render :show
         end

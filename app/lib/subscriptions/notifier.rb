@@ -102,9 +102,7 @@ module Subscriptions
     # the fleet is entitled to, so telling all 400 of them is noise -- and
     # `fleet:manage` is the privilege that already means "runs this fleet".
     private def admins
-      fleet.fleet_memberships.kept.accepted.includes(:fleet_role, :user)
-        .select { |membership| membership.has_access?(["fleet:manage"]) }
-        .filter_map(&:user)
+      fleet.managers
     end
   end
 end

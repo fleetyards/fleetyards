@@ -255,19 +255,40 @@ class Fleet < ApplicationRecord
     rsi_sid if rsi_verified?
   end
 
+  # Written past validation: neither column is something a form edits, and a
+  # fleet saved before a later format check must still be able to get a token.
+  # rubocop:disable Rails/SkipsModelValidations
   def generate_rsi_verification_token!
-    update!(rsi_verification_token: "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}")
+    update_columns(
+      rsi_verification_token: "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}",
+      rsi_verification_status: nil,
+      updated_at: Time.current
+    )
   end
+
+  # The token is dropped too: left in place, the same token still on the org
+  # page would verify the fleet again on its next check.
+  def revoke_rsi_verification!
+    update_columns(
+      rsi_verified_at: nil,
+      rsi_verified_sid: nil,
+      rsi_verification_status: nil,
+      rsi_verification_token: nil,
+      updated_at: Time.current
+    )
+  end
+  # rubocop:enable Rails/SkipsModelValidations
 
   def rsi_verification_cooling_down?
     rsi_verification_checked_at.present? &&
       rsi_verification_checked_at > RSI_VERIFICATION_COOLDOWN.ago
   end
 
-  def rsi_verification_managers
+  # `fleet:manage` is the privilege that already means "runs this fleet".
+  def managers
     fleet_memberships.kept.accepted.includes(:fleet_role, :user)
       .select { |membership| membership.has_access?(["fleet:manage"]) }
-      .map(&:user)
+      .filter_map(&:user)
   end
 
   def update_urls(force: false)

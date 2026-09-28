@@ -98,9 +98,14 @@ const updateMutation = useUpdateFleet({
 const revokeMutation = useRevokeFleetRsiVerification({
   mutation: {
     onSettled: () => {
-      void queryClient.invalidateQueries({
-        queryKey: getFleetQueryKey(props.fleet.id),
-      });
+      void Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: getFleetsQueryKey(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: getFleetQueryKey(props.fleet.id),
+        }),
+      ]);
     },
   },
 });
