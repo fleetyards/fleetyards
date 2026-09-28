@@ -27,6 +27,24 @@ json.deliveries do
     json.error delivery.error if delivery.error.present?
     json.delivered_at delivery.delivered_at.utc.iso8601 if delivery.delivered_at.present?
     json.attempts delivery.attempts
+    json.url delivery.post_url if delivery.post_url.present?
+    json.engagement_trackable delivery.engagement_trackable?
+
+    if delivery.engagement.present?
+      json.engagement do
+        json.extract!(delivery.engagement, *(delivery.engagement.keys & %w[likes reposts replies quotes]))
+
+        if delivery.engagement["reactions"]
+          json.reactions delivery.engagement["reactions"] do |reaction|
+            json.emoji reaction["emoji"]
+            json.id reaction["id"] if reaction["id"].present?
+            json.count reaction["count"]
+          end
+        end
+      end
+    end
+
+    json.engagement_fetched_at delivery.engagement_fetched_at.utc.iso8601 if delivery.engagement_fetched_at.present?
   end
 end
 
