@@ -136,6 +136,23 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
             size="small"
             :online="onlineFor(record)"
           />
+          <span
+            v-if="record.verifiedOrgSid"
+            v-tooltip="
+              t('labels.fleet.members.verifiedOrgMember', {
+                sid: record.verifiedOrgSid,
+              })
+            "
+            :aria-label="
+              t('labels.fleet.members.verifiedOrgMember', {
+                sid: record.verifiedOrgSid,
+              })
+            "
+            class="member-avatar-verified"
+            data-test="member-verified-org"
+          >
+            <i class="fa-duotone fa-shield-check text-success" />
+          </span>
           <SquadronEmblem
             v-if="props.showSquadrons && record.squadrons?.length"
             v-tooltip="squadronNames(record)"
@@ -145,7 +162,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
           />
         </span>
         <div class="member-username-inner">
-          <MemberName :member="record" />
+          <MemberName :member="record" :org-badge="false" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
             (<RsiProfileLink
               :handle="record.rsiHandle"
@@ -234,5 +251,23 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   position: absolute;
   left: -4px;
   bottom: -4px;
+}
+
+// The top-right corner, the one neither the squadron nor the presence dot
+// takes, inset the way the presence dot is below it. Opaque in the colour the
+// default 40% duotone layer shows over the page, so the avatar does not show
+// through it.
+.member-avatar-verified {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  line-height: 1;
+  --fa-secondary-color: color-mix(
+    in srgb,
+    currentColor 40%,
+    var(--color-background, #000)
+  );
+  --fa-secondary-opacity: 1;
 }
 </style>

@@ -13,9 +13,13 @@ import type { MemberContact } from "@/frontend/components/base/MemberContactMenu
 
 type Props = {
   member: MemberContact;
+  // Off where the caller shows the badge on the member's avatar instead.
+  orgBadge?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  orgBadge: true,
+});
 
 const { t } = useI18n();
 
@@ -56,7 +60,7 @@ const secondaryName = computed(() =>
     <!-- The org this fleet proved it runs, not the member's own handle: that
          one is badged where the handle is shown. -->
     <span
-      v-if="member.verifiedOrgSid"
+      v-if="orgBadge && member.verifiedOrgSid"
       v-tooltip="
         t('labels.fleet.members.verifiedOrgMember', {
           sid: member.verifiedOrgSid,
