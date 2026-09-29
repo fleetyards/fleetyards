@@ -10,7 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type User,
   type UserInput,
-  UserRsiHandleVerifiedVia,
+  RsiHandleVerifiedViaEnum,
   useUpdateUser,
   useRevokeUserRsiVerification,
   getUsersQueryKey,
@@ -130,7 +130,7 @@ const revokeMutation = useRevokeUserRsiVerification({
 });
 
 const rsiHandleVerifiedLabel = computed(() =>
-  props.user.rsiHandleVerifiedVia === UserRsiHandleVerifiedVia.rsi_profile
+  props.user.rsiHandleVerifiedVia === RsiHandleVerifiedViaEnum.RSI_PROFILE
     ? t("labels.user.rsiHandleVerifiedViaProfile")
     : t("labels.user.rsiHandleVerified"),
 );

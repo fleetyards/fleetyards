@@ -16,7 +16,7 @@ module Admin
             avatar: ::Shared::V1::Schemas::MediaFile,
             rsiHandle: {type: :string},
             rsiHandleVerified: {type: :boolean},
-            rsiHandleVerifiedVia: {type: :string, enum: %w[citizenid rsi_profile]},
+            rsiHandleVerifiedVia: ::Admin::V1::Schemas::Enums::RsiHandleVerifiedViaEnum,
             rsiHandleVerifiedAt: {type: :string, format: "date-time"},
             citizenidProfileUrl: {type: :string},
             discord: {type: :string},

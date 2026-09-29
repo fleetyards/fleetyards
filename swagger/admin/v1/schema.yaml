@@ -18747,6 +18747,15 @@ components:
           type: number
       additionalProperties: false
       title: RefuelBoom
+    RsiHandleVerifiedViaEnum:
+      type: string
+      enum:
+      - citizenid
+      - rsi_profile
+      x-enumNames:
+      - CITIZENID
+      - RSI_PROFILE
+      title: RsiHandleVerifiedViaEnum
     RsiRequestLog:
       type: object
       properties:
@@ -19345,10 +19354,7 @@ components:
         rsiHandleVerified:
           type: boolean
         rsiHandleVerifiedVia:
-          type: string
-          enum:
-          - citizenid
-          - rsi_profile
+          "$ref": "#/components/schemas/RsiHandleVerifiedViaEnum"
         rsiHandleVerifiedAt:
           type: string
           format: date-time
