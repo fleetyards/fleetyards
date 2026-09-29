@@ -1,25 +1,25 @@
 import { describe, expect, it } from "vitest";
-import { arMode } from "./arViewer";
+import { mayHaveAr } from "./arViewer";
 
 const anchor = (supportsAr: boolean) =>
   ({
     relList: { supports: (token: string) => supportsAr && token === "ar" },
   }) as unknown as HTMLAnchorElement;
 
-describe("arMode", () => {
-  it("offers Quick Look where the browser announces it", () => {
-    expect(arMode("Mozilla/5.0 (iPhone)", anchor(true))).toBe("quick-look");
+describe("mayHaveAr", () => {
+  it("expects AR where the browser announces Quick Look", () => {
+    expect(mayHaveAr("Mozilla/5.0 (iPhone)", anchor(true))).toBe(true);
   });
 
-  it("offers Scene Viewer on Android", () => {
-    expect(arMode("Mozilla/5.0 (Linux; Android 14)", anchor(false))).toBe(
-      "scene-viewer",
+  it("expects AR on Android", () => {
+    expect(mayHaveAr("Mozilla/5.0 (Linux; Android 14)", anchor(false))).toBe(
+      true,
     );
   });
 
-  it("offers nothing on a desktop", () => {
+  it("does not expect AR on a desktop", () => {
     expect(
-      arMode("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0)", anchor(false)),
-    ).toBeUndefined();
+      mayHaveAr("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0)", anchor(false)),
+    ).toBe(false);
   });
 });
