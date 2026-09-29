@@ -250,6 +250,21 @@ describe("FleetShow header", () => {
     expect(title.text()).toBe("Maru (MARU)");
   });
 
+  it("keeps the badge off an FID the fleet is not verified for", async () => {
+    const subject = await mount({
+      fleet: {
+        ...fleet(),
+        fid: "MARU-1",
+        rsiVerified: true,
+        rsiSid: "MARU",
+      } as Fleet,
+    });
+
+    expect(subject.find('[data-test="fleet-rsi-verified"]').exists()).toBe(
+      false,
+    );
+  });
+
   it("shows no mark for an unverified fleet", async () => {
     const subject = await mount({ fleet: fleet() });
 

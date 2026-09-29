@@ -82,6 +82,14 @@ const teamList = computed(() =>
   allSquadrons.value.filter((squadron) => squadron.team),
 );
 
+// Verification proves the SID, not whichever FID the fleet uses: a claimant
+// still on its temporary `X-N` is verified for `X`, not for `X-N`.
+const fidVerified = computed(
+  () =>
+    !!props.fleet.rsiVerified &&
+    props.fleet.rsiSid?.toUpperCase() === props.fleet.fid?.toUpperCase(),
+);
+
 // Only a manager can act on it: verifying is theirs to do.
 const showFidNotice = computed(
   () =>
@@ -112,7 +120,7 @@ const description = computed(() => {
         <span class="title">
           {{ fleet.name }} ({{ fleet.fid
           }}<i
-            v-if="fleet.rsiVerified"
+            v-if="fidVerified"
             v-tooltip="t('labels.fleet.rsiVerification.verified')"
             :aria-label="t('labels.fleet.rsiVerification.verified')"
             class="fa-duotone fa-badge-check text-success fid-verified"
