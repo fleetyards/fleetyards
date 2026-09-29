@@ -336,7 +336,7 @@ const openDeflectionCheck = () => {
   white-space: nowrap;
 
   &__label {
-    font-size: 10.5px;
+    font-size: 11px;
     color: $gray;
   }
 
@@ -376,7 +376,7 @@ const openDeflectionCheck = () => {
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: lighten($text-color, 10%);
@@ -391,7 +391,7 @@ const openDeflectionCheck = () => {
   }
 
   &__unit {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 400;
     color: $gray;
   }

@@ -238,7 +238,7 @@ const doorBarWidth = (health: number) =>
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -287,7 +287,7 @@ const doorBarWidth = (health: number) =>
 
   &__hp {
     grid-column: 2;
-    font-size: 10px;
+    font-size: 11px;
     color: $gray;
     font-variant-numeric: tabular-nums;
   }
@@ -312,7 +312,7 @@ const doorBarWidth = (health: number) =>
 
 .parts-head {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: $gray;
@@ -371,7 +371,7 @@ const doorBarWidth = (health: number) =>
 
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -405,7 +405,7 @@ const doorBarWidth = (health: number) =>
 
   &__nohp {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: $gray;

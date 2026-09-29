@@ -191,7 +191,7 @@ const openAvailability = () => {
 .base-panel {
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray-light;

@@ -503,7 +503,7 @@ const detail = computed(
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -545,7 +545,7 @@ const detail = computed(
 
   &__kind {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -676,7 +676,7 @@ const detail = computed(
     text-align: left;
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 400;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -714,7 +714,7 @@ const detail = computed(
     padding: 6px 0;
     text-align: center;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray;
@@ -758,7 +758,7 @@ const detail = computed(
   &__shielded {
     display: block;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: $primary;
@@ -852,7 +852,7 @@ const detail = computed(
   &__absorbed {
     color: $primary;
     text-transform: uppercase;
-    font-size: 9.5px;
+    font-size: 11px;
     letter-spacing: 0.1em;
   }
 
@@ -861,7 +861,7 @@ const detail = computed(
     padding: 2px 8px;
     border-radius: 3px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 
