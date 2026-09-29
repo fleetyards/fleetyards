@@ -18,6 +18,9 @@ namespace :me, defaults: {format: :json} do
   resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
     post :rotate
   end
+  resource :rsi_verification, path: "rsi-verification", only: %i[show create destroy] do
+    post :check
+  end
   resource :supporter_claim_key, path: "supporter/claim-key", only: %i[show]
   resources :supporter_contributions, path: "supporter/contributions", only: %i[index update]
   resource :supported_fleet, path: "supporter/fleet", only: %i[show update]

@@ -93,6 +93,9 @@ en:
       update: "A claim can only be shortened while it is open, to a date before the one it ends on now."
       cancel: "This claim is no longer open."
       complete: "The fleet ID did not move: the claim was closed in the meantime, the claimant is no longer verified for it, or a different fleet holds it now and has been given its own notice."
+    user_rsi_verification:
+      check: "Save your RSI handle in your profile before checking."
+      destroy: "A handle verified through Citizen iD is released by disconnecting Citizen iD."
     fleet_notification_settings:
       update: Notification settings could not be updated.
     hangar_group:

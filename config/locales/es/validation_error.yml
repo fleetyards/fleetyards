@@ -266,6 +266,9 @@ es:
       update: "Una reclamación solo se puede acortar mientras está abierta, y solo a una fecha anterior a la de su fin actual."
       cancel: "Esta reclamación ya no está abierta."
       complete: "El ID de flota no se transfirió: la reclamación se cerró entretanto, la flota que reclama ya no está verificada para él, u otra flota lo tiene ahora y ha recibido su propio aviso."
+    user_rsi_verification:
+      check: "Guarda tu handle de RSI en tu perfil antes de comprobar."
+      destroy: "Un handle verificado mediante Citizen iD se libera desconectando Citizen iD."
     fleet_notification_settings:
       update: No se pudieron actualizar los ajustes de notificación.
     version:
