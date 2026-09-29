@@ -80,6 +80,14 @@ FactoryBot.define do
       background_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg") }
     end
 
+    # Past the verification check, which is what the RSI org page is for; the
+    # SID has to be given.
+    trait :rsi_verified do
+      after(:create) do |fleet|
+        fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: fleet.rsi_sid, rsi_verification_status: :verified)
+      end
+    end
+
     trait :with_social_links do
       discord { "https://discord.gg/test" }
       twitch { "https://twitch.tv/test" }

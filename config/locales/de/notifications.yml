@@ -58,6 +58,38 @@ de:
     fleet_rsi_verification_lost:
       title: "%{fleet} ist nicht mehr für %{sid} verifiziert"
       body: "Eine andere Flotte hat ihren Verifizierungscode auf die RSI-Seite der Organisation %{sid} gesetzt und damit gezeigt, dass sie sie verwaltet. Deine Flotte zeigt die SID nicht mehr als verifiziert. Wenn %{sid} deine Organisation ist, verifiziere sie in den Flotteneinstellungen erneut."
+    fleet_fid_claim_opened:
+      title: "%{claimant} beansprucht die Flotten-ID %{fid}"
+      body: "%{claimant} hat nachgewiesen, dass sie die RSI-Organisation %{fid} führt, und darf deshalb die passende Flotten-ID übernehmen. Am %{date} wird %{fleet} in die nächste freie ID wie %{fid}-1 umbenannt, und Links auf %{fid} öffnen dann %{claimant}. Wenn %{fid} deine Organisation ist, verifiziere sie vorher in den Flotteneinstellungen, um die ID zu behalten. Andernfalls sag deinen Mitgliedern Bescheid."
+    fleet_fid_claim_completed:
+      claimant:
+        title: "%{fleet} hat jetzt die Flotten-ID %{fid}"
+        body: "Die Schonfrist ist vorbei, und die Flotten-ID %{fid} gehört euch. Links auf %{fid} öffnen jetzt deine Flotte."
+      holder:
+        title: "%{fleet} heißt jetzt %{new_fid}"
+        body: "Die Flotten-ID %{fid} ist an %{claimant} gegangen, die für die RSI-Organisation %{fid} verifiziert ist. ID und Adresse deiner Flotte lauten jetzt %{new_fid}, und alte Links auf %{fid} öffnen %{claimant}."
+    fleet_fid_claim_cancelled:
+      holder_withdrawn:
+        title: "Der Anspruch auf %{fid} wurde zurückgezogen"
+        body: "%{claimant} hat ihren Anspruch zurückgezogen, %{fleet} behält also die Flotten-ID %{fid}."
+      holder_holder_verified:
+        title: "%{fleet} behält die Flotten-ID %{fid}"
+        body: "Deine Flotte ist jetzt für die RSI-Organisation %{fid} verifiziert, deshalb ist der Anspruch von %{claimant} beendet."
+      holder_claimant_unverified:
+        title: "Der Anspruch auf %{fid} ist beendet"
+        body: "%{claimant} ist nicht mehr für die RSI-Organisation %{fid} verifiziert, %{fleet} behält also die Flotten-ID."
+      holder_admin:
+        title: "Der Anspruch auf %{fid} wurde abgebrochen"
+        body: "Ein Administrator hat den Anspruch von %{claimant} abgebrochen, %{fleet} behält also die Flotten-ID %{fid}."
+      claimant_holder_verified:
+        title: "Dein Anspruch auf %{fid} ist beendet"
+        body: "%{holder} hat nachgewiesen, dass sie die RSI-Organisation %{fid} führt. %{fleet} ist deshalb nicht mehr dafür verifiziert, und der Anspruch ist beendet."
+      claimant_claimant_unverified:
+        title: "Dein Anspruch auf %{fid} ist beendet"
+        body: "%{fleet} ist nicht mehr für die RSI-Organisation %{fid} verifiziert, deshalb ist der Anspruch beendet."
+      claimant_admin:
+        title: "Dein Anspruch auf %{fid} wurde abgebrochen"
+        body: "Ein Administrator hat den Anspruch von %{fleet} auf die Flotten-ID %{fid} abgebrochen."
     fleet_member_accepted:
       title: "%{username} ist %{fleet} beigetreten"
     fleet_request_accepted:

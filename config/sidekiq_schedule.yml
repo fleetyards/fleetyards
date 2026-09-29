@@ -49,6 +49,9 @@ patreon_supporter_sync_job:
   class: 'PatreonSupporterSyncJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? && PatreonSupporterSyncJob.configured? %>
+fleet_fid_claims_complete_job:
+  cron: '*/10 * * * *' # Every 10 Minutes
+  class: 'FleetFidClaimsCompleteJob'
 metrics_job:
   cron: '0 1 */1 * *' # Daily at 1:00
   class: 'MetricsJob'

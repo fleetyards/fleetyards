@@ -422,6 +422,7 @@ fr:
         fleet:
           not_an_rsi_sid: "doit être le SID de la page RSI de ton organisation, par exemple TEST"
           locked_while_verified: "est vérifié et ne peut pas être modifié ; demande d’abord au support de révoquer la vérification"
+          reserved: "est réclamé par la flotte vérifiée pour cette organisation RSI et ne peut pas être pris"
         fleet_squadron:
           attributes:
             team:

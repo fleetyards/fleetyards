@@ -886,6 +886,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_130000) do
     t.index ["mission_id"], name: "index_fleet_events_on_mission_id"
   end
 
+  create_table "fleet_fid_claims", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "claimant_id", null: false
+    t.uuid "holder_id"
+    t.uuid "created_by"
+    t.string "fid", null: false
+    t.string "state", default: "open", null: false
+    t.string "cancel_reason"
+    t.datetime "ends_at", null: false
+    t.datetime "completed_at"
+    t.datetime "cancelled_at"
+    t.string "holder_previous_fid"
+    t.string "holder_new_fid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["claimant_id"], name: "index_fleet_fid_claims_on_claimant_id"
+    t.index ["fid"], name: "index_fleet_fid_claims_on_open_fid", unique: true, where: "((state)::text = 'open'::text)"
+    t.index ["holder_id"], name: "index_fleet_fid_claims_on_holder_id"
+    t.index ["state", "ends_at"], name: "index_fleet_fid_claims_on_state_and_ends_at"
+  end
+
   create_table "fleet_inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -2557,6 +2577,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_130000) do
   add_foreign_key "fleet_events", "fleets"
   add_foreign_key "fleet_events", "missions"
   add_foreign_key "fleet_events", "users", column: "created_by_id"
+  add_foreign_key "fleet_fid_claims", "fleets", column: "claimant_id", on_delete: :cascade
+  add_foreign_key "fleet_fid_claims", "fleets", column: "holder_id", on_delete: :nullify
   add_foreign_key "fleet_inventories", "fleets"
   add_foreign_key "fleet_inventories", "users", column: "managed_by"
   add_foreign_key "fleet_inventory_items", "fleet_inventories"

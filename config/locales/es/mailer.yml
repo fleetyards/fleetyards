@@ -50,6 +50,8 @@ es:
         su cuenta.
       expires: Este código expirará en 10 minutos.
       subject: Su código de confirmación
+    fleet:
+      action: "Abrir los ajustes de la flota"
     hello: Hola %{username}
     model:
       new:

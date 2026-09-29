@@ -47,6 +47,8 @@ zh-TW:
       body: 請使用以下驗證碼確認存取您的帳戶設定。
       expires: 此驗證碼將在 10 分鐘後過期。
       subject: 您的確認碼
+    fleet:
+      action: "開啟艦隊設定"
     hello: 你好 %{username}
     model:
       new:

@@ -3,104 +3,83 @@
 Working plan for #5273. Decisions live in the issue body. Deleted before the PR merges.
 
 ## Goal
-A fleet can prove it controls an RSI org by putting a token on the org page. A verified fleet can then claim the FID equal to its SID from whoever holds it, after a 14-day grace period.
+A fleet verified for an RSI SID can claim the FID equal to that SID from whichever fleet holds it. The holder gets 14 days to prove the SID itself or tell its members; then it is renamed to the next free `X-N` and the claimant gets `X`.
 
-Two stacked PRs:
-- PR 1 (this branch): normalisation and verification.
-- PR 2: FID claims.
+PR 1 (normalisation and verification) merged as #5274. This branch is PR 2, FID claims, cut from `main`.
 
 ## Open questions
-- None for PR 1.
+- None.
 
-## What changed
+## Design
 
-### Phase 1 — Normalise `rsi_sid`
-1. `Fleet#rsi_sid=`: trim; extract the SID from `robertsspaceindustries.com/(en/)orgs/<SID>` with or without a scheme; strip `[]` and a trailing `/`; upcase. A leading `@` marks a citizen handle, so it is left in for the format check to reject.
-2. Validate format `/\A[A-Z0-9]{1,10}\z/`, allow blank.
-3. Data migration in `db/data/`: normalise every kept and discarded fleet; set values that still fail the format to nil. Test it in `test/migrations/`.
-4. `verify_fleet_memberships` keeps `UPPER(rsi_sid)` working. Now that the column is canonical, compare it directly.
+### Model: `FleetFidClaim` (`fleet_fid_claims`)
+- `claimant_id` (fleet, cascade), `holder_id` (fleet, nullify), `created_by` (user), `fid` (the SID, uppercase).
+- `state`: `open`, `completed`, `cancelled`. `cancel_reason`: `withdrawn`, `holder_verified`, `claimant_unverified`, `admin`.
+- `ends_at`, `completed_at`, `cancelled_at`, `holder_previous_fid`, `holder_new_fid`.
+- Partial unique index on `fid` where `state = 'open'`; index on `(state, ends_at)`.
 
-### Phase 2 — Verification model and job
-1. Migration: `rsi_verification_token`, `rsi_verification_checked_at`, `rsi_verified_at`, `rsi_verified_sid`, plus a partial unique index on `rsi_verified_sid` where `discarded_at IS NULL`.
-2. `Fleet`:
-   - `rsi_verified?`
-   - `reset_rsi_verification` when `rsi_sid` changes
-   - `generate_rsi_verification_token!`
-   - clear the verification on discard, so the SID is freed
-3. `Rsi::OrgPageVerifier` (app/lib/rsi): Typhoeus GET `/en/orgs/<SID>`. Returns `:verified`, `:token_missing`, `:symbol_mismatch`, `:not_found` or `:error`. Blocked requests are recorded via `RsiRequestLog`, like `BaseLoader`.
-4. `FleetRsiVerificationJob` (Sidekiq):
-   - runs the verifier
-   - on success, takes the SID away from any other kept fleet, then sets the fields; all in one transaction
-   - notifies the previous fleet's managers
-   - broadcasts the result
-5. No cable channel: the status is stored on the fleet and the panel polls while it is `pending` (see Discovery Log).
+### Rules
+- Claimable when the fleet is verified, its verified SID is a valid FID (3+ characters), it does not already hold that FID, and another kept fleet does.
+- If nobody holds it, the fleet can simply set its FID; there is nothing to claim.
+- An FID with an open claim is reserved: only the claimant may take it, and the holder cannot rename back to it after leaving it.
+- Cancelled when the claimant loses its verification: a takeover (reason `holder_verified` when the holder is the new verifier), an admin revoke, or discarding the claimant.
+- Completion rechecks everything under locks: the claimant must still be kept and verified for the FID. The current holder, if any, is renamed to the next free `X-N`, and then the claimant takes `X`.
+- A cron sweep completes due claims every 10 minutes. An admin who shortens a claim to now also enqueues the sweep.
 
-### Phase 3 — API
-1. `POST /fleets/:slug/rsi-verification` generates or rotates the token.
-2. `POST /fleets/:slug/rsi-verification/check` queues the job; inside the cooldown it answers with the current state and queues nothing.
-3. `GET /fleets/:slug/rsi-verification` returns the status, token and last check.
-4. The policy gates all three on `fleet:manage`.
-5. Schemas and `generate-schema`.
-6. `rsiVerified` on the fleet schemas.
-7. Public jbuilder: `rsi_sid` only when verified.
-8. Admin:
-   - verified column (the filter was dropped: a column was enough to find one)
-   - `DELETE /admin/.../fleets/:id/rsi-verification` to revoke
+### Notifications
+- `fleet_fid_claim_opened` goes to the holder's managers. `fleet_fid_claim_completed` and `fleet_fid_claim_cancelled` go to both sides (a claimant that withdrew is not told). All three use app and mail.
+- `fleet_rsi_verification_lost` gains mail, as the issue decided.
+- `FleetMailer.notification` is one generic template: title, body, and a button to the link.
 
-### Phase 4 — Frontend
-1. Fleet settings (`settings/fleet.vue`) gets a verification panel:
-   - token with copy
-   - link to the RSI org page
-   - check button
-   - the result by polling while the check is pending
-2. The public page (`[slug]/index.vue`) shows the RSI link only when verified, plus a verified or unverified mark.
-3. Settings banner for an SID-shaped FID on an unverified fleet.
-4. Admin fleets list column and a revoke action on the detail page.
-5. Hand-translate the labels into all 7 locales. Notification types need entries in `notification_examples.rb`.
+### API
+- `GET/POST/DELETE /fleets/:slug/fid-claim` (`fleet:manage`): the status for the fleet (`availability`, claimable `fid`, `outgoing` and `incoming` claims), open a claim, withdraw one.
+- `POST /fleets/check` answers with `FleetFidCheck` (`taken`, plus `suggestion` when a taken value is shaped like an SID).
+- `FleetCreateInput` accepts `rsiSid`.
+- Admin: `GET /fleet-fid-claims` (open claims), `PATCH /fleet-fid-claims/:id` (`endsAt`, earlier only), `PUT /fleet-fid-claims/:id/cancel`.
 
-## Intent Verification
-
-- [ ] **A fleet proves an org**: with the token on a fixture org page, the check verifies the fleet. A missing token, a symbol mismatch and a 404 each leave it unverified with a distinct error.
-- [ ] **Latest proof wins**: fleet B verifying an SID already held by fleet A moves it, and A's managers get a notification.
-- [ ] **Changing `rsi_sid` unverifies**, and so does an admin revoke.
-- [ ] **Public output hides an unverified SID**: the public JSON has no `rsiSid` for an unverified fleet.
-- [ ] **Normalisation**: a URL, a lowercase value, surrounding whitespace, `[GIT]` and `VERSEGUARD/` all store the bare SID; a handle or `#123` is rejected.
-- [ ] **Membership verification** matches a fleet that previously stored an org URL.
+### Frontend
+- `settings/rsi.vue`: a claim panel for the claimant (claim, pending, withdraw) and a danger alert for the holder.
+- Fleet page: the holder's managers see the incoming claim in place of the at-risk warning.
+- `add.vue`: when a taken FID looks like an SID, explain claiming and offer `X-N` with the SID prefilled; after creation, open the RSI settings.
+- Admin: `fleets/fid-claims/` list with end-now, set-date and cancel actions, linked from the fleets index.
+- All labels in 7 locales.
 
 ## Key files
 
 | File | Role |
 |------|------|
-| `app/models/fleet.rb` | normalisation, validation, verification helpers |
-| `app/controllers/omniauth_callbacks_controller.rb:204` | `verify_fleet_memberships` SID match |
-| `app/policies/fleet_policy.rb` | `fleet:manage` gate, `params_filter` |
-| `app/lib/rsi/base_loader.rb` | Typhoeus and `RsiRequestLog` pattern |
-| `app/models/notification.rb`, `app/models/fleet_membership.rb:362` | fleet manager notifications |
-| `app/views/api/v1/public/fleets/_base.jbuilder` | public SID exposure |
-| `app/frontend/frontend/pages/fleets/[slug]/settings/fleet.vue` | settings form |
-| `app/frontend/frontend/pages/fleets/[slug]/index.vue:122` | public RSI link |
-| `app/frontend/admin/pages/fleets/index.vue` | admin column |
-| `test/fixtures/rsi/` | org page fixture |
+| `app/models/fleet_fid_claim.rb` | claim lifecycle |
+| `app/models/fleet.rb` | reservation validation, `next_free_fid` |
+| `app/lib/fleet_rsi_verification.rb` | cancel on takeover |
+| `app/jobs/fleet_fid_claims_complete_job.rb` | sweep |
+| `app/controllers/api/v1/fleet_fid_claims_controller.rb` | fleet API |
+| `app/controllers/admin/api/v1/fleet_fid_claims_controller.rb` | admin API |
+| `app/mailers/fleet_mailer.rb` | notification mail |
+
+## Intent Verification
+
+- [ ] A verified fleet claims its SID's FID; the holder's managers get an app notification and a mail.
+- [ ] Only the verified SID can be claimed: no body parameter, and each non-claimable state answers 400.
+- [ ] Completion renames the holder to `X-1` (or the next free suffix) and gives the claimant `X`; both are notified.
+- [ ] The holder verifying the SID during the grace period cancels the claim, and so does a revoke.
+- [ ] While a claim is open, no other fleet can register the FID.
+- [ ] Admin lists open claims, shortens one and cancels one.
+- [ ] Creating a fleet with a taken SID-shaped FID suggests `X-N` with the SID prefilled.
 
 ## Not in scope (deferred)
-- **FID claims, grace period, rename to `X-N`** — PR 2, stacked on this branch, same issue.
-- **Public fleet directory** — its own issue after #5273; `listed` opt-in, verified, at least 2 accepted members.
+- **Public fleet directory**: its own issue; `listed` opt-in, verified, at least 2 accepted members.
 
 ## Discovery Log
 
-- **2026-09-28** Initial research and plan. `rsi_sid` has no validation or index. The public schema reuses `v1/schemas/fleets/fleet.rb`. Controllers have no per-record rate limiting.
-- **2026-09-28** Cooldown is `rsi_verification_checked_at` on the fleet. A check inside it answers with the current state and does not reach RSI.
-- **2026-09-28** Dropped the cable channel. The check takes about a second, so `rsi_verification_status` on the fleet plus a 2s poll while `pending` is enough, and it avoids a channel, its asyncapi entry and a generated client.
-- **2026-09-28** `api/v1/public/fleets/_base.jbuilder` had not been rendered since the Vue 3 migration; the public payload renders the members' partial. Deleted it. The public partial gets its own cache key and a `visitor` flag, because Jbuilder is `ignore_nil`, so assigning nil after the cached block cannot remove the key.
-- **2026-09-28** `[slug].vue` raced the public and members' fleet queries, and a member's settings form could seed itself from the visitor payload. Once the payload hid an unverified SID, the field came up empty. A signed-in reader now falls back to the public payload only once the members' copy is refused.
-- **2026-09-28** The lost-verification notification is app-only in PR 1. The mail comes with FID claims in PR 2, which needs a mailer anyway.
-- **2026-09-29** The fleet page moved to its own "Fleet ID & RSI" settings page. The check runs in a modal, the SID is locked once verified, and every fleet carries a token from creation.
-- **2026-09-29** Fleet `updated_at` keeps whole seconds, so the fleet fragment keys carry `rsi_verified?` as well.
-- **2026-09-28** The data migration cannot reach RSI, so SID-shaped values that RSI answers with 404 are kept. They stay unverified and hidden publicly.
+- **2026-09-29** The PR 1 plan landed on `main` with #5274 instead of being deleted. This branch reuses it and deletes it before merge.
+- **2026-09-29** An outsider hitting a fleet endpoint gets 404 from `authorized_scope`, not 403, so the 403 cases use a member without `fleet:manage`.
+- **2026-09-29** The admin claim components are `AdminFleetFidClaim(s)`: a second `FleetFidClaim` component would exist in both documents.
+- **2026-09-29** The admin page offers "end now" and cancel. Any earlier date works through `PATCH`, but a date picker was not worth its weight for a rare admin action.
 
 ## Progress
-- [x] Phase 1 — normalise `rsi_sid`
-- [x] Phase 2 — verification model and job
-- [x] Phase 3 — API
-- [x] Phase 4 — frontend
-- [ ] PR 2 — FID claims
+- [x] PR 1: normalisation and verification (#5274)
+- [x] Model, migration, completion, cancellation
+- [x] Notifications and mailer
+- [x] API and schema
+- [x] Frontend
+- [x] Admin

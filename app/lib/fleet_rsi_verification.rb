@@ -86,7 +86,10 @@ class FleetRsiVerification
 
     return if applied == :stale
 
-    previous.each { |other| notify_lost(other, sid) }
+    previous.each do |other|
+      notify_lost(other, sid)
+      FleetFidClaim.cancel_for_lost_verification!(other, verified_by: fleet)
+    end
 
     applied
   rescue ActiveRecord::RecordNotUnique, ActiveRecord::Deadlocked

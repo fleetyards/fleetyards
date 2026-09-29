@@ -1,0 +1,20 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @user.username) %>
+</mj-text>
+
+<mj-text>
+  <%= @notification.title %>
+</mj-text>
+
+<% if @notification.body.present? %>
+  <mj-text>
+    <%= @notification.body %>
+  </mj-text>
+<% end %>
+
+<% if @link.present? %>
+  <%= render "shared/mailer/btn",
+             href: @link,
+             label: I18n.t("mailer.fleet.action"),
+             tone: :primary %>
+<% end %>
