@@ -253,7 +253,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -301,7 +301,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
   justify-content: space-between;
   gap: 10px;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: $gray;
@@ -314,7 +314,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 
   &__unit {
     font-family: "Open Sans", sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: none;
     color: $gray;
@@ -368,7 +368,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 .availability__premium {
   flex: none;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 8.5px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: $gray;

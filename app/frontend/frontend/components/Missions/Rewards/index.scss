@@ -12,10 +12,10 @@
   }
 
   // The micro-label the metrics cards, their tiles and the catalogue rows all
-  // share: Orbitron 10px at .16em.
+  // share: Orbitron 11px at .16em.
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);

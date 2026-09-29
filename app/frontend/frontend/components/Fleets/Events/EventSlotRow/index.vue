@@ -381,7 +381,7 @@ const submitSignup = async () => {
   flex: none;
   white-space: nowrap;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-gray-light, #7a8288);

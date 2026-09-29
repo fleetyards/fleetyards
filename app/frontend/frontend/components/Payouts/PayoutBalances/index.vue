@@ -193,7 +193,7 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
 }
 
 .payout-balances__tag {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 1px 6px;

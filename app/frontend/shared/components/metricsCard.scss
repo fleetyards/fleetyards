@@ -68,7 +68,7 @@
 
   &__section-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: $gray-light;
@@ -85,7 +85,7 @@
 
     &-label {
       font-family: "Orbitron", tahoma, sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: $gray-light;
@@ -146,7 +146,7 @@
 
     &__label {
       font-family: "Orbitron", tahoma, sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: $gray-light;
@@ -193,7 +193,7 @@
   &__toggle {
     @include touch-tap-target;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 6px 13px;
@@ -249,11 +249,17 @@
 
     &__label {
       font-family: "Orbitron", tahoma, sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: $gray-light;
       margin-bottom: 7px;
+
+      // Three tiles share a phone's width, and at this size the wide tracking
+      // pushed "INVENTORY" into the tile's edge.
+      @media (max-width: 576px) {
+        letter-spacing: 0.1em;
+      }
     }
 
     &__value {

@@ -155,7 +155,7 @@ const { t } = useI18n();
   border: 1px solid rgba(white, 0.15);
   border-radius: 4px;
   color: rgba(white, 0.75);
-  font-size: 0.65rem;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;

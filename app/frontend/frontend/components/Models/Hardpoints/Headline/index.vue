@@ -44,7 +44,7 @@ defineProps<Props>();
   display: block;
   margin-top: 1px;
   color: $gray-light;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

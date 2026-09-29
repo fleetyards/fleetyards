@@ -458,7 +458,7 @@ const cellHeight = (span: number) =>
     background: transparent;
     border: 0;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -524,7 +524,7 @@ const cellHeight = (span: number) =>
   }
 
   &__axis {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     color: $gray;
     margin-left: 2px;

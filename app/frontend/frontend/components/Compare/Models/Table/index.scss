@@ -92,7 +92,7 @@
 
 .compare-table__count {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: $gray;
@@ -220,14 +220,14 @@
 
 .compare-table__tag {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 8.5px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: $gold;
 }
 
 .compare-table__mfr {
-  font-size: 10.5px;
+  font-size: 11px;
   color: $gray-light;
 }
 
@@ -288,6 +288,8 @@
   background: none;
   border: 0;
   cursor: pointer;
+
+  @include touch-tap-target;
 
   i {
     font-size: 9px;
@@ -375,7 +377,7 @@
 .compare-table__unit {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 0.06em;
   color: $gray;
 }
@@ -474,7 +476,7 @@
   }
 
   &--base {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gold;
@@ -502,7 +504,7 @@
 
   &__label {
     font-family: "Open Sans", sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     color: $gray;
   }
 
@@ -555,7 +557,7 @@
 
 .compare-table__legend-title {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: $gray-light;

@@ -30,7 +30,7 @@
 
   &__name {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10.5px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;
@@ -38,7 +38,7 @@
 
   &__gate {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-warning, #fa6800);
@@ -102,7 +102,7 @@
 
   &__quality-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-muted, #7a8288);
@@ -127,7 +127,7 @@
     background: none;
     border: 0;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--color-muted, #7a8288);
@@ -375,7 +375,7 @@
   // is the thing that stands out.
   &__held-tag {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-gray, #52575c);

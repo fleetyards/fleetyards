@@ -478,7 +478,7 @@ onUnmounted(() => {
     background: rgb(0 0 0 / 0.28);
     border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-gray-light, #7a8288);

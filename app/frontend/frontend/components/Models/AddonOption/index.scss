@@ -147,6 +147,8 @@ $phone-indent: 82px;
   border: 0;
   cursor: pointer;
 
+  @include touch-tap-target;
+
   &:hover:not(:disabled) {
     color: #fff;
   }
