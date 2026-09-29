@@ -157,6 +157,7 @@ const cssClasses = computed(() => [
     "btn--grouped-block":
       container?.container === "group" && container.block.value,
     "btn--menu-item": container?.container === "menu",
+    "btn--unclipped": !props.clipLabel,
     active: props.active,
     "is-loading": props.loading,
   },
@@ -500,6 +501,13 @@ const handleClick = (event: MouseEvent) => {
 
 .btn--block {
   @apply w-full;
+}
+
+/* A label that may overhang no longer ends in an ellipsis on its own, so the
+   button is held to its container instead, and whatever the label truncates
+   inside it gets a width to truncate against. */
+.btn--unclipped {
+  @apply max-w-full min-w-0;
 }
 
 .btn__content--unclipped {

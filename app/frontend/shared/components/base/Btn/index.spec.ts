@@ -53,6 +53,9 @@ describe("BaseBtn", () => {
     expect(
       mountBtn({ clipLabel: false }).find(".btn__content").classes(),
     ).toContain("btn__content--unclipped");
+    expect(mountBtn({ clipLabel: false }).classes()).toContain(
+      "btn--unclipped",
+    );
   });
 
   it("renders an anchor for href", () => {
