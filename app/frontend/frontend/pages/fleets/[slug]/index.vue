@@ -300,10 +300,7 @@ const description = computed(() => {
 }
 
 // Centred on the FID's right edge, so it overlaps the last letter and reads
-// as marking that FID whatever its size. Opaque:
-// the duotone badge's own secondary layer is translucent, and the letter
-// underneath showed through it. The check is drawn in the text colour
-// rather than cut out in the page colour, so it reads the same on a panel.
+// as marking that FID whatever its size.
 .fid-badge {
   position: absolute;
   z-index: 1;
@@ -312,9 +309,6 @@ const description = computed(() => {
   transform: translate(50%, 0);
   font-size: 0.45em;
   line-height: 1;
-  --fa-primary-color: var(--color-text, #c8c8c8);
-  --fa-secondary-color: currentColor;
-  --fa-secondary-opacity: 1;
 }
 
 .squadrons {
