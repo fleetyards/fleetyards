@@ -124,6 +124,9 @@
           "inventories": "Inventaires",
           "inventoryItems": "Entrées"
         },
+        "fleetFidClaims": {
+          "index": "Réclamations d’ID de flotte"
+        },
         "destroyedFleets": {
           "index": "Flottes détruites"
         },

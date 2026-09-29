@@ -406,6 +406,18 @@
         "rsiSettings": {
           "hint": "Die Flotten-ID ist die Adresse deiner Flotte auf Fleetyards. Die SID verknüpft die Flotte mit ihrer RSI-Organisation, und die Verifizierung zeigt, dass die Organisation dir gehört."
         },
+        "fidClaim": {
+          "claimableTitle": "Flotten-ID %{fid} beanspruchen",
+          "claimable": "Deine Flotte ist für die RSI-Organisation %{fid} verifiziert, aber eine andere Flotte hat die Flotten-ID %{fid}. Wenn du sie beanspruchst, hat diese Flotte 14 Tage Zeit, die Organisation selbst nachzuweisen oder ihre Mitglieder zu informieren. Danach wird sie umbenannt, und %{fid} wird die ID deiner Flotte.",
+          "pendingTitle": "Anspruch auf %{fid} läuft",
+          "pending": "%{holder} behält %{fid} bis %{date}. Danach geht die ID an deine Flotte, außer diese Flotte weist vorher nach, dass sie die Organisation %{fid} führt.",
+          "availableTitle": "Die Flotten-ID %{fid} ist frei",
+          "available": "Deine Flotte ist für %{fid} verifiziert, und keine andere Flotte nutzt diese ID. Trag sie oben als Flotten-ID ein.",
+          "incomingTitle": "%{claimant} beansprucht eure Flotten-ID",
+          "incoming": "%{claimant} ist für die RSI-Organisation %{fid} verifiziert. Am %{date} wird deine Flotte in die nächste freie ID wie %{fid}-1 umbenannt, und Links auf %{fid} öffnen dann %{claimant}. Wenn %{fid} deine Organisation ist, verifiziere sie vorher, um die ID zu behalten. Andernfalls sag deinen Mitgliedern Bescheid.",
+          "createTakenTitle": "%{fid} ist vergeben",
+          "createTaken": "Wenn %{fid} deine RSI-Organisation ist, starte mit %{suggestion} und der SID %{fid}. Sobald deine Flotte für %{fid} verifiziert ist, kann sie die Flotten-ID von der Flotte beanspruchen, die sie hat."
+        },
         "rsiVerification": {
           "steps": {
             "copy": "Kopiere deinen Verifizierungscode",
@@ -2568,6 +2580,9 @@
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
         "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
+        "fleet_fid_claim_opened": "Flotten-ID beansprucht",
+        "fleet_fid_claim_completed": "Flotten-ID übertragen",
+        "fleet_fid_claim_cancelled": "Anspruch auf Flotten-ID beendet",
         "fleet_rsi_verification_lost": "Flottenverifizierung verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt",
         "fleet_contract_settled": "Auftrag ausgezahlt",

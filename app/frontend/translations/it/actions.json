@@ -221,6 +221,13 @@
       "destroyFleet": "Distruggi flotta",
       "restore": "Ripristina",
       "fleet": {
+        "fidClaim": {
+          "claim": "Rivendica %{fid}",
+          "withdraw": "Ritira la rivendicazione",
+          "useSuggestion": "Usa %{suggestion}",
+          "endNow": "Termina ora il periodo di tolleranza",
+          "cancel": "Annulla la rivendicazione"
+        },
         "rsiVerification": {
           "verify": "Verifica",
           "regenerateToken": "Genera un nuovo codice",

@@ -406,6 +406,18 @@
         "rsiSettings": {
           "hint": "L’ID de flotte est l’adresse de ta flotte sur Fleetyards. Le SID relie la flotte à son organisation RSI, et le vérifier prouve que l’organisation t’appartient."
         },
+        "fidClaim": {
+          "claimableTitle": "Réclamer l’ID de flotte %{fid}",
+          "claimable": "Ta flotte est vérifiée pour l’organisation RSI %{fid}, mais une autre flotte détient l’ID de flotte %{fid}. Si tu le réclames, cette flotte a 14 jours pour prouver elle-même l’organisation ou prévenir ses membres. Ensuite elle est renommée et %{fid} devient l’ID de ta flotte.",
+          "pendingTitle": "Réclamation de %{fid} en cours",
+          "pending": "%{holder} garde %{fid} jusqu’au %{date}. Ensuite l’ID passe à ta flotte, sauf si cette flotte prouve d’ici là qu’elle gère l’organisation %{fid}.",
+          "availableTitle": "L’ID de flotte %{fid} est libre",
+          "available": "Ta flotte est vérifiée pour %{fid} et aucune autre flotte n’utilise cet ID. Indique-le plus haut comme ID de ta flotte.",
+          "incomingTitle": "%{claimant} réclame l’ID de ta flotte",
+          "incoming": "%{claimant} est vérifiée pour l’organisation RSI %{fid}. Le %{date}, ta flotte sera renommée avec le prochain ID libre, comme %{fid}-1, et les liens vers %{fid} ouvriront %{claimant}. Si %{fid} est ton organisation, vérifie-la avant pour garder l’ID. Sinon, préviens tes membres.",
+          "createTakenTitle": "%{fid} est déjà pris",
+          "createTaken": "Si %{fid} est ton organisation RSI, commence avec %{suggestion} et le SID %{fid}. Dès que ta flotte est vérifiée pour %{fid}, elle peut réclamer l’ID de flotte à la flotte qui le détient."
+        },
         "rsiVerification": {
           "steps": {
             "copy": "Copie ton code de vérification",
@@ -2568,6 +2580,9 @@
         "fleet_contract_crew_answered": "Demande d'équipage traitée",
         "fleet_subscription_started": "Fonctionnalités de flotte activées",
         "fleet_subscription_ended": "Fonctionnalités de flotte perdues",
+        "fleet_fid_claim_opened": "ID de flotte réclamé",
+        "fleet_fid_claim_completed": "ID de flotte transféré",
+        "fleet_fid_claim_cancelled": "Réclamation d’ID de flotte terminée",
         "fleet_rsi_verification_lost": "Vérification de flotte perdue",
         "fleet_contract_fulfilled": "Contrat rempli",
         "fleet_contract_settled": "Contrat payé",

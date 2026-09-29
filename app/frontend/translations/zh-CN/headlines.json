@@ -124,6 +124,9 @@
           "inventories": "舰队库存",
           "inventoryItems": "库存条目"
         },
+        "fleetFidClaims": {
+          "index": "舰队 ID 申领"
+        },
         "destroyedFleets": {
           "index": "已删除舰队"
         },

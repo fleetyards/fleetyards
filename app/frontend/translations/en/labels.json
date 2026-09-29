@@ -406,6 +406,18 @@
         "rsiSettings": {
           "hint": "The fleet ID is your fleet's address on Fleetyards. The SID links the fleet to its RSI organisation, and verifying it proves the organisation is yours."
         },
+        "fidClaim": {
+          "claimableTitle": "Claim the fleet ID %{fid}",
+          "claimable": "Your fleet is verified for the RSI organisation %{fid}, but another fleet holds the fleet ID %{fid}. If you claim it, that fleet has 14 days to prove the organisation itself or tell its members. Then it is renamed, and %{fid} becomes your fleet ID.",
+          "pendingTitle": "Claim on %{fid} pending",
+          "pending": "%{holder} keeps %{fid} until %{date}. Then the ID moves to your fleet, unless that fleet proves it runs the organisation %{fid} first.",
+          "availableTitle": "The fleet ID %{fid} is free",
+          "available": "Your fleet is verified for %{fid}, and no other fleet uses that ID. Set it as your fleet ID above.",
+          "incomingTitle": "%{claimant} claims your fleet ID",
+          "incoming": "%{claimant} is verified for the RSI organisation %{fid}. On %{date}, your fleet will be renamed to the next free ID, such as %{fid}-1, and links to %{fid} will open %{claimant}. If %{fid} is your organisation, verify it before then to keep the ID. Otherwise, let your members know.",
+          "createTakenTitle": "%{fid} is taken",
+          "createTaken": "If %{fid} is your RSI organisation, start with %{suggestion} and the SID %{fid}. Once your fleet is verified for %{fid}, it can claim the fleet ID from the fleet that holds it."
+        },
         "rsiVerification": {
           "steps": {
             "copy": "Copy your verification token",
@@ -2582,6 +2594,9 @@
         "fleet_contract_crew_answered": "Contract crew request answered",
         "fleet_subscription_started": "Fleet features unlocked",
         "fleet_subscription_ended": "Fleet features lost",
+        "fleet_fid_claim_opened": "Fleet ID claimed",
+        "fleet_fid_claim_completed": "Fleet ID moved",
+        "fleet_fid_claim_cancelled": "Fleet ID claim ended",
         "fleet_rsi_verification_lost": "Fleet verification lost",
         "fleet_contract_fulfilled": "Contract fulfilled",
         "fleet_contract_settled": "Contract paid out",

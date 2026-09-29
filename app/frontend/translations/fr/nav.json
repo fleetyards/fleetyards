@@ -267,6 +267,9 @@
           "roles": "Rôles",
           "inventories": "Inventaires"
         },
+        "fleetFidClaims": {
+          "index": "Réclamations de FID"
+        },
         "destroyedFleets": {
           "index": "Flottes détruites"
         },

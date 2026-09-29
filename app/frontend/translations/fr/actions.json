@@ -221,6 +221,13 @@
       "destroyFleet": "Détruire la flotte",
       "restore": "Restaurer",
       "fleet": {
+        "fidClaim": {
+          "claim": "Réclamer %{fid}",
+          "withdraw": "Retirer la réclamation",
+          "useSuggestion": "Utiliser %{suggestion}",
+          "endNow": "Terminer le délai de grâce maintenant",
+          "cancel": "Annuler la réclamation"
+        },
         "rsiVerification": {
           "verify": "Vérifier",
           "regenerateToken": "Générer un nouveau code",

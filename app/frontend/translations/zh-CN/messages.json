@@ -260,6 +260,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "申领已提交，已通知持有该 ID 的舰队。",
+            "failure": "无法申领该舰队 ID。"
+          },
+          "destroy": {
+            "success": "申领已撤回。",
+            "failure": "无法撤回申领。"
+          },
+          "endNow": {
+            "success": "宽限期已结束。",
+            "failure": "无法结束宽限期。"
+          },
+          "cancel": {
+            "success": "申领已取消。",
+            "failure": "无法取消申领。"
+          }
+        },
         "create": {
           "success": "您的舰队已创建。",
           "failure": "舰队无法保存。"
@@ -500,6 +518,13 @@
             "one": "确定要删除所选通知吗? 此操作无法撤销。",
             "other": "确定要删除所选的 %{count} 条通知吗? 此操作无法撤销。"
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "立即结束宽限期？持有者将被改名，申领方立刻获得该舰队 ID。",
+          "cancel": "取消此申领？双方舰队都会收到通知，持有者保留该舰队 ID。"
+        },
+        "fleetFidClaim": {
+          "create": "申领舰队 ID %{fid}？持有它的舰队会立即收到通知，并在 14 天后失去该 ID，除非它自行证明该 RSI 组织。"
         },
         "adminDestroyedFleet": {
           "restore": "确定要恢复此舰队吗?",

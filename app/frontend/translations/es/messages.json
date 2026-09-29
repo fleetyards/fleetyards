@@ -260,6 +260,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "Reclamación abierta. Se ha avisado a la flota que tiene el ID.",
+            "failure": "No se pudo reclamar el ID de flota."
+          },
+          "destroy": {
+            "success": "Reclamación retirada.",
+            "failure": "No se pudo retirar la reclamación."
+          },
+          "endNow": {
+            "success": "Periodo de gracia terminado.",
+            "failure": "No se pudo terminar el periodo de gracia."
+          },
+          "cancel": {
+            "success": "Reclamación cancelada.",
+            "failure": "No se pudo cancelar la reclamación."
+          }
+        },
         "create": {
           "success": "Tu Flota ha sido creada.",
           "failure": "La Flota no pudo ser guardada."
@@ -500,6 +518,13 @@
             "one": "¿Seguro que quieres borrar la notificación seleccionada? Esta acción no se puede revertir.",
             "other": "¿Seguro que quieres borrar las %{count} notificaciones seleccionadas? Esta acción no se puede revertir."
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "¿Terminar ya el periodo de gracia? La flota que lo tiene cambia de nombre y la que reclama recibe el ID de flota al momento.",
+          "cancel": "¿Cancelar esta reclamación? Se avisa a ambas flotas, y la que lo tiene conserva el ID de flota."
+        },
+        "fleetFidClaim": {
+          "create": "¿Reclamar el ID de flota %{fid}? Se avisa ahora a la flota que lo tiene, y lo pierde en 14 días salvo que demuestre ella misma la organización de RSI."
         },
         "adminDestroyedFleet": {
           "restore": "¿Seguro que quieres restaurar esta flota?",

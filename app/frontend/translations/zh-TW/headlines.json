@@ -124,6 +124,9 @@
           "inventories": "庫存",
           "inventoryItems": "庫存記錄"
         },
+        "fleetFidClaims": {
+          "index": "艦隊 ID 申領"
+        },
         "destroyedFleets": {
           "index": "已刪除艦隊"
         },

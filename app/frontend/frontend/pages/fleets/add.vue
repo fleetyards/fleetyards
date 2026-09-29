@@ -6,12 +6,19 @@ export default {
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
+import { watchDebounced } from "@vueuse/core";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { type FleetCreateInput } from "@/services/fyApi";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
+import { type FleetCreateInput, checkFID } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useCreateFleet as useCreateFleetMutation } from "@/services/fyApi";
@@ -24,6 +31,7 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 const initialValues: FleetCreateInput = {
   name: "",
   fid: "",
+  rsiSid: "",
 };
 
 const validationSchema = {
@@ -31,9 +39,41 @@ const validationSchema = {
   fid: "required|min:3|fidTaken|alpha_dash",
 };
 
-const { setErrors, handleSubmit } = useForm({
+const { setErrors, handleSubmit, values, setFieldValue } = useForm({
   initialValues,
 });
+
+// A taken FID shaped like an SID may be the reader's own RSI org, held by a
+// fleet somebody else made: the answer then offers a free `X-N` to start with,
+// and the org can claim `X` once its fleet is verified.
+const takenFid = ref<string>();
+
+const suggestion = ref<string>();
+
+watchDebounced(
+  () => values.fid,
+  async (fid) => {
+    takenFid.value = undefined;
+    suggestion.value = undefined;
+
+    if (!fid || fid.length < 3) return;
+
+    const result = await checkFID({ value: fid }).catch(() => undefined);
+
+    if (result?.taken && result.suggestion && values.fid === fid) {
+      takenFid.value = fid.toUpperCase();
+      suggestion.value = result.suggestion;
+    }
+  },
+  { debounce: 300 },
+);
+
+const useSuggestion = () => {
+  if (!suggestion.value || !takenFid.value) return;
+
+  setFieldValue("rsiSid", takenFid.value);
+  setFieldValue("fid", suggestion.value);
+};
 
 const submitting = ref(false);
 
@@ -61,9 +101,10 @@ const submit = handleSubmit(async (values) => {
 
       supportPrompt.notifyOnce("fleetCreated", "fleetCreated");
 
+      // A fleet started under a temporary FID goes on to verify its SID.
       router
         .push({
-          name: "fleet",
+          name: fleet.rsiSid ? "fleet-settings-rsi" : "fleet",
           params: { slug: fleet.slug },
         })
         .catch(() => {});
@@ -99,10 +140,41 @@ const submit = handleSubmit(async (values) => {
             :rules="validationSchema.fid"
             translation-key="fleet.fid"
           />
+          <Alert
+            v-if="suggestion && takenFid"
+            :variant="AlertVariantsEnum.INFO"
+            :title="
+              t('labels.fleet.fidClaim.createTakenTitle', { fid: takenFid })
+            "
+            data-test="fleet-fid-suggestion"
+          >
+            {{
+              t("labels.fleet.fidClaim.createTaken", {
+                fid: takenFid,
+                suggestion,
+              })
+            }}
+            <template #actions>
+              <Btn
+                :size="BtnSizesEnum.SM"
+                :variant="BtnVariantsEnum.BARE"
+                data-test="fleet-fid-use-suggestion"
+                @click="useSuggestion"
+              >
+                {{ t("actions.fleet.fidClaim.useSuggestion", { suggestion }) }}
+                <i class="fa-light fa-chevron-right" />
+              </Btn>
+            </template>
+          </Alert>
           <FormInput
             name="name"
             :rules="validationSchema.name"
             translation-key="name"
+          />
+          <FormInput
+            name="rsiSid"
+            icon="icon icon-rsi icon-label"
+            translation-key="fleet.rsiSid"
           />
         </div>
       </div>

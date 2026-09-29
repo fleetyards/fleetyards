@@ -11,9 +11,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { fidAtRisk } from "@/frontend/utils/rsiSid";
-import Alert from "@/shared/components/base/Alert/index.vue";
-import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
+import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -87,11 +85,9 @@ const teamList = computed(() =>
 );
 
 // Only a manager can act on it: verifying is theirs to do.
-const showFidWarning = computed(
+const showFidNotice = computed(
   () =>
-    isMember.value &&
-    (props.membership?.capabilities?.manageFleet ?? false) &&
-    fidAtRisk(props.fleet),
+    isMember.value && (props.membership?.capabilities?.manageFleet ?? false),
 );
 
 const description = computed(() => {
@@ -134,13 +130,7 @@ const description = computed(() => {
           {{ t("labels.fleet.rsiVerification.unverified") }}
         </Pill>
       </p>
-      <Alert
-        v-if="showFidWarning"
-        :variant="AlertVariantsEnum.WARNING"
-        :title="t('labels.fleet.rsiVerification.fidAtRiskTitle')"
-        data-test="fleet-fid-at-risk"
-      >
-        {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
+      <FidNotice v-if="showFidNotice" :fleet="fleet">
         <template #actions>
           <router-link
             :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
@@ -149,7 +139,7 @@ const description = computed(() => {
             <i class="fa-light fa-chevron-right" />
           </router-link>
         </template>
-      </Alert>
+      </FidNotice>
     </div>
   </div>
   <div class="row">

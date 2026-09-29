@@ -267,6 +267,9 @@
           "roles": "角色",
           "inventories": "库存"
         },
+        "fleetFidClaims": {
+          "index": "FID 申领"
+        },
         "destroyedFleets": {
           "index": "已删除舰队"
         },

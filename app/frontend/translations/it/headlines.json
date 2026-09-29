@@ -124,6 +124,9 @@
           "inventories": "Inventari",
           "inventoryItems": "Voci"
         },
+        "fleetFidClaims": {
+          "index": "Rivendicazioni di ID flotta"
+        },
         "destroyedFleets": {
           "index": "Flotte eliminate"
         },

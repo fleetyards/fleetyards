@@ -221,6 +221,13 @@
       "destroyFleet": "解散艦隊",
       "restore": "還原",
       "fleet": {
+        "fidClaim": {
+          "claim": "申領 %{fid}",
+          "withdraw": "撤回申領",
+          "useSuggestion": "使用 %{suggestion}",
+          "endNow": "立即結束寬限期",
+          "cancel": "取消申領"
+        },
         "rsiVerification": {
           "verify": "驗證",
           "regenerateToken": "產生新的驗證碼",

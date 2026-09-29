@@ -260,6 +260,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "Rivendicazione aperta. La flotta che ha l’ID è stata avvisata.",
+            "failure": "Non è stato possibile rivendicare l’ID flotta."
+          },
+          "destroy": {
+            "success": "Rivendicazione ritirata.",
+            "failure": "Non è stato possibile ritirare la rivendicazione."
+          },
+          "endNow": {
+            "success": "Periodo di tolleranza terminato.",
+            "failure": "Non è stato possibile terminare il periodo di tolleranza."
+          },
+          "cancel": {
+            "success": "Rivendicazione annullata.",
+            "failure": "Non è stato possibile annullare la rivendicazione."
+          }
+        },
         "create": {
           "success": "La tua Flotta è stata creata.",
           "failure": "Non è stato possibile salvare la Flotta."
@@ -500,6 +518,13 @@
             "one": "Sei sicuro di voler eliminare la notifica selezionata? Questa azione non può essere annullata.",
             "other": "Sei sicuro di voler eliminare le %{count} notifiche selezionate? Questa azione non può essere annullata."
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "Terminare ora il periodo di tolleranza? La flotta che ha l’ID viene rinominata e quella che lo rivendica lo riceve subito.",
+          "cancel": "Annullare questa rivendicazione? Entrambe le flotte vengono avvisate, e quella che ha l’ID lo tiene."
+        },
+        "fleetFidClaim": {
+          "create": "Rivendicare l’ID flotta %{fid}? La flotta che lo ha viene avvisata ora e perde l’ID tra 14 giorni, a meno che non dimostri lei stessa l’organizzazione RSI."
         },
         "adminDestroyedFleet": {
           "restore": "Sei sicuro di voler ripristinare questa flotta?",
