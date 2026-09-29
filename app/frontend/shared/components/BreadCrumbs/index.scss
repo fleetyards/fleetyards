@@ -14,7 +14,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-inline: auto 20px;
+  margin-inline: 20px;
+}
+
+// Right-aligned beside a trail, and on its own line once it wraps below one.
+.breadcrumb + .stepper {
+  margin-inline-start: auto;
 }
 
 .breadcrumb {
