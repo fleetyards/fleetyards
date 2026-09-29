@@ -1,5 +1,5 @@
 import { useRoute } from "vue-router";
-import logo from "@/images/favicon.png";
+import defaultImage from "@/images/og/default.jpg";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type MetaType = "website" | "article";
@@ -114,7 +114,7 @@ export const useMetaInfo = (options: MetaInfoOptions = {}) => {
 
     const host = `${window.location.protocol}//${window.location.host}`;
 
-    return `${host}${logo}`;
+    return `${host}${defaultImage}`;
   };
 
   const updateMetaInfo = (update?: MetaInfoUpdate) => {
