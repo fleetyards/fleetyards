@@ -297,6 +297,21 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     end
 
     assert_includes ScDataUnlistedModel.undecided, @entry.reload
+    assert_equal "krig_s65_stingray", Model.last.sc_key, "a created ship keeps its own identifier"
+  end
+
+  test "POST reset hands back the identifier a link gave the ship" do
+    existing = create(:model, name: "S-65 Stingray", sc_key: nil, created_at: 1.day.ago)
+    @entry.update!(created_at: 1.hour.ago)
+    @entry.link_to_model!(existing)
+    Sidekiq::Job.clear_all
+
+    sign_in @user
+
+    assert_api_response :post, 200, path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/reset"
+
+    assert_nil existing.reload.sc_key
+    assert_equal [existing.id], Loaders::ScData::ModelJob.jobs.map { |job| job["args"].first }
   end
 
   test "POST ignore needs the models privilege" do

@@ -79,7 +79,8 @@ module Admin
         # stays: deleting a ship is its own action, and a hangar entry may
         # already point at it.
         def reset
-          @sc_data_unlisted_model.reset!
+          released = @sc_data_unlisted_model.reset!
+          Loaders::ScData::ModelJob.perform_async(released.id) if released
         end
 
         # A patch's entries are mostly one decision repeated -- the marker filter
@@ -96,9 +97,10 @@ module Admin
         end
 
         def reset_bulk
-          ScDataUnlistedModel.transaction do
-            @sc_data_unlisted_models.find_each(&:reset!)
+          released = ScDataUnlistedModel.transaction do
+            @sc_data_unlisted_models.find_each.filter_map(&:reset!)
           end
+          released.each { |model| Loaders::ScData::ModelJob.perform_async(model.id) }
 
           head :no_content
         end
