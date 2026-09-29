@@ -56,4 +56,12 @@ describe("i18nHelpers", () => {
       "3 days ago",
     );
   });
+
+  it("writes a UTC timestamp in UTC, whatever the reader's own zone", () => {
+    const { lUtc } = i18nHelpers(i18nIn("en"));
+
+    expect(lUtc("2026-09-29T23:30:00Z", "datetime.formats.date")).toBe(
+      "29 September 2026",
+    );
+  });
 });

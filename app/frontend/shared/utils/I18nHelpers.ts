@@ -1,6 +1,6 @@
 import type { I18n } from "i18n-js";
 import { parseISO, formatDistance, type Locale } from "date-fns";
-import { format } from "date-fns-tz";
+import { format, formatInTimeZone } from "date-fns-tz";
 import { de } from "date-fns/locale/de";
 import { enUS } from "date-fns/locale/en-US";
 import { es } from "date-fns/locale/es";
@@ -45,9 +45,10 @@ export const i18nHelpers = (i18n: I18n) => {
   const l = (value: string, dateFormat = "datetime.formats.default") =>
     format(parseISO(value), i18n.t(dateFormat), { locale: dateLocale() });
 
+  // formatInTimeZone, not format with a timeZone option: that one only names
+  // the zone and prints the reader's local time under the label "UTC".
   const lUtc = (value: string, dateFormat = "datetime.formats.default") =>
-    format(parseISO(value), i18n.t(dateFormat), {
-      timeZone: "UTC",
+    formatInTimeZone(parseISO(value), "UTC", i18n.t(dateFormat), {
       locale: dateLocale(),
     });
 
