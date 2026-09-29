@@ -265,6 +265,7 @@ es:
       destroy: "Esta flota no tiene ninguna reclamación abierta que retirar."
       update: "Una reclamación solo se puede acortar mientras está abierta, y solo a una fecha anterior a la de su fin actual."
       cancel: "Esta reclamación ya no está abierta."
+      complete: "El ID de flota no se transfirió: la reclamación se cerró entretanto o la flota que reclama ya no está verificada para él."
     fleet_notification_settings:
       update: No se pudieron actualizar los ajustes de notificación.
     version:

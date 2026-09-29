@@ -56,6 +56,14 @@ class Api::V1::FleetsFidClaimDestroyTest < ActionDispatch::IntegrationTest
     assert_equal "claimable", response.parsed_body["availability"]
   end
 
+  test "DELETE /fleets/:slug/fid-claim is refused when the claim closed first" do
+    FleetFidClaim.open_for!(@claimant, user: @admin)
+    FleetFidClaim.any_instance.stubs(:cancel!).returns(false)
+    sign_in @admin
+
+    assert_api_response :delete, 400, path_params: {fleetSlug: @claimant.slug}
+  end
+
   test "DELETE /fleets/:slug/fid-claim without an open claim is refused" do
     sign_in @admin
 

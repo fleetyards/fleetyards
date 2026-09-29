@@ -270,6 +270,7 @@ de:
       destroy: "Diese Flotte hat keinen offenen Anspruch, der zurückgezogen werden könnte."
       update: "Ein Anspruch lässt sich nur verkürzen, solange er offen ist, und nur auf ein Datum vor seinem aktuellen Ende."
       cancel: "Dieser Anspruch ist nicht mehr offen."
+      complete: "Die Flotten-ID wurde nicht übertragen: Der Anspruch wurde inzwischen geschlossen, oder die beanspruchende Flotte ist nicht mehr dafür verifiziert."
     fleet_notification_settings:
       update: Benachrichtigungseinstellungen konnten nicht aktualisiert werden.
     tours:

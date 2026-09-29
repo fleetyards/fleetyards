@@ -92,6 +92,7 @@ en:
       destroy: "This fleet has no open claim to withdraw."
       update: "A claim can only be shortened while it is open, to a date before the one it ends on now."
       cancel: "This claim is no longer open."
+      complete: "The fleet ID did not move: the claim was closed in the meantime, or the claimant is no longer verified for it."
     fleet_notification_settings:
       update: Notification settings could not be updated.
     hangar_group:

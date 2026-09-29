@@ -262,6 +262,7 @@ fr:
       destroy: "Cette flotte n’a aucune réclamation ouverte à retirer."
       update: "Une réclamation ne peut être raccourcie que tant qu’elle est ouverte, et seulement à une date antérieure à sa fin actuelle."
       cancel: "Cette réclamation n’est plus ouverte."
+      complete: "L’ID de flotte n’a pas été transféré : la réclamation a été fermée entre-temps, ou la flotte qui le réclame n’est plus vérifiée pour lui."
     fleet_notification_settings:
       update: Impossible de mettre à jour les paramètres de notification.
     version:

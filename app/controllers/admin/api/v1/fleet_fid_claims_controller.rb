@@ -39,7 +39,12 @@ module Admin
             return
           end
 
-          @claim.complete! if @claim.ends_at <= Time.current
+          # A claim that closed in between, or whose claimant is no longer
+          # verified, moves nothing, and ending it now must not say it did.
+          if @claim.ends_at <= Time.current && @claim.complete! != :completed
+            render json: ValidationError.new("fleet_fid_claim.complete"), status: :bad_request
+            return
+          end
 
           render :show
         end

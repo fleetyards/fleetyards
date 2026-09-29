@@ -29,12 +29,12 @@ module Api
       def destroy
         claim = @fleet.outgoing_fid_claims.open.first
 
-        if claim.blank?
+        # A completion that lands first closes the claim, and the withdrawal
+        # then stopped nothing.
+        if claim.blank? || !claim.cancel!(:withdrawn)
           render json: ValidationError.new("fleet_fid_claim.destroy"), status: :bad_request
           return
         end
-
-        claim.cancel!(:withdrawn)
 
         render :show
       end
