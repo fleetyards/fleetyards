@@ -119,6 +119,20 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members says when a verified membership was last checked" do
+    @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU") # rubocop:disable Rails/SkipsModelValidations
+    checked_at = 3.hours.ago.change(usec: 0)
+    verify_handle(@member)
+    @member.store_rsi_organizations(%w[MARU], read_at: checked_at)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_equal checked_at.utc.iso8601, member["verificationCheckedAt"]
+    end
+  end
+
   test "GET /fleets/:slug/members names the org of a member verified in a verified fleet" do
     @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU") # rubocop:disable Rails/SkipsModelValidations
     @fleet.fleet_memberships.find_by(user: @member).update!(verified: true)

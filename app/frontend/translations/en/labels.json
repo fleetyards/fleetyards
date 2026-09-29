@@ -491,6 +491,7 @@
         "awaitingConfirmation": "Awaiting confirmation by Fleet",
         "members": {
           "verifiedOrgMember": "Verified member of %{sid}",
+          "verifiedOrgMemberChecked": "Verified member of %{sid}, checked %{checked}",
           "primary": "Primary Fleet?",
           "shipsFilter": {
             "label": "Which Ships should be added to the Fleet?",

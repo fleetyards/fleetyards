@@ -34,6 +34,9 @@ module V1
             # The SID of the org the membership is verified for, only once
             # the fleet has proved it runs that org.
             verifiedOrgSid: {type: :string},
+            # When the member's org list was last read, from Citizen iD at sign-in
+            # or their organisations page. Present with verifiedOrgSid.
+            verificationCheckedAt: {type: :string, format: "date-time"},
             citizenidProfileUrl: {type: :string},
             rsiHandleVerifiedVia: ::V1::Schemas::Enums::RsiHandleVerifiedViaEnum,
             discordProfileUrl: {type: :string},

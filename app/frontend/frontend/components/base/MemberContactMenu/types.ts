@@ -9,4 +9,5 @@ export interface MemberContact {
   citizenidProfileUrl?: string;
   // Set only on a fleet roster, and only once the fleet has proved its SID.
   verifiedOrgSid?: string;
+  verificationCheckedAt?: string;
 }

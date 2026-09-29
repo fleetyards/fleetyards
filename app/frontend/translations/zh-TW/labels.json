@@ -491,6 +491,7 @@
         "awaitingConfirmation": "等待艦隊確認",
         "members": {
           "verifiedOrgMember": "%{sid} 的已驗證成員",
+          "verifiedOrgMemberChecked": "%{sid} 的已驗證成員，檢查於 %{checked}",
           "primary": "主艦隊?",
           "shipsFilter": {
             "label": "哪些飛船應該新增到艦隊?",

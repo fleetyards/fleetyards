@@ -2,9 +2,10 @@
 
 # The fleet's verification is in the key: whether the member's own flag is shown
 # depends on it, and proving or losing the SID does not touch the membership.
-# So is the user's handle verification, which touches neither, to the
-# microsecond: a switch between Citizen iD and the bio can land within a second.
-json.cache! ["v7", member, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verification_cache_key] do
+# So are the user's handle verification and the read of their org list, which
+# touch neither, to the microsecond, and the flag itself: a change can land
+# within the second of the last write.
+json.cache! ["v8", member, member.verified?, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verification_cache_key, member.user.rsi_organizations_cache_key] do
   json.partial! "api/v1/fleet_members/base", member: member
 end
 

@@ -491,6 +491,7 @@
         "awaitingConfirmation": "Esperando confirmación de la flota",
         "members": {
           "verifiedOrgMember": "Miembro verificado de %{sid}",
+          "verifiedOrgMemberChecked": "Miembro verificado de %{sid}, comprobado %{checked}",
           "primary": "¿Flota principal?",
           "shipsFilter": {
             "label": "¿Qué naves deben agregarse a la flota?",
