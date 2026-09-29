@@ -129,9 +129,12 @@ const html = computed(() => {
     margin: 0 0 8px;
   }
 
+  // The global reset strips list markers, which turns a list into indented
+  // lines with nothing to separate them.
   :deep(ul) {
     margin: 0 0 8px;
     padding-left: 18px;
+    list-style: disc;
   }
 
   :deep(li) {
