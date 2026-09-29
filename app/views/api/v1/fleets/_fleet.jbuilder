@@ -2,7 +2,9 @@
 
 visitor = local_assigns.fetch(:visitor, false)
 
-json.cache!(visitor ? ["v2", "visitor", fleet] : ["v2", fleet]) do
+# The verification is in the key as well as `updated_at`: the column keeps whole
+# seconds, and a check can answer inside the second of the write before it.
+json.cache!(visitor ? ["v2", "visitor", fleet, fleet.rsi_verified?] : ["v2", fleet, fleet.rsi_verified?]) do
   json.partial!("api/v1/fleets/base", fleet:, visitor:)
 end
 

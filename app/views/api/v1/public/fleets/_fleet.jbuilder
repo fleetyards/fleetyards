@@ -2,7 +2,7 @@
 
 # Its own cache key: the members' copy carries the SID as typed, and a visitor
 # only sees one the fleet has proved -- anyone can type any SID.
-json.cache! ["v2", "public", fleet] do
+json.cache! ["v2", "public", fleet, fleet.rsi_verified?] do
   json.partial!("api/v1/fleets/base", fleet:, visitor: true)
 end
 

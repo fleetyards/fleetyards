@@ -74,6 +74,20 @@ class Api::V1::PublicFleetsShowTest < ActionDispatch::IntegrationTest
     assert_equal true, response.parsed_body["rsiVerified"]
   end
 
+  test "GET /public/fleets/:slug does not serve a cached copy from before the verification" do
+    fleet = create(:fleet, rsi_sid: "TEST")
+    with_fragment_caching do
+      assert_api_response :get, 200, path_params: {slug: fleet.slug}
+      assert_equal false, response.parsed_body["rsiVerified"]
+
+      # Within the same second: `updated_at` keeps whole seconds.
+      fleet.update_columns(rsi_verified_at: Time.current, rsi_verified_sid: "TEST", updated_at: fleet.updated_at) # rubocop:disable Rails/SkipsModelValidations
+
+      assert_api_response :get, 200, path_params: {slug: fleet.slug}
+      assert_equal true, response.parsed_body["rsiVerified"]
+    end
+  end
+
   test "GET /public/fleets/:slug lists the features switched on for the fleet" do
     fleet = create(:fleet)
     Flipper.enable("fleet_squadrons", fleet)
