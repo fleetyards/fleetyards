@@ -120,6 +120,13 @@ export const useSessionStore = defineStore("session", {
           query.queryKey[0] === "fleets" && query.queryKey[2] === "blueprints",
       });
 
+      // A manager's view of the fleet's RSI verification, token included.
+      queryClient.removeQueries({
+        predicate: (query) =>
+          query.queryKey[0] === "fleets" &&
+          query.queryKey[2] === "rsi-verification",
+      });
+
       this.$reset();
     },
     async logout() {
