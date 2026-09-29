@@ -4,40 +4,40 @@
 #
 # Table name: fleets
 #
-#  id                        :uuid             not null, primary key
-#  allies_fleet              :boolean          default(FALSE), not null
-#  allies_fleet_members      :boolean          default(FALSE), not null
-#  allies_fleet_stats        :boolean          default(FALSE), not null
-#  calendar_feed_token       :string
-#  created_by                :uuid
-#  default_timezone          :string           default("UTC"), not null
-#  description               :text
-#  discarded_at              :datetime
-#  discord                   :string
-#  fid                       :string
-#  guilded                   :string
-#  homepage                  :string
-#  inventory_transfer_policy :integer          default("everyone"), not null
-#  name                      :string
-#  normalized_fid            :string
-#  public_fleet              :boolean          default(FALSE)
-#  public_fleet_stats        :boolean          default(FALSE)
-#  rsi_sid                   :string
+#  id                          :uuid             not null, primary key
+#  allies_fleet                :boolean          default(FALSE), not null
+#  allies_fleet_members        :boolean          default(FALSE), not null
+#  allies_fleet_stats          :boolean          default(FALSE), not null
+#  calendar_feed_token         :string
+#  created_by                  :uuid
+#  default_timezone            :string           default("UTC"), not null
+#  description                 :text
+#  discarded_at                :datetime
+#  discord                     :string
+#  fid                         :string
+#  guilded                     :string
+#  homepage                    :string
+#  inventory_transfer_policy   :integer          default("everyone"), not null
+#  name                        :string
+#  normalized_fid              :string
+#  public_fleet                :boolean          default(FALSE)
+#  public_fleet_stats          :boolean          default(FALSE)
+#  rsi_sid                     :string
 #  rsi_verification_checked_at :datetime
-#  rsi_verification_status   :string
-#  rsi_verification_token    :string
-#  rsi_verified_at           :datetime
-#  rsi_verified_sid          :string
-#  sid                       :string
-#  slug                      :string
-#  squadrons_enabled         :boolean          default(FALSE), not null
-#  transfers_blocked_at      :datetime
-#  transfers_blocked_reason  :text
-#  ts                        :string
-#  twitch                    :string
-#  youtube                   :string
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
+#  rsi_verification_status     :string
+#  rsi_verification_token      :string
+#  rsi_verified_at             :datetime
+#  rsi_verified_sid            :string
+#  sid                         :string
+#  slug                        :string
+#  squadrons_enabled           :boolean          default(FALSE), not null
+#  transfers_blocked_at        :datetime
+#  transfers_blocked_reason    :text
+#  ts                          :string
+#  twitch                      :string
+#  youtube                     :string
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
 #
 # Indexes
 #

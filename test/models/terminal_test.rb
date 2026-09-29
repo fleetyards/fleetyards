@@ -2,6 +2,39 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: terminals
+#
+#  id                   :uuid             not null, primary key
+#  available            :boolean          default(TRUE), not null
+#  city                 :string
+#  code                 :string
+#  contact_url          :string
+#  display_name         :string
+#  has_docking_port     :boolean          default(FALSE), not null
+#  has_freight_elevator :boolean          default(FALSE), not null
+#  has_loading_dock     :boolean          default(FALSE), not null
+#  max_container_size   :integer
+#  moon                 :string
+#  name                 :string           not null
+#  nickname             :string
+#  orbit                :string
+#  outpost              :string
+#  planet               :string
+#  player_owned         :boolean          default(FALSE), not null
+#  source_updated_at    :datetime
+#  space_station        :string
+#  star_system          :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  uex_id               :integer          not null
+#
+# Indexes
+#
+#  index_terminals_on_star_system  (star_system)
+#  index_terminals_on_uex_id       (uex_id) UNIQUE
+#
 class TerminalTest < ActiveSupport::TestCase
   test "a station is not on a surface, even over a planet" do
     station = create(:terminal, space_station: "ARC-L1 Wide Forest Station", city: nil, outpost: nil)
