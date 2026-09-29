@@ -50,7 +50,13 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-8",
       title: "fleets.events.payouts",
       needsAuthentication: true,
-      feature: [FeatureFlagName.TOUR_PAYOUTS, FeatureFlagName.FLEET_TOURS],
+      // Route meta merges shallowly, so this list replaces the events root's
+      // flag rather than adding to it, and has to carry it itself.
+      feature: [
+        FeatureFlagName.FLEET_MISSION_BUILDER,
+        FeatureFlagName.TOUR_PAYOUTS,
+        FeatureFlagName.FLEET_TOURS,
+      ],
       featureScope: "fleet",
       // Event privileges are in the list because the ledger's own policy lets
       // an event's creator, admins and moderators manage it, and none of that
