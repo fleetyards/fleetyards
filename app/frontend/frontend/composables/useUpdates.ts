@@ -4,6 +4,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
+import { useMovedFleetRedirect } from "@/frontend/composables/useMovedFleetRedirect";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { usePresenceUpdates } from "@/frontend/composables/usePresenceUpdates";
 import { storeToRefs } from "pinia";
@@ -139,6 +140,8 @@ export const useUpdates = () => {
   const { invalidate: invalidateNotifications, invalidateFidClaims } =
     useNotificationInvalidation();
 
+  const followMovedFleet = useMovedFleetRedirect(useRouter(), useRoute());
+
   // A notification is a record, so its fields have to be mapped onto the toast.
   // The toast is also the way into the center it was just filed in — unlike the
   // admin's it keeps its timeout, because it interrupts browsing rather than
@@ -146,6 +149,7 @@ export const useUpdates = () => {
   const handleUserNotification = (notification: Notification) => {
     invalidateNotifications();
     invalidateFidClaims(notification);
+    void followMovedFleet(notification);
 
     displayMessage({
       text: notification.title,
