@@ -127,7 +127,11 @@ const refresh = (data: unknown) => {
 };
 
 const generateToken = async () => {
-  refresh(await createMutation.mutateAsync({ fleetSlug: props.fleet.slug }));
+  try {
+    refresh(await createMutation.mutateAsync({ fleetSlug: props.fleet.slug }));
+  } catch (error) {
+    displayAlert({ text: validationErrorFrom(error).message });
+  }
 };
 
 const check = async () => {

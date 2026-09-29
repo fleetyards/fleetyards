@@ -131,7 +131,11 @@ const refresh = (data: unknown) => {
 };
 
 const generateToken = async () => {
-  refresh(await createMutation.mutateAsync());
+  try {
+    refresh(await createMutation.mutateAsync());
+  } catch (error) {
+    displayAlert({ text: validationErrorFrom(error).message });
+  }
 };
 
 const check = async () => {

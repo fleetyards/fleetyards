@@ -131,7 +131,10 @@ const revokeMutation = useRevokeUserRsiVerification({
 });
 
 const revokeVerification = async () => {
-  await revokeMutation.mutateAsync({ id: props.user.id! });
+  await revokeMutation.mutateAsync({ id: props.user.id! }).catch((error) => {
+    console.error("Error revoking the RSI handle verification:", error);
+    alert(error);
+  });
 };
 
 const onSubmit = handleSubmit(async (values) => {

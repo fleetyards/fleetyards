@@ -112,7 +112,10 @@ const revokeMutation = useRevokeFleetRsiVerification({
 });
 
 const revokeVerification = async () => {
-  await revokeMutation.mutateAsync({ id: props.fleet.id });
+  await revokeMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
+    console.error("Error revoking the RSI verification:", error);
+    alert(error);
+  });
 };
 
 const onSubmit = handleSubmit(async (values) => {
