@@ -112,7 +112,8 @@ h1,
 }
 
 .price-info {
-  font-size: 70%;
+  // Relative to the button it sits in, but never below the 11px floor.
+  font-size: max(70%, 11px);
 }
 
 .panel-title {
