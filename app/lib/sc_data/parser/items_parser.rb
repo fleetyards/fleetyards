@@ -575,7 +575,6 @@ module ScData
         if values.dig("Components", "SCItemVehicleArmorParams")
           armor_data = values.dig("Components", "SCItemVehicleArmorParams")
           damage_info = armor_data.dig("damageMultiplier", "DamageInfo") if armor_data.dig("damageMultiplier").is_a?(Hash)
-          signal_data = armor_data.dig("signalCrossSection", "SItemSignalEmission") if armor_data.dig("signalCrossSection").is_a?(Hash)
           deflection = armor_data.dig("armorDeflection", "deflectionValue")
           resistances = values.dig("Components", "SHealthComponentParams", "DamageResistances", "DamageResistance")
           item[:type_data] = {
@@ -594,9 +593,9 @@ module ScData
             deflection_energy: deflection&.dig("DamageEnergy")&.to_f,
             deflection_distortion: deflection&.dig("DamageDistortion")&.to_f,
             deflection_thermal: deflection&.dig("DamageThermal")&.to_f,
-            signal_infrared: signal_data&.dig("Infrared")&.to_f,
-            signal_electromagnetic: signal_data&.dig("Electromagnetic")&.to_f,
-            signal_cross_section: signal_data&.dig("CrossSection")&.to_f
+            signal_infrared: armor_data["signalInfrared"]&.to_f,
+            signal_electromagnetic: armor_data["signalElectromagnetic"]&.to_f,
+            signal_cross_section: armor_data["signalCrossSection"]&.to_f
           }.compact
         end
 
