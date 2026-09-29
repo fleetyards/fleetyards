@@ -260,6 +260,11 @@ es:
       update: No se pudo actualizar el equipo del evento.
     fleet_rsi_verification:
       check: "Guarda el SID de tu organización y genera un código de verificación antes de comprobar."
+    fleet_fid_claim:
+      create: "Esta flota no puede reclamar un ID de flota. Solo una flota verificada para una organización de RSI puede reclamar el ID de flota igual a su SID, y solo mientras lo tenga otra flota."
+      destroy: "Esta flota no tiene ninguna reclamación abierta que retirar."
+      update: "Una reclamación solo se puede acortar mientras está abierta, y solo a una fecha anterior a la de su fin actual."
+      cancel: "Esta reclamación ya no está abierta."
     fleet_notification_settings:
       update: No se pudieron actualizar los ajustes de notificación.
     version:

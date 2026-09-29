@@ -257,6 +257,11 @@ fr:
       update: Impossible de mettre à jour l'équipe de l'événement.
     fleet_rsi_verification:
       check: "Enregistre le SID de ton organisation et génère un code de vérification avant de vérifier."
+    fleet_fid_claim:
+      create: "Cette flotte ne peut pas réclamer d’ID de flotte. Seule une flotte vérifiée pour une organisation RSI peut réclamer l’ID de flotte égal à son SID, et seulement tant qu’une autre flotte le détient."
+      destroy: "Cette flotte n’a aucune réclamation ouverte à retirer."
+      update: "Une réclamation ne peut être raccourcie que tant qu’elle est ouverte, et seulement à une date antérieure à sa fin actuelle."
+      cancel: "Cette réclamation n’est plus ouverte."
     fleet_notification_settings:
       update: Impossible de mettre à jour les paramètres de notification.
     version:

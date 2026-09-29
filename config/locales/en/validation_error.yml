@@ -87,6 +87,11 @@ en:
       destroy: Event admin could not be revoked.
     fleet_rsi_verification:
       check: "Save your organisation's SID and generate a verification token before checking."
+    fleet_fid_claim:
+      create: "This fleet cannot claim a fleet ID. Only a fleet verified for an RSI organisation can claim the fleet ID equal to its SID, and only while another fleet holds it."
+      destroy: "This fleet has no open claim to withdraw."
+      update: "A claim can only be shortened while it is open, to a date before the one it ends on now."
+      cancel: "This claim is no longer open."
     fleet_notification_settings:
       update: Notification settings could not be updated.
     hangar_group:
