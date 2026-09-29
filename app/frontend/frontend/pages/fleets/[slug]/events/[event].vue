@@ -317,13 +317,17 @@ const splitMutation = useSplitFleetEventSeries();
 const router = useRouter();
 
 // The event's own address rather than the one in the bar, which can carry a
-// modal or a tab in its query.
+// modal or a tab in its query. The occurrence stays: a recurring event's link
+// is to the date being looked at, not to the series.
 const shareUrl = computed(() =>
   event.value
     ? new URL(
         router.resolve({
           name: "fleet-event",
           params: { slug: props.fleet.slug, event: event.value.slug },
+          query: occurrenceParam.value
+            ? { occurrence: occurrenceParam.value }
+            : {},
         }).href,
         window.location.origin,
       ).href
