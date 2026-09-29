@@ -74,6 +74,14 @@ class FrontendFleetItemPreviewTest < ActionDispatch::IntegrationTest
     assert_includes og_title, "Join Private loop"
   end
 
+  test "a cancelled tour's invite does not preview as an invitation" do
+    tour = create(:tour, title: "Private loop", cancelled_at: Time.current)
+
+    get "/tools/tours/join/#{tour.invite_token}"
+
+    assert_not_includes og_title, "Private loop"
+  end
+
   private def og_title
     assert_response :success
 
