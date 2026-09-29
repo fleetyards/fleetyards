@@ -141,8 +141,8 @@ importers:
         specifier: ^0.5.2
         version: 0.5.2(vue@3.5.43(typescript@6.0.3))
       '@rails/activestorage':
-        specifier: ^8.1.301
-        version: 8.1.301
+        specifier: ^8.1.400
+        version: 8.1.400
       '@tanstack/vue-query':
         specifier: ^5.103.2
         version: 5.103.2(vue@3.5.43(typescript@6.0.3))
@@ -2224,8 +2224,8 @@ packages:
   '@pmndrs/pointer-events@6.6.29':
     resolution: {integrity: sha512-o4YD6VfJgDYjFgde/YyAw2X5KY454tdmOXrHGOvKTWJBHzkL90B5vH4rqmexwRVvaDfT3YLvVh/Dm5cBbgZXMg==}
 
-  '@rails/activestorage@8.1.301':
-    resolution: {integrity: sha512-o+gxhV96Wa/NpVdTWib9iR9RWlqWjjsylPv16muSFUjIhI6usZJBjM1y93h9cjwWfuW/FxI5QONeH3EFv3+cbg==}
+  '@rails/activestorage@8.1.400':
+    resolution: {integrity: sha512-ScpkkHXTQ7QByvzLbnrnubpsWRKhlu08kXyRhSV+Hh1s1X43lv5T0PFLhXAvmqrIcq8nQ2up8iyuCmIzacPDDw==}
 
   '@rolldown/binding-android-arm-eabi@1.2.11':
     resolution: {integrity: sha512-A5kXfGKvKWWZE0TtPrfsvT+q4Y5d1QG8gGUzpYjGydM+fARM9MuX90PrXYXe0XbsDVgyxxNzHo6giCj90bsFNw==}
@@ -8953,7 +8953,7 @@ snapshots:
 
   '@pmndrs/pointer-events@6.6.29': {}
 
-  '@rails/activestorage@8.1.301':
+  '@rails/activestorage@8.1.400':
     dependencies:
       spark-md5: 3.0.2
 
