@@ -51,5 +51,5 @@ Page views by device, OS and install state can be read per day after visits are 
 
 ## Progress
 
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
