@@ -490,6 +490,7 @@
         "ts": "Teamspeak 服务器",
         "awaitingConfirmation": "等待舰队确认",
         "members": {
+          "verifiedOrgMember": "%{sid} 的已验证成员",
           "primary": "主舰队?",
           "shipsFilter": {
             "label": "哪些飞船应该添加到舰队?",

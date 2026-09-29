@@ -43,13 +43,6 @@ const secondaryName = computed(() =>
           <span v-if="secondaryName" class="member-name__username">
             {{ secondaryName }}
           </span>
-          <span
-            v-if="member.citizenidProfileUrl"
-            v-tooltip="t('labels.user.rsiHandleVerified')"
-            class="member-name__badge"
-          >
-            <i class="fa-duotone fa-badge-check text-success" />
-          </span>
         </template>
         <MemberContactMenu :member="member" />
       </BtnDropdown>
@@ -60,6 +53,25 @@ const secondaryName = computed(() =>
         {{ secondaryName }}
       </span>
     </template>
+    <!-- The org this fleet proved it runs, not the member's own handle: that
+         one is badged where the handle is shown. -->
+    <span
+      v-if="member.verifiedOrgSid"
+      v-tooltip="
+        t('labels.fleet.members.verifiedOrgMember', {
+          sid: member.verifiedOrgSid,
+        })
+      "
+      :aria-label="
+        t('labels.fleet.members.verifiedOrgMember', {
+          sid: member.verifiedOrgSid,
+        })
+      "
+      class="member-name__badge"
+      data-test="member-verified-org"
+    >
+      <i class="fa-duotone fa-shield-check text-success" />
+    </span>
   </span>
 </template>
 

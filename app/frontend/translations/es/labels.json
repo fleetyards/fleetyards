@@ -490,6 +490,7 @@
         "ts": "Servidor Teamspeak",
         "awaitingConfirmation": "Esperando confirmación de la flota",
         "members": {
+          "verifiedOrgMember": "Miembro verificado de %{sid}",
           "primary": "¿Flota principal?",
           "shipsFilter": {
             "label": "¿Qué naves deben agregarse a la flota?",

@@ -490,6 +490,7 @@
         "ts": "Serveur chat de l'équipe",
         "awaitingConfirmation": "En attente de confirmation par la Flotte",
         "members": {
+          "verifiedOrgMember": "Membre vérifié de %{sid}",
           "primary": "Flotte principale?",
           "shipsFilter": {
             "label": "Quels vaisseaux doivent être ajoutés à la Flotte ?",

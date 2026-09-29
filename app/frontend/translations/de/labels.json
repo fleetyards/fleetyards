@@ -490,6 +490,7 @@
         "ts": "Teamspeak-Server",
         "awaitingConfirmation": "Wartet auf Bestätigung durch die Flotte",
         "members": {
+          "verifiedOrgMember": "Verifiziertes Mitglied von %{sid}",
           "primary": "Primäre Flotte?",
           "shipsFilter": {
             "label": "Welche Schiffe sollen zur Flotte hinzugefügt werden?",
