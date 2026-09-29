@@ -162,6 +162,12 @@ v1_admin_api_routes = lambda do
     end
   end
 
+  resources :fleet_fid_claims, path: "fleet-fid-claims", only: %i[index update] do
+    member do
+      put :cancel
+    end
+  end
+
   resources :destroyed_fleets, path: "destroyed-fleets", only: %i[index] do
     member do
       post :restore
