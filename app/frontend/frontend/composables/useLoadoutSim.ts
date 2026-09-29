@@ -549,7 +549,8 @@ function computeHeat(
 }
 
 // EM signature: power plants weighted by ship-wide power
-// utilization, weapons weighted by their pool fill ratio, and every other
+// utilization (weapons counting their raw draw), weapons weighted by the share
+// of their enabled pool blocks that are powered, and every other
 // powered component scaled by its active-segment fraction — each × its
 // power-range modifier and nominal EM emission.
 function computeEm(
@@ -560,14 +561,18 @@ function computeEm(
   usedSegments: number,
   totalSegments: number,
   weaponAllocated: number,
-  weaponRatio: number,
+  weaponUnits: number,
+  weaponEnabledBlocks: number,
 ): number {
   let em = 0;
 
   const poweredPlants = plants.filter((plant) => plant.poweredOn);
   if (poweredPlants.length > 0 && totalSegments > 0) {
-    const utilization = usedSegments / totalSegments;
-    const perPlant = Math.round(usedSegments) / poweredPlants.length;
+    const drawn =
+      usedSegments - weaponAllocated + Math.min(weaponAllocated, weaponUnits);
+    const utilization = drawn / totalSegments;
+    const perPlant =
+      Math.round(totalSegments * utilization) / poweredPlants.length;
     const plantSum = poweredPlants.reduce(
       (sum, plant) =>
         sum + plant.emNominal * rangeModifier(plant.ranges, perPlant),
@@ -576,13 +581,15 @@ function computeEm(
     em += plantSum * utilization;
   }
 
-  if (weaponAllocated > 0 && weaponRatio > 0) {
+  const weaponShare =
+    weaponEnabledBlocks > 0 ? weaponAllocated / weaponEnabledBlocks : 0;
+  if (weaponAllocated > 0 && weaponShare > 0) {
     const weaponSum = weaponEmSources.reduce(
       (sum, weapon) =>
         sum + weapon.emNominal * rangeModifier(weapon.ranges, weaponAllocated),
       0,
     );
-    em += weaponSum * weaponRatio;
+    em += weaponSum * weaponShare;
   }
 
   for (const component of components) {
@@ -729,7 +736,8 @@ export function simulateLoadoutPower(
     usedSegments,
     segments,
     state.perPort[WEAPON_POOL_PORT] ?? 0,
-    weaponRatioValue,
+    acc.weaponUnits,
+    Math.min(pool, consumption),
   );
 
   return {
