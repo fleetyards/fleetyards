@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-json.cache! ["v2", model_module_package, Manufacturer.artwork_version] do
+json.cache! ["v3", model_module_package, Manufacturer.artwork_version] do
   json.partial!("admin/api/v1/model_module_packages/base", model_module_package:)
 end
