@@ -56,7 +56,9 @@ module ScData
         # A model the export dropped loses its current build and keeps the row --
         # which is now also what makes `in_game?` false for it. A hangar entry
         # pointing at a retired ship still has to resolve, so the row stays.
-        retire_absent_builds(ModelBuild, :model_id, loaded)
+        # Only a re-load of the same build finds anything here: a new build has no
+        # rows for a ship it dropped in the first place.
+        retire_absent_models(loaded)
 
         prune_builds(ModelBuild)
 
@@ -145,6 +147,24 @@ module ScData
         return false if identifier.blank?
 
         export_path.join("models", "#{identifier}.json").exist?
+      end
+
+      # Guarded like `retire_absent_builds`: a run that loaded nothing must not
+      # sweep the whole catalogue.
+      #
+      # A ship still holding ports in this build counts too, build or not: its
+      # ports are written before its build, so a load that failed in between
+      # leaves them behind.
+      private def retire_absent_models(loaded)
+        return if loaded.blank?
+
+        with_build = ModelBuild.current(source).select(:model_id)
+        with_ports = Hardpoint.where(parent_type: "Model", source: :game_files)
+          .where(id: HardpointBuild.current(source).select(:hardpoint_id))
+          .select(:parent_id)
+
+        Model.where(id: with_build).or(Model.where(id: with_ports)).where.not(id: loaded)
+          .find_each { |model| retire_model(model) }
       end
 
       # The rows stay, like everything a build drops; only this build's say

@@ -12,6 +12,55 @@ module ScData
         clean_loader_tables
       end
 
+      test "#all retires the build and game-file loadout of a model the export dropped" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        kept = create(:model, :in_game, name: "Kept Test")
+        dropped = create(:model, :in_game, name: "Dropped Test")
+        kept_port = create(:hardpoint, parent: kept, source: :game_files)
+        dropped_port = create(:hardpoint, parent: dropped, source: :game_files)
+        matrix = create(:hardpoint, parent: dropped, source: :ship_matrix)
+        loader.stubs(:parsed?).returns(false)
+        loader.stubs(:parsed?).with(kept).returns(true)
+        loader.stubs(:load_model).with(kept).returns(kept.build)
+
+        loader.all
+
+        assert_not_predicate dropped.reload, :in_game?
+        assert_not_includes dropped.hardpoints.in_build, dropped_port
+        assert Hardpoint.exists?(dropped_port.id), "the row stays, only this build's say goes"
+        assert_includes dropped.hardpoints.in_build, matrix
+        assert_includes kept.hardpoints.in_build, kept_port
+      end
+
+      # Ports are written before the build, so a load that failed in between
+      # leaves a ship with ports in the build and no build of its own.
+      test "#all retires the ports a failed load left on a model without a build" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        kept = create(:model, :in_game, name: "Kept Orphan Test")
+        create(:hardpoint, parent: kept, source: :game_files)
+        orphaned = create(:model, name: "Orphaned Test")
+        orphaned_port = create(:hardpoint, parent: orphaned, source: :game_files)
+        loader.stubs(:parsed?).returns(false)
+        loader.stubs(:parsed?).with(kept).returns(true)
+        loader.stubs(:load_model).with(kept).returns(kept.build)
+
+        loader.all
+
+        assert_not_includes orphaned.hardpoints.in_build, orphaned_port
+      end
+
+      test "#all retires nothing when the run loaded nothing" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, :in_game, name: "Nothing Loaded Test")
+        port = create(:hardpoint, parent: model, source: :game_files)
+        loader.stubs(:parsed?).returns(false)
+
+        loader.all
+
+        assert_predicate model.reload, :in_game?
+        assert_includes model.hardpoints.in_build, port
+      end
+
       test "#one retires the build of a model whose file the build does not ship" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, :in_game, name: "Unlinked Test")
