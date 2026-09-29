@@ -23,6 +23,8 @@ allowBuilds:
 peerDependencyRules:
   allowedVersions:
     vite-plugin-pwa>vite: '8'
+    # Only the standalone build is loaded, which bundles its own three.js.
+    '@google/model-viewer>three': '0.186'
 overrides:
   json5: '>=2.2.2'
   semver: '>=7.5.2'
