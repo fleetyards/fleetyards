@@ -18,9 +18,23 @@ class MetricsJob < ApplicationJob
   # of installed use per platform can be read back after the visits are purged.
   ROLLUP_VISITS_BY_OS = "Visits by OS"
 
-  # Page views per device, OS and install state, which says which pages get used
-  # on a phone and from the installed app once the events behind it are purged.
+  # Page views per section, device, OS and install state, which says which parts
+  # of the site get used on a phone and from the installed app once the events
+  # behind it are purged.
   ROLLUP_VIEWS_BY_DEVICE = "Views by device"
+
+  # The first segment of the path (`hangar`, `ships`, `compare`), and for a fleet
+  # the tool under it (`fleets/events`, `fleets/contracts`), since a fleet's
+  # tools are what a phone would be used for and they all share `/fleets/`. No
+  # slug or id survives, which keeps a day to a few dozen rows per device.
+  VIEW_SECTION = Arel.sql(<<~SQL.squish)
+    CASE
+    WHEN split_part(ahoy_events.properties->>'page', '/', 2) = 'fleets'
+      AND split_part(ahoy_events.properties->>'page', '/', 4) <> ''
+    THEN 'fleets/' || split_part(ahoy_events.properties->>'page', '/', 4)
+    ELSE split_part(ahoy_events.properties->>'page', '/', 2)
+    END
+  SQL
 
   # A visit's installed flag can only change while the visit lasts, so a day is
   # settled well within this.
@@ -125,13 +139,13 @@ class MetricsJob < ApplicationJob
     rebuild_recent_days(ROLLUP_VIEWS_BY_DEVICE) do |range|
       page_views.joins(:visit)
         .where.not(ahoy_visits: {installed: nil})
-        .group("ahoy_visits.device_type", "ahoy_visits.os", "ahoy_visits.installed")
+        .group(VIEW_SECTION, "ahoy_visits.device_type", "ahoy_visits.os", "ahoy_visits.installed")
         .rollup(
           ROLLUP_VIEWS_BY_DEVICE,
           interval: "day",
           column: "ahoy_events.time",
           range:,
-          dimension_names: ["device_type", "os", "installed"]
+          dimension_names: ["section", "device_type", "os", "installed"]
         )
     end
   end

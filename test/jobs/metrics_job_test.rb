@@ -259,8 +259,23 @@ class MetricsJobTest < ActiveJob::TestCase
 
     MetricsJob.new.perform
 
-    assert_equal 2, views_by_device_on(2.days.ago, device_type: "Smartphone", os: "iOS", installed: true)
-    assert_equal 1, views_by_device_on(2.days.ago, device_type: "Desktop", os: "Windows", installed: false)
+    assert_equal 2, views_by_device_on(2.days.ago, section: "fleets", device_type: "Smartphone", os: "iOS", installed: true)
+    assert_equal 1, views_by_device_on(2.days.ago, section: "hangar", device_type: "Desktop", os: "Windows", installed: false)
+  end
+
+  test "#perform names a fleet's tool as the section and drops every slug" do
+    visit = visit_on(2.days.ago, os: "iOS", device_type: "Smartphone")
+    view_on(visit, "/fleets/ember/events/abc123/")
+    view_on(visit, "/fleets/ember/contracts/")
+    view_on(visit, "/fleets/ember/")
+    view_on(visit, "/ships/aurora-mr/images/")
+
+    MetricsJob.new.perform
+
+    sections = Rollup.where(name: MetricsJob::ROLLUP_VIEWS_BY_DEVICE).where("value > 0")
+      .pluck(Arel.sql("dimensions->>'section'"))
+
+    assert_equal ["fleets", "fleets/contracts", "fleets/events", "ships"], sections.sort
   end
 
   test "#perform moves a visit's views once it is flagged installed" do
@@ -271,8 +286,8 @@ class MetricsJobTest < ActiveJob::TestCase
     visit.update!(installed: true)
     MetricsJob.new.perform
 
-    assert_equal 1, views_by_device_on(Time.current, device_type: "Smartphone", os: "Android", installed: true)
-    assert_equal 0, views_by_device_on(Time.current, device_type: "Smartphone", os: "Android", installed: false)
+    assert_equal 1, views_by_device_on(Time.current, section: "", device_type: "Smartphone", os: "Android", installed: true)
+    assert_equal 0, views_by_device_on(Time.current, section: "", device_type: "Smartphone", os: "Android", installed: false)
   end
 
   test "#perform leaves views by a user who objected to tracking out of the device rollup" do
@@ -328,12 +343,12 @@ class MetricsJobTest < ActiveJob::TestCase
     )
   end
 
-  private def views_by_device_on(time, device_type:, os:, installed:)
+  private def views_by_device_on(time, section:, device_type:, os:, installed:)
     Rollup.where(
       name: MetricsJob::ROLLUP_VIEWS_BY_DEVICE,
       interval: "day",
       time: time.to_date,
-      dimensions: {device_type:, os:, installed:}
+      dimensions: {section:, device_type:, os:, installed:}
     ).sum(:value)
   end
 
