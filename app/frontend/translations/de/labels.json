@@ -403,6 +403,34 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
+        "rsiSettings": {
+          "hint": "Die Flotten-ID ist die Adresse deiner Flotte auf Fleetyards. Die SID verknüpft die Flotte mit ihrer RSI-Organisation, und die Verifizierung zeigt, dass die Organisation dir gehört."
+        },
+        "rsiVerification": {
+          "steps": {
+            "copy": "Kopiere deinen Verifizierungscode",
+            "paste": "Füge ihn irgendwo auf der öffentlichen RSI-Seite deiner Organisation ein: in der Einleitung, der Geschichte, dem Manifest oder der Charta. Sobald die Flotte verifiziert ist, kannst du ihn wieder entfernen.",
+            "check": "Prüfe die Seite"
+          },
+          "openOrgPage": "%{sid} auf RSI öffnen",
+          "locked": "Eine verifizierte SID ist gesperrt. Wende dich an den Support, wenn sie sich ändern muss.",
+          "fidAtRiskTitle": "Deine Flotten-ID ist nicht geschützt",
+          "saveFirst": "Speichere die SID, bevor du sie verifizierst.",
+          "title": "RSI-Verifizierung",
+          "token": "Verifizierungscode",
+          "verified": "Verifizierte RSI-Organisation",
+          "unverified": "Nicht bei RSI verifiziert",
+          "verifiedSince": "Verifiziert seit %{date}",
+          "nextCheck": "Du kannst in einer Minute erneut prüfen.",
+          "fidAtRisk": "Eine andere Flotte, die die RSI-Organisation %{fid} verifiziert, kann sie übernehmen, und die Adresse deiner Flotte ändert sich.",
+          "statuses": {
+            "pending": "Die Organisationsseite wird geprüft…",
+            "token_missing": "Der Code steht noch nicht auf der Organisationsseite. RSI kann einige Minuten brauchen, bis eine Änderung sichtbar ist.",
+            "symbol_mismatch": "Die Seite, die RSI geliefert hat, gehört zu einer anderen Organisation.",
+            "not_found": "RSI kennt keine Organisation mit dieser SID.",
+            "failed": "Die Organisationsseite konnte nicht geprüft werden. Versuche es in einer Minute erneut."
+          }
+        },
         "description": "Beschreibung",
         "public": "Öffentliche Flottenansicht",
         "publicFleet": "Öffentliche Flotte",
@@ -2540,6 +2568,7 @@
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
         "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
+        "fleet_rsi_verification_lost": "Flottenverifizierung verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt",
         "fleet_contract_settled": "Auftrag ausgezahlt",
         "payout_ledger_settled": "Auszahlung abgerechnet",

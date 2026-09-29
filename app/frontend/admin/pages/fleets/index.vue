@@ -86,6 +86,11 @@ const columns: BaseTableCol<Fleet>[] = [
     mobile: false,
   },
   {
+    name: "rsiVerified",
+    label: "RSI verified",
+    mobile: false,
+  },
+  {
     name: "createdAt",
     label: "Created At",
     mobile: false,
@@ -165,6 +170,13 @@ const { t, l } = useI18n();
         </template>
         <template #col-publicFleet="{ record }">
           <i v-if="record.publicFleet" class="fa-duotone fa-check" />
+          <i v-else class="fa-duotone fa-times" />
+        </template>
+        <template #col-rsiVerified="{ record }">
+          <span v-if="record.rsiVerified" :title="record.rsiSid">
+            <i class="fa-duotone fa-badge-check" />
+            {{ record.rsiSid }}
+          </span>
           <i v-else class="fa-duotone fa-times" />
         </template>
         <template #col-createdAt="{ record }">

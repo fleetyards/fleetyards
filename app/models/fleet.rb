@@ -23,6 +23,11 @@
 #  public_fleet              :boolean          default(FALSE)
 #  public_fleet_stats        :boolean          default(FALSE)
 #  rsi_sid                   :string
+#  rsi_verification_checked_at :datetime
+#  rsi_verification_status   :string
+#  rsi_verification_token    :string
+#  rsi_verified_at           :datetime
+#  rsi_verified_sid          :string
 #  sid                       :string
 #  slug                      :string
 #  squadrons_enabled         :boolean          default(FALSE), not null
@@ -39,6 +44,7 @@
 #  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
 #  index_fleets_on_discarded_at         (discarded_at)
 #  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
+#  index_fleets_on_rsi_verified_sid     (rsi_verified_sid) UNIQUE WHERE (discarded_at IS NULL)
 #
 class Fleet < ApplicationRecord
   include Discard::Model
@@ -120,6 +126,38 @@ class Fleet < ApplicationRecord
     length: {minimum: 3},
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
+
+  normalizes :rsi_sid, with: ->(sid) { Rsi::Sid.normalize(sid) }
+
+  # Only on change: a row saved before the column was checked must not block an
+  # unrelated edit of the fleet.
+  validates :rsi_sid,
+    format: {with: Rsi::Sid::FORMAT, message: :not_an_rsi_sid},
+    allow_nil: true,
+    if: :rsi_sid_changed?
+
+  # A proved SID stays put: it names the org the fleet showed it runs, and its
+  # members' flags were earned against it. An admin revoke is the way out.
+  validate :verified_rsi_sid_locked, if: :rsi_sid_changed?
+
+  RSI_VERIFICATION_COOLDOWN = 1.minute
+
+  enum :rsi_verification_status, {
+    pending: "pending",
+    verified: "verified",
+    token_missing: "token_missing",
+    symbol_mismatch: "symbol_mismatch",
+    not_found: "not_found",
+    failed: "failed"
+  }, prefix: :rsi_verification
+
+  before_create -> { self.rsi_verification_token ||= self.class.new_rsi_verification_token }
+  before_save :reset_rsi_verification, if: :rsi_sid_changed?
+  after_update :reset_membership_verification, if: :saved_change_to_rsi_sid?
+  # The index keeps one verified SID per kept fleet, so a discarded fleet has to
+  # let go of it: restoring one would otherwise collide with whoever proved the
+  # SID since.
+  before_discard :reset_rsi_verification
 
   validates :name,
     length: {minimum: 3},
@@ -211,6 +249,64 @@ class Fleet < ApplicationRecord
 
   def set_normalized_fields
     self.normalized_fid = fid&.downcase
+  end
+
+  # For fragment keys: `updated_at` keeps whole seconds, and two verifications
+  # inside one second -- even of two different SIDs -- must not share a key.
+  def rsi_verification_cache_key
+    [rsi_verified_sid, rsi_verified_at&.utc&.iso8601(6)]
+  end
+
+  def rsi_verified?
+    rsi_verified_at.present? && rsi_sid.present? && rsi_verified_sid == rsi_sid
+  end
+
+  # The public API names the org only once the fleet has shown it runs it:
+  # anyone can type any SID.
+  def public_rsi_sid
+    rsi_sid if rsi_verified?
+  end
+
+  # Written past validation: neither column is something a form edits, and a
+  # fleet saved before a later format check must still be able to get a token.
+  # rubocop:disable Rails/SkipsModelValidations
+  # Not a secret: it is meant to be pasted on a public page, and all it can
+  # ever prove is that this fleet's managers reached that page.
+  def self.new_rsi_verification_token
+    "FLEETYARDS-#{SecureRandom.alphanumeric(10).upcase}"
+  end
+
+  def generate_rsi_verification_token!
+    update_columns(
+      rsi_verification_token: self.class.new_rsi_verification_token,
+      rsi_verification_status: nil,
+      updated_at: Time.current
+    )
+  end
+
+  # The token is replaced too: left in place, the same token still on the org
+  # page would verify the fleet again on its next check.
+  def revoke_rsi_verification!
+    update_columns(
+      rsi_verified_at: nil,
+      rsi_verified_sid: nil,
+      rsi_verification_status: nil,
+      rsi_verification_token: self.class.new_rsi_verification_token,
+      updated_at: Time.current
+    )
+  end
+  # rubocop:enable Rails/SkipsModelValidations
+
+  def rsi_verification_cooling_down?
+    rsi_verification_checked_at.present? &&
+      rsi_verification_checked_at > RSI_VERIFICATION_COOLDOWN.ago
+  end
+
+  # `fleet:manage` is the privilege that already means "runs this fleet".
+  def managers
+    fleet_memberships.kept.accepted.includes(:fleet_role, :user)
+      .select { |membership| membership.has_access?(["fleet:manage"]) }
+      .filter_map(&:user)
   end
 
   def update_urls(force: false)
@@ -352,6 +448,29 @@ class Fleet < ApplicationRecord
       token = SecureRandom.urlsafe_base64(32)
       break token unless exists?(calendar_feed_token: token)
     end
+  end
+
+  # A member's flag says they are in the org the fleet named then. Kept across a
+  # new SID, it would show them as members of an org they may not be in once
+  # the fleet proves the new one.
+  private def reset_membership_verification
+    fleet_memberships.where(verified: true).update_all(verified: false, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+  end
+
+  # The last check time goes too: the cooldown is for asking RSI about one
+  # org again, not about a new one, and a check still out for the old SID no
+  # longer matches it.
+  private def verified_rsi_sid_locked
+    return if rsi_verified_at_was.blank? || rsi_verified_sid_was.blank?
+
+    errors.add(:rsi_sid, :locked_while_verified)
+  end
+
+  private def reset_rsi_verification
+    self.rsi_verified_at = nil
+    self.rsi_verified_sid = nil
+    self.rsi_verification_status = nil
+    self.rsi_verification_checked_at = nil
   end
 
   private def update_slugs

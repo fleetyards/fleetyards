@@ -27,6 +27,17 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "rsi/",
+    name: "fleet-settings-rsi",
+    component: () => import("@/frontend/pages/fleets/[slug]/settings/rsi.vue"),
+    meta: {
+      title: "fleets.settings.rsi",
+      needsAuthentication: true,
+      access: ["fleet:manage"],
+      customTitle: true,
+    },
+  },
+  {
     path: "squadrons/",
     name: "fleet-settings-squadrons",
     component: () =>

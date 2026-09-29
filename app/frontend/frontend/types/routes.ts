@@ -96,6 +96,7 @@ export type FrontendRouteLocation =
   | ParamRoute<"fleet-settings", SlugParams>
   | ParamRoute<"fleet-settings-membership", SlugParams>
   | ParamRoute<"fleet-settings-fleet", SlugParams>
+  | ParamRoute<"fleet-settings-rsi", SlugParams>
   | ParamRoute<"fleet-settings-roles", SlugParams>
   | ParamRoute<"fleet-stats", SlugParams>
   // Fleets (token)

@@ -403,6 +403,34 @@
         "name": "名称",
         "logo": "标志",
         "rsiSid": "SID",
+        "rsiSettings": {
+          "hint": "舰队 ID 是你的舰队在 Fleetyards 上的地址。SID 将舰队与其 RSI 组织关联，验证它可以证明该组织属于你。"
+        },
+        "rsiVerification": {
+          "steps": {
+            "copy": "复制你的验证码",
+            "paste": "将它粘贴到你的组织 RSI 公开页面的任意位置：简介、历史、宣言或章程。舰队验证后即可将其删除。",
+            "check": "检查页面"
+          },
+          "openOrgPage": "在 RSI 上打开 %{sid}",
+          "locked": "已验证的 SID 已锁定。如需更改，请联系支持团队。",
+          "fidAtRiskTitle": "你的舰队 ID 未受保护",
+          "saveFirst": "请先保存 SID 再进行验证。",
+          "title": "RSI 验证",
+          "token": "验证码",
+          "verified": "已验证的 RSI 组织",
+          "unverified": "未通过 RSI 验证",
+          "verifiedSince": "自 %{date} 起已验证",
+          "nextCheck": "一分钟后可以再次检查。",
+          "fidAtRisk": "验证 RSI 组织 %{fid} 的另一支舰队可以认领它，你的舰队地址将会改变。",
+          "statuses": {
+            "pending": "正在检查组织页面…",
+            "token_missing": "组织页面上还没有该验证码。RSI 可能需要几分钟才会显示修改。",
+            "symbol_mismatch": "RSI 返回的页面属于另一个组织。",
+            "not_found": "RSI 上没有使用此 SID 的组织。",
+            "failed": "无法检查组织页面。请一分钟后重试。"
+          }
+        },
         "description": "描述",
         "public": "公开舰队视图",
         "publicFleet": "公开舰队",
@@ -2540,6 +2568,7 @@
         "fleet_contract_crew_answered": "合约成员申请已处理",
         "fleet_subscription_started": "已获得舰队功能",
         "fleet_subscription_ended": "已失去舰队功能",
+        "fleet_rsi_verification_lost": "舰队验证已失效",
         "fleet_contract_fulfilled": "合约已完成",
         "fleet_contract_settled": "合同已结算",
         "payout_ledger_settled": "分账已结算",

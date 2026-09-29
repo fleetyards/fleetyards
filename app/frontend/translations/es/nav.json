@@ -91,6 +91,7 @@
         "settings": {
           "index": "Configuración",
           "fleet": "Configuración de flota",
+          "rsi": "ID de flota y RSI",
           "membership": "Configuración de membresía",
           "roles": "Roles",
           "squadrons": "Escuadrones",
@@ -162,6 +163,7 @@
         "supportHint": "Aviso de apoyo",
         "media": "Multimedia",
         "charts": "Gráficos",
+        "alerts": "Avisos",
         "chips": "Chips",
         "squadrons": "Escuadrones",
         "groups": {

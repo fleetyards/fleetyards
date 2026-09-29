@@ -109,6 +109,7 @@
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",
+          "rsi": "%{fleet} Fleet ID & RSI",
           "membership": "%{fleet} Membership",
           "roles": "%{fleet} Roles",
           "squadrons": "%{fleet} Squadrons",
@@ -192,6 +193,7 @@
         "media": "Media - Visual Tests",
         "charts": "Charts - Visual Tests",
         "themes": "Themes - Visual Tests",
+        "alerts": "Alerts - Visual Tests",
         "chips": "Chips - Visual Tests",
         "squadrons": "Squadrons - Visual Tests",
         "notificationCenter": "Notification Center - Visual Tests"

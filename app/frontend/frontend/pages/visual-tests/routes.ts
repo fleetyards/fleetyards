@@ -193,6 +193,15 @@ export const routes = [
     },
   },
   {
+    path: "alerts/",
+    name: "visual-tests-alerts",
+    component: () => import("@/shared/components/base/Alert/visual.vue"),
+    meta: {
+      title: "visualTests.alerts",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "chips/",
     name: "visual-tests-chips",
     component: () => import("@/shared/components/base/Chip/visual.vue"),

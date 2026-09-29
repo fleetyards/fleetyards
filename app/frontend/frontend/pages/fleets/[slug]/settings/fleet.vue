@@ -60,10 +60,8 @@ const deleting = ref(false);
 
 const initialValues = ref<FleetUpdateInput>({
   logo: undefined,
-  fid: props.fleet.fid,
   name: props.fleet.name,
   description: props.fleet.description,
-  rsiSid: props.fleet.rsiSid,
   discord: props.fleet.discord,
   ts: props.fleet.ts,
   homepage: props.fleet.homepage,
@@ -79,7 +77,6 @@ const initialValues = ref<FleetUpdateInput>({
 });
 
 const validationSchema = {
-  fid: "required|min:3|alpha_dash",
   name: "required|min:3|fleetName",
   description: `max:${DESCRIPTION_MAX}`,
 };
@@ -88,10 +85,8 @@ const { defineField, handleSubmit, meta, resetForm, setErrors } = useForm({
   initialValues: initialValues.value,
 });
 
-const [fid, fidProps] = defineField("fid");
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
-const [rsiSid, rsiSidProps] = defineField("rsiSid");
 const [discord, discordProps] = defineField("discord");
 const [ts, tsProps] = defineField("ts");
 const [homepage, homepageProps] = defineField("homepage");
@@ -130,19 +125,12 @@ const onSubmit = handleSubmit(async (values) => {
       slug: route.params.slug as string,
       data: values,
     })
-    .then(async (updatedFleet) => {
+    .then(() => {
       displaySuccess({
         text: t("messages.fleet.update.success"),
       });
 
       comlink.emit("fleet-update");
-
-      if (updatedFleet.slug !== route.params.slug) {
-        await router.replace({
-          name: "fleet-settings",
-          params: { slug: updatedFleet.slug },
-        });
-      }
     })
     .catch((error) => {
       const { message, formErrors } = validationErrorFrom(error);
@@ -216,15 +204,6 @@ const onDestroy = async () => {
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput
-          v-model="fid"
-          name="fid"
-          :rules="validationSchema.fid"
-          :label="t('labels.fleet.fid')"
-          v-bind="fidProps"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
           v-model="name"
           name="name"
           :rules="validationSchema.name"
@@ -240,17 +219,6 @@ const onDestroy = async () => {
           v-bind="descriptionProps"
           :rules="validationSchema.description"
           :maxlength="DESCRIPTION_MAX"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="rsiSid"
-          name="rsiSid"
-          icon="icon icon-rsi icon-label"
-          translation-key="fleet.rsiSid"
-          v-bind="rsiSidProps"
         />
       </div>
     </div>

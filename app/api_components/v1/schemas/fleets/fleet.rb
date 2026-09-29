@@ -12,6 +12,7 @@ module V1
             id: {type: :string, format: :uuid},
             fid: {type: :string},
             rsiSid: {type: :string},
+            rsiVerified: {type: :boolean},
             ts: {type: :string},
             discord: {type: :string},
             youtube: {type: :string},

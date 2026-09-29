@@ -109,6 +109,7 @@
         "settings": {
           "index": "Impostazioni di %{fleet}",
           "fleet": "Impostazioni di %{fleet}",
+          "rsi": "%{fleet} – ID flotta e RSI",
           "membership": "Appartenenza a %{fleet}",
           "roles": "Ruoli di %{fleet}",
           "squadrons": "Squadroni di %{fleet}",
@@ -192,6 +193,7 @@
         "media": "Media - Test Visivi",
         "charts": "Grafici - Test Visivi",
         "themes": "Temi - Test Visivi",
+        "alerts": "Avvisi - Test visivi",
         "chips": "Chips - Test Visivi",
         "squadrons": "Squadroni - Test Visivi",
         "notificationCenter": "Centro notifiche - Test Visivi"

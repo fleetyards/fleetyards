@@ -55,6 +55,9 @@ it:
       reasons:
         contribution: "la donazione che la sosteneva non è più attiva"
         manual: "la concessione è stata terminata da un amministratore"
+    fleet_rsi_verification_lost:
+      title: "%{fleet} non è più verificata per %{sid}"
+      body: "Un’altra flotta ha dimostrato di gestire l’organizzazione RSI %{sid} inserendo il proprio codice di verifica nella pagina dell’organizzazione. La tua flotta non mostra più il SID come verificato. Se %{sid} è la tua organizzazione, verificala di nuovo dalle impostazioni della flotta."
     fleet_member_accepted:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:

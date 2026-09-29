@@ -162,6 +162,13 @@ class FleetMembership < ApplicationRecord
     false
   end
 
+  # Citizen ID confirms the member is in the RSI org whose SID the fleet names.
+  # That only says something about the fleet once the fleet has proved the SID
+  # is its own; until then anyone could have typed it.
+  def rsi_verified?
+    verified? && fleet.rsi_verified?
+  end
+
   def has_access?(privileges)
     return false if fleet_role.blank?
 

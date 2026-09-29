@@ -255,6 +255,8 @@ fr:
       create: Impossible de créer l'équipe de l'événement.
       destroy: Impossible de supprimer l'équipe de l'événement.
       update: Impossible de mettre à jour l'équipe de l'événement.
+    fleet_rsi_verification:
+      check: "Enregistre le SID de ton organisation et génère un code de vérification avant de vérifier."
     fleet_notification_settings:
       update: Impossible de mettre à jour les paramètres de notification.
     version:

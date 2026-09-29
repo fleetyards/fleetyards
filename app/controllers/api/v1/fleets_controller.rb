@@ -75,6 +75,7 @@ module Api
         @fleet = invite_url.fleet
         @my_fleet = current_resource_owner.present? &&
           @fleet.fleet_memberships.kept.accepted.exists?(user: current_resource_owner)
+        @visitor = !@my_fleet
 
         render "show"
       end

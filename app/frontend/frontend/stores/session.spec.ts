@@ -3,7 +3,11 @@ import { createApp } from "vue";
 import { setActivePinia, createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { queryClient } from "@/frontend/plugins/QueryClient";
-import { getMySupporterClaimKeyQueryKey, me } from "@/services/fyApi";
+import {
+  getFleetRsiVerificationQueryKey,
+  getMySupporterClaimKeyQueryKey,
+  me,
+} from "@/services/fyApi";
 import { useSessionStore } from "./session";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -40,6 +44,18 @@ describe("session store", () => {
 
     expect(
       queryClient.getQueryData(getMySupporterClaimKeyQueryKey()),
+    ).toBeUndefined();
+  });
+
+  it("drops a fleet's cached verification token on logout", async () => {
+    queryClient.setQueryData(getFleetRsiVerificationQueryKey("maru"), {
+      token: "FLEETYARDS-ABCDEFGHIJ",
+    });
+
+    await useSessionStore().logout();
+
+    expect(
+      queryClient.getQueryData(getFleetRsiVerificationQueryKey("maru")),
     ).toBeUndefined();
   });
 

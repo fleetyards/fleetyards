@@ -42,6 +42,16 @@ class Api::V1::FleetsInvitesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/invites hides a SID the fleet has not verified" do
+    fleet = create(:fleet, rsi_sid: "TEST")
+    create(:fleet_membership, user: @user, fleet:, aasm_state: :invited)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body.first.dig("fleet", "rsiSid")
+    end
+  end
+
   test "GET /fleets/invites returns 401 when not signed in" do
     assert_api_response :get, 401
   end

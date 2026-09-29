@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-json.cache! ["v1", fleet] do
-  json.partial!("api/v1/fleets/base", fleet:)
+visitor = local_assigns.fetch(:visitor, false)
+
+# The verification is in the key as well as `updated_at`, which keeps whole
+# seconds: a check can answer inside the second of the write before it.
+json.cache!(visitor ? ["v2", "visitor", fleet, fleet.rsi_verification_cache_key] : ["v2", fleet, fleet.rsi_verification_cache_key]) do
+  json.partial!("api/v1/fleets/base", fleet:, visitor:)
 end
 
 json.my_fleet(local_assigns.fetch(:my_fleet, false))

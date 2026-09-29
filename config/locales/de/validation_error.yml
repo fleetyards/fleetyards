@@ -263,6 +263,8 @@ de:
       create: Event-Team konnte nicht erstellt werden.
       destroy: Event-Team konnte nicht gelöscht werden.
       update: Event-Team konnte nicht aktualisiert werden.
+    fleet_rsi_verification:
+      check: "Speichere die SID deiner Organisation und erzeuge einen Verifizierungscode, bevor du prüfst."
     fleet_notification_settings:
       update: Benachrichtigungseinstellungen konnten nicht aktualisiert werden.
     tours:

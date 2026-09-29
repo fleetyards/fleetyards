@@ -403,6 +403,34 @@
         "name": "Nom",
         "logo": "Logo",
         "rsiSid": "SID",
+        "rsiSettings": {
+          "hint": "L’ID de flotte est l’adresse de ta flotte sur Fleetyards. Le SID relie la flotte à son organisation RSI, et le vérifier prouve que l’organisation t’appartient."
+        },
+        "rsiVerification": {
+          "steps": {
+            "copy": "Copie ton code de vérification",
+            "paste": "Colle-le n’importe où sur la page RSI publique de ton organisation : l’introduction, l’histoire, le manifeste ou la charte. Tu pourras le retirer une fois la flotte vérifiée.",
+            "check": "Vérifie la page"
+          },
+          "openOrgPage": "Ouvrir %{sid} sur RSI",
+          "locked": "Un SID vérifié est verrouillé. Contacte le support s’il doit changer.",
+          "fidAtRiskTitle": "L’ID de ta flotte n’est pas protégé",
+          "saveFirst": "Enregistre le SID avant de le vérifier.",
+          "title": "Vérification RSI",
+          "token": "Code de vérification",
+          "verified": "Organisation RSI vérifiée",
+          "unverified": "Non vérifiée auprès de RSI",
+          "verifiedSince": "Vérifiée depuis le %{date}",
+          "nextCheck": "Tu pourras vérifier à nouveau dans une minute.",
+          "fidAtRisk": "Une autre flotte qui vérifie l’organisation RSI %{fid} peut le réclamer, et l’adresse de ta flotte change.",
+          "statuses": {
+            "pending": "Vérification de la page de l’organisation…",
+            "token_missing": "Le code n’est pas encore sur la page de l’organisation. RSI peut mettre quelques minutes à afficher une modification.",
+            "symbol_mismatch": "La page renvoyée par RSI appartient à une autre organisation.",
+            "not_found": "RSI ne connaît aucune organisation avec ce SID.",
+            "failed": "La page de l’organisation n’a pas pu être vérifiée. Réessaie dans une minute."
+          }
+        },
         "description": "Description",
         "public": "Aperçu publique de la Flotte",
         "publicFleet": "Flotte publique",
@@ -2540,6 +2568,7 @@
         "fleet_contract_crew_answered": "Demande d'équipage traitée",
         "fleet_subscription_started": "Fonctionnalités de flotte activées",
         "fleet_subscription_ended": "Fonctionnalités de flotte perdues",
+        "fleet_rsi_verification_lost": "Vérification de flotte perdue",
         "fleet_contract_fulfilled": "Contrat rempli",
         "fleet_contract_settled": "Contrat payé",
         "payout_ledger_settled": "Paiements arrêtés",

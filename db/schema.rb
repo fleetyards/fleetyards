@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_28_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_28_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1090,6 +1090,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_100000) do
     t.boolean "public_fleet", default: false
     t.boolean "public_fleet_stats", default: false
     t.string "rsi_sid"
+    t.datetime "rsi_verification_checked_at"
+    t.string "rsi_verification_status"
+    t.string "rsi_verification_token"
+    t.datetime "rsi_verified_at"
+    t.string "rsi_verified_sid"
     t.string "sid"
     t.string "slug"
     t.boolean "squadrons_enabled", default: false, null: false
@@ -1102,6 +1107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_100000) do
     t.index ["calendar_feed_token"], name: "index_fleets_on_calendar_feed_token", unique: true
     t.index ["discarded_at"], name: "index_fleets_on_discarded_at"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true, where: "(discarded_at IS NULL)"
+    t.index ["rsi_verified_sid"], name: "index_fleets_on_rsi_verified_sid", unique: true, where: "(discarded_at IS NULL)"
   end
 
   create_table "flipper_features", force: :cascade do |t|

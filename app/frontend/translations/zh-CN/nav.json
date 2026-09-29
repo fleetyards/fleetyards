@@ -91,6 +91,7 @@
         "settings": {
           "index": "设置",
           "fleet": "舰队设置",
+          "rsi": "舰队 ID 与 RSI",
           "membership": "成员设置",
           "roles": "角色",
           "squadrons": "中队",
@@ -162,6 +163,7 @@
         "supportHint": "支持提示",
         "media": "媒体",
         "charts": "图表",
+        "alerts": "提示",
         "chips": "Chips",
         "squadrons": "中队",
         "groups": {

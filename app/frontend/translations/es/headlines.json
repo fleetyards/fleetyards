@@ -270,6 +270,7 @@
         },
         "settings": {
           "fleet": "Fleet Settings",
+          "rsi": "ID de flota y RSI",
           "membership": "Membership Settings",
           "roles": "Roles de flota",
           "squadrons": "Escuadrones de la flota",
@@ -424,6 +425,7 @@
         "charts": "Gráficos",
         "blueprints": "Planos",
         "squadrons": "Escuadrones",
+        "alerts": "Avisos",
         "chips": "Chips de pruebas visuales",
         "events": "Eventos",
         "typography": "Tipografía",

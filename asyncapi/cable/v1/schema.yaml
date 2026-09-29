@@ -1287,6 +1287,8 @@ components:
           type: string
         rsiSid:
           type: string
+        rsiVerified:
+          type: boolean
         ts:
           type: string
         discord:
@@ -3328,6 +3330,7 @@ components:
       - payout_entry_declined
       - fleet_subscription_started
       - fleet_subscription_ended
+      - fleet_rsi_verification_lost
       - announcement
       x-enumNames:
       - HANGAR_CREATE
@@ -3373,6 +3376,7 @@ components:
       - PAYOUT_ENTRY_DECLINED
       - FLEET_SUBSCRIPTION_STARTED
       - FLEET_SUBSCRIPTION_ENDED
+      - FLEET_RSI_VERIFICATION_LOST
       - ANNOUNCEMENT
     PayoutLedger:
       type: object

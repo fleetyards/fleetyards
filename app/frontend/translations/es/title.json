@@ -109,6 +109,7 @@
         "settings": {
           "index": "Configuración de %{fleet}",
           "fleet": "Configuración de %{fleet}",
+          "rsi": "%{fleet}: ID de flota y RSI",
           "membership": "Membresía de %{fleet}",
           "roles": "Roles de %{fleet}",
           "squadrons": "Escuadrones de %{fleet}",
@@ -192,6 +193,7 @@
         "media": "Multimedia - Pruebas Visuales",
         "charts": "Gráficos - Pruebas Visuales",
         "themes": "Temas - Pruebas Visuales",
+        "alerts": "Avisos - Pruebas visuales",
         "chips": "Chips - Pruebas Visuales",
         "squadrons": "Escuadrones - Pruebas Visuales",
         "notificationCenter": "Centro de notificaciones - Pruebas Visuales"

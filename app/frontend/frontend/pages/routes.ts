@@ -18,7 +18,10 @@ const VisualTestsRoutes =
           path: "/visual-tests/",
           component: () => import("@/frontend/pages/visual-tests.vue"),
           children: visualTestsRoutes,
-          redirect: { name: visualTestsRoutes[0].name },
+          // Named rather than the array's first entry: that was whichever
+          // page happened to be added at the top, and the nav opens on
+          // typography.
+          redirect: { name: "visual-tests-typography" },
         },
       ]
     : [];

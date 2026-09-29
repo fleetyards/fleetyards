@@ -37,12 +37,25 @@ const {
   },
 });
 
+// A signed-in reader falls back to the visitor payload only once the members'
+// copy is refused -- a 404, which is how a non-member is told. Racing the two,
+// or falling back on any failure, let a member's page render from the visitor
+// payload, which leaves out what only members see: a settings form seeded from
+// it would save the gaps back.
+const memberFleetRefused = computed(() => {
+  const error = asyncFleetStatus.error.value;
+
+  return !!error && errorTypeFrom(error) === ErrorTypesEnum.NOT_FOUND;
+});
+
 const { data: publicFleet, ...asyncPublicFleetStatus } = usePublicFleetQuery(
   slug,
   {
     query: {
       enabled: computed(
-        () => !!slug.value && (!sessionStore.isAuthenticated || !fleet.value),
+        () =>
+          !!slug.value &&
+          (!sessionStore.isAuthenticated || memberFleetRefused.value),
       ),
       retry: false,
     },
@@ -75,11 +88,20 @@ const membershipRequired = computed(
   () => !!route.meta.needsAuthentication && !membership.value,
 );
 
-const resolvedFleet = computed(() => fleet.value || publicFleet.value);
+// Vue Query keeps the last good payload through a failed refetch, so a member
+// who was just removed still has theirs cached. Refused means refused: from
+// then on only the visitor payload is shown.
+const memberFleet = computed(() =>
+  memberFleetRefused.value ? undefined : fleet.value,
+);
+
+const resolvedFleet = computed(() => memberFleet.value || publicFleet.value);
 
 const resolvedAsyncFleetStatus = computed(() => {
-  if (fleet.value) return asyncFleetStatus;
-  if (publicFleet.value) return asyncPublicFleetStatus;
+  if (memberFleet.value) return asyncFleetStatus;
+  if (sessionStore.isAuthenticated && !memberFleetRefused.value) {
+    return asyncFleetStatus;
+  }
   return asyncPublicFleetStatus;
 });
 

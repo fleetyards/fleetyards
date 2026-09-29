@@ -81,6 +81,7 @@ class Notification < ApplicationRecord
     payout_entry_declined: "payout_entry_declined",
     fleet_subscription_started: "fleet_subscription_started",
     fleet_subscription_ended: "fleet_subscription_ended",
+    fleet_rsi_verification_lost: "fleet_rsi_verification_lost",
     announcement: "announcement"
   }
 
@@ -337,6 +338,11 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
     fleet_subscription_ended: {
+      retention: 365.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
+    },
+    fleet_rsi_verification_lost: {
       retention: 365.days,
       channels: %i[app],
       preference_defaults: {app: true, mail: false, push: false, discord: false}

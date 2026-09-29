@@ -55,6 +55,9 @@ de:
       reasons:
         contribution: "die unterstützende Spende ist nicht mehr aktiv"
         manual: "die Freigabe wurde von einem Administrator beendet"
+    fleet_rsi_verification_lost:
+      title: "%{fleet} ist nicht mehr für %{sid} verifiziert"
+      body: "Eine andere Flotte hat ihren Verifizierungscode auf die RSI-Seite der Organisation %{sid} gesetzt und damit gezeigt, dass sie sie verwaltet. Deine Flotte zeigt die SID nicht mehr als verifiziert. Wenn %{sid} deine Organisation ist, verifiziere sie in den Flotteneinstellungen erneut."
     fleet_member_accepted:
       title: "%{username} ist %{fleet} beigetreten"
     fleet_request_accepted:

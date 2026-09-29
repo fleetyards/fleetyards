@@ -1,0 +1,144 @@
+/*
+ * The Panel frame in miniature: a 1px edge with end-caps, both in the tone,
+ * over a neutral tint. The caps are what tie a notice to the app's surfaces;
+ * the tint is what sets it apart from them.
+ *
+ * The var() fallbacks are load-bearing: a bare var() written by hand gets none
+ * from Tailwind, and the embed bundle never registers :root.
+ */
+.base-alert {
+  --alert-tone: var(--color-primary, #428bca);
+
+  position: relative;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  // One fill for every variant: the edge, the caps and the icon carry the
+  // meaning, so a page with two notices reads as one kind of surface. Half the
+  // panel surface: enough that the background image does not fight the text,
+  // light enough that a notice still reads as lighter than a panel.
+  background: color-mix(
+    in srgb,
+    var(--color-muted, #{$gray-light}) 12%,
+    color-mix(
+      in srgb,
+      var(--color-surface, rgb(39 43 48 / 0.9)) 55%,
+      transparent
+    )
+  );
+  border: 1px solid color-mix(in srgb, var(--alert-tone) 45%, transparent);
+  line-height: 1.45;
+  // The layout follows the box's own width, not the viewport's: a notice in a
+  // modal or a narrow column needs the stacked form on a desktop too.
+  container-type: inline-size;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: max(10px, 12%);
+    right: max(10px, 12%);
+    height: 3px;
+    background: var(--alert-tone);
+  }
+
+  &::before {
+    top: -1px;
+    border-radius: 0 0 3px 3px;
+  }
+
+  &::after {
+    bottom: -1px;
+    border-radius: 3px 3px 0 0;
+  }
+
+  &--neutral {
+    --alert-tone: var(--color-muted, #{$gray-light});
+  }
+
+  &--success {
+    --alert-tone: var(--color-success, #{$success});
+  }
+
+  &--warning {
+    --alert-tone: var(--color-warning, #{$warning});
+  }
+
+  &--danger {
+    --alert-tone: var(--color-danger, #{$danger});
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "icon content actions dismiss";
+    gap: 14px;
+    // Centred, so an action beside one line of text or three sits level with it.
+    align-items: center;
+    padding: 12px 16px;
+  }
+
+  &__icon {
+    grid-area: icon;
+    font-size: 1.6em;
+    color: var(--alert-tone);
+  }
+
+  &__content {
+    grid-area: content;
+  }
+
+  &__title {
+    font-weight: 600;
+  }
+
+  &__body :deep(p) {
+    margin: 0;
+  }
+
+  &__actions {
+    grid-area: actions;
+  }
+
+  &__dismiss {
+    grid-area: dismiss;
+    align-self: start;
+    padding: 2px 4px;
+    border: 0;
+    background: none;
+    color: var(--color-muted, #{$gray-light});
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text, #{$text-color});
+    }
+  }
+
+  &--compact {
+    margin-bottom: 12px;
+    font-size: 0.9em;
+
+    .base-alert__inner {
+      gap: 10px;
+      padding: 8px 12px;
+    }
+
+    .base-alert__icon {
+      font-size: 1.2em;
+    }
+  }
+
+  @container (max-width: 480px) {
+    .base-alert__inner {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas:
+        "icon content dismiss"
+        ". actions actions";
+      row-gap: 8px;
+    }
+
+    .base-alert__actions {
+      justify-self: start;
+    }
+  }
+}

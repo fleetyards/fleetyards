@@ -45,6 +45,16 @@ class Api::V1::FleetsFindByInviteTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets/find-by-invite/:token hides a SID the fleet has not verified" do
+    fleet = create(:fleet, rsi_sid: "TEST")
+    invite = create(:fleet_invite_url, fleet: fleet)
+    sign_in @user
+
+    assert_api_response :post, 200, path_params: {token: invite.token} do
+      assert_nil parsed_body["rsiSid"]
+    end
+  end
+
   test "POST /fleets/find-by-invite/:token returns 401 when not signed in" do
     fleet = create(:fleet)
     invite = create(:fleet_invite_url, fleet: fleet)

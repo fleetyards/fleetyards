@@ -475,6 +475,17 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *).deliver_later
   end
 
+  # For text stored in a notification, which is written once per recipient.
+  # `locale` already holds one of the app's own locales, so this only has to
+  # survive a blank or a stale one -- I18n raises on an unavailable locale
+  # rather than falling back.
+  def notification_locale
+    stored = locale.presence
+    return I18n.default_locale if stored.blank?
+
+    I18n.available_locales.map(&:to_s).include?(stored) ? stored.to_sym : I18n.default_locale
+  end
+
   def public_hangar_url
     return short_public_hangar_url(username:) if Rails.configuration.app.short_domain.present?
 

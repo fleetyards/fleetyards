@@ -2,7 +2,8 @@
 
 json.id fleet.id
 json.fid fleet.fid
-json.rsi_sid fleet.rsi_sid
+json.rsi_sid local_assigns[:visitor] ? fleet.public_rsi_sid : fleet.rsi_sid
+json.rsi_verified fleet.rsi_verified?
 json.ts fleet.ts
 json.discord fleet.discord
 json.youtube fleet.youtube

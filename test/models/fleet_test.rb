@@ -23,6 +23,11 @@
 #  public_fleet              :boolean          default(FALSE)
 #  public_fleet_stats        :boolean          default(FALSE)
 #  rsi_sid                   :string
+#  rsi_verification_checked_at :datetime
+#  rsi_verification_status   :string
+#  rsi_verification_token    :string
+#  rsi_verified_at           :datetime
+#  rsi_verified_sid          :string
 #  sid                       :string
 #  slug                      :string
 #  squadrons_enabled         :boolean          default(FALSE), not null
@@ -39,6 +44,7 @@
 #  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
 #  index_fleets_on_discarded_at         (discarded_at)
 #  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
+#  index_fleets_on_rsi_verified_sid     (rsi_verified_sid) UNIQUE WHERE (discarded_at IS NULL)
 #
 require "test_helper"
 
