@@ -123,6 +123,15 @@ const { t, l } = useI18n();
   <Teleport to="#header-right">
     <Btn
       :size="BtnSizesEnum.MD"
+      :to="{ name: 'admin-fleet-fid-claims' }"
+      :aria-label="t('nav.admin.fleetFidClaims.index')"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-id-badge" />
+      {{ t("nav.admin.fleetFidClaims.index") }}
+    </Btn>
+    <Btn
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-destroyed-fleets' }"
       :aria-label="t('nav.admin.destroyedFleets.index')"
       mobile-icon-only
