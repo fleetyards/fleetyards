@@ -46,6 +46,22 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_nil model.reload.dimensions_measured_at
   end
 
+  # A replacement landing between the job's check and its write: the write
+  # itself has to refuse, or the old file's stamp lands on the new holo.
+  test "#perform writes nothing once the measured holo has been replaced" do
+    model = attach(create(:model), :holo, "plain.gltf")
+    measured_blob_id = model.holo.blob.id
+    attach(model, :holo, "wide.gltf")
+    length = model.reload.length
+    MeasureHoloJob.any_instance.stubs(:stale_blob?).returns(false)
+
+    MeasureHoloJob.new.perform(model.id, "holo", measured_blob_id)
+
+    model.reload
+    assert_nil model.dimensions_measured_at
+    assert_equal length, model.length
+  end
+
   # The fixture is 10 x 1 x 6 -- wider than it is long, like the Corsair with
   # its wings deployed. Sorting the axes would call the 10 the length; the
   # frame the pipeline exports in says the 6 is.

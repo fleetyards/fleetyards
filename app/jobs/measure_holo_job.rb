@@ -58,7 +58,8 @@ class MeasureHoloJob
     dimensions = AXIS_ORDER.map { |axis| result.public_send(axis) }
     # `updated_at` too: the model's cached fragments are keyed on it, and they
     # carry both the dimensions and whether the holo is to scale.
-    model.update_columns(columns.zip(dimensions).to_h.merge(measured_at_for(name), updated_at: Time.current))
+    values = columns.zip(dimensions).to_h.merge(measured_at_for(name), updated_at: Time.current)
+    return if measured_holo_scope(model, name, blob_id).update_all(values).zero?
 
     write_pad_class(model, name, dimensions)
   rescue ActiveStorage::FileNotFoundError
@@ -112,6 +113,21 @@ class MeasureHoloJob
     return {} if column.nil?
 
     {column => Time.current}
+  end
+
+  # The write, conditional on the holo still being the file that was measured:
+  # a replacement attached after the check above clears the stamp, and an
+  # unconditional write would put the old file's measurement back on top of it.
+  private def measured_holo_scope(model, name, blob_id)
+    scope = ::Model.where(id: model.id)
+    return scope if blob_id.blank?
+
+    scope.where(
+      ::ActiveStorage::Attachment
+        .where(record_type: ::Model.name, name:, blob_id:)
+        .where("active_storage_attachments.record_id = models.id")
+        .arel.exists
+    )
   end
 
   # A second upload while this one was queued: the older file's numbers must not
