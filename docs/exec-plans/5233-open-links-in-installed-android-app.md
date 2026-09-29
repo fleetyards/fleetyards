@@ -53,5 +53,5 @@ A link shared into Fleetyards from Android's share sheet opens its page in the a
 
 ## Progress
 
-- [ ] Phase 1
-- [ ] Phase 2
+- [x] Phase 1
+- [x] Phase 2
