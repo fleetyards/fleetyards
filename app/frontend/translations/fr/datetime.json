@@ -2,7 +2,7 @@
   "fr": {
     "datetime": {
       "formats": {
-        "default": "d MMMM y 'at' HH:mm z",
+        "default": "d MMMM y 'à' HH:mm z",
         "short": "d MMM HH:mm z",
         "dateTime": "d MMM y, HH:mm",
         "dateTimeZone": "d MMM y, HH:mm z",

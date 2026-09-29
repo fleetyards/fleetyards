@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { I18n } from "i18n-js";
+import translations from "@/translations";
 import { i18nHelpers } from "./I18nHelpers";
 
 const i18nIn = (locale: string) => {
@@ -62,6 +63,29 @@ describe("i18nHelpers", () => {
 
     expect(lUtc("2026-09-29T23:30:00Z", "datetime.formats.date")).toBe(
       "29 September 2026",
+    );
+  });
+
+  it("writes the default timestamp in the UI's language, connective included", () => {
+    const withAppTranslations = (locale: string) => {
+      const i18n = new I18n(translations);
+      i18n.locale = locale;
+
+      return i18nHelpers(i18n);
+    };
+    const timestamp = "2026-09-29T12:00:00Z";
+
+    expect(withAppTranslations("de").lUtc(timestamp)).toBe(
+      "29. September 2026 um 12:00 UTC",
+    );
+    expect(withAppTranslations("fr").lUtc(timestamp)).toBe(
+      "29 septembre 2026 à 12:00 UTC",
+    );
+    expect(withAppTranslations("zh-CN").lUtc(timestamp)).toBe(
+      "2026 年 9 月 29 日 12:00 UTC",
+    );
+    expect(withAppTranslations("en").lUtc(timestamp)).toBe(
+      "29 September 2026 at 12:00 UTC",
     );
   });
 });
