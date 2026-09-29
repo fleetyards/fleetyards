@@ -136,7 +136,8 @@ export const useUpdates = () => {
     });
   };
 
-  const { invalidate: invalidateNotifications } = useNotificationInvalidation();
+  const { invalidate: invalidateNotifications, invalidateFidClaims } =
+    useNotificationInvalidation();
 
   // A notification is a record, so its fields have to be mapped onto the toast.
   // The toast is also the way into the center it was just filed in — unlike the
@@ -144,6 +145,7 @@ export const useUpdates = () => {
   // reporting an operational failure that must not be missed.
   const handleUserNotification = (notification: Notification) => {
     invalidateNotifications();
+    invalidateFidClaims(notification);
 
     displayMessage({
       text: notification.title,
