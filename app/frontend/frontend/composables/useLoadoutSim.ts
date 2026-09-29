@@ -472,8 +472,13 @@ function heatModel(
   modifiers: SignatureModifiers,
 ): HeatModel {
   return {
+    // A cooler with no coolant output cannot cool; balancing against it would
+    // only shed power from everything else.
     coolers: components
-      .filter((component) => component.family === "coolers")
+      .filter(
+        (component) =>
+          component.family === "coolers" && component.coolingRate > 0,
+      )
       .map((component) => ({
         portPath: component.portPath,
         units: component.units,

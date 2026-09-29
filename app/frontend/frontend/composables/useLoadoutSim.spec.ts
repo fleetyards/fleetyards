@@ -455,6 +455,24 @@ describe("heat (cooling ratio)", () => {
     expect(sim.emittedIr).toBeGreaterThan(0);
   });
 
+  it("keeps a cooler with no coolant data out of the balancing", () => {
+    const shield = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
+      powerConsumption: 6,
+    });
+    const sim = simulateLoadoutPower(
+      [
+        plant(40, 2),
+        hp(HardpointCategoryEnum.COOLER, { powerConsumption: 3 }),
+        shield,
+      ],
+      0,
+    );
+
+    expect(sim.columns.find((c) => c.portPath === shield.id)?.allocated).toBe(
+      6,
+    );
+  });
+
   it("does not count tractor beams toward the heat load", () => {
     const base = [
       plant(40, 2),
