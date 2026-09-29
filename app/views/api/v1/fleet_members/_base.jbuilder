@@ -41,8 +41,12 @@ json.last_active_at member.user.last_active_at&.utc&.iso8601
 json.fleet_slug member.fleet.slug
 json.fleet_name member.fleet.name
 json.primary member.primary
+# Two separate facts. `verified` says the member is in the RSI org this fleet
+# proved it runs, so it needs the fleet's verification. The Citizen iD profile
+# says the user's own handle is theirs, whichever fleet they are in.
 json.verified member.rsi_verified?
-json.citizenid_profile_url member.user.citizenid_profile_url if member.rsi_verified?
+json.verified_org_sid member.fleet.rsi_verified_sid if member.rsi_verified?
+json.citizenid_profile_url member.user.citizenid_profile_url
 json.discord_profile_url member.user.discord_profile_url
 json.latitude member.user.latitude&.to_f
 json.longitude member.user.longitude&.to_f

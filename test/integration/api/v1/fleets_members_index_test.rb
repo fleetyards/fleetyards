@@ -46,6 +46,11 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def verify_handle(user)
+    user.update!(rsi_handle: "maru_pilot", rsi_handle_verified: true)
+    create(:omniauth_connection, user:, provider: :citizenid)
+  end
+
   setup do
     @admin = create(:user)
     @member = create(:user)
@@ -58,6 +63,34 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /fleets/:slug/members shows a verified handle in a fleet that is not verified" do
+    verify_handle(@member)
+    @fleet.fleet_memberships.find_by(user: @member).update!(verified: true)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_predicate member["citizenidProfileUrl"], :present?
+      assert_equal false, member["verified"]
+      assert_nil member["verifiedOrgSid"]
+    end
+  end
+
+  test "GET /fleets/:slug/members names the org of a member verified in a verified fleet" do
+    @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU") # rubocop:disable Rails/SkipsModelValidations
+    @fleet.fleet_memberships.find_by(user: @member).update!(verified: true)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_equal true, member["verified"]
+      assert_equal "MARU", member["verifiedOrgSid"]
+      assert_nil member["citizenidProfileUrl"]
     end
   end
 

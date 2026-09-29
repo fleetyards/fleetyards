@@ -22824,6 +22824,8 @@ components:
           type: boolean
         verified:
           type: boolean
+        verifiedOrgSid:
+          type: string
         citizenidProfileUrl:
           type: string
         discordProfileUrl:
