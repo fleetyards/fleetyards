@@ -70,7 +70,7 @@ const rsiProfileUrl = computed(
     top: 0;
     right: 0;
     transform: translate(50%, 0);
-    font-size: 0.65em;
+    font-size: 0.85em;
     line-height: 1;
     --fa-secondary-color: color-mix(
       in srgb,

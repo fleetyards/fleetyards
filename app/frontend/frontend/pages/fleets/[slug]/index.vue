@@ -309,7 +309,7 @@ const description = computed(() => {
   top: 0;
   right: 0;
   transform: translate(50%, 0);
-  font-size: 0.45em;
+  font-size: 0.6em;
   line-height: 1;
   --fa-secondary-color: color-mix(
     in srgb,
