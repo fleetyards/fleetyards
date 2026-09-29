@@ -828,6 +828,22 @@ const crumbs = computed<Crumb[]>(() => [
     padding-right: 66px;
   }
 }
+
+/* One fact per line on a phone: a date range with its timezone does not fit
+   in half of a 390px card. */
+@media (max-width: 576px) {
+  .event-detail__hero .metrics-card__rows--split {
+    grid-template-columns: 1fr;
+
+    .metrics-card__row:nth-last-child(-n + 2) {
+      border-bottom: 1px solid rgba($gray-light, 0.16);
+    }
+
+    .metrics-card__row:last-child {
+      border-bottom: 0;
+    }
+  }
+}
 .event-hero__tz {
   font-size: 0.85em;
   opacity: 0.75;
