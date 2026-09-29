@@ -1,5 +1,10 @@
 en:
   title:
+    link_preview:
+      fleet_event: "Fleet event in %{fleet}"
+      fleet_contract: "Contract in %{fleet}"
+      tour: "Tour"
+      tour_invite: "Join %{tour}"
     default: FleetYards.net
     default_short: FleetYards
     default_admin: FleetYards.net Command

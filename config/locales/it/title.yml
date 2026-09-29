@@ -1,6 +1,11 @@
 ---
 it:
   title:
+    link_preview:
+      fleet_event: "Evento della flotta in %{fleet}"
+      fleet_contract: "Contratto in %{fleet}"
+      tour: "Spedizione"
+      tour_invite: "Unisciti a %{tour}"
     default: FleetYards.net
     default_short: FleetYards
     default_admin: FleetYards.net Command
