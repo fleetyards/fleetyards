@@ -199,17 +199,19 @@ describe("overrides (pip UI)", () => {
     expect(nav.columns.find((c) => c.portPath === qd.id)?.allocated).toBe(3);
   });
 
-  it("defaults a non-primary system to its critical floor (life support 1)", () => {
-    // LS: units 2 @ 0.5 min fraction → critical 1; not greedily filled.
+  it("tops life support up in SCM but keeps it at its critical floor in NAV", () => {
+    // LS: units 2 @ 0.5 min fraction → critical 1.
     const ls = hp(HardpointCategoryEnum.LIFESUPPORT, {
       powerConsumption: 2,
       powerMinimumFraction: 0.5,
     });
-    const col = simulateLoadoutPower([plant(40, 2), ls], 0).columns.find(
-      (c) => c.portPath === ls.id,
-    );
-    expect(col?.allocated).toBe(1);
-    expect(col?.capacity).toBe(2);
+    const column = (mode: "SCM" | "NAV") =>
+      simulateLoadoutPower([plant(40, 2), ls], 0, mode).columns.find(
+        (c) => c.portPath === ls.id,
+      );
+    expect(column("SCM")?.allocated).toBe(2);
+    expect(column("NAV")?.allocated).toBe(1);
+    expect(column("NAV")?.capacity).toBe(2);
   });
 
   it("returns freed pips to the pool instead of redistributing", () => {
@@ -381,9 +383,7 @@ describe("heat (cooling ratio)", () => {
     expect(dark.emittedEm).toBe(0);
   });
 
-  it("exceeds 1 when the coolers can't keep up (under-cooled)", () => {
-    // A tiny cooler against a fully-powered shield generates far more heat than
-    // it can dissipate → cooling load well above 1.
+  it("exceeds 1 when the user powers more than the coolers can take", () => {
     const tinyCooler = hp(HardpointCategoryEnum.COOLER, {
       powerConsumption: 2,
       coolingRate: 4,
@@ -391,8 +391,12 @@ describe("heat (cooling ratio)", () => {
     const shield = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
       powerConsumption: 12,
     });
-    const sim = simulateLoadoutPower([plant(40, 2), tinyCooler, shield], 0);
-    expect(sim.coolingRatio).toBeGreaterThan(1);
+    const ports = [plant(40, 2), tinyCooler, shield];
+    // The default sheds shield power until the tiny cooler keeps up.
+    expect(simulateLoadoutPower(ports, 0).coolingRatio).toBeLessThanOrEqual(1);
+    // Forcing the shield to full generates far more heat than it can take.
+    const forced = simulateLoadoutPower(ports, 0, "SCM", { [shield.id]: 12 });
+    expect(forced.coolingRatio).toBeGreaterThan(1);
   });
 
   it("has no heat or cooling when nothing is powered", () => {

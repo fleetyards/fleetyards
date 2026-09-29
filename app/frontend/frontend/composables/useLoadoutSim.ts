@@ -3,13 +3,16 @@ import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
 import {
   allocatePower,
   componentBlocks,
+  criticalSize,
   POWER_FAMILIES,
   totalSegments,
   weaponPoolBlocks,
   weaponPoolRatio,
   WEAPON_POOL_PORT,
+  type Allocation,
   type AllocationState,
   type FlightMode,
+  type HeatModel,
   type PortOverrides,
   type PowerFamily,
   type PowerPort,
@@ -87,12 +90,14 @@ function rangeModifier(ranges: PowerRange[], segments: number): number {
 
 // A power-drawing component captured for the heat pass: its allocated segments
 // come from the allocation state (by portPath). Coolers additionally carry the
-// coolant they produce at full power (`coolingRate`); `irNominal` is the
-// component's infrared signature emission at full power.
+// coolant they produce at full power (`coolingRate`) and only run at or above
+// their mandatory `floor`; `irNominal` is the component's infrared signature
+// emission at full power.
 type HeatComponent = {
   portPath: string;
   family: PowerFamily;
   units: number;
+  floor: number;
   ranges: PowerRange[];
   coolingRate: number;
   irNominal: number;
@@ -260,6 +265,7 @@ function collectPorts(
               portPath: hardpoint.id,
               family,
               units: draw,
+              floor: criticalSize(draw, minimumFraction),
               ranges: toRanges(typeData.powerRanges),
               coolingRate:
                 family === "coolers" ? numeric(typeData.coolingRate) : 0,
@@ -401,15 +407,76 @@ function buildColumns(
   );
 }
 
-// Heat pass: coolers turn active power segments into coolant;
-// every powered component generates heat. `coolingRatio` is the cooling *load* —
-// heat generated ÷ coolant provided — so it rises above 1 when the active
-// coolers can't keep up, and is 0 when no cooler is powered (there is no active
+// Coolant a cooler produces at `segments` active segments; nothing below its
+// floor.
+function coolerOutput(component: HeatComponent, segments: number): number {
+  const active = Math.min(segments, component.units);
+  if (component.floor <= 0 || active < component.floor) return 0;
+  return (
+    component.coolingRate *
+    (active / component.units) *
+    rangeModifier(component.ranges, active)
+  );
+}
+
+// Heat generated per second: every powered segment except the weapons and the
+// heat-free families, the weapons at no more than their raw draw, plus the
+// extra heat of shields, life support, radar and the quantum drive.
+function heatGeneration(
+  components: HeatComponent[],
+  weaponUnits: number,
+  { perPort, perFamily }: Allocation,
+): number {
+  let heat = Math.min(perFamily.weapon, weaponUnits);
+  for (const family of POWER_FAMILIES) {
+    if (family === "weapon" || NON_HEAT_FAMILIES.has(family)) continue;
+    heat += perFamily[family];
+  }
+  for (const component of components) {
+    if (!EXTRA_HEAT_FAMILIES.has(component.family)) continue;
+    const active = perPort[component.portPath] ?? 0;
+    if (active > 0) heat += active * rangeModifier(component.ranges, active);
+  }
+  return heat;
+}
+
+// The coolers and heat generation the default distribution balances.
+function heatModel(
+  components: HeatComponent[],
+  weaponUnits: number,
+): HeatModel {
+  return {
+    coolers: components
+      .filter((component) => component.family === "coolers")
+      .map((component) => ({
+        portPath: component.portPath,
+        units: component.units,
+        floor: component.floor,
+        cooling: (segments) => coolerOutput(component, segments),
+        signature: (segments) => {
+          const scale =
+            (segments / component.units) *
+            rangeModifier(component.ranges, segments);
+          return {
+            em: component.emNominal * scale,
+            ir: component.irNominal * scale,
+          };
+        },
+      })),
+    generation: (allocation) =>
+      heatGeneration(components, weaponUnits, allocation),
+  };
+}
+
+// Heat pass: coolers turn active power segments into coolant; every powered
+// component generates heat. `coolingRatio` is the cooling *load* — heat
+// generated ÷ coolant provided — so it rises above 1 when the active coolers
+// can't keep up, and is 0 when no cooler is powered (there is no active
 // cooling system to load). It also drives the IR signature.
 function computeHeat(
   components: HeatComponent[],
-  usedSegments: number,
-  perPort: Record<string, number>,
+  weaponUnits: number,
+  allocation: Allocation,
 ): {
   coolingPerSec: number;
   coolingMaxPerSec: number;
@@ -419,45 +486,35 @@ function computeHeat(
 } {
   let coolingPerSec = 0;
   let coolingMaxPerSec = 0;
-  let extraHeat = 0;
-  let nonHeatSegments = 0;
   let irRaw = 0;
 
   for (const component of components) {
-    const active = perPort[component.portPath] ?? 0;
-    if (component.family === "coolers" && component.units > 0) {
-      const modifier = rangeModifier(component.ranges, active);
-      coolingPerSec +=
-        component.coolingRate * (active / component.units) * modifier;
-      coolingMaxPerSec +=
-        component.coolingRate *
-        rangeModifier(component.ranges, component.units);
-      // IR is emitted by the active coolers.
-      if (active > 0) {
-        irRaw += component.irNominal * (active / component.units) * modifier;
-      }
-    }
-    if (active > 0 && EXTRA_HEAT_FAMILIES.has(component.family)) {
-      extraHeat += active * rangeModifier(component.ranges, active);
-    }
-    if (NON_HEAT_FAMILIES.has(component.family)) {
-      nonHeatSegments += active;
+    if (component.family !== "coolers" || component.units <= 0) continue;
+    const active = allocation.perPort[component.portPath] ?? 0;
+    const output = coolerOutput(component, active);
+    coolingPerSec += output;
+    coolingMaxPerSec +=
+      component.coolingRate * rangeModifier(component.ranges, component.units);
+    // IR is emitted by the running coolers.
+    if (output > 0) {
+      irRaw +=
+        component.irNominal *
+        (active / component.units) *
+        rangeModifier(component.ranges, active);
     }
   }
 
-  // Heat generated = every active power segment (minus the families that emit
-  // none, e.g. tractor beams), plus the extra component heat.
-  const heatGeneration = usedSegments - nonHeatSegments + extraHeat;
+  const heat = heatGeneration(components, weaponUnits, allocation);
   // Cooling load: heat ÷ coolant provided (uncapped, so > 1 when under-cooled);
   // 0 when no cooler is powered.
-  const coolingRatio = coolingPerSec > 0 ? heatGeneration / coolingPerSec : 0;
+  const coolingRatio = coolingPerSec > 0 ? heat / coolingPerSec : 0;
   // Emitted IR signature scales with the active cooling (0 when cooling is off).
   const emittedIr = irRaw * coolingRatio;
 
   return {
     coolingPerSec,
     coolingMaxPerSec,
-    heatGeneration,
+    heatGeneration: heat,
     coolingRatio,
     emittedIr,
   };
@@ -551,7 +608,10 @@ export function simulateLoadoutPower(
   };
 
   // The default distribution (no user input).
-  const baseline = allocatePower(ports, segments, allocateOpts);
+  const baseline = allocatePower(ports, segments, {
+    ...allocateOpts,
+    heat: heatModel(acc.components, acc.weaponUnits),
+  });
 
   // Once the user assigns pips, pin every untouched component to its baseline
   // and honor the overrides — so freed pips return to the pool rather than
@@ -630,7 +690,7 @@ export function simulateLoadoutPower(
       : 0;
 
   const usedSegments = segments - state.remaining;
-  const heat = computeHeat(acc.components, usedSegments, state.perPort);
+  const heat = computeHeat(acc.components, acc.weaponUnits, state);
   const weaponRatioValue = pool <= 0 ? 1 : weaponPoolRatio(state, consumption);
   const emittedEm = computeEm(
     acc.plants,
