@@ -69,6 +69,15 @@ class Api::V1::FleetsRsiVerificationCheckTest < ActionDispatch::IntegrationTest
     assert_empty FleetRsiVerificationJob.jobs
   end
 
+  test "POST /fleets/:slug/rsi-verification/check names the end of the cooldown to the microsecond" do
+    sign_in @admin
+
+    assert_api_response :post, 200, path_params: {fleetSlug: @fleet.slug}
+
+    expected = (@fleet.reload.rsi_verification_checked_at + Fleet::RSI_VERIFICATION_COOLDOWN).utc.iso8601(6)
+    assert_equal expected, response.parsed_body["nextCheckAt"]
+  end
+
   test "POST /fleets/:slug/rsi-verification/check needs a SID" do
     sign_in @admin
     @fleet.update!(rsi_sid: nil)

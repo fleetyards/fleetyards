@@ -32,19 +32,25 @@ module Api
           return
         end
 
-        unless @fleet.rsi_verification_cooling_down?
+        # Under the lock, so two managers pressing Check at once start one
+        # request to RSI rather than two.
+        checked_at = @fleet.with_lock do
+          next if @fleet.rsi_verification_cooling_down?
+
           # To the microsecond the column keeps, so the job's copy of it still
           # names this check once read back.
-          checked_at = Time.current.floor(6)
+          Time.current.floor(6).tap do |now|
+            # rubocop:disable Rails/SkipsModelValidations
+            @fleet.update_columns(
+              rsi_verification_status: :pending,
+              rsi_verification_checked_at: now,
+              updated_at: Time.current
+            )
+            # rubocop:enable Rails/SkipsModelValidations
+          end
+        end
 
-          # rubocop:disable Rails/SkipsModelValidations
-          @fleet.update_columns(
-            rsi_verification_status: :pending,
-            rsi_verification_checked_at: checked_at,
-            updated_at: Time.current
-          )
-          # rubocop:enable Rails/SkipsModelValidations
-
+        if checked_at
           FleetRsiVerificationJob.perform_async(@fleet.id, FleetRsiVerification.generation_of(checked_at))
         end
 
