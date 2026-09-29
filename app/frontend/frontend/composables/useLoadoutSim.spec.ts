@@ -436,6 +436,25 @@ describe("heat (cooling ratio)", () => {
     expect(armored.emittedEm).toBeCloseTo(bare.emittedEm * 1.2, 5);
   });
 
+  it("masks a signature the armor multiplies by zero", () => {
+    const sim = simulateLoadoutPower(
+      [
+        hp(
+          HardpointCategoryEnum.POWERPLANT,
+          { powerBase: 40, signatureEm: 6000 },
+          { size: 2 },
+        ),
+        cooler(),
+        hp(HardpointCategoryEnum.ARMOR, { signalElectromagnetic: 0 }),
+      ],
+      0,
+    );
+
+    expect(sim.signatureModifiers).toEqual({ em: 0, ir: 1, crossSection: 1 });
+    expect(sim.emittedEm).toBe(0);
+    expect(sim.emittedIr).toBeGreaterThan(0);
+  });
+
   it("does not count tractor beams toward the heat load", () => {
     const base = [
       plant(40, 2),

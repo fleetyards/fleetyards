@@ -189,10 +189,8 @@ export type SignatureModifiers = {
   crossSection: number;
 };
 
-const multiplier = (value: unknown) => {
-  const n = numeric(value);
-  return n > 0 ? n : 1;
-};
+// A missing multiplier leaves the signature as it is; a zero masks it.
+const multiplier = (value: unknown) => (value == null ? 1 : numeric(value));
 
 function signatureModifiers(
   hardpoints: Hardpoint[] | undefined,
