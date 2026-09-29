@@ -1,10 +1,10 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ref } from "vue";
 import type { Model } from "@/services/fyApi";
 
 const ar = vi.hoisted(() => ({
-  flag: true,
   mayHaveAr: true,
   canActivate: true,
   activateAR: vi.fn(() => Promise.resolve()),
@@ -22,8 +22,10 @@ vi.mock("@/frontend/utils/arViewer", () => ({
   ),
 }));
 
+const mockFlag = ref(true);
+
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => ar.flag }),
+  useFeatures: () => ({ isFeatureEnabled: () => mockFlag.value }),
 }));
 
 const { default: Component } = await import("./index.vue");
@@ -49,7 +51,7 @@ const button = (wrapper: Awaited<ReturnType<typeof mount>>) =>
 
 describe("ViewInArBtn", () => {
   beforeEach(() => {
-    ar.flag = true;
+    mockFlag.value = true;
     ar.mayHaveAr = true;
     ar.canActivate = true;
     ar.activateAR.mockClear();
@@ -60,9 +62,19 @@ describe("ViewInArBtn", () => {
   });
 
   it("hides AR while the feature is off", async () => {
-    ar.flag = false;
+    mockFlag.value = false;
 
     expect(button(await mount({ model: model() })).exists()).toBe(false);
+  });
+
+  it("offers AR once the flag arrives while the 3D view is open", async () => {
+    mockFlag.value = false;
+    const wrapper = await mount({ model: model() });
+
+    mockFlag.value = true;
+    await flushPromises();
+
+    expect(button(wrapper).exists()).toBe(true);
   });
 
   it("hides AR for a holo that is not to scale", async () => {

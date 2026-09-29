@@ -71,7 +71,8 @@ const prepare = async () => {
 
 onMounted(prepare);
 
-watch([holoUrl, () => props.active], prepare);
+// The whole condition, so the flag loading in or being switched counts too.
+watch([holoUrl, candidate], prepare);
 
 onBeforeUnmount(() => {
   preparation += 1;
