@@ -13,6 +13,8 @@ end
 
 json.rsi_handle user.rsi_handle if user.rsi_handle.present?
 json.rsi_handle_verified user.rsi_handle_verified
+json.rsi_handle_verified_via user.rsi_handle_verified_via if user.rsi_handle_verified?
+json.rsi_handle_verified_at user.rsi_handle_verified_at&.utc&.iso8601 if user.rsi_handle_verified_at.present?
 json.citizenid_profile_url user.citizenid_profile_url if user.rsi_handle_verified?
 
 json.discord user.discord if user.discord.present?

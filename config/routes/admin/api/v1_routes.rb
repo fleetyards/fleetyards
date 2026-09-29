@@ -20,6 +20,7 @@ v1_admin_api_routes = lambda do
       get "login-as", to: "users#login_as"
       post "resend-confirmation", to: "users#resend_confirmation"
       post "send-password-reset", to: "users#send_password_reset"
+      delete "rsi-verification", to: "users#revoke_rsi_verification"
     end
 
     resources :fleets, only: %i[index], controller: "user_fleets"
