@@ -491,6 +491,7 @@
         "awaitingConfirmation": "En attente de confirmation par la Flotte",
         "members": {
           "verifiedOrgMember": "Membre vérifié de %{sid}",
+          "verifiedOrgMemberChecked": "Membre vérifié de %{sid}, vérifié %{checked}",
           "primary": "Flotte principale?",
           "shipsFilter": {
             "label": "Quels vaisseaux doivent être ajoutés à la Flotte ?",

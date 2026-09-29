@@ -22944,6 +22944,9 @@ components:
           type: boolean
         verifiedOrgSid:
           type: string
+        verificationCheckedAt:
+          type: string
+          format: date-time
         citizenidProfileUrl:
           type: string
         rsiHandleVerifiedVia:

@@ -31,6 +31,10 @@ module RsiHandleVerificationConcern
     before_save :reset_rsi_handle_verification,
       if: -> { rsi_handle_changed? && !rsi_handle_verified_at_changed? }
     before_save :release_rsi_handle_elsewhere, if: :claiming_rsi_handle?
+    # The org list was read through the handle, so it stops counting once the
+    # handle is no longer proved to be this account's.
+    after_save :forget_rsi_organizations,
+      if: -> { saved_change_to_rsi_handle? || saved_change_to_rsi_handle_verified?(to: false) }
     after_commit :notify_rsi_handle_lost, on: %i[create update]
   end
 
@@ -70,16 +74,20 @@ module RsiHandleVerificationConcern
   # The token stays: only the account holder can start a check of their own
   # handle, and a token in their bio proves nothing for anybody else. The last
   # check goes instead, so one still out when the revoke lands no longer names
-  # the latest check and cannot undo it.
+  # the latest check and cannot undo it. Under the same lock a read of the org
+  # list takes, so one still out cannot write the list back afterwards.
   def revoke_rsi_handle_verification!
-    update_columns(
-      rsi_handle_verified: false,
-      rsi_handle_verified_via: nil,
-      rsi_handle_verified_at: nil,
-      rsi_verification_status: nil,
-      rsi_verification_checked_at: nil,
-      updated_at: Time.current
-    )
+    with_lock do
+      update_columns(
+        rsi_handle_verified: false,
+        rsi_handle_verified_via: nil,
+        rsi_handle_verified_at: nil,
+        rsi_verification_status: nil,
+        rsi_verification_checked_at: nil,
+        updated_at: Time.current
+      )
+      forget_rsi_organizations
+    end
   end
   # rubocop:enable Rails/SkipsModelValidations
 
@@ -89,9 +97,41 @@ module RsiHandleVerificationConcern
     [rsi_handle_verified, rsi_handle_verified_via, rsi_handle_verified_at&.utc&.iso8601(6)]
   end
 
+  # A read of the user's RSI orgs, from their organisations page or Citizen iD's
+  # claim. It only counts while the handle it was read through is still this
+  # account's proved one, and never replaces a newer read: two reads can be out
+  # at once, and whichever finishes last is not necessarily the fresher. One
+  # begun before the current verification belongs to an earlier proof, which a
+  # revoke in between may have undone.
+  def store_rsi_organizations(sids, read_at:, handle: rsi_handle)
+    sids = Array(sids).compact_blank.map { |sid| sid.to_s.upcase }.uniq.sort
+
+    stored = with_lock do
+      next false unless rsi_handle_verified? && rsi_handle == handle
+      next false if rsi_handle_verified_at.present? && rsi_handle_verified_at > read_at
+      next false if rsi_organizations_checked_at.present? && rsi_organizations_checked_at > read_at
+
+      update_columns(rsi_organization_sids: sids, rsi_organizations_checked_at: read_at, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
+      true
+    end
+
+    FleetMembershipVerification.sync_user(self) if stored
+
+    stored
+  end
+
+  def rsi_organizations_cache_key
+    rsi_organizations_checked_at&.utc&.iso8601(6)
+  end
+
   def rsi_verification_cooling_down?
     rsi_verification_checked_at.present? &&
       rsi_verification_checked_at > RSI_VERIFICATION_COOLDOWN.ago
+  end
+
+  private def forget_rsi_organizations
+    update_columns(rsi_organization_sids: [], rsi_organizations_checked_at: nil) # rubocop:disable Rails/SkipsModelValidations
+    FleetMembershipVerification.sync_user(self)
   end
 
   private def reset_rsi_handle_verification
@@ -121,9 +161,13 @@ module RsiHandleVerificationConcern
       rsi_handle_verified_via: nil,
       rsi_handle_verified_at: nil,
       rsi_verification_status: nil,
+      rsi_organization_sids: [],
+      rsi_organizations_checked_at: nil,
       updated_at: Time.current
     )
     # rubocop:enable Rails/SkipsModelValidations
+
+    self.class.where(id: holders).find_each { |holder| FleetMembershipVerification.sync_user(holder) }
 
     @rsi_handle_released = {handle: rsi_handle, user_ids: holders}
   end

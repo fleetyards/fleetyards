@@ -8,8 +8,8 @@ export default {
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import MemberContactMenu from "@/frontend/components/base/MemberContactMenu/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import { useI18n } from "@/shared/composables/useI18n";
 import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
+import { useVerifiedOrgLabel } from "@/frontend/composables/useVerifiedOrgLabel";
 
 type Props = {
   member: MemberContact;
@@ -21,18 +21,14 @@ const props = withDefaults(defineProps<Props>(), {
   orgBadge: true,
 });
 
-const { t } = useI18n();
-
 const hasContactOptions = computed(
   () => !!props.member.rsiHandle || !!props.member.discordProfileUrl,
 );
 
+const verifiedOrgLabel = useVerifiedOrgLabel();
+
 const orgBadgeLabel = computed(() =>
-  props.orgBadge && props.member.verifiedOrgSid
-    ? t("labels.fleet.members.verifiedOrgMember", {
-        sid: props.member.verifiedOrgSid,
-      })
-    : undefined,
+  props.orgBadge ? verifiedOrgLabel(props.member) : undefined,
 );
 
 const displayName = computed(

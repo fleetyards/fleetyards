@@ -63,4 +63,88 @@ class UserRsiHandleVerificationTest < ActiveSupport::TestCase
 
     assert_nil user.citizenid_profile_url
   end
+
+  def with_org_list(handle: "TestPilot", via: :rsi_profile, sids: %w[MAIN])
+    create(:user).tap do |user|
+      user.verify_rsi_handle(handle, via:)
+      user.save!
+      user.store_rsi_organizations(sids, read_at: Time.current)
+    end
+  end
+
+  def membership_of(user, sid: "MAIN")
+    create(:fleet, rsi_sid: sid, members: [user]).fleet_memberships.find_by(user:)
+  end
+
+  test "a stored org list verifies the memberships whose fleet it names" do
+    user = with_org_list
+    named = membership_of(user)
+    other = membership_of(user, sid: "OTHER")
+
+    user.store_rsi_organizations(%w[main], read_at: Time.current)
+
+    assert named.reload.verified?
+    assert_not other.reload.verified?
+  end
+
+  test "an older read does not replace a newer list" do
+    user = with_org_list
+    user.update_columns(rsi_handle_verified_at: 1.day.ago) # rubocop:disable Rails/SkipsModelValidations
+    membership = membership_of(user)
+
+    assert_not user.store_rsi_organizations([], read_at: 1.hour.ago)
+
+    assert_equal %w[MAIN], user.reload.rsi_organization_sids
+    assert membership.reload.verified?
+  end
+
+  test "a read begun before a revoke and a new verification is dropped" do
+    user = with_org_list
+    read_at = Time.current
+
+    user.revoke_rsi_handle_verification!
+    user.reload.verify_rsi_handle("TestPilot", via: :rsi_profile)
+    user.save!
+
+    assert_not user.store_rsi_organizations(%w[OTHER], read_at:)
+    assert_empty user.reload.rsi_organization_sids
+  end
+
+  test "a list read through a handle the user no longer has is dropped" do
+    user = with_org_list
+
+    assert_not user.store_rsi_organizations(%w[OTHER], read_at: Time.current, handle: "SomeoneElse")
+  end
+
+  test "revoking the handle empties the list and clears its memberships" do
+    user = with_org_list
+    membership = membership_of(user)
+
+    user.revoke_rsi_handle_verification!
+
+    assert_empty user.reload.rsi_organization_sids
+    assert_not membership.reload.verified?
+  end
+
+  test "a handle taken by another account takes its list and memberships with it" do
+    holder = with_org_list
+    membership = membership_of(holder)
+
+    user = create(:user)
+    user.verify_rsi_handle("TestPilot", via: :citizenid)
+    user.save!
+
+    assert_empty holder.reload.rsi_organization_sids
+    assert_not membership.reload.verified?
+  end
+
+  test "a new handle forgets what the old one's list said" do
+    user = with_org_list
+    membership = membership_of(user)
+
+    user.update!(rsi_handle: "OtherPilot")
+
+    assert_empty user.reload.rsi_organization_sids
+    assert_not membership.reload.verified?
+  end
 end

@@ -265,4 +265,14 @@ class FleetMembershipTest < ActiveSupport::TestCase
     assert_equal "declined", request.reload.aasm_state
     assert_equal officer.id, request.versions.last.author_id
   end
+
+  test "a member whose org list names the fleet's SID is verified on joining" do
+    user = create(:user)
+    user.verify_rsi_handle("TestPilot", via: :rsi_profile)
+    user.save!
+    user.store_rsi_organizations(%w[MAIN], read_at: Time.current)
+
+    assert create(:fleet_membership, :invited, fleet: create(:fleet, rsi_sid: "MAIN"), user:).verified?
+    assert_not create(:fleet_membership, :invited, fleet: create(:fleet, rsi_sid: "OTHER"), user:).verified?
+  end
 end

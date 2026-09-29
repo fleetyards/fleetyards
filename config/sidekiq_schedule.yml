@@ -135,3 +135,8 @@ presence_sweep_job:
   cron: '* * * * *' # Every minute
   class: 'Presence::SweepJob'
   queue: 'default'
+rsi_organizations_refresh_job:
+  cron: '40 * * * *' # Hourly at :40, each run a 24th of the users with a verified handle
+  class: 'RsiOrganizationsRefreshJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>

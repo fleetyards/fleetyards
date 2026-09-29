@@ -491,6 +491,7 @@
         "awaitingConfirmation": "等待舰队确认",
         "members": {
           "verifiedOrgMember": "%{sid} 的已验证成员",
+          "verifiedOrgMemberChecked": "%{sid} 的已验证成员，检查于 %{checked}",
           "primary": "主舰队?",
           "shipsFilter": {
             "label": "哪些飞船应该添加到舰队?",

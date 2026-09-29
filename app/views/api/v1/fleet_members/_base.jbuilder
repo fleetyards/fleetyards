@@ -46,6 +46,7 @@ json.primary member.primary
 # says the user's own handle is theirs, whichever fleet they are in.
 json.verified member.rsi_verified?
 json.verified_org_sid member.fleet.rsi_verified_sid if member.rsi_verified?
+json.verification_checked_at member.user.rsi_organizations_checked_at&.utc&.iso8601 if member.rsi_verified? && member.user.rsi_organizations_checked_at.present?
 json.citizenid_profile_url member.user.citizenid_profile_url
 json.rsi_handle_verified_via member.user.rsi_handle_verified_via if member.user.rsi_handle_verified?
 json.discord_profile_url member.user.discord_profile_url

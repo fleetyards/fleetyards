@@ -203,22 +203,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     raw_info = auth.extra&.raw_info
     return if raw_info.blank?
 
-    public_sids = Array(raw_info["urn:user:rsi:orgs:public"]).reject(&:blank?).map(&:upcase)
-
-    # rubocop:disable Rails/SkipsModelValidations
-    user.fleet_memberships.kept.where(verified: true).update_all(verified: false)
-    # rubocop:enable Rails/SkipsModelValidations
-
-    return if public_sids.blank?
-
-    matching_fleets = Fleet.kept.where(rsi_sid: public_sids)
-
-    matching_fleets.each do |fleet|
-      membership = user.fleet_memberships.kept.find_by(fleet_id: fleet.id)
-      next if membership.blank?
-
-      membership.update!(verified: true)
-    end
+    user.store_rsi_organizations(Array(raw_info["urn:user:rsi:orgs:public"]), read_at: Time.current)
   end
 
   private def sanitize_username(name)

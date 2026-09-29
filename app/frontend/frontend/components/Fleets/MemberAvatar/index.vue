@@ -8,10 +8,13 @@ export default {
 import Avatar from "@/shared/components/Avatar/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import type { FleetMember } from "@/services/fyApi";
-import { useI18n } from "@/shared/composables/useI18n";
+import { useVerifiedOrgLabel } from "@/frontend/composables/useVerifiedOrgLabel";
 
 type Props = {
-  member: Pick<FleetMember, "avatar" | "squadrons" | "verifiedOrgSid">;
+  member: Pick<
+    FleetMember,
+    "avatar" | "squadrons" | "verifiedOrgSid" | "verificationCheckedAt"
+  >;
   online?: boolean;
   showSquadrons?: boolean;
 };
@@ -21,7 +24,9 @@ const props = withDefaults(defineProps<Props>(), {
   showSquadrons: false,
 });
 
-const { t } = useI18n();
+const verifiedOrgLabel = useVerifiedOrgLabel();
+
+const orgBadgeLabel = computed(() => verifiedOrgLabel(props.member));
 
 const squadronNames = computed(() =>
   (props.member.squadrons ?? []).map((squadron) => squadron.name).join(", "),
@@ -32,17 +37,9 @@ const squadronNames = computed(() =>
   <span class="member-avatar">
     <Avatar :avatar="member.avatar?.smallUrl" size="small" :online="online" />
     <span
-      v-if="member.verifiedOrgSid"
-      v-tooltip="
-        t('labels.fleet.members.verifiedOrgMember', {
-          sid: member.verifiedOrgSid,
-        })
-      "
-      :aria-label="
-        t('labels.fleet.members.verifiedOrgMember', {
-          sid: member.verifiedOrgSid,
-        })
-      "
+      v-if="orgBadgeLabel"
+      v-tooltip="orgBadgeLabel"
+      :aria-label="orgBadgeLabel"
       class="member-avatar__verified"
       data-test="member-verified-org"
     >
