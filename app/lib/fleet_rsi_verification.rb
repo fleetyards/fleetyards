@@ -59,7 +59,9 @@ class FleetRsiVerification
   # another check. Locking the holders serialises a takeover, but when nobody
   # holds the SID there is no row to lock, and two fleets proving it at once
   # both write it: the loser meets the unique index and goes again, with a
-  # holder to take the SID from this time.
+  # holder to take the SID from this time. Two fleets taking each other's SIDs
+  # at once can deadlock on the pair of rows; PostgreSQL aborts one, which goes
+  # again the same way.
   private def apply(status, sid:, token:, attempts: 2)
     previous = []
 
@@ -87,7 +89,7 @@ class FleetRsiVerification
     previous.each { |other| notify_lost(other, sid) }
 
     applied
-  rescue ActiveRecord::RecordNotUnique
+  rescue ActiveRecord::RecordNotUnique, ActiveRecord::Deadlocked
     raise if (attempts -= 1).zero?
 
     retry
