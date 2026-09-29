@@ -20,7 +20,7 @@ class MetricsJob < ApplicationJob
 
   # A visit's installed flag can only change while the visit lasts, so a day is
   # settled well within this.
-  VISITS_BY_OS_RECOMPUTE = 2.days
+  VISIT_RECOMPUTE = 2.days
 
   def perform
     User.rollup("Registrations", interval: "month")
@@ -57,17 +57,25 @@ class MetricsJob < ApplicationJob
     track_visits_by_os(visits)
   end
 
+  # A NULL flag is a visit from before it was recorded, not a browser visit.
+  def track_visits_by_os(visits)
+    rebuild_recent_days(ROLLUP_VISITS_BY_OS) do |range|
+      visits.where.not(installed: nil).group(:os, :installed)
+        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at, range:)
+    end
+  end
+
   # The gem only upserts the groups it finds, so a visit flagged installed after
   # its day was rolled up would leave its old `installed: false` row behind. The
   # recent days are therefore cleared and rebuilt as a window rather than left to
   # the gem's own resume point. The window never reaches past the cleanup cutoff:
   # every visit newer than that is always still there, and an older day may be
   # partly purged, so its stored counts are all that is left.
-  def track_visits_by_os(visits)
-    stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
+  def rebuild_recent_days(name)
+    stored = Rollup.where(name:, interval: "day")
     floor = (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
     latest = stored.maximum(:time)&.to_date
-    start = [floor, [latest, VISITS_BY_OS_RECOMPUTE.ago.to_date].compact.min].max
+    start = [floor, [latest, VISIT_RECOMPUTE.ago.to_date].compact.min].max
     range = start.in_time_zone(Rollup.time_zone)..Time.current
 
     Rollup.transaction do
@@ -75,9 +83,7 @@ class MetricsJob < ApplicationJob
       # current day is still ahead of `Time.current` until UTC catches up.
       stored.where(time: start..).delete_all
 
-      # A NULL flag is a visit from before it was recorded, not a browser visit.
-      visits.where.not(installed: nil).group(:os, :installed)
-        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at, range:)
+      yield range
     end
   end
 
@@ -87,20 +93,7 @@ class MetricsJob < ApplicationJob
   # interval onward, so a monthly rollup would recompute a half-purged month down
   # to a wrong number, while a day is always complete by the time it is purged.
   def track_ship_views
-    scope = Ahoy::Event
-      .where(name: "$view")
-      .where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
-
-    # `Ahoy.exclude_method` already refuses to record an objecting user, so this
-    # only covers rows written before they objected. `NOT IN` alone would drop
-    # every anonymous view along with them, since `NULL NOT IN (...)` is NULL.
-    blocked_user_ids = User.where(tracking: false).pluck(:id)
-    if blocked_user_ids.any?
-      scope = scope.where(
-        "ahoy_events.user_id IS NULL OR ahoy_events.user_id NOT IN (?)",
-        blocked_user_ids
-      )
-    end
+    scope = page_views.where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
 
     scope.group(SHIP_VIEW_SLUG).rollup(
       ROLLUP_SHIP_VIEWS,
@@ -109,6 +102,21 @@ class MetricsJob < ApplicationJob
       # The gem derives a dimension name from the grouped column and only accepts
       # a bare word, which an expression is not.
       dimension_names: ["model_slug"]
+    )
+  end
+
+  # `Ahoy.exclude_method` already refuses to record an objecting user, so this
+  # only covers rows written before they objected. `NOT IN` alone would drop
+  # every anonymous view along with them, since `NULL NOT IN (...)` is NULL.
+  def page_views
+    scope = Ahoy::Event.where(name: "$view")
+
+    blocked_user_ids = User.where(tracking: false).pluck(:id)
+    return scope if blocked_user_ids.empty?
+
+    scope.where(
+      "ahoy_events.user_id IS NULL OR ahoy_events.user_id NOT IN (?)",
+      blocked_user_ids
     )
   end
 
