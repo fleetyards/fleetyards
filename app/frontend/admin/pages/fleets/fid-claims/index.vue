@@ -42,6 +42,7 @@ const { perPage, page, updatePerPage } = usePagination(claimsQueryKey);
 
 const claimsQueryParams = computed(() => ({
   page: page.value,
+  perPage: perPage.value,
 }));
 
 const { data: claims, ...asyncStatus } = useFleetFidClaims(claimsQueryParams);

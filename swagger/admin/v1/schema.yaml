@@ -2755,6 +2755,12 @@ paths:
       operationId: fleetFidClaims
       parameters:
       - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
       responses:
         '200':
           description: successful

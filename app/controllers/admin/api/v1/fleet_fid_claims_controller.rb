@@ -26,12 +26,19 @@ module Admin
         def update
           ends_at = Time.zone.parse(params[:ends_at].to_s)
 
-          if !@claim.open? || ends_at.nil? || ends_at > @claim.ends_at
+          # Under the lock, so a withdrawal or a completion that lands first
+          # is not answered with a new deadline on a claim that is closed.
+          shortened = @claim.with_lock do
+            next false if !@claim.open? || ends_at.nil? || ends_at > @claim.ends_at
+
+            @claim.update!(ends_at:)
+          end
+
+          unless shortened
             render json: ValidationError.new("fleet_fid_claim.update"), status: :bad_request
             return
           end
 
-          @claim.update!(ends_at:)
           @claim.complete! if @claim.ends_at <= Time.current
 
           render :show

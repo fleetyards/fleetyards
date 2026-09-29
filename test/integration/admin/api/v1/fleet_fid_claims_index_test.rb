@@ -14,6 +14,7 @@ class Admin::Api::V1::FleetFidClaimsIndexTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
+      parameter name: "perPage", in: :query, schema: {type: :string, default: FleetFidClaim.default_per_page}, required: false
 
       response(200, "successful") do
         schema ::Admin::V1::Schemas::AdminFleetFidClaims
