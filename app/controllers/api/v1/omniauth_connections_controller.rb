@@ -21,9 +21,6 @@ module Api
             current_resource_owner.clear_rsi_handle_verification
             current_resource_owner.save!
           end
-          # rubocop:disable Rails/SkipsModelValidations
-          current_resource_owner.fleet_memberships.kept.where(verified: true).update_all(verified: false)
-          # rubocop:enable Rails/SkipsModelValidations
         end
 
         @user = current_resource_owner.reload

@@ -136,6 +136,21 @@ class FleetRsiSidTest < ActiveSupport::TestCase
     assert membership.reload.rsi_verified?
   end
 
+  test "a new SID is answered from the members' org lists" do
+    fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
+    user = create(:user)
+    user.verify_rsi_handle("TestPilot", via: :citizenid)
+    user.save!
+    user.store_rsi_organizations(%w[OTHER], read_at: Time.current)
+    membership = create(:fleet_membership, :accepted, fleet:, user:)
+
+    assert_not membership.verified?
+
+    fleet.update!(rsi_sid: "OTHER")
+
+    assert membership.reload.verified?
+  end
+
   test "a new SID clears the members' Citizen ID flags" do
     fleet = create(:fleet, created_by: create(:user).id, rsi_sid: "TEST")
     membership = fleet.fleet_memberships.first

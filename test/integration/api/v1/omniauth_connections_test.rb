@@ -88,4 +88,32 @@ class Api::V1::OmniauthConnectionsTest < ActionDispatch::IntegrationTest
 
     assert user.reload.rsi_handle_verified_via_rsi_profile?
   end
+
+  test "DELETE /omniauth-connections/citizenid clears the memberships of a handle Citizen iD verified" do
+    user = create(:user, password: "enterprise", password_set_manually: true)
+    create(:omniauth_connection, user: user, provider: :citizenid, uid: "citizen-uid")
+    user.verify_rsi_handle("TestPilot", via: :citizenid)
+    user.save!
+    user.store_rsi_organizations(%w[MAIN], read_at: Time.current)
+    membership = create(:fleet, rsi_sid: "MAIN", members: [user]).fleet_memberships.find_by(user:)
+    sign_in user
+
+    assert_api_response :delete, 200, path_params: {provider: "citizenid"}
+
+    assert_not membership.reload.verified?
+  end
+
+  test "DELETE /omniauth-connections/citizenid keeps the memberships of a handle the bio verified" do
+    user = create(:user, password: "enterprise", password_set_manually: true)
+    create(:omniauth_connection, user: user, provider: :citizenid, uid: "citizen-uid")
+    user.verify_rsi_handle("TestPilot", via: :rsi_profile)
+    user.save!
+    user.store_rsi_organizations(%w[MAIN], read_at: Time.current)
+    membership = create(:fleet, rsi_sid: "MAIN", members: [user]).fleet_memberships.find_by(user:)
+    sign_in user
+
+    assert_api_response :delete, 200, path_params: {provider: "citizenid"}
+
+    assert membership.reload.verified?
+  end
 end

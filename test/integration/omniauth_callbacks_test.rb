@@ -140,4 +140,18 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     assert_equal "TestPilot", user.rsi_handle
     assert_not holder.reload.rsi_handle_verified?
   end
+
+  test "#citizenid stores the orgs its claim lists and verifies the memberships in them" do
+    user = create(:user, email: EMAIL)
+    fleet = create(:fleet, rsi_sid: "MAIN", members: [user])
+    other = create(:fleet, rsi_sid: "OTHER", members: [user])
+    mock_omniauth(:citizenid, uid: UID, email: EMAIL, nickname: NICKNAME)
+    OmniAuth.config.mock_auth[:citizenid].extra = {raw_info: {"urn:user:rsi:username" => "TestPilot", "urn:user:rsi:orgs:public" => ["main"]}}
+
+    post "/users/auth/citizenid/callback"
+
+    assert_equal %w[MAIN], user.reload.rsi_organization_sids
+    assert fleet.fleet_memberships.find_by(user:).verified?
+    assert_not other.fleet_memberships.find_by(user:).verified?
+  end
 end

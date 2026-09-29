@@ -134,6 +134,9 @@ class FleetMembership < ApplicationRecord
   before_validation :set_default_ships_filter
   before_validation :set_default_blueprints_filter
   before_validation :normalize_nickname
+  # From the user's stored org list, so a member whose list already names the
+  # fleet's SID is verified the moment they join, without asking RSI.
+  before_create -> { self.verified = FleetMembershipVerification.verified?(user, fleet) if user && fleet }
   after_create :broadcast_create
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
@@ -162,9 +165,10 @@ class FleetMembership < ApplicationRecord
     false
   end
 
-  # Citizen ID confirms the member is in the RSI org whose SID the fleet names.
-  # That only says something about the fleet once the fleet has proved the SID
-  # is its own; until then anyone could have typed it.
+  # The member's org list, from Citizen iD or their RSI organisations page,
+  # names the SID the fleet gives. That only says something about the fleet once
+  # the fleet has proved the SID is its own; until then anyone could have typed
+  # it.
   def rsi_verified?
     verified? && fleet.rsi_verified?
   end

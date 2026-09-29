@@ -4,77 +4,80 @@
 #
 # Table name: users
 #
-#  id                          :uuid             not null, primary key
-#  calendar_feed_token         :string
-#  claim_key                   :string
-#  confirmation_sent_at        :datetime
-#  confirmation_token          :string(255)
-#  confirmed_at                :datetime
-#  consumed_timestep           :integer
-#  current_sign_in_at          :datetime
-#  current_sign_in_ip          :string(255)
-#  current_system              :string
-#  current_system_code         :string
-#  date_format                 :string           default("dmy_dots"), not null
-#  discord                     :string
-#  email                       :string(255)      default(""), not null
-#  encrypted_otp_secret        :string
-#  encrypted_otp_secret_iv     :string
-#  encrypted_otp_secret_salt   :string
-#  encrypted_password          :string(255)      default(""), not null
-#  failed_attempts             :integer          default(0), not null
-#  friends_hangar              :boolean          default(FALSE), not null
-#  friends_hangar_stats        :boolean          default(FALSE), not null
-#  friends_wishlist            :boolean          default(FALSE), not null
-#  guilded                     :string
-#  hangar_default_sort         :string
-#  hangar_updated_at           :datetime
-#  hide_owner                  :boolean          default(FALSE), not null
-#  homepage                    :string
-#  inventory_transfer_policy   :integer          default("everyone"), not null
-#  last_active_at              :datetime
-#  last_sign_in_at             :datetime
-#  last_sign_in_ip             :string(255)
-#  latitude                    :decimal(10, 6)
-#  locale                      :string(255)
-#  location                    :string
-#  locked_at                   :datetime
-#  longitude                   :decimal(10, 6)
-#  normalized_email            :string
-#  normalized_username         :string
-#  otp_backup_codes            :string           is an Array
-#  otp_required_for_login      :boolean
-#  otp_secret                  :string
-#  password_set_manually       :boolean          default(FALSE), not null
-#  public_hangar               :boolean          default(TRUE)
-#  public_hangar_loaners       :boolean          default(FALSE)
-#  public_hangar_stats         :boolean          default(FALSE)
-#  public_wishlist             :boolean          default(FALSE)
-#  remember_created_at         :datetime
-#  reset_password_sent_at      :datetime
-#  reset_password_token        :string(255)
-#  rsi_handle                  :string
-#  rsi_handle_verified         :boolean          default(FALSE), not null
-#  rsi_handle_verified_at      :datetime
-#  rsi_handle_verified_via     :string
-#  rsi_verification_checked_at :datetime
-#  rsi_verification_status     :string
-#  rsi_verification_token      :string
-#  sale_notify                 :boolean          default(FALSE)
-#  show_online_status          :boolean          default(TRUE), not null
-#  sign_in_count               :integer          default(0), not null
-#  tester                      :boolean          default(FALSE)
-#  tracking                    :boolean          default(TRUE)
-#  transfers_blocked_at        :datetime
-#  transfers_blocked_reason    :text
-#  twitch                      :string
-#  unconfirmed_email           :string(255)
-#  unlock_token                :string(255)
-#  username                    :string(255)      default(""), not null
-#  youtube                     :string
-#  created_at                  :datetime
-#  updated_at                  :datetime
-#  supported_fleet_id          :uuid
+#  id                             :uuid             not null, primary key
+#  calendar_feed_token            :string
+#  claim_key                      :string
+#  confirmation_sent_at           :datetime
+#  confirmation_token             :string(255)
+#  confirmed_at                   :datetime
+#  consumed_timestep              :integer
+#  current_sign_in_at             :datetime
+#  current_sign_in_ip             :string(255)
+#  current_system                 :string
+#  current_system_code            :string
+#  date_format                    :string           default("dmy_dots"), not null
+#  discord                        :string
+#  email                          :string(255)      default(""), not null
+#  encrypted_otp_secret           :string
+#  encrypted_otp_secret_iv        :string
+#  encrypted_otp_secret_salt      :string
+#  encrypted_password             :string(255)      default(""), not null
+#  failed_attempts                :integer          default(0), not null
+#  friends_hangar                 :boolean          default(FALSE), not null
+#  friends_hangar_stats           :boolean          default(FALSE), not null
+#  friends_wishlist               :boolean          default(FALSE), not null
+#  guilded                        :string
+#  hangar_default_sort            :string
+#  hangar_updated_at              :datetime
+#  hide_owner                     :boolean          default(FALSE), not null
+#  homepage                       :string
+#  inventory_transfer_policy      :integer          default("everyone"), not null
+#  last_active_at                 :datetime
+#  last_sign_in_at                :datetime
+#  last_sign_in_ip                :string(255)
+#  latitude                       :decimal(10, 6)
+#  locale                         :string(255)
+#  location                       :string
+#  locked_at                      :datetime
+#  longitude                      :decimal(10, 6)
+#  normalized_email               :string
+#  normalized_username            :string
+#  otp_backup_codes               :string           is an Array
+#  otp_required_for_login         :boolean
+#  otp_secret                     :string
+#  password_set_manually          :boolean          default(FALSE), not null
+#  public_hangar                  :boolean          default(TRUE)
+#  public_hangar_loaners          :boolean          default(FALSE)
+#  public_hangar_stats            :boolean          default(FALSE)
+#  public_wishlist                :boolean          default(FALSE)
+#  remember_created_at            :datetime
+#  reset_password_sent_at         :datetime
+#  reset_password_token           :string(255)
+#  rsi_handle                     :string
+#  rsi_handle_verified            :boolean          default(FALSE), not null
+#  rsi_handle_verified_at         :datetime
+#  rsi_handle_verified_via        :string
+#  rsi_organization_sids          :string           default([]), not null, is an Array
+#  rsi_organizations_attempted_at :datetime
+#  rsi_organizations_checked_at   :datetime
+#  rsi_verification_checked_at    :datetime
+#  rsi_verification_status        :string
+#  rsi_verification_token         :string
+#  sale_notify                    :boolean          default(FALSE)
+#  show_online_status             :boolean          default(TRUE), not null
+#  sign_in_count                  :integer          default(0), not null
+#  tester                         :boolean          default(FALSE)
+#  tracking                       :boolean          default(TRUE)
+#  transfers_blocked_at           :datetime
+#  transfers_blocked_reason       :text
+#  twitch                         :string
+#  unconfirmed_email              :string(255)
+#  unlock_token                   :string(255)
+#  username                       :string(255)      default(""), not null
+#  youtube                        :string
+#  created_at                     :datetime
+#  updated_at                     :datetime
+#  supported_fleet_id             :uuid
 #
 # Indexes
 #
