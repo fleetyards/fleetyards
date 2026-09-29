@@ -7,12 +7,11 @@ export default {
 <script lang="ts" setup>
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
 import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
-import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
+import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
@@ -59,9 +58,6 @@ const onRowClick = (member: FleetMember) => {
     props: { member },
   });
 };
-
-const squadronNames = (member: FleetMember) =>
-  (member.squadrons ?? []).map((squadron) => squadron.name).join(", ");
 
 const joinedAt = (member: FleetMember) =>
   props.squadronSlug
@@ -130,37 +126,11 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   >
     <template #col-username="{ record }">
       <div class="member-username">
-        <span class="member-avatar">
-          <Avatar
-            :avatar="record.avatar?.smallUrl"
-            size="small"
-            :online="onlineFor(record)"
-          />
-          <span
-            v-if="record.verifiedOrgSid"
-            v-tooltip="
-              t('labels.fleet.members.verifiedOrgMember', {
-                sid: record.verifiedOrgSid,
-              })
-            "
-            :aria-label="
-              t('labels.fleet.members.verifiedOrgMember', {
-                sid: record.verifiedOrgSid,
-              })
-            "
-            class="member-avatar-verified"
-            data-test="member-verified-org"
-          >
-            <i class="fa-duotone fa-shield-check text-success" />
-          </span>
-          <SquadronEmblem
-            v-if="props.showSquadrons && record.squadrons?.length"
-            v-tooltip="squadronNames(record)"
-            :squadron="record.squadrons[0]"
-            :size="18"
-            class="member-avatar-squadron"
-          />
-        </span>
+        <MemberAvatar
+          :member="record"
+          :online="onlineFor(record)"
+          :show-squadrons="props.showSquadrons"
+        />
         <div class="member-username-inner">
           <MemberName :member="record" :org-badge="false" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
@@ -237,37 +207,5 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 .rsi-handle-inline {
   font-size: 0.85em;
   opacity: 0.8;
-}
-
-.member-avatar {
-  position: relative;
-  display: inline-flex;
-  flex-shrink: 0;
-}
-
-// Overhangs the frame the way the presence dot does, on the corner it leaves
-// free.
-.member-avatar-squadron {
-  position: absolute;
-  left: -4px;
-  bottom: -4px;
-}
-
-// The top-right corner, the one neither the squadron nor the presence dot
-// takes, inset the way the presence dot is below it. Opaque in the colour the
-// default 40% duotone layer shows over the page, so the avatar does not show
-// through it.
-.member-avatar-verified {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 14px;
-  line-height: 1;
-  --fa-secondary-color: color-mix(
-    in srgb,
-    currentColor 40%,
-    var(--color-background, #000)
-  );
-  --fa-secondary-opacity: 1;
 }
 </style>

@@ -10,6 +10,7 @@ import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmble
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
+import FleetFid from "@/frontend/components/Fleets/FleetFid/index.vue";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -118,15 +119,10 @@ const description = computed(() => {
           icon="fa-duotone fa-image"
         />
         <span class="title">
-          {{ fleet.name }} (<span class="fid"
-            >{{ fleet.fid
-            }}<i
-              v-if="fidVerified"
-              v-tooltip="t('labels.fleet.rsiVerification.verified')"
-              :aria-label="t('labels.fleet.rsiVerification.verified')"
-              class="fa-duotone fa-badge-check text-success fid-badge"
-              data-test="fleet-rsi-verified" /></span
-          >)
+          {{ fleet.name }} (<FleetFid
+            :fid="fleet.fid"
+            :verified="fidVerified"
+          />)
         </span>
       </h1>
       <FidNotice v-if="showFidNotice" :fleet="fleet">
@@ -292,33 +288,6 @@ const description = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-// On the FID's corner rather than beside the name: the FID is what a
-// verification protects, and the name is free text. Absolute, so the title
-// reads the same with or without it. In em, to follow the heading's size.
-.fid {
-  position: relative;
-}
-
-// Centred on the FID's right edge, so it overlaps the last letter and reads
-// as marking that FID whatever its size. The duotone shape is made opaque in
-// the colour its default 40% layer shows over the page, so the letter it
-// overlaps does not show through.
-.fid-badge {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  transform: translate(50%, 0);
-  font-size: 0.6em;
-  line-height: 1;
-  --fa-secondary-color: color-mix(
-    in srgb,
-    currentColor 40%,
-    var(--color-background, #000)
-  );
-  --fa-secondary-opacity: 1;
-}
-
 .squadrons {
   display: flex;
   flex-wrap: wrap;
