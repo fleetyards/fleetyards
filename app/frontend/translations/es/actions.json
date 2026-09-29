@@ -156,7 +156,6 @@
           "checkIn": "Comprobar de nuevo en %{seconds} s",
           "copyToken": "Copiar código",
           "regenerateToken": "Generar un código nuevo",
-          "remove": "Quitar la verificación",
           "revoke": "Revocar"
         }
       },

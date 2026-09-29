@@ -156,7 +156,6 @@
           "checkIn": "Revérifier dans %{seconds} s",
           "copyToken": "Copier le code",
           "regenerateToken": "Générer un nouveau code",
-          "remove": "Retirer la vérification",
           "revoke": "Révoquer"
         }
       },

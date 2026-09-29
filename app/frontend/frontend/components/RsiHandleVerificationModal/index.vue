@@ -10,7 +10,6 @@ import { useIntervalFn, useNow } from "@vueuse/core";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
-  BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
@@ -28,7 +27,6 @@ import {
   getMyRsiVerificationQueryKey,
   useCheckMyRsiVerification,
   useCreateMyRsiVerification,
-  useDestroyMyRsiVerification,
   useMyRsiVerification,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -69,8 +67,6 @@ const { data: verification } = useMyRsiVerification({
 const createMutation = useCreateMyRsiVerification();
 
 const checkMutation = useCheckMyRsiVerification();
-
-const destroyMutation = useDestroyMyRsiVerification();
 
 const now = useNow({ scheduler: (tick) => useIntervalFn(tick, 1000) });
 
@@ -126,12 +122,6 @@ const verifiedTitle = computed(() =>
     : t("labels.user.rsiHandleVerifiedViaProfile"),
 );
 
-const removable = computed(
-  () =>
-    verification.value?.verified &&
-    verification.value.verifiedVia === VerifiedViaEnum.RSI_PROFILE,
-);
-
 const close = () => {
   comlink.emit("close-modal");
 };
@@ -147,14 +137,6 @@ const generateToken = async () => {
 const check = async () => {
   try {
     refresh(await checkMutation.mutateAsync());
-  } catch (error) {
-    displayAlert({ text: validationErrorFrom(error).message });
-  }
-};
-
-const remove = async () => {
-  try {
-    refresh(await destroyMutation.mutateAsync());
   } catch (error) {
     displayAlert({ text: validationErrorFrom(error).message });
   }
@@ -286,16 +268,7 @@ const copyToken = () => {
           {{ t("actions.close") }}
         </Btn>
         <Btn
-          v-if="removable"
-          :tone="BtnTonesEnum.DANGER"
-          :loading="destroyMutation.isPending.value"
-          data-test="user-rsi-verification-remove"
-          @click="remove"
-        >
-          {{ t("actions.user.rsiVerification.remove") }}
-        </Btn>
-        <Btn
-          v-else-if="
+          v-if="
             verification?.handle && verification.token && !verification.verified
           "
           :loading="checkMutation.isPending.value || pending"

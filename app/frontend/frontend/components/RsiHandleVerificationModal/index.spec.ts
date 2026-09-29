@@ -6,7 +6,6 @@ import Component from "./index.vue";
 
 const verification = ref<UserRsiVerification | undefined>();
 const checkHandle = vi.fn();
-const removeVerification = vi.fn();
 
 const mutation = (mutateAsync = vi.fn()) => ({
   mutateAsync,
@@ -22,7 +21,6 @@ vi.mock("@/services/fyApi", async () => {
     useMyRsiVerification: () => ({ data: verification }),
     useCreateMyRsiVerification: () => mutation(),
     useCheckMyRsiVerification: () => mutation(checkHandle),
-    useDestroyMyRsiVerification: () => mutation(removeVerification),
   };
 });
 
@@ -45,7 +43,6 @@ describe("RsiHandleVerificationModal", () => {
   beforeEach(() => {
     verification.value = unverified();
     checkHandle.mockReset();
-    removeVerification.mockReset();
   });
 
   it("shows the token to put in the bio", async () => {
@@ -108,7 +105,7 @@ describe("RsiHandleVerificationModal", () => {
     }
   });
 
-  it("lets a handle proved through the bio have its verification removed", async () => {
+  it("shows a verified handle as verified, with nothing to remove", async () => {
     verification.value = unverified({
       verified: true,
       verifiedVia: "rsi_profile",
@@ -121,22 +118,6 @@ describe("RsiHandleVerificationModal", () => {
     expect(
       wrapper.find('[data-test="user-rsi-verification-check"]').exists(),
     ).toBe(false);
-
-    await wrapper
-      .find('[data-test="user-rsi-verification-remove"]')
-      .trigger("click");
-
-    expect(removeVerification).toHaveBeenCalled();
-  });
-
-  it("leaves a Citizen iD verification to the connection", async () => {
-    verification.value = unverified({
-      verified: true,
-      verifiedVia: "citizenid",
-    });
-
-    const wrapper = await mountModal();
-
     expect(
       wrapper.find('[data-test="user-rsi-verification-remove"]').exists(),
     ).toBe(false);

@@ -156,7 +156,6 @@
           "checkIn": "%{seconds} 秒后可再次检查",
           "copyToken": "复制验证码",
           "regenerateToken": "生成新的验证码",
-          "remove": "移除验证",
           "revoke": "撤销"
         }
       },
