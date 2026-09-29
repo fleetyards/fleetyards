@@ -60,7 +60,7 @@ es:
       body: "Otra flota demostró que gestiona la organización de RSI %{sid} poniendo su código de verificación en la página de la organización. Tu flota ya no muestra el SID como verificado. Si %{sid} es tu organización, vuelve a verificarla desde los ajustes de la flota."
     fleet_fid_claim_opened:
       title: "%{claimant} reclama el ID de flota %{fid}"
-      body: "%{claimant} demostró que gestiona la organización de RSI %{fid}, así que puede quedarse con el ID de flota correspondiente. El %{date}, %{fleet} pasará a llamarse con el siguiente ID libre, como %{fid}-1, y a partir de entonces los enlaces a %{fid} abrirán %{claimant}. Si %{fid} es tu organización, verifícala antes desde los ajustes de la flota para conservar el ID. Si no, avisa a tus miembros."
+      body: "%{claimant} demostró que gestiona la organización de RSI **%{fid}**, así que puede quedarse con el ID de flota correspondiente.\n\n**El %{date}:**\n\n- %{fleet} pasa al siguiente ID de flota libre, como **%{fid}-1**.\n- Los enlaces a %{fid} abrirán %{claimant} desde entonces.\n\n**Para conservar el ID**, verifica %{fid} antes desde los ajustes de la flota. Si no, avisa a tus miembros de la nueva dirección."
     fleet_fid_claim_completed:
       claimant:
         title: "%{fleet} ya tiene el ID de flota %{fid}"

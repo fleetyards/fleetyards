@@ -6,9 +6,10 @@
   <%= @notification.title %>
 </mj-text>
 
+<%# The body is markdown, the same text the in-app notification renders. %>
 <% if @notification.body.present? %>
   <mj-text>
-    <%= @notification.body %>
+    <%= render_markdown(@notification.body) %>
   </mj-text>
 <% end %>
 

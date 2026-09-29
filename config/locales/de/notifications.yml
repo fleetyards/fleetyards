@@ -60,7 +60,7 @@ de:
       body: "Eine andere Flotte hat ihren Verifizierungscode auf die RSI-Seite der Organisation %{sid} gesetzt und damit gezeigt, dass sie sie verwaltet. Deine Flotte zeigt die SID nicht mehr als verifiziert. Wenn %{sid} deine Organisation ist, verifiziere sie in den Flotteneinstellungen erneut."
     fleet_fid_claim_opened:
       title: "%{claimant} beansprucht die Flotten-ID %{fid}"
-      body: "%{claimant} hat nachgewiesen, dass sie die RSI-Organisation %{fid} führt, und darf deshalb die passende Flotten-ID übernehmen. Am %{date} wird %{fleet} in die nächste freie ID wie %{fid}-1 umbenannt, und Links auf %{fid} öffnen dann %{claimant}. Wenn %{fid} deine Organisation ist, verifiziere sie vorher in den Flotteneinstellungen, um die ID zu behalten. Andernfalls sag deinen Mitgliedern Bescheid."
+      body: "%{claimant} hat nachgewiesen, dass sie die RSI-Organisation **%{fid}** führt, und darf deshalb die passende Flotten-ID übernehmen.\n\n**Am %{date}:**\n\n- %{fleet} bekommt die nächste freie Flotten-ID, etwa **%{fid}-1**.\n- Links auf %{fid} öffnen ab dann %{claimant}.\n\n**Um die ID zu behalten**, verifiziere %{fid} vorher in den Flotteneinstellungen. Andernfalls sag deinen Mitgliedern Bescheid, dass sich die Adresse ändert."
     fleet_fid_claim_completed:
       claimant:
         title: "%{fleet} hat jetzt die Flotten-ID %{fid}"

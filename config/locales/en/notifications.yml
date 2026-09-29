@@ -55,7 +55,7 @@ en:
       body: "Another fleet proved it runs the RSI organisation %{sid} by putting its verification token on the org's page. Your fleet no longer shows the SID as verified. If %{sid} is your organisation, verify it again from the fleet settings."
     fleet_fid_claim_opened:
       title: "%{claimant} claims the fleet ID %{fid}"
-      body: "%{claimant} proved it runs the RSI organisation %{fid}, so it may take the matching fleet ID. On %{date}, %{fleet} will be renamed to the next free ID, such as %{fid}-1, and links to %{fid} will open %{claimant} from then on. If %{fid} is your organisation, verify it from the fleet settings before then to keep the ID. Otherwise, let your members know."
+      body: "%{claimant} proved it runs the RSI organisation **%{fid}**, so it can take the matching fleet ID.\n\n**On %{date}:**\n\n- %{fleet} moves to the next free fleet ID, such as **%{fid}-1**.\n- Links to %{fid} open %{claimant} from then on.\n\n**To keep the ID**, verify %{fid} from your fleet settings before then. Otherwise, let your members know about the new address."
     fleet_fid_claim_completed:
       claimant:
         title: "%{fleet} now has the fleet ID %{fid}"

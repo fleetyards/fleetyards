@@ -60,7 +60,7 @@ zh-TW:
       body: "另一支艦隊將其驗證碼放到了 RSI 組織 %{sid} 的頁面上，證明它在管理該組織。你的艦隊不再將該 SID 顯示為已驗證。如果 %{sid} 是你的組織，請在艦隊設定中重新驗證。"
     fleet_fid_claim_opened:
       title: "%{claimant} 申領艦隊 ID %{fid}"
-      body: "%{claimant} 已證明它在管理 RSI 組織 %{fid}，因此可以取得對應的艦隊 ID。%{date}，%{fleet} 將被改名為下一個空閒 ID（例如 %{fid}-1），此後指向 %{fid} 的連結會開啟 %{claimant}。如果 %{fid} 是你的組織，請在此之前到艦隊設定中完成驗證以保留該 ID；否則請通知你的成員。"
+      body: "%{claimant} 已證明它在管理 RSI 組織 **%{fid}**，因此可以取得對應的艦隊 ID。\n\n**%{date}：**\n\n- %{fleet} 將改用下一個空閒艦隊 ID，例如 **%{fid}-1**。\n- 此後指向 %{fid} 的連結會開啟 %{claimant}。\n\n**如需保留該 ID**，請在此之前到艦隊設定中驗證 %{fid}；否則請通知你的成員網址即將變更。"
     fleet_fid_claim_completed:
       claimant:
         title: "%{fleet} 現在擁有艦隊 ID %{fid}"
