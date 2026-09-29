@@ -100,6 +100,8 @@ class MetricsJob < ApplicationJob
   def track_ship_views
     scope = page_views.where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
 
+    # Counted once per visit: every tab on a ship page is a view of its own, so
+    # counting views would rank ships by how many tabs people click through.
     scope.group(SHIP_VIEW_SLUG).rollup(
       ROLLUP_SHIP_VIEWS,
       interval: "day",
@@ -107,7 +109,7 @@ class MetricsJob < ApplicationJob
       # The gem derives a dimension name from the grouped column and only accepts
       # a bare word, which an expression is not.
       dimension_names: ["model_slug"]
-    )
+    ) { |views| views.distinct.count(:visit_id) }
   end
 
   # A view is counted under the visit's install state, which a later view of the

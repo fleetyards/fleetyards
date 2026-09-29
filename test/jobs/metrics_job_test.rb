@@ -78,6 +78,18 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 2, ship_views("aurora-mr")
   end
 
+  test "#perform counts a ship once per visit however many of its pages were viewed" do
+    visit = track_ship_view("/ships/aurora-mr/").visit
+    ["/ships/aurora-mr/images/", "/ships/aurora-mr/", "/ships/cutlass-black/"].each do |page|
+      Ahoy::Event.create!(visit:, name: "$view", properties: {"page" => page}, time: visit.started_at)
+    end
+
+    MetricsJob.new.perform
+
+    assert_equal 1, ship_views("aurora-mr")
+    assert_equal 1, ship_views("cutlass-black")
+  end
+
   test "#perform ignores the ship index, which names no ship" do
     track_ship_view("/ships/")
 
