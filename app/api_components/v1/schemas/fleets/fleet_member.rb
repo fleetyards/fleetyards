@@ -35,6 +35,7 @@ module V1
             # the fleet has proved it runs that org.
             verifiedOrgSid: {type: :string},
             citizenidProfileUrl: {type: :string},
+            rsiHandleVerifiedVia: ::V1::Schemas::Enums::RsiHandleVerifiedViaEnum,
             discordProfileUrl: {type: :string},
             latitude: {type: :number, format: :double},
             longitude: {type: :number, format: :double},

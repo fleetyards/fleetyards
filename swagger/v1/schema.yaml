@@ -22946,6 +22946,8 @@ components:
           type: string
         citizenidProfileUrl:
           type: string
+        rsiHandleVerifiedVia:
+          "$ref": "#/components/schemas/RsiHandleVerifiedViaEnum"
         discordProfileUrl:
           type: string
         latitude:

@@ -46,9 +46,10 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def verify_handle(user)
-    user.update!(rsi_handle: "maru_pilot", rsi_handle_verified: true)
-    create(:omniauth_connection, user:, provider: :citizenid)
+  def verify_handle(user, via: :citizenid)
+    user.verify_rsi_handle("maru_pilot", via:)
+    user.save!
+    create(:omniauth_connection, user:, provider: :citizenid) if via == :citizenid
   end
 
   setup do
@@ -77,6 +78,44 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
       assert_predicate member["citizenidProfileUrl"], :present?
       assert_equal false, member["verified"]
       assert_nil member["verifiedOrgSid"]
+    end
+  end
+
+  test "GET /fleets/:slug/members says a handle was verified through the RSI bio" do
+    verify_handle(@member, via: :rsi_profile)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_equal "rsi_profile", member["rsiHandleVerifiedVia"]
+      assert_nil member["citizenidProfileUrl"]
+    end
+  end
+
+  test "GET /fleets/:slug/members follows a switch to the RSI bio within the second of the last write" do
+    verify_handle(@member)
+    sign_in @admin
+
+    with_fragment_caching do
+      travel_to Time.current.change(usec: 100_000) do
+        # Every write below lands on the same second the key already carries.
+        stamp = Time.current.change(usec: 0)
+        memberships = FleetMembership.where(fleet: @fleet)
+        memberships.update_all(updated_at: stamp) # rubocop:disable Rails/SkipsModelValidations
+
+        assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
+
+        @member.reload.verify_rsi_handle("maru_pilot", via: :rsi_profile)
+        @member.save!(validate: false, touch: false)
+        memberships.update_all(updated_at: stamp) # rubocop:disable Rails/SkipsModelValidations
+
+        assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+          member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+          assert_equal "rsi_profile", member["rsiHandleVerifiedVia"]
+        end
+      end
     end
   end
 
