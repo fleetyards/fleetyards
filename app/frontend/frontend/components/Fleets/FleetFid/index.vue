@@ -47,7 +47,7 @@ const { t } = useI18n();
   z-index: 1;
   top: 0;
   right: 0;
-  transform: translate(50%, 0);
+  transform: translate(65%, 0);
   font-size: 0.6em;
   line-height: 1;
   --fa-secondary-color: color-mix(

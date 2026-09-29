@@ -52,7 +52,7 @@ const squadronNames = computed(() =>
       v-if="showSquadrons && member.squadrons?.length"
       v-tooltip="squadronNames"
       :squadron="member.squadrons[0]"
-      :size="18"
+      :size="14"
       class="member-avatar__squadron"
     />
   </span>
@@ -85,11 +85,13 @@ const squadronNames = computed(() =>
   --fa-secondary-opacity: 1;
 }
 
-// Overhangs the frame the way the presence dot does, on the corner it leaves
-// free.
+// The bottom-left corner, mirroring the presence dot on the bottom-right:
+// centred 5px in from both edges, as the dot is, and as small as the verified
+// badge above it.
 .member-avatar__squadron {
   position: absolute;
-  left: -4px;
-  bottom: -4px;
+  left: 5px;
+  bottom: 5px;
+  transform: translate(-50%, 50%);
 }
 </style>
