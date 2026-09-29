@@ -414,7 +414,7 @@
           "availableTitle": "L’ID de flotte %{fid} est libre",
           "available": "Ta flotte est vérifiée pour %{fid} et aucune autre flotte n’utilise cet ID. Indique-le plus haut comme ID de ta flotte.",
           "incomingTitle": "%{claimant} réclame l’ID de ta flotte",
-          "incoming": "%{claimant} est vérifiée pour l’organisation RSI %{fid}. Le %{date}, ta flotte sera renommée avec le prochain ID libre, comme %{fid}-1, et les liens vers %{fid} ouvriront %{claimant}. Si %{fid} est ton organisation, vérifie-la avant pour garder l’ID. Sinon, préviens tes membres.",
+          "incoming": "%{claimant} est vérifiée pour l’organisation RSI **%{fid}**.\n\n**Le %{date} :**\n\n- Ta flotte passe au prochain ID de flotte libre, comme **%{fid}-1**.\n- Les liens vers %{fid} ouvriront ensuite %{claimant}.\n\n**Pour garder l’ID**, vérifie %{fid} avant cette date. Sinon, préviens tes membres du changement d’adresse.",
           "createTakenTitle": "%{fid} est déjà pris",
           "createTaken": "Si %{fid} est ton organisation RSI, commence avec %{suggestion} et le SID %{fid}. Dès que ta flotte est vérifiée pour %{fid}, elle peut réclamer l’ID de flotte à la flotte qui le détient."
         },

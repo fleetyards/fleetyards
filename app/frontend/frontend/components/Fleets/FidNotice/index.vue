@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Alert from "@/shared/components/base/Alert/index.vue";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import { fidAtRisk } from "@/frontend/utils/rsiSid";
 import { type Fleet, useFleetFidClaim } from "@/services/fyApi";
@@ -41,13 +42,17 @@ const showFidWarning = computed(
     "
     data-test="fleet-fid-claim-incoming"
   >
-    {{
-      t("labels.fleet.fidClaim.incoming", {
-        claimant: incomingClaim.claimantName,
-        fid: incomingClaim.fid,
-        date: l(incomingClaim.endsAt, "datetime.formats.date"),
-      })
-    }}
+    <!-- Markdown, like the notification about the same claim: the date, what
+         happens on it, and how to keep the ID, rather than one paragraph. -->
+    <Markdown
+      :source="
+        t('labels.fleet.fidClaim.incoming', {
+          claimant: incomingClaim.claimantName,
+          fid: incomingClaim.fid,
+          date: l(incomingClaim.endsAt, 'datetime.formats.date'),
+        })
+      "
+    />
     <template v-if="slots.actions" #actions>
       <slot name="actions" />
     </template>

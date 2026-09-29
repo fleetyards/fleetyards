@@ -42,6 +42,10 @@ describe("FleetFidNotice", () => {
     expect(
       wrapper.find('[data-test="fleet-fid-claim-incoming"]').text(),
     ).toContain("Real Org");
+    // The date, what happens on it and how to keep the ID, as a list.
+    expect(
+      wrapper.findAll('[data-test="fleet-fid-claim-incoming"] li'),
+    ).toHaveLength(2);
     expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(
       false,
     );

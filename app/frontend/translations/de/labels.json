@@ -414,7 +414,7 @@
           "availableTitle": "Die Flotten-ID %{fid} ist frei",
           "available": "Deine Flotte ist für %{fid} verifiziert, und keine andere Flotte nutzt diese ID. Trag sie oben als Flotten-ID ein.",
           "incomingTitle": "%{claimant} beansprucht eure Flotten-ID",
-          "incoming": "%{claimant} ist für die RSI-Organisation %{fid} verifiziert. Am %{date} wird deine Flotte in die nächste freie ID wie %{fid}-1 umbenannt, und Links auf %{fid} öffnen dann %{claimant}. Wenn %{fid} deine Organisation ist, verifiziere sie vorher, um die ID zu behalten. Andernfalls sag deinen Mitgliedern Bescheid.",
+          "incoming": "%{claimant} ist für die RSI-Organisation **%{fid}** verifiziert.\n\n**Am %{date}:**\n\n- Deine Flotte bekommt die nächste freie Flotten-ID, etwa **%{fid}-1**.\n- Links auf %{fid} öffnen ab dann %{claimant}.\n\n**Um die ID zu behalten**, verifiziere %{fid} vorher. Andernfalls sag deinen Mitgliedern Bescheid, dass sich die Adresse ändert.",
           "createTakenTitle": "%{fid} ist vergeben",
           "createTaken": "Wenn %{fid} deine RSI-Organisation ist, starte mit %{suggestion} und der SID %{fid}. Sobald deine Flotte für %{fid} verifiziert ist, kann sie die Flotten-ID von der Flotte beanspruchen, die sie hat."
         },

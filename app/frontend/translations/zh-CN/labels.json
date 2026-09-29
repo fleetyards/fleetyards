@@ -414,7 +414,7 @@
           "availableTitle": "舰队 ID %{fid} 空闲",
           "available": "你的舰队已通过 %{fid} 的验证，且没有其他舰队使用该 ID。请在上方将其设为你的舰队 ID。",
           "incomingTitle": "%{claimant} 申领你的舰队 ID",
-          "incoming": "%{claimant} 已通过 RSI 组织 %{fid} 的验证。%{date}，你的舰队将被改名为下一个空闲 ID（例如 %{fid}-1），指向 %{fid} 的链接将打开 %{claimant}。如果 %{fid} 是你的组织，请在此之前完成验证以保留该 ID；否则请通知你的成员。",
+          "incoming": "%{claimant} 已通过 RSI 组织 **%{fid}** 的验证。\n\n**%{date}：**\n\n- 你的舰队将改用下一个空闲舰队 ID，例如 **%{fid}-1**。\n- 此后指向 %{fid} 的链接会打开 %{claimant}。\n\n**如需保留该 ID**，请在此之前验证 %{fid}；否则请通知你的成员地址即将变更。",
           "createTakenTitle": "%{fid} 已被占用",
           "createTaken": "如果 %{fid} 是你的 RSI 组织，请先使用 %{suggestion} 并填写 SID %{fid}。你的舰队通过 %{fid} 的验证后，即可从持有该 ID 的舰队申领它。"
         },
