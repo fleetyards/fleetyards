@@ -9,8 +9,6 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import Pill from "@/shared/components/base/Pill/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
 import {
   FleetMembershipStatusEnum,
@@ -111,25 +109,17 @@ const description = computed(() => {
           size="large"
           icon="fa-duotone fa-image"
         />
-        <span class="title">{{ fleet.name }} ({{ fleet.fid }})</span>
+        <span class="title">
+          {{ fleet.name }} ({{ fleet.fid
+          }}<i
+            v-if="fleet.rsiVerified"
+            v-tooltip="t('labels.fleet.rsiVerification.verified')"
+            :aria-label="t('labels.fleet.rsiVerification.verified')"
+            class="fa-duotone fa-badge-check text-success fid-verified"
+            data-test="fleet-rsi-verified"
+          />)
+        </span>
       </h1>
-      <p class="rsi-verification-mark">
-        <Pill
-          v-if="fleet.rsiVerified"
-          :variant="PillVariantsEnum.SUCCESS"
-          data-test="fleet-rsi-verified"
-        >
-          <i class="fa-duotone fa-badge-check" />
-          {{ t("labels.fleet.rsiVerification.verified") }}
-        </Pill>
-        <Pill
-          v-else
-          :variant="PillVariantsEnum.NEUTRAL"
-          data-test="fleet-rsi-unverified"
-        >
-          {{ t("labels.fleet.rsiVerification.unverified") }}
-        </Pill>
-      </p>
       <FidNotice v-if="showFidNotice" :fleet="fleet">
         <template #actions>
           <router-link
@@ -293,6 +283,14 @@ const description = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+// Sits on the FID rather than beside the name: the FID is what a verification
+// protects, and the name is free text.
+.fid-verified {
+  margin-left: 0.25em;
+  font-size: 0.7em;
+  vertical-align: middle;
+}
+
 .squadrons {
   display: flex;
   flex-wrap: wrap;
