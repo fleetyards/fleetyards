@@ -16,7 +16,11 @@ module Api
         connection.destroy!
 
         if connection.citizenid?
-          current_resource_owner.update!(rsi_handle_verified: false)
+          # A handle proved through the RSI bio does not depend on Citizen iD.
+          if current_resource_owner.rsi_handle_verified_via_citizenid?
+            current_resource_owner.clear_rsi_handle_verification
+            current_resource_owner.save!
+          end
           # rubocop:disable Rails/SkipsModelValidations
           current_resource_owner.fleet_memberships.kept.where(verified: true).update_all(verified: false)
           # rubocop:enable Rails/SkipsModelValidations

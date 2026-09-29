@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_29_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2400,6 +2400,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_130000) do
     t.string "reset_password_token", limit: 255
     t.string "rsi_handle"
     t.boolean "rsi_handle_verified", default: false, null: false
+    t.datetime "rsi_handle_verified_at"
+    t.string "rsi_handle_verified_via"
+    t.datetime "rsi_verification_checked_at"
+    t.string "rsi_verification_status"
+    t.string "rsi_verification_token"
     t.boolean "sale_notify", default: false
     t.boolean "show_online_status", default: true, null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -2416,6 +2421,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_130000) do
     t.integer "wanted_vehicles_count", default: 0, null: false
     t.string "youtube"
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
+    t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
     t.index ["calendar_feed_token"], name: "index_users_on_calendar_feed_token", unique: true
     t.index ["claim_key"], name: "index_users_on_claim_key", unique: true, where: "(claim_key IS NOT NULL)"
