@@ -52,9 +52,11 @@ A user can verify their RSI handle by putting a token in their RSI bio, as an al
 ## Discovery Log
 
 - **2026-09-29** In the dev dump, 14 handles are verified on more than one account and 60 handles are shared by several accounts, verified or not. The token must be read from `.entry.bio .value`: the page also shows the main org's name, which that org's officers control.
+- **2026-09-29** `db/schema.rb` and the model annotations were written by hand because the migration was not run against a dev database. The dedup query was dry-run read-only against the dump: it unverifies exactly the 14 duplicates and keeps 1255 handles. No verified row lacks a handle.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
+- [ ] Live UI check of the profile modal on a dev server
