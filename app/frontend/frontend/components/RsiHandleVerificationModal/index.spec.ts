@@ -84,6 +84,30 @@ describe("RsiHandleVerificationModal", () => {
     ).toBeDefined();
   });
 
+  it("counts the cooldown down on the check and offers it again after", async () => {
+    vi.useFakeTimers();
+    try {
+      verification.value = unverified({
+        status: "token_missing",
+        nextCheckAt: new Date(Date.now() + 42_000).toISOString(),
+      });
+
+      const wrapper = await mountModal();
+      const button = () =>
+        wrapper.find('[data-test="user-rsi-verification-check"]');
+
+      expect(button().attributes("disabled")).toBeDefined();
+      expect(button().text()).toContain("42");
+
+      await vi.advanceTimersByTimeAsync(43_000);
+
+      expect(button().attributes("disabled")).toBeUndefined();
+      expect(button().text()).not.toContain("42");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("lets a handle proved through the bio have its verification removed", async () => {
     verification.value = unverified({
       verified: true,

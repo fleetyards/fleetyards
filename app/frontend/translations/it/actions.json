@@ -153,6 +153,7 @@
         "rsiVerification": {
           "verify": "Verifica tramite profilo RSI",
           "check": "Controlla ora",
+          "checkIn": "Ricontrolla tra %{seconds} s",
           "copyToken": "Copia codice",
           "regenerateToken": "Genera un nuovo codice",
           "remove": "Rimuovi la verifica",

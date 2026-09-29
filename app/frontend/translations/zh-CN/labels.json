@@ -1547,7 +1547,6 @@
           "title": "验证你的 RSI 用户名",
           "token": "验证码",
           "verifiedSince": "自 %{date} 起已验证",
-          "nextCheck": "一分钟后可以再次检查。",
           "openProfileSettings": "编辑你的 RSI 个人资料",
           "steps": {
             "copy": "复制你的验证码",

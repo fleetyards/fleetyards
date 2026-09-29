@@ -80,6 +80,18 @@ const coolingDown = computed(() => {
   return !!nextCheckAt && new Date(nextCheckAt) > now.value;
 });
 
+// Counted down on the button, so a disabled Check says when it comes back
+// instead of looking broken.
+const secondsUntilNextCheck = computed(() => {
+  const nextCheckAt = verification.value?.nextCheckAt;
+  if (!nextCheckAt) return 0;
+
+  return Math.max(
+    0,
+    Math.ceil((new Date(nextCheckAt).getTime() - now.value.getTime()) / 1000),
+  );
+});
+
 const pending = computed(
   () => verification.value?.status === StatusEnum.PENDING && coolingDown.value,
 );
@@ -264,9 +276,6 @@ const copyToken = () => {
           >
             {{ statusText }}
           </Alert>
-          <p v-else-if="coolingDown" class="text-muted small">
-            {{ t("labels.user.rsiVerification.nextCheck") }}
-          </p>
         </li>
       </ol>
     </section>
@@ -294,7 +303,16 @@ const copyToken = () => {
           data-test="user-rsi-verification-check"
           @click="check"
         >
-          {{ t("actions.user.rsiVerification.check") }}
+          <template v-if="coolingDown && !pending">
+            {{
+              t("actions.user.rsiVerification.checkIn", {
+                seconds: secondsUntilNextCheck,
+              })
+            }}
+          </template>
+          <template v-else>
+            {{ t("actions.user.rsiVerification.check") }}
+          </template>
         </Btn>
       </div>
     </template>

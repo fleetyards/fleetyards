@@ -1547,7 +1547,6 @@
           "title": "Vérifier ton pseudo RSI",
           "token": "Code de vérification",
           "verifiedSince": "Vérifié depuis le %{date}",
-          "nextCheck": "Tu pourras vérifier à nouveau dans une minute.",
           "openProfileSettings": "Modifier ton profil RSI",
           "steps": {
             "copy": "Copie ton code de vérification",

@@ -1547,7 +1547,6 @@
           "title": "Verify your RSI handle",
           "token": "Verification token",
           "verifiedSince": "Verified since %{date}",
-          "nextCheck": "You can check again in a minute.",
           "openProfileSettings": "Edit your RSI profile",
           "steps": {
             "copy": "Copy your verification token",

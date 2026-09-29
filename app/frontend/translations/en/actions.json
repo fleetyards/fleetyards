@@ -153,6 +153,7 @@
         "rsiVerification": {
           "verify": "Verify via RSI profile",
           "check": "Check now",
+          "checkIn": "Check again in %{seconds}s",
           "copyToken": "Copy token",
           "regenerateToken": "Generate new token",
           "remove": "Remove verification",

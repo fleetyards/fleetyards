@@ -1547,7 +1547,6 @@
           "title": "Verifica il tuo handle RSI",
           "token": "Codice di verifica",
           "verifiedSince": "Verificato dal %{date}",
-          "nextCheck": "Puoi controllare di nuovo tra un minuto.",
           "openProfileSettings": "Modifica il tuo profilo RSI",
           "steps": {
             "copy": "Copia il tuo codice di verifica",

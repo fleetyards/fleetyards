@@ -1547,7 +1547,6 @@
           "title": "RSI-Handle verifizieren",
           "token": "Verifizierungscode",
           "verifiedSince": "Verifiziert seit %{date}",
-          "nextCheck": "Du kannst in einer Minute erneut prüfen.",
           "openProfileSettings": "RSI-Profil bearbeiten",
           "steps": {
             "copy": "Kopiere deinen Verifizierungscode",
