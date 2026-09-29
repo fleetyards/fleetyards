@@ -72,17 +72,6 @@ module Frontend
       render_frontend
     end
 
-    private def render_frontend
-      respond_to do |format|
-        format.html do
-          render "frontend/index", status: :ok
-        end
-        format.all do
-          redirect_to "/404"
-        end
-      end
-    end
-
     private def fleet
       @fleet ||= Fleet.kept.find_by(slug: (params[:slug] || "").downcase)
     end
