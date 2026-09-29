@@ -288,6 +288,8 @@
       "guilded": "Servidor de Guilded",
       "3dView": "3D",
       "3dMap": "Map",
+      "viewInAr": "RA",
+      "viewInArHint": "Colócala en tu habitación a tamaño real",
       "filter": "Filtro",
       "taxExcluded": "sin IVA",
       "hangar": "Hangar",

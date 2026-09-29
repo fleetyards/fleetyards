@@ -8,6 +8,7 @@ export default {
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import ViewInArBtn from "@/frontend/components/Models/ViewInArBtn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import CrewPositions from "@/frontend/components/Models/CrewPositions/index.vue";
@@ -339,6 +340,8 @@ const adiMap = computed(() => {
                   <img :src="adiIcon" class="adi-icon" />
                   {{ t("labels.3dMap") }}
                 </Btn>
+
+                <ViewInArBtn :model="model" />
               </BtnGroup>
 
               <!-- Earned by a second holo: a state that differs in the views

@@ -288,6 +288,8 @@
       "guilded": "Guilded 服务器",
       "3dView": "3D",
       "3dMap": "Map",
+      "viewInAr": "AR",
+      "viewInArHint": "以真实尺寸放置在你的房间中",
       "filter": "筛选",
       "taxExcluded": "不含增值税",
       "hangar": "机库",

@@ -288,6 +288,8 @@
       "guilded": "Guilded Server",
       "3dView": "3D",
       "3dMap": "Map",
+      "viewInAr": "AR",
+      "viewInArHint": "Place it in your room at true size",
       "filter": "Filter",
       "taxExcluded": "excl. VAT",
       "hangar": "Hangar",
