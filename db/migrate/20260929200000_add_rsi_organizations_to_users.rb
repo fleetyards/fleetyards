@@ -25,6 +25,24 @@ class AddRsiOrganizationsToUsers < ActiveRecord::Migration[8.1]
       ) AS seeded
       WHERE users.id = seeded.user_id AND users.rsi_handle_verified
     SQL
+
+    # And the flags follow the lists from here on, by the same rule the model
+    # applies. That only clears: a flag whose user no longer has a verified
+    # handle, like the accounts a duplicate handle was taken from, has no list
+    # to stand on.
+    execute <<~SQL
+      UPDATE fleet_memberships
+      SET verified = FALSE, updated_at = NOW()
+      FROM users, fleets
+      WHERE users.id = fleet_memberships.user_id
+        AND fleets.id = fleet_memberships.fleet_id
+        AND fleet_memberships.verified
+        AND NOT (
+          users.rsi_handle_verified
+          AND fleets.rsi_sid IS NOT NULL
+          AND fleets.rsi_sid = ANY(users.rsi_organization_sids)
+        )
+    SQL
   end
 
   def down
