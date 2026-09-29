@@ -14,6 +14,7 @@ const GROUPED = {
   foundations: ["typography", "panels", "buttons", "chips", "media"],
   data: ["tables", "lists", "metrics", "charts"],
   feedback: [
+    "alerts",
     "states",
     "notifications",
     "install-prompt",

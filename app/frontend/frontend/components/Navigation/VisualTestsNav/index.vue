@@ -33,6 +33,7 @@ const GROUPS = [
     key: "feedback",
     icon: "fadt fa-comment-dots",
     members: [
+      "alerts",
       "states",
       "notifications",
       "notification-center",
@@ -95,6 +96,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-charts",
     label: "charts",
     icon: "fadt fa-chart-line",
+  },
+  alerts: {
+    route: "visual-tests-alerts",
+    label: "alerts",
+    icon: "fadt fa-circle-exclamation",
   },
   states: {
     route: "visual-tests-states",
