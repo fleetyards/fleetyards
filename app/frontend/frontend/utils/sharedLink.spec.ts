@@ -86,6 +86,12 @@ describe("resolveSharedLink", () => {
     ).toEqual({ kind: "short", href: "https://fltyrd.net/fi/abc123" });
   });
 
+  it("does not search for the punctuation left after a foreign link", () => {
+    expect(
+      resolveSharedLink({ text: "https://example.com/page." }, hosts),
+    ).toEqual({ kind: "home" });
+  });
+
   it("opens the home page when nothing usable was shared", () => {
     expect(resolveSharedLink({}, hosts)).toEqual({ kind: "home" });
   });

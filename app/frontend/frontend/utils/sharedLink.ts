@@ -68,9 +68,10 @@ export const resolveSharedLink = (
     }
   }
 
+  // What is left once the links are gone; a leftover full stop is not a search.
   const query = [fields.text, fields.title]
     .map((value) => value?.replace(URL_PATTERN, "").trim())
-    .find(Boolean);
+    .find((value) => !!value && /[\p{L}\p{N}]/u.test(value));
 
   return query ? { kind: "search", query } : { kind: "home" };
 };
