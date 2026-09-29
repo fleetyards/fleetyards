@@ -42,11 +42,16 @@ const { count: pendingFriendRequests } = usePendingFriendRequests();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
-const { canInstall, install: installApp } = useInstallPrompt();
+const { canInstall, isIos, install: installApp } = useInstallPrompt();
 
 // Desktop browsers offer the install in their address bar already; on phones
-// and tablets it hides in a menu, or on iOS has no browser prompt at all.
+// and tablets it hides in a menu. iOS has no browser prompt at all, and an iPad
+// with a trackpad reports a fine pointer, so it is kept by name.
 const touchDevice = useMediaQuery("(pointer: coarse)");
+
+const showInstall = computed(
+  () => canInstall.value && (touchDevice.value || isIos.value),
+);
 
 const { isFleetRoute } = useFleetRouteCheck();
 
@@ -212,7 +217,7 @@ const settingsActive = computed(() => {
     <template #footer>
       <ScDataSourceSwitch />
       <NavItem
-        v-if="canInstall && touchDevice"
+        v-if="showInstall"
         :action="installApp"
         menu-key="install-app"
         :label="t('nav.installApp')"

@@ -2,13 +2,14 @@ import { describe, expect, it, vi } from "vitest";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 
-const { Stub, coarsePointer } = vi.hoisted(() => {
+const { Stub, coarsePointer, ios } = vi.hoisted(() => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const vue = require("vue");
 
   return {
     Stub: vue.defineComponent({ name: "Stub", render: () => vue.h("div") }),
     coarsePointer: vue.ref(false),
+    ios: vue.ref(false),
   };
 });
 
@@ -27,7 +28,11 @@ vi.mock("@/frontend/composables/usePendingFriendRequests", () => ({
 }));
 
 vi.mock("@/frontend/composables/useInstallPrompt", () => ({
-  useInstallPrompt: () => ({ canInstall: ref(true), install: vi.fn() }),
+  useInstallPrompt: () => ({
+    canInstall: ref(true),
+    isIos: ios,
+    install: vi.fn(),
+  }),
 }));
 vi.mock("@vueuse/core", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@vueuse/core")>()),
@@ -96,9 +101,20 @@ describe("Navigation", () => {
 
   it("leaves the install to the browser on desktop", async () => {
     coarsePointer.value = false;
+    ios.value = false;
 
     const wrapper = await mountNavigation("ships");
 
     expect(wrapper.find('[data-test="install-app"]').exists()).toBe(false);
+  });
+
+  // Safari has no install button of its own, whatever pointer the iPad reports.
+  it("offers the install on an iPad with a trackpad", async () => {
+    coarsePointer.value = false;
+    ios.value = true;
+
+    const wrapper = await mountNavigation("ships");
+
+    expect(wrapper.find('[data-test="install-app"]').exists()).toBe(true);
   });
 });
