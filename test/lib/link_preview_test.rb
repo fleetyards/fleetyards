@@ -27,9 +27,16 @@ class LinkPreviewTest < ActiveSupport::TestCase
     assert_equal "Fleet event in Ember Guard", LinkPreview.for_fleet_event(event).title
   end
 
-  test "an event without a cover shows the fleet's logo" do
+  test "an event without a cover shows the art it shows on its page" do
+    event = build(:fleet_event, :open, fleet: @fleet, cover_image_preset: "mining")
+
+    assert_equal "images/missions/mining.jpg", LinkPreview.for_fleet_event(event).image
+  end
+
+  test "an event without a cover or art shows the fleet's logo" do
     attach(@fleet.logo)
     event = build(:fleet_event, :open, fleet: @fleet)
+    event.stubs(:preset_cover_file).returns(nil)
 
     assert_equal @fleet.logo, LinkPreview.for_fleet_event(event).image
   end

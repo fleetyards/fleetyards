@@ -5,6 +5,7 @@
 # pasted to, so an item only names itself when every member of its fleet may
 # see it; anything narrower reads as a generic item of the fleet.
 class LinkPreview
+  # `image` is an attachment, or the path of an image bundled with the frontend.
   attr_reader :title, :image
 
   def initialize(title:, image: nil)
@@ -15,7 +16,9 @@ class LinkPreview
   def self.for_fleet_event(event)
     return restricted("fleet_event", event.fleet) if event.draft? || !event.discord_guild_wide?
 
-    new(title: event.title, image: cover_or_logo(event.cover_image, event.fleet))
+    image = attached(event.cover_image) || preset_cover(event) || attached(event.fleet.logo)
+
+    new(title: event.title, image:)
   end
 
   def self.for_fleet_contract(contract)
@@ -44,9 +47,15 @@ class LinkPreview
     attached(cover) || attached(fleet.logo)
   end
 
+  # A path under the frontend's source root, which the controller turns into an
+  # asset URL the way it does for any other bundled image.
+  def self.preset_cover(event)
+    event.preset_cover_file&.relative_path_from(Rails.root.join("app/frontend"))&.to_s
+  end
+
   def self.attached(attachment)
     attachment if attachment&.attached?
   end
 
-  private_class_method :restricted, :cover_or_logo, :attached
+  private_class_method :restricted, :cover_or_logo, :preset_cover, :attached
 end
