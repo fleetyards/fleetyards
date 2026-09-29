@@ -155,7 +155,8 @@
           "check": "Controlla ora",
           "copyToken": "Copia codice",
           "regenerateToken": "Genera un nuovo codice",
-          "remove": "Rimuovi la verifica"
+          "remove": "Rimuovi la verifica",
+          "revoke": "Revoca la verifica"
         }
       },
       "oauth": {

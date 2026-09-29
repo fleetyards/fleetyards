@@ -10,7 +10,9 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type User,
   type UserInput,
+  UserRsiHandleVerifiedVia,
   useUpdateUser,
+  useRevokeUserRsiVerification,
   getUsersQueryKey,
   getUserQueryKey,
 } from "@/services/fyAdminApi";
@@ -20,6 +22,8 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import SupporterStatus from "@/shared/components/SupporterStatus/index.vue";
 import PresenceDot from "@/shared/components/PresenceDot/index.vue";
 import { useAdminPresence } from "@/admin/composables/useAdminPresence";
@@ -107,6 +111,34 @@ const updateMutation = useUpdateUser({
   },
 });
 
+const revokeMutation = useRevokeUserRsiVerification({
+  mutation: {
+    onSettled: () => {
+      const promises: Promise<void>[] = [
+        queryClient.invalidateQueries({ queryKey: getUsersQueryKey() }),
+      ];
+      if (props.user.id) {
+        promises.push(
+          queryClient.invalidateQueries({
+            queryKey: getUserQueryKey(props.user.id),
+          }),
+        );
+      }
+      void Promise.all(promises);
+    },
+  },
+});
+
+const rsiHandleVerifiedLabel = computed(() =>
+  props.user.rsiHandleVerifiedVia === UserRsiHandleVerifiedVia.rsi_profile
+    ? t("labels.user.rsiHandleVerifiedViaProfile")
+    : t("labels.user.rsiHandleVerified"),
+);
+
+const revokeVerification = async () => {
+  await revokeMutation.mutateAsync({ id: props.user.id! });
+};
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -164,6 +196,17 @@ const handleCancel = async () => {
           translation-key="user.rsiHandle"
           name="rsiHandle"
         />
+        <p v-if="user.rsiHandleVerified" data-test="admin-user-rsi-verified">
+          <i class="fa-duotone fa-badge-check" />
+          {{ rsiHandleVerifiedLabel }}
+          <BtnConfirm
+            :size="BtnSizesEnum.SM"
+            :disabled="revokeMutation.isPending.value"
+            @confirm="revokeVerification"
+          >
+            {{ t("actions.user.rsiVerification.revoke") }}
+          </BtnConfirm>
+        </p>
         <FormFileInput
           v-model="avatar"
           v-bind="avatarProps"
