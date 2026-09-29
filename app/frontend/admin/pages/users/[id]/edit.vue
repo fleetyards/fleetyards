@@ -189,7 +189,33 @@ const handleCancel = async () => {
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="username" v-bind="usernameProps" name="username" />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="saleNotify"
+          translation-key="user.saleNotify"
+          v-bind="saleNotifyProps"
+          name="saleNotify"
+          align-with-fields
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
         <FormInput v-model="email" v-bind="emailProps" name="email" />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="tester"
+          translation-key="user.tester"
+          v-bind="testerProps"
+          name="tester"
+          align-with-fields
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
         <FormInput
           v-model="rsiHandle"
           v-bind="rsiHandleProps"
@@ -207,6 +233,19 @@ const handleCancel = async () => {
             {{ t("actions.user.rsiVerification.revoke") }}
           </BtnConfirm>
         </p>
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="publicHangar"
+          translation-key="user.publicHangar"
+          v-bind="publicHangarProps"
+          name="publicHangar"
+          align-with-fields
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
         <FormFileInput
           v-model="avatar"
           v-bind="avatarProps"
@@ -218,61 +257,25 @@ const handleCancel = async () => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="saleNotify"
-              translation-key="user.saleNotify"
-              v-bind="saleNotifyProps"
-              name="saleNotify"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="tester"
-              translation-key="user.tester"
-              v-bind="testerProps"
-              name="tester"
-            />
-          </div>
-        </div>
-        <hr />
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="publicHangar"
-              translation-key="user.publicHangar"
-              v-bind="publicHangarProps"
-              name="publicHangar"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="publicHangarLoaners"
-              translation-key="user.publicHangarLoaners"
-              v-bind="publicHangarLoanersProps"
-              name="publicHangarLoaners"
-            />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="publicWishlist"
-              translation-key="user.publicWishlist"
-              v-bind="publicWishlistProps"
-              name="publicWishlist"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="hideOwner"
-              translation-key="user.hideOwner"
-              v-bind="hideOwnerProps"
-              name="hideOwner"
-            />
-          </div>
-        </div>
+        <FormToggle
+          v-model="publicHangarLoaners"
+          translation-key="user.publicHangarLoaners"
+          v-bind="publicHangarLoanersProps"
+          name="publicHangarLoaners"
+          align-with-fields
+        />
+        <FormToggle
+          v-model="publicWishlist"
+          translation-key="user.publicWishlist"
+          v-bind="publicWishlistProps"
+          name="publicWishlist"
+        />
+        <FormToggle
+          v-model="hideOwner"
+          translation-key="user.hideOwner"
+          v-bind="hideOwnerProps"
+          name="hideOwner"
+        />
       </div>
     </div>
     <FormActions
