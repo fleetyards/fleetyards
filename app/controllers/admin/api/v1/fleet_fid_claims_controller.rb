@@ -46,6 +46,10 @@ module Admin
             return
           end
 
+          # Completing renamed both fleets through instances of their own, so
+          # the ones preloaded here would still answer with the old FIDs.
+          @claim = FleetFidClaim.includes(:claimant, :holder).find(@claim.id)
+
           render :show
         end
 

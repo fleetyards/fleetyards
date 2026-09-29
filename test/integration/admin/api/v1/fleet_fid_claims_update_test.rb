@@ -62,6 +62,7 @@ class Admin::Api::V1::FleetFidClaimsUpdateTest < ActionDispatch::IntegrationTest
 
     assert_equal "completed", response.parsed_body["state"]
     assert_equal @claim.fid, @claim.claimant.reload.fid
+    assert_equal @claim.fid, response.parsed_body["claimantFid"]
   end
 
   test "PATCH /fleet-fid-claims/:id to now refuses a claimant that is no longer verified" do
