@@ -269,13 +269,16 @@ class MetricsJobTest < ActiveJob::TestCase
     view_on(visit, "/fleets/ember/contracts/")
     view_on(visit, "/fleets/ember/")
     view_on(visit, "/ships/aurora-mr/images/")
+    view_on(visit, "/fleets/invites/a1b2c3d4/")
+    view_on(visit, "/fleets/invites/e5f6a7b8/")
+    view_on(visit, "/fleets/add/")
 
     MetricsJob.new.perform
 
     sections = Rollup.where(name: MetricsJob::ROLLUP_VIEWS_BY_DEVICE).where("value > 0")
       .pluck(Arel.sql("dimensions->>'section'"))
 
-    assert_equal ["fleets", "fleets/contracts", "fleets/events", "ships"], sections.sort
+    assert_equal ["fleets", "fleets/add", "fleets/contracts", "fleets/events", "fleets/invites", "ships"], sections.sort
   end
 
   test "#perform moves a visit's views once it is flagged installed" do

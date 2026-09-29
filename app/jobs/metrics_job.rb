@@ -26,13 +26,20 @@ class MetricsJob < ApplicationJob
   # The first segment of the path (`hangar`, `ships`, `compare`), and for a fleet
   # the tool under it (`fleets/events`, `fleets/contracts`), since a fleet's
   # tools are what a phone would be used for and they all share `/fleets/`. No
-  # slug or id survives, which keeps a day to a few dozen rows per device.
+  # slug or id survives, which keeps a day to a few dozen rows per device. The
+  # routes beside `/fleets/:slug/` take the place of a slug, and an invite's
+  # token would otherwise become a section of its own.
+  FLEET_TOP_LEVEL_ROUTES = %w[add preview invites].freeze
+
   VIEW_SECTION = Arel.sql(<<~SQL.squish)
     CASE
-    WHEN split_part(ahoy_events.properties->>'page', '/', 2) = 'fleets'
-      AND split_part(ahoy_events.properties->>'page', '/', 4) <> ''
+    WHEN split_part(ahoy_events.properties->>'page', '/', 2) <> 'fleets'
+    THEN split_part(ahoy_events.properties->>'page', '/', 2)
+    WHEN split_part(ahoy_events.properties->>'page', '/', 3) IN (#{FLEET_TOP_LEVEL_ROUTES.map { |route| "'#{route}'" }.join(", ")})
+    THEN 'fleets/' || split_part(ahoy_events.properties->>'page', '/', 3)
+    WHEN split_part(ahoy_events.properties->>'page', '/', 4) <> ''
     THEN 'fleets/' || split_part(ahoy_events.properties->>'page', '/', 4)
-    ELSE split_part(ahoy_events.properties->>'page', '/', 2)
+    ELSE 'fleets'
     END
   SQL
 
