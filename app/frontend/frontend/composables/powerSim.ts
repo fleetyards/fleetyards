@@ -282,148 +282,176 @@ const GROW: PowerFamily[] = ["engine"];
 // Signature scores within this margin count as a tie.
 const SCORE_TIE = 1e-6;
 
-class Distribution {
-  readonly state: AllocationState;
-  private readonly byFamily = new Map<PowerFamily, PowerPort[]>();
+// The default distribution's working state: the allocation, plus the ports
+// grouped by family in their original order.
+type Distribution = {
+  ports: PowerPort[];
+  byFamily: Map<PowerFamily, PowerPort[]>;
+  state: AllocationState;
+  mode: FlightMode;
+  weaponCap: number;
+  heat: HeatModel | undefined;
+};
 
-  constructor(
-    readonly ports: PowerPort[],
-    totalSegments: number,
-    readonly mode: FlightMode,
-    readonly weaponCap: number,
-    readonly heat: HeatModel | undefined,
-  ) {
-    this.state = emptyState(totalSegments);
-    for (const port of ports) {
-      const list = this.byFamily.get(port.family) ?? [];
-      list.push(port);
-      this.byFamily.set(port.family, list);
+function createDistribution(
+  ports: PowerPort[],
+  totalSegments: number,
+  mode: FlightMode,
+  weaponCap: number,
+  heat: HeatModel | undefined,
+): Distribution {
+  const byFamily = new Map<PowerFamily, PowerPort[]>();
+  for (const port of ports) {
+    const list = byFamily.get(port.family) ?? [];
+    list.push(port);
+    byFamily.set(port.family, list);
+  }
+  return {
+    ports,
+    byFamily,
+    state: emptyState(totalSegments),
+    mode,
+    weaponCap,
+    heat,
+  };
+}
+
+function coolersOf(d: Distribution): CoolerModel[] {
+  return d.heat?.coolers ?? [];
+}
+
+function familyPorts(d: Distribution, family: PowerFamily): PowerPort[] {
+  return d.byFamily.get(family) ?? [];
+}
+
+function free(d: Distribution, port: PowerPort): void {
+  port.selected = false;
+  const { state } = d;
+  state.perPort[port.portPath] =
+    (state.perPort[port.portPath] ?? 0) - port.size;
+  if (state.perPort[port.portPath] <= 0) delete state.perPort[port.portPath];
+  state.perFamily[port.family] -= port.size;
+  state.remaining += port.size;
+}
+
+// Every critical block of a family that still fits.
+function fillCritical(d: Distribution, family: PowerFamily): void {
+  allocCritical(familyPorts(d, family), d.state);
+}
+
+// Blocks in order until one no longer fits.
+function fillFamily(d: Distribution, family: PowerFamily): void {
+  for (const port of familyPorts(d, family)) {
+    if (port.disabled || port.selected) continue;
+    if (port.size > d.state.remaining) break;
+    alloc(d.state, port);
+  }
+}
+
+// Up to `amount` more segments for a family.
+function fillFamilyBy(
+  d: Distribution,
+  family: PowerFamily,
+  amount: number,
+): void {
+  fillBlocks(d, familyPorts(d, family), amount);
+}
+
+// Up to `amount` more segments for one port.
+function fillPortBy(
+  d: Distribution,
+  portPath: string,
+  family: PowerFamily,
+  amount: number,
+): void {
+  fillBlocks(
+    d,
+    familyPorts(d, family).filter((port) => port.portPath === portPath),
+    amount,
+  );
+}
+
+function fillBlocks(d: Distribution, blocks: PowerPort[], amount: number) {
+  if (amount <= 0) return;
+  let added = 0;
+  for (const port of blocks) {
+    if (port.disabled || port.selected) continue;
+    if (added + port.size > amount || port.size > d.state.remaining) break;
+    alloc(d.state, port);
+    added += port.size;
+    if (added >= amount) break;
+  }
+}
+
+// Frees the last powered, non-critical block of the first family that has
+// one.
+function shedOne(d: Distribution, families: PowerFamily[]): boolean {
+  for (const family of families) {
+    const blocks = familyPorts(d, family);
+    for (let i = blocks.length - 1; i >= 0; i--) {
+      const port = blocks[i];
+      if (!port.selected || port.critical) continue;
+      free(d, port);
+      return true;
     }
   }
+  return false;
+}
 
-  get coolers(): CoolerModel[] {
-    return this.heat?.coolers ?? [];
-  }
-
-  family(family: PowerFamily): PowerPort[] {
-    return this.byFamily.get(family) ?? [];
-  }
-
-  free(port: PowerPort): void {
-    port.selected = false;
-    const { state } = this;
-    state.perPort[port.portPath] =
-      (state.perPort[port.portPath] ?? 0) - port.size;
-    if (state.perPort[port.portPath] <= 0) delete state.perPort[port.portPath];
-    state.perFamily[port.family] -= port.size;
-    state.remaining += port.size;
-  }
-
-  // Every critical block of a family that still fits.
-  critical(family: PowerFamily): void {
-    allocCritical(this.family(family), this.state);
-  }
-
-  // Blocks in order until one no longer fits.
-  fill(family: PowerFamily): void {
-    for (const port of this.family(family)) {
+// Powers the next block of the first family whose block fits both the
+// segments left and the cooling headroom.
+function growOne(
+  d: Distribution,
+  families: PowerFamily[],
+  headroom: number,
+): boolean {
+  for (const family of families) {
+    for (const port of familyPorts(d, family)) {
       if (port.disabled || port.selected) continue;
-      if (port.size > this.state.remaining) break;
-      alloc(this.state, port);
+      if (port.size > d.state.remaining || port.size > headroom + EPSILON)
+        break;
+      alloc(d.state, port);
+      return true;
     }
   }
+  return false;
+}
 
-  // Up to `amount` more segments for a family.
-  fillBy(family: PowerFamily, amount: number): void {
-    this.fillBlocks(this.family(family), amount);
-  }
-
-  // Up to `amount` more segments for one port.
-  fillPortBy(portPath: string, family: PowerFamily, amount: number): void {
-    this.fillBlocks(
-      this.family(family).filter((port) => port.portPath === portPath),
-      amount,
-    );
-  }
-
-  private fillBlocks(blocks: PowerPort[], amount: number): void {
-    if (amount <= 0) return;
-    let added = 0;
-    for (const port of blocks) {
-      if (port.disabled || port.selected) continue;
-      if (added + port.size > amount || port.size > this.state.remaining) break;
-      alloc(this.state, port);
-      added += port.size;
-      if (added >= amount) break;
+function balance(d: Distribution): { cooling: number; heat: number } {
+  let cooling = 0;
+  for (const cooler of coolersOf(d)) {
+    const segments = d.state.perPort[cooler.portPath] ?? 0;
+    if (cooler.floor > 0 && segments >= cooler.floor) {
+      cooling += cooler.cooling(segments);
     }
   }
+  return { cooling, heat: d.heat?.generation(d.state) ?? 0 };
+}
 
-  // Frees the last powered, non-critical block of the first family that has
-  // one.
-  shedOne(families: PowerFamily[]): boolean {
-    for (const family of families) {
-      const blocks = this.family(family);
-      for (let i = blocks.length - 1; i >= 0; i--) {
-        const port = blocks[i];
-        if (!port.selected || port.critical) continue;
-        this.free(port);
-        return true;
-      }
-    }
-    return false;
-  }
+function overheated(d: Distribution): boolean {
+  const { cooling, heat } = balance(d);
+  return heat > cooling + EPSILON;
+}
 
-  // Powers the next block of the first family whose block fits both the
-  // segments left and the cooling headroom.
-  growOne(families: PowerFamily[], headroom: number): boolean {
-    for (const family of families) {
-      for (const port of this.family(family)) {
-        if (port.disabled || port.selected) continue;
-        if (port.size > this.state.remaining || port.size > headroom + EPSILON)
-          break;
-        alloc(this.state, port);
-        return true;
-      }
-    }
-    return false;
-  }
+function snapshot(d: Distribution) {
+  return {
+    selected: d.ports.map((port) => port.selected),
+    remaining: d.state.remaining,
+    perPort: { ...d.state.perPort },
+    perFamily: { ...d.state.perFamily },
+  };
+}
 
-  balance(): { cooling: number; heat: number } {
-    let cooling = 0;
-    for (const cooler of this.coolers) {
-      const segments = this.state.perPort[cooler.portPath] ?? 0;
-      if (cooler.floor > 0 && segments >= cooler.floor) {
-        cooling += cooler.cooling(segments);
-      }
-    }
-    return { cooling, heat: this.heat?.generation(this.state) ?? 0 };
+function restore(d: Distribution, saved: ReturnType<typeof snapshot>): void {
+  d.ports.forEach((port, i) => {
+    port.selected = saved.selected[i];
+  });
+  d.state.remaining = saved.remaining;
+  for (const key of Object.keys(d.state.perPort)) {
+    delete d.state.perPort[key];
   }
-
-  overheated(): boolean {
-    const { cooling, heat } = this.balance();
-    return heat > cooling + EPSILON;
-  }
-
-  snapshot() {
-    return {
-      selected: this.ports.map((port) => port.selected),
-      remaining: this.state.remaining,
-      perPort: { ...this.state.perPort },
-      perFamily: { ...this.state.perFamily },
-    };
-  }
-
-  restore(snapshot: ReturnType<Distribution["snapshot"]>): void {
-    this.ports.forEach((port, i) => {
-      port.selected = snapshot.selected[i];
-    });
-    this.state.remaining = snapshot.remaining;
-    for (const key of Object.keys(this.state.perPort)) {
-      delete this.state.perPort[key];
-    }
-    Object.assign(this.state.perPort, snapshot.perPort);
-    Object.assign(this.state.perFamily, snapshot.perFamily);
-  }
+  Object.assign(d.state.perPort, saved.perPort);
+  Object.assign(d.state.perFamily, saved.perFamily);
 }
 
 function defaultDistribution(
@@ -433,14 +461,20 @@ function defaultDistribution(
 ): AllocationState {
   const mode = opts.mode ?? "SCM";
   const weaponCap = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
-  const d = new Distribution(ports, totalSegments, mode, weaponCap, opts.heat);
+  const d = createDistribution(
+    ports,
+    totalSegments,
+    mode,
+    weaponCap,
+    opts.heat,
+  );
 
   basePass(d);
 
-  const primary = d.coolers.at(0);
+  const primary = coolersOf(d).at(0);
   if (primary && d.state.remaining > 0) {
     const segments = primaryCoolerSegments(d, primary);
-    if (segments > 0) d.fillPortBy(primary.portPath, "coolers", segments);
+    if (segments > 0) fillPortBy(d, primary.portPath, "coolers", segments);
   }
 
   fillPass(d);
@@ -455,24 +489,24 @@ function defaultDistribution(
 // The mandatory minimum per family, in priority order. Weapons get a single
 // segment in SCM; the quantum drive only runs in NAV.
 function basePass(d: Distribution): void {
-  d.critical("lifeSupport");
-  d.critical("miningLaser");
-  d.critical("salvage");
+  fillCritical(d, "lifeSupport");
+  fillCritical(d, "miningLaser");
+  fillCritical(d, "salvage");
   if (d.mode === "SCM") {
-    d.critical("emp");
+    fillCritical(d, "emp");
     weaponBase(d);
-    d.critical("shield");
+    fillCritical(d, "shield");
   } else {
-    d.critical("qdrive");
+    fillCritical(d, "qdrive");
   }
-  d.critical("radar");
-  d.critical("engine");
+  fillCritical(d, "radar");
+  fillCritical(d, "engine");
 }
 
 function weaponBase(d: Distribution): void {
   const target = Math.min(1, d.state.remaining);
   let added = 0;
-  for (const port of d.family("weapon")) {
+  for (const port of familyPorts(d, "weapon")) {
     if (added >= target) break;
     if (port.disabled || port.selected) continue;
     if (port.size > d.state.remaining) break;
@@ -482,15 +516,15 @@ function weaponBase(d: Distribution): void {
 }
 
 function fillPass(d: Distribution): void {
-  d.fill("miningLaser");
-  d.fill("salvage");
+  fillFamily(d, "miningLaser");
+  fillFamily(d, "salvage");
   if (d.mode === "SCM") {
-    d.fillBy("weapon", d.weaponCap - d.state.perFamily.weapon);
-    d.fill("shield");
-    d.fill("radar");
-    d.fill("engine");
+    fillFamilyBy(d, "weapon", d.weaponCap - d.state.perFamily.weapon);
+    fillFamily(d, "shield");
+    fillFamily(d, "radar");
+    fillFamily(d, "engine");
   } else {
-    d.fill("engine");
+    fillFamily(d, "engine");
   }
 }
 
@@ -523,7 +557,7 @@ function projectFill(
   let budget = d.state.remaining - segments;
 
   const project = (family: PowerFamily, target: number) => {
-    const blocks = d.family(family).filter((port) => !port.disabled);
+    const blocks = familyPorts(d, family).filter((port) => !port.disabled);
     if (blocks.length === 0 || budget <= 0) return;
     const capacity = blocks.reduce((sum, port) => sum + port.size, 0);
     const add = Math.min(
@@ -554,13 +588,13 @@ function powerOtherCoolers(
   d: Distribution,
   primary: CoolerModel | undefined,
 ): void {
-  for (const cooler of d.coolers) {
+  for (const cooler of coolersOf(d)) {
     if (cooler === primary) continue;
-    for (const port of d.family("coolers")) {
+    for (const port of familyPorts(d, "coolers")) {
       if (port.portPath !== cooler.portPath) continue;
       if (port.disabled || port.selected) continue;
       if (port.size > d.state.remaining) break;
-      const { cooling, heat } = d.balance();
+      const { cooling, heat } = balance(d);
       if (cooling + EPSILON >= heat) return;
       alloc(d.state, port);
       if (d.state.remaining <= 0) return;
@@ -573,17 +607,17 @@ function powerOtherCoolers(
 // cool: trim the primary cooler, else grow the engines into the headroom, else
 // trade a shed segment for engine segments.
 function balanceHeat(d: Distribution, primary: CoolerModel | undefined): void {
-  if (d.coolers.length === 0) return;
+  if (coolersOf(d).length === 0) return;
   const shedFirst = SHED_FIRST[d.mode];
   const shedAny = SHED_ANY[d.mode];
 
   for (let step = 0; step < MAX_BALANCE_STEPS; step++) {
-    const { cooling, heat } = d.balance();
+    const { cooling, heat } = balance(d);
     if (heat > cooling + EPSILON) {
       if (
         raiseCoolerToFloor(d, shedAny) ||
-        d.shedOne(shedFirst) ||
-        d.shedOne(shedAny)
+        shedOne(d, shedFirst) ||
+        shedOne(d, shedAny)
       ) {
         continue;
       }
@@ -591,7 +625,7 @@ function balanceHeat(d: Distribution, primary: CoolerModel | undefined): void {
     }
     if (trimPrimaryCooler(d, primary)) continue;
     if (d.state.remaining <= 0) return;
-    if (d.growOne(GROW, cooling - heat)) continue;
+    if (growOne(d, GROW, cooling - heat)) continue;
     if (!tradeForGrowth(d, shedFirst)) return;
   }
 }
@@ -599,13 +633,13 @@ function balanceHeat(d: Distribution, primary: CoolerModel | undefined): void {
 // Powers the first cooler sitting below its floor, shedding segments to make
 // room for its mandatory block.
 function raiseCoolerToFloor(d: Distribution, shed: PowerFamily[]): boolean {
-  for (const cooler of d.coolers) {
+  for (const cooler of coolersOf(d)) {
     if (cooler.floor <= 0) continue;
     if ((d.state.perPort[cooler.portPath] ?? 0) >= cooler.floor) continue;
     while (d.state.remaining < cooler.floor) {
-      if (!d.shedOne(shed)) return false;
+      if (!shedOne(d, shed)) return false;
     }
-    d.fillPortBy(cooler.portPath, "coolers", cooler.floor);
+    fillPortBy(d, cooler.portPath, "coolers", cooler.floor);
     return true;
   }
   return false;
@@ -618,14 +652,14 @@ function trimPrimaryCooler(
   primary: CoolerModel | undefined,
 ): boolean {
   if (!primary) return false;
-  const powered = d
-    .family("coolers")
-    .filter((port) => port.selected && port.portPath === primary.portPath);
+  const powered = familyPorts(d, "coolers").filter(
+    (port) => port.selected && port.portPath === primary.portPath,
+  );
   const last = powered.at(-1);
   const total = powered.reduce((sum, port) => sum + port.size, 0);
   if (!last || total - last.size < primary.floor) return false;
-  d.free(last);
-  if (d.overheated()) {
+  free(d, last);
+  if (overheated(d)) {
     alloc(d.state, last);
     return false;
   }
@@ -636,31 +670,31 @@ function trimPrimaryCooler(
 // freed headroom; kept only when it powers more segments and stays cooled.
 function tradeForGrowth(d: Distribution, shed: PowerFamily[]): boolean {
   for (const family of shed) {
-    const before = d.snapshot();
-    if (!d.shedOne([family])) continue;
+    const before = snapshot(d);
+    if (!shedOne(d, [family])) continue;
     for (
       let step = 0;
       step < MAX_BALANCE_STEPS && d.state.remaining > 0;
       step++
     ) {
-      const { cooling, heat } = d.balance();
-      if (!d.growOne(GROW, cooling - heat)) break;
+      const { cooling, heat } = balance(d);
+      if (!growOne(d, GROW, cooling - heat)) break;
     }
-    if (d.state.remaining < before.remaining && !d.overheated()) return true;
-    d.restore(before);
+    if (d.state.remaining < before.remaining && !overheated(d)) return true;
+    restore(d, before);
   }
   return false;
 }
 
 // Tops life support up block by block while the coolers keep up.
 function topUpLifeSupport(d: Distribution): void {
-  const hasCoolers = d.coolers.length > 0;
-  for (const port of d.family("lifeSupport")) {
+  const hasCoolers = coolersOf(d).length > 0;
+  for (const port of familyPorts(d, "lifeSupport")) {
     if (port.disabled || port.selected) continue;
     if (port.size > d.state.remaining) break;
     alloc(d.state, port);
-    if (hasCoolers && d.overheated()) {
-      d.free(port);
+    if (hasCoolers && overheated(d)) {
+      free(d, port);
       break;
     }
   }
@@ -671,7 +705,7 @@ function topUpLifeSupport(d: Distribution): void {
 // counts at the cooling load it runs at. Ties go to the split that loads the
 // earlier coolers more.
 function splitCoolers(d: Distribution): void {
-  const coolers = d.coolers.filter((cooler) => cooler.floor > 0);
+  const coolers = coolersOf(d).filter((cooler) => cooler.floor > 0);
   if (coolers.length < 2 || !d.heat) return;
   const total = d.state.perFamily.coolers;
   if (total <= 0) return;
@@ -722,11 +756,11 @@ function splitCoolers(d: Distribution): void {
   if (best === current) return;
 
   const paths = new Set(coolers.map((cooler) => cooler.portPath));
-  for (const port of d.family("coolers")) {
-    if (port.selected && paths.has(port.portPath)) d.free(port);
+  for (const port of familyPorts(d, "coolers")) {
+    if (port.selected && paths.has(port.portPath)) free(d, port);
   }
   best.forEach((segments, i) => {
-    if (segments > 0) d.fillPortBy(coolers[i].portPath, "coolers", segments);
+    if (segments > 0) fillPortBy(d, coolers[i].portPath, "coolers", segments);
   });
 }
 
