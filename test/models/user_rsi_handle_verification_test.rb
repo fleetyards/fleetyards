@@ -89,12 +89,25 @@ class UserRsiHandleVerificationTest < ActiveSupport::TestCase
 
   test "an older read does not replace a newer list" do
     user = with_org_list
+    user.update_columns(rsi_handle_verified_at: 1.day.ago) # rubocop:disable Rails/SkipsModelValidations
     membership = membership_of(user)
 
     assert_not user.store_rsi_organizations([], read_at: 1.hour.ago)
 
     assert_equal %w[MAIN], user.reload.rsi_organization_sids
     assert membership.reload.verified?
+  end
+
+  test "a read begun before a revoke and a new verification is dropped" do
+    user = with_org_list
+    read_at = Time.current
+
+    user.revoke_rsi_handle_verification!
+    user.reload.verify_rsi_handle("TestPilot", via: :rsi_profile)
+    user.save!
+
+    assert_not user.store_rsi_organizations(%w[OTHER], read_at:)
+    assert_empty user.reload.rsi_organization_sids
   end
 
   test "a list read through a handle the user no longer has is dropped" do

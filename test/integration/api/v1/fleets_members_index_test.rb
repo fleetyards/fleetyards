@@ -123,6 +123,7 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     @fleet.update_columns(rsi_sid: "MARU", rsi_verified_at: Time.current, rsi_verified_sid: "MARU") # rubocop:disable Rails/SkipsModelValidations
     checked_at = 3.hours.ago.change(usec: 0)
     verify_handle(@member)
+    @member.update_columns(rsi_handle_verified_at: 1.day.ago) # rubocop:disable Rails/SkipsModelValidations
     @member.store_rsi_organizations(%w[MARU], read_at: checked_at)
     sign_in @admin
 

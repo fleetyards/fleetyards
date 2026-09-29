@@ -32,6 +32,7 @@ class UserRsiOrganizationsTest < ActiveSupport::TestCase
   end
 
   test "a failed read leaves the list as it is, and is only counted as an attempt" do
+    @user.update_columns(rsi_handle_verified_at: 2.days.ago) # rubocop:disable Rails/SkipsModelValidations
     @user.store_rsi_organizations(%w[MAIN], read_at: 1.day.ago)
     stub_page(status: 500)
 

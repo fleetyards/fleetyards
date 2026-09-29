@@ -100,12 +100,15 @@ module RsiHandleVerificationConcern
   # A read of the user's RSI orgs, from their organisations page or Citizen iD's
   # claim. It only counts while the handle it was read through is still this
   # account's proved one, and never replaces a newer read: two reads can be out
-  # at once, and whichever finishes last is not necessarily the fresher.
+  # at once, and whichever finishes last is not necessarily the fresher. One
+  # begun before the current verification belongs to an earlier proof, which a
+  # revoke in between may have undone.
   def store_rsi_organizations(sids, read_at:, handle: rsi_handle)
     sids = Array(sids).compact_blank.map { |sid| sid.to_s.upcase }.uniq.sort
 
     stored = with_lock do
       next false unless rsi_handle_verified? && rsi_handle == handle
+      next false if rsi_handle_verified_at.present? && rsi_handle_verified_at > read_at
       next false if rsi_organizations_checked_at.present? && rsi_organizations_checked_at > read_at
 
       update_columns(rsi_organization_sids: sids, rsi_organizations_checked_at: read_at, updated_at: Time.current) # rubocop:disable Rails/SkipsModelValidations
