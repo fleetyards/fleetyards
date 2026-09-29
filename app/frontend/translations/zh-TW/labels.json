@@ -2585,6 +2585,7 @@
         "fleet_fid_claim_completed": "艦隊 ID 已轉移",
         "fleet_fid_claim_cancelled": "艦隊 ID 申領已結束",
         "fleet_rsi_verification_lost": "艦隊驗證已失效",
+        "rsi_handle_verification_lost": "RSI 使用者名驗證已失效",
         "fleet_contract_fulfilled": "合約已完成",
         "fleet_contract_settled": "合約已結算",
         "payout_ledger_settled": "分帳已結算",

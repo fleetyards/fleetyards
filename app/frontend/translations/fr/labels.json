@@ -2585,6 +2585,7 @@
         "fleet_fid_claim_completed": "ID de flotte transféré",
         "fleet_fid_claim_cancelled": "Réclamation d’ID de flotte terminée",
         "fleet_rsi_verification_lost": "Vérification de flotte perdue",
+        "rsi_handle_verification_lost": "Vérification du pseudo RSI perdue",
         "fleet_contract_fulfilled": "Contrat rempli",
         "fleet_contract_settled": "Contrat payé",
         "payout_ledger_settled": "Paiements arrêtés",

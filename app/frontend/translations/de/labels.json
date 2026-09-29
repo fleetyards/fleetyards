@@ -2585,6 +2585,7 @@
         "fleet_fid_claim_completed": "Flotten-ID übertragen",
         "fleet_fid_claim_cancelled": "Anspruch auf Flotten-ID beendet",
         "fleet_rsi_verification_lost": "Flottenverifizierung verloren",
+        "rsi_handle_verification_lost": "RSI-Handle-Verifizierung verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt",
         "fleet_contract_settled": "Auftrag ausgezahlt",
         "payout_ledger_settled": "Auszahlung abgerechnet",

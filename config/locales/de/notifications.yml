@@ -90,6 +90,9 @@ de:
       claimant_admin:
         title: "Dein Anspruch auf %{fid} wurde abgebrochen"
         body: "Ein Administrator hat den Anspruch von %{fleet} auf die Flotten-ID %{fid} abgebrochen."
+    rsi_handle_verification_lost:
+      title: "Dein RSI-Handle %{handle} ist nicht mehr verifiziert"
+      body: "Ein anderes Fleetyards-Konto hat gezeigt, dass ihm das RSI-Handle %{handle} gehört – über Citizen iD oder mit seinem Verifizierungscode in der RSI-Bio. Dein Profil zeigt das Handle nicht mehr als verifiziert. Wenn %{handle} deins ist, verifiziere es in deinen Profileinstellungen erneut."
     fleet_member_accepted:
       title: "%{username} ist %{fleet} beigetreten"
     fleet_request_accepted:

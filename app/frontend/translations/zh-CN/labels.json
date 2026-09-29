@@ -2585,6 +2585,7 @@
         "fleet_fid_claim_completed": "舰队 ID 已转移",
         "fleet_fid_claim_cancelled": "舰队 ID 申领已结束",
         "fleet_rsi_verification_lost": "舰队验证已失效",
+        "rsi_handle_verification_lost": "RSI 用户名验证已失效",
         "fleet_contract_fulfilled": "合约已完成",
         "fleet_contract_settled": "合同已结算",
         "payout_ledger_settled": "分账已结算",

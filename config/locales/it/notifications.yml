@@ -90,6 +90,9 @@ it:
       claimant_admin:
         title: "La tua rivendicazione di %{fid} è stata annullata"
         body: "Un amministratore ha annullato la rivendicazione di %{fleet} sull’ID flotta %{fid}."
+    rsi_handle_verification_lost:
+      title: "Il tuo handle RSI %{handle} non è più verificato"
+      body: "Un altro account Fleetyards ha dimostrato di possedere l’handle RSI %{handle}, tramite Citizen iD o con il proprio codice di verifica nella bio RSI. Il tuo profilo non mostra più l’handle come verificato. Se %{handle} è tuo, verificalo di nuovo dalle impostazioni del profilo."
     fleet_member_accepted:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:

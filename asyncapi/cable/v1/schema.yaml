@@ -3336,6 +3336,7 @@ components:
       - fleet_fid_claim_opened
       - fleet_fid_claim_completed
       - fleet_fid_claim_cancelled
+      - rsi_handle_verification_lost
       - announcement
       x-enumNames:
       - HANGAR_CREATE
@@ -3385,6 +3386,7 @@ components:
       - FLEET_FID_CLAIM_OPENED
       - FLEET_FID_CLAIM_COMPLETED
       - FLEET_FID_CLAIM_CANCELLED
+      - RSI_HANDLE_VERIFICATION_LOST
       - ANNOUNCEMENT
     PayoutLedger:
       type: object

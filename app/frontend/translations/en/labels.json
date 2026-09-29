@@ -2599,6 +2599,7 @@
         "fleet_fid_claim_completed": "Fleet ID moved",
         "fleet_fid_claim_cancelled": "Fleet ID claim ended",
         "fleet_rsi_verification_lost": "Fleet verification lost",
+        "rsi_handle_verification_lost": "RSI handle verification lost",
         "fleet_contract_fulfilled": "Contract fulfilled",
         "fleet_contract_settled": "Contract paid out",
         "payout_ledger_settled": "Payouts settled",

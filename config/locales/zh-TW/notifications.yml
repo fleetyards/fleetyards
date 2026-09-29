@@ -90,6 +90,9 @@ zh-TW:
       claimant_admin:
         title: "你對 %{fid} 的申領已取消"
         body: "管理員取消了 %{fleet} 對艦隊 ID %{fid} 的申領。"
+    rsi_handle_verification_lost:
+      title: "你的 RSI 使用者名 %{handle} 不再是已驗證狀態"
+      body: "另一個 Fleetyards 帳戶透過 Citizen iD 或將其驗證碼放入 RSI 個人簡介，證明了 RSI 使用者名 %{handle} 屬於它。你的個人資料不再將該使用者名顯示為已驗證。如果 %{handle} 是你的，請在個人資料設定中重新驗證。"
     fleet_member_accepted:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:
