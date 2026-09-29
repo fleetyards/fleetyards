@@ -262,7 +262,7 @@ it:
       destroy: "Questa flotta non ha rivendicazioni aperte da ritirare."
       update: "Una rivendicazione si può accorciare solo finché è aperta, e solo a una data precedente alla sua fine attuale."
       cancel: "Questa rivendicazione non è più aperta."
-      complete: "L’ID flotta non è stato trasferito: la rivendicazione è stata chiusa nel frattempo, oppure la flotta che lo rivendica non è più verificata."
+      complete: "L’ID flotta non è stato trasferito: la rivendicazione è stata chiusa nel frattempo, la flotta che lo rivendica non è più verificata, oppure ora lo ha un’altra flotta, che ha ricevuto un proprio avviso."
     fleet_notification_settings:
       update: Impossibile aggiornare le impostazioni di notifica.
     version:

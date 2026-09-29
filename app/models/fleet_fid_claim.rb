@@ -130,6 +130,15 @@ class FleetFidClaim < ApplicationRecord
 
       current_holder = Fleet.kept.lock.where(normalized_fid: fid.downcase).where.not(id: fleet.id).first
 
+      # A fleet that took the FID after the claim was opened -- in the moment
+      # between the check and the reservation, or by a restore that skips
+      # validation -- was never warned. It gets the notice and a grace period
+      # of its own rather than a rename out of the blue.
+      if current_holder.present? && current_holder.id != holder_id
+        update!(holder: current_holder, ends_at: GRACE_PERIOD.from_now)
+        next :restarted
+      end
+
       if current_holder.present?
         self.holder = current_holder
         self.holder_previous_fid = current_holder.fid
@@ -148,6 +157,7 @@ class FleetFidClaim < ApplicationRecord
     case outcome
     when :completed then notify_completed
     when :cancelled then notify_cancelled
+    when :restarted then notify_opened
     end
 
     outcome

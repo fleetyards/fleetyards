@@ -261,7 +261,7 @@ zh-CN:
       destroy: "此舰队没有可撤回的进行中申领。"
       update: "申领只能在进行中时缩短，且只能改为早于当前结束时间的日期。"
       cancel: "此申领已不再进行中。"
-      complete: "舰队 ID 未转移：申领已在此期间关闭，或申领方不再通过该验证。"
+      complete: "舰队 ID 未转移：申领已在此期间关闭，申领方不再通过该验证，或现在由另一支舰队持有且该舰队已收到单独通知。"
     fleet_notification_settings:
       update: 无法更新通知设置。
     version:

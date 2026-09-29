@@ -140,6 +140,26 @@ class FleetFidClaimTest < ActiveSupport::TestCase
     assert_empty notifications_for(@holder_manager, :fleet_fid_claim_completed)
   end
 
+  test "a fleet that took the FID after the claim opened gets its own notice" do
+    claim = open_claim
+    @holder.update!(fid: "elsewhere")
+    newcomer_manager = create(:user)
+    newcomer = create(:fleet, fid: "other", created_by: newcomer_manager.id)
+    # Past the reservation, the way a restore or a lost race would leave it.
+    newcomer.update_columns(fid: "test", normalized_fid: "test", slug: "test") # rubocop:disable Rails/SkipsModelValidations
+    claim.update!(ends_at: 1.minute.ago)
+
+    assert_difference -> { notifications_for(newcomer_manager, :fleet_fid_claim_opened).count }, 1 do
+      assert_equal :restarted, claim.complete!
+    end
+
+    claim.reload
+    assert claim.open?
+    assert_equal newcomer, claim.holder
+    assert_in_delta FleetFidClaim::GRACE_PERIOD.from_now, claim.ends_at, 5.seconds
+    assert_equal "test", newcomer.reload.fid
+  end
+
   test "the sweep completes every due claim" do
     claim = open_claim
     claim.update!(ends_at: 1.minute.ago)
