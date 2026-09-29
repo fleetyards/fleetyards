@@ -59,11 +59,20 @@ describe("i18nHelpers", () => {
   });
 
   it("writes a UTC timestamp in UTC, whatever the reader's own zone", () => {
-    const { lUtc } = i18nHelpers(i18nIn("en"));
+    // Ahead of UTC, so 23:30 UTC is already the next day locally: a runner that
+    // is itself on UTC would not tell the two apart.
+    const zone = process.env.TZ;
+    process.env.TZ = "Europe/Berlin";
 
-    expect(lUtc("2026-09-29T23:30:00Z", "datetime.formats.date")).toBe(
-      "29 September 2026",
-    );
+    try {
+      const { lUtc } = i18nHelpers(i18nIn("en"));
+
+      expect(lUtc("2026-09-29T23:30:00Z", "datetime.formats.date")).toBe(
+        "29 September 2026",
+      );
+    } finally {
+      process.env.TZ = zone;
+    }
   });
 
   it("writes the default timestamp in the UI's language, connective included", () => {
