@@ -10,7 +10,6 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type User,
   type UserInput,
-  RsiHandleVerifiedViaEnum,
   useUpdateUser,
   useRevokeUserRsiVerification,
   getUsersQueryKey,
@@ -18,6 +17,8 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
+import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -129,12 +130,6 @@ const revokeMutation = useRevokeUserRsiVerification({
   },
 });
 
-const rsiHandleVerifiedLabel = computed(() =>
-  props.user.rsiHandleVerifiedVia === RsiHandleVerifiedViaEnum.RSI_PROFILE
-    ? t("labels.user.rsiHandleVerifiedViaProfile")
-    : t("labels.user.rsiHandleVerified"),
-);
-
 const revokeVerification = async () => {
   await revokeMutation.mutateAsync({ id: props.user.id! });
 };
@@ -216,23 +211,30 @@ const handleCancel = async () => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormInput
-          v-model="rsiHandle"
-          v-bind="rsiHandleProps"
-          translation-key="user.rsiHandle"
-          name="rsiHandle"
-        />
-        <p v-if="user.rsiHandleVerified" data-test="admin-user-rsi-verified">
-          <i class="fa-duotone fa-badge-check" />
-          {{ rsiHandleVerifiedLabel }}
+        <FormInputGroup>
+          <FormInput
+            v-model="rsiHandle"
+            v-bind="rsiHandleProps"
+            translation-key="user.rsiHandle"
+            name="rsiHandle"
+          >
+            <template v-if="user.rsiHandleVerified" #suffix>
+              <RsiHandleVerifiedBadge
+                :verified-via="user.rsiHandleVerifiedVia"
+                :citizenid-profile-url="user.citizenidProfileUrl"
+              />
+            </template>
+          </FormInput>
           <BtnConfirm
+            v-if="user.rsiHandleVerified"
             :size="BtnSizesEnum.SM"
             :disabled="revokeMutation.isPending.value"
+            data-test="admin-user-rsi-revoke"
             @confirm="revokeVerification"
           >
             {{ t("actions.user.rsiVerification.revoke") }}
           </BtnConfirm>
-        </p>
+        </FormInputGroup>
       </div>
       <div class="col-12 col-md-6">
         <FormToggle

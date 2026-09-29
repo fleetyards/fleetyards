@@ -156,7 +156,7 @@
           "copyToken": "Code kopieren",
           "regenerateToken": "Neuen Code erzeugen",
           "remove": "Verifizierung entfernen",
-          "revoke": "Verifizierung entziehen"
+          "revoke": "Entziehen"
         }
       },
       "oauth": {

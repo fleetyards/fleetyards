@@ -156,7 +156,7 @@
           "copyToken": "複製驗證碼",
           "regenerateToken": "產生新的驗證碼",
           "remove": "移除驗證",
-          "revoke": "撤銷驗證"
+          "revoke": "撤銷"
         }
       },
       "oauth": {

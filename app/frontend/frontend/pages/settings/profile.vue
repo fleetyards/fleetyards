@@ -21,11 +21,17 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FilterOption,
   type UserUpdateInput,
-  RsiHandleVerifiedViaEnum,
   UserDateFormatEnum,
 } from "@/services/fyApi";
-import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
+import {
+  RsiHandleVerifiedViaEnum,
+  useDestroyMyRsiVerification,
+  useUpdateProfile as useUpdateProfileMutation,
+} from "@/services/fyApi";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
+import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/index.vue";
 import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -84,23 +90,31 @@ const citizenIdConnected = computed(() =>
   sessionStore.currentUser?.authConnections?.includes("citizenid"),
 );
 
-const rsiHandleVerifiedViaProfile = computed(
-  () =>
-    sessionStore.currentUser?.rsiHandleVerifiedVia ===
-    RsiHandleVerifiedViaEnum.RSI_PROFILE,
-);
-
-const rsiHandleVerifiedLabel = computed(() =>
-  rsiHandleVerifiedViaProfile.value
-    ? t("labels.user.rsiHandleVerifiedViaProfile")
-    : t("labels.user.rsiHandleVerified"),
-);
-
 // The check reads the saved handle, so one still being typed has nothing to
 // verify yet.
 const canVerifyRsiHandle = computed(
   () => !!sessionStore.currentUser?.rsiHandle && !rsiHandleVerified.value,
 );
+
+// Citizen iD would verify the handle again at the next sign-in, so a handle it
+// proved is released by disconnecting it instead.
+const rsiHandleRevocable = computed(
+  () =>
+    rsiHandleVerified.value &&
+    sessionStore.currentUser?.rsiHandleVerifiedVia ===
+      RsiHandleVerifiedViaEnum.RSI_PROFILE,
+);
+
+const revokeMutation = useDestroyMyRsiVerification();
+
+const revokeRsiVerification = async () => {
+  try {
+    await revokeMutation.mutateAsync();
+    comlink.emit("user-update");
+  } catch (error) {
+    displayAlert({ text: validationErrorFrom(error).message });
+  }
+};
 
 const openRsiVerification = () => {
   comlink.emit("open-modal", {
@@ -245,33 +259,23 @@ const onSubmit = handleSubmit(async (values) => {
             :disabled="rsiHandleVerified"
           >
             <template v-if="rsiHandleVerified" #suffix>
-              <button
-                v-if="rsiHandleVerifiedViaProfile"
-                type="button"
-                class="rsi-handle-badge"
-                :aria-label="rsiHandleVerifiedLabel"
-                data-test="rsi-handle-verified-badge"
-                @click="openRsiVerification"
-              >
-                <i
-                  v-tooltip="rsiHandleVerifiedLabel"
-                  class="fa-duotone fa-badge-check text-success"
-                />
-              </button>
-              <a
-                v-else
-                :href="sessionStore.currentUser?.citizenidProfileUrl"
-                :aria-label="rsiHandleVerifiedLabel"
-                target="_blank"
-                rel="noopener"
-              >
-                <i
-                  v-tooltip="rsiHandleVerifiedLabel"
-                  class="fa-duotone fa-badge-check text-success"
-                />
-              </a>
+              <RsiHandleVerifiedBadge
+                :verified-via="sessionStore.currentUser?.rsiHandleVerifiedVia"
+                :citizenid-profile-url="
+                  sessionStore.currentUser?.citizenidProfileUrl
+                "
+              />
             </template>
           </FormInput>
+          <BtnConfirm
+            v-if="rsiHandleRevocable"
+            :size="BtnSizesEnum.SM"
+            :disabled="revokeMutation.isPending.value"
+            data-test="rsi-handle-revoke"
+            @confirm="revokeRsiVerification"
+          >
+            {{ t("actions.user.rsiVerification.revoke") }}
+          </BtnConfirm>
           <Btn
             v-if="canVerifyRsiHandle"
             :size="BtnSizesEnum.SM"
@@ -382,13 +386,3 @@ const onSubmit = handleSubmit(async (values) => {
     />
   </form>
 </template>
-
-<style lang="scss" scoped>
-.rsi-handle-badge {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-}
-</style>

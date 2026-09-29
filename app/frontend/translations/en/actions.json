@@ -156,7 +156,7 @@
           "copyToken": "Copy token",
           "regenerateToken": "Generate new token",
           "remove": "Remove verification",
-          "revoke": "Revoke verification"
+          "revoke": "Revoke"
         }
       },
       "oauth": {
