@@ -207,6 +207,18 @@ describe("FleetRouterView", () => {
     expect(wrapper.find('[data-test="fleet-child"]').exists()).toBe(false);
   });
 
+  it("drops a removed member's cached fleet for the visitor payload", async () => {
+    setMembership("notFound");
+    fleetState.fleet.value = { slug: "evle", name: "Member" } as Fleet;
+    fleetState.publicFleet.value = { slug: "evle", name: "Visitor" } as Fleet;
+
+    const wrapper = await mountFleetPage(true);
+
+    const child = wrapper.findComponent(Child);
+    expect(child.exists()).toBe(true);
+    expect((child.vm.$attrs.fleet as Fleet).name).toBe("Visitor");
+  });
+
   it("shows the error screen when the membership request fails", async () => {
     setMembership("failed");
 

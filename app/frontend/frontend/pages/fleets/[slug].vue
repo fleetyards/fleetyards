@@ -88,10 +88,17 @@ const membershipRequired = computed(
   () => !!route.meta.needsAuthentication && !membership.value,
 );
 
-const resolvedFleet = computed(() => fleet.value || publicFleet.value);
+// Vue Query keeps the last good payload through a failed refetch, so a member
+// who was just removed still has theirs cached. Refused means refused: from
+// then on only the visitor payload is shown.
+const memberFleet = computed(() =>
+  memberFleetRefused.value ? undefined : fleet.value,
+);
+
+const resolvedFleet = computed(() => memberFleet.value || publicFleet.value);
 
 const resolvedAsyncFleetStatus = computed(() => {
-  if (fleet.value) return asyncFleetStatus;
+  if (memberFleet.value) return asyncFleetStatus;
   if (sessionStore.isAuthenticated && !memberFleetRefused.value) {
     return asyncFleetStatus;
   }
