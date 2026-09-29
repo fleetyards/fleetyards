@@ -8,8 +8,12 @@
 class ClaimLinkedScKeys < ActiveRecord::Migration[8.1]
   def up
     claimed = []
+    links = ScDataUnlistedModel.where(decision: "model").where.not(model_id: nil)
+    # A ship several files are linked to is left for a person: which of them is
+    # the ship, and which a variant, is not something to guess.
+    ambiguous = links.group(:model_id).having("COUNT(*) > 1").pluck(:model_id)
 
-    ScDataUnlistedModel.where(decision: "model").where.not(model_id: nil).find_each do |entry|
+    links.where.not(model_id: ambiguous).find_each do |entry|
       model = Model.find_by(id: entry.model_id)
       next if model.blank? || model.sc_key.present?
 
