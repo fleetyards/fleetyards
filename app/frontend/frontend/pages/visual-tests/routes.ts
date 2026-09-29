@@ -202,6 +202,16 @@ export const routes = [
     },
   },
   {
+    path: "verified-badges/",
+    name: "visual-tests-verified-badges",
+    component: () =>
+      import("@/frontend/pages/visual-tests/verified-badges.vue"),
+    meta: {
+      title: "visualTests.verifiedBadges",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "chips/",
     name: "visual-tests-chips",
     component: () => import("@/shared/components/base/Chip/visual.vue"),
