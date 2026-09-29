@@ -46,6 +46,15 @@ describe("BaseBtn", () => {
     expect(wrapper.classes()).toContain("btn--tone-danger");
   });
 
+  it("clips the label unless told not to", () => {
+    expect(mountBtn().find(".btn__content").classes()).not.toContain(
+      "btn__content--unclipped",
+    );
+    expect(
+      mountBtn({ clipLabel: false }).find(".btn__content").classes(),
+    ).toContain("btn__content--unclipped");
+  });
+
   it("renders an anchor for href", () => {
     const wrapper = mountBtn({ href: "https://fleetyards.net" });
 

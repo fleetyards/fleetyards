@@ -49,7 +49,7 @@ const secondaryName = computed(() =>
 <template>
   <span class="member-name">
     <template v-if="hasContactOptions">
-      <BtnDropdown :variant="BtnVariantsEnum.BARE">
+      <BtnDropdown :variant="BtnVariantsEnum.BARE" :clip-label="!orgBadgeLabel">
         <template #label>
           <span class="member-name__display"
             >{{ displayName

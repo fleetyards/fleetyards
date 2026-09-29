@@ -29,6 +29,8 @@ type Props = {
   expandLeft?: boolean;
   expandTop?: boolean;
   expandBottom?: boolean;
+  /** Passed to the trigger's Btn; see its `clipLabel`. */
+  clipLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   expandLeft: false,
   expandTop: false,
   expandBottom: false,
+  clipLabel: true,
 });
 
 const visible = ref(false);
@@ -221,6 +224,7 @@ const documentClick = (event: MouseEvent) => {
         :variant="variant"
         :tone="tone"
         :block="block"
+        :clip-label="clipLabel"
         :active="visible"
         aria-haspopup="menu"
         :aria-expanded="visible"
