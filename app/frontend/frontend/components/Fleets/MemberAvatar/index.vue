@@ -66,13 +66,15 @@ const squadronNames = computed(() =>
 }
 
 // The top-right corner, the one neither the squadron nor the presence dot
-// takes, inset the way the presence dot is below it. Opaque in the colour the
-// default 40% duotone layer shows over the page, so the avatar does not show
-// through it.
+// takes. Centred where the dot is centred below it -- the dot is 10px and sits
+// flush in its corner -- so the two line up whatever the badge's size. Opaque
+// in the colour the default 40% duotone layer shows over the page, so the
+// avatar does not show through it.
 .member-avatar__verified {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
+  transform: translate(50%, -50%);
   font-size: 14px;
   line-height: 1;
   --fa-secondary-color: color-mix(

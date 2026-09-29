@@ -27,6 +27,14 @@ const hasContactOptions = computed(
   () => !!props.member.rsiHandle || !!props.member.discordProfileUrl,
 );
 
+const orgBadgeLabel = computed(() =>
+  props.orgBadge && props.member.verifiedOrgSid
+    ? t("labels.fleet.members.verifiedOrgMember", {
+        sid: props.member.verifiedOrgSid,
+      })
+    : undefined,
+);
+
 const displayName = computed(
   () => props.member.nickname || props.member.username,
 );
@@ -43,7 +51,18 @@ const secondaryName = computed(() =>
     <template v-if="hasContactOptions">
       <BtnDropdown :variant="BtnVariantsEnum.BARE">
         <template #label>
-          <span>{{ displayName }}</span>
+          <span class="member-name__display"
+            >{{ displayName
+            }}<span
+              v-if="orgBadgeLabel"
+              v-tooltip="orgBadgeLabel"
+              :aria-label="orgBadgeLabel"
+              class="member-name__badge"
+              data-test="member-verified-org"
+            >
+              <i class="fa-duotone fa-shield-check text-success" />
+            </span>
+          </span>
           <span v-if="secondaryName" class="member-name__username">
             {{ secondaryName }}
           </span>
@@ -52,30 +71,22 @@ const secondaryName = computed(() =>
       </BtnDropdown>
     </template>
     <template v-else>
-      <span>{{ displayName }}</span>
+      <span class="member-name__display"
+        >{{ displayName
+        }}<span
+          v-if="orgBadgeLabel"
+          v-tooltip="orgBadgeLabel"
+          :aria-label="orgBadgeLabel"
+          class="member-name__badge"
+          data-test="member-verified-org"
+        >
+          <i class="fa-duotone fa-shield-check text-success" />
+        </span>
+      </span>
       <span v-if="secondaryName" class="member-name__username">
         {{ secondaryName }}
       </span>
     </template>
-    <!-- The org this fleet proved it runs, not the member's own handle: that
-         one is badged where the handle is shown. -->
-    <span
-      v-if="orgBadge && member.verifiedOrgSid"
-      v-tooltip="
-        t('labels.fleet.members.verifiedOrgMember', {
-          sid: member.verifiedOrgSid,
-        })
-      "
-      :aria-label="
-        t('labels.fleet.members.verifiedOrgMember', {
-          sid: member.verifiedOrgSid,
-        })
-      "
-      class="member-name__badge"
-      data-test="member-verified-org"
-    >
-      <i class="fa-duotone fa-shield-check text-success" />
-    </span>
   </span>
 </template>
 
@@ -84,9 +95,27 @@ const secondaryName = computed(() =>
   display: inline-flex;
   align-items: center;
 
+  &__display {
+    position: relative;
+  }
+
+  // Placed like the badge on the RSI handle: past the name's right edge and
+  // above it, so only its corner touches the name. The org this fleet proved
+  // it runs, not the member's own handle, which is badged where it is shown.
   &__badge {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    transform: translate(75%, -35%);
     font-size: 0.85em;
     line-height: 1;
+    --fa-secondary-color: color-mix(
+      in srgb,
+      currentColor 40%,
+      var(--color-background, #000)
+    );
+    --fa-secondary-opacity: 1;
   }
 
   &__username {

@@ -26,7 +26,10 @@ const rsiProfileUrl = computed(
 </script>
 
 <template>
-  <span class="rsi-profile-link">
+  <span
+    class="rsi-profile-link"
+    :class="{ 'rsi-profile-link--icon': iconOnly }"
+  >
     <a
       v-tooltip="t('nav.rsiProfile')"
       :aria-label="t('nav.rsiProfile')"
@@ -70,6 +73,12 @@ const rsiProfileUrl = computed(
     top: 0;
     right: 0;
     transform: translate(75%, -35%);
+
+    // The RSI logo is wide and ends in open space, so the badge moves in to
+    // sit on the logo rather than beside it.
+    .rsi-profile-link--icon & {
+      transform: translate(25%, -35%);
+    }
     font-size: 0.85em;
     line-height: 1;
     --fa-secondary-color: color-mix(
