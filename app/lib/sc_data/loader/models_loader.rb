@@ -73,9 +73,9 @@ module ScData
 
       def one(model)
         # A model whose file this build does not ship loses its current build, as
-        # it does in `all` -- otherwise a ship repointed at a missing file keeps
-        # showing the facts of the one it left.
-        ModelBuild.current(source).where(model_id: model.id).delete_all unless load_model(model.reload)
+        # it does in `all`, and so does its game-file loadout -- otherwise a ship
+        # repointed at a missing file keeps showing the ports of the one it left.
+        retire_model(model) unless load_model(model.reload)
 
         model.hardpoints.find_each(&:save) # hack to generate correct group_keys
       end
@@ -145,6 +145,21 @@ module ScData
         return false if identifier.blank?
 
         export_path.join("models", "#{identifier}.json").exist?
+      end
+
+      # The rows stay, like everything a build drops; only this build's say
+      # about them goes. The matrix's ports come from no build and are untouched.
+      private def retire_model(model)
+        ModelBuild.current(source).where(model_id: model.id).delete_all
+
+        ids = []
+        level = model.hardpoints.where(source: :game_files).pluck(:id)
+        while level.any?
+          ids.concat(level)
+          level = Hardpoint.where(parent_type: "Hardpoint", parent_id: level, source: :game_files).pluck(:id)
+        end
+
+        HardpointBuild.current(source).where(hardpoint_id: ids).delete_all
       end
 
       private def load_model_data(sc_data_identifier)
