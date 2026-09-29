@@ -38,7 +38,10 @@ class UserRsiVerification
       apply(:failed, handle:, token:)
     else
       page = Rsi::CitizenPage.fetch(handle)
-      apply(status_for(page, handle:, token:), handle:, token:, page_handle: page.handle)
+      apply(status_for(page, handle:, token:), handle:, token:, page_handle: page.handle).tap do |status|
+        # The handle is proved now, so the orgs it is in can verify the fleets.
+        UserRsiOrganizationsJob.perform_async(user.id) if status == :verified
+      end
     end
   end
 
