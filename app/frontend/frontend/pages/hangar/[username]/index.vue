@@ -33,6 +33,7 @@ import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
+import { useSessionStore } from "@/frontend/stores/session";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
 import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -152,8 +153,22 @@ const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
 
 const refresh = useDebouncedRefresh(fetch);
 
+const sessionStore = useSessionStore();
+
+// The channel carries the viewer's own hangar, so it only has anything to say
+// about this page when the hangar is theirs. On anyone else's it opened a
+// connection on first paint and refetched this hangar whenever the viewer's
+// own changed.
+const ownHangar = computed(
+  () =>
+    !!sessionStore.currentUser &&
+    sessionStore.currentUser.username.toLowerCase() ===
+      username.value.toLowerCase(),
+);
+
 useSubscription({
   channel: HangarChannel,
+  enabled: ownHangar,
   received: refresh,
   // The channel replays nothing it broadcast while the socket was down, so
   // the hangar is read again on the way back rather than waiting for whatever
