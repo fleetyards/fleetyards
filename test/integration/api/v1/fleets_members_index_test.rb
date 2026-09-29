@@ -61,6 +61,20 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members shows a verified handle in a fleet that is not verified" do
+    @member.update!(rsi_handle: "maru_pilot", rsi_handle_verified: true)
+    create(:omniauth_connection, user: @member, provider: :citizenid)
+    @fleet.fleet_memberships.find_by(user: @member).update!(verified: true)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_predicate member["citizenidProfileUrl"], :present?
+      assert_equal false, member["verified"]
+    end
+  end
+
   test "GET /fleets/:slug/members filters by usernameCont" do
     sign_in @admin
 

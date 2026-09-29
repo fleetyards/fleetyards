@@ -42,7 +42,9 @@ json.fleet_slug member.fleet.slug
 json.fleet_name member.fleet.name
 json.primary member.primary
 json.verified member.rsi_verified?
-json.citizenid_profile_url member.user.citizenid_profile_url if member.rsi_verified?
+# The user's own handle, proved through Citizen ID, whichever fleet they are
+# in -- unlike `verified`, which is about the org this fleet names.
+json.citizenid_profile_url member.user.citizenid_profile_url
 json.discord_profile_url member.user.discord_profile_url
 json.latitude member.user.latitude&.to_f
 json.longitude member.user.longitude&.to_f
