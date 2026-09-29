@@ -3,6 +3,8 @@
 namespace :short, path: "", host: Rails.configuration.app.short_domain do
   get "h/:username", to: "base#hangar", as: :public_hangar
   get "h/:username/wishlist", to: "base#wishlist", as: :public_wishlist
+  get "h/:username/stats", to: "base#hangar_stats", as: :public_hangar_stats
+  get "h/:username/fleetchart", to: "base#hangar_fleetchart", as: :public_hangar_fleetchart
   get "fi/:token", to: "base#fleet_invite", as: :fleet_invite
   get "sc", to: "base#model_compare", as: :model_compare
   get "c/:short_code", to: "base#model_compare_share", as: :model_compare_share,

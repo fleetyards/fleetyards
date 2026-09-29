@@ -88,8 +88,8 @@ namespace :frontend, **frontend_options do
 
   get "hangar", to: "hangar#index", as: :hangar
   get "hangar/:username", to: "hangar#public", as: :public_hangar
-  get "hangar/:username/fleetchart", to: "hangar#public"
-  get "hangar/:username/stats", to: "hangar#public"
+  get "hangar/:username/fleetchart", to: "hangar#public", as: :public_hangar_fleetchart
+  get "hangar/:username/stats", to: "hangar#public", as: :public_hangar_stats
   get "hangar/:username/wishlist", to: "hangar#wishlist", as: :public_wishlist
 
   get "compare", to: "base#compare_models"

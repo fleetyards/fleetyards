@@ -10,6 +10,14 @@ module Short
       redirect_to frontend_public_wishlist_url(username: params[:username]), allow_other_host: true
     end
 
+    def hangar_stats
+      redirect_to frontend_public_hangar_stats_url(username: params[:username]), allow_other_host: true
+    end
+
+    def hangar_fleetchart
+      redirect_to frontend_public_hangar_fleetchart_url(username: params[:username]), allow_other_host: true
+    end
+
     def fleet_invite
       redirect_to frontend_fleet_invite_url(token: params[:token]), allow_other_host: true
     end
