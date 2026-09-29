@@ -80,6 +80,12 @@ describe("resolveSharedLink", () => {
     ).toEqual({ kind: "home" });
   });
 
+  it("follows a shared http short link over https", () => {
+    expect(
+      resolveSharedLink({ url: "http://fltyrd.net/fi/abc123" }, hosts),
+    ).toEqual({ kind: "short", href: "https://fltyrd.net/fi/abc123" });
+  });
+
   it("opens the home page when nothing usable was shared", () => {
     expect(resolveSharedLink({}, hosts)).toEqual({ kind: "home" });
   });

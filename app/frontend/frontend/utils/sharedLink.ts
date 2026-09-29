@@ -37,7 +37,8 @@ export const resolveSharedLink = (
   fields: SharedFields,
   { frontendEndpoint, shortDomain }: Hosts,
 ): SharedLinkTarget => {
-  const frontendHost = parseUrl(frontendEndpoint)?.host;
+  const frontend = parseUrl(frontendEndpoint);
+  const frontendHost = frontend?.host;
   const candidates = [
     fields.url,
     ...urlsIn(fields.text),
@@ -59,8 +60,10 @@ export const resolveSharedLink = (
     }
 
     // A short link is resolved by the server, which knows the fleets, events
-    // and compare codes it points at.
+    // and compare codes it points at. It is followed over the app's own scheme,
+    // so a shared `http://` link never leaves as a plain request.
     if (shortDomain && url.host === shortDomain) {
+      url.protocol = frontend?.protocol ?? "https:";
       return { kind: "short", href: url.href };
     }
   }
