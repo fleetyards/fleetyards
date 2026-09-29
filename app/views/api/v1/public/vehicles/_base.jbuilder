@@ -12,7 +12,7 @@ if vehicle.name_visible?
 end
 json.loaner vehicle.loaner
 json.model do
-  json.partial! "api/v1/models/base", model: vehicle.model if vehicle.model.present?
+  json.partial! "api/v1/models/model", model: vehicle.model if vehicle.model.present?
 end
 if vehicle.model_paint.present?
   json.paint do
