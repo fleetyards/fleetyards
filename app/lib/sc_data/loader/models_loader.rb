@@ -151,10 +151,19 @@ module ScData
 
       # Guarded like `retire_absent_builds`: a run that loaded nothing must not
       # sweep the whole catalogue.
+      #
+      # A ship still holding ports in this build counts too, build or not: its
+      # ports are written before its build, so a load that failed in between
+      # leaves them behind.
       private def retire_absent_models(loaded)
         return if loaded.blank?
 
-        Model.where(id: ModelBuild.current(source).where.not(model_id: loaded).select(:model_id))
+        with_build = ModelBuild.current(source).select(:model_id)
+        with_ports = Hardpoint.where(parent_type: "Model", source: :game_files)
+          .where(id: HardpointBuild.current(source).select(:hardpoint_id))
+          .select(:parent_id)
+
+        Model.where(id: with_build).or(Model.where(id: with_ports)).where.not(id: loaded)
           .find_each { |model| retire_model(model) }
       end
 
