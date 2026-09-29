@@ -18,7 +18,7 @@ Working plan for #5181. Decisions live in the issue body. Deleted before the PR 
 ### Phase 2 — Heat model shared with the allocator
 1. A heat-generation function over `{perPort, perFamily}`: every family's segments except weapons and shields, plus shields per port, plus `min(weapon segments, raw weapon draw)`, plus the extra heat from shield, life support, radar and QD (`seg × modifier`).
 2. Cooler output is `rated × seg/units × modifier(seg)`, and only when `seg ≥ floor`.
-3. `computeHeat` uses the same functions, so the display matches the allocator. Tractor/towing beams now count toward heat, and weapons count their raw draw.
+3. `computeHeat` uses the same functions, so the display matches the allocator. Weapons count their raw draw; tractor/towing beams still generate no heat.
 
 ### Phase 3 — Cooler passes
 1. First cooler, before the fill: the smallest segment count from `floor` up whose cooling covers the heat of a projected fill.
@@ -49,10 +49,12 @@ Working plan for #5181. Decisions live in the issue body. Deleted before the PR 
 | `docs/findings/loadout-stat-formulas.md` | Formula record |
 
 ## Not in scope (deferred)
-- **Armor signal modifiers** in the cooler-split score. We have no armor signature data, so both weights are 1.
+- **Hammerhead record**: the model is linked to `aegs_hammerhead`, a template (`EntityUIDisplayParams displayName="@LOC_UNINITIALIZED"`) with the S2 Surveyor. The playable ship is `aegs_hammerhead_gs` with the S3 Resolu (10 units, floor 3). Fixed by setting the model's `sc_key` in admin. It is the only ship split like this in 4.10.1.
 - **`initialPowerAllocation`**: vehicles that ship a fixed default distribution.
 
 ## Discovery Log
+
+- **2026-09-29** Armor signature multipliers were never parsed: they are attributes of `SCItemVehicleArmorParams`, and the parser read a nested element that does not exist. Fixed, and fed into IR/EM/CS and the cooler-split score. EM also used the sustained-DPS ratio for weapons instead of the powered pool share. With both fixed, Asgard and Gladius IR/EM match the reference.
 
 - **2026-09-29** Compared on 4.10.1-live.12660092: Asgard SCM/NAV, Gladius SCM/NAV and Hammerhead SCM match pip for pip, cooling % included. Hammerhead NAV matches once its radar floor is 3; our data (and the game file) give 1.
 - **2026-09-29** Decoded the full default pipeline. It differs from the recorded base/fill passes too: coolers, the QED and the beams have no base segment, and NAV fills only engines.

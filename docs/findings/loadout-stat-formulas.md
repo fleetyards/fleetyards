@@ -93,17 +93,17 @@ coolingRatio = coolingPerSec > 0 ? min(u / coolingPerSec, 1) : (u > 0 ? 1 : 0)
 
 ## Signatures
 
-`signature = {em, ir, crossSection:{x,y,z}, armorModifier, sources[]}`. Each port's nominals come from the item's `resource.states[Online].signature.{em,ir}.nominal`. The armor multipliers `signalElectromagnetic`/`signalInfrared`/`signalCrossSection` live on the armor item and default to 1.
+`signature = {em, ir, crossSection:{x,y,z}, armorModifier, sources[]}`. Each port's nominals come from the item's `resource.states[Online].signature.{em,ir}.nominal`. The armor multipliers `signalElectromagnetic`/`signalInfrared`/`signalCrossSection` live on the armor item and default to 1. In the game files they are attributes of `SCItemVehicleArmorParams` itself (`signalInfrared="1.13"` on the Gladius), not a nested element.
 
 - **CS** = `vehicle.crossSection.{x,y,z} × armor.signalCrossSection`, and the displayed value is the largest axis. The source is `crossSectionParams → SSCSignatureSystemManualCrossSectionParams → crossSection`. For the Asgard that is 20139/7624/27912, and the max axis 27912 × ~1.09 armor gives ≈ 30.4k. CS does not depend on power.
 - **EM** = `armor.signalElectromagnetic × Σ` of four kinds of term:
-  - shields: `emNominal × powerModifier(pr, f) × shieldRatio`, with `f = round(totalSeg × shieldRatio) / nShields`;
-  - weapons: `emNominal × powerModifier(pr, weaponSelected) × selected/enabled`;
+  - power plants: `emNominal × powerModifier(pr, f) × u`, with `u = (Σ non-weapon segments + min(weaponSelected, raw Σ weapon draw)) / totalSeg` and `f = round(totalSeg × u) / nPlants`;
+  - weapons: `emNominal × powerModifier(pr, weaponSelected) × selected/enabled`, where `enabled = min(poolSize, weaponConsumptionPoints)`. This is the share of the powered pool blocks, not the sustained-DPS ratio `selected/consumption`;
   - the segment-scaled sources (shields, coolers, radar): `emNominal × powerModifier(pr, activeSeg) × activeSeg/units`;
   - every other powered port: `emNominal × powerModifier(pr, seg) × seg/powerSegmentUnits`.
 - **IR** = `coolingRatio × armor.signalInfrared × Σ over heat.sources of irNominal × (activeSeg/units) × powerModifier(powerRanges, activeSeg)`. It is gated by `coolingRatio` and is 0 when there is no power.
 
-`pr` is the port's `powerRanges`. Asgard reference values: IR 8.4k, EM 31.2k, CS 30.4k, with armor modifiers of +9% on each.
+`pr` is the port's `powerRanges`. Asgard reference values: IR 8.4k, EM 31.2k, CS 30.4k, with armor modifiers of +9% on each. The port gives 8467 / 31232 for the Asgard and 5815 / 13804 for the Gladius (reference 5.8k / 13.8k at +13%). The reference display truncates to one decimal rather than rounding.
 
 ## Quantum range
 
