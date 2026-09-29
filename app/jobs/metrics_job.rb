@@ -18,9 +18,39 @@ class MetricsJob < ApplicationJob
   # of installed use per platform can be read back after the visits are purged.
   ROLLUP_VISITS_BY_OS = "Visits by OS"
 
+  # Page views per section, device, OS and install state, which says which parts
+  # of the site get used on a phone and from the installed app once the events
+  # behind it are purged.
+  ROLLUP_VIEWS_BY_DEVICE = "Views by device"
+
+  # The first segment of the path (`hangar`, `ships`, `compare`), and for a fleet
+  # the tool under it (`fleets/events`, `fleets/contracts`), since a fleet's
+  # tools are what a phone would be used for and they all share `/fleets/`. No
+  # slug or id survives, which keeps a day to a few dozen rows per device. The
+  # routes beside `/fleets/:slug/` take the place of a slug, and an invite's
+  # token would otherwise become a section of its own.
+  FLEET_TOP_LEVEL_ROUTES = %w[add preview invites].freeze
+
+  VIEW_SECTION = Arel.sql(<<~SQL.squish)
+    CASE
+    WHEN split_part(ahoy_events.properties->>'page', '/', 2) <> 'fleets'
+    THEN split_part(ahoy_events.properties->>'page', '/', 2)
+    WHEN split_part(ahoy_events.properties->>'page', '/', 3) IN (#{FLEET_TOP_LEVEL_ROUTES.map { |route| "'#{route}'" }.join(", ")})
+    THEN 'fleets/' || split_part(ahoy_events.properties->>'page', '/', 3)
+    WHEN split_part(ahoy_events.properties->>'page', '/', 4) <> ''
+    THEN 'fleets/' || split_part(ahoy_events.properties->>'page', '/', 4)
+    ELSE 'fleets'
+    END
+  SQL
+
   # A visit's installed flag can only change while the visit lasts, so a day is
   # settled well within this.
-  VISITS_BY_OS_RECOMPUTE = 2.days
+  VISIT_RECOMPUTE = 2.days
+
+  # The oldest day whose visits and events are all still there.
+  def self.cleanup_floor
+    (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
+  end
 
   def perform
     User.rollup("Registrations", interval: "month")
@@ -38,23 +68,55 @@ class MetricsJob < ApplicationJob
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "month")
 
     track_ship_views
+    track_views_by_device
     track_visits
     track_wishlist_by_model
     track_ship_of_the_month
     track_api_usage
   end
 
+  # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
+  # a monthly total, so per-ship views are gone before anything can read them.
+  # A ship counts once per visit: every tab on a ship page is a view of its own,
+  # so counting views would rank ships by how many tabs people click through.
+  # Public so every retained day can be rebuilt (`since:` the cleanup cutoff)
+  # without running the other rollups, which consume counters as they go.
+  def track_ship_views(since: nil)
+    scope = page_views.where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
+
+    rebuild_recent_days(ROLLUP_SHIP_VIEWS, since:) do |range|
+      scope.group(SHIP_VIEW_SLUG).rollup(
+        ROLLUP_SHIP_VIEWS,
+        interval: "day",
+        column: :time,
+        range:,
+        # The gem derives a dimension name from the grouped column and only
+        # accepts a bare word, which an expression is not.
+        dimension_names: ["model_slug"]
+      ) { |views| views.distinct.count(:visit_id) }
+    end
+  end
+
   private
 
   # `Cleanup::VisitsJob` writes the monthly total under the same name, but it
   # runs once a month, which no per-day chart can be built on. The day interval
-  # is the only safe one here for the reason `track_ship_views` gives: a visit
-  # is purged after a month, and a day is always complete before that happens.
+  # is the only safe one here: the gem recomputes from the newest stored interval
+  # onward, so a monthly rollup would recompute a half-purged month down to a
+  # wrong number, while a day is always complete by the time it is purged.
   def track_visits
     visits = Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
 
     visits.rollup("Visits", interval: "day", column: :started_at)
     track_visits_by_os(visits)
+  end
+
+  # A NULL flag is a visit from before it was recorded, not a browser visit.
+  def track_visits_by_os(visits)
+    rebuild_recent_days(ROLLUP_VISITS_BY_OS) do |range|
+      visits.where.not(installed: nil).group(:os, :installed)
+        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at, range:)
+    end
   end
 
   # The gem only upserts the groups it finds, so a visit flagged installed after
@@ -63,11 +125,10 @@ class MetricsJob < ApplicationJob
   # the gem's own resume point. The window never reaches past the cleanup cutoff:
   # every visit newer than that is always still there, and an older day may be
   # partly purged, so its stored counts are all that is left.
-  def track_visits_by_os(visits)
-    stored = Rollup.where(name: ROLLUP_VISITS_BY_OS, interval: "day")
-    floor = (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
+  def rebuild_recent_days(name, since: nil)
+    stored = Rollup.where(name:, interval: "day")
     latest = stored.maximum(:time)&.to_date
-    start = [floor, [latest, VISITS_BY_OS_RECOMPUTE.ago.to_date].compact.min].max
+    start = [self.class.cleanup_floor, since || [latest, VISIT_RECOMPUTE.ago.to_date].compact.min].max
     range = start.in_time_zone(Rollup.time_zone)..Time.current
 
     Rollup.transaction do
@@ -75,40 +136,39 @@ class MetricsJob < ApplicationJob
       # current day is still ahead of `Time.current` until UTC catches up.
       stored.where(time: start..).delete_all
 
-      # A NULL flag is a visit from before it was recorded, not a browser visit.
-      visits.where.not(installed: nil).group(:os, :installed)
-        .rollup(ROLLUP_VISITS_BY_OS, interval: "day", column: :started_at, range:)
+      yield range
     end
   end
 
-  # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
-  # a monthly total, so per-ship views are gone before anything can read them.
-  # The interval is deliberately `day`: the gem recomputes from the newest stored
-  # interval onward, so a monthly rollup would recompute a half-purged month down
-  # to a wrong number, while a day is always complete by the time it is purged.
-  def track_ship_views
-    scope = Ahoy::Event
-      .where(name: "$view")
-      .where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
-
-    # `Ahoy.exclude_method` already refuses to record an objecting user, so this
-    # only covers rows written before they objected. `NOT IN` alone would drop
-    # every anonymous view along with them, since `NULL NOT IN (...)` is NULL.
-    blocked_user_ids = User.where(tracking: false).pluck(:id)
-    if blocked_user_ids.any?
-      scope = scope.where(
-        "ahoy_events.user_id IS NULL OR ahoy_events.user_id NOT IN (?)",
-        blocked_user_ids
-      )
+  # A view is counted under the visit's install state, which a later view of the
+  # same visit can still flip, so its days are rebuilt like `Visits by OS`.
+  def track_views_by_device
+    rebuild_recent_days(ROLLUP_VIEWS_BY_DEVICE) do |range|
+      page_views.joins(:visit)
+        .where.not(ahoy_visits: {installed: nil})
+        .group(VIEW_SECTION, "ahoy_visits.device_type", "ahoy_visits.os", "ahoy_visits.installed")
+        .rollup(
+          ROLLUP_VIEWS_BY_DEVICE,
+          interval: "day",
+          column: "ahoy_events.time",
+          range:,
+          dimension_names: ["section", "device_type", "os", "installed"]
+        )
     end
+  end
 
-    scope.group(SHIP_VIEW_SLUG).rollup(
-      ROLLUP_SHIP_VIEWS,
-      interval: "day",
-      column: :time,
-      # The gem derives a dimension name from the grouped column and only accepts
-      # a bare word, which an expression is not.
-      dimension_names: ["model_slug"]
+  # `Ahoy.exclude_method` already refuses to record an objecting user, so this
+  # only covers rows written before they objected. `NOT IN` alone would drop
+  # every anonymous view along with them, since `NULL NOT IN (...)` is NULL.
+  def page_views
+    scope = Ahoy::Event.where(name: "$view")
+
+    blocked_user_ids = User.where(tracking: false).pluck(:id)
+    return scope if blocked_user_ids.empty?
+
+    scope.where(
+      "ahoy_events.user_id IS NULL OR ahoy_events.user_id NOT IN (?)",
+      blocked_user_ids
     )
   end
 

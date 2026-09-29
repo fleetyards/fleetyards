@@ -1,4 +1,5 @@
 import ahoy from "ahoy.js";
+import { START_LOCATION } from "vue-router";
 import { useCookiesStore } from "@/frontend/stores/cookies";
 import { useSessionStore } from "@/frontend/stores/session";
 import { isInstalledApp } from "@/shared/utils/DisplayMode";
@@ -30,7 +31,15 @@ const guardTrack = () => {
   };
 };
 
+const samePage = (path: string, other: string) =>
+  path.replace(/\/$/, "") === other.replace(/\/$/, "");
+
+const trackView = () => {
+  ahoy.trackView(isInstalledApp() ? { installed: true } : {});
+};
+
 export const useAhoy = () => {
+  const router = useRouter();
   const sessionStore = useSessionStore();
   const cookiesStore = useCookiesStore();
 
@@ -52,6 +61,24 @@ export const useAhoy = () => {
     { immediate: true },
   );
 
-  ahoy.trackView(isInstalledApp() ? { installed: true } : {});
   ahoy.trackSubmits("form");
+
+  // Lets the route's document title settle before ahoy.js reads it.
+  const trackViewOnceRendered = () => nextTick(trackView);
+
+  // The app mounts before the initial navigation settles, so the page it was
+  // loaded on is only known once a redirect or guard has resolved. A load whose
+  // initial navigation failed is still a load, of whatever page it stayed on.
+  void router.isReady().then(trackViewOnceRendered, trackViewOnceRendered);
+
+  // The initial navigation is covered above. A change of query or hash alone (a
+  // modal, a tab, a filter) stays on the same page and is not a new view, and
+  // neither is the first filter change canonicalising `/compare` to `/compare/`.
+  router.afterEach((to, from, failure) => {
+    if (failure || from === START_LOCATION || samePage(to.path, from.path)) {
+      return;
+    }
+
+    void trackViewOnceRendered();
+  });
 };
