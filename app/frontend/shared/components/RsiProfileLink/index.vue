@@ -61,13 +61,20 @@ const rsiProfileUrl = computed(
   display: inline-flex;
   align-items: center;
 
-  // In em rather than px, so it sits on the icon's corner at any text size.
+  // Centred on the right edge, so it overlaps the icon or the handle at any
+  // size. Opaque: the duotone badge's secondary layer is translucent, and what
+  // it overlaps showed through. The check is cut out in the page colour.
   &__badge {
     position: absolute;
-    top: -0.35em;
-    right: -0.6em;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    transform: translate(50%, 0);
     font-size: 0.65em;
     line-height: 1;
+    --fa-primary-color: var(--color-background, #000);
+    --fa-secondary-color: currentColor;
+    --fa-secondary-opacity: 1;
   }
 }
 </style>
