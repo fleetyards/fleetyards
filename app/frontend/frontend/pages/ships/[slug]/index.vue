@@ -341,7 +341,7 @@ const adiMap = computed(() => {
                   {{ t("labels.3dMap") }}
                 </Btn>
 
-                <ViewInArBtn :model="model" />
+                <ViewInArBtn :model="model" :active="holoviewerVisible" />
               </BtnGroup>
 
               <!-- Earned by a second holo: a state that differs in the views

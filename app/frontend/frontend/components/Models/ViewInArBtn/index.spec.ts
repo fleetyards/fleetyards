@@ -31,9 +31,9 @@ const model = (overrides: Partial<Model> = {}): Model =>
     ...overrides,
   }) as Model;
 
-const mount = async (props: { model: Model }) => {
+const mount = async (props: { model: Model; active?: boolean }) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props,
+    props: { active: true, ...props },
   });
   await flushPromises();
   return wrapper;
@@ -71,11 +71,54 @@ describe("ViewInArBtn", () => {
     expect(button(await mount({ model: model() })).exists()).toBe(false);
   });
 
+  it("fetches nothing until the 3D view is open", async () => {
+    const { prepareAr } = await import("@/frontend/utils/arViewer");
+    vi.mocked(prepareAr).mockClear();
+
+    const wrapper = await mount({ model: model(), active: false });
+
+    expect(prepareAr).not.toHaveBeenCalled();
+    expect(button(wrapper).exists()).toBe(false);
+
+    await wrapper.setProps({ active: true });
+    await flushPromises();
+
+    expect(prepareAr).toHaveBeenCalledOnce();
+    expect(button(wrapper).exists()).toBe(true);
+  });
+
   it("opens AR straight from the tap", async () => {
     const wrapper = await mount({ model: model() });
 
     await button(wrapper).trigger("click");
 
     expect(ar.activateAR).toHaveBeenCalledOnce();
+  });
+
+  it("keeps the viewer of the holo it was last asked for", async () => {
+    const { prepareAr } = await import("@/frontend/utils/arViewer");
+    const late = { resolve: (_: unknown) => {} };
+    const stale = Object.assign(document.createElement("div"), {
+      activateAR: vi.fn(),
+      canActivateAR: true,
+    });
+    vi.mocked(prepareAr).mockImplementationOnce(
+      () => new Promise((resolve) => (late.resolve = resolve)) as never,
+    );
+
+    const wrapper = await mount({ model: model() });
+    await wrapper.setProps({
+      model: model({
+        media: { holo: { url: "https://fleetyards.test/files/other.glb" } },
+      } as Partial<Model>),
+    });
+    await flushPromises();
+    late.resolve(stale);
+    await flushPromises();
+
+    await button(wrapper).trigger("click");
+
+    expect(ar.activateAR).toHaveBeenCalledOnce();
+    expect(stale.activateAR).not.toHaveBeenCalled();
   });
 });

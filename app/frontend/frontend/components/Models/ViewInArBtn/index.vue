@@ -17,15 +17,16 @@ import type { Model } from "@/services/fyApi";
 
 type Props = {
   model: Model;
+  // The 3D view is open. Only then is the viewer fetched: the holo is being
+  // downloaded for it anyway, and a page view costs nothing extra.
+  active?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { active: false });
 
 const { t } = useI18n();
 
 const { displayAlert } = useAppNotifications();
-
-const host = ref<HTMLElement | null>(null);
 
 const viewer = shallowRef<ModelViewerElement>();
 
@@ -33,29 +34,42 @@ const holoUrl = computed(() => props.model.media.holo?.url);
 
 // Only a holo exported in meters can be placed at true size.
 const candidate = computed(
-  () => !!holoUrl.value && !!props.model.holoToScale && mayHaveAr(),
+  () =>
+    props.active && !!holoUrl.value && !!props.model.holoToScale && mayHaveAr(),
 );
 
+// Counts preparations, so one that finishes after a newer one started (another
+// ship's holo) is thrown away rather than replacing the current viewer.
+let preparation = 0;
+
 const prepare = async () => {
+  const current = ++preparation;
+
   viewer.value?.remove();
   viewer.value = undefined;
 
-  if (!candidate.value || !holoUrl.value || !host.value) {
+  if (!candidate.value || !holoUrl.value) {
     return;
   }
 
-  try {
-    viewer.value = await prepareAr(holoUrl.value, host.value);
-  } catch {
-    viewer.value = undefined;
+  const prepared = await prepareAr(holoUrl.value).catch(() => undefined);
+
+  if (current !== preparation) {
+    prepared?.remove();
+    return;
   }
+
+  viewer.value = prepared;
 };
 
 onMounted(prepare);
 
-watch(holoUrl, prepare);
+watch([holoUrl, () => props.active], prepare);
 
-onBeforeUnmount(() => viewer.value?.remove());
+onBeforeUnmount(() => {
+  preparation += 1;
+  viewer.value?.remove();
+});
 
 // Straight from the tap, without awaiting anything first: the AR viewers only
 // open from a user gesture.
@@ -67,22 +81,14 @@ const open = () => {
 </script>
 
 <template>
-  <span ref="host" class="view-in-ar">
-    <Btn
-      v-if="viewer"
-      v-tooltip="t('labels.viewInArHint')"
-      :aria-label="t('labels.viewInArHint')"
-      data-test="view-in-ar"
-      @click="open"
-    >
-      <i class="fa-light fa-cube" />
-      {{ t("labels.viewInAr") }}
-    </Btn>
-  </span>
+  <Btn
+    v-if="viewer"
+    v-tooltip="t('labels.viewInArHint')"
+    :aria-label="t('labels.viewInArHint')"
+    data-test="view-in-ar"
+    @click="open"
+  >
+    <i class="fa-light fa-cube" />
+    {{ t("labels.viewInAr") }}
+  </Btn>
 </template>
-
-<style lang="scss" scoped>
-.view-in-ar {
-  display: contents;
-}
-</style>

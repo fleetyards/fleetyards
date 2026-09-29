@@ -19,15 +19,14 @@ const loadModelViewer = () =>
 
 const nextTask = () => new Promise((resolve) => setTimeout(resolve));
 
-// Ready before anybody taps, because Scene Viewer and Quick Look have to be
+// Ready before the AR tap, because Scene Viewer and Quick Look have to be
 // launched from the tap itself: model-viewer only settles on a mode after an
-// update, and a launch that waits for a download loses the gesture. Hidden
-// with `display: none` so the holo is not fetched for a page view -- Quick Look
-// loads it after the tap to build its USDZ, Scene Viewer fetches it itself.
+// update, and a launch that waits for a download loses the gesture. Prepared
+// once the 3D view is open, so the holo is already in the browser's cache when
+// Quick Look loads it to build its USDZ; Scene Viewer fetches it itself.
 // `ar-scale="fixed"` keeps both at 1:1: the holo is exported in meters.
 export const prepareAr = async (
   holoUrl: string,
-  host: HTMLElement,
 ): Promise<ModelViewerElement | undefined> => {
   await loadModelViewer();
   await customElements.whenDefined("model-viewer");
@@ -39,7 +38,7 @@ export const prepareAr = async (
   element.setAttribute("ar-scale", "fixed");
   element.setAttribute("loading", "lazy");
   element.style.display = "none";
-  host.appendChild(element);
+  document.body.appendChild(element);
 
   await element.updateComplete;
   await nextTask();
