@@ -23,6 +23,7 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   HangarGroup,
   type HangarGroupPublic,
+  RsiHandleVerifiedViaEnum,
   type UserPublic,
 } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
@@ -187,6 +188,9 @@ useSubscription({
         v-if="user.rsiHandle"
         :handle="user.rsiHandle"
         :citizenid-profile-url="user.citizenidProfileUrl"
+        :verified="
+          user.rsiHandleVerifiedVia === RsiHandleVerifiedViaEnum.RSI_PROFILE
+        "
         icon-only
       />
       <a

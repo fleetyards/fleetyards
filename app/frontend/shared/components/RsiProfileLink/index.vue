@@ -9,7 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 // A citizen's profile by handle, or an organisation's page by SID. Either
 // carries the same verified badge on its corner: a handle proved through
-// Citizen iD, or an org the fleet proved it runs.
+// Citizen iD or the RSI bio, or an org the fleet proved it runs.
 type Props = {
   handle?: string;
   sid?: string;
@@ -29,6 +29,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
+const verifiedLabel = computed(() =>
+  props.sid
+    ? t("labels.fleet.rsiVerification.verified")
+    : t("labels.user.rsiHandleVerifiedViaProfile"),
+);
 
 const rsiProfileUrl = computed(() =>
   props.sid
@@ -73,8 +79,8 @@ const rsiProfileUrl = computed(() =>
     </a>
     <span
       v-else-if="verified"
-      v-tooltip="t('labels.fleet.rsiVerification.verified')"
-      :aria-label="t('labels.fleet.rsiVerification.verified')"
+      v-tooltip="verifiedLabel"
+      :aria-label="verifiedLabel"
       class="rsi-profile-link__badge"
       data-test="rsi-profile-link-verified"
     >

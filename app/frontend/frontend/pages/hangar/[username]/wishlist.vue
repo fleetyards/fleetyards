@@ -20,7 +20,7 @@ import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { type UserPublic } from "@/services/fyApi";
+import { RsiHandleVerifiedViaEnum, type UserPublic } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -141,6 +141,9 @@ onMounted(async () => {
         v-if="user.rsiHandle"
         :handle="user.rsiHandle"
         :citizenid-profile-url="user.citizenidProfileUrl"
+        :verified="
+          user.rsiHandleVerifiedVia === RsiHandleVerifiedViaEnum.RSI_PROFILE
+        "
         icon-only
       />
       <a
