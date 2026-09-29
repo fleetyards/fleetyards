@@ -1,6 +1,25 @@
 import type { I18n } from "i18n-js";
-import { parseISO, formatDistance } from "date-fns";
+import { parseISO, formatDistance, type Locale } from "date-fns";
 import { format } from "date-fns-tz";
+import { de } from "date-fns/locale/de";
+import { enUS } from "date-fns/locale/en-US";
+import { es } from "date-fns/locale/es";
+import { fr } from "date-fns/locale/fr";
+import { it } from "date-fns/locale/it";
+import { zhCN } from "date-fns/locale/zh-CN";
+import { zhTW } from "date-fns/locale/zh-TW";
+
+// date-fns carries each language's own grammar for month names and relative
+// times, down to German's "vor 3 Tagen"; without one it writes English.
+const DATE_LOCALES: Record<string, Locale> = {
+  de,
+  en: enUS,
+  es,
+  fr,
+  it,
+  "zh-CN": zhCN,
+  "zh-TW": zhTW,
+};
 
 const formatStat = (i18n: I18n, value: number): string => {
   // Collapse to a single decimal (27.55 -> 27.6) before formatting; trailing
@@ -20,15 +39,22 @@ const formatStat = (i18n: I18n, value: number): string => {
 };
 
 export const i18nHelpers = (i18n: I18n) => {
+  // Read on every call, so a locale switch applies without a reload.
+  const dateLocale = () => DATE_LOCALES[i18n.locale] ?? enUS;
+
   const l = (value: string, dateFormat = "datetime.formats.default") =>
-    format(parseISO(value), i18n.t(dateFormat));
+    format(parseISO(value), i18n.t(dateFormat), { locale: dateLocale() });
 
   const lUtc = (value: string, dateFormat = "datetime.formats.default") =>
-    format(parseISO(value), i18n.t(dateFormat), { timeZone: "UTC" });
+    format(parseISO(value), i18n.t(dateFormat), {
+      timeZone: "UTC",
+      locale: dateLocale(),
+    });
 
   const timeDistance = (value: string) => {
     return formatDistance(parseISO(value), new Date(), {
       addSuffix: true,
+      locale: dateLocale(),
     });
   };
 
