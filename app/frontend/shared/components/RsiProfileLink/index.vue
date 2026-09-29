@@ -7,28 +7,43 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 
+// A citizen's profile by handle, or an organisation's page by SID. Either
+// carries the same verified badge on its corner: a handle proved through
+// Citizen iD, or an org the fleet proved it runs.
 type Props = {
-  handle: string;
+  handle?: string;
+  sid?: string;
   citizenidProfileUrl?: string | null;
+  verified?: boolean;
   iconOnly?: boolean;
+  large?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  handle: undefined,
+  sid: undefined,
   citizenidProfileUrl: null,
+  verified: false,
   iconOnly: false,
+  large: false,
 });
 
 const { t } = useI18n();
 
-const rsiProfileUrl = computed(
-  () => `https://robertsspaceindustries.com/citizens/${props.handle}`,
+const rsiProfileUrl = computed(() =>
+  props.sid
+    ? `https://robertsspaceindustries.com/orgs/${props.sid}`
+    : `https://robertsspaceindustries.com/citizens/${props.handle}`,
 );
 </script>
 
 <template>
   <span
     class="rsi-profile-link"
-    :class="{ 'rsi-profile-link--icon': iconOnly }"
+    :class="{
+      'rsi-profile-link--icon': iconOnly,
+      'rsi-profile-link--large': iconOnly && large,
+    }"
   >
     <a
       v-tooltip="t('nav.rsiProfile')"
@@ -42,7 +57,7 @@ const rsiProfileUrl = computed(
         <i class="icon icon-rsi" />
       </template>
       <template v-else>
-        {{ handle }}
+        {{ sid ?? handle }}
       </template>
     </a>
     <a
@@ -56,6 +71,15 @@ const rsiProfileUrl = computed(
     >
       <i class="fa-duotone fa-badge-check text-success" />
     </a>
+    <span
+      v-else-if="verified"
+      v-tooltip="t('labels.fleet.rsiVerification.verified')"
+      :aria-label="t('labels.fleet.rsiVerification.verified')"
+      class="rsi-profile-link__badge"
+      data-test="rsi-profile-link-verified"
+    >
+      <i class="fa-duotone fa-badge-check text-success" />
+    </span>
   </span>
 </template>
 
@@ -98,7 +122,30 @@ const rsiProfileUrl = computed(
     // three times its size in the hangar's 30px link row.
     .rsi-profile-link--icon & {
       transform: translate(50%, -50%);
-      font-size: 13px;
+      font-size: 15px;
+    }
+
+    .rsi-profile-link--large & {
+      font-size: 25px;
+    }
+  }
+
+  // The fleet page's logo: larger on a wide screen, the regular size on a
+  // narrow one, where its link row wraps. The badge keeps the same share of
+  // the logo at either size.
+  &--large .icon-rsi {
+    width: 76px;
+    height: 40px;
+  }
+
+  @media (max-width: $desktop-breakpoint) {
+    &--large .icon-rsi {
+      width: 46px;
+      height: 24px;
+    }
+
+    &--large &__badge {
+      font-size: 15px;
     }
   }
 }

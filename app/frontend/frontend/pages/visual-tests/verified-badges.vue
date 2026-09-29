@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FleetFid from "@/frontend/components/Fleets/FleetFid/index.vue";
 import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
@@ -67,15 +66,12 @@ const avatarCases: AvatarCase[] = [
       :data-test="`verified-badges-${surface}`"
     >
       <component :is="surface === 'page' ? 'div' : PanelBody">
-        <Heading :level="HeadingLevelEnum.H3">Fleet ID in the header</Heading>
-        <h1 class="large verified-badges__row">
-          <span>Maru (<FleetFid fid="MARU" verified />)</span>
-          <span>Squatters (<FleetFid fid="MARU" />)</span>
-          <span>Maru (<FleetFid fid="MARU-1" />)</span>
-        </h1>
+        <Heading :level="HeadingLevelEnum.H3">Fleet organisation</Heading>
         <p class="verified-badges__row">
-          <span>Maru (<FleetFid fid="MARU" verified />)</span>
-          <span>Maru Inc. (<FleetFid fid="TEST" verified />)</span>
+          <RsiProfileLink sid="MARU" verified icon-only large />
+          <RsiProfileLink sid="MARU" icon-only large />
+          <RsiProfileLink sid="MARU" verified icon-only />
+          <RsiProfileLink sid="MARU" verified />
         </p>
 
         <Heading :level="HeadingLevelEnum.H3">RSI handle</Heading>

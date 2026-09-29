@@ -240,39 +240,25 @@ describe("FleetShow squadrons", () => {
 });
 
 describe("FleetShow header", () => {
-  it("marks a verified fleet's FID with the badge", async () => {
+  it("badges the RSI logo of a verified fleet, not its FID", async () => {
     const subject = await mount({
       fleet: { ...fleet(), rsiVerified: true, rsiSid: "MARU" } as Fleet,
     });
 
-    const title = subject.find(".title");
-    expect(title.find('[data-test="fleet-rsi-verified"]').exists()).toBe(true);
-    expect(title.text()).toBe("Maru (MARU)");
+    expect(
+      subject.find('[data-test="rsi-profile-link-verified"]').exists(),
+    ).toBe(true);
+    expect(subject.find(".title").text()).toBe("Maru (MARU)");
   });
 
-  it("keeps the badge off an FID the fleet is not verified for", async () => {
+  it("shows the RSI logo of an unverified fleet without the badge", async () => {
     const subject = await mount({
-      fleet: {
-        ...fleet(),
-        fid: "MARU-1",
-        rsiVerified: true,
-        rsiSid: "MARU",
-      } as Fleet,
+      fleet: { ...fleet(), rsiVerified: false, rsiSid: "MARU" } as Fleet,
     });
 
-    expect(subject.find('[data-test="fleet-rsi-verified"]').exists()).toBe(
-      false,
-    );
-  });
-
-  it("shows no mark for an unverified fleet", async () => {
-    const subject = await mount({ fleet: fleet() });
-
-    expect(subject.find('[data-test="fleet-rsi-verified"]').exists()).toBe(
-      false,
-    );
-    expect(subject.find('[data-test="fleet-rsi-unverified"]').exists()).toBe(
-      false,
-    );
+    expect(subject.find(".rsi-profile-link").exists()).toBe(true);
+    expect(
+      subject.find('[data-test="rsi-profile-link-verified"]').exists(),
+    ).toBe(false);
   });
 });

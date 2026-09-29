@@ -10,7 +10,7 @@ import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmble
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
-import FleetFid from "@/frontend/components/Fleets/FleetFid/index.vue";
+import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -83,14 +83,6 @@ const teamList = computed(() =>
   allSquadrons.value.filter((squadron) => squadron.team),
 );
 
-// Verification proves the SID, not whichever FID the fleet uses: a claimant
-// still on its temporary `X-N` is verified for `X`, not for `X-N`.
-const fidVerified = computed(
-  () =>
-    !!props.fleet.rsiVerified &&
-    props.fleet.rsiSid?.toUpperCase() === props.fleet.fid?.toUpperCase(),
-);
-
 // Only a manager can act on it: verifying is theirs to do.
 const showFidNotice = computed(
   () =>
@@ -118,12 +110,7 @@ const description = computed(() => {
           size="large"
           icon="fa-duotone fa-image"
         />
-        <span class="title">
-          {{ fleet.name }} (<FleetFid
-            :fid="fleet.fid"
-            :verified="fidVerified"
-          />)
-        </span>
+        <span class="title"> {{ fleet.name }} ({{ fleet.fid }}) </span>
       </h1>
       <FidNotice v-if="showFidNotice" :fleet="fleet">
         <template #actions>
@@ -149,16 +136,13 @@ const description = computed(() => {
       >
         <i class="fa-light fa-globe globe-rotate" />
       </a>
-      <a
+      <RsiProfileLink
         v-if="fleet.rsiSid"
-        v-tooltip="t('nav.rsiProfile')"
-        :aria-label="t('nav.rsiProfile')"
-        :href="`https://robertsspaceindustries.com/orgs/${fleet.rsiSid}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="icon icon-rsi icon-large" />
-      </a>
+        :sid="fleet.rsiSid"
+        :verified="fleet.rsiVerified"
+        icon-only
+        large
+      />
       <a
         v-if="fleet.guilded"
         v-tooltip="t('labels.guilded')"
