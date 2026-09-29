@@ -243,7 +243,7 @@
           "regenerateToken": "Genera un nuovo codice",
           "check": "Controlla ora",
           "copyToken": "Copia codice",
-          "revoke": "Revoca la verifica"
+          "revoke": "Revoca"
         },
         "join": "Unisciti a %{fleet}!",
         "leave": "Abbandona %{fleet}",

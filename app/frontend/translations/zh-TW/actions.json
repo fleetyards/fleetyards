@@ -243,7 +243,7 @@
           "regenerateToken": "產生新的驗證碼",
           "check": "立即檢查",
           "copyToken": "複製驗證碼",
-          "revoke": "撤銷驗證"
+          "revoke": "撤銷"
         },
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
