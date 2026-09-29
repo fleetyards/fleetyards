@@ -842,6 +842,12 @@ const crumbs = computed<Crumb[]>(() => [
     .metrics-card__row:last-child {
       border-bottom: 0;
     }
+
+    // The row alone does not make room for a range with its timezone: the
+    // value keeps the shared one-line ellipsis, which cut off the end date.
+    .metrics-card__row__value {
+      white-space: normal;
+    }
   }
 }
 .event-hero__tz {
