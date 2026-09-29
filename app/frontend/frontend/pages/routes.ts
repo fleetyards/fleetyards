@@ -56,6 +56,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // Where the web app manifest's `share_target` sends a link shared into the
+    // installed app.
+    path: "/share/",
+    name: "share",
+    component: () => import("@/frontend/pages/share.vue"),
+    meta: {
+      title: "share",
+    },
+  },
+  {
     path: "/privacy-policy/",
     name: "privacy-policy",
     component: () => import("@/frontend/pages/privacy-policy.vue"),
