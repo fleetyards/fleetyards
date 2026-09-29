@@ -414,7 +414,7 @@
           "availableTitle": "The fleet ID %{fid} is free",
           "available": "Your fleet is verified for %{fid}, and no other fleet uses that ID. Set it as your fleet ID above.",
           "incomingTitle": "%{claimant} claims your fleet ID",
-          "incoming": "%{claimant} is verified for the RSI organisation %{fid}. On %{date}, your fleet will be renamed to the next free ID, such as %{fid}-1, and links to %{fid} will open %{claimant}. If %{fid} is your organisation, verify it before then to keep the ID. Otherwise, let your members know.",
+          "incoming": "%{claimant} is verified for the RSI organisation **%{fid}**.\n\n**On %{date}:**\n\n- Your fleet moves to the next free fleet ID, such as **%{fid}-1**.\n- Links to %{fid} open %{claimant} from then on.\n\n**To keep the ID**, verify %{fid} before then. Otherwise, let your members know about the new address.",
           "createTakenTitle": "%{fid} is taken",
           "createTaken": "If %{fid} is your RSI organisation, start with %{suggestion} and the SID %{fid}. Once your fleet is verified for %{fid}, it can claim the fleet ID from the fleet that holds it."
         },

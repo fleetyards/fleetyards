@@ -18,6 +18,17 @@ import {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import Markdown from "@/shared/components/Markdown/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+
+const { t, l } = useI18n();
+
+// The notice a fleet sees while another fleet claims its FID. Built here from
+// the same translation, because the real one only renders while a claim is
+// open against the fleet.
+const claimEndsAt = new Date(
+  Date.now() + 14 * 24 * 60 * 60 * 1000,
+).toISOString();
 
 const variants = Object.values(AlertVariantsEnum);
 
@@ -41,6 +52,28 @@ const dismissed = ref(false);
   >
     Another fleet that verifies the RSI organisation MARU can claim it, and your
     fleet's address changes.
+  </Alert>
+
+  <Heading :level="HeadingLevelEnum.H2" mt>With markdown</Heading>
+  <Alert
+    :variant="AlertVariantsEnum.DANGER"
+    :title="t('labels.fleet.fidClaim.incomingTitle', { claimant: 'Maru' })"
+  >
+    <Markdown
+      :source="
+        t('labels.fleet.fidClaim.incoming', {
+          claimant: 'Maru',
+          fid: 'MARU',
+          date: l(claimEndsAt, 'datetime.formats.date'),
+        })
+      "
+    />
+    <template #actions>
+      <Btn :size="BtnSizesEnum.SM" :variant="BtnVariantsEnum.BARE">
+        Verify
+        <i class="fa-light fa-chevron-right" />
+      </Btn>
+    </template>
   </Alert>
 
   <Heading :level="HeadingLevelEnum.H2" mt>With an action</Heading>
