@@ -55,4 +55,4 @@ Fleet events, contracts, tours and fleet invites can be shared from the phone's 
 ## Progress
 
 - [x] Phase 1
-- [ ] Phase 2
+- [x] Phase 2
