@@ -60,6 +60,7 @@ module Api
           )
             .order(@q.result.order_values)
             .includes(:model, :vehicle_loadouts)
+            .preload(:model_modules, :model_upgrades, :public_hangar_groups, user: {avatar_attachment: :blob})
             .joins(model: :manufacturer)
         end
 
