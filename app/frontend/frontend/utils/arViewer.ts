@@ -40,8 +40,13 @@ export const prepareAr = async (
   element.style.display = "none";
   document.body.appendChild(element);
 
-  await element.updateComplete;
-  await nextTask();
+  try {
+    await element.updateComplete;
+    await nextTask();
+  } catch (error) {
+    element.remove();
+    throw error;
+  }
 
   if (!element.canActivateAR) {
     element.remove();
