@@ -121,7 +121,8 @@ const coolingFill = computed(() => Math.min(coolingPercent.value, 100));
 const coolingOver = computed(() => coolingPercent.value > 100);
 
 // Signature readouts (IR / EM / CS). IR + EM are power-reactive;
-// CS is the ship's fixed cross-section per axis. Compact-formatted ("9.8k").
+// CS is the ship's fixed cross-section per axis. All three carry the armor's
+// signature multipliers. Compact-formatted ("9.8k").
 const compact = (value: number) =>
   value >= 1000 ? `${(value / 1000).toFixed(1)}k` : `${Math.round(value)}`;
 const emittedIr = computed(() => sim.value.emittedIr);
@@ -131,7 +132,11 @@ const emittedEm = computed(() => sim.value.emittedEm);
 // x → y → z. Default to the largest axis.
 const CS_AXES = ["x", "y", "z"] as const;
 type CsAxis = (typeof CS_AXES)[number];
-const csValue = (axis: CsAxis) => Math.round(props.crossSection?.[axis] ?? 0);
+const csValue = (axis: CsAxis) =>
+  Math.round(
+    (props.crossSection?.[axis] ?? 0) *
+      sim.value.signatureModifiers.crossSection,
+  );
 const csAxis = ref<CsAxis>(
   CS_AXES.reduce((best, axis) => (csValue(axis) > csValue(best) ? axis : best)),
 );

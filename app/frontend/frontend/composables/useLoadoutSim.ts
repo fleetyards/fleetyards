@@ -17,6 +17,7 @@ import {
   type PowerFamily,
   type PowerPort,
 } from "./powerSim";
+import { findArmor } from "./useArmorStats";
 
 export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
 
@@ -178,7 +179,31 @@ export type LoadoutSimResult = {
   emittedIr: number;
   // Emitted electromagnetic signature at the current allocation.
   emittedEm: number;
+  // The armor's signature multipliers (1 without armor data).
+  signatureModifiers: SignatureModifiers;
 };
+
+export type SignatureModifiers = {
+  em: number;
+  ir: number;
+  crossSection: number;
+};
+
+const multiplier = (value: unknown) => {
+  const n = numeric(value);
+  return n > 0 ? n : 1;
+};
+
+function signatureModifiers(
+  hardpoints: Hardpoint[] | undefined,
+): SignatureModifiers {
+  const armor = findArmor(hardpoints);
+  return {
+    em: multiplier(armor?.signalElectromagnetic),
+    ir: multiplier(armor?.signalInfrared),
+    crossSection: multiplier(armor?.signalCrossSection),
+  };
+}
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
 // pool `maxItemCount`); the rest are unpowered backups. 2 is the game default.
@@ -440,10 +465,13 @@ function heatGeneration(
   return heat;
 }
 
-// The coolers and heat generation the default distribution balances.
+// The coolers and heat generation the default distribution balances. Cooler
+// signatures carry the armor's multipliers, which weigh EM against IR when the
+// coolers are split.
 function heatModel(
   components: HeatComponent[],
   weaponUnits: number,
+  modifiers: SignatureModifiers,
 ): HeatModel {
   return {
     coolers: components
@@ -458,8 +486,8 @@ function heatModel(
             (segments / component.units) *
             rangeModifier(component.ranges, segments);
           return {
-            em: component.emNominal * scale,
-            ir: component.irNominal * scale,
+            em: component.emNominal * scale * modifiers.em,
+            ir: component.irNominal * scale * modifiers.ir,
           };
         },
       })),
@@ -579,6 +607,7 @@ export function simulateLoadoutPower(
   overrides?: PortOverrides,
   shieldMaxItemCount: number = DEFAULT_SHIELD_MAX_ITEM_COUNT,
 ): LoadoutSimResult {
+  const modifiers = signatureModifiers(hardpoints);
   const acc = collectPorts(
     hardpoints,
     {
@@ -610,7 +639,7 @@ export function simulateLoadoutPower(
   // The default distribution (no user input).
   const baseline = allocatePower(ports, segments, {
     ...allocateOpts,
-    heat: heatModel(acc.components, acc.weaponUnits),
+    heat: heatModel(acc.components, acc.weaponUnits, modifiers),
   });
 
   // Once the user assigns pips, pin every untouched component to its baseline
@@ -725,8 +754,9 @@ export function simulateLoadoutPower(
     coolingMaxPerSec: heat.coolingMaxPerSec,
     heatGeneration: heat.heatGeneration,
     coolingRatio: heat.coolingRatio,
-    emittedIr: heat.emittedIr,
-    emittedEm,
+    emittedIr: heat.emittedIr * modifiers.ir,
+    emittedEm: emittedEm * modifiers.em,
+    signatureModifiers: modifiers,
   };
 }
 

@@ -87,7 +87,7 @@ const SIGNATURE_TYPES: {
   },
 ];
 
-function findArmor(
+export function findArmor(
   hardpoints: Hardpoint[] | undefined,
 ): ComponentArmor | undefined {
   for (const hardpoint of hardpoints || []) {
