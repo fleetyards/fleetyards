@@ -38,9 +38,15 @@ const model = (overrides: Partial<Model> = {}): Model =>
     ...overrides,
   }) as Model;
 
-const mount = async (props: { model: Model; active?: boolean }) => {
+const HOLO = "https://fleetyards.test/files/holo.glb";
+
+const mount = async (props: {
+  model: Model;
+  active?: boolean;
+  displayedHoloUrl?: string;
+}) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props: { active: true, ...props },
+    props: { active: true, displayedHoloUrl: HOLO, ...props },
   });
   await flushPromises();
   return wrapper;
@@ -75,6 +81,15 @@ describe("ViewInArBtn", () => {
     await flushPromises();
 
     expect(button(wrapper).exists()).toBe(true);
+  });
+
+  it("hides AR while the 3D view shows another pose's holo", async () => {
+    const wrapper = await mount({
+      model: model(),
+      displayedHoloUrl: "https://fleetyards.test/files/landed.glb",
+    });
+
+    expect(button(wrapper).exists()).toBe(false);
   });
 
   it("hides AR for a holo that is not to scale", async () => {
@@ -135,6 +150,7 @@ describe("ViewInArBtn", () => {
       model: model({
         media: { holo: { url: "https://fleetyards.test/files/other.glb" } },
       } as Partial<Model>),
+      displayedHoloUrl: "https://fleetyards.test/files/other.glb",
     });
     await flushPromises();
     late.resolve(stale);

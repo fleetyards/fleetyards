@@ -21,9 +21,16 @@ type Props = {
   // The 3D view is open. Only then is the viewer fetched: the holo is being
   // downloaded for it anyway, and a page view costs nothing extra.
   active?: boolean;
+  // The holo the 3D view is showing. Only the flight holo carries the
+  // measurement that vouches for its scale, so a landed or extended pose gets
+  // no AR rather than a different pose than the one on screen.
+  displayedHoloUrl?: string;
 };
 
-const props = withDefaults(defineProps<Props>(), { active: false });
+const props = withDefaults(defineProps<Props>(), {
+  active: false,
+  displayedHoloUrl: undefined,
+});
 
 const { t } = useI18n();
 
@@ -41,6 +48,7 @@ const candidate = computed(
     isFeatureEnabled(FeatureFlagName.HOLO_AR) &&
     props.active &&
     !!holoUrl.value &&
+    props.displayedHoloUrl === holoUrl.value &&
     !!props.model.holoToScale &&
     mayHaveAr(),
 );
