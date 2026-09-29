@@ -37,14 +37,14 @@ Two stacked PRs:
 
 ### Phase 3 — API
 1. `POST /fleets/:slug/rsi-verification` generates or rotates the token.
-2. `POST /fleets/:slug/rsi-verification/check` queues the job; returns 429 inside the cooldown.
+2. `POST /fleets/:slug/rsi-verification/check` queues the job; inside the cooldown it answers with the current state and queues nothing.
 3. `GET /fleets/:slug/rsi-verification` returns the status, token and last check.
 4. The policy gates all three on `fleet:manage`.
 5. Schemas and `generate-schema`.
 6. `rsiVerified` on the fleet schemas.
 7. Public jbuilder: `rsi_sid` only when verified.
 8. Admin:
-   - verified column and filter
+   - verified column (the filter was dropped: a column was enough to find one)
    - `DELETE /admin/.../fleets/:id/rsi-verification` to revoke
 
 ### Phase 4 — Frontend
@@ -52,7 +52,7 @@ Two stacked PRs:
    - token with copy
    - link to the RSI org page
    - check button
-   - live result via the channel
+   - the result by polling while the check is pending
 2. The public page (`[slug]/index.vue`) shows the RSI link only when verified, plus a verified or unverified mark.
 3. Settings banner for an SID-shaped FID on an unverified fleet.
 4. Admin fleets list column and a revoke action on the detail page.
@@ -75,7 +75,6 @@ Two stacked PRs:
 | `app/controllers/omniauth_callbacks_controller.rb:204` | `verify_fleet_memberships` SID match |
 | `app/policies/fleet_policy.rb` | `fleet:manage` gate, `params_filter` |
 | `app/lib/rsi/base_loader.rb` | Typhoeus and `RsiRequestLog` pattern |
-| `app/lib/hangar_sync.rb`, `app/channels/hangar_sync_channel.rb` | job-to-cable result pattern |
 | `app/models/notification.rb`, `app/models/fleet_membership.rb:362` | fleet manager notifications |
 | `app/views/api/v1/public/fleets/_base.jbuilder` | public SID exposure |
 | `app/frontend/frontend/pages/fleets/[slug]/settings/fleet.vue` | settings form |
@@ -95,6 +94,8 @@ Two stacked PRs:
 - **2026-09-28** `api/v1/public/fleets/_base.jbuilder` had not been rendered since the Vue 3 migration; the public payload renders the members' partial. Deleted it. The public partial gets its own cache key and a `visitor` flag, because Jbuilder is `ignore_nil`, so assigning nil after the cached block cannot remove the key.
 - **2026-09-28** `[slug].vue` raced the public and members' fleet queries, and a member's settings form could seed itself from the visitor payload. Once the payload hid an unverified SID, the field came up empty. A signed-in reader now falls back to the public payload only once the members' copy is refused.
 - **2026-09-28** The lost-verification notification is app-only in PR 1. The mail comes with FID claims in PR 2, which needs a mailer anyway.
+- **2026-09-29** The fleet page moved to its own "Fleet ID & RSI" settings page. The check runs in a modal, the SID is locked once verified, and every fleet carries a token from creation.
+- **2026-09-29** Fleet `updated_at` keeps whole seconds, so the fleet fragment keys carry `rsi_verified?` as well.
 - **2026-09-28** The data migration cannot reach RSI, so SID-shaped values that RSI answers with 404 are kept. They stay unverified and hidden publicly.
 
 ## Progress
