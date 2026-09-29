@@ -204,4 +204,22 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, headers: oauth_headers_for(user, scopes: ["public"]), body: {discord: "DiscordServer"}
   end
+
+  test "GET /users/me shows a handle verified within the second of the last write" do
+    user = create(:user, rsi_handle: "TestPilot")
+    sign_in user
+
+    with_fragment_caching do
+      travel_to Time.current.change(usec: 100_000) do
+        assert_api_response :get, 200
+        assert_equal false, response.parsed_body["rsiHandleVerified"]
+
+        user.reload.verify_rsi_handle("TestPilot", via: :rsi_profile)
+        user.save!(validate: false, touch: false)
+
+        assert_api_response :get, 200
+        assert_equal true, response.parsed_body["rsiHandleVerified"]
+      end
+    end
+  end
 end

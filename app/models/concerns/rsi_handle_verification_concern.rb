@@ -81,6 +81,12 @@ module RsiHandleVerificationConcern
   end
   # rubocop:enable Rails/SkipsModelValidations
 
+  # updated_at keeps whole seconds, so a check answering within the second of
+  # the request that started it would leave a cached payload unverified.
+  def rsi_handle_verification_cache_key
+    [rsi_handle_verified, rsi_handle_verified_via, rsi_handle_verified_at&.utc&.iso8601(6)]
+  end
+
   def rsi_verification_cooling_down?
     rsi_verification_checked_at.present? &&
       rsi_verification_checked_at > RSI_VERIFICATION_COOLDOWN.ago
