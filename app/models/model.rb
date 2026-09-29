@@ -525,6 +525,10 @@ class Model < ApplicationRecord
 
   after_commit :measure_attached_holos, if: :has_new_holos?
 
+  # A replaced holo is not the file the stamp vouched for: until it is measured
+  # itself, nothing says it is in meters.
+  before_save :forget_replaced_holo_measurements
+
   before_save :update_slugs
 
   before_save :update_from_hardpoints
@@ -789,6 +793,12 @@ class Model < ApplicationRecord
 
   private def has_new_holos?
     new_holo_names.any?
+  end
+
+  private def forget_replaced_holo_measurements
+    HOLO_MEASURED_AT.each do |name, column|
+      self[column] = nil if attachment_changes.key?(name)
+    end
   end
 
   def update_from_hardpoints

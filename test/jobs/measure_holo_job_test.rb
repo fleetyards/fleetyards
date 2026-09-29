@@ -35,6 +35,17 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_operator model.reload.updated_at, :>, 1.minute.ago
   end
 
+  # Until the new file is measured, nothing vouches that it is in meters.
+  test "a replaced holo drops the old measurement's stamp" do
+    model = attach(create(:model), :holo, "plain.gltf")
+    MeasureHoloJob.new.perform(model.id, "holo")
+    assert_not_nil model.reload.dimensions_measured_at
+
+    attach(model, :holo, "rotated.gltf")
+
+    assert_nil model.reload.dimensions_measured_at
+  end
+
   # The fixture is 10 x 1 x 6 -- wider than it is long, like the Corsair with
   # its wings deployed. Sorting the axes would call the 10 the length; the
   # frame the pipeline exports in says the 6 is.
