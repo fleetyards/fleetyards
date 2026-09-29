@@ -611,6 +611,16 @@ class FleetEvent < ApplicationRecord
     self.cover_image_preset = category.to_s
   end
 
+  PRESET_COVER_ROOT = Rails.root.join("app/frontend/images/missions")
+
+  # The art the event shows without an uploaded cover, following the frontend's
+  # useMissionCover chain: the preset someone picked, then the category's own.
+  def preset_cover_file
+    [cover_image_preset.presence, category.to_s.presence].compact
+      .flat_map { |stem| %w[jpg jpeg png].map { |ext| PRESET_COVER_ROOT.join("#{stem}.#{ext}") } }
+      .find(&:exist?)
+  end
+
   def officers_only?
     visibility == "officers"
   end
