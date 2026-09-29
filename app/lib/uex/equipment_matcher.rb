@@ -23,7 +23,12 @@ module Uex
       # UEX spells the colourway "Gray", the game files "Grey".
       1968 => "vgl_armor_light_arms_01_01_10",
       3524 => "vgl_armor_light_helmet_01_01_07",
-      3526 => "vgl_armor_light_core_01_01_10"
+      3526 => "vgl_armor_light_core_01_01_10",
+      # The game files misspell these, and UEX carries no uuid to match on.
+      2918 => "987_pants_01_01_03",
+      2924 => "987_shirt_03_01_18",
+      4049 => "grin_toxic_jumpsuit_01_01_02",
+      4107 => "alb_jacket_05_01_16"
     }.freeze
 
     # The whole build we are on, hidden records included. Weapon skins are hidden
