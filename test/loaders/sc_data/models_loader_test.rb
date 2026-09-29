@@ -12,6 +12,23 @@ module ScData
         clean_loader_tables
       end
 
+      test "#all retires the build and game-file loadout of a model the export dropped" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        kept = create(:model, :in_game, name: "Kept Test")
+        dropped = create(:model, :in_game, name: "Dropped Test")
+        kept_port = create(:hardpoint, parent: kept, source: :game_files)
+        dropped_port = create(:hardpoint, parent: dropped, source: :game_files)
+        loader.stubs(:parsed?).returns(false)
+        loader.stubs(:parsed?).with(kept).returns(true)
+        loader.stubs(:load_model).with(kept).returns(kept.build)
+
+        loader.all
+
+        assert_not_predicate dropped.reload, :in_game?
+        assert_not_includes dropped.hardpoints.in_build, dropped_port
+        assert_includes kept.hardpoints.in_build, kept_port
+      end
+
       test "#one retires the build of a model whose file the build does not ship" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, :in_game, name: "Unlinked Test")
