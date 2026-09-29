@@ -48,7 +48,8 @@ module Admin
         # differently. The detected match is only a suggestion -- the admin says
         # which ship it is, because the export never gives enough to be sure.
         def link
-          @sc_data_unlisted_model.link_to_model!(Model.find(params[:model_id]))
+          target = Model.find(params[:model_id])
+          Loaders::ScData::ModelJob.perform_async(target.id) if @sc_data_unlisted_model.link_to_model!(target)
         rescue ArgumentError => e
           @sc_data_unlisted_model.errors.add(:base, e.message)
 

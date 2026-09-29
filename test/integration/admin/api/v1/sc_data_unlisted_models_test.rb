@@ -335,10 +335,11 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     assert_empty ScDataUnlistedModel.undecided
   end
 
-  # Repointing a ship's identifier at a variant's file would make the loader read
-  # the wrong one, so linking records the answer and leaves `sc_key` alone.
-  test "POST link leaves the linked ship's own identifier alone" do
+  # Left on its slug-derived identifier the ship reads whatever file that names,
+  # or none at all, so a link hands it the identifier and loads it again.
+  test "POST link gives a ship without an sc_key the linked identifier" do
     existing = create(:model, name: "S-65 Stingray", sc_key: nil)
+    Sidekiq::Job.clear_all
 
     sign_in @user
 
@@ -346,7 +347,22 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
       path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
       body: {modelId: existing.id}
 
-    assert_nil existing.reload.sc_key
+    assert_equal "krig_s65_stingray", existing.reload.sc_key
+    assert_equal [existing.id], Loaders::ScData::ModelJob.jobs.map { |job| job["args"].first }
+  end
+
+  test "POST link keeps an sc_key someone already set" do
+    existing = create(:model, name: "S-65 Stingray", sc_key: "krig_stingray")
+    Sidekiq::Job.clear_all
+
+    sign_in @user
+
+    assert_api_response :post, 200,
+      path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
+      body: {modelId: existing.id}
+
+    assert_equal "krig_stingray", existing.reload.sc_key
+    assert_empty Loaders::ScData::ModelJob.jobs
   end
 
   test "POST link refuses a second decision" do
