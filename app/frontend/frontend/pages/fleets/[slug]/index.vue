@@ -118,14 +118,15 @@ const description = computed(() => {
           icon="fa-duotone fa-image"
         />
         <span class="title">
-          {{ fleet.name }} ({{ fleet.fid
-          }}<i
-            v-if="fidVerified"
-            v-tooltip="t('labels.fleet.rsiVerification.verified')"
-            :aria-label="t('labels.fleet.rsiVerification.verified')"
-            class="fa-duotone fa-badge-check text-success fid-verified"
-            data-test="fleet-rsi-verified"
-          />)
+          {{ fleet.name }} (<span class="fid"
+            >{{ fleet.fid
+            }}<i
+              v-if="fidVerified"
+              v-tooltip="t('labels.fleet.rsiVerification.verified')"
+              :aria-label="t('labels.fleet.rsiVerification.verified')"
+              class="fa-duotone fa-badge-check text-success fid__badge"
+              data-test="fleet-rsi-verified" /></span
+          >)
         </span>
       </h1>
       <FidNotice v-if="showFidNotice" :fleet="fleet">
@@ -291,12 +292,19 @@ const description = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-// Sits on the FID rather than beside the name: the FID is what a verification
-// protects, and the name is free text.
-.fid-verified {
-  margin-left: 0.25em;
-  font-size: 0.7em;
-  vertical-align: middle;
+// On the FID's corner rather than beside the name: the FID is what a
+// verification protects, and the name is free text. Absolute, so the title
+// reads the same with or without it. In em, to follow the heading's size.
+.fid {
+  position: relative;
+}
+
+.fid__badge {
+  position: absolute;
+  top: -0.35em;
+  right: -0.75em;
+  font-size: 0.45em;
+  line-height: 1;
 }
 
 .squadrons {
