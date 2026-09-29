@@ -97,8 +97,8 @@ const rsiProfileUrl = computed(
     // is a fixed-size image: in em it grew with whatever text the link sat in,
     // three times its size in the hangar's 30px link row.
     .rsi-profile-link--icon & {
-      transform: translate(25%, -35%);
-      font-size: 12px;
+      transform: translate(50%, -50%);
+      font-size: 13px;
     }
   }
 }
