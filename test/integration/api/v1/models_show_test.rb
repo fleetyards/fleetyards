@@ -227,4 +227,22 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
   test "GET /models/:slug returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
+
+  # Only a holo whose measurement filled the dimensions is exported in meters,
+  # which is what placing it at true size in AR relies on.
+  test "GET /models/:slug says whether its holo is to scale" do
+    measured = create(:model)
+    measured.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "plain.glb")
+    measured.update_columns(dimensions_measured_at: Time.current)
+    unmeasured = create(:model)
+    unmeasured.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "plain.glb")
+    without_holo = create(:model)
+    without_holo.update_columns(dimensions_measured_at: Time.current)
+
+    {measured => true, unmeasured => false, without_holo => false}.each do |model, expected|
+      assert_api_response :get, 200, path_params: {slug: model.slug} do
+        assert_equal expected, parsed_body["holoToScale"], model.slug
+      end
+    end
+  end
 end

@@ -56,6 +56,10 @@ json.manufacturer do
   json.partial! "api/v1/manufacturers/base", manufacturer: model.manufacturer
 end
 
+# The flying holo is exported in meters exactly when its measurement filled the
+# model's dimensions, which is what lets it be placed at true size in AR.
+json.holo_to_scale model.holo.attached? && model.dimensions_measured_at.present?
+
 json.media({})
 json.media do
   json.angled_view do
