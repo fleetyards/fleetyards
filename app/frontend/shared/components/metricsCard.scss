@@ -254,6 +254,12 @@
       text-transform: uppercase;
       color: $gray-light;
       margin-bottom: 7px;
+
+      // Three tiles share a phone's width, and at this size the wide tracking
+      // pushed "INVENTORY" into the tile's edge.
+      @media (max-width: 576px) {
+        letter-spacing: 0.1em;
+      }
     }
 
     &__value {
