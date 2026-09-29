@@ -520,6 +520,7 @@ const crumbs = computed<Crumb[]>(() => [
       :bg-rounded="PanelRoundedEnum.TOP"
       :tone="statusTone"
       class="event-detail__hero"
+      :class="{ 'event-detail__hero--calendar': icsDownloadUrl }"
     >
       <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
         <template #default>
@@ -816,6 +817,16 @@ const crumbs = computed<Crumb[]>(() => [
 
 .event-detail__calendar :deep(.btn) {
   backdrop-filter: blur(6px) brightness(0.45);
+}
+
+/* Keeps a long title clear of the calendar button above it: icon-only on a
+   phone, labelled on a desktop. */
+.event-detail__hero--calendar :deep(.panel-heading) {
+  padding-right: 200px;
+
+  @media (max-width: 992px) {
+    padding-right: 66px;
+  }
 }
 .event-hero__tz {
   font-size: 0.85em;
