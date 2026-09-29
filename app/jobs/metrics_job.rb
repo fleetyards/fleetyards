@@ -26,6 +26,11 @@ class MetricsJob < ApplicationJob
   # settled well within this.
   VISIT_RECOMPUTE = 2.days
 
+  # The oldest day whose visits and events are all still there.
+  def self.cleanup_floor
+    (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
+  end
+
   def perform
     User.rollup("Registrations", interval: "month")
     User.rollup("Registrations", interval: "year")
@@ -49,12 +54,35 @@ class MetricsJob < ApplicationJob
     track_api_usage
   end
 
+  # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
+  # a monthly total, so per-ship views are gone before anything can read them.
+  # A ship counts once per visit: every tab on a ship page is a view of its own,
+  # so counting views would rank ships by how many tabs people click through.
+  # Public so every retained day can be rebuilt (`since:` the cleanup cutoff)
+  # without running the other rollups, which consume counters as they go.
+  def track_ship_views(since: nil)
+    scope = page_views.where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
+
+    rebuild_recent_days(ROLLUP_SHIP_VIEWS, since:) do |range|
+      scope.group(SHIP_VIEW_SLUG).rollup(
+        ROLLUP_SHIP_VIEWS,
+        interval: "day",
+        column: :time,
+        range:,
+        # The gem derives a dimension name from the grouped column and only
+        # accepts a bare word, which an expression is not.
+        dimension_names: ["model_slug"]
+      ) { |views| views.distinct.count(:visit_id) }
+    end
+  end
+
   private
 
   # `Cleanup::VisitsJob` writes the monthly total under the same name, but it
   # runs once a month, which no per-day chart can be built on. The day interval
-  # is the only safe one here for the reason `track_ship_views` gives: a visit
-  # is purged after a month, and a day is always complete before that happens.
+  # is the only safe one here: the gem recomputes from the newest stored interval
+  # onward, so a monthly rollup would recompute a half-purged month down to a
+  # wrong number, while a day is always complete by the time it is purged.
   def track_visits
     visits = Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
 
@@ -76,11 +104,10 @@ class MetricsJob < ApplicationJob
   # the gem's own resume point. The window never reaches past the cleanup cutoff:
   # every visit newer than that is always still there, and an older day may be
   # partly purged, so its stored counts are all that is left.
-  def rebuild_recent_days(name)
+  def rebuild_recent_days(name, since: nil)
     stored = Rollup.where(name:, interval: "day")
-    floor = (Cleanup::VisitsJob::RETENTION.ago + 1.day).to_date
     latest = stored.maximum(:time)&.to_date
-    start = [floor, [latest, VISIT_RECOMPUTE.ago.to_date].compact.min].max
+    start = [self.class.cleanup_floor, since || [latest, VISIT_RECOMPUTE.ago.to_date].compact.min].max
     range = start.in_time_zone(Rollup.time_zone)..Time.current
 
     Rollup.transaction do
@@ -90,26 +117,6 @@ class MetricsJob < ApplicationJob
 
       yield range
     end
-  end
-
-  # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
-  # a monthly total, so per-ship views are gone before anything can read them.
-  # The interval is deliberately `day`: the gem recomputes from the newest stored
-  # interval onward, so a monthly rollup would recompute a half-purged month down
-  # to a wrong number, while a day is always complete by the time it is purged.
-  def track_ship_views
-    scope = page_views.where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
-
-    # Counted once per visit: every tab on a ship page is a view of its own, so
-    # counting views would rank ships by how many tabs people click through.
-    scope.group(SHIP_VIEW_SLUG).rollup(
-      ROLLUP_SHIP_VIEWS,
-      interval: "day",
-      column: :time,
-      # The gem derives a dimension name from the grouped column and only accepts
-      # a bare word, which an expression is not.
-      dimension_names: ["model_slug"]
-    ) { |views| views.distinct.count(:visit_id) }
   end
 
   # A view is counted under the visit's install state, which a later view of the
