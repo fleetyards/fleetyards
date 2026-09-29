@@ -21,11 +21,13 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FilterOption,
   type UserUpdateInput,
+  RsiHandleVerifiedViaEnum,
   UserDateFormatEnum,
 } from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 
@@ -81,6 +83,31 @@ const rsiHandleVerified = computed(
 const citizenIdConnected = computed(() =>
   sessionStore.currentUser?.authConnections?.includes("citizenid"),
 );
+
+const rsiHandleVerifiedViaProfile = computed(
+  () =>
+    sessionStore.currentUser?.rsiHandleVerifiedVia ===
+    RsiHandleVerifiedViaEnum.RSI_PROFILE,
+);
+
+const rsiHandleVerifiedLabel = computed(() =>
+  rsiHandleVerifiedViaProfile.value
+    ? t("labels.user.rsiHandleVerifiedViaProfile")
+    : t("labels.user.rsiHandleVerified"),
+);
+
+// The check reads the saved handle, so one still being typed has nothing to
+// verify yet.
+const canVerifyRsiHandle = computed(
+  () => !!sessionStore.currentUser?.rsiHandle && !rsiHandleVerified.value,
+);
+
+const openRsiVerification = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/RsiHandleVerificationModal/index.vue"),
+  });
+};
 
 watch(
   () => sessionStore.currentUser,
@@ -218,21 +245,43 @@ const onSubmit = handleSubmit(async (values) => {
             :disabled="rsiHandleVerified"
           >
             <template v-if="rsiHandleVerified" #suffix>
+              <button
+                v-if="rsiHandleVerifiedViaProfile"
+                type="button"
+                class="rsi-handle-badge"
+                :aria-label="rsiHandleVerifiedLabel"
+                data-test="rsi-handle-verified-badge"
+                @click="openRsiVerification"
+              >
+                <i
+                  v-tooltip="rsiHandleVerifiedLabel"
+                  class="fa-duotone fa-badge-check text-success"
+                />
+              </button>
               <a
+                v-else
                 :href="sessionStore.currentUser?.citizenidProfileUrl"
-                :aria-label="t('labels.user.rsiHandleVerified')"
+                :aria-label="rsiHandleVerifiedLabel"
                 target="_blank"
                 rel="noopener"
               >
                 <i
-                  v-tooltip="t('labels.user.rsiHandleVerified')"
+                  v-tooltip="rsiHandleVerifiedLabel"
                   class="fa-duotone fa-badge-check text-success"
                 />
               </a>
             </template>
           </FormInput>
+          <Btn
+            v-if="canVerifyRsiHandle"
+            :size="BtnSizesEnum.SM"
+            data-test="rsi-handle-verify"
+            @click="openRsiVerification"
+          >
+            {{ t("actions.user.rsiVerification.verify") }}
+          </Btn>
           <OauthBtn
-            v-if="!citizenIdConnected"
+            v-if="!citizenIdConnected && !rsiHandleVerified"
             :provider="OauthBtnProvidersEnum.CITIZENID"
             :size="BtnSizesEnum.SM"
             inline
@@ -333,3 +382,13 @@ const onSubmit = handleSubmit(async (values) => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+.rsi-handle-badge {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+</style>

@@ -1542,6 +1542,26 @@
         },
         "rsiHandle": "使用者名",
         "rsiHandleVerified": "已透過 Citizen iD 驗證",
+        "rsiHandleVerifiedViaProfile": "已透過 RSI 個人資料驗證",
+        "rsiVerification": {
+          "title": "驗證你的 RSI 使用者名",
+          "token": "驗證碼",
+          "verifiedSince": "自 %{date} 起已驗證",
+          "nextCheck": "一分鐘後可以再次檢查。",
+          "openProfileSettings": "編輯你的 RSI 個人資料",
+          "steps": {
+            "copy": "複製你的驗證碼",
+            "paste": "將它貼到你的 RSI 個人資料的簡介中。使用者名驗證後即可將其刪除。",
+            "check": "檢查 %{handle} 的公民頁面"
+          },
+          "statuses": {
+            "pending": "正在檢查你的公民頁面…",
+            "token_missing": "你的簡介中還沒有該驗證碼。RSI 可能需要幾分鐘才會顯示修改。",
+            "handle_mismatch": "RSI 回傳的頁面屬於另一個使用者名。",
+            "not_found": "RSI 上沒有使用此使用者名的公民。",
+            "failed": "無法檢查你的公民頁面。請一分鐘後重試。"
+          }
+        },
         "location": "位置",
         "currentSystem": "目前星系",
         "tester": "測試者?",

@@ -149,6 +149,15 @@
         "deny": "拒絕"
       },
       "verifyWithCitizenId": "使用 Citizen iD 驗證",
+      "user": {
+        "rsiVerification": {
+          "verify": "透過 RSI 個人資料驗證",
+          "check": "立即檢查",
+          "copyToken": "複製驗證碼",
+          "regenerateToken": "產生新的驗證碼",
+          "remove": "移除驗證"
+        }
+      },
       "oauth": {
         "signInWith": "透過以下方式登入",
         "google": "Google",

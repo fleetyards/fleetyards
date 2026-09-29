@@ -1542,6 +1542,26 @@
         },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Über Citizen iD verifiziert",
+        "rsiHandleVerifiedViaProfile": "Über das RSI-Profil verifiziert",
+        "rsiVerification": {
+          "title": "RSI-Handle verifizieren",
+          "token": "Verifizierungscode",
+          "verifiedSince": "Verifiziert seit %{date}",
+          "nextCheck": "Du kannst in einer Minute erneut prüfen.",
+          "openProfileSettings": "RSI-Profil bearbeiten",
+          "steps": {
+            "copy": "Kopiere deinen Verifizierungscode",
+            "paste": "Füge ihn in die Kurzbiografie deines RSI-Profils ein. Sobald dein Handle verifiziert ist, kannst du ihn wieder entfernen.",
+            "check": "Prüfe die Bürgerseite von %{handle}"
+          },
+          "statuses": {
+            "pending": "Deine Bürgerseite wird geprüft…",
+            "token_missing": "Der Code steht noch nicht in deiner Biografie. RSI kann einige Minuten brauchen, bis eine Änderung sichtbar ist.",
+            "handle_mismatch": "Die Seite, die RSI geliefert hat, gehört zu einem anderen Handle.",
+            "not_found": "RSI kennt keinen Bürger mit diesem Handle.",
+            "failed": "Deine Bürgerseite konnte nicht geprüft werden. Versuche es in einer Minute erneut."
+          }
+        },
         "location": "Standort",
         "currentSystem": "Aktuelles Sternensystem",
         "tester": "Tester?",

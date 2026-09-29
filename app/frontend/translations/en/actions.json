@@ -149,6 +149,15 @@
         "deny": "Deny"
       },
       "verifyWithCitizenId": "Verify with Citizen iD",
+      "user": {
+        "rsiVerification": {
+          "verify": "Verify via RSI profile",
+          "check": "Check now",
+          "copyToken": "Copy token",
+          "regenerateToken": "Generate new token",
+          "remove": "Remove verification"
+        }
+      },
       "oauth": {
         "signInWith": "Sign in with",
         "google": "Google",

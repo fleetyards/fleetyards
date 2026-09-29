@@ -1542,6 +1542,26 @@
         },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Verified via Citizen iD",
+        "rsiHandleVerifiedViaProfile": "Verified via RSI profile",
+        "rsiVerification": {
+          "title": "Verify your RSI handle",
+          "token": "Verification token",
+          "verifiedSince": "Verified since %{date}",
+          "nextCheck": "You can check again in a minute.",
+          "openProfileSettings": "Edit your RSI profile",
+          "steps": {
+            "copy": "Copy your verification token",
+            "paste": "Paste it into the short bio on your RSI profile. You can remove it once your handle is verified.",
+            "check": "Check the citizen page of %{handle}"
+          },
+          "statuses": {
+            "pending": "Checking your citizen page…",
+            "token_missing": "The token is not in your bio yet. RSI can take a few minutes to show an edit.",
+            "handle_mismatch": "The page RSI returned belongs to a different handle.",
+            "not_found": "RSI has no citizen with this handle.",
+            "failed": "Your citizen page could not be checked. Try again in a minute."
+          }
+        },
         "location": "Location",
         "currentSystem": "Current Star System",
         "tester": "Tester?",

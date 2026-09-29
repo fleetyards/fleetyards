@@ -6,6 +6,7 @@ import {
   type User,
   me as fetchMe,
   destroySession,
+  getMyRsiVerificationQueryKey,
   getMySupporterClaimKeyQueryKey,
   getHangarAllInventoryStockQueryKey,
   getMyFleetsQueryKey,
@@ -119,6 +120,9 @@ export const useSessionStore = defineStore("session", {
         predicate: (query) =>
           query.queryKey[0] === "fleets" && query.queryKey[2] === "blueprints",
       });
+
+      // The reader's own RSI verification, token included.
+      queryClient.removeQueries({ queryKey: getMyRsiVerificationQueryKey() });
 
       // A manager's view of the fleet's RSI verification, token included.
       queryClient.removeQueries({
