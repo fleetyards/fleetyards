@@ -13,13 +13,17 @@
   margin-bottom: 20px;
   border-radius: 10px;
   // One fill for every variant: the edge, the caps and the icon carry the
-  // meaning, so a page with two notices reads as one kind of surface. Tinted
-  // from the panel surface rather than from nothing, so the page's background
-  // image does not show through the text.
+  // meaning, so a page with two notices reads as one kind of surface. Half the
+  // panel surface: enough that the background image does not fight the text,
+  // light enough that a notice still reads as lighter than a panel.
   background: color-mix(
     in srgb,
     var(--color-muted, #{$gray-light}) 12%,
-    var(--color-surface, rgb(39 43 48 / 0.9))
+    color-mix(
+      in srgb,
+      var(--color-surface, rgb(39 43 48 / 0.9)) 55%,
+      transparent
+    )
   );
   border: 1px solid color-mix(in srgb, var(--alert-tone) 45%, transparent);
   line-height: 1.45;
