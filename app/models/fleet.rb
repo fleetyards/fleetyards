@@ -251,6 +251,12 @@ class Fleet < ApplicationRecord
     self.normalized_fid = fid&.downcase
   end
 
+  # For fragment keys: `updated_at` keeps whole seconds, and two verifications
+  # inside one second -- even of two different SIDs -- must not share a key.
+  def rsi_verification_cache_key
+    [rsi_verified_sid, rsi_verified_at&.utc&.iso8601(6)]
+  end
+
   def rsi_verified?
     rsi_verified_at.present? && rsi_sid.present? && rsi_verified_sid == rsi_sid
   end

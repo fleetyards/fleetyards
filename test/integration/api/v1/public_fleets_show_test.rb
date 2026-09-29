@@ -88,6 +88,20 @@ class Api::V1::PublicFleetsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/fleets/:slug does not serve the last verified SID after a switch within the second" do
+    fleet = create(:fleet, rsi_sid: "OLD")
+    fleet.update_columns(rsi_verified_at: 1.second.ago, rsi_verified_sid: "OLD") # rubocop:disable Rails/SkipsModelValidations
+    with_fragment_caching do
+      assert_api_response :get, 200, path_params: {slug: fleet.slug}
+      assert_equal "OLD", response.parsed_body["rsiSid"]
+
+      fleet.update_columns(rsi_sid: "NEW", rsi_verified_at: Time.current, rsi_verified_sid: "NEW", updated_at: fleet.updated_at) # rubocop:disable Rails/SkipsModelValidations
+
+      assert_api_response :get, 200, path_params: {slug: fleet.slug}
+      assert_equal "NEW", response.parsed_body["rsiSid"]
+    end
+  end
+
   test "GET /public/fleets/:slug lists the features switched on for the fleet" do
     fleet = create(:fleet)
     Flipper.enable("fleet_squadrons", fleet)
