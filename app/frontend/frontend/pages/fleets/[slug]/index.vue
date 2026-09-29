@@ -299,14 +299,16 @@ const description = computed(() => {
   position: relative;
 }
 
-// Overlaps the FID's last letter, so it reads as marking that FID. Opaque:
+// Centred on the FID's right edge, so it overlaps the last letter and reads
+// as marking that FID whatever its size. Opaque:
 // the duotone badge's own secondary layer is translucent, and the letter
 // underneath showed through it. The check is cut out in the page colour.
 .fid__badge {
   position: absolute;
   z-index: 1;
-  top: -0.25em;
-  right: -0.35em;
+  top: 0;
+  right: 0;
+  transform: translate(50%, 0);
   font-size: 0.45em;
   line-height: 1;
   --fa-primary-color: var(--color-background, #000);
