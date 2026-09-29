@@ -240,11 +240,53 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_equal 0, Rollup.where(name: MetricsJob::ROLLUP_VISITS_BY_OS).count
   end
 
-  private def visit_on(time, user: nil, os: nil, installed: false)
+  test "#perform rolls up page views per day by device, OS and installed" do
+    phone = visit_on(2.days.ago, os: "iOS", device_type: "Smartphone", installed: true)
+    2.times { view_on(phone, "/fleets/") }
+    view_on(visit_on(2.days.ago, os: "Windows", device_type: "Desktop"), "/hangar/")
+
+    MetricsJob.new.perform
+
+    assert_equal 2, views_by_device_on(2.days.ago, device_type: "Smartphone", os: "iOS", installed: true)
+    assert_equal 1, views_by_device_on(2.days.ago, device_type: "Desktop", os: "Windows", installed: false)
+  end
+
+  test "#perform moves a visit's views once it is flagged installed" do
+    visit = visit_on(Time.current, os: "Android", device_type: "Smartphone")
+    view_on(visit, "/")
+    MetricsJob.new.perform
+
+    visit.update!(installed: true)
+    MetricsJob.new.perform
+
+    assert_equal 1, views_by_device_on(Time.current, device_type: "Smartphone", os: "Android", installed: true)
+    assert_equal 0, views_by_device_on(Time.current, device_type: "Smartphone", os: "Android", installed: false)
+  end
+
+  test "#perform leaves views by a user who objected to tracking out of the device rollup" do
+    objector = create(:user, tracking: false)
+    view_on(visit_on(2.days.ago, user: objector, os: "iOS", device_type: "Smartphone"), "/")
+
+    MetricsJob.new.perform
+
+    assert_equal 0, Rollup.where(name: MetricsJob::ROLLUP_VIEWS_BY_DEVICE).count
+  end
+
+  test "#perform counts only page views in the device rollup" do
+    visit = visit_on(2.days.ago, os: "iOS", device_type: "Smartphone")
+    Ahoy::Event.create!(visit:, name: "$submit", properties: {}, time: visit.started_at)
+
+    MetricsJob.new.perform
+
+    assert_equal 0, Rollup.where(name: MetricsJob::ROLLUP_VIEWS_BY_DEVICE).count
+  end
+
+  private def visit_on(time, user: nil, os: nil, device_type: nil, installed: false)
     Ahoy::Visit.create!(
       started_at: time,
       user:,
       os:,
+      device_type:,
       installed:,
       visit_token: SecureRandom.uuid,
       visitor_token: SecureRandom.uuid
@@ -261,6 +303,25 @@ class MetricsJobTest < ActiveJob::TestCase
       interval: "day",
       time: time.to_date,
       dimensions: {os:, installed:}
+    ).sum(:value)
+  end
+
+  private def view_on(visit, page)
+    Ahoy::Event.create!(
+      visit:,
+      user_id: visit.user_id,
+      name: "$view",
+      properties: {"page" => page},
+      time: visit.started_at
+    )
+  end
+
+  private def views_by_device_on(time, device_type:, os:, installed:)
+    Rollup.where(
+      name: MetricsJob::ROLLUP_VIEWS_BY_DEVICE,
+      interval: "day",
+      time: time.to_date,
+      dimensions: {device_type:, os:, installed:}
     ).sum(:value)
   end
 

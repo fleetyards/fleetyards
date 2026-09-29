@@ -18,6 +18,10 @@ class MetricsJob < ApplicationJob
   # of installed use per platform can be read back after the visits are purged.
   ROLLUP_VISITS_BY_OS = "Visits by OS"
 
+  # Page views per device, OS and install state, which says which pages get used
+  # on a phone and from the installed app once the events behind it are purged.
+  ROLLUP_VIEWS_BY_DEVICE = "Views by device"
+
   # A visit's installed flag can only change while the visit lasts, so a day is
   # settled well within this.
   VISIT_RECOMPUTE = 2.days
@@ -38,6 +42,7 @@ class MetricsJob < ApplicationJob
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "month")
 
     track_ship_views
+    track_views_by_device
     track_visits
     track_wishlist_by_model
     track_ship_of_the_month
@@ -103,6 +108,23 @@ class MetricsJob < ApplicationJob
       # a bare word, which an expression is not.
       dimension_names: ["model_slug"]
     )
+  end
+
+  # A view is counted under the visit's install state, which a later view of the
+  # same visit can still flip, so its days are rebuilt like `Visits by OS`.
+  def track_views_by_device
+    rebuild_recent_days(ROLLUP_VIEWS_BY_DEVICE) do |range|
+      page_views.joins(:visit)
+        .where.not(ahoy_visits: {installed: nil})
+        .group("ahoy_visits.device_type", "ahoy_visits.os", "ahoy_visits.installed")
+        .rollup(
+          ROLLUP_VIEWS_BY_DEVICE,
+          interval: "day",
+          column: "ahoy_events.time",
+          range:,
+          dimension_names: ["device_type", "os", "installed"]
+        )
+    end
   end
 
   # `Ahoy.exclude_method` already refuses to record an objecting user, so this
