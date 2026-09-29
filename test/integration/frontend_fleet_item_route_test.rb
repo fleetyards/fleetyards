@@ -50,6 +50,14 @@ class FrontendFleetItemPreviewTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "Secret op"
   end
 
+  # The icon is transparent, and platforms that paint a preview on white turn it
+  # into a grey circle on a white square.
+  test "a page without an image of its own previews with the opaque default" do
+    get "/fleets/#{@fleet.slug}/contracts/unknown"
+
+    assert_match %r{images/og/default\.jpg}, response.body[/<meta property="og:image" content="([^"]*)"/, 1].to_s
+  end
+
   test "a draft contract's preview does not name it" do
     contract = create(:fleet_contract, fleet: @fleet, title: "Ore run")
 
