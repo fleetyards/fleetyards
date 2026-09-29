@@ -299,10 +299,11 @@ const description = computed(() => {
   position: relative;
 }
 
+// Overlaps the FID's last letter, so it reads as marking that FID.
 .fid__badge {
   position: absolute;
-  top: -0.35em;
-  right: -0.75em;
+  top: -0.25em;
+  right: -0.35em;
   font-size: 0.45em;
   line-height: 1;
 }
