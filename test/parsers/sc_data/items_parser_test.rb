@@ -123,7 +123,23 @@ module ScData
         assert_not File.exist?("#{@base_folder}/parsed/test/items/controller_light.json")
       end
 
-      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor")
+      test "reads the armor's signature multipliers off its params" do
+        write_item(
+          "armr_signals",
+          name: "@item_NameSignals",
+          components: <<~XML
+            <SCItemVehicleArmorParams signalInfrared="1.13" signalElectromagnetic="1.09" signalCrossSection="1.05" />
+          XML
+        )
+
+        type_data = parsed_item("armr_signals")["type_data"]
+
+        assert_in_delta 1.13, type_data["signal_infrared"]
+        assert_in_delta 1.09, type_data["signal_electromagnetic"]
+        assert_in_delta 1.05, type_data["signal_cross_section"]
+      end
+
+      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", components: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
         FileUtils.mkdir_p(folder)
@@ -136,6 +152,7 @@ module ScData
                   <Localization Name="#{name}" ShortName="#{short_name}" Description="#{description}" />
                 </AttachDef>
               </SAttachableComponentParams>
+              #{components}
             </Components>
           </EntityClassDefinition.#{key}>
         XML

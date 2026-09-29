@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_28_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2170,6 +2170,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_130000) do
     t.uuid "model_id"
     t.string "name"
     t.datetime "updated_at", null: false
+    t.boolean "claimed_sc_key", default: false, null: false
     t.index ["base_model_id"], name: "index_sc_data_unlisted_models_on_base_model_id"
     t.index ["decision"], name: "index_sc_data_unlisted_models_on_decision"
     t.index ["identifier"], name: "index_sc_data_unlisted_models_on_identifier", unique: true

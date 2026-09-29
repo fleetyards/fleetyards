@@ -3,17 +3,21 @@ import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
 import {
   allocatePower,
   componentBlocks,
+  criticalSize,
   POWER_FAMILIES,
   totalSegments,
   weaponPoolBlocks,
   weaponPoolRatio,
   WEAPON_POOL_PORT,
+  type Allocation,
   type AllocationState,
   type FlightMode,
+  type HeatModel,
   type PortOverrides,
   type PowerFamily,
   type PowerPort,
 } from "./powerSim";
+import { findArmor } from "./useArmorStats";
 
 export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
 
@@ -50,7 +54,7 @@ const GROUPED_FAMILIES = new Set<PowerFamily>([
 ]);
 
 // Families that emit extra component heat on top of their active segments
-// (erkul's `l` term in the heat-generation sum): shields, life support, radar
+// in the heat-generation sum: shields, life support, radar
 // and the quantum drive.
 const EXTRA_HEAT_FAMILIES = new Set<PowerFamily>([
   "shield",
@@ -59,13 +63,13 @@ const EXTRA_HEAT_FAMILIES = new Set<PowerFamily>([
   "qdrive",
 ]);
 
-// Families whose active segments generate no heat load (matching erkul, where
-// powering the tractor/towing beams doesn't change the cooling ratio).
+// Families whose active segments generate no heat load (powering the
+// tractor/towing beams doesn't change the cooling ratio).
 const NON_HEAT_FAMILIES = new Set<PowerFamily>(["tractorBeam", "towingbeam"]);
 
 // A component's power-range modifier curve — `{start, modifier}` breakpoints
 // sorted ascending by `start`. The modifier for a given active-segment count is
-// the entry with the greatest `start` ≤ segments (erkul's `L`), default 1.
+// the entry with the greatest `start` ≤ segments, default 1.
 type PowerRange = { start: number; modifier: number };
 
 function toRanges(raw: unknown): PowerRange[] {
@@ -87,12 +91,14 @@ function rangeModifier(ranges: PowerRange[], segments: number): number {
 
 // A power-drawing component captured for the heat pass: its allocated segments
 // come from the allocation state (by portPath). Coolers additionally carry the
-// coolant they produce at full power (`coolingRate`); `irNominal` is the
-// component's infrared signature emission at full power.
+// coolant they produce at full power (`coolingRate`) and only run at or above
+// their mandatory `floor`; `irNominal` is the component's infrared signature
+// emission at full power.
 type HeatComponent = {
   portPath: string;
   family: PowerFamily;
   units: number;
+  floor: number;
   ranges: PowerRange[];
   coolingRate: number;
   irNominal: number;
@@ -112,8 +118,8 @@ type PowerPlant = {
 // A weapon's EM contribution (per-weapon nominal + its power-range curve).
 type WeaponEmSource = { emNominal: number; ranges: PowerRange[] };
 
-// FleetYards hardpoint category → erkul power family. Only the families erkul
-// feeds power segments to are mapped; every other category (thrusters, fuel,
+// FleetYards hardpoint category → power family. Only the families that take
+// power segments are mapped; every other category (thrusters, fuel,
 // cargo, seats, …) draws no segments. A mapped component still contributes
 // ports only when it actually declares a Power draw (`powerConsumption`).
 export const POWER_FAMILY_BY_CATEGORY: Partial<
@@ -163,7 +169,7 @@ export type LoadoutSimResult = {
   aimAssistMax: number;
   // Heat: coolant produced per second at the current allocation, the maximum
   // coolers could produce, the heat generated, and the cooling load — heat ÷
-  // coolant (erkul's `coolingRatio`, uncapped so > 1 when under-cooled; 0 with
+  // coolant (`coolingRatio`, uncapped so > 1 when under-cooled; 0 with
   // no active cooler). It also drives the IR signature.
   coolingPerSec: number;
   coolingMaxPerSec: number;
@@ -173,7 +179,29 @@ export type LoadoutSimResult = {
   emittedIr: number;
   // Emitted electromagnetic signature at the current allocation.
   emittedEm: number;
+  // The armor's signature multipliers (1 without armor data).
+  signatureModifiers: SignatureModifiers;
 };
+
+export type SignatureModifiers = {
+  em: number;
+  ir: number;
+  crossSection: number;
+};
+
+// A missing multiplier leaves the signature as it is; a zero masks it.
+const multiplier = (value: unknown) => (value == null ? 1 : numeric(value));
+
+function signatureModifiers(
+  hardpoints: Hardpoint[] | undefined,
+): SignatureModifiers {
+  const armor = findArmor(hardpoints);
+  return {
+    em: multiplier(armor?.signalElectromagnetic),
+    ir: multiplier(armor?.signalInfrared),
+    crossSection: multiplier(armor?.signalCrossSection),
+  };
+}
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
 // pool `maxItemCount`); the rest are unpowered backups. 2 is the game default.
@@ -260,6 +288,7 @@ function collectPorts(
               portPath: hardpoint.id,
               family,
               units: draw,
+              floor: criticalSize(draw, minimumFraction),
               ranges: toRanges(typeData.powerRanges),
               coolingRate:
                 family === "coolers" ? numeric(typeData.coolingRate) : 0,
@@ -401,15 +430,84 @@ function buildColumns(
   );
 }
 
-// Heat pass (erkul's `Ze`/`G`): coolers turn active power segments into coolant;
-// every powered component generates heat. `coolingRatio` is the cooling *load* —
-// heat generated ÷ coolant provided — so it rises above 1 when the active
-// coolers can't keep up, and is 0 when no cooler is powered (there is no active
+// Coolant a cooler produces at `segments` active segments; nothing below its
+// floor.
+function coolerOutput(component: HeatComponent, segments: number): number {
+  const active = Math.min(segments, component.units);
+  if (component.floor <= 0 || active < component.floor) return 0;
+  return (
+    component.coolingRate *
+    (active / component.units) *
+    rangeModifier(component.ranges, active)
+  );
+}
+
+// Heat generated per second: every powered segment except the weapons and the
+// heat-free families, the weapons at no more than their raw draw, plus the
+// extra heat of shields, life support, radar and the quantum drive.
+function heatGeneration(
+  components: HeatComponent[],
+  weaponUnits: number,
+  { perPort, perFamily }: Allocation,
+): number {
+  let heat = Math.min(perFamily.weapon, weaponUnits);
+  for (const family of POWER_FAMILIES) {
+    if (family === "weapon" || NON_HEAT_FAMILIES.has(family)) continue;
+    heat += perFamily[family];
+  }
+  for (const component of components) {
+    if (!EXTRA_HEAT_FAMILIES.has(component.family)) continue;
+    const active = perPort[component.portPath] ?? 0;
+    if (active > 0) heat += active * rangeModifier(component.ranges, active);
+  }
+  return heat;
+}
+
+// The coolers and heat generation the default distribution balances. Cooler
+// signatures carry the armor's multipliers, which weigh EM against IR when the
+// coolers are split.
+function heatModel(
+  components: HeatComponent[],
+  weaponUnits: number,
+  modifiers: SignatureModifiers,
+): HeatModel {
+  return {
+    // A cooler with no coolant output cannot cool; balancing against it would
+    // only shed power from everything else.
+    coolers: components
+      .filter(
+        (component) =>
+          component.family === "coolers" && component.coolingRate > 0,
+      )
+      .map((component) => ({
+        portPath: component.portPath,
+        units: component.units,
+        floor: component.floor,
+        cooling: (segments) => coolerOutput(component, segments),
+        signature: (segments) => {
+          const scale =
+            (segments / component.units) *
+            rangeModifier(component.ranges, segments);
+          return {
+            em: component.emNominal * scale * modifiers.em,
+            ir: component.irNominal * scale * modifiers.ir,
+          };
+        },
+      })),
+    generation: (allocation) =>
+      heatGeneration(components, weaponUnits, allocation),
+  };
+}
+
+// Heat pass: coolers turn active power segments into coolant; every powered
+// component generates heat. `coolingRatio` is the cooling *load* — heat
+// generated ÷ coolant provided — so it rises above 1 when the active coolers
+// can't keep up, and is 0 when no cooler is powered (there is no active
 // cooling system to load). It also drives the IR signature.
 function computeHeat(
   components: HeatComponent[],
-  usedSegments: number,
-  perPort: Record<string, number>,
+  weaponUnits: number,
+  allocation: Allocation,
 ): {
   coolingPerSec: number;
   coolingMaxPerSec: number;
@@ -419,52 +517,43 @@ function computeHeat(
 } {
   let coolingPerSec = 0;
   let coolingMaxPerSec = 0;
-  let extraHeat = 0;
-  let nonHeatSegments = 0;
   let irRaw = 0;
 
   for (const component of components) {
-    const active = perPort[component.portPath] ?? 0;
-    if (component.family === "coolers" && component.units > 0) {
-      const modifier = rangeModifier(component.ranges, active);
-      coolingPerSec +=
-        component.coolingRate * (active / component.units) * modifier;
-      coolingMaxPerSec +=
-        component.coolingRate *
-        rangeModifier(component.ranges, component.units);
-      // IR is emitted by the active coolers (erkul's `gr` over heat sources).
-      if (active > 0) {
-        irRaw += component.irNominal * (active / component.units) * modifier;
-      }
-    }
-    if (active > 0 && EXTRA_HEAT_FAMILIES.has(component.family)) {
-      extraHeat += active * rangeModifier(component.ranges, active);
-    }
-    if (NON_HEAT_FAMILIES.has(component.family)) {
-      nonHeatSegments += active;
+    if (component.family !== "coolers" || component.units <= 0) continue;
+    const active = allocation.perPort[component.portPath] ?? 0;
+    const output = coolerOutput(component, active);
+    coolingPerSec += output;
+    coolingMaxPerSec +=
+      component.coolingRate * rangeModifier(component.ranges, component.units);
+    // IR is emitted by the running coolers.
+    if (output > 0) {
+      irRaw +=
+        component.irNominal *
+        (active / component.units) *
+        rangeModifier(component.ranges, active);
     }
   }
 
-  // Heat generated = every active power segment (minus the families that emit
-  // none, e.g. tractor beams), plus the extra component heat.
-  const heatGeneration = usedSegments - nonHeatSegments + extraHeat;
+  const heat = heatGeneration(components, weaponUnits, allocation);
   // Cooling load: heat ÷ coolant provided (uncapped, so > 1 when under-cooled);
   // 0 when no cooler is powered.
-  const coolingRatio = coolingPerSec > 0 ? heatGeneration / coolingPerSec : 0;
+  const coolingRatio = coolingPerSec > 0 ? heat / coolingPerSec : 0;
   // Emitted IR signature scales with the active cooling (0 when cooling is off).
   const emittedIr = irRaw * coolingRatio;
 
   return {
     coolingPerSec,
     coolingMaxPerSec,
-    heatGeneration,
+    heatGeneration: heat,
     coolingRatio,
     emittedIr,
   };
 }
 
-// EM signature (erkul's `yr`): power plants weighted by ship-wide power
-// utilization, weapons weighted by their pool fill ratio, and every other
+// EM signature: power plants weighted by ship-wide power
+// utilization (weapons counting their raw draw), weapons weighted by the share
+// of their enabled pool blocks that are powered, and every other
 // powered component scaled by its active-segment fraction — each × its
 // power-range modifier and nominal EM emission.
 function computeEm(
@@ -475,14 +564,18 @@ function computeEm(
   usedSegments: number,
   totalSegments: number,
   weaponAllocated: number,
-  weaponRatio: number,
+  weaponUnits: number,
+  weaponEnabledBlocks: number,
 ): number {
   let em = 0;
 
   const poweredPlants = plants.filter((plant) => plant.poweredOn);
   if (poweredPlants.length > 0 && totalSegments > 0) {
-    const utilization = usedSegments / totalSegments;
-    const perPlant = Math.round(usedSegments) / poweredPlants.length;
+    const drawn =
+      usedSegments - weaponAllocated + Math.min(weaponAllocated, weaponUnits);
+    const utilization = drawn / totalSegments;
+    const perPlant =
+      Math.round(totalSegments * utilization) / poweredPlants.length;
     const plantSum = poweredPlants.reduce(
       (sum, plant) =>
         sum + plant.emNominal * rangeModifier(plant.ranges, perPlant),
@@ -491,13 +584,15 @@ function computeEm(
     em += plantSum * utilization;
   }
 
-  if (weaponAllocated > 0 && weaponRatio > 0) {
+  const weaponShare =
+    weaponEnabledBlocks > 0 ? weaponAllocated / weaponEnabledBlocks : 0;
+  if (weaponAllocated > 0 && weaponShare > 0) {
     const weaponSum = weaponEmSources.reduce(
       (sum, weapon) =>
         sum + weapon.emNominal * rangeModifier(weapon.ranges, weaponAllocated),
       0,
     );
-    em += weaponSum * weaponRatio;
+    em += weaponSum * weaponShare;
   }
 
   for (const component of components) {
@@ -512,7 +607,7 @@ function computeEm(
   return em;
 }
 
-// Pure core: build the family ports from a loadout, run erkul's allocation over
+// Pure core: build the family ports from a loadout, run the allocation over
 // the plants' segments, and expose the per-component columns and the weapon
 // sustained-DPS ratios (current allocation + max-weapon).
 export function simulateLoadoutPower(
@@ -522,6 +617,7 @@ export function simulateLoadoutPower(
   overrides?: PortOverrides,
   shieldMaxItemCount: number = DEFAULT_SHIELD_MAX_ITEM_COUNT,
 ): LoadoutSimResult {
+  const modifiers = signatureModifiers(hardpoints);
   const acc = collectPorts(
     hardpoints,
     {
@@ -551,7 +647,10 @@ export function simulateLoadoutPower(
   };
 
   // The default distribution (no user input).
-  const baseline = allocatePower(ports, segments, allocateOpts);
+  const baseline = allocatePower(ports, segments, {
+    ...allocateOpts,
+    heat: heatModel(acc.components, acc.weaponUnits, modifiers),
+  });
 
   // Once the user assigns pips, pin every untouched component to its baseline
   // and honor the overrides — so freed pips return to the pool rather than
@@ -592,7 +691,7 @@ export function simulateLoadoutPower(
   // ratio: `(activeSegments − min) / (capacity − min)`, where `min` is the
   // mandatory power floor. 0 at the floor (no afterburner, base handling only)
   // and 1 with every pip filled — so the default part-filled distribution shows
-  // a partial boost, exactly like erkul, which reads the same game fields.
+  // a partial boost.
   // 1 when the ship has no engine power family (nothing to scale against).
   const engineColumn = columns.find((column) => column.family === "engine");
   const engineSpan = engineColumn
@@ -613,7 +712,7 @@ export function simulateLoadoutPower(
   // power family (nothing to gate on).
   const engineActive = !engineColumn || engineColumn.allocated > 0;
 
-  // Radar power ratio → effective aim-assist range (erkul's `or`): interpolated
+  // Radar power ratio → effective aim-assist range: interpolated
   // between the radar's min and max by radar power, 0 when the radar is off.
   const radarColumn = columns.find((column) => column.family === "radar");
   const radarPoolRatio =
@@ -630,7 +729,7 @@ export function simulateLoadoutPower(
       : 0;
 
   const usedSegments = segments - state.remaining;
-  const heat = computeHeat(acc.components, usedSegments, state.perPort);
+  const heat = computeHeat(acc.components, acc.weaponUnits, state);
   const weaponRatioValue = pool <= 0 ? 1 : weaponPoolRatio(state, consumption);
   const emittedEm = computeEm(
     acc.plants,
@@ -640,7 +739,8 @@ export function simulateLoadoutPower(
     usedSegments,
     segments,
     state.perPort[WEAPON_POOL_PORT] ?? 0,
-    weaponRatioValue,
+    acc.weaponUnits,
+    Math.min(pool, consumption),
   );
 
   return {
@@ -665,8 +765,9 @@ export function simulateLoadoutPower(
     coolingMaxPerSec: heat.coolingMaxPerSec,
     heatGeneration: heat.heatGeneration,
     coolingRatio: heat.coolingRatio,
-    emittedIr: heat.emittedIr,
-    emittedEm,
+    emittedIr: heat.emittedIr * modifiers.ir,
+    emittedEm: emittedEm * modifiers.em,
+    signatureModifiers: modifiers,
   };
 }
 

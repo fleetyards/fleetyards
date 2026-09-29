@@ -5,6 +5,7 @@
 # Table name: sc_data_unlisted_models
 #
 #  id                     :uuid             not null, primary key
+#  claimed_sc_key         :boolean          default(FALSE), not null
 #  comparison             :string
 #  decided_at             :datetime
 #  decision               :string

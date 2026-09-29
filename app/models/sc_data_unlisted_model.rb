@@ -10,6 +10,7 @@
 # Table name: sc_data_unlisted_models
 #
 #  id                     :uuid             not null, primary key
+#  claimed_sc_key         :boolean          default(FALSE), not null
 #  comparison             :string
 #  decided_at             :datetime
 #  decision               :string
@@ -160,15 +161,27 @@ class ScDataUnlistedModel < ApplicationRecord
   # differently. Records which one, so the entry stops being reported and the
   # answer is kept rather than being worked out again next patch.
   #
-  # The model's `sc_key` is deliberately not claimed here. Only a fifth of the
-  # entries that match an existing ship *are* that ship -- the rest are variants
-  # whose export name is simply the base ship's -- and repointing a ship's
-  # identifier at a variant's file would make the loader read the wrong one.
+  # A link says this file *is* the ship, so the ship takes its identifier when
+  # it has none of its own. Left on the slug-derived one it reads whatever file
+  # that happens to name: nothing for the Basher, and for the Hammerhead a
+  # template with an older loadout. A variant belongs under `paint` or
+  # `ignored`, not here. An `sc_key` someone already set is theirs to change.
+  #
+  # Answers whether the ship's identifier changed, which is when its game data
+  # has to be loaded again.
   def link_to_model!(target)
     raise ArgumentError, "already decided" if decision.present?
     raise ArgumentError, "no model given" if target.blank?
 
-    update!(decision: "model", model: target, decided_at: Time.current)
+    transaction do
+      update!(decision: "model", model: target, decided_at: Time.current)
+
+      next false if target.sc_key.present?
+
+      target.update!(sc_key: identifier)
+      update!(claimed_sc_key: true)
+      true
+    end
   end
 
   def decide!(decision)
@@ -182,8 +195,21 @@ class ScDataUnlistedModel < ApplicationRecord
   # Back to undecided, for a decision made in error. The model a `create_model`
   # left behind is not deleted here -- deleting a ship is its own action, and a
   # hangar entry may already point at it.
+  #
+  # A ship hands back the identifier a link gave it, or it keeps reading the
+  # wrong file. Only one the link wrote: a key someone set by hand, or the one a
+  # `create_model` made the ship with, is the ship's own.
+  #
+  # Answers the ship whose identifier changed, if any.
   def reset!
-    update!(decision: nil, model: nil, decided_at: nil)
+    released = model if claimed_sc_key && model.present? && model.sc_key == identifier
+
+    transaction do
+      update!(decision: nil, model: nil, decided_at: nil, claimed_sc_key: false)
+      released&.update!(sc_key: nil)
+    end
+
+    released
   end
 
   DEFAULT_SORTING_PARAMS = ["identifier asc"]

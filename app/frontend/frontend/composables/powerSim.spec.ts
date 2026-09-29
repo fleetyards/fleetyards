@@ -5,10 +5,12 @@ import {
   totalSegments,
   weaponPoolBlocks,
   weaponPoolRatio,
+  type CoolerModel,
+  type HeatModel,
   type PowerPort,
 } from "./powerSim";
 
-// erkul's `ue`: the weapon pool is `poolSize` size-1 blocks (all sharing one
+// The weapon pool is `poolSize` size-1 blocks (all sharing one
 // portPath), of which the first `consumption` are enabled (the rest disabled).
 function weaponBlocks(poolSize: number, consumption: number): PowerPort[] {
   return Array.from({ length: poolSize }, (_, i) => ({
@@ -85,6 +87,128 @@ describe("allocatePower", () => {
 
     expect(state.perFamily.weapon).toBe(1);
     expect(state.perFamily.shield).toBe(0);
+  });
+});
+
+// A cooler of `units` blocks (the first one critical) producing
+// `perSegment` coolant per active segment.
+function cooler(
+  portPath: string,
+  units: number,
+  perSegment: number,
+  emPerSegment = 0,
+): { ports: PowerPort[]; model: CoolerModel } {
+  return {
+    ports: Array.from({ length: units }, (_, i) =>
+      block(portPath, "coolers", { critical: i === 0 }),
+    ),
+    model: {
+      portPath,
+      units,
+      floor: 1,
+      cooling: (segments) => segments * perSegment,
+      signature: (segments) => ({ em: segments * emPerSegment, ir: 0 }),
+    },
+  };
+}
+
+// Every powered segment makes one unit of heat.
+function heatOf(...coolers: CoolerModel[]): HeatModel {
+  return {
+    coolers,
+    generation: ({ perFamily }) =>
+      Object.values(perFamily).reduce((sum, value) => sum + value, 0),
+  };
+}
+
+function blocks(portPath: string, family: PowerPort["family"], count: number) {
+  return Array.from({ length: count }, () => block(portPath, family));
+}
+
+const noWeapons = { weaponConsumption: 0, weaponPoolSize: 0 };
+
+describe("allocatePower cooler passes", () => {
+  it("sizes the first cooler to the fewest segments that cover the heat", () => {
+    const a = cooler("a", 4, 2);
+    const state = allocatePower([...a.ports, ...blocks("s", "shield", 3)], 20, {
+      ...noWeapons,
+      heat: heatOf(a.model),
+    });
+
+    // 3 shield + n cooler segments of heat against 2n cooling → n = 3.
+    expect(state.perPort.a).toBe(3);
+    expect(state.perFamily.shield).toBe(3);
+  });
+
+  it("brings the other coolers online until cooling covers the heat", () => {
+    const a = cooler("a", 2, 2);
+    const b = cooler("b", 4, 2);
+    const state = allocatePower(
+      [...a.ports, ...b.ports, ...blocks("s", "shield", 6)],
+      20,
+      { ...noWeapons, heat: heatOf(a.model, b.model) },
+    );
+
+    expect(state.perPort.a).toBe(2);
+    expect(state.perPort.b).toBe(4);
+    expect(state.perFamily.shield).toBe(6);
+  });
+
+  it("sheds radar before shields when the coolers can't keep up", () => {
+    const a = cooler("a", 2, 2);
+    const state = allocatePower(
+      [...a.ports, ...blocks("s", "shield", 3), ...blocks("r", "radar", 3)],
+      20,
+      { ...noWeapons, heat: heatOf(a.model) },
+    );
+
+    // Cooling tops out at 4: the cooler's own 2 segments leave room for 2 more.
+    expect(state.perPort.a).toBe(2);
+    expect(state.perFamily.radar).toBe(0);
+    expect(state.perFamily.shield).toBe(2);
+  });
+
+  it("tops life support up only while the coolers keep up", () => {
+    const lifeSupport = () => [
+      block("ls", "lifeSupport", { critical: true }),
+      ...blocks("ls", "lifeSupport", 3),
+    ];
+    const a = cooler("a", 4, 2);
+
+    const cooled = allocatePower([...a.ports, ...lifeSupport()], 20, {
+      ...noWeapons,
+      heat: heatOf(a.model),
+    });
+    expect(cooled.perFamily.lifeSupport).toBe(1);
+
+    const unmodelled = allocatePower(lifeSupport(), 20, noWeapons);
+    expect(unmodelled.perFamily.lifeSupport).toBe(4);
+  });
+
+  it("splits the cooler segments to the lowest signature that still cools", () => {
+    const loud = cooler("loud", 3, 2, 10);
+    const quiet = cooler("quiet", 3, 2, 1);
+    const state = allocatePower(
+      [...loud.ports, ...quiet.ports, ...blocks("s", "shield", 2)],
+      20,
+      { ...noWeapons, heat: heatOf(loud.model, quiet.model) },
+    );
+
+    expect(state.perPort.loud).toBeUndefined();
+    expect(state.perPort.quiet).toBe(2);
+    expect(state.perFamily.coolers).toBe(2);
+  });
+
+  it("leaves the coolers where the targets put them", () => {
+    const a = cooler("a", 4, 2);
+    const state = allocatePower([...a.ports, ...blocks("s", "shield", 6)], 20, {
+      ...noWeapons,
+      heat: heatOf(a.model),
+      overrides: { a: 1, s: 6 },
+    });
+
+    expect(state.perPort.a).toBe(1);
+    expect(state.perFamily.shield).toBe(6);
   });
 });
 

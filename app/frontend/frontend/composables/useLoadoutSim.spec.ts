@@ -199,17 +199,19 @@ describe("overrides (pip UI)", () => {
     expect(nav.columns.find((c) => c.portPath === qd.id)?.allocated).toBe(3);
   });
 
-  it("defaults a non-primary system to its critical floor (life support 1)", () => {
-    // LS: units 2 @ 0.5 min fraction → critical 1; not greedily filled.
+  it("tops life support up in SCM but keeps it at its critical floor in NAV", () => {
+    // LS: units 2 @ 0.5 min fraction → critical 1.
     const ls = hp(HardpointCategoryEnum.LIFESUPPORT, {
       powerConsumption: 2,
       powerMinimumFraction: 0.5,
     });
-    const col = simulateLoadoutPower([plant(40, 2), ls], 0).columns.find(
-      (c) => c.portPath === ls.id,
-    );
-    expect(col?.allocated).toBe(1);
-    expect(col?.capacity).toBe(2);
+    const column = (mode: "SCM" | "NAV") =>
+      simulateLoadoutPower([plant(40, 2), ls], 0, mode).columns.find(
+        (c) => c.portPath === ls.id,
+      );
+    expect(column("SCM")?.allocated).toBe(2);
+    expect(column("NAV")?.allocated).toBe(1);
+    expect(column("NAV")?.capacity).toBe(2);
   });
 
   it("returns freed pips to the pool instead of redistributing", () => {
@@ -381,9 +383,7 @@ describe("heat (cooling ratio)", () => {
     expect(dark.emittedEm).toBe(0);
   });
 
-  it("exceeds 1 when the coolers can't keep up (under-cooled)", () => {
-    // A tiny cooler against a fully-powered shield generates far more heat than
-    // it can dissipate → cooling load well above 1.
+  it("exceeds 1 when the user powers more than the coolers can take", () => {
     const tinyCooler = hp(HardpointCategoryEnum.COOLER, {
       powerConsumption: 2,
       coolingRate: 4,
@@ -391,8 +391,12 @@ describe("heat (cooling ratio)", () => {
     const shield = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
       powerConsumption: 12,
     });
-    const sim = simulateLoadoutPower([plant(40, 2), tinyCooler, shield], 0);
-    expect(sim.coolingRatio).toBeGreaterThan(1);
+    const ports = [plant(40, 2), tinyCooler, shield];
+    // The default sheds shield power until the tiny cooler keeps up.
+    expect(simulateLoadoutPower(ports, 0).coolingRatio).toBeLessThanOrEqual(1);
+    // Forcing the shield to full generates far more heat than it can take.
+    const forced = simulateLoadoutPower(ports, 0, "SCM", { [shield.id]: 12 });
+    expect(forced.coolingRatio).toBeGreaterThan(1);
   });
 
   it("has no heat or cooling when nothing is powered", () => {
@@ -403,7 +407,73 @@ describe("heat (cooling ratio)", () => {
     expect(sim.coolingRatio).toBe(0);
   });
 
-  it("does not count tractor beams toward the heat load (matches erkul)", () => {
+  it("scales IR and EM by the armor's signature multipliers", () => {
+    const loadout = () => [
+      hp(
+        HardpointCategoryEnum.POWERPLANT,
+        { powerBase: 40, signatureEm: 6000 },
+        { size: 2 },
+      ),
+      cooler(),
+      hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+    ];
+    const bare = simulateLoadoutPower(loadout(), 0);
+    const armored = simulateLoadoutPower(
+      [
+        ...loadout(),
+        hp(HardpointCategoryEnum.ARMOR, {
+          signalInfrared: 1.1,
+          signalElectromagnetic: 1.2,
+          signalCrossSection: 1.3,
+        }),
+      ],
+      0,
+    );
+
+    expect(bare.signatureModifiers).toEqual({ em: 1, ir: 1, crossSection: 1 });
+    expect(armored.signatureModifiers.crossSection).toBe(1.3);
+    expect(armored.emittedIr).toBeCloseTo(bare.emittedIr * 1.1, 5);
+    expect(armored.emittedEm).toBeCloseTo(bare.emittedEm * 1.2, 5);
+  });
+
+  it("masks a signature the armor multiplies by zero", () => {
+    const sim = simulateLoadoutPower(
+      [
+        hp(
+          HardpointCategoryEnum.POWERPLANT,
+          { powerBase: 40, signatureEm: 6000 },
+          { size: 2 },
+        ),
+        cooler(),
+        hp(HardpointCategoryEnum.ARMOR, { signalElectromagnetic: 0 }),
+      ],
+      0,
+    );
+
+    expect(sim.signatureModifiers).toEqual({ em: 0, ir: 1, crossSection: 1 });
+    expect(sim.emittedEm).toBe(0);
+    expect(sim.emittedIr).toBeGreaterThan(0);
+  });
+
+  it("keeps a cooler with no coolant data out of the balancing", () => {
+    const shield = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
+      powerConsumption: 6,
+    });
+    const sim = simulateLoadoutPower(
+      [
+        plant(40, 2),
+        hp(HardpointCategoryEnum.COOLER, { powerConsumption: 3 }),
+        shield,
+      ],
+      0,
+    );
+
+    expect(sim.columns.find((c) => c.portPath === shield.id)?.allocated).toBe(
+      6,
+    );
+  });
+
+  it("does not count tractor beams toward the heat load", () => {
     const base = [
       plant(40, 2),
       cooler(),
@@ -450,7 +520,7 @@ describe("engine power ratio (flight scaling)", () => {
 
   it("is below 1 at the default when the engine can't fill to capacity", () => {
     // The engine fills last, so a segment-starved plant leaves it part-filled
-    // at the default — a partial boost, like erkul's default 3/6 engine pips,
+    // at the default — a partial boost (e.g. 3/6 engine pips),
     // rather than the fully-rated boost.
     const engine = hp(HardpointCategoryEnum.CONTROLLER, {
       powerConsumption: 8,
@@ -534,7 +604,7 @@ describe("POWER_FAMILY_BY_CATEGORY", () => {
     expect(POWER_FAMILY_BY_CATEGORY[HardpointCategoryEnum.CONTROLLER]).toBe(
       "engine",
     );
-    // Thrusters / fuel draw no power segments in erkul's model.
+    // Thrusters / fuel draw no power segments.
     expect(
       POWER_FAMILY_BY_CATEGORY[HardpointCategoryEnum.MAIN_THRUSTERS],
     ).toBeUndefined();

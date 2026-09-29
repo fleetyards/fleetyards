@@ -48,7 +48,8 @@ module Admin
         # differently. The detected match is only a suggestion -- the admin says
         # which ship it is, because the export never gives enough to be sure.
         def link
-          @sc_data_unlisted_model.link_to_model!(Model.find(params[:model_id]))
+          target = Model.find(params[:model_id])
+          Loaders::ScData::ModelJob.perform_async(target.id) if @sc_data_unlisted_model.link_to_model!(target)
         rescue ArgumentError => e
           @sc_data_unlisted_model.errors.add(:base, e.message)
 
@@ -78,7 +79,8 @@ module Admin
         # stays: deleting a ship is its own action, and a hangar entry may
         # already point at it.
         def reset
-          @sc_data_unlisted_model.reset!
+          released = @sc_data_unlisted_model.reset!
+          Loaders::ScData::ModelJob.perform_async(released.id) if released
         end
 
         # A patch's entries are mostly one decision repeated -- the marker filter
@@ -95,9 +97,10 @@ module Admin
         end
 
         def reset_bulk
-          ScDataUnlistedModel.transaction do
-            @sc_data_unlisted_models.find_each(&:reset!)
+          released = ScDataUnlistedModel.transaction do
+            @sc_data_unlisted_models.find_each.filter_map(&:reset!)
           end
+          released.each { |model| Loaders::ScData::ModelJob.perform_async(model.id) }
 
           head :no_content
         end

@@ -66,7 +66,7 @@ const FAMILY_ICON: Partial<Record<PowerFamily, string>> = {
 };
 
 // FontAwesome fallback for families without a hardpoint SVG. Life support and
-// the beams follow erkul's glyphs (a pulse heart, arrows pulling to a center).
+// the beams use a pulse heart and arrows pulling to a center.
 const FAMILY_FA_ICON: Partial<Record<PowerFamily, string>> = {
   lifeSupport: "fa-heart-pulse",
   salvage: "fa-bin-recycle",
@@ -113,25 +113,30 @@ const aimAssistPercent = computed(() =>
 );
 
 // Cooling load: heat generated as a share of the coolant the active coolers
-// provide (erkul's coolingRatio). Can exceed 100% when the ship is under-cooled;
+// provide (coolingRatio). Can exceed 100% when the ship is under-cooled;
 // 0 with no active cooler. Only shown when the ship actually has coolers.
 const hasCoolers = computed(() => sim.value.coolingMaxPerSec > 0);
 const coolingPercent = computed(() => Math.round(sim.value.coolingRatio * 100));
 const coolingFill = computed(() => Math.min(coolingPercent.value, 100));
 const coolingOver = computed(() => coolingPercent.value > 100);
 
-// Signature readouts (erkul's IR / EM / CS numbers). IR + EM are power-reactive;
-// CS is the ship's fixed cross-section per axis. Compact-formatted ("9.8k").
+// Signature readouts (IR / EM / CS). IR + EM are power-reactive;
+// CS is the ship's fixed cross-section per axis. All three carry the armor's
+// signature multipliers. Compact-formatted ("9.8k").
 const compact = (value: number) =>
   value >= 1000 ? `${(value / 1000).toFixed(1)}k` : `${Math.round(value)}`;
 const emittedIr = computed(() => sim.value.emittedIr);
 const emittedEm = computed(() => sim.value.emittedEm);
 
-// Cross-section: erkul shows one axis at a time with a clickable label to cycle
+// Cross-section: one axis at a time, with a clickable label to cycle
 // x → y → z. Default to the largest axis.
 const CS_AXES = ["x", "y", "z"] as const;
 type CsAxis = (typeof CS_AXES)[number];
-const csValue = (axis: CsAxis) => Math.round(props.crossSection?.[axis] ?? 0);
+const csValue = (axis: CsAxis) =>
+  Math.round(
+    (props.crossSection?.[axis] ?? 0) *
+      sim.value.signatureModifiers.crossSection,
+  );
 const csAxis = ref<CsAxis>(
   CS_AXES.reduce((best, axis) => (csValue(axis) > csValue(best) ? axis : best)),
 );
@@ -196,7 +201,7 @@ const onCellClick = (
 };
 
 // Click the icon: drain the whole column to 0 if any member has pips, else fill
-// every member from the pool — erkul's icon toggle.
+// every member from the pool.
 const toggleColumn = (column: PowerColumn) => {
   const anyOn = column.members.some((member) => member.allocated > 0);
   const next: PortOverrides = { ...props.modelValue };
@@ -656,7 +661,7 @@ const cellHeight = (span: number) =>
     }
   }
 
-  // erkul-style count inside a merged (span > 1) block.
+  // Count inside a merged (span > 1) block.
   &__pip-label {
     font-size: 11px;
     font-weight: 600;

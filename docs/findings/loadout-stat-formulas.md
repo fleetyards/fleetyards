@@ -1,10 +1,10 @@
 # Loadout Stat Formulas
 
-**Date:** 2026-09-24 (worked out 2026-08-06 to 2026-08-11)
+**Date:** 2026-09-29 (worked out 2026-08-06 to 2026-08-11, allocation completed 2026-09-29)
 
 These are the formulas behind a vehicle's loadout stats: sustained DPS, weapon power, the power-segment allocation, cooling, the EM/IR/CS signatures and quantum range. They were verified against the Anvil Asgard (`anvl_asgard`, data `4.9.0-live.12344265`).
 
-**Status of the port.** The allocation primitives, the SCM/NAV base and fill passes, cooling/`coolingRatio`, EM and IR live in `app/frontend/frontend/composables/powerSim.ts` and `useLoadoutSim.ts`. Sustained DPS and quantum range are in `useLoadoutStats`/`useHardpointStats`. **Not ported:** the cooler heat-balancing pass and the refinement passes. The port therefore does not balance coolers against heat in its default distribution.
+**Status of the port.** The full default distribution (base, cooler sizing, fill, heat balancing, life-support top-up, cooler split), cooling/`coolingRatio`, EM and IR live in `app/frontend/frontend/composables/powerSim.ts` and `useLoadoutSim.ts`. Sustained DPS and quantum range are in `useLoadoutStats`/`useHardpointStats`. On `4.10.1-live.12660092` the default pips and the cooling % match the reference tools exactly for the Asgard (SCM and NAV), the Gladius (SCM and NAV) and the Hammerhead (SCM). In NAV the reference shows the Hammerhead's radar at a 3-segment floor where our data gives 1 (the game file has `minimumConsumptionFraction="0.2"` on 5 units). Given that floor, the rest of its distribution matches too.
 
 ## Sustained DPS
 
@@ -46,10 +46,15 @@ Asgard: burst 4,910. The plain duty cycle gives 2,502, and the pool ratio brings
 
 A power plant produces `resource.states[Online].flows[generate].produces[Power, unitKind=powerSegment].units` segments, summed over the powered-on plants. **The default distribution is an algorithm, not a data field.** A vehicle's `initialPowerAllocation` short-circuits it when present, but the Asgard has none. The allocator is a multi-pass greedy over the family buckets `{weapon, engine, shield, qdrive, radar, lifeSupport, coolers, qed, emp, miningLaser, salvage, tractorBeam, towingbeam}`, run once for SCM and once for NAV:
 
-1. The base pass: a minimum per family, in priority order. In SCM that is lifeSupport → miningLaser → salvage → emp → weapon(1) → shield → radar → engine …. NAV swaps qdrive in for weapon, shield and emp.
-2. The fill pass: weapons go up to `min(weaponConsumptionPoints, poolSize)`, then shield / radar / engine.
-3. The cooler heat-balancing pass: a loop of at most 200 iterations that adds cooler segments until cooling ≥ heat generation.
-4. The refinement passes: cooler refinement and distribution of what remains.
+1. **Base.** Every critical block, in order. SCM: lifeSupport, miningLaser, salvage, emp, one weapon segment, shield, radar, engine. NAV: lifeSupport, miningLaser, salvage, qdrive, radar, engine. Coolers, the QED and the beams get no base segment.
+2. **Primary cooler.** The first installed cooler gets the smallest segment count from its floor up where `cooling(seg) ≥ heat` of a _projected_ fill. The projection counts per family, with no blocks, and credits each family's fill to its first enabled port. It fills weapons to cap, then shield, radar and engine in SCM, and only engine in NAV. When no count covers the heat, the cooler takes `min(units, remaining)`.
+3. **Fill.** Greedy per family until a block no longer fits. The order is miningLaser, salvage, then weapons up to `min(weaponConsumptionPoints, poolSize)`, shield, radar and engine in SCM. In NAV only miningLaser, salvage and engine fill.
+4. **Other coolers (SCM).** Each remaining cooler gets block after block until `cooling + ε ≥ heat`.
+5. **Balance loop** (at most 200 steps, `ε = 1e-9`). While `heat > cooling + ε`: power the first cooler below its floor (shedding to make room), else shed the last non-critical block of `[radar, shield]` (NAV: `[radar]`), else of `[engine, radar, shield, weapon, lifeSupport]` (NAV: `[radar, engine, weapon, lifeSupport]`). Otherwise it trims the primary cooler's last block if it stays at its floor and stays cooled. If that fails it adds one engine block that fits in `cooling − heat`. If that fails it tries shedding one radar/shield block and regrowing engines into the headroom, keeping the trade only when it powers more segments and stays cooled. When none of these moves applies, it stops.
+6. **Life support top-up (SCM).** Block after block, undoing the block that would over-heat. With no coolers installed it fills completely.
+7. **Cooler split.** With two or more coolers it keeps their total and tries every split, each cooler at 0 or `floor..units`. It picks the one that still covers the heat at the lowest `armorEm × EM + armorIr × min(1, heat/cooling) × IR`. There is no armor signature data yet, so the port weights both at 1. A tie within `1e-6` goes to the lexically greater split.
+
+The balance loop and the cooler split are skipped once the user sets pips; the UI then pins every untouched port to its default.
 
 Each port is built from item and loadout data into its `size`/`family`/`critical`/`floor`/`units`.
 
@@ -63,7 +68,7 @@ Each port is built from item and loadout data into its `size`/`family`/`critical
 - Port fill: fills one specific port up to n segments.
 - Cooler segment search, **heat-coupled**: scans a cooler's segments from `floor..units` and returns the first where `cooling(seg) ≥ coolingConsumptionPerSec`. This is the power↔heat link the heat-balancing pass iterates.
 
-**Power and heat are coupled.** The heat-balancing pass sets cooler segments against heat generation, so the power allocation depends on the heat model. They cannot be built as independent passes: either the heat pass is built together with the allocation, or the allocation assumes a simplified cooler rule and the heat pass refines it later. Flight/IFCS is the only truly independent piece.
+**Power and heat are coupled.** The cooler passes size coolers against heat generation, so `allocatePower` takes a `HeatModel` (the coolers plus a heat-generation function over `{perPort, perFamily}`). `useLoadoutSim` builds it from the same functions `computeHeat` uses, so the allocation and the displayed figures cannot drift apart.
 
 **Coverage gap.** The allocation assigns power to `engine` and `lifeSupport`. A faithful full allocation needs their Power draw, plus the exact block sizes for non-weapon families.
 
@@ -79,26 +84,26 @@ activeSeg = poweredOn && seg ≥ floor && floor > 0 ? clamp(seg, 0, units) : 0
 effectiveCoolingPerSec = ratedCooling × (activeSeg/units) × powerModifier(powerRanges, activeSeg)
 coolingPerSec    = Σ effective
 coolingMaxPerSec = Σ ratedCooling × powerModifier(powerRanges, units)
-heat u = Σ active segments across all families (weapons count min(selected, consumption))
+heat u = Σ active segments across all families except the beams (weapons count min(selected, raw Σ weapon draw))
        + Σ over shield/lifeSupport/radar/qdrive of activeSeg × powerModifier(powerRanges, activeSeg)
 coolingRatio = coolingPerSec > 0 ? min(u / coolingPerSec, 1) : (u > 0 ? 1 : 0)
 ```
 
-`useLoadoutSim.computeHeat` intentionally departs from this. It leaves the ratio uncapped, so it reads above 1 when the ship is under-cooled, and returns 0 when no cooler is powered. Whether the COOLING bar displays `coolingRatio × 100` or `coolingPerSec / coolingMaxPerSec` is unconfirmed. An idle Ironclad at 90% is a usable check.
+`useLoadoutSim.computeHeat` intentionally departs from this. It leaves the ratio uncapped, so it reads above 1 when the ship is under-cooled, and returns 0 when no cooler is powered. The COOLING bar displays `coolingRatio × 100`: the Asgard's default reads 82% against a ratio of 0.823.
 
 ## Signatures
 
-`signature = {em, ir, crossSection:{x,y,z}, armorModifier, sources[]}`. Each port's nominals come from the item's `resource.states[Online].signature.{em,ir}.nominal`. The armor multipliers `signalElectromagnetic`/`signalInfrared`/`signalCrossSection` live on the armor item and default to 1.
+`signature = {em, ir, crossSection:{x,y,z}, armorModifier, sources[]}`. Each port's nominals come from the item's `resource.states[Online].signature.{em,ir}.nominal`. The armor multipliers `signalElectromagnetic`/`signalInfrared`/`signalCrossSection` live on the armor item and default to 1. In the game files they are attributes of `SCItemVehicleArmorParams` itself (`signalInfrared="1.13"` on the Gladius), not a nested element.
 
 - **CS** = `vehicle.crossSection.{x,y,z} × armor.signalCrossSection`, and the displayed value is the largest axis. The source is `crossSectionParams → SSCSignatureSystemManualCrossSectionParams → crossSection`. For the Asgard that is 20139/7624/27912, and the max axis 27912 × ~1.09 armor gives ≈ 30.4k. CS does not depend on power.
 - **EM** = `armor.signalElectromagnetic × Σ` of four kinds of term:
-  - shields: `emNominal × powerModifier(pr, f) × shieldRatio`, with `f = round(totalSeg × shieldRatio) / nShields`;
-  - weapons: `emNominal × powerModifier(pr, weaponSelected) × selected/enabled`;
+  - power plants: `emNominal × powerModifier(pr, f) × u`, with `u = (Σ non-weapon segments + min(weaponSelected, raw Σ weapon draw)) / totalSeg` and `f = round(totalSeg × u) / nPlants`;
+  - weapons: `emNominal × powerModifier(pr, weaponSelected) × selected/enabled`, where `enabled = min(poolSize, weaponConsumptionPoints)`. This is the share of the powered pool blocks, not the sustained-DPS ratio `selected/consumption`;
   - the segment-scaled sources (shields, coolers, radar): `emNominal × powerModifier(pr, activeSeg) × activeSeg/units`;
   - every other powered port: `emNominal × powerModifier(pr, seg) × seg/powerSegmentUnits`.
 - **IR** = `coolingRatio × armor.signalInfrared × Σ over heat.sources of irNominal × (activeSeg/units) × powerModifier(powerRanges, activeSeg)`. It is gated by `coolingRatio` and is 0 when there is no power.
 
-`pr` is the port's `powerRanges`. Asgard reference values: IR 8.4k, EM 31.2k, CS 30.4k, with armor modifiers of +9% on each.
+`pr` is the port's `powerRanges`. Asgard reference values: IR 8.4k, EM 31.2k, CS 30.4k, with armor modifiers of +9% on each. The port gives 8467 / 31232 for the Asgard and 5815 / 13804 for the Gladius (reference 5.8k / 13.8k at +13%). The reference display truncates to one decimal rather than rounding.
 
 ## Quantum range
 

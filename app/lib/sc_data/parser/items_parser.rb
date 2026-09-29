@@ -575,7 +575,6 @@ module ScData
         if values.dig("Components", "SCItemVehicleArmorParams")
           armor_data = values.dig("Components", "SCItemVehicleArmorParams")
           damage_info = armor_data.dig("damageMultiplier", "DamageInfo") if armor_data.dig("damageMultiplier").is_a?(Hash)
-          signal_data = armor_data.dig("signalCrossSection", "SItemSignalEmission") if armor_data.dig("signalCrossSection").is_a?(Hash)
           deflection = armor_data.dig("armorDeflection", "deflectionValue")
           resistances = values.dig("Components", "SHealthComponentParams", "DamageResistances", "DamageResistance")
           item[:type_data] = {
@@ -594,9 +593,9 @@ module ScData
             deflection_energy: deflection&.dig("DamageEnergy")&.to_f,
             deflection_distortion: deflection&.dig("DamageDistortion")&.to_f,
             deflection_thermal: deflection&.dig("DamageThermal")&.to_f,
-            signal_infrared: signal_data&.dig("Infrared")&.to_f,
-            signal_electromagnetic: signal_data&.dig("Electromagnetic")&.to_f,
-            signal_cross_section: signal_data&.dig("CrossSection")&.to_f
+            signal_infrared: armor_data["signalInfrared"]&.to_f,
+            signal_electromagnetic: armor_data["signalElectromagnetic"]&.to_f,
+            signal_cross_section: armor_data["signalCrossSection"]&.to_f
           }.compact
         end
 
@@ -617,8 +616,7 @@ module ScData
         end
 
         # Power draw + its power-range modifier for power-drawing components —
-        # inputs for the ship-wide power-allocation sim (erkul's `z` /
-        # `powerRanges`). Any component that draws Power gets this, even ones
+        # inputs for the ship-wide power-allocation sim. Any component that draws Power gets this, even ones
         # without their own type_data block (e.g. life support), so the sim sees
         # every power consumer.
         power_draw = extract_resource_consumption(values, "Power")
@@ -906,8 +904,8 @@ module ScData
         end.presence
       end
 
-      # A component's passive EM/IR signature emission at full power (erkul's
-      # `emNominal`/`irNominal`), read from the Online resource state. The sim
+      # A component's passive EM/IR signature emission at full power, read from
+      # the Online resource state. The sim
       # scales these by active power segments (and IR by the cooling ratio).
       private def extract_signature(values)
         state = values.dig("Components", "ItemResourceComponentParams", "states", "ItemResourceState")
@@ -1105,8 +1103,8 @@ module ScData
       # converters (`ItemResourceDeltaConversion`, e.g. shields/coolers/radar,
       # which turn Power into their output) declare a `consumption` flow. The
       # amount is a `SStandardResourceUnit` for standard-unit consumers or a
-      # `SPowerSegmentResourceUnit` for segment-based components — both map to
-      # erkul's `units`.
+      # `SPowerSegmentResourceUnit` for segment-based components — both are the
+      # component's power units.
       RESOURCE_DELTA_KEYS = %w[
         ItemResourceDeltaConsumption
         ItemResourceDeltaConversion
@@ -1118,8 +1116,7 @@ module ScData
       end
 
       # The `minimumConsumptionFraction` of a component's Power flow — the share
-      # that must stay powered (erkul's `minimumFraction`, sizing the critical
-      # allocation block).
+      # that must stay powered, sizing the critical allocation block.
       private def extract_power_minimum_fraction(values)
         each_resource_consumption(values, "Power") do |_units, fraction|
           return fraction if fraction.present?

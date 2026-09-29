@@ -12,6 +12,35 @@ module ScData
         clean_loader_tables
       end
 
+      test "#one retires the build of a model whose file the build does not ship" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, :in_game, name: "Unlinked Test")
+        loader.stubs(:load_model_data).returns(nil)
+
+        loader.one(model)
+
+        assert_not_predicate model.reload, :in_game?
+      end
+
+      test "#one retires the game-file loadout of a model whose file is missing" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, :in_game, name: "Unlinked Loadout Test")
+        port = create(:hardpoint, parent: model, source: :game_files)
+        nested = create(:hardpoint, parent: port, source: :game_files)
+        matrix = create(:hardpoint, parent: model, source: :ship_matrix)
+        # Another ship's port keeps the environment in a build; with no build
+        # rows at all `in_build` serves every slot.
+        create(:hardpoint, source: :game_files)
+        loader.stubs(:load_model_data).returns(nil)
+
+        loader.one(model)
+
+        assert_empty HardpointBuild.current.where(hardpoint_id: [port.id, nested.id])
+        assert Hardpoint.exists?(port.id), "the rows stay, only this build's say goes"
+        assert_includes model.hardpoints.in_build, matrix
+        assert_not_includes model.hardpoints.in_build, port
+      end
+
       test "#load_model persists the parsed cross section signature" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, :in_game, name: "Cross Section Test")
