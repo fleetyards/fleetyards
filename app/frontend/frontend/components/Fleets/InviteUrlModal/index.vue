@@ -35,6 +35,10 @@ const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
+// Where clipboard.js parks its scratch textarea. The modal traps focus, so one
+// in `body` never takes the selection and the copy silently copies nothing.
+const clipboardHost = ref<HTMLElement | null>(null);
+
 const form = ref<FleetInviteUrlCreateInput>({});
 
 const expiresAfterOptions = [
@@ -158,7 +162,7 @@ const usageLabel = (inviteUrl: FleetInviteUrl) => {
 };
 
 const copy = (inviteUrl: FleetInviteUrl) => {
-  copyText(inviteUrl.url).then(
+  copyText(inviteUrl.url, clipboardHost.value ?? undefined).then(
     () => {
       displaySuccess({
         text: t("messages.copyInviteUrl.success", {
@@ -177,6 +181,7 @@ const copy = (inviteUrl: FleetInviteUrl) => {
 
 <template>
   <Modal v-if="fleet" :title="t('headlines.fleets.inviteUrls')">
+    <div ref="clipboardHost" />
     <div
       v-for="inviteUrl in inviteUrls"
       :key="inviteUrl.token"
