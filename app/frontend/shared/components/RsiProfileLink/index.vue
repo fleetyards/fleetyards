@@ -61,11 +61,12 @@ const rsiProfileUrl = computed(
   display: inline-flex;
   align-items: center;
 
+  // In em rather than px, so it sits on the icon's corner at any text size.
   &__badge {
     position: absolute;
-    top: -6px;
-    right: -10px;
-    font-size: 0.8em;
+    top: -0.35em;
+    right: -0.6em;
+    font-size: 0.65em;
     line-height: 1;
   }
 }
