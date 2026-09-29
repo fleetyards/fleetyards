@@ -107,7 +107,7 @@ class Api::V1::MeRsiVerificationTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 401
   end
 
-  test "DELETE /me/rsi-verification unlocks a handle proved through the bio and rotates the token" do
+  test "DELETE /me/rsi-verification unlocks a handle proved through the bio and keeps the token" do
     @user.verify_rsi_handle("TestPilot", via: :rsi_profile)
     @user.save!
     token = @user.rsi_verification_token
@@ -119,7 +119,7 @@ class Api::V1::MeRsiVerificationTest < ActionDispatch::IntegrationTest
     assert_not @user.rsi_handle_verified?
     assert_nil @user.rsi_handle_verified_via
     assert_equal "TestPilot", @user.rsi_handle
-    assert_not_equal token, @user.rsi_verification_token
+    assert_equal token, @user.rsi_verification_token
   end
 
   test "DELETE /me/rsi-verification leaves a Citizen iD verification to the disconnect" do

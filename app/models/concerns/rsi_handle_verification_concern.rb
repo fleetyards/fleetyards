@@ -67,15 +67,14 @@ module RsiHandleVerificationConcern
     )
   end
 
-  # The token is replaced too: left in place, the same token still in the bio
-  # would verify the handle again on its next check.
+  # The token stays: only the account holder can start a check of their own
+  # handle, and a token in their bio proves nothing for anybody else.
   def revoke_rsi_handle_verification!
     update_columns(
       rsi_handle_verified: false,
       rsi_handle_verified_via: nil,
       rsi_handle_verified_at: nil,
       rsi_verification_status: nil,
-      rsi_verification_token: self.class.new_rsi_verification_token,
       updated_at: Time.current
     )
   end

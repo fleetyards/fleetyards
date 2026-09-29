@@ -19,8 +19,6 @@ module Api
         def show
         end
 
-        # Rotates the token: one that leaked would otherwise let whoever holds
-        # it prove a handle whose bio still carries it.
         def create
           @user.generate_rsi_verification_token!
 
