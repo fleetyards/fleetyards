@@ -1,6 +1,11 @@
 ---
 zh-CN:
   title:
+    link_preview:
+      fleet_event: "%{fleet} 的舰队活动"
+      fleet_contract: "%{fleet} 的合约"
+      tour: "行程"
+      tour_invite: "加入 %{tour}"
     default: FleetYards.net
     default_short: FleetYards
     default_admin: FleetYards.net Command

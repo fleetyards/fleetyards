@@ -3,6 +3,20 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import Component from "./index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import type { Tour } from "@/services/fyApi";
+import { createMemoryHistory, createRouter } from "vue-router";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+
+const page = { template: "<div />" };
+
+// The share link is resolved through the named routes, which the default test
+// router does not declare.
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [
+    { path: "/fleets/:slug/tours/:tour/", name: "fleet-tour", component: page },
+    { path: "/tools/tours/:slug/", name: "tour", component: page },
+  ],
+});
 
 const tour = (overrides: Partial<Tour> = {}): Tour =>
   ({
@@ -21,6 +35,7 @@ const wrappers: Array<{ unmount: () => void }> = [];
 const mount = async (props: { tour: Tour; manageable?: boolean }) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
     props,
+    plugins: [router],
   });
   wrappers.push(wrapper);
   return wrapper;
@@ -99,5 +114,29 @@ describe("TourDetails", () => {
     expect(
       wrapper.find('[data-test="tour-join-request-pending"]').exists(),
     ).toBe(true);
+  });
+
+  it("shares the invite link with someone who may invite", async () => {
+    const wrapper = await mount({ tour: tour({ inviteToken: "tok123" }) });
+
+    expect(wrapper.findComponent(ShareBtn).props("url")).toBe(
+      `${window.location.origin}/tools/tours/join/tok123/`,
+    );
+  });
+
+  it("shares a fleet tour's page with anyone else", async () => {
+    const wrapper = await mount({ tour: tour() });
+
+    expect(wrapper.findComponent(ShareBtn).props("url")).toBe(
+      `${window.location.origin}/fleets/blue-sun/tours/abc-jumptown-run/`,
+    );
+  });
+
+  it("shares a standalone tour's own page", async () => {
+    const wrapper = await mount({ tour: tour({ fleet: undefined }) });
+
+    expect(wrapper.findComponent(ShareBtn).props("url")).toBe(
+      `${window.location.origin}/tools/tours/abc-jumptown-run/`,
+    );
   });
 });

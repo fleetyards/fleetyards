@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def og_image
-    @og_image || vite_asset_url("images/favicons/icon-512.png")
+    @og_image || vite_asset_url("images/og/default.jpg")
   end
 
   def og_description

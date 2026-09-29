@@ -9,11 +9,11 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
-import copyText from "@/shared/utils/CopyText";
 import {
   useCreateTourJoinRequest as useCreateTourJoinRequestMutation,
   useDestroyTourJoinRequest as useDestroyTourJoinRequestMutation,
@@ -38,6 +38,8 @@ const emit = defineEmits<{ reload: [] }>();
 const { t, l } = useI18n();
 const comlink = useComlink();
 const sessionStore = useSessionStore();
+
+const router = useRouter();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const isOrganiser = computed(
@@ -129,19 +131,26 @@ const inviteUrl = computed(() => {
   return `${window.location.origin}/tools/tours/join/${props.tour.inviteToken}/`;
 });
 
-const onCopyInvite = async () => {
-  if (!inviteUrl.value) {
-    return;
+// Someone who may invite shares the link that lets the recipient join; anyone
+// else can only point at the page, which opens for those already on the tour
+// or in its fleet.
+const shareUrl = computed(() => {
+  if (inviteUrl.value) {
+    return inviteUrl.value;
   }
 
-  await copyText(inviteUrl.value)
-    .then(() => {
-      displaySuccess({ text: t("messages.payouts.inviteCopied") });
-    })
-    .catch(() => {
-      displayAlert({ text: inviteUrl.value as string });
-    });
-};
+  const location = props.tour.fleet
+    ? {
+        name: "fleet-tour",
+        params: { slug: props.tour.fleet.slug, tour: props.tour.slug },
+      }
+    : { name: "tour", params: { slug: props.tour.slug } };
+
+  return new URL(
+    router.resolve(location).href,
+    window.location.origin,
+  ).toString();
+});
 </script>
 
 <template>
@@ -172,17 +181,13 @@ const onCopyInvite = async () => {
       <span>{{ t("actions.payouts.withdrawJoinRequest") }}</span>
     </Btn>
 
-    <Btn
-      v-if="inviteUrl"
+    <ShareBtn
+      :url="shareUrl"
+      :title="tour.title"
       :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.payouts.copyInvite')"
-      data-test="tour-copy-invite"
       mobile-icon-only
-      @click="onCopyInvite"
-    >
-      <i class="fa-light fa-link" />
-      <span>{{ t("actions.payouts.copyInvite") }}</span>
-    </Btn>
+      data-test="tour-share"
+    />
   </Teleport>
 
   <div class="tour-meta">

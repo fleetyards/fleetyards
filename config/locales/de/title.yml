@@ -1,6 +1,11 @@
 ---
 de:
   title:
+    link_preview:
+      fleet_event: "Flotten-Event in %{fleet}"
+      fleet_contract: "Auftrag in %{fleet}"
+      tour: "Tour"
+      tour_invite: "%{tour} beitreten"
     default: FleetYards.net
     default_short: FleetYards
     default_admin: FleetYards.net Command

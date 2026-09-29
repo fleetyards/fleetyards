@@ -9,6 +9,8 @@ import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import copyText from "@/frontend/utils/CopyText";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
+import { useMobile } from "@/shared/composables/useMobile";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,6 +36,12 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useAppNotifications();
+
+const mobile = useMobile();
+
+// Where clipboard.js parks its scratch textarea. The modal traps focus, so one
+// in `body` never takes the selection and the copy silently copies nothing.
+const clipboardHost = ref<HTMLElement | null>(null);
 
 const form = ref<FleetInviteUrlCreateInput>({});
 
@@ -158,7 +166,7 @@ const usageLabel = (inviteUrl: FleetInviteUrl) => {
 };
 
 const copy = (inviteUrl: FleetInviteUrl) => {
-  copyText(inviteUrl.url).then(
+  copyText(inviteUrl.url, clipboardHost.value ?? undefined).then(
     () => {
       displaySuccess({
         text: t("messages.copyInviteUrl.success", {
@@ -177,6 +185,7 @@ const copy = (inviteUrl: FleetInviteUrl) => {
 
 <template>
   <Modal v-if="fleet" :title="t('headlines.fleets.inviteUrls')">
+    <div ref="clipboardHost" />
     <div
       v-for="inviteUrl in inviteUrls"
       :key="inviteUrl.token"
@@ -193,7 +202,15 @@ const copy = (inviteUrl: FleetInviteUrl) => {
           class="url-input"
           @click="copy(inviteUrl)"
         />
-        <Btn @click="copy(inviteUrl)">
+        <ShareBtn
+          v-if="mobile"
+          :url="inviteUrl.url"
+          :title="t('actions.fleet.join', { fleet: fleet.name })"
+          :container="clipboardHost ?? undefined"
+          no-label
+          data-test="invite-url-share"
+        />
+        <Btn v-else @click="copy(inviteUrl)">
           <i class="fa-duotone fa-copy" />
         </Btn>
         <Btn :tone="BtnTonesEnum.DANGER" @click="remove(inviteUrl)">

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module Frontend
-  class FleetsController < ApplicationController
+  class FleetsController < BaseController
+    include LinkPreviewRendering
+
     def show
       if fleet.present?
         @title = fleet.name
@@ -43,15 +45,21 @@ module Frontend
     end
 
     def event
-      fleet_for_event = Fleet.find_by(slug: (params[:fleet_slug] || "").downcase)
-      fleet_event = fleet_for_event&.fleet_events&.find_by(slug: params[:event_slug])
-      if fleet_event.present?
-        @title = fleet_event.title
-        @og_type = "article"
-        @og_image = fleet_event.cover_image.attached? ? rails_blob_url(fleet_event.cover_image) : nil
+      render_link_preview(item_fleet&.fleet_events&.find_by(slug: params[:event_slug])) do |fleet_event|
+        LinkPreview.for_fleet_event(fleet_event)
       end
+    end
 
-      render_frontend
+    def contract
+      render_link_preview(item_fleet&.fleet_contracts&.find_by(slug: params[:contract_slug])) do |fleet_contract|
+        LinkPreview.for_fleet_contract(fleet_contract)
+      end
+    end
+
+    def tour
+      render_link_preview(item_fleet&.tours&.find_by(slug: params[:tour_slug])) do |fleet_tour|
+        LinkPreview.for_tour(fleet_tour)
+      end
     end
 
     def settings
@@ -64,19 +72,12 @@ module Frontend
       render_frontend
     end
 
-    private def render_frontend
-      respond_to do |format|
-        format.html do
-          render "frontend/index", status: :ok
-        end
-        format.all do
-          redirect_to "/404"
-        end
-      end
-    end
-
     private def fleet
       @fleet ||= Fleet.kept.find_by(slug: (params[:slug] || "").downcase)
+    end
+
+    private def item_fleet
+      @item_fleet ||= Fleet.kept.find_by(slug: (params[:fleet_slug] || "").downcase)
     end
   end
 end
