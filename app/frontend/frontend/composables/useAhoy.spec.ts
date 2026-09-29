@@ -8,13 +8,23 @@ const START_LOCATION: Location = { path: "/" };
 
 const hooks: Hook[] = [];
 
+let settle: { resolve: () => void; reject: (error: Error) => void };
+
+const isReady = () =>
+  new Promise<void>((resolve, reject) => {
+    settle = { resolve, reject };
+  });
+
 const trackView = vi.fn();
 
 let installed = false;
 
 vi.mock("vue-router", () => ({
   START_LOCATION,
-  useRouter: () => ({ afterEach: (hook: Hook) => hooks.push(hook) }),
+  useRouter: () => ({
+    afterEach: (hook: Hook) => hooks.push(hook),
+    isReady,
+  }),
 }));
 
 vi.mock("ahoy.js", () => ({
@@ -40,6 +50,14 @@ vi.mock("@/shared/utils/DisplayMode", () => ({
 
 const { useAhoy } = await import("./useAhoy");
 
+const flush = () => new Promise((resolve) => setTimeout(resolve));
+
+const load = async () => {
+  useAhoy();
+  settle.resolve();
+  await flush();
+};
+
 const navigate = async (to: string, from: Location | string) => {
   hooks.forEach((hook) =>
     hook({ path: to }, typeof from === "string" ? { path: from } : from),
@@ -54,21 +72,35 @@ describe("useAhoy", () => {
     installed = false;
   });
 
-  it("tracks the page the app was loaded on", () => {
+  it("tracks the page the app was loaded on once its navigation settles", async () => {
     useAhoy();
+    await flush();
+
+    expect(trackView).not.toHaveBeenCalled();
+
+    settle.resolve();
+    await flush();
 
     expect(trackView).toHaveBeenCalledExactlyOnceWith({});
   });
 
-  it("does not count the initial navigation twice", async () => {
+  it("tracks a load whose initial navigation failed", async () => {
     useAhoy();
+    settle.reject(new Error("guard threw"));
+    await flush();
+
+    expect(trackView).toHaveBeenCalledOnce();
+  });
+
+  it("does not count the initial navigation twice", async () => {
+    await load();
     await navigate("/hangar/", START_LOCATION);
 
     expect(trackView).toHaveBeenCalledOnce();
   });
 
   it("tracks every navigation to another page", async () => {
-    useAhoy();
+    await load();
     await navigate("/hangar/", "/");
     await navigate("/fleets/", "/hangar/");
 
@@ -76,14 +108,14 @@ describe("useAhoy", () => {
   });
 
   it("ignores a change that stays on the same page", async () => {
-    useAhoy();
+    await load();
     await navigate("/hangar/", "/hangar/");
 
     expect(trackView).toHaveBeenCalledOnce();
   });
 
   it("ignores a navigation that failed", async () => {
-    useAhoy();
+    await load();
     hooks.forEach((hook) =>
       hook({ path: "/fleets/" }, { path: "/hangar/" }, new Error("aborted")),
     );
@@ -94,7 +126,7 @@ describe("useAhoy", () => {
 
   it("marks every view from the installed app", async () => {
     installed = true;
-    useAhoy();
+    await load();
     await navigate("/hangar/", "/");
 
     expect(trackView).toHaveBeenNthCalledWith(1, { installed: true });

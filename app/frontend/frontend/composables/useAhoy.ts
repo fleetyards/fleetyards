@@ -58,18 +58,23 @@ export const useAhoy = () => {
     { immediate: true },
   );
 
-  trackView();
   ahoy.trackSubmits("form");
 
-  // The view above covers the page the app was loaded on, so the initial
-  // navigation is skipped. A change of query or hash alone (a modal, a tab, a
-  // filter) stays on the same page and is not a new view.
+  // Lets the route's document title settle before ahoy.js reads it.
+  const trackViewOnceRendered = () => nextTick(trackView);
+
+  // The app mounts before the initial navigation settles, so the page it was
+  // loaded on is only known once a redirect or guard has resolved. A load whose
+  // initial navigation failed is still a load, of whatever page it stayed on.
+  void router.isReady().then(trackViewOnceRendered, trackViewOnceRendered);
+
+  // The initial navigation is covered above. A change of query or hash alone (a
+  // modal, a tab, a filter) stays on the same page and is not a new view.
   router.afterEach((to, from, failure) => {
     if (failure || from === START_LOCATION || to.path === from.path) {
       return;
     }
 
-    // Lets the route's document title settle before ahoy.js reads it.
-    void nextTick(trackView);
+    void trackViewOnceRendered();
   });
 };
