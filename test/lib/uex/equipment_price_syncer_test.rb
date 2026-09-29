@@ -95,6 +95,17 @@ module Uex
       assert_equal ["Big Benny's Noodles", "Sunrise Cooler"], result.unknown_other.map { |row| row["item_name"] }.sort
     end
 
+    test "#run keeps a carryable UEX files as a weapon out of the gaps" do
+      prices = uex_fixture("equipment_items_prices_all") + [
+        uex_fixture("equipment_items_prices_all").last.merge("id_item" => 414, "item_name" => "Pink QuikFlare", "item_uuid" => nil)
+      ]
+
+      result = sync(item_prices: prices)
+
+      assert_includes result.unknown_other.map { |row| row["item_name"] }, "Pink QuikFlare"
+      assert_not_includes result.unknown.map { |row| row["item_name"] }, "Pink QuikFlare"
+    end
+
     # Both syncers read one feed and write one table. Each reconciles only its
     # own item type, so a run of one must not take the other's prices as stale.
     test "#run leaves component prices alone" do

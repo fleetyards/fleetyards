@@ -11,6 +11,8 @@ module Uex
     SECTIONS = [].freeze
     # Categories inside SECTIONS that still hold nothing of this catalogue.
     FOREIGN_CATEGORIES = [].freeze
+    # UEX item ids inside SECTIONS that are still not of this catalogue.
+    FOREIGN_ITEMS = [].freeze
 
     # `unknown` is split on purpose. A UEX item in one of our sections that we
     # cannot place is a gap somebody should look at -- an item renamed by a
@@ -51,7 +53,8 @@ module Uex
         category = categories[row["id_category"]] || {}
 
         self.class::SECTIONS.include?(category["section"]) &&
-          self.class::FOREIGN_CATEGORIES.exclude?(category["name"])
+          self.class::FOREIGN_CATEGORIES.exclude?(category["name"]) &&
+          self.class::FOREIGN_ITEMS.exclude?(row["id_item"])
       end
 
       Result.new(
