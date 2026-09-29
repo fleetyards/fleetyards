@@ -68,13 +68,16 @@ module RsiHandleVerificationConcern
   end
 
   # The token stays: only the account holder can start a check of their own
-  # handle, and a token in their bio proves nothing for anybody else.
+  # handle, and a token in their bio proves nothing for anybody else. The last
+  # check goes instead, so one still out when the revoke lands no longer names
+  # the latest check and cannot undo it.
   def revoke_rsi_handle_verification!
     update_columns(
       rsi_handle_verified: false,
       rsi_handle_verified_via: nil,
       rsi_handle_verified_at: nil,
       rsi_verification_status: nil,
+      rsi_verification_checked_at: nil,
       updated_at: Time.current
     )
   end

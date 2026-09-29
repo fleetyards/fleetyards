@@ -114,4 +114,18 @@ class UserRsiVerificationTest < ActiveSupport::TestCase
     assert_nil check.run
     assert_not @user.reload.rsi_handle_verified?
   end
+
+  test "an answer from a check started before a revoke is dropped" do
+    @user.update_columns(rsi_verification_status: :pending, rsi_verification_checked_at: Time.current.floor(6)) # rubocop:disable Rails/SkipsModelValidations
+    check = UserRsiVerification.new(@user.reload)
+    stub_citizen_page(bio: @user.rsi_verification_token)
+
+    other = User.find(@user.id)
+    other.verify_rsi_handle("testpilot", via: :citizenid)
+    other.save!
+    other.revoke_rsi_handle_verification!
+
+    assert_nil check.run
+    assert_not @user.reload.rsi_handle_verified?
+  end
 end
