@@ -611,7 +611,7 @@ const crumbs = computed<Crumb[]>(() => [
 
   &__kind {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;
@@ -688,7 +688,7 @@ const crumbs = computed<Crumb[]>(() => [
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;
