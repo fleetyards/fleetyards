@@ -108,6 +108,17 @@ const avatarCases: AvatarCase[] = [
           />
           <MemberName :member="{ username: 'torlek' }" />
         </p>
+        <p class="verified-badges__narrow">
+          <MemberName
+            :member="{
+              username: 'torlek',
+              nickname:
+                'Torlek of the Long Watch, Keeper of the Outer Beacons and Pilot of Last Resort',
+              rsiHandle: 'TorlekMaru',
+              verifiedOrgSid: 'MARU',
+            }"
+          />
+        </p>
 
         <Heading :level="HeadingLevelEnum.H3">Member avatar</Heading>
         <div class="verified-badges__row">
@@ -158,6 +169,11 @@ const avatarCases: AvatarCase[] = [
   flex-wrap: wrap;
   align-items: center;
   gap: 2em;
+}
+
+// A column as narrow as the members table gives a name on a phone.
+.verified-badges__narrow {
+  max-width: 220px;
 }
 
 .verified-badges__avatar {

@@ -52,8 +52,8 @@ const secondaryName = computed(() =>
       <BtnDropdown :variant="BtnVariantsEnum.BARE" :clip-label="!orgBadgeLabel">
         <template #label>
           <span class="member-name__display"
-            >{{ displayName
-            }}<span
+            ><span class="member-name__text">{{ displayName }}</span
+            ><span
               v-if="orgBadgeLabel"
               v-tooltip="orgBadgeLabel"
               :aria-label="orgBadgeLabel"
@@ -72,8 +72,8 @@ const secondaryName = computed(() =>
     </template>
     <template v-else>
       <span class="member-name__display"
-        >{{ displayName
-        }}<span
+        ><span class="member-name__text">{{ displayName }}</span
+        ><span
           v-if="orgBadgeLabel"
           v-tooltip="orgBadgeLabel"
           :aria-label="orgBadgeLabel"
@@ -94,9 +94,23 @@ const secondaryName = computed(() =>
 .member-name {
   display: inline-flex;
   align-items: center;
+  min-width: 0;
+  max-width: 100%;
 
   &__display {
     position: relative;
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  // The name truncates on its own, so a long nickname still ends in an
+  // ellipsis on a button that no longer clips its label for the badge.
+  &__text {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   // Placed like the badge on the RSI handle: past the name's right edge and
