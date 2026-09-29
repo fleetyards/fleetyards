@@ -12,6 +12,16 @@ module ScData
         clean_loader_tables
       end
 
+      test "#one retires the build of a model whose file the build does not ship" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, :in_game, name: "Unlinked Test")
+        loader.stubs(:load_model_data).returns(nil)
+
+        loader.one(model)
+
+        assert_not_predicate model.reload, :in_game?
+      end
+
       test "#load_model persists the parsed cross section signature" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, :in_game, name: "Cross Section Test")

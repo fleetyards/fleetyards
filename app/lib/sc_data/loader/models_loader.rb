@@ -72,7 +72,10 @@ module ScData
       end
 
       def one(model)
-        load_model(model.reload)
+        # A model whose file this build does not ship loses its current build, as
+        # it does in `all` -- otherwise a ship repointed at a missing file keeps
+        # showing the facts of the one it left.
+        ModelBuild.current(source).where(model_id: model.id).delete_all unless load_model(model.reload)
 
         model.hardpoints.find_each(&:save) # hack to generate correct group_keys
       end
