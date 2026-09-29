@@ -1542,6 +1542,25 @@
         },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Verificato tramite Citizen iD",
+        "rsiHandleVerifiedViaProfile": "Verificato tramite il profilo RSI",
+        "rsiVerification": {
+          "title": "Verifica il tuo handle RSI",
+          "token": "Codice di verifica",
+          "verifiedSince": "Verificato dal %{date}",
+          "openProfileSettings": "Modifica il tuo profilo RSI",
+          "steps": {
+            "copy": "Copia il tuo codice di verifica",
+            "paste": "Incollalo nella breve bio del tuo profilo RSI. Puoi rimuoverlo una volta verificato l’handle.",
+            "check": "Controlla la pagina cittadino di %{handle}"
+          },
+          "statuses": {
+            "pending": "Controllo della tua pagina cittadino…",
+            "token_missing": "Il codice non è ancora nella tua bio. RSI può impiegare qualche minuto a mostrare una modifica.",
+            "handle_mismatch": "La pagina restituita da RSI appartiene a un altro handle.",
+            "not_found": "RSI non ha nessun cittadino con questo handle.",
+            "failed": "Non è stato possibile controllare la tua pagina cittadino. Riprova tra un minuto."
+          }
+        },
         "location": "Posizione",
         "currentSystem": "Sistema stellare attuale",
         "tester": "Tester?",
@@ -2585,6 +2604,7 @@
         "fleet_fid_claim_completed": "ID flotta trasferito",
         "fleet_fid_claim_cancelled": "Rivendicazione dell’ID flotta terminata",
         "fleet_rsi_verification_lost": "Verifica della flotta persa",
+        "rsi_handle_verification_lost": "Verifica dell’handle RSI persa",
         "fleet_contract_fulfilled": "Contratto completato",
         "fleet_contract_settled": "Contratto pagato",
         "payout_ledger_settled": "Pagamenti definiti",

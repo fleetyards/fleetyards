@@ -80,12 +80,18 @@ const avatarCases: AvatarCase[] = [
             handle="TorlekMaru"
             :citizenid-profile-url="citizenidProfileUrl"
           />
+          <RsiProfileLink
+            handle="TorlekMaru"
+            verified
+            data-test="verified-badges-handle-profile"
+          />
           <RsiProfileLink handle="TorlekMaru" />
           <RsiProfileLink
             handle="TorlekMaru"
             :citizenid-profile-url="citizenidProfileUrl"
             icon-only
           />
+          <RsiProfileLink handle="TorlekMaru" verified icon-only />
           <RsiProfileLink handle="TorlekMaru" icon-only />
         </p>
 

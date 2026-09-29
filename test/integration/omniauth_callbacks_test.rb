@@ -124,4 +124,20 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
   end
+
+  test "#citizenid verifies the handle it names and takes it from the account that held it" do
+    holder = create(:user)
+    holder.verify_rsi_handle("TestPilot", via: :rsi_profile)
+    holder.save!
+    mock_omniauth(:citizenid, uid: UID, email: EMAIL, nickname: NICKNAME)
+    OmniAuth.config.mock_auth[:citizenid].extra = {raw_info: {"urn:user:rsi:username" => "TestPilot"}}
+
+    post "/users/auth/citizenid/callback"
+
+    assert_response :redirect
+    user = User.find_by!(normalized_email: EMAIL)
+    assert user.rsi_handle_verified_via_citizenid?
+    assert_equal "TestPilot", user.rsi_handle
+    assert_not holder.reload.rsi_handle_verified?
+  end
 end

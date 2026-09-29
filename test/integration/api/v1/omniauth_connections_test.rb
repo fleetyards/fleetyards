@@ -64,4 +64,28 @@ class Api::V1::OmniauthConnectionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :delete, 403, path_params: {provider: user.omniauth_connections.first.provider}
   end
+
+  test "DELETE /omniauth-connections/citizenid clears a handle Citizen iD verified" do
+    user = create(:user, password: "enterprise", password_set_manually: true)
+    create(:omniauth_connection, user: user, provider: :citizenid, uid: "citizen-uid")
+    user.verify_rsi_handle("TestPilot", via: :citizenid)
+    user.save!
+    sign_in user
+
+    assert_api_response :delete, 200, path_params: {provider: "citizenid"}
+
+    assert_not user.reload.rsi_handle_verified?
+  end
+
+  test "DELETE /omniauth-connections/citizenid keeps a handle proved through the RSI bio" do
+    user = create(:user, password: "enterprise", password_set_manually: true)
+    create(:omniauth_connection, user: user, provider: :citizenid, uid: "citizen-uid")
+    user.verify_rsi_handle("TestPilot", via: :rsi_profile)
+    user.save!
+    sign_in user
+
+    assert_api_response :delete, 200, path_params: {provider: "citizenid"}
+
+    assert user.reload.rsi_handle_verified_via_rsi_profile?
+  end
 end

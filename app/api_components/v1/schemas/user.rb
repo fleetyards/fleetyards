@@ -15,6 +15,7 @@ module V1
           avatar: ::Shared::V1::Schemas::MediaFile,
           rsiHandle: {type: :string},
           rsiHandleVerified: {type: :boolean},
+          rsiHandleVerifiedVia: ::V1::Schemas::Enums::RsiHandleVerifiedViaEnum,
           citizenidProfileUrl: {type: :string},
           discord: {type: :string},
           youtube: {type: :string},

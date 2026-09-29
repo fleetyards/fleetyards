@@ -5,6 +5,7 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   getFleetRsiVerificationQueryKey,
+  getMyRsiVerificationQueryKey,
   getMySupporterClaimKeyQueryKey,
   me,
 } from "@/services/fyApi";
@@ -44,6 +45,18 @@ describe("session store", () => {
 
     expect(
       queryClient.getQueryData(getMySupporterClaimKeyQueryKey()),
+    ).toBeUndefined();
+  });
+
+  it("drops the reader's cached verification token on logout", async () => {
+    queryClient.setQueryData(getMyRsiVerificationQueryKey(), {
+      token: "FLEETYARDS-ABCDEFGHIJ",
+    });
+
+    await useSessionStore().logout();
+
+    expect(
+      queryClient.getQueryData(getMyRsiVerificationQueryKey()),
     ).toBeUndefined();
   });
 

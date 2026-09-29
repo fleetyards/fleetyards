@@ -55,6 +55,11 @@
 #  reset_password_token      :string(255)
 #  rsi_handle                :string
 #  rsi_handle_verified       :boolean          default(FALSE), not null
+#  rsi_handle_verified_at    :datetime
+#  rsi_handle_verified_via   :string
+#  rsi_verification_checked_at :datetime
+#  rsi_verification_status   :string
+#  rsi_verification_token    :string
 #  sale_notify               :boolean          default(FALSE)
 #  show_online_status        :boolean          default(TRUE), not null
 #  sign_in_count             :integer          default(0), not null
@@ -86,6 +91,7 @@
 #  index_users_on_reset_password_token   (reset_password_token) UNIQUE
 #  index_users_on_supported_fleet_id     (supported_fleet_id) WHERE (supported_fleet_id IS NOT NULL)
 #  index_users_on_unlock_token           (unlock_token) UNIQUE
+#  index_users_on_verified_rsi_handle    (lower((rsi_handle)::text)) UNIQUE WHERE rsi_handle_verified
 #  index_users_on_username               (username) UNIQUE
 #
 # Foreign Keys
@@ -96,6 +102,7 @@ class User < ApplicationRecord
   # A version of a user row holds their old email and username verbatim, so it
   # has to go when the account does.
   include ErasableVersionsConcern
+  include RsiHandleVerificationConcern
 
   # Both columns were only ever written by the migration that added them -- the
   # `counter_cache: true` meant to maintain them sat on the `has_many` side,
@@ -493,7 +500,7 @@ class User < ApplicationRecord
   end
 
   def citizenid_profile_url
-    return unless rsi_handle_verified?
+    return unless rsi_handle_verified? && rsi_handle_verified_via_citizenid?
 
     connection = connection_for("citizenid")
     return if connection.blank?

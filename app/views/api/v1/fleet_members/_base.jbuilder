@@ -47,6 +47,7 @@ json.primary member.primary
 json.verified member.rsi_verified?
 json.verified_org_sid member.fleet.rsi_verified_sid if member.rsi_verified?
 json.citizenid_profile_url member.user.citizenid_profile_url
+json.rsi_handle_verified_via member.user.rsi_handle_verified_via if member.user.rsi_handle_verified?
 json.discord_profile_url member.user.discord_profile_url
 json.latitude member.user.latitude&.to_f
 json.longitude member.user.longitude&.to_f

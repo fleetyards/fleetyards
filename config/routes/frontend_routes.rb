@@ -129,6 +129,7 @@ namespace :frontend, **frontend_options do
   get "notifications", to: "base#index", as: :notifications
   get "settings", to: "base#index", as: :settings_account
   get "settings/notifications", to: "base#index"
+  get "settings/profile", to: "base#index", as: :profile_settings
   get "settings/friends", to: "base#index", as: :friends
   # The list a request is answered on. A notification that dropped the reader on
   # the accepted friends is pointing at the one list the request is not in.

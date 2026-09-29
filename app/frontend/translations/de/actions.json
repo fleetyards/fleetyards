@@ -149,6 +149,16 @@
         "deny": "Ablehnen"
       },
       "verifyWithCitizenId": "Mit Citizen iD verifizieren",
+      "user": {
+        "rsiVerification": {
+          "verify": "Über RSI-Profil verifizieren",
+          "check": "Jetzt prüfen",
+          "checkIn": "Erneut prüfen in %{seconds} s",
+          "copyToken": "Code kopieren",
+          "regenerateToken": "Neuen Code erzeugen",
+          "revoke": "Entziehen"
+        }
+      },
       "oauth": {
         "signInWith": "Anmelden mit",
         "google": "Google",
@@ -233,7 +243,7 @@
           "regenerateToken": "Neuen Code erzeugen",
           "check": "Jetzt prüfen",
           "copyToken": "Code kopieren",
-          "revoke": "Verifizierung entziehen"
+          "revoke": "Entziehen"
         },
         "join": "%{fleet} beitreten!",
         "leave": "%{fleet} verlassen",

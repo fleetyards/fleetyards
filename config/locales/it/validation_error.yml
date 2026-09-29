@@ -263,6 +263,9 @@ it:
       update: "Una rivendicazione si può accorciare solo finché è aperta, e solo a una data precedente alla sua fine attuale."
       cancel: "Questa rivendicazione non è più aperta."
       complete: "L’ID flotta non è stato trasferito: la rivendicazione è stata chiusa nel frattempo, la flotta che lo rivendica non è più verificata, oppure ora lo ha un’altra flotta, che ha ricevuto un proprio avviso."
+    user_rsi_verification:
+      check: "Salva il tuo handle RSI nel profilo prima di controllare."
+      destroy: "Un handle verificato tramite Citizen iD si libera scollegando Citizen iD."
     fleet_notification_settings:
       update: Impossibile aggiornare le impostazioni di notifica.
     version:

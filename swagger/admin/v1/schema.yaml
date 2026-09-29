@@ -8862,6 +8862,47 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{id}/rsi-verification":
+    parameters:
+    - name: id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Revoke a user's RSI handle verification
+      tags:
+      - Users
+      operationId: revokeUserRsiVerification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}/send-password-reset":
     parameters:
     - name: id
@@ -18706,6 +18747,15 @@ components:
           type: number
       additionalProperties: false
       title: RefuelBoom
+    RsiHandleVerifiedViaEnum:
+      type: string
+      enum:
+      - citizenid
+      - rsi_profile
+      x-enumNames:
+      - CITIZENID
+      - RSI_PROFILE
+      title: RsiHandleVerifiedViaEnum
     RsiRequestLog:
       type: object
       properties:
@@ -19303,6 +19353,11 @@ components:
           type: string
         rsiHandleVerified:
           type: boolean
+        rsiHandleVerifiedVia:
+          "$ref": "#/components/schemas/RsiHandleVerifiedViaEnum"
+        rsiHandleVerifiedAt:
+          type: string
+          format: date-time
         citizenidProfileUrl:
           type: string
         discord:

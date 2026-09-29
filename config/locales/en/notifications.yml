@@ -85,6 +85,9 @@ en:
       claimant_admin:
         title: "Your claim on %{fid} was cancelled"
         body: "An administrator cancelled the claim by %{fleet} on the fleet ID %{fid}."
+    rsi_handle_verification_lost:
+      title: "Your RSI handle %{handle} is no longer verified"
+      body: "Another Fleetyards account proved it owns the RSI handle %{handle}, either through Citizen iD or with its verification token in the RSI bio. Your profile no longer shows the handle as verified. If %{handle} is yours, verify it again from your profile settings."
     fleet_member_accepted:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:

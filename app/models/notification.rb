@@ -85,6 +85,7 @@ class Notification < ApplicationRecord
     fleet_fid_claim_opened: "fleet_fid_claim_opened",
     fleet_fid_claim_completed: "fleet_fid_claim_completed",
     fleet_fid_claim_cancelled: "fleet_fid_claim_cancelled",
+    rsi_handle_verification_lost: "rsi_handle_verification_lost",
     announcement: "announcement"
   }
 
@@ -371,6 +372,11 @@ class Notification < ApplicationRecord
       channels: %i[app mail],
       mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    rsi_handle_verification_lost: {
+      retention: 365.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

@@ -149,6 +149,16 @@
         "deny": "Refuser"
       },
       "verifyWithCitizenId": "Vérifier avec Citizen iD",
+      "user": {
+        "rsiVerification": {
+          "verify": "Vérifier via le profil RSI",
+          "check": "Vérifier maintenant",
+          "checkIn": "Revérifier dans %{seconds} s",
+          "copyToken": "Copier le code",
+          "regenerateToken": "Générer un nouveau code",
+          "revoke": "Révoquer"
+        }
+      },
       "oauth": {
         "signInWith": "Se connecter avec",
         "google": "Google",
@@ -233,7 +243,7 @@
           "regenerateToken": "Générer un nouveau code",
           "check": "Vérifier maintenant",
           "copyToken": "Copier le code",
-          "revoke": "Révoquer la vérification"
+          "revoke": "Révoquer"
         },
         "join": "Rejoignez la flotte %{fleet}!",
         "leave": "Quitter la flotte %{fleet}",

@@ -262,6 +262,9 @@ zh-TW:
       update: "申領只能在進行中時縮短，且只能改為早於目前結束時間的日期。"
       cancel: "此申領已不再進行中。"
       complete: "艦隊 ID 未轉移：申領已在此期間關閉，申領方不再通過該驗證，或現在由另一支艦隊持有且該艦隊已收到單獨通知。"
+    user_rsi_verification:
+      check: "請先在個人資料中儲存你的 RSI 使用者名，然後再檢查。"
+      destroy: "透過 Citizen iD 驗證的使用者名需要中斷 Citizen iD 連線才能解除。"
     fleet_notification_settings:
       update: 無法更新通知設定。
     version:

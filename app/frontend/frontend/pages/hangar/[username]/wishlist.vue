@@ -22,6 +22,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { type UserPublic } from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -141,6 +142,7 @@ onMounted(async () => {
         v-if="user.rsiHandle"
         :handle="user.rsiHandle"
         :citizenid-profile-url="user.citizenidProfileUrl"
+        :verified="handleVerifiedViaProfile(user)"
         icon-only
       />
       <a

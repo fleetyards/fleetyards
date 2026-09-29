@@ -90,6 +90,9 @@ es:
       claimant_admin:
         title: "Se ha cancelado tu reclamación de %{fid}"
         body: "Un administrador canceló la reclamación de %{fleet} sobre el ID de flota %{fid}."
+    rsi_handle_verification_lost:
+      title: "Tu handle de RSI %{handle} ya no está verificado"
+      body: "Otra cuenta de Fleetyards demostró que el handle de RSI %{handle} le pertenece, mediante Citizen iD o con su código de verificación en la biografía de RSI. Tu perfil ya no muestra el handle como verificado. Si %{handle} es tuyo, vuelve a verificarlo desde los ajustes de tu perfil."
     fleet_member_accepted:
       title: "%{username} se unió a %{fleet}"
     fleet_request_accepted:

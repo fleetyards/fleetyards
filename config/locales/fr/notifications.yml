@@ -90,6 +90,9 @@ fr:
       claimant_admin:
         title: "Ta réclamation de %{fid} a été annulée"
         body: "Un administrateur a annulé la réclamation de %{fleet} sur l’ID de flotte %{fid}."
+    rsi_handle_verification_lost:
+      title: "Ton pseudo RSI %{handle} n’est plus vérifié"
+      body: "Un autre compte Fleetyards a prouvé que le pseudo RSI %{handle} lui appartient, via Citizen iD ou avec son code de vérification dans la bio RSI. Ton profil n’affiche plus le pseudo comme vérifié. Si %{handle} est le tien, vérifie-le à nouveau depuis les paramètres de ton profil."
     fleet_member_accepted:
       title: "%{username} a rejoint %{fleet}"
     fleet_request_accepted:

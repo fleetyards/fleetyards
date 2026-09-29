@@ -23,9 +23,17 @@ import {
   type UserUpdateInput,
   UserDateFormatEnum,
 } from "@/services/fyApi";
-import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
+import {
+  RsiHandleVerifiedViaEnum,
+  useDestroyMyRsiVerification,
+  useUpdateProfile as useUpdateProfileMutation,
+} from "@/services/fyApi";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
+import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/index.vue";
 import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 
@@ -81,6 +89,39 @@ const rsiHandleVerified = computed(
 const citizenIdConnected = computed(() =>
   sessionStore.currentUser?.authConnections?.includes("citizenid"),
 );
+
+// The check reads the saved handle, so one still being typed has nothing to
+// verify yet.
+const canVerifyRsiHandle = computed(
+  () => !!sessionStore.currentUser?.rsiHandle && !rsiHandleVerified.value,
+);
+
+// Citizen iD would verify the handle again at the next sign-in, so a handle it
+// proved is released by disconnecting it instead.
+const rsiHandleRevocable = computed(
+  () =>
+    rsiHandleVerified.value &&
+    sessionStore.currentUser?.rsiHandleVerifiedVia ===
+      RsiHandleVerifiedViaEnum.RSI_PROFILE,
+);
+
+const revokeMutation = useDestroyMyRsiVerification();
+
+const revokeRsiVerification = async () => {
+  try {
+    await revokeMutation.mutateAsync();
+    comlink.emit("user-update");
+  } catch (error) {
+    displayAlert({ text: validationErrorFrom(error).message });
+  }
+};
+
+const openRsiVerification = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/RsiHandleVerificationModal/index.vue"),
+  });
+};
 
 watch(
   () => sessionStore.currentUser,
@@ -218,21 +259,33 @@ const onSubmit = handleSubmit(async (values) => {
             :disabled="rsiHandleVerified"
           >
             <template v-if="rsiHandleVerified" #suffix>
-              <a
-                :href="sessionStore.currentUser?.citizenidProfileUrl"
-                :aria-label="t('labels.user.rsiHandleVerified')"
-                target="_blank"
-                rel="noopener"
-              >
-                <i
-                  v-tooltip="t('labels.user.rsiHandleVerified')"
-                  class="fa-duotone fa-badge-check text-success"
-                />
-              </a>
+              <RsiHandleVerifiedBadge
+                :verified-via="sessionStore.currentUser?.rsiHandleVerifiedVia"
+                :citizenid-profile-url="
+                  sessionStore.currentUser?.citizenidProfileUrl
+                "
+              />
             </template>
           </FormInput>
+          <BtnConfirm
+            v-if="rsiHandleRevocable"
+            :size="BtnSizesEnum.SM"
+            :disabled="revokeMutation.isPending.value"
+            data-test="rsi-handle-revoke"
+            @confirm="revokeRsiVerification"
+          >
+            {{ t("actions.user.rsiVerification.revoke") }}
+          </BtnConfirm>
+          <Btn
+            v-if="canVerifyRsiHandle"
+            :size="BtnSizesEnum.SM"
+            data-test="rsi-handle-verify"
+            @click="openRsiVerification"
+          >
+            {{ t("actions.user.rsiVerification.verify") }}
+          </Btn>
           <OauthBtn
-            v-if="!citizenIdConnected"
+            v-if="!citizenIdConnected && !rsiHandleVerified"
             :provider="OauthBtnProvidersEnum.CITIZENID"
             :size="BtnSizesEnum.SM"
             inline

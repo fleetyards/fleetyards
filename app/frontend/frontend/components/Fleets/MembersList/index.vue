@@ -11,6 +11,7 @@ import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue"
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
 import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -137,6 +138,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
             (<RsiProfileLink
               :handle="record.rsiHandle"
               :citizenid-profile-url="record.citizenidProfileUrl"
+              :verified="handleVerifiedViaProfile(record)"
             />)
           </div>
         </div>
@@ -148,6 +150,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
         v-if="record.rsiHandle"
         :handle="record.rsiHandle"
         :citizenid-profile-url="record.citizenidProfileUrl"
+        :verified="handleVerifiedViaProfile(record)"
       />
     </template>
 

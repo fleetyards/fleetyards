@@ -1542,6 +1542,25 @@
         },
         "rsiHandle": "Handle",
         "rsiHandleVerified": "Über Citizen iD verifiziert",
+        "rsiHandleVerifiedViaProfile": "Über das RSI-Profil verifiziert",
+        "rsiVerification": {
+          "title": "RSI-Handle verifizieren",
+          "token": "Verifizierungscode",
+          "verifiedSince": "Verifiziert seit %{date}",
+          "openProfileSettings": "RSI-Profil bearbeiten",
+          "steps": {
+            "copy": "Kopiere deinen Verifizierungscode",
+            "paste": "Füge ihn in die Kurzbiografie deines RSI-Profils ein. Sobald dein Handle verifiziert ist, kannst du ihn wieder entfernen.",
+            "check": "Prüfe die Bürgerseite von %{handle}"
+          },
+          "statuses": {
+            "pending": "Deine Bürgerseite wird geprüft…",
+            "token_missing": "Der Code steht noch nicht in deiner Biografie. RSI kann einige Minuten brauchen, bis eine Änderung sichtbar ist.",
+            "handle_mismatch": "Die Seite, die RSI geliefert hat, gehört zu einem anderen Handle.",
+            "not_found": "RSI kennt keinen Bürger mit diesem Handle.",
+            "failed": "Deine Bürgerseite konnte nicht geprüft werden. Versuche es in einer Minute erneut."
+          }
+        },
         "location": "Standort",
         "currentSystem": "Aktuelles Sternensystem",
         "tester": "Tester?",
@@ -2585,6 +2604,7 @@
         "fleet_fid_claim_completed": "Flotten-ID übertragen",
         "fleet_fid_claim_cancelled": "Anspruch auf Flotten-ID beendet",
         "fleet_rsi_verification_lost": "Flottenverifizierung verloren",
+        "rsi_handle_verification_lost": "RSI-Handle-Verifizierung verloren",
         "fleet_contract_fulfilled": "Auftrag erfüllt",
         "fleet_contract_settled": "Auftrag ausgezahlt",
         "payout_ledger_settled": "Auszahlung abgerechnet",

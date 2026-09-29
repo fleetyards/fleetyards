@@ -10,6 +10,7 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
 import type { FleetMember } from "@/services/fyApi";
@@ -90,6 +91,7 @@ const roleDisplay = computed(() => {
           <RsiProfileLink
             :handle="props.member.rsiHandle"
             :citizenid-profile-url="props.member.citizenidProfileUrl"
+            :verified="handleVerifiedViaProfile(props.member)"
           />
         </dd>
       </template>

@@ -17,6 +17,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -111,7 +112,10 @@ const revokeMutation = useRevokeFleetRsiVerification({
 });
 
 const revokeVerification = async () => {
-  await revokeMutation.mutateAsync({ id: props.fleet.id });
+  await revokeMutation.mutateAsync({ id: props.fleet.id }).catch((error) => {
+    console.error("Error revoking the RSI verification:", error);
+    alert(error);
+  });
 };
 
 const onSubmit = handleSubmit(async (values) => {
@@ -156,23 +160,38 @@ const handleCancel = async () => {
           translation-key="fleet.description"
           name="description"
         />
-        <FormInput
-          v-model="rsiSid"
-          v-bind="rsiSidProps"
-          translation-key="fleet.rsiSid"
-          name="rsiSid"
-        />
-        <p v-if="fleet.rsiVerified" data-test="admin-fleet-rsi-verified">
-          <i class="fa-duotone fa-badge-check" />
-          {{ t("labels.fleet.rsiVerification.verified") }}
+        <FormInputGroup>
+          <FormInput
+            v-model="rsiSid"
+            v-bind="rsiSidProps"
+            translation-key="fleet.rsiSid"
+            name="rsiSid"
+          >
+            <template v-if="fleet.rsiVerified" #suffix>
+              <a
+                :href="`https://robertsspaceindustries.com/orgs/${fleet.rsiSid}`"
+                :aria-label="t('labels.fleet.rsiVerification.verified')"
+                target="_blank"
+                rel="noopener"
+                data-test="admin-fleet-rsi-verified"
+              >
+                <i
+                  v-tooltip="t('labels.fleet.rsiVerification.verified')"
+                  class="fa-duotone fa-badge-check text-success"
+                />
+              </a>
+            </template>
+          </FormInput>
           <BtnConfirm
+            v-if="fleet.rsiVerified"
             :size="BtnSizesEnum.SM"
             :disabled="revokeMutation.isPending.value"
+            data-test="admin-fleet-rsi-revoke"
             @confirm="revokeVerification"
           >
             {{ t("actions.fleet.rsiVerification.revoke") }}
           </BtnConfirm>
-        </p>
+        </FormInputGroup>
         <FormFileInput
           v-model="logo"
           v-bind="logoProps"

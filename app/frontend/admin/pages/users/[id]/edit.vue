@@ -11,15 +11,20 @@ import {
   type User,
   type UserInput,
   useUpdateUser,
+  useRevokeUserRsiVerification,
   getUsersQueryKey,
   getUserQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
+import RsiHandleVerifiedBadge from "@/shared/components/RsiHandleVerifiedBadge/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import SupporterStatus from "@/shared/components/SupporterStatus/index.vue";
 import PresenceDot from "@/shared/components/PresenceDot/index.vue";
 import { useAdminPresence } from "@/admin/composables/useAdminPresence";
@@ -107,6 +112,31 @@ const updateMutation = useUpdateUser({
   },
 });
 
+const revokeMutation = useRevokeUserRsiVerification({
+  mutation: {
+    onSettled: () => {
+      const promises: Promise<void>[] = [
+        queryClient.invalidateQueries({ queryKey: getUsersQueryKey() }),
+      ];
+      if (props.user.id) {
+        promises.push(
+          queryClient.invalidateQueries({
+            queryKey: getUserQueryKey(props.user.id),
+          }),
+        );
+      }
+      void Promise.all(promises);
+    },
+  },
+});
+
+const revokeVerification = async () => {
+  await revokeMutation.mutateAsync({ id: props.user.id! }).catch((error) => {
+    console.error("Error revoking the RSI handle verification:", error);
+    alert(error);
+  });
+};
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -157,13 +187,70 @@ const handleCancel = async () => {
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="username" v-bind="usernameProps" name="username" />
-        <FormInput v-model="email" v-bind="emailProps" name="email" />
-        <FormInput
-          v-model="rsiHandle"
-          v-bind="rsiHandleProps"
-          translation-key="user.rsiHandle"
-          name="rsiHandle"
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="saleNotify"
+          translation-key="user.saleNotify"
+          v-bind="saleNotifyProps"
+          name="saleNotify"
+          align-with-fields
         />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput v-model="email" v-bind="emailProps" name="email" />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="tester"
+          translation-key="user.tester"
+          v-bind="testerProps"
+          name="tester"
+          align-with-fields
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInputGroup>
+          <FormInput
+            v-model="rsiHandle"
+            v-bind="rsiHandleProps"
+            translation-key="user.rsiHandle"
+            name="rsiHandle"
+          >
+            <template v-if="user.rsiHandleVerified" #suffix>
+              <RsiHandleVerifiedBadge
+                :verified-via="user.rsiHandleVerifiedVia"
+                :citizenid-profile-url="user.citizenidProfileUrl"
+              />
+            </template>
+          </FormInput>
+          <BtnConfirm
+            v-if="user.rsiHandleVerified"
+            :size="BtnSizesEnum.SM"
+            :disabled="revokeMutation.isPending.value"
+            data-test="admin-user-rsi-revoke"
+            @confirm="revokeVerification"
+          >
+            {{ t("actions.user.rsiVerification.revoke") }}
+          </BtnConfirm>
+        </FormInputGroup>
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="publicHangar"
+          translation-key="user.publicHangar"
+          v-bind="publicHangarProps"
+          name="publicHangar"
+          align-with-fields
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
         <FormFileInput
           v-model="avatar"
           v-bind="avatarProps"
@@ -175,61 +262,25 @@ const handleCancel = async () => {
         />
       </div>
       <div class="col-12 col-md-6">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="saleNotify"
-              translation-key="user.saleNotify"
-              v-bind="saleNotifyProps"
-              name="saleNotify"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="tester"
-              translation-key="user.tester"
-              v-bind="testerProps"
-              name="tester"
-            />
-          </div>
-        </div>
-        <hr />
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="publicHangar"
-              translation-key="user.publicHangar"
-              v-bind="publicHangarProps"
-              name="publicHangar"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="publicHangarLoaners"
-              translation-key="user.publicHangarLoaners"
-              v-bind="publicHangarLoanersProps"
-              name="publicHangarLoaners"
-            />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="publicWishlist"
-              translation-key="user.publicWishlist"
-              v-bind="publicWishlistProps"
-              name="publicWishlist"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormToggle
-              v-model="hideOwner"
-              translation-key="user.hideOwner"
-              v-bind="hideOwnerProps"
-              name="hideOwner"
-            />
-          </div>
-        </div>
+        <FormToggle
+          v-model="publicHangarLoaners"
+          translation-key="user.publicHangarLoaners"
+          v-bind="publicHangarLoanersProps"
+          name="publicHangarLoaners"
+          align-with-fields
+        />
+        <FormToggle
+          v-model="publicWishlist"
+          translation-key="user.publicWishlist"
+          v-bind="publicWishlistProps"
+          name="publicWishlist"
+        />
+        <FormToggle
+          v-model="hideOwner"
+          translation-key="user.hideOwner"
+          v-bind="hideOwnerProps"
+          name="hideOwner"
+        />
       </div>
     </div>
     <FormActions

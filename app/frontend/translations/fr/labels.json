@@ -1542,6 +1542,25 @@
         },
         "rsiHandle": "Pseudo",
         "rsiHandleVerified": "Vérifié via Citizen iD",
+        "rsiHandleVerifiedViaProfile": "Vérifié via le profil RSI",
+        "rsiVerification": {
+          "title": "Vérifier ton pseudo RSI",
+          "token": "Code de vérification",
+          "verifiedSince": "Vérifié depuis le %{date}",
+          "openProfileSettings": "Modifier ton profil RSI",
+          "steps": {
+            "copy": "Copie ton code de vérification",
+            "paste": "Colle-le dans la courte bio de ton profil RSI. Tu pourras le retirer une fois ton pseudo vérifié.",
+            "check": "Vérifie la page citoyen de %{handle}"
+          },
+          "statuses": {
+            "pending": "Vérification de ta page citoyen…",
+            "token_missing": "Le code n’est pas encore dans ta bio. RSI peut mettre quelques minutes à afficher une modification.",
+            "handle_mismatch": "La page renvoyée par RSI appartient à un autre pseudo.",
+            "not_found": "RSI ne connaît aucun citoyen avec ce pseudo.",
+            "failed": "Ta page citoyen n’a pas pu être vérifiée. Réessaie dans une minute."
+          }
+        },
         "location": "Emplacement",
         "currentSystem": "Système stellaire actuel",
         "tester": "Testeur ?",
@@ -2585,6 +2604,7 @@
         "fleet_fid_claim_completed": "ID de flotte transféré",
         "fleet_fid_claim_cancelled": "Réclamation d’ID de flotte terminée",
         "fleet_rsi_verification_lost": "Vérification de flotte perdue",
+        "rsi_handle_verification_lost": "Vérification du pseudo RSI perdue",
         "fleet_contract_fulfilled": "Contrat rempli",
         "fleet_contract_settled": "Contrat payé",
         "payout_ledger_settled": "Paiements arrêtés",

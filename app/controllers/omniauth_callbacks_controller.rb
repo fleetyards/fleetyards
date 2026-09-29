@@ -178,10 +178,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return if raw_info.blank?
 
     rsi_handle = raw_info["urn:user:rsi:username"]
-    if rsi_handle.present?
-      user.rsi_handle = rsi_handle
-      user.rsi_handle_verified = true
-    end
+    user.verify_rsi_handle(rsi_handle, via: :citizenid) if rsi_handle.present?
 
     attach_remote_avatar(user, raw_info["urn:user:rsi:avatar:url"])
   end

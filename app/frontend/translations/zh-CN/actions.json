@@ -149,6 +149,16 @@
         "deny": "拒绝"
       },
       "verifyWithCitizenId": "使用 Citizen iD 验证",
+      "user": {
+        "rsiVerification": {
+          "verify": "通过 RSI 个人资料验证",
+          "check": "立即检查",
+          "checkIn": "%{seconds} 秒后可再次检查",
+          "copyToken": "复制验证码",
+          "regenerateToken": "生成新的验证码",
+          "revoke": "撤销"
+        }
+      },
       "oauth": {
         "signInWith": "通过以下方式登录",
         "google": "Google",
@@ -233,7 +243,7 @@
           "regenerateToken": "生成新的验证码",
           "check": "立即检查",
           "copyToken": "复制验证码",
-          "revoke": "撤销验证"
+          "revoke": "撤销"
         },
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
