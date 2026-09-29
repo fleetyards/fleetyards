@@ -62,7 +62,8 @@ const rsiProfileUrl = computed(
   align-items: center;
 
   // Centred on the right edge, so it overlaps the icon or the handle at any
-  // size.
+  // size. The duotone shape is made opaque in the colour its default 40%
+  // layer shows over the page, so what it overlaps does not show through.
   &__badge {
     position: absolute;
     z-index: 1;
@@ -71,6 +72,12 @@ const rsiProfileUrl = computed(
     transform: translate(50%, 0);
     font-size: 0.65em;
     line-height: 1;
+    --fa-secondary-color: color-mix(
+      in srgb,
+      currentColor 40%,
+      var(--color-background, #000)
+    );
+    --fa-secondary-opacity: 1;
   }
 }
 </style>
