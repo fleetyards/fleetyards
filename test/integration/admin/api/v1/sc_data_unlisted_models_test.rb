@@ -301,8 +301,7 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
   end
 
   test "POST reset hands back the identifier a link gave the ship" do
-    existing = create(:model, name: "S-65 Stingray", sc_key: nil, created_at: 1.day.ago)
-    @entry.update!(created_at: 1.hour.ago)
+    existing = create(:model, name: "S-65 Stingray", sc_key: nil)
     @entry.link_to_model!(existing)
     Sidekiq::Job.clear_all
 
@@ -312,6 +311,19 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
 
     assert_nil existing.reload.sc_key
     assert_equal [existing.id], Loaders::ScData::ModelJob.jobs.map { |job| job["args"].first }
+  end
+
+  test "POST reset keeps an identifier someone set by hand" do
+    existing = create(:model, name: "S-65 Stingray", sc_key: "krig_s65_stingray")
+    @entry.link_to_model!(existing)
+    Sidekiq::Job.clear_all
+
+    sign_in @user
+
+    assert_api_response :post, 200, path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/reset"
+
+    assert_equal "krig_s65_stingray", existing.reload.sc_key
+    assert_empty Loaders::ScData::ModelJob.jobs
   end
 
   test "POST ignore needs the models privilege" do

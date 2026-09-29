@@ -10,6 +10,7 @@
 # Table name: sc_data_unlisted_models
 #
 #  id                     :uuid             not null, primary key
+#  claimed_sc_key         :boolean          default(FALSE), not null
 #  comparison             :string
 #  decided_at             :datetime
 #  decision               :string
@@ -178,6 +179,7 @@ class ScDataUnlistedModel < ApplicationRecord
       next false if target.sc_key.present?
 
       target.update!(sc_key: identifier)
+      update!(claimed_sc_key: true)
       true
     end
   end
@@ -194,20 +196,20 @@ class ScDataUnlistedModel < ApplicationRecord
   # left behind is not deleted here -- deleting a ship is its own action, and a
   # hangar entry may already point at it.
   #
-  # A ship that was linked hands back the identifier the link gave it, or it
-  # keeps reading the wrong file. A linked ship predates the entry; one a
-  # `create_model` made does not, and that identifier is its own.
+  # A ship hands back the identifier a link gave it, or it keeps reading the
+  # wrong file. Only one the link wrote: a key someone set by hand, or the one a
+  # `create_model` made the ship with, is the ship's own.
   #
-  # Answers whether the ship's identifier changed.
+  # Answers the ship whose identifier changed, if any.
   def reset!
-    linked = model if model.present? && model.sc_key == identifier && model.created_at < created_at
+    released = model if claimed_sc_key && model.present? && model.sc_key == identifier
 
     transaction do
-      update!(decision: nil, model: nil, decided_at: nil)
-      linked&.update!(sc_key: nil)
+      update!(decision: nil, model: nil, decided_at: nil, claimed_sc_key: false)
+      released&.update!(sc_key: nil)
     end
 
-    linked
+    released
   end
 
   DEFAULT_SORTING_PARAMS = ["identifier asc"]
