@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Model } from "@/services/fyApi";
 
 const ar = vi.hoisted(() => ({
+  flag: true,
   mayHaveAr: true,
   canActivate: true,
   activateAR: vi.fn(() => Promise.resolve()),
@@ -19,6 +20,10 @@ vi.mock("@/frontend/utils/arViewer", () => ({
         })
       : undefined,
   ),
+}));
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => ar.flag }),
 }));
 
 const { default: Component } = await import("./index.vue");
@@ -44,6 +49,7 @@ const button = (wrapper: Awaited<ReturnType<typeof mount>>) =>
 
 describe("ViewInArBtn", () => {
   beforeEach(() => {
+    ar.flag = true;
     ar.mayHaveAr = true;
     ar.canActivate = true;
     ar.activateAR.mockClear();
@@ -51,6 +57,12 @@ describe("ViewInArBtn", () => {
 
   it("offers AR for a holo exported to scale", async () => {
     expect(button(await mount({ model: model() })).exists()).toBe(true);
+  });
+
+  it("hides AR while the feature is off", async () => {
+    ar.flag = false;
+
+    expect(button(await mount({ model: model() })).exists()).toBe(false);
   });
 
   it("hides AR for a holo that is not to scale", async () => {

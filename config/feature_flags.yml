@@ -121,3 +121,6 @@ trade_routes:
 # on a fleet event -- needs fleet_tours on top.
 tour_payouts:
   description: "Tour payouts — a shared expense/income ledger with a settlement list, on fleet events and standalone tours"
+
+holo_ar:
+  description: "View in AR — place a ship's to-scale holo in your room from the ship page"

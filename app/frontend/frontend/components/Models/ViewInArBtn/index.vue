@@ -13,7 +13,8 @@ import {
   prepareAr,
   type ModelViewerElement,
 } from "@/frontend/utils/arViewer";
-import type { Model } from "@/services/fyApi";
+import { FeatureFlagName, type Model } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   model: Model;
@@ -33,9 +34,15 @@ const viewer = shallowRef<ModelViewerElement>();
 const holoUrl = computed(() => props.model.media.holo?.url);
 
 // Only a holo exported in meters can be placed at true size.
+const { isFeatureEnabled } = useFeatures();
+
 const candidate = computed(
   () =>
-    props.active && !!holoUrl.value && !!props.model.holoToScale && mayHaveAr(),
+    isFeatureEnabled(FeatureFlagName.HOLO_AR) &&
+    props.active &&
+    !!holoUrl.value &&
+    !!props.model.holoToScale &&
+    mayHaveAr(),
 );
 
 // Counts preparations, so one that finishes after a newer one started (another

@@ -20048,6 +20048,7 @@ components:
       - fleet_tours
       - friends
       - hangar_inventories
+      - holo_ar
       - inventory_transfers
       - oauth-applications
       - oauth-bluesky
@@ -20071,6 +20072,7 @@ components:
       - FLEET_TOURS
       - FRIENDS
       - HANGAR_INVENTORIES
+      - HOLO_AR
       - INVENTORY_TRANSFERS
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
