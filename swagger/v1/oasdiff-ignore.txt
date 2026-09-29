@@ -1493,3 +1493,10 @@ PUT /notifications/{id}/unarchive added the new `fleet_fid_claim_opened` enum va
 PUT /notifications/{id}/unread added the new `fleet_fid_claim_cancelled` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_fid_claim_completed` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `fleet_fid_claim_opened` enum value to the `notificationType` response property for the response status `200`
+GET /notification-preferences added the new `rsi_handle_verification_lost` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `rsi_handle_verification_lost` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`

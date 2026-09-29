@@ -11241,6 +11241,124 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/rsi-verification":
+    get:
+      summary: Show the RSI handle verification
+      tags:
+      - Me RSI Verification
+      operationId: myRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserRsiVerification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Issue a new RSI handle verification token
+      tags:
+      - Me RSI Verification
+      operationId: createMyRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserRsiVerification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Remove the RSI handle verification
+      tags:
+      - Me RSI Verification
+      operationId: destroyMyRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserRsiVerification"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/rsi-verification/check":
+    post:
+      summary: Check the RSI citizen page for the verification token
+      tags:
+      - Me RSI Verification
+      operationId: checkMyRsiVerification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserRsiVerification"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/supporter/claim-key":
     get:
       summary: Show the supporter claim key
@@ -29504,6 +29622,7 @@ components:
       - fleet_fid_claim_opened
       - fleet_fid_claim_completed
       - fleet_fid_claim_cancelled
+      - rsi_handle_verification_lost
       - announcement
       x-enumNames:
       - HANGAR_CREATE
@@ -29553,6 +29672,7 @@ components:
       - FLEET_FID_CLAIM_OPENED
       - FLEET_FID_CLAIM_COMPLETED
       - FLEET_FID_CLAIM_CANCELLED
+      - RSI_HANDLE_VERIFICATION_LOST
       - ANNOUNCEMENT
       title: NotificationTypeEnum
     NotificationUnreadCount:
@@ -29711,6 +29831,19 @@ components:
       - EQUIPMENT
       - 'NULL'
       title: NullableInventoryItemTypeEnum
+    NullableRsiHandleVerifiedViaEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - citizenid
+      - rsi_profile
+      -
+      x-enumNames:
+      - CITIZENID
+      - RSI_PROFILE
+      - 'NULL'
+      title: NullableRsiHandleVerifiedViaEnum
     NullableTradeRouteLoadLimitEnum:
       type:
       - string
@@ -29743,6 +29876,27 @@ components:
       - BOTH
       - 'NULL'
       title: NullableTradeRouteUnflyableReasonEnum
+    NullableUserRsiVerificationStatusEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - pending
+      - verified
+      - token_missing
+      - handle_mismatch
+      - not_found
+      - failed
+      -
+      x-enumNames:
+      - PENDING
+      - VERIFIED
+      - TOKEN_MISSING
+      - HANDLE_MISMATCH
+      - NOT_FOUND
+      - FAILED
+      - 'NULL'
+      title: NullableUserRsiVerificationStatusEnum
     NullableVehicleSortEnum:
       type:
       - string
@@ -30593,6 +30747,15 @@ components:
       - id
       - username
       title: RelationshipUser
+    RsiHandleVerifiedViaEnum:
+      type: string
+      enum:
+      - citizenid
+      - rsi_profile
+      x-enumNames:
+      - CITIZENID
+      - RSI_PROFILE
+      title: RsiHandleVerifiedViaEnum
     RsiHangarItemInput:
       type: object
       properties:
@@ -31746,6 +31909,8 @@ components:
           type: string
         rsiHandleVerified:
           type: boolean
+        rsiHandleVerifiedVia:
+          "$ref": "#/components/schemas/RsiHandleVerifiedViaEnum"
         citizenidProfileUrl:
           type: string
         discord:
@@ -31960,6 +32125,8 @@ components:
           type: string
         rsiHandleVerified:
           type: boolean
+        rsiHandleVerifiedVia:
+          "$ref": "#/components/schemas/RsiHandleVerifiedViaEnum"
         citizenidProfileUrl:
           type: string
         discord:
@@ -32034,6 +32201,46 @@ components:
       enum: []
       x-enumNames: []
       title: UserResourceAccessEnum
+    UserRsiVerification:
+      type: object
+      properties:
+        handle:
+          type:
+          - string
+          - 'null'
+        token:
+          type:
+          - string
+          - 'null'
+        status:
+          "$ref": "#/components/schemas/NullableUserRsiVerificationStatusEnum"
+        verified:
+          type: boolean
+        verifiedVia:
+          "$ref": "#/components/schemas/NullableRsiHandleVerifiedViaEnum"
+        verifiedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        checkedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        nextCheckAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - handle
+      - token
+      - status
+      - verified
+      - verifiedVia
+      - verifiedAt
+      - checkedAt
+      title: UserRsiVerification
     UserUpdateInput:
       type: object
       properties:
