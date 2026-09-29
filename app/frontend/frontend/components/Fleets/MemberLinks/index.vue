@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
+import { handleVerifiedViaProfile } from "@/frontend/utils/rsiHandle";
 import type { FleetMember } from "@/services/fyApi";
 
 type Props = {
@@ -43,6 +44,7 @@ const { t } = useI18n();
       v-if="props.member.rsiHandle"
       :handle="props.member.rsiHandle"
       :citizenid-profile-url="props.member.citizenidProfileUrl"
+      :verified="handleVerifiedViaProfile(props.member)"
       icon-only
     />
     <a
