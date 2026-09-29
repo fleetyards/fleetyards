@@ -75,9 +75,12 @@ const rsiProfileUrl = computed(
     transform: translate(75%, -35%);
 
     // The RSI logo is wide and ends in open space, so the badge moves in to
-    // sit on the logo rather than beside it.
+    // sit on the logo rather than beside it. Sized in px like the logo, which
+    // is a fixed-size image: in em it grew with whatever text the link sat in,
+    // three times its size in the hangar's 30px link row.
     .rsi-profile-link--icon & {
       transform: translate(25%, -35%);
+      font-size: 12px;
     }
     font-size: 0.85em;
     line-height: 1;
