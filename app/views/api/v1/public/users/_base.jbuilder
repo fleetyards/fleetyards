@@ -6,6 +6,7 @@ json.avatar do
 end
 json.rsi_handle user.rsi_handle
 json.rsi_handle_verified user.rsi_handle_verified
+json.rsi_handle_verified_via user.rsi_handle_verified_via if user.rsi_handle_verified?
 json.citizenid_profile_url user.citizenid_profile_url if user.rsi_handle_verified?
 json.discord user.discord
 json.youtube user.youtube
