@@ -31,6 +31,9 @@ const guardTrack = () => {
   };
 };
 
+const samePage = (path: string, other: string) =>
+  path.replace(/\/$/, "") === other.replace(/\/$/, "");
+
 const trackView = () => {
   ahoy.trackView(isInstalledApp() ? { installed: true } : {});
 };
@@ -69,9 +72,10 @@ export const useAhoy = () => {
   void router.isReady().then(trackViewOnceRendered, trackViewOnceRendered);
 
   // The initial navigation is covered above. A change of query or hash alone (a
-  // modal, a tab, a filter) stays on the same page and is not a new view.
+  // modal, a tab, a filter) stays on the same page and is not a new view, and
+  // neither is the first filter change canonicalising `/compare` to `/compare/`.
   router.afterEach((to, from, failure) => {
-    if (failure || from === START_LOCATION || to.path === from.path) {
+    if (failure || from === START_LOCATION || samePage(to.path, from.path)) {
       return;
     }
 

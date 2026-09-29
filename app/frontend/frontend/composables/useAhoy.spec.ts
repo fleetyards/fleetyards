@@ -114,6 +114,13 @@ describe("useAhoy", () => {
     expect(trackView).toHaveBeenCalledOnce();
   });
 
+  it("ignores a trailing slash added to the same page", async () => {
+    await load();
+    await navigate("/compare/", "/compare");
+
+    expect(trackView).toHaveBeenCalledOnce();
+  });
+
   it("ignores a navigation that failed", async () => {
     await load();
     hooks.forEach((hook) =>
