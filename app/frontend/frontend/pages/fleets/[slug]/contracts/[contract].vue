@@ -10,6 +10,7 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -175,6 +176,23 @@ const goToPayouts = () => {
 
 const canPublish = computed(
   () => contract.value?.state === FleetContractStateEnum.DRAFT && mayEdit.value,
+);
+
+// A draft is only on the board for whoever may edit it, so there is no one to
+// send it to yet.
+const canShare = computed(
+  () =>
+    !!contract.value && contract.value.state !== FleetContractStateEnum.DRAFT,
+);
+
+const shareUrl = computed(() =>
+  new URL(
+    router.resolve({
+      name: "fleet-contract",
+      params: { slug: props.fleet.slug, contract: contractSlug.value },
+    }).href,
+    window.location.origin,
+  ).toString(),
 );
 
 const CANCELLABLE_STATES: FleetContractStateEnum[] = [
@@ -416,6 +434,14 @@ const crumbs = computed<Crumb[]>(() => [
         <i class="fa-duotone fa-coins" />
         {{ t("actions.fleets.contracts.payouts") }}
       </Btn>
+      <ShareBtn
+        v-if="canShare && contract"
+        :url="shareUrl"
+        :title="contract.title"
+        :size="BtnSizesEnum.MD"
+        mobile-icon-only
+        data-test="share-contract"
+      />
       <Btn
         v-if="canEdit"
         :size="BtnSizesEnum.MD"

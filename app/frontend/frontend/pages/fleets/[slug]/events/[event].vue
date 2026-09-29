@@ -21,6 +21,7 @@ import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
 import EventAdminActions from "@/frontend/components/Fleets/Events/EventAdminActions/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import UnassignedSignups from "@/frontend/components/Fleets/Events/UnassignedSignups/index.vue";
 import YourSignupPanel from "@/frontend/components/Fleets/Events/YourSignupPanel/index.vue";
 import {
@@ -315,6 +316,20 @@ const endMutation = useEndFleetEventSeries();
 const splitMutation = useSplitFleetEventSeries();
 const router = useRouter();
 
+// The event's own address rather than the one in the bar, which can carry a
+// modal or a tab in its query.
+const shareUrl = computed(() =>
+  event.value
+    ? new URL(
+        router.resolve({
+          name: "fleet-event",
+          params: { slug: props.fleet.slug, event: event.value.slug },
+        }).href,
+        window.location.origin,
+      ).href
+    : "",
+);
+
 const goToSeriesEdit = (slug: string) =>
   router.push({
     name: "fleet-event-edit-schedule",
@@ -476,6 +491,13 @@ const crumbs = computed<Crumb[]>(() => [
         <i class="fa-light fa-coins" />
         <span>{{ t("nav.fleets.events.payouts") }}</span>
       </Btn>
+      <ShareBtn
+        :url="shareUrl"
+        :title="event.title"
+        :size="BtnSizesEnum.SM"
+        mobile-icon-only
+        data-test="fleet-event-share"
+      />
       <EventAdminActions
         v-if="canManageEvent"
         :fleet="fleet"
