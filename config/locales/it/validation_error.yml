@@ -257,6 +257,12 @@ it:
       update: Impossibile aggiornare il team dell'evento.
     fleet_rsi_verification:
       check: "Salva il SID della tua organizzazione e genera un codice di verifica prima di controllare."
+    fleet_fid_claim:
+      create: "Questa flotta non può rivendicare un ID flotta. Solo una flotta verificata per un’organizzazione RSI può rivendicare l’ID flotta uguale al suo SID, e solo finché lo ha un’altra flotta."
+      destroy: "Questa flotta non ha rivendicazioni aperte da ritirare."
+      update: "Una rivendicazione si può accorciare solo finché è aperta, e solo a una data precedente alla sua fine attuale."
+      cancel: "Questa rivendicazione non è più aperta."
+      complete: "L’ID flotta non è stato trasferito: la rivendicazione è stata chiusa nel frattempo, la flotta che lo rivendica non è più verificata, oppure ora lo ha un’altra flotta, che ha ricevuto un proprio avviso."
     fleet_notification_settings:
       update: Impossibile aggiornare le impostazioni di notifica.
     version:

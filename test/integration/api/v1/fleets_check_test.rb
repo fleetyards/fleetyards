@@ -23,7 +23,7 @@ class Api::V1::FleetsCheckTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema ::V1::Schemas::Check
+        schema ::V1::Schemas::FleetFidCheck
       end
 
       response(401, "unauthorized") do
@@ -38,6 +38,39 @@ class Api::V1::FleetsCheckTest < ActionDispatch::IntegrationTest
 
   test "POST /fleets/check reports the FID as taken" do
     create(:fleet, fid: "STF")
+    sign_in @user
+
+    assert_api_response :post, 200, body: {value: "STF"} do
+      assert_equal true, parsed_body["taken"]
+    end
+  end
+
+  test "POST /fleets/check suggests a free FID when a taken one could be an RSI SID" do
+    create(:fleet, fid: "STF")
+    create(:fleet, fid: "STF-1")
+    sign_in @user
+
+    assert_api_response :post, 200, body: {value: "stf"} do
+      assert_equal true, parsed_body["taken"]
+      assert_equal "STF-2", parsed_body["suggestion"]
+    end
+  end
+
+  test "POST /fleets/check suggests nothing for an FID no SID looks like" do
+    create(:fleet, fid: "my_fleet")
+    sign_in @user
+
+    assert_api_response :post, 200, body: {value: "my_fleet"} do
+      assert_equal true, parsed_body["taken"]
+      assert_nil parsed_body["suggestion"]
+    end
+  end
+
+  test "POST /fleets/check reports an FID with an open claim as taken" do
+    claimant = create(:fleet, :rsi_verified, fid: "STF-1", rsi_sid: "STF")
+    holder = create(:fleet, fid: "STF", created_by: create(:user).id)
+    FleetFidClaim.open_for!(claimant, user: nil)
+    holder.update!(fid: "elsewhere")
     sign_in @user
 
     assert_api_response :post, 200, body: {value: "STF"} do

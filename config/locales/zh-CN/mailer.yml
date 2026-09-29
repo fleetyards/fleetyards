@@ -47,6 +47,8 @@ zh-CN:
       body: 请使用以下验证码确认访问您的账户设置。
       expires: 此验证码将在 10 分钟后过期。
       subject: 您的确认码
+    fleet:
+      action: "打开舰队设置"
     hello: 你好 %{username}
     model:
       new:

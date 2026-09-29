@@ -65,8 +65,17 @@ module Api
         render json: ValidationError.new("fleet.destroy", errors: @fleet.errors), status: :bad_request
       end
 
+      # A taken FID shaped like an SID may belong to the RSI org that carries
+      # it, which can claim it once its own fleet is verified -- so the answer
+      # offers a free `X-N` to start with.
       def check
-        render json: {taken: Fleet.kept.exists?(normalized_fid: params.fetch(:value, "").downcase)}
+        value = params.fetch(:value, "").to_s
+        taken = Fleet.kept.exists?(normalized_fid: value.downcase) || FleetFidClaim.reserved?(value)
+
+        result = {taken:}
+        result[:suggestion] = Fleet.next_free_fid(value) if taken && Rsi::Sid.valid?(value.upcase)
+
+        render json: result
       end
 
       def find_by_invite

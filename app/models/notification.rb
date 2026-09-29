@@ -82,6 +82,9 @@ class Notification < ApplicationRecord
     fleet_subscription_started: "fleet_subscription_started",
     fleet_subscription_ended: "fleet_subscription_ended",
     fleet_rsi_verification_lost: "fleet_rsi_verification_lost",
+    fleet_fid_claim_opened: "fleet_fid_claim_opened",
+    fleet_fid_claim_completed: "fleet_fid_claim_completed",
+    fleet_fid_claim_cancelled: "fleet_fid_claim_cancelled",
     announcement: "announcement"
   }
 
@@ -342,10 +345,32 @@ class Notification < ApplicationRecord
       channels: %i[app],
       preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
+    # Mailed by default, as are the claim types below: each one changes or
+    # threatens the fleet's address, and a manager who rarely signs in should
+    # hear of it before the grace period is over, not after.
     fleet_rsi_verification_lost: {
       retention: 365.days,
-      channels: %i[app],
-      preference_defaults: {app: true, mail: false, push: false, discord: false}
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    fleet_fid_claim_opened: {
+      retention: 365.days,
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    fleet_fid_claim_completed: {
+      retention: 365.days,
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    fleet_fid_claim_cancelled: {
+      retention: 365.days,
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

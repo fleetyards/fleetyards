@@ -31,6 +31,9 @@ module V1
             fleet: {"$ref": "#/components/schemas/Fleet"},
             primary: {type: :boolean},
             verified: {type: :boolean},
+            # The SID of the org the membership is verified for, only once
+            # the fleet has proved it runs that org.
+            verifiedOrgSid: {type: :string},
             citizenidProfileUrl: {type: :string},
             discordProfileUrl: {type: :string},
             latitude: {type: :number, format: :double},

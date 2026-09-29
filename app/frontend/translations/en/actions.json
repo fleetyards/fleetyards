@@ -221,6 +221,13 @@
       "destroyFleet": "Destroy Fleet",
       "restore": "Restore",
       "fleet": {
+        "fidClaim": {
+          "claim": "Claim %{fid}",
+          "withdraw": "Withdraw claim",
+          "useSuggestion": "Use %{suggestion}",
+          "endNow": "End grace period now",
+          "cancel": "Cancel claim"
+        },
         "rsiVerification": {
           "verify": "Verify",
           "regenerateToken": "Generate new token",

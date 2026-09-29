@@ -37,6 +37,9 @@ module Fleets
       ActiveRecord::Base.transaction do
         fleet = version.reify
         raise FidTaken if fleet.fid.present? && Fleet.kept.where("LOWER(fid) = ?", fleet.fid.downcase).exists?
+        # The save below skips validation, and with it the reservation an open
+        # FID claim holds for its claimant.
+        raise FidTaken if fleet.fid.present? && FleetFidClaim.reserved?(fleet.fid)
 
         fleet.save!(validate: false)
 

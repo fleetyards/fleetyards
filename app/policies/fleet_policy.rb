@@ -37,6 +37,10 @@ class FleetPolicy < FleetBasePolicy
     manage?
   end
 
+  def manage_fid_claim?
+    manage?
+  end
+
   def update?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"])
   end
@@ -50,7 +54,7 @@ class FleetPolicy < FleetBasePolicy
   end
 
   params_filter(:create) do |params|
-    params.permit(%i[fid name])
+    params.permit(%i[fid name rsi_sid])
   end
 
   params_filter do |params|

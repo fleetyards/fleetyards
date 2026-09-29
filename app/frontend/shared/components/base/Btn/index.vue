@@ -37,6 +37,11 @@ export type Props = {
    * so its arrows are not highlighted just because they point at the current page.
    */
   routeActiveClass?: string;
+  /**
+   * The label is clipped so a long one ends in an ellipsis. Off for a label
+   * that carries something meant to overhang it, such as a badge.
+   */
+  clipLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   confirm: false,
   routeActiveClass: undefined,
+  clipLabel: true,
 });
 
 const emit = defineEmits(["click"]);
@@ -151,6 +157,7 @@ const cssClasses = computed(() => [
     "btn--grouped-block":
       container?.container === "group" && container.block.value,
     "btn--menu-item": container?.container === "menu",
+    "btn--unclipped": !props.clipLabel,
     active: props.active,
     "is-loading": props.loading,
   },
@@ -197,7 +204,10 @@ const handleClick = (event: MouseEvent) => {
     v-bind="btnProps"
     @click="handleClick"
   >
-    <span class="btn__content">
+    <span
+      class="btn__content"
+      :class="{ 'btn__content--unclipped': !clipLabel }"
+    >
       <slot />
     </span>
     <!-- Announced for every loading button - the caps are visual only. The
@@ -491,6 +501,17 @@ const handleClick = (event: MouseEvent) => {
 
 .btn--block {
   @apply w-full;
+}
+
+/* A label that may overhang no longer ends in an ellipsis on its own, so the
+   button is held to its container instead, and whatever the label truncates
+   inside it gets a width to truncate against. */
+.btn--unclipped {
+  @apply max-w-full min-w-0;
+}
+
+.btn__content--unclipped {
+  @apply overflow-visible;
 }
 
 /* ---------- inside a BtnGroup ----------

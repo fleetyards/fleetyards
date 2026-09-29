@@ -14,9 +14,8 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import Alert from "@/shared/components/base/Alert/index.vue";
-import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
-import { fidAtRisk } from "@/frontend/utils/rsiSid";
+import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
+import FidClaimPanel from "@/frontend/components/Fleets/FidClaimPanel/index.vue";
 import {
   type Fleet,
   type FleetMember,
@@ -110,8 +109,6 @@ const handleCancel = () => {
   resetForm();
 };
 
-const showFidWarning = computed(() => fidAtRisk(props.fleet));
-
 // The check reads the saved SID, so a typed one has to be saved first.
 const canVerify = computed(
   () => !!props.fleet.rsiSid && rsiSid.value === props.fleet.rsiSid,
@@ -127,13 +124,7 @@ const openVerification = () => {
 </script>
 
 <template>
-  <Alert
-    v-if="showFidWarning"
-    :variant="AlertVariantsEnum.WARNING"
-    :title="t('labels.fleet.rsiVerification.fidAtRiskTitle')"
-    data-test="fleet-fid-at-risk"
-  >
-    {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
+  <FidNotice :fleet="fleet">
     <template v-if="canVerify" #actions>
       <Btn
         :size="BtnSizesEnum.SM"
@@ -144,7 +135,8 @@ const openVerification = () => {
         <i class="fa-light fa-chevron-right" />
       </Btn>
     </template>
-  </Alert>
+  </FidNotice>
+  <FidClaimPanel :fleet="fleet" />
 
   <form id="fleet-rsi-settings-form" @submit.prevent="onSubmit">
     <p class="text-muted">

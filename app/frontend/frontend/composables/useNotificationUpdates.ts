@@ -28,6 +28,17 @@ export const useNotificationInvalidation = () => {
     });
   };
 
+  // A claim is opened, completed or cancelled by another fleet, and the
+  // notification is the only word of it a holder's open page gets.
+  const invalidateFidClaims = (notification: Notification) => {
+    if (!notification.notificationType?.startsWith("fleet_fid_claim")) return;
+
+    void queryClient.invalidateQueries({
+      predicate: (query) =>
+        query.queryKey[0] === "fleets" && query.queryKey[2] === "fid-claim",
+    });
+  };
+
   const invalidate = () => {
     void queryClient.invalidateQueries({
       queryKey: getNotificationsQueryKey(),
@@ -64,6 +75,7 @@ export const useNotificationInvalidation = () => {
     invalidate,
     invalidateUnreadCount,
     invalidatePendingFriendRequests,
+    invalidateFidClaims,
     patchCached,
   };
 };

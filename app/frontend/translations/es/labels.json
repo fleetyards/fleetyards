@@ -406,6 +406,18 @@
         "rsiSettings": {
           "hint": "El ID de flota es la dirección de tu flota en Fleetyards. El SID vincula la flota con su organización de RSI, y verificarlo demuestra que la organización es tuya."
         },
+        "fidClaim": {
+          "claimableTitle": "Reclamar el ID de flota %{fid}",
+          "claimable": "Tu flota está verificada para la organización de RSI %{fid}, pero otra flota tiene el ID de flota %{fid}. Si lo reclamas, esa flota tiene 14 días para demostrar ella misma la organización o avisar a sus miembros. Después se le cambia el nombre y %{fid} pasa a ser el ID de tu flota.",
+          "pendingTitle": "Reclamación de %{fid} en curso",
+          "pending": "%{holder} conserva %{fid} hasta el %{date}. Después el ID pasa a tu flota, salvo que esa flota demuestre antes que gestiona la organización %{fid}.",
+          "availableTitle": "El ID de flota %{fid} está libre",
+          "available": "Tu flota está verificada para %{fid} y ninguna otra flota usa ese ID. Ponlo arriba como ID de tu flota.",
+          "incomingTitle": "%{claimant} reclama el ID de tu flota",
+          "incoming": "%{claimant} está verificada para la organización de RSI %{fid}. El %{date}, tu flota pasará a llamarse con el siguiente ID libre, como %{fid}-1, y los enlaces a %{fid} abrirán %{claimant}. Si %{fid} es tu organización, verifícala antes para conservar el ID. Si no, avisa a tus miembros.",
+          "createTakenTitle": "%{fid} ya está en uso",
+          "createTaken": "Si %{fid} es tu organización de RSI, empieza con %{suggestion} y el SID %{fid}. En cuanto tu flota esté verificada para %{fid}, podrá reclamar el ID de flota a la flota que lo tiene."
+        },
         "rsiVerification": {
           "steps": {
             "copy": "Copia tu código de verificación",
@@ -478,6 +490,7 @@
         "ts": "Servidor Teamspeak",
         "awaitingConfirmation": "Esperando confirmación de la flota",
         "members": {
+          "verifiedOrgMember": "Miembro verificado de %{sid}",
           "primary": "¿Flota principal?",
           "shipsFilter": {
             "label": "¿Qué naves deben agregarse a la flota?",
@@ -2568,6 +2581,9 @@
         "fleet_contract_crew_answered": "Solicitud de tripulación respondida",
         "fleet_subscription_started": "Funciones de flota activadas",
         "fleet_subscription_ended": "Funciones de flota perdidas",
+        "fleet_fid_claim_opened": "ID de flota reclamado",
+        "fleet_fid_claim_completed": "ID de flota transferido",
+        "fleet_fid_claim_cancelled": "Reclamación de ID de flota terminada",
         "fleet_rsi_verification_lost": "Verificación de flota perdida",
         "fleet_contract_fulfilled": "Contrato cumplido",
         "fleet_contract_settled": "Contrato pagado",

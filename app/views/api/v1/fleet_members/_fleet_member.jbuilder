@@ -2,7 +2,8 @@
 
 # The fleet's verification is in the key: whether the member's own flag is shown
 # depends on it, and proving or losing the SID does not touch the membership.
-json.cache! ["v5", member, member.fleet.rsi_verification_cache_key] do
+# So is the user's handle verification, which touches neither.
+json.cache! ["v6", member, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verified?] do
   json.partial! "api/v1/fleet_members/base", member: member
 end
 

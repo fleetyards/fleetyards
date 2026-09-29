@@ -164,6 +164,7 @@
         "media": "媒体",
         "charts": "图表",
         "alerts": "提示",
+        "verifiedBadges": "验证徽章",
         "chips": "Chips",
         "squadrons": "中队",
         "groups": {
@@ -266,6 +267,9 @@
           "history": "历史",
           "roles": "角色",
           "inventories": "库存"
+        },
+        "fleetFidClaims": {
+          "index": "FID 申领"
         },
         "destroyedFleets": {
           "index": "已删除舰队"

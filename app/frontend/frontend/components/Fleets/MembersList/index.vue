@@ -7,12 +7,11 @@ export default {
 <script lang="ts" setup>
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
 import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
-import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
+import MemberAvatar from "@/frontend/components/Fleets/MemberAvatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMemberPresence } from "@/frontend/composables/useMemberPresence";
@@ -59,9 +58,6 @@ const onRowClick = (member: FleetMember) => {
     props: { member },
   });
 };
-
-const squadronNames = (member: FleetMember) =>
-  (member.squadrons ?? []).map((squadron) => squadron.name).join(", ");
 
 const joinedAt = (member: FleetMember) =>
   props.squadronSlug
@@ -130,22 +126,13 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
   >
     <template #col-username="{ record }">
       <div class="member-username">
-        <span class="member-avatar">
-          <Avatar
-            :avatar="record.avatar?.smallUrl"
-            size="small"
-            :online="onlineFor(record)"
-          />
-          <SquadronEmblem
-            v-if="props.showSquadrons && record.squadrons?.length"
-            v-tooltip="squadronNames(record)"
-            :squadron="record.squadrons[0]"
-            :size="18"
-            class="member-avatar-squadron"
-          />
-        </span>
+        <MemberAvatar
+          :member="record"
+          :online="onlineFor(record)"
+          :show-squadrons="props.showSquadrons"
+        />
         <div class="member-username-inner">
-          <MemberName :member="record" />
+          <MemberName :member="record" :org-badge="false" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
             (<RsiProfileLink
               :handle="record.rsiHandle"
@@ -220,19 +207,5 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 .rsi-handle-inline {
   font-size: 0.85em;
   opacity: 0.8;
-}
-
-.member-avatar {
-  position: relative;
-  display: inline-flex;
-  flex-shrink: 0;
-}
-
-// Overhangs the frame the way the presence dot does, on the corner it leaves
-// free.
-.member-avatar-squadron {
-  position: absolute;
-  left: -4px;
-  bottom: -4px;
 }
 </style>

@@ -9,11 +9,8 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import Pill from "@/shared/components/base/Pill/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { fidAtRisk } from "@/frontend/utils/rsiSid";
-import Alert from "@/shared/components/base/Alert/index.vue";
-import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
+import FidNotice from "@/frontend/components/Fleets/FidNotice/index.vue";
+import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import {
   FleetMembershipStatusEnum,
   useFleetSquadrons,
@@ -87,11 +84,9 @@ const teamList = computed(() =>
 );
 
 // Only a manager can act on it: verifying is theirs to do.
-const showFidWarning = computed(
+const showFidNotice = computed(
   () =>
-    isMember.value &&
-    (props.membership?.capabilities?.manageFleet ?? false) &&
-    fidAtRisk(props.fleet),
+    isMember.value && (props.membership?.capabilities?.manageFleet ?? false),
 );
 
 const description = computed(() => {
@@ -115,32 +110,9 @@ const description = computed(() => {
           size="large"
           icon="fa-duotone fa-image"
         />
-        <span class="title">{{ fleet.name }} ({{ fleet.fid }})</span>
+        <span class="title"> {{ fleet.name }} ({{ fleet.fid }}) </span>
       </h1>
-      <p class="rsi-verification-mark">
-        <Pill
-          v-if="fleet.rsiVerified"
-          :variant="PillVariantsEnum.SUCCESS"
-          data-test="fleet-rsi-verified"
-        >
-          <i class="fa-duotone fa-badge-check" />
-          {{ t("labels.fleet.rsiVerification.verified") }}
-        </Pill>
-        <Pill
-          v-else
-          :variant="PillVariantsEnum.NEUTRAL"
-          data-test="fleet-rsi-unverified"
-        >
-          {{ t("labels.fleet.rsiVerification.unverified") }}
-        </Pill>
-      </p>
-      <Alert
-        v-if="showFidWarning"
-        :variant="AlertVariantsEnum.WARNING"
-        :title="t('labels.fleet.rsiVerification.fidAtRiskTitle')"
-        data-test="fleet-fid-at-risk"
-      >
-        {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
+      <FidNotice v-if="showFidNotice" :fleet="fleet">
         <template #actions>
           <router-link
             :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"
@@ -149,7 +121,7 @@ const description = computed(() => {
             <i class="fa-light fa-chevron-right" />
           </router-link>
         </template>
-      </Alert>
+      </FidNotice>
     </div>
   </div>
   <div class="row">
@@ -164,16 +136,13 @@ const description = computed(() => {
       >
         <i class="fa-light fa-globe globe-rotate" />
       </a>
-      <a
+      <RsiProfileLink
         v-if="fleet.rsiSid"
-        v-tooltip="t('nav.rsiProfile')"
-        :aria-label="t('nav.rsiProfile')"
-        :href="`https://robertsspaceindustries.com/orgs/${fleet.rsiSid}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="icon icon-rsi icon-large" />
-      </a>
+        :sid="fleet.rsiSid"
+        :verified="fleet.rsiVerified"
+        icon-only
+        large
+      />
       <a
         v-if="fleet.guilded"
         v-tooltip="t('labels.guilded')"

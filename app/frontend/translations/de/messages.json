@@ -260,6 +260,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "Anspruch gestellt. Die Flotte mit dieser ID wurde informiert.",
+            "failure": "Die Flotten-ID konnte nicht beansprucht werden."
+          },
+          "destroy": {
+            "success": "Anspruch zurückgezogen.",
+            "failure": "Der Anspruch konnte nicht zurückgezogen werden."
+          },
+          "endNow": {
+            "success": "Schonfrist beendet.",
+            "failure": "Die Schonfrist konnte nicht beendet werden."
+          },
+          "cancel": {
+            "success": "Anspruch abgebrochen.",
+            "failure": "Der Anspruch konnte nicht abgebrochen werden."
+          }
+        },
         "create": {
           "success": "Deine Flotte wurde erstellt.",
           "failure": "Flotte konnte nicht gespeichert werden."
@@ -500,6 +518,13 @@
             "one": "Bist du sicher, dass du die ausgewählte Benachrichtigung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
             "other": "Bist du sicher, dass du die %{count} ausgewählten Benachrichtigungen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "Schonfrist jetzt beenden? Die bisherige Flotte wird umbenannt, und die beanspruchende Flotte bekommt die Flotten-ID sofort.",
+          "cancel": "Diesen Anspruch abbrechen? Beide Flotten werden informiert, und die bisherige Flotte behält die Flotten-ID."
+        },
+        "fleetFidClaim": {
+          "create": "Flotten-ID %{fid} beanspruchen? Die Flotte, die sie hat, wird jetzt informiert und verliert die ID in 14 Tagen, außer sie weist die RSI-Organisation selbst nach."
         },
         "adminDestroyedFleet": {
           "restore": "Bist du sicher, dass du diese Flotte wiederherstellen möchtest?",

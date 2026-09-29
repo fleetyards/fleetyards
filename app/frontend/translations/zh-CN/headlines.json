@@ -124,6 +124,9 @@
           "inventories": "舰队库存",
           "inventoryItems": "库存条目"
         },
+        "fleetFidClaims": {
+          "index": "舰队 ID 申领"
+        },
         "destroyedFleets": {
           "index": "已删除舰队"
         },
@@ -426,6 +429,7 @@
         "blueprints": "蓝图",
         "squadrons": "中队",
         "alerts": "提示",
+        "verifiedBadges": "验证徽章",
         "chips": "视觉测试 Chips",
         "events": "活动",
         "typography": "排版",

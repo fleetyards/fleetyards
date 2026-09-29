@@ -53,6 +53,38 @@ en:
     fleet_rsi_verification_lost:
       title: "%{fleet} is no longer verified for %{sid}"
       body: "Another fleet proved it runs the RSI organisation %{sid} by putting its verification token on the org's page. Your fleet no longer shows the SID as verified. If %{sid} is your organisation, verify it again from the fleet settings."
+    fleet_fid_claim_opened:
+      title: "%{claimant} claims the fleet ID %{fid}"
+      body: "%{claimant} proved it runs the RSI organisation **%{fid}**, so it can take the matching fleet ID.\n\n**On %{date}:**\n\n- %{fleet} moves to the next free fleet ID, such as **%{fid}-1**.\n- Links to %{fid} open %{claimant} from then on.\n\n**To keep the ID**, verify %{fid} from your fleet settings before then. Otherwise, let your members know about the new address."
+    fleet_fid_claim_completed:
+      claimant:
+        title: "%{fleet} now has the fleet ID %{fid}"
+        body: "The grace period is over, and the fleet ID %{fid} is yours. Links to %{fid} now open your fleet."
+      holder:
+        title: "%{fleet} is now %{new_fid}"
+        body: "The fleet ID %{fid} moved to %{claimant}, which is verified for the RSI organisation %{fid}. Your fleet's ID and address are now %{new_fid}, and old links to %{fid} open %{claimant}."
+    fleet_fid_claim_cancelled:
+      holder_withdrawn:
+        title: "The claim on %{fid} was withdrawn"
+        body: "%{claimant} withdrew its claim, so %{fleet} keeps the fleet ID %{fid}."
+      holder_holder_verified:
+        title: "%{fleet} keeps the fleet ID %{fid}"
+        body: "Your fleet is now verified for the RSI organisation %{fid}, so the claim by %{claimant} has ended."
+      holder_claimant_unverified:
+        title: "The claim on %{fid} has ended"
+        body: "%{claimant} is no longer verified for the RSI organisation %{fid}, so %{fleet} keeps the fleet ID."
+      holder_admin:
+        title: "The claim on %{fid} was cancelled"
+        body: "An administrator cancelled the claim by %{claimant}, so %{fleet} keeps the fleet ID %{fid}."
+      claimant_holder_verified:
+        title: "Your claim on %{fid} has ended"
+        body: "%{holder} proved it runs the RSI organisation %{fid}, so %{fleet} is no longer verified for it and the claim has ended."
+      claimant_claimant_unverified:
+        title: "Your claim on %{fid} has ended"
+        body: "%{fleet} is no longer verified for the RSI organisation %{fid}, so the claim has ended."
+      claimant_admin:
+        title: "Your claim on %{fid} was cancelled"
+        body: "An administrator cancelled the claim by %{fleet} on the fleet ID %{fid}."
     fleet_member_accepted:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:

@@ -238,3 +238,27 @@ describe("FleetShow squadrons", () => {
     expect(publicAsked.every((enabled) => !enabled)).toBe(true);
   });
 });
+
+describe("FleetShow header", () => {
+  it("badges the RSI logo of a verified fleet, not its FID", async () => {
+    const subject = await mount({
+      fleet: { ...fleet(), rsiVerified: true, rsiSid: "MARU" } as Fleet,
+    });
+
+    expect(
+      subject.find('[data-test="rsi-profile-link-verified"]').exists(),
+    ).toBe(true);
+    expect(subject.find(".title").text()).toBe("Maru (MARU)");
+  });
+
+  it("shows the RSI logo of an unverified fleet without the badge", async () => {
+    const subject = await mount({
+      fleet: { ...fleet(), rsiVerified: false, rsiSid: "MARU" } as Fleet,
+    });
+
+    expect(subject.find(".rsi-profile-link").exists()).toBe(true);
+    expect(
+      subject.find('[data-test="rsi-profile-link-verified"]').exists(),
+    ).toBe(false);
+  });
+});

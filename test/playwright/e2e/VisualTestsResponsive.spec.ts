@@ -22,6 +22,7 @@ const routes = [
   "panels",
   "buttons",
   "chips",
+  "verified-badges",
   "media",
   "tables",
   "lists",

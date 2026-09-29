@@ -422,6 +422,7 @@ zh-CN:
         fleet:
           not_an_rsi_sid: "必须是你的组织在 RSI 页面上的 SID，例如 TEST"
           locked_while_verified: "已验证，无法更改；请先联系支持团队撤销验证"
+          reserved: "已被通过该 RSI 组织验证的舰队申领，无法使用"
         fleet_squadron:
           attributes:
             team:

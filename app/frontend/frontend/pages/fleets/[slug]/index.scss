@@ -16,19 +16,6 @@
 
   > a {
     font-size: 3rem;
-
-    .icon-rsi {
-      opacity: 0.8;
-      transition: opacity $transition-base-speed ease;
-      width: 76px;
-      height: 40px;
-    }
-
-    &:hover {
-      .icon-rsi {
-        opacity: 1;
-      }
-    }
   }
 }
 
@@ -55,11 +42,6 @@
 
     > a {
       font-size: 2rem;
-
-      .icon-rsi {
-        width: 46px;
-        height: 24px;
-      }
     }
   }
 }

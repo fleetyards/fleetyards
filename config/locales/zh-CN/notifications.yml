@@ -58,6 +58,38 @@ zh-CN:
     fleet_rsi_verification_lost:
       title: "%{fleet} 不再是 %{sid} 的已验证舰队"
       body: "另一支舰队将其验证码放到了 RSI 组织 %{sid} 的页面上，证明它在管理该组织。你的舰队不再将该 SID 显示为已验证。如果 %{sid} 是你的组织，请在舰队设置中重新验证。"
+    fleet_fid_claim_opened:
+      title: "%{claimant} 申领舰队 ID %{fid}"
+      body: "%{claimant} 已证明它在管理 RSI 组织 **%{fid}**，因此可以取得对应的舰队 ID。\n\n**%{date}：**\n\n- %{fleet} 将改用下一个空闲舰队 ID，例如 **%{fid}-1**。\n- 此后指向 %{fid} 的链接会打开 %{claimant}。\n\n**如需保留该 ID**，请在此之前到舰队设置中验证 %{fid}；否则请通知你的成员地址即将变更。"
+    fleet_fid_claim_completed:
+      claimant:
+        title: "%{fleet} 现在拥有舰队 ID %{fid}"
+        body: "宽限期已结束，舰队 ID %{fid} 归你们所有。指向 %{fid} 的链接现在会打开你的舰队。"
+      holder:
+        title: "%{fleet} 现在是 %{new_fid}"
+        body: "舰队 ID %{fid} 已转给 %{claimant}，它已通过 RSI 组织 %{fid} 的验证。你的舰队 ID 和地址现在是 %{new_fid}，指向 %{fid} 的旧链接会打开 %{claimant}。"
+    fleet_fid_claim_cancelled:
+      holder_withdrawn:
+        title: "对 %{fid} 的申领已撤回"
+        body: "%{claimant} 撤回了申领，%{fleet} 保留舰队 ID %{fid}。"
+      holder_holder_verified:
+        title: "%{fleet} 保留舰队 ID %{fid}"
+        body: "你的舰队现已通过 RSI 组织 %{fid} 的验证，%{claimant} 的申领因此结束。"
+      holder_claimant_unverified:
+        title: "对 %{fid} 的申领已结束"
+        body: "%{claimant} 不再是 RSI 组织 %{fid} 的已验证舰队，%{fleet} 保留该舰队 ID。"
+      holder_admin:
+        title: "对 %{fid} 的申领已取消"
+        body: "管理员取消了 %{claimant} 的申领，%{fleet} 保留舰队 ID %{fid}。"
+      claimant_holder_verified:
+        title: "你对 %{fid} 的申领已结束"
+        body: "%{holder} 已证明它在管理 RSI 组织 %{fid}，因此 %{fleet} 不再是该组织的已验证舰队，申领已结束。"
+      claimant_claimant_unverified:
+        title: "你对 %{fid} 的申领已结束"
+        body: "%{fleet} 不再是 RSI 组织 %{fid} 的已验证舰队，申领已结束。"
+      claimant_admin:
+        title: "你对 %{fid} 的申领已取消"
+        body: "管理员取消了 %{fleet} 对舰队 ID %{fid} 的申领。"
     fleet_member_accepted:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:

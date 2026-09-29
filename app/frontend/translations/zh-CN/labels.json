@@ -406,6 +406,18 @@
         "rsiSettings": {
           "hint": "舰队 ID 是你的舰队在 Fleetyards 上的地址。SID 将舰队与其 RSI 组织关联，验证它可以证明该组织属于你。"
         },
+        "fidClaim": {
+          "claimableTitle": "申领舰队 ID %{fid}",
+          "claimable": "你的舰队已通过 RSI 组织 %{fid} 的验证，但舰队 ID %{fid} 由另一支舰队持有。申领后，该舰队有 14 天时间自行证明该组织或通知其成员。之后它将被改名，%{fid} 成为你的舰队 ID。",
+          "pendingTitle": "对 %{fid} 的申领进行中",
+          "pending": "%{holder} 将保留 %{fid} 至 %{date}。之后该 ID 转给你的舰队，除非该舰队在此之前证明它在管理组织 %{fid}。",
+          "availableTitle": "舰队 ID %{fid} 空闲",
+          "available": "你的舰队已通过 %{fid} 的验证，且没有其他舰队使用该 ID。请在上方将其设为你的舰队 ID。",
+          "incomingTitle": "%{claimant} 申领你的舰队 ID",
+          "incoming": "%{claimant} 已通过 RSI 组织 %{fid} 的验证。%{date}，你的舰队将被改名为下一个空闲 ID（例如 %{fid}-1），指向 %{fid} 的链接将打开 %{claimant}。如果 %{fid} 是你的组织，请在此之前完成验证以保留该 ID；否则请通知你的成员。",
+          "createTakenTitle": "%{fid} 已被占用",
+          "createTaken": "如果 %{fid} 是你的 RSI 组织，请先使用 %{suggestion} 并填写 SID %{fid}。你的舰队通过 %{fid} 的验证后，即可从持有该 ID 的舰队申领它。"
+        },
         "rsiVerification": {
           "steps": {
             "copy": "复制你的验证码",
@@ -478,6 +490,7 @@
         "ts": "Teamspeak 服务器",
         "awaitingConfirmation": "等待舰队确认",
         "members": {
+          "verifiedOrgMember": "%{sid} 的已验证成员",
           "primary": "主舰队?",
           "shipsFilter": {
             "label": "哪些飞船应该添加到舰队?",
@@ -2568,6 +2581,9 @@
         "fleet_contract_crew_answered": "合约成员申请已处理",
         "fleet_subscription_started": "已获得舰队功能",
         "fleet_subscription_ended": "已失去舰队功能",
+        "fleet_fid_claim_opened": "舰队 ID 被申领",
+        "fleet_fid_claim_completed": "舰队 ID 已转移",
+        "fleet_fid_claim_cancelled": "舰队 ID 申领已结束",
         "fleet_rsi_verification_lost": "舰队验证已失效",
         "fleet_contract_fulfilled": "合约已完成",
         "fleet_contract_settled": "合同已结算",

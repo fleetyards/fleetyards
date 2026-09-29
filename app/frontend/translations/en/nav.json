@@ -164,6 +164,7 @@
         "media": "Media",
         "charts": "Charts",
         "alerts": "Alerts",
+        "verifiedBadges": "Verified Badges",
         "chips": "Chips",
         "squadrons": "Squadrons",
         "groups": {
@@ -266,6 +267,9 @@
           "history": "History",
           "roles": "Roles",
           "inventories": "Inventories"
+        },
+        "fleetFidClaims": {
+          "index": "FID Claims"
         },
         "destroyedFleets": {
           "index": "Destroyed Fleets"

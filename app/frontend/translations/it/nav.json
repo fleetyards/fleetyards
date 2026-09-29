@@ -164,6 +164,7 @@
         "media": "Media",
         "charts": "Grafici",
         "alerts": "Avvisi",
+        "verifiedBadges": "Badge di verifica",
         "chips": "Chips",
         "squadrons": "Squadroni",
         "groups": {
@@ -266,6 +267,9 @@
           "history": "Cronologia",
           "roles": "Ruoli",
           "inventories": "Inventari"
+        },
+        "fleetFidClaims": {
+          "index": "Rivendicazioni FID"
         },
         "destroyedFleets": {
           "index": "Flotte eliminate"

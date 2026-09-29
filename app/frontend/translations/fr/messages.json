@@ -260,6 +260,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "Réclamation ouverte. La flotte qui détient l’ID a été prévenue.",
+            "failure": "L’ID de flotte n’a pas pu être réclamé."
+          },
+          "destroy": {
+            "success": "Réclamation retirée.",
+            "failure": "La réclamation n’a pas pu être retirée."
+          },
+          "endNow": {
+            "success": "Délai de grâce terminé.",
+            "failure": "Le délai de grâce n’a pas pu être terminé."
+          },
+          "cancel": {
+            "success": "Réclamation annulée.",
+            "failure": "La réclamation n’a pas pu être annulée."
+          }
+        },
         "create": {
           "success": "Votre flotte a été créée.",
           "failure": "La flotte n'a pas pu être sauvegardée."
@@ -500,6 +518,13 @@
             "one": "Êtes-vous sûr de vouloir supprimer la notification sélectionnée ? Cette action est irréversible.",
             "other": "Êtes-vous sûr de vouloir supprimer les %{count} notifications sélectionnées ? Cette action est irréversible."
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "Terminer le délai de grâce maintenant ? La flotte qui détient l’ID est renommée et celle qui le réclame le reçoit tout de suite.",
+          "cancel": "Annuler cette réclamation ? Les deux flottes sont prévenues, et celle qui détient l’ID le garde."
+        },
+        "fleetFidClaim": {
+          "create": "Réclamer l’ID de flotte %{fid} ? La flotte qui le détient est prévenue maintenant et perd l’ID dans 14 jours, sauf si elle prouve elle-même l’organisation RSI."
         },
         "adminDestroyedFleet": {
           "restore": "Êtes-vous sûr de vouloir restaurer cette flotte ?",

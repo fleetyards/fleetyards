@@ -63,6 +63,18 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
     end
   end
 
+  test "raises FidTaken when an open FID claim reserves the fleet's FID" do
+    fleet = create(:fleet, fid: "MARU", created_by: @creator.id)
+    fleet_id = fleet.id
+    claimant = create(:fleet, :rsi_verified, fid: "MARU-1", rsi_sid: "MARU", created_by: create(:user).id)
+    FleetFidClaim.open_for!(claimant, user: @creator)
+    Fleet.find(fleet_id).destroy
+
+    assert_raises(Fleets::PurgedFleetRestorer::FidTaken) do
+      Fleets::PurgedFleetRestorer.new(fleet_id).call
+    end
+  end
+
   test "raises NothingToRestore when there is no destroy version" do
     assert_raises(Fleets::PurgedFleetRestorer::NothingToRestore) do
       Fleets::PurgedFleetRestorer.new(SecureRandom.uuid).call

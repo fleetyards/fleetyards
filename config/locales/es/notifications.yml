@@ -58,6 +58,38 @@ es:
     fleet_rsi_verification_lost:
       title: "%{fleet} ya no está verificada para %{sid}"
       body: "Otra flota demostró que gestiona la organización de RSI %{sid} poniendo su código de verificación en la página de la organización. Tu flota ya no muestra el SID como verificado. Si %{sid} es tu organización, vuelve a verificarla desde los ajustes de la flota."
+    fleet_fid_claim_opened:
+      title: "%{claimant} reclama el ID de flota %{fid}"
+      body: "%{claimant} demostró que gestiona la organización de RSI **%{fid}**, así que puede quedarse con el ID de flota correspondiente.\n\n**El %{date}:**\n\n- %{fleet} pasa al siguiente ID de flota libre, como **%{fid}-1**.\n- Los enlaces a %{fid} abrirán %{claimant} desde entonces.\n\n**Para conservar el ID**, verifica %{fid} antes desde los ajustes de la flota. Si no, avisa a tus miembros de la nueva dirección."
+    fleet_fid_claim_completed:
+      claimant:
+        title: "%{fleet} ya tiene el ID de flota %{fid}"
+        body: "El periodo de gracia ha terminado y el ID de flota %{fid} es vuestro. Los enlaces a %{fid} ya abren tu flota."
+      holder:
+        title: "%{fleet} ahora es %{new_fid}"
+        body: "El ID de flota %{fid} ha pasado a %{claimant}, que está verificada para la organización de RSI %{fid}. El ID y la dirección de tu flota son ahora %{new_fid}, y los enlaces antiguos a %{fid} abren %{claimant}."
+    fleet_fid_claim_cancelled:
+      holder_withdrawn:
+        title: "Se ha retirado la reclamación de %{fid}"
+        body: "%{claimant} retiró su reclamación, así que %{fleet} conserva el ID de flota %{fid}."
+      holder_holder_verified:
+        title: "%{fleet} conserva el ID de flota %{fid}"
+        body: "Tu flota ya está verificada para la organización de RSI %{fid}, así que la reclamación de %{claimant} ha terminado."
+      holder_claimant_unverified:
+        title: "La reclamación de %{fid} ha terminado"
+        body: "%{claimant} ya no está verificada para la organización de RSI %{fid}, así que %{fleet} conserva el ID de flota."
+      holder_admin:
+        title: "Se ha cancelado la reclamación de %{fid}"
+        body: "Un administrador canceló la reclamación de %{claimant}, así que %{fleet} conserva el ID de flota %{fid}."
+      claimant_holder_verified:
+        title: "Tu reclamación de %{fid} ha terminado"
+        body: "%{holder} demostró que gestiona la organización de RSI %{fid}, así que %{fleet} ya no está verificada para ella y la reclamación ha terminado."
+      claimant_claimant_unverified:
+        title: "Tu reclamación de %{fid} ha terminado"
+        body: "%{fleet} ya no está verificada para la organización de RSI %{fid}, así que la reclamación ha terminado."
+      claimant_admin:
+        title: "Se ha cancelado tu reclamación de %{fid}"
+        body: "Un administrador canceló la reclamación de %{fleet} sobre el ID de flota %{fid}."
     fleet_member_accepted:
       title: "%{username} se unió a %{fleet}"
     fleet_request_accepted:

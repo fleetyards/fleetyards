@@ -122,6 +122,8 @@ en:
       body: Use the following code to confirm access to your account settings.
       expires: This code will expire in 10 minutes.
       subject: Your confirmation code
+    fleet:
+      action: "Open fleet settings"
     hello: Hello %{username}
     model:
       new:

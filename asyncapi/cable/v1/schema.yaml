@@ -1438,6 +1438,8 @@ components:
           type: boolean
         verified:
           type: boolean
+        verifiedOrgSid:
+          type: string
         citizenidProfileUrl:
           type: string
         discordProfileUrl:
@@ -3331,6 +3333,9 @@ components:
       - fleet_subscription_started
       - fleet_subscription_ended
       - fleet_rsi_verification_lost
+      - fleet_fid_claim_opened
+      - fleet_fid_claim_completed
+      - fleet_fid_claim_cancelled
       - announcement
       x-enumNames:
       - HANGAR_CREATE
@@ -3377,6 +3382,9 @@ components:
       - FLEET_SUBSCRIPTION_STARTED
       - FLEET_SUBSCRIPTION_ENDED
       - FLEET_RSI_VERIFICATION_LOST
+      - FLEET_FID_CLAIM_OPENED
+      - FLEET_FID_CLAIM_COMPLETED
+      - FLEET_FID_CLAIM_CANCELLED
       - ANNOUNCEMENT
     PayoutLedger:
       type: object

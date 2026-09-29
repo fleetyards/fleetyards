@@ -124,6 +124,9 @@
           "inventories": "Inventare",
           "inventoryItems": "Einträge"
         },
+        "fleetFidClaims": {
+          "index": "Ansprüche auf Flotten-IDs"
+        },
         "destroyedFleets": {
           "index": "Gelöschte Flotten"
         },
@@ -426,6 +429,7 @@
         "blueprints": "Baupläne",
         "squadrons": "Staffeln",
         "alerts": "Hinweise",
+        "verifiedBadges": "Verifizierungsabzeichen",
         "chips": "Visuelle Tests Chips",
         "events": "Events",
         "typography": "Typografie",

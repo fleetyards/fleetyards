@@ -221,6 +221,13 @@
       "destroyFleet": "Flotte auflösen",
       "restore": "Wiederherstellen",
       "fleet": {
+        "fidClaim": {
+          "claim": "%{fid} beanspruchen",
+          "withdraw": "Anspruch zurückziehen",
+          "useSuggestion": "%{suggestion} verwenden",
+          "endNow": "Schonfrist jetzt beenden",
+          "cancel": "Anspruch abbrechen"
+        },
         "rsiVerification": {
           "verify": "Verifizieren",
           "regenerateToken": "Neuen Code erzeugen",

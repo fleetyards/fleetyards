@@ -270,6 +270,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "Claim opened. The fleet that holds the ID has been told.",
+            "failure": "The fleet ID could not be claimed."
+          },
+          "destroy": {
+            "success": "Claim withdrawn.",
+            "failure": "The claim could not be withdrawn."
+          },
+          "endNow": {
+            "success": "Grace period ended.",
+            "failure": "The grace period could not be ended."
+          },
+          "cancel": {
+            "success": "Claim cancelled.",
+            "failure": "The claim could not be cancelled."
+          }
+        },
         "create": {
           "success": "Your Fleet has been created.",
           "failure": "Fleet could not be saved."
@@ -510,6 +528,13 @@
             "one": "Are you sure you want to delete the selected notification? This action can't be reverted.",
             "other": "Are you sure you want to delete the %{count} selected notifications? This action can't be reverted."
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "End the grace period now? The holder is renamed and the claimant gets the fleet ID at once.",
+          "cancel": "Cancel this claim? Both fleets are told, and the holder keeps the fleet ID."
+        },
+        "fleetFidClaim": {
+          "create": "Claim the fleet ID %{fid}? The fleet that holds it is told now, and it loses the ID in 14 days unless it proves the RSI organisation itself."
         },
         "adminDestroyedFleet": {
           "restore": "Are you sure you want to restore this fleet?",

@@ -124,6 +124,9 @@
           "inventories": "庫存",
           "inventoryItems": "庫存記錄"
         },
+        "fleetFidClaims": {
+          "index": "艦隊 ID 申領"
+        },
         "destroyedFleets": {
           "index": "已刪除艦隊"
         },
@@ -426,6 +429,7 @@
         "blueprints": "藍圖",
         "squadrons": "中隊",
         "alerts": "提示",
+        "verifiedBadges": "驗證徽章",
         "chips": "視覺測試 Chips",
         "events": "活動",
         "typography": "排版",

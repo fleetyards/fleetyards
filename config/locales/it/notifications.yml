@@ -58,6 +58,38 @@ it:
     fleet_rsi_verification_lost:
       title: "%{fleet} non è più verificata per %{sid}"
       body: "Un’altra flotta ha dimostrato di gestire l’organizzazione RSI %{sid} inserendo il proprio codice di verifica nella pagina dell’organizzazione. La tua flotta non mostra più il SID come verificato. Se %{sid} è la tua organizzazione, verificala di nuovo dalle impostazioni della flotta."
+    fleet_fid_claim_opened:
+      title: "%{claimant} rivendica l’ID flotta %{fid}"
+      body: "%{claimant} ha dimostrato di gestire l’organizzazione RSI **%{fid}**, quindi può prendere l’ID flotta corrispondente.\n\n**Il %{date}:**\n\n- %{fleet} passa al prossimo ID flotta libero, come **%{fid}-1**.\n- Da allora i link a %{fid} apriranno %{claimant}.\n\n**Per tenere l’ID**, verifica %{fid} prima dalle impostazioni della flotta. Altrimenti avvisa i tuoi membri del nuovo indirizzo."
+    fleet_fid_claim_completed:
+      claimant:
+        title: "%{fleet} ha ora l’ID flotta %{fid}"
+        body: "Il periodo di tolleranza è finito e l’ID flotta %{fid} è vostro. I link a %{fid} ora aprono la tua flotta."
+      holder:
+        title: "%{fleet} ora è %{new_fid}"
+        body: "L’ID flotta %{fid} è passato a %{claimant}, verificata per l’organizzazione RSI %{fid}. L’ID e l’indirizzo della tua flotta ora sono %{new_fid}, e i vecchi link a %{fid} aprono %{claimant}."
+    fleet_fid_claim_cancelled:
+      holder_withdrawn:
+        title: "La rivendicazione di %{fid} è stata ritirata"
+        body: "%{claimant} ha ritirato la sua rivendicazione, quindi %{fleet} tiene l’ID flotta %{fid}."
+      holder_holder_verified:
+        title: "%{fleet} tiene l’ID flotta %{fid}"
+        body: "La tua flotta ora è verificata per l’organizzazione RSI %{fid}, quindi la rivendicazione di %{claimant} è terminata."
+      holder_claimant_unverified:
+        title: "La rivendicazione di %{fid} è terminata"
+        body: "%{claimant} non è più verificata per l’organizzazione RSI %{fid}, quindi %{fleet} tiene l’ID flotta."
+      holder_admin:
+        title: "La rivendicazione di %{fid} è stata annullata"
+        body: "Un amministratore ha annullato la rivendicazione di %{claimant}, quindi %{fleet} tiene l’ID flotta %{fid}."
+      claimant_holder_verified:
+        title: "La tua rivendicazione di %{fid} è terminata"
+        body: "%{holder} ha dimostrato di gestire l’organizzazione RSI %{fid}, quindi %{fleet} non è più verificata per essa e la rivendicazione è terminata."
+      claimant_claimant_unverified:
+        title: "La tua rivendicazione di %{fid} è terminata"
+        body: "%{fleet} non è più verificata per l’organizzazione RSI %{fid}, quindi la rivendicazione è terminata."
+      claimant_admin:
+        title: "La tua rivendicazione di %{fid} è stata annullata"
+        body: "Un amministratore ha annullato la rivendicazione di %{fleet} sull’ID flotta %{fid}."
     fleet_member_accepted:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:

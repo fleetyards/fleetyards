@@ -92,6 +92,10 @@ class Fleet < ApplicationRecord
   # way of doing the same thing -- and a fleet must never fail to delete
   # because of a row describing what it was entitled to.
   has_many :fleet_subscriptions, dependent: nil
+  has_many :outgoing_fid_claims, class_name: "FleetFidClaim", foreign_key: :claimant_id,
+    dependent: nil, inverse_of: :claimant
+  has_many :incoming_fid_claims, class_name: "FleetFidClaim", foreign_key: :holder_id,
+    dependent: nil, inverse_of: :holder
 
   has_many :sent_alliance_requests,
     class_name: "FleetAlliance",
@@ -121,11 +125,15 @@ class Fleet < ApplicationRecord
   has_many :manufacturers,
     through: :models
 
+  FID_FORMAT = /\A[a-zA-Z0-9\-_]{3,}\Z/
+
   validates :fid,
     uniqueness: {case_sensitive: false, conditions: -> { where(discarded_at: nil) }},
     length: {minimum: 3},
     presence: true,
-    format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
+    format: {with: FID_FORMAT}
+
+  validate :fid_not_reserved, if: :fid_changed?
 
   normalizes :rsi_sid, with: ->(sid) { Rsi::Sid.normalize(sid) }
 
@@ -158,6 +166,7 @@ class Fleet < ApplicationRecord
   # let go of it: restoring one would otherwise collide with whoever proved the
   # SID since.
   before_discard :reset_rsi_verification
+  after_discard -> { FleetFidClaim.cancel_for_lost_verification!(self) }
 
   validates :name,
     length: {minimum: 3},
@@ -294,8 +303,25 @@ class Fleet < ApplicationRecord
       rsi_verification_token: self.class.new_rsi_verification_token,
       updated_at: Time.current
     )
+
+    FleetFidClaim.cancel_for_lost_verification!(self)
   end
   # rubocop:enable Rails/SkipsModelValidations
+
+  def self.valid_fid?(value)
+    FID_FORMAT.match?(value.to_s)
+  end
+
+  # `X-1`, `X-2`, ...: an SID never contains a hyphen, so a suffixed FID can
+  # never be one another fleet verifies and claims in turn.
+  def self.next_free_fid(base)
+    base = base.to_s.upcase
+    taken = kept.where("normalized_fid LIKE ?", "#{sanitize_sql_like(base.downcase)}-%").pluck(:normalized_fid).to_set
+
+    suffix = (1..).find { |n| taken.exclude?("#{base.downcase}-#{n}") }
+
+    "#{base}-#{suffix}"
+  end
 
   def rsi_verification_cooling_down?
     rsi_verification_checked_at.present? &&
@@ -464,6 +490,17 @@ class Fleet < ApplicationRecord
     return if rsi_verified_at_was.blank? || rsi_verified_sid_was.blank?
 
     errors.add(:rsi_sid, :locked_while_verified)
+  end
+
+  # An FID with an open claim waits for its claimant: the holder may leave it,
+  # but neither it nor anybody else may take it in the meantime. A holder only
+  # changing the case of the FID it has is not taking it.
+  private def fid_not_reserved
+    return if fid.blank?
+    return if fid_was.present? && fid_was.casecmp?(fid)
+    return unless FleetFidClaim.reserved?(fid, except: self)
+
+    errors.add(:fid, :reserved)
   end
 
   private def reset_rsi_verification

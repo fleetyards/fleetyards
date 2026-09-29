@@ -265,6 +265,12 @@ de:
       update: Event-Team konnte nicht aktualisiert werden.
     fleet_rsi_verification:
       check: "Speichere die SID deiner Organisation und erzeuge einen Verifizierungscode, bevor du prüfst."
+    fleet_fid_claim:
+      create: "Diese Flotte kann keine Flotten-ID beanspruchen. Nur eine für eine RSI-Organisation verifizierte Flotte kann die Flotten-ID beanspruchen, die ihrer SID entspricht, und nur solange eine andere Flotte sie hat."
+      destroy: "Diese Flotte hat keinen offenen Anspruch, der zurückgezogen werden könnte."
+      update: "Ein Anspruch lässt sich nur verkürzen, solange er offen ist, und nur auf ein Datum vor seinem aktuellen Ende."
+      cancel: "Dieser Anspruch ist nicht mehr offen."
+      complete: "Die Flotten-ID wurde nicht übertragen: Der Anspruch wurde inzwischen geschlossen, die beanspruchende Flotte ist nicht mehr dafür verifiziert, oder eine andere Flotte hat sie jetzt und wurde eigens benachrichtigt."
     fleet_notification_settings:
       update: Benachrichtigungseinstellungen konnten nicht aktualisiert werden.
     tours:

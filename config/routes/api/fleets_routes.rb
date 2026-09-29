@@ -62,6 +62,8 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     post :check
   end
 
+  resource :fleet_fid_claim, path: "fid-claim", only: %i[show create destroy]
+
   resource :fleet_notification_setting, path: "notifications", only: %i[show update] do
     get "discord-status", action: :discord_status
   end

@@ -256,6 +256,12 @@ zh-TW:
       update: 無法更新活動隊伍。
     fleet_rsi_verification:
       check: "請先儲存你的組織 SID 並產生驗證碼，然後再檢查。"
+    fleet_fid_claim:
+      create: "此艦隊無法申領艦隊 ID。只有通過 RSI 組織驗證的艦隊才能申領與其 SID 相同的艦隊 ID，且僅限該 ID 由另一支艦隊持有時。"
+      destroy: "此艦隊沒有可撤回的進行中申領。"
+      update: "申領只能在進行中時縮短，且只能改為早於目前結束時間的日期。"
+      cancel: "此申領已不再進行中。"
+      complete: "艦隊 ID 未轉移：申領已在此期間關閉，申領方不再通過該驗證，或現在由另一支艦隊持有且該艦隊已收到單獨通知。"
     fleet_notification_settings:
       update: 無法更新通知設定。
     version:

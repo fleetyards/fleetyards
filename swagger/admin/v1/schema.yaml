@@ -2747,6 +2747,137 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleet-fid-claims":
+    get:
+      summary: Open FID claims
+      tags:
+      - Fleets
+      operationId: fleetFidClaims
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminFleetFidClaims"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleet-fid-claims/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Claim id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    patch:
+      summary: Shorten an FID claim's grace period
+      tags:
+      - Fleets
+      operationId: updateFleetFidClaim
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetFidClaimUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminFleetFidClaim"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleet-fid-claims/{id}/cancel":
+    parameters:
+    - name: id
+      in: path
+      description: Claim id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Cancel an FID claim
+      tags:
+      - Fleets
+      operationId: cancelFleetFidClaim
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminFleetFidClaim"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleet-subscriptions":
     get:
       summary: List Fleet Subscriptions
@@ -9563,6 +9694,90 @@ components:
       - meta
       - items
       title: AdminCargoHolds
+    AdminFleetFidClaim:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        state:
+          "$ref": "#/components/schemas/FleetFidClaimStateEnum"
+        cancelReason:
+          "$ref": "#/components/schemas/NullableFleetFidClaimCancelReasonEnum"
+        endsAt:
+          type: string
+          format: date-time
+        claimantId:
+          type: string
+          format: uuid
+        claimantName:
+          type: string
+        claimantFid:
+          type: string
+        holderId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        holderName:
+          type:
+          - string
+          - 'null'
+        holderFid:
+          type:
+          - string
+          - 'null'
+        holderNewFid:
+          type:
+          - string
+          - 'null'
+        completedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        cancelledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - state
+      - cancelReason
+      - endsAt
+      - claimantId
+      - claimantName
+      - claimantFid
+      - holderId
+      - holderName
+      - holderFid
+      - holderNewFid
+      - completedAt
+      - cancelledAt
+      - createdAt
+      title: AdminFleetFidClaim
+    AdminFleetFidClaims:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminFleetFidClaim"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminFleetFidClaims
     AdminFleetMember:
       type: object
       properties:
@@ -13712,6 +13927,27 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
+    FleetFidClaimStateEnum:
+      type: string
+      enum:
+      - open
+      - completed
+      - cancelled
+      x-enumNames:
+      - OPEN
+      - COMPLETED
+      - CANCELLED
+      title: FleetFidClaimStateEnum
+    FleetFidClaimUpdateInput:
+      type: object
+      properties:
+        endsAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - endsAt
+      title: FleetFidClaimUpdateInput
     FleetInput:
       type: object
       properties:
@@ -18193,6 +18429,23 @@ components:
       - BACKPACK
       - 'NULL'
       title: NullableEquipmentSlotEnum
+    NullableFleetFidClaimCancelReasonEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - withdrawn
+      - holder_verified
+      - claimant_unverified
+      - admin
+      -
+      x-enumNames:
+      - WITHDRAWN
+      - HOLDER_VERIFIED
+      - CLAIMANT_UNVERIFIED
+      - ADMIN
+      - 'NULL'
+      title: NullableFleetFidClaimCancelReasonEnum
     NullableGameMissionLocationKindEnum:
       type:
       - string

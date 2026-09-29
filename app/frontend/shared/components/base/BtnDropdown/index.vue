@@ -29,6 +29,8 @@ type Props = {
   expandLeft?: boolean;
   expandTop?: boolean;
   expandBottom?: boolean;
+  /** Passed to the trigger's Btn; see its `clipLabel`. */
+  clipLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   expandLeft: false,
   expandTop: false,
   expandBottom: false,
+  clipLabel: true,
 });
 
 const visible = ref(false);
@@ -213,6 +216,7 @@ const documentClick = (event: MouseEvent) => {
     :class="{
       'btn-dropdown--grouped': grouped,
       'btn-dropdown--custom-trigger': !!$slots.trigger,
+      'btn-dropdown--unclipped': !clipLabel,
     }"
   >
     <slot name="trigger" :toggle="toggle" :visible="visible">
@@ -221,6 +225,7 @@ const documentClick = (event: MouseEvent) => {
         :variant="variant"
         :tone="tone"
         :block="block"
+        :clip-label="clipLabel"
         :active="visible"
         aria-haspopup="menu"
         :aria-expanded="visible"
@@ -250,6 +255,11 @@ const documentClick = (event: MouseEvent) => {
 .btn-dropdown {
   @apply relative inline-block;
   margin: 0;
+}
+
+/* Held to its container along with its trigger; see Btn's `btn--unclipped`. */
+.btn-dropdown--unclipped {
+  @apply max-w-full min-w-0;
 }
 
 /*

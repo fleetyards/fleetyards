@@ -48,6 +48,14 @@ class Api::V1::FleetsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /fleets takes the RSI SID along with a temporary FID" do
+    sign_in @user
+
+    assert_api_response :post, 201, body: {fid: "STF-1", name: "Starfleet", rsiSid: "stf"} do
+      assert_equal "STF", parsed_body["rsiSid"]
+    end
+  end
+
   test "POST /fleets returns 400 for missing body" do
     sign_in @user
 

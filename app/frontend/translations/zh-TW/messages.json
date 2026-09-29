@@ -260,6 +260,24 @@
         }
       },
       "fleet": {
+        "fidClaim": {
+          "create": {
+            "success": "申領已提交，已通知持有該 ID 的艦隊。",
+            "failure": "無法申領該艦隊 ID。"
+          },
+          "destroy": {
+            "success": "申領已撤回。",
+            "failure": "無法撤回申領。"
+          },
+          "endNow": {
+            "success": "寬限期已結束。",
+            "failure": "無法結束寬限期。"
+          },
+          "cancel": {
+            "success": "申領已取消。",
+            "failure": "無法取消申領。"
+          }
+        },
         "create": {
           "success": "您的艦隊已建立。",
           "failure": "艦隊無法儲存。"
@@ -500,6 +518,13 @@
             "one": "確定要刪除選取的通知嗎？此操作無法復原。",
             "other": "確定要刪除選取的 %{count} 則通知嗎？此操作無法復原。"
           }
+        },
+        "adminFleetFidClaim": {
+          "endNow": "立即結束寬限期？持有者將被改名，申領方立刻取得該艦隊 ID。",
+          "cancel": "取消此申領？雙方艦隊都會收到通知，持有者保留該艦隊 ID。"
+        },
+        "fleetFidClaim": {
+          "create": "申領艦隊 ID %{fid}？持有它的艦隊會立即收到通知，並在 14 天後失去該 ID，除非它自行證明該 RSI 組織。"
         },
         "adminDestroyedFleet": {
           "restore": "確定要還原此艦隊嗎？",

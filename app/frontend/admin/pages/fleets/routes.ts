@@ -28,6 +28,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "fid-claims/",
+    name: "admin-fleet-fid-claims",
+    component: () => import("@/admin/pages/fleets/fid-claims/index.vue"),
+    strict: true,
+    meta: {
+      needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-fleets",
+      access: ["fleets"],
+    },
+  },
+  {
     path: ":id/",
     component: () => import("@/admin/pages/fleets/[id].vue"),
     children: [
