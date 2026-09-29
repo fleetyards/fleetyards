@@ -30,6 +30,9 @@ module Api
           )
             .order(@q.result.order_values)
             .includes(:model, :vehicle_loadouts)
+            # What the vehicle partial reads per vehicle, which ran a handful of
+            # queries each on every vehicle whose fragment was not cached yet.
+            .preload(:model_modules, :model_upgrades, :public_hangar_groups, user: {avatar_attachment: :blob})
             .joins(model: :manufacturer)
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
