@@ -2,12 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 import { createRouter, createMemoryHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 
-const { Stub } = vi.hoisted(() => {
+const { Stub, coarsePointer } = vi.hoisted(() => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { defineComponent, h } = require("vue");
+  const vue = require("vue");
 
   return {
-    Stub: defineComponent({ name: "Stub", render: () => h("div") }),
+    Stub: vue.defineComponent({ name: "Stub", render: () => vue.h("div") }),
+    coarsePointer: vue.ref(false),
   };
 });
 
@@ -23,6 +24,14 @@ vi.mock("@/frontend/components/ScDataSource/index.vue", () => ({
 }));
 vi.mock("@/frontend/composables/usePendingFriendRequests", () => ({
   usePendingFriendRequests: () => ({ count: ref(0) }),
+}));
+
+vi.mock("@/frontend/composables/useInstallPrompt", () => ({
+  useInstallPrompt: () => ({ canInstall: ref(true), install: vi.fn() }),
+}));
+vi.mock("@vueuse/core", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@vueuse/core")>()),
+  useMediaQuery: () => coarsePointer,
 }));
 
 import Navigation from "./index.vue";
@@ -42,7 +51,7 @@ const routes = [
   "visual-tests",
 ].map((name) => ({ path: `/${name}`, name, component: Stub }));
 
-const hangarItem = async (routeName: string) => {
+const mountNavigation = async (routeName: string) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [{ path: "/", name: "home", component: Stub }, ...routes],
@@ -51,10 +60,14 @@ const hangarItem = async (routeName: string) => {
   await router.push({ name: routeName });
   await router.isReady();
 
-  const wrapper = await mountWithDefaults(Navigation, {
+  return mountWithDefaults(Navigation, {
     plugins: [router],
     initialState: { hangar: { preview: false } },
   });
+};
+
+const hangarItem = async (routeName: string) => {
+  const wrapper = await mountNavigation(routeName);
 
   return wrapper
     .findAllComponents({ name: "NavItem" })
@@ -71,5 +84,21 @@ describe("Navigation", () => {
   // up next to the settings entry that is actually open.
   it("leaves the hangar unmarked on the hangar settings", async () => {
     expect((await hangarItem("settings-hangar")).props("active")).toBe(false);
+  });
+
+  it("offers the install on a touch device", async () => {
+    coarsePointer.value = true;
+
+    const wrapper = await mountNavigation("ships");
+
+    expect(wrapper.find('[data-test="install-app"]').exists()).toBe(true);
+  });
+
+  it("leaves the install to the browser on desktop", async () => {
+    coarsePointer.value = false;
+
+    const wrapper = await mountNavigation("ships");
+
+    expect(wrapper.find('[data-test="install-app"]').exists()).toBe(false);
   });
 });

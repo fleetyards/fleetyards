@@ -24,6 +24,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
+import { useMediaQuery } from "@vueuse/core";
 import rsiLogo from "@/images/rsi_logo.png";
 import favicon from "@/images/favicon-small.png";
 
@@ -42,6 +43,10 @@ const { count: pendingFriendRequests } = usePendingFriendRequests();
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
 const { canInstall, install: installApp } = useInstallPrompt();
+
+// Desktop browsers offer the install in their address bar already; on phones
+// and tablets it hides in a menu, or on iOS has no browser prompt at all.
+const touchDevice = useMediaQuery("(pointer: coarse)");
 
 const { isFleetRoute } = useFleetRouteCheck();
 
@@ -207,7 +212,7 @@ const settingsActive = computed(() => {
     <template #footer>
       <ScDataSourceSwitch />
       <NavItem
-        v-if="canInstall"
+        v-if="canInstall && touchDevice"
         :action="installApp"
         menu-key="install-app"
         :label="t('nav.installApp')"
