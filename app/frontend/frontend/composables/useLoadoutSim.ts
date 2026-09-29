@@ -50,7 +50,7 @@ const GROUPED_FAMILIES = new Set<PowerFamily>([
 ]);
 
 // Families that emit extra component heat on top of their active segments
-// (erkul's `l` term in the heat-generation sum): shields, life support, radar
+// in the heat-generation sum: shields, life support, radar
 // and the quantum drive.
 const EXTRA_HEAT_FAMILIES = new Set<PowerFamily>([
   "shield",
@@ -59,13 +59,13 @@ const EXTRA_HEAT_FAMILIES = new Set<PowerFamily>([
   "qdrive",
 ]);
 
-// Families whose active segments generate no heat load (matching erkul, where
-// powering the tractor/towing beams doesn't change the cooling ratio).
+// Families whose active segments generate no heat load (powering the
+// tractor/towing beams doesn't change the cooling ratio).
 const NON_HEAT_FAMILIES = new Set<PowerFamily>(["tractorBeam", "towingbeam"]);
 
 // A component's power-range modifier curve — `{start, modifier}` breakpoints
 // sorted ascending by `start`. The modifier for a given active-segment count is
-// the entry with the greatest `start` ≤ segments (erkul's `L`), default 1.
+// the entry with the greatest `start` ≤ segments, default 1.
 type PowerRange = { start: number; modifier: number };
 
 function toRanges(raw: unknown): PowerRange[] {
@@ -112,8 +112,8 @@ type PowerPlant = {
 // A weapon's EM contribution (per-weapon nominal + its power-range curve).
 type WeaponEmSource = { emNominal: number; ranges: PowerRange[] };
 
-// FleetYards hardpoint category → erkul power family. Only the families erkul
-// feeds power segments to are mapped; every other category (thrusters, fuel,
+// FleetYards hardpoint category → power family. Only the families that take
+// power segments are mapped; every other category (thrusters, fuel,
 // cargo, seats, …) draws no segments. A mapped component still contributes
 // ports only when it actually declares a Power draw (`powerConsumption`).
 export const POWER_FAMILY_BY_CATEGORY: Partial<
@@ -163,7 +163,7 @@ export type LoadoutSimResult = {
   aimAssistMax: number;
   // Heat: coolant produced per second at the current allocation, the maximum
   // coolers could produce, the heat generated, and the cooling load — heat ÷
-  // coolant (erkul's `coolingRatio`, uncapped so > 1 when under-cooled; 0 with
+  // coolant (`coolingRatio`, uncapped so > 1 when under-cooled; 0 with
   // no active cooler). It also drives the IR signature.
   coolingPerSec: number;
   coolingMaxPerSec: number;
@@ -401,7 +401,7 @@ function buildColumns(
   );
 }
 
-// Heat pass (erkul's `Ze`/`G`): coolers turn active power segments into coolant;
+// Heat pass: coolers turn active power segments into coolant;
 // every powered component generates heat. `coolingRatio` is the cooling *load* —
 // heat generated ÷ coolant provided — so it rises above 1 when the active
 // coolers can't keep up, and is 0 when no cooler is powered (there is no active
@@ -432,7 +432,7 @@ function computeHeat(
       coolingMaxPerSec +=
         component.coolingRate *
         rangeModifier(component.ranges, component.units);
-      // IR is emitted by the active coolers (erkul's `gr` over heat sources).
+      // IR is emitted by the active coolers.
       if (active > 0) {
         irRaw += component.irNominal * (active / component.units) * modifier;
       }
@@ -463,7 +463,7 @@ function computeHeat(
   };
 }
 
-// EM signature (erkul's `yr`): power plants weighted by ship-wide power
+// EM signature: power plants weighted by ship-wide power
 // utilization, weapons weighted by their pool fill ratio, and every other
 // powered component scaled by its active-segment fraction — each × its
 // power-range modifier and nominal EM emission.
@@ -512,7 +512,7 @@ function computeEm(
   return em;
 }
 
-// Pure core: build the family ports from a loadout, run erkul's allocation over
+// Pure core: build the family ports from a loadout, run the allocation over
 // the plants' segments, and expose the per-component columns and the weapon
 // sustained-DPS ratios (current allocation + max-weapon).
 export function simulateLoadoutPower(
@@ -592,7 +592,7 @@ export function simulateLoadoutPower(
   // ratio: `(activeSegments − min) / (capacity − min)`, where `min` is the
   // mandatory power floor. 0 at the floor (no afterburner, base handling only)
   // and 1 with every pip filled — so the default part-filled distribution shows
-  // a partial boost, exactly like erkul, which reads the same game fields.
+  // a partial boost.
   // 1 when the ship has no engine power family (nothing to scale against).
   const engineColumn = columns.find((column) => column.family === "engine");
   const engineSpan = engineColumn
@@ -613,7 +613,7 @@ export function simulateLoadoutPower(
   // power family (nothing to gate on).
   const engineActive = !engineColumn || engineColumn.allocated > 0;
 
-  // Radar power ratio → effective aim-assist range (erkul's `or`): interpolated
+  // Radar power ratio → effective aim-assist range: interpolated
   // between the radar's min and max by radar power, 0 when the radar is off.
   const radarColumn = columns.find((column) => column.family === "radar");
   const radarPoolRatio =

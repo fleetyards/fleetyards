@@ -8,7 +8,7 @@ import {
   type PowerPort,
 } from "./powerSim";
 
-// erkul's `ue`: the weapon pool is `poolSize` size-1 blocks (all sharing one
+// The weapon pool is `poolSize` size-1 blocks (all sharing one
 // portPath), of which the first `consumption` are enabled (the rest disabled).
 function weaponBlocks(poolSize: number, consumption: number): PowerPort[] {
   return Array.from({ length: poolSize }, (_, i) => ({

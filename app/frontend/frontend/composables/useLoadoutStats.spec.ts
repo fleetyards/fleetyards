@@ -217,7 +217,7 @@ describe("computeLoadoutStats", () => {
   });
 
   it("needs a weapon pip for ballistics, then fires them unthrottled", () => {
-    // Heat-limited (no energy pool). Like erkul, ballistics still need the
+    // Heat-limited (no energy pool). Ballistics still need the
     // weapon system powered (≥1 pip) to fire, but once on they aren't
     // throttled by the weapon pool — only their overheat duty cycle applies.
     const weapon = weaponHardpoint({

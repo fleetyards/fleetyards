@@ -403,7 +403,7 @@ describe("heat (cooling ratio)", () => {
     expect(sim.coolingRatio).toBe(0);
   });
 
-  it("does not count tractor beams toward the heat load (matches erkul)", () => {
+  it("does not count tractor beams toward the heat load", () => {
     const base = [
       plant(40, 2),
       cooler(),
@@ -450,7 +450,7 @@ describe("engine power ratio (flight scaling)", () => {
 
   it("is below 1 at the default when the engine can't fill to capacity", () => {
     // The engine fills last, so a segment-starved plant leaves it part-filled
-    // at the default — a partial boost, like erkul's default 3/6 engine pips,
+    // at the default — a partial boost (e.g. 3/6 engine pips),
     // rather than the fully-rated boost.
     const engine = hp(HardpointCategoryEnum.CONTROLLER, {
       powerConsumption: 8,
@@ -534,7 +534,7 @@ describe("POWER_FAMILY_BY_CATEGORY", () => {
     expect(POWER_FAMILY_BY_CATEGORY[HardpointCategoryEnum.CONTROLLER]).toBe(
       "engine",
     );
-    // Thrusters / fuel draw no power segments in erkul's model.
+    // Thrusters / fuel draw no power segments.
     expect(
       POWER_FAMILY_BY_CATEGORY[HardpointCategoryEnum.MAIN_THRUSTERS],
     ).toBeUndefined();

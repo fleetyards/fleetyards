@@ -91,7 +91,7 @@ function isMissile(weapon: ComponentWeapon): boolean {
 
 // Duty-cycle fraction of burst a weapon can sustain: fire until the energy pool
 // drains (or heat forces an overheat lockout), then wait out cooldown + regen.
-// This is erkul's `Io` model. `powerRatio` (< 1 when the ship's shared weapon
+// `powerRatio` (< 1 when the ship's shared weapon
 // power pool can't feed every gun at once) scales an energy weapon's effective
 // pool and regen, shrinking its uptime — the shared-pool sustained throttle.
 // Heat-limited (ballistic) weapons aren't power-fed, so they ignore powerRatio.
