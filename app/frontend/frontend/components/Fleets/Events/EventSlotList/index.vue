@@ -277,7 +277,7 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 .slot-type-badge {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   color: var(--color-muted, #7a8288);
   flex-shrink: 0;

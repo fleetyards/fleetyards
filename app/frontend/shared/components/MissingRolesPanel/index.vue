@@ -116,7 +116,7 @@ const labels = computed(() =>
   // no hover and a quieter edge than a control would carry.
   .missing-roles-panel__chip {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 5px 11px;
