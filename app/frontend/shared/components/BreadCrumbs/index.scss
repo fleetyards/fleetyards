@@ -1,7 +1,12 @@
+// Wraps rather than shrinking the trail: next to a row of actions on a phone
+// it was squeezed into a column one word wide. The actions drop to a line of
+// their own only when both do not fit.
 .breadcrumbs {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 8px 20px;
   margin-bottom: 15px;
 }
 
@@ -10,6 +15,11 @@
   align-items: center;
   gap: 10px;
   margin-inline: 20px;
+}
+
+// Right-aligned beside a trail, and on its own line once it wraps below one.
+.breadcrumb + .stepper {
+  margin-inline-start: auto;
 }
 
 .breadcrumb {

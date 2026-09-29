@@ -572,14 +572,16 @@ const detail = computed(
 .sizes {
   display: flex;
   flex: 1 1 auto;
+  flex-wrap: wrap;
   min-width: 0;
   gap: 4px;
 
   &__btn {
-    // Share the remaining width evenly rather than sitting cramped at the left.
+    // Share the remaining width evenly rather than sitting cramped at the left,
+    // and wrap to a second line on a phone before a label is cut off.
     flex: 1 1 0;
     height: 43px;
-    min-width: 0;
+    min-width: 40px;
     padding: 0 6px;
     border-radius: 4px;
     border: 1px solid rgba($gray-light, 0.28);

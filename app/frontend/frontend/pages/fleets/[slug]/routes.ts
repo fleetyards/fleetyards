@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 import { routes as membersRoutes } from "@/frontend/pages/fleets/[slug]/members/routes";
 import { routes as squadronsRoutes } from "@/frontend/pages/fleets/[slug]/squadrons/routes";
 import { routes as logisticsRoutes } from "@/frontend/pages/fleets/[slug]/logistics/routes";
@@ -133,6 +134,8 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       backgroundImage: "bg-8",
       customTitle: true,
+      feature: FeatureFlagName.FLEET_MISSION_BUILDER,
+      featureScope: "fleet",
     },
     redirect: {
       name: eventsRoutes[0].name,

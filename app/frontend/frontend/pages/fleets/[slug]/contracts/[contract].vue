@@ -668,6 +668,14 @@ const crumbs = computed<Crumb[]>(() => [
     position: relative;
     z-index: 2;
     margin-top: -18px;
+
+    // A reward runs to seven figures and a unit, which the metric cards'
+    // six-figure sizing clipped in a half-width tile on a phone. Smaller, and
+    // the unit wraps under the amount rather than being cut off.
+    .metrics-card__tile--primary .metrics-card__tile__value {
+      flex-wrap: wrap;
+      font-size: clamp(16px, 11cqw, 30px);
+    }
   }
 
   &__description {

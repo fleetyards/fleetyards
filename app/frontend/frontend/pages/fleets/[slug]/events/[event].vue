@@ -520,6 +520,7 @@ const crumbs = computed<Crumb[]>(() => [
       :bg-rounded="PanelRoundedEnum.TOP"
       :tone="statusTone"
       class="event-detail__hero"
+      :class="{ 'event-detail__hero--calendar': icsDownloadUrl }"
     >
       <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
         <template #default>
@@ -816,6 +817,38 @@ const crumbs = computed<Crumb[]>(() => [
 
 .event-detail__calendar :deep(.btn) {
   backdrop-filter: blur(6px) brightness(0.45);
+}
+
+/* Keeps a long title clear of the calendar button above it: icon-only on a
+   phone, labelled on a desktop. */
+.event-detail__hero--calendar :deep(.panel-heading) {
+  padding-right: 200px;
+
+  @media (max-width: 992px) {
+    padding-right: 66px;
+  }
+}
+
+/* One fact per line on a phone: a date range with its timezone does not fit
+   in half of a 390px card. */
+@media (max-width: 576px) {
+  .event-detail__hero .metrics-card__rows--split {
+    grid-template-columns: 1fr;
+
+    .metrics-card__row:nth-last-child(-n + 2) {
+      border-bottom: 1px solid rgba($gray-light, 0.16);
+    }
+
+    .metrics-card__row:last-child {
+      border-bottom: 0;
+    }
+
+    // The row alone does not make room for a range with its timezone: the
+    // value keeps the shared one-line ellipsis, which cut off the end date.
+    .metrics-card__row__value {
+      white-space: normal;
+    }
+  }
 }
 .event-hero__tz {
   font-size: 0.85em;
