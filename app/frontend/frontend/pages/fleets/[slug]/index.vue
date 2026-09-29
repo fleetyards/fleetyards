@@ -124,7 +124,7 @@ const description = computed(() => {
               v-if="fidVerified"
               v-tooltip="t('labels.fleet.rsiVerification.verified')"
               :aria-label="t('labels.fleet.rsiVerification.verified')"
-              class="fa-duotone fa-badge-check text-success fid__badge"
+              class="fa-duotone fa-badge-check text-success fid-badge"
               data-test="fleet-rsi-verified" /></span
           >)
         </span>
@@ -303,7 +303,7 @@ const description = computed(() => {
 // as marking that FID whatever its size. Opaque:
 // the duotone badge's own secondary layer is translucent, and the letter
 // underneath showed through it. The check is cut out in the page colour.
-.fid__badge {
+.fid-badge {
   position: absolute;
   z-index: 1;
   top: 0;
