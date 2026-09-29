@@ -56,7 +56,9 @@ class MeasureHoloJob
     return if overtaken?(model, columns, previous)
 
     dimensions = AXIS_ORDER.map { |axis| result.public_send(axis) }
-    model.update_columns(columns.zip(dimensions).to_h.merge(measured_at_for(name)))
+    # `updated_at` too: the model's cached fragments are keyed on it, and they
+    # carry both the dimensions and whether the holo is to scale.
+    model.update_columns(columns.zip(dimensions).to_h.merge(measured_at_for(name), updated_at: Time.current))
 
     write_pad_class(model, name, dimensions)
   rescue ActiveStorage::FileNotFoundError

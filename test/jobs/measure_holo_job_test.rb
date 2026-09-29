@@ -24,6 +24,17 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_in_delta 1.0, model.height.to_f
   end
 
+  # The model's cached fragments are keyed on it; without the bump they kept
+  # serving the unmeasured figures after the measurement landed.
+  test "#perform moves the model's updated_at with the measurement" do
+    model = attach(create(:model), :holo, "plain.gltf")
+    model.update_columns(updated_at: 1.day.ago)
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_operator model.reload.updated_at, :>, 1.minute.ago
+  end
+
   # The fixture is 10 x 1 x 6 -- wider than it is long, like the Corsair with
   # its wings deployed. Sorting the axes would call the 10 the length; the
   # frame the pipeline exports in says the 6 is.
