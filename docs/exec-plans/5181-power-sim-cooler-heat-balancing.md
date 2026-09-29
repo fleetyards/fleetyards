@@ -49,10 +49,11 @@ Working plan for #5181. Decisions live in the issue body. Deleted before the PR 
 | `docs/findings/loadout-stat-formulas.md` | Formula record |
 
 ## Not in scope (deferred)
-- **Hammerhead record**: the model is linked to `aegs_hammerhead`, a template (`EntityUIDisplayParams displayName="@LOC_UNINITIALIZED"`) with the S2 Surveyor. The playable ship is `aegs_hammerhead_gs` with the S3 Resolu (10 units, floor 3). Fixed by setting the model's `sc_key` in admin. It is the only ship split like this in 4.10.1.
 - **`initialPowerAllocation`**: vehicles that ship a fixed default distribution.
 
 ## Discovery Log
+
+- **2026-09-29** The Hammerhead read `aegs_hammerhead`, a template with the S2 Surveyor; the playable record is `aegs_hammerhead_gs` with the S3 Resolu. It was already linked under Models → Unlisted, but a link never claimed `sc_key`. A link now claims it when empty, and a data migration backfills the five linked ships without one. Re-parsed live tree pushed (211 objects, armor only).
 
 - **2026-09-29** Armor signature multipliers were never parsed: they are attributes of `SCItemVehicleArmorParams`, and the parser read a nested element that does not exist. Fixed, and fed into IR/EM/CS and the cooler-split score. EM also used the sustained-DPS ratio for weapons instead of the powered pool share. With both fixed, Asgard and Gladius IR/EM match the reference.
 
