@@ -12,14 +12,14 @@ User-written descriptions are stored as Markdown, edited through `FormMarkdownEd
 
 ## What Tiptap's serializer writes
 
-| Input | Written as | Why the renderer cares |
-| --- | --- | --- |
+| Input                                     | Written as                       | Why the renderer cares                                                                                                                        |
+| ----------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `[`, `]`, `*`, `_`, `` ` `` typed as text | `\[`, `\]`, `\*`, `\_`, `` \` `` | Backslash escapes must be read as the character, before code spans are split (an escaped backtick opens nothing) and before links are matched |
-| `&`, `<`, `>` typed as text | `&amp;`, `&lt;`, `&gt;` | Entities must be decoded, or the page shows `&amp;` |
-| A centred block | `:::center\n\n…\n\n:::` | `createBlockMarkdownSpec` only matches `:::name` **without** a space after the colons; `::: center` opens as plain text |
-| A hard break | two trailing spaces | The renderer trims lines and joins a paragraph with `<br>`, so it shows |
-| A nested list | indented by two spaces | The renderer nests lists by indentation |
-| An underlined (setext) heading | `## Heading` | Stored fleet descriptions use `----` underlines, so the renderer reads both forms |
+| `&`, `<`, `>` typed as text               | `&amp;`, `&lt;`, `&gt;`          | Entities must be decoded, or the page shows `&amp;`                                                                                           |
+| A centred block                           | `:::center\n\n…\n\n:::`          | `createBlockMarkdownSpec` only matches `:::name` **without** a space after the colons; `::: center` opens as plain text                       |
+| A hard break                              | two trailing spaces              | The renderer trims lines and joins a paragraph with `<br>`, so it shows                                                                       |
+| A nested list                             | indented by two spaces           | The renderer nests lists by indentation                                                                                                       |
+| An underlined (setext) heading            | `## Heading`                     | Stored fleet descriptions use `----` underlines, so the renderer reads both forms                                                             |
 
 ## Traps
 
