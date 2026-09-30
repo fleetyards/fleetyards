@@ -258,13 +258,9 @@ const html = computed(() => {
 
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -- escaped above, see renderInline -->
-  <div class="markdown" v-html="html" />
+  <div class="markdown markdown-content" v-html="html" />
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "./content";
-
-.markdown {
-  @include markdown-content;
-}
 </style>

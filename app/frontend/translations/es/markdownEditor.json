@@ -1,0 +1,19 @@
+{
+  "es": {
+    "markdownEditor": {
+      "toolbar": "Formato",
+      "bold": "Negrita",
+      "italic": "Cursiva",
+      "heading": "Encabezado",
+      "bulletList": "Lista con viñetas",
+      "orderedList": "Lista numerada",
+      "center": "Centrar",
+      "link": "Enlace",
+      "linkUrl": "Dirección del enlace",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "Aplicar",
+      "linkRemove": "Quitar enlace",
+      "linkInvalid": "Solo se pueden enlazar direcciones http(s) o rutas de este sitio."
+    }
+  }
+}

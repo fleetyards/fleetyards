@@ -1,0 +1,19 @@
+{
+  "it": {
+    "markdownEditor": {
+      "toolbar": "Formattazione",
+      "bold": "Grassetto",
+      "italic": "Corsivo",
+      "heading": "Titolo",
+      "bulletList": "Elenco puntato",
+      "orderedList": "Elenco numerato",
+      "center": "Centra",
+      "link": "Link",
+      "linkUrl": "Indirizzo del link",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "Applica",
+      "linkRemove": "Rimuovi link",
+      "linkInvalid": "Si possono collegare solo indirizzi http(s) o percorsi di questo sito."
+    }
+  }
+}

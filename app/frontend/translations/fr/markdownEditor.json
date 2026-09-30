@@ -1,0 +1,19 @@
+{
+  "fr": {
+    "markdownEditor": {
+      "toolbar": "Mise en forme",
+      "bold": "Gras",
+      "italic": "Italique",
+      "heading": "Titre",
+      "bulletList": "Liste à puces",
+      "orderedList": "Liste numérotée",
+      "center": "Centrer",
+      "link": "Lien",
+      "linkUrl": "Adresse du lien",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "Appliquer",
+      "linkRemove": "Supprimer le lien",
+      "linkInvalid": "Seules les adresses http(s) ou les chemins de ce site peuvent être liés."
+    }
+  }
+}

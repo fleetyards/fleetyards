@@ -1,0 +1,19 @@
+{
+  "de": {
+    "markdownEditor": {
+      "toolbar": "Formatierung",
+      "bold": "Fett",
+      "italic": "Kursiv",
+      "heading": "Überschrift",
+      "bulletList": "Aufzählung",
+      "orderedList": "Nummerierte Liste",
+      "center": "Zentrieren",
+      "link": "Link",
+      "linkUrl": "Linkadresse",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "Übernehmen",
+      "linkRemove": "Link entfernen",
+      "linkInvalid": "Verlinkt werden können nur http(s)-Adressen oder Pfade auf dieser Seite."
+    }
+  }
+}
