@@ -2,14 +2,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const createPushSubscription = vi.fn();
 const destroyPushSubscription = vi.fn();
-const pushSubscriptions = vi.fn();
+const touchPushSubscription = vi.fn();
 
 vi.mock("@/services/fyApi", () => ({
   createPushSubscription: (...args: unknown[]) =>
     createPushSubscription(...args),
   destroyPushSubscription: (...args: unknown[]) =>
     destroyPushSubscription(...args),
-  pushSubscriptions: (...args: unknown[]) => pushSubscriptions(...args),
+  touchPushSubscription: (...args: unknown[]) => touchPushSubscription(...args),
 }));
 
 import {
@@ -73,7 +73,7 @@ const setup = ({
 beforeEach(() => {
   createPushSubscription.mockResolvedValue({ id: "row-1" });
   destroyPushSubscription.mockResolvedValue(undefined);
-  pushSubscriptions.mockResolvedValue([{ id: "row-1" }]);
+  touchPushSubscription.mockResolvedValue({ id: "row-1" });
 });
 
 afterEach(() => {
@@ -123,8 +123,10 @@ describe("useWebPush", () => {
     expect(push.status.value).toBe(WebPushStatusEnum.OFF);
   });
 
-  it("is unsupported only once no worker shows up at all", async () => {
+  // A slow worker is not proof the subscription is gone.
+  it("is unsupported once no worker shows up, and keeps what it knew", async () => {
     vi.useFakeTimers();
+    remember("row-1", "https://fcm.googleapis.com/abc");
     setup({ registered: false });
     const push = useWebPush();
 
@@ -133,6 +135,11 @@ describe("useWebPush", () => {
     await refreshing;
 
     expect(push.status.value).toBe(WebPushStatusEnum.UNSUPPORTED);
+    expect(stored()).toEqual({
+      id: "row-1",
+      endpoint: "https://fcm.googleapis.com/abc",
+      userId: USER,
+    });
   });
 
   it("is off until this browser subscribes", async () => {
@@ -145,8 +152,9 @@ describe("useWebPush", () => {
     expect(createPushSubscription).not.toHaveBeenCalled();
   });
 
-  // Saving again is the server's sign that the device is still in use.
-  it("is on, and says so to the server, while it still has this browser's row", async () => {
+  // The touch is the server's sign that the device is still in use; it never
+  // recreates a row, and it leaves the failure count alone.
+  it("is on, and touches the row, while the server still has it", async () => {
     const existing = browserSubscription();
     remember("row-1", existing.endpoint);
     setup({ permission: "granted", existing });
@@ -156,7 +164,8 @@ describe("useWebPush", () => {
 
     expect(push.status.value).toBe(WebPushStatusEnum.ON);
     expect(push.subscriptionId.value).toBe("row-1");
-    expect(createPushSubscription).toHaveBeenCalledWith(existing.input);
+    expect(touchPushSubscription).toHaveBeenCalledWith("row-1");
+    expect(createPushSubscription).not.toHaveBeenCalled();
   });
 
   // The worker saves a renewal itself, but it has no session once the reader
@@ -181,7 +190,10 @@ describe("useWebPush", () => {
   it("stays off for a device this account removed elsewhere", async () => {
     const existing = browserSubscription();
     remember("row-1", existing.endpoint);
-    pushSubscriptions.mockResolvedValue([{ id: "another-device" }]);
+    touchPushSubscription.mockRejectedValue({
+      isAxiosError: true,
+      response: { status: 404 },
+    });
     setup({ permission: "granted", existing });
     const push = useWebPush();
 
@@ -209,7 +221,10 @@ describe("useWebPush", () => {
   it("reports a check that failed instead of reading as off", async () => {
     const existing = browserSubscription();
     remember("row-1", existing.endpoint);
-    pushSubscriptions.mockRejectedValue(new Error("503"));
+    touchPushSubscription.mockRejectedValue({
+      isAxiosError: true,
+      response: { status: 503 },
+    });
     setup({ permission: "granted", existing });
     const push = useWebPush();
 

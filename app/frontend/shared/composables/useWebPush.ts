@@ -1,7 +1,8 @@
+import { isAxiosError } from "axios";
 import {
   createPushSubscription,
   destroyPushSubscription,
-  pushSubscriptions,
+  touchPushSubscription,
   type PushSubscriptionInput,
 } from "@/services/fyApi";
 
@@ -126,7 +127,7 @@ export const useWebPush = () => {
 
   // Brings this browser and the server back in line, without ever turning
   // push on by itself:
-  // - the row is still there: on, and saved again, which is what tells the
+  // - the row is still there: on, and touched, which is what tells the
   //   server this device is alive (it prunes rows nothing touched in half a
   //   year);
   // - the browser renewed but the server never heard (the worker had no
@@ -134,24 +135,32 @@ export const useWebPush = () => {
   // - this account removed the row, from here or another device: the browser
   //   unsubscribes too, and it stays off;
   // - it belongs to another account, or was never saved: off, left alone.
+  //
+  // A worker that has not turned up yet decides nothing: what is stored stays
+  // for a later visit to reconcile.
   const refresh = async (userId: string) => {
     if (!supported) return;
 
     failed.value = false;
 
     try {
-      const subscription = await (
-        await registration()
-      )?.pushManager.getSubscription();
+      const found = await registration();
+      if (!found) return;
+
+      const subscription = await found.pushManager.getSubscription();
       const stored = readStored();
 
-      if (!subscription || permission.value !== "granted") {
+      if (!subscription) {
         subscriptionId.value = undefined;
-        if (!subscription) writeStored(undefined);
+        writeStored(undefined);
         return;
       }
 
-      if (!stored || stored.userId !== userId) {
+      if (
+        permission.value !== "granted" ||
+        !stored ||
+        stored.userId !== userId
+      ) {
         subscriptionId.value = undefined;
         return;
       }
@@ -161,11 +170,14 @@ export const useWebPush = () => {
         return;
       }
 
-      const rows = await pushSubscriptions();
+      try {
+        await touchPushSubscription(stored.id);
+        subscriptionId.value = stored.id;
+      } catch (error) {
+        if (!isAxiosError(error) || error.response?.status !== 404) {
+          throw error;
+        }
 
-      if (rows.some((row) => row.id === stored.id)) {
-        await save(subscription, userId);
-      } else {
         await subscription.unsubscribe();
         writeStored(undefined);
         subscriptionId.value = undefined;
