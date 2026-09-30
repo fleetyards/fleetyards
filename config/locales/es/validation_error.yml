@@ -225,6 +225,7 @@ es:
       create: No se pudo crear la mejora.
       update: No se pudo actualizar la mejora.
     notification_preference: No se pudo actualizar la preferencia de notificación.
+    push_subscription: "No se pudieron activar las notificaciones push para este navegador."
     supporter_contribution:
       create: No se pudo crear la contribución del patrocinador.
       destroy: No se pudo eliminar la contribución del patrocinador.

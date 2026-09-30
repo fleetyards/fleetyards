@@ -230,6 +230,7 @@ de:
       create: Upgrade konnte nicht erstellt werden.
       update: Upgrade konnte nicht aktualisiert werden.
     notification_preference: Benachrichtigungseinstellung konnte nicht aktualisiert werden.
+    push_subscription: "Push-Benachrichtigungen konnten für diesen Browser nicht aktiviert werden."
     supporter_contribution:
       create: Unterstützerbeitrag konnte nicht erstellt werden.
       destroy: Unterstützerbeitrag konnte nicht gelöscht werden.

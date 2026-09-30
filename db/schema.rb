@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_29_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_30_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2159,6 +2159,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_200000) do
     t.index ["to_participant_id"], name: "index_payout_transfers_on_to_participant_id"
   end
 
+  create_table "push_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "auth_key", null: false
+    t.datetime "created_at", null: false
+    t.string "endpoint", null: false
+    t.integer "failure_count", default: 0, null: false
+    t.datetime "last_delivered_at"
+    t.datetime "last_failed_at"
+    t.string "p256dh_key", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_agent"
+    t.uuid "user_id", null: false
+    t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
+  end
+
   create_table "rollups", force: :cascade do |t|
     t.jsonb "dimensions", default: {}, null: false
     t.string "interval", null: false
@@ -2676,6 +2691,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_200000) do
   add_foreign_key "payout_transfers", "payout_participants", column: "from_participant_id"
   add_foreign_key "payout_transfers", "payout_participants", column: "to_participant_id"
   add_foreign_key "payout_transfers", "users", column: "confirmed_by_id"
+  add_foreign_key "push_subscriptions", "users"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "fleets", on_delete: :nullify

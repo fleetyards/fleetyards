@@ -15029,6 +15029,133 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/push-subscriptions":
+    get:
+      summary: Push subscriptions
+      tags:
+      - PushSubscriptions
+      operationId: pushSubscriptions
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:read
+      - OpenId:
+        - notifications
+        - notifications:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PushSubscriptionsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Subscribe this browser to push notifications
+      tags:
+      - PushSubscriptions
+      operationId: createPushSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PushSubscriptionInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PushSubscription"
+        '200':
+          description: an already known browser subscribed again
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PushSubscription"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/push-subscriptions/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Unsubscribe a browser from push notifications
+      tags:
+      - PushSubscriptions
+      operationId: destroyPushSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/sc-data/builds":
     get:
       summary: SC Data Builds
@@ -30814,6 +30941,67 @@ components:
       items:
         "$ref": "#/components/schemas/VehiclePublic"
       title: PublicVehiclesList
+    PushSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        browser:
+          type:
+          - string
+          - 'null'
+        os:
+          type:
+          - string
+          - 'null'
+        lastDeliveredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - browser
+      - os
+      - lastDeliveredAt
+      - createdAt
+      title: PushSubscription
+    PushSubscriptionInput:
+      type: object
+      properties:
+        endpoint:
+          type: string
+        expirationTime:
+          type:
+          - number
+          - 'null'
+        keys:
+          "$ref": "#/components/schemas/PushSubscriptionKeysInput"
+      required:
+      - endpoint
+      - keys
+      title: PushSubscriptionInput
+    PushSubscriptionKeysInput:
+      type: object
+      properties:
+        p256dh:
+          type: string
+        auth:
+          type: string
+      required:
+      - p256dh
+      - auth
+      title: PushSubscriptionKeysInput
+    PushSubscriptionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/PushSubscription"
+      title: PushSubscriptionsList
     RefuelBoom:
       type: object
       properties:

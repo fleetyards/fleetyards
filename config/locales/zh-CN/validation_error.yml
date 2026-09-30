@@ -221,6 +221,7 @@ zh-CN:
       create: 无法创建升级。
       update: 无法更新升级。
     notification_preference: 无法更新通知设置。
+    push_subscription: "无法为此浏览器开启推送通知。"
     supporter_contribution:
       create: 无法创建支持者贡献。
       destroy: 无法删除支持者贡献。

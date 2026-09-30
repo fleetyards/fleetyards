@@ -221,6 +221,7 @@ zh-TW:
       create: 無法建立升級。
       update: 無法更新升級。
     notification_preference: 無法更新通知設定。
+    push_subscription: "無法為此瀏覽器開啟推播通知。"
     supporter_contribution:
       create: 無法建立支持者貢獻。
       destroy: 無法刪除支持者貢獻。
