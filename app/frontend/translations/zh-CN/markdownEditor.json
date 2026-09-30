@@ -34,7 +34,10 @@
       "itemType": {
         "Component": "组件",
         "Equipment": "装备",
-        "Commodity": "商品"
+        "Commodity": "商品",
+        "Model": "舰船",
+        "Blueprint": "蓝图",
+        "GameMission": "任务"
       }
     }
   }

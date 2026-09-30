@@ -34,7 +34,10 @@
       "itemType": {
         "Component": "Komponente",
         "Equipment": "Ausrüstung",
-        "Commodity": "Rohstoff"
+        "Commodity": "Rohstoff",
+        "Model": "Schiff",
+        "Blueprint": "Bauplan",
+        "GameMission": "Mission"
       }
     }
   }

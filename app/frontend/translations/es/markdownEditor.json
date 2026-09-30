@@ -34,7 +34,10 @@
       "itemType": {
         "Component": "Componente",
         "Equipment": "Equipo",
-        "Commodity": "Mercancía"
+        "Commodity": "Mercancía",
+        "Model": "Nave",
+        "Blueprint": "Plano",
+        "GameMission": "Misión"
       }
     }
   }

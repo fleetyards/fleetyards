@@ -34,7 +34,10 @@
       "itemType": {
         "Component": "Componente",
         "Equipment": "Equipaggiamento",
-        "Commodity": "Merce"
+        "Commodity": "Merce",
+        "Model": "Nave",
+        "Blueprint": "Progetto",
+        "GameMission": "Missione"
       }
     }
   }

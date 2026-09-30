@@ -34,7 +34,10 @@
       "itemType": {
         "Component": "Component",
         "Equipment": "Equipment",
-        "Commodity": "Commodity"
+        "Commodity": "Commodity",
+        "Model": "Ship",
+        "Blueprint": "Blueprint",
+        "GameMission": "Mission"
       }
     }
   }

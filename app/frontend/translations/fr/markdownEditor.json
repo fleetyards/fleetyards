@@ -34,7 +34,10 @@
       "itemType": {
         "Component": "Composant",
         "Equipment": "Équipement",
-        "Commodity": "Marchandise"
+        "Commodity": "Marchandise",
+        "Model": "Vaisseau",
+        "Blueprint": "Plan",
+        "GameMission": "Mission"
       }
     }
   }
