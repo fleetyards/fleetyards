@@ -12498,6 +12498,18 @@ components:
           type: number
         pitchSpeed:
           type: number
+        minYaw:
+          type: number
+        maxYaw:
+          type: number
+        yawLimitsVary:
+          type: boolean
+        minPitch:
+          type: number
+        maxPitch:
+          type: number
+        pitchLimitsVary:
+          type: boolean
         control:
           "$ref": "#/components/schemas/ComponentTurretControlEnum"
         powerConsumption:
