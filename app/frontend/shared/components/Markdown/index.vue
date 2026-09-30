@@ -10,6 +10,10 @@ import { catalogueLookup } from "@/services/fyApi";
 import { renderMarkdown } from "@/shared/utils/Markdown";
 import { MARKDOWN_CATALOGUE_TOKEN } from "./catalogueTokens";
 
+// The text and the links mounted into it are two roots, so a class or a test
+// hook the caller passes is placed on the text by hand.
+defineOptions({ inheritAttrs: false });
+
 type Props = {
   source?: string;
 };
@@ -95,7 +99,12 @@ watch(resolvedMarks, (resolved) => {
 
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -- renderMarkdown escapes every character it does not turn into a tag -->
-  <div ref="root" class="markdown markdown-content" v-html="html" />
+  <div
+    ref="root"
+    v-bind="$attrs"
+    class="markdown markdown-content"
+    v-html="html"
+  />
   <template v-if="tokenComponent">
     <Teleport v-for="mark in resolvedMarks" :key="mark.key" :to="mark.element">
       <component

@@ -94,6 +94,22 @@ describe("Markdown catalogue tokens", () => {
     expect(subject.text()).toBe("A Unknown Thing here");
   });
 
+  it("puts a class and a test hook the caller passes on the text", async () => {
+    const Host = defineComponent({
+      setup: () => () =>
+        h(Markdown, {
+          source: "Hi",
+          class: "description",
+          "data-test": "body",
+        }),
+    });
+
+    wrapper = await mountWithDefaults(Host);
+
+    expect(wrapper.find(".markdown.description").exists()).toBe(true);
+    expect(wrapper.find('[data-test="body"]').text()).toBe("Hi");
+  });
+
   it("asks nothing where no link is provided", async () => {
     const subject = await mount("Fit an [*Attrition-3 Repeater*]", false);
 
