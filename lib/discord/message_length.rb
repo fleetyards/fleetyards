@@ -11,16 +11,16 @@ module Discord
       text.to_s.encode("UTF-16LE").bytesize / 2
     end
 
-    def self.fits?(text)
-      of(text) <= MAX
+    def self.fits?(text, max = MAX)
+      of(text) <= max
     end
 
-    def self.truncate(text)
+    def self.truncate(text, max = MAX)
       text = text.to_s
-      return text if fits?(text)
+      return text if fits?(text, max)
 
       used = 0
-      text.each_char.take_while { |char| (used += of(char)) <= MAX }.join
+      text.each_char.take_while { |char| (used += of(char)) <= max }.join
     end
   end
 end

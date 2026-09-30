@@ -42,6 +42,30 @@ module Discord
       deliver
     end
 
+    # An announcement body has no length limit, and Discord refuses an embed
+    # over its own; a retry would send the same text again.
+    test "cuts a long body to the embed's limit and keeps the link" do
+      @notification.update!(body: "🚀" * 3000, link: "/announcements/launch")
+      @api.stubs(:create_dm_channel).returns({"id" => "300000000000000001"})
+      @api.expects(:create_message).with do |_channel, payload|
+        embed = payload[:embeds].first
+        ::Discord::MessageLength.of(embed[:description]) <= 4096 &&
+          embed[:description].end_with?("…") &&
+          embed[:description].valid_encoding? &&
+          embed[:url].end_with?("/announcements/launch")
+      end
+
+      deliver
+    end
+
+    test "cuts a long title to the embed's limit" do
+      @notification.update!(title: "a" * 300)
+      @api.stubs(:create_dm_channel).returns({"id" => "300000000000000001"})
+      @api.expects(:create_message).with { |_channel, payload| payload[:embeds].first[:title] == "a" * 256 }
+
+      deliver
+    end
+
     # A notification link is a path, and a DM has no site around it.
     test "makes the notification's link absolute" do
       @api.stubs(:create_dm_channel).returns({"id" => "300000000000000001"})
