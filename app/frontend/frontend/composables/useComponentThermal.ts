@@ -16,11 +16,14 @@ export const useComponentThermal = (
 ) => {
   const { t, toNumber } = useI18n();
 
-  const kelvin = (value: number) =>
-    `${String(toNumber(Math.round(value), "integer"))} K`;
+  // `toNumber` reads 0 as "not available", but a zero here is a real figure.
+  const integer = (value: number) =>
+    Math.round(value) === 0
+      ? "0"
+      : String(toNumber(Math.round(value), "integer"));
+  const kelvin = (value: number) => `${integer(value)} K`;
   const percent = (value: number) => `${Math.round(value * 100)}%`;
-  const seconds = (value: number) =>
-    `${String(toNumber(Math.round(value), "integer"))} s`;
+  const seconds = (value: number) => `${integer(value)} s`;
 
   return computed<ComponentThermal>(() => {
     const value = toValue(component);
@@ -51,7 +54,7 @@ export const useComponentThermal = (
           value:
             Math.round(low) === Math.round(high)
               ? kelvin(low)
-              : `${Math.round(low)}–${kelvin(high)}`,
+              : `${integer(low)}–${kelvin(high)}`,
         });
       }
 
@@ -59,7 +62,10 @@ export const useComponentThermal = (
       if (typeof temperature.irPerKelvin === "number") {
         temperatureRows.push({
           label: t("labels.component.temperature.irPerKelvin"),
-          value: String(toNumber(temperature.irPerKelvin, "number")),
+          value:
+            temperature.irPerKelvin === 0
+              ? "0"
+              : String(toNumber(temperature.irPerKelvin)),
         });
       }
     }
@@ -83,7 +89,7 @@ export const useComponentThermal = (
           value:
             Math.round(low) === Math.round(high)
               ? seconds(low)
-              : `${Math.round(low)}–${seconds(high)}`,
+              : `${integer(low)}–${seconds(high)}`,
         });
       }
     }

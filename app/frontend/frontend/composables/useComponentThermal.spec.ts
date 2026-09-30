@@ -2,10 +2,16 @@ import { describe, expect, it, vi } from "vitest";
 import type { Component } from "@/services/fyApi";
 import { useComponentThermal } from "./useComponentThermal";
 
+// The real helper's two traps: 0 reads as "not available", and a unit is a
+// translation key.
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
-    toNumber: (value: number) => String(value),
+    toNumber: (value: number, units?: string) => {
+      if (!value) return "labels.notAvailable";
+      if (units && units !== "integer") return `number.${units}`;
+      return String(value);
+    },
   }),
 }));
 
@@ -60,6 +66,16 @@ describe("useComponentThermal", () => {
       "100%",
       "45–600 s",
     ]);
+  });
+
+  it("shows a real zero as zero", () => {
+    const { temperature, misfire } = thermalOf({
+      temperature: { minCoolingTemperature: 0, irPerKelvin: 0 },
+      misfire: { heat: 0, minWindow: 0, maxWindow: 0 },
+    });
+
+    expect(temperature.map((row) => row.value)).toEqual(["0 K", "0"]);
+    expect(misfire.map((row) => row.value)).toEqual(["0%", "0 s"]);
   });
 
   it("gives nothing for a component with neither", () => {

@@ -941,7 +941,11 @@ export const useHardpointStats = (
             ? jumpHeat.slice(0, 1)
             : jumpHeat
           )
-            .map((heat) => String(toNumber(Math.round(heat), "integer")))
+            .map((heat) =>
+              Math.round(heat) === 0
+                ? "0"
+                : String(toNumber(Math.round(heat), "integer")),
+            )
             .join(" / "),
         });
       }

@@ -10,7 +10,8 @@ import { useHardpointStats } from "./useHardpointStats";
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
-    toNumber: (value: number) => String(value),
+    toNumber: (value: number) =>
+      value ? String(value) : "labels.notAvailable",
   }),
 }));
 
@@ -66,6 +67,20 @@ describe("useHardpointStats for a quantum drive's jump heat", () => {
         },
       })?.value,
     ).toBe("573 / 600 / 6000 / 600 / 573");
+  });
+
+  it("shows a phase with no heat as zero", () => {
+    expect(
+      jumpHeatRow({
+        jumpHeat: {
+          preRampUp: 0,
+          rampUp: 600,
+          inFlight: 600,
+          rampDown: 600,
+          postRampDown: 0,
+        },
+      })?.value,
+    ).toBe("0 / 600 / 600 / 600 / 0");
   });
 
   it("shows nothing for a drive without jump heat", () => {
