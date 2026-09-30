@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { markdownToPlainText } from "@/shared/utils/Markdown";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
@@ -124,7 +125,7 @@ const openMission = (mission: Mission) => {
           v-if="(record as Mission).description"
           class="missions-table__lede"
         >
-          {{ (record as Mission).description }}
+          {{ markdownToPlainText((record as Mission).description ?? "") }}
         </span>
       </span>
     </template>

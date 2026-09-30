@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { markdownToPlainText } from "@/shared/utils/Markdown";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -66,7 +67,7 @@ const cover = computed(() => resolve(props.mission));
     <template #footer>
       <PanelBody>
         <p v-if="mission.description" class="mission-panel__lede">
-          {{ mission.description }}
+          {{ markdownToPlainText(mission.description) }}
         </p>
         <!-- Two peer figures, which is what the hero rail is for. -->
         <div class="metrics-card__hero">

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Markdown from "@/shared/components/Markdown/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -26,9 +27,11 @@ const { t } = useI18n();
         'squadron-description-body--empty': !props.squadron.description,
       }"
     >
-      <p v-if="props.squadron.description" class="squadron-description">
-        {{ props.squadron.description }}
-      </p>
+      <Markdown
+        v-if="props.squadron.description"
+        class="squadron-description"
+        :source="props.squadron.description"
+      />
       <p v-else class="squadron-description-placeholder">
         {{ t("labels.fleet.squadrons.noDescription") }}
       </p>
@@ -43,7 +46,6 @@ const { t } = useI18n();
 
 .squadron-description {
   margin: 0;
-  white-space: pre-line;
 }
 
 .squadron-description-placeholder {

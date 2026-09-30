@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -634,12 +635,14 @@ const crumbs = computed<Crumb[]>(() => [
           </div>
 
           <div v-if="hasOverviewContent" class="event-overview">
-            <p v-if="event.description" class="event-description">
-              {{ event.description }}
-            </p>
+            <Markdown
+              v-if="event.description"
+              class="event-description"
+              :source="event.description"
+            />
             <details v-if="event.briefing" class="event-briefing">
               <summary>{{ t("labels.fleets.events.briefing") }}</summary>
-              <p>{{ event.briefing }}</p>
+              <Markdown :source="event.briefing" />
             </details>
           </div>
         </PanelBody>
@@ -865,7 +868,6 @@ const crumbs = computed<Crumb[]>(() => [
 }
 .event-description {
   margin: 0;
-  white-space: pre-wrap;
 }
 .event-briefing {
   background: rgb(0 0 0 / 0.2);

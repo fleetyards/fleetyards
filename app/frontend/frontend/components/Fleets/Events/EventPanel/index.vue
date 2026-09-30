@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { markdownToPlainText } from "@/shared/utils/Markdown";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -128,7 +129,7 @@ const unarchive = async () => {
     <template #footer>
       <PanelBody>
         <p v-if="event.description" class="event-panel__lede">
-          {{ event.description }}
+          {{ markdownToPlainText(event.description) }}
         </p>
         <div class="metrics-card__rows">
           <div class="metrics-card__row">
