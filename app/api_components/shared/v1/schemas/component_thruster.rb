@@ -15,6 +15,8 @@ module Shared
             fuelBurnRatePer10KNewton: {type: :number},
             vtolOnly: {type: :boolean},
             gimbal: ComponentThrusterGimbal,
+            powerConsumption: {type: :number},
+            powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
             signatureEm: {type: :number},
             signatureIr: {type: :number}

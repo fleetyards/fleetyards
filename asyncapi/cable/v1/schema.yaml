@@ -1383,6 +1383,10 @@ components:
           type: boolean
         gimbal:
           "$ref": "#/components/schemas/ComponentThrusterGimbal"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
         powerRanges:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:

@@ -417,7 +417,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
   test "GET /components serves a thruster's vectoring range and VTOL-only flag" do
     create(:component, name: "Thrusterprobe", category: "thrusters", type_data: {
       "thrust_capacity" => 1_282_107.0, "thruster_type" => "Retro", "fuel_burn_rate_per10_k_newton" => 0.05,
-      "vtol_only" => true, "signature_em" => 0.0,
+      "vtol_only" => true, "signature_em" => 0.0, "power_consumption" => 1.0, "power_minimum_fraction" => 0.5,
       "gimbal" => {"min_pitch" => -90.0, "max_pitch" => 90.0, "min_yaw" => -30.0, "max_yaw" => 30.0}
     })
 
@@ -425,6 +425,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       type_data = parsed_body["items"].sole["typeData"]
 
       assert type_data["vtolOnly"]
+      assert_in_delta 1.0, type_data["powerConsumption"]
       assert_in_delta(-30.0, type_data.dig("gimbal", "minYaw"))
     end
   end
