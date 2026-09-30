@@ -58,5 +58,22 @@ module Push
       assert_equal FRONTEND_ENDPOINT, subject.to_h[:url]
       assert_operator subject.to_json.bytesize, :<=, Payload::MAX_BYTES
     end
+
+    test "a body that grows when escaped still fits" do
+      subject = payload(title: "&" * 400, body: "&\"" * 2_000)
+
+      assert_operator subject.to_json.bytesize, :<=, Payload::MAX_BYTES
+      assert subject.to_h[:body].present?
+    end
+
+    test "an absolute link is kept" do
+      assert_equal "https://robertsspaceindustries.com/comm-link", payload(link: "https://robertsspaceindustries.com/comm-link").to_h[:url]
+    end
+
+    %w[http-not-a-url javascript:alert(1) //evil.example/path mailto:someone].each do |link|
+      test "#{link} opens the site instead" do
+        assert_equal FRONTEND_ENDPOINT, payload(link:).to_h[:url]
+      end
+    end
   end
 end

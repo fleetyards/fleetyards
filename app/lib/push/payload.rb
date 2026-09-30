@@ -18,8 +18,10 @@ module Push
       @notification = notification
     end
 
-    # The link is not ours to cut, so an overlong one falls back to the site
-    # rather than making the push impossible to encrypt.
+    # Measured as the JSON that is sent, since escaping can grow it well past
+    # the text's own bytes (`&` is six of them, a quote two). The link is not
+    # ours to cut, so an overlong one falls back to the site; after that the
+    # body gives way, then the title.
     def to_h
       payload = {
         title: @notification.title.to_s.truncate_bytes(TITLE_MAX_BYTES),
@@ -30,11 +32,38 @@ module Push
       }.compact
 
       payload[:url] = FRONTEND_ENDPOINT unless fits?(payload)
+      shrink(payload, :body)
+      shrink(payload, :title)
       payload
     end
 
     private def fits?(payload)
-      payload.to_json.bytesize <= MAX_BYTES
+      overflow(payload) <= 0
+    end
+
+    private def overflow(payload)
+      payload.to_json.bytesize - MAX_BYTES
+    end
+
+    # The longest cut that fits. Escaping makes the JSON grow unevenly with
+    # the text, so the cut is searched for rather than computed.
+    private def shrink(payload, key)
+      text = payload[key]
+      return if text.blank? || fits?(payload)
+
+      shortest = 0
+      longest = text.bytesize
+      while shortest < longest
+        candidate = (shortest + longest + 1) / 2
+        if fits?(payload.merge(key => text.truncate_bytes(candidate)))
+          shortest = candidate
+        else
+          longest = candidate - 1
+        end
+      end
+
+      payload[key] = text.truncate_bytes(shortest)
+      payload.delete(:body) if key == :body && payload[:body].blank?
     end
 
     def to_json(*)
@@ -50,12 +79,18 @@ module Push
       CGI.unescapeHTML(plain).truncate_bytes(BODY_MAX_BYTES).presence
     end
 
+    # A path is the site's; an absolute link has to be a real http(s) URL.
+    # Anything else -- announcement links are free text -- opens the site.
     private def url
-      path = @notification.link.presence
-      return FRONTEND_ENDPOINT if path.nil?
-      return path if path.start_with?("http")
+      link = @notification.link.to_s.strip
+      return "#{FRONTEND_ENDPOINT}#{link}" if link.start_with?("/") && !link.start_with?("//")
 
-      "#{FRONTEND_ENDPOINT}#{path}"
+      uri = URI.parse(link)
+      return link if uri.is_a?(URI::HTTP) && uri.host.present?
+
+      FRONTEND_ENDPOINT
+    rescue URI::Error
+      FRONTEND_ENDPOINT
     end
 
     # A later push with the same tag replaces the banner instead of stacking a
