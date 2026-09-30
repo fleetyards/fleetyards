@@ -36,6 +36,14 @@ class MarkdownPlainTextTest < ActiveSupport::TestCase
     assert_equal "Fit Attrition-3 Repeater or Mercury", MarkdownPlainText.render("Fit [*Attrition-3 Repeater*] or [*commodity:Mercury*]")
   end
 
+  test "keeps a token written as code" do
+    text = MarkdownPlainText.render("Type `[*Name*]` to name one\n\n```\n[*ship:Carrack*]\n```\n\nor [*ship:Carrack*]")
+
+    assert_includes text, "[*Name*]"
+    assert_includes text, "[*ship:Carrack*]"
+    assert text.end_with?("or Carrack"), text
+  end
+
   test "is empty for no text" do
     assert_equal "", MarkdownPlainText.render(nil)
   end
