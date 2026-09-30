@@ -18787,6 +18787,8 @@ components:
           - "$ref": "#/components/schemas/ComponentCooler"
           - "$ref": "#/components/schemas/ComponentRadar"
           - "$ref": "#/components/schemas/ComponentController"
+          - "$ref": "#/components/schemas/ComponentShieldController"
+          - "$ref": "#/components/schemas/ComponentMissileController"
           - "$ref": "#/components/schemas/ComponentTurret"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
           - "$ref": "#/components/schemas/ComponentMiningModule"
@@ -19247,6 +19249,27 @@ components:
           type: number
       additionalProperties: false
       title: ComponentMissile
+    ComponentMissileController:
+      type: object
+      properties:
+        maxArmedMissiles:
+          type: integer
+        launchCooldown:
+          type: number
+        lockAngle:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      title: ComponentMissileController
     ComponentMissileRack:
       type: object
       properties:
@@ -19655,6 +19678,36 @@ components:
       - maxHealth
       - maxRegen
       title: ComponentShield
+    ComponentShieldController:
+      type: object
+      properties:
+        faceType:
+          "$ref": "#/components/schemas/ComponentShieldFaceTypeEnum"
+        maxReallocation:
+          type: number
+        reconfigurationCooldown:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      title: ComponentShieldController
+    ComponentShieldFaceTypeEnum:
+      type: string
+      enum:
+      - bubble
+      - quadrant
+      x-enumNames:
+      - BUBBLE
+      - QUADRANT
+      title: ComponentShieldFaceTypeEnum
     ComponentSignatureDetection:
       type: object
       properties:
