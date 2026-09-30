@@ -7,6 +7,7 @@ import {
   type ComponentMissile,
   type ComponentMissileRack,
   ComponentMissileTrackingSignalEnum,
+  ComponentTypeEnum,
 } from "@/services/fyApi";
 import { useHardpointStats } from "./useHardpointStats";
 
@@ -20,12 +21,13 @@ vi.mock("@/shared/composables/useI18n", () => ({
 function ordnanceHardpoint(
   typeData: ComponentMissile | ComponentBomb | ComponentMissileRack,
   category: HardpointCategoryEnum = HardpointCategoryEnum.WEAPONS,
+  type?: ComponentTypeEnum,
 ): Hardpoint {
   return {
     id: Math.random().toString(),
     name: "ordnance",
     category,
-    component: { name: "Ordnance", typeData } as Hardpoint["component"],
+    component: { name: "Ordnance", type, typeData } as Hardpoint["component"],
     hardpoints: [],
     createdAt: "",
     updatedAt: "",
@@ -95,7 +97,22 @@ describe("useHardpointStats for ordnance", () => {
     expect(stats).not.toHaveProperty("labels.hardpoint.missiles.lockTime");
   });
 
-  it("shows a rack's launch delay without rounding it away", () => {
+  it("reads a bomb by its type, even without a drop angle", () => {
+    const stats = statsFor(
+      ordnanceHardpoint(
+        { damagePerShot: { physical: 100 }, armTime: 3 },
+        HardpointCategoryEnum.WEAPONS,
+        ComponentTypeEnum.BOMB,
+      ),
+    );
+
+    expect(stats).toEqual({
+      "labels.hardpoint.missiles.damage": "100",
+      "labels.hardpoint.missiles.armTime": "3",
+    });
+  });
+
+  it("shows a rack's launch delay in milliseconds", () => {
     const stats = statsFor(
       ordnanceHardpoint(
         { launchDelay: 0.125, igniteOnPylon: false },
@@ -104,7 +121,7 @@ describe("useHardpointStats for ordnance", () => {
     );
 
     expect(stats).toEqual({
-      "labels.hardpoint.missileRacks.launchDelay": "0.125",
+      "labels.hardpoint.missileRacks.launchDelay": "125",
       "labels.hardpoint.missileRacks.ignition":
         "labels.hardpoint.missileRacks.ignitesAfterRelease",
     });

@@ -16,6 +16,7 @@ import {
   type ComponentMissile,
   type ComponentBomb,
   type ComponentMissileRack,
+  ComponentTypeEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -132,25 +133,26 @@ export const useHardpointStats = (
     }
   };
 
-  // For figures below one, which `stat` would round to nothing: a rack fires
-  // every 0.125 s, a missile arms after 1.5.
-  const precise = (
+  // `stat` rounds to a whole number, which turns a 1.5 s arm time into 2;
+  // this keeps the one decimal `toNumber` itself allows.
+  const decimalStat = (
     labelKey: string,
     value: number,
     format: string,
   ): HardpointStat => ({
     label: t(`labels.hardpoint.${labelKey}`),
-    value: String(toNumber(Math.round(value * 1000) / 1000, format)),
+    value: String(toNumber(value, format)),
   });
 
-  // One figure when both ends agree, which most blast radii do.
+  // One figure when both ends agree, which most blast radii do. Compared at
+  // the one decimal `toNumber` shows, so two ends that print alike read as one.
   const span = (
     min: number | undefined,
     max: number | undefined,
     format: string,
   ) => {
-    const low = Math.round((min ?? max ?? 0) * 100) / 100;
-    const high = Math.round((max ?? min ?? 0) * 100) / 100;
+    const low = Math.round((min ?? max ?? 0) * 10) / 10;
+    const high = Math.round((max ?? min ?? 0) * 10) / 10;
     if (low === high) return String(toNumber(high, format));
 
     return `${String(toNumber(low, format))} - ${String(toNumber(high, format))}`;
@@ -196,7 +198,9 @@ export const useHardpointStats = (
         });
       }
       if (ordnance.armTime) {
-        result.push(precise("missiles.armTime", ordnance.armTime, "seconds"));
+        result.push(
+          decimalStat("missiles.armTime", ordnance.armTime, "seconds"),
+        );
       }
       if (ordnance.safetyDistance) {
         result.push(
@@ -326,6 +330,9 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.WEAPONS) {
       const weapon = typeData as ComponentWeapon;
+      // A missile or bomb is told apart by its type first; a field of its
+      // own is the fallback for a payload that does not say.
+      const componentType = hp.component?.type;
       // Sustainable-fire fraction (erkul's "efficiency"): the duty-cycle share
       // of burst the weapon can hold. Only meaningful when < 100%.
       const efficiency = sustainedRatio(
@@ -398,7 +405,10 @@ export const useHardpointStats = (
             ),
           );
         }
-      } else if ("trackingSignal" in typeData) {
+      } else if (
+        componentType === ComponentTypeEnum.MISSILE ||
+        "trackingSignal" in typeData
+      ) {
         const missile = typeData as ComponentMissile;
         pushOrdnanceDamage(missile.damagePerShot);
         if (missile.speed) {
@@ -437,7 +447,7 @@ export const useHardpointStats = (
         }
         if (missile.boostPhaseDuration) {
           result.push(
-            precise(
+            decimalStat(
               "missiles.boostPhase",
               missile.boostPhaseDuration,
               "seconds",
@@ -446,7 +456,7 @@ export const useHardpointStats = (
         }
         if (missile.terminalPhaseTime) {
           result.push(
-            precise(
+            decimalStat(
               "missiles.terminalPhase",
               missile.terminalPhaseTime,
               "seconds",
@@ -455,7 +465,7 @@ export const useHardpointStats = (
         }
         if (missile.maxLifetime) {
           result.push(
-            precise("missiles.lifetime", missile.maxLifetime, "seconds"),
+            decimalStat("missiles.lifetime", missile.maxLifetime, "seconds"),
           );
         }
         if (missile.fuelTankSize) {
@@ -472,7 +482,10 @@ export const useHardpointStats = (
           });
         }
         pushFuse(missile);
-      } else if ("maxDropAngle" in typeData) {
+      } else if (
+        componentType === ComponentTypeEnum.BOMB ||
+        "maxDropAngle" in typeData
+      ) {
         const bomb = typeData as ComponentBomb;
         pushOrdnanceDamage(bomb.damagePerShot);
         if (bomb.maxDropAngle) {
@@ -535,7 +548,11 @@ export const useHardpointStats = (
       const rack = typeData as ComponentMissileRack;
       if (typeof rack.launchDelay === "number" && rack.launchDelay > 0) {
         result.push(
-          precise("missileRacks.launchDelay", rack.launchDelay, "seconds"),
+          stat(
+            "missileRacks.launchDelay",
+            rack.launchDelay * 1000,
+            "milliseconds",
+          ),
         );
       }
       if (typeof rack.igniteOnPylon === "boolean") {
