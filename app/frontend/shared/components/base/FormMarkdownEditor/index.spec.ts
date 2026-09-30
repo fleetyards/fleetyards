@@ -73,6 +73,18 @@ const sizeButton = (size: string) =>
     ) as Element,
   );
 
+// The item search waits a moment after typing before it asks.
+const waitForSuggestions = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  await flushPromises();
+  await nextTick();
+};
+
+const suggestion = (slug: string) =>
+  document.querySelector(
+    `[data-test="markdown-editor-item-suggestion-${slug}"]`,
+  );
+
 const button = (subject: VueWrapper, key: string) =>
   subject.find(`[data-test="markdown-editor-${key}"]`);
 
@@ -312,6 +324,62 @@ describe("FormMarkdownEditor", () => {
     await nextFrames();
 
     expect(sizeToolbarShown()).toBe(false);
+  });
+
+  it("offers catalogue items after [* and inserts the one picked", async () => {
+    const searchCatalogue = vi.fn(async () => [
+      {
+        token: "Quantainium",
+        name: "Quantainium",
+        type: "Commodity",
+        slug: "quantainium",
+      },
+      {
+        token: "Raw Quantainium",
+        name: "Raw Quantainium",
+        type: "Commodity",
+        slug: "raw-quantainium",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      searchCatalogue: searchCatalogue as never,
+    });
+    const editor = editorOf(subject);
+
+    editor.chain().focus().insertContent("Mine [*quan").run();
+    await waitForSuggestions();
+
+    expect(searchCatalogue).toHaveBeenCalledWith("quan");
+    expect(suggestion("raw-quantainium")).not.toBeNull();
+
+    editor.view.dom.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+    );
+    editor.view.dom.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+    );
+
+    expect(lastEmitted(subject)).toBe("Mine [*Raw Quantainium*]");
+  });
+
+  it("opens the item search from the toolbar", async () => {
+    const searchCatalogue = vi.fn(async () => []);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      searchCatalogue: searchCatalogue as never,
+    });
+
+    editorOf(subject).commands.focus();
+    await button(subject, "item").trigger("click");
+    await waitForSuggestions();
+
+    expect(
+      document.querySelector('[data-test="markdown-editor-item-suggestions"]')
+        ?.textContent,
+    ).toContain("Type an item's name");
   });
 
   it("closes the link panel when the image dialog opens", async () => {

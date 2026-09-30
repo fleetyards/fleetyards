@@ -27,7 +27,15 @@
       "imageSize25": "Pequeña",
       "imageSize50": "Mediana",
       "imageSize75": "Grande",
-      "imageSizeFull": "Ancho completo"
+      "imageSizeFull": "Ancho completo",
+      "item": "Artículo del catálogo",
+      "itemSearchHint": "Escribe el nombre de un artículo",
+      "itemSearchEmpty": "Ningún artículo listado con ese nombre",
+      "itemType": {
+        "Component": "Componente",
+        "Equipment": "Equipo",
+        "Commodity": "Mercancía"
+      }
     }
   }
 }

@@ -27,7 +27,15 @@
       "imageSize25": "小",
       "imageSize50": "中",
       "imageSize75": "大",
-      "imageSizeFull": "全宽"
+      "imageSizeFull": "全宽",
+      "item": "目录物品",
+      "itemSearchHint": "输入物品名称",
+      "itemSearchEmpty": "没有该名称的已列出物品",
+      "itemType": {
+        "Component": "组件",
+        "Equipment": "装备",
+        "Commodity": "商品"
+      }
     }
   }
 }
