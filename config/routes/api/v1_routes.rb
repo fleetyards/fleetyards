@@ -59,6 +59,7 @@ v1_api_routes = lambda do
   draw "api/imports_routes"
   draw "api/notifications_routes"
   draw "api/notification_preferences_routes"
+  draw "api/push_subscriptions_routes"
 
   resources :manufacturers, param: :slug, only: %i[index] do
     get "with-models", to: "manufacturers#with_models", on: :collection
