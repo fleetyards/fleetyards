@@ -64,10 +64,11 @@ Stacked on #5338 (`feat/5331-markdown-editor-tiptap`): the Markdown editor, rend
 ## Discovery Log
 
 - **2026-10-01** Public-catalogue name collisions measured on the production dump: components 153 repeated names / 3,190 items (generic per-ship parts), equipment 20 / 4,565, commodities 0 / 232, cross-catalogue 2 (mercury, slam).
-- **2026-10-01** `CatalogueItemPopover` lives under `frontend/components`, but `Markdown` is in `shared/` (also used by admin). The popover must be injected into `Markdown` from the frontend app rather than imported by the shared component — to be settled in Phase 2.
+- **2026-10-01** `CatalogueItemPopover` lives under `frontend/components`, but `Markdown` is in `shared/` (also used by admin). Settled: the frontend entry provides it under `MARKDOWN_CATALOGUE_TOKEN` (loaded lazily); admin provides nothing and keeps plain names.
+- **2026-10-01** Real names are longer than the examples in the issue: the token for the Attrition-3 is `[*Attrition-3 Repeater*]`. The autocomplete is what makes that writable.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4 (Playwright spec runs on CI; no dev server for this worktree to check by hand)
