@@ -693,6 +693,57 @@ module ScData
         assert_in_delta 18.0, type_data["lock_angle"]
       end
 
+      test "reads what a decoy presents to a seeker and how long it burns" do
+        write_countermeasure("cml_flare_probe", <<~XML, lifetime: 12)
+          <CounterMeasureFlareParams StartInfrared="50000" EndInfrared="20000" StartElectromagnetic="60000" EndElectromagnetic="60000" StartCrossSection="1000" EndCrossSection="1000" />
+        XML
+
+        countermeasure = parsed_item("cml_flare_probe")["type_data"]["countermeasure"]
+
+        assert_equal "decoy", countermeasure["kind"]
+        assert_in_delta 12.0, countermeasure["lifetime"]
+        assert_equal({"start" => 50000.0, "end" => 20000.0}, countermeasure["infrared"])
+        assert_in_delta 1000.0, countermeasure["cross_section"]["start"]
+        assert_nil countermeasure["spawn_delay"]
+      end
+
+      test "reads a noise cloud's lifetime off the cloud, not the canister" do
+        write_countermeasure("cml_chaff_probe", <<~XML, lifetime: 0.8)
+          <CounterMeasureChaffParams volumeSpawnDelay="1" volumeLifetime="8" StartInfrared="30000" EndInfrared="30000" StartElectromagnetic="30000" EndElectromagnetic="30000" StartCrossSection="20000" EndCrossSection="20000" />
+        XML
+
+        countermeasure = parsed_item("cml_chaff_probe")["type_data"]["countermeasure"]
+
+        assert_equal "noise", countermeasure["kind"]
+        assert_in_delta 8.0, countermeasure["lifetime"]
+        assert_in_delta 1.0, countermeasure["spawn_delay"]
+      end
+
+      private def write_countermeasure(key, params, lifetime:)
+        ref = Digest::UUID.uuid_v5(Digest::UUID::OID_NAMESPACE, key)
+        folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/ammoparams/vehicle"
+        FileUtils.mkdir_p(folder)
+
+        File.write("#{folder}/#{key}_ammo.xml", <<~XML)
+          <AmmoParams.#{key} lifetime="#{lifetime}" speed="180" __ref="#{ref}">
+            <projectileParams>
+              <CounterMeasureProjectileParams>
+                <typeParams>#{params}</typeParams>
+              </CounterMeasureProjectileParams>
+            </projectileParams>
+          </AmmoParams.#{key}>
+        XML
+
+        write_item(key, name: "@item_Name#{key}", category: "countermeasures", type: "WeaponDefensive", sub_type: "CountermeasureLauncher", components: <<~XML)
+          <SCItemWeaponComponentParams>
+            <fireActions>
+              <SWeaponActionFireSingleParams fireRate="50" heatPerShot="0" />
+            </fireActions>
+          </SCItemWeaponComponentParams>
+          <SAmmoContainerComponentParams maxAmmoCount="20" ammoParamsRecord="#{ref}" />
+        XML
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 

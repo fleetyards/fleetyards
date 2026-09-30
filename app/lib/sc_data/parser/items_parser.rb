@@ -536,7 +536,8 @@ module ScData
               range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
               ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i,
               max_ammo: max_ammo,
-              spread: extract_weapon_spread(fire_actions)
+              spread: extract_weapon_spread(fire_actions),
+              countermeasure: extract_countermeasure(ammo)
             }
 
             if charged.present?
@@ -1172,6 +1173,32 @@ module ScData
           ref = values.dig("__ref")
           @ammo_params[ref] = values if ref.present?
         end
+      end
+
+      # What a launched decoy or noise cloud presents to a seeker, from launch
+      # to burn-out, and how long it lasts: a flare for its projectile's
+      # lifetime, a noise cloud for its own volume lifetime once it spawns.
+      private def extract_countermeasure(ammo)
+        params = ammo&.dig("projectileParams", "CounterMeasureProjectileParams", "typeParams")
+        return if params.blank?
+
+        flare = params["CounterMeasureFlareParams"]
+        chaff = params["CounterMeasureChaffParams"]
+        signature = flare || chaff
+        return if signature.blank?
+
+        range = ->(name) {
+          {start: signature["Start#{name}"]&.to_f, end: signature["End#{name}"]&.to_f}.compact.presence
+        }
+
+        {
+          kind: flare ? "decoy" : "noise",
+          lifetime: (flare ? ammo["lifetime"] : chaff["volumeLifetime"])&.to_f,
+          spawn_delay: chaff&.dig("volumeSpawnDelay")&.to_f,
+          infrared: range.call("Infrared"),
+          electromagnetic: range.call("Electromagnetic"),
+          cross_section: range.call("CrossSection")
+        }.compact
       end
 
       private def extract_ammo_damage(ammo)
