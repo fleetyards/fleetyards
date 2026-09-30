@@ -1,31 +1,47 @@
 <script lang="ts">
 export default {
-  name: "CatalogueItemLink",
+  name: "CatalogueItemPopover",
 };
 </script>
 
 <script lang="ts" setup>
-import StatsPopover from "@/shared/components/StatsPopover/index.vue";
+import BasePopover from "@/shared/components/Popover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.vue";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
   useComponent as useComponentQuery,
   useEquipmentItem as useEquipmentItemQuery,
+  useCommodity as useCommodityQuery,
+  type Commodity,
+  type Component,
+  type Equipment,
 } from "@/services/fyApi";
-
-type CatalogueItem = {
-  type?: string | null;
-  slug?: string | null;
-  name?: string | null;
-  listed?: boolean;
-};
+import { type CatalogueItemRef, type CatalogueRecord } from "./types";
 
 type Props = {
-  item: CatalogueItem;
+  item: CatalogueItemRef;
+  // The record itself, where the page already holds it -- a hardpoint row has
+  // its component, a catalogue row its item. Without one the card is fetched.
+  record?: CatalogueRecord;
+  // Off where the trigger already sits inside a link to the same record, such
+  // as a list row's name: an anchor inside an anchor does not work.
+  link?: boolean;
+  linkClass?: string;
+  // For a trigger with no text of its own, such as an icon.
+  linkLabel?: string;
+  // Off for the same list-row name: the row's own link is the focus stop.
+  focusable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  record: undefined,
+  link: true,
+  linkClass: undefined,
+  linkLabel: undefined,
+  focusable: true,
+});
 
 const route = computed(() => catalogueItemRoute(props.item));
 
@@ -33,66 +49,110 @@ const slug = computed(() => props.item.slug || "");
 
 const isComponent = computed(() => props.item.type === "Component");
 const isEquipment = computed(() => props.item.type === "Equipment");
+const isCommodity = computed(() => props.item.type === "Commodity");
 
-// A reference names its record by slug and nothing more, so the card is
-// fetched the first time it is opened -- never for every link on a page -- and
-// stays enabled afterwards so the query cache answers every later open.
+// Fetched the first time the card opens -- never for every link on a page --
+// and left enabled afterwards, so the query cache (shared with the detail
+// pages) answers every later open.
 const requested = ref(false);
 
-const { data: component, isPending: componentPending } = useComponentQuery(
-  slug,
-  {
-    query: {
-      enabled: computed(
-        () => requested.value && isComponent.value && !!slug.value,
-      ),
-    },
-  },
+const fetches = (type: Ref<boolean>) =>
+  computed(
+    () => requested.value && type.value && !props.record && !!slug.value,
+  );
+
+const { data: fetchedComponent, isPending: componentPending } =
+  useComponentQuery(slug, { query: { enabled: fetches(isComponent) } });
+
+const { data: fetchedEquipment, isPending: equipmentPending } =
+  useEquipmentItemQuery(slug, { query: { enabled: fetches(isEquipment) } });
+
+const { data: fetchedCommodity, isPending: commodityPending } =
+  useCommodityQuery(slug, { query: { enabled: fetches(isCommodity) } });
+
+const component = computed(
+  () => (props.record as Component | undefined) ?? fetchedComponent.value,
+);
+const equipment = computed(
+  () => (props.record as Equipment | undefined) ?? fetchedEquipment.value,
+);
+const commodity = computed(
+  () => (props.record as Commodity | undefined) ?? fetchedCommodity.value,
 );
 
-const { data: equipment, isPending: equipmentPending } = useEquipmentItemQuery(
-  slug,
-  {
-    query: {
-      enabled: computed(
-        () => requested.value && isEquipment.value && !!slug.value,
-      ),
-    },
-  },
-);
+const pending = (type: Ref<boolean>, isPending: Ref<boolean>) =>
+  computed(() => !props.record && type.value && isPending.value);
 
+const componentLoading = pending(isComponent, componentPending);
+const equipmentLoading = pending(isEquipment, equipmentPending);
+const commodityLoading = pending(isCommodity, commodityPending);
+
+// A record the catalogue does not list still has figures worth reading -- a
+// door or a seat on a ship -- so a card needs a record or a page, not both.
 const hasCard = computed(
-  () => !!route.value && (isComponent.value || isEquipment.value),
+  () =>
+    (isComponent.value || isEquipment.value || isCommodity.value) &&
+    (!!props.record || !!route.value),
 );
+
+const linked = computed(() => props.link && !!route.value);
+
+const label = computed(() => props.item.name || props.linkLabel || "");
 </script>
 
 <template>
-  <StatsPopover
+  <BasePopover
     v-if="hasCard"
-    :label="item.name || ''"
+    :label="label"
+    :focusable="focusable"
     @open="requested = true"
   >
-    <router-link :to="route!">
+    <router-link
+      v-if="linked"
+      :to="route!"
+      :class="linkClass"
+      :aria-label="linkLabel"
+      @click.stop
+    >
       <slot>{{ item.name }}</slot>
     </router-link>
+    <slot v-else>{{ item.name }}</slot>
 
     <template #content="{ close }">
       <ComponentStatsCard
         v-if="isComponent"
+        compact
+        :to="route ?? false"
         :component="component"
-        :loading="componentPending"
+        :loading="componentLoading"
         @navigate="close"
       />
       <EquipmentStatsCard
-        v-else
+        v-else-if="isEquipment"
+        compact
+        :to="route ?? false"
         :equipment="equipment"
-        :loading="equipmentPending"
+        :loading="equipmentLoading"
+        @navigate="close"
+      />
+      <CommodityStatsCard
+        v-else
+        compact
+        :to="route ?? false"
+        :commodity="commodity"
+        :loading="commodityLoading"
         @navigate="close"
       />
     </template>
-  </StatsPopover>
+  </BasePopover>
 
-  <router-link v-else-if="route" :to="route">
+  <router-link
+    v-else-if="linked"
+    :to="route!"
+    :class="linkClass"
+    :aria-label="linkLabel"
+    @click.stop
+  >
     <slot>{{ item.name }}</slot>
   </router-link>
 
