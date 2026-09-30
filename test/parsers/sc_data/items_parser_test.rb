@@ -475,6 +475,128 @@ module ScData
         XML
       end
 
+      test "reads which signatures a radar picks up passively and actively, and its ground-vehicle penalty" do
+        groups_folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/radarsystem"
+        FileUtils.mkdir_p(groups_folder)
+        File.write("#{groups_folder}/radarcontactgroups.records.xml", <<~XML)
+          <RadarContactGroupDefinition.RadarContactGroups>
+            <RadarContactGroupEntry.00000000-0000-0000-0000-00000000a001 name="GroundVehicle" __type="RadarContactGroupEntry" __ref="00000000-0000-0000-0000-00000000a001" />
+          </RadarContactGroupDefinition.RadarContactGroups>
+        XML
+
+        write_item("radr_probe", name: "@item_Nameradr_probe", category: "radar", components: <<~XML)
+          <SCItemRadarComponentParams>
+            <signatureDetection>
+              <SCItemRadarSignatureDetection sensitivity="0.75" piercing="1" permitPassiveDetection="1" permitActiveDetection="1" />
+              <SCItemRadarSignatureDetection sensitivity="0.75" piercing="0.25" permitPassiveDetection="1" permitActiveDetection="1" />
+              <SCItemRadarSignatureDetection sensitivity="0.5" piercing="0.25" permitPassiveDetection="0" permitActiveDetection="1" />
+            </signatureDetection>
+            <sensitivityModifiers>
+              <SCItemRadarSensitivityModifier sensitivityAddition="-0.65">
+                <modifierType>
+                  <SCItemRadarSensitivityModifierTypeContactGroups>
+                    <contactGroups><Reference value="00000000-0000-0000-0000-00000000a001" /></contactGroups>
+                  </SCItemRadarSensitivityModifierTypeContactGroups>
+                </modifierType>
+              </SCItemRadarSensitivityModifier>
+            </sensitivityModifiers>
+            <aimAssist distanceMinAssignment="630" distanceMaxAssignment="632.5" outsideRangeBufferDistance="80" />
+          </SCItemRadarComponentParams>
+        XML
+
+        type_data = parsed_item("radr_probe")["type_data"]
+
+        assert_equal({"sensitivity" => 0.5, "piercing" => 0.25, "passive" => false, "active" => true}, type_data.dig("signature_detection", "cs"))
+        assert_equal([{"sensitivity_addition" => -0.65, "contact_groups" => ["GroundVehicle"]}], type_data["contact_sensitivity"])
+        assert_in_delta 80.0, type_data["aim_assist_buffer"]
+      end
+
+      test "keeps every sensitivity modifier a radar carries, with all its contact groups" do
+        groups_folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/radarsystem"
+        FileUtils.mkdir_p(groups_folder)
+        File.write("#{groups_folder}/radarcontactgroups.records.xml", <<~XML)
+          <RadarContactGroupDefinition.RadarContactGroups>
+            <RadarContactGroupEntry.00000000-0000-0000-0000-00000000a001 name="GroundVehicle" __type="RadarContactGroupEntry" __ref="00000000-0000-0000-0000-00000000a001" />
+            <RadarContactGroupEntry.00000000-0000-0000-0000-00000000a002 name="Person" __type="RadarContactGroupEntry" __ref="00000000-0000-0000-0000-00000000a002" />
+          </RadarContactGroupDefinition.RadarContactGroups>
+        XML
+
+        modifier = ->(addition, *refs) {
+          references = refs.map { |ref| %(<Reference value="#{ref}" />) }.join
+          <<~XML
+            <SCItemRadarSensitivityModifier sensitivityAddition="#{addition}">
+              <modifierType>
+                <SCItemRadarSensitivityModifierTypeContactGroups>
+                  <contactGroups>#{references}</contactGroups>
+                </SCItemRadarSensitivityModifierTypeContactGroups>
+              </modifierType>
+            </SCItemRadarSensitivityModifier>
+          XML
+        }
+
+        write_item("radr_multi", name: "@item_Nameradr_multi", category: "radar", components: <<~XML)
+          <SCItemRadarComponentParams>
+            <sensitivityModifiers>
+              #{modifier.call("-0.5", "00000000-0000-0000-0000-00000000a001", "00000000-0000-0000-0000-00000000a002")}
+              #{modifier.call("0.25", "00000000-0000-0000-0000-00000000ffff")}
+            </sensitivityModifiers>
+          </SCItemRadarComponentParams>
+        XML
+
+        assert_equal [
+          {"sensitivity_addition" => -0.5, "contact_groups" => ["GroundVehicle", "Person"]},
+          {"sensitivity_addition" => 0.25, "contact_groups" => ["00000000-0000-0000-0000-00000000ffff"]}
+        ], parsed_item("radr_multi")["type_data"]["contact_sensitivity"]
+      end
+
+      test "reads a flex thruster's vectoring range and a VTOL-only thruster" do
+        write_item("thruster_flex", name: "@item_Namethruster_flex", category: "thrusters", components: <<~XML)
+          <SCItemThrusterParams thrustCapacity="1282107" fuelBurnRatePer10KNewton="0.05" thrusterType="Retro" onlyActiveInVTOL="1">
+            <gimbal isFlex="1">
+              <pitchAxis angleMin="-90" angleMax="90" />
+              <yawAxis angleMin="-30" angleMax="30" />
+            </gimbal>
+          </SCItemThrusterParams>
+        XML
+        write_item("thruster_fixed", name: "@item_Namethruster_fixed", category: "thrusters", components: <<~XML)
+          <SCItemThrusterParams thrustCapacity="1000" fuelBurnRatePer10KNewton="0.05" thrusterType="Main" onlyActiveInVTOL="0">
+            <gimbal isFlex="0">
+              <pitchAxis angleMin="-10" angleMax="10" />
+            </gimbal>
+          </SCItemThrusterParams>
+        XML
+
+        flex = parsed_item("thruster_flex")["type_data"]
+        fixed = parsed_item("thruster_fixed")["type_data"]
+
+        assert flex["vtol_only"]
+        assert_equal({"min_pitch" => -90.0, "max_pitch" => 90.0, "min_yaw" => -30.0, "max_yaw" => 30.0}, flex["gimbal"])
+        assert_nil fixed["vtol_only"]
+        assert_nil fixed["gimbal"]
+      end
+
+      test "reads how much air a life-support unit makes" do
+        write_item("lfsp_probe", name: "@item_Namelfsp_probe", category: "lifesupport", components: <<~XML)
+          <ItemResourceComponentParams>
+            <states>
+              <ItemResourceState name="Online">
+                <deltas>
+                  <ItemResourceDeltaConversion minimumConsumptionFraction="0.4">
+                    <consumption resource="Power"><resourceAmountPerSecond><SPowerSegmentResourceUnit units="1" /></resourceAmountPerSecond></consumption>
+                    <generation resource="LifeSupport"><resourceAmountPerSecond><SStandardResourceUnit standardResourceUnits="0.05" /></resourceAmountPerSecond></generation>
+                  </ItemResourceDeltaConversion>
+                </deltas>
+              </ItemResourceState>
+            </states>
+          </ItemResourceComponentParams>
+        XML
+
+        type_data = parsed_item("lfsp_probe")["type_data"]
+
+        assert_in_delta 0.05, type_data["life_support_generation"]
+        assert_in_delta 1.0, type_data["power_consumption"]
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 

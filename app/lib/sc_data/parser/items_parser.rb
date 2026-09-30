@@ -370,6 +370,8 @@ module ScData
             signature_detection: extract_radar_signatures(detections),
             aim_assist_range: aim_assist&.dig("distanceMaxAssignment")&.to_f,
             aim_assist_min: aim_assist&.dig("distanceMinAssignment")&.to_f,
+            aim_assist_buffer: aim_assist&.dig("outsideRangeBufferDistance")&.to_f,
+            contact_sensitivity: extract_radar_contact_sensitivity(radar),
             ping_properties: {
               cooldown_time: radar.dig("pingProperties", "cooldownTime")&.to_f
             }
@@ -429,12 +431,15 @@ module ScData
             :main
           end
 
+          thruster = values.dig("Components", "SCItemThrusterParams")
           item[:type_data] = {
-            thrust_capacity: values.dig("Components", "SCItemThrusterParams", "thrustCapacity").to_f,
-            fuel_burn_rate_per10_k_newton: values.dig("Components", "SCItemThrusterParams", "fuelBurnRatePer10KNewton").to_f,
-            thruster_type: values.dig("Components", "SCItemThrusterParams", "thrusterType"),
-            thruster_class:
-          }
+            thrust_capacity: thruster["thrustCapacity"].to_f,
+            fuel_burn_rate_per10_k_newton: thruster["fuelBurnRatePer10KNewton"].to_f,
+            thruster_type: thruster["thrusterType"],
+            thruster_class:,
+            vtol_only: (thruster["onlyActiveInVTOL"] == "1") || nil,
+            gimbal: extract_thruster_gimbal(thruster["gimbal"])
+          }.compact
         end
 
         if values.dig("Components", "SCItemEMPParams")
@@ -682,6 +687,12 @@ module ScData
         # inputs for the ship-wide power-allocation sim. Any component that draws Power gets this, even ones
         # without their own type_data block (e.g. life support), so the sim sees
         # every power consumer.
+        life_support = extract_resource_generation(values, "LifeSupport")
+        if life_support.present?
+          item[:type_data] = {} unless item[:type_data].is_a?(Hash)
+          item[:type_data][:life_support_generation] = life_support
+        end
+
         power_draw = extract_resource_consumption(values, "Power")
         if power_draw.present?
           item[:type_data] = {} unless item[:type_data].is_a?(Hash)
@@ -1316,10 +1327,57 @@ module ScData
 
           result[type] = {
             sensitivity: entry.dig("sensitivity")&.to_f,
-            piercing: entry.dig("piercing")&.to_f
+            piercing: entry.dig("piercing")&.to_f,
+            passive: flag(entry["permitPassiveDetection"]),
+            active: flag(entry["permitActiveDetection"])
           }.compact
         end
         result.presence
+      end
+
+      # How much a radar's sensitivity shifts against particular kinds of
+      # contact, one entry per modifier with every contact group it names. In
+      # 4.10 each radar carries a single one, for ground vehicles -- which is
+      # why they are so much harder to pick up than ships.
+      private def extract_radar_contact_sensitivity(radar)
+        Array.wrap(radar.dig("sensitivityModifiers", "SCItemRadarSensitivityModifier")).filter_map { |modifier|
+          refs = Array.wrap(modifier.dig("modifierType", "SCItemRadarSensitivityModifierTypeContactGroups", "contactGroups", "Reference"))
+            .filter_map { |reference| reference["value"] }
+          addition = modifier["sensitivityAddition"]&.to_f
+          next if addition.nil? || refs.empty?
+
+          {
+            sensitivity_addition: addition,
+            contact_groups: refs.map { |ref| radar_contact_groups[ref] || ref }
+          }
+        }.presence
+      end
+
+      private def radar_contact_groups
+        @radar_contact_groups ||= Dir.glob("#{import_path}/radarsystem/radarcontactgroups*.xml").each_with_object({}) do |file, groups|
+          File.read(file).scan(/<RadarContactGroupEntry\.\S+ name="([^"]+)"[^>]*__ref="([^"]+)"/) do |name, ref|
+            groups[ref] = name
+          end
+        end
+      end
+
+      # An articulated thruster swings its nozzle to vector thrust; a fixed one
+      # carries the same block with `isFlex` off and its angles meaning nothing.
+      private def extract_thruster_gimbal(gimbal)
+        return if gimbal.blank? || gimbal["isFlex"] != "1"
+
+        {
+          min_pitch: gimbal.dig("pitchAxis", "angleMin")&.to_f,
+          max_pitch: gimbal.dig("pitchAxis", "angleMax")&.to_f,
+          min_yaw: gimbal.dig("yawAxis", "angleMin")&.to_f,
+          max_yaw: gimbal.dig("yawAxis", "angleMax")&.to_f
+        }.compact.presence
+      end
+
+      private def flag(value)
+        return if value.nil?
+
+        value == "1"
       end
 
       SHIELD_DAMAGE_TYPES = %i[physical energy distortion thermal biochemical stun].freeze
