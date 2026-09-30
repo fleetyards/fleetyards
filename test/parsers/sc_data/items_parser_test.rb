@@ -177,6 +177,45 @@ module ScData
         assert_nil parsed_item("slaved_only")["type_data"]["yaw_speed"]
       end
 
+      test "reads a mount's fixed angle limits per axis" do
+        write_turret("gimbal_limits",
+          yaw_limits: '<SCItemTurretStandardAngleLimitParams LowestAngle="-80" HighestAngle="80" />',
+          pitch_limits: '<SCItemTurretStandardAngleLimitParams LowestAngle="-20" HighestAngle="20" />')
+
+        type_data = parsed_item("gimbal_limits")["type_data"]
+
+        assert_in_delta(-80.0, type_data["min_yaw"])
+        assert_in_delta 80.0, type_data["max_yaw"]
+        assert_in_delta(-20.0, type_data["min_pitch"])
+        assert_in_delta 20.0, type_data["max_pitch"]
+        assert_nil type_data["yaw_limits_vary"]
+        assert_nil type_data["pitch_limits_vary"]
+      end
+
+      test "keeps the widest range of a limit that changes with rotation" do
+        write_turret("bubble_limits", pitch_limits: <<~XML)
+          <SCItemTurretCustomAngleLimitParams RelativeJointName="yaw_part">
+            <AngleLimits>
+              <SCItemTurretCustomAngleLimit TurretRotation="0" LowestAngle="-85" HighestAngle="0" />
+              <SCItemTurretCustomAngleLimit TurretRotation="100" LowestAngle="-85" HighestAngle="-15" />
+            </AngleLimits>
+            <limitOverwrites>
+              <SCItemTurretCustomAngleLimitTagOverwriteParams limiterTag="00000000-0000-0000-0000-000000000002">
+                <AngleLimits>
+                  <SCItemTurretCustomAngleLimit TurretRotation="0" LowestAngle="-89" HighestAngle="89" />
+                </AngleLimits>
+              </SCItemTurretCustomAngleLimitTagOverwriteParams>
+            </limitOverwrites>
+          </SCItemTurretCustomAngleLimitParams>
+        XML
+
+        type_data = parsed_item("bubble_limits")["type_data"]
+
+        assert_in_delta(-85.0, type_data["min_pitch"])
+        assert_in_delta 0.0, type_data["max_pitch"]
+        assert type_data["pitch_limits_vary"]
+      end
+
       test "marks a point-defence turret by a tag written with its prefix" do
         write_turret("pdc_tagged", tags: "$flightReady $PDC")
 
@@ -201,7 +240,7 @@ module ScData
         assert_equal "pds", parsed_item("pdc_turret")["type_data"]["control"]
       end
 
-      private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "")
+      private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 
         write_item(key, name: "@item_Name#{key}", category: "turret", type:, sub_type:, tags:, components: <<~XML)
@@ -209,12 +248,16 @@ module ScData
             <movementList>
               <SCItemTurretJointMovementParams jointName="yaw_part" slavedOnly="0">
                 <yawAxis>
-                  <SCItemTurretJointMovementAxisParams speed="#{yaw_speed}" />
+                  <SCItemTurretJointMovementAxisParams speed="#{yaw_speed}">
+                    <angleLimits>#{yaw_limits}</angleLimits>
+                  </SCItemTurretJointMovementAxisParams>
                 </yawAxis>
               </SCItemTurretJointMovementParams>
               <SCItemTurretJointMovementParams jointName="pitch_part" slavedOnly="0">
                 <pitchAxis>
-                  <SCItemTurretJointMovementAxisParams speed="#{pitch_speed}" />
+                  <SCItemTurretJointMovementAxisParams speed="#{pitch_speed}">
+                    <angleLimits>#{pitch_limits}</angleLimits>
+                  </SCItemTurretJointMovementAxisParams>
                 </pitchAxis>
               </SCItemTurretJointMovementParams>
               #{extra_joints}

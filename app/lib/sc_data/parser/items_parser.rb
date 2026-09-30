@@ -610,6 +610,7 @@ module ScData
           item[:type_data] = {
             yaw_speed: extract_turret_axis_speed(turret_data, "yawAxis"),
             pitch_speed: extract_turret_axis_speed(turret_data, "pitchAxis"),
+            **turret_limits(turret_data),
             control: extract_turret_control(values, turret_data, item[:sub_type], tags)
           }.compact
         end
@@ -656,16 +657,67 @@ module ScData
       ].freeze
 
       # A mount turns on one joint per axis, each with its own top speed in
-      # degrees per second. A slaved joint only follows another one, so it says
-      # nothing about how fast the operator can aim.
+      # degrees per second.
       private def extract_turret_axis_speed(turret_data, axis)
-        joints = Array.wrap(turret_data.dig("movementList", "SCItemTurretJointMovementParams"))
-        driven = joints.reject { |joint| joint["slavedOnly"] == "1" }
-        speeds = driven.filter_map do |joint|
-          Array.wrap(joint[axis]).first&.dig("SCItemTurretJointMovementAxisParams", "speed")&.to_f
-        end
+        speeds = turret_axis_params(turret_data, axis).filter_map { |params| params["speed"]&.to_f }
 
         speeds.max
+      end
+
+      private def turret_limits(turret_data)
+        yaw = extract_turret_axis_limits(turret_data, "yawAxis")
+        pitch = extract_turret_axis_limits(turret_data, "pitchAxis")
+
+        {
+          min_yaw: yaw[:min],
+          max_yaw: yaw[:max],
+          yaw_limits_vary: yaw[:vary],
+          min_pitch: pitch[:min],
+          max_pitch: pitch[:max],
+          pitch_limits_vary: pitch[:vary]
+        }
+      end
+
+      # How far a mount turns on one axis, in degrees either side of centre.
+      # A fixed range is one pair; a range tied to another joint's rotation --
+      # a turret that cannot pitch down into its own hull when facing aft -- is
+      # a pair per rotation, and what is kept is the widest it ever gets, with
+      # `vary` saying the limit is not the same all the way round.
+      #
+      # Limits a ship overrides through a tag on its port are left out: they
+      # describe that one installation, not the mount.
+      private def extract_turret_axis_limits(turret_data, axis)
+        ranges = turret_axis_params(turret_data, axis).map do |params|
+          limits = params["angleLimits"] || {}
+
+          if (standard = limits["SCItemTurretStandardAngleLimitParams"])
+            [[standard["LowestAngle"], standard["HighestAngle"]]]
+          else
+            Array.wrap(limits.dig("SCItemTurretCustomAngleLimitParams", "AngleLimits", "SCItemTurretCustomAngleLimit"))
+              .map { |limit| [limit["LowestAngle"], limit["HighestAngle"]] }
+          end
+        end
+
+        pairs = ranges.flatten(1).select { |low, high| low.present? && high.present? }
+          .map { |low, high| [low.to_f, high.to_f] }
+
+        return {} if pairs.empty?
+
+        {
+          min: pairs.map(&:first).min,
+          max: pairs.map(&:last).max,
+          vary: (pairs.uniq.size > 1) || nil
+        }.compact
+      end
+
+      # A slaved joint only follows another one, so it says nothing about how
+      # the operator can aim.
+      private def turret_axis_params(turret_data, axis)
+        joints = Array.wrap(turret_data.dig("movementList", "SCItemTurretJointMovementParams"))
+
+        joints.reject { |joint| joint["slavedOnly"] == "1" }.filter_map do |joint|
+          Array.wrap(joint[axis]).first&.dig("SCItemTurretJointMovementAxisParams")
+        end
       end
 
       # Who aims the mount. Nothing marks a pilot's gimbal as such: it is the
