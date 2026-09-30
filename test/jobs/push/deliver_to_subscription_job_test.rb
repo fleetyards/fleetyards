@@ -91,6 +91,30 @@ module Push
       refute PushSubscription.exists?(@subscription.id)
     end
 
+    # The browser renewed the same endpoint with new keys while the push to
+    # the old ones was in flight.
+    test "a gone answer for keys the browser has since renewed keeps the row" do
+      WebPush.stubs(:payload_send).with do
+        @subscription.class.find(@subscription.id).update!(auth_key: Base64.urlsafe_encode64("0123456789abcdef", padding: false))
+        true
+      end.raises(response_error(WebPush::ExpiredSubscription))
+
+      perform
+
+      assert PushSubscription.exists?(@subscription.id)
+    end
+
+    test "a refusal for keys the browser has since renewed does not count" do
+      WebPush.stubs(:payload_send).with do
+        @subscription.class.find(@subscription.id).update!(auth_key: Base64.urlsafe_encode64("0123456789abcdef", padding: false))
+        true
+      end.raises(response_error(WebPush::Unauthorized))
+
+      perform
+
+      assert_equal 2, @subscription.reload.failure_count
+    end
+
     test "a racing failure is counted from the database, not the loaded row" do
       stale = PushSubscription.find(@subscription.id)
       @subscription.update_columns(failure_count: 3)

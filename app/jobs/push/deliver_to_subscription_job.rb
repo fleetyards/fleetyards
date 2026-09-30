@@ -51,12 +51,25 @@ module Push
       send_push(notification, subscription)
       subscription.update_columns(last_delivered_at: Time.current, failure_count: 0, last_failed_at: nil)
     rescue WebPush::ExpiredSubscription, WebPush::InvalidSubscription
-      subscription.destroy
+      self.class.as_sent(subscription, &:destroy)
     rescue *RETRYABLE
       raise
     rescue WebPush::ResponseError => e
       Rails.logger.warn("[Push::DeliverToSubscriptionJob] subscription=#{subscription.id} not delivered: #{e.class}")
-      self.class.record_failure(subscription)
+      self.class.as_sent(subscription) { |row| self.class.record_failure(row) }
+    end
+
+    # An answer is about the keys and the owner the push went out with. If the
+    # browser renewed or moved accounts while it was in flight, the row is a
+    # different subscription now and the answer says nothing about it.
+    def self.as_sent(sent)
+      PushSubscription.transaction do
+        row = PushSubscription.lock.find_by(id: sent.id)
+        next unless row && row.user_id == sent.user_id
+        next unless row.p256dh_key == sent.p256dh_key && row.auth_key == sent.auth_key
+
+        yield row
+      end
     end
 
     # In SQL, so two sends failing at once both count.
