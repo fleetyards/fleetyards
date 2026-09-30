@@ -417,3 +417,25 @@ describe("computeDeflectionCheck vs erkul (Asgard, shields down)", () => {
     expect(entry.types[0].effective).not.toBeCloseTo(13.3);
   });
 });
+
+describe("computeDeflectionCheck on a ship without shields", () => {
+  const unshielded = [
+    hardpoint(HardpointCategoryEnum.ARMOR, {
+      health: 1000,
+      deflectionEnergy: 9,
+    }),
+  ];
+
+  it("lets every type reach the armor instead of reading as absorbed", () => {
+    const { results } = computeDeflectionCheck(
+      [weapon("Repeater", { energy: 30 })],
+      computeArmorStats(unshielded),
+      computeShieldStats(unshielded),
+      1,
+      1,
+    );
+
+    expect(results[0].outcome).toBe("pierces");
+    expect(results[0].types[0].effective).toBe(30);
+  });
+});

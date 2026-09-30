@@ -57,7 +57,10 @@ export function absorptionAtHealth(
   key: string,
   shieldHealth: number,
 ): number {
-  if (shieldHealth <= 0) return 0;
+  // A ship with no shield soaks nothing. The per-type maps fall back to full
+  // absorption when no shield reports a type, which is right for a shield that
+  // omits one and wrong for a ship that has none at all.
+  if (shieldHealth <= 0 || !shield.hasData) return 0;
 
   const max = shield.absorptionByType[key] ?? 1;
   const min = shield.absorptionMinByType[key] ?? max;
@@ -71,7 +74,7 @@ export function resistanceAtHealth(
   key: string,
   shieldHealth: number,
 ): number {
-  if (shieldHealth <= 0) return 0;
+  if (shieldHealth <= 0 || !shield.hasData) return 0;
 
   const max = shield.resistanceByType[key] ?? 0;
   const min = shield.resistanceMinByType[key] ?? 0;
