@@ -262,3 +262,19 @@ describe("FleetShow header", () => {
     ).toBe(false);
   });
 });
+
+describe("FleetShow description", () => {
+  it("renders the description as markdown and never as html", async () => {
+    const subject = await mount({
+      fleet: {
+        ...fleet(),
+        description: "**Crew**\n<img src=x onerror=alert(1)>",
+      } as Fleet,
+    });
+
+    const description = subject.find(".description");
+    expect(description.find("strong").text()).toBe("Crew");
+    expect(description.find("img").exists()).toBe(false);
+    expect(description.text()).toContain("<img src=x onerror=alert(1)>");
+  });
+});
