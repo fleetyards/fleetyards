@@ -55,6 +55,7 @@ interface FleetState extends ShipListState {
   tableViewImageCols: FleetTableViewImageColsEnum[];
   tableViewCols: FleetTableViewColsEnum[];
   sortFields: FleetSortFieldsEnum[];
+  dismissedFidWarnings: string[];
 }
 
 export const useFleetStore = defineStore("fleet", {
@@ -83,6 +84,7 @@ export const useFleetStore = defineStore("fleet", {
       FleetSortFieldsEnum.PRICE,
       FleetSortFieldsEnum.PRODUCTION_STATUS,
     ],
+    dismissedFidWarnings: [],
   }),
   actions: {
     toggleDetails() {
@@ -118,6 +120,11 @@ export const useFleetStore = defineStore("fleet", {
     setSortFields(fields: FleetSortFieldsEnum[]) {
       this.sortFields = fields;
     },
+    dismissFidWarning(key: string) {
+      if (!this.dismissedFidWarnings.includes(key)) {
+        this.dismissedFidWarnings.push(key);
+      }
+    },
   },
   persist: {
     pick: [
@@ -130,6 +137,7 @@ export const useFleetStore = defineStore("fleet", {
       "tableViewImageCols",
       "tableViewCols",
       "sortFields",
+      "dismissedFidWarnings",
     ],
   },
 });
