@@ -11178,6 +11178,31 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/markdown-images/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Markdown image id
+      required: true
+    get:
+      summary: Show an image embedded in a Markdown description
+      tags:
+      - MarkdownImages
+      operationId: markdownImage
+      responses:
+        '302':
+          description: redirects to the image's rendition
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/me/calendar/subscription":
     post:
       summary: Generate personal calendar subscription
@@ -27641,8 +27666,9 @@ components:
         url:
           type: string
           format: uri
-          description: A re-encoded WebP rendition of the upload, never the original
-            file
+          description: The address to embed. It redirects to a re-encoded WebP rendition
+            of the upload, never the original file, and stops resolving once the image
+            is deleted.
         width:
           type:
           - integer

@@ -46,7 +46,7 @@ class Api::V1::MarkdownImagesCreateTest < ActionDispatch::IntegrationTest
     assert_difference -> { @user.markdown_images.count }, 1 do
       assert_api_response :post, 201, body: {file: upload("test.png", "image/png").signed_id} do
         assert_equal @user.markdown_images.last.id, parsed_body["id"]
-        assert_includes parsed_body["url"], "/representations/"
+        assert_match %r{/markdown-images/#{parsed_body["id"]}/?\z}, parsed_body["url"]
         assert_equal 2000, parsed_body["width"]
         assert_equal 1405, parsed_body["height"]
       end

@@ -10,7 +10,7 @@ module V1
         required: %i[id url width height],
         properties: {
           id: {type: :string, format: :uuid},
-          url: {type: :string, format: :uri, description: "A re-encoded WebP rendition of the upload, never the original file"},
+          url: {type: :string, format: :uri, description: "The address to embed. It redirects to a re-encoded WebP rendition of the upload, never the original file, and stops resolving once the image is deleted."},
           width: {type: [:integer, :null]},
           height: {type: [:integer, :null]}
         }
