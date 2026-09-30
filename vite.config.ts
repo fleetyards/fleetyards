@@ -92,22 +92,23 @@ export default defineConfig({
     Vue({
       ...templateCompilerOptions,
     }),
+    // injectManifest rather than generateSW: the worker needs push and
+    // notificationclick handlers, and generateSW has no source to put them in.
+    // The precaching, cleanup and takeover it configured now live in sw.ts.
     VitePWA({
+      strategies: "injectManifest",
+      srcDir: "sw",
+      filename: "sw.ts",
       registerType: "autoUpdate",
-      filename: "sw.js",
       useCredentials: true,
       scope: "/",
       // Rails serves the manifest (app/views/frontend/_manifest.json.erb).
       manifest: false,
-      workbox: {
+      injectManifest: {
         modifyURLPrefix: {
           "": "/vite/",
         },
         globPatterns: ["**/*.{js,css,ico,png,svg,woff2}"],
-        cleanupOutdatedCaches: true,
-        clientsClaim: true,
-        skipWaiting: true,
-        navigateFallback: null,
       },
     }),
     Components({
