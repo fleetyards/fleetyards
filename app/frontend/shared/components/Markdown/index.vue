@@ -5,10 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-// Renders the markdown subset our own generated report bodies use: ATX
-// headings, unordered lists, paragraphs, bold, inline code and inline links.
-// Anything else is passed through as text. Everything is HTML-escaped before a
-// single tag is added, so the result is safe to hand to v-html.
+// Renders a small markdown subset: ATX headings, unordered lists, paragraphs,
+// bold, italic, inline code, links, images and a `::: center` ... `:::` block,
+// the container syntax markdown editors map to a custom node. Anything else is passed through
+// as text. Everything is HTML-escaped before a single tag is added, so the
+// result is safe to hand to v-html -- which is why user-written text (a fleet's
+// description) goes through here too.
 
 type Props = {
   source?: string;
@@ -29,21 +31,28 @@ const escapeHtml = (value: string) =>
 // text rather than becoming an href.
 const safeHref = (url: string) => /^(https?:\/\/|\/)/.test(url);
 
+const safeSrc = (url: string) => /^(https:\/\/|\/)/.test(url);
+
 const renderInline = (value: string) =>
   escapeHtml(value)
     .replace(/`([^`]+)`/g, "<code>$1</code>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match, alt, url: string) =>
+      safeSrc(url) ? `<img src="${url}" alt="${alt}" loading="lazy">` : match,
+    )
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, url: string) =>
       safeHref(url)
         ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
         : match,
-    );
+    )
+    .replace(/(^|[^*\w[])\*(?!\s)([^*]+?)\*(?![*\w])/g, "$1<em>$2</em>");
 
 const html = computed(() => {
   const blocks: string[] = [];
 
   let list: string[] = [];
   let paragraph: string[] = [];
+  let centred = false;
 
   const flushList = () => {
     if (!list.length) return;
@@ -59,8 +68,27 @@ const html = computed(() => {
     paragraph = [];
   };
 
+  const flush = () => {
+    flushList();
+    flushParagraph();
+  };
+
   props.source.split("\n").forEach((line) => {
     const trimmed = line.trim();
+
+    if (!centred && /^:::\s*center$/.test(trimmed)) {
+      flush();
+      blocks.push('<div class="markdown__center">');
+      centred = true;
+      return;
+    }
+
+    if (centred && trimmed === ":::") {
+      flush();
+      blocks.push("</div>");
+      centred = false;
+      return;
+    }
 
     const heading = /^(#{1,6})\s+(.*)$/.exec(trimmed);
 
@@ -91,8 +119,11 @@ const html = computed(() => {
     paragraph.push(renderInline(trimmed));
   });
 
-  flushList();
-  flushParagraph();
+  flush();
+
+  if (centred) {
+    blocks.push("</div>");
+  }
 
   return blocks.join("");
 });
@@ -139,6 +170,15 @@ const html = computed(() => {
 
   :deep(li) {
     margin: 2px 0;
+  }
+
+  :deep(.markdown__center) {
+    text-align: center;
+  }
+
+  :deep(img) {
+    max-width: 100%;
+    height: auto;
   }
 
   :deep(code) {
