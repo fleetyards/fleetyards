@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import ComponentCategoryIcon from "@/frontend/components/Components/CategoryIcon/index.vue";
 import ComponentLeadMetric from "@/frontend/components/Components/LeadMetric/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
@@ -83,7 +84,22 @@ const badges = computed<RowListItemBadge[]>(() => {
       <ComponentCategoryIcon :category="component.category" />
     </template>
 
-    <template #name>{{ component.name }}</template>
+    <!-- The name is already the row's link, so it opens the card without
+         a second link or focus stop of its own. -->
+    <template #name>
+      <CatalogueItemPopover
+        :item="{
+          type: 'Component',
+          slug: component.slug,
+          name: component.name,
+        }"
+        :record="component"
+        :link="false"
+        :focusable="false"
+      >
+        {{ component.name }}
+      </CatalogueItemPopover>
+    </template>
 
     <template #sub>
       <router-link

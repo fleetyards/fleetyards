@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import {
@@ -16,7 +17,6 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { type Blueprint, type FleetBlueprintOwner } from "@/services/fyApi";
-import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   blueprint: Blueprint;
@@ -83,14 +83,6 @@ const tags = computed<RowListItemTag[]>(() =>
   })),
 );
 
-// What the recipe makes, and where that lives. 5 of the 1,607 recipes in the
-// current build resolve to no catalogue row at all -- four mission carryables
-// and one entity class present in no file -- so this is genuinely absent
-// rather than merely unset.
-const craftableRoute = computed(() =>
-  catalogueItemRoute(props.blueprint.craftable),
-);
-
 const badges = computed<RowListItemBadge[]>(() => {
   const list: RowListItemBadge[] = [];
 
@@ -151,12 +143,10 @@ const badges = computed<RowListItemBadge[]>(() => {
       >
         {{ t(`labels.blueprint.craftableTypes.${blueprint.craftable.type}`) }}
       </router-link>
-      <router-link v-if="craftableRoute" :to="craftableRoute">
-        {{ blueprint.craftable?.name }}
-      </router-link>
-      <span v-else-if="blueprint.craftable">{{
-        blueprint.craftable.name
-      }}</span>
+      <CatalogueItemPopover
+        v-if="blueprint.craftable"
+        :item="blueprint.craftable"
+      />
     </template>
 
     <!-- Who in the fleet holds it. Capped at three names with a count for the

@@ -67,6 +67,7 @@ Fleetyards frontend. Components here should be:
 - **AppFooter/** — Application footer
 - **AppModal/** — Modal dialog (with Inner)
 - **AppEnvironment/** — Environment indicator
+- **Popover/** — `BasePopover`: rich content (a stats card) beside a trigger, on hover, keyboard focus or tap; one open at a time, layered above the modal it opens from
 
 ## Adding New Components
 

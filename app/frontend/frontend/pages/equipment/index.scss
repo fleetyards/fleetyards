@@ -82,11 +82,6 @@
     margin: 0 0 24px;
   }
 
-  &__empty {
-    color: var(--color-text-dim, #959595);
-    margin: 0;
-  }
-
   &__columns {
     display: grid;
     grid-template-columns: 1fr;

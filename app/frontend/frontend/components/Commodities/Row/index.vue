@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import CommodityIcon from "@/frontend/components/Commodities/Icon/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
@@ -87,7 +88,22 @@ const badges = computed<RowListItemBadge[]>(() => {
       <CommodityIcon :commodity="commodity" />
     </template>
 
-    <template #name>{{ commodity.name }}</template>
+    <!-- The name is already the row's link, so it opens the card without
+         a second link or focus stop of its own. -->
+    <template #name>
+      <CatalogueItemPopover
+        :item="{
+          type: 'Commodity',
+          slug: commodity.slug,
+          name: commodity.name,
+        }"
+        :record="commodity"
+        :link="false"
+        :focusable="false"
+      >
+        {{ commodity.name }}
+      </CatalogueItemPopover>
+    </template>
 
     <template #sub>
       <router-link

@@ -11,6 +11,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { popoverLayerKey } from "@/shared/components/Popover/layer";
 import { type AppModalOptions } from "./types";
 
 interface ModalComponent extends HTMLElement {
@@ -36,6 +37,10 @@ const dirty = ref(false);
 const isShow = ref(false);
 
 const isOpen = ref(false);
+
+// Matches `.app-modal` in index.scss, so a popover opened from the modal's
+// content is placed above it rather than underneath.
+provide(popoverLayerKey, 1050);
 
 const comlink = useComlink();
 

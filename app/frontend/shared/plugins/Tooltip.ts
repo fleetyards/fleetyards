@@ -1,4 +1,5 @@
 import type { App, Directive, DirectiveBinding } from "vue";
+import { placeFloating } from "@/shared/utils/floatingPlacement";
 
 interface TooltipOptions {
   content: string | false;
@@ -136,39 +137,11 @@ function positionTooltip(
   placement: string,
 ) {
   const rect = target.getBoundingClientRect();
-  const tooltipRect = tooltip.getBoundingClientRect();
-  const gap = 8;
-  const margin = 4;
-
-  let top = 0;
-  let left = 0;
-
-  switch (placement) {
-    case "bottom":
-      top = rect.bottom + gap;
-      left = rect.left + rect.width / 2 - tooltipRect.width / 2;
-      break;
-    case "left":
-      top = rect.top + rect.height / 2 - tooltipRect.height / 2;
-      left = rect.left - tooltipRect.width - gap;
-      break;
-    case "right":
-      top = rect.top + rect.height / 2 - tooltipRect.height / 2;
-      left = rect.right + gap;
-      break;
-    default: // top
-      top = rect.top - tooltipRect.height - gap;
-      left = rect.left + rect.width / 2 - tooltipRect.width / 2;
-      break;
-  }
-
-  left = Math.max(
-    margin,
-    Math.min(left, window.innerWidth - tooltipRect.width - margin),
-  );
-  top = Math.max(
-    margin,
-    Math.min(top, window.innerHeight - tooltipRect.height - margin),
+  const { top, left } = placeFloating(
+    rect,
+    tooltip.getBoundingClientRect(),
+    placement,
+    { gap: 8, margin: 4 },
   );
 
   tooltip.style.top = `${top}px`;

@@ -13,7 +13,7 @@ import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useComponentStats } from "@/frontend/composables/useComponentStats";
+import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import {
   type Component,
@@ -35,8 +35,6 @@ const { updateMetaInfo } = useMetaInfo();
 // fetch the same component a second time.
 const component = computed(() => props.component);
 
-const stats = useComponentStats(component);
-
 // What this can be crafted from. Asked only once the component has arrived,
 // since the recipe is looked up by its id -- 476 of the catalogue's components
 // have one, so most pages get an empty answer and no card.
@@ -53,12 +51,6 @@ const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
 );
 
 const recipes = computed(() => blueprints.value?.items || []);
-
-// The renderer already marks the figures worth leading with. Those become hero
-// tiles and the rest fall into the split list below, which is the metrics
-// card's own division rather than a new one -- see metricsCard.scss.
-const heroStats = computed(() => stats.value.filter((stat) => stat.primary));
-const restStats = computed(() => stats.value.filter((stat) => !stat.primary));
 
 // One crumb, not two. `/catalogue/` is a redirect rather than a page of its
 // own, so a "Catalogue" step above would point at whichever tenant happens to
@@ -207,44 +199,7 @@ watch(
     </p>
 
     <div class="component-page__columns">
-      <MetricsCard :title="t('headlines.component.metrics')">
-        <div v-if="heroStats.length" class="metrics-card__hero">
-          <!-- The accent marks the headline, so exactly one tile carries
-                   it. A category can name more than one key figure -- a gun
-                   names sustained and burst DPS -- and accenting both says
-                   neither is the one to read first. -->
-          <div
-            v-for="(stat, index) in heroStats"
-            :key="stat.label"
-            class="metrics-card__tile"
-            :class="{ 'metrics-card__tile--primary': index === 0 }"
-          >
-            <div class="metrics-card__tile__label">{{ stat.label }}</div>
-            <div class="metrics-card__tile__value">{{ stat.value }}</div>
-          </div>
-        </div>
-
-        <div
-          v-if="restStats.length"
-          class="metrics-card__rows metrics-card__rows--split"
-        >
-          <div
-            v-for="stat in restStats"
-            :key="stat.label"
-            class="metrics-card__row"
-            :class="{ 'metrics-card__row--stack': stat.wide }"
-          >
-            <span class="metrics-card__row__label">{{ stat.label }}</span>
-            <span class="metrics-card__row__value">{{ stat.value }}</span>
-          </div>
-        </div>
-
-        <!-- Said out loud: 301 components carry no metric keys at all, and
-                 an empty card reads as something having failed to load. -->
-        <p v-if="!stats.length" class="component-page__empty">
-          {{ t("labels.component.noMetrics") }}
-        </p>
-      </MetricsCard>
+      <ComponentStatsCard :component="component" />
 
       <div class="component-page__rail">
         <MetricsCard

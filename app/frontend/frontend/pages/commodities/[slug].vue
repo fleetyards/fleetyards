@@ -12,6 +12,8 @@ import Chart from "@/shared/components/Chart/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import CommodityIcon from "@/frontend/components/Commodities/Icon/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.vue";
+import { useCommodityStats } from "@/frontend/composables/useCommodityStats";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { type ChartSeries } from "@/shared/components/Chart/types";
@@ -23,7 +25,7 @@ import {
   useCommodityPriceHistory as usePriceHistoryQuery,
 } from "@/services/fyApi";
 
-const { t, tExists, l, toNumber } = useI18n();
+const { t, tExists, l } = useI18n();
 
 const { updateMetaInfo } = useMetaInfo();
 
@@ -107,34 +109,7 @@ const series = computed<ChartSeries[]>(() => [
   },
 ]);
 
-const details = computed(() => {
-  const value = commodity.value;
-  if (!value) return [];
-
-  return [
-    { label: t("labels.commodity.commodityType"), value: typeLabel.value },
-    {
-      // Every size the game packages it in, from the hand-carried forms below
-      // one SCU up to the 32 freight crates.
-      label: t("labels.commodity.containerSizes"),
-      value: value.containerSizes?.length
-        ? value.containerSizes.map((size) => toNumber(size)).join(" · ")
-        : undefined,
-      stack: true,
-    },
-    {
-      // Only the counted ones have a single figure: a bulk commodity's unit is
-      // a crate, sold in seven sizes, so there is no one volume to state.
-      label: t("labels.commodity.pieceVolume"),
-      value:
-        value.pieceVolume != null ? toNumber(value.pieceVolume) : undefined,
-    },
-    {
-      label: t("labels.commodity.consumable"),
-      value: value.consumable ? t("labels.true") : undefined,
-    },
-  ].filter((entry) => entry.value);
-});
+const stats = useCommodityStats(commodity);
 
 watch(
   commodity,
@@ -199,30 +174,15 @@ watch(
           </MetricsCard>
 
           <div class="commodity-page__rail">
-            <MetricsCard
+            <CommodityStatsCard
               v-if="
-                details.length ||
+                stats.length ||
                 commodity.refinesInto ||
                 commodity.refinedFrom?.length
               "
-              :title="t('headlines.commodity.identity')"
-              variant="slim"
+              :commodity="commodity"
             >
-              <div class="metrics-card__rows">
-                <div
-                  v-for="entry in details"
-                  :key="entry.label"
-                  class="metrics-card__row"
-                  :class="{ 'metrics-card__row--stack': entry.stack }"
-                >
-                  <span class="metrics-card__row__label">{{
-                    entry.label
-                  }}</span>
-                  <span class="metrics-card__row__value">{{
-                    entry.value
-                  }}</span>
-                </div>
-
+              <template #rows>
                 <router-link
                   v-if="commodity.refinesInto"
                   :to="{
@@ -254,8 +214,8 @@ watch(
                     {{ source.name }}
                   </span>
                 </router-link>
-              </div>
-            </MetricsCard>
+              </template>
+            </CommodityStatsCard>
 
             <!-- Above the recipe card, because when nothing trades a commodity
                  the answer it gives is "it is a crafting material". -->

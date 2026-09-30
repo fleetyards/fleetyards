@@ -15,7 +15,7 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useEquipmentStats } from "@/frontend/composables/useEquipmentStats";
+import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
 import {
   BlueprintCraftableTypeEnum,
   useBlueprints as useBlueprintsQuery,
@@ -31,11 +31,6 @@ const route = useRoute();
 const slug = computed(() => route.params.slug as string);
 
 const { data: equipment, ...asyncStatus } = useEquipmentItemQuery(slug);
-
-const stats = useEquipmentStats(equipment);
-
-const heroStats = computed(() => stats.value.filter((stat) => stat.primary));
-const restStats = computed(() => stats.value.filter((stat) => !stat.primary));
 
 // Which recipes make this. Looked up by id, so only once the item has arrived.
 const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
@@ -144,39 +139,7 @@ watch(
         </p>
 
         <div class="equipment-page__columns">
-          <MetricsCard :title="t('headlines.equipment.metrics')">
-            <div v-if="heroStats.length" class="metrics-card__hero">
-              <div
-                v-for="(stat, index) in heroStats"
-                :key="stat.label"
-                class="metrics-card__tile"
-                :class="{ 'metrics-card__tile--primary': index === 0 }"
-              >
-                <div class="metrics-card__tile__label">{{ stat.label }}</div>
-                <div class="metrics-card__tile__value">{{ stat.value }}</div>
-              </div>
-            </div>
-
-            <div
-              v-if="restStats.length"
-              class="metrics-card__rows metrics-card__rows--split"
-            >
-              <div
-                v-for="stat in restStats"
-                :key="stat.label"
-                class="metrics-card__row"
-              >
-                <span class="metrics-card__row__label">{{ stat.label }}</span>
-                <span class="metrics-card__row__value">{{ stat.value }}</span>
-              </div>
-            </div>
-
-            <!-- Clothing mostly carries no figure at all, and an empty card
-                 reads as something having failed to load. -->
-            <p v-if="!stats.length" class="equipment-page__empty">
-              {{ t("labels.equipment.noMetrics") }}
-            </p>
-          </MetricsCard>
+          <EquipmentStatsCard :equipment="equipment" />
 
           <div class="equipment-page__rail">
             <MetricsCard

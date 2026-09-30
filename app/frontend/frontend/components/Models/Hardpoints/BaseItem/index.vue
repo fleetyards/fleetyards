@@ -15,6 +15,7 @@ import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
 import HardpointStats from "@/frontend/components/Models/Hardpoints/Stats/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
 import {
   HardpointSourceEnum,
@@ -179,21 +180,15 @@ const hardpointNames = computed(() => {
                    player, and a link here would be a way into a page the
                    catalogue has decided not to list. The server decides that,
                    so the two cannot drift. -->
-              <router-link
-                v-if="
-                  hardpoint.component.slug && hardpoint.component.catalogued
-                "
-                :to="{
-                  name: 'component',
-                  params: { slug: hardpoint.component.slug },
+              <CatalogueItemPopover
+                :item="{
+                  type: 'Component',
+                  slug: hardpoint.component.slug,
+                  name: hardpoint.component.name,
+                  listed: hardpoint.component.catalogued,
                 }"
-                @click.stop
-              >
-                {{ hardpoint.component.name }}
-              </router-link>
-              <template v-else>
-                {{ hardpoint.component.name }}
-              </template>
+                :record="hardpoint.component"
+              />
               <span v-if="hardpoint.component.itemClass">
                 {{ hardpoint.component.itemClassLabel }}
                 {{ t("labels.component.grade") }}

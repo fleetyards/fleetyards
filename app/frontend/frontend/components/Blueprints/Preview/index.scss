@@ -6,6 +6,12 @@
     color: var(--color-muted, #7a8288);
     text-align: right;
 
+    // The link is rendered by the catalogue link component, outside this
+    // scope, so it would otherwise take the global link colour.
+    :deep(a) {
+      color: inherit;
+    }
+
     &:hover {
       color: var(--color-primary, #428bca);
     }

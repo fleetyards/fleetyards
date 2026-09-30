@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useQualityRamp,
@@ -180,7 +181,14 @@ const onQuality = (event: Event) => {
         <span v-if="amount" class="blueprint-slot__amount">{{ amount }}</span>
         <!-- A material the commodity catalogue has no row for still says
              which material it is: the key is what the game names. -->
-        <span v-if="option.commodity">{{ option.commodity.name }}</span>
+        <CatalogueItemPopover
+          v-if="option.commodity"
+          :item="{
+            type: 'Commodity',
+            slug: option.commodity.slug,
+            name: option.commodity.name,
+          }"
+        />
         <span v-else class="blueprint-slot__unmapped">
           {{ option.commodityKey }}
         </span>

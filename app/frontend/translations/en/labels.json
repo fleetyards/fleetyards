@@ -216,6 +216,10 @@
           "buyPrice": "buys for"
         }
       },
+      "statsCard": {
+        "more": "+%{count} more on the detail page",
+        "unavailable": "Could not load these details."
+      },
       "stats": {
         "quickStats": {
           "newShips": "New Ships in %{year}",

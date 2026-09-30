@@ -216,6 +216,10 @@
           "buyPrice": "compra per"
         }
       },
+      "statsCard": {
+        "more": "+%{count} altri nella pagina dei dettagli",
+        "unavailable": "Impossibile caricare questi dettagli."
+      },
       "stats": {
         "quickStats": {
           "newShips": "Nuove navi in %{year}",
