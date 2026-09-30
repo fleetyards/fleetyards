@@ -284,5 +284,10 @@ class FleetTest < ActiveSupport::TestCase
       refute @fleet.update(description: "a" * 10_001)
       assert_includes @fleet.errors.details[:description].pluck(:error), :too_long
     end
+
+    test "markdown and typographic characters are accepted" do
+      assert @fleet.update(description: "# Crew\n\n- **Mining** & hauling \u2014 *since 2950* \u2714"),
+        @fleet.errors.full_messages.to_sentence
+    end
   end
 end

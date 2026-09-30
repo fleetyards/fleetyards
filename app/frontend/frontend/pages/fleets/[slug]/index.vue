@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -88,14 +89,6 @@ const showFidNotice = computed(
   () =>
     isMember.value && (props.membership?.capabilities?.manageFleet ?? false),
 );
-
-const description = computed(() => {
-  if (!props.fleet || !props.fleet.description) {
-    return undefined;
-  }
-
-  return props.fleet.description.replaceAll("\n", "<br>");
-});
 </script>
 
 <template>
@@ -195,9 +188,9 @@ const description = computed(() => {
       </a>
     </div>
   </div>
-  <div v-if="description" class="row md:justify-center">
+  <div v-if="fleet.description" class="row md:justify-center">
     <div class="col-12 col-md-8">
-      <p class="description" v-html="description" />
+      <Markdown class="description" :source="fleet.description" />
     </div>
   </div>
   <!-- Unlabelled: the front page introduces the fleet, and a strip of emblems
