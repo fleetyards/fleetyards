@@ -120,6 +120,47 @@ describe("Markdown", () => {
     expect(wrapper.find("img").exists()).toBe(false);
   });
 
+  it("shows a backslash-escaped character as itself, unformatted", async () => {
+    const wrapper = await mount(
+      "Some \\[REDACTED\\] and 2 \\* 3 \\* 4 and a\\_b",
+    );
+
+    expect(wrapper.text()).toBe("Some [REDACTED] and 2 * 3 * 4 and a_b");
+    expect(wrapper.find("em").exists()).toBe(false);
+  });
+
+  it("keeps an escaped marker out of the formatting it would close", async () => {
+    const wrapper = await mount("*Superior since **\\[REDACTED\\]***");
+
+    expect(wrapper.find("em").text()).toBe("Superior since [REDACTED]");
+    expect(wrapper.find("em strong").text()).toBe("[REDACTED]");
+  });
+
+  it("decodes entities without turning them into markup", async () => {
+    const wrapper = await mount(
+      "&lt;&lt; DAKKAR &gt;&gt; &amp; &#42;not italic&#42; &lt;img src=x onerror=alert(1)&gt;",
+    );
+
+    expect(wrapper.text()).toBe(
+      "<< DAKKAR >> & *not italic* <img src=x onerror=alert(1)>",
+    );
+    expect(wrapper.find("em").exists()).toBe(false);
+    expect(wrapper.find("img").exists()).toBe(false);
+  });
+
+  it("leaves an unknown entity and escapes inside code as written", async () => {
+    const wrapper = await mount("&bogus; and `a\\_b &amp;`");
+
+    expect(wrapper.text()).toContain("&bogus;");
+    expect(wrapper.find("code").text()).toBe("a\\_b &amp;");
+  });
+
+  it("ignores a placeholder character typed into the text", async () => {
+    const wrapper = await mount("a\ue000\ue105b \\*");
+
+    expect(wrapper.text()).toBe("a\ue105b *");
+  });
+
   it("renders https images only", async () => {
     const wrapper = await mount(
       "![cover](https://robertsspaceindustries.com/cover.jpg) ![x](http://example.com/a.jpg) ![y](javascript:alert(1))",

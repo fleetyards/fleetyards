@@ -55,13 +55,82 @@ const formatText = (value: string) =>
     )
     .replace(/(^|[^*\w[])\*(?!\s)([^*]+?)\*(?![*\w])/g, "$1<em>$2</em>");
 
-// Code spans are cut out first so nothing inside them is formatted; `split`
-// with a capture group puts them at the odd indices.
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+};
+
+const decodeEntity = (entity: string) => {
+  const numeric = /^#(x[\da-f]+|\d+)$/i.exec(entity);
+
+  if (!numeric) {
+    return NAMED_ENTITIES[entity.toLowerCase()];
+  }
+
+  const code = numeric[1].startsWith("x")
+    ? parseInt(numeric[1].slice(1), 16)
+    : parseInt(numeric[1], 10);
+
+  return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : undefined;
+};
+
+// A markdown writer escapes what would otherwise be markup (`\*`, `\[`) and
+// writes `&`, `<` and `>` as entities. Both stand for a literal character, so
+// each is swapped for a private-use placeholder that no formatting rule
+// matches, and put back -- escaped -- once formatting is done.
+const PLACEHOLDER = "";
+const PLACEHOLDER_BASE = 0xe100;
+const PLACEHOLDER_PATTERN = /([-])/g;
+const LITERAL_PATTERN =
+  /\\([!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])|&(#x[\da-f]+|#\d+|[a-z]+);/gi;
+
+const renderText = (value: string) => {
+  const literals: string[] = [];
+
+  // The placeholder marker itself cannot appear in the text, or it would read
+  // as one.
+  const marked = value
+    .replaceAll(PLACEHOLDER, "")
+    .replace(
+      LITERAL_PATTERN,
+      (match, escaped: string | undefined, entity: string | undefined) => {
+        const literal = escaped ?? (entity ? decodeEntity(entity) : undefined);
+
+        if (
+          literal === undefined ||
+          PLACEHOLDER_BASE + literals.length > 0xf8ff
+        ) {
+          return match;
+        }
+
+        literals.push(literal);
+        return (
+          PLACEHOLDER +
+          String.fromCharCode(PLACEHOLDER_BASE + literals.length - 1)
+        );
+      },
+    );
+
+  return formatText(escapeHtml(marked)).replace(
+    PLACEHOLDER_PATTERN,
+    (_, index: string) =>
+      escapeHtml(literals[index.charCodeAt(0) - PLACEHOLDER_BASE]),
+  );
+};
+
+// Code spans are cut out first so nothing inside them is formatted or
+// unescaped; `split` with a capture group puts them at the odd indices.
 const renderInline = (value: string) =>
-  escapeHtml(value)
+  value
     .split(/(`[^`]+`)/)
     .map((part, index) =>
-      index % 2 ? `<code>${part.slice(1, -1)}</code>` : formatText(part),
+      index % 2
+        ? `<code>${escapeHtml(part.slice(1, -1))}</code>`
+        : renderText(part),
     )
     .join("");
 
