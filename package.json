@@ -38,6 +38,7 @@
     "@appsignal/javascript": "^1.6.1",
     "@appsignal/vue": "^1.1.7",
     "@event-calendar/core": "^5.15.0",
+    "@floating-ui/dom": "^1.7.6",
     "@google/model-viewer": "^4.3.1",
     "@number-flow/vue": "^0.5.2",
     "@rails/activestorage": "^8.1.400",
