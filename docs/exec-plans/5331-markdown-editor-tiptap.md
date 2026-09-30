@@ -76,4 +76,4 @@ Probed with the real extension (jsdom): Tiptap writes CommonMark escapes and ent
 - [x] Phase 2
 - [x] Phase 3
 - [x] Phase 4
-- [ ] Browser check of the editor in the fleet settings and an event modal
+- [x] Browser check on `/visual-tests/forms/`: toolbar, pressed state, resize, counter; typed text renders the same in the preview
