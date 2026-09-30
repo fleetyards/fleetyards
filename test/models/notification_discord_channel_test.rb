@@ -36,6 +36,16 @@ class NotificationDiscordChannelTest < ActiveSupport::TestCase
     assert_equal notification.id, ::Discord::DeliverNotificationJob.jobs.first["args"].first
   end
 
+  test "a mailer that raises does not cost the reader the DM" do
+    prefer_discord!(true)
+    @user.notification_preferences.find_by!(notification_type: :model_on_sale).update!(mail: true)
+    Notification.stubs(:mailer_for).returns(->(_notification) { raise "mail is down" })
+
+    notify!
+
+    assert_equal 1, ::Discord::DeliverNotificationJob.jobs.size
+  end
+
   # An unsolicited DM from a bot is the fastest way to get an app reported.
   test "does not deliver to Discord by default" do
     notify!

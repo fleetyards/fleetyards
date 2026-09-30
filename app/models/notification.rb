@@ -500,23 +500,29 @@ class Notification < ApplicationRecord
     notification
   end
 
+  # Each channel on its own: a mailer that raises must not cost the reader the
+  # DM they also asked for.
   def self.deliver_channels(notification, preference)
-    if preference.app?
-      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash)
+    deliver_channel(notification, :app) do
+      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash) if preference.app?
     end
 
-    if preference.mail?
-      mailer = mailer_for(notification.notification_type)
-      mailer&.call(notification)
+    deliver_channel(notification, :mail) do
+      mailer_for(notification.notification_type)&.call(notification) if preference.mail?
     end
 
-    if preference.discord?
-      ::Discord::DeliverNotificationJob.perform_async(notification.id)
+    deliver_channel(notification, :discord) do
+      ::Discord::DeliverNotificationJob.perform_async(notification.id) if preference.discord?
     end
-  rescue => e
-    Rails.logger.error("Notification delivery failed for #{notification.id}: #{e.message}")
   end
   private_class_method :deliver_channels
+
+  def self.deliver_channel(notification, channel)
+    yield
+  rescue => e
+    Rails.logger.error("Notification #{channel} delivery failed for #{notification.id}: #{e.message}")
+  end
+  private_class_method :deliver_channel
 
   def read?
     read_at.present?
