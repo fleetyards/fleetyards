@@ -16,6 +16,7 @@ import {
 } from "@/frontend/composables/useShieldStats";
 import {
   byMargin,
+  DEFLECTION_DAMAGE_TYPES,
   evaluateWeapon,
   type DeflectionOutcome,
   type DeflectionResult,
@@ -72,7 +73,9 @@ export function collectLoadoutWeapons(
         hardpoint.category === HardpointCategoryEnum.WEAPONS &&
         !isMissile(weapon) &&
         !weapon.beam &&
-        Object.values(weapon.damagePerShot ?? {}).some((value) => value > 0)
+        DEFLECTION_DAMAGE_TYPES.some(
+          ({ key }) => (weapon.damagePerShot?.[key] ?? 0) > 0,
+        )
       ) {
         const existing = byComponent.get(component.id);
 

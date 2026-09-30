@@ -234,9 +234,18 @@ describe("collectLoadoutWeapons", () => {
     expect(weapons[0].damagePerShot.physical).toBe(0);
   });
 
+  it("ignores guns whose only damage the check does not weigh", () => {
+    expect(
+      collectLoadoutWeapons([gun("stunner", { damagePerShot: { stun: 40 } })]),
+    ).toEqual([]);
+  });
+
   it("ignores missiles and beams", () => {
     const weapons = collectLoadoutWeapons([
-      gun("missile", { damagePerShot: { physical: 5000 }, trackingSignal: "IR" }),
+      gun("missile", {
+        damagePerShot: { physical: 5000 },
+        trackingSignal: "IR",
+      }),
       gun("beam", { damagePerShot: { energy: 10 }, beam: true }),
     ]);
 

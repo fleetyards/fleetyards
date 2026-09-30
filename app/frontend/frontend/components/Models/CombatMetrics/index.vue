@@ -16,6 +16,7 @@ import {
   type DamageBreakdown,
 } from "@/frontend/composables/useLoadoutStats";
 import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
+import { collectLoadoutWeapons } from "@/frontend/composables/usePenetrationCheck";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -95,6 +96,12 @@ const composition = computed(() =>
     .sort((a, b) => b.value - a.value),
 );
 
+// Beams and missiles have no per-shot alpha to test, so a loadout of only
+// those has nothing to put in the check.
+const hasTestableGuns = computed(
+  () => collectLoadoutWeapons(props.hardpoints).length > 0,
+);
+
 const openPenetrationCheck = () => {
   comlink.emit("open-modal", {
     component: () =>
@@ -172,7 +179,7 @@ const openPenetrationCheck = () => {
       @highlight="hoveredType = $event"
     />
 
-    <div v-if="stats.weaponCount" class="metrics-card__actions">
+    <div v-if="hasTestableGuns" class="metrics-card__actions">
       <button
         type="button"
         class="metrics-card__toggle"
