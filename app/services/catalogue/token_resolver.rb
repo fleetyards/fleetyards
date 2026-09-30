@@ -10,8 +10,17 @@ module Catalogue
     CATALOGUES = {
       "component" => ::Component,
       "equipment" => ::Equipment,
-      "commodity" => ::Commodity
+      "commodity" => ::Commodity,
+      "ship" => ::Model,
+      "blueprint" => ::Blueprint,
+      "mission" => ::GameMission
     }.freeze
+
+    # What a token without a prefix can mean. The rest are reached only by
+    # their prefix: a blueprint carries the name of the item it crafts, and a
+    # ship or a mission can share an item's name, so letting them answer a bare
+    # name would turn tokens already written ambiguous.
+    BARE = %w[component equipment commodity].freeze
 
     MAX_TOKENS = 100
     MAX_NAME_LENGTH = 200
@@ -25,6 +34,9 @@ module Catalogue
       when "component" then ::Component.with_facts(true).catalogued
       when "equipment" then ::Equipment.visible(true)
       when "commodity" then ::Commodity.with_facts(true)
+      when "ship" then ::Model.visible.active
+      when "blueprint" then ::Blueprint.with_facts(true)
+      when "mission" then ::GameMission.with_facts(true).named
       end
     end
 
@@ -43,7 +55,7 @@ module Catalogue
       rows = rows_named(parsed.map { |_, _, name| name.downcase }.uniq)
 
       parsed.filter_map do |token, prefix, name|
-        candidates = rows.fetch(name.downcase, []).select { |row| prefix.nil? || row[:prefix] == prefix }
+        candidates = rows.fetch(name.downcase, []).select { |row| prefix ? row[:prefix] == prefix : BARE.include?(row[:prefix]) }
         next unless candidates.one?
 
         row = candidates.first
@@ -74,8 +86,8 @@ module Catalogue
           next unless in_catalogue.one?
 
           row = in_catalogue.first
-          shared = named.any? { |other| other[:prefix] != prefix }
-          token = shared ? "#{prefix}:#{row[:name]}" : row[:name]
+          shared = named.any? { |other| other[:prefix] != prefix && BARE.include?(other[:prefix]) }
+          token = (shared || !BARE.include?(prefix)) ? "#{prefix}:#{row[:name]}" : row[:name]
           [lower.start_with?(query.downcase) ? 0 : 1, row[:name].length, Match.new(token:, name: row[:name], type: CATALOGUES.fetch(prefix).name, slug: row[:slug])]
         end
       end.sort_by { |starts, length, match| [starts, length, match.name] }.first(SEARCH_LIMIT).map(&:last)
@@ -93,7 +105,11 @@ module Catalogue
       end.group_by { |row| row[:name].downcase }
     end
 
+    # A ship's name is its row's; the game-file catalogues read theirs off the
+    # build the listed scope joined.
     private def name_sql(prefix)
+      return "models.name" if prefix == "ship"
+
       CATALOGUES.fetch(prefix).fact_sql(:name).to_s
     end
   end

@@ -11,7 +11,7 @@ module V1
         properties: {
           token: {type: :string, description: "The token text between `[*` and `*]`, as written or to be inserted"},
           name: {type: :string},
-          type: {type: :string, enum: %w[Component Equipment Commodity]},
+          type: {type: :string, enum: %w[Component Equipment Commodity Model Blueprint GameMission]},
           slug: {type: :string}
         }
       })

@@ -48,6 +48,37 @@ module Catalogue
       assert_empty resolved("Nothing By This Name", "", "component:")
     end
 
+    test "resolves a ship, a blueprint and a mission by their prefix only" do
+      ship = create(:model, name: "Carrack")
+      blueprint = create(:blueprint, name: "Omnisky IX Cannon")
+      mission = create(:game_mission, name: "Ambush: Outlaw Freighter")
+
+      assert_equal(
+        {
+          "ship:Carrack" => ["Model", ship.slug],
+          "blueprint:Omnisky IX Cannon" => ["Blueprint", blueprint.slug],
+          "mission:Ambush: Outlaw Freighter" => ["GameMission", mission.slug]
+        },
+        resolved("ship:Carrack", "blueprint:Omnisky IX Cannon", "mission:Ambush: Outlaw Freighter")
+      )
+      assert_empty resolved("Carrack", "Omnisky IX Cannon")
+    end
+
+    # A blueprint has the name of what it crafts; a bare name keeps meaning
+    # the item it meant before blueprints could be named at all.
+    test "keeps a bare name on the item a blueprint shares it with" do
+      component = create(:component, name: "Omnisky IX Cannon")
+      create(:blueprint, name: "Omnisky IX Cannon")
+
+      assert_equal({"Omnisky IX Cannon" => ["Component", component.slug]}, resolved("Omnisky IX Cannon"))
+    end
+
+    test "ignores a hidden ship" do
+      create(:model, name: "Secret Ship", hidden: true)
+
+      assert_empty resolved("ship:Secret Ship")
+    end
+
     test "search offers names that resolve, with the token to insert" do
       create(:commodity, name: "Quantainium")
       create(:commodity, name: "Raw Quantainium")
@@ -63,6 +94,13 @@ module Catalogue
       create(:commodity, name: "Mercury")
 
       assert_equal ["commodity:Mercury", "component:Mercury"], @resolver.search("merc").map(&:token).sort
+    end
+
+    test "search always prefixes a ship, a blueprint or a mission" do
+      create(:model, name: "Carrack")
+      create(:component, name: "Carrack Engine")
+
+      assert_equal ["ship:Carrack", "Carrack Engine"], @resolver.search("carrack").map(&:token)
     end
 
     test "search needs two characters" do

@@ -18471,6 +18471,9 @@ components:
           - Component
           - Equipment
           - Commodity
+          - Model
+          - Blueprint
+          - GameMission
         slug:
           type: string
       title: CatalogueTokenMatch
