@@ -33,12 +33,16 @@ const { data: claimStatus } = useFleetFidClaim(() => props.fleet.slug);
 const incomingClaim = computed(() => claimStatus.value?.incoming);
 
 // An incoming claim has a deadline, so only the standing at-risk warning can
-// be put away -- and only where the caller allows it. Keyed by id: the slug
-// follows the FID, which another fleet can take over.
+// be put away -- and only where the caller allows it. Keyed by fleet and FID:
+// another fleet can take over the FID, and a changed FID is a new risk.
+const dismissalKey = computed(
+  () => `${props.fleet.id}:${props.fleet.fid.toUpperCase()}`,
+);
+
 const fidWarningDismissed = computed(
   () =>
     props.dismissible &&
-    fleetStore.dismissedFidWarnings.includes(props.fleet.id),
+    fleetStore.dismissedFidWarnings.includes(dismissalKey.value),
 );
 
 const showFidWarning = computed(
@@ -49,7 +53,7 @@ const showFidWarning = computed(
 );
 
 const dismissFidWarning = () => {
-  fleetStore.dismissFidWarning(props.fleet.id);
+  fleetStore.dismissFidWarning(dismissalKey.value);
 };
 </script>
 

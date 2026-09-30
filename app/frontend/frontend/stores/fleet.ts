@@ -120,9 +120,9 @@ export const useFleetStore = defineStore("fleet", {
     setSortFields(fields: FleetSortFieldsEnum[]) {
       this.sortFields = fields;
     },
-    dismissFidWarning(fleetId: string) {
-      if (!this.dismissedFidWarnings.includes(fleetId)) {
-        this.dismissedFidWarnings.push(fleetId);
+    dismissFidWarning(key: string) {
+      if (!this.dismissedFidWarnings.includes(key)) {
+        this.dismissedFidWarnings.push(key);
       }
     },
   },

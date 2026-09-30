@@ -82,7 +82,7 @@ describe("FleetFidNotice", () => {
 
   it("keeps the at-risk warning permanent unless asked otherwise", async () => {
     claimStatus.value = { availability: "unverified", fid: null };
-    const wrapper = await mountNotice({ fleet: fleet() }, ["fleet-a"]);
+    const wrapper = await mountNotice({ fleet: fleet() }, ["fleet-a:TEST"]);
 
     expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
     expect(wrapper.find('[data-test="alert-dismiss"]').exists()).toBe(false);
@@ -96,13 +96,13 @@ describe("FleetFidNotice", () => {
 
     await wrapper.find('[data-test="alert-dismiss"]').trigger("click");
 
-    expect(dismiss).toHaveBeenCalledWith("fleet-a");
+    expect(dismiss).toHaveBeenCalledWith("fleet-a:TEST");
   });
 
   it("hides a dismissed at-risk warning", async () => {
     claimStatus.value = { availability: "unverified", fid: null };
     const wrapper = await mountNotice({ fleet: fleet(), dismissible: true }, [
-      "fleet-a",
+      "fleet-a:TEST",
     ]);
 
     expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(
@@ -114,7 +114,17 @@ describe("FleetFidNotice", () => {
     claimStatus.value = { availability: "unverified", fid: null };
     const wrapper = await mountNotice(
       { fleet: fleet({ id: "fleet-b" }), dismissible: true },
-      ["fleet-a"],
+      ["fleet-a:TEST"],
+    );
+
+    expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
+  });
+
+  it("warns again once the fleet changes its FID", async () => {
+    claimStatus.value = { availability: "unverified", fid: null };
+    const wrapper = await mountNotice(
+      { fleet: fleet({ fid: "newid" }), dismissible: true },
+      ["fleet-a:TEST"],
     );
 
     expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
