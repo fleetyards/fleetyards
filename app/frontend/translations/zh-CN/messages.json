@@ -79,6 +79,9 @@
         "success": "通知设置已更新。",
         "failure": "无法保存您的通知设置。"
       },
+      "pushNotifications": {
+        "failure": "无法更新推送通知。"
+      },
       "updateAccount": {
         "success": "账户已更新。"
       },

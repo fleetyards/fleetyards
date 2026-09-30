@@ -13,7 +13,12 @@ module V1
           properties: {
             endpoint: {type: :string},
             expirationTime: {type: [:number, :null]},
-            keys: ::V1::Schemas::Inputs::PushSubscriptionKeysInput
+            keys: ::V1::Schemas::Inputs::PushSubscriptionKeysInput,
+            replaces: {
+              type: [:string, :null],
+              format: :uuid,
+              description: "The row of the endpoint this subscription renews; removed with it"
+            }
           },
           required: %w[endpoint keys]
         })

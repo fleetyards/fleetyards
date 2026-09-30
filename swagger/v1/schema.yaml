@@ -15156,6 +15156,54 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/push-subscriptions/{id}/touch":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Mark this browser's push subscription as still in use
+      tags:
+      - PushSubscriptions
+      operationId: touchPushSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PushSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/sc-data/builds":
     get:
       summary: SC Data Builds
@@ -31292,6 +31340,13 @@ components:
           - 'null'
         keys:
           "$ref": "#/components/schemas/PushSubscriptionKeysInput"
+        replaces:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The row of the endpoint this subscription renews; removed with
+            it
       required:
       - endpoint
       - keys

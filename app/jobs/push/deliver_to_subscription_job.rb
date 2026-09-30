@@ -30,16 +30,20 @@ module Push
       SocketError
     ].freeze
 
-    # Only while the browser still belongs to the notification's reader: a
-    # browser that moved accounts since must not pay for the old owner's sends.
+    # Only while the row is still the subscription this job was queued for: a
+    # browser that moved accounts, or renewed its keys, since must not pay for
+    # sends to what it was before.
     sidekiq_retries_exhausted do |job, _exception|
-      notification_id, subscription_id = job["args"]
+      notification_id, subscription_id, key_digest = job["args"]
       subscription = PushSubscription.find_by(id: subscription_id)
       owner_id = Notification.where(id: notification_id).pick(:user_id)
-      DeliverToSubscriptionJob.record_failure(subscription) if subscription && subscription.user_id == owner_id
+      next unless subscription && subscription.user_id == owner_id
+      next if key_digest && subscription.key_digest != key_digest
+
+      DeliverToSubscriptionJob.record_failure(subscription)
     end
 
-    def perform(notification_id, subscription_id)
+    def perform(notification_id, subscription_id, _key_digest = nil)
       notification = Notification.find_by(id: notification_id)
       subscription = PushSubscription.find_by(id: subscription_id)
       return if notification.blank? || subscription.blank?

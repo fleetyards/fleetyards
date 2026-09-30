@@ -2,6 +2,7 @@
 
 class PushSubscriptionPolicy < ApplicationPolicy
   alias_rule :index?, :create?, to: :show?
+  alias_rule :touch?, to: :destroy?
 
   def show?
     user.present?

@@ -52,6 +52,7 @@ declare global {
     NODE_ENV: string;
     GIT_REVISION: string;
     APPSIGNAL_KEY?: string;
+    VAPID_PUBLIC_KEY?: string;
     MAINTAINER_NAME: string;
     MAINTAINER_MAIL: string;
     MAINTAINER_ADDRESS_STREET: string;

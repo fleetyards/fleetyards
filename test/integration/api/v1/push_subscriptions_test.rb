@@ -66,6 +66,27 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/push-subscriptions/{id}/touch" do
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, required: true
+
+    put("Mark this browser's push subscription as still in use") do
+      operationId "touchPushSubscription"
+      tags "PushSubscriptions"
+      produces "application/json"
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["notifications", "notifications:write"]},
+        {OpenId: ["notifications", "notifications:write"]}
+      ]
+
+      response(200, "successful") { schema ::V1::Schemas::PushSubscription }
+      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
   FIREFOX = "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0"
   P256DH = "BNcRdreALRFXTkOOUHK1EtK2wtaz5Ry4YfYCA_0QTpQtUbVlUls0VJXg7A8u-Ts1XbjhazAkj7I99e8QcYP7DkM"
   AUTH = "tBHItJI5svbpez7KI4CCXg"
@@ -156,6 +177,16 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     assert_equal 1, PushSubscription.count
   end
 
+  test "POST with replaces removes the renewed endpoint's row" do
+    old = create(:push_subscription, user: @user)
+    sign_in @user
+
+    assert_api_response :post, 201, body: subscription_body.merge(replaces: old.id)
+
+    refute PushSubscription.exists?(old.id)
+    assert_equal 1, @user.push_subscriptions.count
+  end
+
   test "POST rejects an endpoint that is not a push service" do
     sign_in @user
 
@@ -204,6 +235,46 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :post, 403, body: subscription_body
+  end
+
+  test "PUT touch marks the browser as in use and keeps its failures" do
+    subscription = create(:push_subscription, user: @user, failure_count: 3)
+    subscription.update_columns(updated_at: 1.year.ago)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: subscription.id} do
+      assert_equal subscription.id, parsed_body["id"]
+    end
+
+    subscription.reload
+    assert_operator subscription.updated_at, :>, 1.minute.ago
+    assert_equal 3, subscription.failure_count
+  end
+
+  # A device removed in the meantime stays removed.
+  test "PUT touch for a removed subscription is not found and creates nothing" do
+    subscription = create(:push_subscription, user: @user)
+    subscription.destroy!
+    sign_in @user
+
+    assert_api_response :put, 404, path_params: {id: subscription.id}
+
+    assert_equal 0, PushSubscription.count
+  end
+
+  test "PUT touch of a subscription removed mid-request is not found" do
+    subscription = create(:push_subscription, user: @user)
+    PushSubscription.any_instance.stubs(:touch).returns(false)
+    sign_in @user
+
+    assert_api_response :put, 404, path_params: {id: subscription.id}
+  end
+
+  test "PUT touch of another user's subscription is not found" do
+    subscription = create(:push_subscription)
+    sign_in @user
+
+    assert_api_response :put, 404, path_params: {id: subscription.id}
   end
 
   test "DELETE unsubscribes a browser" do

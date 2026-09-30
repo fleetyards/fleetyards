@@ -79,6 +79,9 @@
         "success": "Configuración de Notificaciones actualizada.",
         "failure": "No se pudo guardar tu configuración de notificaciones."
       },
+      "pushNotifications": {
+        "failure": "No se pudieron actualizar las notificaciones push."
+      },
       "updateAccount": {
         "success": "Cuenta actualizada."
       },

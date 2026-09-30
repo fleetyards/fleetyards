@@ -77,7 +77,10 @@ class PushSubscription < ApplicationRecord
   #
   # Always stamps `updated_at`, even when nothing else changed: the cap keeps
   # the most recently subscribed devices.
-  def self.subscribe(user:, endpoint:, p256dh_key:, auth_key:, user_agent: nil)
+  # `replaces` names the row of the endpoint this one renews. It goes in the
+  # same transaction, before the cap: kept around as a recent device, the dead
+  # endpoint would push a live one past the cap instead of going itself.
+  def self.subscribe(user:, endpoint:, p256dh_key:, auth_key:, user_agent: nil, replaces: nil)
     attempts ||= 0
     subscription = find_or_initialize_by(endpoint:)
 
@@ -98,8 +101,11 @@ class PushSubscription < ApplicationRecord
       updated_at: Time.current
     )
 
-    if subscription.save
-      prune_beyond_cap(user)
+    transaction do
+      if subscription.save
+        user.push_subscriptions.where(id: replaces).where.not(id: subscription.id).delete_all if replaces.present?
+        prune_beyond_cap(user)
+      end
     end
 
     subscription
@@ -109,6 +115,12 @@ class PushSubscription < ApplicationRecord
     attempts += 1
     retry if attempts < 2
     raise
+  end
+
+  # Names the keys a push went out with without carrying them into the job
+  # queue, where they would sit unencrypted.
+  def key_digest
+    Digest::SHA256.hexdigest("#{p256dh_key}:#{auth_key}")
   end
 
   def self.prune_beyond_cap(user)

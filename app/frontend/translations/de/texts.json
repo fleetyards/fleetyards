@@ -152,7 +152,19 @@
           "onlineStatus": "Wenn dies aktiviert ist, sehen die Mitglieder deiner Flotten und deine Freunde einen Punkt neben deinem Namen, solange du FleetYards geöffnet hast. Beim Ausschalten wird er für sie ausgeblendet — sonst ändert sich nichts, und deine letzte Aktivität wird weiterhin angezeigt."
         },
         "notifications": {
-          "hint": "Lege fest, wie dich jedes Ereignis erreicht. App-Benachrichtigungen sammeln sich in deinem Benachrichtigungscenter, E-Mails gehen an die Adresse deines Kontos."
+          "hint": "Lege fest, wie dich jedes Ereignis erreicht. App-Benachrichtigungen sammeln sich in deinem Benachrichtigungscenter, E-Mails gehen an die Adresse deines Kontos.",
+          "push": {
+            "title": "Push-Benachrichtigungen",
+            "intro": "Erhalte Benachrichtigungen auf diesem Gerät, auch wenn FleetYards geschlossen ist. Welche als Push ankommen, legst du unten in der Spalte Push fest.",
+            "unsupported": "Dieser Browser kann keine Push-Benachrichtigungen empfangen. Auf einem iPhone oder iPad füge FleetYards zuerst zum Home-Bildschirm hinzu und öffne es von dort.",
+            "denied": "Benachrichtigungen sind für FleetYards in diesem Browser blockiert. Erlaube sie in den Website-Einstellungen des Browsers und lade die Seite dann neu.",
+            "on": "Push-Benachrichtigungen sind für dieses Gerät aktiviert.",
+            "off": "Push-Benachrichtigungen sind für dieses Gerät deaktiviert.",
+            "device": "%{browser} auf %{os}",
+            "unknownDevice": "Unbekannter Browser",
+            "thisDevice": "(dieses Gerät)",
+            "failed": "Der Status der Push-Benachrichtigungen für dieses Gerät konnte nicht geprüft werden. Lade die Seite neu, um es erneut zu versuchen."
+          }
         }
       },
       "signup": {

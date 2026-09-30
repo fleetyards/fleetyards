@@ -152,7 +152,19 @@
           "onlineStatus": "When this is enabled, the members of your fleets and your friends see a dot next to your name while you have FleetYards open. Turning it off hides it from them — nothing else changes, and your last activity is still shown."
         },
         "notifications": {
-          "hint": "Pick how each event reaches you. App notifications are collected in your notification center, mail goes to your account's address."
+          "hint": "Pick how each event reaches you. App notifications are collected in your notification center, mail goes to your account's address.",
+          "push": {
+            "title": "Push notifications",
+            "intro": "Get notifications on this device even while FleetYards is closed. Which ones arrive as push is set in the Push column below.",
+            "unsupported": "This browser can't receive push notifications. On an iPhone or iPad, add FleetYards to your Home Screen and open it from there.",
+            "denied": "Notifications are blocked for FleetYards in this browser. Allow them in the browser's site settings, then reload this page.",
+            "on": "Push notifications are on for this device.",
+            "off": "Push notifications are off for this device.",
+            "device": "%{browser} on %{os}",
+            "unknownDevice": "Unknown browser",
+            "thisDevice": "(this device)",
+            "failed": "Push notifications could not be checked for this device. Reload the page to try again."
+          }
         }
       },
       "signup": {
