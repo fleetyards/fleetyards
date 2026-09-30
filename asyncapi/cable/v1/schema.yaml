@@ -538,6 +538,8 @@ components:
           - "$ref": "#/components/schemas/ComponentSalvageModifier"
         durability:
           "$ref": "#/components/schemas/ComponentDurability"
+        temperature:
+          "$ref": "#/components/schemas/ComponentTemperature"
         hardpoints:
           type: array
           items:
@@ -1196,6 +1198,26 @@ components:
         sensitivity:
           type: number
         piercing:
+          type: number
+      additionalProperties: false
+    ComponentTemperature:
+      type: object
+      properties:
+        minCoolingTemperature:
+          type: number
+        overheatTemperature:
+          type: number
+        overheatWarningTemperature:
+          type: number
+        overheatRecoveryTemperature:
+          type: number
+        misfireMinTemperature:
+          type: number
+        misfireMaxTemperature:
+          type: number
+        irStartTemperature:
+          type: number
+        irPerKelvin:
           type: number
       additionalProperties: false
     ComponentThruster:

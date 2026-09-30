@@ -46,11 +46,15 @@ end
 json.tags component.tags
 json.required_tags component.required_tags
 
-# `inventoryConsumption`, `ammunition`, `powerConnection` and `heatConnection`
-# are all absent on purpose. The last three are raw game-file dumps --
-# `heat_connection` alone carries 22 different keys across the table, mixing
-# `MaxCoolingRate` with `cooling_rate` in the same hash -- so no honest schema
-# can describe them until the parser gives them consistent keys. The first is
+if (temperature = component.temperature).present?
+  json.temperature do
+    temperature.each { |key, value| json.set! key, value }
+  end
+end
+
+# `inventoryConsumption`, `ammunition` and `powerConnection` are all absent on
+# purpose. The last two are raw game-file dumps, so no honest schema can
+# describe them until the parser gives them consistent keys. The first is
 # documented as a string it has never been, and correcting that type is a
 # breaking change that belongs with that parser cleanup rather than here. The live power figures are in `typeData.powerRanges` regardless.
 

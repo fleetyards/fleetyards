@@ -456,4 +456,16 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert_in_delta 0.05, spread["decay"]
     end
   end
+
+  test "GET /components serves a component's temperature model, and none from the old heat dump" do
+    create(:component, name: "Tempprobe Hot", heat_connection: {"overheat_temperature" => 383.0, "ir_per_kelvin" => 10.0})
+    create(:component, name: "Tempprobe Stale", heat_connection: {"MaxTemperature" => 450.0, "MaxCoolingRate" => 1.0})
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Tempprobe"}} do
+      by_name = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert_equal({"overheatTemperature" => 383.0, "irPerKelvin" => 10.0}, by_name["Tempprobe Hot"]["temperature"])
+      assert_not by_name["Tempprobe Stale"].key?("temperature")
+    end
+  end
 end
