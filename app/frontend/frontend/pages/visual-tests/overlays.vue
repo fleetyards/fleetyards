@@ -17,11 +17,12 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
-import StatsPopover from "@/shared/components/StatsPopover/index.vue";
+import BasePopover from "@/shared/components/Popover/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
-import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
 import {
   EquipmentTypeEnum,
+  type Commodity,
   type Component,
   type Equipment,
 } from "@/services/fyApi";
@@ -168,6 +169,18 @@ const demoArmor = {
   radiationProtection: 12000,
   volume: 0.035,
 } as unknown as Equipment;
+
+const demoCommodity = {
+  id: "demo-commodity",
+  name: "Agricium",
+  slug: "agricium",
+  commodityType: "metal",
+  containerSizes: [1, 2, 4, 8, 16, 24, 32],
+  consumable: false,
+  counted: false,
+  sellPrice: 2640,
+  buyPrice: 2410,
+} as unknown as Commodity;
 </script>
 
 <template>
@@ -254,41 +267,40 @@ const demoArmor = {
     </div>
   </Teleport>
 
-  <Heading :level="HeadingLevelEnum.H2">StatsPopover</Heading>
+  <Heading :level="HeadingLevelEnum.H2">Popover</Heading>
   <p>
     Hover a name with a mouse, or focus it with the keyboard, and its stats card
     opens after a short delay; the pointer can cross into the card. On touch the
     first tap opens the card instead of following the link, and a tap outside,
-    Escape or a scroll closes it. The plain-text trigger has no link, so it is
-    focusable on its own.
+    Escape or a scroll closes it. Each of these carries its record, so nothing
+    is fetched; the armour has no page link here and is focusable on its own.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
-      <StatsPopover
-        :label="demoCooler.name"
-        data-test="stats-popover-demo-link"
-      >
-        <a href="#stats-popover">{{ demoCooler.name }}</a>
-        <template #content="{ close }">
-          <ComponentStatsCard :component="demoCooler" @navigate="close" />
-        </template>
-      </StatsPopover>
-      <StatsPopover
-        :label="demoArmor.name"
-        placement="top"
-        data-test="stats-popover-demo-text"
-      >
-        {{ demoArmor.name }}
-        <template #content="{ close }">
-          <EquipmentStatsCard :equipment="demoArmor" @navigate="close" />
-        </template>
-      </StatsPopover>
-      <StatsPopover label="Loading" data-test="stats-popover-demo-loading">
-        <a href="#stats-popover">Still loading</a>
+      <span data-test="popover-demo-component">
+        <CatalogueItemPopover
+          :item="{ type: 'Component', slug: 'glacier', name: 'Glacier' }"
+          :record="demoCooler"
+        />
+      </span>
+      <span data-test="popover-demo-equipment">
+        <CatalogueItemPopover
+          :item="{ type: 'Equipment', name: demoArmor.name, listed: false }"
+          :record="demoArmor"
+        />
+      </span>
+      <span data-test="popover-demo-commodity">
+        <CatalogueItemPopover
+          :item="{ type: 'Commodity', slug: 'agricium', name: 'Agricium' }"
+          :record="demoCommodity"
+        />
+      </span>
+      <BasePopover label="Loading" data-test="popover-demo-loading">
+        <a href="#popover">Still loading</a>
         <template #content>
-          <ComponentStatsCard loading />
+          <ComponentStatsCard compact loading />
         </template>
-      </StatsPopover>
+      </BasePopover>
     </div>
   </div>
 
