@@ -608,10 +608,9 @@ module ScData
         if values.dig("Components", "SCItemTurretParams")
           turret_data = values.dig("Components", "SCItemTurretParams")
           item[:type_data] = {
-            min_yaw: turret_data.dig("movementParams", "SItemTurretMovementParams", "yawLimits", "min")&.to_f,
-            max_yaw: turret_data.dig("movementParams", "SItemTurretMovementParams", "yawLimits", "max")&.to_f,
-            min_pitch: turret_data.dig("movementParams", "SItemTurretMovementParams", "pitchLimits", "min")&.to_f,
-            max_pitch: turret_data.dig("movementParams", "SItemTurretMovementParams", "pitchLimits", "max")&.to_f
+            yaw_speed: extract_turret_axis_speed(turret_data, "yawAxis"),
+            pitch_speed: extract_turret_axis_speed(turret_data, "pitchAxis"),
+            control: extract_turret_control(values, turret_data, item[:sub_type], tags)
           }.compact
         end
 
@@ -655,6 +654,32 @@ module ScData
         PlasmaCannon NeutronCannon TachyonCannon
         ScatterGun MassDriver
       ].freeze
+
+      # A mount turns on one joint per axis, each with its own top speed in
+      # degrees per second. A slaved joint only follows another one, so it says
+      # nothing about how fast the operator can aim.
+      private def extract_turret_axis_speed(turret_data, axis)
+        joints = Array.wrap(turret_data.dig("movementList", "SCItemTurretJointMovementParams"))
+        driven = joints.reject { |joint| joint["slavedOnly"] == "1" }
+        speeds = (driven.presence || joints).filter_map do |joint|
+          Array.wrap(joint[axis]).first&.dig("SCItemTurretJointMovementAxisParams", "speed")&.to_f
+        end
+
+        speeds.max
+      end
+
+      # Who aims the mount. Nothing marks a pilot's gimbal as such: it is the
+      # mount with none of these, and a gimbal inside a manned or remote turret
+      # is aimed by that turret's operator instead.
+      private def extract_turret_control(values, turret_data, sub_type, tags)
+        if sub_type == "PDCTurret" || tags.include?("PDC")
+          "pds"
+        elsif turret_data.dig("remoteTurret", "SCItemTurretRemoteParams").present?
+          "remote"
+        elsif sub_type == "MannedTurret" || values.dig("Components", "SCItemSeatParams").present?
+          "manned"
+        end
+      end
 
       private def extract_item_class(tags)
         # Longest match first so "DistortionScatterGun" is not read as

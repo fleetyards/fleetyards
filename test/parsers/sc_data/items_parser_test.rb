@@ -139,7 +139,70 @@ module ScData
         assert_in_delta 1.05, type_data["signal_cross_section"]
       end
 
-      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", components: "")
+      test "reads a mount's turn rate per axis off its joints" do
+        write_turret("mount_gimbal_s3", yaw_speed: 80, pitch_speed: 60)
+
+        type_data = parsed_item("mount_gimbal_s3")["type_data"]
+
+        assert_in_delta 80.0, type_data["yaw_speed"]
+        assert_in_delta 60.0, type_data["pitch_speed"]
+        assert_nil type_data["control"]
+      end
+
+      test "leaves a slaved joint out of the turn rate" do
+        write_turret("slaved_turret", yaw_speed: 35, pitch_speed: 35, extra_joints: <<~XML)
+          <SCItemTurretJointMovementParams jointName="follower" slavedOnly="1">
+            <yawAxis>
+              <SCItemTurretJointMovementAxisParams speed="200" />
+            </yawAxis>
+          </SCItemTurretJointMovementParams>
+        XML
+
+        assert_in_delta 35.0, parsed_item("slaved_turret")["type_data"]["yaw_speed"]
+      end
+
+      test "marks a turret aimed from a remote seat" do
+        write_turret("remote_turret", remote: true)
+
+        assert_equal "remote", parsed_item("remote_turret")["type_data"]["control"]
+      end
+
+      test "marks a turret with its own seat as manned" do
+        write_turret("manned_turret", type: "TurretBase", sub_type: "MannedTurret")
+
+        assert_equal "manned", parsed_item("manned_turret")["type_data"]["control"]
+      end
+
+      test "marks a point-defence turret as such, even though it is remote" do
+        write_turret("pdc_turret", sub_type: "PDCTurret", remote: true)
+
+        assert_equal "pds", parsed_item("pdc_turret")["type_data"]["control"]
+      end
+
+      private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, extra_joints: "")
+        remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
+
+        write_item(key, name: "@item_Name#{key}", category: "turret", type:, sub_type:, components: <<~XML)
+          <SCItemTurretParams rotationStyle="SingleAxis">
+            <movementList>
+              <SCItemTurretJointMovementParams jointName="yaw_part" slavedOnly="0">
+                <yawAxis>
+                  <SCItemTurretJointMovementAxisParams speed="#{yaw_speed}" />
+                </yawAxis>
+              </SCItemTurretJointMovementParams>
+              <SCItemTurretJointMovementParams jointName="pitch_part" slavedOnly="0">
+                <pitchAxis>
+                  <SCItemTurretJointMovementAxisParams speed="#{pitch_speed}" />
+                </pitchAxis>
+              </SCItemTurretJointMovementParams>
+              #{extra_joints}
+            </movementList>
+            #{remote_params}
+          </SCItemTurretParams>
+        XML
+      end
+
+      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", type: "Armor", sub_type: "UNDEFINED", components: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
         FileUtils.mkdir_p(folder)
@@ -148,7 +211,7 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="Armor" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{tags || key}" RequiredTags="#{required_tags}">
+                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{tags || key}" RequiredTags="#{required_tags}">
                   <Localization Name="#{name}" ShortName="#{short_name}" Description="#{description}" />
                 </AttachDef>
               </SAttachableComponentParams>
