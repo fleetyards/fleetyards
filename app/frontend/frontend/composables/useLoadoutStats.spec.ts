@@ -3,6 +3,8 @@ import {
   HardpointCategoryEnum,
   type Hardpoint,
   type ComponentWeapon,
+  type ComponentTurret,
+  ComponentTurretControlEnum,
 } from "@/services/fyApi";
 import { computeLoadoutStats } from "./useLoadoutStats";
 import { WEAPON_POOL_PORT } from "./useLoadoutSim";
@@ -44,6 +46,25 @@ function plant(powerBase = 40): Hardpoint {
     updatedAt: "",
   } as Hardpoint;
 }
+
+function mount(
+  typeData: ComponentTurret,
+  children: Hardpoint[],
+  category: HardpointCategoryEnum = HardpointCategoryEnum.TURRET,
+): Hardpoint {
+  return {
+    id: Math.random().toString(),
+    name: "mount",
+    category,
+    component: { name: "Mount", typeData } as Hardpoint["component"],
+    hardpoints: children,
+    createdAt: "",
+    updatedAt: "",
+  } as Hardpoint;
+}
+
+const gun = (energy: number) =>
+  weaponHardpoint({ fireRate: 60, damagePerShot: { energy } });
 
 describe("computeLoadoutStats", () => {
   it("returns empty stats when there are no weapons", () => {
@@ -241,5 +262,51 @@ describe("computeLoadoutStats", () => {
     expect(on.dps.total).toBeCloseTo(100);
     expect(on.alpha.total).toBeCloseTo(100);
     expect(on.sustainedDps.total).toBeCloseTo(50);
+  });
+
+  describe("DPS by control group", () => {
+    it("credits a gun on the hull or a plain gimbal to the pilot", () => {
+      const stats = computeLoadoutStats([
+        gun(10),
+        mount({ yawSpeed: 80 }, [gun(20)], HardpointCategoryEnum.WEAPON_MOUNTS),
+      ]);
+
+      expect(stats.dpsByControl).toEqual({
+        pilot: 30,
+        manned: 0,
+        remote: 0,
+        pds: 0,
+      });
+      expect(stats.weapons.every((w) => w.control === "pilot")).toBe(true);
+    });
+
+    it("splits the manned, remote and point-defence turrets out", () => {
+      const stats = computeLoadoutStats([
+        gun(10),
+        mount({ control: ComponentTurretControlEnum.MANNED }, [gun(20)]),
+        mount({ control: ComponentTurretControlEnum.REMOTE }, [gun(30)]),
+        mount({ control: ComponentTurretControlEnum.PDS }, [gun(40)]),
+      ]);
+
+      expect(stats.dpsByControl).toEqual({
+        pilot: 10,
+        manned: 20,
+        remote: 30,
+        pds: 40,
+      });
+      expect(stats.dps.total).toBe(100);
+    });
+
+    it("lets the outermost turret decide for a gimbal inside it", () => {
+      const stats = computeLoadoutStats([
+        mount({ control: ComponentTurretControlEnum.MANNED }, [
+          mount({ control: ComponentTurretControlEnum.REMOTE }, [gun(25)]),
+        ]),
+      ]);
+
+      expect(stats.dpsByControl.manned).toBe(25);
+      expect(stats.dpsByControl.remote).toBe(0);
+      expect(stats.weapons[0].control).toBe("manned");
+    });
   });
 });

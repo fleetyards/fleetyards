@@ -981,6 +981,7 @@
         "damageEnergy": "能量",
         "damageDistortion": "扭曲",
         "damageThermal": "熱能",
+        "controlComposition": "依操控分類的DPS",
         "controlGroups": {
           "pilot": "駕駛員",
           "manned": "有人砲塔",

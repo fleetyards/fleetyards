@@ -981,6 +981,7 @@
         "damageEnergy": "Energy",
         "damageDistortion": "Distortion",
         "damageThermal": "Thermal",
+        "controlComposition": "DPS by Control",
         "controlGroups": {
           "pilot": "Pilot",
           "manned": "Manned Turret",

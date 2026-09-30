@@ -981,6 +981,7 @@
         "damageEnergy": "Energie",
         "damageDistortion": "Distortion",
         "damageThermal": "Thermisch",
+        "controlComposition": "DPS nach Steuerung",
         "controlGroups": {
           "pilot": "Pilot",
           "manned": "Bemannter Geschützturm",

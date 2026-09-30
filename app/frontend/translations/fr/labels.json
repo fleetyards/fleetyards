@@ -981,6 +981,7 @@
         "damageEnergy": "Énergie",
         "damageDistortion": "Distorsion",
         "damageThermal": "Thermique",
+        "controlComposition": "DPS par contrôle",
         "controlGroups": {
           "pilot": "Pilote",
           "manned": "Tourelle habitée",

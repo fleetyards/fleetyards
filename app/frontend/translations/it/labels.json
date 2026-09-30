@@ -981,6 +981,7 @@
         "damageEnergy": "Energia",
         "damageDistortion": "Distorsione",
         "damageThermal": "Termico",
+        "controlComposition": "DPS per controllo",
         "controlGroups": {
           "pilot": "Pilota",
           "manned": "Torretta con equipaggio",
