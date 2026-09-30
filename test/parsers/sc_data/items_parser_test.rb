@@ -277,6 +277,63 @@ module ScData
         assert_equal "pds", parsed_item("pdc_turret")["type_data"]["control"]
       end
 
+      test "reads a missile's lock cone, flight phases and fuse" do
+        write_item("misl_probe", name: "@item_Namemisl_probe", category: "weapons", components: <<~XML)
+          <SCItemMissileParams maxLifetime="15" armTime="1.5" explosionSafetyDistance="5">
+            <targetingParams trackingSignalType="Infrared" trackingSignalMin="15" lockTime="0.5" lockingAngle="60"
+              lockRangeMin="1700" lockRangeMax="10000" signalResilienceMin="1" signalResilienceMax="1.7" allowDumbFiring="1" />
+            <GCSParams linearSpeed="1372" boostPhaseDuration="2" terminalPhaseEngagementTime="1"
+              terminalPhaseEngagementAngle="45" fuelTankSize="30" />
+            <explosionParams minRadius="3" maxRadius="5">
+              <damage><DamageInfo DamagePhysical="650" /></damage>
+            </explosionParams>
+          </SCItemMissileParams>
+        XML
+
+        type_data = parsed_item("misl_probe")["type_data"]
+
+        assert_in_delta 60.0, type_data["lock_angle"]
+        assert_in_delta 1.7, type_data["signal_resilience_max"]
+        assert type_data["dumbfire"]
+        assert_in_delta 2.0, type_data["boost_phase_duration"]
+        assert_in_delta 1.0, type_data["terminal_phase_time"]
+        assert_in_delta 30.0, type_data["fuel_tank_size"]
+        assert_in_delta 1.5, type_data["arm_time"]
+        assert_in_delta 5.0, type_data["safety_distance"]
+        assert_in_delta 3.0, type_data["blast_radius_min"]
+        assert_in_delta 5.0, type_data["blast_radius_max"]
+        assert_in_delta 20_580.0, type_data["range"]
+      end
+
+      test "reads a bomb's warhead, fuse and drop angle" do
+        write_item("bomb_probe", name: "@item_Namebomb_probe", category: "weapons", components: <<~XML)
+          <SCItemBombParams maxLifetime="300" armTime="3" explosionSafetyDistance="50" maximumDropAngleFromFlatFlight="90">
+            <explosionParams minRadius="100" maxRadius="100">
+              <damage><DamageInfo DamagePhysical="22346" DamageEnergy="24356" /></damage>
+            </explosionParams>
+          </SCItemBombParams>
+        XML
+
+        type_data = parsed_item("bomb_probe")["type_data"]
+
+        assert_in_delta 22_346.0, type_data["damage_per_shot"]["physical"]
+        assert_in_delta 24_356.0, type_data["damage_per_shot"]["energy"]
+        assert_in_delta 90.0, type_data["max_drop_angle"]
+        assert_in_delta 3.0, type_data["arm_time"]
+        assert_in_delta 100.0, type_data["blast_radius_max"]
+      end
+
+      test "reads a rack's launch delay and whether it ignites on the pylon" do
+        write_item("mrck_probe", name: "@item_Namemrck_probe", category: "missile_racks", components: <<~XML)
+          <SCItemMissileRackParams launchDelay="0.125" igniteOnPylon="0" />
+        XML
+
+        type_data = parsed_item("mrck_probe")["type_data"]
+
+        assert_in_delta 0.125, type_data["launch_delay"]
+        refute type_data["ignite_on_pylon"]
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 
