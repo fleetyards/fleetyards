@@ -67,6 +67,8 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
   end
 
   FIREFOX = "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0"
+  P256DH = "BNcRdreALRFXTkOOUHK1EtK2wtaz5Ry4YfYCA_0QTpQtUbVlUls0VJXg7A8u-Ts1XbjhazAkj7I99e8QcYP7DkM"
+  AUTH = "tBHItJI5svbpez7KI4CCXg"
 
   setup do
     @user = create(:user)
@@ -75,7 +77,7 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
   end
 
   def subscription_body(endpoint: "https://fcm.googleapis.com/fcm/send/abc")
-    {endpoint:, expirationTime: nil, keys: {p256dh: "p256dh-key", auth: "auth-key"}}
+    {endpoint:, expirationTime: nil, keys: {p256dh: P256DH, auth: AUTH}}
   end
 
   test "GET lists the user's own subscriptions" do
@@ -139,8 +141,8 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
 
     subscription = @user.push_subscriptions.sole
     assert_equal "https://fcm.googleapis.com/fcm/send/abc", subscription.endpoint
-    assert_equal "p256dh-key", subscription.p256dh_key
-    assert_equal "auth-key", subscription.auth_key
+    assert_equal P256DH, subscription.p256dh_key
+    assert_equal AUTH, subscription.auth_key
   end
 
   test "POST with a known endpoint answers with the same row" do
@@ -160,6 +162,15 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, body: subscription_body(endpoint: "https://169.254.169.254/latest/meta-data")
 
     assert_equal 0, PushSubscription.count
+  end
+
+  test "POST of another user's endpoint without its keys is a bad request" do
+    subscription = create(:push_subscription, endpoint: "https://fcm.googleapis.com/fcm/send/abc", auth_key: Base64.urlsafe_encode64("0123456789abcdef", padding: false))
+    sign_in @user
+
+    assert_api_response :post, 400, body: subscription_body
+
+    assert_equal subscription.user_id, subscription.reload.user_id
   end
 
   test "POST without keys is a bad request" do

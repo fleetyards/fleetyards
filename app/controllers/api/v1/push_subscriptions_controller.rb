@@ -26,8 +26,6 @@ module Api
       def create
         authorize! with: PushSubscriptionPolicy
 
-        known = PushSubscription.exists?(endpoint: subscription_params[:endpoint])
-
         @push_subscription = PushSubscription.subscribe(
           user: current_resource_owner,
           endpoint: subscription_params[:endpoint],
@@ -37,7 +35,7 @@ module Api
         )
 
         if @push_subscription.persisted? && @push_subscription.errors.empty?
-          render :show, status: known ? :ok : :created
+          render :show, status: @push_subscription.previously_new_record? ? :created : :ok
         else
           render json: ValidationError.new("push_subscription", errors: @push_subscription.errors), status: :bad_request
         end

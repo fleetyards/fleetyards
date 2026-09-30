@@ -41,6 +41,11 @@ class PushSubscription < ApplicationRecord
 
   USER_AGENT_MAX = 255
 
+  # RFC 8291: an uncompressed P-256 point and a 16-byte secret. Anything else
+  # cannot be encrypted to, so it is not a subscription.
+  P256DH_BYTES = 65
+  AUTH_BYTES = 16
+
   belongs_to :user
 
   # Endpoint plus keys is a capability: whoever holds them can push to that
@@ -51,20 +56,33 @@ class PushSubscription < ApplicationRecord
 
   validates :endpoint, :p256dh_key, :auth_key, presence: true
   validate :endpoint_is_a_push_service
+  validate :keys_are_well_formed
 
-  # A known endpoint is the same device subscribing again, possibly under a
-  # different account after a second login on a shared browser, so it moves
-  # rather than failing the unique index.
+  # A known endpoint is the same device subscribing again, so it updates the
+  # row rather than failing the unique index. It moves to another account only
+  # with the same keys -- a second login on a shared browser sends them, while
+  # someone who merely learned the endpoint does not have the auth secret.
+  #
+  # Always stamps `updated_at`, even when nothing else changed: the cap keeps
+  # the most recently subscribed devices.
   def self.subscribe(user:, endpoint:, p256dh_key:, auth_key:, user_agent: nil)
     attempts ||= 0
     subscription = find_or_initialize_by(endpoint:)
+
+    if subscription.persisted? && subscription.user_id != user.id &&
+        !(subscription.p256dh_key == p256dh_key && subscription.auth_key == auth_key)
+      subscription.errors.add(:endpoint, :taken)
+      return subscription
+    end
+
     subscription.assign_attributes(
       user:,
       p256dh_key:,
       auth_key:,
       user_agent: user_agent&.truncate(USER_AGENT_MAX),
       failure_count: 0,
-      last_failed_at: nil
+      last_failed_at: nil,
+      updated_at: Time.current
     )
 
     if subscription.save
@@ -97,5 +115,19 @@ class PushSubscription < ApplicationRecord
     errors.add(:endpoint, :invalid)
   rescue URI::InvalidURIError
     errors.add(:endpoint, :invalid)
+  end
+
+  private def keys_are_well_formed
+    p256dh = decode_key(p256dh_key)
+    errors.add(:p256dh_key, :invalid) if p256dh_key.present? && !(p256dh&.bytesize == P256DH_BYTES && p256dh.getbyte(0) == 0x04)
+
+    auth = decode_key(auth_key)
+    errors.add(:auth_key, :invalid) if auth_key.present? && auth&.bytesize != AUTH_BYTES
+  end
+
+  private def decode_key(value)
+    Base64.urlsafe_decode64(value.to_s)
+  rescue ArgumentError
+    nil
   end
 end

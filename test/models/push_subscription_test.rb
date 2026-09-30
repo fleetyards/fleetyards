@@ -28,12 +28,16 @@
 require "test_helper"
 
 class PushSubscriptionTest < ActiveSupport::TestCase
+  P256DH = "BNcRdreALRFXTkOOUHK1EtK2wtaz5Ry4YfYCA_0QTpQtUbVlUls0VJXg7A8u-Ts1XbjhazAkj7I99e8QcYP7DkM"
+  AUTH = "tBHItJI5svbpez7KI4CCXg"
+  OTHER_AUTH = Base64.urlsafe_encode64("0123456789abcdef", padding: false)
+
   setup do
     @user = create(:user)
   end
 
-  def subscribe(user: @user, endpoint: "https://fcm.googleapis.com/fcm/send/abc", **attrs)
-    PushSubscription.subscribe(user:, endpoint:, p256dh_key: "p256dh", auth_key: "auth", **attrs)
+  def subscribe(user: @user, endpoint: "https://fcm.googleapis.com/fcm/send/abc", p256dh_key: P256DH, auth_key: AUTH, **attrs)
+    PushSubscription.subscribe(user:, endpoint:, p256dh_key:, auth_key:, **attrs)
   end
 
   test "subscribing creates a row for the user" do
@@ -47,18 +51,18 @@ class PushSubscriptionTest < ActiveSupport::TestCase
     first = subscribe
     first.update_columns(failure_count: 3, last_failed_at: 1.day.ago)
 
-    second = subscribe(auth_key: "rotated")
+    second = subscribe(auth_key: OTHER_AUTH)
 
     assert_equal first.id, second.id
     assert_equal 1, PushSubscription.count
-    assert_equal "rotated", second.reload.auth_key
+    assert_equal OTHER_AUTH, second.reload.auth_key
     assert_equal 0, second.failure_count
     assert_nil second.last_failed_at
   end
 
   # A shared browser, a second login: the device now belongs to whoever
   # subscribed it last.
-  test "a known endpoint subscribed by another user moves to that user" do
+  test "a known endpoint subscribed by another user with the same keys moves to that user" do
     subscribe
     other = create(:user)
 
@@ -66,6 +70,37 @@ class PushSubscriptionTest < ActiveSupport::TestCase
 
     assert_empty @user.push_subscriptions.reload
     assert_equal 1, other.push_subscriptions.count
+  end
+
+  # Knowing an endpoint is not holding the subscription: without its auth
+  # secret nobody can take the device away from its owner.
+  test "another user without the keys cannot take a known endpoint" do
+    subscribe
+    other = create(:user)
+
+    subscription = subscribe(user: other, auth_key: OTHER_AUTH)
+
+    assert subscription.errors.added?(:endpoint, :taken)
+    assert_equal 1, @user.push_subscriptions.count
+    assert_equal AUTH, @user.push_subscriptions.sole.auth_key
+    assert_empty other.push_subscriptions
+  end
+
+  test "re-subscribing with nothing changed still counts as recent for the cap" do
+    subscription = subscribe
+    subscription.update_columns(updated_at: 1.year.ago)
+
+    subscribe
+
+    assert_operator subscription.reload.updated_at, :>, 1.minute.ago
+  end
+
+  test "rejects keys that are not an RFC 8291 key pair" do
+    subscription = subscribe(p256dh_key: "not-a-key", auth_key: Base64.urlsafe_encode64("short", padding: false))
+
+    refute subscription.persisted?
+    assert subscription.errors.added?(:p256dh_key, :invalid)
+    assert subscription.errors.added?(:auth_key, :invalid)
   end
 
   test "keeps only the newest subscriptions past the per-user cap" do
@@ -135,8 +170,8 @@ class PushSubscriptionTest < ActiveSupport::TestCase
     )
 
     refute_includes row["endpoint"], "fcm.googleapis.com"
-    refute_equal "p256dh", row["p256dh_key"]
-    refute_equal "auth", row["auth_key"]
+    refute_equal P256DH, row["p256dh_key"]
+    refute_equal AUTH, row["auth_key"]
     assert_equal "https://fcm.googleapis.com/fcm/send/abc", subscription.reload.endpoint
   end
 
