@@ -12,7 +12,12 @@ module Shared
             thrustCapacity: {type: :number},
             thrusterType: {type: :string},
             thrusterClass: ::Shared::V1::Schemas::Enums::ThrusterClassEnum,
-            fuelBurnRatePer10KNewton: {type: :number}
+            fuelBurnRatePer10KNewton: {type: :number},
+            vtolOnly: {type: :boolean},
+            gimbal: ComponentThrusterGimbal,
+            powerRanges: ComponentPowerRanges,
+            signatureEm: {type: :number},
+            signatureIr: {type: :number}
           },
           additionalProperties: false,
           required: %w[thrustCapacity thrusterType fuelBurnRatePer10KNewton]

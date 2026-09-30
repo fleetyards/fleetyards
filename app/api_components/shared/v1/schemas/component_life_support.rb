@@ -3,26 +3,22 @@
 module Shared
   module V1
     module Schemas
-      class ComponentRadar
+      class ComponentLifeSupport
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            signatureDetection: ComponentSignatureDetection,
-            pingProperties: ComponentPingProperties,
-            aimAssistRange: {type: :number},
-            aimAssistMin: {type: :number},
-            # Metres past the aim-assist range before assist lets go.
-            aimAssistBuffer: {type: :number},
-            sensitivityModifiers: ComponentSensitivityModifiers,
+            # Life-support units generated per second.
+            lifeSupportGeneration: {type: :number},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
             signatureEm: {type: :number},
             signatureIr: {type: :number}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          required: %w[lifeSupportGeneration]
         })
       end
     end

@@ -3,16 +3,17 @@
 module Shared
   module V1
     module Schemas
-      class ComponentSignatureSensitivity
+      class ComponentThrusterGimbal
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            sensitivity: {type: :number},
-            piercing: {type: :number},
-            passive: {type: :boolean},
-            active: {type: :boolean}
+            # How far an articulated nozzle swings, in degrees from centre.
+            minPitch: {type: :number},
+            maxPitch: {type: :number},
+            minYaw: {type: :number},
+            maxYaw: {type: :number}
           },
           additionalProperties: false
         })

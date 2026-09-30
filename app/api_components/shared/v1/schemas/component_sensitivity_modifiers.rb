@@ -9,7 +9,9 @@ module Shared
         schema({
           type: :object,
           properties: {
-            sensitivityAddition: {type: :number}
+            sensitivityAddition: {type: :number},
+            # The contact group the offset applies to, as the game names it.
+            contactGroup: {type: :string}
           },
           additionalProperties: false
         })

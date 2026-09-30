@@ -3,19 +3,17 @@
 module Shared
   module V1
     module Schemas
-      class ComponentRadar
+      class ComponentQuantumEnforcement
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            signatureDetection: ComponentSignatureDetection,
-            pingProperties: ComponentPingProperties,
-            aimAssistRange: {type: :number},
-            aimAssistMin: {type: :number},
-            # Metres past the aim-assist range before assist lets go.
-            aimAssistBuffer: {type: :number},
-            sensitivityModifiers: ComponentSensitivityModifiers,
+            basePowerDrawFraction: {type: :number},
+            pulsePowerFraction: {type: :number},
+            jammerPowerFraction: {type: :number},
+            jammerSettings: ComponentQuantumJammer,
+            quantumInterdictionPulseSettings: ComponentQuantumInterdictionPulse,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

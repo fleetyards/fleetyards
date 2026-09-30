@@ -18791,6 +18791,9 @@ components:
           - "$ref": "#/components/schemas/ComponentPowerPlant"
           - "$ref": "#/components/schemas/ComponentMiningModule"
           - "$ref": "#/components/schemas/ComponentSalvageModifier"
+          - "$ref": "#/components/schemas/ComponentEmp"
+          - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
+          - "$ref": "#/components/schemas/ComponentLifeSupport"
         durability:
           "$ref": "#/components/schemas/ComponentDurability"
         hardpoints:
@@ -19071,6 +19074,39 @@ components:
           "$ref": "#/components/schemas/ComponentDistortion"
       additionalProperties: false
       title: ComponentDurability
+    ComponentEmp:
+      type: object
+      properties:
+        chargeTime:
+          type: number
+        unleashTime:
+          type: number
+        cooldownTime:
+          type: number
+        distortionDamage:
+          type: number
+        empRadius:
+          type: number
+        minEmpRadius:
+          type: number
+        physRadius:
+          type: number
+        minPhysRadius:
+          type: number
+        pressure:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      title: ComponentEmp
     ComponentItemClassEnum:
       type: string
       enum:
@@ -19117,6 +19153,25 @@ components:
           type: number
       additionalProperties: false
       title: ComponentJumpDrive
+    ComponentLifeSupport:
+      type: object
+      properties:
+        lifeSupportGeneration:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      required:
+      - lifeSupportGeneration
+      title: ComponentLifeSupport
     ComponentMiningLaser:
       type: object
       properties:
@@ -19422,6 +19477,75 @@ components:
           type: number
       additionalProperties: false
       title: ComponentQuantumDriveJump
+    ComponentQuantumEnforcement:
+      type: object
+      properties:
+        basePowerDrawFraction:
+          type: number
+        pulsePowerFraction:
+          type: number
+        jammerPowerFraction:
+          type: number
+        jammerSettings:
+          "$ref": "#/components/schemas/ComponentQuantumJammer"
+        quantumInterdictionPulseSettings:
+          "$ref": "#/components/schemas/ComponentQuantumInterdictionPulse"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      title: ComponentQuantumEnforcement
+    ComponentQuantumInterdictionPulse:
+      type: object
+      properties:
+        chargeTimeSecs:
+          type: number
+        dischargeTimeSecs:
+          type: number
+        cooldownTimeSecs:
+          type: number
+        radiusMeters:
+          type: number
+        decreaseChargeRateTimeSeconds:
+          type: number
+        increaseChargeRateTimeSeconds:
+          type: number
+        activationPhaseDurationSeconds:
+          type: number
+        disperseChargeTimeSeconds:
+          type: number
+        maxPowerDraw:
+          type: number
+        stopChargingPowerDrawFraction:
+          type: number
+        maxChargeRatePowerDrawFraction:
+          type: number
+        activePowerDrawFraction:
+          type: number
+        tetheringPowerDrawFraction:
+          type: number
+        greenZoneCheckRange:
+          type: number
+      additionalProperties: false
+      title: ComponentQuantumInterdictionPulse
+    ComponentQuantumJammer:
+      type: object
+      properties:
+        jammerRange:
+          type: number
+        maxPowerDraw:
+          type: number
+        greenZoneCheckRange:
+          type: number
+      additionalProperties: false
+      title: ComponentQuantumJammer
     ComponentQuery:
       type: object
       properties:
@@ -19580,6 +19704,8 @@ components:
           type: number
         aimAssistMin:
           type: number
+        aimAssistBuffer:
+          type: number
         sensitivityModifiers:
           "$ref": "#/components/schemas/ComponentSensitivityModifiers"
         powerConsumption:
@@ -19589,6 +19715,8 @@ components:
         powerRanges:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
+          type: number
+        signatureIr:
           type: number
       additionalProperties: false
       title: ComponentRadar
@@ -19623,6 +19751,8 @@ components:
       properties:
         sensitivityAddition:
           type: number
+        contactGroup:
+          type: string
       additionalProperties: false
       title: ComponentSensitivityModifiers
     ComponentShield:
@@ -19638,6 +19768,18 @@ components:
           type: number
         damagedRegenDelay:
           type: number
+        reservePoolInitialHealthRatio:
+          type: number
+        reservePoolMaxHealthRatio:
+          type: number
+        reservePoolRegenRateRatio:
+          type: number
+        reservePoolDrainRateRatio:
+          type: number
+        electricalChargeDamageResistance:
+          type: number
+        stunParams:
+          "$ref": "#/components/schemas/ComponentShieldStun"
         resistance:
           "$ref": "#/components/schemas/ComponentDamageTypeMap"
         absorption:
@@ -19650,11 +19792,26 @@ components:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
+        signatureIr:
+          type: number
       additionalProperties: false
       required:
       - maxHealth
       - maxRegen
       title: ComponentShield
+    ComponentShieldStun:
+      type: object
+      properties:
+        minAlphaDamageRatio:
+          type: number
+        maxAlphaDamageRatio:
+          type: number
+        minStunTime:
+          type: number
+        maxStunTime:
+          type: number
+      additionalProperties: false
+      title: ComponentShieldStun
     ComponentSignatureDetection:
       type: object
       properties:
@@ -19675,6 +19832,10 @@ components:
           type: number
         piercing:
           type: number
+        passive:
+          type: boolean
+        active:
+          type: boolean
       additionalProperties: false
       title: ComponentSignatureSensitivity
     ComponentThruster:
@@ -19688,12 +19849,35 @@ components:
           "$ref": "#/components/schemas/ThrusterClassEnum"
         fuelBurnRatePer10KNewton:
           type: number
+        vtolOnly:
+          type: boolean
+        gimbal:
+          "$ref": "#/components/schemas/ComponentThrusterGimbal"
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
       additionalProperties: false
       required:
       - thrustCapacity
       - thrusterType
       - fuelBurnRatePer10KNewton
       title: ComponentThruster
+    ComponentThrusterGimbal:
+      type: object
+      properties:
+        minPitch:
+          type: number
+        maxPitch:
+          type: number
+        minYaw:
+          type: number
+        maxYaw:
+          type: number
+      additionalProperties: false
+      title: ComponentThrusterGimbal
     ComponentTractorBeam:
       type: object
       properties:

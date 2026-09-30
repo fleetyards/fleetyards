@@ -3,16 +3,16 @@
 module Shared
   module V1
     module Schemas
-      class ComponentSignatureSensitivity
+      class ComponentShieldStun
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            sensitivity: {type: :number},
-            piercing: {type: :number},
-            passive: {type: :boolean},
-            active: {type: :boolean}
+            minAlphaDamageRatio: {type: :number},
+            maxAlphaDamageRatio: {type: :number},
+            minStunTime: {type: :number},
+            maxStunTime: {type: :number}
           },
           additionalProperties: false
         })
