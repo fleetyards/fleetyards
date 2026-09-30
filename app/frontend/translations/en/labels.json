@@ -965,6 +965,7 @@
       },
       "combat": {
         "title": "Combat",
+        "openPenetrationCheck": "Penetration check",
         "dps": "Burst DPS",
         "dpsSub": "%{count} weapons",
         "sustained": "Sustained DPS",
@@ -1035,6 +1036,17 @@
         },
         "hint": "Shield and armor values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up.",
         "openDeflectionCheck": "Deflection check"
+      },
+      "penetrationCheck": {
+        "title": "Penetration Check",
+        "intro": "— which ships can its guns pierce?",
+        "noWeapons": "This loadout mounts no guns with per-shot damage to test.",
+        "weapons": "Weapons",
+        "shieldHealth": "Target shield health",
+        "armorHealth": "Target armor health",
+        "ship": "Ship",
+        "hoverHint": "Hover a ship for the per-weapon breakdown.",
+        "note": "Each selected gun is tested against every ship's shields and armor deflection with the same rules as the deflection check; a ship is pierced when any one of them gets through, and ranked by the gun that comes closest. Ships without armor are left out, since there is no threshold to cross."
       },
       "deflectionCheck": {
         "title": "Deflection Check",

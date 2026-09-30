@@ -965,6 +965,7 @@
       },
       "combat": {
         "title": "Combat",
+        "openPenetrationCheck": "Test de pénétration",
         "dps": "DPS en rafale",
         "dpsSub": "%{count} armes",
         "sustained": "DPS soutenu",
@@ -1035,6 +1036,17 @@
         },
         "hint": "Valeurs de bouclier et de blindage de l'équipement par défaut. Une absorption inférieure à 100 % signifie que ce type de dégâts atteint la coque alors que les boucliers sont encore actifs.",
         "openDeflectionCheck": "Test de déflexion"
+      },
+      "penetrationCheck": {
+        "title": "Test de pénétration",
+        "intro": "— quels vaisseaux ses armes peuvent-elles percer ?",
+        "noWeapons": "Cette configuration n'embarque aucun canon avec des dégâts par tir à tester.",
+        "weapons": "Armes",
+        "shieldHealth": "Santé du bouclier de la cible",
+        "armorHealth": "Santé du blindage de la cible",
+        "ship": "Vaisseau",
+        "hoverHint": "Survolez un vaisseau pour le détail par arme.",
+        "note": "Chaque canon sélectionné est testé contre les boucliers et la déflexion du blindage de chaque vaisseau selon les mêmes règles que le test de déflexion ; un vaisseau est percé dès que l'un d'eux passe, et classé selon le canon qui s'en approche le plus. Les vaisseaux sans blindage sont exclus, faute de seuil à franchir."
       },
       "deflectionCheck": {
         "title": "Test de déflexion",

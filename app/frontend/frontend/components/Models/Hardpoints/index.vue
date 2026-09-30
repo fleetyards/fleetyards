@@ -240,6 +240,7 @@ useMetricsMasonry(metricsGrid);
       <div v-if="showMetrics" ref="metricsGrid" class="metrics-grid">
         <ModelCombatMetrics
           :hardpoints="loadoutHardpoints"
+          :model-name="model.name"
           :loading="loadingHardpoints"
         />
         <ModelPowerDistribution

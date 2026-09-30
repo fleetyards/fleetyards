@@ -965,6 +965,7 @@
       },
       "combat": {
         "title": "Combate",
+        "openPenetrationCheck": "Comprobación de penetración",
         "dps": "DPS de ráfaga",
         "dpsSub": "%{count} armas",
         "sustained": "DPS sostenido",
@@ -1035,6 +1036,17 @@
         },
         "hint": "Valores de escudo y blindaje de la configuración por defecto. Una absorción inferior al 100 % significa que ese tipo de daño alcanza el casco incluso con los escudos activos.",
         "openDeflectionCheck": "Comprobación de deflexión"
+      },
+      "penetrationCheck": {
+        "title": "Comprobación de penetración",
+        "intro": "— ¿qué naves pueden perforar sus armas?",
+        "noWeapons": "Esta configuración no monta cañones con daño por disparo que comprobar.",
+        "weapons": "Armas",
+        "shieldHealth": "Salud del escudo del objetivo",
+        "armorHealth": "Salud del blindaje del objetivo",
+        "ship": "Nave",
+        "hoverHint": "Pasa el cursor sobre una nave para ver el desglose por arma.",
+        "note": "Cada cañón seleccionado se compara con los escudos y la deflexión del blindaje de cada nave con las mismas reglas que la comprobación de deflexión; una nave queda perforada cuando cualquiera de ellos lo consigue, y se ordena por el cañón que más se acerca. Las naves sin blindaje se omiten, ya que no hay umbral que superar."
       },
       "deflectionCheck": {
         "title": "Comprobación de deflexión",

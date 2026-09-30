@@ -965,6 +965,7 @@
       },
       "combat": {
         "title": "戰鬥",
+        "openPenetrationCheck": "穿透檢測",
         "dps": "爆發 DPS",
         "dpsSub": "%{count} 件武器",
         "sustained": "持續 DPS",
@@ -1035,6 +1036,17 @@
         },
         "hint": "以預設配置計算的護盾與裝甲數值。吸收率低於 100% 表示該傷害類型在護盾還撐著的時候就會打到船體。",
         "openDeflectionCheck": "偏轉檢測"
+      },
+      "penetrationCheck": {
+        "title": "穿透檢測",
+        "intro": "— 它的武器能擊穿哪些艦船？",
+        "noWeapons": "此配裝沒有可檢測單發傷害的機砲。",
+        "weapons": "武器",
+        "shieldHealth": "目標護盾狀態",
+        "armorHealth": "目標裝甲狀態",
+        "ship": "艦船",
+        "hoverHint": "將滑鼠停在艦船上查看各武器明細。",
+        "note": "每門選取的機砲都依照與偏轉檢測相同的規則，與每艘艦船的護盾和裝甲偏轉進行比較；只要其中任一門能夠擊穿，該艦船即視為被擊穿，並依最接近閾值的機砲排序。沒有裝甲的艦船不在列表中，因為沒有可跨越的閾值。"
       },
       "deflectionCheck": {
         "title": "偏轉檢測",
