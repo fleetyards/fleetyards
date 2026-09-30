@@ -6,7 +6,7 @@ Stacked on #5330 (`fix/fleet-description-xss`), which introduces the Markdown de
 
 ## Goal
 
-A shared `FormMarkdownEditor` that edits a Markdown string through Tiptap, used by the fleet description forms, and whose output the `Markdown` renderer displays the way the editor showed it.
+A shared `FormMarkdownEditor` that edits a Markdown string through Tiptap, used by every fleet-written description (fleet, events, missions, contracts, squadrons), whose output the `Markdown` renderer displays the way the editor showed it.
 
 ## Open questions
 
@@ -29,6 +29,8 @@ Probed with the real extension (jsdom): Tiptap writes CommonMark escapes and ent
 ### Phase 3 — Wiring
 1. Fleet settings description (`pages/fleets/[slug]/settings/fleet.vue`).
 2. Admin fleet edit (`admin/pages/fleets/[id]/edit.vue`).
+3. Event (description, briefing, occurrence override, ship, team), mission (description, ship, team), contract and squadron description inputs.
+4. Their displays: full text through `Markdown`, table rows and panel ledes through `markdownToPlainText`, the ICS export through `MarkdownPlainText`.
 
 ### Phase 4 — Tests
 1. Round-trip every supported node through the editor unchanged.
@@ -65,9 +67,13 @@ Probed with the real extension (jsdom): Tiptap writes CommonMark escapes and ent
 - **2026-09-30** Tiptap 3.31.3 (`@tiptap/markdown`): soft line breaks, headings, lists, links, images round-trip unchanged. `:::center` round-trips with blank lines added inside (`:::center\n\n…\n\n:::`), which the renderer already reads. `createBlockMarkdownSpec` only matches `:::name` without a space, which is why #5330 writes `:::center`.
 - **2026-09-30** The serializer escapes `[`, `]`, `*`, `_` with backslashes and writes `&`, `<`, `>` as entities. Typed HTML in the source is parsed on load (inert DOMParser) and saved back as Markdown or dropped.
 - **2026-09-30** Hard breaks serialize as two trailing spaces; the renderer trims lines and joins a paragraph with `<br>`, so they display.
+- **2026-09-30** A block StarterKit has switched off is flattened on load (`1. a\n2. b` → `1. a 2. b`). Stored descriptions use numbered lists (1) and `----` underlined headings (2), so ordered lists and rules stay on and the renderer learned them; quote, strike and code block stay off (none stored).
+- **2026-09-30** StarterKit's trailing node leaves an empty paragraph after a closing image or block; `toMarkdown` trims it.
+- **2026-09-30** `@tiptap/vue-3` publishes editor state to templates two animation frames after a change, so toolbar pressed state lags a command by two frames (tests wait for it).
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
+- [ ] Browser check of the editor in the fleet settings and an event modal
