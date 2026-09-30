@@ -73,9 +73,9 @@ describe("Markdown", () => {
     expect(wrapper.text()).toContain("[*Attrition-3*]");
   });
 
-  it("centres the lines inside a ::: center block", async () => {
+  it("centres the lines inside a :::center block", async () => {
     const wrapper = await mount(
-      "::: center\nWelcome to the **Crew**\n\nsince 2950\n:::\nAfter",
+      ":::center\nWelcome to the **Crew**\n\nsince 2950\n:::\nAfter",
     );
 
     const centre = wrapper.find(".markdown__center");
@@ -84,8 +84,8 @@ describe("Markdown", () => {
     expect(centre.text()).not.toContain("After");
   });
 
-  it("closes an unterminated ::: center block and keeps a stray ::: as text", async () => {
-    const wrapper = await mount(":::\n::: center\nWelcome");
+  it("closes an unterminated :::center block and keeps a stray ::: as text", async () => {
+    const wrapper = await mount(":::\n:::center\nWelcome");
 
     expect(wrapper.text()).toContain(":::");
     expect(wrapper.find(".markdown__center").text()).toBe("Welcome");

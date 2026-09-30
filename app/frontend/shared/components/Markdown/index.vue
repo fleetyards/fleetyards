@@ -6,11 +6,12 @@ export default {
 
 <script lang="ts" setup>
 // Renders a small markdown subset: ATX headings, unordered lists, paragraphs,
-// bold, italic, inline code, links, images and a `::: center` ... `:::` block,
-// the container syntax markdown editors map to a custom node. Anything else is passed through
-// as text. Everything is HTML-escaped before a single tag is added, so the
-// result is safe to hand to v-html -- which is why user-written text (a fleet's
-// description) goes through here too.
+// bold, italic, inline code, links, images and a `:::center` ... `:::` block,
+// the container syntax Tiptap's markdown extension reads and writes (without a
+// space after the colons). Anything else is passed through as text. Everything
+// is HTML-escaped before a single tag is added, so the result is safe to hand
+// to v-html -- which is why user-written text (a fleet's description) goes
+// through here too.
 
 type Props = {
   source?: string;

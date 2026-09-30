@@ -35,7 +35,7 @@ class ConvertFleetDescriptionsToMarkdownTest < ActiveSupport::TestCase
 
     ConvertFleetDescriptionsToMarkdown.new.up
 
-    assert_equal "::: center\nWelcome to the\n**Crew**\n:::\n\nMore", @fleet.reload.description
+    assert_equal ":::center\nWelcome to the\n**Crew**\n:::\n\nMore", @fleet.reload.description
   end
 
   test "emphasis keeps its spaces outside the markers" do

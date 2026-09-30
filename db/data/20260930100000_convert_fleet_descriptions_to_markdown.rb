@@ -3,7 +3,7 @@
 # The fleet page used to hand the description to v-html, so some fleets wrote
 # HTML into it. It renders as markdown now, escaped, and those tags would show
 # up as text -- so they are rewritten into the markdown that means the same.
-# <center> becomes a `::: center` block; <u>, which markdown has no word for,
+# <center> becomes a `:::center` block; <u>, which markdown has no word for,
 # keeps its text and loses the tag.
 #
 # Only descriptions holding a tag are touched: `<< DAKKAR >>` or an arrow like
@@ -52,7 +52,7 @@ class ConvertFleetDescriptionsToMarkdown < ActiveRecord::Migration[8.1]
     when "a" then link(node)
     when "img" then image(node)
     when "ul", "ol" then list(node)
-    when "center" then "\n\n::: center\n#{render(node).strip}\n:::\n\n"
+    when "center" then "\n\n:::center\n#{render(node).strip}\n:::\n\n"
     when "p", "div" then "\n\n#{render(node).strip}\n\n"
     when /\Ah([1-6])\z/ then "\n\n#{"#" * [Regexp.last_match(1).to_i - 2, 1].max} #{render(node).strip}\n\n"
     else render(node)
