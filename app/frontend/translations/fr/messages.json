@@ -79,6 +79,9 @@
         "success": "Paramètres de notification mis à jour.",
         "failure": "Impossible d'enregistrer vos paramètres de notification."
       },
+      "pushNotifications": {
+        "failure": "Les notifications push n'ont pas pu être mises à jour."
+      },
       "updateAccount": {
         "success": "Compte mis à jour."
       },

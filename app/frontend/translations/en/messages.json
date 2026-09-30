@@ -79,6 +79,9 @@
         "success": "Notification Settings updated.",
         "failure": "Could not save your notification settings."
       },
+      "pushNotifications": {
+        "failure": "Push notifications could not be updated."
+      },
       "updateAccount": {
         "success": "Account updated."
       },

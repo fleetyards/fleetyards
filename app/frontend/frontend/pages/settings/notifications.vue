@@ -15,7 +15,10 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import PushDevices from "@/frontend/components/Notifications/PushDevices/index.vue";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
+  FeatureFlagName,
   type NotificationPreference,
   NotificationTypeEnum,
   getNotificationPreferencesQueryKey,
@@ -28,6 +31,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const { t } = useI18n();
 const { displayAlert } = useAppNotifications();
+const { isFeatureEnabled } = useFeatures();
 
 const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
   {
@@ -156,8 +160,9 @@ const supportsChannel = (
   return true;
 };
 
-// A channel nothing can deliver on is not a column of dead switches: push has
-// no sender yet, so it stays out of the table until one type reports it.
+// A channel nothing can deliver on is not a column of dead switches: push
+// stays out of the table until one type reports it, which the server only
+// does for readers with the flag, and where it holds a key to send with.
 const channels = computed(() =>
   CHANNELS.filter((channel) =>
     channel === "app"
@@ -280,6 +285,10 @@ const toggleGroup = (
   </div>
 
   <Loader :loading="isLoading" />
+
+  <!-- Above the table: its push switches do nothing on a device that never
+     subscribed. -->
+  <PushDevices v-if="isFeatureEnabled(FeatureFlagName.PUSH_NOTIFICATIONS)" />
 
   <Panel v-for="group in groups" :key="group.key">
     <PanelHeading :level="HeadingLevelEnum.H2">

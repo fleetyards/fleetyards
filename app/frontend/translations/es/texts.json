@@ -152,7 +152,18 @@
           "onlineStatus": "Cuando está activado, los miembros de tus flotas y tus amigos ven un punto junto a tu nombre mientras tienes FleetYards abierto. Al desactivarlo se les oculta: nada más cambia y tu última actividad se sigue mostrando."
         },
         "notifications": {
-          "hint": "Elige cómo te llega cada evento. Las notificaciones de la app se recogen en tu centro de notificaciones; el correo se envía a la dirección de tu cuenta."
+          "hint": "Elige cómo te llega cada evento. Las notificaciones de la app se recogen en tu centro de notificaciones; el correo se envía a la dirección de tu cuenta.",
+          "push": {
+            "title": "Notificaciones push",
+            "intro": "Recibe notificaciones en este dispositivo incluso con FleetYards cerrado. Cuáles llegan como push se elige en la columna Push de abajo.",
+            "unsupported": "Este navegador no puede recibir notificaciones push. En un iPhone o iPad, añade FleetYards a la pantalla de inicio y ábrelo desde allí.",
+            "denied": "Las notificaciones de FleetYards están bloqueadas en este navegador. Permítelas en la configuración del sitio del navegador y vuelve a cargar esta página.",
+            "on": "Las notificaciones push están activadas en este dispositivo.",
+            "off": "Las notificaciones push están desactivadas en este dispositivo.",
+            "device": "%{browser} en %{os}",
+            "unknownDevice": "Navegador desconocido",
+            "thisDevice": "(este dispositivo)"
+          }
         }
       },
       "signup": {

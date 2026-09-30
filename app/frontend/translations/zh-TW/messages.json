@@ -79,6 +79,9 @@
         "success": "通知設定已更新。",
         "failure": "無法儲存您的通知設定。"
       },
+      "pushNotifications": {
+        "failure": "無法更新推播通知。"
+      },
       "updateAccount": {
         "success": "帳戶已更新。"
       },

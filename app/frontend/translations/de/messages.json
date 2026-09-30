@@ -79,6 +79,9 @@
         "success": "Benachrichtigungs-Einstellungen aktualisiert.",
         "failure": "Deine Benachrichtigungseinstellungen konnten nicht gespeichert werden."
       },
+      "pushNotifications": {
+        "failure": "Push-Benachrichtigungen konnten nicht aktualisiert werden."
+      },
       "updateAccount": {
         "success": "Konto aktualisiert."
       },
