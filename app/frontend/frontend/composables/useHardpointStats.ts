@@ -30,6 +30,10 @@ export type HardpointStat = {
   value: string;
   wide?: boolean;
   primary?: boolean;
+  // Figures that describe one mode of the item rather than the item itself --
+  // a quantum drive's spline jump -- which a detail page gives a card of their
+  // own. A row lists them with the rest; their labels already name the mode.
+  group?: string;
 };
 
 // Ordered, human-readable stats for a hardpoint's mounted component, most
@@ -73,6 +77,16 @@ export const useHardpointStats = (
     value: String(toNumber(Math.round(value), format)),
     primary,
   });
+
+  // One decimal, not rounded to a whole second: spool, cooldown and
+  // interdiction times are tenths (7.3 s, 2.6 s).
+  const secondsStat = (labelKey: string, value: number): HardpointStat => ({
+    label: t(`labels.hardpoint.${labelKey}`),
+    value: String(toNumber(value, "seconds")),
+  });
+
+  const splineAccel = (stageOne: number, stageTwo: number) =>
+    `${String(toNumber(stageOne / 1000))} / ${String(toNumber(stageTwo / 1000))} km/s²`;
 
   const resistanceStat = (labelKey: string, value: number): HardpointStat => ({
     label: t(`labels.hardpoint.${labelKey}`),
@@ -752,23 +766,10 @@ export const useHardpointStats = (
         });
       }
       if (qd.spoolUpTime) {
-        result.push(
-          stat("quantumDrives.spoolUpTime", qd.spoolUpTime, "spoolTime"),
-        );
+        result.push(secondsStat("quantumDrives.spoolUpTime", qd.spoolUpTime));
       }
       if (qd.cooldownTime) {
-        result.push(
-          stat("quantumDrives.cooldownTime", qd.cooldownTime, "cooldownTime"),
-        );
-      }
-      if (qd.splineJumpParams?.driveSpeed) {
-        result.push(
-          stat(
-            "quantumDrives.splineSpeed",
-            qd.splineJumpParams.driveSpeed,
-            "driveSpeed",
-          ),
-        );
+        result.push(secondsStat("quantumDrives.cooldownTime", qd.cooldownTime));
       }
       if (qd.stageOneAccelRate && qd.stageTwoAccelRate) {
         result.push({
@@ -778,6 +779,74 @@ export const useHardpointStats = (
           )} / ${String(toNumber(qd.stageTwoAccelRate / 1000, "integer"))} km/s²`,
         });
       }
+      if (qd.engageSpeed) {
+        result.push(
+          stat("quantumDrives.engageSpeed", qd.engageSpeed, "driveSpeed"),
+        );
+      }
+      if (qd.calibrationRate) {
+        result.push({
+          label: t("labels.hardpoint.quantumDrives.calibrationRate"),
+          value: `${String(toNumber(qd.calibrationRate, "integer"))}/s`,
+        });
+      }
+      if (qd.disconnectRange) {
+        result.push({
+          label: t("labels.hardpoint.quantumDrives.disconnectRange"),
+          value: `${String(toNumber(qd.disconnectRange / 1000))} km`,
+        });
+      }
+      if (qd.interdictionEffectTime) {
+        result.push(
+          secondsStat(
+            "quantumDrives.interdictionTime",
+            qd.interdictionEffectTime,
+          ),
+        );
+      }
+
+      const spline = qd.splineJumpParams;
+      const splineStats: HardpointStat[] = [];
+      if (spline?.driveSpeed) {
+        splineStats.push(
+          stat("quantumDrives.splineSpeed", spline.driveSpeed, "driveSpeed"),
+        );
+      }
+      // Stage one of a spline jump is a crawl -- 250 m/s² on most drives -- so
+      // both stages keep their decimal rather than rounding the first to 0.
+      if (
+        typeof spline?.stageOneAccelRate === "number" &&
+        spline.stageTwoAccelRate
+      ) {
+        splineStats.push({
+          label: t("labels.hardpoint.quantumDrives.splineAccel"),
+          value: splineAccel(
+            spline.stageOneAccelRate,
+            spline.stageTwoAccelRate,
+          ),
+        });
+      }
+      if (spline?.spoolUpTime) {
+        splineStats.push(
+          secondsStat("quantumDrives.splineSpoolUpTime", spline.spoolUpTime),
+        );
+      }
+      if (spline?.cooldownTime) {
+        splineStats.push(
+          secondsStat("quantumDrives.splineCooldownTime", spline.cooldownTime),
+        );
+      }
+      if (spline?.interdictionEffectTime) {
+        splineStats.push(
+          secondsStat(
+            "quantumDrives.splineInterdictionTime",
+            spline.interdictionEffectTime,
+          ),
+        );
+      }
+      result.push(
+        ...splineStats.map((entry) => ({ ...entry, group: "splineJump" })),
+      );
     } else if (category === HardpointCategoryEnum.JUMPDRIVE) {
       const jump = typeData as ComponentJumpDrive;
       // Alignment/tuning rates are small per-second fractions (0.2 vs 0.24) that
@@ -792,6 +861,17 @@ export const useHardpointStats = (
           value: `×${String(toNumber(jump.fuelUsageEfficiencyMultiplier))}`,
           primary: true,
         });
+      }
+      if (jump.exitSpeed) {
+        result.push(stat("jumpDrives.exitSpeed", jump.exitSpeed, "speed"));
+      }
+      if (jump.maxTunnelSpeed) {
+        result.push(
+          stat("jumpDrives.maxTunnelSpeed", jump.maxTunnelSpeed, "speed"),
+        );
+      }
+      if (jump.respoolTime) {
+        result.push(secondsStat("jumpDrives.respoolTime", jump.respoolTime));
       }
       if (jump.alignmentRate) {
         result.push({

@@ -10,12 +10,16 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import DurabilityMetrics from "@/frontend/components/Components/DurabilityMetrics/index.vue";
+import StatGroups from "@/frontend/components/Components/StatGroups/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
-import { useComponentStats } from "@/frontend/composables/useComponentStats";
+import {
+  useComponentStats,
+  useModeGroups,
+} from "@/frontend/composables/useComponentStats";
 import { useComponentDurability } from "@/frontend/composables/useComponentDurability";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import {
@@ -62,6 +66,12 @@ const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
 );
 
 const recipes = computed(() => blueprints.value?.items || []);
+
+// A mode of the item -- a quantum drive's spline jump -- gets a card of its
+// own beside the durability ones rather than a run of look-alike rows in the
+// metrics card, which then shows only the item's own figures.
+const itemStats = computed(() => stats.value.filter((stat) => !stat.group));
+const modeGroups = useModeGroups(stats);
 
 // One crumb, not two. `/catalogue/` is a redirect rather than a page of its
 // own, so a "Catalogue" step above would point at whichever tenant happens to
@@ -211,7 +221,9 @@ watch(
 
     <div class="component-page__columns">
       <ComponentStatsCard
-        v-if="stats.length || !durabilityGroups.length"
+        v-if="
+          itemStats.length || !(durabilityGroups.length || modeGroups.length)
+        "
         :component="component"
       />
 
@@ -233,6 +245,8 @@ watch(
             </div>
           </div>
         </MetricsCard>
+
+        <StatGroups :groups="modeGroups" test-prefix="mode" />
 
         <DurabilityMetrics :durability="component.durability" />
 

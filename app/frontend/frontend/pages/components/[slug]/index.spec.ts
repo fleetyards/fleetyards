@@ -87,4 +87,28 @@ describe("ComponentPage", () => {
     expect(titles(wrapper)).toContain("headlines.component.physical");
     expect(titles(wrapper)).not.toContain("headlines.component.metrics");
   });
+
+  it("gives a quantum drive's spline jump a card of its own", async () => {
+    const wrapper = await mountPage(
+      record({
+        category: "quantumdrive",
+        typeData: {
+          driveSpeed: 263_400_000,
+          splineJumpParams: { driveSpeed: 400_000, spoolUpTime: 6 },
+        },
+      } as Partial<Component>),
+    );
+
+    expect(titles(wrapper)).toContain("headlines.component.splineJump");
+
+    const metrics = wrapper
+      .findAll("section")
+      .find(
+        (section) =>
+          section.attributes("data-title") === "headlines.component.metrics",
+      );
+    expect(metrics?.text()).not.toContain(
+      "labels.hardpoint.quantumDrives.splineSpeed",
+    );
+  });
 });

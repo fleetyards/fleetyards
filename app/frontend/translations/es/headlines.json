@@ -510,7 +510,8 @@
         "physical": "Físico",
         "damageTaken": "Daño recibido",
         "selfRepair": "Autorreparación",
-        "distortion": "Distorsión"
+        "distortion": "Distorsión",
+        "splineJump": "Salto en órbita"
       },
       "commodity": {
         "priceHistory": "Histórico de precios",

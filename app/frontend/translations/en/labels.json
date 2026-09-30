@@ -1479,14 +1479,25 @@
           "spoolUpTime": "Spool Up",
           "cooldownTime": "Cooldown",
           "splineSpeed": "Orbit",
-          "accel": "Accel"
+          "accel": "Accel",
+          "engageSpeed": "Engage Speed",
+          "calibrationRate": "Calibration Rate",
+          "disconnectRange": "Disconnect Range",
+          "interdictionTime": "Interdiction Time",
+          "splineAccel": "Orbit Accel",
+          "splineSpoolUpTime": "Orbit Spool Up",
+          "splineCooldownTime": "Orbit Cooldown",
+          "splineInterdictionTime": "Orbit Interdiction"
         },
         "jumpDrives": {
           "fuelEfficiency": "Fuel Efficiency",
           "alignRate": "Align Rate",
           "tuneRate": "Tune Rate",
           "alignDecay": "Align Decay",
-          "tuneDecay": "Tune Decay"
+          "tuneDecay": "Tune Decay",
+          "exitSpeed": "Exit Speed",
+          "maxTunnelSpeed": "Max Tunnel Speed",
+          "respoolTime": "Respool"
         },
         "radar": {
           "aimAssistRange": "Assist Range",

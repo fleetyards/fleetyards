@@ -1479,14 +1479,25 @@
           "spoolUpTime": "蓄能",
           "cooldownTime": "冷却",
           "splineSpeed": "轨道",
-          "accel": "加速度"
+          "accel": "加速度",
+          "engageSpeed": "接入速度",
+          "calibrationRate": "校准速率",
+          "disconnectRange": "断开距离",
+          "interdictionTime": "拦截时长",
+          "splineAccel": "轨道加速",
+          "splineSpoolUpTime": "轨道预热",
+          "splineCooldownTime": "轨道冷却",
+          "splineInterdictionTime": "轨道拦截"
         },
         "jumpDrives": {
           "fuelEfficiency": "燃料效率",
           "alignRate": "校准速率",
           "tuneRate": "调谐速率",
           "alignDecay": "校准衰减",
-          "tuneDecay": "调谐衰减"
+          "tuneDecay": "调谐衰减",
+          "exitSpeed": "出口速度",
+          "maxTunnelSpeed": "隧道最高速度",
+          "respoolTime": "重新预热"
         },
         "radar": {
           "aimAssistRange": "辅助距离",

@@ -512,7 +512,8 @@
         "physical": "Physical",
         "damageTaken": "Damage taken",
         "selfRepair": "Self-repair",
-        "distortion": "Distortion"
+        "distortion": "Distortion",
+        "splineJump": "Orbit Jump"
       },
       "commodity": {
         "priceHistory": "Price History",
