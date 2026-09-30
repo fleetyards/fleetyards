@@ -638,6 +638,30 @@ components:
         signatureIr:
           type: number
       additionalProperties: false
+    ComponentBoostCapacitor:
+      type: object
+      properties:
+        capacity:
+          type: number
+        regenPerSecond:
+          type: number
+        regenDelay:
+          type: number
+        idleCost:
+          type: number
+        linearCost:
+          type: number
+        angularCost:
+          type: number
+        thresholdRatio:
+          type: number
+        preDelay:
+          type: number
+        rampUpTime:
+          type: number
+        rampDownTime:
+          type: number
+      additionalProperties: false
     ComponentClassEnum:
       type: string
       enum:
@@ -667,6 +691,8 @@ components:
           "$ref": "#/components/schemas/ComponentAngularVelocity"
         boostedAngularVelocity:
           "$ref": "#/components/schemas/ComponentAngularVelocity"
+        boostCapacitor:
+          "$ref": "#/components/schemas/ComponentBoostCapacitor"
         powerConsumption:
           type: number
         powerMinimumFraction:

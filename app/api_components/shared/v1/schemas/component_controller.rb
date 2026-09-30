@@ -15,6 +15,7 @@ module Shared
             maxSpeed: {type: :number},
             angularVelocity: ComponentAngularVelocity,
             boostedAngularVelocity: ComponentAngularVelocity,
+            boostCapacitor: ComponentBoostCapacitor,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

@@ -184,6 +184,23 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a flight controller's boost capacitor" do
+    create(:component, name: "Bladeprobe", category: "controller", component_type: "FlightController",
+      type_data: {
+        "scm_speed" => 262.0, "max_speed" => 1425.0,
+        "angular_velocity" => {"pitch" => 53.0, "yaw" => 48.0, "roll" => 190.0},
+        "boost_capacitor" => {"capacity" => 25.0, "regen_per_second" => 0.75, "regen_delay" => 1.1, "ramp_up_time" => 0.4}
+      })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Bladeprobe"}} do
+      capacitor = parsed_body["items"].sole["typeData"]["boostCapacitor"]
+
+      assert_in_delta 25.0, capacitor["capacity"]
+      assert_in_delta 1.1, capacitor["regenDelay"]
+      assert_in_delta 0.4, capacitor["rampUpTime"]
+    end
+  end
+
   test "GET /components serves a mount's turn rate, angle limits and who controls it" do
     create(:component, name: "Turretprobe", category: "turret",
       type_data: {
