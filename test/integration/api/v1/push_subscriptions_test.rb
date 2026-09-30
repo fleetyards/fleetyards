@@ -91,6 +91,20 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET answers null rather than leaving a field out" do
+    create(:push_subscription, user: @user, user_agent: nil)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      subscription = parsed_body.first
+      assert_includes subscription.keys, "lastDeliveredAt"
+      assert_includes subscription.keys, "browser"
+      assert_includes subscription.keys, "os"
+      assert_nil subscription["lastDeliveredAt"]
+      assert_nil subscription["browser"]
+    end
+  end
+
   test "GET with a notifications read token" do
     token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["notifications:read"])
 
