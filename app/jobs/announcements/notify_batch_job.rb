@@ -141,8 +141,11 @@ module Announcements
     private def mail(notifications, user_ids)
       return if user_ids.empty?
 
-      Notification.where(id: notification_ids(notifications, user_ids)).find_each do |notification|
-        AnnouncementMailer.published(notification).deliver_later
+      # Enqueued in each reader's locale, which is the one the mail renders in.
+      Notification.where(id: notification_ids(notifications, user_ids)).includes(:user).find_each do |notification|
+        I18n.with_locale(notification.user.notification_locale) do
+          AnnouncementMailer.published(notification).deliver_later
+        end
       end
     end
 

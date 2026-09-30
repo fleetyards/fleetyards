@@ -507,8 +507,15 @@ class Notification < ApplicationRecord
       UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash) if preference.app?
     end
 
+    # A mail job renders in the locale it was enqueued in, so enqueueing it in
+    # the reader's is what makes the whole mail -- greeting, buttons, subject --
+    # theirs, whoever caused the notification.
     deliver_channel(notification, :mail) do
-      mailer_for(notification.notification_type)&.call(notification) if preference.mail?
+      if preference.mail?
+        I18n.with_locale(notification.user.notification_locale) do
+          mailer_for(notification.notification_type)&.call(notification)
+        end
+      end
     end
 
     deliver_channel(notification, :push) do

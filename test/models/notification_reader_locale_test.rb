@@ -53,6 +53,18 @@ class NotificationReaderLocaleTest < ActiveSupport::TestCase
     assert_equal I18n.t("notifications.model_on_sale.title", model: model.name, locale: :fr), notification.title
   end
 
+  # A mail job renders in the locale it was enqueued in.
+  test "the mail is enqueued in the reader's language" do
+    reader = create(:user, locale: "it")
+    reader.notification_preferences.find_by!(notification_type: :fleet_invite).update!(mail: true)
+    enqueued_in = nil
+    Notification.stubs(:mailer_for).returns(->(_notification) { enqueued_in = I18n.locale })
+
+    I18n.with_locale(:en) { Notification.notify!(user: reader, type: :fleet_invite, title: "Invited") }
+
+    assert_equal :it, enqueued_in
+  end
+
   test "a reader without a usable locale gets English" do
     [nil, "", "xx"].each do |stored|
       reader = create(:user)
