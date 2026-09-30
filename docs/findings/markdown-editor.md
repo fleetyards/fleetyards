@@ -9,6 +9,7 @@ User-written descriptions are stored as Markdown, edited through `FormMarkdownEd
 - **Every block the renderer shows must exist as a node in the editor**, whether or not the toolbar offers it. Tiptap flattens a block it has no node for when the Markdown is loaded (`1. a\n2. b` became `1. a 2. b` with ordered lists switched off; a quote lost its `>`), and the next save writes the flattened text back. Underline is the only StarterKit mark left out, because Markdown cannot write it.
 - **Everything the editor can write must render the way the editor shows it.** Round-trip tests in `FormMarkdownEditor/extensions.spec.ts` render the editor's output with the real renderer for this reason.
 - **The URL rule is shared** (`shared/utils/MarkdownUrls.ts`): the renderer uses it to decide what becomes a link or an image, and the editor uses it to refuse what the page would not show.
+- **Images come only from Fleetyards and RSI.** The page's content security policy (`img-src`) loads nothing else, and a third-party host would receive every reader's address. `isSafeMarkdownSrc` builds its allowlist from `window.FRONTEND_ENDPOINT`, `API_ENDPOINT` and `RSI_ENDPOINT`. An image from anywhere else renders as a link named by its description. A new picture gets in by upload: `POST /v1/markdown-images` takes a direct-upload blob and returns the URL of a re-encoded WebP rendition, never the original file.
 
 ## What Tiptap's serializer writes
 
@@ -26,8 +27,9 @@ User-written descriptions are stored as Markdown, edited through `FormMarkdownEd
 - **URLs have to be checked after escapes are resolved.** The renderer replaces escapes and entities with placeholders before formatting. If a URL is checked while the placeholders are still in it, `[x](/\/host)` or `[x](/&#47;host)` passes as a same-origin path and reaches the browser as `//host`. `formatText` resolves the URL before calling the shared rule. The rule also refuses whitespace and control characters, which browsers strip while parsing a URL.
 - **Markdown reads `<word>` as an HTML tag, and the editor drops a tag it has no node for.** `protectHtml` passes `<` outside code as `&lt;` when content is loaded, so typed text like `<RSI handle>` survives a save.
 - **The trailing node.** StarterKit keeps an empty paragraph after a closing image or block so there is somewhere to type. It would serialize as trailing blank lines; `toMarkdown` trims it.
+- **One app modal at a time.** `AppModal` holds a single component and replaces it on the next `open-modal`. The editor often sits inside one (event and mission ship and team modals), so its image upload is a native `<dialog>` in the top layer, reusing `AppModalInner` with `onClose`.
 - **Reactivity lags by two frames.** `@tiptap/vue-3` publishes editor state to templates through a ref that triggers two `requestAnimationFrame`s after a change, so a toolbar's pressed state lags a command. Tests wait two frames.
-- **Loading is not a change.** Tiptap does not emit an update when content is set at creation, so opening a description does not dirty the form, even though its serialized form may differ (escapes, entities) from what is stored.
+- **Loading is not a change, and neither is focusing.** Tiptap does not emit on the content it is created with, but the first transaction (focusing the text is enough) lets StarterKit's trailing node append a paragraph, and the document then re-serializes with escapes and entities the stored text lacks. The editor records what the loaded document serializes to and, when an update produces exactly that, hands back the original text, so the form isn't dirtied and the stored text isn't rewritten.
 
 ## Where it is used
 
