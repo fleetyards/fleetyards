@@ -12,10 +12,12 @@ import { IMAGE_SIZES, type ImageSize } from "./extensions";
 
 type Props = {
   size?: ImageSize | null;
+  disabled?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   size: null,
+  disabled: false,
 });
 
 const emit = defineEmits<{
@@ -23,6 +25,12 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const root = ref<HTMLElement>();
+
+defineExpose({
+  containsFocus: () => !!root.value?.contains(document.activeElement),
+});
 
 const options: { size: ImageSize | null; key: string }[] = [
   ...IMAGE_SIZES.map((size) => ({ size, key: `imageSize${size}` })),
@@ -32,6 +40,7 @@ const options: { size: ImageSize | null; key: string }[] = [
 
 <template>
   <div
+    ref="root"
     class="markdown-image-size"
     role="toolbar"
     :aria-label="t('markdownEditor.imageSize')"
@@ -43,6 +52,7 @@ const options: { size: ImageSize | null; key: string }[] = [
         :key="option.key"
         :size="BtnSizesEnum.XS"
         :active="option.size === size"
+        :disabled="disabled"
         :aria-pressed="option.size === size"
         :data-test="`markdown-editor-image-size-${option.size ?? 'full'}`"
         @mousedown.prevent

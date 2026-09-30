@@ -312,6 +312,10 @@ const closeImageDialog = () => {
 
 // A selected image offers its size in a small toolbar over it -- while the
 // text is being edited, not because a description opens on an image.
+const imageSizeToolbar = ref<InstanceType<typeof ImageSizePanel>>();
+
+// Focus inside the toolbar counts as editing too: a keyboard user tabs from
+// the image into its buttons, and the text no longer has focus then.
 const showImageSize = ({
   editor: instance,
   view,
@@ -320,9 +324,10 @@ const showImageSize = ({
   view: TiptapEditor["view"];
 }) =>
   instance.isEditable &&
+  !props.disabled &&
   !sourceMode.value &&
-  view.hasFocus() &&
-  instance.isActive("image");
+  instance.isActive("image") &&
+  (view.hasFocus() || !!imageSizeToolbar.value?.containsFocus());
 
 // Inside the image's top edge rather than above it: above, it would sit on the
 // editor's own toolbar whenever the image is at the top of the text.
@@ -337,6 +342,8 @@ const imageSize = computed(
 );
 
 const setImageSize = (size: ImageSize | null) => {
+  if (props.disabled) return;
+
   editor.value?.chain().updateAttributes("image", { size }).run();
 };
 
@@ -486,7 +493,12 @@ defineExpose({ setFocus: focusEditor });
         :update-delay="0"
         :options="imageSizeMenuOptions"
       >
-        <ImageSizePanel :size="imageSize" @select="setImageSize" />
+        <ImageSizePanel
+          ref="imageSizeToolbar"
+          :size="imageSize"
+          :disabled="disabled"
+          @select="setImageSize"
+        />
       </BubbleMenu>
       <EditorContent
         v-show="!sourceMode"

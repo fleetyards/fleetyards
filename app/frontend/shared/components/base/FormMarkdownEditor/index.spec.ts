@@ -285,6 +285,35 @@ describe("FormMarkdownEditor", () => {
     );
   });
 
+  it("keeps the size toolbar while keyboard focus is inside it", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "![cover](https://robertsspaceindustries.com/a.jpg)",
+    });
+    const editor = editorOf(subject);
+    editor.chain().focus().setNodeSelection(0).run();
+    await nextFrames();
+
+    (sizeButton("50").element as HTMLElement).focus();
+    editor.view.dispatch(editor.state.tr.setMeta("probe", true));
+    await nextFrames();
+
+    expect(sizeToolbarShown()).toBe(true);
+  });
+
+  it("offers no size for an image while disabled", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "![cover](https://robertsspaceindustries.com/a.jpg)",
+      disabled: true,
+    });
+
+    editorOf(subject).chain().focus().setNodeSelection(0).run();
+    await nextFrames();
+
+    expect(sizeToolbarShown()).toBe(false);
+  });
+
   it("closes the link panel when the image dialog opens", async () => {
     const subject = await mountEditor({ name: "description", modelValue: "" });
 

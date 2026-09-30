@@ -77,17 +77,18 @@
     max-width: 100%;
     height: auto;
 
-    // A share of the column, never more than the picture's own width.
+    // At most a share of the column: a smaller picture keeps its own width
+    // rather than being stretched blurry.
     &[data-size="25"] {
-      width: 25%;
+      max-width: 25%;
     }
 
     &[data-size="50"] {
-      width: 50%;
+      max-width: 50%;
     }
 
     &[data-size="75"] {
-      width: 75%;
+      max-width: 75%;
     }
   }
 
