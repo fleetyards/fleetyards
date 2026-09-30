@@ -352,25 +352,25 @@ class Notification < ApplicationRecord
     fleet_rsi_verification_lost: {
       retention: 365.days,
       channels: %i[app mail],
-      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     fleet_fid_claim_opened: {
       retention: 365.days,
       channels: %i[app mail],
-      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     fleet_fid_claim_completed: {
       retention: 365.days,
       channels: %i[app mail],
-      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     fleet_fid_claim_cancelled: {
       retention: 365.days,
       channels: %i[app mail],
-      mailer: ->(notification) { FleetMailer.fleet_notification(notification).deliver_later },
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     rsi_handle_verification_lost: {

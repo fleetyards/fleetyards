@@ -50,8 +50,8 @@ fr:
         compte.
       expires: Ce code expirera dans 10 minutes.
       subject: Votre code de confirmation
-    fleet:
-      action: "Ouvrir les paramètres de la flotte"
+    notification:
+      action: "Voir sur FleetYards"
     hello: Bonjour %{username}
     model:
       new:
