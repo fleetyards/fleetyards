@@ -530,20 +530,24 @@ class Vehicle < ApplicationRecord
 
     if wanted?
       WishlistCreateChannel.broadcast_to(user, to_jbuilder_hash)
-      Notification.notify!(
-        user:,
-        type: :wishlist_create,
-        title: I18n.t("notifications.wishlist_create.title", model: model.name),
-        link: Rails.application.routes.url_helpers.frontend_hangar_path
-      )
+      I18n.with_locale(user.notification_locale) do
+        Notification.notify!(
+          user:,
+          type: :wishlist_create,
+          title: I18n.t("notifications.wishlist_create.title", model: model.name),
+          link: Rails.application.routes.url_helpers.frontend_hangar_path
+        )
+      end
     else
       HangarCreateChannel.broadcast_to(user, to_jbuilder_hash)
-      Notification.notify!(
-        user:,
-        type: :hangar_create,
-        title: I18n.t("notifications.hangar_create.title", model: model.name),
-        link: Rails.application.routes.url_helpers.frontend_hangar_path
-      )
+      I18n.with_locale(user.notification_locale) do
+        Notification.notify!(
+          user:,
+          type: :hangar_create,
+          title: I18n.t("notifications.hangar_create.title", model: model.name),
+          link: Rails.application.routes.url_helpers.frontend_hangar_path
+        )
+      end
     end
   end
 
@@ -552,20 +556,24 @@ class Vehicle < ApplicationRecord
 
     if wanted?
       WishlistDestroyChannel.broadcast_to(user, to_jbuilder_hash)
-      Notification.notify!(
-        user:,
-        type: :wishlist_destroy,
-        title: I18n.t("notifications.wishlist_destroy.title", model: model.name),
-        link: Rails.application.routes.url_helpers.frontend_hangar_path
-      )
+      I18n.with_locale(user.notification_locale) do
+        Notification.notify!(
+          user:,
+          type: :wishlist_destroy,
+          title: I18n.t("notifications.wishlist_destroy.title", model: model.name),
+          link: Rails.application.routes.url_helpers.frontend_hangar_path
+        )
+      end
     else
       HangarDestroyChannel.broadcast_to(user, to_jbuilder_hash)
-      Notification.notify!(
-        user:,
-        type: :hangar_destroy,
-        title: I18n.t("notifications.hangar_destroy.title", model: model.name),
-        link: Rails.application.routes.url_helpers.frontend_hangar_path
-      )
+      I18n.with_locale(user.notification_locale) do
+        Notification.notify!(
+          user:,
+          type: :hangar_destroy,
+          title: I18n.t("notifications.hangar_destroy.title", model: model.name),
+          link: Rails.application.routes.url_helpers.frontend_hangar_path
+        )
+      end
     end
   end
 

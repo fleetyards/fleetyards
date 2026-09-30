@@ -30,13 +30,15 @@ module Relationships
       type = :"#{prefix}_request_#{event}"
 
       recipients_for(party).each do |user|
-        ::Notification.notify!(
-          user: user,
-          type: type,
-          title: I18n.t("notifications.#{type}.title", **title_args(about, party)),
-          link: link_for(party, event),
-          record: @relationship
-        )
+        I18n.with_locale(user.notification_locale) do
+          ::Notification.notify!(
+            user: user,
+            type: type,
+            title: I18n.t("notifications.#{type}.title", **title_args(about, party)),
+            link: link_for(party, event),
+            record: @relationship
+          )
+        end
       end
     end
 

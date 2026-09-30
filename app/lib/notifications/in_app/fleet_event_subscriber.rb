@@ -71,9 +71,12 @@ module Notifications
         return unless event && in_app_enabled?(event.fleet, "fleet_event.published")
 
         eligible_users(event).each do |user|
-          notify(user, :fleet_event_published, event,
-            title: I18n.t("notifications.fleet_event.published.title", fleet: event.fleet.name, title: event.title),
-            body: I18n.t("notifications.fleet_event.published.body", fleet: event.fleet.name))
+          notify(user, :fleet_event_published, event) do
+            {
+              title: I18n.t("notifications.fleet_event.published.title", fleet: event.fleet.name, title: event.title),
+              body: I18n.t("notifications.fleet_event.published.body", fleet: event.fleet.name)
+            }
+          end
         end
       end
 
@@ -81,8 +84,11 @@ module Notifications
         return unless event && in_app_enabled?(event.fleet, "fleet_event.locked")
 
         signup_users(event).each do |user|
-          notify(user, :fleet_event_locked, event,
-            title: I18n.t("notifications.fleet_event.locked.title", title: event.title))
+          notify(user, :fleet_event_locked, event) do
+            {
+              title: I18n.t("notifications.fleet_event.locked.title", title: event.title)
+            }
+          end
         end
       end
 
@@ -90,8 +96,11 @@ module Notifications
         return unless event && in_app_enabled?(event.fleet, "fleet_event.starting_soon")
 
         signup_users(event).each do |user|
-          notify(user, :fleet_event_starting_soon, event,
-            title: I18n.t("notifications.fleet_event.starting_soon.title", title: event.title))
+          notify(user, :fleet_event_starting_soon, event) do
+            {
+              title: I18n.t("notifications.fleet_event.starting_soon.title", title: event.title)
+            }
+          end
         end
       end
 
@@ -99,8 +108,11 @@ module Notifications
         return unless event
 
         signup_users(event).each do |user|
-          notify(user, :fleet_event_started, event,
-            title: I18n.t("notifications.fleet_event.started.title", title: event.title))
+          notify(user, :fleet_event_started, event) do
+            {
+              title: I18n.t("notifications.fleet_event.started.title", title: event.title)
+            }
+          end
         end
       end
 
@@ -108,8 +120,11 @@ module Notifications
         return unless event
 
         signup_users(event).each do |user|
-          notify(user, :fleet_event_completed, event,
-            title: I18n.t("notifications.fleet_event.completed.title", title: event.title))
+          notify(user, :fleet_event_completed, event) do
+            {
+              title: I18n.t("notifications.fleet_event.completed.title", title: event.title)
+            }
+          end
         end
       end
 
@@ -117,9 +132,12 @@ module Notifications
         return unless event && in_app_enabled?(event.fleet, "fleet_event.cancelled")
 
         signup_users(event).each do |user|
-          notify(user, :fleet_event_cancelled, event,
-            title: I18n.t("notifications.fleet_event.cancelled.title", title: event.title),
-            body: event.cancelled_reason.presence)
+          notify(user, :fleet_event_cancelled, event) do
+            {
+              title: I18n.t("notifications.fleet_event.cancelled.title", title: event.title),
+              body: event.cancelled_reason.presence
+            }
+          end
         end
       end
 
@@ -129,10 +147,13 @@ module Notifications
         return unless target_event&.created_by
         return unless in_app_enabled?(target_event.fleet, "fleet_event_signup.created")
 
-        notify(target_event.created_by, :fleet_event_signup_added, target_event,
-          title: I18n.t("notifications.fleet_event_signup.added.title",
-            user: signup.user&.username || "Member",
-            title: target_event.title))
+        notify(target_event.created_by, :fleet_event_signup_added, target_event) do
+          {
+            title: I18n.t("notifications.fleet_event_signup.added.title",
+              user: signup.user&.username || "Member",
+              title: target_event.title)
+          }
+        end
       end
 
       def handle_signup_withdrawn
@@ -142,19 +163,25 @@ module Notifications
 
         # Member-side: notify the affected user when an admin kicked them.
         if @payload[:kicked] && signup.user
-          notify(signup.user, :fleet_event_signup_kicked, target_event,
-            title: I18n.t("notifications.fleet_event_signup.kicked.title",
-              title: target_event.title))
+          notify(signup.user, :fleet_event_signup_kicked, target_event) do
+            {
+              title: I18n.t("notifications.fleet_event_signup.kicked.title",
+                title: target_event.title)
+            }
+          end
         end
 
         # Creator-side: same notification regardless of who initiated.
         return unless target_event.created_by
         return unless in_app_enabled?(target_event.fleet, "fleet_event_signup.withdrawn")
 
-        notify(target_event.created_by, :fleet_event_signup_withdrawn, target_event,
-          title: I18n.t("notifications.fleet_event_signup.withdrawn.title",
-            user: signup.user&.username || "Member",
-            title: target_event.title))
+        notify(target_event.created_by, :fleet_event_signup_withdrawn, target_event) do
+          {
+            title: I18n.t("notifications.fleet_event_signup.withdrawn.title",
+              user: signup.user&.username || "Member",
+              title: target_event.title)
+          }
+        end
       end
 
       def handle_signup_status_changed
@@ -164,9 +191,12 @@ module Notifications
 
         # Member-side: notify when an admin promotes pending → confirmed.
         if @payload[:by_admin] && signup.status == "confirmed" && @payload[:previous_status] == "pending"
-          notify(signup.user, :fleet_event_signup_confirmed, target_event,
-            title: I18n.t("notifications.fleet_event_signup.confirmed.title",
-              title: target_event.title))
+          notify(signup.user, :fleet_event_signup_confirmed, target_event) do
+            {
+              title: I18n.t("notifications.fleet_event_signup.confirmed.title",
+                title: target_event.title)
+            }
+          end
         end
       end
 
@@ -176,10 +206,13 @@ module Notifications
         return unless target_event && signup.user
 
         slot_title = signup.fleet_event_slot&.title || target_event.title
-        notify(signup.user, :fleet_event_signup_assigned, target_event,
-          title: I18n.t("notifications.fleet_event_signup.assigned.title",
-            slot: slot_title,
-            title: target_event.title))
+        notify(signup.user, :fleet_event_signup_assigned, target_event) do
+          {
+            title: I18n.t("notifications.fleet_event_signup.assigned.title",
+              slot: slot_title,
+              title: target_event.title)
+          }
+        end
       end
 
       EVENT_MANAGE_PRIVILEGES = ["fleet:manage", "fleet:events:manage"].freeze
@@ -209,17 +242,26 @@ module Notifications
           .uniq
       end
 
-      def notify(user, type, target_event, title:, body: nil)
+      # The block builds the text, in the reader's own language: the title and
+      # body are stored, and one event reaches members who do not share one.
+      def notify(user, type, target_event)
+        return if user.blank?
+
         link = "/fleets/#{target_event.fleet.slug}/events/#{target_event.slug}"
-        Notification.notify!(
-          user: user,
-          type: type,
-          title: title,
-          body: body,
-          link: link,
-          icon: "calendar",
-          record: target_event
-        )
+
+        I18n.with_locale(user.notification_locale) do
+          text = yield
+
+          Notification.notify!(
+            user: user,
+            type: type,
+            title: text[:title],
+            body: text[:body],
+            link: link,
+            icon: "calendar",
+            record: target_event
+          )
+        end
       end
     end
   end

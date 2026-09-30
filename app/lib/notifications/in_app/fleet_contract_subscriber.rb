@@ -62,11 +62,14 @@ module Notifications
         return if contract.blank?
 
         readers.each do |user|
-          notify(user, :fleet_contract_published,
-            title: I18n.t("notifications.fleet_contract.published.title",
-              fleet: contract.fleet.name, title: contract.display_title),
-            body: I18n.t("notifications.fleet_contract.published.body",
-              fleet: contract.fleet.name))
+          notify(user, :fleet_contract_published) do
+            {
+              title: I18n.t("notifications.fleet_contract.published.title",
+                fleet: contract.fleet.name, title: contract.display_title),
+              body: I18n.t("notifications.fleet_contract.published.body",
+                fleet: contract.fleet.name)
+            }
+          end
         end
       end
 
@@ -78,9 +81,12 @@ module Notifications
         managers.each do |user|
           next if user == claimant
 
-          notify(user, :fleet_contract_claimed,
-            title: I18n.t("notifications.fleet_contract.claimed.title",
-              user: claimant&.username || "A member", title: contract.display_title))
+          notify(user, :fleet_contract_claimed) do
+            {
+              title: I18n.t("notifications.fleet_contract.claimed.title",
+                user: claimant&.username || "A member", title: contract.display_title)
+            }
+          end
         end
       end
 
@@ -90,8 +96,11 @@ module Notifications
         # The crew are told as well as the managers: a fulfilled contract is
         # what they are waiting on before they can be paid.
         (managers + contract.contractor_assignments.includes(:user).map(&:user)).compact.uniq.each do |user|
-          notify(user, :fleet_contract_fulfilled,
-            title: I18n.t("notifications.fleet_contract.fulfilled.title", title: contract.display_title))
+          notify(user, :fleet_contract_fulfilled) do
+            {
+              title: I18n.t("notifications.fleet_contract.fulfilled.title", title: contract.display_title)
+            }
+          end
         end
       end
 
@@ -104,9 +113,12 @@ module Notifications
         recipients = managers if recipients.empty?
 
         recipients.each do |user|
-          notify(user, :fleet_contract_crew_requested,
-            title: I18n.t("notifications.fleet_contract.crew_requested.title",
-              user: assignment.user&.username || "A member", title: contract.display_title))
+          notify(user, :fleet_contract_crew_requested) do
+            {
+              title: I18n.t("notifications.fleet_contract.crew_requested.title",
+                user: assignment.user&.username || "A member", title: contract.display_title)
+            }
+          end
         end
       end
 
@@ -116,8 +128,11 @@ module Notifications
 
         key = assignment.accepted? ? "accepted" : "declined"
 
-        notify(assignment.user, :fleet_contract_crew_answered,
-          title: I18n.t("notifications.fleet_contract.crew_#{key}.title", title: contract.display_title))
+        notify(assignment.user, :fleet_contract_crew_answered) do
+          {
+            title: I18n.t("notifications.fleet_contract.crew_#{key}.title", title: contract.display_title)
+          }
+        end
       end
 
       def memberships
@@ -137,18 +152,24 @@ module Notifications
         memberships.select { |membership| membership.has_access?(MANAGE_PRIVILEGES) }.filter_map(&:user)
       end
 
-      def notify(user, type, title:, body: nil)
+      # The block builds the text, in the reader's own language: the title and
+      # body are stored, and one contract reaches members who do not share one.
+      def notify(user, type)
         return if user.blank?
 
-        Notification.notify!(
-          user: user,
-          type: type,
-          title: title,
-          body: body,
-          link: "/fleets/#{contract.fleet.slug}/contracts/#{contract.slug}",
-          icon: "clipboard-list",
-          record: contract
-        )
+        I18n.with_locale(user.notification_locale) do
+          text = yield
+
+          Notification.notify!(
+            user: user,
+            type: type,
+            title: text[:title],
+            body: text[:body],
+            link: "/fleets/#{contract.fleet.slug}/contracts/#{contract.slug}",
+            icon: "clipboard-list",
+            record: contract
+          )
+        end
       end
     end
   end

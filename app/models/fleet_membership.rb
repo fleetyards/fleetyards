@@ -353,13 +353,15 @@ class FleetMembership < ApplicationRecord
     return unless invited?
     return if user.email.blank?
 
-    Notification.notify!(
-      user:,
-      type: :fleet_invite,
-      title: I18n.t("notifications.fleet_invite.title", fleet: fleet.name),
-      link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
-      record: self
-    )
+    I18n.with_locale(user.notification_locale) do
+      Notification.notify!(
+        user:,
+        type: :fleet_invite,
+        title: I18n.t("notifications.fleet_invite.title", fleet: fleet.name),
+        link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
+        record: self
+      )
+    end
   end
 
   def on_accept_invitation
@@ -382,13 +384,15 @@ class FleetMembership < ApplicationRecord
     type = requested? ? :fleet_member_requested : :fleet_member_accepted
 
     admin_users.each do |admin_user|
-      Notification.notify!(
-        user: admin_user,
-        type:,
-        title: I18n.t("notifications.#{type}.title", username: user.username, fleet: fleet.name),
-        link: Rails.application.routes.url_helpers.frontend_fleet_members_path(fleet.slug),
-        record: self
-      )
+      I18n.with_locale(admin_user.notification_locale) do
+        Notification.notify!(
+          user: admin_user,
+          type:,
+          title: I18n.t("notifications.#{type}.title", username: user.username, fleet: fleet.name),
+          link: Rails.application.routes.url_helpers.frontend_fleet_members_path(fleet.slug),
+          record: self
+        )
+      end
     end
   end
 
@@ -440,13 +444,15 @@ class FleetMembership < ApplicationRecord
     return unless accepted?
     return if user.email.blank?
 
-    Notification.notify!(
-      user:,
-      type: :fleet_request_accepted,
-      title: I18n.t("notifications.fleet_request_accepted.title", fleet: fleet.name),
-      link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
-      record: self
-    )
+    I18n.with_locale(user.notification_locale) do
+      Notification.notify!(
+        user:,
+        type: :fleet_request_accepted,
+        title: I18n.t("notifications.fleet_request_accepted.title", fleet: fleet.name),
+        link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
+        record: self
+      )
+    end
   end
 
   # Only the two things that change which Discord roles a member should hold:

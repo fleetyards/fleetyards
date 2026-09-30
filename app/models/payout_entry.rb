@@ -180,31 +180,35 @@ class PayoutEntry < ApplicationRecord
     skipped << payout_participant.user if payout_ledger.subject.is_a?(FleetContract)
 
     (payout_ledger.managers - skipped.compact).each do |manager|
-      Notification.notify!(
-        user: manager,
-        type: :payout_entry_pending_review,
-        title: I18n.t("notifications.payout_entry_pending_review.title",
-          user: payout_participant.display_name, subject: payout_ledger.subject_title),
-        body: description,
-        link: payout_ledger.page_link,
-        icon: "fa-duotone fa-coins",
-        record: payout_ledger.subject
-      )
+      I18n.with_locale(manager.notification_locale) do
+        Notification.notify!(
+          user: manager,
+          type: :payout_entry_pending_review,
+          title: I18n.t("notifications.payout_entry_pending_review.title",
+            user: payout_participant.display_name, subject: payout_ledger.subject_title),
+          body: description,
+          link: payout_ledger.page_link,
+          icon: "fa-duotone fa-coins",
+          record: payout_ledger.subject
+        )
+      end
     end
   end
 
   private def notify_recorder_of_decline
     ([payout_participant.user, recorded_by].compact.uniq - [reviewed_by]).each do |recipient|
-      Notification.notify!(
-        user: recipient,
-        type: :payout_entry_declined,
-        title: I18n.t("notifications.payout_entry_declined.title",
-          description: description, subject: payout_ledger.subject_title),
-        body: decline_reason,
-        link: payout_ledger.page_link,
-        icon: "fa-duotone fa-coins",
-        record: payout_ledger.subject
-      )
+      I18n.with_locale(recipient.notification_locale) do
+        Notification.notify!(
+          user: recipient,
+          type: :payout_entry_declined,
+          title: I18n.t("notifications.payout_entry_declined.title",
+            description: description, subject: payout_ledger.subject_title),
+          body: decline_reason,
+          link: payout_ledger.page_link,
+          icon: "fa-duotone fa-coins",
+          record: payout_ledger.subject
+        )
+      end
     end
   end
 
