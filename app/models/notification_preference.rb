@@ -47,8 +47,12 @@ class NotificationPreference < ApplicationRecord
     Notification.channels_for(type).include?(:mail)
   end
 
-  def self.push_available?(type)
-    Notification.channels_for(type).include?(:push)
+  # Per user as well: the rollout flag is, and without VAPID keys (anywhere
+  # but production) there is nothing to send with.
+  def self.push_available?(type, user:)
+    return false unless Notification.channels_for(type).include?(:push)
+
+    Push::Vapid.configured? && user.present? && Flipper.enabled?(:push_notifications, user)
   end
 
   # Availability is per user here, not only per type: a DM needs somewhere to

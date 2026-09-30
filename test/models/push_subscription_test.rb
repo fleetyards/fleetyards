@@ -175,6 +175,8 @@ class PushSubscriptionTest < ActiveSupport::TestCase
     https://evil.example/fcm.googleapis.com
     https://fcm.googleapis.com.evil.example/abc
     https://notapush.apple.com/abc
+    https://fcm.googleapis.com:8443/fcm/send/abc
+    https://user@fcm.googleapis.com/fcm/send/abc
     not-a-url
   ].each do |endpoint|
     test "rejects #{endpoint}" do

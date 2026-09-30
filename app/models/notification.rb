@@ -108,7 +108,7 @@ class Notification < ApplicationRecord
     },
     model_on_sale: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { VehicleMailer.on_sale(notification.record).deliver_later },
       preference_defaults: {app: false, mail: false, push: false, discord: false}
     },
@@ -119,16 +119,16 @@ class Notification < ApplicationRecord
     },
     hangar_sync_finished: {
       retention: 90.days,
-      channels: %i[app discord]
+      channels: %i[app push discord]
     },
     hangar_sync_failed: {
       retention: 90.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later }
     },
     fleet_invite: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) {
         membership = notification.record
         FleetMembershipMailer.new_invite(notification.user.email, notification.user.username, membership.fleet).deliver_later
@@ -137,7 +137,7 @@ class Notification < ApplicationRecord
     },
     fleet_member_requested: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) {
         membership = notification.record
         FleetMembershipMailer.member_requested(notification.user.email, membership.user.username, membership.fleet).deliver_later
@@ -146,7 +146,7 @@ class Notification < ApplicationRecord
     },
     fleet_member_accepted: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) {
         membership = notification.record
         FleetMembershipMailer.member_accepted(notification.user.email, membership.user.username, membership.fleet).deliver_later
@@ -155,7 +155,7 @@ class Notification < ApplicationRecord
     },
     fleet_request_accepted: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) {
         membership = notification.record
         FleetMembershipMailer.fleet_accepted(notification.user.email, notification.user.username, membership.fleet).deliver_later
@@ -169,7 +169,7 @@ class Notification < ApplicationRecord
     },
     fleet_event_published: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.published(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
@@ -181,13 +181,13 @@ class Notification < ApplicationRecord
     },
     fleet_event_starting_soon: {
       retention: 7.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.starting_soon(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false}
     },
     fleet_event_started: {
       retention: 7.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.started(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
@@ -199,37 +199,37 @@ class Notification < ApplicationRecord
     },
     fleet_event_cancelled: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.cancelled(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false}
     },
     fleet_event_signup_added: {
       retention: 14.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.signup_added(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_withdrawn: {
       retention: 14.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.signup_withdrawn(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_confirmed: {
       retention: 14.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.signup_confirmed(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_assigned: {
       retention: 14.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.signup_assigned(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_kicked: {
       retention: 14.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { FleetEventMailer.signup_kicked(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
@@ -238,7 +238,7 @@ class Notification < ApplicationRecord
     # kind of event.
     inventory_transfer_received: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later }
     },
     inventory_transfer_resolved: {
@@ -253,24 +253,24 @@ class Notification < ApplicationRecord
     # counterpart either.
     friend_request_received: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     friend_request_accepted: {
       retention: 30.days,
-      channels: %i[app discord],
+      channels: %i[app push discord],
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_ally_request_received: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_ally_request_accepted: {
       retention: 30.days,
-      channels: %i[app discord],
+      channels: %i[app push discord],
       preference_defaults: {app: true, mail: false, push: false}
     },
     # Asking onto a tour and being let on, and nothing in between: a decline is
@@ -278,13 +278,13 @@ class Notification < ApplicationRecord
     # telling somebody they were turned down.
     tour_join_request_received: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     tour_join_request_accepted: {
       retention: 30.days,
-      channels: %i[app discord],
+      channels: %i[app push discord],
       preference_defaults: {app: true, mail: false, push: false}
     },
     # A new job on the board goes to every member who can see it, so it is off
@@ -292,21 +292,21 @@ class Notification < ApplicationRecord
     # answer.
     fleet_contract_published: {
       retention: 30.days,
-      channels: %i[app discord],
+      channels: %i[app push discord],
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_contract_claimed: {
       retention: 30.days,
-      channels: %i[app discord]
+      channels: %i[app push discord]
     },
     fleet_contract_crew_requested: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later }
     },
     fleet_contract_crew_answered: {
       retention: 30.days,
-      channels: %i[app discord]
+      channels: %i[app push discord]
     },
     fleet_contract_fulfilled: {
       retention: 90.days,
@@ -326,12 +326,12 @@ class Notification < ApplicationRecord
     # has done its job, and the ledger itself shows the outcome.
     payout_entry_pending_review: {
       retention: 30.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later }
     },
     payout_entry_declined: {
       retention: 30.days,
-      channels: %i[app discord]
+      channels: %i[app push discord]
     },
     # Kept a year rather than 90 days, and both are app-only.
     #
@@ -358,31 +358,31 @@ class Notification < ApplicationRecord
     # hear of it before the grace period is over, not after.
     fleet_rsi_verification_lost: {
       retention: 365.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     fleet_fid_claim_opened: {
       retention: 365.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     fleet_fid_claim_completed: {
       retention: 365.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     fleet_fid_claim_cancelled: {
       retention: 365.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     rsi_handle_verification_lost: {
       retention: 365.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
@@ -393,7 +393,7 @@ class Notification < ApplicationRecord
     # who linked an account would be the same message twice.
     announcement: {
       retention: 90.days,
-      channels: %i[app mail discord],
+      channels: %i[app mail push discord],
       mailer: ->(notification) { AnnouncementMailer.published(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false, discord: false}
     }
@@ -500,23 +500,33 @@ class Notification < ApplicationRecord
     notification
   end
 
+  # Each channel on its own: a mailer that raises must not cost the reader the
+  # push or the DM they also asked for.
   def self.deliver_channels(notification, preference)
-    if preference.app?
-      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash)
+    deliver_channel(notification, :app) do
+      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash) if preference.app?
     end
 
-    if preference.mail?
-      mailer = mailer_for(notification.notification_type)
-      mailer&.call(notification)
+    deliver_channel(notification, :mail) do
+      mailer_for(notification.notification_type)&.call(notification) if preference.mail?
     end
 
-    if preference.discord?
-      ::Discord::DeliverNotificationJob.perform_async(notification.id)
+    deliver_channel(notification, :push) do
+      ::Push::DeliverNotificationJob.perform_async(notification.id) if preference.push?
     end
-  rescue => e
-    Rails.logger.error("Notification delivery failed for #{notification.id}: #{e.message}")
+
+    deliver_channel(notification, :discord) do
+      ::Discord::DeliverNotificationJob.perform_async(notification.id) if preference.discord?
+    end
   end
   private_class_method :deliver_channels
+
+  def self.deliver_channel(notification, channel)
+    yield
+  rescue => e
+    Rails.logger.error("Notification #{channel} delivery failed for #{notification.id}: #{e.message}")
+  end
+  private_class_method :deliver_channel
 
   def read?
     read_at.present?

@@ -6,5 +6,5 @@ json.mail notification_preference.mail?
 json.push notification_preference.push?
 json.discord notification_preference.discord?
 json.mail_available NotificationPreference.mail_available?(notification_preference.notification_type)
-json.push_available NotificationPreference.push_available?(notification_preference.notification_type)
+json.push_available NotificationPreference.push_available?(notification_preference.notification_type, user: notification_preference.user || current_resource_owner)
 json.discord_available NotificationPreference.discord_available?(notification_preference.notification_type, user: notification_preference.user || current_resource_owner)
