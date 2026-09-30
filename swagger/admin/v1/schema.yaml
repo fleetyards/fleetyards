@@ -13026,8 +13026,31 @@ components:
           "$ref": "#/components/schemas/ComponentWeaponSpread"
         mining:
           "$ref": "#/components/schemas/ComponentMiningLaser"
+        gimbalMode:
+          "$ref": "#/components/schemas/ComponentWeaponGimbalMode"
+        aimAssist:
+          "$ref": "#/components/schemas/ComponentWeaponAimAssist"
       additionalProperties: false
       title: ComponentWeapon
+    ComponentWeaponAimAssist:
+      type: object
+      properties:
+        nudgeAngle:
+          type: number
+        innerAngle:
+          type: number
+        outerAngle:
+          type: number
+        closeRangeMin:
+          type: number
+        closeRangeMax:
+          type: number
+        closeInnerAngle:
+          type: number
+        closeOuterAngle:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponAimAssist
     ComponentWeaponDamage:
       type: object
       properties:
@@ -13045,6 +13068,17 @@ components:
           type: number
       additionalProperties: false
       title: ComponentWeaponDamage
+    ComponentWeaponGimbalMode:
+      type: object
+      properties:
+        fireRateMultiplier:
+          type: number
+        spreadMinMultiplier:
+          type: number
+        spreadMaxMultiplier:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponGimbalMode
     ComponentWeaponHeat:
       type: object
       properties:

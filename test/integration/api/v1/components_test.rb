@@ -236,6 +236,23 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a gun's gimbal-mode penalty and aim-assist cone" do
+    create(:component, name: "Gimbalprobe", category: "weapons",
+      type_data: {
+        "fire_rate" => 600.0,
+        "gimbal_mode" => {"fire_rate_multiplier" => 0.85},
+        "aim_assist" => {"nudge_angle" => 2.25, "outer_angle" => 3.0, "close_range_min" => 75.0, "close_range_max" => 150.0, "close_outer_angle" => 16.0}
+      })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Gimbalprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 0.85, type_data["gimbalMode"]["fireRateMultiplier"]
+      assert_in_delta 2.25, type_data["aimAssist"]["nudgeAngle"]
+      assert_in_delta 16.0, type_data["aimAssist"]["closeOuterAngle"]
+    end
+  end
+
   # Numerically, which is the whole reason `sizeOrder` exists as a name of its
   # own: `size` is a string ransacker, so ordering on it puts 10 and 12 ahead
   # of 2.
