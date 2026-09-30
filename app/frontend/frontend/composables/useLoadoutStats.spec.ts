@@ -156,6 +156,31 @@ describe("computeLoadoutStats", () => {
     expect(stats.launchCooldown).toBe(0);
   });
 
+  it("keeps a fitted missile's capacity when its payload is not parsed", () => {
+    const controller = {
+      id: "controller",
+      name: "controller",
+      category: HardpointCategoryEnum.CONTROLLER,
+      component: {
+        name: "Missile Controller",
+        typeData: { maxArmedMissiles: 8, launchCooldown: 4 },
+      } as unknown as Hardpoint["component"],
+      hardpoints: [],
+      createdAt: "",
+      updatedAt: "",
+    } as Hardpoint;
+
+    const stats = computeLoadoutStats([
+      controller,
+      weaponHardpoint({ trackingSignal: "infrared" } as ComponentWeapon),
+    ]);
+
+    expect(stats.missileDamage).toBe(0);
+    expect(stats.missileCount).toBe(1);
+    expect(stats.hasData).toBe(true);
+    expect(stats.maxArmedMissiles).toBe(8);
+  });
+
   it("leaves the armed-missile capacity off a ship without missiles", () => {
     const controller = {
       id: "controller",

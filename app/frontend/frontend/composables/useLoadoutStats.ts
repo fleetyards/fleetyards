@@ -44,6 +44,8 @@ export type LoadoutStats = {
   weapons: WeaponStat[];
   weaponCount: number;
   missileDamage: number;
+  // Fitted missiles, whether or not their payload is parsed.
+  missileCount: number;
   // How many missiles the ship keeps armed at once, and the time between
   // launches -- only for a ship that carries missiles, since nearly every
   // ship has a missile controller whether or not it has a rack.
@@ -197,6 +199,7 @@ export function computeLoadoutStats(
   const dpsByControl = emptyControlBreakdown();
   const weapons: WeaponStat[] = [];
   let missileDamage = 0;
+  let missileCount = 0;
 
   for (const { hardpoint, control } of weaponHardpoints) {
     const component = hardpoint.component!;
@@ -218,8 +221,9 @@ export function computeLoadoutStats(
     } else {
       // Missiles (and other non-DPS munitions) don't contribute to DPS/alpha,
       // but their total payload damage is surfaced separately.
-      if (isMissile(weapon) && weapon.damagePerShot) {
-        for (const value of Object.values(weapon.damagePerShot)) {
+      if (isMissile(weapon)) {
+        missileCount += 1;
+        for (const value of Object.values(weapon.damagePerShot || {})) {
           if (typeof value === "number") missileDamage += value;
         }
       }
@@ -253,14 +257,15 @@ export function computeLoadoutStats(
     weapons,
     weaponCount: weapons.length,
     missileDamage,
-    ...(missileDamage > 0
+    missileCount,
+    ...(missileCount > 0
       ? {
           maxArmedMissiles: controllers.maxArmedMissiles,
           launchCooldown: controllers.launchCooldown,
         }
       : {}),
     weaponPowerRatio: powerRatio,
-    hasData: weapons.length > 0 || missileDamage > 0,
+    hasData: weapons.length > 0 || missileCount > 0,
   };
 }
 
