@@ -1312,7 +1312,43 @@
         "category": "Kategorie",
         "subType": "Untertyp",
         "retired": "Nicht mehr im aktuellen Build",
-        "noMetrics": "Für diese Komponente sind keine Werte hinterlegt."
+        "noMetrics": "Für diese Komponente sind keine Werte hinterlegt.",
+        "durability": {
+          "health": "Trefferpunkte",
+          "mass": "Masse",
+          "physical": "Physisch",
+          "energy": "Energie",
+          "distortion": "Distortion",
+          "thermal": "Thermisch",
+          "biochemical": "Biochemisch",
+          "stun": "Betäubung",
+          "repairTime": "Reparaturzeit",
+          "repairsTo": "Repariert auf",
+          "maxRepairs": "Max. Reparaturen",
+          "disableAt": "Ausfall bei",
+          "warningAt": "Warnung bei",
+          "recoversBelow": "Erholt sich unter",
+          "decayRate": "Abbaurate",
+          "decayDelay": "Abbauverzögerung"
+        },
+        "durabilityChanges": {
+          "health": "Trefferpunkte",
+          "mass": "Masse (kg)",
+          "resistancesPhysical": "Erlittener physischer Schaden",
+          "resistancesEnergy": "Erlittener Energieschaden",
+          "resistancesDistortion": "Erlittener Distortion-Schaden",
+          "resistancesThermal": "Erlittener thermischer Schaden",
+          "resistancesBiochemical": "Erlittener biochemischer Schaden",
+          "resistancesStun": "Erlittener Betäubungsschaden",
+          "selfRepairTime": "Selbstreparaturzeit (s)",
+          "selfRepairHealthRatio": "Selbstreparatur stellt her auf",
+          "selfRepairMaxRepairs": "Max. Selbstreparaturen",
+          "distortionMaximum": "Distortion-Ausfallschwelle",
+          "distortionWarningRatio": "Distortion-Warnschwelle",
+          "distortionRecoveryRatio": "Distortion-Erholungsschwelle",
+          "distortionDecayRate": "Distortion-Abbaurate (/s)",
+          "distortionDecayDelay": "Distortion-Abbauverzögerung (s)"
+        }
       },
       "hardpoint": {
         "legend": {

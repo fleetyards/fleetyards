@@ -26,7 +26,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, tExists, l } = useI18n();
+const { t, tExists, l, toNumber } = useI18n();
 
 const { updateMetaInfo } = useMetaInfo();
 
@@ -105,10 +105,24 @@ const METRIC_SCOPES: Record<string, string> = {
   weapons: "weapons",
 };
 
+const DURABILITY_PREFIX = "durability.";
+
+const isDurability = (change: ComponentBuildChange) =>
+  change.field.startsWith(DURABILITY_PREFIX);
+
+// `durability.self_repair.time` -> `selfRepairTime`.
+const camelize = (path: string) =>
+  path.replace(/[._](\w)/g, (_, character: string) => character.toUpperCase());
+
 const fieldLabel = (change: ComponentBuildChange) => {
-  const key = change.field.replace(/_(\w)/g, (_, character: string) =>
-    character.toUpperCase(),
-  );
+  if (isDurability(change)) {
+    const path = `labels.component.durabilityChanges.${camelize(
+      change.field.slice(DURABILITY_PREFIX.length),
+    )}`;
+    if (tExists(path)) return t(path);
+  }
+
+  const key = camelize(change.field);
 
   const scope = props.component.category
     ? METRIC_SCOPES[props.component.category]
@@ -135,6 +149,25 @@ const fieldLabel = (change: ComponentBuildChange) => {
 // and printing an empty cell for them would read as a blank rather than an
 // absence.
 const displayValue = (value?: string | null) => value ?? "—";
+
+// Durability is stored as the game writes it: a share of damage taken or of
+// health as a fraction, and every figure as a float. Read as the component
+// page shows them -- "10%" rather than "0.1", "630" rather than "630.0".
+const isRatio = (field: string) =>
+  field.includes(".resistances.") || field.endsWith("_ratio");
+
+const changeValue = (change: ComponentBuildChange, value?: string | null) => {
+  if (value == null || !isDurability(change)) return displayValue(value);
+
+  const number = Number(value);
+  if (!Number.isFinite(number)) return value;
+
+  if (isRatio(change.field)) return `${Math.round(number * 100)}%`;
+
+  // `toNumber` reads zero as "not available", and a figure dropping to zero
+  // is a change worth reading as one.
+  return number === 0 ? "0" : String(toNumber(number));
+};
 
 const date = (value?: string | null) =>
   value ? l(value, "datetime.formats.date") : "—";
@@ -180,9 +213,9 @@ watch(() => props.component, updateTitle);
               {{ fieldLabel(change) }}
             </span>
             <span class="component-history__values">
-              {{ displayValue(change.oldValue) }}
+              {{ changeValue(change, change.oldValue) }}
               →
-              {{ displayValue(change.newValue) }}
+              {{ changeValue(change, change.newValue) }}
             </span>
           </li>
         </ul>

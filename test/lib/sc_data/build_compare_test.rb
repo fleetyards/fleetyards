@@ -69,6 +69,14 @@ module ScData
       assert_equal %i[name size], change.fields.sort
     end
 
+    test "#call names each durability figure that differs" do
+      component = create(:component, :without_build)
+      build_for(OLD, component:, name: "Torrent", durability: {"health" => 410.0, "resistances" => {"thermal" => 0.1}, "mass" => 630.0, "distortion" => {"maximum" => 3500.0}})
+      build_for(NEW, component:, name: "Torrent", durability: {"health" => 410.0, "resistances" => {"thermal" => 0.1}, "mass" => 700.0, "distortion" => {"maximum" => 4000.0}})
+
+      assert_equal %w[durability.distortion.maximum durability.mass], compare.changed.sole.fields
+    end
+
     test "#call leaves out a record neither build changed" do
       component = create(:component, :without_build)
       build_for(OLD, component:, name: "Same")

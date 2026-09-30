@@ -18677,6 +18677,8 @@ components:
           - "$ref": "#/components/schemas/ComponentController"
           - "$ref": "#/components/schemas/ComponentTurret"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
+        durability:
+          "$ref": "#/components/schemas/ComponentDurability"
         hardpoints:
           type: array
           items:
@@ -18882,6 +18884,23 @@ components:
       required:
       - coolingRate
       title: ComponentCooler
+    ComponentDamageMultipliers:
+      type: object
+      properties:
+        physical:
+          type: number
+        energy:
+          type: number
+        distortion:
+          type: number
+        thermal:
+          type: number
+        biochemical:
+          type: number
+        stun:
+          type: number
+      additionalProperties: false
+      title: ComponentDamageMultipliers
     ComponentDamageRange:
       type: object
       properties:
@@ -18908,6 +18927,36 @@ components:
           "$ref": "#/components/schemas/ComponentDamageRange"
       additionalProperties: false
       title: ComponentDamageTypeMap
+    ComponentDistortion:
+      type: object
+      properties:
+        maximum:
+          type: number
+        warningRatio:
+          type: number
+        recoveryRatio:
+          type: number
+        decayRate:
+          type: number
+        decayDelay:
+          type: number
+      additionalProperties: false
+      title: ComponentDistortion
+    ComponentDurability:
+      type: object
+      properties:
+        health:
+          type: number
+        mass:
+          type: number
+        resistances:
+          "$ref": "#/components/schemas/ComponentDamageMultipliers"
+        selfRepair:
+          "$ref": "#/components/schemas/ComponentSelfRepair"
+        distortion:
+          "$ref": "#/components/schemas/ComponentDistortion"
+      additionalProperties: false
+      title: ComponentDurability
     ComponentItemClassEnum:
       type: string
       enum:
@@ -19334,6 +19383,17 @@ components:
           type: number
       additionalProperties: false
       title: ComponentRadar
+    ComponentSelfRepair:
+      type: object
+      properties:
+        time:
+          type: number
+        healthRatio:
+          type: number
+        maxRepairs:
+          type: integer
+      additionalProperties: false
+      title: ComponentSelfRepair
     ComponentSensitivityModifiers:
       type: object
       properties:

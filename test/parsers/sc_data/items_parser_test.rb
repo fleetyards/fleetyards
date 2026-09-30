@@ -347,6 +347,49 @@ module ScData
         refute type_data["ignite_on_pylon"]
       end
 
+      test "reads a component's health, mass, repair and distortion into its durability" do
+        write_item("qdrv_probe", name: "@item_Nameqdrv_probe", components: <<~XML)
+          <SEntityPhysicsControllerParams>
+            <PhysType>
+              <SEntityRigidPhysicsControllerParams Mass="630" />
+            </PhysType>
+          </SEntityPhysicsControllerParams>
+          <SHealthComponentParams Health="410">
+            <DamageResistances>
+              <DamageResistance>
+                <PhysicalResistance Multiplier="0.85" />
+                <ThermalResistance Multiplier="0.1" />
+              </DamageResistance>
+            </DamageResistances>
+          </SHealthComponentParams>
+          <ItemResourceComponentParams>
+            <selfRepair maxRepairCount="1" timeToRepair="56" healthRatio="0.2" />
+          </ItemResourceComponentParams>
+          <SDistortionParams DecayDelay="3" DecayRate="233.3333" Maximum="3500" WarningRatio="0.75" RecoveryRatio="0" />
+        XML
+
+        durability = parsed_item("qdrv_probe")["durability"]
+
+        assert_in_delta 410.0, durability["health"]
+        assert_in_delta 630.0, durability["mass"]
+        assert_equal(
+          {"physical" => 0.85, "energy" => 1.0, "distortion" => 1.0, "thermal" => 0.1, "biochemical" => 1.0, "stun" => 1.0},
+          durability["resistances"]
+        )
+        assert_equal({"time" => 56.0, "health_ratio" => 0.2, "max_repairs" => 1}, durability["self_repair"])
+        assert_in_delta 3500.0, durability.dig("distortion", "maximum")
+        assert_in_delta 0.75, durability.dig("distortion", "warning_ratio")
+      end
+
+      test "carries no distortion for an item the game never distorts" do
+        write_item("armr_plain", name: "@item_Namearmr_plain", components: '<SHealthComponentParams Health="100" />')
+
+        durability = parsed_item("armr_plain")["durability"]
+
+        assert_equal({"health" => 100.0}, durability.except("resistances"))
+        assert_equal [1.0], durability["resistances"].values.uniq
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 

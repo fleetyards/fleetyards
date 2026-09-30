@@ -506,7 +506,11 @@
         "identity": "詳情",
         "metrics": "數據",
         "requiredTags": "可裝入具備以下標籤的接口",
-        "tags": "標籤"
+        "tags": "標籤",
+        "physical": "物理屬性",
+        "damageTaken": "承受傷害",
+        "selfRepair": "自我修復",
+        "distortion": "扭曲"
       },
       "commodity": {
         "priceHistory": "價格歷史",

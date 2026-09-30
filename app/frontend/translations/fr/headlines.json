@@ -506,7 +506,11 @@
         "identity": "Détails",
         "metrics": "Caractéristiques",
         "requiredTags": "S'installe sur un port offrant",
-        "tags": "Tags"
+        "tags": "Tags",
+        "physical": "Physique",
+        "damageTaken": "Dégâts subis",
+        "selfRepair": "Autoréparation",
+        "distortion": "Distorsion"
       },
       "commodity": {
         "priceHistory": "Historique des prix",

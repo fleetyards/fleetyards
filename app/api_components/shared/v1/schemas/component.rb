@@ -79,6 +79,8 @@ module Shared
               ]
             },
 
+            durability: ::Shared::V1::Schemas::ComponentDurability,
+
             # Detail responses only -- a list omits it rather than paying an
             # association hit per row, which is why it is not required.
             hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},

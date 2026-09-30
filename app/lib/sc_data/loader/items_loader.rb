@@ -49,6 +49,11 @@ module ScData
             update_params[:type_data] = cargo_grid if cargo_grid.present?
           end
 
+          # Unconditional, unlike the blocks around it: a build that stops
+          # describing a component's health or repair has to take the figures
+          # with it, or the new build goes on serving the old ones.
+          update_params[:durability] = item[:durability].presence
+
           if item[:power_connection].present?
             update_params[:power_connection] = item[:power_connection]
           end

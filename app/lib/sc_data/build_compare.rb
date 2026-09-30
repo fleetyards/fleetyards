@@ -140,11 +140,25 @@ module ScData
         after = to_rows[id]
 
         differing = facts.select { |fact| before[fact.to_s] != after[fact.to_s] }
+        differing += changed_figures(before, after)
 
         next if differing.empty?
 
         Change.new(id:, name: after["name"], fields: differing)
       end
+    end
+
+    # A structured fact whose every leaf is a figure worth naming -- a
+    # component's durability -- compared leaf by leaf, so the answer is
+    # "durability.mass" rather than "something inside durability changed".
+    private def changed_figures(before, after)
+      return [] unless figures?
+
+      build_class.durability_changes(before["durability"], after["durability"]).keys
+    end
+
+    private def figures?
+      build_class.respond_to?(:durability_changes)
     end
 
     # Both sides are read once and compared in Ruby rather than joined in SQL:
@@ -160,7 +174,7 @@ module ScData
     end
 
     private def rows_for(source)
-      columns = ([subject_key] + facts.map(&:to_s) + ["name"]).uniq
+      columns = ([subject_key] + facts.map(&:to_s) + ["name"] + (figures? ? ["durability"] : [])).uniq
         .select { |column| build_class.column_names.include?(column) }
 
       build_class

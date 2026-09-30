@@ -1312,7 +1312,43 @@
         "category": "分類",
         "subType": "子類型",
         "retired": "已不在目前版本中",
-        "noMetrics": "該部件沒有記錄任何數據。"
+        "noMetrics": "該部件沒有記錄任何數據。",
+        "durability": {
+          "health": "耐久",
+          "mass": "質量",
+          "physical": "物理",
+          "energy": "能量",
+          "distortion": "扭曲",
+          "thermal": "熱能",
+          "biochemical": "生化",
+          "stun": "暈眩",
+          "repairTime": "修復時間",
+          "repairsTo": "修復至",
+          "maxRepairs": "最大修復次數",
+          "disableAt": "失效閾值",
+          "warningAt": "警告閾值",
+          "recoversBelow": "恢復閾值",
+          "decayRate": "衰減速率",
+          "decayDelay": "衰減延遲"
+        },
+        "durabilityChanges": {
+          "health": "耐久",
+          "mass": "質量 (kg)",
+          "resistancesPhysical": "承受物理傷害",
+          "resistancesEnergy": "承受能量傷害",
+          "resistancesDistortion": "承受扭曲傷害",
+          "resistancesThermal": "承受熱能傷害",
+          "resistancesBiochemical": "承受生化傷害",
+          "resistancesStun": "承受暈眩傷害",
+          "selfRepairTime": "自我修復時間 (s)",
+          "selfRepairHealthRatio": "自我修復恢復至",
+          "selfRepairMaxRepairs": "最大自我修復次數",
+          "distortionMaximum": "扭曲失效閾值",
+          "distortionWarningRatio": "扭曲警告閾值",
+          "distortionRecoveryRatio": "扭曲恢復閾值",
+          "distortionDecayRate": "扭曲衰減速率 (/s)",
+          "distortionDecayDelay": "扭曲衰減延遲 (s)"
+        }
       },
       "hardpoint": {
         "legend": {

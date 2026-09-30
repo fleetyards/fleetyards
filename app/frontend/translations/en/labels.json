@@ -1312,7 +1312,43 @@
         "category": "Category",
         "subType": "Sub Type",
         "retired": "No longer in the current build",
-        "noMetrics": "No metrics are recorded for this component."
+        "noMetrics": "No metrics are recorded for this component.",
+        "durability": {
+          "health": "Health",
+          "mass": "Mass",
+          "physical": "Physical",
+          "energy": "Energy",
+          "distortion": "Distortion",
+          "thermal": "Thermal",
+          "biochemical": "Biochemical",
+          "stun": "Stun",
+          "repairTime": "Repair time",
+          "repairsTo": "Repairs to",
+          "maxRepairs": "Max repairs",
+          "disableAt": "Disabled at",
+          "warningAt": "Warning at",
+          "recoversBelow": "Recovers below",
+          "decayRate": "Decay rate",
+          "decayDelay": "Decay delay"
+        },
+        "durabilityChanges": {
+          "health": "Health",
+          "mass": "Mass (kg)",
+          "resistancesPhysical": "Physical damage taken",
+          "resistancesEnergy": "Energy damage taken",
+          "resistancesDistortion": "Distortion damage taken",
+          "resistancesThermal": "Thermal damage taken",
+          "resistancesBiochemical": "Biochemical damage taken",
+          "resistancesStun": "Stun damage taken",
+          "selfRepairTime": "Self-repair time (s)",
+          "selfRepairHealthRatio": "Self-repair restores to",
+          "selfRepairMaxRepairs": "Max self-repairs",
+          "distortionMaximum": "Distortion shutdown threshold",
+          "distortionWarningRatio": "Distortion warning threshold",
+          "distortionRecoveryRatio": "Distortion recovery threshold",
+          "distortionDecayRate": "Distortion decay rate (/s)",
+          "distortionDecayDelay": "Distortion decay delay (s)"
+        }
       },
       "hardpoint": {
         "legend": {

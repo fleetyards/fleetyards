@@ -203,6 +203,67 @@ class ComponentBuildChangeTest < ActiveSupport::TestCase
   # The name is pinned rather than left to the factory's sequence: two builds of
   # the same component carrying different names would report a `name` change in
   # every one of these, on top of the fact each is actually about.
+  test ".record! records each durability figure a patch moved as its own row" do
+    previous_build(durability: {
+      "health" => 410.0, "mass" => 630.0,
+      "resistances" => {"thermal" => 0.1},
+      "self_repair" => {"time" => 56.0, "max_repairs" => 1},
+      "distortion" => {"maximum" => 3500.0}
+    })
+    build = current_build(durability: {
+      "health" => 410.0, "mass" => 700.0,
+      "resistances" => {"thermal" => 0.2},
+      "self_repair" => {"time" => 56.0, "max_repairs" => 1},
+      "distortion" => {"maximum" => 4000.0}
+    })
+
+    assert_equal 3, ComponentBuildChange.record!(build)
+
+    assert_equal(
+      [
+        ["durability.distortion.maximum", "3500.0", "4000.0"],
+        ["durability.mass", "630.0", "700.0"],
+        ["durability.resistances.thermal", "0.1", "0.2"]
+      ],
+      ComponentBuildChange.order(:field).pluck(:field, :old_value, :new_value)
+    )
+    assert_not ComponentBuildChange.first.metric?
+  end
+
+  test ".record! records a durability figure a patch added and one it took away" do
+    resistances = {"physical" => 1.0}
+    previous_build(durability: {"health" => 100.0, "resistances" => resistances, "self_repair" => {"time" => 30.0}})
+    build = current_build(durability: {"health" => 100.0, "resistances" => resistances, "distortion" => {"maximum" => 1000.0}})
+
+    assert_equal(
+      [["durability.distortion.maximum", nil, "1000.0"], ["durability.self_repair.time", "30.0", nil]],
+      ComponentBuildChange.tap { it.record!(build) }.order(:field).pluck(:field, :old_value, :new_value)
+    )
+  end
+
+  # A build from before the parser read mass, repair and distortion carries
+  # health alone. Every other figure would otherwise read as one the patch
+  # introduced, on every component at once.
+  test ".record! compares only health against a build that carried nothing else" do
+    previous_build(durability: {"health" => 400.0, "lifetime" => 720.0})
+    build = current_build(durability: {"health" => 410.0, "mass" => 630.0, "self_repair" => {"time" => 56.0}})
+
+    assert_equal 1, ComponentBuildChange.record!(build)
+    assert_equal ["durability.health", "400.0", "410.0"], ComponentBuildChange.sole.values_at(:field, :old_value, :new_value)
+  end
+
+  # A build this parser wrote can still carry health and its multipliers
+  # alone -- an item with no physics block has no mass -- and a later build
+  # gaining one is a real change.
+  test ".record! records the first figure a patch adds beside health" do
+    resistances = {"physical" => 1.0, "energy" => 1.0}
+    previous_build(durability: {"health" => 100.0, "resistances" => resistances})
+    build = current_build(durability: {"health" => 100.0, "resistances" => resistances, "mass" => 20.0})
+
+    assert_equal 1, ComponentBuildChange.record!(build)
+    assert_equal ["durability.mass", nil, "20.0"], ComponentBuildChange.sole.values_at(:field, :old_value, :new_value)
+  end
+
   private def previous_build(attributes)
     create(
       :component_build,

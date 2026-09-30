@@ -97,6 +97,63 @@ class ComponentBuild < ApplicationRecord
   # belongs.
   DIFFABLE_FACTS = (FACTS - STRUCTURED_FACTS - %i[description manufacturer_id]).freeze
 
+  # `durability` is one of the shapes above, but every figure in it is a number
+  # a reader acts on -- health, mass, how much of each damage type it takes,
+  # its repair and its distortion limits. So it is compared a figure at a time
+  # rather than whole: one entry per leaf, keyed by its path.
+  DURABILITY_PREFIX = "durability."
+
+  # The parts the parser writes. Older rows also carry a `lifetime` nothing
+  # reads, which must not surface as a figure.
+  DURABILITY_PARTS = %w[health mass resistances self_repair distortion].freeze
+
+  def self.durability_figures(durability)
+    flatten = lambda do |hash, path|
+      hash.each_with_object({}) do |(key, value), figures|
+        field = "#{path}#{key}"
+
+        if value.is_a?(Hash)
+          figures.merge!(flatten.call(value, "#{field}."))
+        elsif value.is_a?(Numeric)
+          figures[field] = value
+        end
+      end
+    end
+
+    flatten.call(durability.to_h.stringify_keys.slice(*DURABILITY_PARTS), DURABILITY_PREFIX)
+  end
+
+  # The figures that differ between two builds' durability, as
+  # `field => [old, new]`.
+  #
+  # Health is the one part every load has always written. A build from before
+  # the parser read the rest carries health without the damage multipliers the
+  # parser now always writes beside it, and against such a build every other
+  # figure would read as one the patch introduced -- on thousands of
+  # components at once, none of which a patch touched. So against one of
+  # those, only health is compared.
+  def self.durability_changes(before, after)
+    old_figures = durability_figures(before)
+    new_figures = durability_figures(after)
+
+    if legacy_durability?(before)
+      old_figures = old_figures.slice("#{DURABILITY_PREFIX}health")
+      new_figures = new_figures.slice("#{DURABILITY_PREFIX}health")
+    end
+
+    (old_figures.keys | new_figures.keys).sort.each_with_object({}) do |field, changes|
+      next if old_figures[field] == new_figures[field]
+
+      changes[field] = [old_figures[field], new_figures[field]]
+    end
+  end
+
+  def self.legacy_durability?(durability)
+    parts = durability.to_h.stringify_keys
+
+    parts.key?("health") && !parts.key?("resistances")
+  end
+
   # The facts Component filters and sorts by. One list, so a ransacker and the
   # fallback join's column list cannot drift apart.
   #

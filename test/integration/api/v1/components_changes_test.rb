@@ -69,6 +69,20 @@ class Api::V1::ComponentsChangesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A durability figure keeps its path: `durability.health` and a shield's
+  # `health` in `typeData` are different facts.
+  test "GET /components/:slug/changes spells a durability figure by its path" do
+    component = create(:component)
+    record(component, field: "durability.self_repair.time", old_value: "30.0", new_value: "56.0")
+
+    assert_api_response :get, 200, path_params: {slug: component.slug} do
+      change = parsed_body.sole
+
+      assert_equal "durability.self_repair.time", change["field"]
+      assert_not change["metric"]
+    end
+  end
+
   # A fact the previous build did not carry has no old value, and null is the
   # honest answer rather than an empty string.
   test "GET /components/:slug/changes reports a fact that was not there before" do

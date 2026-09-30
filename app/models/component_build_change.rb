@@ -97,7 +97,15 @@ class ComponentBuildChange < ApplicationRecord
   end
 
   def self.changed_facts(previous, build)
-    changed_columns(previous, build).merge(changed_metrics(previous, build))
+    changed_columns(previous, build)
+      .merge(changed_metrics(previous, build))
+      .merge(changed_durability(previous, build))
+  end
+
+  # One row per figure, keyed by its path under `durability.` -- a repair time
+  # and a distortion limit are separate facts a patch moves separately.
+  def self.changed_durability(previous, build)
+    ComponentBuild.durability_changes(previous.durability, build.durability)
   end
 
   def self.changed_columns(previous, build)

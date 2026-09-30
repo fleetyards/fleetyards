@@ -506,7 +506,11 @@
         "identity": "Dettagli",
         "metrics": "Valori",
         "requiredTags": "Si monta su una porta con",
-        "tags": "Tag"
+        "tags": "Tag",
+        "physical": "Fisico",
+        "damageTaken": "Danni subiti",
+        "selfRepair": "Autoriparazione",
+        "distortion": "Distorsione"
       },
       "commodity": {
         "priceHistory": "Storico prezzi",
