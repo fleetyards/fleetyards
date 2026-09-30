@@ -47,7 +47,14 @@ class PushSubscription < ApplicationRecord
   AUTH_BYTES = 16
   P256_GROUP = OpenSSL::PKey::EC::Group.new("prime256v1")
 
+  # Neither delivered to nor re-subscribed for this long: the browser is gone,
+  # or its owner stopped visiting. A browser that still has the site open
+  # re-announces itself on every visit, which bumps `updated_at`.
+  STALE_AFTER = 180.days
+
   belongs_to :user
+
+  scope :stale, -> { where("GREATEST(last_delivered_at, updated_at) < ?", STALE_AFTER.ago) }
 
   # Endpoint plus keys is a capability: whoever holds them can push to that
   # device. Deterministic for the endpoint because the unique index and the
