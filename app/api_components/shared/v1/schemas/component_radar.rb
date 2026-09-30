@@ -16,6 +16,7 @@ module Shared
             # Metres past the aim-assist range before assist lets go.
             aimAssistBuffer: {type: :number},
             sensitivityModifiers: ComponentSensitivityModifiers,
+            contactSensitivity: {type: :array, items: ComponentRadarContactSensitivity},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

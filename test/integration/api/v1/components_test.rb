@@ -402,7 +402,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     create(:component, name: "Radarprobe", category: "radar", type_data: {
       "aim_assist_range" => 632.5, "aim_assist_buffer" => 80.0, "signature_ir" => 0.0,
       "signature_detection" => {"cs" => {"sensitivity" => 0.5, "piercing" => 0.25, "passive" => false, "active" => true}},
-      "sensitivity_modifiers" => {"sensitivity_addition" => -0.65, "contact_group" => "GroundVehicle"}
+      "contact_sensitivity" => [{"sensitivity_addition" => -0.65, "contact_groups" => ["GroundVehicle"]}]
     })
 
     assert_api_response :get, 200, params: {q: {"nameCont" => "Radarprobe"}} do
@@ -410,7 +410,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
 
       assert_in_delta 80.0, type_data["aimAssistBuffer"]
       assert_equal false, type_data.dig("signatureDetection", "cs", "passive")
-      assert_equal "GroundVehicle", type_data.dig("sensitivityModifiers", "contactGroup")
+      assert_equal ["GroundVehicle"], type_data.dig("contactSensitivity", 0, "contactGroups")
     end
   end
 

@@ -19708,6 +19708,10 @@ components:
           type: number
         sensitivityModifiers:
           "$ref": "#/components/schemas/ComponentSensitivityModifiers"
+        contactSensitivity:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ComponentRadarContactSensitivity"
         powerConsumption:
           type: number
         powerMinimumFraction:
@@ -19720,6 +19724,20 @@ components:
           type: number
       additionalProperties: false
       title: ComponentRadar
+    ComponentRadarContactSensitivity:
+      type: object
+      properties:
+        sensitivityAddition:
+          type: number
+        contactGroups:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - sensitivityAddition
+      - contactGroups
+      title: ComponentRadarContactSensitivity
     ComponentSalvageModifier:
       type: object
       properties:
@@ -19751,8 +19769,6 @@ components:
       properties:
         sensitivityAddition:
           type: number
-        contactGroup:
-          type: string
       additionalProperties: false
       title: ComponentSensitivityModifiers
     ComponentShield:
