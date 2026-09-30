@@ -5,7 +5,9 @@ import Suggestion, { type SuggestionOptions } from "@tiptap/suggestion";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
 import { catalogueSearch, type CatalogueTokenMatch } from "@/services/fyApi";
 import {
+  catalogueTokenIcon,
   catalogueTokenName,
+  catalogueTokenPrefix,
   catalogueTokenText,
 } from "@/shared/utils/CatalogueTokens";
 import SuggestionList from "./CatalogueSuggestionList.vue";
@@ -47,13 +49,24 @@ export const CatalogueToken = Node.create({
     return [{ tag: "span[data-catalogue-token]" }];
   },
 
+  // Marked as it will read on the page: the type's icon, then the name in
+  // brackets.
   renderHTML({ node, HTMLAttributes }) {
+    const token = node.attrs.token as string;
+
     return [
       "span",
       mergeAttributes(HTMLAttributes, {
         class: "catalogue-token catalogue-token--chip",
       }),
-      catalogueTokenName(node.attrs.token as string),
+      [
+        "i",
+        {
+          class: catalogueTokenIcon(catalogueTokenPrefix(token)),
+          "aria-hidden": "true",
+        },
+      ],
+      `[${catalogueTokenName(token)}]`,
     ];
   },
 

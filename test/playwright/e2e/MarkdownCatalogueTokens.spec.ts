@@ -37,13 +37,13 @@ test.describe("Markdown catalogue tokens", () => {
     await page.keyboard.press("Enter");
 
     await expect(text.locator("[data-catalogue-token]")).toHaveText(
-      "Quantainium",
+      "[Quantainium]",
     );
 
     const link = page
       .getByTestId("markdown-preview")
       .locator(".catalogue-token a");
-    await expect(link).toHaveText("Quantainium");
+    await expect(link).toHaveText("[Quantainium]");
     await expect(link).toHaveAttribute("href", /quantainium/);
   });
 });

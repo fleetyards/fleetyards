@@ -64,7 +64,7 @@ app.use(veeValidate);
 app.provide(
   MARKDOWN_CATALOGUE_TOKEN,
   defineAsyncComponent(
-    () => import("@/frontend/components/CatalogueItemPopover/index.vue"),
+    () => import("@/frontend/components/CatalogueTokenLink/index.vue"),
   ),
 );
 
