@@ -9,6 +9,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
+import DurabilityMetrics from "@/frontend/components/Components/DurabilityMetrics/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -219,6 +220,8 @@ watch(
             </div>
           </div>
         </MetricsCard>
+
+        <DurabilityMetrics :durability="component.durability" />
 
         <!-- Above the recipe card, because when nothing sells a component the
              answer it gives is "made from the recipe below". -->

@@ -1312,7 +1312,25 @@
         "category": "Categoría",
         "subType": "Subtipo",
         "retired": "Ya no está en la compilación actual",
-        "noMetrics": "No hay métricas registradas para este componente."
+        "noMetrics": "No hay métricas registradas para este componente.",
+        "durability": {
+          "health": "Salud",
+          "mass": "Masa",
+          "physical": "Físico",
+          "energy": "Energía",
+          "distortion": "Distorsión",
+          "thermal": "Térmico",
+          "biochemical": "Bioquímico",
+          "stun": "Aturdimiento",
+          "repairTime": "Tiempo de reparación",
+          "repairsTo": "Repara hasta",
+          "maxRepairs": "Reparaciones máx.",
+          "disableAt": "Se desactiva en",
+          "warningAt": "Aviso en",
+          "recoversBelow": "Se recupera por debajo de",
+          "decayRate": "Tasa de disipación",
+          "decayDelay": "Retardo de disipación"
+        }
       },
       "hardpoint": {
         "legend": {

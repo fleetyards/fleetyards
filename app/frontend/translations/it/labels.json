@@ -1312,7 +1312,25 @@
         "category": "Categoria",
         "subType": "Sottotipo",
         "retired": "Non più presente nella build attuale",
-        "noMetrics": "Nessun dato registrato per questo componente."
+        "noMetrics": "Nessun dato registrato per questo componente.",
+        "durability": {
+          "health": "Salute",
+          "mass": "Massa",
+          "physical": "Fisico",
+          "energy": "Energia",
+          "distortion": "Distorsione",
+          "thermal": "Termico",
+          "biochemical": "Biochimico",
+          "stun": "Stordimento",
+          "repairTime": "Tempo di riparazione",
+          "repairsTo": "Ripara fino a",
+          "maxRepairs": "Riparazioni max",
+          "disableAt": "Disattivato a",
+          "warningAt": "Avviso a",
+          "recoversBelow": "Si riprende sotto",
+          "decayRate": "Velocità di dissipazione",
+          "decayDelay": "Ritardo di dissipazione"
+        }
       },
       "hardpoint": {
         "legend": {

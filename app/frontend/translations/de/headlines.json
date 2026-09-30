@@ -506,7 +506,11 @@
         "identity": "Details",
         "metrics": "Werte",
         "requiredTags": "Passt in einen Port mit",
-        "tags": "Tags"
+        "tags": "Tags",
+        "physical": "Physische Werte",
+        "damageTaken": "Erlittener Schaden",
+        "selfRepair": "Selbstreparatur",
+        "distortion": "Distortion"
       },
       "commodity": {
         "priceHistory": "Preisverlauf",

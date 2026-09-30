@@ -1312,7 +1312,25 @@
         "category": "分类",
         "subType": "子类型",
         "retired": "已不在当前版本中",
-        "noMetrics": "该部件没有记录任何数据。"
+        "noMetrics": "该部件没有记录任何数据。",
+        "durability": {
+          "health": "耐久",
+          "mass": "质量",
+          "physical": "物理",
+          "energy": "能量",
+          "distortion": "扭曲",
+          "thermal": "热能",
+          "biochemical": "生化",
+          "stun": "眩晕",
+          "repairTime": "修复时间",
+          "repairsTo": "修复至",
+          "maxRepairs": "最大修复次数",
+          "disableAt": "失效阈值",
+          "warningAt": "警告阈值",
+          "recoversBelow": "恢复阈值",
+          "decayRate": "衰减速率",
+          "decayDelay": "衰减延迟"
+        }
       },
       "hardpoint": {
         "legend": {

@@ -506,7 +506,11 @@
         "identity": "Detalles",
         "metrics": "Métricas",
         "requiredTags": "Encaja en un puerto con",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "physical": "Físico",
+        "damageTaken": "Daño recibido",
+        "selfRepair": "Autorreparación",
+        "distortion": "Distorsión"
       },
       "commodity": {
         "priceHistory": "Histórico de precios",

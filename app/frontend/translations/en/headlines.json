@@ -508,7 +508,11 @@
         "identity": "Details",
         "metrics": "Metrics",
         "requiredTags": "Fits a port offering",
-        "tags": "Tags"
+        "tags": "Tags",
+        "physical": "Physical",
+        "damageTaken": "Damage taken",
+        "selfRepair": "Self-repair",
+        "distortion": "Distortion"
       },
       "commodity": {
         "priceHistory": "Price History",

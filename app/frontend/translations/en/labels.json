@@ -1312,7 +1312,25 @@
         "category": "Category",
         "subType": "Sub Type",
         "retired": "No longer in the current build",
-        "noMetrics": "No metrics are recorded for this component."
+        "noMetrics": "No metrics are recorded for this component.",
+        "durability": {
+          "health": "Health",
+          "mass": "Mass",
+          "physical": "Physical",
+          "energy": "Energy",
+          "distortion": "Distortion",
+          "thermal": "Thermal",
+          "biochemical": "Biochemical",
+          "stun": "Stun",
+          "repairTime": "Repair time",
+          "repairsTo": "Repairs to",
+          "maxRepairs": "Max repairs",
+          "disableAt": "Disabled at",
+          "warningAt": "Warning at",
+          "recoversBelow": "Recovers below",
+          "decayRate": "Decay rate",
+          "decayDelay": "Decay delay"
+        }
       },
       "hardpoint": {
         "legend": {

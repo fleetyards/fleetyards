@@ -506,7 +506,11 @@
         "identity": "详情",
         "metrics": "数据",
         "requiredTags": "可装入具备以下标签的接口",
-        "tags": "标签"
+        "tags": "标签",
+        "physical": "物理属性",
+        "damageTaken": "承受伤害",
+        "selfRepair": "自我修复",
+        "distortion": "扭曲"
       },
       "commodity": {
         "priceHistory": "价格历史",
