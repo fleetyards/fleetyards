@@ -339,6 +339,33 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a quantum drive's interdiction time in both modes" do
+    create(:component, name: "Quantumprobe", category: "quantumdrive", type_data: {
+      "drive_speed" => 263_400_000.0, "interdiction_effect_time" => 2.6, "signature_ir" => 0.0,
+      "spline_jump_params" => {"drive_speed" => 400_000.0, "interdiction_effect_time" => 5.0}
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Quantumprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 2.6, type_data["interdictionEffectTime"]
+      assert_in_delta 5.0, type_data.dig("splineJumpParams", "interdictionEffectTime")
+    end
+  end
+
+  test "GET /components serves a jump drive's tunnel flight" do
+    create(:component, name: "Jumpprobe", category: "jumpdrive", type_data: {
+      "tuning_rate" => 0.26, "exit_speed" => 200.0, "max_tunnel_speed" => 1300.0, "respool_time" => 3.0, "signature_em" => 0.0
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Jumpprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 200.0, type_data["exitSpeed"]
+      assert_in_delta 1300.0, type_data["maxTunnelSpeed"]
+    end
+  end
+
   # Rows loaded before the parser read these blocks carry a `lifetime` the
   # schema does not describe, and nothing else.
   test "GET /components leaves out durability that only an older load wrote" do
