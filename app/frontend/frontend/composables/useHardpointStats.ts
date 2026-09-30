@@ -98,6 +98,36 @@ export const useHardpointStats = (
       : range;
   };
 
+  // Spread runs to thousandths of a degree, which the one-decimal stat
+  // format would round away. Written with the app's own decimal separator,
+  // as every other figure is.
+  const degrees = (value: number): string => {
+    const rounded = String(Math.round(value * 1000) / 1000);
+    return `${rounded.replace(".", t("number.format.separator") || ",")}°`;
+  };
+
+  // What one magazine delivers before a reload: only for guns fed from a
+  // magazine, since an energy weapon's pool refills while it fires.
+  const magazineTotals = (
+    weapon: ComponentWeapon,
+  ): { damage: number; seconds: number } | null => {
+    if (!weapon.maxAmmo || weapon.regen?.maxAmmoLoad || !weapon.fireRate) {
+      return null;
+    }
+
+    const perShot = Object.values(weapon.damagePerShot || {}).reduce(
+      (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+      0,
+    );
+    const shots = Math.floor(weapon.maxAmmo / (weapon.ammoCost || 1));
+    if (!perShot || !shots) return null;
+
+    return {
+      damage: shots * perShot * (weapon.pelletsPerShot || 1),
+      seconds: shots / (weapon.fireRate / 60),
+    };
+  };
+
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
 
@@ -396,8 +426,55 @@ export const useHardpointStats = (
         if (weapon.maxAmmo) {
           result.push(stat("weapons.ammo", weapon.maxAmmo, "integer"));
         }
+        const magazine = magazineTotals(weapon);
+        if (magazine) {
+          result.push(
+            stat("weapons.magazineDamage", magazine.damage, "integer"),
+            {
+              label: t("labels.hardpoint.weapons.timeToEmpty"),
+              // Unrounded, and floored at the format's one decimal: a fast
+              // gun with a small magazine empties in well under a second, and
+              // a zero would read as "not available".
+              value: String(
+                toNumber(Math.max(magazine.seconds, 0.1), "seconds"),
+              ),
+            },
+          );
+        }
         if (weapon.fireRate) {
           result.push(stat("weapons.fireRate", weapon.fireRate, "rateOfFire"));
+        }
+        if (weapon.spread?.max) {
+          const { min, max, firstAttack, attack, decay } = weapon.spread;
+          result.push({
+            label: t("labels.hardpoint.weapons.spread"),
+            value:
+              min != null && min !== max
+                ? `${degrees(min)} / ${degrees(max)}`
+                : degrees(max),
+          });
+          // A cone that is already at its widest has nothing left to grow into.
+          const grows = min !== max;
+          // The first shot opens the cone by its own amount; it is shown only
+          // where it differs from what every shot after it adds.
+          if (grows && firstAttack && firstAttack !== attack) {
+            result.push({
+              label: t("labels.hardpoint.weapons.spreadFirstShot"),
+              value: degrees(firstAttack),
+            });
+          }
+          if (grows && attack) {
+            result.push({
+              label: t("labels.hardpoint.weapons.spreadPerShot"),
+              value: degrees(attack),
+            });
+          }
+          if (grows && decay) {
+            result.push({
+              label: t("labels.hardpoint.weapons.spreadRecovery"),
+              value: `${degrees(decay)}/s`,
+            });
+          }
         }
         if (weapon.damagePerShot) {
           addDamageBreakdown(result, weapon.damagePerShot);

@@ -501,7 +501,8 @@ module ScData
               speed: projectile_speed,
               range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
               ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i,
-              max_ammo: max_ammo
+              max_ammo: max_ammo,
+              spread: extract_weapon_spread(fire_actions)
             }
 
             if charged.present?
@@ -1098,6 +1099,22 @@ module ScData
           (container_x <= x && container_y <= y && container_z <= z) ||
             (container_x <= y && container_y <= x && container_z <= z)
         end
+      end
+
+      # The cone a gun's shots scatter into, in degrees: it opens from `min`
+      # by `first_attack` on the first shot and `attack` on each one after,
+      # up to `max`, and closes again at `decay` per second once firing stops.
+      private def extract_weapon_spread(fire_action)
+        spread = fire_action&.dig("launchParams", "SProjectileLauncher", "spreadParams")
+        return unless spread.is_a?(Hash)
+
+        {
+          min: spread["min"]&.to_f,
+          max: spread["max"]&.to_f,
+          first_attack: spread["firstAttack"]&.to_f,
+          attack: spread["attack"]&.to_f,
+          decay: spread["decay"]&.to_f
+        }.compact.presence
       end
 
       FIRE_ACTION_TYPES = %w[

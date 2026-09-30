@@ -29,7 +29,8 @@ module Shared
             overchargeTime: {type: :number},
             regen: ComponentWeaponRegen,
             heat: ComponentWeaponHeat,
-            penetration: ComponentWeaponPenetration
+            penetration: ComponentWeaponPenetration,
+            spread: ComponentWeaponSpread
           },
           additionalProperties: false
         })

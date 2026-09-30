@@ -1255,6 +1255,8 @@ components:
           "$ref": "#/components/schemas/ComponentWeaponHeat"
         penetration:
           "$ref": "#/components/schemas/ComponentWeaponPenetration"
+        spread:
+          "$ref": "#/components/schemas/ComponentWeaponSpread"
       additionalProperties: false
     ComponentWeaponDamage:
       type: object
@@ -1306,6 +1308,20 @@ components:
         requestedRegenPerSecond:
           type: number
         requestedAmmoLoad:
+          type: number
+      additionalProperties: false
+    ComponentWeaponSpread:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        firstAttack:
+          type: number
+        attack:
+          type: number
+        decay:
           type: number
       additionalProperties: false
     ExternalFuelTank:
