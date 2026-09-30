@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
 import { useComponentStats } from "@/frontend/composables/useComponentStats";
@@ -13,11 +14,18 @@ import { type Component } from "@/services/fyApi";
 
 type Props = {
   component?: Component;
+  compact?: boolean;
+  // Where the card's detail link goes, when the caller knows better than the
+  // record -- a reference can say the catalogue does not list it. `false`
+  // drops the link.
+  to?: RouteLocationRaw | false;
   loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   component: undefined,
+  compact: false,
+  to: undefined,
   loading: false,
 });
 
@@ -77,7 +85,7 @@ const badges = computed<StatsCardBadge[]>(() => {
 
 // Components the catalogue does not list -- doors, controllers, seats -- have
 // no page to send anyone to.
-const to = computed(() =>
+const ownRoute = computed(() =>
   props.component?.slug && props.component.catalogued !== false
     ? { name: "component", params: { slug: props.component.slug } }
     : undefined,
@@ -86,12 +94,14 @@ const to = computed(() =>
 
 <template>
   <StatsCard
-    :title="component?.name || ''"
+    :compact="compact"
+    :title="compact ? component?.name || '' : t('headlines.component.metrics')"
     :subtitle="subtitle || undefined"
     :badges="badges"
     :stats="stats"
-    :to="to"
-    :loading="loading || !component"
+    :to="to === false ? undefined : (to ?? ownRoute)"
+    :empty-text="t('labels.component.noMetrics')"
+    :loading="loading || (compact && !component)"
     @navigate="emit('navigate')"
   >
     <slot />

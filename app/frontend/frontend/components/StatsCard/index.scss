@@ -1,6 +1,12 @@
-// The hero tile and rows are the metrics card's own primitives, so a card on
-// hover reads the same as the detail page it links to.
+// The hero tiles and rows are the metrics card's own primitives, rendered here
+// rather than by each detail page, so a card on hover and the page it links to
+// cannot drift apart.
 @import "@/shared/components/metricsCard";
+
+.stats-card__note {
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+}
 
 .stats-card {
   display: flex;
@@ -46,16 +52,13 @@
     padding: 12px 0;
   }
 
-  // The hero keeps its own bottom margin for the detail page's taller layout;
-  // the card's gap already spaces it here.
+  // The hero keeps a bottom margin for the detail page's taller layout; the
+  // card's gap already spaces it here.
   .metrics-card__hero {
     margin-bottom: 0;
   }
 
-  &__more,
-  &__empty {
-    margin: 0;
-    color: var(--color-text-dim, #959595);
+  .stats-card__note {
     font-size: 0.85rem;
   }
 

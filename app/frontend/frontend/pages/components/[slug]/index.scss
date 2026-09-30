@@ -109,11 +109,6 @@
     margin: 0 0 24px;
   }
 
-  &__empty {
-    color: var(--color-muted, #7a8288);
-    margin: 0;
-  }
-
   // The rail only earns its own column once there is room for both; the grid
   // breakpoints here start at 1500px, so this uses its own.
   &__columns {

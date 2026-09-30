@@ -28,7 +28,7 @@ type Props = Omit<InstanceType<typeof Component>["$props"], "title">;
 
 const mount = (props: Props) =>
   mountWithDefaults(Component, {
-    props: { ...props, title: "Glacier" },
+    props: { compact: true, ...props, title: "Glacier" },
     plugins: [router()],
   });
 
@@ -46,13 +46,13 @@ describe("StatsCard", () => {
     const wrapper = await mount({ stats: stats(15), maxStats: 10 });
 
     expect(wrapper.findAll(".metrics-card__row")).toHaveLength(10);
-    expect(wrapper.find(".stats-card__more").text()).toContain("4");
+    expect(wrapper.find(".stats-card__note").text()).toContain("4");
   });
 
   it("says so when there is nothing to show", async () => {
-    const wrapper = await mount({ stats: [] });
+    const wrapper = await mount({ stats: [], emptyText: "Nothing recorded." });
 
-    expect(wrapper.find(".stats-card__empty").exists()).toBe(true);
+    expect(wrapper.find(".stats-card__note").text()).toBe("Nothing recorded.");
   });
 
   it("shows a loader instead of figures while loading", async () => {
@@ -79,5 +79,36 @@ describe("StatsCard", () => {
     const wrapper = await mount({ stats: stats(2) });
 
     expect(wrapper.find("[data-test='stats-card-link']").exists()).toBe(false);
+  });
+
+  describe("on a detail page", () => {
+    it("shows every key figure as a tile, accenting only the first", async () => {
+      const wrapper = await mount({ stats: stats(4, 2), compact: false });
+
+      const tiles = wrapper.findAll(".metrics-card__tile");
+      expect(tiles).toHaveLength(2);
+      expect(tiles[0].classes()).toContain("metrics-card__tile--primary");
+      expect(tiles[1].classes()).not.toContain("metrics-card__tile--primary");
+    });
+
+    it("shows every other figure, uncapped, in the split list", async () => {
+      const wrapper = await mount({ stats: stats(15), compact: false });
+
+      expect(wrapper.findAll(".metrics-card__row")).toHaveLength(14);
+      expect(wrapper.find(".metrics-card__rows--split").exists()).toBe(true);
+      expect(wrapper.find(".stats-card__note").exists()).toBe(false);
+    });
+
+    it("links nowhere, since it is the page", async () => {
+      const wrapper = await mount({
+        stats: stats(2),
+        compact: false,
+        to: { name: "component", params: { slug: "glacier" } },
+      });
+
+      expect(wrapper.find("[data-test='stats-card-link']").exists()).toBe(
+        false,
+      );
+    });
   });
 });
