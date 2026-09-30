@@ -178,6 +178,20 @@ const guestTracking = computed({
         </p>
         <br />
 
+        <h3>Browser push services</h3>
+        <p>
+          If you turn on push notifications for a device, your browser hands us
+          an address at its vendor's push service (Google, Mozilla, Apple or
+          Microsoft, depending on the browser) that identifies this browser. We
+          store it, encrypted, together with the browser and operating system
+          name, and send the notifications you chose to it. The push service
+          only receives the encrypted notification and passes it on to your
+          device. Turning push off for a device, or removing the device in your
+          notification settings, deletes the address; so does deleting your
+          account.
+        </p>
+        <br />
+
         <h3>
           <a href="https://www.youtube.com/" target="_blank" rel="noopener">
             Youtube
