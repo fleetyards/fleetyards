@@ -1,0 +1,22 @@
+.popover__trigger {
+  display: inline;
+
+  &[tabindex] {
+    cursor: help;
+  }
+}
+
+// The dropdown menu's material: opaque, because it floats over arbitrary
+// content. The layer is set inline, since it depends on where the trigger is.
+.popover {
+  position: fixed;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 16px));
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  font-size: 1rem;
+  background: var(--color-gray-darker, #272b30);
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: var(--radius-control, 8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+}

@@ -379,30 +379,6 @@ defineExpose({ open, show, close });
   </Teleport>
 </template>
 
-<!-- Plain CSS, not scss: see the note in base/Btn/index.vue. -->
-<style scoped>
-@reference "../../../entrypoints/tailwind.css";
-
-.popover__trigger {
-  display: inline;
-}
-
-.popover__trigger[tabindex] {
-  cursor: help;
-}
-
-/*
- * The dropdown menu's material: opaque, because it floats over arbitrary
- * content. The layer is set inline, since it depends on where the trigger is.
- */
-.popover {
-  @apply bg-gray-darker border-edge rounded-control border;
-  position: fixed;
-  width: max-content;
-  max-width: min(340px, calc(100vw - 16px));
-  max-height: calc(100vh - 16px);
-  overflow-y: auto;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
-  font-size: 1rem;
-}
+<style lang="scss" scoped>
+@import "index";
 </style>
