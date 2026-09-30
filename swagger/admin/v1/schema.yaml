@@ -12731,6 +12731,8 @@ components:
           "$ref": "#/components/schemas/ComponentWeaponHeat"
         penetration:
           "$ref": "#/components/schemas/ComponentWeaponPenetration"
+        spread:
+          "$ref": "#/components/schemas/ComponentWeaponSpread"
       additionalProperties: false
       title: ComponentWeapon
     ComponentWeaponDamage:
@@ -12789,6 +12791,21 @@ components:
           type: number
       additionalProperties: false
       title: ComponentWeaponRegen
+    ComponentWeaponSpread:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        firstAttack:
+          type: number
+        attack:
+          type: number
+        decay:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponSpread
     Components:
       type: object
       properties:

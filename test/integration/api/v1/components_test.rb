@@ -322,4 +322,17 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert_not_includes names, "Different Category"
     end
   end
+
+  test "GET /components serves a gun's spread" do
+    create(:component, name: "Spreadprobe", category: "weapons", component_sub_type: "Gun",
+      type_data: {"fire_rate" => 50.0, "max_ammo" => 270, "spread" => {"min" => 0.2, "max" => 0.2, "first_attack" => 0.025, "attack" => 0.025, "decay" => 0.05}})
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Spreadprobe"}} do
+      spread = parsed_body["items"].sole["typeData"]["spread"]
+
+      assert_in_delta 0.2, spread["max"]
+      assert_in_delta 0.025, spread["firstAttack"]
+      assert_in_delta 0.05, spread["decay"]
+    end
+  end
 end
