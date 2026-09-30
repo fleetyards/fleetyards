@@ -20072,6 +20072,7 @@ components:
       - oauth-patreon
       - oauth-twitch
       - online_status
+      - push_notifications
       - ship_inventories
       - tour_payouts
       - trade_routes
@@ -20096,6 +20097,7 @@ components:
       - OAUTH_PATREON
       - OAUTH_TWITCH
       - ONLINE_STATUS
+      - PUSH_NOTIFICATIONS
       - SHIP_INVENTORIES
       - TOUR_PAYOUTS
       - TRADE_ROUTES
