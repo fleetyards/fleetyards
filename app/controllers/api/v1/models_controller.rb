@@ -106,6 +106,12 @@ module Api
           .per(per_page(Model))
       end
 
+      # Armor and shields for the whole catalogue in one light response, for a
+      # client that weighs a loadout against every ship at once.
+      def defenses
+        @defenses = ModelDefenses.call
+      end
+
       def latest
         @models = Model.visible.includes(:manufacturer, :item_prices, model_loaners: :loaner_model)
           .active
