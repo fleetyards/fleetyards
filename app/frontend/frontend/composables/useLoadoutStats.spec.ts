@@ -181,6 +181,15 @@ describe("computeLoadoutStats", () => {
     expect(stats.maxArmedMissiles).toBe(8);
   });
 
+  it("has nothing to show for missiles with no payload and no controller", () => {
+    const stats = computeLoadoutStats([
+      weaponHardpoint({ trackingSignal: "infrared" } as ComponentWeapon),
+    ]);
+
+    expect(stats.missileCount).toBe(1);
+    expect(stats.hasData).toBe(false);
+  });
+
   it("leaves the armed-missile capacity off a ship without missiles", () => {
     const controller = {
       id: "controller",

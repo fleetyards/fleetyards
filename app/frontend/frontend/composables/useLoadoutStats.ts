@@ -52,7 +52,8 @@ export type LoadoutStats = {
   maxArmedMissiles?: number;
   launchCooldown?: number;
   weaponPowerRatio: number;
-  // A ship with only missiles still has a combat loadout to show.
+  // Whether the card has a figure to show: guns, a missile payload, or the
+  // capacity of the missiles it carries. Fitted missiles alone are not one.
   hasData: boolean;
 };
 
@@ -265,7 +266,10 @@ export function computeLoadoutStats(
         }
       : {}),
     weaponPowerRatio: powerRatio,
-    hasData: weapons.length > 0 || missileCount > 0,
+    hasData:
+      weapons.length > 0 ||
+      missileDamage > 0 ||
+      (missileCount > 0 && (controllers.maxArmedMissiles || 0) > 0),
   };
 }
 
