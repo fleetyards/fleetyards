@@ -111,11 +111,11 @@ test.describe("Fleet", () => {
 
     await expect(page).toHaveURL(/\/settings\/fleet\//);
 
-    await page
-      .locator("textarea[name='description']")
-      .waitFor({ state: "visible" });
+    // The description is a markdown editor: its text is a contenteditable.
+    const description = page.getByTestId("input-description");
+    await expect(description).toBeVisible();
 
-    await page.locator("textarea[name='description']").fill("test");
+    await description.fill("test");
 
     await page.getByTestId("submit-form").click();
 
