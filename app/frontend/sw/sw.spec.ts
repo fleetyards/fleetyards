@@ -35,14 +35,26 @@ const worker = () => {
 
 let current: ReturnType<typeof worker>;
 
-// The event's work is whatever it handed to waitUntil.
-const dispatch = async (type: string, event: Record<string, unknown>) => {
+// The event's work is whatever it handed to waitUntil, and all of it has to
+// succeed unless a test says otherwise: an assertion on a side effect proves
+// nothing if the work failed right after it.
+const dispatch = async (
+  type: string,
+  event: Record<string, unknown>,
+  { allowRejection = false } = {},
+) => {
   const pending: Promise<unknown>[] = [];
   current.listeners[type]({
     ...event,
     waitUntil: (promise: Promise<unknown>) => pending.push(promise),
   });
-  return Promise.allSettled(pending);
+  const results = await Promise.allSettled(pending);
+
+  if (!allowRejection) {
+    expect(results.map((result) => result.status)).not.toContain("rejected");
+  }
+
+  return results;
 };
 
 beforeEach(async () => {
@@ -181,10 +193,11 @@ describe("pushsubscriptionchange", () => {
       vi.fn().mockResolvedValue({ ok: false, status: 401 }),
     );
 
-    const [result] = await dispatch("pushsubscriptionchange", {
-      newSubscription: renewed,
-      oldSubscription: null,
-    });
+    const [result] = await dispatch(
+      "pushsubscriptionchange",
+      { newSubscription: renewed, oldSubscription: null },
+      { allowRejection: true },
+    );
 
     expect(result.status).toBe("rejected");
   });
