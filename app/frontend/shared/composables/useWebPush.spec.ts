@@ -207,9 +207,27 @@ describe("useWebPush", () => {
 
     await push.refresh(USER);
 
+    expect(touchPushSubscription).toHaveBeenCalledWith("row-1");
     expect(createPushSubscription).toHaveBeenCalledWith(existing.input);
-    expect(touchPushSubscription).not.toHaveBeenCalled();
     expect(stored().p256dh).toBe("p");
+  });
+
+  it("does not bring back a removed device when it renews", async () => {
+    const existing = browserSubscription("https://fcm.googleapis.com/renewed");
+    remember("row-0", "https://fcm.googleapis.com/old");
+    touchPushSubscription.mockRejectedValue({
+      isAxiosError: true,
+      response: { status: 404 },
+    });
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+
+    await push.refresh(USER);
+
+    expect(createPushSubscription).not.toHaveBeenCalled();
+    expect(existing.unsubscribe).toHaveBeenCalled();
+    expect(stored()).toBeNull();
+    expect(push.status.value).toBe(WebPushStatusEnum.OFF);
   });
 
   it("stays off for a device this account removed elsewhere", async () => {

@@ -193,14 +193,10 @@ export const useWebPush = () => {
         return;
       }
 
-      if (renewed(stored, subscription)) {
-        await save(subscription, userId);
-        return;
-      }
-
+      // Touch first, renewal or not: a row this account removed meanwhile
+      // stays removed, and a renewal must not bring it back.
       try {
         await touchPushSubscription(stored.id);
-        subscriptionId.value = stored.id;
       } catch (error) {
         if (!isAxiosError(error) || error.response?.status !== 404) {
           throw error;
@@ -209,6 +205,13 @@ export const useWebPush = () => {
         await subscription.unsubscribe();
         writeStored(undefined);
         subscriptionId.value = undefined;
+        return;
+      }
+
+      if (renewed(stored, subscription)) {
+        await save(subscription, userId);
+      } else {
+        subscriptionId.value = stored.id;
       }
     } catch (error) {
       failed.value = true;
