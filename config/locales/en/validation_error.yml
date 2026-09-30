@@ -268,6 +268,7 @@ en:
       create: Upgrade could not be created.
       update: Upgrade could not be updated.
     notification_preference: Notification preference could not be updated.
+    push_subscription: "Push notifications could not be turned on for this browser."
     supporter_contribution:
       create: Supporter contribution could not be created.
       destroy: Supporter contribution could not be destroyed.

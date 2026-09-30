@@ -222,6 +222,7 @@ fr:
       create: Impossible de créer l'amélioration.
       update: Impossible de mettre à jour l'amélioration.
     notification_preference: Impossible de mettre à jour la préférence de notification.
+    push_subscription: "Les notifications push n'ont pas pu être activées pour ce navigateur."
     supporter_contribution:
       create: Impossible de créer la contribution du soutien.
       destroy: Impossible de supprimer la contribution du soutien.

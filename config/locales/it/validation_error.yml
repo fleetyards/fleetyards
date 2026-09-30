@@ -222,6 +222,7 @@ it:
       create: Impossibile creare il potenziamento.
       update: Impossibile aggiornare il potenziamento.
     notification_preference: Impossibile aggiornare la preferenza di notifica.
+    push_subscription: "Non è stato possibile attivare le notifiche push per questo browser."
     supporter_contribution:
       create: Impossibile creare il contributo del sostenitore.
       destroy: Impossibile eliminare il contributo del sostenitore.
