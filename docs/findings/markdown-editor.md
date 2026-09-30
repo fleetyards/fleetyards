@@ -23,6 +23,15 @@ User-written descriptions are stored as Markdown, edited through `FormMarkdownEd
 | A nested list                             | indented by two spaces           | The renderer nests lists by indentation                                                                                                       |
 | An underlined (setext) heading            | `## Heading`                     | Stored fleet descriptions use `----` underlines, so the renderer reads both forms                                                             |
 
+## Catalogue tokens
+
+`[*Name*]` and `[*type:Name*]` name a catalogue item inline. The grammar lives in `shared/utils/CatalogueTokens.ts` (and once more in Ruby, in `MarkdownPlainText`). The name can't hold `*`, `]` or a line break.
+
+- **Renderer:** a token outside code becomes an inert `span[data-catalogue-token]` showing the name. It's marked on the escaped text and before the formatting rules, which would otherwise read its asterisks as emphasis.
+- **`Markdown` component:** resolves every mark of a text through `GET /v1/catalogue/lookup` in one request, then teleports the injected `MARKDOWN_CATALOGUE_TOKEN` component (the frontend provides `CatalogueItemPopover`) into each resolved mark. Admin provides nothing, so tokens stay names there.
+- **Editor:** `catalogueToken` is an inline atom node. Without it, the serializer escapes the brackets and parses the name as italic, and the first save rewrites the token.
+- **Resolution** (`Catalogue::TokenResolver`): a name resolves only when exactly one listed item carries it. Components repeat many generic names ("Internal Tank" ×313), so the search offers only names that resolve, prefixed when another catalogue carries the name too.
+
 ## Traps
 
 - **URLs have to be checked after escapes are resolved.** The renderer replaces escapes and entities with placeholders before formatting. If a URL is checked while the placeholders are still in it, `[x](/\/host)` or `[x](/&#47;host)` passes as a same-origin path and reaches the browser as `//host`. `formatText` resolves the URL before calling the shared rule. The rule also refuses whitespace and control characters, which browsers strip while parsing a URL.
