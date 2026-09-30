@@ -323,6 +323,19 @@ module ScData
         assert_in_delta 100.0, type_data["blast_radius_max"]
       end
 
+      test "reads no warhead from an explosion whose damage is not a block" do
+        write_item("bomb_blank", name: "@item_Namebomb_blank", category: "weapons", components: <<~XML)
+          <SCItemBombParams armTime="3">
+            <explosionParams minRadius="10" maxRadius="10"><damage>none</damage></explosionParams>
+          </SCItemBombParams>
+        XML
+
+        type_data = parsed_item("bomb_blank")["type_data"]
+
+        assert_nil type_data["damage_per_shot"]
+        assert_in_delta 3.0, type_data["arm_time"]
+      end
+
       test "reads a rack's launch delay and whether it ignites on the pylon" do
         write_item("mrck_probe", name: "@item_Namemrck_probe", category: "missile_racks", components: <<~XML)
           <SCItemMissileRackParams launchDelay="0.125" igniteOnPylon="0" />

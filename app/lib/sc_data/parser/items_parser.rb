@@ -79,7 +79,10 @@ module ScData
       end
 
       private def ordnance_damage(explosion)
-        damage_info = explosion&.dig("damage", "DamageInfo") || explosion&.dig("damage")
+        damage = explosion&.dig("damage")
+        return unless damage.is_a?(Hash)
+
+        damage_info = damage["DamageInfo"] || damage
         return unless damage_info.is_a?(Hash)
 
         {
