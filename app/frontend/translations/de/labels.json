@@ -1337,7 +1337,10 @@
         },
         "turrets": {
           "turnRate": "Drehrate",
-          "control": "Steuerung"
+          "control": "Steuerung",
+          "yawRange": "Gierbereich",
+          "pitchRange": "Nickbereich",
+          "limitsVary": "abhängig von der Drehung"
         },
         "weapons": {
           "dps": "DPS",

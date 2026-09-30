@@ -1337,7 +1337,10 @@
         },
         "turrets": {
           "turnRate": "Vitesse de rotation",
-          "control": "Contrôle"
+          "control": "Contrôle",
+          "yawRange": "Amplitude en lacet",
+          "pitchRange": "Amplitude en tangage",
+          "limitsVary": "selon la rotation"
         },
         "weapons": {
           "dps": "DPS",

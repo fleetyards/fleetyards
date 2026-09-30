@@ -1337,7 +1337,10 @@
         },
         "turrets": {
           "turnRate": "转向速率",
-          "control": "操控"
+          "control": "操控",
+          "yawRange": "偏航范围",
+          "pitchRange": "俯仰范围",
+          "limitsVary": "随转向变化"
         },
         "weapons": {
           "dps": "DPS",

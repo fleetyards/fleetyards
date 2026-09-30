@@ -73,6 +73,37 @@ describe("useHardpointStats for mounts", () => {
     ]);
   });
 
+  it("shows how far a mount turns on each axis", () => {
+    const stats = statsFor(
+      mountHardpoint(
+        { yawSpeed: 80, minYaw: -80, maxYaw: 80, minPitch: -20, maxPitch: 20 },
+        HardpointCategoryEnum.WEAPON_MOUNTS,
+      ),
+    );
+
+    expect(stats.slice(1)).toEqual([
+      { label: "labels.hardpoint.turrets.yawRange", value: "±80°" },
+      { label: "labels.hardpoint.turrets.pitchRange", value: "±20°" },
+    ]);
+  });
+
+  it("shows a full turn, and a range that changes with rotation", () => {
+    const stats = statsFor(
+      mountHardpoint({
+        minYaw: -180,
+        maxYaw: 180,
+        minPitch: -85,
+        maxPitch: 0,
+        pitchLimitsVary: true,
+      }),
+    );
+
+    expect(stats.map((stat) => stat.value)).toEqual([
+      "360°",
+      "-85° / 0° (labels.hardpoint.turrets.limitsVary)",
+    ]);
+  });
+
   it("shows nothing for a mount without parsed joints", () => {
     expect(statsFor(mountHardpoint({ signatureEm: 0 }))).toEqual([]);
   });

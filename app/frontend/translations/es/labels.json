@@ -1337,7 +1337,10 @@
         },
         "turrets": {
           "turnRate": "Velocidad de giro",
-          "control": "Control"
+          "control": "Control",
+          "yawRange": "Rango de guiñada",
+          "pitchRange": "Rango de cabeceo",
+          "limitsVary": "según la rotación"
         },
         "weapons": {
           "dps": "DPS",
