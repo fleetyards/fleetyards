@@ -16,6 +16,7 @@
   window.ON_SUBDOMAIN = <%= Rails.configuration.app.on_subdomain? %>
   window.RSI_ENDPOINT = '<%= Rails.configuration.rsi.endpoint %>'
   window.APPSIGNAL_KEY = '<%= Rails.application.credentials.dig(:appsignal, :frontend_key) %>'
+  window.VAPID_PUBLIC_KEY = '<%= Push::Vapid.public_key if Push::Vapid.configured? %>'
   window.DATA_PREFETCH = <%= @data_prefetch.to_json.html_safe %>
   window.MAINTAINER_NAME = '<%= Rails.configuration.maintainer.name %>'
   window.MAINTAINER_MAIL = '<%= Rails.configuration.maintainer.mail %>'
