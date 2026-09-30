@@ -61,13 +61,14 @@ describe("useComponentStats for drives", () => {
     expect(valueOf(stats, "Cooldown")).toBe("14,3 s");
   });
 
+  // A 250 m/s² first stage is 0.25 km/s², and one decimal would call it 0.3.
   it("groups the spline jump figures as one mode", () => {
     const stats = useComponentStats(component("quantumdrive", torrent)).value;
     const spline = stats.filter((stat) => stat.group === "splineJump");
 
     expect(spline.map((stat) => [stat.label, stat.value])).toEqual([
       ["Orbit", "400 km/s"],
-      ["Orbit Accel", "0,3 / 50 km/s²"],
+      ["Orbit Accel", "0,25 / 50 km/s²"],
       ["Orbit Spool Up", "6 s"],
       ["Orbit Cooldown", "21,6 s"],
       ["Orbit Interdiction", "5 s"],

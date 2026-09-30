@@ -85,8 +85,20 @@ export const useHardpointStats = (
     value: String(toNumber(value, "seconds")),
   });
 
+  // For figures that live below the one-decimal stat format -- a 0.25 km/s²
+  // first stage, a 0.05/s air output -- where rounding would misstate them.
+  // Zero stays a zero rather than "not available". Thousands are grouped the
+  // way `toNumber` groups them.
+  const precise = (value: number, digits = 3): string => {
+    if (Math.abs(value) >= 1) return String(toNumber(value));
+
+    const rounded = String(Math.round(value * 10 ** digits) / 10 ** digits);
+
+    return rounded.replace(".", t("number.format.separator") || ",");
+  };
+
   const splineAccel = (stageOne: number, stageTwo: number) =>
-    `${String(toNumber(stageOne / 1000))} / ${String(toNumber(stageTwo / 1000))} km/s²`;
+    `${precise(stageOne / 1000)} / ${precise(stageTwo / 1000)} km/s²`;
 
   const resistanceStat = (labelKey: string, value: number): HardpointStat => ({
     label: t(`labels.hardpoint.${labelKey}`),
