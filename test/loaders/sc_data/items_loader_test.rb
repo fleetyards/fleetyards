@@ -147,6 +147,18 @@ module ScData
         assert_equal 4, grid.type_data["capacity"]
       end
 
+      test "#all clears durability an export no longer describes" do
+        grid = create(:component, :without_build, sc_key: "aegs_avenger_cargogrid_stalker", durability: {"health" => 410.0})
+        build = grid.builds.create!(
+          environment: fixture_source.environment, version: fixture_source.version, durability: {"health" => 410.0}
+        )
+
+        items_loader.all
+
+        assert_nil grid.reload.read_attribute(:durability)
+        assert_nil build.reload.durability
+      end
+
       test "#all writes a component's durability to the component and its build" do
         items_loader.all
 
