@@ -329,6 +329,18 @@ const showImageSize = ({
   instance.isActive("image") &&
   (view.hasFocus() || !!imageSizeToolbar.value?.containsFocus());
 
+// The menu plugin makes its wrapper a tab stop of its own, which would leave an
+// empty stop between the image and the buttons. It hands focus on instead:
+// into the buttons coming from the text, back to the text coming out of them.
+const onImageSizeWrapperFocus = (event: FocusEvent) => {
+  if (imageSizeToolbar.value?.contains(event.relatedTarget as Node | null)) {
+    editor.value?.commands.focus();
+    return;
+  }
+
+  imageSizeToolbar.value?.focusFirst();
+};
+
 // Inside the image's top edge rather than above it: above, it would sit on the
 // editor's own toolbar whenever the image is at the top of the text.
 const imageSizeMenuOptions = {
@@ -489,6 +501,7 @@ defineExpose({ setFocus: focusEditor });
         v-if="editor"
         :editor="editor"
         plugin-key="markdownEditorImageSize"
+        @focus="onImageSizeWrapperFocus"
         :should-show="showImageSize"
         :update-delay="0"
         :options="imageSizeMenuOptions"

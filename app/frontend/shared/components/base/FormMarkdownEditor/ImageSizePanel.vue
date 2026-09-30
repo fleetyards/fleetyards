@@ -30,6 +30,8 @@ const root = ref<HTMLElement>();
 
 defineExpose({
   containsFocus: () => !!root.value?.contains(document.activeElement),
+  contains: (node: Node | null) => !!node && !!root.value?.contains(node),
+  focusFirst: () => root.value?.querySelector<HTMLElement>("button")?.focus(),
 });
 
 const options: { size: ImageSize | null; key: string }[] = [
