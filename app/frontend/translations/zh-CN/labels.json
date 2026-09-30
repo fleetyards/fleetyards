@@ -1330,6 +1330,24 @@
           "recoversBelow": "恢复阈值",
           "decayRate": "衰减速率",
           "decayDelay": "衰减延迟"
+        },
+        "durabilityChanges": {
+          "health": "耐久",
+          "mass": "质量 (kg)",
+          "resistancesPhysical": "承受物理伤害",
+          "resistancesEnergy": "承受能量伤害",
+          "resistancesDistortion": "承受扭曲伤害",
+          "resistancesThermal": "承受热能伤害",
+          "resistancesBiochemical": "承受生化伤害",
+          "resistancesStun": "承受眩晕伤害",
+          "selfRepairTime": "自我修复时间 (s)",
+          "selfRepairHealthRatio": "自我修复恢复至",
+          "selfRepairMaxRepairs": "最大自我修复次数",
+          "distortionMaximum": "扭曲失效阈值",
+          "distortionWarningRatio": "扭曲警告阈值",
+          "distortionRecoveryRatio": "扭曲恢复阈值",
+          "distortionDecayRate": "扭曲衰减速率 (/s)",
+          "distortionDecayDelay": "扭曲衰减延迟 (s)"
         }
       },
       "hardpoint": {

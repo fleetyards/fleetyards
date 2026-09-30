@@ -1330,6 +1330,24 @@
           "recoversBelow": "Se recupera por debajo de",
           "decayRate": "Tasa de disipación",
           "decayDelay": "Retardo de disipación"
+        },
+        "durabilityChanges": {
+          "health": "Salud",
+          "mass": "Masa (kg)",
+          "resistancesPhysical": "Daño físico recibido",
+          "resistancesEnergy": "Daño de energía recibido",
+          "resistancesDistortion": "Daño de distorsión recibido",
+          "resistancesThermal": "Daño térmico recibido",
+          "resistancesBiochemical": "Daño bioquímico recibido",
+          "resistancesStun": "Daño de aturdimiento recibido",
+          "selfRepairTime": "Tiempo de autorreparación (s)",
+          "selfRepairHealthRatio": "La autorreparación restaura hasta",
+          "selfRepairMaxRepairs": "Autorreparaciones máx.",
+          "distortionMaximum": "Umbral de apagado por distorsión",
+          "distortionWarningRatio": "Umbral de aviso de distorsión",
+          "distortionRecoveryRatio": "Umbral de recuperación de distorsión",
+          "distortionDecayRate": "Tasa de disipación de distorsión (/s)",
+          "distortionDecayDelay": "Retardo de disipación de distorsión (s)"
         }
       },
       "hardpoint": {

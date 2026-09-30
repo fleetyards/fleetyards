@@ -1330,6 +1330,24 @@
           "recoversBelow": "Recovers below",
           "decayRate": "Decay rate",
           "decayDelay": "Decay delay"
+        },
+        "durabilityChanges": {
+          "health": "Health",
+          "mass": "Mass (kg)",
+          "resistancesPhysical": "Physical damage taken",
+          "resistancesEnergy": "Energy damage taken",
+          "resistancesDistortion": "Distortion damage taken",
+          "resistancesThermal": "Thermal damage taken",
+          "resistancesBiochemical": "Biochemical damage taken",
+          "resistancesStun": "Stun damage taken",
+          "selfRepairTime": "Self-repair time (s)",
+          "selfRepairHealthRatio": "Self-repair restores to",
+          "selfRepairMaxRepairs": "Max self-repairs",
+          "distortionMaximum": "Distortion shutdown threshold",
+          "distortionWarningRatio": "Distortion warning threshold",
+          "distortionRecoveryRatio": "Distortion recovery threshold",
+          "distortionDecayRate": "Distortion decay rate (/s)",
+          "distortionDecayDelay": "Distortion decay delay (s)"
         }
       },
       "hardpoint": {
