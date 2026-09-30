@@ -216,6 +216,9 @@
           "buyPrice": "Achats pour"
         }
       },
+      "statsCard": {
+        "more": "+%{count} de plus sur la page de détails"
+      },
       "stats": {
         "quickStats": {
           "newShips": "Nouveaux vaisseaux en %{year}",

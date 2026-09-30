@@ -216,6 +216,9 @@
           "buyPrice": "buys for"
         }
       },
+      "statsCard": {
+        "more": "+%{count} more on the detail page"
+      },
       "stats": {
         "quickStats": {
           "newShips": "New Ships in %{year}",

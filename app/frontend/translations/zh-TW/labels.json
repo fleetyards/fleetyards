@@ -216,6 +216,9 @@
           "buyPrice": "購買價格"
         }
       },
+      "statsCard": {
+        "more": "詳情頁另有 %{count} 項"
+      },
       "stats": {
         "quickStats": {
           "newShips": "%{year} 年新飛船",

@@ -216,6 +216,9 @@
           "buyPrice": "compra por"
         }
       },
+      "statsCard": {
+        "more": "+%{count} más en la página de detalles"
+      },
       "stats": {
         "quickStats": {
           "newShips": "Nuevas naves en %{year}",
