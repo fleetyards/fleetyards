@@ -296,6 +296,14 @@ export const useHardpointStats = (
     }
   };
 
+  // Angles and multipliers run to hundredths, which the one-decimal stat
+  // format would round away; written with the app's decimal separator.
+  const preciseNumber = (value: number): string =>
+    String(Math.round(value * 100) / 100).replace(
+      ".",
+      t("number.format.separator") || ",",
+    );
+
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
 
@@ -753,6 +761,36 @@ export const useHardpointStats = (
               value: `${degrees(decay)}/s`,
             });
           }
+        }
+        const gimbalFireRate = weapon.gimbalMode?.fireRateMultiplier;
+        if (weapon.fireRate && gimbalFireRate && gimbalFireRate !== 1) {
+          result.push(
+            stat(
+              "weapons.gimbalFireRate",
+              weapon.fireRate * gimbalFireRate,
+              "rateOfFire",
+            ),
+          );
+        }
+        const gimbalSpread = weapon.gimbalMode?.spreadMinMultiplier;
+        if (gimbalSpread && gimbalSpread !== 1) {
+          result.push({
+            label: t("labels.hardpoint.weapons.gimbalSpread"),
+            value: `×${preciseNumber(gimbalSpread)}`,
+          });
+        }
+        if (weapon.aimAssist?.nudgeAngle) {
+          result.push({
+            label: t("labels.hardpoint.weapons.aimAssist"),
+            value: `${preciseNumber(weapon.aimAssist.nudgeAngle)}°`,
+          });
+        }
+        const assist = weapon.aimAssist;
+        if (assist?.closeOuterAngle && assist.closeRangeMax) {
+          result.push({
+            label: t("labels.hardpoint.weapons.closeAimAssist"),
+            value: `${preciseNumber(assist.closeOuterAngle)}° (${preciseNumber(assist.closeRangeMin || 0)}–${preciseNumber(assist.closeRangeMax)} m)`,
+          });
         }
         if (weapon.damagePerShot) {
           addDamageBreakdown(result, weapon.damagePerShot);
