@@ -235,9 +235,12 @@ const onMouseleave = () => {
 /*
  * On touch the first tap shows the card and goes no further, even when the
  * trigger is a link: following it would make the card unreachable on a phone,
- * and the card carries the same link. A second tap then does what the trigger
- * does. `detail` is the click count, which a keyboard activation does not have,
- * so Enter on a link still follows it.
+ * and the card carries the same link. A second tap closes it and does what the
+ * trigger does -- a link still navigates. Neither tap reaches a click handler
+ * around the trigger, such as a hardpoint row that toggles its stack: the
+ * trigger is the popover's, and a row that expands under a closing card reads
+ * as the tap having done two things. `detail` is the click count, which a
+ * keyboard activation does not have, so Enter on a link still follows it.
  */
 const onClickCapture = (event: MouseEvent) => {
   if (props.disabled || event.detail === 0) return;
@@ -247,13 +250,14 @@ const onClickCapture = (event: MouseEvent) => {
     return;
   }
 
+  event.stopPropagation();
+
   if (open.value) {
     close();
     return;
   }
 
   event.preventDefault();
-  event.stopPropagation();
   void show("tap");
 };
 

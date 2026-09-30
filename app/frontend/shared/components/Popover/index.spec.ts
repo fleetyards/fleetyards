@@ -175,6 +175,31 @@ describe("Popover on touch", () => {
     expect(panel()).toBeNull();
   });
 
+  it("keeps the second tap from reaching a clickable row around it too", async () => {
+    const onRowClick = vi.fn();
+    const row = document.createElement("div");
+    row.addEventListener("click", onRowClick);
+    document.body.appendChild(row);
+
+    const wrapper = mount(Popover, {
+      attachTo: row,
+      props: { label: "Door" },
+      slots: { default: "Door", content: "stats" },
+    });
+    wrappers.push(wrapper);
+    const trigger = wrapper.find("[data-test='popover-trigger']").element;
+
+    tap(trigger);
+    await vi.advanceTimersByTimeAsync(0);
+    const second = tap(trigger);
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(panel()).toBeNull();
+    expect(second.defaultPrevented).toBe(false);
+    expect(onRowClick).not.toHaveBeenCalled();
+    row.remove();
+  });
+
   it("keeps the tap from reaching a clickable row around it", async () => {
     const onRowClick = vi.fn();
     const row = document.createElement("div");
