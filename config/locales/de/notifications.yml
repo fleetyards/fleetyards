@@ -116,6 +116,7 @@ de:
     payout_entry_declined:
       title: "Deine Ausgabe \"%{description}\" für %{subject} wurde abgelehnt"
     fleet_contract:
+      someone: "Ein Mitglied"
       published:
         title: "Neuer Auftrag in %{fleet}: %{title}"
         body: "%{fleet} hat einen neuen Auftrag ausgeschrieben."

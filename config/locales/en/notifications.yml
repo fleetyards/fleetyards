@@ -118,6 +118,7 @@ en:
     fleet_inventory_item_added:
       title: "New inventory item in %{fleet}: %{item_name}"
     fleet_contract:
+      someone: "A member"
       published:
         title: "New contract in %{fleet}: %{title}"
         body: "%{fleet} just posted a new contract."

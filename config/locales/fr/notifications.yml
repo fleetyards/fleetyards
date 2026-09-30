@@ -116,6 +116,7 @@ fr:
     payout_entry_declined:
       title: "Votre dépense \"%{description}\" sur %{subject} a été refusée"
     fleet_contract:
+      someone: "Un membre"
       published:
         title: "Nouveau contrat dans %{fleet} : %{title}"
         body: "%{fleet} vient de publier un nouveau contrat."

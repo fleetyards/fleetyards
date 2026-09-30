@@ -84,7 +84,7 @@ module Notifications
           notify(user, :fleet_contract_claimed) do
             {
               title: I18n.t("notifications.fleet_contract.claimed.title",
-                user: claimant&.username || "A member", title: contract.display_title)
+                user: claimant&.username || I18n.t("notifications.fleet_contract.someone"), title: contract.display_title)
             }
           end
         end
@@ -116,7 +116,7 @@ module Notifications
           notify(user, :fleet_contract_crew_requested) do
             {
               title: I18n.t("notifications.fleet_contract.crew_requested.title",
-                user: assignment.user&.username || "A member", title: contract.display_title)
+                user: assignment.user&.username || I18n.t("notifications.fleet_contract.someone"), title: contract.display_title)
             }
           end
         end
