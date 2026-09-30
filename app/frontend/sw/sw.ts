@@ -31,11 +31,16 @@ self.addEventListener("push", (event) => {
   );
 });
 
+// Only for a push: the app's own local alerts go through this registration
+// too, carry no link, and clicking one never did anything but close it.
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
+  const link = event.notification.data?.url;
+  if (!link) return;
+
   const origin = self.location.origin;
-  const url = safeUrl(event.notification.data?.url, origin);
+  const url = safeUrl(link, origin);
 
   event.waitUntil(
     (async () => {
@@ -59,6 +64,10 @@ self.addEventListener("notificationclick", (event) => {
 // The browser rotated the subscription. Without telling the server, push to
 // this device simply stops. The new keys come along, which is what lets the
 // server accept the endpoint for this account.
+//
+// This needs a session, and the worker may run with none. A refused save is
+// thrown rather than swallowed; the app posts its current subscription again
+// on the next signed-in visit, which is what recovers it.
 self.addEventListener("pushsubscriptionchange", (event) => {
   event.waitUntil(
     (async () => {
@@ -70,12 +79,16 @@ self.addEventListener("pushsubscriptionchange", (event) => {
             event.oldSubscription?.options.applicationServerKey,
         }));
 
-      await fetch("/api/v1/push-subscriptions", {
+      const response = await fetch("/api/v1/push-subscriptions", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(subscription.toJSON()),
       });
+
+      if (!response.ok) {
+        throw new Error(`push subscription not saved: ${response.status}`);
+      }
     })(),
   );
 });
