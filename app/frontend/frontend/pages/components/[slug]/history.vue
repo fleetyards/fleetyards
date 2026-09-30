@@ -162,9 +162,11 @@ const changeValue = (change: ComponentBuildChange, value?: string | null) => {
   const number = Number(value);
   if (!Number.isFinite(number)) return value;
 
-  return isRatio(change.field)
-    ? `${Math.round(number * 100)}%`
-    : String(toNumber(number));
+  if (isRatio(change.field)) return `${Math.round(number * 100)}%`;
+
+  // `toNumber` reads zero as "not available", and a figure dropping to zero
+  // is a change worth reading as one.
+  return number === 0 ? "0" : String(toNumber(number));
 };
 
 const date = (value?: string | null) =>

@@ -17,7 +17,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
     t: (key: string) => key,
     tExists: (key: string) => key.startsWith("labels.component.durability"),
     l: (value: string) => value,
-    toNumber: (value: number) => String(value),
+    toNumber: (value: number) =>
+      value === 0 ? "labels.notAvailable" : String(value),
   }),
 }));
 
@@ -98,12 +99,14 @@ describe("ComponentHistoryPage", () => {
       change("durability.mass", "630.0", "700.0"),
       change("durability.resistances.thermal", "0.1", "0.2"),
       change("durability.self_repair.time", null, "56.0"),
+      change("durability.distortion.decay_rate", "2.0", "0.0"),
     ];
 
     expect(rows(await mountPage())).toEqual([
       "labels.component.durabilityChanges.mass: 630 → 700",
       "labels.component.durabilityChanges.resistancesThermal: 10% → 20%",
       "labels.component.durabilityChanges.selfRepairTime: — → 56",
+      "labels.component.durabilityChanges.distortionDecayRate: 2 → 0",
     ]);
   });
 });
