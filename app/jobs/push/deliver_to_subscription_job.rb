@@ -30,9 +30,13 @@ module Push
       SocketError
     ].freeze
 
+    # Only while the browser still belongs to the notification's reader: a
+    # browser that moved accounts since must not pay for the old owner's sends.
     sidekiq_retries_exhausted do |job, _exception|
-      subscription = PushSubscription.find_by(id: job["args"].last)
-      subscription && DeliverToSubscriptionJob.record_failure(subscription)
+      notification_id, subscription_id = job["args"]
+      subscription = PushSubscription.find_by(id: subscription_id)
+      owner_id = Notification.where(id: notification_id).pick(:user_id)
+      DeliverToSubscriptionJob.record_failure(subscription) if subscription && subscription.user_id == owner_id
     end
 
     def perform(notification_id, subscription_id)
@@ -40,7 +44,9 @@ module Push
       subscription = PushSubscription.find_by(id: subscription_id)
       return if notification.blank? || subscription.blank?
       return unless subscription.user_id == notification.user_id
-      return unless Vapid.configured?
+      # Again at send time: the queue can be minutes behind, and a reader who
+      # switched push off meanwhile must not get it anyway.
+      return unless DeliverNotificationJob.deliverable?(notification)
 
       send_push(notification, subscription)
       subscription.update_columns(last_delivered_at: Time.current, failure_count: 0, last_failed_at: nil)
@@ -53,12 +59,13 @@ module Push
       self.class.record_failure(subscription)
     end
 
+    # In SQL, so two sends failing at once both count.
     def self.record_failure(subscription)
-      if subscription.failure_count + 1 >= MAX_FAILURES
-        subscription.destroy
-      else
-        subscription.update_columns(failure_count: subscription.failure_count + 1, last_failed_at: Time.current)
-      end
+      failures = PushSubscription.where(id: subscription.id)
+        .update_all(["failure_count = failure_count + 1, last_failed_at = ?", Time.current])
+      return if failures.zero?
+
+      PushSubscription.where(id: subscription.id, failure_count: MAX_FAILURES..).delete_all
     end
 
     private def send_push(notification, subscription)

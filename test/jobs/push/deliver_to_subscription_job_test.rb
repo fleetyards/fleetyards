@@ -12,6 +12,8 @@ module Push
       Vapid.stubs(:public_key).returns("public")
       Vapid.stubs(:private_key).returns("private")
       Vapid.stubs(:subject).returns("mailto:info@fleetyards.net")
+      Flipper.enable(:push_notifications)
+      @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(push: true)
     end
 
     def perform
@@ -87,6 +89,39 @@ module Push
       perform
 
       refute PushSubscription.exists?(@subscription.id)
+    end
+
+    test "a racing failure is counted from the database, not the loaded row" do
+      stale = PushSubscription.find(@subscription.id)
+      @subscription.update_columns(failure_count: 3)
+
+      DeliverToSubscriptionJob.record_failure(stale)
+
+      assert_equal 4, @subscription.reload.failure_count
+    end
+
+    test "sends nothing when the reader switched push off after fan-out" do
+      @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(push: false)
+      WebPush.expects(:payload_send).never
+
+      perform
+    end
+
+    test "sends nothing when the flag went off after fan-out" do
+      Flipper.disable(:push_notifications)
+      WebPush.expects(:payload_send).never
+
+      perform
+    end
+
+    test "exhausted retries for a browser that moved accounts do not count against its new owner" do
+      @subscription.update_columns(user_id: create(:user).id)
+
+      DeliverToSubscriptionJob.sidekiq_retries_exhausted_block.call(
+        {"args" => [@notification.id, @subscription.id]}, WebPush::TooManyRequests.allocate
+      )
+
+      assert_equal 2, @subscription.reload.failure_count
     end
 
     test "exhausted retries count as a failure" do

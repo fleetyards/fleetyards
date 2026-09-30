@@ -25,7 +25,8 @@ module Push
     def self.deliverable?(notification)
       Vapid.configured? &&
         Notification.channels_for(notification.notification_type).include?(:push) &&
-        Flipper.enabled?(:push_notifications, notification.user)
+        Flipper.enabled?(:push_notifications, notification.user) &&
+        NotificationPreference.for(user: notification.user, type: notification.notification_type).push?
     end
   end
 end

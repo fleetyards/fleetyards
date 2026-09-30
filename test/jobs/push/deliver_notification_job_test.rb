@@ -11,6 +11,7 @@ module Push
       create(:push_subscription)
       Vapid.stubs(:configured?).returns(true)
       Flipper.enable(:push_notifications)
+      @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(push: true)
       DeliverToSubscriptionJob.jobs.clear
     end
 
@@ -35,6 +36,14 @@ module Push
 
     test "sends nothing with the flag off for the reader" do
       Flipper.disable(:push_notifications)
+
+      perform
+
+      assert_empty DeliverToSubscriptionJob.jobs
+    end
+
+    test "sends nothing when the reader has push off for the type" do
+      @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(push: false)
 
       perform
 
