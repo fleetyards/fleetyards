@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -19,7 +20,6 @@ import { useCraftTime } from "@/frontend/composables/useCraftTime";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import { useBlueprint as useBlueprintQuery } from "@/services/fyApi";
 import { useMaterialStockUpdates } from "@/frontend/composables/useMaterialStock";
-import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 const { t } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -63,10 +63,6 @@ const setEveryQuality = (value: number) => {
   });
   qualities.value = next;
 };
-
-const craftableRoute = computed(() =>
-  catalogueItemRoute(blueprint.value?.craftable),
-);
 
 const qualitySummary = computed(() => {
   const slots = blueprint.value?.costSlots || [];
@@ -113,10 +109,7 @@ watch(
             <div class="blueprint-page__sub">
               <template v-if="blueprint.craftable">
                 {{ t("labels.blueprint.makesA") }}
-                <router-link v-if="craftableRoute" :to="craftableRoute">
-                  {{ blueprint.craftable.name }}
-                </router-link>
-                <span v-else>{{ blueprint.craftable.name }}</span>
+                <CatalogueItemLink :item="blueprint.craftable" />
               </template>
               <!-- 5 of the 1,607 recipes make something no catalogue here
                  carries: four mission carryables, and one entity class in no

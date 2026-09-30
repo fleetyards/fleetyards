@@ -51,6 +51,12 @@
 
   &__name {
     color: #eee;
+
+    // The link is rendered by the catalogue link component, outside this
+    // scope, so it would otherwise take the global link colour.
+    :deep(a) {
+      color: inherit;
+    }
   }
 
   // The grade is the one thing on the row that changes what counts, so it reads

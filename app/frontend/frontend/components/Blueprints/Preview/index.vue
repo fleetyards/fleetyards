@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
 import { type Blueprint } from "@/services/fyApi";
-import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   blueprint: Blueprint;
@@ -24,10 +24,6 @@ const { stats } = useCraftedStats(
   () => props.blueprint.costSlots || [],
   (position) => props.qualityFor(position),
 );
-
-const craftableRoute = computed(() =>
-  catalogueItemRoute(props.blueprint.craftable),
-);
 </script>
 
 <template>
@@ -38,18 +34,8 @@ const craftableRoute = computed(() =>
     variant="slim"
   >
     <template #head>
-      <router-link
-        v-if="craftableRoute"
-        :to="craftableRoute"
-        class="blueprint-preview__craftable"
-      >
-        {{ blueprint.craftable?.name }}
-      </router-link>
-      <span
-        v-else-if="blueprint.craftable"
-        class="blueprint-preview__craftable"
-      >
-        {{ blueprint.craftable.name }}
+      <span v-if="blueprint.craftable" class="blueprint-preview__craftable">
+        <CatalogueItemLink :item="blueprint.craftable" />
       </span>
     </template>
 

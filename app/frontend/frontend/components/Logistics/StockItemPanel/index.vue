@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { InventoryStockPosition } from "@/services/fyApi";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 
 type Props = {
   stockItem: InventoryStockPosition;
@@ -82,13 +82,7 @@ const quality = computed(() => {
               {{ t("labels.logistics.linkedItem") }}
             </div>
             <div class="metrics-card__row__value">
-              <router-link
-                v-if="catalogueItemRoute(stockItem.item)"
-                :to="catalogueItemRoute(stockItem.item)!"
-              >
-                {{ stockItem.item.name }}
-              </router-link>
-              <template v-else>{{ stockItem.item.name }}</template>
+              <CatalogueItemLink :item="stockItem.item" />
               <BasePill
                 v-if="stockItem.item.available === false"
                 :variant="PillVariantsEnum.WARNING"
