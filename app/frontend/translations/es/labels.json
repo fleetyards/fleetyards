@@ -981,6 +981,12 @@
         "damageEnergy": "Energía",
         "damageDistortion": "Distorsión",
         "damageThermal": "Térmico",
+        "controlGroups": {
+          "pilot": "Piloto",
+          "manned": "Torreta tripulada",
+          "remote": "Torreta remota",
+          "pds": "Defensa puntual"
+        },
         "hint": "DPS de la configuración por defecto. El sostenido tiene en cuenta la regeneración de la reserva de energía de cada arma y su ciclo de sobrecalentamiento. Los misiles quedan excluidos."
       },
       "power": {
@@ -1327,6 +1333,10 @@
           "captureRadius": "Radio de captura",
           "fuelFlowRate": "Caudal de combustible",
           "quantumFuelFlowRate": "Caudal de combustible Quantum"
+        },
+        "turrets": {
+          "turnRate": "Velocidad de giro",
+          "control": "Control"
         },
         "weapons": {
           "dps": "DPS",

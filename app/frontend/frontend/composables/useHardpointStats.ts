@@ -12,6 +12,7 @@ import {
   type ComponentThruster,
   type ComponentArmor,
   type ComponentTractorBeam,
+  type ComponentTurret,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -629,6 +630,33 @@ export const useHardpointStats = (
         if (sigs.rs?.sensitivity != null) {
           result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
         }
+      }
+    } else if (
+      category === HardpointCategoryEnum.TURRET ||
+      category === HardpointCategoryEnum.WEAPON_MOUNTS
+    ) {
+      const turret = typeData as ComponentTurret;
+      const speeds = [turret.yawSpeed, turret.pitchSpeed].filter(
+        (speed): speed is number => typeof speed === "number" && speed > 0,
+      );
+
+      if (speeds.length) {
+        // One figure when both axes turn alike, which most mounts do; the
+        // pair, yaw first, when they differ.
+        const value = [...new Set(speeds.map(Math.round))]
+          .map((speed) => String(toNumber(speed, "integer")))
+          .join(" / ");
+        result.push({
+          label: t("labels.hardpoint.turrets.turnRate"),
+          value: `${value} °/s`,
+          primary: true,
+        });
+      }
+      if (turret.control) {
+        result.push({
+          label: t("labels.hardpoint.turrets.control"),
+          value: t(`labels.combat.controlGroups.${turret.control}`),
+        });
       }
     } else if (category === HardpointCategoryEnum.COUNTERMEASURES) {
       const cm = typeData as Record<string, unknown>;
