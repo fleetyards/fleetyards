@@ -14,7 +14,9 @@ import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import Slider from "@/shared/components/base/Slider/index.vue";
@@ -60,6 +62,10 @@ const rightAligned = ref(998);
 
 const textarea = ref(
   "The Galaxy is a modular multi-role ship. Swap the module to change what the ship does.",
+);
+
+const markdown = ref(
+  ":::center\n\n**Welcome** to the *Crew*\n\n:::\n\n## Briefing\n\n1. Meet at [Port Olisar](https://fleetyards.net/)\n2. Bring a \\[REDACTED\\] ship\n\n- Cargo & mining\n- Escort",
 );
 
 const checkbox = ref(true);
@@ -294,6 +300,33 @@ const powerMarks = (value: number) => ({ label: String(value) });
         <FormInput v-model="text" name="grouped" label="RSI Handle" />
         <Btn>Verify</Btn>
       </FormInputGroup>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">FormMarkdownEditor</Heading>
+  <p>The editor, and what the page renders from its markdown.</p>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <FormMarkdownEditor
+        v-model="markdown"
+        name="markdown"
+        label="Description"
+        info="Markdown, edited in place"
+        :maxlength="10000"
+      />
+    </div>
+    <div class="col-12 col-md-6" data-test="markdown-preview">
+      <Markdown :source="markdown" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <FormMarkdownEditor
+        v-model="markdown"
+        name="markdown-disabled"
+        label="Description (disabled)"
+        disabled
+      />
     </div>
   </div>
 
