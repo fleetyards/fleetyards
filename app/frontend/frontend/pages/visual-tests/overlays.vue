@@ -17,6 +17,14 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
+import StatsPopover from "@/shared/components/StatsPopover/index.vue";
+import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
+import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import {
+  EquipmentTypeEnum,
+  type Component,
+  type Equipment,
+} from "@/services/fyApi";
 
 /*
  * AppConfirm and OffCanvas are singletons mounted once in App.vue and driven by
@@ -126,6 +134,40 @@ const anchorItems = [
 ];
 
 const activeAnchor = ref("clean");
+
+// Fixtures rather than a fetch, so the cards render without a backend.
+const demoCooler = {
+  id: "demo-cooler",
+  name: "Glacier",
+  slug: "glacier",
+  catalogued: true,
+  category: "cooler",
+  size: 2,
+  gradeLabel: "A",
+  itemClassLabel: "Military",
+  manufacturer: { name: "J-Span" },
+  typeData: {
+    coolingRate: 1250000,
+    powerConsumption: 3,
+    signatureEm: 1500,
+    signatureIr: 4200,
+  },
+} as unknown as Component;
+
+const demoArmor = {
+  id: "demo-armor",
+  name: "Morozov-SH Core",
+  slug: "morozov-sh-core",
+  equipmentType: EquipmentTypeEnum.ARMOR,
+  equipmentTypeLabel: "Armor",
+  slotLabel: "Core",
+  grade: "B",
+  manufacturer: { name: "Roussimoff Rehabilitation Systems" },
+  damageReduction: 30,
+  temperatureRating: "-65 / 95 °C",
+  radiationProtection: 12000,
+  volume: 0.035,
+} as unknown as Equipment;
 </script>
 
 <template>
@@ -211,6 +253,44 @@ const activeAnchor = ref("clean");
       </Btn>
     </div>
   </Teleport>
+
+  <Heading :level="HeadingLevelEnum.H2">StatsPopover</Heading>
+  <p>
+    Hover a name with a mouse, or focus it with the keyboard, and its stats card
+    opens after a short delay; the pointer can cross into the card. On touch the
+    first tap opens the card instead of following the link, and a tap outside,
+    Escape or a scroll closes it. The plain-text trigger has no link, so it is
+    focusable on its own.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <StatsPopover
+        :label="demoCooler.name"
+        data-test="stats-popover-demo-link"
+      >
+        <a href="#stats-popover">{{ demoCooler.name }}</a>
+        <template #content="{ close }">
+          <ComponentStatsCard :component="demoCooler" @navigate="close" />
+        </template>
+      </StatsPopover>
+      <StatsPopover
+        :label="demoArmor.name"
+        placement="top"
+        data-test="stats-popover-demo-text"
+      >
+        {{ demoArmor.name }}
+        <template #content="{ close }">
+          <EquipmentStatsCard :equipment="demoArmor" @navigate="close" />
+        </template>
+      </StatsPopover>
+      <StatsPopover label="Loading" data-test="stats-popover-demo-loading">
+        <a href="#stats-popover">Still loading</a>
+        <template #content>
+          <ComponentStatsCard loading />
+        </template>
+      </StatsPopover>
+    </div>
+  </div>
 
   <Heading :level="HeadingLevelEnum.H2">BreadCrumbs</Heading>
   <p>
