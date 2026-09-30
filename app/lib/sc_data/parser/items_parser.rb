@@ -826,9 +826,13 @@ module ScData
         {
           health: health&.dig("Health")&.to_f,
           mass: extract_mass(components),
-          resistances: DAMAGE_RESISTANCES.to_h { |key, name|
-            [key, resistances&.dig(name, "Multiplier")&.to_f]
-          }.compact.presence,
+          # Always written beside health, at the game's default of 1 -- the full
+          # hit -- for a type the item does not name. Every health block in the
+          # files carries these; that they always come together is also what
+          # tells a build this parser wrote from one written before it read them.
+          resistances: health && DAMAGE_RESISTANCES.to_h { |key, name|
+            [key, resistances&.dig(name, "Multiplier")&.to_f || 1.0]
+          },
           self_repair: repair && {
             time: repair["timeToRepair"]&.to_f,
             health_ratio: repair["healthRatio"]&.to_f,

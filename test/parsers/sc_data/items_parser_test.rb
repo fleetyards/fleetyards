@@ -372,7 +372,10 @@ module ScData
 
         assert_in_delta 410.0, durability["health"]
         assert_in_delta 630.0, durability["mass"]
-        assert_equal({"physical" => 0.85, "thermal" => 0.1}, durability["resistances"])
+        assert_equal(
+          {"physical" => 0.85, "energy" => 1.0, "distortion" => 1.0, "thermal" => 0.1, "biochemical" => 1.0, "stun" => 1.0},
+          durability["resistances"]
+        )
         assert_equal({"time" => 56.0, "health_ratio" => 0.2, "max_repairs" => 1}, durability["self_repair"])
         assert_in_delta 3500.0, durability.dig("distortion", "maximum")
         assert_in_delta 0.75, durability.dig("distortion", "warning_ratio")
@@ -383,7 +386,8 @@ module ScData
 
         durability = parsed_item("armr_plain")["durability"]
 
-        assert_equal({"health" => 100.0}, durability)
+        assert_equal({"health" => 100.0}, durability.except("resistances"))
+        assert_equal [1.0], durability["resistances"].values.uniq
       end
 
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)

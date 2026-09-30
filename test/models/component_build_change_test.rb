@@ -231,8 +231,9 @@ class ComponentBuildChangeTest < ActiveSupport::TestCase
   end
 
   test ".record! records a durability figure a patch added and one it took away" do
-    previous_build(durability: {"health" => 100.0, "self_repair" => {"time" => 30.0}})
-    build = current_build(durability: {"health" => 100.0, "distortion" => {"maximum" => 1000.0}})
+    resistances = {"physical" => 1.0}
+    previous_build(durability: {"health" => 100.0, "resistances" => resistances, "self_repair" => {"time" => 30.0}})
+    build = current_build(durability: {"health" => 100.0, "resistances" => resistances, "distortion" => {"maximum" => 1000.0}})
 
     assert_equal(
       [["durability.distortion.maximum", nil, "1000.0"], ["durability.self_repair.time", "30.0", nil]],
@@ -249,6 +250,18 @@ class ComponentBuildChangeTest < ActiveSupport::TestCase
 
     assert_equal 1, ComponentBuildChange.record!(build)
     assert_equal ["durability.health", "400.0", "410.0"], ComponentBuildChange.sole.values_at(:field, :old_value, :new_value)
+  end
+
+  # A build this parser wrote can still carry health and its multipliers
+  # alone -- an item with no physics block has no mass -- and a later build
+  # gaining one is a real change.
+  test ".record! records the first figure a patch adds beside health" do
+    resistances = {"physical" => 1.0, "energy" => 1.0}
+    previous_build(durability: {"health" => 100.0, "resistances" => resistances})
+    build = current_build(durability: {"health" => 100.0, "resistances" => resistances, "mass" => 20.0})
+
+    assert_equal 1, ComponentBuildChange.record!(build)
+    assert_equal ["durability.mass", nil, "20.0"], ComponentBuildChange.sole.values_at(:field, :old_value, :new_value)
   end
 
   private def previous_build(attributes)

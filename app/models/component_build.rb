@@ -126,17 +126,17 @@ class ComponentBuild < ApplicationRecord
   # The figures that differ between two builds' durability, as
   # `field => [old, new]`.
   #
-  # Health is the one part every load has always written. Measured against a
-  # build from before mass, repair and distortion were read, every other figure
-  # would read as one the patch introduced -- on thousands of components at
-  # once, none of which a patch touched -- so against such a build only health
-  # is compared.
+  # Health is the one part every load has always written. A build from before
+  # the parser read the rest carries health without the damage multipliers the
+  # parser now always writes beside it, and against such a build every other
+  # figure would read as one the patch introduced -- on thousands of
+  # components at once, none of which a patch touched. So against one of
+  # those, only health is compared.
   def self.durability_changes(before, after)
     old_figures = durability_figures(before)
     new_figures = durability_figures(after)
 
-    legacy = before.present? && (before.to_h.stringify_keys.keys & DURABILITY_PARTS) - %w[health] == []
-    if legacy
+    if legacy_durability?(before)
       old_figures = old_figures.slice("#{DURABILITY_PREFIX}health")
       new_figures = new_figures.slice("#{DURABILITY_PREFIX}health")
     end
@@ -146,6 +146,12 @@ class ComponentBuild < ApplicationRecord
 
       changes[field] = [old_figures[field], new_figures[field]]
     end
+  end
+
+  def self.legacy_durability?(durability)
+    parts = durability.to_h.stringify_keys
+
+    parts.key?("health") && !parts.key?("resistances")
   end
 
   # The facts Component filters and sorts by. One list, so a ransacker and the
