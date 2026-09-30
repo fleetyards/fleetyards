@@ -77,3 +77,18 @@ describe("computeCountermeasureStats durations", () => {
     ).toEqual([]);
   });
 });
+
+describe("computeCountermeasureStats without ammo counts", () => {
+  it("still has data when a launcher knows its duration but no ammo", () => {
+    const stats = computeCountermeasureStats([
+      launcher("cml_flare", 0, {
+        kind: ComponentCountermeasureKindEnum.DECOY,
+        lifetime: 8,
+      }),
+    ]);
+
+    expect(stats.counts).toEqual([]);
+    expect(stats.durations).toHaveLength(1);
+    expect(stats.hasData).toBe(true);
+  });
+});

@@ -255,17 +255,19 @@ const openDeflectionCheck = () => {
       <div class="metrics-card__divider" />
 
       <dl class="stat-rows">
-        <dt>{{ t("labels.defense.countermeasures") }}</dt>
-        <dd>
-          <span
-            v-for="entry in countermeasures.counts"
-            :key="entry.key"
-            class="chip"
-          >
-            <span class="chip__label">{{ t(entry.label) }}</span>
-            <span class="chip__value">{{ num(entry.value) }}</span>
-          </span>
-        </dd>
+        <template v-if="countermeasures.counts.length">
+          <dt>{{ t("labels.defense.countermeasures") }}</dt>
+          <dd>
+            <span
+              v-for="entry in countermeasures.counts"
+              :key="entry.key"
+              class="chip"
+            >
+              <span class="chip__label">{{ t(entry.label) }}</span>
+              <span class="chip__value">{{ num(entry.value) }}</span>
+            </span>
+          </dd>
+        </template>
 
         <template v-if="countermeasures.durations.length">
           <dt>{{ t("labels.defense.countermeasureDuration") }}</dt>

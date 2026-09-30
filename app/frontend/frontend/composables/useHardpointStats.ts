@@ -305,8 +305,12 @@ export const useHardpointStats = (
     const end = range?.end ?? start;
     if (!start && !end) return null;
 
-    const format = (value?: number) =>
-      String(toNumber(Math.round(value || 0), "integer"));
+    // A cloud that fades to nothing ends at a real 0, which `toNumber`
+    // would print as not available.
+    const format = (value?: number) => {
+      const rounded = Math.round(value || 0);
+      return rounded ? String(toNumber(rounded, "integer")) : "0";
+    };
 
     return start === end ? format(start) : `${format(start)} → ${format(end)}`;
   };

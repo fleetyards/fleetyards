@@ -102,7 +102,11 @@ export function computeCountermeasureStats(
     }),
   );
 
-  return { counts, durations, hasData: counts.length > 0 };
+  return {
+    counts,
+    durations,
+    hasData: counts.length > 0 || durations.length > 0,
+  };
 }
 
 export function useCountermeasureStats(

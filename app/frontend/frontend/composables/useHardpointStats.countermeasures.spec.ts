@@ -11,7 +11,7 @@ import { useHardpointStats } from "./useHardpointStats";
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
-    toNumber: (value: number) => String(value),
+    toNumber: (value: number) => (value ? String(value) : "N/A"),
   }),
 }));
 
@@ -65,6 +65,25 @@ describe("useHardpointStats for a countermeasure's ammo", () => {
     expect(
       valueOf(stats, "labels.hardpoint.countermeasureStats.spawnDelay"),
     ).toBeUndefined();
+  });
+
+  it("shows a signature that starts or ends at zero as 0", () => {
+    const stats = statsFor(
+      launcherHardpoint({
+        countermeasure: {
+          kind: ComponentCountermeasureKindEnum.DECOY,
+          infrared: { start: 50000, end: 0 },
+          electromagnetic: { start: 0, end: 30000 },
+        },
+      }),
+    );
+
+    expect(
+      valueOf(stats, "labels.hardpoint.countermeasureStats.infrared"),
+    ).toBe("50000 → 0");
+    expect(
+      valueOf(stats, "labels.hardpoint.countermeasureStats.electromagnetic"),
+    ).toBe("0 → 30000");
   });
 
   it("shows when a noise cloud deploys", () => {
