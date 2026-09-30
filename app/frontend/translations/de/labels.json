@@ -1623,6 +1623,32 @@
         "powerMinimumFraction": "Verbrauch im Leerlauf",
         "signatureEm": "EM-Signatur",
         "signatureIr": "IR-Signatur",
+        "mining": {
+          "fracturePower": "Bruchleistung",
+          "extractionPower": "Extraktionsleistung",
+          "range": "Reichweite",
+          "chargeTime": "Aufladen / Entladen",
+          "moduleSlots": "Modulplätze",
+          "activation": "Typ",
+          "active": "Aktiv",
+          "passive": "Passiv",
+          "charges": "Anwendungen",
+          "duration": "Dauer",
+          "modifiers": {
+            "instability": "Instabilität",
+            "resistance": "Widerstand",
+            "optimalChargeWindow": "Optimales Ladefenster",
+            "optimalChargeRate": "Optimale Laderate",
+            "catastrophicChargeRate": "Kritische Laderate",
+            "shatterDamage": "Splitterschaden",
+            "inertMaterials": "Inertes Material"
+          }
+        },
+        "salvage": {
+          "salvageSpeed": "Bergungsgeschwindigkeit",
+          "radius": "Strahlradius",
+          "extractionEfficiency": "Extraktionseffizienz"
+        },
         "utility": {
           "capacity": "Kapazität"
         },

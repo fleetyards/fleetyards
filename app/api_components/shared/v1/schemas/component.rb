@@ -75,7 +75,9 @@ module Shared
                 ::Shared::V1::Schemas::ComponentRadar,
                 ::Shared::V1::Schemas::ComponentController,
                 ::Shared::V1::Schemas::ComponentTurret,
-                ::Shared::V1::Schemas::ComponentPowerPlant
+                ::Shared::V1::Schemas::ComponentPowerPlant,
+                ::Shared::V1::Schemas::ComponentMiningModule,
+                ::Shared::V1::Schemas::ComponentSalvageModifier
               ]
             },
 

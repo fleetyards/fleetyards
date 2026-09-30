@@ -1623,6 +1623,32 @@
         "powerMinimumFraction": "Consumo en reposo",
         "signatureEm": "Firma EM",
         "signatureIr": "Firma IR",
+        "mining": {
+          "fracturePower": "Potencia de fractura",
+          "extractionPower": "Potencia de extracción",
+          "range": "Alcance",
+          "chargeTime": "Carga / descarga",
+          "moduleSlots": "Ranuras de módulo",
+          "activation": "Tipo",
+          "active": "Activo",
+          "passive": "Pasivo",
+          "charges": "Usos",
+          "duration": "Duración",
+          "modifiers": {
+            "instability": "Inestabilidad",
+            "resistance": "Resistencia",
+            "optimalChargeWindow": "Ventana de carga óptima",
+            "optimalChargeRate": "Tasa de carga óptima",
+            "catastrophicChargeRate": "Tasa de carga catastrófica",
+            "shatterDamage": "Daño por fragmentación",
+            "inertMaterials": "Materiales inertes"
+          }
+        },
+        "salvage": {
+          "salvageSpeed": "Velocidad de recuperación",
+          "radius": "Radio del haz",
+          "extractionEfficiency": "Eficiencia de extracción"
+        },
         "utility": {
           "capacity": "Capacidad"
         },

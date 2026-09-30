@@ -103,9 +103,12 @@ function collectWeaponHardpoints(
       inherited ??
       (hardpoint.component?.typeData as ComponentTurret | undefined)?.control;
 
+    // A mining laser's beam damage is what it does to a rock; counted here it
+    // would read as a ship's firepower.
     if (
       hardpoint.category === HardpointCategoryEnum.WEAPONS &&
-      hardpoint.component?.typeData
+      hardpoint.component?.typeData &&
+      !(hardpoint.component.typeData as ComponentWeapon).mining
     ) {
       collected.push({ hardpoint, control: control ?? "pilot" });
     }

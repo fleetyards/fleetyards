@@ -1623,6 +1623,32 @@
         "powerMinimumFraction": "Consumo a riposo",
         "signatureEm": "Firma EM",
         "signatureIr": "Firma IR",
+        "mining": {
+          "fracturePower": "Potenza di frattura",
+          "extractionPower": "Potenza di estrazione",
+          "range": "Portata",
+          "chargeTime": "Carica / scarica",
+          "moduleSlots": "Slot modulo",
+          "activation": "Tipo",
+          "active": "Attivo",
+          "passive": "Passivo",
+          "charges": "Utilizzi",
+          "duration": "Durata",
+          "modifiers": {
+            "instability": "Instabilità",
+            "resistance": "Resistenza",
+            "optimalChargeWindow": "Finestra di carica ottimale",
+            "optimalChargeRate": "Velocità di carica ottimale",
+            "catastrophicChargeRate": "Velocità di carica critica",
+            "shatterDamage": "Danno da frantumazione",
+            "inertMaterials": "Materiali inerti"
+          }
+        },
+        "salvage": {
+          "salvageSpeed": "Velocità di recupero",
+          "radius": "Raggio del fascio",
+          "extractionEfficiency": "Efficienza di estrazione"
+        },
         "utility": {
           "capacity": "Capacità"
         },

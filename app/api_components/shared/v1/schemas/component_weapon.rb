@@ -30,7 +30,8 @@ module Shared
             regen: ComponentWeaponRegen,
             heat: ComponentWeaponHeat,
             penetration: ComponentWeaponPenetration,
-            spread: ComponentWeaponSpread
+            spread: ComponentWeaponSpread,
+            mining: ComponentMiningLaser
           },
           additionalProperties: false
         })

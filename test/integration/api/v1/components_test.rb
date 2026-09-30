@@ -239,6 +239,38 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
   # Numerically, which is the whole reason `sizeOrder` exists as a name of its
   # own: `size` is a string ransacker, so ordering on it puts 10 and 12 ahead
   # of 2.
+  test "GET /components serves a mining laser's, a mining module's and a salvage modifier's stats" do
+    create(:component, name: "Miningprobe Laser", category: "weapons", type_data: {
+      "beam" => true,
+      "mining" => {
+        "fracture_power_min" => 117.0, "fracture_power_max" => 2340.0, "extraction_power" => 1850.0,
+        "optimal_range" => 60.0, "max_range" => 180.0, "module_slots" => 1,
+        "modifiers" => {"instability" => -35.0, "inert_materials" => -30.0}
+      }
+    })
+    create(:component, name: "Miningprobe Module", category: "utility", type_data: {
+      "mining_module" => true, "activation" => "active", "charges" => 7, "duration" => 15.0,
+      "fracture_power" => 50.0, "modifiers" => {"resistance" => -15.5}
+    })
+    create(:component, name: "Miningprobe Scraper", category: "utility", type_data: {
+      "salvage_modifier" => true, "salvage_speed" => 0.6, "radius" => 1.5, "extraction_efficiency" => 1.0
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Miningprobe"}} do
+      by_name = parsed_body["items"].index_by { |item| item["name"] }
+
+      mining = by_name["Miningprobe Laser"].dig("typeData", "mining")
+      assert_in_delta 117.0, mining["fracturePowerMin"]
+      assert_in_delta(-30.0, mining.dig("modifiers", "inertMaterials"))
+
+      mining_module = by_name["Miningprobe Module"]["typeData"]
+      assert_equal "active", mining_module["activation"]
+      assert_in_delta 50.0, mining_module["fracturePower"]
+
+      assert_in_delta 0.6, by_name["Miningprobe Scraper"].dig("typeData", "salvageSpeed")
+    end
+  end
+
   test "GET /components sorts by size numerically" do
     ["2", "10", "1"].each_with_index do |size, index|
       create(:component, name: "Size #{size}", size:, sc_key: "size_sort_#{index}")

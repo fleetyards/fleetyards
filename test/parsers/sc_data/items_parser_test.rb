@@ -486,6 +486,126 @@ module ScData
         XML
       end
 
+      test "reads a mining laser's power, reach, module slots and modifiers" do
+        write_item("mining_laser_probe", name: "@item_Namemining_laser_probe", category: "weapons", type: "WeaponMining", sub_type: "Gun", components: <<~XML)
+          <SCItemWeaponComponentParams>
+            <fireActions>
+              <SWeaponActionFireBeamParams hitType="ElectricArc" fullDamageRange="60" zeroDamageRange="180" chargeUpTime="0.1" chargeDownTime="0.2">
+                <damagePerSecond><DamageInfo DamagePhysical="0" DamageEnergy="2340" /></damagePerSecond>
+              </SWeaponActionFireBeamParams>
+              <SWeaponActionFireBeamParams hitType="Extraction" fullDamageRange="60" zeroDamageRange="180">
+                <damagePerSecond><DamageInfo DamagePhysical="0" DamageEnergy="1850" /></damagePerSecond>
+              </SWeaponActionFireBeamParams>
+            </fireActions>
+          </SCItemWeaponComponentParams>
+          <SEntityComponentMiningLaserParams throttleMinimum="0.05">
+            <miningLaserModifiers>
+              <laserInstability><FloatModifierMultiplicative value="-35" /></laserInstability>
+              <resistanceModifier><FloatModifierMultiplicative value="25" /></resistanceModifier>
+              <optimalChargeWindowRateModifier><FloatModifierMultiplicative value="0" /></optimalChargeWindowRateModifier>
+            </miningLaserModifiers>
+            <filterParams>
+              <filterModifier><FloatModifierMultiplicative value="30" /></filterModifier>
+            </filterParams>
+          </SEntityComponentMiningLaserParams>
+          <SItemPortContainerComponentParams>
+            <Ports>
+              <SItemPortDef Name="consumable_1"><Types><SItemPortDefTypes Type="MiningModifier" /></Types></SItemPortDef>
+              <SItemPortDef Name="consumable_2"><Types><SItemPortDefTypes Type="MiningModifier" /></Types></SItemPortDef>
+              <SItemPortDef Name="vent"><Types><SItemPortDefTypes Type="WeaponAttachment" /></Types></SItemPortDef>
+            </Ports>
+          </SItemPortContainerComponentParams>
+        XML
+
+        mining = parsed_item("mining_laser_probe")["type_data"]["mining"]
+
+        assert_in_delta 2340.0, mining["fracture_power_max"]
+        assert_in_delta 117.0, mining["fracture_power_min"]
+        assert_in_delta 1850.0, mining["extraction_power"]
+        assert_in_delta 60.0, mining["optimal_range"]
+        assert_in_delta 180.0, mining["max_range"]
+        assert_in_delta 0.2, mining["charge_down_time"]
+        assert_equal 2, mining["module_slots"]
+        assert_equal({"instability" => -35.0, "resistance" => 25.0, "inert_materials" => -30.0}, mining["modifiers"])
+      end
+
+      test "reads an active mining module's uses, duration and effect on each beam" do
+        write_item("mining_module_active_probe", name: "@item_Namemining_module_active_probe", category: "utility", type: "MiningModifier", sub_type: "Gun", components: <<~XML)
+          <EntityComponentAttachableModifierParams activationMethod="ActivateOnDemand" charges="7">
+            <modifiers>
+              <ItemWeaponModifiersParams fireActionIndex="0">
+                <weaponModifier><weaponStats damageMultiplier="1.5" /></weaponModifier>
+              </ItemWeaponModifiersParams>
+              <ItemWeaponModifiersParams fireActionIndex="1">
+                <weaponModifier><weaponStats damageMultiplier="1" /></weaponModifier>
+              </ItemWeaponModifiersParams>
+              <ItemMiningModifierParams>
+                <modifierLifetime><ItemModifierTimedLife lifetime="15" /></modifierLifetime>
+                <MiningLaserModifier>
+                  <resistanceModifier><FloatModifierMultiplicative value="-15.5" /></resistanceModifier>
+                </MiningLaserModifier>
+              </ItemMiningModifierParams>
+            </modifiers>
+          </EntityComponentAttachableModifierParams>
+        XML
+
+        type_data = parsed_item("mining_module_active_probe")["type_data"]
+
+        assert type_data["mining_module"]
+        assert_equal "active", type_data["activation"]
+        assert_equal 7, type_data["charges"]
+        assert_in_delta 15.0, type_data["duration"]
+        assert_in_delta 50.0, type_data["fracture_power"]
+        assert_nil type_data["extraction_power"]
+        assert_equal({"resistance" => -15.5}, type_data["modifiers"])
+      end
+
+      test "reads a passive mining module's filter as less inert material, and no uses" do
+        write_item("mining_module_passive_probe", name: "@item_Namemining_module_passive_probe", category: "utility", type: "MiningModifier", sub_type: "Gun", components: <<~XML)
+          <EntityComponentAttachableModifierParams activationMethod="ActivateOnAttach" charges="1">
+            <modifiers>
+              <ItemWeaponModifiersParams fireActionIndex="1">
+                <weaponModifier><weaponStats damageMultiplier="0.85" /></weaponModifier>
+              </ItemWeaponModifiersParams>
+              <MiningFilterItemModifierParams>
+                <filterParams><filterModifier><FloatModifierMultiplicative value="20" /></filterModifier></filterParams>
+              </MiningFilterItemModifierParams>
+            </modifiers>
+          </EntityComponentAttachableModifierParams>
+        XML
+
+        type_data = parsed_item("mining_module_passive_probe")["type_data"]
+
+        assert_equal "passive", type_data["activation"]
+        assert_nil type_data["charges"]
+        assert_nil type_data["duration"]
+        assert_in_delta(-15.0, type_data["extraction_power"])
+        assert_equal({"inert_materials" => -20.0}, type_data["modifiers"])
+      end
+
+      test "reads a salvage modifier's multipliers, and nothing for one that scales nothing" do
+        salvage = <<~XML
+          <EntityComponentAttachableModifierParams activationMethod="ActivateOnDemand" charges="0">
+            <modifiers>
+              <ItemWeaponModifiersParams fireActionIndex="0">
+                <weaponModifier><weaponStats><salvageModifier salvageSpeedMultiplier="%s" radiusMultiplier="%s" extractionEfficiency="1" /></weaponStats></weaponModifier>
+              </ItemWeaponModifiersParams>
+            </modifiers>
+          </EntityComponentAttachableModifierParams>
+        XML
+        write_item("salvage_scraper_probe", name: "@item_Namesalvage_scraper_probe", category: "utility", type: "SalvageModifier", components: format(salvage, 0.6, 1.5))
+        write_item("salvage_tractor_probe", name: "@item_Namesalvage_tractor_probe", category: "utility", type: "SalvageModifier", components: format(salvage, 1, 1))
+
+        type_data = parsed_item("salvage_scraper_probe")["type_data"]
+
+        assert type_data["salvage_modifier"]
+        assert_in_delta 0.6, type_data["salvage_speed"]
+        assert_in_delta 1.5, type_data["radius"]
+        assert_in_delta 1.0, type_data["extraction_efficiency"]
+        tractor = JSON.parse(File.read("#{@base_folder}/parsed/test/items/salvage_tractor_probe.json"))
+        assert_nil tractor["type_data"]
+      end
+
       private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", type: "Armor", sub_type: "UNDEFINED", components: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
