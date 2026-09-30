@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import StatGroups from "@/frontend/components/Components/StatGroups/index.vue";
 import type { ComponentDurability } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponentDurability } from "@/frontend/composables/useComponentDurability";
@@ -18,30 +18,16 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const groups = useComponentDurability(() => props.durability);
+const durabilityGroups = useComponentDurability(() => props.durability);
+
+const groups = computed(() =>
+  durabilityGroups.value.map((group) => ({
+    ...group,
+    title: t(`headlines.component.${group.key}`),
+  })),
+);
 </script>
 
 <template>
-  <MetricsCard
-    v-for="group in groups"
-    :key="group.key"
-    :title="t(`headlines.component.${group.key}`)"
-    variant="slim"
-    :data-test="`durability-${group.key}`"
-  >
-    <div class="metrics-card__rows">
-      <div
-        v-for="stat in group.stats"
-        :key="stat.label"
-        class="metrics-card__row"
-      >
-        <span class="metrics-card__row__label">{{ stat.label }}</span>
-        <span class="metrics-card__row__value">{{ stat.value }}</span>
-      </div>
-    </div>
-  </MetricsCard>
+  <StatGroups :groups="groups" test-prefix="durability" />
 </template>
-
-<style lang="scss" scoped>
-@import "@/shared/components/metricsCard";
-</style>
