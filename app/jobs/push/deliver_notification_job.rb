@@ -14,10 +14,12 @@ module Push
       return if notification.blank?
       return unless self.class.deliverable?(notification)
 
-      subscription_ids = notification.user.push_subscriptions.pluck(:id)
-      return if subscription_ids.empty?
+      subscriptions = notification.user.push_subscriptions.to_a
+      return if subscriptions.empty?
 
-      DeliverToSubscriptionJob.perform_bulk(subscription_ids.map { |id| [notification.id, id] })
+      DeliverToSubscriptionJob.perform_bulk(
+        subscriptions.map { |subscription| [notification.id, subscription.id, subscription.key_digest] }
+      )
     end
 
     # Checked here rather than when the reader's switch was flipped: the flag,

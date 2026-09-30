@@ -150,6 +150,26 @@ module Push
 
     test "exhausted retries count as a failure" do
       DeliverToSubscriptionJob.sidekiq_retries_exhausted_block.call(
+        {"args" => [@notification.id, @subscription.id, @subscription.key_digest]}, WebPush::TooManyRequests.allocate
+      )
+
+      assert_equal 3, @subscription.reload.failure_count
+    end
+
+    test "exhausted retries for keys the browser has since renewed do not count" do
+      queued_digest = @subscription.key_digest
+      @subscription.update!(auth_key: Base64.urlsafe_encode64("0123456789abcdef", padding: false))
+
+      DeliverToSubscriptionJob.sidekiq_retries_exhausted_block.call(
+        {"args" => [@notification.id, @subscription.id, queued_digest]}, WebPush::TooManyRequests.allocate
+      )
+
+      assert_equal 2, @subscription.reload.failure_count
+    end
+
+    # Jobs queued before the digest was passed along still count as before.
+    test "exhausted retries queued without a digest still count" do
+      DeliverToSubscriptionJob.sidekiq_retries_exhausted_block.call(
         {"args" => [@notification.id, @subscription.id]}, WebPush::TooManyRequests.allocate
       )
 

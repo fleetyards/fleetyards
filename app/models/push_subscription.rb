@@ -111,6 +111,12 @@ class PushSubscription < ApplicationRecord
     raise
   end
 
+  # Names the keys a push went out with without carrying them into the job
+  # queue, where they would sit unencrypted.
+  def key_digest
+    Digest::SHA256.hexdigest("#{p256dh_key}:#{auth_key}")
+  end
+
   def self.prune_beyond_cap(user)
     keep = user.push_subscriptions.order(updated_at: :desc).limit(MAX_PER_USER).select(:id)
 

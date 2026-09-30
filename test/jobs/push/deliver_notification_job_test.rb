@@ -22,7 +22,7 @@ module Push
     test "enqueues one delivery per browser of the reader" do
       perform
 
-      assert_equal @subscriptions.map { |s| [@notification.id, s.id] }.sort,
+      assert_equal @subscriptions.map { |s| [@notification.id, s.id, s.key_digest] }.sort,
         DeliverToSubscriptionJob.jobs.map { |job| job["args"] }.sort
     end
 
