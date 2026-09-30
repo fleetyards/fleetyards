@@ -126,7 +126,9 @@ export const useWebPush = () => {
 
   // Brings this browser and the server back in line, without ever turning
   // push on by itself:
-  // - the row is still there: on;
+  // - the row is still there: on, and saved again, which is what tells the
+  //   server this device is alive (it prunes rows nothing touched in half a
+  //   year);
   // - the browser renewed but the server never heard (the worker had no
   //   session): the renewal is saved;
   // - this account removed the row, from here or another device: the browser
@@ -162,7 +164,7 @@ export const useWebPush = () => {
       const rows = await pushSubscriptions();
 
       if (rows.some((row) => row.id === stored.id)) {
-        subscriptionId.value = stored.id;
+        await save(subscription, userId);
       } else {
         await subscription.unsubscribe();
         writeStored(undefined);

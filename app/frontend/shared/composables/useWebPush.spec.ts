@@ -145,7 +145,8 @@ describe("useWebPush", () => {
     expect(createPushSubscription).not.toHaveBeenCalled();
   });
 
-  it("is on when the server still has this browser's row", async () => {
+  // Saving again is the server's sign that the device is still in use.
+  it("is on, and says so to the server, while it still has this browser's row", async () => {
     const existing = browserSubscription();
     remember("row-1", existing.endpoint);
     setup({ permission: "granted", existing });
@@ -155,7 +156,7 @@ describe("useWebPush", () => {
 
     expect(push.status.value).toBe(WebPushStatusEnum.ON);
     expect(push.subscriptionId.value).toBe("row-1");
-    expect(createPushSubscription).not.toHaveBeenCalled();
+    expect(createPushSubscription).toHaveBeenCalledWith(existing.input);
   });
 
   // The worker saves a renewal itself, but it has no session once the reader
