@@ -68,15 +68,22 @@ module Catalogue
     # prefix, so the inserted token cannot be read two ways.
     def search(query)
       query = query.to_s.strip
-      return [] if query.length < 2
+      return [] if query.length < 2 || query.length > MAX_NAME_LENGTH
 
       pattern = "%#{ActiveRecord::Base.sanitize_sql_like(query.downcase)}%"
+      # Only names one item carries, chosen by the database: a name repeated
+      # hundreds of times would otherwise fill the row budget and push the
+      # names that resolve out of it.
       found = CATALOGUES.keys.flat_map do |prefix|
+        name = name_sql(prefix)
+
         self.class.listed(prefix)
-          .where("lower(#{name_sql(prefix)}) LIKE ?", pattern)
-          .order(Arel.sql("length(#{name_sql(prefix)})"), Arel.sql(name_sql(prefix)))
-          .limit(SEARCH_LIMIT * 2)
-          .pluck(Arel.sql(name_sql(prefix)))
+          .where("lower(#{name}) LIKE ?", pattern)
+          .group(Arel.sql("lower(#{name})"))
+          .having("count(*) = 1")
+          .order(Arel.sql("min(length(#{name}))"), Arel.sql("lower(#{name})"))
+          .limit(SEARCH_LIMIT)
+          .pluck(Arel.sql("min(#{name})"))
       end
 
       rows = rows_named(found.map(&:downcase).uniq)

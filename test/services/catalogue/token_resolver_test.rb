@@ -103,6 +103,17 @@ module Catalogue
       assert_equal ["ship:Carrack", "Carrack Engine"], @resolver.search("carrack").map(&:token)
     end
 
+    test "search offers a unique name that a much repeated one would crowd out" do
+      create_list(:equipment, TokenResolver::SEARCH_LIMIT + 5, name: "Internal Tank")
+      create(:equipment, name: "Internal Tank Mk II")
+
+      assert_equal ["Internal Tank Mk II"], @resolver.search("tank").map(&:token)
+    end
+
+    test "search ignores a query longer than any name" do
+      assert_empty @resolver.search("x" * (TokenResolver::MAX_NAME_LENGTH + 1))
+    end
+
     test "search needs two characters" do
       create(:commodity, name: "Quantainium")
 
