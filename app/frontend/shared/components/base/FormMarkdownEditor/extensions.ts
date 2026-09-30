@@ -11,6 +11,7 @@ import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
+import { splitCodeSpans } from "@/shared/utils/Markdown";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -65,15 +66,44 @@ const SafeImage = Image.extend({
 
 export const HEADING_LEVELS = [1, 2, 3] as const;
 
-// Only what the markdown renderer can show. Everything else StarterKit brings
-// is switched off, so the editor cannot produce a block the page would print as
-// raw markdown.
+// Markdown reads `<word>` as an HTML tag, and the editor drops a tag it has no
+// node for -- so typed text like `<RSI handle>` would vanish on the next save.
+// Outside code, `<` is handed over as the entity for itself, which the editor
+// shows and writes back as the character it is.
+export const protectHtml = (markdown: string) => {
+  let fence: string | undefined;
+
+  return markdown
+    .split("\n")
+    .map((line) => {
+      const fenceMarker = /^ {0,3}(`{3,}|~{3,})/.exec(line)?.[1];
+
+      if (fence) {
+        if (line.trim().startsWith(fence)) fence = undefined;
+        return line;
+      }
+
+      if (fenceMarker) {
+        fence = fenceMarker;
+        return line;
+      }
+
+      return splitCodeSpans(line)
+        .map((part) =>
+          part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
+        )
+        .join("");
+    })
+    .join("\n");
+};
+
+// Every block the markdown renderer shows, whether the toolbar offers it or
+// not: a block the editor has no node for is flattened when a description is
+// opened, and the next save would write the flattened text back. Underline is
+// the one left out -- markdown has no way to write it.
 export const markdownExtensions = (): Extensions => [
   StarterKit.configure({
     heading: { levels: [...HEADING_LEVELS] },
-    blockquote: false,
-    codeBlock: false,
-    strike: false,
     underline: false,
     link: {
       openOnClick: false,

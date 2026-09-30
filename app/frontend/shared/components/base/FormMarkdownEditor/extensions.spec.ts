@@ -2,12 +2,12 @@ import { Editor } from "@tiptap/core";
 import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Markdown from "@/shared/components/Markdown/index.vue";
-import { markdownExtensions, toMarkdown } from "./extensions";
+import { markdownExtensions, protectHtml, toMarkdown } from "./extensions";
 
 const load = (markdown: string) =>
   new Editor({
     extensions: markdownExtensions(),
-    content: markdown,
+    content: protectHtml(markdown),
     contentType: "markdown",
   });
 
@@ -44,6 +44,10 @@ describe("markdownExtensions round trip", () => {
     ],
     ["a rule", "Above\n\n---\n\nBelow"],
     ["a hard break", "Line one  \nhard break"],
+    ["a quote", "> Quoted instructions\n\nAfter"],
+    ["a strike", "~~cancelled~~ moved"],
+    ["a fenced code block", "```\n/join fleet\n```"],
+    ["a nested list", "- Ships\n  - Aurora\n  - Carrack\n- Crew"],
   ])("keeps %s", (_, markdown) => {
     expect(roundTrip(markdown)).toBe(markdown);
   });
@@ -79,6 +83,20 @@ describe("markdownExtensions output rendered by Markdown", () => {
     expect(rendered.find(".markdown__center p").text()).toBe("Welcome");
   });
 
+  it("renders a saved quote, strike, code block and nested list", async () => {
+    const rendered = await render(
+      roundTrip(
+        "> Quoted\n\n~~gone~~\n\n```\n/join *fleet*\n```\n\n- Ships\n  - Aurora\n- Crew",
+      ),
+    );
+
+    expect(rendered.find("blockquote").text()).toBe("Quoted");
+    expect(rendered.find("del").text()).toBe("gone");
+    expect(rendered.find("pre code").text()).toBe("/join *fleet*");
+    expect(rendered.find("ul > li > ul > li").text()).toBe("Aurora");
+    expect(rendered.findAll("ul")[0].element.children).toHaveLength(2);
+  });
+
   it("renders saved lists, headings and emphasis", async () => {
     const rendered = await render(
       roundTrip("## Crew\n\n1. **Download**\n2. *Import*\n\n- bullet"),
@@ -89,6 +107,41 @@ describe("markdownExtensions output rendered by Markdown", () => {
     expect(rendered.find("ol strong").text()).toBe("Download");
     expect(rendered.find("ol em").text()).toBe("Import");
     expect(rendered.find("ul li").text()).toBe("bullet");
+  });
+});
+
+describe("markdownExtensions and angle brackets", () => {
+  it("keeps typed <text> instead of dropping it as a tag", async () => {
+    const saved = roundTrip("Ask <RSI handle> or <b>us</b>, not `<code>`");
+    const rendered = await render(saved);
+
+    expect(rendered.text()).toBe("Ask <RSI handle> or <b>us</b>, not <code>");
+    expect(rendered.find("code").text()).toBe("<code>");
+    expect(rendered.find("b").exists()).toBe(false);
+  });
+
+  it("leaves angle brackets inside fenced code alone", () => {
+    expect(protectHtml("```\n<tag>\n```\n<tag>")).toBe(
+      "```\n<tag>\n```\n&lt;tag>",
+    );
+  });
+});
+
+describe("markdownExtensions links from the toolbar", () => {
+  it("renders a link whose text has brackets", async () => {
+    const editor = load("");
+    editor.commands.insertContent({
+      type: "text",
+      text: "Team [A]",
+      marks: [{ type: "link", attrs: { href: "https://fleetyards.net/" } }],
+    });
+    const rendered = await render(toMarkdown(editor));
+    editor.destroy();
+
+    expect(rendered.find("a").text()).toBe("Team [A]");
+    expect(rendered.find("a").attributes("href")).toBe(
+      "https://fleetyards.net/",
+    );
   });
 });
 
@@ -111,10 +164,5 @@ describe("markdownExtensions refusals", () => {
 
     expect(toMarkdown(editor)).toBe("click");
     editor.destroy();
-  });
-
-  it("turns a quote and a strike into plain text", () => {
-    expect(roundTrip("> quote")).toBe("quote");
-    expect(roundTrip("~~strike~~")).toBe("strike");
   });
 });

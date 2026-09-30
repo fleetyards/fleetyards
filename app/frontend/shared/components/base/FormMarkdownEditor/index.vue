@@ -15,7 +15,7 @@ import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
-import { markdownExtensions, toMarkdown } from "./extensions";
+import { markdownExtensions, protectHtml, toMarkdown } from "./extensions";
 
 type Props = {
   name: string;
@@ -99,7 +99,7 @@ let emitted: string | null = props.modelValue ?? null;
 
 const editor = useEditor({
   extensions: markdownExtensions(),
-  content: props.modelValue ?? "",
+  content: protectHtml(props.modelValue ?? ""),
   contentType: "markdown",
   editable: !props.disabled,
   editorProps: {
@@ -129,7 +129,7 @@ watch(
   (value) => {
     if ((value ?? null) !== emitted) {
       emitted = value ?? null;
-      editor.value?.commands.setContent(value ?? "", {
+      editor.value?.commands.setContent(protectHtml(value ?? ""), {
         contentType: "markdown",
         emitUpdate: false,
       });

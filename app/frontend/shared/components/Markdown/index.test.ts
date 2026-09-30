@@ -193,6 +193,71 @@ describe("Markdown", () => {
     expect(wrapper.findAll("ul li")).toHaveLength(2);
   });
 
+  it("nests a list by its indentation", async () => {
+    const wrapper = await mount(
+      "- Ships\n  - Aurora\n  - Carrack\n- Crew\n  1. Pilot\n  2. Gunner",
+    );
+
+    const top = wrapper.find("ul");
+    expect(top.element.children).toHaveLength(2);
+    expect(top.findAll(":scope > li > ul > li").map((li) => li.text())).toEqual(
+      ["Aurora", "Carrack"],
+    );
+    expect(top.findAll(":scope > li > ol > li")).toHaveLength(2);
+  });
+
+  it("renders a quote with markdown of its own", async () => {
+    const wrapper = await mount("> **Meet** at\n> - Olisar\n\nAfter");
+
+    expect(wrapper.find("blockquote strong").text()).toBe("Meet");
+    expect(wrapper.find("blockquote li").text()).toBe("Olisar");
+    expect(wrapper.find("p:last-child").text()).toBe("After");
+  });
+
+  it("renders fenced code as written", async () => {
+    const wrapper = await mount("```\n**not bold** <b>\n  indented\n```");
+
+    expect(wrapper.find("pre code").text()).toBe(
+      "**not bold** <b>\n  indented",
+    );
+    expect(wrapper.find("strong").exists()).toBe(false);
+  });
+
+  it("strikes through ~~text~~", async () => {
+    const wrapper = await mount("~~cancelled~~ moved");
+
+    expect(wrapper.find("del").text()).toBe("cancelled");
+  });
+
+  it("reads escaped backticks as backticks, not a code span", async () => {
+    const wrapper = await mount("literal \\`ship\\` and `real`");
+
+    expect(wrapper.text()).toBe("literal `ship` and real");
+    expect(wrapper.findAll("code")).toHaveLength(1);
+    expect(wrapper.find("code").text()).toBe("real");
+  });
+
+  it("judges a link by its address once escapes and entities are read", async () => {
+    const wrapper = await mount(
+      "[a](/\\/evil.test) [b](/&#47;evil.test) [c](/&#92;evil.test) ![d](/\\/evil.test/x.jpg) [ok](/fleets/maru)",
+    );
+
+    const links = wrapper.findAll("a");
+    expect(links).toHaveLength(1);
+    expect(links[0].attributes("href")).toBe("/fleets/maru");
+    expect(wrapper.find("img").exists()).toBe(false);
+  });
+
+  it("links an escaped character in an address as that character", async () => {
+    const wrapper = await mount(
+      "[wiki](https://example.org/Ship\\_\\(game\\))",
+    );
+
+    expect(wrapper.find("a").attributes("href")).toBe(
+      "https://example.org/Ship_(game)",
+    );
+  });
+
   it("renders https images only", async () => {
     const wrapper = await mount(
       "![cover](https://robertsspaceindustries.com/cover.jpg) ![x](http://example.com/a.jpg) ![y](javascript:alert(1))",
