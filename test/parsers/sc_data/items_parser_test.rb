@@ -216,6 +216,43 @@ module ScData
         assert type_data["pitch_limits_vary"]
       end
 
+      test "never joins the ends of two rotations into a full turn" do
+        write_turret("half_turns", yaw_limits: <<~XML)
+          <SCItemTurretCustomAngleLimitParams RelativeJointName="pitch_part">
+            <AngleLimits>
+              <SCItemTurretCustomAngleLimit TurretRotation="0" LowestAngle="-180" HighestAngle="0" />
+              <SCItemTurretCustomAngleLimit TurretRotation="100" LowestAngle="0" HighestAngle="150" />
+            </AngleLimits>
+          </SCItemTurretCustomAngleLimitParams>
+        XML
+
+        type_data = parsed_item("half_turns")["type_data"]
+
+        assert_in_delta(-180.0, type_data["min_yaw"])
+        assert_in_delta 0.0, type_data["max_yaw"]
+        assert type_data["yaw_limits_vary"]
+      end
+
+      test "describes an axis two joints share by the wider one" do
+        write_turret("cradle_yaw",
+          yaw_limits: '<SCItemTurretStandardAngleLimitParams LowestAngle="-180" HighestAngle="180" />',
+          extra_joints: <<~XML)
+            <SCItemTurretJointMovementParams jointName="cradle_yaw" slavedOnly="0">
+              <yawAxis>
+                <SCItemTurretJointMovementAxisParams speed="40">
+                  <angleLimits><SCItemTurretStandardAngleLimitParams LowestAngle="-75" HighestAngle="75" /></angleLimits>
+                </SCItemTurretJointMovementAxisParams>
+              </yawAxis>
+            </SCItemTurretJointMovementParams>
+          XML
+
+        type_data = parsed_item("cradle_yaw")["type_data"]
+
+        assert_in_delta(-180.0, type_data["min_yaw"])
+        assert_in_delta 180.0, type_data["max_yaw"]
+        assert_nil type_data["yaw_limits_vary"]
+      end
+
       test "marks a point-defence turret by a tag written with its prefix" do
         write_turret("pdc_tagged", tags: "$flightReady $PDC")
 

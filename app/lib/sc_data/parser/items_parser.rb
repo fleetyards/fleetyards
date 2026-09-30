@@ -678,36 +678,40 @@ module ScData
         }
       end
 
-      # How far a mount turns on one axis, in degrees either side of centre.
-      # A fixed range is one pair; a range tied to another joint's rotation --
-      # a turret that cannot pitch down into its own hull when facing aft -- is
-      # a pair per rotation, and what is kept is the widest it ever gets, with
-      # `vary` saying the limit is not the same all the way round.
+      # How far a mount turns on one axis, in degrees from centre, as one
+      # interval the mount can actually sweep. A fixed limit is one interval; a
+      # limit tied to another joint's rotation -- a turret that cannot pitch
+      # down into its own hull when facing aft -- is one per rotation, and the
+      # widest of them is kept, with `vary` saying the others are narrower.
+      # Ends are never mixed across rotations or joints: two half turns are
+      # not a full one. Where two joints share an axis, a base and the gun
+      # cradle on it, the wider joint describes the mount.
       #
       # Limits a ship overrides through a tag on its port are left out: they
       # describe that one installation, not the mount.
       private def extract_turret_axis_limits(turret_data, axis)
-        ranges = turret_axis_params(turret_data, axis).map do |params|
-          limits = params["angleLimits"] || {}
+        joints = turret_axis_params(turret_data, axis).filter_map do |params|
+          intervals = turret_angle_intervals(params["angleLimits"] || {})
+          next if intervals.empty?
 
-          if (standard = limits["SCItemTurretStandardAngleLimitParams"])
-            [[standard["LowestAngle"], standard["HighestAngle"]]]
-          else
-            Array.wrap(limits.dig("SCItemTurretCustomAngleLimitParams", "AngleLimits", "SCItemTurretCustomAngleLimit"))
-              .map { |limit| [limit["LowestAngle"], limit["HighestAngle"]] }
-          end
+          {interval: intervals.max_by { |low, high| high - low }, vary: intervals.uniq.size > 1}
         end
 
-        pairs = ranges.flatten(1).select { |low, high| low.present? && high.present? }
-          .map { |low, high| [low.to_f, high.to_f] }
+        widest = joints.max_by { |joint| joint[:interval].last - joint[:interval].first }
+        return {} unless widest
 
-        return {} if pairs.empty?
+        {min: widest[:interval].first, max: widest[:interval].last, vary: widest[:vary] || nil}.compact
+      end
 
-        {
-          min: pairs.map(&:first).min,
-          max: pairs.map(&:last).max,
-          vary: (pairs.uniq.size > 1) || nil
-        }.compact
+      private def turret_angle_intervals(limits)
+        pairs = if (standard = limits["SCItemTurretStandardAngleLimitParams"])
+          [[standard["LowestAngle"], standard["HighestAngle"]]]
+        else
+          Array.wrap(limits.dig("SCItemTurretCustomAngleLimitParams", "AngleLimits", "SCItemTurretCustomAngleLimit"))
+            .map { |limit| [limit["LowestAngle"], limit["HighestAngle"]] }
+        end
+
+        pairs.select { |low, high| low.present? && high.present? }.map { |low, high| [low.to_f, high.to_f] }
       end
 
       # A slaved joint only follows another one, so it says nothing about how
