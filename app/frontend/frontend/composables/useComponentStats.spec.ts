@@ -73,6 +73,8 @@ describe("useComponentStats", () => {
 
   // Carried by every powered item and rendered by no category branch, so a
   // page without this block would drop it entirely.
+  // The minimum share the allocator can cut it to reads as the low end of the
+  // draw rather than as a percentage of its own.
   it("appends the power and signature block", () => {
     const stats = useComponentStats(
       component("cooler", {
@@ -85,14 +87,11 @@ describe("useComponentStats", () => {
     ).value;
 
     expect(labels(stats)).toEqual(
-      expect.arrayContaining([
-        "Power Draw",
-        "EM Signature",
-        "IR Signature",
-        "Idle Draw",
-      ]),
+      expect.arrayContaining(["Power Draw", "EM Signature", "IR Signature"]),
     );
-    expect(stats.find((stat) => stat.label === "Idle Draw")?.value).toBe("40%");
+    expect(stats.find((stat) => stat.label === "Power Draw")?.value).toBe(
+      "48 – 120 seg",
+    );
   });
 
   // 3,450 of the 3,755 components carrying the block have an identical modifier

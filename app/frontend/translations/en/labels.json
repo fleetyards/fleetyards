@@ -1368,7 +1368,11 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "Mode",
+          "vtolOnly": "VTOL only",
+          "vectorPitch": "Vectoring Pitch",
+          "vectorYaw": "Vectoring Yaw"
         },
         "refuelBoom": {
           "captureRadius": "Capture Radius",
@@ -1380,7 +1384,8 @@
           "control": "Control",
           "yawRange": "Yaw Range",
           "pitchRange": "Pitch Range",
-          "limitsVary": "varies with rotation"
+          "limitsVary": "varies with rotation",
+          "gunPorts": "Gun Ports"
         },
         "weapons": {
           "dps": "DPS",
@@ -1463,7 +1468,13 @@
           "damagedRegenDelay": "Damaged Delay",
           "resistancePhysical": "Phys. Resist.",
           "resistanceEnergy": "Energy Resist.",
-          "resistanceDistortion": "Dist. Resist."
+          "resistanceDistortion": "Dist. Resist.",
+          "decay": "Decay",
+          "absorption": {
+            "physical": "Physical Absorption",
+            "energy": "Energy Absorption",
+            "distortion": "Distortion Absorption"
+          }
         },
         "coolers": {
           "coolingRate": "Cooling Rate"
@@ -1504,7 +1515,13 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "Passive Detection",
+          "active": "Active Detection",
+          "aimAssistBuffer": "Assist Buffer",
+          "contactGroups": {
+            "GroundVehicle": "Ground Vehicles"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1663,7 +1680,18 @@
           "chargeTime": "Charge Time",
           "cooldownTime": "Cooldown"
         },
-        "powerRanges": "Power Curve (Low / Med / High)"
+        "emp": {
+          "distortionDamage": "Distortion Damage",
+          "radius": "Radius",
+          "chargeTime": "Charge Time",
+          "unleashTime": "Unleash Time",
+          "cooldownTime": "Cooldown"
+        },
+        "lifeSupport": {
+          "output": "Output"
+        },
+        "powerRanges": "Power Curve (Low / Med / High)",
+        "powerSegments": "seg"
       },
       "blank": {
         "propulsion": "No Propulsion present",

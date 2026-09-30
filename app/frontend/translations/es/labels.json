@@ -1368,7 +1368,11 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "Modo",
+          "vtolOnly": "Solo VTOL",
+          "vectorPitch": "Vectorización cabeceo",
+          "vectorYaw": "Vectorización guiñada"
         },
         "refuelBoom": {
           "captureRadius": "Radio de captura",
@@ -1380,7 +1384,8 @@
           "control": "Control",
           "yawRange": "Rango de guiñada",
           "pitchRange": "Rango de cabeceo",
-          "limitsVary": "según la rotación"
+          "limitsVary": "según la rotación",
+          "gunPorts": "Puertos de armas"
         },
         "weapons": {
           "dps": "DPS",
@@ -1463,7 +1468,13 @@
           "damagedRegenDelay": "Retardo tras daño",
           "resistancePhysical": "Resist. fís.",
           "resistanceEnergy": "Resist. energía",
-          "resistanceDistortion": "Resist. distors."
+          "resistanceDistortion": "Resist. distors.",
+          "decay": "Decaimiento",
+          "absorption": {
+            "physical": "Absorción física",
+            "energy": "Absorción de energía",
+            "distortion": "Absorción de distorsión"
+          }
         },
         "coolers": {
           "coolingRate": "Refrigeración"
@@ -1504,7 +1515,13 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "Detección pasiva",
+          "active": "Detección activa",
+          "aimAssistBuffer": "Margen de asistencia",
+          "contactGroups": {
+            "GroundVehicle": "Vehículos terrestres"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1663,7 +1680,18 @@
           "chargeTime": "Tiempo de carga",
           "cooldownTime": "Enfriamiento"
         },
-        "powerRanges": "Curva de potencia (baja / media / alta)"
+        "emp": {
+          "distortionDamage": "Daño de distorsión",
+          "radius": "Radio",
+          "chargeTime": "Tiempo de carga",
+          "unleashTime": "Tiempo de descarga",
+          "cooldownTime": "Enfriamiento"
+        },
+        "lifeSupport": {
+          "output": "Producción"
+        },
+        "powerRanges": "Curva de potencia (baja / media / alta)",
+        "powerSegments": "seg."
       },
       "blank": {
         "propulsion": "Sin propulsión presente",
