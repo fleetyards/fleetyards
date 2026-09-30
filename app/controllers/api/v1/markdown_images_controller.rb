@@ -16,7 +16,8 @@ module Api
       def show
         markdown_image = MarkdownImage.find(params[:id])
 
-        expires_in 1.hour, public: true
+        # Briefly: a deleted image should stop showing soon, not an hour later.
+        expires_in 5.minutes, public: true
         redirect_to rails_representation_url(markdown_image.display_representation), allow_other_host: true
       end
 
