@@ -188,7 +188,10 @@ describe("useWebPush", () => {
 
     await push.refresh(USER);
 
-    expect(createPushSubscription).toHaveBeenCalledWith(existing.input);
+    expect(createPushSubscription).toHaveBeenCalledWith({
+      ...existing.input,
+      replaces: "row-0",
+    });
     expect(stored()).toEqual({
       id: "row-1",
       endpoint: existing.endpoint,

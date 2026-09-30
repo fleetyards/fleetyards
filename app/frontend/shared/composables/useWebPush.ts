@@ -124,9 +124,17 @@ export const useWebPush = () => {
     return found;
   };
 
-  const save = async (subscription: PushSubscription, userId: string) => {
+  // `replaces` hands the server the row of an endpoint this one renews, so
+  // the dead one goes rather than counting as a device against the cap.
+  const save = async (
+    subscription: PushSubscription,
+    userId: string,
+    replaces?: string,
+  ) => {
     const input = toInput(subscription);
-    const row = await createPushSubscription(input);
+    const row = await createPushSubscription(
+      replaces ? { ...input, replaces } : input,
+    );
 
     subscriptionId.value = row.id;
     writeStored({
@@ -209,7 +217,11 @@ export const useWebPush = () => {
       }
 
       if (renewed(stored, subscription)) {
-        await save(subscription, userId);
+        await save(
+          subscription,
+          userId,
+          stored.endpoint === subscription.endpoint ? undefined : stored.id,
+        );
       } else {
         subscriptionId.value = stored.id;
       }
