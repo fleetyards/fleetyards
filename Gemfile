@@ -19,6 +19,7 @@ gem "data_migrate"
 
 gem "discordrb-webhooks"
 gem "discordrb", require: false
+gem "web-push"
 
 gem "vite_rails"
 
