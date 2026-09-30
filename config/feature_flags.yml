@@ -80,6 +80,9 @@ ship_inventories:
 online_status:
   description: "Online status — a live dot on the fleet roster and the friends list, from the cable connection"
 
+push_notifications:
+  description: "Push notifications — Web Push delivery of notifications to a subscribed browser"
+
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true
