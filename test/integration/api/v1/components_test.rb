@@ -320,6 +320,34 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert parsed_body["items"].first.key?("hardpoints")
     end
   end
+
+  test "GET /components serves a component's health, mass, repair and distortion" do
+    create(:component, name: "Durabilityprobe", durability: {
+      "health" => 410.0, "mass" => 630.0,
+      "resistances" => {"physical" => 0.85, "thermal" => 0.1},
+      "self_repair" => {"time" => 56.0, "health_ratio" => 0.2, "max_repairs" => 1},
+      "distortion" => {"maximum" => 3500.0, "warning_ratio" => 0.75, "recovery_ratio" => 0.0, "decay_rate" => 233.3333, "decay_delay" => 3.0}
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Durabilityprobe"}} do
+      durability = parsed_body["items"].sole["durability"]
+
+      assert_in_delta 630.0, durability["mass"]
+      assert_in_delta 0.2, durability.dig("selfRepair", "healthRatio")
+      assert_in_delta 0.75, durability.dig("distortion", "warningRatio")
+      assert_in_delta 0.1, durability.dig("resistances", "thermal")
+    end
+  end
+
+  # Rows loaded before the parser read these blocks carry a `lifetime` the
+  # schema does not describe, and nothing else.
+  test "GET /components leaves out durability that only an older load wrote" do
+    create(:component, name: "Legacyprobe", durability: {"lifetime" => 720.0})
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Legacyprobe"}} do
+      assert_not parsed_body["items"].sole.key?("durability")
+    end
+  end
   # The ransackers behind these already existed -- they are what make the metric
   # sorts work -- but the schema refused the predicate with a 400, so the model
   # could filter on a figure and the API could not.

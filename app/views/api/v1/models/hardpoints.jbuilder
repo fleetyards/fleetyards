@@ -9,5 +9,5 @@ json.array! @hardpoints,
   # previous build's loadout. For a matrix slot `facts` is the slot itself and
   # that half collapses back to one entry per source.
   cached: ->(hardpoint) {
-    ["v3", hardpoint, ::ScData::Source.current, hardpoint.facts, hardpoint.facts.component, Manufacturer.artwork_version]
+    ["v4", hardpoint, ::ScData::Source.current, hardpoint.facts, hardpoint.facts.component, Manufacturer.artwork_version]
   }

@@ -21,6 +21,19 @@ json.type_data component.type_data
 
 json.description component.description
 
+# Built key by key rather than dumped: rows loaded before the parser read
+# these blocks still carry a `lifetime` the schema does not describe.
+durability = (component.durability || {}).to_h.with_indifferent_access
+if durability.slice(:health, :mass, :resistances, :self_repair, :distortion).present?
+  json.durability do
+    json.health durability[:health] if durability[:health]
+    json.mass durability[:mass] if durability[:mass]
+    json.resistances durability[:resistances] if durability[:resistances].present?
+    json.self_repair durability[:self_repair] if durability[:self_repair].present?
+    json.distortion durability[:distortion] if durability[:distortion].present?
+  end
+end
+
 # The two halves of "what fits where": the tags this item carries, and the
 # tags it demands of the port it goes into. A ship's port matches an item by
 # naming the same tag, so neither side answers the question alone.
