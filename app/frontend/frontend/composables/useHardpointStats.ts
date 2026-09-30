@@ -17,6 +17,10 @@ import {
   type ComponentBomb,
   type ComponentMissileRack,
   ComponentTypeEnum,
+  type ComponentMiningLaser,
+  type ComponentMiningModifiers,
+  type ComponentMiningModule,
+  type ComponentSalvageModifier,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -130,6 +134,139 @@ export const useHardpointStats = (
       damage: shots * perShot * (weapon.pelletsPerShot || 1),
       seconds: shots / (weapon.fireRate / 60),
     };
+  };
+
+  // A percent change, signed the way the game prints one: "+40%", "-35%".
+  const signedPercent = (value: number): string =>
+    `${value > 0 ? "+" : ""}${String(toNumber(value, "percent"))}`;
+
+  const MINING_MODIFIER_KEYS: (keyof ComponentMiningModifiers)[] = [
+    "instability",
+    "resistance",
+    "optimalChargeWindow",
+    "optimalChargeRate",
+    "catastrophicChargeRate",
+    "shatterDamage",
+    "inertMaterials",
+  ];
+
+  const pushMiningModifiers = (
+    result: HardpointStat[],
+    modifiers?: ComponentMiningModifiers,
+  ) => {
+    if (!modifiers) return;
+
+    for (const key of MINING_MODIFIER_KEYS) {
+      const value = modifiers[key];
+      if (typeof value === "number" && value !== 0) {
+        result.push({
+          label: t(`labels.hardpoint.mining.modifiers.${key}`),
+          value: signedPercent(value),
+        });
+      }
+    }
+  };
+
+  // A mining laser's beam damage is what it does to a rock, not to a ship, so
+  // it reads as the laser's power range rather than as DPS.
+  const pushMiningLaser = (
+    result: HardpointStat[],
+    mining: ComponentMiningLaser,
+  ) => {
+    const { fracturePowerMin: min, fracturePowerMax: max } = mining;
+    if (typeof max === "number") {
+      result.push({
+        label: t("labels.hardpoint.mining.fracturePower"),
+        value:
+          typeof min === "number" && min < max
+            ? `${String(toNumber(Math.round(min), "integer"))} - ${String(toNumber(Math.round(max), "integer"))}`
+            : String(toNumber(Math.round(max), "integer")),
+        primary: true,
+      });
+    }
+    if (mining.extractionPower) {
+      result.push(
+        stat("mining.extractionPower", mining.extractionPower, "integer", true),
+      );
+    }
+    if (mining.maxRange) {
+      result.push({
+        label: t("labels.hardpoint.mining.range"),
+        value: mining.optimalRange
+          ? `${String(toNumber(mining.optimalRange))} - ${String(toNumber(mining.maxRange, "weaponRange"))}`
+          : String(toNumber(mining.maxRange, "weaponRange")),
+      });
+    }
+    if (mining.moduleSlots) {
+      result.push(stat("mining.moduleSlots", mining.moduleSlots, "integer"));
+    }
+    if (mining.chargeUpTime || mining.chargeDownTime) {
+      result.push({
+        label: t("labels.hardpoint.mining.chargeTime"),
+        value: `${String(toNumber(mining.chargeUpTime ?? 0))} / ${String(toNumber(mining.chargeDownTime ?? 0, "seconds"))}`,
+      });
+    }
+    pushMiningModifiers(result, mining.modifiers);
+  };
+
+  const pushMiningModule = (
+    result: HardpointStat[],
+    miningModule: ComponentMiningModule,
+  ) => {
+    result.push({
+      label: t("labels.hardpoint.mining.activation"),
+      value: t(`labels.hardpoint.mining.${miningModule.activation}`),
+      primary: true,
+    });
+    if (typeof miningModule.fracturePower === "number") {
+      result.push({
+        label: t("labels.hardpoint.mining.fracturePower"),
+        value: signedPercent(miningModule.fracturePower),
+        primary: true,
+      });
+    }
+    if (typeof miningModule.extractionPower === "number") {
+      result.push({
+        label: t("labels.hardpoint.mining.extractionPower"),
+        value: signedPercent(miningModule.extractionPower),
+      });
+    }
+    if (miningModule.charges) {
+      result.push(stat("mining.charges", miningModule.charges, "integer"));
+    }
+    if (miningModule.duration) {
+      result.push({
+        label: t("labels.hardpoint.mining.duration"),
+        value: String(toNumber(miningModule.duration, "seconds")),
+      });
+    }
+    pushMiningModifiers(result, miningModule.modifiers);
+  };
+
+  // Multipliers on the head's scraping beam; efficiency is the share of what
+  // is scraped that ends up as material, so it reads as a percentage.
+  const pushSalvageModifier = (
+    result: HardpointStat[],
+    salvage: ComponentSalvageModifier,
+  ) => {
+    const multiplier = (labelKey: string, value?: number) => {
+      if (typeof value !== "number") return;
+
+      result.push({
+        label: t(`labels.hardpoint.salvage.${labelKey}`),
+        value: `${String(toNumber(value))}×`,
+        primary: labelKey === "salvageSpeed",
+      });
+    };
+
+    multiplier("salvageSpeed", salvage.salvageSpeed);
+    multiplier("radius", salvage.radius);
+    if (typeof salvage.extractionEfficiency === "number") {
+      result.push({
+        label: t("labels.hardpoint.salvage.extractionEfficiency"),
+        value: `${Math.round(salvage.extractionEfficiency * 100)}%`,
+      });
+    }
   };
 
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
@@ -401,7 +538,9 @@ export const useHardpointStats = (
         }
       };
 
-      if (weapon.beam) {
+      if (weapon.mining) {
+        pushMiningLaser(result, weapon.mining);
+      } else if (weapon.beam) {
         if (weapon.damagePerSecond) {
           const dps = Object.values(weapon.damagePerSecond).reduce(
             (sum: number, val) => sum + (typeof val === "number" ? val : 0),
@@ -994,7 +1133,11 @@ export const useHardpointStats = (
       // capacity. The three that are tractor beams fall to the shape check
       // above, which runs before any category branch.
       const utility = typeData as Record<string, unknown>;
-      if (typeof utility.capacity === "number" && utility.capacity > 0) {
+      if (utility.miningModule) {
+        pushMiningModule(result, typeData as ComponentMiningModule);
+      } else if (utility.salvageModifier) {
+        pushSalvageModifier(result, typeData as ComponentSalvageModifier);
+      } else if (typeof utility.capacity === "number" && utility.capacity > 0) {
         result.push(stat("utility.capacity", utility.capacity, "cargo", true));
       }
     } else if (category === HardpointCategoryEnum.SELFDESTRUCT) {

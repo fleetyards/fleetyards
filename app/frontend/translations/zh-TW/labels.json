@@ -1612,6 +1612,32 @@
         "powerMinimumFraction": "待機功耗",
         "signatureEm": "電磁訊號",
         "signatureIr": "紅外線訊號",
+        "mining": {
+          "fracturePower": "破碎功率",
+          "extractionPower": "提取功率",
+          "range": "射程",
+          "chargeTime": "充能 / 放能",
+          "moduleSlots": "模組槽",
+          "activation": "類型",
+          "active": "主動",
+          "passive": "被動",
+          "charges": "使用次數",
+          "duration": "持續時間",
+          "modifiers": {
+            "instability": "不穩定性",
+            "resistance": "抗性",
+            "optimalChargeWindow": "最佳充能窗口",
+            "optimalChargeRate": "最佳充能速率",
+            "catastrophicChargeRate": "災難性充能速率",
+            "shatterDamage": "碎裂傷害",
+            "inertMaterials": "惰性物質"
+          }
+        },
+        "salvage": {
+          "salvageSpeed": "打撈速度",
+          "radius": "光束半徑",
+          "extractionEfficiency": "提取效率"
+        },
         "utility": {
           "capacity": "容量"
         },

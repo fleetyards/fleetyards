@@ -1612,6 +1612,32 @@
         "powerMinimumFraction": "Idle Draw",
         "signatureEm": "EM Signature",
         "signatureIr": "IR Signature",
+        "mining": {
+          "fracturePower": "Fracture Power",
+          "extractionPower": "Extraction Power",
+          "range": "Range",
+          "chargeTime": "Charge Up / Down",
+          "moduleSlots": "Module Slots",
+          "activation": "Type",
+          "active": "Active",
+          "passive": "Passive",
+          "charges": "Uses",
+          "duration": "Duration",
+          "modifiers": {
+            "instability": "Instability",
+            "resistance": "Resistance",
+            "optimalChargeWindow": "Optimal Charge Window",
+            "optimalChargeRate": "Optimal Charge Rate",
+            "catastrophicChargeRate": "Catastrophic Charge Rate",
+            "shatterDamage": "Shatter Damage",
+            "inertMaterials": "Inert Materials"
+          }
+        },
+        "salvage": {
+          "salvageSpeed": "Salvage Speed",
+          "radius": "Beam Radius",
+          "extractionEfficiency": "Extraction Efficiency"
+        },
         "utility": {
           "capacity": "Capacity"
         },
