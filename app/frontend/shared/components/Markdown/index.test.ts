@@ -161,6 +161,38 @@ describe("Markdown", () => {
     expect(wrapper.text()).toBe("a\ue105b *");
   });
 
+  it("renders numbered lists, keeping where they start", async () => {
+    const wrapper = await mount("1. Download\n2. Import\n\n3) Share\n- bullet");
+
+    const lists = wrapper.findAll("ol");
+    expect(lists).toHaveLength(2);
+    expect(lists[0].findAll("li")).toHaveLength(2);
+    expect(lists[0].attributes("start")).toBeUndefined();
+    expect(lists[1].attributes("start")).toBe("3");
+    expect(wrapper.find("ul li").text()).toBe("bullet");
+  });
+
+  it("reads a line of = or - under a paragraph as its heading", async () => {
+    const wrapper = await mount("History\n-----------\nText\n\nFleet\n===");
+
+    expect(wrapper.find("h4").text()).toBe("History");
+    expect(wrapper.find("h3").text()).toBe("Fleet");
+    expect(wrapper.find("p").text()).toBe("Text");
+  });
+
+  it("draws a rule for a line of three or more markers on its own", async () => {
+    const wrapper = await mount("Above\n\n---\n\nBelow\n\n* * *");
+
+    expect(wrapper.findAll("hr")).toHaveLength(2);
+    expect(wrapper.find("h4").exists()).toBe(false);
+  });
+
+  it("takes + as a bullet too", async () => {
+    const wrapper = await mount("+ one\n+ two");
+
+    expect(wrapper.findAll("ul li")).toHaveLength(2);
+  });
+
   it("renders https images only", async () => {
     const wrapper = await mount(
       "![cover](https://robertsspaceindustries.com/cover.jpg) ![x](http://example.com/a.jpg) ![y](javascript:alert(1))",

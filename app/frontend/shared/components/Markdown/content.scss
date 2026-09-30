@@ -1,0 +1,84 @@
+// What rendered markdown looks like, shared by the renderer and the editor so
+// that what is written looks like what is shown. Both fill their content in
+// outside the template (v-html, ProseMirror), hence :deep.
+@mixin markdown-content {
+  /*
+   * Report bodies carry generated identifiers - slugs, ids, urls - with no space
+   * to break on, and this renders inside a narrow admin panel. `anywhere` rather
+   * than `break-all`, so ordinary prose still breaks between words.
+   */
+  overflow-wrap: anywhere;
+
+  // The renderer never writes h1 or h2 -- it starts markdown headings at h3 --
+  // but the editor shows a heading at its own level.
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4),
+  :deep(h5),
+  :deep(h6) {
+    margin: 12px 0 6px;
+    font-size: 1em;
+    font-weight: bold;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  :deep(p) {
+    margin: 0 0 8px;
+  }
+
+  // The global reset strips list markers, which turns a list into indented
+  // lines with nothing to separate them.
+  :deep(ul),
+  :deep(ol) {
+    margin: 0 0 8px;
+    padding-left: 18px;
+  }
+
+  :deep(ul) {
+    list-style: disc;
+  }
+
+  :deep(ol) {
+    padding-left: 24px;
+    list-style: decimal;
+  }
+
+  :deep(hr) {
+    margin: 12px 0;
+    border: 0;
+    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  }
+
+  :deep(li) {
+    margin: 2px 0;
+  }
+
+  // The editor wraps an item's text in a paragraph; the renderer does not.
+  :deep(li > p) {
+    margin: 0;
+  }
+
+  :deep(.markdown__center) {
+    text-align: center;
+  }
+
+  :deep(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  :deep(code) {
+    padding: 1px 4px;
+    font-size: 0.9em;
+    background-color: rgba($gray-darker, 0.8);
+    border-radius: $border-radius-base;
+  }
+
+  :deep(:last-child) {
+    margin-bottom: 0;
+  }
+}
