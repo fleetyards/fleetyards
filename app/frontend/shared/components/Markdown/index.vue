@@ -28,24 +28,39 @@ const escapeHtml = (value: string) =>
     .replace(/"/g, "&quot;");
 
 // Anything but http(s) and same-origin paths - javascript: above all - stays
-// text rather than becoming an href.
-const safeHref = (url: string) => /^(https?:\/\/|\/)/.test(url);
+// text rather than becoming an href. `//host` and `/\host` are another origin
+// (browsers read a backslash as a slash there), so a path may not start so.
+const SAME_ORIGIN_PATH = /^\/(?![/\\])/;
 
-const safeSrc = (url: string) => /^(https:\/\/|\/)/.test(url);
+const safeHref = (url: string) =>
+  /^https?:\/\//.test(url) || SAME_ORIGIN_PATH.test(url);
 
-const renderInline = (value: string) =>
-  escapeHtml(value)
-    .replace(/`([^`]+)`/g, "<code>$1</code>")
+const safeSrc = (url: string) =>
+  /^https:\/\//.test(url) || SAME_ORIGIN_PATH.test(url);
+
+const formatText = (value: string) =>
+  value
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match, alt, url: string) =>
       safeSrc(url) ? `<img src="${url}" alt="${alt}" loading="lazy">` : match,
     )
-    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, url: string) =>
+    // Not after a `!`: an image the pass above refused stays text, not a link.
+    .replace(/(?<!!)\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, url: string) =>
       safeHref(url)
         ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
         : match,
     )
     .replace(/(^|[^*\w[])\*(?!\s)([^*]+?)\*(?![*\w])/g, "$1<em>$2</em>");
+
+// Code spans are cut out first so nothing inside them is formatted; `split`
+// with a capture group puts them at the odd indices.
+const renderInline = (value: string) =>
+  escapeHtml(value)
+    .split(/(`[^`]+`)/)
+    .map((part, index) =>
+      index % 2 ? `<code>${part.slice(1, -1)}</code>` : formatText(part),
+    )
+    .join("");
 
 const html = computed(() => {
   const blocks: string[] = [];

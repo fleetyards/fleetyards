@@ -91,6 +91,35 @@ describe("Markdown", () => {
     expect(wrapper.find(".markdown__center").text()).toBe("Welcome");
   });
 
+  it("formats nothing inside inline code", async () => {
+    const wrapper = await mount("Use `*value*` and `**x**`");
+
+    expect(wrapper.find("em").exists()).toBe(false);
+    expect(wrapper.find("strong").exists()).toBe(false);
+    expect(wrapper.findAll("code").map((code) => code.text())).toEqual([
+      "*value*",
+      "**x**",
+    ]);
+  });
+
+  it("keeps a refused image as text rather than a link", async () => {
+    const wrapper = await mount("![cover](http://example.com/a.jpg)");
+
+    expect(wrapper.find("a").exists()).toBe(false);
+    expect(wrapper.text()).toContain("![cover](http://example.com/a.jpg)");
+  });
+
+  it("treats //host and /\\host as another origin", async () => {
+    const wrapper = await mount(
+      "[a](//evil.test) [b](/\\evil.test) [c](/fleets/maru) ![d](//evil.test/x.jpg)",
+    );
+
+    const links = wrapper.findAll("a");
+    expect(links).toHaveLength(1);
+    expect(links[0].attributes("href")).toBe("/fleets/maru");
+    expect(wrapper.find("img").exists()).toBe(false);
+  });
+
   it("renders https images only", async () => {
     const wrapper = await mount(
       "![cover](https://robertsspaceindustries.com/cover.jpg) ![x](http://example.com/a.jpg) ![y](javascript:alert(1))",
