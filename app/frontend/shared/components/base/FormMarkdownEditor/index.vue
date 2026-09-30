@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import { type MaybeRef } from "vue";
 import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
@@ -20,6 +21,8 @@ type Props = {
   translationKey?: string;
   label?: string;
   noLabel?: boolean;
+  // Rendered beside the label, so it is absent when the label is.
+  info?: string;
   // The limit the API enforces, drawn as a running count under the field.
   maxlength?: number;
   disabled?: boolean;
@@ -31,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   translationKey: undefined,
   label: undefined,
   noLabel: false,
+  info: undefined,
   maxlength: undefined,
   disabled: false,
 });
@@ -259,6 +263,7 @@ defineExpose({ setFocus: focusEditor });
            focuses the text as a click on a textarea's label would. -->
       <!-- eslint-disable-next-line vuejs-accessibility/label-has-for -->
       <label :id="labelId" @click="focusEditor">{{ innerLabel }}</label>
+      <HintIcon v-if="info" :text="info" />
     </div>
     <div class="base-textarea__wrapper">
       <div
