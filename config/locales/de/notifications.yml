@@ -135,6 +135,7 @@ de:
     fleet_inventory_item_added:
       title: "Neuer Gegenstand im Inventar von %{fleet}: %{item_name}"
     fleet_event:
+      someone: "Ein Mitglied"
       published:
         title: "Neues Event in %{fleet}: %{title}"
         body: "%{fleet} hat ein neues Event veröffentlicht."

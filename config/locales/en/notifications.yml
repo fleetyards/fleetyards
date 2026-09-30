@@ -135,6 +135,7 @@ en:
       crew_declined:
         title: "Your request to join %{title} was declined"
     fleet_event:
+      someone: "A member"
       published:
         title: "New event in %{fleet}: %{title}"
         body: "%{fleet} just published a new event."

@@ -150,7 +150,7 @@ module Notifications
         notify(target_event.created_by, :fleet_event_signup_added, target_event) do
           {
             title: I18n.t("notifications.fleet_event_signup.added.title",
-              user: signup.user&.username || "Member",
+              user: signup.user&.username || I18n.t("notifications.fleet_event.someone"),
               title: target_event.title)
           }
         end
@@ -178,7 +178,7 @@ module Notifications
         notify(target_event.created_by, :fleet_event_signup_withdrawn, target_event) do
           {
             title: I18n.t("notifications.fleet_event_signup.withdrawn.title",
-              user: signup.user&.username || "Member",
+              user: signup.user&.username || I18n.t("notifications.fleet_event.someone"),
               title: target_event.title)
           }
         end

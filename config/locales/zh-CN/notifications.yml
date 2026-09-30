@@ -135,6 +135,7 @@ zh-CN:
     fleet_inventory_item_added:
       title: "%{fleet} 的库存新增物品：%{item_name}"
     fleet_event:
+      someone: "一名成员"
       published:
         title: "%{fleet} 有新活动：%{title}"
         body: "%{fleet} 刚刚发布了一个新活动。"

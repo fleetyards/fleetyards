@@ -65,6 +65,16 @@ class NotificationReaderLocaleTest < ActiveSupport::TestCase
     assert_equal :it, enqueued_in
   end
 
+  # Where the name is gone, the stand-in is part of the sentence and has to be
+  # in the same language as the rest of it.
+  test "the stand-in for a missing name is translated" do
+    %w[fleet_event fleet_contract].each do |scope|
+      I18n.available_locales.each do |locale|
+        assert I18n.exists?("notifications.#{scope}.someone", locale), "#{scope}.someone missing in #{locale}"
+      end
+    end
+  end
+
   test "a reader without a usable locale gets English" do
     [nil, "", "xx"].each do |stored|
       reader = create(:user)
