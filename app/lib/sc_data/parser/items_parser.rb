@@ -3,6 +3,7 @@ module ScData
     class ItemsParser < ScData::Parser::BaseParser
       def all
         load_ammo_params
+        load_weapon_records
         load_cargogrids
         load_items
       end
@@ -660,6 +661,8 @@ module ScData
         if item[:type_data].present? && type == "WeaponGun"
           item[:type_data][:weapon_class] = extract_item_class(tags)
           item[:type_data][:mountable] = tags.include?("weaponMountUsable")
+          item[:type_data][:gimbal_mode] = extract_gimbal_mode(values.dig("Components", "SCItemWeaponComponentParams"))
+          item[:type_data][:aim_assist] = extract_aim_assist(values.dig("Components", "SCItemWeaponComponentParams"))
           item[:type_data].compact!
         end
 
@@ -1083,6 +1086,62 @@ module ScData
             "entityClassName" => item.dig("itemName")
           }
         end
+      end
+
+      # Guns name two shared records by reference: what changes while the gun
+      # runs in gimbal mode, and how far the game nudges its shots onto a
+      # target.
+      private def load_weapon_records
+        @weapon_records = {}
+        Dir.glob("#{base_path}/#{FOUNDRY_PATH}/entities/scitem/ships/weapons/{weapongimbalmodemodifiers,weaponaimableangles}/*.xml").each do |file|
+          values = Hash.from_xml(File.read(file)).values.first
+          ref = values&.dig("__ref")
+          @weapon_records[ref] = values if ref.present?
+        end
+      end
+
+      # A gimbal-mode record holds one modifier set per entry and nothing on the
+      # gun says which entry applies to it, so a multiplier is only carried when
+      # every entry agrees on it. The fire-rate penalty does, on every record in
+      # use; the spread change differs between entries of the default record.
+      #
+      # A reference that resolves to no record carries nothing: an unknown
+      # penalty is not the same as none.
+      private def extract_gimbal_mode(weapon_data)
+        record = @weapon_records[weapon_data&.dig("gimbalModeModifierRecord")]
+        return if record.blank?
+
+        entries = Array.wrap(record.dig("weaponGimbalModeModifiers", "SWeaponModifierParams")).filter_map { |entry| entry["weaponStats"] }
+        return if entries.empty?
+
+        agreed = ->(values) { values.uniq.one? ? values.first&.to_f : nil }
+
+        {
+          fire_rate_multiplier: agreed.call(entries.map { |stats| stats["fireRateMultiplier"] }),
+          spread_min_multiplier: agreed.call(entries.map { |stats| stats.dig("spreadModifier", "minMultiplier") }),
+          spread_max_multiplier: agreed.call(entries.map { |stats| stats.dig("spreadModifier", "maxMultiplier") })
+        }.compact.presence
+      end
+
+      # Degrees the game bends a shot towards the target: `nudge` at any range,
+      # and a wider cone between the two close-range distances. The null record
+      # is all zeros, which is a gun with no assist rather than one with a
+      # zero-degree cone.
+      private def extract_aim_assist(weapon_data)
+        record = @weapon_records[weapon_data&.dig("aimableAnglesRecord")]
+        return if record.blank?
+
+        assist = {
+          nudge_angle: record["maxNudgeAngle"]&.to_f,
+          inner_angle: record["innerThresholdAngle"]&.to_f,
+          outer_angle: record["outerThresholdAngle"]&.to_f,
+          close_range_min: record["closeDistanceMinRange"]&.to_f,
+          close_range_max: record["closeDistanceMaxRange"]&.to_f,
+          close_inner_angle: record["closeDistanceInnerAngle"]&.to_f,
+          close_outer_angle: record["closeDistanceOuterAngle"]&.to_f
+        }.compact
+
+        assist.values.all?(&:zero?) ? nil : assist.presence
       end
 
       private def load_ammo_params

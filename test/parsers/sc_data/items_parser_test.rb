@@ -597,6 +597,78 @@ module ScData
         assert_in_delta 1.0, type_data["power_consumption"]
       end
 
+      test "carries a gun's gimbal-mode fire-rate penalty, and a spread change only where every entry agrees" do
+        write_weapon_record("weapongimbalmodemodifiers", "gimbal_default", <<~XML)
+          <weaponGimbalModeModifiers>
+            <SWeaponModifierParams><weaponStats fireRateMultiplier="0.85"><spreadModifier minMultiplier="0.5" maxMultiplier="0.5" /></weaponStats></SWeaponModifierParams>
+            <SWeaponModifierParams><weaponStats fireRateMultiplier="0.85"><spreadModifier minMultiplier="1" maxMultiplier="1" /></weaponStats></SWeaponModifierParams>
+          </weaponGimbalModeModifiers>
+        XML
+        write_record_gun("gimbal_gun", gimbal: "gimbal_default")
+
+        gimbal_mode = parsed_item("gimbal_gun")["type_data"]["gimbal_mode"]
+
+        assert_in_delta 0.85, gimbal_mode["fire_rate_multiplier"]
+        assert_nil gimbal_mode["spread_min_multiplier"]
+        assert_nil gimbal_mode["spread_max_multiplier"]
+      end
+
+      test "carries no gimbal-mode penalty for a record that does not resolve" do
+        write_record_gun("unresolved_gun", gimbal: "missing")
+
+        assert_nil parsed_item("unresolved_gun")["type_data"]["gimbal_mode"]
+      end
+
+      test "reads a gun's aim-assist cone off its aimable-angles record" do
+        write_weapon_record("weaponaimableangles", "aim_high", "", attributes: 'maxNudgeAngle="2.25" innerThresholdAngle="0" outerThresholdAngle="3" closeDistanceMaxRange="150" closeDistanceMinRange="75" closeDistanceOuterAngle="16" closeDistanceInnerAngle="8"')
+        write_record_gun("assisted_gun", aim: "aim_high")
+
+        assist = parsed_item("assisted_gun")["type_data"]["aim_assist"]
+
+        assert_in_delta 2.25, assist["nudge_angle"]
+        assert_in_delta 3.0, assist["outer_angle"]
+        assert_in_delta 75.0, assist["close_range_min"]
+        assert_in_delta 150.0, assist["close_range_max"]
+        assert_in_delta 16.0, assist["close_outer_angle"]
+      end
+
+      test "reads an all-zero aim-assist record as no assist" do
+        write_weapon_record("weaponaimableangles", "aim_null", "", attributes: 'maxNudgeAngle="0" innerThresholdAngle="0" outerThresholdAngle="0" closeDistanceMaxRange="0" closeDistanceMinRange="0" closeDistanceOuterAngle="0" closeDistanceInnerAngle="0"')
+        write_record_gun("unassisted_gun", aim: "aim_null")
+
+        assert_nil parsed_item("unassisted_gun")["type_data"]["aim_assist"]
+      end
+
+      private def record_ref(name)
+        Digest::UUID.uuid_v5(Digest::UUID::OID_NAMESPACE, name)
+      end
+
+      private def write_weapon_record(folder, name, body, attributes: "")
+        path = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/weapons/#{folder}"
+        FileUtils.mkdir_p(path)
+
+        File.write("#{path}/#{name}.xml", <<~XML)
+          <WeaponRecord.#{name} #{attributes} __ref="#{record_ref(name)}">
+            #{body}
+          </WeaponRecord.#{name}>
+        XML
+      end
+
+      private def write_record_gun(key, gimbal: nil, aim: nil)
+        references = [
+          gimbal && "gimbalModeModifierRecord=\"#{record_ref(gimbal)}\"",
+          aim && "aimableAnglesRecord=\"#{record_ref(aim)}\""
+        ].compact.join(" ")
+
+        write_item(key, name: "@item_Name#{key}", category: "weapons", type: "WeaponGun", sub_type: "Gun", components: <<~XML)
+          <SCItemWeaponComponentParams #{references}>
+            <fireActions>
+              <SWeaponActionFireSingleParams fireRate="600" heatPerShot="0" />
+            </fireActions>
+          </SCItemWeaponComponentParams>
+        XML
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 
