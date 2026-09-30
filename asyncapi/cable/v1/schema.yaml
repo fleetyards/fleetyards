@@ -787,6 +787,22 @@ components:
           type: number
         fuelUsageEfficiencyMultiplier:
           type: number
+        exitSpeed:
+          type: number
+        maxTunnelSpeed:
+          type: number
+        respoolTime:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
       additionalProperties: false
     ComponentMissile:
       type: object
@@ -943,6 +959,8 @@ components:
           type: number
         spoolUpTime:
           type: number
+        interdictionEffectTime:
+          type: number
         splineJumpParams:
           "$ref": "#/components/schemas/ComponentQuantumDriveJump"
         quantumBoostParams:
@@ -954,6 +972,8 @@ components:
         powerRanges:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
+          type: number
+        signatureIr:
           type: number
       additionalProperties: false
     ComponentQuantumDriveBoost:
@@ -1002,6 +1022,8 @@ components:
         calibrationDelayInSeconds:
           type: number
         spoolUpTime:
+          type: number
+        interdictionEffectTime:
           type: number
       additionalProperties: false
     ComponentRadar:

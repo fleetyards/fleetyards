@@ -1479,14 +1479,25 @@
           "spoolUpTime": "Preparazione",
           "cooldownTime": "Recupero",
           "splineSpeed": "Orbita",
-          "accel": "Accel."
+          "accel": "Accel.",
+          "engageSpeed": "Velocità di aggancio",
+          "calibrationRate": "Velocità di calibrazione",
+          "disconnectRange": "Distanza di disconnessione",
+          "interdictionTime": "Durata dell'interdizione",
+          "splineAccel": "Accelerazione in orbita",
+          "splineSpoolUpTime": "Avvio in orbita",
+          "splineCooldownTime": "Raffreddamento in orbita",
+          "splineInterdictionTime": "Interdizione in orbita"
         },
         "jumpDrives": {
           "fuelEfficiency": "Efficienza carburante",
           "alignRate": "Vel. allineamento",
           "tuneRate": "Vel. sintonizzazione",
           "alignDecay": "Decadimento allineamento",
-          "tuneDecay": "Decadimento sintonizzazione"
+          "tuneDecay": "Decadimento sintonizzazione",
+          "exitSpeed": "Velocità di uscita",
+          "maxTunnelSpeed": "Velocità max nel tunnel",
+          "respoolTime": "Riavvio"
         },
         "radar": {
           "aimAssistRange": "Gittata assistenza",

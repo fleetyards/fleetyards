@@ -65,6 +65,29 @@ module ScData
         paint_logos[item[:manufacturer_ref]]
       end
 
+      # How a ship flies through a jump tunnel lives in a record of its own the
+      # drive only points at: the speed it drops to on leaving the tunnel and
+      # the top speed it can hold inside it.
+      private def jump_drive_flight(ref)
+        tuning = jump_drive_flight_tunings[ref]
+        return {} if tuning.blank?
+
+        {
+          exit_speed: tuning["exitRecoverySpeed"]&.to_f,
+          max_tunnel_speed: tuning.dig("linear", "maxSpeed")&.to_f,
+          respool_time: tuning["respoolTime"]&.to_f
+        }
+      end
+
+      private def jump_drive_flight_tunings
+        @jump_drive_flight_tunings ||= Dir.glob("#{import_path}/entities/scitem/ships/jumpdrive/jumpdriveflighttuning/*.xml").filter_map { |file|
+          values = Hash.from_xml(File.read(file)).values.first
+          ref = value_or_nil(values["__ref"])
+
+          [ref, values] if ref.present?
+        }.to_h
+      end
+
       private def paint_logos
         @paint_logos ||= Dir.glob("#{import_path}/scitemmanufacturer/paintcolorlogos/*.xml").filter_map { |file|
           values = Hash.from_xml(File.read(file)).values.first
@@ -312,6 +335,7 @@ module ScData
             calibration_warning_angle_limit: values.dig("Components", "SCItemQuantumDriveParams", "params", "calibrationWarningAngleLimit").to_f,
             calibration_delay_in_seconds: values.dig("Components", "SCItemQuantumDriveParams", "params", "calibrationDelayInSeconds").to_f,
             spool_up_time: values.dig("Components", "SCItemQuantumDriveParams", "params", "spoolUpTime").to_f,
+            interdiction_effect_time: values.dig("Components", "SCItemQuantumDriveParams", "params", "interdictionEffectTime")&.to_f,
             spline_jump_params: {
               drive_speed: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "driveSpeed").to_f,
               cooldown_time: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "cooldownTime").to_f,
@@ -324,8 +348,9 @@ module ScData
               calibration_process_angle_limit: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "calibrationProcessAngleLimit").to_f,
               calibration_warning_angle_limit: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "calibrationWarningAngleLimit").to_f,
               calibration_delay_in_seconds: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "calibrationDelayInSeconds").to_f,
-              spool_up_time: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "spoolUpTime").to_f
-            },
+              spool_up_time: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "spoolUpTime").to_f,
+              interdiction_effect_time: values.dig("Components", "SCItemQuantumDriveParams", "splineJumpParams", "interdictionEffectTime")&.to_f
+            }.compact,
             quantum_boost_params: {
               max_boost_speed: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "maxBoostSpeed").to_f,
               time_to_max_boost_speed: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "timeToMaxBoostSpeed").to_f,
@@ -336,8 +361,7 @@ module ScData
               ifcs_handover_down_time: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "ifcsHandoverDownTime").to_f,
               ifcs_handover_respool_time: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "ifcsHandoverRespoolTime").to_f
             }
-          }
-
+          }.compact
         end
 
         if values.dig("Components", "SCItemJumpDriveParams")
@@ -347,7 +371,8 @@ module ScData
             alignment_decay_rate: jump["alignmentDecayRate"]&.to_f,
             tuning_rate: jump["tuningRate"]&.to_f,
             tuning_decay_rate: jump["tuningDecayRate"]&.to_f,
-            fuel_usage_efficiency_multiplier: jump["fuelUsageEfficiencyMultiplier"]&.to_f
+            fuel_usage_efficiency_multiplier: jump["fuelUsageEfficiencyMultiplier"]&.to_f,
+            **jump_drive_flight(jump["flightTuning"])
           }.compact
         end
 

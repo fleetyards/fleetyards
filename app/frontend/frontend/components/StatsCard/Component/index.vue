@@ -37,7 +37,13 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t, tExists } = useI18n();
 
-const stats = useComponentStats(() => props.component);
+const allStats = useComponentStats(() => props.component);
+
+// On the detail page a mode of the item gets a card of its own beside this
+// one; floating over a list, the card is all there is, so it keeps them.
+const stats = computed(() =>
+  props.compact ? allStats.value : allStats.value.filter((stat) => !stat.group),
+);
 
 const categoryLabel = computed(() => {
   const key = props.component?.category;

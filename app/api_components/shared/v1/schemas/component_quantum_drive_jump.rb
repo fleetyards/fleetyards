@@ -20,7 +20,8 @@ module Shared
             calibrationProcessAngleLimit: {type: :number},
             calibrationWarningAngleLimit: {type: :number},
             calibrationDelayInSeconds: {type: :number},
-            spoolUpTime: {type: :number}
+            spoolUpTime: {type: :number},
+            interdictionEffectTime: {type: :number}
           },
           additionalProperties: false
         })

@@ -510,7 +510,8 @@
         "physical": "物理屬性",
         "damageTaken": "承受傷害",
         "selfRepair": "自我修復",
-        "distortion": "扭曲"
+        "distortion": "扭曲",
+        "splineJump": "軌道躍遷"
       },
       "commodity": {
         "priceHistory": "價格歷史",

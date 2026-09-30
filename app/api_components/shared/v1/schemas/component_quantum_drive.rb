@@ -25,12 +25,15 @@ module Shared
             calibrationWarningAngleLimit: {type: :number},
             calibrationDelayInSeconds: {type: :number},
             spoolUpTime: {type: :number},
+            # Seconds the drive stays disabled after an interdiction pulse.
+            interdictionEffectTime: {type: :number},
             splineJumpParams: ::Shared::V1::Schemas::ComponentQuantumDriveJump,
             quantumBoostParams: ::Shared::V1::Schemas::ComponentQuantumDriveBoost,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            signatureEm: {type: :number},
+            signatureIr: {type: :number}
           },
           additionalProperties: false
         })

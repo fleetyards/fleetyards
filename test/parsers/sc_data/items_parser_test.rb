@@ -390,6 +390,41 @@ module ScData
         assert_equal [1.0], durability["resistances"].values.uniq
       end
 
+      test "reads how long a quantum drive stays interdicted, in both modes" do
+        write_item("qdrv_probe", name: "@item_Nameqdrv_probe", category: "quantumdrive", components: <<~XML)
+          <SCItemQuantumDriveParams disconnectRange="34693">
+            <params driveSpeed="263400000" engageSpeed="84000000" interdictionEffectTime="2.6" calibrationRate="1000" spoolUpTime="7.3" />
+            <splineJumpParams driveSpeed="400000" stageOneAccelRate="250" stageTwoAccelRate="50000" interdictionEffectTime="5" spoolUpTime="6" cooldownTime="21.6" />
+          </SCItemQuantumDriveParams>
+        XML
+
+        type_data = parsed_item("qdrv_probe")["type_data"]
+
+        assert_in_delta 2.6, type_data["interdiction_effect_time"]
+        assert_in_delta 5.0, type_data["spline_jump_params"]["interdiction_effect_time"]
+        assert_in_delta 34_693.0, type_data["disconnect_range"]
+      end
+
+      test "reads a jump drive's tunnel flight from the record it points at" do
+        tuning_folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/jumpdrive/jumpdriveflighttuning"
+        FileUtils.mkdir_p(tuning_folder)
+        File.write("#{tuning_folder}/jumpdriveflighttuning_s04.xml", <<~XML)
+          <JumpDriveFlightParams.JumpDriveFlightTuning_S04 respoolTime="3" exitRecoverySpeed="200" __ref="00000000-0000-0000-0000-0000000f1172">
+            <linear maxSpeed="1300" />
+          </JumpDriveFlightParams.JumpDriveFlightTuning_S04>
+        XML
+
+        write_item("jdrv_probe", name: "@item_Namejdrv_probe", category: "jumpdrive", components: <<~XML)
+          <SCItemJumpDriveParams alignmentRate="0.2" tuningRate="0.26" flightTuning="00000000-0000-0000-0000-0000000f1172" />
+        XML
+
+        type_data = parsed_item("jdrv_probe")["type_data"]
+
+        assert_in_delta 200.0, type_data["exit_speed"]
+        assert_in_delta 1300.0, type_data["max_tunnel_speed"]
+        assert_in_delta 3.0, type_data["respool_time"]
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 

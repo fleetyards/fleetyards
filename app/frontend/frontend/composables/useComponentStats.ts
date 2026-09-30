@@ -8,6 +8,7 @@ import {
   useHardpointStats,
   type HardpointStat,
 } from "@/frontend/composables/useHardpointStats";
+import type { StatGroup } from "@/frontend/components/Components/StatGroups/types";
 
 // A component's own `category` and the slot vocabulary a hardpoint speaks are
 // two different lists. They agree on almost every value, and disagree on the
@@ -130,4 +131,29 @@ export const useComponentStats = (
     ...categoryStats.value,
     ...poweredStats.value,
   ]);
+};
+
+// The stats that describe one mode of the item -- a quantum drive's spline
+// jump -- collected into a titled group each, in the order they came in. A
+// detail page shows them as cards of their own; a compact card lists them with
+// the rest, since their labels already name the mode.
+export const useModeGroups = (stats: MaybeRefOrGetter<HardpointStat[]>) => {
+  const { t } = useI18n();
+
+  return computed<StatGroup[]>(() => {
+    const grouped = new Map<string, StatGroup>();
+    toValue(stats).forEach((stat) => {
+      if (!stat.group) return;
+
+      const group = grouped.get(stat.group) || {
+        key: stat.group,
+        title: t(`headlines.component.${stat.group}`),
+        stats: [],
+      };
+      group.stats.push(stat);
+      grouped.set(stat.group, group);
+    });
+
+    return [...grouped.values()];
+  });
 };
