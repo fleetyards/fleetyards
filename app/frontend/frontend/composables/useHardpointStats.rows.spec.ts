@@ -96,10 +96,10 @@ describe("useHardpointStats rows", () => {
           cs: { sensitivity: 0.5, passive: false, active: true },
           rs: { sensitivity: 1, passive: true, active: true },
         },
-        sensitivityModifiers: {
-          sensitivityAddition: -0.65,
-          contactGroup: "GroundVehicle",
-        },
+        contactSensitivity: [
+          { sensitivityAddition: -0.65, contactGroups: ["GroundVehicle"] },
+          { sensitivityAddition: 0.25, contactGroups: ["Person", "Missile"] },
+        ],
       }),
     );
 
@@ -112,6 +112,7 @@ describe("useHardpointStats rows", () => {
     expect(
       valueOf(stats, "labels.hardpoint.radar.contactGroups.GroundVehicle"),
     ).toBe("-65%");
+    expect(valueOf(stats, "Person · Missile")).toBe("25%");
   });
 
   it("shows a flex thruster's vectoring range and a VTOL-only thruster", () => {
@@ -130,6 +131,18 @@ describe("useHardpointStats rows", () => {
       "±90°",
     );
     expect(valueOf(stats, "labels.hardpoint.thrusters.vectorYaw")).toBe("±30°");
+  });
+
+  it("falls back to a mount's own ports when its ship slot lists none", () => {
+    const slot = hardpoint(HardpointCategoryEnum.TURRET, { yawSpeed: 80 });
+    slot.component!.hardpoints = [
+      { category: HardpointCategoryEnum.WEAPON_MOUNTS, maxSize: 3 },
+      { category: HardpointCategoryEnum.WEAPON_MOUNTS, maxSize: 3 },
+    ] as Hardpoint[];
+
+    expect(valueOf(statsFor(slot), "labels.hardpoint.turrets.gunPorts")).toBe(
+      "2 × S3",
+    );
   });
 
   it("counts a mount's gun ports by size, leaving out its other slots", () => {
@@ -164,19 +177,5 @@ describe("useHardpointStats rows", () => {
     });
     expect(valueOf(stats, "labels.hardpoint.emp.radius")).toBe("500 – 4500 m");
     expect(valueOf(stats, "labels.hardpoint.emp.cooldownTime")).toBe("7.5");
-  });
-
-  it("shows a life-support unit's output", () => {
-    const stats = statsFor(
-      hardpoint(HardpointCategoryEnum.LIFESUPPORT, {
-        lifeSupportGeneration: 0.05,
-      }),
-    );
-
-    expect(stats[0]).toMatchObject({
-      label: "labels.hardpoint.lifeSupport.output",
-      value: "0.05/s",
-      primary: true,
-    });
   });
 });

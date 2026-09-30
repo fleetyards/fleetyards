@@ -351,7 +351,7 @@ export const useHardpointStats = (
         label: t("labels.hardpoint.powerConsumption"),
         value:
           minimum !== undefined && minimum < full
-            ? `${String(toNumber(minimum))} – ${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`
+            ? `${precise(minimum)} – ${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`
             : `${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`,
       });
     }
@@ -1259,16 +1259,25 @@ export const useHardpointStats = (
           value: `${String(toNumber(radar.aimAssistBuffer, "integer"))} m`,
         });
       }
-      const modifier = radar.sensitivityModifiers as
-        { sensitivityAddition?: number; contactGroup?: string } | undefined;
-      if (modifier?.sensitivityAddition && modifier.contactGroup) {
+      // One row per modifier, labelled by the contact groups it applies to.
+      const contactSensitivity = (radar.contactSensitivity ?? []) as {
+        sensitivityAddition: number;
+        contactGroups: string[];
+      }[];
+      contactSensitivity.forEach((entry) => {
+        if (!entry.sensitivityAddition || !entry.contactGroups?.length) return;
+
         result.push({
-          label: RADAR_CONTACT_GROUPS.includes(modifier.contactGroup)
-            ? t(`labels.hardpoint.radar.contactGroups.${modifier.contactGroup}`)
-            : modifier.contactGroup,
-          value: `${Math.round(modifier.sensitivityAddition * 100)}%`,
+          label: entry.contactGroups
+            .map((group) =>
+              RADAR_CONTACT_GROUPS.includes(group)
+                ? t(`labels.hardpoint.radar.contactGroups.${group}`)
+                : group,
+            )
+            .join(" · "),
+          value: `${Math.round(entry.sensitivityAddition * 100)}%`,
         });
-      }
+      });
     } else if (
       category === HardpointCategoryEnum.TURRET ||
       category === HardpointCategoryEnum.WEAPON_MOUNTS
@@ -1318,7 +1327,11 @@ export const useHardpointStats = (
           value: t(`labels.combat.controlGroups.${turret.control}`),
         });
       }
-      const ports = gunPorts(hp.hardpoints ?? hp.component?.hardpoints);
+      // A ship slot always lists its children, empty or not; the mount's own
+      // ports are the fallback when it has none, as in the loadout tree.
+      const ports = gunPorts(
+        hp.hardpoints?.length ? hp.hardpoints : hp.component?.hardpoints,
+      );
       if (ports) {
         result.push({
           label: t("labels.hardpoint.turrets.gunPorts"),
@@ -1330,7 +1343,7 @@ export const useHardpointStats = (
       if (lifeSupport.lifeSupportGeneration) {
         result.push({
           label: t("labels.hardpoint.lifeSupport.output"),
-          value: `${String(toNumber(lifeSupport.lifeSupportGeneration))}/s`,
+          value: `${precise(lifeSupport.lifeSupportGeneration)}/s`,
           primary: true,
         });
       }
