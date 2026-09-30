@@ -515,6 +515,9 @@ module ScData
             item[:type_data] = extract_tractor_beam_data(tractor)
           elsif beam.present?
             item[:type_data] = extract_beam_weapon_data(beam)
+
+            mining = extract_mining_laser_data(values, weapon_data)
+            item[:type_data][:mining] = mining if mining.present?
           else
             charged = weapon_data.dig("fireActions", "SWeaponActionFireChargedParams")
             charged = charged.is_a?(Array) ? charged.first : charged
@@ -660,6 +663,16 @@ module ScData
           item[:type_data][:weapon_class] = extract_item_class(tags)
           item[:type_data][:mountable] = tags.include?("weaponMountUsable")
           item[:type_data].compact!
+        end
+
+        if type == "MiningModifier"
+          mining_module = extract_mining_module_data(values)
+          item[:type_data] = mining_module if mining_module.present?
+        end
+
+        if type == "SalvageModifier"
+          salvage_modifier = extract_salvage_modifier_data(values)
+          item[:type_data] = salvage_modifier if salvage_modifier.present?
         end
 
         if values.dig("Components", "SCItemTurretParams")
@@ -999,6 +1012,124 @@ module ScData
           full_damage_range: beam["fullDamageRange"]&.to_f,
           zero_damage_range: beam["zeroDamageRange"]&.to_f
         }.compact
+      end
+
+      # A mining laser fires two beams: the fracturing one, whose power the
+      # operator throttles down to `throttleMinimum` of full, and the extraction
+      # one that pulls the fragments in. The laser's own modifiers are percent
+      # changes to the rock's behaviour, as the game's own description of the
+      # item prints them.
+      private def extract_mining_laser_data(values, weapon_data)
+        laser = values.dig("Components", "SEntityComponentMiningLaserParams")
+        return if laser.blank?
+
+        beams = Array.wrap(weapon_data.dig("fireActions", "SWeaponActionFireBeamParams"))
+        fracture = beams.find { |beam| beam["hitType"] != "Extraction" }
+        extraction = beams.find { |beam| beam["hitType"] == "Extraction" }
+        fracture_power = beam_power(fracture)
+        throttle_minimum = laser["throttleMinimum"]&.to_f
+
+        {
+          fracture_power_max: fracture_power,
+          fracture_power_min: ((fracture_power * throttle_minimum).round(2) if fracture_power && throttle_minimum),
+          extraction_power: beam_power(extraction),
+          optimal_range: fracture&.dig("fullDamageRange")&.to_f,
+          max_range: fracture&.dig("zeroDamageRange")&.to_f,
+          charge_up_time: fracture&.dig("chargeUpTime")&.to_f,
+          charge_down_time: fracture&.dig("chargeDownTime")&.to_f,
+          module_slots: mining_module_slots(values).nonzero?,
+          modifiers: extract_mining_modifiers(laser["miningLaserModifiers"], laser["filterParams"])
+        }.compact
+      end
+
+      private def beam_power(beam)
+        damage = beam&.dig("damagePerSecond", "DamageInfo")
+        return if damage.blank?
+
+        damage.values.sum(&:to_f).nonzero?
+      end
+
+      private def mining_module_slots(values)
+        ports = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))
+
+        ports.count do |port|
+          Array.wrap(port.dig("Types", "SItemPortDefTypes")).any? { |type| type["Type"] == "MiningModifier" }
+        end
+      end
+
+      MINING_MODIFIERS = {
+        instability: "laserInstability",
+        resistance: "resistanceModifier",
+        optimal_charge_window: "optimalChargeWindowSizeModifier",
+        optimal_charge_rate: "optimalChargeWindowRateModifier",
+        catastrophic_charge_rate: "catastrophicChargeWindowRateModifier",
+        shatter_damage: "shatterdamageModifier"
+      }.freeze
+
+      # The filter is stored as how much inert material it screens out, and
+      # reads the other way round from every other modifier: a filter of 30 is
+      # 30 % less inert material, which is how the game describes it.
+      private def extract_mining_modifiers(modifiers, filter_params)
+        values = MINING_MODIFIERS.transform_values do |key|
+          modifiers&.dig(key, "FloatModifierMultiplicative", "value")&.to_f
+        end
+
+        filter = filter_params&.dig("filterModifier", "FloatModifierMultiplicative", "value")&.to_f
+        values[:inert_materials] = -filter if filter
+
+        values.compact.reject { |_, value| value.zero? }.presence
+      end
+
+      # A module either sits in its slot for good (passive) or is fired off for
+      # a few seconds at a time, a set number of times (active). What it does
+      # to the laser's two beams is a multiplier per fire action, kept as the
+      # percent change the game prints.
+      private def extract_mining_module_data(values)
+        params = values.dig("Components", "EntityComponentAttachableModifierParams")
+        return if params.blank?
+
+        mining = Array.wrap(params.dig("modifiers", "ItemMiningModifierParams")).first
+        weapon_modifiers = Array.wrap(params.dig("modifiers", "ItemWeaponModifiersParams"))
+        power_change = ->(index) {
+          modifier = weapon_modifiers.find { |entry| entry["fireActionIndex"].to_s == index.to_s }
+          multiplier = modifier&.dig("weaponModifier", "weaponStats", "damageMultiplier")&.to_f
+          ((multiplier - 1) * 100).round(2).nonzero? if multiplier
+        }
+        active = params["activationMethod"] == "ActivateOnDemand"
+
+        data = {
+          fracture_power: power_change.call(0),
+          extraction_power: power_change.call(1),
+          modifiers: extract_mining_modifiers(
+            mining&.dig("MiningLaserModifier"),
+            params.dig("modifiers", "MiningFilterItemModifierParams", "filterParams")
+          )
+        }.compact
+        return if data.empty?
+
+        data.merge(
+          mining_module: true,
+          activation: active ? "active" : "passive",
+          charges: (params["charges"]&.to_i&.nonzero? if active),
+          duration: (mining&.dig("modifierLifetime", "ItemModifierTimedLife", "lifetime")&.to_f if active)
+        ).compact
+      end
+
+      # A salvage modifier scales the head's scraping beam. A modifier that
+      # scales nothing -- the tractor-side ones -- has nothing to report.
+      private def extract_salvage_modifier_data(values)
+        modifiers = Array.wrap(values.dig("Components", "EntityComponentAttachableModifierParams", "modifiers", "ItemWeaponModifiersParams"))
+        salvage = modifiers.filter_map { |entry| entry.dig("weaponModifier", "weaponStats", "salvageModifier") }.first
+        return if salvage.blank?
+
+        data = {
+          salvage_speed: salvage["salvageSpeedMultiplier"]&.to_f,
+          radius: salvage["radiusMultiplier"]&.to_f,
+          extraction_efficiency: salvage["extractionEfficiency"]&.to_f
+        }.compact
+        return if data.values.all? { |value| (value - 1).abs < 1e-9 }
+
+        data.merge(salvage_modifier: true)
       end
 
       # Tractor and towing beams are WeaponGun-shaped items with no projectile,
