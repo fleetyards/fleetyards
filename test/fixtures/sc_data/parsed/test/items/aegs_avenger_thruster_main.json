@@ -19,7 +19,24 @@
     }
   },
   "durability": {
-    "health": 9100.0
+    "health": 9100.0,
+    "mass": 1200.0,
+    "resistances": {
+      "physical": 0.85,
+      "energy": 0.85
+    },
+    "self_repair": {
+      "time": 56.0,
+      "health_ratio": 0.2,
+      "max_repairs": 1
+    },
+    "distortion": {
+      "maximum": 3500.0,
+      "warning_ratio": 0.75,
+      "recovery_ratio": 0.0,
+      "decay_rate": 233.3333,
+      "decay_delay": 3.0
+    }
   },
   "type_data": {
     "thrust_capacity": 5047832.0,

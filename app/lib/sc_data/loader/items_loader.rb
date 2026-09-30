@@ -49,6 +49,10 @@ module ScData
             update_params[:type_data] = cargo_grid if cargo_grid.present?
           end
 
+          if item[:durability].present?
+            update_params[:durability] = item[:durability]
+          end
+
           if item[:power_connection].present?
             update_params[:power_connection] = item[:power_connection]
           end

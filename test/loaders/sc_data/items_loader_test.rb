@@ -146,6 +146,18 @@ module ScData
 
         assert_equal 4, grid.type_data["capacity"]
       end
+
+      test "#all writes a component's durability to the component and its build" do
+        items_loader.all
+
+        thruster = Component.find_by(sc_key: "aegs_avenger_thruster_main")
+
+        [thruster.read_attribute(:durability), thruster.builds.sole.durability].each do |durability|
+          assert_in_delta 1200.0, durability["mass"]
+          assert_equal 1, durability.dig("self_repair", "max_repairs")
+          assert_in_delta 3500.0, durability.dig("distortion", "maximum")
+        end
+      end
     end
   end
 end
