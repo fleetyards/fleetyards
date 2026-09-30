@@ -1356,6 +1356,7 @@
           "magazineDamage": "Magazinschaden",
           "timeToEmpty": "Zeit bis leer",
           "spread": "Streuung",
+          "spreadFirstShot": "Streuung erster Schuss",
           "spreadPerShot": "Streuung/Schuss",
           "spreadRecovery": "Streuungsabbau",
           "pool": "Energiepool",

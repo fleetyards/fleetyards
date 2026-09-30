@@ -1356,6 +1356,7 @@
           "magazineDamage": "Magazine Damage",
           "timeToEmpty": "Time to Empty",
           "spread": "Spread",
+          "spreadFirstShot": "First Shot Spread",
           "spreadPerShot": "Spread/Shot",
           "spreadRecovery": "Spread Recovery",
           "pool": "Energy Pool",

@@ -1356,6 +1356,7 @@
           "magazineDamage": "弹匣总伤害",
           "timeToEmpty": "打空时间",
           "spread": "散布",
+          "spreadFirstShot": "首发散布",
           "spreadPerShot": "散布/发",
           "spreadRecovery": "散布恢复",
           "pool": "能量池",

@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import type { Component } from "@/services/fyApi";
+import {
+  HardpointCategoryEnum,
+  type Component,
+  type Hardpoint,
+} from "@/services/fyApi";
 import { useComponentStats } from "./useComponentStats";
+import { useHardpointStats } from "./useHardpointStats";
 
 const gun = (typeData: Record<string, unknown>): Component =>
   ({
@@ -55,6 +60,14 @@ describe("useHardpointStats for guns", () => {
     expect(valueOf(stats, "Time to Empty")).toBe("20 s");
   });
 
+  it("shows a magazine that empties in under half a second", () => {
+    const stats = useComponentStats(
+      gun({ fireRate: 1200, maxAmmo: 4, damagePerShot: { physical: 10 } }),
+    ).value;
+
+    expect(valueOf(stats, "Time to Empty")).toBe("0,2 s");
+  });
+
   it("gives an energy weapon no magazine totals", () => {
     const stats = useComponentStats(
       gun({
@@ -78,7 +91,7 @@ describe("useHardpointStats for guns", () => {
       }),
     ).value;
 
-    expect(valueOf(stats, "Spread")).toBe("0.6°");
+    expect(valueOf(stats, "Spread")).toBe("0,6°");
     expect(valueOf(stats, "Spread/Shot")).toBeUndefined();
   });
 
@@ -91,8 +104,44 @@ describe("useHardpointStats for guns", () => {
       }),
     ).value;
 
-    expect(valueOf(stats, "Spread")).toBe("0.2° / 1.5°");
-    expect(valueOf(stats, "Spread/Shot")).toBe("0.025°");
-    expect(valueOf(stats, "Spread Recovery")).toBe("0.05°/s");
+    expect(valueOf(stats, "Spread")).toBe("0,2° / 1,5°");
+    expect(valueOf(stats, "Spread/Shot")).toBe("0,025°");
+    expect(valueOf(stats, "Spread Recovery")).toBe("0,05°/s");
+  });
+
+  it("shows the first shot's own growth when it differs", () => {
+    const stats = useComponentStats(
+      gun({
+        fireRate: 70,
+        damagePerShot: { energy: 49.5 },
+        spread: { min: 2, max: 4, firstAttack: 0.5, attack: 0, decay: 0.6 },
+      }),
+    ).value;
+
+    expect(valueOf(stats, "First Shot Spread")).toBe("0,5°");
+    expect(valueOf(stats, "Spread/Shot")).toBeUndefined();
+  });
+
+  // A stacked mount sums only its DPS; a magazine and a cone belong to each
+  // gun, so a row of four shows the same figures as one gun on its own.
+  it("keeps the figures per gun on a stacked ship row", () => {
+    const typeData = {
+      fireRate: 50,
+      maxAmmo: 270,
+      ammoCost: 1,
+      damagePerShot: { physical: 975 },
+      spread: { min: 0.2, max: 0.2 },
+    };
+    const hardpoint = {
+      category: HardpointCategoryEnum.WEAPONS,
+      component: gun(typeData),
+    } as unknown as Hardpoint;
+
+    const stacked = useHardpointStats(hardpoint, 4).value;
+    const single = useComponentStats(gun(typeData)).value;
+
+    for (const label of ["Magazine Damage", "Time to Empty", "Spread"]) {
+      expect(valueOf(stacked, label)).toBe(valueOf(single, label));
+    }
   });
 });

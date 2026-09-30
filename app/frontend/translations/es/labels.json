@@ -1356,6 +1356,7 @@
           "magazineDamage": "Daño del cargador",
           "timeToEmpty": "Tiempo hasta vaciar",
           "spread": "Dispersión",
+          "spreadFirstShot": "Dispersión del primer disparo",
           "spreadPerShot": "Dispersión/disparo",
           "spreadRecovery": "Recuperación de dispersión",
           "pool": "Reserva de energía",
