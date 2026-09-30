@@ -967,6 +967,7 @@
       },
       "combat": {
         "title": "Combattimento",
+        "openPenetrationCheck": "Verifica penetrazione",
         "dps": "DPS di raffica",
         "dpsSub": "%{count} armi",
         "sustained": "DPS sostenuto",
@@ -1042,6 +1043,17 @@
         },
         "hint": "Valori di scudi, corazza e contromisure della configurazione predefinita. Un assorbimento inferiore al 100% significa che quel tipo di danno raggiunge lo scafo mentre gli scudi sono ancora attivi.",
         "openDeflectionCheck": "Verifica deflessione"
+      },
+      "penetrationCheck": {
+        "title": "Verifica penetrazione",
+        "intro": "— quali navi possono perforare le sue armi?",
+        "noWeapons": "Questa configurazione non monta cannoni con danno per colpo da verificare.",
+        "weapons": "Armi",
+        "shieldHealth": "Salute degli scudi del bersaglio",
+        "armorHealth": "Salute della corazza del bersaglio",
+        "ship": "Nave",
+        "hoverHint": "Passa sopra una nave per il dettaglio per arma.",
+        "note": "Ogni cannone selezionato viene confrontato con gli scudi e la deflessione della corazza di ogni nave secondo le stesse regole della verifica deflessione; una nave è perforata quando uno qualsiasi di essi passa, e viene ordinata in base al cannone che si avvicina di più. Le navi senza corazza sono escluse, perché non c'è una soglia da superare."
       },
       "deflectionCheck": {
         "title": "Verifica della deflessione",

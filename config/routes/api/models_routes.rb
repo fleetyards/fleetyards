@@ -7,6 +7,7 @@ resources :models, param: :slug, only: %i[index show] do
     get :slugs
     get :updated
     get :embed
+    get :defenses
   end
   member do
     get :hardpoints

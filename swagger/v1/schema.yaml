@@ -11818,6 +11818,19 @@ paths:
                 "$ref": "#/components/schemas/Models"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/defenses":
+    get:
+      summary: Ship defenses for the penetration check
+      tags:
+      - Models
+      operationId: modelDefenses
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelDefensesList"
   "/models/embed":
     get:
       summary: Embed Models
@@ -27978,6 +27991,74 @@ components:
           type: string
       additionalProperties: false
       title: ModelCrew
+    ModelDefense:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        size:
+          type: string
+        manufacturerCode:
+          type: string
+        armor:
+          "$ref": "#/components/schemas/ModelDefenseArmor"
+        shields:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelDefenseShield"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - shields
+      title: ModelDefense
+    ModelDefenseArmor:
+      type: object
+      properties:
+        health:
+          type: number
+        damagePhysical:
+          type: number
+        damageEnergy:
+          type: number
+        damageDistortion:
+          type: number
+        damageThermal:
+          type: number
+        deflectionPhysical:
+          type: number
+        deflectionEnergy:
+          type: number
+        deflectionDistortion:
+          type: number
+        deflectionThermal:
+          type: number
+      additionalProperties: false
+      title: ModelDefenseArmor
+    ModelDefenseShield:
+      type: object
+      properties:
+        maxHealth:
+          type: number
+        absorption:
+          "$ref": "#/components/schemas/ComponentDamageTypeMap"
+        resistance:
+          "$ref": "#/components/schemas/ComponentDamageTypeMap"
+      additionalProperties: false
+      required:
+      - maxHealth
+      title: ModelDefenseShield
+    ModelDefensesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelDefense"
+      title: ModelDefensesList
     ModelExtended:
       type: object
       properties:

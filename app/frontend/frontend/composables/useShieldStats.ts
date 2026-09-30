@@ -33,6 +33,12 @@ export type ShieldStats = {
   hasData: boolean;
 };
 
+// What the stats read off a shield; the defenses index carries only this much.
+export type ShieldData = Pick<
+  ComponentShield,
+  "maxHealth" | "absorption" | "resistance"
+> & { maxRegen?: number };
+
 type ComponentShieldResistanceMap = NonNullable<ComponentShield["resistance"]>;
 
 const DAMAGE_TYPES: {
@@ -69,8 +75,8 @@ function collectShieldHardpoints(
 // shield contributes more to the effective profile). `fallback` is the value
 // used when no shield reports the stat at all.
 function weightedByHp(
-  shields: ComponentShield[],
-  pick: (shield: ComponentShield) => number | undefined,
+  shields: ShieldData[],
+  pick: (shield: ShieldData) => number | undefined,
   fallback: number,
 ): number {
   let weighted = 0;
@@ -92,10 +98,18 @@ export function computeShieldStats(
   hardpoints: Hardpoint[] | undefined,
   shieldPoolRatio = 1,
 ): ShieldStats {
-  const shields = collectShieldHardpoints(hardpoints).map(
-    (hardpoint) => hardpoint.component!.typeData as ComponentShield,
+  return shieldStatsFrom(
+    collectShieldHardpoints(hardpoints).map(
+      (hardpoint) => hardpoint.component!.typeData as ComponentShield,
+    ),
+    shieldPoolRatio,
   );
+}
 
+export function shieldStatsFrom(
+  shields: ShieldData[],
+  shieldPoolRatio = 1,
+): ShieldStats {
   // Regen scales with the shield power allocation; an unpowered shield (0 pips)
   // offers no protection, so its HP drops to 0 as well.
   const powered = shieldPoolRatio > 0 ? 1 : 0;

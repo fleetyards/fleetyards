@@ -10,23 +10,29 @@ import type { Hardpoint } from "@/services/fyApi";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import {
   useLoadoutStats,
   type DamageBreakdown,
 } from "@/frontend/composables/useLoadoutStats";
 import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
+import { collectLoadoutWeapons } from "@/frontend/composables/usePenetrationCheck";
 
 type Props = {
   hardpoints?: Hardpoint[];
+  modelName?: string;
   loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
+  modelName: "",
   loading: false,
 });
 
 const { t, toNumber } = useI18n();
+
+const comlink = useComlink();
 
 const weaponPoolSize = inject<Ref<number | undefined>>(
   "weaponPoolSize",
@@ -89,6 +95,24 @@ const composition = computed(() =>
     .filter((entry) => entry.value > 0)
     .sort((a, b) => b.value - a.value),
 );
+
+// Beams and missiles have no per-shot alpha to test, so a loadout of only
+// those has nothing to put in the check.
+const hasTestableGuns = computed(
+  () => collectLoadoutWeapons(props.hardpoints).length > 0,
+);
+
+const openPenetrationCheck = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/PenetrationCheckModal/index.vue"),
+    wide: true,
+    props: {
+      modelName: props.modelName,
+      hardpoints: props.hardpoints,
+    },
+  });
+};
 </script>
 
 <template>
@@ -154,6 +178,16 @@ const composition = computed(() =>
       :highlighted="hoveredType"
       @highlight="hoveredType = $event"
     />
+
+    <div v-if="hasTestableGuns" class="metrics-card__actions">
+      <button
+        type="button"
+        class="metrics-card__toggle"
+        @click="openPenetrationCheck"
+      >
+        {{ t("labels.combat.openPenetrationCheck") }}
+      </button>
+    </div>
 
     <div class="metrics-card__footer">
       <span class="metrics-card__hint">{{ t("labels.combat.hint") }}</span>

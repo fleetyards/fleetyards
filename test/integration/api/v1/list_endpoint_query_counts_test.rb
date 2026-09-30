@@ -118,4 +118,31 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
     assert_equal for_one, for_many,
       "models queries grew from #{for_one} to #{for_many} between 1 and 9 ships"
   end
+
+  # Every slot reads its component through the build in force, and nested
+  # shields are resolved to their ship through the parent slot, so both have to
+  # be answered in bulk rather than per ship.
+  test "the defenses index issues the same number of queries for one ship as for many" do
+    armored_ship = lambda do
+      model = create(:model)
+      create(:hardpoint, parent: model, source: :game_files,
+        component: create(:component, category: "armor", type_data: {"health" => 100.0}))
+      parent = create(:hardpoint, parent: model, source: :game_files, component: create(:component, category: "cooler"))
+      create(:hardpoint, parent:, source: :game_files,
+        component: create(:component, category: "shieldgenerator", type_data: {"max_health" => 50.0}))
+    end
+
+    armored_ship.call
+    get "/api/v1/models/defenses"
+    assert_response :success
+    for_one = count_queries { get "/api/v1/models/defenses" }
+
+    8.times { armored_ship.call }
+    for_many = count_queries { get "/api/v1/models/defenses" }
+
+    assert_response :success
+    assert_equal 9, response.parsed_body.size
+    assert_equal for_one, for_many,
+      "defenses queries grew from #{for_one} to #{for_many} between 1 and 9 ships"
+  end
 end

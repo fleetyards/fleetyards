@@ -1,25 +1,21 @@
 <script lang="ts">
 export default {
-  name: "ModelDeflectionCheckModal",
+  name: "ModelPenetrationCheckModal",
 };
 </script>
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import BaseSelect from "@/shared/components/base/Select/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
-import { useComponentWeapons as useComponentWeaponsQuery } from "@/services/fyApi";
+import { useModelDefenses as useModelDefensesQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useArmorStats } from "@/frontend/composables/useArmorStats";
-import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import {
-  useDeflectionCheck,
-  absorptionAtHealth,
-  deflectionAtHealth,
-  DEFLECTION_DAMAGE_TYPES,
-  type DeflectionResult,
-} from "@/frontend/composables/useDeflectionCheck";
+  collectLoadoutWeapons,
+  penetrationTargets,
+  usePenetrationCheck,
+  type PenetrationResult,
+} from "@/frontend/composables/usePenetrationCheck";
 
 type Props = {
   modelName?: string;
@@ -33,112 +29,79 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t, toNumber } = useI18n();
 
-const armor = useArmorStats(() => props.hardpoints);
-const shield = useShieldStats(() => props.hardpoints);
+// The same order the catalogue's size filter uses.
+const SIZE_ORDER = [
+  "vehicle",
+  "snub",
+  "small",
+  "medium",
+  "large",
+  "extra_large",
+  "capital",
+];
 
-// Percent of shield health remaining; drives how much of each damage type the
-// shields still soak.
+const loadoutWeapons = computed(() => collectLoadoutWeapons(props.hardpoints));
+
+// Everything the loadout mounts starts selected; a click takes a gun out of
+// (or back into) the comparison.
+const deselected = ref<string[]>([]);
+
+const toggleWeapon = (id: string) => {
+  deselected.value = deselected.value.includes(id)
+    ? deselected.value.filter((entry) => entry !== id)
+    : [...deselected.value, id];
+};
+
+const selectedWeapons = computed(() =>
+  loadoutWeapons.value.filter(
+    (weapon) => !deselected.value.includes(weapon.id),
+  ),
+);
+
+// Percent of the target's shield and armor health remaining.
 const shieldHealth = ref(100);
 const armorHealth = ref(100);
 const sizeFilter = ref<string | null>(null);
-const classFilter = ref<string[]>([]);
 
-const { data: weapons, isLoading } = useComponentWeaponsQuery();
+const { data: defenses, isLoading, isError } = useModelDefensesQuery();
 
-const selectable = computed(() =>
-  (weapons.value || []).filter(
-    (weapon) =>
-      !weapon.beam &&
-      Object.values(weapon.damagePerShot ?? {}).some(
-        (value) => (value ?? 0) > 0,
-      ),
-  ),
-);
+const targets = computed(() => penetrationTargets(defenses.value));
 
 const sizes = computed(() => {
   const present = new Set(
-    selectable.value
-      .map((weapon) => weapon.size)
+    targets.value
+      .map((target) => target.model.size)
       .filter((size): size is string => !!size),
   );
 
-  return [...present].sort((a, b) => Number(a) - Number(b));
+  return SIZE_ORDER.filter((size) => present.has(size));
 });
 
-// "BallisticGatling" -> "Ballistic Gatling"; the game files give us the class
-// as a bare CamelCase tag with no display form.
-const humanizeClass = (value: string) =>
-  value.replace(/([a-z])([A-Z])/g, "$1 $2");
-
-// Built from whatever classes the response actually contains, so the filter
-// stays correct as the game data changes.
-const classOptions = computed(() => {
-  const present = new Set(
-    selectable.value
-      .map((weapon) => weapon.weaponClass)
-      .filter((value): value is string => !!value),
-  );
-
-  return [...present]
-    .sort()
-    .map((value) => ({ label: humanizeClass(value), value }));
-});
-
-const filtered = computed(() =>
-  (weapons.value || []).filter(
-    (weapon) =>
-      (!sizeFilter.value || weapon.size === sizeFilter.value) &&
-      (!classFilter.value.length ||
-        (!!weapon.weaponClass &&
-          classFilter.value.includes(weapon.weaponClass))),
+const filteredTargets = computed(() =>
+  targets.value.filter(
+    (target) => !sizeFilter.value || target.model.size === sizeFilter.value,
   ),
 );
 
-const check = useDeflectionCheck(
-  filtered,
-  armor,
-  shield,
+const check = usePenetrationCheck(
+  selectedWeapons,
+  filteredTargets,
   () => shieldHealth.value / 100,
   () => armorHealth.value / 100,
 );
 
-// Live readouts mirroring erkul: both pools and their per-type figures scale
-// with the sliders, so the effect of dropping either is visible at a glance.
-const shieldReadout = computed(() => ({
-  hp: shield.value.totalHp * (shieldHealth.value / 100),
-  types: DEFLECTION_DAMAGE_TYPES.filter(({ key }) => key !== "thermal").map(
-    ({ key, label }) => ({
-      key,
-      label,
-      value:
-        shieldHealth.value > 0
-          ? absorptionAtHealth(shield.value, key, shieldHealth.value / 100)
-          : 0,
-    }),
-  ),
-}));
-
-const armorReadout = computed(() => ({
-  hp: armor.value.health * (armorHealth.value / 100),
-  types: DEFLECTION_DAMAGE_TYPES.filter(({ key }) => key !== "thermal").map(
-    ({ key, label }) => ({
-      key,
-      label,
-      value: deflectionAtHealth(armor.value, key, armorHealth.value / 100),
-    }),
-  ),
-}));
+const humanizeSize = (size: string) => {
+  const words = size.replace(/_/g, " ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+};
 
 const round = (value: number) => Math.round(value);
 // `toNumber` renders any falsy value as "N/A", which is wrong for a genuine
-// zero — nothing absorbed is a real result, not missing data.
+// zero — nothing pierced is a real result, not missing data.
 const num = (value: number) => (value ? toNumber(value, "integer") : "0");
 
-// Bars run out from a centre line: deflected to the left, piercing to the
-// right. Margins span a couple of orders of magnitude (a size 1 repeater barely
-// clears the threshold, a size 5 cannon buries it), so a linear scale collapses
-// almost every row into an invisible sliver — square-root keeps the small ones
-// legible while the big ones still read as big.
+// Same square-root scale as the deflection check, so a hull that barely turns
+// a gun away and one that buries it both stay legible.
 const scale = computed(() =>
   check.value.results.reduce(
     (max, entry) => Math.max(max, Math.abs(entry.margin ?? 0)),
@@ -151,37 +114,62 @@ const barWidth = (margin: number) => {
   return `${Math.max(ratio * 100, 4)}%`;
 };
 
-// Absorbed weapons have no `best` type, so fall back to their heaviest hit.
-const topRaw = (entry: DeflectionResult) =>
-  entry.types.reduce((max, type) => Math.max(max, type.raw), 0);
+const threshold = (entry: PenetrationResult) => entry.best?.best?.deflection;
 
 const hovered = ref<string | null>(null);
 
 const detail = computed(
   () =>
-    check.value.results.find((entry) => entry.weapon.id === hovered.value) ??
+    check.value.results.find((entry) => entry.model.id === hovered.value) ??
     null,
 );
 </script>
 
 <template>
-  <Modal :title="t('labels.deflectionCheck.title')">
+  <Modal :title="t('labels.penetrationCheck.title')">
     <div class="check-modal">
       <p class="intro">
         <strong>{{ modelName }}</strong>
-        {{ t("labels.deflectionCheck.intro") }}
+        {{ t("labels.penetrationCheck.intro") }}
       </p>
 
-      <div v-if="!armor.hasData" class="empty">
-        {{ t("labels.deflectionCheck.noArmor") }}
+      <div v-if="!loadoutWeapons.length" class="empty">
+        {{ t("labels.penetrationCheck.noWeapons") }}
       </div>
 
       <template v-else>
+        <div
+          class="weapons"
+          role="group"
+          :aria-label="t('labels.penetrationCheck.weapons')"
+        >
+          <button
+            v-for="weapon in loadoutWeapons"
+            :key="weapon.id"
+            type="button"
+            class="weapons__btn"
+            data-test="penetration-weapon"
+            :class="{
+              'weapons__btn--active': !deselected.includes(weapon.id),
+            }"
+            :aria-pressed="!deselected.includes(weapon.id)"
+            @click="toggleWeapon(weapon.id)"
+          >
+            <span v-if="weapon.count > 1" class="weapons__count">
+              {{ weapon.count }}×
+            </span>
+            <span v-if="weapon.size" class="weapons__size">
+              S{{ weapon.size }}
+            </span>
+            {{ weapon.name }}
+          </button>
+        </div>
+
         <div class="pools">
           <div class="pool">
             <div class="pool__head">
               <span class="pool__label">
-                {{ t("labels.deflectionCheck.shieldHealth") }}
+                {{ t("labels.penetrationCheck.shieldHealth") }}
               </span>
               <span class="pool__pct">{{ shieldHealth }}%</span>
             </div>
@@ -193,28 +181,12 @@ const detail = computed(
               step="1"
               class="pool__range"
             />
-            <div class="pool__stats">
-              <span class="pool__hp">
-                HP {{ num(round(shieldReadout.hp)) }}
-              </span>
-              <span class="pool__kind">
-                {{ t("labels.deflectionCheck.absorb") }}
-              </span>
-              <span
-                v-for="type in shieldReadout.types"
-                :key="type.key"
-                class="pool__stat"
-              >
-                {{ t(type.label) }}
-                <strong>{{ Math.round(type.value * 100) }}%</strong>
-              </span>
-            </div>
           </div>
 
           <div class="pool">
             <div class="pool__head">
               <span class="pool__label">
-                {{ t("labels.deflectionCheck.armorHealth") }}
+                {{ t("labels.penetrationCheck.armorHealth") }}
               </span>
               <span class="pool__pct">{{ armorHealth }}%</span>
             </div>
@@ -226,38 +198,10 @@ const detail = computed(
               step="1"
               class="pool__range"
             />
-            <div class="pool__stats">
-              <span class="pool__hp">
-                HP {{ num(round(armorReadout.hp)) }}
-              </span>
-              <span class="pool__kind">
-                {{ t("labels.deflectionCheck.defl") }}
-              </span>
-              <span
-                v-for="type in armorReadout.types"
-                :key="type.key"
-                class="pool__stat"
-              >
-                {{ t(type.label) }}
-                <strong>{{ Math.round(type.value) }}</strong>
-              </span>
-            </div>
           </div>
         </div>
 
         <div class="controls">
-          <BaseSelect
-            v-model="classFilter"
-            :options="classOptions"
-            :label="t('labels.deflectionCheck.type')"
-            name="weapon-class"
-            class="type-filter"
-            multiple
-            inline
-            searchable
-            no-label
-          />
-
           <div
             class="sizes"
             role="group"
@@ -277,16 +221,17 @@ const detail = computed(
               :key="size"
               type="button"
               class="sizes__btn"
+              data-test="penetration-size"
               :class="{ 'sizes__btn--active': sizeFilter === size }"
               :aria-pressed="sizeFilter === size"
               @click="sizeFilter = size"
             >
-              S{{ size }}
+              {{ humanizeSize(size) }}
             </button>
           </div>
         </div>
 
-        <div class="tally">
+        <div class="tally" data-test="penetration-tally">
           <template v-if="check.absorbedCount">
             <span class="tally__absorbed">
               {{ num(check.absorbedCount) }}
@@ -307,7 +252,11 @@ const detail = computed(
 
         <Loader :loading="isLoading" relative />
 
-        <template v-if="!isLoading">
+        <div v-if="isError" class="empty" data-test="penetration-error">
+          {{ t("texts.serverError") }}
+        </div>
+
+        <template v-else-if="!isLoading">
           <div class="table-wrap">
             <table class="dtable">
               <colgroup>
@@ -318,18 +267,18 @@ const detail = computed(
               </colgroup>
               <thead>
                 <tr>
-                  <th>{{ t("labels.deflectionCheck.weapon") }}</th>
+                  <th>{{ t("labels.penetrationCheck.ship") }}</th>
                   <th class="center">
                     {{ t("labels.deflectionCheck.boundary") }}
                   </th>
                   <th class="num">{{ t("labels.deflectionCheck.margin") }}</th>
-                  <th class="num">{{ t("labels.deflectionCheck.alpha") }}</th>
+                  <th class="num">{{ t("labels.deflectionCheck.defl") }}</th>
                 </tr>
               </thead>
               <tbody>
                 <template
                   v-for="(entry, index) in check.results"
-                  :key="entry.weapon.id"
+                  :key="entry.model.id"
                 >
                   <tr
                     v-if="
@@ -350,20 +299,21 @@ const detail = computed(
 
                   <tr
                     class="dtable__row"
-                    @mouseenter="hovered = entry.weapon.id"
+                    data-test="penetration-row"
+                    @mouseenter="hovered = entry.model.id"
                     @mouseleave="hovered = null"
                   >
                     <td class="dtable__name">
-                      <span class="dtable__title">{{ entry.weapon.name }}</span>
+                      <span class="dtable__title">{{ entry.model.name }}</span>
                       <span class="dtable__meta">
-                        <span v-if="entry.weapon.size" class="dtable__size">
-                          S{{ entry.weapon.size }}
+                        <span v-if="entry.model.size" class="dtable__size">
+                          {{ humanizeSize(entry.model.size) }}
                         </span>
-                        <span v-if="entry.weapon.manufacturerCode">
-                          {{ entry.weapon.manufacturerCode }}
+                        <span v-if="entry.model.manufacturerCode">
+                          {{ entry.model.manufacturerCode }}
                         </span>
-                        <span v-if="entry.best" class="dtable__type">
-                          {{ t(entry.best.label) }}
+                        <span v-if="entry.best?.best" class="dtable__type">
+                          {{ t(entry.best.best.label) }}
                         </span>
                       </span>
                     </td>
@@ -402,7 +352,12 @@ const detail = computed(
                     </td>
 
                     <td class="num dtable__alpha">
-                      {{ num(round(entry.best?.raw ?? topRaw(entry))) }}
+                      <template v-if="threshold(entry) === undefined">
+                        —
+                      </template>
+                      <template v-else>
+                        {{ num(round(threshold(entry)!)) }}
+                      </template>
                     </td>
                   </tr>
                 </template>
@@ -412,24 +367,23 @@ const detail = computed(
 
           <div class="detail">
             <template v-if="detail">
-              <span class="detail__name">{{ detail.weapon.name }}</span>
+              <span class="detail__name">{{ detail.model.name }}</span>
               <span
-                v-for="type in detail.types"
-                :key="type.key"
+                v-for="result in detail.weapons"
+                :key="result.weapon.id"
                 class="detail__type"
               >
-                {{ t(type.label) }}
-                <template v-if="type.absorbed">
+                {{ result.weapon.name }}
+                <template v-if="!result.best">
                   <span class="detail__absorbed">
                     {{ t("labels.deflectionCheck.absorbed") }}
                   </span>
                 </template>
                 <template v-else>
-                  <strong>{{ round(type.effective) }}</strong>
-                  <span class="detail__raw">({{ round(type.raw) }} raw)</span>
+                  <strong>{{ round(result.best.effective) }}</strong>
+                  {{ t("labels.deflectionCheck.versus") }}
+                  {{ round(result.best.deflection) }}
                 </template>
-                {{ t("labels.deflectionCheck.versus") }}
-                {{ round(type.deflection) }}
               </span>
               <span
                 class="detail__verdict"
@@ -439,11 +393,11 @@ const detail = computed(
               </span>
             </template>
             <span v-else class="detail__hint">
-              {{ t("labels.deflectionCheck.hoverHint") }}
+              {{ t("labels.penetrationCheck.hoverHint") }}
             </span>
           </div>
 
-          <p class="note">{{ t("labels.deflectionCheck.note") }}</p>
+          <p class="note">{{ t("labels.penetrationCheck.note") }}</p>
         </template>
       </template>
     </div>
@@ -452,4 +406,40 @@ const detail = computed(
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/defenseCheck";
+
+.weapons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+
+  &__btn {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba($gray-light, 0.28);
+    background: $gray-black;
+    color: $gray;
+    font-size: 12px;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover {
+      color: lighten($text-color, 15%);
+      border-color: rgba($gray-light, 0.5);
+    }
+
+    &--active {
+      border-color: rgba($gold, 0.6);
+      color: $gold;
+    }
+  }
+
+  &__count,
+  &__size {
+    margin-right: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+}
 </style>

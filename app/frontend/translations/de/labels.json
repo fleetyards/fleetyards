@@ -967,6 +967,7 @@
       },
       "combat": {
         "title": "Kampf",
+        "openPenetrationCheck": "Durchschlagsprüfung",
         "dps": "Burst DPS",
         "dpsSub": "%{count} Waffen",
         "sustained": "Dauer-DPS",
@@ -1042,6 +1043,17 @@
         },
         "hint": "Schild-, Panzerungs- und Gegenmaßnahmenwerte aus dem Standard-Loadout. Eine Absorption unter 100 % bedeutet, dass dieser Schadenstyp den Rumpf erreicht, während die Schilde noch stehen.",
         "openDeflectionCheck": "Ablenkungsprüfung"
+      },
+      "penetrationCheck": {
+        "title": "Durchschlagsprüfung",
+        "intro": "— welche Schiffe durchschlagen seine Waffen?",
+        "noWeapons": "Diese Ausrüstung hat keine Geschütze mit Schaden pro Schuss, die sich prüfen ließen.",
+        "weapons": "Waffen",
+        "shieldHealth": "Schildstärke des Ziels",
+        "armorHealth": "Panzerungszustand des Ziels",
+        "ship": "Schiff",
+        "hoverHint": "Fahre über ein Schiff für die Aufschlüsselung je Waffe.",
+        "note": "Jedes gewählte Geschütz wird nach denselben Regeln wie bei der Ablenkungsprüfung gegen die Schilde und die Panzerungsablenkung jedes Schiffs geprüft; ein Schiff gilt als durchschlagen, sobald eines davon durchkommt, und wird nach dem Geschütz sortiert, das am nächsten herankommt. Schiffe ohne Panzerung fehlen, da es keine Schwelle zu überschreiten gibt."
       },
       "deflectionCheck": {
         "title": "Ablenkungsprüfung",

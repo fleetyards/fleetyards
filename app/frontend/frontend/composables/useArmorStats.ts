@@ -105,11 +105,9 @@ export function findArmor(
   return undefined;
 }
 
-export function computeArmorStats(
-  hardpoints: Hardpoint[] | undefined,
+export function armorStatsFrom(
+  armor: Partial<ComponentArmor> | undefined,
 ): ArmorStats {
-  const armor = findArmor(hardpoints);
-
   const damageMultiplierByType: Record<string, number> = {};
   const reductions: ArmorValue[] = [];
   const deflections: ArmorValue[] = [];
@@ -152,6 +150,12 @@ export function computeArmorStats(
     damageMultiplierByType,
     hasData: !!armor,
   };
+}
+
+export function computeArmorStats(
+  hardpoints: Hardpoint[] | undefined,
+): ArmorStats {
+  return armorStatsFrom(findArmor(hardpoints));
 }
 
 export function useArmorStats(
