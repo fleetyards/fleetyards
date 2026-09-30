@@ -1,5 +1,9 @@
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
-import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
+import {
+  HardpointCategoryEnum,
+  type ComponentWeapon,
+  type Hardpoint,
+} from "@/services/fyApi";
 
 export type CountermeasureKind = "decoy" | "noise";
 
@@ -9,8 +13,16 @@ export type CountermeasureValue = {
   value: number;
 };
 
+export type CountermeasureDuration = {
+  key: CountermeasureKind;
+  label: string;
+  min: number;
+  max: number;
+};
+
 export type CountermeasureStats = {
   counts: CountermeasureValue[];
+  durations: CountermeasureDuration[];
   hasData: boolean;
 };
 
@@ -38,24 +50,32 @@ export function countermeasureKind(
   return KINDS.find((kind) => kind.pattern.test(scKey))?.key;
 }
 
+type Durations = Record<CountermeasureKind, number[]>;
+
 function collectAmmo(
   hardpoints: Hardpoint[] | undefined,
   totals: Record<CountermeasureKind, number>,
+  durations: Durations,
 ) {
   for (const hardpoint of hardpoints || []) {
     const component = hardpoint.component;
 
     if (hardpoint.category === HardpointCategoryEnum.COUNTERMEASURES) {
-      const kind = countermeasureKind(component?.scKey);
-      const maxAmmo = (component?.typeData as { maxAmmo?: number } | undefined)
-        ?.maxAmmo;
+      const typeData = component?.typeData as ComponentWeapon | undefined;
+      // The parsed ammo says what the launcher fires; the key is the fallback
+      // for a launcher loaded before the ammo was parsed.
+      const kind =
+        typeData?.countermeasure?.kind || countermeasureKind(component?.scKey);
 
-      if (kind && maxAmmo) {
-        totals[kind] += maxAmmo;
+      if (kind && typeData?.maxAmmo) {
+        totals[kind] += typeData.maxAmmo;
+      }
+      if (kind && typeData?.countermeasure?.lifetime) {
+        durations[kind].push(typeData.countermeasure.lifetime);
       }
     }
 
-    collectAmmo(hardpoint.hardpoints, totals);
+    collectAmmo(hardpoint.hardpoints, totals, durations);
   }
 }
 
@@ -63,8 +83,9 @@ export function computeCountermeasureStats(
   hardpoints: Hardpoint[] | undefined,
 ): CountermeasureStats {
   const totals: Record<CountermeasureKind, number> = { decoy: 0, noise: 0 };
+  const lifetimes: Durations = { decoy: [], noise: [] };
 
-  collectAmmo(hardpoints, totals);
+  collectAmmo(hardpoints, totals, lifetimes);
 
   const counts = KINDS.map(({ key, label }) => ({
     key,
@@ -72,7 +93,16 @@ export function computeCountermeasureStats(
     value: totals[key],
   })).filter((entry) => entry.value > 0);
 
-  return { counts, hasData: counts.length > 0 };
+  const durations = KINDS.filter(({ key }) => lifetimes[key].length).map(
+    ({ key, label }) => ({
+      key,
+      label,
+      min: Math.min(...lifetimes[key]),
+      max: Math.max(...lifetimes[key]),
+    }),
+  );
+
+  return { counts, durations, hasData: counts.length > 0 };
 }
 
 export function useCountermeasureStats(

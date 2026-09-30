@@ -1037,6 +1037,7 @@
         "armorSelfResistance": "Résistance propre",
         "armorSignature": "Signature",
         "countermeasures": "Contre-mesures",
+        "countermeasureDuration": "Durée",
         "countermeasure": {
           "decoy": "Leurre",
           "noise": "Brouillage"
@@ -1374,6 +1375,13 @@
           "captureRadius": "Rayon de capture",
           "fuelFlowRate": "Débit de carburant",
           "quantumFuelFlowRate": "Débit de carburant Quantum"
+        },
+        "countermeasureStats": {
+          "duration": "Durée",
+          "spawnDelay": "Se déploie après",
+          "infrared": "Signature IR",
+          "electromagnetic": "Signature EM",
+          "crossSection": "Section efficace"
         },
         "turrets": {
           "turnRate": "Vitesse de rotation",

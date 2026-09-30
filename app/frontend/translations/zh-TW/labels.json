@@ -1037,6 +1037,7 @@
         "armorSelfResistance": "自身抗性",
         "armorSignature": "訊號特徵",
         "countermeasures": "干擾措施",
+        "countermeasureDuration": "持續時間",
         "countermeasure": {
           "decoy": "誘餌彈",
           "noise": "干擾箔"
@@ -1374,6 +1375,13 @@
           "captureRadius": "捕捉半徑",
           "fuelFlowRate": "燃料輸送速率",
           "quantumFuelFlowRate": "量子燃料輸送速率"
+        },
+        "countermeasureStats": {
+          "duration": "持續時間",
+          "spawnDelay": "展開延遲",
+          "infrared": "紅外線訊號",
+          "electromagnetic": "電磁訊號",
+          "crossSection": "截面訊號"
         },
         "turrets": {
           "turnRate": "轉向速率",

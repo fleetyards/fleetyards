@@ -71,6 +71,11 @@ const percent = (value: number) => `${Math.round(value * 100)}%`;
 const signed = (value: number) =>
   `${value > 0 ? "+" : ""}${Math.round(value * 100)}%`;
 
+const durationLabel = (entry: { min: number; max: number }) =>
+  entry.min === entry.max
+    ? `${toNumber(entry.max)} s`
+    : `${toNumber(entry.min)} – ${toNumber(entry.max)} s`;
+
 const absorptionLabel = (entry: { min: number; max: number }) =>
   entry.min === entry.max
     ? percent(entry.max)
@@ -261,6 +266,20 @@ const openDeflectionCheck = () => {
             <span class="chip__value">{{ num(entry.value) }}</span>
           </span>
         </dd>
+
+        <template v-if="countermeasures.durations.length">
+          <dt>{{ t("labels.defense.countermeasureDuration") }}</dt>
+          <dd>
+            <span
+              v-for="entry in countermeasures.durations"
+              :key="entry.key"
+              class="chip"
+            >
+              <span class="chip__label">{{ t(entry.label) }}</span>
+              <span class="chip__value">{{ durationLabel(entry) }}</span>
+            </span>
+          </dd>
+        </template>
       </dl>
     </template>
 

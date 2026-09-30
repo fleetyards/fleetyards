@@ -1037,6 +1037,7 @@
         "armorSelfResistance": "自身抗性",
         "armorSignature": "信号特征",
         "countermeasures": "干扰措施",
+        "countermeasureDuration": "持续时间",
         "countermeasure": {
           "decoy": "诱饵弹",
           "noise": "干扰箔"
@@ -1374,6 +1375,13 @@
           "captureRadius": "捕获半径",
           "fuelFlowRate": "燃料流速",
           "quantumFuelFlowRate": "量子燃料流速"
+        },
+        "countermeasureStats": {
+          "duration": "持续时间",
+          "spawnDelay": "展开延迟",
+          "infrared": "红外信号",
+          "electromagnetic": "电磁信号",
+          "crossSection": "截面信号"
         },
         "turrets": {
           "turnRate": "转向速率",

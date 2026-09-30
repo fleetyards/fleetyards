@@ -1037,6 +1037,7 @@
         "armorSelfResistance": "Eigenresistenz",
         "armorSignature": "Signatur",
         "countermeasures": "Gegenmaßnahmen",
+        "countermeasureDuration": "Dauer",
         "countermeasure": {
           "decoy": "Täuschkörper",
           "noise": "Störsignal"
@@ -1374,6 +1375,13 @@
           "captureRadius": "Fangradius",
           "fuelFlowRate": "Treibstoff-Durchflussrate",
           "quantumFuelFlowRate": "Quantum-Durchflussrate"
+        },
+        "countermeasureStats": {
+          "duration": "Dauer",
+          "spawnDelay": "Entfaltung nach",
+          "infrared": "IR-Signatur",
+          "electromagnetic": "EM-Signatur",
+          "crossSection": "Querschnitt"
         },
         "turrets": {
           "turnRate": "Drehrate",

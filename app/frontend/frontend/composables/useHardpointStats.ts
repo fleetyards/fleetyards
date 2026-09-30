@@ -296,6 +296,21 @@ export const useHardpointStats = (
     }
   };
 
+  // A signature that fades from launch to burn-out reads as its two ends.
+  const signatureRange = (range?: {
+    start?: number;
+    end?: number;
+  }): string | null => {
+    const start = range?.start;
+    const end = range?.end ?? start;
+    if (!start && !end) return null;
+
+    const format = (value?: number) =>
+      String(toNumber(Math.round(value || 0), "integer"));
+
+    return start === end ? format(start) : `${format(start)} → ${format(end)}`;
+  };
+
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
 
@@ -1166,6 +1181,34 @@ export const useHardpointStats = (
       if (cm.range) {
         result.push(stat("weapons.range", cm.range as number, "weaponRange"));
       }
+      const launched = (typeData as ComponentWeapon).countermeasure;
+      if (launched?.lifetime) {
+        result.push({
+          label: t("labels.hardpoint.countermeasureStats.duration"),
+          value: `${toNumber(launched.lifetime)} s`,
+        });
+      }
+      if (launched?.spawnDelay) {
+        result.push({
+          label: t("labels.hardpoint.countermeasureStats.spawnDelay"),
+          value: `${toNumber(launched.spawnDelay)} s`,
+        });
+      }
+      (
+        [
+          ["infrared", launched?.infrared],
+          ["electromagnetic", launched?.electromagnetic],
+          ["crossSection", launched?.crossSection],
+        ] as const
+      ).forEach(([key, signature]) => {
+        const value = signatureRange(signature);
+        if (value) {
+          result.push({
+            label: t(`labels.hardpoint.countermeasureStats.${key}`),
+            value,
+          });
+        }
+      });
     } else if (category === HardpointCategoryEnum.ARMOR) {
       const armor = typeData as ComponentArmor;
       if (armor.health && armor.health > 0) {

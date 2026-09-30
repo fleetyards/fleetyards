@@ -1037,6 +1037,7 @@
         "armorSelfResistance": "Autorresistencia",
         "armorSignature": "Firma",
         "countermeasures": "Contramedidas",
+        "countermeasureDuration": "Duración",
         "countermeasure": {
           "decoy": "Señuelo",
           "noise": "Ruido"
@@ -1374,6 +1375,13 @@
           "captureRadius": "Radio de captura",
           "fuelFlowRate": "Caudal de combustible",
           "quantumFuelFlowRate": "Caudal de combustible Quantum"
+        },
+        "countermeasureStats": {
+          "duration": "Duración",
+          "spawnDelay": "Se despliega tras",
+          "infrared": "Firma IR",
+          "electromagnetic": "Firma EM",
+          "crossSection": "Sección transversal"
         },
         "turrets": {
           "turnRate": "Velocidad de giro",
