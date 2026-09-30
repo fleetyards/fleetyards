@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "StatsPopover",
+  name: "BasePopover",
   // Two roots -- the trigger and the teleported card -- so attributes are
   // bound to the trigger by hand.
   inheritAttrs: false,
@@ -9,17 +9,22 @@ export default {
 
 <script lang="ts" setup>
 import { useResizeObserver } from "@vueuse/core";
+import { placeFloating } from "@/shared/utils/floatingPlacement";
 import { claimActive, releaseActive } from "./activePopover";
-import { type StatsPopoverPlacement, type StatsPopoverTrigger } from "./types";
+import { popoverLayerKey, POPOVER_BASE_LAYER } from "./layer";
+import { type PopoverPlacement, type PopoverTrigger } from "./types";
 
 type Props = {
   // Names the card for assistive tech: it is a dialog, and the trigger it
   // hangs off is usually a link whose text is the same name.
   label: string;
-  placement?: StatsPopoverPlacement;
+  placement?: PopoverPlacement;
   disabled?: boolean;
   openDelay?: number;
   closeDelay?: number;
+  // Off where the trigger sits inside a link of its own -- a list row's name --
+  // since a focus stop inside an anchor is one the keyboard lands on twice.
+  focusable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   openDelay: 300,
   closeDelay: 150,
+  focusable: true,
 });
 
 const emit = defineEmits<{ open: []; close: [] }>();
@@ -40,8 +46,8 @@ const trigger = ref<HTMLElement | null>(null);
 const panel = ref<HTMLElement | null>(null);
 
 const open = ref(false);
-const openedBy = ref<StatsPopoverTrigger>("hover");
-const placed = ref<StatsPopoverPlacement>(props.placement);
+const openedBy = ref<PopoverTrigger>("hover");
+const placed = ref<PopoverPlacement>(props.placement);
 const position = ref({ top: 0, left: 0 });
 
 // Plain text has nothing to focus, so the keyboard could never reach its card.
@@ -79,32 +85,23 @@ const focusTarget = () =>
 const place = () => {
   if (!trigger.value || !panel.value) return;
 
-  const anchor = trigger.value.getBoundingClientRect();
-  const box = panel.value.getBoundingClientRect();
+  const { top, left, placement } = placeFloating(
+    trigger.value.getBoundingClientRect(),
+    panel.value.getBoundingClientRect(),
+    props.placement,
+    { gap: GAP, margin: MARGIN, flip: true },
+  );
 
-  const below = window.innerHeight - anchor.bottom - GAP - MARGIN;
-  const above = anchor.top - GAP - MARGIN;
-
-  let side = props.placement;
-  if (side === "bottom" && box.height > below && above > below) side = "top";
-  if (side === "top" && box.height > above && below > above) side = "bottom";
-
-  const top =
-    side === "bottom" ? anchor.bottom + GAP : anchor.top - box.height - GAP;
-  const left = anchor.left + anchor.width / 2 - box.width / 2;
-
-  placed.value = side;
-  position.value = {
-    top: Math.max(
-      MARGIN,
-      Math.min(top, window.innerHeight - box.height - MARGIN),
-    ),
-    left: Math.max(
-      MARGIN,
-      Math.min(left, window.innerWidth - box.width - MARGIN),
-    ),
-  };
+  placed.value = placement === "top" ? "top" : "bottom";
+  position.value = { top, left };
 };
+
+// A card opened from inside a modal belongs above that modal; anywhere else it
+// sits above the page and below any modal that opens over it.
+const layer = inject(popoverLayerKey, undefined);
+const zIndex = computed(() =>
+  layer === undefined ? POPOVER_BASE_LAYER : layer + 1,
+);
 
 // A lazily loaded card changes size once its data arrives.
 useResizeObserver(panel, () => {
@@ -179,7 +176,7 @@ function close() {
   emit("close");
 }
 
-const show = async (by: StatsPopoverTrigger) => {
+const show = async (by: PopoverTrigger) => {
   clearTimers();
   if (props.disabled || !trigger.value?.isConnected) return;
 
@@ -296,7 +293,10 @@ watch(
 );
 
 onMounted(() => {
-  if (!trigger.value?.querySelector("a[href], button, [tabindex]")) {
+  if (
+    props.focusable &&
+    !trigger.value?.querySelector("a[href], button, [tabindex]")
+  ) {
     ownTabindex.value = 0;
   }
 });
@@ -313,13 +313,13 @@ defineExpose({ open, show, close });
   <span
     v-bind="$attrs"
     ref="trigger"
-    class="stats-popover__trigger"
-    :class="{ 'stats-popover__trigger--open': open }"
+    class="popover__trigger"
+    :class="{ 'popover__trigger--open': open }"
     :tabindex="ownTabindex"
     aria-haspopup="dialog"
     :aria-expanded="open"
     :aria-controls="open ? id : undefined"
-    data-test="stats-popover-trigger"
+    data-test="popover-trigger"
     @pointerover="onPointerover"
     @mouseenter="onMouseenter"
     @mouseleave="onMouseleave"
@@ -335,12 +335,16 @@ defineExpose({ open, show, close });
       v-if="open"
       :id="id"
       ref="panel"
-      class="stats-popover"
-      :class="`stats-popover--${placed}`"
-      :style="{ top: `${position.top}px`, left: `${position.left}px` }"
+      class="popover"
+      :class="`popover--${placed}`"
+      :style="{
+        top: `${position.top}px`,
+        left: `${position.left}px`,
+        zIndex,
+      }"
       role="dialog"
       :aria-label="label"
-      data-test="stats-popover"
+      data-test="popover"
       @mouseenter="onPanelMouseenter"
       @mouseleave="onPanelMouseleave"
       @focusout="onFocusout"
@@ -354,23 +358,21 @@ defineExpose({ open, show, close });
 <style scoped>
 @reference "../../../entrypoints/tailwind.css";
 
-.stats-popover__trigger {
+.popover__trigger {
   display: inline;
 }
 
-.stats-popover__trigger[tabindex] {
+.popover__trigger[tabindex] {
   cursor: help;
 }
 
 /*
- * The dropdown menu's material and layer: opaque, because it floats over
- * arbitrary content, and at 2100 so a row inside a modal (1050) can still open
- * one above it.
+ * The dropdown menu's material: opaque, because it floats over arbitrary
+ * content. The layer is set inline, since it depends on where the trigger is.
  */
-.stats-popover {
+.popover {
   @apply bg-gray-darker border-edge rounded-control border;
   position: fixed;
-  z-index: 2100;
   width: max-content;
   max-width: min(340px, calc(100vw - 16px));
   max-height: calc(100vh - 16px);

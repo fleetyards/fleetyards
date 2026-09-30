@@ -1,12 +1,13 @@
 import { mount, type VueWrapper } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { h } from "vue";
-import StatsPopover from "./index.vue";
+import Popover from "./index.vue";
+import { popoverLayerKey, POPOVER_BASE_LAYER } from "./layer";
 
 const wrappers: VueWrapper[] = [];
 
 const mountPopover = (trigger: "link" | "text" = "link", label = "Glacier") => {
-  const wrapper = mount(StatsPopover, {
+  const wrapper = mount(Popover, {
     attachTo: document.body,
     props: { label },
     slots: {
@@ -23,7 +24,7 @@ const mountPopover = (trigger: "link" | "text" = "link", label = "Glacier") => {
   return wrapper;
 };
 
-const panel = () => document.querySelector("[data-test='stats-popover']");
+const panel = () => document.querySelector("[data-test='popover']");
 
 const pointerover = (el: Element, pointerType: string) => {
   const event = new Event("pointerover", { bubbles: true });
@@ -56,10 +57,10 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("StatsPopover with a mouse", () => {
+describe("Popover with a mouse", () => {
   it("opens after the delay and closes after the grace period", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     pointerover(trigger.element, "mouse");
     await trigger.trigger("mouseenter");
@@ -75,7 +76,7 @@ describe("StatsPopover with a mouse", () => {
 
   it("stays open while the pointer crosses into the card", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     pointerover(trigger.element, "mouse");
     await trigger.trigger("mouseenter");
@@ -90,7 +91,7 @@ describe("StatsPopover with a mouse", () => {
 
   it("never opens for a pointer that only passes over", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     pointerover(trigger.element, "mouse");
     await trigger.trigger("mouseenter");
@@ -103,7 +104,7 @@ describe("StatsPopover with a mouse", () => {
 
   it("lets a click follow the link", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
     pointerover(trigger.element, "mouse");
 
     const click = new MouseEvent("click", {
@@ -118,10 +119,10 @@ describe("StatsPopover with a mouse", () => {
   });
 });
 
-describe("StatsPopover on touch", () => {
+describe("Popover on touch", () => {
   it("opens on the first tap instead of following the link", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     const click = tap(trigger.element, wrapper.find(".trigger-link").element);
     await vi.advanceTimersByTimeAsync(500);
@@ -133,7 +134,7 @@ describe("StatsPopover on touch", () => {
 
   it("follows the link on a second tap", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
     const link = wrapper.find(".trigger-link").element;
 
     tap(trigger.element, link);
@@ -148,7 +149,7 @@ describe("StatsPopover on touch", () => {
 
   it("closes on a tap outside, but not on one inside the card", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     tap(trigger.element);
     await vi.advanceTimersByTimeAsync(0);
@@ -163,7 +164,7 @@ describe("StatsPopover on touch", () => {
 
   it("closes when the page scrolls", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     tap(trigger.element);
     await vi.advanceTimersByTimeAsync(0);
@@ -180,14 +181,14 @@ describe("StatsPopover on touch", () => {
     row.addEventListener("click", onRowClick);
     document.body.appendChild(row);
 
-    const wrapper = mount(StatsPopover, {
+    const wrapper = mount(Popover, {
       attachTo: row,
       props: { label: "Glacier" },
       slots: { default: "Glacier", content: "stats" },
     });
     wrappers.push(wrapper);
 
-    tap(wrapper.find("[data-test='stats-popover-trigger']").element);
+    tap(wrapper.find("[data-test='popover-trigger']").element);
     await vi.advanceTimersByTimeAsync(0);
 
     expect(onRowClick).not.toHaveBeenCalled();
@@ -195,10 +196,10 @@ describe("StatsPopover on touch", () => {
   });
 });
 
-describe("StatsPopover", () => {
+describe("Popover", () => {
   it("closes on Escape", async () => {
     const wrapper = mountPopover();
-    const trigger = wrapper.find("[data-test='stats-popover-trigger']");
+    const trigger = wrapper.find("[data-test='popover-trigger']");
 
     tap(trigger.element);
     await vi.advanceTimersByTimeAsync(0);
@@ -237,12 +238,12 @@ describe("StatsPopover", () => {
     const first = mountPopover("link", "Glacier");
     const second = mountPopover("link", "Snowblind");
 
-    tap(first.find("[data-test='stats-popover-trigger']").element);
+    tap(first.find("[data-test='popover-trigger']").element);
     await vi.advanceTimersByTimeAsync(0);
-    tap(second.find("[data-test='stats-popover-trigger']").element);
+    tap(second.find("[data-test='popover-trigger']").element);
     await vi.advanceTimersByTimeAsync(0);
 
-    const open = document.querySelectorAll("[data-test='stats-popover']");
+    const open = document.querySelectorAll("[data-test='popover']");
     expect(open).toHaveLength(1);
     expect(open[0].textContent).toBe("Snowblind stats");
   });
@@ -253,10 +254,10 @@ describe("StatsPopover", () => {
     await vi.advanceTimersByTimeAsync(0);
 
     expect(
-      text.find("[data-test='stats-popover-trigger']").attributes("tabindex"),
+      text.find("[data-test='popover-trigger']").attributes("tabindex"),
     ).toBe("0");
     expect(
-      link.find("[data-test='stats-popover-trigger']").attributes("tabindex"),
+      link.find("[data-test='popover-trigger']").attributes("tabindex"),
     ).toBeUndefined();
   });
 
@@ -264,9 +265,38 @@ describe("StatsPopover", () => {
     const wrapper = mountPopover();
     await wrapper.setProps({ disabled: true });
 
-    tap(wrapper.find("[data-test='stats-popover-trigger']").element);
+    tap(wrapper.find("[data-test='popover-trigger']").element);
     await vi.advanceTimersByTimeAsync(500);
 
     expect(panel()).toBeNull();
+  });
+});
+
+describe("Popover layering", () => {
+  const openIn = async (layer?: number) => {
+    const wrapper = mount(Popover, {
+      attachTo: document.body,
+      props: { label: "Glacier" },
+      slots: { default: "Glacier", content: "stats" },
+      global:
+        layer === undefined
+          ? {}
+          : { provide: { [popoverLayerKey as symbol]: layer } },
+    });
+    wrappers.push(wrapper);
+
+    tap(wrapper.find("[data-test='popover-trigger']").element);
+    await vi.advanceTimersByTimeAsync(0);
+
+    return (panel() as HTMLElement).style.zIndex;
+  };
+
+  it("sits above the page and below a modal by default", async () => {
+    expect(Number(await openIn())).toBe(POPOVER_BASE_LAYER);
+    expect(POPOVER_BASE_LAYER).toBeLessThan(1050);
+  });
+
+  it("sits one above the overlay its trigger is in", async () => {
+    expect(await openIn(1050)).toBe("1051");
   });
 });
