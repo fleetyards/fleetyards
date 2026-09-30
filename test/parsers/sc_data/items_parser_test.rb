@@ -304,6 +304,40 @@ module ScData
         XML
       end
 
+      test "reads a gun's spread off its projectile launcher" do
+        write_gun("scatter_spread", spread: '<spreadParams min="4" max="6" firstAttack="0.5" attack="0.45" decay="0.6" />')
+
+        spread = parsed_item("scatter_spread")["type_data"]["spread"]
+
+        assert_in_delta 4.0, spread["min"]
+        assert_in_delta 6.0, spread["max"]
+        assert_in_delta 0.5, spread["first_attack"]
+        assert_in_delta 0.45, spread["attack"]
+        assert_in_delta 0.6, spread["decay"]
+      end
+
+      test "carries no spread for a gun whose launcher declares none" do
+        write_gun("no_spread")
+
+        assert_nil parsed_item("no_spread")["type_data"]["spread"]
+      end
+
+      private def write_gun(key, spread: "")
+        write_item(key, name: "@item_Name#{key}", category: "weapons", type: "WeaponGun", sub_type: "Gun", components: <<~XML)
+          <SCItemWeaponComponentParams>
+            <fireActions>
+              <SWeaponActionFireSingleParams fireRate="750" heatPerShot="0">
+                <launchParams>
+                  <SProjectileLauncher ammoCost="1" pelletCount="1">
+                    #{spread}
+                  </SProjectileLauncher>
+                </launchParams>
+              </SWeaponActionFireSingleParams>
+            </fireActions>
+          </SCItemWeaponComponentParams>
+        XML
+      end
+
       private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", type: "Armor", sub_type: "UNDEFINED", components: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
