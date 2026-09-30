@@ -61,7 +61,11 @@ class MeasureHoloJob
     values = columns.zip(dimensions).to_h.merge(measured_at_for(name), updated_at: Time.current)
     return if measured_holo_scope(model, name, blob_id).update_all(values).zero?
 
-    write_pad_class(model, name, dimensions)
+    write_pad_class(model, name, dimensions, blob_id)
+
+    # Both writes skip the model's callbacks, so the channel hears about the
+    # measurement from here -- once, with the pad class already in it.
+    model.reload.broadcast_update
   rescue ActiveStorage::FileNotFoundError
     Rails.logger.warn("MeasureHoloJob: blob for #{name} on model #{model_id} not found, skipping")
   rescue JSON::ParserError => error
@@ -90,14 +94,16 @@ class MeasureHoloJob
   #
   # A ground vehicle has no pad class. It is on its own ladder, `vehicle_size`,
   # which is curated rather than measured.
-  private def write_pad_class(model, name, dimensions)
+  private def write_pad_class(model, name, dimensions, blob_id)
     return unless %w[holo landed_holo].include?(name)
     return if model.size == ::Model::VEHICLE_SIZE
 
     pad = ::Dock.ship_size_for(*dimensions)
     return if pad.nil?
 
-    scope = ::Model.where(id: model.id)
+    # The same condition as the measurement: a holo replaced in between must not
+    # get the old file's pad class.
+    scope = measured_holo_scope(model, name, blob_id)
     scope = scope.where(INCOMPLETE_LANDED_BOX) if name == "holo"
 
     scope.update_all(dock_size: ::Model.dock_sizes.fetch(pad))

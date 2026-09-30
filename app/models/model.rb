@@ -1250,7 +1250,8 @@ class Model < ApplicationRecord
     (gaps.sum / gaps.size).round(1)
   end
 
-  private def broadcast_update
+  # Public for the writers that skip callbacks, like `MeasureHoloJob`.
+  def broadcast_update
     ActionCable.server.broadcast("models", to_jbuilder_hash)
   end
 
