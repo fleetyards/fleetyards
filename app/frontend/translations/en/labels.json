@@ -1382,7 +1382,28 @@
           "range": "Range",
           "lockRange": "Lock Range",
           "lockTime": "Lock Time",
-          "trackingSignal": "Tracking"
+          "trackingSignal": "Tracking",
+          "lockAngle": "Lock Cone",
+          "signalResilience": "Signal Resilience",
+          "boostPhase": "Boost Phase",
+          "terminalPhase": "Terminal Phase",
+          "lifetime": "Lifetime",
+          "fuel": "Fuel",
+          "dumbfire": "Dumbfire",
+          "dumbfireAllowed": "Allowed",
+          "dumbfireBlocked": "Not allowed",
+          "blastRadius": "Blast Radius",
+          "armTime": "Arm Time",
+          "safetyDistance": "Safety Distance"
+        },
+        "bombs": {
+          "maxDropAngle": "Max Drop Angle"
+        },
+        "missileRacks": {
+          "launchDelay": "Launch Delay",
+          "ignition": "Motor Ignition",
+          "ignitesOnRack": "On the rack",
+          "ignitesAfterRelease": "After release"
         },
         "tractorBeams": {
           "maxForce": "Max Force",

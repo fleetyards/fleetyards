@@ -1382,7 +1382,28 @@
           "range": "Portée",
           "lockRange": "Portée de verrouillage",
           "lockTime": "Temps de verrouillage",
-          "trackingSignal": "Suivi"
+          "trackingSignal": "Suivi",
+          "lockAngle": "Cône de verrouillage",
+          "signalResilience": "Résistance au signal",
+          "boostPhase": "Phase de propulsion",
+          "terminalPhase": "Phase terminale",
+          "lifetime": "Durée de vie",
+          "fuel": "Carburant",
+          "dumbfire": "Tir non guidé",
+          "dumbfireAllowed": "Autorisé",
+          "dumbfireBlocked": "Non autorisé",
+          "blastRadius": "Rayon d'explosion",
+          "armTime": "Délai d'armement",
+          "safetyDistance": "Distance de sécurité"
+        },
+        "bombs": {
+          "maxDropAngle": "Angle de largage max."
+        },
+        "missileRacks": {
+          "launchDelay": "Délai de lancement",
+          "ignition": "Allumage du moteur",
+          "ignitesOnRack": "Sur le rail",
+          "ignitesAfterRelease": "Après largage"
         },
         "tractorBeams": {
           "maxForce": "Force max.",

@@ -1382,7 +1382,28 @@
           "range": "Gittata",
           "lockRange": "Gittata di aggancio",
           "lockTime": "Tempo di aggancio",
-          "trackingSignal": "Tracciamento"
+          "trackingSignal": "Tracciamento",
+          "lockAngle": "Cono di aggancio",
+          "signalResilience": "Resistenza al segnale",
+          "boostPhase": "Fase di spinta",
+          "terminalPhase": "Fase terminale",
+          "lifetime": "Durata",
+          "fuel": "Carburante",
+          "dumbfire": "Fuoco non guidato",
+          "dumbfireAllowed": "Consentito",
+          "dumbfireBlocked": "Non consentito",
+          "blastRadius": "Raggio d'esplosione",
+          "armTime": "Tempo d'innesco",
+          "safetyDistance": "Distanza di sicurezza"
+        },
+        "bombs": {
+          "maxDropAngle": "Angolo di sgancio max."
+        },
+        "missileRacks": {
+          "launchDelay": "Ritardo di lancio",
+          "ignition": "Accensione del motore",
+          "ignitesOnRack": "Sul supporto",
+          "ignitesAfterRelease": "Dopo lo sgancio"
         },
         "tractorBeams": {
           "maxForce": "Forza max",

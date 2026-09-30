@@ -78,6 +78,41 @@ module ScData
         }.to_h
       end
 
+      private def ordnance_damage(explosion)
+        damage = explosion&.dig("damage")
+        return unless damage.is_a?(Hash)
+
+        damage_info = damage["DamageInfo"] || damage
+        return unless damage_info.is_a?(Hash)
+
+        {
+          physical: damage_info["DamagePhysical"]&.to_f,
+          energy: damage_info["DamageEnergy"]&.to_f,
+          distortion: damage_info["DamageDistortion"]&.to_f,
+          thermal: damage_info["DamageThermal"]&.to_f,
+          biochemical: damage_info["DamageBiochemical"]&.to_f,
+          stun: damage_info["DamageStun"]&.to_f
+        }.compact.presence
+      end
+
+      # What missiles and bombs share once released: how long before the
+      # warhead arms, how close to the ship that fired it it may go off, and how
+      # wide the blast reaches.
+      private def ordnance_fuse(ordnance, explosion)
+        {
+          arm_time: ordnance["armTime"]&.to_f,
+          safety_distance: ordnance["explosionSafetyDistance"]&.to_f,
+          blast_radius_min: explosion&.dig("minRadius")&.to_f,
+          blast_radius_max: explosion&.dig("maxRadius")&.to_f
+        }
+      end
+
+      private def flag_or_nil(value)
+        return if value.nil?
+
+        value.to_s == "1"
+      end
+
       private def categories
         %w[
           armor batteries computers missile_racks bombcompartments cooler module powerplant
@@ -547,17 +582,7 @@ module ScData
           targeting = missile_data.dig("targetingParams") if missile_data.dig("targetingParams").is_a?(Hash)
           gcs = missile_data.dig("GCSParams") if missile_data.dig("GCSParams").is_a?(Hash)
 
-          damage_info = explosion&.dig("damage", "DamageInfo") || explosion&.dig("damage")
-          damage_per_shot = if damage_info.is_a?(Hash)
-            {
-              physical: damage_info["DamagePhysical"]&.to_f,
-              energy: damage_info["DamageEnergy"]&.to_f,
-              distortion: damage_info["DamageDistortion"]&.to_f,
-              thermal: damage_info["DamageThermal"]&.to_f,
-              biochemical: damage_info["DamageBiochemical"]&.to_f,
-              stun: damage_info["DamageStun"]&.to_f
-            }.compact.presence
-          end
+          damage_per_shot = ordnance_damage(explosion)
 
           missile_speed = gcs&.dig("linearSpeed")&.to_f
           max_lifetime = missile_data["maxLifetime"]&.to_f
@@ -567,9 +592,43 @@ module ScData
             lock_time: targeting&.dig("lockTime")&.to_f,
             lock_range_min: targeting&.dig("lockRangeMin")&.to_f,
             lock_range_max: targeting&.dig("lockRangeMax")&.to_f,
+            lock_angle: targeting&.dig("lockingAngle")&.to_f,
             tracking_signal: targeting&.dig("trackingSignalType"),
+            tracking_signal_min: targeting&.dig("trackingSignalMin")&.to_f,
+            signal_resilience_min: targeting&.dig("signalResilienceMin")&.to_f,
+            signal_resilience_max: targeting&.dig("signalResilienceMax")&.to_f,
+            dumbfire: flag_or_nil(targeting&.dig("allowDumbFiring")),
             speed: missile_speed,
-            range: (missile_speed && max_lifetime) ? (missile_speed * max_lifetime).round(1) : nil
+            range: (missile_speed && max_lifetime) ? (missile_speed * max_lifetime).round(1) : nil,
+            max_lifetime:,
+            boost_phase_duration: gcs&.dig("boostPhaseDuration")&.to_f,
+            terminal_phase_time: gcs&.dig("terminalPhaseEngagementTime")&.to_f,
+            terminal_phase_angle: gcs&.dig("terminalPhaseEngagementAngle")&.to_f,
+            fuel_tank_size: gcs&.dig("fuelTankSize")&.to_f,
+            **ordnance_fuse(missile_data, explosion)
+          }.compact
+        end
+
+        # A bomb is a missile with no seeker: it falls rather than flies, so it
+        # carries a drop-angle limit where a missile carries its lock.
+        if values.dig("Components", "SCItemBombParams")
+          bomb_data = values.dig("Components", "SCItemBombParams")
+          explosion = bomb_data["explosionParams"] if bomb_data["explosionParams"].is_a?(Hash)
+
+          item[:type_data] = {
+            damage_per_shot: ordnance_damage(explosion),
+            max_lifetime: bomb_data["maxLifetime"]&.to_f,
+            max_drop_angle: bomb_data["maximumDropAngleFromFlatFlight"]&.to_f,
+            **ordnance_fuse(bomb_data, explosion)
+          }.compact
+        end
+
+        if values.dig("Components", "SCItemMissileRackParams")
+          rack_data = values.dig("Components", "SCItemMissileRackParams")
+
+          item[:type_data] = {
+            launch_delay: rack_data["launchDelay"]&.to_f,
+            ignite_on_pylon: flag_or_nil(rack_data["igniteOnPylon"])
           }.compact
         end
 

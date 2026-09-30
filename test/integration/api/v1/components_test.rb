@@ -202,6 +202,40 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a missile's seeker, flight and fuse" do
+    create(:component, name: "Missileprobe", category: "weapons",
+      type_data: {
+        "damage_per_shot" => {"physical" => 650.0}, "tracking_signal" => "Infrared", "lock_angle" => 60.0,
+        "dumbfire" => true, "boost_phase_duration" => 2.0, "arm_time" => 1.5, "blast_radius_max" => 5.0,
+        "power_consumption" => 1.0, "signature_ir" => 120.0
+      })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Missileprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 60.0, type_data["lockAngle"]
+      assert type_data["dumbfire"]
+      assert_in_delta 2.0, type_data["boostPhaseDuration"]
+      assert_in_delta 5.0, type_data["blastRadiusMax"]
+      assert_in_delta 120.0, type_data["signatureIr"]
+    end
+  end
+
+  test "GET /components serves a bomb's drop angle and a rack's launch delay" do
+    create(:component, name: "Ordnanceprobe Bomb", category: "weapons",
+      type_data: {"damage_per_shot" => {"physical" => 22_346.0}, "max_drop_angle" => 90.0, "arm_time" => 3.0})
+    create(:component, name: "Ordnanceprobe Rack", category: "missile_racks",
+      type_data: {"launch_delay" => 0.125, "ignite_on_pylon" => false, "signature_em" => 0.0})
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Ordnanceprobe"}} do
+      by_name = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert_in_delta 90.0, by_name["Ordnanceprobe Bomb"]["typeData"]["maxDropAngle"]
+      assert_in_delta 0.125, by_name["Ordnanceprobe Rack"]["typeData"]["launchDelay"]
+      assert_equal false, by_name["Ordnanceprobe Rack"]["typeData"]["igniteOnPylon"]
+    end
+  end
+
   # Numerically, which is the whole reason `sizeOrder` exists as a name of its
   # own: `size` is a string ransacker, so ordering on it puts 10 and 12 ahead
   # of 2.

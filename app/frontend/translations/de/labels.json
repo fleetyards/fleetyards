@@ -1382,7 +1382,28 @@
           "range": "Reichweite",
           "lockRange": "Erfassungsreichweite",
           "lockTime": "Erfassungszeit",
-          "trackingSignal": "Tracking"
+          "trackingSignal": "Tracking",
+          "lockAngle": "Erfassungskegel",
+          "signalResilience": "Signalresistenz",
+          "boostPhase": "Boost-Phase",
+          "terminalPhase": "Endphase",
+          "lifetime": "Lebensdauer",
+          "fuel": "Treibstoff",
+          "dumbfire": "Ungelenkt",
+          "dumbfireAllowed": "Erlaubt",
+          "dumbfireBlocked": "Nicht erlaubt",
+          "blastRadius": "Explosionsradius",
+          "armTime": "Schärfzeit",
+          "safetyDistance": "Sicherheitsabstand"
+        },
+        "bombs": {
+          "maxDropAngle": "Max. Abwurfwinkel"
+        },
+        "missileRacks": {
+          "launchDelay": "Startverzögerung",
+          "ignition": "Motorzündung",
+          "ignitesOnRack": "Am Träger",
+          "ignitesAfterRelease": "Nach dem Ausklinken"
         },
         "tractorBeams": {
           "maxForce": "Max. Kraft",

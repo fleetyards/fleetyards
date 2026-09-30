@@ -32,6 +32,7 @@
       "speed": "%{count} m/s",
       "acceleration": "%{count} m/s²",
       "seconds": "%{count} s",
+      "milliseconds": "%{count} ms",
       "rateOfFire": "%{count} shots/min",
       "rotation": "%{count} deg/s",
       "degrees": "%{count}°",
