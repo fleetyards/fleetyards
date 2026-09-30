@@ -162,7 +162,8 @@
             "off": "Push-Benachrichtigungen sind für dieses Gerät deaktiviert.",
             "device": "%{browser} auf %{os}",
             "unknownDevice": "Unbekannter Browser",
-            "thisDevice": "(dieses Gerät)"
+            "thisDevice": "(dieses Gerät)",
+            "failed": "Der Status der Push-Benachrichtigungen für dieses Gerät konnte nicht geprüft werden. Lade die Seite neu, um es erneut zu versuchen."
           }
         }
       },

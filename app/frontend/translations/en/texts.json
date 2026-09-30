@@ -162,7 +162,8 @@
             "off": "Push notifications are off for this device.",
             "device": "%{browser} on %{os}",
             "unknownDevice": "Unknown browser",
-            "thisDevice": "(this device)"
+            "thisDevice": "(this device)",
+            "failed": "Push notifications could not be checked for this device. Reload the page to try again."
           }
         }
       },

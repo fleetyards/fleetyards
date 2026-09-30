@@ -26,6 +26,10 @@ vi.mock("@/shared/composables/useWebPush", async (importOriginal) => ({
   }),
 }));
 
+vi.mock("@/frontend/stores/session", () => ({
+  useSessionStore: () => ({ currentUser: { id: "user-1" } }),
+}));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   usePushSubscriptions: () => ({ data: devices }),
@@ -66,12 +70,23 @@ describe("NotificationsPushDevices", () => {
     );
   });
 
+  it("says so when the check failed rather than offering to turn it on", async () => {
+    const wrapper = await mount(WebPushStatusEnum.FAILED);
+
+    expect(wrapper.find('[data-test="push-devices-failed"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.find('[data-test="push-devices-enable"]').exists()).toBe(
+      false,
+    );
+  });
+
   it("offers to turn push on for this device", async () => {
     const wrapper = await mount(WebPushStatusEnum.OFF);
 
     await wrapper.find('[data-test="push-devices-enable"]').trigger("click");
 
-    expect(enable).toHaveBeenCalled();
+    expect(enable).toHaveBeenCalledWith("user-1");
   });
 
   it("offers to turn it off again once on", async () => {

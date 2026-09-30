@@ -1,15 +1,53 @@
 import {
   createPushSubscription,
   destroyPushSubscription,
+  pushSubscriptions,
   type PushSubscriptionInput,
 } from "@/services/fyApi";
 
 export enum WebPushStatusEnum {
   UNSUPPORTED = "unsupported",
   DENIED = "denied",
+  FAILED = "failed",
   OFF = "off",
   ON = "on",
 }
+
+// What this browser last subscribed as, so a visit can tell a device removed
+// on purpose -- stays off -- from one whose renewal never reached the server,
+// which is saved again.
+type StoredSubscription = { id: string; endpoint: string; userId: string };
+
+const STORAGE_KEY = "fy.push-subscription";
+
+// Registration runs after DOMContentLoaded, so a page opened straight away can
+// ask before it has finished.
+const REGISTRATION_WAIT_MS = 10_000;
+
+const readStored = (): StoredSubscription | undefined => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const parsed: unknown = raw ? JSON.parse(raw) : undefined;
+
+    return parsed && typeof parsed === "object" && "id" in parsed
+      ? (parsed as StoredSubscription)
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const writeStored = (stored?: StoredSubscription) => {
+  try {
+    if (stored) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  } catch {
+    // ignore storage failures
+  }
+};
 
 // The VAPID key is base64url; the Push API wants its raw bytes.
 export const applicationServerKey = (
@@ -44,11 +82,16 @@ const toInput = (subscription: PushSubscription): PushSubscriptionInput => {
 };
 
 export const useWebPush = () => {
-  const supported = ref(pushSupported());
+  const supported = pushSupported();
 
   const permission = ref<NotificationPermission>(
-    supported.value ? window.Notification.permission : "default",
+    supported ? window.Notification.permission : "default",
   );
+
+  // Looked up again on every call: missing now can mean not registered yet.
+  const workerMissing = ref(false);
+
+  const failed = ref(false);
 
   // The server's row for this browser, which is how the device list tells
   // this device apart from the others.
@@ -56,46 +99,85 @@ export const useWebPush = () => {
 
   const busy = ref(false);
 
-  // Not `serviceWorker.ready`: that never settles where no worker is
-  // registered, which is every dev server.
   const registration = async () => {
     // eslint-disable-next-line compat/compat -- only reached once pushSupported() saw it
-    const found = await navigator.serviceWorker.getRegistration("/");
+    const container = navigator.serviceWorker;
 
-    if (!found) {
-      supported.value = false;
-    }
+    const found =
+      (await container.getRegistration("/")) ??
+      (await Promise.race([
+        container.ready,
+        new Promise<undefined>((resolve) => {
+          setTimeout(() => resolve(undefined), REGISTRATION_WAIT_MS);
+        }),
+      ]));
+
+    workerMissing.value = !found;
 
     return found;
   };
 
-  const save = async (subscription: PushSubscription) => {
+  const save = async (subscription: PushSubscription, userId: string) => {
     const row = await createPushSubscription(toInput(subscription));
 
     subscriptionId.value = row.id;
+    writeStored({ id: row.id, endpoint: subscription.endpoint, userId });
   };
 
-  // A browser that subscribed on an earlier visit announces itself again: the
-  // answer names its row, and a row the server pruned in the meantime comes
-  // back.
-  const refresh = async () => {
-    if (!supported.value) return;
+  // Brings this browser and the server back in line, without ever turning
+  // push on by itself:
+  // - the row is still there: on;
+  // - the browser renewed but the server never heard (the worker had no
+  //   session): the renewal is saved;
+  // - this account removed the row, from here or another device: the browser
+  //   unsubscribes too, and it stays off;
+  // - it belongs to another account, or was never saved: off, left alone.
+  const refresh = async (userId: string) => {
+    if (!supported) return;
 
-    const subscription = await (
-      await registration()
-    )?.pushManager.getSubscription();
+    failed.value = false;
 
-    if (subscription && permission.value === "granted") {
-      await save(subscription);
-    } else {
-      subscriptionId.value = undefined;
+    try {
+      const subscription = await (
+        await registration()
+      )?.pushManager.getSubscription();
+      const stored = readStored();
+
+      if (!subscription || permission.value !== "granted") {
+        subscriptionId.value = undefined;
+        if (!subscription) writeStored(undefined);
+        return;
+      }
+
+      if (!stored || stored.userId !== userId) {
+        subscriptionId.value = undefined;
+        return;
+      }
+
+      if (stored.endpoint !== subscription.endpoint) {
+        await save(subscription, userId);
+        return;
+      }
+
+      const rows = await pushSubscriptions();
+
+      if (rows.some((row) => row.id === stored.id)) {
+        subscriptionId.value = stored.id;
+      } else {
+        await subscription.unsubscribe();
+        writeStored(undefined);
+        subscriptionId.value = undefined;
+      }
+    } catch (error) {
+      failed.value = true;
+      throw error;
     }
   };
 
   // Only ever from a click: a prompt nobody asked for is the quickest way to
   // a permanent "denied", which nothing on the page can undo.
-  const enable = async () => {
-    if (!supported.value || busy.value) return false;
+  const enable = async (userId: string) => {
+    if (!supported || busy.value) return false;
 
     busy.value = true;
 
@@ -117,7 +199,8 @@ export const useWebPush = () => {
           ),
         }));
 
-      await save(subscription);
+      await save(subscription, userId);
+      failed.value = false;
 
       return true;
     } finally {
@@ -125,8 +208,10 @@ export const useWebPush = () => {
     }
   };
 
+  // The browser first: if it refuses to let go, the server row stays and the
+  // page keeps saying on, which is the truth.
   const disable = async () => {
-    if (!supported.value || busy.value) return;
+    if (!supported || busy.value) return;
 
     busy.value = true;
 
@@ -135,21 +220,26 @@ export const useWebPush = () => {
         await registration()
       )?.pushManager.getSubscription();
 
-      if (subscriptionId.value) {
-        await destroyPushSubscription(subscriptionId.value);
+      if (subscription && !(await subscription.unsubscribe())) {
+        throw new Error("the browser kept its push subscription");
       }
 
-      await subscription?.unsubscribe();
-
+      const id = subscriptionId.value;
       subscriptionId.value = undefined;
+      writeStored(undefined);
+
+      if (id) await destroyPushSubscription(id);
     } finally {
       busy.value = false;
     }
   };
 
   const status = computed(() => {
-    if (!supported.value) return WebPushStatusEnum.UNSUPPORTED;
+    if (!supported || workerMissing.value) {
+      return WebPushStatusEnum.UNSUPPORTED;
+    }
     if (permission.value === "denied") return WebPushStatusEnum.DENIED;
+    if (failed.value) return WebPushStatusEnum.FAILED;
 
     return subscriptionId.value ? WebPushStatusEnum.ON : WebPushStatusEnum.OFF;
   });

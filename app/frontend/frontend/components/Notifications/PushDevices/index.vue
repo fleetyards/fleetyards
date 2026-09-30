@@ -26,6 +26,7 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { WebPushStatusEnum, useWebPush } from "@/shared/composables/useWebPush";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const emit = defineEmits<{
   changed: [];
@@ -34,6 +35,9 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const { displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
+const sessionStore = useSessionStore();
+
+const userId = () => sessionStore.currentUser?.id ?? "";
 
 const { status, busy, subscriptionId, refresh, enable, disable } = useWebPush();
 
@@ -44,9 +48,13 @@ const destroyMutation = useDestroyPushSubscription();
 const reloadDevices = () =>
   queryClient.invalidateQueries({ queryKey: getPushSubscriptionsQueryKey() });
 
+// A failed check shows as such rather than as "off", which would invite
+// turning on what may well be on already.
 onMounted(async () => {
   try {
-    await refresh();
+    await refresh(userId());
+  } catch {
+    // the panel shows the failed state
   } finally {
     await reloadDevices();
   }
@@ -63,7 +71,7 @@ const run = async (action: () => Promise<unknown>) => {
   }
 };
 
-const turnOn = () => run(enable);
+const turnOn = () => run(() => enable(userId()));
 
 const turnOff = () => run(disable);
 
@@ -114,6 +122,15 @@ const deviceLabel = (device: PushDevice) => {
         data-test="push-devices-denied"
       >
         {{ t("texts.settings.notifications.push.denied") }}
+      </Alert>
+
+      <Alert
+        v-else-if="status === WebPushStatusEnum.FAILED"
+        :size="AlertSizesEnum.COMPACT"
+        variant="danger"
+        data-test="push-devices-failed"
+      >
+        {{ t("texts.settings.notifications.push.failed") }}
       </Alert>
 
       <div v-else class="push-devices__this" data-test="push-devices-this">

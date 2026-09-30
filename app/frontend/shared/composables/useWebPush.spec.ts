@@ -2,12 +2,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const createPushSubscription = vi.fn();
 const destroyPushSubscription = vi.fn();
+const pushSubscriptions = vi.fn();
 
 vi.mock("@/services/fyApi", () => ({
   createPushSubscription: (...args: unknown[]) =>
     createPushSubscription(...args),
   destroyPushSubscription: (...args: unknown[]) =>
     destroyPushSubscription(...args),
+  pushSubscriptions: (...args: unknown[]) => pushSubscriptions(...args),
 }));
 
 import {
@@ -18,6 +20,8 @@ import {
 
 const KEY =
   "BNcRdreALRFXTkOOUHK1EtK2wtaz5Ry4YfYCA_0QTpQtUbVlUls0VJXg7A8u-Ts1XbjhazAkj7I99e8QcYP7DkM";
+const USER = "user-1";
+const STORAGE_KEY = "fy.push-subscription";
 
 const browserSubscription = (endpoint = "https://fcm.googleapis.com/abc") => ({
   endpoint,
@@ -28,12 +32,18 @@ const browserSubscription = (endpoint = "https://fcm.googleapis.com/abc") => ({
 
 type FakeSubscription = ReturnType<typeof browserSubscription>;
 
+const remember = (id: string, endpoint: string, userId = USER) =>
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ id, endpoint, userId }));
+
+const stored = () => JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
+
 const setup = ({
   permission = "default" as NotificationPermission,
   requested = "granted" as NotificationPermission,
   existing = null as FakeSubscription | null,
   registered = true,
-  key = KEY as string | undefined,
+  ready = new Promise<unknown>(() => {}),
+  key = KEY,
 } = {}) => {
   const created = browserSubscription();
   const pushManager = {
@@ -52,6 +62,7 @@ const setup = ({
       getRegistration: vi
         .fn()
         .mockResolvedValue(registered ? { pushManager } : undefined),
+      ready: registered ? Promise.resolve({ pushManager }) : ready,
     },
   });
   window.VAPID_PUBLIC_KEY = key;
@@ -62,11 +73,14 @@ const setup = ({
 beforeEach(() => {
   createPushSubscription.mockResolvedValue({ id: "row-1" });
   destroyPushSubscription.mockResolvedValue(undefined);
+  pushSubscriptions.mockResolvedValue([{ id: "row-1" }]);
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   vi.unstubAllGlobals();
   vi.clearAllMocks();
+  localStorage.clear();
   window.VAPID_PUBLIC_KEY = undefined;
 });
 
@@ -86,56 +100,139 @@ describe("useWebPush", () => {
     expect(useWebPush().status.value).toBe(WebPushStatusEnum.UNSUPPORTED);
   });
 
-  it("is unsupported where no worker is registered", async () => {
-    setup({ registered: false });
-    const push = useWebPush();
-
-    await push.refresh();
-
-    expect(push.status.value).toBe(WebPushStatusEnum.UNSUPPORTED);
-  });
-
   it("reports a permission the browser already denied", () => {
     setup({ permission: "denied" });
 
     expect(useWebPush().status.value).toBe(WebPushStatusEnum.DENIED);
   });
 
+  // Registration runs after DOMContentLoaded; a page opened straight away
+  // can ask first.
+  it("waits for a worker that is still registering", async () => {
+    let register: (value: unknown) => void = () => {};
+    const ready = new Promise((resolve) => {
+      register = resolve;
+    });
+    const { pushManager } = setup({ registered: false, ready });
+    const push = useWebPush();
+
+    const refreshing = push.refresh(USER);
+    register({ pushManager });
+    await refreshing;
+
+    expect(push.status.value).toBe(WebPushStatusEnum.OFF);
+  });
+
+  it("is unsupported only once no worker shows up at all", async () => {
+    vi.useFakeTimers();
+    setup({ registered: false });
+    const push = useWebPush();
+
+    const refreshing = push.refresh(USER);
+    await vi.advanceTimersByTimeAsync(10_000);
+    await refreshing;
+
+    expect(push.status.value).toBe(WebPushStatusEnum.UNSUPPORTED);
+  });
+
   it("is off until this browser subscribes", async () => {
     setup();
     const push = useWebPush();
 
-    await push.refresh();
+    await push.refresh(USER);
 
     expect(push.status.value).toBe(WebPushStatusEnum.OFF);
     expect(createPushSubscription).not.toHaveBeenCalled();
   });
 
-  // Every visit re-announces the browser, which is how the page learns which
-  // of the account's devices is this one.
-  it("re-announces a browser that subscribed on an earlier visit", async () => {
+  it("is on when the server still has this browser's row", async () => {
     const existing = browserSubscription();
+    remember("row-1", existing.endpoint);
     setup({ permission: "granted", existing });
     const push = useWebPush();
 
-    await push.refresh();
+    await push.refresh(USER);
+
+    expect(push.status.value).toBe(WebPushStatusEnum.ON);
+    expect(push.subscriptionId.value).toBe("row-1");
+    expect(createPushSubscription).not.toHaveBeenCalled();
+  });
+
+  // The worker saves a renewal itself, but it has no session once the reader
+  // is logged out.
+  it("saves a renewal the server never heard about", async () => {
+    const existing = browserSubscription("https://fcm.googleapis.com/renewed");
+    remember("row-0", "https://fcm.googleapis.com/old");
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+
+    await push.refresh(USER);
 
     expect(createPushSubscription).toHaveBeenCalledWith(existing.input);
-    expect(push.subscriptionId.value).toBe("row-1");
+    expect(stored()).toEqual({
+      id: "row-1",
+      endpoint: existing.endpoint,
+      userId: USER,
+    });
     expect(push.status.value).toBe(WebPushStatusEnum.ON);
+  });
+
+  it("stays off for a device this account removed elsewhere", async () => {
+    const existing = browserSubscription();
+    remember("row-1", existing.endpoint);
+    pushSubscriptions.mockResolvedValue([{ id: "another-device" }]);
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+
+    await push.refresh(USER);
+
+    expect(createPushSubscription).not.toHaveBeenCalled();
+    expect(existing.unsubscribe).toHaveBeenCalled();
+    expect(stored()).toBeNull();
+    expect(push.status.value).toBe(WebPushStatusEnum.OFF);
+  });
+
+  it("leaves another account's subscription alone", async () => {
+    const existing = browserSubscription();
+    remember("row-1", existing.endpoint, "someone-else");
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+
+    await push.refresh(USER);
+
+    expect(createPushSubscription).not.toHaveBeenCalled();
+    expect(existing.unsubscribe).not.toHaveBeenCalled();
+    expect(push.status.value).toBe(WebPushStatusEnum.OFF);
+  });
+
+  it("reports a check that failed instead of reading as off", async () => {
+    const existing = browserSubscription();
+    remember("row-1", existing.endpoint);
+    pushSubscriptions.mockRejectedValue(new Error("503"));
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+
+    await expect(push.refresh(USER)).rejects.toThrow();
+
+    expect(push.status.value).toBe(WebPushStatusEnum.FAILED);
   });
 
   it("subscribes with the server key once permission is granted", async () => {
     const { pushManager, created } = setup();
     const push = useWebPush();
 
-    expect(await push.enable()).toBe(true);
+    expect(await push.enable(USER)).toBe(true);
 
     const [{ userVisibleOnly, applicationServerKey: key }] =
       pushManager.subscribe.mock.calls[0];
     expect(userVisibleOnly).toBe(true);
     expect(key).toEqual(applicationServerKey(KEY));
     expect(createPushSubscription).toHaveBeenCalledWith(created.input);
+    expect(stored()).toEqual({
+      id: "row-1",
+      endpoint: created.endpoint,
+      userId: USER,
+    });
     expect(push.status.value).toBe(WebPushStatusEnum.ON);
   });
 
@@ -143,22 +240,38 @@ describe("useWebPush", () => {
     const { pushManager } = setup({ requested: "denied" });
     const push = useWebPush();
 
-    expect(await push.enable()).toBe(false);
+    expect(await push.enable(USER)).toBe(false);
 
     expect(pushManager.subscribe).not.toHaveBeenCalled();
     expect(push.status.value).toBe(WebPushStatusEnum.DENIED);
   });
 
-  it("turning off removes the server's row and the browser's subscription", async () => {
+  it("turning off unsubscribes the browser, then removes the server's row", async () => {
     const existing = browserSubscription();
+    remember("row-1", existing.endpoint);
     setup({ permission: "granted", existing });
     const push = useWebPush();
-    await push.refresh();
+    await push.refresh(USER);
 
     await push.disable();
 
-    expect(destroyPushSubscription).toHaveBeenCalledWith("row-1");
     expect(existing.unsubscribe).toHaveBeenCalled();
+    expect(destroyPushSubscription).toHaveBeenCalledWith("row-1");
+    expect(stored()).toBeNull();
     expect(push.status.value).toBe(WebPushStatusEnum.OFF);
+  });
+
+  it("stays on when the browser refuses to unsubscribe", async () => {
+    const existing = browserSubscription();
+    existing.unsubscribe.mockResolvedValue(false);
+    remember("row-1", existing.endpoint);
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+    await push.refresh(USER);
+
+    await expect(push.disable()).rejects.toThrow();
+
+    expect(destroyPushSubscription).not.toHaveBeenCalled();
+    expect(push.status.value).toBe(WebPushStatusEnum.ON);
   });
 });

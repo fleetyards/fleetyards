@@ -162,7 +162,8 @@
             "off": "Le notifiche push sono disattivate su questo dispositivo.",
             "device": "%{browser} su %{os}",
             "unknownDevice": "Browser sconosciuto",
-            "thisDevice": "(questo dispositivo)"
+            "thisDevice": "(questo dispositivo)",
+            "failed": "Non è stato possibile verificare le notifiche push su questo dispositivo. Ricarica la pagina per riprovare."
           }
         }
       },

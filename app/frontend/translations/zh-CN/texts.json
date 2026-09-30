@@ -162,7 +162,8 @@
             "off": "此设备已关闭推送通知。",
             "device": "%{os} 上的 %{browser}",
             "unknownDevice": "未知浏览器",
-            "thisDevice": "（此设备）"
+            "thisDevice": "（此设备）",
+            "failed": "无法检查此设备的推送通知状态。请重新加载页面后重试。"
           }
         }
       },

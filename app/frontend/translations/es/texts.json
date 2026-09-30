@@ -162,7 +162,8 @@
             "off": "Las notificaciones push están desactivadas en este dispositivo.",
             "device": "%{browser} en %{os}",
             "unknownDevice": "Navegador desconocido",
-            "thisDevice": "(este dispositivo)"
+            "thisDevice": "(este dispositivo)",
+            "failed": "No se pudo comprobar el estado de las notificaciones push en este dispositivo. Vuelve a cargar la página para intentarlo de nuevo."
           }
         }
       },
