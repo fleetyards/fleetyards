@@ -7,7 +7,7 @@
 #  id         :uuid             not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :uuid             not null
+#  user_id    :uuid
 #
 # Indexes
 #
@@ -15,7 +15,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (user_id => users.id) ON DELETE => cascade
+#  fk_rails_...  (user_id => users.id) ON DELETE => nullify
 #
 class MarkdownImage < ApplicationRecord
   include ActiveStorageVariants
@@ -47,13 +47,16 @@ class MarkdownImage < ApplicationRecord
 
   REFERENCE_PATTERN = "markdown-images/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})"
 
-  belongs_to :user
+  # Nil once the uploader's account is gone; the image stays while text uses it.
+  belongs_to :user, optional: true
 
   has_one_attached :file
 
   before_validation :analyze_file, on: :create
 
+  validates :user, presence: true, on: :create
   validates :file, presence: true, no_vector_image: true
+  validate :file_not_attached_elsewhere, on: :create
   validate :file_is_a_supported_image
   validate :file_within_size_limit
   validate :daily_limit_not_reached, on: :create
@@ -65,7 +68,7 @@ class MarkdownImage < ApplicationRecord
       columns.flat_map do |column|
         quoted = model.connection.quote_column_name(column)
 
-        ids_in(model.unscoped.where("#{quoted} LIKE ?", "%markdown-images/%"), quoted)
+        ids_in(model.unscoped.where("#{quoted} ILIKE ?", "%markdown-images/%"), quoted)
       end
     end
 
@@ -76,19 +79,26 @@ class MarkdownImage < ApplicationRecord
     where(created_at: ..UNREFERENCED_GRACE.ago).where.not(id: referenced_ids.to_a)
   end
 
+  # Case-insensitive, and lowered to how ids are stored: an address with an
+  # uppercase id resolves all the same, so it has to count all the same.
   private_class_method def self.ids_in(scope, expression)
-    scope.pluck(Arel.sql("(regexp_matches(#{expression}, '#{REFERENCE_PATTERN}', 'g'))[1]"))
+    scope.pluck(Arel.sql("lower((regexp_matches(#{expression}, '#{REFERENCE_PATTERN}', 'gi'))[1])"))
   end
 
+  # Only the history of records that still exist: an admin reverts a field on a
+  # live record, and a deleted one's versions would otherwise keep its images
+  # forever.
   private_class_method def self.ids_in_history
     history = "concat(object::text, object_changes::text, old_object, old_object_changes)"
 
-    ids_in(
-      PaperTrail::Version
-        .where(item_type: REFERENCING_COLUMNS.keys & ::VersionedItem::TYPES)
-        .where("#{history} LIKE ?", "%markdown-images/%"),
-      history
-    )
+    (REFERENCING_COLUMNS.keys & ::VersionedItem::TYPES).flat_map do |class_name|
+      ids_in(
+        PaperTrail::Version
+          .where(item_type: class_name, item_id: class_name.constantize.unscoped.select(:id))
+          .where("#{history} ILIKE ?", "%markdown-images/%"),
+        history
+      )
+    end
   end
 
   def display_representation
@@ -123,6 +133,18 @@ class MarkdownImage < ApplicationRecord
     blob.analyze if blob.persisted? && !blob.analyzed?
   rescue ActiveStorage::FileNotFoundError
     nil
+  end
+
+  # A signed blob id is not secret -- the API hands out the ones behind logos and
+  # covers -- so an upload must be one nothing else uses. Taking over another
+  # record's blob would publish its file, and deleting this image would purge it
+  # from under that record.
+  private def file_not_attached_elsewhere
+    return unless file.attached?
+    return if file.blob.new_record?
+    return unless ActiveStorage::Attachment.where(blob_id: file.blob.id).where.not(record: self).exists?
+
+    errors.add(:file, :file_in_use)
   end
 
   private def file_is_a_supported_image

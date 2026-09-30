@@ -214,7 +214,7 @@ class User < ApplicationRecord
   has_many :fleet_contract_assignments, dependent: :destroy
   has_many :fleet_contracts, through: :fleet_contract_assignments
 
-  has_many :markdown_images, dependent: :destroy
+  has_many :markdown_images, dependent: :nullify
 
   # Both directions of the same table, because a friendship is one row per
   # unordered pair -- see `PartyRelationship`. Nothing outside the inbox should

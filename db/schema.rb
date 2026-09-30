@@ -1586,7 +1586,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_120000) do
   create_table "markdown_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "user_id", null: false
+    t.uuid "user_id"
     t.index ["user_id", "created_at"], name: "index_markdown_images_on_user_id_and_created_at"
   end
 
@@ -2662,7 +2662,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_120000) do
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
   add_foreign_key "item_prices", "terminals", on_delete: :nullify
-  add_foreign_key "markdown_images", "users", on_delete: :cascade
+  add_foreign_key "markdown_images", "users", on_delete: :nullify
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
   add_foreign_key "mission_ships", "mission_teams"

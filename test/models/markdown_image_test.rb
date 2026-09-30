@@ -70,20 +70,30 @@ class MarkdownImageTest < ActiveSupport::TestCase
     assert_predicate image, :valid?
   end
 
-  test "is removed with its user" do
-    create(:markdown_image, user: @user)
-
-    assert_difference -> { MarkdownImage.count }, -1 do
-      @user.destroy!
-    end
-  end
-
   private def upload(fixture, content_type)
     ActiveStorage::Blob.create_and_upload!(io: file_fixture(fixture).open, filename: fixture, content_type:)
   end
 
   private def insert_images(count, created_at:)
     MarkdownImage.insert_all(Array.new(count) { {user_id: @user.id, created_at:, updated_at: created_at} })
+  end
+
+  test "refuses a blob another record already uses" do
+    fleet = create(:fleet, created_by: @user.id)
+    fleet.logo.attach(upload("test.png", "image/png"))
+    image = MarkdownImage.new(user: @user, file: fleet.logo.blob.signed_id)
+
+    assert_not image.valid?
+    assert_includes image.errors.details[:file], {error: :file_in_use}
+  end
+
+  test "outlives the account that uploaded it" do
+    image = create(:markdown_image, user: @user)
+
+    @user.destroy!
+
+    assert_nil image.reload.user_id
+    assert image.file.attached?
   end
 
   # A text column on a fleet-owned table is written through the markdown editor

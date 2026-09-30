@@ -330,6 +330,7 @@ en:
         inventory_contract_destination: "cannot be deleted while an open fleet contract delivers into it"
         position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
         image_type_not_supported: "must be a PNG, JPEG, WebP or GIF image"
+        file_in_use: "is already used elsewhere; upload the image again"
         file_too_large: "must not be larger than %{count} MB"
         markdown_image_limit_reached: "You have uploaded %{count} images in the last 24 hours. Please try again later."
       models:

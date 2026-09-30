@@ -47,6 +47,27 @@ module Cleanup
       assert MarkdownImage.exists?(image.id)
     end
 
+    test "#perform keeps an image named by an uppercase id" do
+      image = old_image
+      @fleet.update_columns(description: "![cover](/v1/markdown-images/#{image.id.upcase})") # rubocop:disable Rails/SkipsModelValidations
+
+      ::Cleanup::MarkdownImagesJob.new.perform
+
+      assert MarkdownImage.exists?(image.id)
+    end
+
+    # A deleted record cannot be reverted, so its history holds nothing back.
+    test "#perform deletes an image only a deleted record's history names" do
+      image = old_image
+      contract = create(:fleet_contract, fleet: @fleet)
+      contract.update!(description: "![map](/v1/markdown-images/#{image.id})")
+      contract.destroy!
+
+      ::Cleanup::MarkdownImagesJob.new.perform
+
+      refute MarkdownImage.exists?(image.id)
+    end
+
     test "#perform keeps a new image its form may not have saved yet" do
       image = create(:markdown_image)
 

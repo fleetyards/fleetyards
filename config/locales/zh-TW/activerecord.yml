@@ -327,6 +327,7 @@ zh-TW:
         inventory_contract_destination: "在有未完成的艦隊合約向其交付期間無法刪除"
         position_goods_in_transit: "在包含它的轉移得到回覆之前無法刪除"
         image_type_not_supported: "必須是 PNG、JPEG、WebP 或 GIF 圖片"
+        file_in_use: "已在其他地方使用，請重新上傳圖片"
         file_too_large: "不能大於 %{count} MB"
         markdown_image_limit_reached: "你在過去 24 小時內已上傳 %{count} 張圖片。請稍後再試。"
         blank: 不能為空
