@@ -17,7 +17,13 @@ export enum WebPushStatusEnum {
 // What this browser last subscribed as, so a visit can tell a device removed
 // on purpose -- stays off -- from one whose renewal never reached the server,
 // which is saved again.
-type StoredSubscription = { id: string; endpoint: string; userId: string };
+type StoredSubscription = {
+  id: string;
+  endpoint: string;
+  userId: string;
+  p256dh?: string;
+  auth?: string;
+};
 
 const STORAGE_KEY = "fy.push-subscription";
 
@@ -119,10 +125,32 @@ export const useWebPush = () => {
   };
 
   const save = async (subscription: PushSubscription, userId: string) => {
-    const row = await createPushSubscription(toInput(subscription));
+    const input = toInput(subscription);
+    const row = await createPushSubscription(input);
 
     subscriptionId.value = row.id;
-    writeStored({ id: row.id, endpoint: subscription.endpoint, userId });
+    writeStored({
+      id: row.id,
+      endpoint: input.endpoint,
+      userId,
+      p256dh: input.keys.p256dh,
+      auth: input.keys.auth,
+    });
+  };
+
+  // A browser can renew its keys and keep the endpoint; the server encrypts
+  // with whatever keys it was last given.
+  const renewed = (
+    stored: StoredSubscription,
+    subscription: PushSubscription,
+  ) => {
+    const input = toInput(subscription);
+
+    return (
+      stored.endpoint !== input.endpoint ||
+      stored.p256dh !== input.keys.p256dh ||
+      stored.auth !== input.keys.auth
+    );
   };
 
   // Brings this browser and the server back in line, without ever turning
@@ -130,8 +158,8 @@ export const useWebPush = () => {
   // - the row is still there: on, and touched, which is what tells the
   //   server this device is alive (it prunes rows nothing touched in half a
   //   year);
-  // - the browser renewed but the server never heard (the worker had no
-  //   session): the renewal is saved;
+  // - the browser renewed its endpoint or keys but the server never heard
+  //   (the worker had no session): the renewal is saved;
   // - this account removed the row, from here or another device: the browser
   //   unsubscribes too, and it stays off;
   // - it belongs to another account, or was never saved: off, left alone.
@@ -165,7 +193,7 @@ export const useWebPush = () => {
         return;
       }
 
-      if (stored.endpoint !== subscription.endpoint) {
+      if (renewed(stored, subscription)) {
         await save(subscription, userId);
         return;
       }

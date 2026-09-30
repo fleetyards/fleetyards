@@ -32,8 +32,16 @@ const browserSubscription = (endpoint = "https://fcm.googleapis.com/abc") => ({
 
 type FakeSubscription = ReturnType<typeof browserSubscription>;
 
-const remember = (id: string, endpoint: string, userId = USER) =>
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ id, endpoint, userId }));
+const remember = (
+  id: string,
+  endpoint: string,
+  userId = USER,
+  keys = { p256dh: "p", auth: "a" },
+) =>
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ id, endpoint, userId, ...keys }),
+  );
 
 const stored = () => JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
 
@@ -139,6 +147,8 @@ describe("useWebPush", () => {
       id: "row-1",
       endpoint: "https://fcm.googleapis.com/abc",
       userId: USER,
+      p256dh: "p",
+      auth: "a",
     });
   });
 
@@ -183,8 +193,23 @@ describe("useWebPush", () => {
       id: "row-1",
       endpoint: existing.endpoint,
       userId: USER,
+      p256dh: "p",
+      auth: "a",
     });
     expect(push.status.value).toBe(WebPushStatusEnum.ON);
+  });
+
+  it("saves keys the browser renewed on the same endpoint", async () => {
+    const existing = browserSubscription();
+    remember("row-1", existing.endpoint, USER, { p256dh: "old", auth: "a" });
+    setup({ permission: "granted", existing });
+    const push = useWebPush();
+
+    await push.refresh(USER);
+
+    expect(createPushSubscription).toHaveBeenCalledWith(existing.input);
+    expect(touchPushSubscription).not.toHaveBeenCalled();
+    expect(stored().p256dh).toBe("p");
   });
 
   it("stays off for a device this account removed elsewhere", async () => {
@@ -248,6 +273,8 @@ describe("useWebPush", () => {
       id: "row-1",
       endpoint: created.endpoint,
       userId: USER,
+      p256dh: "p",
+      auth: "a",
     });
     expect(push.status.value).toBe(WebPushStatusEnum.ON);
   });
