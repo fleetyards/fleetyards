@@ -9,7 +9,9 @@ require "redcarpet/render_strip"
 module MarkdownPlainText
   FENCE = /^:::(?:center)?[ \t]*$\n?/
   # An image's size, `![a](src){width=50%}`, is layout -- not words.
-  IMAGE_SIZE = /(!\[[^\]]*\]\([^)]*\))\{width=\d+%\}/
+  # The renderer's shapes: a description may hold one level of brackets or an
+  # escaped one, and only these widths are sizes -- any other stays as text.
+  IMAGE_SIZE = /(!\[(?:[^\[\]\\]|\\.|\[[^\[\]]*\])*\]\([^)\s]+\))\{width=(?:25|50|75)%\}/
 
   def self.render(text)
     return "" if text.blank?

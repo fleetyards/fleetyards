@@ -22,6 +22,16 @@ class MarkdownPlainTextTest < ActiveSupport::TestCase
       MarkdownPlainText.render("Before\n\n![cover](https://x.test/a.jpg){width=50%}\n\nAfter")
   end
 
+  test "leaves the size out of an image whose description has brackets" do
+    text = MarkdownPlainText.render("![Fleet [Alpha]](https://x.test/a.jpg){width=50%}")
+
+    assert_not_includes text, "{width"
+  end
+
+  test "keeps a width the page does not read as a size" do
+    assert_includes MarkdownPlainText.render("![a](https://x.test/a.jpg){width=33%}"), "{width=33%}"
+  end
+
   test "is empty for no text" do
     assert_equal "", MarkdownPlainText.render(nil)
   end
