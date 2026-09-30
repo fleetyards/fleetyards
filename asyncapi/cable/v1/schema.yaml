@@ -694,6 +694,30 @@ components:
       additionalProperties: false
       required:
       - coolingRate
+    ComponentCountermeasure:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/ComponentCountermeasureKindEnum"
+        lifetime:
+          type: number
+        spawnDelay:
+          type: number
+        infrared:
+          "$ref": "#/components/schemas/ComponentSignatureRange"
+        electromagnetic:
+          "$ref": "#/components/schemas/ComponentSignatureRange"
+        crossSection:
+          "$ref": "#/components/schemas/ComponentSignatureRange"
+      additionalProperties: false
+    ComponentCountermeasureKindEnum:
+      type: string
+      enum:
+      - decoy
+      - noise
+      x-enumNames:
+      - DECOY
+      - NOISE
     ComponentDamageMultipliers:
       type: object
       properties:
@@ -1190,6 +1214,14 @@ components:
         rs:
           "$ref": "#/components/schemas/ComponentSignatureSensitivity"
       additionalProperties: false
+    ComponentSignatureRange:
+      type: object
+      properties:
+        start:
+          type: number
+        end:
+          type: number
+      additionalProperties: false
     ComponentSignatureSensitivity:
       type: object
       properties:
@@ -1537,6 +1569,8 @@ components:
           "$ref": "#/components/schemas/ComponentWeaponSpread"
         mining:
           "$ref": "#/components/schemas/ComponentMiningLaser"
+        countermeasure:
+          "$ref": "#/components/schemas/ComponentCountermeasure"
       additionalProperties: false
     ComponentWeaponDamage:
       type: object

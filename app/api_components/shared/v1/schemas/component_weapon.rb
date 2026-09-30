@@ -31,7 +31,8 @@ module Shared
             heat: ComponentWeaponHeat,
             penetration: ComponentWeaponPenetration,
             spread: ComponentWeaponSpread,
-            mining: ComponentMiningLaser
+            mining: ComponentMiningLaser,
+            countermeasure: ComponentCountermeasure
           },
           additionalProperties: false
         })

@@ -162,6 +162,10 @@ class Component < ApplicationRecord
   # pilot, for a gimbal on the hull.
   TURRET_CONTROLS = %w[manned remote pds].freeze
 
+  # A countermeasure is a decoy (a flare that draws a seeker off) or noise (a
+  # cloud that blinds it), as the parser reads it off the launcher's ammo.
+  COUNTERMEASURE_KINDS = %w[decoy noise].freeze
+
   # What the public catalogue lists. `with_facts` has to be applied by the
   # caller -- the category is read off the joined build.
   #
