@@ -69,6 +69,32 @@ module Announcements
       Announcements::NotifyBatchJob.new.perform(@announcement.id, [opted_in.id, opted_out.id])
     end
 
+    test "#perform sends a Discord DM only to the readers who opted in" do
+      opted_in = create(:user, last_active_at: 3.days.ago)
+      opted_in.notification_preferences
+        .find_or_create_by!(notification_type: "announcement")
+        .update!(discord: true)
+      opted_out = create(:user, last_active_at: 3.days.ago)
+      ::Discord::DeliverNotificationJob.jobs.clear
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [opted_in.id, opted_out.id])
+
+      notification = Notification.find_by!(user: opted_in, notification_type: "announcement")
+      assert_equal [[notification.id]], ::Discord::DeliverNotificationJob.jobs.map { |job| job["args"] }
+    end
+
+    test "#perform does not send a second Discord DM on a retry" do
+      user = create(:user, last_active_at: 3.days.ago)
+      user.notification_preferences
+        .find_or_create_by!(notification_type: "announcement")
+        .update!(discord: true)
+      ::Discord::DeliverNotificationJob.jobs.clear
+
+      2.times { Announcements::NotifyBatchJob.new.perform(@announcement.id, [user.id]) }
+
+      assert_equal 1, ::Discord::DeliverNotificationJob.jobs.size
+    end
+
     # A batch job retries, so the second run has to be a no-op: no second row,
     # and -- the part that would actually be noticed -- no second mail.
     test "#perform is idempotent across a retry" do
