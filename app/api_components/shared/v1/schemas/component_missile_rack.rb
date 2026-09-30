@@ -13,6 +13,8 @@ module Shared
             launchDelay: {type: :number},
             # Whether the motor lights on the rack rather than after release.
             igniteOnPylon: {type: :boolean},
+            powerConsumption: {type: :number},
+            powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
             signatureEm: {type: :number},
             signatureIr: {type: :number}

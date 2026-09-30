@@ -30,7 +30,12 @@ module Shared
             armTime: {type: :number},
             safetyDistance: {type: :number},
             blastRadiusMin: {type: :number},
-            blastRadiusMax: {type: :number}
+            blastRadiusMax: {type: :number},
+            powerConsumption: {type: :number},
+            powerMinimumFraction: {type: :number},
+            powerRanges: ComponentPowerRanges,
+            signatureEm: {type: :number},
+            signatureIr: {type: :number}
           },
           additionalProperties: false
         })

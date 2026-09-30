@@ -623,6 +623,16 @@ components:
           type: number
         blastRadiusMax:
           type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
       additionalProperties: false
     ComponentClassEnum:
       type: string
@@ -777,6 +787,16 @@ components:
           type: number
         blastRadiusMax:
           type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
       additionalProperties: false
     ComponentMissileRack:
       type: object
@@ -785,6 +805,10 @@ components:
           type: number
         igniteOnPylon:
           type: boolean
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
         powerRanges:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:

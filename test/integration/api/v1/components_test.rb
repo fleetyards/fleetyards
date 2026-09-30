@@ -206,7 +206,8 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     create(:component, name: "Missileprobe", category: "weapons",
       type_data: {
         "damage_per_shot" => {"physical" => 650.0}, "tracking_signal" => "Infrared", "lock_angle" => 60.0,
-        "dumbfire" => true, "boost_phase_duration" => 2.0, "arm_time" => 1.5, "blast_radius_max" => 5.0
+        "dumbfire" => true, "boost_phase_duration" => 2.0, "arm_time" => 1.5, "blast_radius_max" => 5.0,
+        "power_consumption" => 1.0, "signature_ir" => 120.0
       })
 
     assert_api_response :get, 200, params: {q: {"nameCont" => "Missileprobe"}} do
@@ -216,6 +217,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert type_data["dumbfire"]
       assert_in_delta 2.0, type_data["boostPhaseDuration"]
       assert_in_delta 5.0, type_data["blastRadiusMax"]
+      assert_in_delta 120.0, type_data["signatureIr"]
     end
   end
 
