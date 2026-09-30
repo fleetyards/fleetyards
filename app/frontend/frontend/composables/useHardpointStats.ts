@@ -27,6 +27,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
+import { criticalSize } from "@/frontend/composables/powerSim";
 import {
   powerPlantContextKey,
   powerPlantPips,
@@ -104,17 +105,26 @@ export const useHardpointStats = (
     value: String(toNumber(value, "seconds")),
   });
 
-  // For figures that live below the one-decimal stat format -- a 0.25 km/s²
-  // first stage, a 0.05/s air output -- where rounding would misstate them.
-  // Zero stays a zero rather than "not available". Thousands are grouped the
-  // way `toNumber` groups them.
+  // For figures the one-decimal stat format would misstate -- a 0.25 km/s²
+  // first stage, a 0.05/s air output, a 4.55 s shield delay. Zero stays a zero
+  // rather than "not available", and thousands are grouped the way `toNumber`
+  // groups them.
   const precise = (value: number, digits = 3): string => {
-    if (Math.abs(value) >= 1) return String(toNumber(value));
+    const rounded = Math.round(value * 10 ** digits) / 10 ** digits;
+    const [integer, decimal] = String(Math.abs(rounded)).split(".");
+    const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
+    const sign = rounded < 0 ? "-" : "";
 
-    const rounded = String(Math.round(value * 10 ** digits) / 10 ** digits);
-
-    return rounded.replace(".", t("number.format.separator") || ",");
+    return decimal
+      ? `${sign}${grouped}${t("number.format.separator") || ","}${decimal}`
+      : `${sign}${grouped}`;
   };
+
+  // Shield delays run to hundredths (4.55 s), which `secondsStat` rounds.
+  const delayStat = (labelKey: string, value: number): HardpointStat => ({
+    label: t(`labels.hardpoint.${labelKey}`),
+    value: `${precise(value, 2)} s`,
+  });
 
   const splineAccel = (stageOne: number, stageTwo: number) =>
     `${precise(stageOne / 1000)} / ${precise(stageTwo / 1000)} km/s²`;
@@ -343,14 +353,12 @@ export const useHardpointStats = (
 
     if (typeof data.powerConsumption === "number" && data.powerConsumption) {
       const full = data.powerConsumption;
-      const minimum =
-        typeof data.powerMinimumFraction === "number"
-          ? full * data.powerMinimumFraction
-          : undefined;
+      // The block the power allocator always keeps powered, as it sizes it.
+      const minimum = criticalSize(full, data.powerMinimumFraction);
       powered.push({
         label: t("labels.hardpoint.powerConsumption"),
         value:
-          minimum !== undefined && minimum < full
+          minimum < full
             ? `${precise(minimum)} – ${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`
             : `${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`,
       });
@@ -926,12 +934,12 @@ export const useHardpointStats = (
       }
       if (shield.downedRegenDelay) {
         result.push(
-          secondsStat("shields.downedRegenDelay", shield.downedRegenDelay),
+          delayStat("shields.downedRegenDelay", shield.downedRegenDelay),
         );
       }
       if (shield.damagedRegenDelay) {
         result.push(
-          secondsStat("shields.damagedRegenDelay", shield.damagedRegenDelay),
+          delayStat("shields.damagedRegenDelay", shield.damagedRegenDelay),
         );
       }
       if (shield.decayRatio) {

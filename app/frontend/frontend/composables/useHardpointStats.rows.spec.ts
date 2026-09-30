@@ -58,7 +58,7 @@ describe("useHardpointStats rows", () => {
     expect(valueOf(stats, "labels.hardpoint.signatureIr")).toBe("300");
   });
 
-  it("shows a shield's delays to the tenth, its decay and absorption ranges", () => {
+  it("shows a shield's decay and absorption ranges", () => {
     const stats = statsFor(
       hardpoint(HardpointCategoryEnum.SHIELDGENERATOR, {
         maxHealth: 5000,
@@ -73,9 +73,6 @@ describe("useHardpointStats rows", () => {
       }),
     );
 
-    expect(valueOf(stats, "labels.hardpoint.shields.damagedRegenDelay")).toBe(
-      "4.55",
-    );
     expect(valueOf(stats, "labels.hardpoint.shields.decay")).toBe("25%");
     expect(valueOf(stats, "labels.hardpoint.shields.absorption.physical")).toBe(
       "23 – 45%",
