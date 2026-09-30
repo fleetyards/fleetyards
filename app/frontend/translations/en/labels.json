@@ -1292,6 +1292,23 @@
         "copySameModel": "Target ship must differ from the source ship."
       },
       "component": {
+        "temperature": {
+          "minCooling": "Cooling From",
+          "overheat": "Overheats At",
+          "warning": "Warning At",
+          "recovery": "Recovers At",
+          "misfireRange": "Misfire Range",
+          "irStart": "IR From",
+          "irPerKelvin": "IR per K"
+        },
+        "misfire": {
+          "heat": "Heat",
+          "distortion": "Distortion",
+          "damage": "Damage",
+          "wear": "Wear",
+          "window": "Window",
+          "hint": "The level of each stat at which the component can start to misfire, as the game files give it."
+        },
         "availability": {
           "retired": "Prices are tracked for the build the catalogue is on, and this part is not in it.",
           "craftedOnly": "No terminal sells this — it is made from the recipe below.",
@@ -1487,7 +1504,8 @@
           "splineAccel": "Orbit Accel",
           "splineSpoolUpTime": "Orbit Spool Up",
           "splineCooldownTime": "Orbit Cooldown",
-          "splineInterdictionTime": "Orbit Interdiction"
+          "splineInterdictionTime": "Orbit Interdiction",
+          "jumpHeat": "Jump Heat"
         },
         "jumpDrives": {
           "fuelEfficiency": "Fuel Efficiency",

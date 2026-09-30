@@ -501,6 +501,8 @@
         "contractCovers": "合約封面圖"
       },
       "component": {
+        "temperature": "溫度",
+        "misfire": "故障",
         "history": "歷史",
         "craftedFrom": "製造配方",
         "identity": "詳情",

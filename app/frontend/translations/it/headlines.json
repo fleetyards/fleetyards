@@ -501,6 +501,8 @@
         "contractCovers": "Copertine dei contratti"
       },
       "component": {
+        "temperature": "Temperatura",
+        "misfire": "Malfunzionamento",
         "history": "Cronologia",
         "craftedFrom": "Fabbricato con",
         "identity": "Dettagli",

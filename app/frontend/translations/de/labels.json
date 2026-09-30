@@ -1292,6 +1292,23 @@
         "copySameModel": "Das Zielschiff muss sich vom Ausgangsschiff unterscheiden."
       },
       "component": {
+        "temperature": {
+          "minCooling": "Kühlung ab",
+          "overheat": "Überhitzt bei",
+          "warning": "Warnung bei",
+          "recovery": "Erholt bei",
+          "misfireRange": "Fehlfunktionsbereich",
+          "irStart": "IR ab",
+          "irPerKelvin": "IR pro K"
+        },
+        "misfire": {
+          "heat": "Hitze",
+          "distortion": "Verzerrung",
+          "damage": "Schaden",
+          "wear": "Verschleiß",
+          "window": "Zeitfenster",
+          "hint": "Der Wert jedes Zustands, ab dem die Komponente Fehlfunktionen haben kann, wie die Spieldateien ihn angeben."
+        },
         "availability": {
           "retired": "Preise werden für den Build erfasst, auf dem der Katalog steht, und dieses Teil ist nicht darin.",
           "craftedOnly": "Kein Terminal verkauft dieses Teil – es wird nach dem Rezept unten hergestellt.",
@@ -1487,7 +1504,8 @@
           "splineAccel": "Orbit-Beschleunigung",
           "splineSpoolUpTime": "Orbit-Hochfahren",
           "splineCooldownTime": "Orbit-Abklingzeit",
-          "splineInterdictionTime": "Orbit-Unterbrechung"
+          "splineInterdictionTime": "Orbit-Unterbrechung",
+          "jumpHeat": "Sprungwärme"
         },
         "jumpDrives": {
           "fuelEfficiency": "Treibstoffeffizienz",

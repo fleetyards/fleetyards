@@ -1292,6 +1292,23 @@
         "copySameModel": "Le vaisseau cible doit être différent du vaisseau source."
       },
       "component": {
+        "temperature": {
+          "minCooling": "Refroidit dès",
+          "overheat": "Surchauffe à",
+          "warning": "Alerte à",
+          "recovery": "Récupère à",
+          "misfireRange": "Plage de défaillance",
+          "irStart": "IR dès",
+          "irPerKelvin": "IR par K"
+        },
+        "misfire": {
+          "heat": "Chaleur",
+          "distortion": "Distorsion",
+          "damage": "Dégâts",
+          "wear": "Usure",
+          "window": "Fenêtre",
+          "hint": "Le niveau de chaque état à partir duquel le composant peut commencer à défaillir, tel que le donnent les fichiers du jeu."
+        },
         "availability": {
           "retired": "Les prix sont suivis pour la version sur laquelle est le catalogue, et cette pièce n'en fait pas partie.",
           "craftedOnly": "Aucun terminal ne le vend : il se fabrique à partir de la recette ci-dessous.",
@@ -1487,7 +1504,8 @@
           "splineAccel": "Accélération en orbite",
           "splineSpoolUpTime": "Démarrage en orbite",
           "splineCooldownTime": "Refroidissement en orbite",
-          "splineInterdictionTime": "Interdiction en orbite"
+          "splineInterdictionTime": "Interdiction en orbite",
+          "jumpHeat": "Chaleur de saut"
         },
         "jumpDrives": {
           "fuelEfficiency": "Efficacité du carburant",
