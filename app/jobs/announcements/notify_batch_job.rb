@@ -97,10 +97,19 @@ module Announcements
       push_user_ids = preferences.select { |_id, channels| channels[:push] }.keys
       discord_user_ids = preferences.select { |_id, channels| channels[:discord] }.keys
 
-      broadcast(notifications, app_user_ids)
-      mail(notifications, mail_user_ids)
-      push(notifications, push_user_ids)
-      direct_message(notifications, discord_user_ids)
+      # Each channel on its own. The rows are already written, so a retry
+      # inserts nothing and delivers nothing: a channel that raised here takes
+      # every channel after it down for good.
+      deliver_channel(:app) { broadcast(notifications, app_user_ids) }
+      deliver_channel(:mail) { mail(notifications, mail_user_ids) }
+      deliver_channel(:push) { push(notifications, push_user_ids) }
+      deliver_channel(:discord) { direct_message(notifications, discord_user_ids) }
+    end
+
+    private def deliver_channel(channel)
+      yield
+    rescue => e
+      Rails.logger.error("Announcement #{channel} delivery failed: #{e.message}")
     end
 
     # Only readers who were using the site in the last few minutes. A broadcast

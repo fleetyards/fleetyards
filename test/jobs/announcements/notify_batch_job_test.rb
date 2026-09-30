@@ -83,6 +83,21 @@ module Announcements
       assert_equal [[notification.id]], ::Push::DeliverNotificationJob.jobs.map { |job| job["args"] }
     end
 
+    test "#perform still pushes when the mail channel raises" do
+      user = create(:user, last_active_at: 3.days.ago)
+      user.notification_preferences
+        .find_or_create_by!(notification_type: "announcement")
+        .update!(mail: true, push: true, discord: true)
+      AnnouncementMailer.stubs(:published).raises("mail is down")
+      ::Push::DeliverNotificationJob.jobs.clear
+      ::Discord::DeliverNotificationJob.jobs.clear
+
+      Announcements::NotifyBatchJob.new.perform(@announcement.id, [user.id])
+
+      assert_equal 1, ::Push::DeliverNotificationJob.jobs.size
+      assert_equal 1, ::Discord::DeliverNotificationJob.jobs.size
+    end
+
     test "#perform sends a Discord DM only to the readers who opted in" do
       opted_in = create(:user, last_active_at: 3.days.ago)
       opted_in.notification_preferences
