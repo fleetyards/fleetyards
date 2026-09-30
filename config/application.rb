@@ -6,6 +6,7 @@ require_relative "../lib/middleware/scrub_header_encoding"
 require_relative "../lib/middleware/reject_malformed_form_body"
 require_relative "../lib/middleware/transform_parameters"
 require_relative "../lib/middleware/reset_locale"
+require_relative "../lib/middleware/service_worker_cache_control"
 
 # Backport of Rails 8.2 `Rails.app.creds` — must load before config_for calls.
 # REMOVAL: Delete this line and lib/rails_creds_backport/ when upgrading to Rails 8.2.
