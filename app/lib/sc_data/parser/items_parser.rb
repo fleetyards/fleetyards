@@ -222,29 +222,11 @@ module ScData
         durability = extract_durability(values["Components"] || {})
         item[:durability] = durability if durability.present?
 
-        if values.dig("Components", "EntityComponentHeatConnection")
-          item[:heat_connection] = {
-            TemperatureToIR: values.dig("Components", "EntityComponentHeatConnection", "TemperatureToIR").to_f,
-            StartIRTemperature: values.dig("Components", "EntityComponentHeatConnection", "StartIRTemperature").to_f,
-            OverpowerHeat: values.dig("Components", "EntityComponentHeatConnection", "OverpowerHeat").to_f,
-            OverclockThresholdMinHeat: values.dig("Components", "EntityComponentHeatConnection", "OverclockThresholdMinHeat").to_f,
-            OverclockThresholdMaxHeat: values.dig("Components", "EntityComponentHeatConnection", "OverclockThresholdMaxHeat").to_f,
-            ThermalEnergyBase: values.dig("Components", "EntityComponentHeatConnection", "ThermalEnergyBase").to_f,
-            ThermalEnergyDraw: values.dig("Components", "EntityComponentHeatConnection", "ThermalEnergyDraw").to_f,
-            ThermalConductivity: values.dig("Components", "EntityComponentHeatConnection", "ThermalConductivity").to_f,
-            SpecificHeatCapacity: values.dig("Components", "EntityComponentHeatConnection", "SpecificHeatCapacity").to_f,
-            Mass: values.dig("Components", "EntityComponentHeatConnection", "Mass").to_f,
-            SurfaceArea: values.dig("Components", "EntityComponentHeatConnection", "SurfaceArea").to_f,
-            StartCoolingTemperature: values.dig("Components", "EntityComponentHeatConnection", "StartCoolingTemperature").to_f,
-            MaxCoolingRate: values.dig("Components", "EntityComponentHeatConnection", "MaxCoolingRate").to_f,
-            MaxTemperature: values.dig("Components", "EntityComponentHeatConnection", "MaxTemperature").to_f,
-            OverheatTemperature: values.dig("Components", "EntityComponentHeatConnection", "OverheatTemperature").to_f,
-            RecoveryTemperature: values.dig("Components", "EntityComponentHeatConnection", "RecoveryTemperature").to_f,
-            MinTemperature: values.dig("Components", "EntityComponentHeatConnection", "MinTemperature").to_f,
-            MisfireMinTemperature: values.dig("Components", "EntityComponentHeatConnection", "MisfireMinTemperature").to_f,
-            MisfireMaxTemperature: values.dig("Components", "EntityComponentHeatConnection", "MisfireMaxTemperature").to_f
-          }
-        end
+        temperature = extract_temperature(values)
+        item[:temperature] = temperature if temperature.present?
+
+        misfire = extract_misfire(values)
+        item[:misfire] = misfire if misfire.present?
 
         if values.dig("Components", "SCItemInventoryContainerComponentParams")
           item[:inventory_ref] = values.dig("Components", "SCItemInventoryContainerComponentParams", "containerParams")
@@ -360,7 +342,8 @@ module ScData
               min_jump_distance: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "minJumpDistance").to_f,
               ifcs_handover_down_time: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "ifcsHandoverDownTime").to_f,
               ifcs_handover_respool_time: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "ifcsHandoverRespoolTime").to_f
-            }
+            },
+            jump_heat: extract_jump_heat(values.dig("Components", "SCItemQuantumDriveParams", "heatParams"))
           }.compact
         end
 
@@ -830,6 +813,86 @@ module ScData
         elsif sub_type == "MannedTurret" || values.dig("Components", "SCItemSeatParams").present?
           "manned"
         end
+      end
+
+      # The heat a quantum drive puts out in each phase of a jump. Every drive
+      # in the current build gives all five the same figure, but they are five
+      # values in the files and are kept as such.
+      private def extract_jump_heat(heat)
+        return if heat.blank?
+
+        {
+          pre_ramp_up: heat["preRampUpThermalEnergyDraw"]&.to_f,
+          ramp_up: heat["rampUpThermalEnergyDraw"]&.to_f,
+          in_flight: heat["inFlightThermalEnergyDraw"]&.to_f,
+          ramp_down: heat["rampDownThermalEnergyDraw"]&.to_f,
+          post_ramp_down: heat["postRampDownThermalEnergyDraw"]&.to_f
+        }.compact.presence
+      end
+
+      # The levels at which a component starts to misfire, one per stat, as
+      # fractions: heat, distortion, damage and wear (`degradation`, the stat
+      # the item's wear accumulators build up). The files name them trigger
+      # conditions but not what each fraction is measured against. The window
+      # is the block's own min/max length in seconds -- not how long a single
+      # misfire lasts, which each misfire event states separately.
+      #
+      # Only the stat condition is read. A block without one -- relays and
+      # batteries carry just the window, or a functionality condition -- has
+      # no trigger levels to show.
+      private def extract_misfire(values)
+        params = values.dig("Components", "EntityComponentMisfireParams")
+        return if params.blank?
+
+        condition = Array.wrap(params.dig("triggerConditions", "SMisfireStatCondition")).first
+        return if condition.blank?
+
+        {
+          heat: condition["heat"]&.to_f,
+          distortion: condition["distortion"]&.to_f,
+          damage: condition["damage"]&.to_f,
+          wear: condition["degradation"]&.to_f,
+          min_window: params["minWindowLength"]&.to_f,
+          max_window: params["maxWindowLength"]&.to_f
+        }.compact
+      end
+
+      # The temperature model an item runs on, in kelvin. It lives on the
+      # item's physics controller, and most items carry the block switched
+      # off -- guns and coolers among them -- which leaves them without one.
+      #
+      # The overheat thresholds and the misfire range only mean something on
+      # an item that can overheat; IR from temperature only on one whose
+      # signature is driven by it.
+      private def extract_temperature(values)
+        temperature = values.dig("Components", "SEntityPhysicsControllerParams", "PhysType")
+          &.values&.find { |physics| physics.is_a?(Hash) && physics["temperature"] }
+          &.dig("temperature")
+
+        return if temperature.blank? || temperature["enable"] != "1"
+
+        resource = temperature["itemResourceParams"] || {}
+        signature = temperature["signatureParams"] || {}
+        misfire = temperature["misfireTemperatureRange"] || {}
+
+        result = {min_cooling_temperature: resource["minCoolingTemperature"]&.to_f}
+
+        if resource["enableOverheat"] == "1"
+          result.merge!(
+            overheat_temperature: resource["overheatTemperature"]&.to_f,
+            overheat_warning_temperature: resource["overheatWarningTemperature"]&.to_f,
+            overheat_recovery_temperature: resource["overheatRecoveryTemperature"]&.to_f,
+            misfire_min_temperature: misfire["minimum"]&.to_f,
+            misfire_max_temperature: misfire["maximum"]&.to_f
+          )
+        end
+
+        if signature["enable"] == "1"
+          result[:ir_start_temperature] = signature["minimumTemperatureForIR"]&.to_f
+          result[:ir_per_kelvin] = signature["temperatureToIR"]&.to_f
+        end
+
+        result.compact
       end
 
       private def extract_item_class(tags)

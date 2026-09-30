@@ -244,6 +244,43 @@ class Component < ApplicationRecord
     CATALOGUE_EXCLUDED_CATEGORIES.exclude?(category)
   end
 
+  TEMPERATURE_KEYS = %w[
+    min_cooling_temperature
+    overheat_temperature overheat_warning_temperature overheat_recovery_temperature
+    misfire_min_temperature misfire_max_temperature
+    ir_start_temperature ir_per_kelvin
+  ].freeze
+
+  MISFIRE_KEYS = %w[heat distortion damage wear min_window max_window].freeze
+
+  # The item's temperature model, in kelvin, and the levels at which it starts
+  # to misfire. `heat_connection` is named for the heat block the game dropped
+  # in 4.10 and now holds these two instead; read key by key because a row no
+  # load has reached since still carries the old dump, whose keys mean nothing
+  # here.
+  def temperature
+    thermal_section("temperature", TEMPERATURE_KEYS)
+  end
+
+  def misfire
+    thermal_section("misfire", MISFIRE_KEYS)
+  end
+
+  # Read off the build alone whenever there is one. The load writes nil on
+  # purpose for an item whose model is switched off, and the read-through
+  # reader would take that nil as "not recorded" and answer from the column --
+  # which holds whatever the last load of any environment wrote, so a PTU
+  # build with the model off would show live's.
+  private def thermal_section(section, keys)
+    stored = facts ? facts.heat_connection : read_attribute(:heat_connection)
+    return {} unless stored.is_a?(Hash)
+
+    values = stored.stringify_keys[section]
+    return {} unless values.is_a?(Hash)
+
+    values.stringify_keys.slice(*keys).compact
+  end
+
   # Not in the build we are on. Said out loud in the API, which until now offered
   # a component the export had dropped as though it were current.
   def retired?

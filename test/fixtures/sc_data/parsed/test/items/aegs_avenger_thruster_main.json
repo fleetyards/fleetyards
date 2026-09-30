@@ -38,6 +38,22 @@
       "decay_delay": 3.0
     }
   },
+  "temperature": {
+    "min_cooling_temperature": 300.0,
+    "overheat_temperature": 525.0,
+    "overheat_warning_temperature": 370.0,
+    "overheat_recovery_temperature": 350.0,
+    "misfire_min_temperature": 370.0,
+    "misfire_max_temperature": 525.0
+  },
+  "misfire": {
+    "heat": 0.6,
+    "distortion": 0.6,
+    "damage": 0.9,
+    "wear": 1.0,
+    "min_window": 15.0,
+    "max_window": 120.0
+  },
   "type_data": {
     "thrust_capacity": 5047832.0,
     "fuel_burn_rate_per10_k_newton": 0.0643125,

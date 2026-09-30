@@ -606,6 +606,95 @@ module ScData
         assert_nil tractor["type_data"]
       end
 
+      test "reads the temperature model off the physics controller" do
+        write_item("qdrv_hot", name: "@item_Nameqdrv_hot", components: temperature_xml(overheat: "1", signature: "1"))
+
+        temperature = parsed_item("qdrv_hot")["temperature"]
+
+        assert_equal(
+          {
+            "min_cooling_temperature" => 303.0,
+            "overheat_temperature" => 383.0,
+            "overheat_warning_temperature" => 373.0,
+            "overheat_recovery_temperature" => 378.0,
+            "misfire_min_temperature" => 380.0,
+            "misfire_max_temperature" => 383.0,
+            "ir_start_temperature" => 318.0,
+            "ir_per_kelvin" => 10.0
+          },
+          temperature
+        )
+      end
+
+      test "leaves out the overheat thresholds and IR of an item that uses neither" do
+        write_item("powr_cool", name: "@item_Namepowr_cool", components: temperature_xml(overheat: "0", signature: "0"))
+
+        assert_equal({"min_cooling_temperature" => 303.0}, parsed_item("powr_cool")["temperature"])
+      end
+
+      test "gives no temperature to an item whose model is switched off" do
+        write_item("gun_cold", name: "@item_Namegun_cold", components: temperature_xml(enable: "0", overheat: "1", signature: "1"))
+
+        assert_nil parsed_item("gun_cold")["temperature"]
+      end
+
+      test "reads the levels a component starts to misfire at, and its window" do
+        write_item("shld_misfire", name: "@item_Nameshld_misfire", components: <<~XML)
+          <EntityComponentMisfireParams maxWindowLength="600" minWindowLength="45">
+            <triggerConditions>
+              <SMisfireStatCondition degradation="1" damage="0.9" heat="0.8" distortion="0.6" />
+            </triggerConditions>
+          </EntityComponentMisfireParams>
+        XML
+
+        assert_equal(
+          {"heat" => 0.8, "distortion" => 0.6, "damage" => 0.9, "wear" => 1.0, "min_window" => 45.0, "max_window" => 600.0},
+          parsed_item("shld_misfire")["misfire"]
+        )
+      end
+
+      test "gives no misfire to a component whose block names no stat levels" do
+        write_item("batt_misfire", name: "@item_Namebatt_misfire", components: <<~XML)
+          <EntityComponentMisfireParams maxWindowLength="120" minWindowLength="15">
+            <triggerConditions>
+              <SMisfireFunctionalityCondition functionalityMin="0" minTimeForTrigger="60" />
+            </triggerConditions>
+          </EntityComponentMisfireParams>
+        XML
+
+        assert_nil parsed_item("batt_misfire")["misfire"]
+      end
+
+      test "reads a quantum drive's heat per jump phase" do
+        write_item("qdrv_heat", name: "@item_Nameqdrv_heat", components: <<~XML)
+          <SCItemQuantumDriveParams quantumFuelRequirement="1" jumpRange="1" disconnectRange="1">
+            <params driveSpeed="1" />
+            <heatParams preRampUpThermalEnergyDraw="573" rampUpThermalEnergyDraw="600" inFlightThermalEnergyDraw="6000" rampDownThermalEnergyDraw="600" postRampDownThermalEnergyDraw="573" />
+          </SCItemQuantumDriveParams>
+        XML
+
+        assert_equal(
+          {"pre_ramp_up" => 573.0, "ramp_up" => 600.0, "in_flight" => 6000.0, "ramp_down" => 600.0, "post_ramp_down" => 573.0},
+          parsed_item("qdrv_heat")["type_data"]["jump_heat"]
+        )
+      end
+
+      private def temperature_xml(overheat:, signature:, enable: "1")
+        <<~XML
+          <SEntityPhysicsControllerParams>
+            <PhysType>
+              <SEntityRigidPhysicsControllerParams Mass="630">
+                <temperature enable="#{enable}" initialTemperature="-1">
+                  <signatureParams enable="#{signature}" minimumTemperatureForIR="318" temperatureToIR="10" />
+                  <itemResourceParams minCoolingTemperature="303" enableOverheat="#{overheat}" overheatTemperature="383" overheatWarningTemperature="373" overheatRecoveryTemperature="378" />
+                  <misfireTemperatureRange minimum="380" maximum="383" />
+                </temperature>
+              </SEntityRigidPhysicsControllerParams>
+            </PhysType>
+          </SEntityPhysicsControllerParams>
+        XML
+      end
+
       private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", type: "Armor", sub_type: "UNDEFINED", components: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
