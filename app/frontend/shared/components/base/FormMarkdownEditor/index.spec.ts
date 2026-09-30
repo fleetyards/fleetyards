@@ -1,10 +1,28 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { EditorContent } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
-import type { VueWrapper } from "@vue/test-utils";
-import { afterEach, describe, expect, it } from "vitest";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { nextTick } from "vue";
 import Component from "./index.vue";
+import ImageDialog from "./ImageDialog.vue";
+
+// Images load only from the hosts the page names as its own and RSI's.
+window.API_ENDPOINT = "https://api.fleetyards.test/v1";
+window.FRONTEND_ENDPOINT = "https://fleetyards.test";
+window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
+
+// jsdom has neither: an image preview needs an object URL, and ProseMirror
+// measures the selection to scroll it into view after an insert.
+URL.createObjectURL = vi.fn(() => "blob:preview");
+URL.revokeObjectURL = vi.fn();
+Range.prototype.getClientRects = () =>
+  ({
+    length: 0,
+    item: () => null,
+    [Symbol.iterator]: [][Symbol.iterator],
+  }) as unknown as DOMRectList;
+Range.prototype.getBoundingClientRect = () => new DOMRect();
 
 let wrapper: VueWrapper | undefined;
 
@@ -114,7 +132,7 @@ describe("FormMarkdownEditor", () => {
 
     await button(subject, "link").trigger("click");
     await subject
-      .find('[data-test="markdown-editor-link-url"]')
+      .find('[data-test="markdown-editor-link-url"] input')
       .setValue("https://fleetyards.net/fleets/maru/");
     await subject
       .find('[data-test="markdown-editor-link-apply"]')
@@ -137,79 +155,133 @@ describe("FormMarkdownEditor", () => {
 
     await button(subject, "link").trigger("click");
     await subject
-      .find('[data-test="markdown-editor-link-url"]')
+      .find('[data-test="markdown-editor-link-url"] input')
       .setValue("javascript:alert(1)");
     await subject
       .find('[data-test="markdown-editor-link-apply"]')
       .trigger("click");
 
     expect(
-      subject
-        .find('[role="alert"].base-markdown-editor__url-form-error')
-        .exists(),
+      subject.find('[role="alert"].base-markdown-editor__panel-error').exists(),
     ).toBe(true);
     expect(subject.emitted("update:modelValue")).toBeUndefined();
   });
 
-  it("inserts an image from an https address, with its description", async () => {
+  it("opens the image dialog above the page and inserts what it returns", async () => {
     const subject = await mountEditor({
       name: "description",
       modelValue: "Our banner",
     });
 
     await button(subject, "image").trigger("click");
-    await subject
-      .find('[data-test="markdown-editor-image-url"]')
-      .setValue("https://robertsspaceindustries.com/cover.jpg");
-    await subject
-      .find('[data-test="markdown-editor-image-alt"]')
-      .setValue("Fleet cover");
-    await subject
-      .find('[data-test="markdown-editor-image-apply"]')
-      .trigger("click");
+    await flushPromises();
+
+    const dialog = subject.findComponent(ImageDialog);
+    expect(dialog.exists()).toBe(true);
+    expect(
+      document.body.querySelector('[data-test="markdown-editor-image-dialog"]'),
+    ).not.toBeNull();
+
+    dialog.vm.$emit("insert", {
+      src: "https://api.fleetyards.test/files/representations/a.webp",
+      alt: "Fleet cover",
+    });
+    await nextTick();
 
     expect(lastEmitted(subject)).toContain(
-      "![Fleet cover](https://robertsspaceindustries.com/cover.jpg)",
+      "![Fleet cover](https://api.fleetyards.test/files/representations/a.webp)",
     );
-    expect(
-      subject.find('[data-test="markdown-editor-image-form"]').exists(),
-    ).toBe(false);
+
+    dialog.vm.$emit("close");
+    await nextTick();
+    expect(subject.findComponent(ImageDialog).exists()).toBe(false);
   });
 
-  it("refuses an image the page would not load", async () => {
+  it("closes the image dialog without changing the text", async () => {
     const subject = await mountEditor({
       name: "description",
       modelValue: "Our banner",
     });
 
     await button(subject, "image").trigger("click");
-    await subject
-      .find('[data-test="markdown-editor-image-url"]')
-      .setValue("http://insecure.test/cover.jpg");
-    await subject
-      .find('[data-test="markdown-editor-image-apply"]')
-      .trigger("click");
+    await flushPromises();
+    subject.findComponent(ImageDialog).vm.$emit("close");
+    await nextTick();
 
-    expect(
-      subject
-        .find('[data-test="markdown-editor-image-form"] [role="alert"]')
-        .exists(),
-    ).toBe(true);
+    expect(subject.findComponent(ImageDialog).exists()).toBe(false);
     expect(subject.emitted("update:modelValue")).toBeUndefined();
   });
 
-  it("opens only one address form at a time", async () => {
+  it("does not report a change for focusing the text", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "Cargo & mining\n\n- Escort",
+    });
+
+    editorOf(subject).commands.focus("end");
+    await nextTick();
+
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
+  it("hands back the text as it was once an edit is undone", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "Cargo & mining",
+    });
+    const editor = editorOf(subject);
+
+    editor.commands.focus("end");
+    editor.commands.insertContent("!");
+    expect(lastEmitted(subject)).toBe("Cargo &amp; mining!");
+
+    editor.commands.undo();
+
+    expect(lastEmitted(subject)).toBe("Cargo & mining");
+  });
+
+  it("closes the link panel when the image dialog opens", async () => {
     const subject = await mountEditor({ name: "description", modelValue: "" });
 
     await button(subject, "link").trigger("click");
     await button(subject, "image").trigger("click");
+    await flushPromises();
 
     expect(
       subject.find('[data-test="markdown-editor-link-form"]').exists(),
     ).toBe(false);
-    expect(
-      subject.find('[data-test="markdown-editor-image-form"]').exists(),
-    ).toBe(true);
+    expect(subject.findComponent(ImageDialog).exists()).toBe(true);
+  });
+
+  it("edits the markdown itself in source mode", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "**Crew**",
+    });
+
+    await button(subject, "source").trigger("click");
+
+    const source = subject.find('[data-test="source-description"]');
+    expect((source.element as HTMLTextAreaElement).value).toBe("**Crew**");
+    expect(button(subject, "bold").attributes("disabled")).toBeDefined();
+
+    await source.setValue("## Crew\n\n- *one*");
+
+    expect(lastEmitted(subject)).toBe("## Crew\n\n- *one*");
+  });
+
+  it("shows what the source means when switching back", async () => {
+    const subject = await mountEditor({ name: "description", modelValue: "" });
+
+    await button(subject, "source").trigger("click");
+    await subject.find('[data-test="source-description"]').setValue("## Crew");
+    await button(subject, "source").trigger("click");
+
+    expect(subject.find('[data-test="source-description"]').exists()).toBe(
+      false,
+    );
+    expect(subject.find(".ProseMirror h2").text()).toBe("Crew");
+    expect(lastEmitted(subject)).toBe("## Crew");
   });
 
   it("takes a new value from outside", async () => {

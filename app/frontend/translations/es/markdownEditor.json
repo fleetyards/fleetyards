@@ -15,10 +15,14 @@
       "linkRemove": "Quitar enlace",
       "linkInvalid": "Solo se pueden enlazar direcciones http(s) o rutas de este sitio.",
       "image": "Imagen",
-      "imageUrl": "Dirección de la imagen",
       "imageAlt": "Descripción de la imagen",
       "imageApply": "Insertar",
-      "imageInvalid": "Solo se pueden mostrar como imagen direcciones https o rutas de este sitio."
+      "close": "Cerrar",
+      "source": "Editar el código Markdown",
+      "imageUploadFailed": "No se pudo subir la imagen. Inténtalo de nuevo.",
+      "imageTitle": "Insertar una imagen",
+      "imageAltHint": "Se lee en lugar de la imagen y se muestra si no puede cargarse.",
+      "cancel": "Cancelar"
     }
   }
 }

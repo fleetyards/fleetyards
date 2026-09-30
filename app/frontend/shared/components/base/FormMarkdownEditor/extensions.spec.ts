@@ -4,6 +4,11 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import { markdownExtensions, protectHtml, toMarkdown } from "./extensions";
 
+// Images load only from the hosts the page names as its own and RSI's.
+window.API_ENDPOINT = "https://api.fleetyards.test/v1";
+window.FRONTEND_ENDPOINT = "https://fleetyards.test";
+window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
+
 const load = (markdown: string) =>
   new Editor({
     extensions: markdownExtensions(),
@@ -176,6 +181,21 @@ describe("markdownExtensions images", () => {
     expect(rendered.find("img").attributes("alt")).toBe("Fleet [Alpha]");
   });
 
+  it("centres a selected image", async () => {
+    const editor = load("![cover](https://robertsspaceindustries.com/a.jpg)");
+    editor.commands.setNodeSelection(0);
+    editor.commands.toggleCenter();
+    const saved = toMarkdown(editor);
+    editor.destroy();
+
+    expect(saved).toBe(
+      ":::center\n\n![cover](https://robertsspaceindustries.com/a.jpg)\n\n:::",
+    );
+    expect((await render(saved)).find(".markdown__center img").exists()).toBe(
+      true,
+    );
+  });
+
   it("keeps numbered lists nested where the editor put them", async () => {
     const rendered = await render(
       roundTrip("1. Crew\n   1. Pilot\n   2. Gunner\n2. Ships\n   - Aurora"),
@@ -199,10 +219,12 @@ describe("markdownExtensions refusals", () => {
   it("drops a pasted image the page would not show", () => {
     const editor = load("");
     editor.commands.setContent(
-      '<p>a</p><img src="http://insecure.test/a.jpg"><img src="https://ok.test/b.jpg">',
+      '<p>a</p><img src="https://imgur.test/a.jpg"><img src="https://robertsspaceindustries.com/b.jpg">',
     );
 
-    expect(toMarkdown(editor)).toBe("a\n\n![](https://ok.test/b.jpg)");
+    expect(toMarkdown(editor)).toBe(
+      "a\n\n![](https://robertsspaceindustries.com/b.jpg)",
+    );
     editor.destroy();
   });
 

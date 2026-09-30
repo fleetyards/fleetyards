@@ -7,15 +7,17 @@ export default {
 <script lang="ts" setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
-import { type MaybeRef } from "vue";
+import { defineAsyncComponent, type MaybeRef } from "vue";
 import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  isSafeMarkdownHref,
-  isSafeMarkdownSrc,
-} from "@/shared/utils/MarkdownUrls";
+import LinkPanel from "./LinkPanel.vue";
+import type { MarkdownImageCreate } from "./ImageDialog.vue";
 import { markdownExtensions, protectHtml, toMarkdown } from "./extensions";
+
+// Loaded when an image is first inserted: the uploader it holds is not small,
+// and most edits never need it.
+const ImageDialog = defineAsyncComponent(() => import("./ImageDialog.vue"));
 
 type Props = {
   name: string;
@@ -29,6 +31,9 @@ type Props = {
   // The limit the API enforces, drawn as a running count under the field.
   maxlength?: number;
   disabled?: boolean;
+  // Turns an uploaded image into the address to embed; the upload endpoint by
+  // default.
+  createImage?: MarkdownImageCreate;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,6 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
   info: undefined,
   maxlength: undefined,
   disabled: false,
+  createImage: undefined,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -50,9 +56,6 @@ const id = `${props.name}-${uuidv4()}`;
 const labelId = `${id}-label`;
 const errorId = `${id}-error`;
 const counterId = `${id}-counter`;
-const linkInputId = `${id}-link`;
-const imageInputId = `${id}-image`;
-const imageAltId = `${id}-image-alt`;
 
 const innerLabel = computed(() => {
   if (props.label) {
@@ -97,6 +100,22 @@ const describedBy = [errorId, props.maxlength ? counterId : undefined]
 // would throw the cursor to the start on every keystroke.
 let emitted: string | null = props.modelValue ?? null;
 
+// What was last loaded, and what the editor writes for it. The two differ --
+// the editor escapes characters and adds a paragraph to type into after a
+// closing block -- so a transaction that changes nothing a reader would see
+// (focusing the text is one) would otherwise hand the form a rewritten copy,
+// and mark it changed without anyone touching it.
+let loaded = props.modelValue ?? "";
+let loadedAs: string | undefined;
+
+const setMarkdown = (markdown: string) => {
+  if (markdown === emitted) return;
+
+  emitted = markdown;
+  handleChange(markdown);
+  emit("update:modelValue", markdown);
+};
+
 const editor = useEditor({
   extensions: markdownExtensions(),
   content: protectHtml(props.modelValue ?? ""),
@@ -112,27 +131,59 @@ const editor = useEditor({
       "data-test": `input-${props.name}`,
     },
   },
+  onCreate: ({ editor: instance }) => {
+    loadedAs = toMarkdown(instance);
+  },
   onUpdate: ({ editor: instance }) => {
     const markdown = toMarkdown(instance);
 
-    emitted = markdown;
-    handleChange(markdown);
-    emit("update:modelValue", markdown);
+    setMarkdown(markdown === loadedAs ? loaded : markdown);
   },
   onBlur: () => {
     handleBlur(undefined, true);
   },
 });
 
+const loadIntoEditor = (markdown: string) => {
+  editor.value?.commands.setContent(protectHtml(markdown), {
+    contentType: "markdown",
+    emitUpdate: false,
+  });
+
+  loaded = markdown;
+  loadedAs = editor.value ? toMarkdown(editor.value) : undefined;
+};
+
+// The markdown as written, for anyone who would rather type it than click it.
+// Switching back hands the text to the editor, which shows what it means.
+const sourceMode = ref(false);
+const source = ref("");
+
+const toggleSource = () => {
+  if (sourceMode.value) {
+    loadIntoEditor(source.value);
+    sourceMode.value = false;
+    void nextTick(() => editor.value?.commands.focus());
+    return;
+  }
+
+  closePanels();
+  source.value = inputValue.value ?? "";
+  sourceMode.value = true;
+};
+
+const onSourceInput = (event: Event) => {
+  source.value = (event.target as HTMLTextAreaElement).value;
+  setMarkdown(source.value);
+};
+
 watch(
   () => props.modelValue,
   (value) => {
     if ((value ?? null) !== emitted) {
       emitted = value ?? null;
-      editor.value?.commands.setContent(protectHtml(value ?? ""), {
-        contentType: "markdown",
-        emitUpdate: false,
-      });
+      source.value = value ?? "";
+      loadIntoEditor(value ?? "");
     }
 
     resetField({ value: value ?? null, touched: meta.touched });
@@ -192,40 +243,33 @@ const actions: ToolbarAction[] = [
   },
 ];
 
-const linkOpen = ref(false);
-const linkUrl = ref("");
-const linkInvalid = ref(false);
-const linkInput = ref<HTMLInputElement>();
+const panel = ref<"link">();
+const imageDialogOpen = ref(false);
 
-const linkActive = computed(() => !!editor.value?.isActive("link"));
-
-const openLink = () => {
-  imageOpen.value = false;
-  linkUrl.value = editor.value?.getAttributes("link").href ?? "";
-  linkInvalid.value = false;
-  linkOpen.value = true;
-  void nextTick(() => linkInput.value?.focus());
+const closePanels = () => {
+  panel.value = undefined;
 };
 
-const closeLink = () => {
-  linkOpen.value = false;
+const togglePanel = (name: "link") => {
+  if (panel.value === name) {
+    closePanel();
+    return;
+  }
+
+  panel.value = name;
+};
+
+const closePanel = () => {
+  closePanels();
   editor.value?.commands.focus();
 };
 
-const applyLink = () => {
-  const url = linkUrl.value.trim();
+const linkActive = computed(() => !!editor.value?.isActive("link"));
 
-  if (!url) {
-    chain().extendMarkRange("link").unsetLink().run();
-    linkOpen.value = false;
-    return;
-  }
+const linkHref = () =>
+  (editor.value?.getAttributes("link").href as string | undefined) ?? "";
 
-  if (!isSafeMarkdownHref(url)) {
-    linkInvalid.value = true;
-    return;
-  }
-
+const applyLink = (url: string) => {
   // With nothing selected there is no text to carry the link, so the address
   // becomes its own text.
   if (editor.value?.state.selection.empty && !linkActive.value) {
@@ -240,53 +284,38 @@ const applyLink = () => {
     chain().extendMarkRange("link").setLink({ href: url }).run();
   }
 
-  linkOpen.value = false;
+  closePanels();
 };
 
 const removeLink = () => {
   chain().extendMarkRange("link").unsetLink().run();
-  linkOpen.value = false;
+  closePanels();
 };
 
-const imageOpen = ref(false);
-const imageUrl = ref("");
-const imageAlt = ref("");
-const imageInvalid = ref(false);
-const imageInput = ref<HTMLInputElement>();
-
-const openImage = () => {
-  linkOpen.value = false;
-  imageUrl.value = "";
-  imageAlt.value = "";
-  imageInvalid.value = false;
-  imageOpen.value = true;
-  void nextTick(() => imageInput.value?.focus());
+const openImageDialog = () => {
+  closePanels();
+  imageDialogOpen.value = true;
 };
 
-const closeImage = () => {
-  imageOpen.value = false;
+const closeImageDialog = () => {
+  imageDialogOpen.value = false;
   editor.value?.commands.focus();
 };
 
-const applyImage = () => {
-  const src = imageUrl.value.trim();
-
-  // Anything the page would not load is refused here rather than saved as
-  // markdown that shows up as its own source text.
-  if (!isSafeMarkdownSrc(src)) {
-    imageInvalid.value = true;
-    return;
-  }
-
-  chain()
-    .setImage({ src, alt: imageAlt.value.trim() || undefined })
-    .run();
-  imageOpen.value = false;
+// The dialog closes itself after an insert, once its animation has run.
+const insertImage = (image: { src: string; alt?: string }) => {
+  chain().setImage(image).run();
 };
 
 const focusEditor = () => {
-  editor.value?.commands.focus();
+  if (sourceMode.value) {
+    sourceInput.value?.focus();
+  } else {
+    editor.value?.commands.focus();
+  }
 };
+
+const sourceInput = ref<HTMLTextAreaElement>();
 
 defineExpose({ setFocus: focusEditor });
 </script>
@@ -321,10 +350,13 @@ defineExpose({ setFocus: focusEditor });
           v-tooltip.bottom="t(`markdownEditor.${action.key}`)"
           type="button"
           class="base-markdown-editor__action"
-          :class="{ 'base-markdown-editor__action--active': action.isActive() }"
-          :aria-pressed="action.isActive()"
+          :class="{
+            'base-markdown-editor__action--active':
+              !sourceMode && action.isActive(),
+          }"
+          :aria-pressed="!sourceMode && action.isActive()"
           :aria-label="t(`markdownEditor.${action.key}`)"
-          :disabled="disabled"
+          :disabled="disabled || sourceMode"
           :data-test="`markdown-editor-${action.key}`"
           @mousedown.prevent
           @click="action.run"
@@ -335,14 +367,16 @@ defineExpose({ setFocus: focusEditor });
           v-tooltip.bottom="t('markdownEditor.link')"
           type="button"
           class="base-markdown-editor__action"
-          :class="{ 'base-markdown-editor__action--active': linkActive }"
-          :aria-pressed="linkActive"
-          :aria-expanded="linkOpen"
+          :class="{
+            'base-markdown-editor__action--active': !sourceMode && linkActive,
+          }"
+          :aria-pressed="!sourceMode && linkActive"
+          :aria-expanded="panel === 'link'"
           :aria-label="t('markdownEditor.link')"
-          :disabled="disabled"
+          :disabled="disabled || sourceMode"
           data-test="markdown-editor-link"
           @mousedown.prevent
-          @click="linkOpen ? closeLink() : openLink()"
+          @click="togglePanel('link')"
         >
           <i class="fa-regular fa-link" />
         </button>
@@ -350,110 +384,64 @@ defineExpose({ setFocus: focusEditor });
           v-tooltip.bottom="t('markdownEditor.image')"
           type="button"
           class="base-markdown-editor__action"
-          :aria-expanded="imageOpen"
+          aria-haspopup="dialog"
           :aria-label="t('markdownEditor.image')"
-          :disabled="disabled"
+          :disabled="disabled || sourceMode"
           data-test="markdown-editor-image"
           @mousedown.prevent
-          @click="imageOpen ? closeImage() : openImage()"
+          @click="openImageDialog"
         >
           <i class="fa-regular fa-image" />
         </button>
-      </div>
-      <div
-        v-if="linkOpen"
-        class="base-markdown-editor__url-form"
-        data-test="markdown-editor-link-form"
-      >
-        <label :for="linkInputId" class="sr-only">
-          {{ t("markdownEditor.linkUrl") }}
-        </label>
-        <input
-          :id="linkInputId"
-          ref="linkInput"
-          v-model="linkUrl"
-          type="url"
-          inputmode="url"
-          :placeholder="t('markdownEditor.linkUrlPlaceholder')"
-          :aria-invalid="linkInvalid"
-          data-test="markdown-editor-link-url"
-          @keydown.enter.prevent="applyLink"
-          @keydown.esc.prevent="closeLink"
-        />
         <button
+          v-tooltip.bottom="t('markdownEditor.source')"
           type="button"
-          class="base-markdown-editor__url-form-action"
-          data-test="markdown-editor-link-apply"
-          @click="applyLink"
+          class="base-markdown-editor__action base-markdown-editor__action--end"
+          :class="{ 'base-markdown-editor__action--active': sourceMode }"
+          :aria-pressed="sourceMode"
+          :aria-label="t('markdownEditor.source')"
+          :disabled="disabled"
+          data-test="markdown-editor-source"
+          @mousedown.prevent
+          @click="toggleSource"
         >
-          {{ t("markdownEditor.linkApply") }}
+          <i class="fa-brands fa-markdown" />
         </button>
-        <button
-          v-if="linkActive"
-          type="button"
-          class="base-markdown-editor__url-form-action"
-          data-test="markdown-editor-link-remove"
-          @click="removeLink"
-        >
-          {{ t("markdownEditor.linkRemove") }}
-        </button>
-        <p
-          v-if="linkInvalid"
-          class="base-markdown-editor__url-form-error"
-          role="alert"
-        >
-          {{ t("markdownEditor.linkInvalid") }}
-        </p>
       </div>
-      <div
-        v-if="imageOpen"
-        class="base-markdown-editor__url-form"
-        data-test="markdown-editor-image-form"
-      >
-        <label :for="imageInputId" class="sr-only">
-          {{ t("markdownEditor.imageUrl") }}
-        </label>
-        <input
-          :id="imageInputId"
-          ref="imageInput"
-          v-model="imageUrl"
-          type="url"
-          inputmode="url"
-          :placeholder="t('markdownEditor.linkUrlPlaceholder')"
-          :aria-invalid="imageInvalid"
-          data-test="markdown-editor-image-url"
-          @keydown.enter.prevent="applyImage"
-          @keydown.esc.prevent="closeImage"
+      <LinkPanel
+        v-if="panel === 'link'"
+        :name="name"
+        :initial-url="linkHref()"
+        :active="linkActive"
+        @apply="applyLink"
+        @remove="removeLink"
+        @close="closePanel"
+      />
+      <Teleport to="body">
+        <ImageDialog
+          v-if="imageDialogOpen"
+          :name="name"
+          :create-image="createImage"
+          @insert="insertImage"
+          @close="closeImageDialog"
         />
-        <label :for="imageAltId" class="sr-only">
-          {{ t("markdownEditor.imageAlt") }}
-        </label>
-        <input
-          :id="imageAltId"
-          v-model="imageAlt"
-          type="text"
-          :placeholder="t('markdownEditor.imageAlt')"
-          data-test="markdown-editor-image-alt"
-          @keydown.enter.prevent="applyImage"
-          @keydown.esc.prevent="closeImage"
-        />
-        <button
-          type="button"
-          class="base-markdown-editor__url-form-action"
-          data-test="markdown-editor-image-apply"
-          @click="applyImage"
-        >
-          {{ t("markdownEditor.imageApply") }}
-        </button>
-        <p
-          v-if="imageInvalid"
-          class="base-markdown-editor__url-form-error"
-          role="alert"
-        >
-          {{ t("markdownEditor.imageInvalid") }}
-        </p>
-      </div>
+      </Teleport>
+      <textarea
+        v-if="sourceMode"
+        :id="`${id}-source`"
+        ref="sourceInput"
+        class="base-markdown-editor__scroller base-markdown-editor__source"
+        :value="source"
+        :aria-labelledby="labelId"
+        :aria-describedby="describedBy"
+        :disabled="disabled"
+        spellcheck="false"
+        :data-test="`source-${name}`"
+        @input="onSourceInput"
+        @blur="handleBlur(undefined, true)"
+      />
       <EditorContent
+        v-show="!sourceMode"
         :id="id"
         class="base-markdown-editor__scroller"
         :editor="editor"

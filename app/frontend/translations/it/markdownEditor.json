@@ -15,10 +15,14 @@
       "linkRemove": "Rimuovi link",
       "linkInvalid": "Si possono collegare solo indirizzi http(s) o percorsi di questo sito.",
       "image": "Immagine",
-      "imageUrl": "Indirizzo dell'immagine",
       "imageAlt": "Descrizione dell'immagine",
       "imageApply": "Inserisci",
-      "imageInvalid": "Si possono mostrare come immagine solo indirizzi https o percorsi di questo sito."
+      "close": "Chiudi",
+      "source": "Modifica il sorgente Markdown",
+      "imageUploadFailed": "Impossibile caricare l'immagine. Riprova.",
+      "imageTitle": "Inserisci un'immagine",
+      "imageAltHint": "Letta al posto dell'immagine e mostrata se non può essere caricata.",
+      "cancel": "Annulla"
     }
   }
 }

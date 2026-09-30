@@ -15,10 +15,14 @@
       "linkRemove": "Link entfernen",
       "linkInvalid": "Verlinkt werden können nur http(s)-Adressen oder Pfade auf dieser Seite.",
       "image": "Bild",
-      "imageUrl": "Bildadresse",
       "imageAlt": "Beschreibung des Bildes",
       "imageApply": "Einfügen",
-      "imageInvalid": "Als Bild angezeigt werden können nur https-Adressen oder Pfade auf dieser Seite."
+      "close": "Schließen",
+      "source": "Markdown-Quelltext bearbeiten",
+      "imageUploadFailed": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+      "imageTitle": "Bild einfügen",
+      "imageAltHint": "Wird anstelle des Bildes vorgelesen und angezeigt, falls es nicht geladen werden kann.",
+      "cancel": "Abbrechen"
     }
   }
 }
