@@ -116,7 +116,8 @@ class PushSubscription < ApplicationRecord
     uri = URI.parse(endpoint)
     host = uri.host.to_s.downcase
 
-    return if uri.is_a?(URI::HTTPS) && PUSH_SERVICE_HOSTS.any? { |allowed| allowed.start_with?(".") ? host.end_with?(allowed) : host == allowed }
+    return if uri.is_a?(URI::HTTPS) && uri.port == URI::HTTPS::DEFAULT_PORT && uri.userinfo.nil? &&
+      PUSH_SERVICE_HOSTS.any? { |allowed| allowed.start_with?(".") ? host.end_with?(allowed) : host == allowed }
 
     errors.add(:endpoint, :invalid)
   rescue URI::InvalidURIError

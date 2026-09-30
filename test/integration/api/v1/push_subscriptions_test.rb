@@ -179,6 +179,14 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, body: {endpoint: "https://fcm.googleapis.com/fcm/send/abc", keys: {}}
   end
 
+  test "POST with keys that are not an object is a bad request" do
+    sign_in @user
+
+    assert_api_response :post, 400, body: {endpoint: "https://fcm.googleapis.com/fcm/send/abc", keys: "abc"}
+
+    assert_equal 0, PushSubscription.count
+  end
+
   test "POST with a notifications write token" do
     token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["notifications:write"])
 
