@@ -199,6 +199,15 @@ class NotificationTest < ActiveSupport::TestCase
     assert_equal %i[app mail discord], Notification.channels_for(:model_on_sale)
   end
 
+  # A mail switch on a type without a mailer is a switch that does nothing.
+  test "every type that offers mail has a mailer" do
+    Notification.notification_types.each_key do |type|
+      next unless Notification.channels_for(type).include?(:mail)
+
+      assert Notification.mailer_for(type), "#{type} offers mail but has no mailer"
+    end
+  end
+
   test "stores the polymorphic record" do
     vehicle = create(:vehicle, user: @user)
     set_preference(@user, "model_on_sale", app: true)

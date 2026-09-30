@@ -237,7 +237,8 @@ class Notification < ApplicationRecord
     # kind of event.
     inventory_transfer_received: {
       retention: 30.days,
-      channels: %i[app mail]
+      channels: %i[app mail],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later }
     },
     inventory_transfer_resolved: {
       retention: 30.days,
