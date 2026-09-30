@@ -669,6 +669,30 @@ module ScData
         XML
       end
 
+      test "reads whether a shield controller runs one bubble or four faces" do
+        write_item("controller_shield_quad", name: "@item_Namecontroller_shield_quad", category: "controller", type: "ShieldController", components: <<~XML)
+          <SCItemShieldEmitterParams FaceType="Quadrant" MaxReallocation="1" ReconfigurationCooldown="2.5" />
+        XML
+
+        type_data = parsed_item("controller_shield_quad")["type_data"]
+
+        assert_equal "quadrant", type_data["face_type"]
+        assert_in_delta 1.0, type_data["max_reallocation"]
+        assert_in_delta 2.5, type_data["reconfiguration_cooldown"]
+      end
+
+      test "reads how many missiles a controller keeps armed and its launch cooldown" do
+        write_item("controller_missile_probe", name: "@item_Namecontroller_missile_probe", category: "controller", type: "MissileController", components: <<~XML)
+          <SCItemMissileControllerParams lockAngleAtMin="18" lockAngleAtMax="18" maxArmedMissiles="4" launchCooldownTime="4" />
+        XML
+
+        type_data = parsed_item("controller_missile_probe")["type_data"]
+
+        assert_equal 4, type_data["max_armed_missiles"]
+        assert_in_delta 4.0, type_data["launch_cooldown"]
+        assert_in_delta 18.0, type_data["lock_angle"]
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 

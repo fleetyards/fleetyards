@@ -676,6 +676,26 @@ module ScData
           item[:type_data] = salvage_modifier if salvage_modifier.present?
         end
 
+        # A shield controller decides whether the ship's shield is one bubble or
+        # four faces a pilot can shift strength between.
+        if (emitter = values.dig("Components", "SCItemShieldEmitterParams"))
+          item[:type_data] = {
+            face_type: emitter["FaceType"]&.downcase,
+            max_reallocation: emitter["MaxReallocation"]&.to_f,
+            reconfiguration_cooldown: emitter["ReconfigurationCooldown"]&.to_f
+          }.compact
+        end
+
+        # How many missiles the ship can hold locked and armed at once, and how
+        # soon it may fire the next.
+        if (missile_controller = values.dig("Components", "SCItemMissileControllerParams"))
+          item[:type_data] = {
+            max_armed_missiles: missile_controller["maxArmedMissiles"]&.to_i,
+            launch_cooldown: missile_controller["launchCooldownTime"]&.to_f,
+            lock_angle: missile_controller["lockAngleAtMax"]&.to_f
+          }.compact
+        end
+
         if values.dig("Components", "SCItemTurretParams")
           turret_data = values.dig("Components", "SCItemTurretParams")
           item[:type_data] = {
