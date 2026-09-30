@@ -1372,7 +1372,28 @@
           "range": "射程",
           "lockRange": "鎖定距離",
           "lockTime": "鎖定時間",
-          "trackingSignal": "追蹤"
+          "trackingSignal": "追蹤",
+          "lockAngle": "鎖定錐角",
+          "signalResilience": "訊號抗性",
+          "boostPhase": "助推階段",
+          "terminalPhase": "末段",
+          "lifetime": "存續時間",
+          "fuel": "燃料",
+          "dumbfire": "無導引發射",
+          "dumbfireAllowed": "允許",
+          "dumbfireBlocked": "不允許",
+          "blastRadius": "爆炸半徑",
+          "armTime": "引信解鎖時間",
+          "safetyDistance": "安全距離"
+        },
+        "bombs": {
+          "maxDropAngle": "最大投彈角"
+        },
+        "missileRacks": {
+          "launchDelay": "發射間隔",
+          "ignition": "引擎點火",
+          "ignitesOnRack": "在掛架上",
+          "ignitesAfterRelease": "釋放後"
         },
         "tractorBeams": {
           "maxForce": "最大牽引力",

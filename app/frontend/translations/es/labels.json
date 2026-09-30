@@ -1372,7 +1372,28 @@
           "range": "Alcance",
           "lockRange": "Alcance de fijación",
           "lockTime": "Tiempo de fijación",
-          "trackingSignal": "Rastreo"
+          "trackingSignal": "Rastreo",
+          "lockAngle": "Cono de fijación",
+          "signalResilience": "Resistencia de señal",
+          "boostPhase": "Fase de impulso",
+          "terminalPhase": "Fase terminal",
+          "lifetime": "Vida útil",
+          "fuel": "Combustible",
+          "dumbfire": "Disparo sin guía",
+          "dumbfireAllowed": "Permitido",
+          "dumbfireBlocked": "No permitido",
+          "blastRadius": "Radio de explosión",
+          "armTime": "Tiempo de armado",
+          "safetyDistance": "Distancia de seguridad"
+        },
+        "bombs": {
+          "maxDropAngle": "Ángulo máx. de lanzamiento"
+        },
+        "missileRacks": {
+          "launchDelay": "Retardo de lanzamiento",
+          "ignition": "Encendido del motor",
+          "ignitesOnRack": "En el soporte",
+          "ignitesAfterRelease": "Tras la liberación"
         },
         "tractorBeams": {
           "maxForce": "Fuerza máx.",

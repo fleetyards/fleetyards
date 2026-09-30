@@ -13,6 +13,9 @@ import {
   type ComponentArmor,
   type ComponentTractorBeam,
   type ComponentTurret,
+  type ComponentMissile,
+  type ComponentBomb,
+  type ComponentMissileRack,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -129,6 +132,30 @@ export const useHardpointStats = (
     }
   };
 
+  // For figures below one, which `stat` would round to nothing: a rack fires
+  // every 0.125 s, a missile arms after 1.5.
+  const precise = (
+    labelKey: string,
+    value: number,
+    format: string,
+  ): HardpointStat => ({
+    label: t(`labels.hardpoint.${labelKey}`),
+    value: String(toNumber(Math.round(value * 1000) / 1000, format)),
+  });
+
+  // One figure when both ends agree, which most blast radii do.
+  const span = (
+    min: number | undefined,
+    max: number | undefined,
+    format: string,
+  ) => {
+    const low = Math.round((min ?? max ?? 0) * 100) / 100;
+    const high = Math.round((max ?? min ?? 0) * 100) / 100;
+    if (low === high) return String(toNumber(high, format));
+
+    return `${String(toNumber(low, format))} - ${String(toNumber(high, format))}`;
+  };
+
   return computed<HardpointStat[]>(() => {
     const hp = toValue(hardpoint);
     const typeData = hp?.component?.typeData;
@@ -136,6 +163,47 @@ export const useHardpointStats = (
 
     const category = hp.category;
     const result: HardpointStat[] = [];
+
+    // Lead with total payload damage as the key metric; only spell out the
+    // per-type split when the warhead actually mixes damage types.
+    const pushOrdnanceDamage = (damage?: ComponentWeaponDamage) => {
+      if (!damage) return;
+
+      const entries = Object.entries(damage).filter(
+        ([, value]) => typeof value === "number" && value > 0,
+      );
+      const total = entries.reduce(
+        (sum, [, value]) => sum + (value as number),
+        0,
+      );
+      if (total) {
+        result.push(stat("missiles.damage", total, "damage", true));
+      }
+      if (entries.length > 1) {
+        addDamageBreakdown(result, damage);
+      }
+    };
+
+    const pushFuse = (ordnance: ComponentMissile | ComponentBomb) => {
+      if (ordnance.blastRadiusMin || ordnance.blastRadiusMax) {
+        result.push({
+          label: t("labels.hardpoint.missiles.blastRadius"),
+          value: span(
+            ordnance.blastRadiusMin,
+            ordnance.blastRadiusMax,
+            "distance",
+          ),
+        });
+      }
+      if (ordnance.armTime) {
+        result.push(precise("missiles.armTime", ordnance.armTime, "seconds"));
+      }
+      if (ordnance.safetyDistance) {
+        result.push(
+          stat("missiles.safetyDistance", ordnance.safetyDistance, "distance"),
+        );
+      }
+    };
 
     // Tractor and towing beams mount in the weapons category but share none of a
     // gun's stats, so the parsed `tractorBeam` flag is the signal to use — the
@@ -331,55 +399,86 @@ export const useHardpointStats = (
           );
         }
       } else if ("trackingSignal" in typeData) {
-        if (weapon.damagePerShot) {
-          // Lead with total payload damage as the key metric; only spell out the
-          // per-type split when the warhead actually mixes damage types.
-          const entries = Object.entries(weapon.damagePerShot).filter(
-            ([, value]) => typeof value === "number" && value > 0,
-          );
-          const total = entries.reduce(
-            (sum, [, value]) => sum + (value as number),
-            0,
-          );
-          if (total) {
-            result.push(stat("missiles.damage", total, "damage", true));
-          }
-          if (entries.length > 1) {
-            addDamageBreakdown(result, weapon.damagePerShot);
-          }
+        const missile = typeData as ComponentMissile;
+        pushOrdnanceDamage(missile.damagePerShot);
+        if (missile.speed) {
+          result.push(stat("missiles.speed", missile.speed, "missileSpeed"));
         }
-        if (weapon.speed) {
-          result.push(stat("missiles.speed", weapon.speed, "missileSpeed"));
+        if (missile.range) {
+          result.push(stat("missiles.range", missile.range, "missileRange"));
         }
-        if (weapon.range) {
-          result.push(stat("missiles.range", weapon.range, "missileRange"));
+        if (missile.lockRangeMin || missile.lockRangeMax) {
+          result.push({
+            label: t("labels.hardpoint.missiles.lockRange"),
+            value: `${String(toNumber(missile.lockRangeMin || 0, "missileRange"))} - ${String(toNumber(missile.lockRangeMax || 0, "missileRange"))}`,
+          });
         }
-        {
-          const td = typeData as Record<string, unknown>;
-          const min = td.lockRangeMin as number | undefined;
-          const max = td.lockRangeMax as number | undefined;
-          if (min || max) {
-            result.push({
-              label: t("labels.hardpoint.missiles.lockRange"),
-              value: `${String(toNumber(min || 0, "missileRange"))} - ${String(toNumber(max || 0, "missileRange"))}`,
-            });
-          }
+        if (missile.lockTime) {
+          result.push(stat("missiles.lockTime", missile.lockTime, "lockTime"));
         }
-        if ((typeData as Record<string, unknown>).lockTime) {
+        if (missile.trackingSignal) {
+          result.push({
+            label: t("labels.hardpoint.missiles.trackingSignal"),
+            value: String(missile.trackingSignal),
+          });
+        }
+        if (missile.lockAngle) {
+          result.push(stat("missiles.lockAngle", missile.lockAngle, "degrees"));
+        }
+        if (missile.signalResilienceMin || missile.signalResilienceMax) {
+          result.push({
+            label: t("labels.hardpoint.missiles.signalResilience"),
+            value: span(
+              missile.signalResilienceMin,
+              missile.signalResilienceMax,
+              "integer",
+            ),
+          });
+        }
+        if (missile.boostPhaseDuration) {
           result.push(
-            stat(
-              "missiles.lockTime",
-              (typeData as Record<string, unknown>).lockTime as number,
-              "lockTime",
+            precise(
+              "missiles.boostPhase",
+              missile.boostPhaseDuration,
+              "seconds",
             ),
           );
         }
-        if ((typeData as Record<string, unknown>).trackingSignal) {
+        if (missile.terminalPhaseTime) {
+          result.push(
+            precise(
+              "missiles.terminalPhase",
+              missile.terminalPhaseTime,
+              "seconds",
+            ),
+          );
+        }
+        if (missile.maxLifetime) {
+          result.push(
+            precise("missiles.lifetime", missile.maxLifetime, "seconds"),
+          );
+        }
+        if (missile.fuelTankSize) {
+          result.push(stat("missiles.fuel", missile.fuelTankSize, "integer"));
+        }
+        if (typeof missile.dumbfire === "boolean") {
           result.push({
-            label: t("labels.hardpoint.missiles.trackingSignal"),
-            value: String((typeData as Record<string, unknown>).trackingSignal),
+            label: t("labels.hardpoint.missiles.dumbfire"),
+            value: t(
+              missile.dumbfire
+                ? "labels.hardpoint.missiles.dumbfireAllowed"
+                : "labels.hardpoint.missiles.dumbfireBlocked",
+            ),
           });
         }
+        pushFuse(missile);
+      } else if ("maxDropAngle" in typeData) {
+        const bomb = typeData as ComponentBomb;
+        pushOrdnanceDamage(bomb.damagePerShot);
+        if (bomb.maxDropAngle) {
+          result.push(stat("bombs.maxDropAngle", bomb.maxDropAngle, "degrees"));
+        }
+        pushFuse(bomb);
       } else {
         const burstDps = projectileBurstDps(weapon);
         if (burstDps) {
@@ -428,6 +527,26 @@ export const useHardpointStats = (
             stat("weapons.costPerShot", weapon.regen.costPerBullet, "integer"),
           );
         }
+      }
+    } else if (
+      category === HardpointCategoryEnum.MISSILE_RACKS ||
+      category === HardpointCategoryEnum.BOMBCOMPARTMENTS
+    ) {
+      const rack = typeData as ComponentMissileRack;
+      if (typeof rack.launchDelay === "number" && rack.launchDelay > 0) {
+        result.push(
+          precise("missileRacks.launchDelay", rack.launchDelay, "seconds"),
+        );
+      }
+      if (typeof rack.igniteOnPylon === "boolean") {
+        result.push({
+          label: t("labels.hardpoint.missileRacks.ignition"),
+          value: t(
+            rack.igniteOnPylon
+              ? "labels.hardpoint.missileRacks.ignitesOnRack"
+              : "labels.hardpoint.missileRacks.ignitesAfterRelease",
+          ),
+        });
       }
     } else if (category === HardpointCategoryEnum.SHIELDGENERATOR) {
       const shield = typeData as ComponentShield;
