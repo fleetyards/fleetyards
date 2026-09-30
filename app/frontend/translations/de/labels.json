@@ -981,6 +981,13 @@
         "damageEnergy": "Energie",
         "damageDistortion": "Distortion",
         "damageThermal": "Thermisch",
+        "controlComposition": "DPS nach Steuerung",
+        "controlGroups": {
+          "pilot": "Pilot",
+          "manned": "Bemannter Geschützturm",
+          "remote": "Ferngesteuerter Geschützturm",
+          "pds": "Punktverteidigung"
+        },
         "hint": "DPS aus dem Standard-Loadout. Der Dauerwert berücksichtigt die Energiepool-Regeneration und den Überhitzungszyklus jeder Waffe. Raketen sind ausgenommen."
       },
       "power": {
@@ -1327,6 +1334,13 @@
           "captureRadius": "Fangradius",
           "fuelFlowRate": "Treibstoff-Durchflussrate",
           "quantumFuelFlowRate": "Quantum-Durchflussrate"
+        },
+        "turrets": {
+          "turnRate": "Drehrate",
+          "control": "Steuerung",
+          "yawRange": "Gierbereich",
+          "pitchRange": "Nickbereich",
+          "limitsVary": "abhängig von der Drehung"
         },
         "weapons": {
           "dps": "DPS",

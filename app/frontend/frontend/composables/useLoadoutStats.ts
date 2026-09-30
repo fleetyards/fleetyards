@@ -4,6 +4,8 @@ import {
   HardpointCategoryEnum,
   type Hardpoint,
   type ComponentWeapon,
+  type ComponentTurret,
+  ComponentTurretControlEnum,
 } from "@/services/fyApi";
 import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
 
@@ -17,6 +19,12 @@ export type DamageBreakdown = {
 
 export type DamageType = "physical" | "energy" | "distortion" | "thermal";
 
+// Who fires a weapon: the pilot, unless a turret it sits on is manned, aimed
+// from a remote seat or run by the point-defence system.
+export type ControlGroup = "pilot" | ComponentTurretControlEnum;
+
+export type ControlBreakdown = Record<ControlGroup, number>;
+
 export type WeaponStat = {
   id: string;
   name: string;
@@ -24,12 +32,14 @@ export type WeaponStat = {
   dps: number;
   sustainedDps: number;
   type: DamageType;
+  control: ControlGroup;
 };
 
 export type LoadoutStats = {
   dps: DamageBreakdown;
   sustainedDps: DamageBreakdown;
   alpha: DamageBreakdown;
+  dpsByControl: ControlBreakdown;
   weapons: WeaponStat[];
   weaponCount: number;
   missileDamage: number;
@@ -65,20 +75,43 @@ function addBreakdown(
   }
 }
 
+export const CONTROL_GROUPS: ControlGroup[] = [
+  "pilot",
+  ComponentTurretControlEnum.MANNED,
+  ComponentTurretControlEnum.REMOTE,
+  ComponentTurretControlEnum.PDS,
+];
+
+function emptyControlBreakdown(): ControlBreakdown {
+  return { pilot: 0, manned: 0, remote: 0, pds: 0 };
+}
+
+type WeaponHardpoint = {
+  hardpoint: Hardpoint;
+  control: ControlGroup;
+};
+
+// The outermost mount that names its operator decides for everything inside
+// it: a gimbal on a manned turret is aimed by the gunner, not by the pilot.
 function collectWeaponHardpoints(
   hardpoints: Hardpoint[] | undefined,
-  collected: Hardpoint[] = [],
-): Hardpoint[] {
+  collected: WeaponHardpoint[] = [],
+  inherited?: ControlGroup,
+): WeaponHardpoint[] {
   for (const hardpoint of hardpoints || []) {
+    const control =
+      inherited ??
+      (hardpoint.component?.typeData as ComponentTurret | undefined)?.control;
+
     if (
       hardpoint.category === HardpointCategoryEnum.WEAPONS &&
       hardpoint.component?.typeData
     ) {
-      collected.push(hardpoint);
+      collected.push({ hardpoint, control: control ?? "pilot" });
     }
 
     if (hardpoint.hardpoints?.length) {
-      collectWeaponHardpoints(hardpoint.hardpoints, collected);
+      collectWeaponHardpoints(hardpoint.hardpoints, collected, control);
     }
   }
 
@@ -150,10 +183,11 @@ export function computeLoadoutStats(
   const dps = emptyBreakdown();
   const sustainedDps = emptyBreakdown();
   const alpha = emptyBreakdown();
+  const dpsByControl = emptyControlBreakdown();
   const weapons: WeaponStat[] = [];
   let missileDamage = 0;
 
-  for (const hardpoint of weaponHardpoints) {
+  for (const { hardpoint, control } of weaponHardpoints) {
     const component = hardpoint.component!;
     const weapon = component.typeData as ComponentWeapon;
     const weaponDps = emptyBreakdown();
@@ -185,6 +219,8 @@ export function computeLoadoutStats(
       weaponDps[current] > weaponDps[best] ? current : best,
     );
 
+    dpsByControl[control] += weaponDps.total;
+
     weapons.push({
       id: hardpoint.id,
       name: component.name,
@@ -192,6 +228,7 @@ export function computeLoadoutStats(
       dps: weaponDps.total,
       sustainedDps: weaponDps.total * ratio,
       type,
+      control,
     });
   }
 
@@ -201,6 +238,7 @@ export function computeLoadoutStats(
     dps,
     sustainedDps,
     alpha,
+    dpsByControl,
     weapons,
     weaponCount: weapons.length,
     missileDamage,

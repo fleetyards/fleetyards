@@ -12,7 +12,9 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
+  CONTROL_GROUPS,
   useLoadoutStats,
+  type ControlGroup,
   type DamageBreakdown,
 } from "@/frontend/composables/useLoadoutStats";
 import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
@@ -113,6 +115,29 @@ const openPenetrationCheck = () => {
     },
   });
 };
+
+const hoveredControl = ref<string | null>(null);
+
+const controlColors: Record<ControlGroup, string> = {
+  pilot: "#f5b800",
+  manned: "#7cb342",
+  remote: "#ab47bc",
+  pds: "#ef5350",
+};
+
+const controlComposition = computed(() =>
+  CONTROL_GROUPS.map((key) => ({
+    key,
+    label: `labels.combat.controlGroups.${key}`,
+    color: controlColors[key],
+    value: stats.value.dpsByControl[key],
+  })).filter((entry) => entry.value > 0),
+);
+
+// A ship whose every gun is the pilot's has nothing to split.
+const showControlComposition = computed(() =>
+  controlComposition.value.some((entry) => entry.key !== "pilot"),
+);
 </script>
 
 <template>
@@ -178,6 +203,17 @@ const openPenetrationCheck = () => {
       :highlighted="hoveredType"
       @highlight="hoveredType = $event"
     />
+
+    <template v-if="showControlComposition">
+      <div class="metrics-card__section-label">
+        {{ t("labels.combat.controlComposition") }}
+      </div>
+      <CompositionBar
+        :segments="controlComposition"
+        :highlighted="hoveredControl"
+        @highlight="hoveredControl = $event"
+      />
+    </template>
 
     <div v-if="hasTestableGuns" class="metrics-card__actions">
       <button

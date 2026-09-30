@@ -608,10 +608,10 @@ module ScData
         if values.dig("Components", "SCItemTurretParams")
           turret_data = values.dig("Components", "SCItemTurretParams")
           item[:type_data] = {
-            min_yaw: turret_data.dig("movementParams", "SItemTurretMovementParams", "yawLimits", "min")&.to_f,
-            max_yaw: turret_data.dig("movementParams", "SItemTurretMovementParams", "yawLimits", "max")&.to_f,
-            min_pitch: turret_data.dig("movementParams", "SItemTurretMovementParams", "pitchLimits", "min")&.to_f,
-            max_pitch: turret_data.dig("movementParams", "SItemTurretMovementParams", "pitchLimits", "max")&.to_f
+            yaw_speed: extract_turret_axis_speed(turret_data, "yawAxis"),
+            pitch_speed: extract_turret_axis_speed(turret_data, "pitchAxis"),
+            **turret_limits(turret_data),
+            control: extract_turret_control(values, turret_data, item[:sub_type], tags)
           }.compact
         end
 
@@ -655,6 +655,87 @@ module ScData
         PlasmaCannon NeutronCannon TachyonCannon
         ScatterGun MassDriver
       ].freeze
+
+      # A mount turns on one joint per axis, each with its own top speed in
+      # degrees per second.
+      private def extract_turret_axis_speed(turret_data, axis)
+        speeds = turret_axis_params(turret_data, axis).filter_map { |params| params["speed"]&.to_f }
+
+        speeds.max
+      end
+
+      private def turret_limits(turret_data)
+        yaw = extract_turret_axis_limits(turret_data, "yawAxis")
+        pitch = extract_turret_axis_limits(turret_data, "pitchAxis")
+
+        {
+          min_yaw: yaw[:min],
+          max_yaw: yaw[:max],
+          yaw_limits_vary: yaw[:vary],
+          min_pitch: pitch[:min],
+          max_pitch: pitch[:max],
+          pitch_limits_vary: pitch[:vary]
+        }
+      end
+
+      # How far a mount turns on one axis, in degrees from centre, as one
+      # interval the mount can actually sweep. A fixed limit is one interval; a
+      # limit tied to another joint's rotation -- a turret that cannot pitch
+      # down into its own hull when facing aft -- is one per rotation, and the
+      # widest of them is kept, with `vary` saying the others are narrower.
+      # Ends are never mixed across rotations or joints: two half turns are
+      # not a full one. Where two joints share an axis, a base and the gun
+      # cradle on it, the wider joint describes the mount.
+      #
+      # Limits a ship overrides through a tag on its port are left out: they
+      # describe that one installation, not the mount.
+      private def extract_turret_axis_limits(turret_data, axis)
+        joints = turret_axis_params(turret_data, axis).filter_map do |params|
+          intervals = turret_angle_intervals(params["angleLimits"] || {})
+          next if intervals.empty?
+
+          {interval: intervals.max_by { |low, high| high - low }, vary: intervals.uniq.size > 1}
+        end
+
+        widest = joints.max_by { |joint| joint[:interval].last - joint[:interval].first }
+        return {} unless widest
+
+        {min: widest[:interval].first, max: widest[:interval].last, vary: widest[:vary] || nil}.compact
+      end
+
+      private def turret_angle_intervals(limits)
+        pairs = if (standard = limits["SCItemTurretStandardAngleLimitParams"])
+          [[standard["LowestAngle"], standard["HighestAngle"]]]
+        else
+          Array.wrap(limits.dig("SCItemTurretCustomAngleLimitParams", "AngleLimits", "SCItemTurretCustomAngleLimit"))
+            .map { |limit| [limit["LowestAngle"], limit["HighestAngle"]] }
+        end
+
+        pairs.select { |low, high| low.present? && high.present? }.map { |low, high| [low.to_f, high.to_f] }
+      end
+
+      # A slaved joint only follows another one, so it says nothing about how
+      # the operator can aim.
+      private def turret_axis_params(turret_data, axis)
+        joints = Array.wrap(turret_data.dig("movementList", "SCItemTurretJointMovementParams"))
+
+        joints.reject { |joint| joint["slavedOnly"] == "1" }.filter_map do |joint|
+          Array.wrap(joint[axis]).first&.dig("SCItemTurretJointMovementAxisParams")
+        end
+      end
+
+      # Who aims the mount. Nothing marks a pilot's gimbal as such: it is the
+      # mount with none of these, and a gimbal inside a manned or remote turret
+      # is aimed by that turret's operator instead.
+      private def extract_turret_control(values, turret_data, sub_type, tags)
+        if sub_type == "PDCTurret" || tags.map { |tag| tag.delete_prefix("$") }.include?("PDC")
+          "pds"
+        elsif turret_data.dig("remoteTurret", "SCItemTurretRemoteParams").present?
+          "remote"
+        elsif sub_type == "MannedTurret" || values.dig("Components", "SCItemSeatParams").present?
+          "manned"
+        end
+      end
 
       private def extract_item_class(tags)
         # Longest match first so "DistortionScatterGun" is not read as

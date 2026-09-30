@@ -184,6 +184,24 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a mount's turn rate, angle limits and who controls it" do
+    create(:component, name: "Turretprobe", category: "turret",
+      type_data: {
+        "yaw_speed" => 95.0, "pitch_speed" => 60.0, "control" => "remote", "signature_ir" => 0.0,
+        "min_yaw" => -180.0, "max_yaw" => 180.0, "min_pitch" => -85.0, "max_pitch" => 0.0, "pitch_limits_vary" => true
+      })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Turretprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 95.0, type_data["yawSpeed"]
+      assert_in_delta 60.0, type_data["pitchSpeed"]
+      assert_equal "remote", type_data["control"]
+      assert_in_delta(-85.0, type_data["minPitch"])
+      assert type_data["pitchLimitsVary"]
+    end
+  end
+
   # Numerically, which is the whole reason `sizeOrder` exists as a name of its
   # own: `size` is a string ransacker, so ordering on it puts 10 and 12 ahead
   # of 2.

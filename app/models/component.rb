@@ -157,6 +157,11 @@ class Component < ApplicationRecord
   # controllers stay internals.
   CATALOGUED_CONTROLLER_TYPES = %w[FlightController].freeze
 
+  # Who aims a turret or gimbal, as the parser reads it off the mount. A mount
+  # carrying none of these is aimed by whoever aims what it sits on -- the
+  # pilot, for a gimbal on the hull.
+  TURRET_CONTROLS = %w[manned remote pds].freeze
+
   # What the public catalogue lists. `with_facts` has to be applied by the
   # caller -- the category is read off the joined build.
   #

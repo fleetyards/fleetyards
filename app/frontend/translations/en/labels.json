@@ -981,6 +981,13 @@
         "damageEnergy": "Energy",
         "damageDistortion": "Distortion",
         "damageThermal": "Thermal",
+        "controlComposition": "DPS by Control",
+        "controlGroups": {
+          "pilot": "Pilot",
+          "manned": "Manned Turret",
+          "remote": "Remote Turret",
+          "pds": "Point Defense"
+        },
         "hint": "DPS from the default loadout. Sustained factors in each weapon's energy-pool regen and overheat cycle. Missiles excluded."
       },
       "power": {
@@ -1327,6 +1334,13 @@
           "captureRadius": "Capture Radius",
           "fuelFlowRate": "Fuel Flow Rate",
           "quantumFuelFlowRate": "Quantum Fuel Flow Rate"
+        },
+        "turrets": {
+          "turnRate": "Turn Rate",
+          "control": "Control",
+          "yawRange": "Yaw Range",
+          "pitchRange": "Pitch Range",
+          "limitsVary": "varies with rotation"
         },
         "weapons": {
           "dps": "DPS",

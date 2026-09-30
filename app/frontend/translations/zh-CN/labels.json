@@ -981,6 +981,13 @@
         "damageEnergy": "能量",
         "damageDistortion": "扭曲",
         "damageThermal": "热能",
+        "controlComposition": "按操控分类的DPS",
+        "controlGroups": {
+          "pilot": "驾驶员",
+          "manned": "有人炮塔",
+          "remote": "遥控炮塔",
+          "pds": "点防御"
+        },
         "hint": "数据来自默认配置的 DPS。持续 DPS 计入每件武器的能量池回复和过热循环。不含导弹。"
       },
       "power": {
@@ -1327,6 +1334,13 @@
           "captureRadius": "捕获半径",
           "fuelFlowRate": "燃料流速",
           "quantumFuelFlowRate": "量子燃料流速"
+        },
+        "turrets": {
+          "turnRate": "转向速率",
+          "control": "操控",
+          "yawRange": "偏航范围",
+          "pitchRange": "俯仰范围",
+          "limitsVary": "随转向变化"
         },
         "weapons": {
           "dps": "DPS",

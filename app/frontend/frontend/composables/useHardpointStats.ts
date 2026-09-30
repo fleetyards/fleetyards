@@ -12,6 +12,7 @@ import {
   type ComponentThruster,
   type ComponentArmor,
   type ComponentTractorBeam,
+  type ComponentTurret,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -73,6 +74,29 @@ export const useHardpointStats = (
     label: t(`labels.hardpoint.${labelKey}`),
     value: `${Math.round(value * 100)}%`,
   });
+
+  // A symmetric range reads as "±80°", a full turn as "360°", anything else
+  // as its two ends.
+  const turretRange = (
+    min?: number,
+    max?: number,
+    vary?: boolean,
+  ): string | null => {
+    if (typeof min !== "number" || typeof max !== "number") return null;
+
+    const low = Math.round(min);
+    const high = Math.round(max);
+    let range = `${low}° / ${high}°`;
+    if (high - low >= 360) {
+      range = "360°";
+    } else if (low === -high) {
+      range = `±${high}°`;
+    }
+
+    return vary
+      ? `${range} (${t("labels.hardpoint.turrets.limitsVary")})`
+      : range;
+  };
 
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
@@ -629,6 +653,55 @@ export const useHardpointStats = (
         if (sigs.rs?.sensitivity != null) {
           result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
         }
+      }
+    } else if (
+      category === HardpointCategoryEnum.TURRET ||
+      category === HardpointCategoryEnum.WEAPON_MOUNTS
+    ) {
+      const turret = typeData as ComponentTurret;
+      const speeds = [turret.yawSpeed, turret.pitchSpeed].filter(
+        (speed): speed is number => typeof speed === "number" && speed > 0,
+      );
+
+      if (speeds.length) {
+        // One figure when both axes turn alike, which most mounts do; the
+        // pair, yaw first, when they differ.
+        const value = [...new Set(speeds.map(Math.round))]
+          .map((speed) => String(toNumber(speed, "integer")))
+          .join(" / ");
+        result.push({
+          label: t("labels.hardpoint.turrets.turnRate"),
+          value: `${value} °/s`,
+          primary: true,
+        });
+      }
+      const yawRange = turretRange(
+        turret.minYaw,
+        turret.maxYaw,
+        turret.yawLimitsVary,
+      );
+      if (yawRange) {
+        result.push({
+          label: t("labels.hardpoint.turrets.yawRange"),
+          value: yawRange,
+        });
+      }
+      const pitchRange = turretRange(
+        turret.minPitch,
+        turret.maxPitch,
+        turret.pitchLimitsVary,
+      );
+      if (pitchRange) {
+        result.push({
+          label: t("labels.hardpoint.turrets.pitchRange"),
+          value: pitchRange,
+        });
+      }
+      if (turret.control) {
+        result.push({
+          label: t("labels.hardpoint.turrets.control"),
+          value: t(`labels.combat.controlGroups.${turret.control}`),
+        });
       }
     } else if (category === HardpointCategoryEnum.COUNTERMEASURES) {
       const cm = typeData as Record<string, unknown>;

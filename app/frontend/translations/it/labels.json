@@ -981,6 +981,13 @@
         "damageEnergy": "Energia",
         "damageDistortion": "Distorsione",
         "damageThermal": "Termico",
+        "controlComposition": "DPS per controllo",
+        "controlGroups": {
+          "pilot": "Pilota",
+          "manned": "Torretta con equipaggio",
+          "remote": "Torretta remota",
+          "pds": "Difesa ravvicinata"
+        },
         "hint": "DPS della configurazione predefinita. Il valore sostenuto tiene conto della rigenerazione della riserva energetica di ogni arma e del ciclo di surriscaldamento. Missili esclusi."
       },
       "power": {
@@ -1327,6 +1334,13 @@
           "captureRadius": "Raggio di aggancio",
           "fuelFlowRate": "Portata carburante",
           "quantumFuelFlowRate": "Portata carburante Quantum"
+        },
+        "turrets": {
+          "turnRate": "Velocità di rotazione",
+          "control": "Controllo",
+          "yawRange": "Escursione d'imbardata",
+          "pitchRange": "Escursione di beccheggio",
+          "limitsVary": "in base alla rotazione"
         },
         "weapons": {
           "dps": "DPS",

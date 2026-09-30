@@ -981,6 +981,13 @@
         "damageEnergy": "Énergie",
         "damageDistortion": "Distorsion",
         "damageThermal": "Thermique",
+        "controlComposition": "DPS par contrôle",
+        "controlGroups": {
+          "pilot": "Pilote",
+          "manned": "Tourelle habitée",
+          "remote": "Tourelle téléopérée",
+          "pds": "Défense rapprochée"
+        },
         "hint": "DPS de l'équipement par défaut. Le DPS soutenu tient compte de la régénération de la réserve d'énergie de chaque arme et de son cycle de surchauffe. Les missiles sont exclus."
       },
       "power": {
@@ -1327,6 +1334,13 @@
           "captureRadius": "Rayon de capture",
           "fuelFlowRate": "Débit de carburant",
           "quantumFuelFlowRate": "Débit de carburant Quantum"
+        },
+        "turrets": {
+          "turnRate": "Vitesse de rotation",
+          "control": "Contrôle",
+          "yawRange": "Amplitude en lacet",
+          "pitchRange": "Amplitude en tangage",
+          "limitsVary": "selon la rotation"
         },
         "weapons": {
           "dps": "DPS",

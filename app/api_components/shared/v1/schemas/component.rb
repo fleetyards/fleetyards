@@ -71,6 +71,7 @@ module Shared
                 ::Shared::V1::Schemas::ComponentCooler,
                 ::Shared::V1::Schemas::ComponentRadar,
                 ::Shared::V1::Schemas::ComponentController,
+                ::Shared::V1::Schemas::ComponentTurret,
                 ::Shared::V1::Schemas::ComponentPowerPlant
               ]
             },

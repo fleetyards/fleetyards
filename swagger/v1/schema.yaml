@@ -18545,6 +18545,7 @@ components:
           - "$ref": "#/components/schemas/ComponentCooler"
           - "$ref": "#/components/schemas/ComponentRadar"
           - "$ref": "#/components/schemas/ComponentController"
+          - "$ref": "#/components/schemas/ComponentTurret"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
@@ -19250,6 +19251,50 @@ components:
           type: number
       additionalProperties: false
       title: ComponentTractorBeamTowing
+    ComponentTurret:
+      type: object
+      properties:
+        yawSpeed:
+          type: number
+        pitchSpeed:
+          type: number
+        minYaw:
+          type: number
+        maxYaw:
+          type: number
+        yawLimitsVary:
+          type: boolean
+        minPitch:
+          type: number
+        maxPitch:
+          type: number
+        pitchLimitsVary:
+          type: boolean
+        control:
+          "$ref": "#/components/schemas/ComponentTurretControlEnum"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      title: ComponentTurret
+    ComponentTurretControlEnum:
+      type: string
+      enum:
+      - manned
+      - remote
+      - pds
+      x-enumNames:
+      - MANNED
+      - REMOTE
+      - PDS
+      title: ComponentTurretControlEnum
     ComponentTypeEnum:
       type: string
       enum:

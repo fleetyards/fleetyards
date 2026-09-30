@@ -139,7 +139,172 @@ module ScData
         assert_in_delta 1.05, type_data["signal_cross_section"]
       end
 
-      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", components: "")
+      test "reads a mount's turn rate per axis off its joints" do
+        write_turret("mount_gimbal_s3", yaw_speed: 80, pitch_speed: 60)
+
+        type_data = parsed_item("mount_gimbal_s3")["type_data"]
+
+        assert_in_delta 80.0, type_data["yaw_speed"]
+        assert_in_delta 60.0, type_data["pitch_speed"]
+        assert_nil type_data["control"]
+      end
+
+      test "leaves a slaved joint out of the turn rate" do
+        write_turret("slaved_turret", yaw_speed: 35, pitch_speed: 35, extra_joints: <<~XML)
+          <SCItemTurretJointMovementParams jointName="follower" slavedOnly="1">
+            <yawAxis>
+              <SCItemTurretJointMovementAxisParams speed="200" />
+            </yawAxis>
+          </SCItemTurretJointMovementParams>
+        XML
+
+        assert_in_delta 35.0, parsed_item("slaved_turret")["type_data"]["yaw_speed"]
+      end
+
+      test "reads no turn rate for an axis only a slaved joint turns" do
+        write_item("slaved_only", name: "@item_Nameslaved_only", category: "turret", type: "Turret", sub_type: "GunTurret", components: <<~XML)
+          <SCItemTurretParams>
+            <movementList>
+              <SCItemTurretJointMovementParams jointName="follower" slavedOnly="1">
+                <yawAxis>
+                  <SCItemTurretJointMovementAxisParams speed="200" />
+                </yawAxis>
+              </SCItemTurretJointMovementParams>
+            </movementList>
+          </SCItemTurretParams>
+        XML
+
+        assert_nil parsed_item("slaved_only")["type_data"]["yaw_speed"]
+      end
+
+      test "reads a mount's fixed angle limits per axis" do
+        write_turret("gimbal_limits",
+          yaw_limits: '<SCItemTurretStandardAngleLimitParams LowestAngle="-80" HighestAngle="80" />',
+          pitch_limits: '<SCItemTurretStandardAngleLimitParams LowestAngle="-20" HighestAngle="20" />')
+
+        type_data = parsed_item("gimbal_limits")["type_data"]
+
+        assert_in_delta(-80.0, type_data["min_yaw"])
+        assert_in_delta 80.0, type_data["max_yaw"]
+        assert_in_delta(-20.0, type_data["min_pitch"])
+        assert_in_delta 20.0, type_data["max_pitch"]
+        assert_nil type_data["yaw_limits_vary"]
+        assert_nil type_data["pitch_limits_vary"]
+      end
+
+      test "keeps the widest range of a limit that changes with rotation" do
+        write_turret("bubble_limits", pitch_limits: <<~XML)
+          <SCItemTurretCustomAngleLimitParams RelativeJointName="yaw_part">
+            <AngleLimits>
+              <SCItemTurretCustomAngleLimit TurretRotation="0" LowestAngle="-85" HighestAngle="0" />
+              <SCItemTurretCustomAngleLimit TurretRotation="100" LowestAngle="-85" HighestAngle="-15" />
+            </AngleLimits>
+            <limitOverwrites>
+              <SCItemTurretCustomAngleLimitTagOverwriteParams limiterTag="00000000-0000-0000-0000-000000000002">
+                <AngleLimits>
+                  <SCItemTurretCustomAngleLimit TurretRotation="0" LowestAngle="-89" HighestAngle="89" />
+                </AngleLimits>
+              </SCItemTurretCustomAngleLimitTagOverwriteParams>
+            </limitOverwrites>
+          </SCItemTurretCustomAngleLimitParams>
+        XML
+
+        type_data = parsed_item("bubble_limits")["type_data"]
+
+        assert_in_delta(-85.0, type_data["min_pitch"])
+        assert_in_delta 0.0, type_data["max_pitch"]
+        assert type_data["pitch_limits_vary"]
+      end
+
+      test "never joins the ends of two rotations into a full turn" do
+        write_turret("half_turns", yaw_limits: <<~XML)
+          <SCItemTurretCustomAngleLimitParams RelativeJointName="pitch_part">
+            <AngleLimits>
+              <SCItemTurretCustomAngleLimit TurretRotation="0" LowestAngle="-180" HighestAngle="0" />
+              <SCItemTurretCustomAngleLimit TurretRotation="100" LowestAngle="0" HighestAngle="150" />
+            </AngleLimits>
+          </SCItemTurretCustomAngleLimitParams>
+        XML
+
+        type_data = parsed_item("half_turns")["type_data"]
+
+        assert_in_delta(-180.0, type_data["min_yaw"])
+        assert_in_delta 0.0, type_data["max_yaw"]
+        assert type_data["yaw_limits_vary"]
+      end
+
+      test "describes an axis two joints share by the wider one" do
+        write_turret("cradle_yaw",
+          yaw_limits: '<SCItemTurretStandardAngleLimitParams LowestAngle="-180" HighestAngle="180" />',
+          extra_joints: <<~XML)
+            <SCItemTurretJointMovementParams jointName="cradle_yaw" slavedOnly="0">
+              <yawAxis>
+                <SCItemTurretJointMovementAxisParams speed="40">
+                  <angleLimits><SCItemTurretStandardAngleLimitParams LowestAngle="-75" HighestAngle="75" /></angleLimits>
+                </SCItemTurretJointMovementAxisParams>
+              </yawAxis>
+            </SCItemTurretJointMovementParams>
+          XML
+
+        type_data = parsed_item("cradle_yaw")["type_data"]
+
+        assert_in_delta(-180.0, type_data["min_yaw"])
+        assert_in_delta 180.0, type_data["max_yaw"]
+        assert_nil type_data["yaw_limits_vary"]
+      end
+
+      test "marks a point-defence turret by a tag written with its prefix" do
+        write_turret("pdc_tagged", tags: "$flightReady $PDC")
+
+        assert_equal "pds", parsed_item("pdc_tagged")["type_data"]["control"]
+      end
+
+      test "marks a turret aimed from a remote seat" do
+        write_turret("remote_turret", remote: true)
+
+        assert_equal "remote", parsed_item("remote_turret")["type_data"]["control"]
+      end
+
+      test "marks a turret with its own seat as manned" do
+        write_turret("manned_turret", type: "TurretBase", sub_type: "MannedTurret")
+
+        assert_equal "manned", parsed_item("manned_turret")["type_data"]["control"]
+      end
+
+      test "marks a point-defence turret as such, even though it is remote" do
+        write_turret("pdc_turret", sub_type: "PDCTurret", remote: true)
+
+        assert_equal "pds", parsed_item("pdc_turret")["type_data"]["control"]
+      end
+
+      private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
+        remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
+
+        write_item(key, name: "@item_Name#{key}", category: "turret", type:, sub_type:, tags:, components: <<~XML)
+          <SCItemTurretParams rotationStyle="SingleAxis">
+            <movementList>
+              <SCItemTurretJointMovementParams jointName="yaw_part" slavedOnly="0">
+                <yawAxis>
+                  <SCItemTurretJointMovementAxisParams speed="#{yaw_speed}">
+                    <angleLimits>#{yaw_limits}</angleLimits>
+                  </SCItemTurretJointMovementAxisParams>
+                </yawAxis>
+              </SCItemTurretJointMovementParams>
+              <SCItemTurretJointMovementParams jointName="pitch_part" slavedOnly="0">
+                <pitchAxis>
+                  <SCItemTurretJointMovementAxisParams speed="#{pitch_speed}">
+                    <angleLimits>#{pitch_limits}</angleLimits>
+                  </SCItemTurretJointMovementAxisParams>
+                </pitchAxis>
+              </SCItemTurretJointMovementParams>
+              #{extra_joints}
+            </movementList>
+            #{remote_params}
+          </SCItemTurretParams>
+        XML
+      end
+
+      private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", type: "Armor", sub_type: "UNDEFINED", components: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/#{category}"
 
         FileUtils.mkdir_p(folder)
@@ -148,7 +313,7 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="Armor" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{tags || key}" RequiredTags="#{required_tags}">
+                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{tags || key}" RequiredTags="#{required_tags}">
                   <Localization Name="#{name}" ShortName="#{short_name}" Description="#{description}" />
                 </AttachDef>
               </SAttachableComponentParams>
