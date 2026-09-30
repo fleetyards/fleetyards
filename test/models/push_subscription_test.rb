@@ -86,6 +86,28 @@ class PushSubscriptionTest < ActiveSupport::TestCase
     assert_empty other.push_subscriptions
   end
 
+  test "the same keys with different padding still move the browser" do
+    subscribe
+    other = create(:user)
+
+    subscribe(user: other, auth_key: "#{AUTH}==")
+
+    assert_equal 1, other.push_subscriptions.count
+  end
+
+  test "stores keys without padding" do
+    assert_equal AUTH, subscribe(auth_key: "#{AUTH}==").reload.auth_key
+  end
+
+  test "rejects a public key that is not on the P-256 curve" do
+    off_curve = Base64.urlsafe_encode64("\x04".b + ("\x00".b * 64), padding: false)
+
+    subscription = subscribe(p256dh_key: off_curve)
+
+    refute subscription.persisted?
+    assert subscription.errors.added?(:p256dh_key, :invalid)
+  end
+
   test "re-subscribing with nothing changed still counts as recent for the cap" do
     subscription = subscribe
     subscription.update_columns(updated_at: 1.year.ago)

@@ -45,6 +45,7 @@ class PushSubscription < ApplicationRecord
   # cannot be encrypted to, so it is not a subscription.
   P256DH_BYTES = 65
   AUTH_BYTES = 16
+  P256_GROUP = OpenSSL::PKey::EC::Group.new("prime256v1")
 
   belongs_to :user
 
@@ -53,6 +54,10 @@ class PushSubscription < ApplicationRecord
   # re-subscribe lookup both query by it.
   encrypts :endpoint, deterministic: true
   encrypts :p256dh_key, :auth_key
+
+  # Browsers differ on base64url padding; one spelling per key is what lets
+  # the same browser be recognised under a second account.
+  normalizes :p256dh_key, :auth_key, with: ->(key) { canonical_key(key) }
 
   validates :endpoint, :p256dh_key, :auth_key, presence: true
   validate :endpoint_is_a_push_service
@@ -70,7 +75,8 @@ class PushSubscription < ApplicationRecord
     subscription = find_or_initialize_by(endpoint:)
 
     if subscription.persisted? && subscription.user_id != user.id &&
-        !(subscription.p256dh_key == p256dh_key && subscription.auth_key == auth_key)
+        !(subscription.p256dh_key == normalize_value_for(:p256dh_key, p256dh_key) &&
+          subscription.auth_key == normalize_value_for(:auth_key, auth_key))
       subscription.errors.add(:endpoint, :taken)
       return subscription
     end
@@ -117,17 +123,31 @@ class PushSubscription < ApplicationRecord
     errors.add(:endpoint, :invalid)
   end
 
-  private def keys_are_well_formed
-    p256dh = decode_key(p256dh_key)
-    errors.add(:p256dh_key, :invalid) if p256dh_key.present? && !(p256dh&.bytesize == P256DH_BYTES && p256dh.getbyte(0) == 0x04)
-
-    auth = decode_key(auth_key)
-    errors.add(:auth_key, :invalid) if auth_key.present? && auth&.bytesize != AUTH_BYTES
+  def self.canonical_key(key)
+    decoded = decode_key(key)
+    decoded ? Base64.urlsafe_encode64(decoded, padding: false) : key
   end
 
-  private def decode_key(value)
+  def self.decode_key(value)
     Base64.urlsafe_decode64(value.to_s)
   rescue ArgumentError
     nil
+  end
+
+  private def keys_are_well_formed
+    errors.add(:p256dh_key, :invalid) if p256dh_key.present? && !p256_point?(self.class.decode_key(p256dh_key))
+
+    auth = self.class.decode_key(auth_key)
+    errors.add(:auth_key, :invalid) if auth_key.present? && auth&.bytesize != AUTH_BYTES
+  end
+
+  # The right length and prefix are not enough: the payload is encrypted to
+  # this point, and one off the curve cannot be encrypted to at all.
+  private def p256_point?(bytes)
+    return false unless bytes&.bytesize == P256DH_BYTES
+
+    OpenSSL::PKey::EC::Point.new(P256_GROUP, OpenSSL::BN.new(bytes, 2)).on_curve?
+  rescue OpenSSL::PKey::EC::Point::Error
+    false
   end
 end
