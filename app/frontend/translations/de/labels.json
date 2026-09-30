@@ -980,6 +980,8 @@
         "alphaSub": "pro Salve",
         "weapons": "Waffen",
         "missileDamage": "Raketenschaden",
+        "armedMissiles": "Scharfe Raketen",
+        "armedMissilesSub": "%{cooldown} s zwischen Starts",
         "composition": "Schadensverteilung",
         "damagePhysical": "Physisch",
         "damageEnergy": "Energie",
@@ -1031,6 +1033,7 @@
         "shieldRegen": "Regeneration",
         "shieldResistances": "Resistenz",
         "shieldAbsorption": "Absorption",
+        "shieldFaces": "Schildseiten",
         "armor": "Panzerung",
         "deflection": "Ablenkung",
         "armorReduction": "Schadensreduzierung",
@@ -1374,6 +1377,17 @@
           "captureRadius": "Fangradius",
           "fuelFlowRate": "Treibstoff-Durchflussrate",
           "quantumFuelFlowRate": "Quantum-Durchflussrate"
+        },
+        "controllers": {
+          "faceType": "Schildtyp",
+          "faces": {
+            "bubble": "Blase",
+            "quadrant": "Quadranten"
+          },
+          "reconfigurationCooldown": "Umverteilung",
+          "armedMissiles": "Scharfe Raketen",
+          "launchCooldown": "Startabklingzeit",
+          "lockAngle": "Aufschaltwinkel"
         },
         "turrets": {
           "turnRate": "Drehrate",

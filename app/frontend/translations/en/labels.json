@@ -980,6 +980,8 @@
         "alphaSub": "per volley",
         "weapons": "Weapons",
         "missileDamage": "Missile Damage",
+        "armedMissiles": "Armed Missiles",
+        "armedMissilesSub": "%{cooldown} s between launches",
         "composition": "Damage Composition",
         "damagePhysical": "Physical",
         "damageEnergy": "Energy",
@@ -1031,6 +1033,7 @@
         "shieldRegen": "Regeneration",
         "shieldResistances": "Resistance",
         "shieldAbsorption": "Absorption",
+        "shieldFaces": "Shield Faces",
         "armor": "Armor",
         "deflection": "Deflection",
         "armorReduction": "Damage reduction",
@@ -1374,6 +1377,17 @@
           "captureRadius": "Capture Radius",
           "fuelFlowRate": "Fuel Flow Rate",
           "quantumFuelFlowRate": "Quantum Fuel Flow Rate"
+        },
+        "controllers": {
+          "faceType": "Shield Type",
+          "faces": {
+            "bubble": "Bubble",
+            "quadrant": "Quadrant"
+          },
+          "reconfigurationCooldown": "Reconfiguration",
+          "armedMissiles": "Armed Missiles",
+          "launchCooldown": "Launch Cooldown",
+          "lockAngle": "Lock Angle"
         },
         "turrets": {
           "turnRate": "Turn Rate",

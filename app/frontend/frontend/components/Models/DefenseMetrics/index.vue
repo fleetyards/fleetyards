@@ -13,6 +13,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import { useArmorStats } from "@/frontend/composables/useArmorStats";
 import { useCountermeasureStats } from "@/frontend/composables/useCountermeasureStats";
+import { useControllerStats } from "@/frontend/composables/useControllerStats";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -43,6 +44,7 @@ const shield = useShieldStats(
 );
 const armor = useArmorStats(() => props.hardpoints);
 const countermeasures = useCountermeasureStats(() => props.hardpoints);
+const controllers = useControllerStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
 // `toNumber` renders any falsy value as "N/A", which is wrong for a genuine
@@ -148,6 +150,17 @@ const openDeflectionCheck = () => {
             <span class="chip__label">{{ t(entry.label) }}</span>
             <span class="chip__value">{{ percent(entry.value) }}</span>
           </span>
+        </dd>
+      </template>
+
+      <template v-if="shield.hasData && controllers.shieldFaceType">
+        <dt>{{ t("labels.defense.shieldFaces") }}</dt>
+        <dd>
+          {{
+            t(
+              `labels.hardpoint.controllers.faces.${controllers.shieldFaceType}`,
+            )
+          }}
         </dd>
       </template>
 

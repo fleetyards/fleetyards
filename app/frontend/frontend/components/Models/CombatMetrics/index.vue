@@ -19,6 +19,7 @@ import {
 } from "@/frontend/composables/useLoadoutStats";
 import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
 import { collectLoadoutWeapons } from "@/frontend/composables/usePenetrationCheck";
+import { useControllerStats } from "@/frontend/composables/useControllerStats";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -52,6 +53,8 @@ const stats = useLoadoutStats(
   () => toValue(weaponPoolSize),
   () => toValue(powerOverrides),
 );
+
+const controllers = useControllerStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
 
@@ -195,6 +198,28 @@ const showControlComposition = computed(() =>
       </span>
     </div>
 
+    <div v-if="controllers.maxArmedMissiles" class="metrics-card__aux">
+      <span class="metrics-card__aux-label">
+        {{ t("labels.combat.armedMissiles") }}
+      </span>
+      <span class="metrics-card__aux-value">
+        {{ controllers.maxArmedMissiles }}
+        <span
+          v-if="typeof controllers.launchCooldown === 'number'"
+          class="metrics-card__aux-sub"
+        >
+          ·
+          {{
+            t("labels.combat.armedMissilesSub", {
+              cooldown: controllers.launchCooldown
+                ? toNumber(controllers.launchCooldown)
+                : "0",
+            })
+          }}
+        </span>
+      </span>
+    </div>
+
     <div class="metrics-card__section-label">
       {{ t("labels.combat.composition") }}
     </div>
@@ -233,4 +258,11 @@ const showControlComposition = computed(() =>
 
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
+
+.metrics-card__aux-sub {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-dim);
+}
 </style>
