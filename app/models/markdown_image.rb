@@ -87,11 +87,12 @@ class MarkdownImage < ApplicationRecord
 
   # Only the history of records that still exist: an admin reverts a field on a
   # live record, and a deleted one's versions would otherwise keep its images
-  # forever.
+  # forever. A purged fleet is the exception -- Fleets::PurgedFleetRestorer
+  # rebuilds it, description included, from its destroy snapshot.
   private_class_method def self.ids_in_history
     history = "concat(object::text, object_changes::text, old_object, old_object_changes)"
 
-    (REFERENCING_COLUMNS.keys & ::VersionedItem::TYPES).flat_map do |class_name|
+    live = (REFERENCING_COLUMNS.keys & ::VersionedItem::TYPES).flat_map do |class_name|
       ids_in(
         PaperTrail::Version
           .where(item_type: class_name, item_id: class_name.constantize.unscoped.select(:id))
@@ -99,6 +100,14 @@ class MarkdownImage < ApplicationRecord
         history
       )
     end
+
+    live + ids_in(
+      PaperTrail::Version
+        .where(item_type: "Fleet", event: "destroy")
+        .where.not(item_id: Fleet.unscoped.select(:id))
+        .where("object::text ILIKE ?", "%markdown-images/%"),
+      "object::text"
+    )
   end
 
   def display_representation

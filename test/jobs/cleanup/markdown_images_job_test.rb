@@ -68,6 +68,20 @@ module Cleanup
       refute MarkdownImage.exists?(image.id)
     end
 
+    # A purged fleet can be rebuilt from its destroy snapshot, description and
+    # all, so that snapshot still counts.
+    test "#perform keeps an image a purged fleet's description names" do
+      image = old_image
+      @fleet.update!(description: "![banner](/v1/markdown-images/#{image.id})")
+      @fleet.destroy!
+      refute Fleet.unscoped.exists?(@fleet.id)
+      assert PaperTrail::Version.exists?(item_type: "Fleet", item_id: @fleet.id, event: "destroy")
+
+      ::Cleanup::MarkdownImagesJob.new.perform
+
+      assert MarkdownImage.exists?(image.id)
+    end
+
     test "#perform keeps a new image its form may not have saved yet" do
       image = create(:markdown_image)
 
