@@ -18466,14 +18466,7 @@ components:
         name:
           type: string
         type:
-          type: string
-          enum:
-          - Component
-          - Equipment
-          - Commodity
-          - Model
-          - Blueprint
-          - GameMission
+          "$ref": "#/components/schemas/CatalogueTokenTypeEnum"
         slug:
           type: string
       title: CatalogueTokenMatch
@@ -18487,6 +18480,23 @@ components:
           items:
             "$ref": "#/components/schemas/CatalogueTokenMatch"
       title: CatalogueTokenMatches
+    CatalogueTokenTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      - Model
+      - Blueprint
+      - GameMission
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      - MODEL
+      - BLUEPRINT
+      - GAME_MISSION
+      title: CatalogueTokenTypeEnum
     ChannelsEnum:
       type: string
       enum:
