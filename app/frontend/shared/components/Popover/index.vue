@@ -77,10 +77,21 @@ const clearTimers = () => {
   closeTimer = 0;
 };
 
+const FOCUSABLE = "a[href], button, [tabindex]:not([tabindex='-1'])";
+
+/*
+ * A trigger inside a control it does not own -- a list row's name, where the
+ * row's link wraps it -- cannot take focus itself without nesting one focus
+ * stop in another. That control drives the card instead: its focus opens it
+ * and it carries the description. Focus events bubble up, never down, so it is
+ * listened to directly.
+ */
+const host = ref<HTMLElement | null>(null);
+
 const focusTarget = () =>
-  trigger.value?.querySelector<HTMLElement>(
-    "a[href], button, [tabindex]:not([tabindex='-1'])",
-  ) ?? trigger.value;
+  trigger.value?.querySelector<HTMLElement>(FOCUSABLE) ??
+  host.value ??
+  trigger.value;
 
 const place = () => {
   if (!trigger.value || !panel.value) return;
@@ -110,7 +121,9 @@ useResizeObserver(panel, () => {
 
 const within = (node: EventTarget | null) =>
   node instanceof Node &&
-  (!!trigger.value?.contains(node) || !!panel.value?.contains(node));
+  (!!trigger.value?.contains(node) ||
+    !!host.value?.contains(node) ||
+    !!panel.value?.contains(node));
 
 const onDocumentPointerdown = (event: PointerEvent) => {
   if (!within(event.target)) close();
@@ -297,15 +310,23 @@ watch(
 );
 
 onMounted(() => {
-  if (
-    props.focusable &&
-    !trigger.value?.querySelector("a[href], button, [tabindex]")
-  ) {
+  if (!trigger.value || trigger.value.querySelector(FOCUSABLE)) return;
+
+  const enclosing =
+    trigger.value.parentElement?.closest<HTMLElement>(FOCUSABLE);
+
+  if (enclosing) {
+    host.value = enclosing;
+    enclosing.addEventListener("focusin", onFocusin);
+    enclosing.addEventListener("focusout", onFocusout);
+  } else if (props.focusable) {
     ownTabindex.value = 0;
   }
 });
 
 onBeforeUnmount(() => {
+  host.value?.removeEventListener("focusin", onFocusin);
+  host.value?.removeEventListener("focusout", onFocusout);
   close();
   clearTimers();
 });
