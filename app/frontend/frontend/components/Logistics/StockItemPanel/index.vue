@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -82,7 +82,7 @@ const quality = computed(() => {
               {{ t("labels.logistics.linkedItem") }}
             </div>
             <div class="metrics-card__row__value">
-              <CatalogueItemLink :item="stockItem.item" />
+              <CatalogueItemPopover :item="stockItem.item" />
               <BasePill
                 v-if="stockItem.item.available === false"
                 :variant="PillVariantsEnum.WARNING"

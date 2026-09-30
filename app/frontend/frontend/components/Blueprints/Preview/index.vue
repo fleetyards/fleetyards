@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
@@ -35,7 +35,7 @@ const { stats } = useCraftedStats(
   >
     <template #head>
       <span v-if="blueprint.craftable" class="blueprint-preview__craftable">
-        <CatalogueItemLink :item="blueprint.craftable" />
+        <CatalogueItemPopover :item="blueprint.craftable" />
       </span>
     </template>
 

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import {
@@ -143,7 +143,7 @@ const badges = computed<RowListItemBadge[]>(() => {
       >
         {{ t(`labels.blueprint.craftableTypes.${blueprint.craftable.type}`) }}
       </router-link>
-      <CatalogueItemLink
+      <CatalogueItemPopover
         v-if="blueprint.craftable"
         :item="blueprint.craftable"
       />

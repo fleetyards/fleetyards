@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import BaseTable, {
   type BaseTableCol,
@@ -215,15 +216,17 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       <slot name="stock-name" :record="record">{{ record.name }}</slot>
       <!-- The name opens the stock position; this opens the catalogue record
            the position holds, which is a different page. -->
-      <router-link
+      <span
         v-if="catalogueItemRoute(record.item)"
-        :to="catalogueItemRoute(record.item)!"
         class="ledger-catalogue-link"
-        :title="t('labels.logistics.openInCatalogue')"
-        :aria-label="t('labels.logistics.openInCatalogue')"
       >
-        <i class="fa-light fa-book-open" />
-      </router-link>
+        <CatalogueItemPopover
+          :item="record.item ?? {}"
+          :link-label="t('labels.logistics.openInCatalogue')"
+        >
+          <i class="fa-light fa-book-open" />
+        </CatalogueItemPopover>
+      </span>
     </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>
@@ -296,15 +299,17 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
     <template #col-name="{ record }">
       <slot name="log-name" :record="record">{{ record.name }}</slot>
-      <router-link
+      <span
         v-if="catalogueItemRoute(record.item)"
-        :to="catalogueItemRoute(record.item)!"
         class="ledger-catalogue-link"
-        :title="t('labels.logistics.openInCatalogue')"
-        :aria-label="t('labels.logistics.openInCatalogue')"
       >
-        <i class="fa-light fa-book-open" />
-      </router-link>
+        <CatalogueItemPopover
+          :item="record.item ?? {}"
+          :link-label="t('labels.logistics.openInCatalogue')"
+        >
+          <i class="fa-light fa-book-open" />
+        </CatalogueItemPopover>
+      </span>
       <BasePill
         v-if="record.item && record.item.available === false"
         :variant="PillVariantsEnum.WARNING"
@@ -367,8 +372,13 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
   margin-left: 0.4rem;
   color: var(--color-muted);
 
+  // The link is rendered by the catalogue popover, outside this scope.
+  :deep(a) {
+    color: inherit;
+  }
+
   &:hover,
-  &:focus-visible {
+  &:focus-within {
     color: var(--color-text);
   }
 }

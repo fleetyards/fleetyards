@@ -11,7 +11,7 @@ import {
   FleetContractQualityMatchEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 
 type Props = {
   progress: FleetContractProgress;
@@ -82,9 +82,9 @@ const pickedWidth = (line: FleetContractProgressLine) => {
     >
       <div class="contract-progress__head">
         <span class="contract-progress__name">
-          <CatalogueItemLink :item="line.item ?? {}">
+          <CatalogueItemPopover :item="line.item ?? {}">
             {{ line.name }}
-          </CatalogueItemLink>
+          </CatalogueItemPopover>
         </span>
         <span
           v-if="line.quality != null"

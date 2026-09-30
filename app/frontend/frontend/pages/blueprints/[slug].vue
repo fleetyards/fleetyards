@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import CatalogueItemLink from "@/frontend/components/CatalogueItemLink/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -109,7 +109,7 @@ watch(
             <div class="blueprint-page__sub">
               <template v-if="blueprint.craftable">
                 {{ t("labels.blueprint.makesA") }}
-                <CatalogueItemLink :item="blueprint.craftable" />
+                <CatalogueItemPopover :item="blueprint.craftable" />
               </template>
               <!-- 5 of the 1,607 recipes make something no catalogue here
                  carries: four mission carryables, and one entity class in no
