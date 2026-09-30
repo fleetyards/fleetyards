@@ -98,6 +98,8 @@ en:
       destroy: "A handle verified through Citizen iD is released by disconnecting Citizen iD."
     fleet_notification_settings:
       update: Notification settings could not be updated.
+    markdown_image:
+      create: "Image could not be uploaded."
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed

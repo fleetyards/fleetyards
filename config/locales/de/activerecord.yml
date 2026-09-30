@@ -326,6 +326,9 @@ de:
         inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"
         inventory_contract_destination: "kann nicht gelöscht werden, solange ein offener Flottenauftrag hierher liefert"
         position_goods_in_transit: "kann nicht gelöscht werden, solange ein Transfer damit noch unbeantwortet ist"
+        image_type_not_supported: "muss ein PNG-, JPEG-, WebP- oder GIF-Bild sein"
+        file_too_large: "darf nicht größer als %{count} MB sein"
+        markdown_image_limit_reached: "Du hast in den letzten 24 Stunden %{count} Bilder hochgeladen. Bitte versuche es später erneut."
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:

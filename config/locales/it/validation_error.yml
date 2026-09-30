@@ -54,6 +54,8 @@ it:
       demote_not_permitted: Non puoi degradare l'ultimo membro di un ruolo flotta
         permanente.
       update: Impossibile aggiornare l'iscrizione alla flotta.
+    markdown_image:
+      create: "Impossibile caricare l'immagine."
     hangar_group:
       create: Impossibile creare il gruppo
       destroy: Impossibile eliminare il gruppo

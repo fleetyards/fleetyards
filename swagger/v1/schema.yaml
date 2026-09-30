@@ -11139,6 +11139,45 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+  "/markdown-images":
+    post:
+      summary: Upload an image for a Markdown description
+      tags:
+      - MarkdownImages
+      operationId: createMarkdownImage
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MarkdownImageCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MarkdownImage"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/calendar/subscription":
     post:
       summary: Generate personal calendar subscription
@@ -27588,6 +27627,41 @@ components:
       - meta
       - items
       title: Manufacturers
+    MarkdownImage:
+      type: object
+      required:
+      - id
+      - url
+      - width
+      - height
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+          description: A re-encoded WebP rendition of the upload, never the original
+            file
+        width:
+          type:
+          - integer
+          - 'null'
+        height:
+          type:
+          - integer
+          - 'null'
+      title: MarkdownImage
+    MarkdownImageCreateInput:
+      type: object
+      properties:
+        file:
+          type: string
+          description: Signed id of an ActiveStorage direct upload
+      required:
+      - file
+      additionalProperties: false
+      title: MarkdownImageCreateInput
     MediaFile:
       type: object
       properties:

@@ -53,6 +53,8 @@ zh-CN:
       decline: 舰队邀请无法拒绝。
       demote_not_permitted: 您不能降级永久舰队角色的最后一个成员。
       update: 无法更新舰队成员资格。
+    markdown_image:
+      create: "无法上传图片。"
     hangar_group:
       create: 无法创建群组
       destroy: 无法删除群组
