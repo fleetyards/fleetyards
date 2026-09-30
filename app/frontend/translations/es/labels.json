@@ -1024,6 +1024,11 @@
         "armorReduction": "Reducción de daño",
         "armorSelfResistance": "Autorresistencia",
         "armorSignature": "Firma",
+        "countermeasures": "Contramedidas",
+        "countermeasure": {
+          "decoy": "Señuelo",
+          "noise": "Ruido"
+        },
         "damageType": {
           "physical": "Fís",
           "energy": "Energía",
@@ -1035,7 +1040,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Valores de escudo y blindaje de la configuración por defecto. Una absorción inferior al 100 % significa que ese tipo de daño alcanza el casco incluso con los escudos activos.",
+        "hint": "Valores de escudo, blindaje y contramedidas de la configuración por defecto. Una absorción inferior al 100 % significa que ese tipo de daño alcanza el casco incluso con los escudos activos.",
         "openDeflectionCheck": "Comprobación de deflexión"
       },
       "deflectionCheck": {

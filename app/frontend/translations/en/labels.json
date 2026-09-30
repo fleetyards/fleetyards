@@ -1024,6 +1024,11 @@
         "armorReduction": "Damage reduction",
         "armorSelfResistance": "Self resistance",
         "armorSignature": "Signature",
+        "countermeasures": "Countermeasures",
+        "countermeasure": {
+          "decoy": "Decoy",
+          "noise": "Noise"
+        },
         "damageType": {
           "physical": "Phys",
           "energy": "Energy",
@@ -1035,7 +1040,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Shield and armor values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up.",
+        "hint": "Shield, armor and countermeasure values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up.",
         "openDeflectionCheck": "Deflection check"
       },
       "deflectionCheck": {

@@ -1024,6 +1024,11 @@
         "armorReduction": "Schadensreduzierung",
         "armorSelfResistance": "Eigenresistenz",
         "armorSignature": "Signatur",
+        "countermeasures": "Gegenmaßnahmen",
+        "countermeasure": {
+          "decoy": "Täuschkörper",
+          "noise": "Störsignal"
+        },
         "damageType": {
           "physical": "Phys",
           "energy": "Energie",
@@ -1035,7 +1040,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Schild- und Panzerungswerte aus dem Standard-Loadout. Eine Absorption unter 100 % bedeutet, dass dieser Schadenstyp den Rumpf erreicht, während die Schilde noch stehen.",
+        "hint": "Schild-, Panzerungs- und Gegenmaßnahmenwerte aus dem Standard-Loadout. Eine Absorption unter 100 % bedeutet, dass dieser Schadenstyp den Rumpf erreicht, während die Schilde noch stehen.",
         "openDeflectionCheck": "Ablenkungsprüfung"
       },
       "deflectionCheck": {
