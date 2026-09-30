@@ -56,7 +56,7 @@ class NotificationDiscordChannelTest < ActiveSupport::TestCase
   end
 
   test "the channel is not offered for a type that does not" do
-    assert_not_includes Notification.channels_for(:fleet_invite), :discord
+    assert_not_includes Notification.channels_for(:hangar_create), :discord
   end
 
   # Availability is per reader, not only per type: a DM needs somewhere to go.
@@ -69,7 +69,7 @@ class NotificationDiscordChannelTest < ActiveSupport::TestCase
   end
 
   test "not available for a type without the channel, even with an account linked" do
-    refute NotificationPreference.discord_available?(:fleet_invite, user: @user)
+    refute NotificationPreference.discord_available?(:hangar_create, user: @user)
   end
 
   test "every type's defaults name the discord channel" do

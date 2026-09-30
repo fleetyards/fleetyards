@@ -50,8 +50,8 @@ it:
         tuo account.
       expires: Questo codice scadrà tra 10 minuti.
       subject: Il tuo codice di conferma
-    fleet:
-      action: "Apri le impostazioni della flotta"
+    notification:
+      action: "Visualizza su FleetYards"
     hello: Ciao %{username}
     model:
       new:

@@ -54,8 +54,8 @@ de:
         zu bestätigen.
       expires: Dieser Code läuft in 10 Minuten ab.
       subject: Ihr Bestätigungscode
-    fleet:
-      action: "Flotteneinstellungen öffnen"
+    notification:
+      action: "Auf FleetYards ansehen"
     hello: Hallo %{username}
     model:
       new:

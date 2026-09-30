@@ -17,6 +17,12 @@ module Discord
       assert truncated.valid_encoding?
     end
 
+    test "truncates to a smaller limit when given one" do
+      assert_equal "abc", MessageLength.truncate("abcdef", 3)
+      assert MessageLength.fits?("abc", 3)
+      refute MessageLength.fits?("abcd", 3)
+    end
+
     test "leaves a message that fits alone" do
       assert_equal "hello", MessageLength.truncate("hello")
     end

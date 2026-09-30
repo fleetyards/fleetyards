@@ -16,6 +16,6 @@
 <% if @link.present? %>
   <%= render "shared/mailer/btn",
              href: @link,
-             label: I18n.t("mailer.fleet.action"),
+             label: I18n.t("mailer.notification.action"),
              tone: :primary %>
 <% end %>

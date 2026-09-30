@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class FleetMailerPreview < ActionMailer::Preview
-  def fleet_notification
-    FleetMailer.fleet_notification(
+class NotificationMailerPreview < ActionMailer::Preview
+  def notification
+    NotificationMailer.notification(
       Notification.new(
         user: User.first || User.new(username: "commander", email: "commander@example.com"),
         notification_type: :fleet_fid_claim_opened,

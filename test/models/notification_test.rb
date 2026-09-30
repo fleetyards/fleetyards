@@ -182,21 +182,47 @@ class NotificationTest < ActiveSupport::TestCase
     )
   end
 
-  %i[hangar_create hangar_destroy wishlist_create wishlist_destroy hangar_sync_finished hangar_sync_failed].each do |type|
+  %i[hangar_create hangar_destroy wishlist_create wishlist_destroy].each do |type|
     test "#{type} only supports app channel" do
       assert_equal %i[app], Notification.channels_for(type)
     end
   end
 
-  %i[new_model fleet_invite fleet_member_requested fleet_member_accepted fleet_request_accepted].each do |type|
+  test "hangar_sync_finished supports app and discord channels" do
+    assert_equal %i[app discord], Notification.channels_for(:hangar_sync_finished)
+  end
+
+  %i[new_model fleet_event_locked fleet_event_completed].each do |type|
     test "#{type} supports app and mail channels" do
       assert_equal %i[app mail], Notification.channels_for(type)
     end
   end
 
-  # The only type that can also be delivered as a Discord DM so far.
-  test "model_on_sale supports app, mail and discord channels" do
-    assert_equal %i[app mail discord], Notification.channels_for(:model_on_sale)
+  %i[
+    model_on_sale fleet_invite fleet_member_requested fleet_member_accepted fleet_request_accepted
+    hangar_sync_failed friend_request_received fleet_ally_request_received tour_join_request_received
+    fleet_contract_crew_requested payout_entry_pending_review rsi_handle_verification_lost
+  ].each do |type|
+    test "#{type} supports app, mail and discord channels" do
+      assert_equal %i[app mail discord], Notification.channels_for(type)
+    end
+  end
+
+  # A mail switch on a type without a mailer is a switch that does nothing.
+  test "every type that offers mail has a mailer" do
+    Notification.notification_types.each_key do |type|
+      next unless Notification.channels_for(type).include?(:mail)
+
+      assert Notification.mailer_for(type), "#{type} offers mail but has no mailer"
+    end
+  end
+
+  test "sends the generic notification mail for a type without a mailer of its own" do
+    set_preference(@user, :friend_request_received, mail: true)
+    mail = stub(deliver_later: true)
+    NotificationMailer.expects(:notification).with { |notification| notification.notification_type == "friend_request_received" }.returns(mail)
+
+    Notification.notify!(user: @user, type: :friend_request_received, title: "Friend request")
   end
 
   test "stores the polymorphic record" do
