@@ -41,6 +41,7 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
+import { useWebPush } from "@/shared/composables/useWebPush";
 import {
   useModalQuery,
   MODAL_QUERY_PARAM,
@@ -110,12 +111,25 @@ const refreshPage = () => queryClient.invalidateQueries();
 
 const router = useRouter();
 
+// A renewal the worker could not save -- it runs without a session once the
+// reader is logged out -- is saved on the next signed-in visit. Nothing is
+// sent unless this browser subscribed for this account before.
+const webPush = useWebPush();
+
+const syncPushSubscription = () => {
+  const userId = sessionStore.currentUser?.id;
+  if (!userId) return;
+
+  webPush.refresh(userId).catch(() => undefined);
+};
+
 watch(
   () => isAuthenticated.value,
   async () => {
     if (isAuthenticated.value) {
       await requestBrowserPermission();
       maybeCountLogin();
+      syncPushSubscription();
     } else if (route.meta.needsAuthentication) {
       await router.push({ name: "login" });
     }
@@ -175,6 +189,7 @@ onMounted(async () => {
   if (isAuthenticated.value) {
     await requestBrowserPermission();
     maybeCountLogin();
+    syncPushSubscription();
   } else {
     maybeCountVisit();
   }
