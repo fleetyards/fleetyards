@@ -1,0 +1,33 @@
+{
+  "de": {
+    "markdownEditor": {
+      "toolbar": "Formatierung",
+      "bold": "Fett",
+      "italic": "Kursiv",
+      "heading": "Überschrift",
+      "bulletList": "Aufzählung",
+      "orderedList": "Nummerierte Liste",
+      "center": "Zentrieren",
+      "link": "Link",
+      "linkUrl": "Linkadresse",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "Übernehmen",
+      "linkRemove": "Link entfernen",
+      "linkInvalid": "Verlinkt werden können nur http(s)-Adressen oder Pfade auf dieser Seite.",
+      "image": "Bild",
+      "imageAlt": "Beschreibung des Bildes",
+      "imageApply": "Einfügen",
+      "close": "Schließen",
+      "source": "Markdown-Quelltext bearbeiten",
+      "imageUploadFailed": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+      "imageTitle": "Bild einfügen",
+      "imageAltHint": "Wird anstelle des Bildes vorgelesen und angezeigt, falls es nicht geladen werden kann.",
+      "cancel": "Abbrechen",
+      "imageSize": "Bildgröße",
+      "imageSize25": "Klein",
+      "imageSize50": "Mittel",
+      "imageSize75": "Groß",
+      "imageSizeFull": "Volle Breite"
+    }
+  }
+}

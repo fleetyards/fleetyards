@@ -33,6 +33,14 @@ module Calendars
         assert_includes ics, "X-WR-CALNAME:MARU Inc. — Events"
       end
 
+      test "writes a markdown description as the plain text it reads as" do
+        @event.update!(description: "**Cargo** runs \\[TM\\] &amp; more")
+
+        ics = ::Calendars::IcsBuilder.new([@event]).to_ics
+
+        assert_includes ics, "DESCRIPTION:Cargo runs [TM] & more"
+      end
+
       test "includes summary, description, location, status, category, url, and uid" do
         ics = ::Calendars::IcsBuilder.new([@event]).to_ics
 

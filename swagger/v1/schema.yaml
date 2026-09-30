@@ -11139,6 +11139,70 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+  "/markdown-images":
+    post:
+      summary: Upload an image for a Markdown description
+      tags:
+      - MarkdownImages
+      operationId: createMarkdownImage
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MarkdownImageCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MarkdownImage"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/markdown-images/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Markdown image id
+      required: true
+    get:
+      summary: Show an image embedded in a Markdown description
+      tags:
+      - MarkdownImages
+      operationId: markdownImage
+      responses:
+        '302':
+          description: redirects to the image's rendition
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/me/calendar/subscription":
     post:
       summary: Generate personal calendar subscription
@@ -27810,6 +27874,42 @@ components:
       - meta
       - items
       title: Manufacturers
+    MarkdownImage:
+      type: object
+      required:
+      - id
+      - url
+      - width
+      - height
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+          description: The address to embed. It redirects to a re-encoded WebP rendition
+            of the upload, never the original file, and stops resolving once the image
+            is deleted.
+        width:
+          type:
+          - integer
+          - 'null'
+        height:
+          type:
+          - integer
+          - 'null'
+      title: MarkdownImage
+    MarkdownImageCreateInput:
+      type: object
+      properties:
+        file:
+          type: string
+          description: Signed id of an ActiveStorage direct upload
+      required:
+      - file
+      additionalProperties: false
+      title: MarkdownImageCreateInput
     MediaFile:
       type: object
       properties:

@@ -53,6 +53,8 @@ zh-TW:
       decline: 艦隊邀請無法拒絕。
       demote_not_permitted: 您不能降級永久艦隊角色的最後一個成員。
       update: 無法更新艦隊成員資格。
+    markdown_image:
+      create: "無法上傳圖片。"
     hangar_group:
       create: 無法建立群組
       destroy: 無法刪除群組

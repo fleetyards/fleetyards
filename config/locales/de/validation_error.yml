@@ -61,6 +61,8 @@ de:
       demote_not_permitted: Sie können das letzte Mitglied einer permanenten Flottenrolle
         nicht degradieren.
       update: Flottenmitgliedschaft konnte nicht aktualisiert werden.
+    markdown_image:
+      create: "Bild konnte nicht hochgeladen werden."
     hangar_group:
       create: Gruppe konnte nicht erstellt werden
       destroy: Gruppe konnte nicht gelöscht werden

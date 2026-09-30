@@ -1,5 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
+import { defineComponent, h } from "vue";
+import { useForm } from "vee-validate";
 import Component from "./index.vue";
 
 const mountInput = (props: InstanceType<typeof Component>["$props"]) =>
@@ -43,5 +45,42 @@ describe("FormInput", () => {
     });
 
     expect(placeholder(wrapper)).toBeUndefined();
+  });
+});
+
+describe("FormInput standalone", () => {
+  // A field inside a form that is not one of the form's own -- the address
+  // box of an editor's link button -- must not end up in what the form saves.
+  const mountInForm = async (standalone: boolean) => {
+    let values: Record<string, unknown> = {};
+
+    const Host = defineComponent({
+      setup() {
+        const form = useForm({ initialValues: { name: "Maru" } });
+        values = form.values;
+
+        return () =>
+          h(Component, {
+            name: "linkUrl",
+            modelValue: "https://x.test",
+            standalone,
+          });
+      },
+    });
+
+    await mountWithDefaults(Host);
+
+    return values;
+  };
+
+  it("keeps its value out of the surrounding form", async () => {
+    expect(await mountInForm(true)).toEqual({ name: "Maru" });
+  });
+
+  it("is one of the form's values by default", async () => {
+    expect(await mountInForm(false)).toHaveProperty(
+      "linkUrl",
+      "https://x.test",
+    );
   });
 });

@@ -45,6 +45,10 @@ type Props = {
   variant?: InputVariantsEnum;
   size?: InputSizesEnum;
   alignment?: InputAlignmentsEnum;
+  // Kept out of the surrounding form's values and validation: a field that
+  // serves a control inside a form (a link address in an editor) rather than
+  // being one of the form's own fields.
+  standalone?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -73,6 +77,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: InputVariantsEnum.DEFAULT,
   size: InputSizesEnum.DEFAULT,
   alignment: InputAlignmentsEnum.LEFT,
+  standalone: false,
 });
 
 watch(
@@ -149,6 +154,7 @@ const {
 } = useField(props.name, props.rules, {
   initialValue: props.modelValue,
   label: innerLabel.value,
+  controlled: !props.standalone,
 });
 
 /*

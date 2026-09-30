@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Markdown from "@/shared/components/Markdown/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
@@ -280,9 +281,11 @@ const subtitle = computed(() => {
           </div>
         </div>
 
-        <p v-if="ship.description" class="mission-ship-card__desc">
-          {{ ship.description }}
-        </p>
+        <Markdown
+          v-if="ship.description"
+          class="mission-ship-card__desc"
+          :source="ship.description"
+        />
 
         <div class="mission-ship-card__slots">
           <p class="metrics-card__section-label">

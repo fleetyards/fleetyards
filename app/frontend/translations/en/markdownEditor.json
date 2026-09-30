@@ -1,0 +1,33 @@
+{
+  "en": {
+    "markdownEditor": {
+      "toolbar": "Formatting",
+      "bold": "Bold",
+      "italic": "Italic",
+      "heading": "Heading",
+      "bulletList": "Bulleted list",
+      "orderedList": "Numbered list",
+      "center": "Centre",
+      "link": "Link",
+      "linkUrl": "Link address",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "Apply",
+      "linkRemove": "Remove link",
+      "linkInvalid": "Only http(s) addresses or paths on this site can be linked.",
+      "image": "Image",
+      "imageAlt": "Description of the image",
+      "imageApply": "Insert",
+      "close": "Close",
+      "source": "Edit the Markdown source",
+      "imageUploadFailed": "The image could not be uploaded. Try again.",
+      "imageTitle": "Insert an image",
+      "imageAltHint": "Read out in place of the image, and shown if it cannot load.",
+      "cancel": "Cancel",
+      "imageSize": "Image size",
+      "imageSize25": "Small",
+      "imageSize50": "Medium",
+      "imageSize75": "Large",
+      "imageSizeFull": "Full width"
+    }
+  }
+}

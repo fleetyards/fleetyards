@@ -326,6 +326,10 @@ es:
         inventory_goods_in_transit: "no se puede eliminar mientras una transferencia enviada siga sin respuesta"
         inventory_contract_destination: "no se puede eliminar mientras un contrato de flota abierto entregue en él"
         position_goods_in_transit: "no se puede eliminar mientras una transferencia que lo contiene siga sin respuesta"
+        image_type_not_supported: "debe ser una imagen PNG, JPEG, WebP o GIF"
+        file_in_use: "ya se usa en otro lugar; vuelve a subir la imagen"
+        file_too_large: "no debe superar los %{count} MB"
+        markdown_image_limit_reached: "Has subido %{count} imágenes en las últimas 24 horas. Inténtalo de nuevo más tarde."
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:

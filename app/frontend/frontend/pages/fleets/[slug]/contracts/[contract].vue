@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -463,9 +464,11 @@ const crumbs = computed<Crumb[]>(() => [
       </BtnConfirm>
     </Teleport>
 
-    <p v-if="contract.description" class="contract-detail__description">
-      {{ contract.description }}
-    </p>
+    <Markdown
+      v-if="contract.description"
+      class="contract-detail__description"
+      :source="contract.description"
+    />
 
     <!-- A haul has two ends, so it reads as one leg rather than two facts. -->
     <Panel>

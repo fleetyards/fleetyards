@@ -1,0 +1,33 @@
+{
+  "zh-CN": {
+    "markdownEditor": {
+      "toolbar": "格式",
+      "bold": "粗体",
+      "italic": "斜体",
+      "heading": "标题",
+      "bulletList": "项目符号列表",
+      "orderedList": "编号列表",
+      "center": "居中",
+      "link": "链接",
+      "linkUrl": "链接地址",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "应用",
+      "linkRemove": "移除链接",
+      "linkInvalid": "只能链接 http(s) 地址或本站路径。",
+      "image": "图片",
+      "imageAlt": "图片描述",
+      "imageApply": "插入",
+      "close": "关闭",
+      "source": "编辑 Markdown 源码",
+      "imageUploadFailed": "图片上传失败，请重试。",
+      "imageTitle": "插入图片",
+      "imageAltHint": "代替图片朗读，图片无法加载时显示。",
+      "cancel": "取消",
+      "imageSize": "图片大小",
+      "imageSize25": "小",
+      "imageSize50": "中",
+      "imageSize75": "大",
+      "imageSizeFull": "全宽"
+    }
+  }
+}

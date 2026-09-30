@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { markdownToPlainText } from "@/shared/utils/Markdown";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
@@ -146,7 +147,7 @@ const openEvent = (event: FleetEvent) => {
           v-if="(record as FleetEvent).description"
           class="events-table__lede"
         >
-          {{ (record as FleetEvent).description }}
+          {{ markdownToPlainText((record as FleetEvent).description ?? "") }}
         </span>
       </span>
     </template>

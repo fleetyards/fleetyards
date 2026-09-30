@@ -1,0 +1,40 @@
+// The panel's own stylesheet: it renders its inner elements itself, where the
+// editor's scoped rules would not reach them.
+// A link address to insert: a row of the app's own field and
+// buttons under the toolbar, wrapping onto lines of its own when narrow.
+.base-markdown-editor__panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+}
+
+.base-markdown-editor__panel-field {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin-bottom: 0;
+
+  // The field's message line is for its own form; the panel reports below.
+  :deep(.base-input__error) {
+    display: none;
+  }
+}
+
+.base-markdown-editor__panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.base-markdown-editor__panel-error {
+  flex-basis: 100%;
+}
+
+.base-markdown-editor__panel-error {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-danger, #dc3545);
+}

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -165,7 +166,7 @@ const hasFooter = computed(() => !!mission.value?.description);
       </PanelHeading>
       <template v-if="hasFooter" #footer>
         <PanelBody>
-          <p class="mission-description">{{ mission.description }}</p>
+          <Markdown class="mission-description" :source="mission.description" />
         </PanelBody>
       </template>
     </Panel>
@@ -213,7 +214,6 @@ const hasFooter = computed(() => !!mission.value?.description);
 }
 .mission-description {
   margin: 0;
-  white-space: pre-wrap;
 }
 .mission-section {
   margin-top: 16px;

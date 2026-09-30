@@ -22,6 +22,8 @@ v1_api_routes = lambda do
     end
   end
 
+  resources :markdown_images, path: "markdown-images", only: %i[create show]
+
   resource :sessions, only: %i[create destroy] do
     collection do
       post "confirm-access", to: "sessions#confirm_access"

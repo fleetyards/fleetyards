@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Markdown from "@/shared/components/Markdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
@@ -199,9 +200,11 @@ onUnmounted(() => {
     </PanelHeading>
 
     <PanelBody>
-      <p v-if="team.description" class="team-desc">
-        {{ team.description }}
-      </p>
+      <Markdown
+        v-if="team.description"
+        class="team-desc"
+        :source="team.description"
+      />
 
       <div class="team-section">
         <p class="metrics-card__section-label">

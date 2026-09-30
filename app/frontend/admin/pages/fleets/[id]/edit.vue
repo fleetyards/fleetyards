@@ -18,6 +18,7 @@ import {
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -32,6 +33,9 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+// The limit the API enforces on a fleet description.
+const DESCRIPTION_MAX = 10_000;
 
 const { t } = useI18n();
 const router = useRouter();
@@ -154,11 +158,12 @@ const handleCancel = async () => {
           translation-key="fleet.fid"
           name="fid"
         />
-        <FormInput
+        <FormMarkdownEditor
           v-model="description"
           v-bind="descriptionProps"
           translation-key="fleet.description"
           name="description"
+          :maxlength="DESCRIPTION_MAX"
         />
         <FormInputGroup>
           <FormInput

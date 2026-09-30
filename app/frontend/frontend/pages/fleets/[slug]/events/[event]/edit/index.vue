@@ -8,7 +8,7 @@ export default {
 import { useForm, type SubmissionHandler } from "vee-validate";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
@@ -157,7 +157,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
 
     <div class="row">
       <div class="col-12">
-        <FormTextarea
+        <FormMarkdownEditor
           v-model="description"
           v-bind="descriptionProps"
           name="description"
@@ -167,7 +167,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     </div>
     <div class="row">
       <div class="col-12">
-        <FormTextarea
+        <FormMarkdownEditor
           v-model="briefing"
           v-bind="briefingProps"
           name="briefing"

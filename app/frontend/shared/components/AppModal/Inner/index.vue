@@ -11,16 +11,25 @@ import { useComlink } from "@/shared/composables/useComlink";
 export type ModalProps = {
   title?: string;
   fixed?: boolean;
+  // For a dialog that is not the app's modal -- one opened above it -- whose
+  // close button must close only itself.
+  onClose?: () => void;
 };
 
-withDefaults(defineProps<ModalProps>(), {
+const props = withDefaults(defineProps<ModalProps>(), {
   title: "",
   fixed: false,
+  onClose: undefined,
 });
 
 const comlink = useComlink();
 
 const close = () => {
+  if (props.onClose) {
+    props.onClose();
+    return;
+  }
+
   comlink.emit("close-modal");
 };
 </script>

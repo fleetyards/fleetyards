@@ -46,7 +46,8 @@ module Calendars
       lines << "CREATED:#{format_utc(event.created_at)}"
       lines.concat(time_lines(event, tz))
       lines << "SUMMARY:#{escape(event.title)}"
-      lines << "DESCRIPTION:#{escape(event.description.to_s)}" if event.description.present?
+      description = MarkdownPlainText.render(event.description)
+      lines << "DESCRIPTION:#{escape(description)}" if description.present?
       lines << "STATUS:#{ics_status(event.status)}"
       lines << "CATEGORIES:#{escape(event.category.to_s.upcase)}" if event.category.present?
       if event.location.present? || event.meetup_location.present?
@@ -162,7 +163,7 @@ module Calendars
         lines << "DTEND:#{format_utc(occurrence + duration)}"
       end
       lines << "SUMMARY:#{escape(state.effective(:title))}"
-      description = state.effective(:description)
+      description = MarkdownPlainText.render(state.effective(:description))
       lines << "DESCRIPTION:#{escape(description)}" if description.present?
       lines << "STATUS:#{ics_status(status)}"
       lines << "CATEGORIES:#{escape(event.category.to_s.upcase)}" if event.category.present?

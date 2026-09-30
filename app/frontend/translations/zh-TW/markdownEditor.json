@@ -1,0 +1,33 @@
+{
+  "zh-TW": {
+    "markdownEditor": {
+      "toolbar": "格式",
+      "bold": "粗體",
+      "italic": "斜體",
+      "heading": "標題",
+      "bulletList": "項目符號清單",
+      "orderedList": "編號清單",
+      "center": "置中",
+      "link": "連結",
+      "linkUrl": "連結網址",
+      "linkUrlPlaceholder": "https://…",
+      "linkApply": "套用",
+      "linkRemove": "移除連結",
+      "linkInvalid": "只能連結 http(s) 網址或本站路徑。",
+      "image": "圖片",
+      "imageAlt": "圖片描述",
+      "imageApply": "插入",
+      "close": "關閉",
+      "source": "編輯 Markdown 原始碼",
+      "imageUploadFailed": "圖片上傳失敗，請再試一次。",
+      "imageTitle": "插入圖片",
+      "imageAltHint": "代替圖片朗讀，圖片無法載入時顯示。",
+      "cancel": "取消",
+      "imageSize": "圖片大小",
+      "imageSize25": "小",
+      "imageSize50": "中",
+      "imageSize75": "大",
+      "imageSizeFull": "全寬"
+    }
+  }
+}

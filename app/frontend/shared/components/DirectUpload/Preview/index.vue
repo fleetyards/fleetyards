@@ -5,12 +5,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { defineAsyncComponent } from "vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
-import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type FileUpload } from "@/shared/components/DirectUpload/index.vue";
 import { fileTypeMap } from "../types";
+
+// Loaded only for a model file: the viewer brings three.js with it, which every
+// other preview -- an image, a PDF -- would otherwise download for nothing.
+const HoloViewer = defineAsyncComponent(
+  () => import("@/shared/components/HoloViewer/index.vue"),
+);
 
 type Props = {
   file: FileUpload;

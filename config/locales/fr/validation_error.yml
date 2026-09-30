@@ -54,6 +54,8 @@ fr:
       demote_not_permitted: Vous ne pouvez pas rétrograder le dernier membre d'un
         rôle de flotte permanent.
       update: Impossible de mettre à jour l'adhésion à la flotte.
+    markdown_image:
+      create: "L'image n'a pas pu être téléversée."
     hangar_group:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
