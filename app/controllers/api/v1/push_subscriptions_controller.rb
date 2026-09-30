@@ -13,7 +13,7 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "notifications", "notifications:write" },
         unless: :user_signed_in?,
-        only: %i[create destroy]
+        only: %i[create destroy touch]
 
       before_action :check_push_notifications_feature
 
@@ -39,6 +39,21 @@ module Api
         else
           render json: ValidationError.new("push_subscription", errors: @push_subscription.errors), status: :bad_request
         end
+      end
+
+      # A visit's sign that this browser is still in use, which keeps it out of
+      # the prune. It only ever updates an existing row: a device removed in the
+      # meantime answers 404 and stays removed, where re-posting the subscription
+      # would bring it back. It also leaves the failure count alone, which only a
+      # real renewal resets.
+      def touch
+        @push_subscription = current_resource_owner.push_subscriptions.find(params[:id])
+
+        authorize! @push_subscription
+
+        @push_subscription.touch
+
+        render :show
       end
 
       def destroy
