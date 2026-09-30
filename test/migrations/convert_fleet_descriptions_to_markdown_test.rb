@@ -46,6 +46,30 @@ class ConvertFleetDescriptionsToMarkdownTest < ActiveSupport::TestCase
     assert_equal "the **banner.** Our goal", @fleet.reload.description
   end
 
+  test "emphasis over several lines is balanced on each" do
+    write_description("<b>First\nSecond</b>")
+
+    ConvertFleetDescriptionsToMarkdown.new.up
+
+    assert_equal "**First**\n**Second**", @fleet.reload.description
+  end
+
+  test "same-origin paths are kept and other origins dropped" do
+    write_description(%(<a href="/fleets/maru">Maru</a> <a href="//evil.test">x</a><img src="/cover.jpg">))
+
+    ConvertFleetDescriptionsToMarkdown.new.up
+
+    assert_equal "[Maru](/fleets/maru) x![](/cover.jpg)", @fleet.reload.description
+  end
+
+  test "parentheses in a url are encoded so the link does not end early" do
+    write_description(%(<a href="https://example.org/wiki/Ship_(game)">Ship</a>))
+
+    ConvertFleetDescriptionsToMarkdown.new.up
+
+    assert_equal "[Ship](https://example.org/wiki/Ship_%28game%29)", @fleet.reload.description
+  end
+
   test "a script or a javascript link does not survive as markup" do
     write_description(%(Hi\n<script>alert(1)</script><a href="javascript:alert(1)">click</a><img src=x onerror=alert(1)>))
 

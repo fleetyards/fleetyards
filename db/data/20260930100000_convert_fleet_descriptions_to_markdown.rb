@@ -11,6 +11,10 @@
 class ConvertFleetDescriptionsToMarkdown < ActiveRecord::Migration[8.1]
   TAG = %r{</?[a-z][a-z0-9]*[\s/>]}i
 
+  # The same policy as the renderer's safeHref/safeSrc: http(s), or a path on
+  # this origin -- `//host` and `/\host` are another one.
+  SAME_ORIGIN_PATH = %r{\A/(?![/\\])}
+
   def up
     Fleet.where("description ~* ?", TAG.source).find_each do |fleet|
       next unless fleet.description.match?(TAG)
@@ -56,28 +60,35 @@ class ConvertFleetDescriptionsToMarkdown < ActiveRecord::Migration[8.1]
   end
 
   # Markdown emphasis cannot open or close on a space, so `<b>text </b>` keeps
-  # its space outside the markers.
+  # its space outside the markers. The renderer reads one line at a time, so
+  # emphasis spanning lines is closed and reopened on each of them.
   def emphasise(inner, marker)
-    return inner if inner.strip.empty?
+    inner.split("\n", -1).map do |line|
+      next line if line.strip.empty?
 
-    leading = inner[/\A\s*/]
-    trailing = inner[/\s*\z/]
-    "#{leading}#{marker}#{inner.strip}#{marker}#{trailing}"
+      "#{line[/\A\s*/]}#{marker}#{line.strip}#{marker}#{line[/\s*\z/]}"
+    end.join("\n")
   end
 
   def link(node)
     inner = render(node)
-    href = node["href"].to_s.strip
-    return inner if inner.strip.empty? || !href.match?(%r{\Ahttps?://}) || inner.include?("](")
+    href = markdown_url(node["href"])
+    return inner if inner.strip.empty? || inner.include?("](")
+    return inner unless href.match?(%r{\Ahttps?://}) || href.match?(SAME_ORIGIN_PATH)
 
-    "[#{inner.strip}](#{href})"
+    "[#{inner.strip.gsub(/\s*\n\s*/, " ")}](#{href})"
   end
 
   def image(node)
-    src = node["src"].to_s.strip
-    return "" unless src.start_with?("https://")
+    src = markdown_url(node["src"])
+    return "" unless src.start_with?("https://") || src.match?(SAME_ORIGIN_PATH)
 
-    "![#{node["alt"].to_s.strip}](#{src})"
+    "![#{node["alt"].to_s.gsub(/[\[\]\n]/, " ").squish}](#{src})"
+  end
+
+  # A markdown destination ends at the first `)` or space, so both are encoded.
+  def markdown_url(url)
+    url.to_s.strip.gsub("(", "%28").gsub(")", "%29").gsub(" ", "%20")
   end
 
   def list(node)
