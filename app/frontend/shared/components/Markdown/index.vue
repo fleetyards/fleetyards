@@ -44,11 +44,13 @@ const formatText = (value: string) =>
     .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match, alt, url: string) =>
       safeSrc(url) ? `<img src="${url}" alt="${alt}" loading="lazy">` : match,
     )
-    // Not after a `!`: an image the pass above refused stays text, not a link.
-    .replace(/(?<!!)\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, url: string) =>
-      safeHref(url)
-        ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
-        : match,
+    // A leading `!` is an image the pass above refused: it stays text.
+    .replace(
+      /(!?)\[([^\]]+)\]\(([^)\s]+)\)/g,
+      (match, bang: string, label, url: string) =>
+        !bang && safeHref(url)
+          ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
+          : match,
     )
     .replace(/(^|[^*\w[])\*(?!\s)([^*]+?)\*(?![*\w])/g, "$1<em>$2</em>");
 
