@@ -22,7 +22,12 @@
       "imageUploadFailed": "图片上传失败，请重试。",
       "imageTitle": "插入图片",
       "imageAltHint": "代替图片朗读，图片无法加载时显示。",
-      "cancel": "取消"
+      "cancel": "取消",
+      "imageSize": "图片大小",
+      "imageSize25": "小",
+      "imageSize50": "中",
+      "imageSize75": "大",
+      "imageSizeFull": "全宽"
     }
   }
 }

@@ -17,6 +17,11 @@ class MarkdownPlainTextTest < ActiveSupport::TestCase
     assert_equal "Welcome\nMore", MarkdownPlainText.render(":::center\n\nWelcome\n\n:::\n\nMore")
   end
 
+  test "leaves an image's size out" do
+    assert_equal "Before\ncover https://x.test/a.jpg\nAfter",
+      MarkdownPlainText.render("Before\n\n![cover](https://x.test/a.jpg){width=50%}\n\nAfter")
+  end
+
   test "is empty for no text" do
     assert_equal "", MarkdownPlainText.render(nil)
   end

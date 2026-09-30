@@ -76,6 +76,19 @@
   img {
     max-width: 100%;
     height: auto;
+
+    // A share of the column, never more than the picture's own width.
+    &[data-size="25"] {
+      width: 25%;
+    }
+
+    &[data-size="50"] {
+      width: 50%;
+    }
+
+    &[data-size="75"] {
+      width: 75%;
+    }
   }
 
   code {

@@ -22,7 +22,12 @@
       "imageUploadFailed": "Impossibile caricare l'immagine. Riprova.",
       "imageTitle": "Inserisci un'immagine",
       "imageAltHint": "Letta al posto dell'immagine e mostrata se non può essere caricata.",
-      "cancel": "Annulla"
+      "cancel": "Annulla",
+      "imageSize": "Dimensione dell'immagine",
+      "imageSize25": "Piccola",
+      "imageSize50": "Media",
+      "imageSize75": "Grande",
+      "imageSizeFull": "Larghezza piena"
     }
   }
 }

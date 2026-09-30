@@ -318,6 +318,17 @@ describe("Markdown", () => {
     expect(wrapper.find("img").attributes("alt")).toBe("cover");
   });
 
+  it("sizes an image only to the steps it knows", async () => {
+    const wrapper = await mount(
+      "![a](https://robertsspaceindustries.com/a.jpg){width=50%} ![b](https://robertsspaceindustries.com/b.jpg){width=33%}",
+    );
+
+    const images = wrapper.findAll("img");
+    expect(images[0].attributes("data-size")).toBe("50");
+    expect(images[1].attributes("data-size")).toBeUndefined();
+    expect(wrapper.text()).toContain("{width=33%}");
+  });
+
   it("keeps an image source from breaking out of its attribute", async () => {
     const wrapper = await mount(
       '![a](https://robertsspaceindustries.com/"onerror="alert(1))',

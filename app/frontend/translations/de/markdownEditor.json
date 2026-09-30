@@ -22,7 +22,12 @@
       "imageUploadFailed": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
       "imageTitle": "Bild einfügen",
       "imageAltHint": "Wird anstelle des Bildes vorgelesen und angezeigt, falls es nicht geladen werden kann.",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "imageSize": "Bildgröße",
+      "imageSize25": "Klein",
+      "imageSize50": "Mittel",
+      "imageSize75": "Groß",
+      "imageSizeFull": "Volle Breite"
     }
   }
 }

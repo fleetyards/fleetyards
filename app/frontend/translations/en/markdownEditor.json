@@ -22,7 +22,12 @@
       "imageUploadFailed": "The image could not be uploaded. Try again.",
       "imageTitle": "Insert an image",
       "imageAltHint": "Read out in place of the image, and shown if it cannot load.",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "imageSize": "Image size",
+      "imageSize25": "Small",
+      "imageSize50": "Medium",
+      "imageSize75": "Large",
+      "imageSizeFull": "Full width"
     }
   }
 }

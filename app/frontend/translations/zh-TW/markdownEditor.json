@@ -22,7 +22,12 @@
       "imageUploadFailed": "圖片上傳失敗，請再試一次。",
       "imageTitle": "插入圖片",
       "imageAltHint": "代替圖片朗讀，圖片無法載入時顯示。",
-      "cancel": "取消"
+      "cancel": "取消",
+      "imageSize": "圖片大小",
+      "imageSize25": "小",
+      "imageSize50": "中",
+      "imageSize75": "大",
+      "imageSizeFull": "全寬"
     }
   }
 }

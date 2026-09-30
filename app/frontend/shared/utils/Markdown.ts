@@ -6,11 +6,12 @@ import {
 // Renders the markdown the editor writes: ATX and underlined headings,
 // bulleted and numbered lists (nested by indentation), block quotes, fenced
 // code, horizontal rules, paragraphs, bold, italic, strikethrough, inline
-// code, links, images and a `:::center` ... `:::` block, the container syntax
-// Tiptap's markdown extension reads and writes (without a space after the
-// colons). Anything else is passed through as text. Everything is
-// HTML-escaped before a single tag is added, so the result is safe to hand to
-// v-html -- which is why user-written text goes through here too.
+// code, links, images (sized with `{width=50%}`) and a `:::center` ... `:::`
+// block, the container syntax Tiptap's markdown extension reads and writes
+// (without a space after the colons). Anything else is passed through as
+// text. Everything is HTML-escaped before a single tag is added, so the result
+// is safe to hand to v-html -- which is why user-written text goes through
+// here too.
 
 const escapeHtml = (value: string) =>
   value
@@ -72,10 +73,11 @@ const formatText = (value: string, resolve: (text: string) => string) => {
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
       .replace(/~~([^~]+)~~/g, "<del>$1</del>")
       .replace(
-        /!\[((?:[^[\]]|\[[^[\]]*\])*)\]\(([^)\s]+)\)/g,
-        (match, alt, url: string) => {
+        /!\[((?:[^[\]]|\[[^[\]]*\])*)\]\(([^)\s]+)\)(?:\{width=(25|50|75)%\})?/g,
+        (match, alt, url: string, size: string | undefined) => {
           if (isSafeMarkdownSrc(target(url))) {
-            return `<img src="${url}" alt="${alt}" loading="lazy">`;
+            const sized = size ? ` data-size="${size}"` : "";
+            return `<img src="${url}" alt="${alt}"${sized} loading="lazy">`;
           }
 
           // An image from a host the page may not load is still worth

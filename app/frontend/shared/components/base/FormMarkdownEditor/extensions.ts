@@ -50,9 +50,34 @@ export const Center = Node.create({
   },
 });
 
+// How wide an image shows, as a share of the text column; none is full width.
+// Written the way Pandoc and markdown-it-attrs write it -- `![a](src){width=50%}`
+// -- and limited to these steps, so a description cannot size an image freely.
+export const IMAGE_SIZES = ["25", "50", "75"] as const;
+
+export type ImageSize = (typeof IMAGE_SIZES)[number];
+
+const SIZED_IMAGE =
+  /^!\[((?:[^[\]\\]|\\.|\[[^[\]]*\])*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)\{width=(25|50|75)%\}/;
+
 // An image the renderer would refuse is not kept either: it would save as
 // markdown that shows up on the page as its own source text.
 const SafeImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      size: {
+        default: null,
+        parseHTML: (element) => {
+          const size = element.getAttribute("data-size");
+          return IMAGE_SIZES.includes(size as ImageSize) ? size : null;
+        },
+        renderHTML: (attributes) =>
+          attributes.size ? { "data-size": attributes.size } : {},
+      },
+    };
+  },
+
   parseHTML() {
     return [
       {
@@ -61,6 +86,45 @@ const SafeImage = Image.extend({
           isSafeMarkdownSrc(element.getAttribute("src") ?? "") ? null : false,
       },
     ];
+  },
+
+  // Runs before the markdown parser's own image rule and takes only an image
+  // that carries a size; any other is left to that rule.
+  markdownTokenizer: {
+    name: "image",
+    level: "inline",
+    start: (src: string) => src.indexOf("!["),
+    tokenize: (src: string) => {
+      const match = SIZED_IMAGE.exec(src);
+
+      if (!match) return undefined;
+
+      return {
+        type: "image",
+        raw: match[0],
+        text: match[1].replace(/\\(.)/g, "$1"),
+        href: match[2],
+        title: match[3] ?? null,
+        size: match[4],
+      };
+    },
+  },
+
+  parseMarkdown: (token, helpers) =>
+    helpers.createNode("image", {
+      src: token.href,
+      title: token.title,
+      alt: token.text,
+      size: (token as { size?: string }).size ?? null,
+    }),
+
+  renderMarkdown: (node) => {
+    const { src, alt, title, size } = node.attrs ?? {};
+    const image = title
+      ? `![${alt ?? ""}](${src ?? ""} "${title}")`
+      : `![${alt ?? ""}](${src ?? ""})`;
+
+    return size ? `${image}{width=${size}%}` : image;
   },
 }).configure({ inline: false, allowBase64: false });
 

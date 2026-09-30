@@ -240,6 +240,41 @@ describe("FormMarkdownEditor", () => {
     expect(lastEmitted(subject)).toBe("Cargo & mining");
   });
 
+  it("offers the size of a selected image and changes it", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "![cover](https://robertsspaceindustries.com/a.jpg)",
+    });
+
+    expect(
+      subject.find('[data-test="markdown-editor-image-size"]').exists(),
+    ).toBe(false);
+
+    editorOf(subject).chain().focus().setNodeSelection(0).run();
+    await nextFrames();
+
+    await subject
+      .find('[data-test="markdown-editor-image-size-50"]')
+      .trigger("click");
+    expect(lastEmitted(subject)).toBe(
+      "![cover](https://robertsspaceindustries.com/a.jpg){width=50%}",
+    );
+
+    await nextFrames();
+    expect(
+      subject
+        .find('[data-test="markdown-editor-image-size-50"]')
+        .attributes("aria-pressed"),
+    ).toBe("true");
+
+    await subject
+      .find('[data-test="markdown-editor-image-size-full"]')
+      .trigger("click");
+    expect(lastEmitted(subject)).toBe(
+      "![cover](https://robertsspaceindustries.com/a.jpg)",
+    );
+  });
+
   it("closes the link panel when the image dialog opens", async () => {
     const subject = await mountEditor({ name: "description", modelValue: "" });
 

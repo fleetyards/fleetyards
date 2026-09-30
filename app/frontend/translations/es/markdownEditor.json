@@ -22,7 +22,12 @@
       "imageUploadFailed": "No se pudo subir la imagen. Inténtalo de nuevo.",
       "imageTitle": "Insertar una imagen",
       "imageAltHint": "Se lee en lugar de la imagen y se muestra si no puede cargarse.",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "imageSize": "Tamaño de la imagen",
+      "imageSize25": "Pequeña",
+      "imageSize50": "Mediana",
+      "imageSize75": "Grande",
+      "imageSizeFull": "Ancho completo"
     }
   }
 }

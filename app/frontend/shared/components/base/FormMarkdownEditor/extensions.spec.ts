@@ -44,6 +44,10 @@ describe("markdownExtensions round trip", () => {
     ["a same-origin link", "[Stats](/fleets/maru/stats/)"],
     ["an image", "![](https://robertsspaceindustries.com/cover.jpg)"],
     [
+      "a sized image",
+      "![Fleet cover](https://robertsspaceindustries.com/cover.jpg){width=50%}",
+    ],
+    [
       "an image with a description",
       "![Fleet cover](https://robertsspaceindustries.com/cover.jpg)",
     ],
@@ -179,6 +183,21 @@ describe("markdownExtensions images", () => {
     editor.destroy();
 
     expect(rendered.find("img").attributes("alt")).toBe("Fleet [Alpha]");
+  });
+
+  it("sizes a selected image, and renders it at that size", async () => {
+    const editor = load("![cover](https://robertsspaceindustries.com/a.jpg)");
+    editor.commands.setNodeSelection(0);
+    editor.commands.updateAttributes("image", { size: "25" });
+    const saved = toMarkdown(editor);
+    editor.destroy();
+
+    expect(saved).toBe(
+      "![cover](https://robertsspaceindustries.com/a.jpg){width=25%}",
+    );
+    expect((await render(saved)).find("img").attributes("data-size")).toBe(
+      "25",
+    );
   });
 
   it("centres a selected image", async () => {

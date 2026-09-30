@@ -12,8 +12,14 @@ import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
 import LinkPanel from "./LinkPanel.vue";
+import ImageSizePanel from "./ImageSizePanel.vue";
 import type { MarkdownImageCreate } from "./ImageDialog.vue";
-import { markdownExtensions, protectHtml, toMarkdown } from "./extensions";
+import {
+  markdownExtensions,
+  protectHtml,
+  toMarkdown,
+  type ImageSize,
+} from "./extensions";
 
 // Loaded when an image is first inserted: the uploader it holds is not small,
 // and most edits never need it.
@@ -108,6 +114,8 @@ let emitted: string | null = props.modelValue ?? null;
 let loaded = props.modelValue ?? "";
 let loadedAs: string | undefined;
 
+const focused = ref(false);
+
 const setMarkdown = (markdown: string) => {
   if (markdown === emitted) return;
 
@@ -139,7 +147,11 @@ const editor = useEditor({
 
     setMarkdown(markdown === loadedAs ? loaded : markdown);
   },
+  onFocus: () => {
+    focused.value = true;
+  },
   onBlur: () => {
+    focused.value = false;
     handleBlur(undefined, true);
   },
 });
@@ -302,6 +314,20 @@ const closeImageDialog = () => {
   editor.value?.commands.focus();
 };
 
+// Selecting an image in the text offers its size -- while the text is being
+// edited, not because a description happens to open on an image.
+const imageSelected = computed(
+  () => focused.value && !sourceMode.value && !!editor.value?.isActive("image"),
+);
+
+const imageSize = computed(
+  () => (editor.value?.getAttributes("image").size as ImageSize | null) ?? null,
+);
+
+const setImageSize = (size: ImageSize | null) => {
+  editor.value?.chain().updateAttributes("image", { size }).run();
+};
+
 // The dialog closes itself after an insert, once its animation has run.
 const insertImage = (image: { src: string; alt?: string }) => {
   chain().setImage(image).run();
@@ -416,6 +442,11 @@ defineExpose({ setFocus: focusEditor });
         @apply="applyLink"
         @remove="removeLink"
         @close="closePanel"
+      />
+      <ImageSizePanel
+        v-if="imageSelected && !panel"
+        :size="imageSize"
+        @select="setImageSize"
       />
       <Teleport to="body">
         <ImageDialog

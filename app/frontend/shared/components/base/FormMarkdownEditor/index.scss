@@ -86,6 +86,12 @@
     resize: vertical;
   }
 
+  // An image is selected as a whole, and its size row speaks to that one.
+  :deep(.ProseMirror-selectednode) {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
+
   :deep(.base-markdown-editor__content) {
     min-height: 100%;
     padding: 6px 12px;
