@@ -15,6 +15,9 @@ import { type Component } from "@/services/fyApi";
 type Props = {
   component?: Component;
   compact?: boolean;
+  // What the card is titled while its record is missing, since a compact card
+  // otherwise takes its title from the record.
+  name?: string;
   // Where the card's detail link goes, when the caller knows better than the
   // record -- a reference can say the catalogue does not list it. `false`
   // drops the link.
@@ -25,6 +28,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   component: undefined,
   compact: false,
+  name: undefined,
   to: undefined,
   loading: false,
 });
@@ -95,13 +99,16 @@ const ownRoute = computed(() =>
 <template>
   <StatsCard
     :compact="compact"
-    :title="compact ? component?.name || '' : t('headlines.component.metrics')"
+    :title="
+      compact ? component?.name || name || '' : t('headlines.component.metrics')
+    "
     :subtitle="subtitle || undefined"
     :badges="badges"
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"
     :empty-text="t('labels.component.noMetrics')"
-    :loading="loading || (compact && !component)"
+    :loading="loading"
+    :unavailable="compact && !loading && !component"
     @navigate="emit('navigate')"
   >
     <slot />

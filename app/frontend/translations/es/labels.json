@@ -217,7 +217,8 @@
         }
       },
       "statsCard": {
-        "more": "+%{count} más en la página de detalles"
+        "more": "+%{count} más en la página de detalles",
+        "unavailable": "No se pudieron cargar estos detalles."
       },
       "stats": {
         "quickStats": {

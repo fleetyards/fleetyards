@@ -5,17 +5,29 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 
 type QueryOptions = { query: { enabled: { value: boolean } } };
 
-// Hoisted with the mock below, which runs before the rest of this file.
-const { enabled, query } = vi.hoisted(() => {
+// Hoisted with the mock below, which runs before the rest of this file. Each
+// query reports the v5 states: pending (disabled, or in flight) until `settle`
+// answers it, then data or an error, and no longer pending.
+const { enabled, query, settle } = vi.hoisted(() => {
   const enabled: Record<string, () => boolean> = {};
+  const states: Record<
+    string,
+    { data: Ref<unknown>; isPending: Ref<boolean> }
+  > = {};
 
   const query = (key: string) => (_slug: unknown, options: QueryOptions) => {
     enabled[key] = () => options.query.enabled.value;
+    states[key] = { data: ref(undefined), isPending: ref(true) };
 
-    return { data: { value: undefined }, isPending: { value: true } };
+    return states[key];
   };
 
-  return { enabled, query };
+  const settle = (key: string, data?: unknown) => {
+    states[key].data.value = data;
+    states[key].isPending.value = false;
+  };
+
+  return { enabled, query, settle };
 });
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -167,5 +179,27 @@ describe("CatalogueItemPopover", () => {
     expect(wrapper.find("a").attributes("aria-label")).toBe(
       "Open in catalogue",
     );
+  });
+
+  it("spins while the lookup is in flight, and says so when it fails", async () => {
+    const wrapper = await mount({
+      item: { type: "Component", slug: "gone", name: "Gone" },
+    });
+
+    await tapOpen(wrapper);
+
+    expect(document.querySelector(".stats-card__loading")).not.toBeNull();
+    expect(
+      document.querySelector("[data-test='stats-card-unavailable']"),
+    ).toBeNull();
+
+    settle("component");
+    await nextTick();
+
+    expect(document.querySelector(".stats-card__loading")).toBeNull();
+    expect(
+      document.querySelector("[data-test='stats-card-unavailable']"),
+    ).not.toBeNull();
+    expect(card()?.textContent).toContain("Gone");
   });
 });

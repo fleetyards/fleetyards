@@ -22,6 +22,10 @@ type Props = {
   variant?: "default" | "slim";
   emptyText?: string;
   loading?: boolean;
+  // A lookup that settled without a record -- a failed request, or a
+  // reference to something the API no longer has. Said out loud so the card
+  // does not look as if it were still loading.
+  unavailable?: boolean;
   subtitle?: string;
   badges?: StatsCardBadge[];
   to?: RouteLocationRaw;
@@ -34,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: "default",
   emptyText: undefined,
   loading: false,
+  unavailable: false,
   subtitle: undefined,
   badges: () => [],
   to: undefined,
@@ -89,6 +94,14 @@ const hasRows = computed(() => rowStats.value.length > 0 || !!slots.rows);
     <div v-if="loading" class="stats-card__loading">
       <SmallLoader :loading="true" />
     </div>
+
+    <p
+      v-else-if="unavailable"
+      class="stats-card__note"
+      data-test="stats-card-unavailable"
+    >
+      {{ t("labels.statsCard.unavailable") }}
+    </p>
 
     <template v-else>
       <div v-if="heroStats.length" class="metrics-card__hero">

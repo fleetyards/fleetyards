@@ -54,6 +54,10 @@ const isCommodity = computed(() => props.item.type === "Commodity");
 // Fetched the first time the card opens -- never for every link on a page --
 // and left enabled afterwards, so the query cache (shared with the detail
 // pages) answers every later open.
+//
+// The card only renders once it has opened, when its query is enabled, so
+// `isPending` means the answer is still to come. A failed request leaves
+// pending without data, which the card states rather than spinning on.
 const requested = ref(false);
 
 const fetches = (type: Ref<boolean>) =>
@@ -123,6 +127,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         v-if="isComponent"
         compact
         :to="route ?? false"
+        :name="label"
         :component="component"
         :loading="componentLoading"
         @navigate="close"
@@ -131,6 +136,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         v-else-if="isEquipment"
         compact
         :to="route ?? false"
+        :name="label"
         :equipment="equipment"
         :loading="equipmentLoading"
         @navigate="close"
@@ -139,6 +145,7 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         v-else
         compact
         :to="route ?? false"
+        :name="label"
         :commodity="commodity"
         :loading="commodityLoading"
         @navigate="close"

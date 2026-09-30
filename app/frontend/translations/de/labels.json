@@ -217,7 +217,8 @@
         }
       },
       "statsCard": {
-        "more": "+%{count} weitere auf der Detailseite"
+        "more": "+%{count} weitere auf der Detailseite",
+        "unavailable": "Diese Details konnten nicht geladen werden."
       },
       "stats": {
         "quickStats": {

@@ -15,6 +15,9 @@ import { type Commodity } from "@/services/fyApi";
 type Props = {
   commodity?: Commodity;
   compact?: boolean;
+  // What the card is titled while its record is missing, since a compact card
+  // otherwise takes its title from the record.
+  name?: string;
   // Where the card's detail link goes, when the caller knows better than the
   // record -- a reference can say the catalogue does not list it. `false`
   // drops the link.
@@ -25,6 +28,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   commodity: undefined,
   compact: false,
+  name: undefined,
   to: undefined,
   loading: false,
 });
@@ -71,12 +75,17 @@ const ownRoute = computed(() =>
 <template>
   <StatsCard
     :compact="compact"
-    :title="compact ? commodity?.name || '' : t('headlines.commodity.identity')"
+    :title="
+      compact
+        ? commodity?.name || name || ''
+        : t('headlines.commodity.identity')
+    "
     variant="slim"
     :badges="badges"
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"
-    :loading="loading || (compact && !commodity)"
+    :loading="loading"
+    :unavailable="compact && !loading && !commodity"
     @navigate="emit('navigate')"
   >
     <template v-if="$slots.rows" #rows>
