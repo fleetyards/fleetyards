@@ -203,7 +203,8 @@ export const useHardpointStats = (
     if (mining.chargeUpTime || mining.chargeDownTime) {
       result.push({
         label: t("labels.hardpoint.mining.chargeTime"),
-        value: `${String(toNumber(mining.chargeUpTime ?? 0))} / ${String(toNumber(mining.chargeDownTime ?? 0, "seconds"))}`,
+        // `toNumber` reads 0 as "not available", and an instant charge is 0 s.
+        value: `${mining.chargeUpTime ? String(toNumber(mining.chargeUpTime)) : "0"} / ${mining.chargeDownTime ? String(toNumber(mining.chargeDownTime, "seconds")) : "0 s"}`,
       });
     }
     pushMiningModifiers(result, mining.modifiers);

@@ -17,8 +17,9 @@ vi.mock("@/shared/composables/useI18n", () => {
   return {
     useI18n: () => ({
       t: (key: string) => key,
+      // Like the real helper, which reads 0 as "not available".
       toNumber: (value: number, format?: string) =>
-        `${value}${(format && units[format]) || ""}`,
+        value ? `${value}${(format && units[format]) || ""}` : "n/a",
     }),
   };
 });
@@ -84,6 +85,20 @@ describe("useHardpointStats for mining and salvage", () => {
       ["labels.hardpoint.mining.modifiers.instability", "-35%"],
       ["labels.hardpoint.mining.modifiers.resistance", "+25%"],
       ["labels.hardpoint.mining.modifiers.inertMaterials", "-30%"],
+    ]);
+  });
+
+  it("shows an instant charge as zero seconds", () => {
+    const stats = statsFor(
+      hardpointWith(
+        { beam: true, mining: { fracturePowerMax: 100, chargeUpTime: 0.5 } },
+        HardpointCategoryEnum.WEAPONS,
+      ),
+    );
+
+    expect(stats).toContainEqual([
+      "labels.hardpoint.mining.chargeTime",
+      "0.5 / 0 s",
     ]);
   });
 
