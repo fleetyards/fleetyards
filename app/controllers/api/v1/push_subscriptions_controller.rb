@@ -51,7 +51,8 @@ module Api
 
         authorize! @push_subscription
 
-        @push_subscription.touch
+        # False when the row went between the lookup and the update.
+        return not_found unless @push_subscription.touch
 
         render :show
       end

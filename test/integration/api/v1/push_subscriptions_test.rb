@@ -252,6 +252,14 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     assert_equal 0, PushSubscription.count
   end
 
+  test "PUT touch of a subscription removed mid-request is not found" do
+    subscription = create(:push_subscription, user: @user)
+    PushSubscription.any_instance.stubs(:touch).returns(false)
+    sign_in @user
+
+    assert_api_response :put, 404, path_params: {id: subscription.id}
+  end
+
   test "PUT touch of another user's subscription is not found" do
     subscription = create(:push_subscription)
     sign_in @user
