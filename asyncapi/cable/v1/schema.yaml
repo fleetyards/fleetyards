@@ -524,6 +524,9 @@ components:
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
           - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentMissile"
+          - "$ref": "#/components/schemas/ComponentBomb"
+          - "$ref": "#/components/schemas/ComponentMissileRack"
           - "$ref": "#/components/schemas/ComponentTractorBeam"
           - "$ref": "#/components/schemas/ComponentShield"
           - "$ref": "#/components/schemas/ComponentCooler"
@@ -601,6 +604,24 @@ components:
         signalElectromagnetic:
           type: number
         signalCrossSection:
+          type: number
+      additionalProperties: false
+    ComponentBomb:
+      type: object
+      properties:
+        damagePerShot:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        maxLifetime:
+          type: number
+        maxDropAngle:
+          type: number
+        armTime:
+          type: number
+        safetyDistance:
+          type: number
+        blastRadiusMin:
+          type: number
+        blastRadiusMax:
           type: number
       additionalProperties: false
     ComponentClassEnum:
@@ -711,6 +732,76 @@ components:
         fuelUsageEfficiencyMultiplier:
           type: number
       additionalProperties: false
+    ComponentMissile:
+      type: object
+      properties:
+        damagePerShot:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        lockTime:
+          type: number
+        lockRangeMin:
+          type: number
+        lockRangeMax:
+          type: number
+        lockAngle:
+          type: number
+        trackingSignal:
+          "$ref": "#/components/schemas/ComponentMissileTrackingSignalEnum"
+        trackingSignalMin:
+          type: number
+        signalResilienceMin:
+          type: number
+        signalResilienceMax:
+          type: number
+        dumbfire:
+          type: boolean
+        speed:
+          type: number
+        range:
+          type: number
+        maxLifetime:
+          type: number
+        boostPhaseDuration:
+          type: number
+        terminalPhaseTime:
+          type: number
+        terminalPhaseAngle:
+          type: number
+        fuelTankSize:
+          type: number
+        armTime:
+          type: number
+        safetyDistance:
+          type: number
+        blastRadiusMin:
+          type: number
+        blastRadiusMax:
+          type: number
+      additionalProperties: false
+    ComponentMissileRack:
+      type: object
+      properties:
+        launchDelay:
+          type: number
+        igniteOnPylon:
+          type: boolean
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+    ComponentMissileTrackingSignalEnum:
+      type: string
+      enum:
+      - Infrared
+      - Electromagnetic
+      - CrossSection
+      x-enumNames:
+      - INFRARED
+      - ELECTROMAGNETIC
+      - CROSS_SECTION
     ComponentPingProperties:
       type: object
       properties:
