@@ -17,7 +17,9 @@
 #
 class ModuleHardpoint < ApplicationRecord
   belongs_to :model, touch: true, counter_cache: true
-  belongs_to :model_module
+  # Linking, unlinking or editing a slot changes what the module embeds, and
+  # its cached fragments are keyed on the module.
+  belongs_to :model_module, touch: true
 
   POSITION_KEYWORDS = %w[front rear bow stern left right].freeze
 

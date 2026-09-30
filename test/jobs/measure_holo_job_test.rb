@@ -3,6 +3,8 @@
 require "test_helper"
 
 class MeasureHoloJobTest < ActiveJob::TestCase
+  include ActionCable::TestHelper
+
   def attach(model, name, fixture)
     model.send(name).attach(
       io: File.open(Rails.root.join("test/fixtures/holo/#{fixture}")),
@@ -22,6 +24,57 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_in_delta 6.0, model.length.to_f
     assert_in_delta 2.0, model.beam.to_f
     assert_in_delta 1.0, model.height.to_f
+  end
+
+  # The model's cached fragments are keyed on it; without the bump they kept
+  # serving the unmeasured figures after the measurement landed.
+  test "#perform moves the model's updated_at with the measurement" do
+    model = attach(create(:model), :holo, "plain.gltf")
+    model.update_columns(updated_at: 1.day.ago)
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_operator model.reload.updated_at, :>, 1.minute.ago
+  end
+
+  # Until the new file is measured, nothing vouches that it is in meters.
+  test "a replaced holo drops the old measurement's stamp" do
+    model = attach(create(:model), :holo, "plain.gltf")
+    MeasureHoloJob.new.perform(model.id, "holo")
+    assert_not_nil model.reload.dimensions_measured_at
+
+    attach(model, :holo, "rotated.gltf")
+
+    assert_nil model.reload.dimensions_measured_at
+  end
+
+  # A replacement landing between the job's check and its write: the write
+  # itself has to refuse, or the old file's stamp lands on the new holo.
+  test "#perform writes nothing once the measured holo has been replaced" do
+    model = attach(create(:model), :holo, "plain.gltf")
+    measured_blob_id = model.holo.blob.id
+    attach(model, :holo, "wide.gltf")
+    model.update_columns(dock_size: ::Model.dock_sizes.keys.last)
+    model.reload
+    length = model.length
+    dock_size = model.dock_size
+    MeasureHoloJob.any_instance.stubs(:stale_blob?).returns(false)
+
+    MeasureHoloJob.new.perform(model.id, "holo", measured_blob_id)
+
+    model.reload
+    assert_nil model.dimensions_measured_at
+    assert_equal length, model.length
+    assert_equal dock_size, model.dock_size
+  end
+
+  # The writes skip the model's callbacks, and with them its broadcast.
+  test "#perform tells the models channel once the measurement is written" do
+    model = attach(create(:model), :holo, "plain.gltf")
+
+    assert_broadcasts("models", 1) do
+      MeasureHoloJob.new.perform(model.id, "holo", model.holo.blob.id)
+    end
   end
 
   # The fixture is 10 x 1 x 6 -- wider than it is long, like the Corsair with

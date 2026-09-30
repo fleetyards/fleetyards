@@ -2412,6 +2412,8 @@ components:
             "$ref": "#/components/schemas/ModelLoaner"
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
+        holoToScale:
+          type: boolean
         media:
           "$ref": "#/components/schemas/ModelMedia"
         metrics:

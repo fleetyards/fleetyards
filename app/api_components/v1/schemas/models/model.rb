@@ -44,6 +44,8 @@ module V1
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
+            holoToScale: {type: :boolean},
+
             media: ::V1::Schemas::ModelMedia,
 
             metrics: Shared::V1::Schemas::ModelMetrics,
