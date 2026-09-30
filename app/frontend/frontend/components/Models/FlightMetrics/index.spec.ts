@@ -4,7 +4,7 @@ import { mount } from "@vue/test-utils";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
-    t: (key: string) => key,
+    t: (key: string) => (key === "number.format.separator" ? "," : key),
     toNumber: (value: number) => String(value),
   }),
 }));
@@ -123,9 +123,9 @@ describe("FlightMetrics boost capacitor", () => {
 
     expect(rows).toEqual([
       ["labels.flight.boostCapacity", "25"],
-      ["labels.flight.boostRegen", "0.75/s"],
-      ["labels.flight.boostRegenDelay", "1.1 s"],
-      ["labels.flight.boostRamp", "0.4 / 0 s"],
+      ["labels.flight.boostRegen", "0,75/s"],
+      ["labels.flight.boostRegenDelay", "1,1 s"],
+      ["labels.flight.boostRamp", "0,4 / 0 s"],
     ]);
   });
 

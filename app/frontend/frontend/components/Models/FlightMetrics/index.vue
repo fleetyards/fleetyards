@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import { formatBoostFigure } from "@/frontend/composables/useHardpointStats";
 import type { ComponentBoostCapacitor, Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -57,7 +58,7 @@ const boostRows = computed(() => {
   if (!capacitor || isGroundVehicle.value) return [];
 
   const figure = (value?: number) =>
-    value ? String(toNumber(value, "integer")) : "0";
+    formatBoostFigure(value, t("number.format.separator"));
 
   return [
     capacitor.capacity && {

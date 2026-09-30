@@ -9,7 +9,7 @@ import { useHardpointStats } from "./useHardpointStats";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
-    t: (key: string) => key,
+    t: (key: string) => (key === "number.format.separator" ? "," : key),
     toNumber: (value: number) => String(value),
   }),
 }));
@@ -66,8 +66,8 @@ describe("useHardpointStats for flight controllers", () => {
     expect(valueOf(stats, "rotation")).toBe("53 / 48 / 190 °/s");
     expect(valueOf(stats, "boostedRotation")).toBe("64 / 58 / 228 °/s");
     expect(valueOf(stats, "boostCapacity")).toBe("20");
-    expect(valueOf(stats, "boostRegen")).toBe("0.75/s");
-    expect(valueOf(stats, "boostRamp")).toBe("0.4 / 0.2 s");
+    expect(valueOf(stats, "boostRegen")).toBe("0,75/s");
+    expect(valueOf(stats, "boostRamp")).toBe("0,4 / 0,2 s");
   });
 
   it("writes a zero ramp as 0 rather than not available", () => {
@@ -78,7 +78,18 @@ describe("useHardpointStats for flight controllers", () => {
       }),
     );
 
-    expect(valueOf(stats, "boostRamp")).toBe("0.6 / 0 s");
+    expect(valueOf(stats, "boostRamp")).toBe("0,6 / 0 s");
+  });
+
+  it("writes a fixed rotation axis as 0", () => {
+    const stats = statsFor(
+      controller({
+        ...blade,
+        angularVelocity: { pitch: 40, yaw: 0, roll: 90 },
+      }),
+    );
+
+    expect(valueOf(stats, "rotation")).toBe("40 / 0 / 90 °/s");
   });
 
   it("leaves a controller without speeds alone", () => {

@@ -44,6 +44,19 @@ export type HardpointStat = {
 // Ordered, human-readable stats for a hardpoint's mounted component, most
 // important first. Shared by the inline row summary (first couple) and the
 // expandable details grid (all of them).
+// Keeps hundredths (0.75/s) where the one-decimal stat format rounds, and
+// groups thousands with a narrow no-break space as that format does.
+export const formatBoostFigure = (
+  value: number | undefined,
+  separator: string,
+): string => {
+  const rounded = Math.round((value || 0) * 100) / 100;
+  const [integer, decimal] = String(rounded).split(".");
+  const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
+
+  return decimal ? `${grouped}${separator || ","}${decimal}` : grouped;
+};
+
 export const useHardpointStats = (
   hardpoint: MaybeRefOrGetter<Hardpoint | undefined>,
   count?: MaybeRefOrGetter<number>,
@@ -296,6 +309,11 @@ export const useHardpointStats = (
       });
     }
   };
+
+  // Boost regen runs to hundredths (0.75/s), which the one-decimal stat
+  // format would round to 0.8.
+  const boostFigure = (value?: number): string =>
+    formatBoostFigure(value, t("number.format.separator"));
 
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
@@ -912,11 +930,14 @@ export const useHardpointStats = (
         );
       }
 
+      // A fixed axis is a real 0 °/s, not a missing figure.
       const axes = (rotation?: typeof flight.angularVelocity) =>
         rotation && (rotation.pitch || rotation.yaw || rotation.roll)
           ? `${[rotation.pitch, rotation.yaw, rotation.roll]
               .map((value) =>
-                String(toNumber(Math.round(value || 0), "integer")),
+                Math.round(value || 0)
+                  ? String(toNumber(Math.round(value || 0), "integer"))
+                  : "0",
               )
               .join(" / ")} °/s`
           : null;
@@ -939,27 +960,25 @@ export const useHardpointStats = (
       if (capacitor?.capacity) {
         result.push({
           label: t("labels.hardpoint.flightControllers.boostCapacity"),
-          value: String(toNumber(capacitor.capacity, "integer")),
+          value: boostFigure(capacitor.capacity),
         });
       }
       if (capacitor?.regenPerSecond) {
         result.push({
           label: t("labels.hardpoint.flightControllers.boostRegen"),
-          value: `${String(toNumber(capacitor.regenPerSecond, "integer"))}/s`,
+          value: `${boostFigure(capacitor.regenPerSecond)}/s`,
         });
       }
       if (capacitor?.regenDelay) {
         result.push({
           label: t("labels.hardpoint.flightControllers.boostRegenDelay"),
-          value: String(toNumber(capacitor.regenDelay, "seconds")),
+          value: `${boostFigure(capacitor.regenDelay)} s`,
         });
       }
       if (capacitor?.rampUpTime || capacitor?.rampDownTime) {
         result.push({
           label: t("labels.hardpoint.flightControllers.boostRamp"),
-          value: `${[capacitor.rampUpTime, capacitor.rampDownTime]
-            .map((value) => (value ? String(toNumber(value, "integer")) : "0"))
-            .join(" / ")} s`,
+          value: `${boostFigure(capacitor.rampUpTime)} / ${boostFigure(capacitor.rampDownTime)} s`,
         });
       }
     } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
