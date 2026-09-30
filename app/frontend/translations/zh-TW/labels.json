@@ -1519,6 +1519,7 @@
           "passive": "被動探測",
           "active": "主動探測",
           "aimAssistBuffer": "輔助瞄準緩衝",
+          "sensitivityModifier": "靈敏度修正",
           "contactGroups": {
             "GroundVehicle": "地面載具"
           }

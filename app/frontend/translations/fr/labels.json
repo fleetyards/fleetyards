@@ -1519,6 +1519,7 @@
           "passive": "Détection passive",
           "active": "Détection active",
           "aimAssistBuffer": "Marge d'assistance",
+          "sensitivityModifier": "Modificateur de sensibilité",
           "contactGroups": {
             "GroundVehicle": "Véhicules terrestres"
           }

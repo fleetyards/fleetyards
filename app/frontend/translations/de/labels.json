@@ -1519,6 +1519,7 @@
           "passive": "Passive Erfassung",
           "active": "Aktive Erfassung",
           "aimAssistBuffer": "Zielhilfe-Puffer",
+          "sensitivityModifier": "Empfindlichkeitsmodifikator",
           "contactGroups": {
             "GroundVehicle": "Bodenfahrzeuge"
           }

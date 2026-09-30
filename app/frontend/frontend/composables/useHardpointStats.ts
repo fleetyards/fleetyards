@@ -1260,7 +1260,21 @@ export const useHardpointStats = (
         });
       }
       // One row per modifier, labelled by the contact groups it applies to.
-      const contactSensitivity = (radar.contactSensitivity ?? []) as {
+      // Radars last loaded before those were parsed carry only an addition in
+      // `sensitivityModifiers`, with no group to name.
+      const legacyModifier = radar.sensitivityModifiers as
+        { sensitivityAddition?: number } | undefined;
+      const contactSensitivity = (radar.contactSensitivity ??
+        (legacyModifier?.sensitivityAddition
+          ? [
+              {
+                sensitivityAddition: legacyModifier.sensitivityAddition,
+                contactGroups: [
+                  t("labels.hardpoint.radar.sensitivityModifier"),
+                ],
+              },
+            ]
+          : [])) as {
         sensitivityAddition: number;
         contactGroups: string[];
       }[];

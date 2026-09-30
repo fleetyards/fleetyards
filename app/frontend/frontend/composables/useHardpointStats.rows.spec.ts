@@ -115,6 +115,19 @@ describe("useHardpointStats rows", () => {
     expect(valueOf(stats, "Person · Missile")).toBe("25%");
   });
 
+  it("still shows the penalty of a radar loaded before contact groups were parsed", () => {
+    const stats = statsFor(
+      hardpoint(HardpointCategoryEnum.RADAR, {
+        aimAssistRange: 632.5,
+        sensitivityModifiers: { sensitivityAddition: -0.5 },
+      }),
+    );
+
+    expect(valueOf(stats, "labels.hardpoint.radar.sensitivityModifier")).toBe(
+      "-50%",
+    );
+  });
+
   it("shows a flex thruster's vectoring range and a VTOL-only thruster", () => {
     const stats = statsFor(
       hardpoint(HardpointCategoryEnum.RETRO_THRUSTERS, {

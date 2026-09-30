@@ -1519,6 +1519,7 @@
           "passive": "Rilevamento passivo",
           "active": "Rilevamento attivo",
           "aimAssistBuffer": "Margine di assistenza",
+          "sensitivityModifier": "Modificatore di sensibilità",
           "contactGroups": {
             "GroundVehicle": "Veicoli terrestri"
           }
