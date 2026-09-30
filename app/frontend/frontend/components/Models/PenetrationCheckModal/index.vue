@@ -63,7 +63,7 @@ const shieldHealth = ref(100);
 const armorHealth = ref(100);
 const sizeFilter = ref<string | null>(null);
 
-const { data: defenses, isLoading } = useModelDefensesQuery();
+const { data: defenses, isLoading, isError } = useModelDefensesQuery();
 
 const targets = computed(() => penetrationTargets(defenses.value));
 
@@ -148,6 +148,7 @@ const detail = computed(
             :key="weapon.id"
             type="button"
             class="weapons__btn"
+            data-test="penetration-weapon"
             :class="{
               'weapons__btn--active': !deselected.includes(weapon.id),
             }"
@@ -220,6 +221,7 @@ const detail = computed(
               :key="size"
               type="button"
               class="sizes__btn"
+              data-test="penetration-size"
               :class="{ 'sizes__btn--active': sizeFilter === size }"
               :aria-pressed="sizeFilter === size"
               @click="sizeFilter = size"
@@ -229,7 +231,7 @@ const detail = computed(
           </div>
         </div>
 
-        <div class="tally">
+        <div class="tally" data-test="penetration-tally">
           <template v-if="check.absorbedCount">
             <span class="tally__absorbed">
               {{ num(check.absorbedCount) }}
@@ -250,7 +252,11 @@ const detail = computed(
 
         <Loader :loading="isLoading" relative />
 
-        <template v-if="!isLoading">
+        <div v-if="isError" class="empty" data-test="penetration-error">
+          {{ t("texts.serverError") }}
+        </div>
+
+        <template v-else-if="!isLoading">
           <div class="table-wrap">
             <table class="dtable">
               <colgroup>
@@ -293,6 +299,7 @@ const detail = computed(
 
                   <tr
                     class="dtable__row"
+                    data-test="penetration-row"
                     @mouseenter="hovered = entry.model.id"
                     @mouseleave="hovered = null"
                   >
