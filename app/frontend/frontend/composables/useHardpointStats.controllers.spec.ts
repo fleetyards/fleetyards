@@ -10,7 +10,7 @@ import { useHardpointStats } from "./useHardpointStats";
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
-    toNumber: (value: number) => String(value),
+    toNumber: (value: number) => (value ? String(value) : "N/A"),
   }),
 }));
 
@@ -48,6 +48,17 @@ describe("useHardpointStats for controllers", () => {
         }),
       ).map((stat) => stat.value),
     ).toEqual(["labels.hardpoint.controllers.faces.quadrant", "2.5 s"]);
+  });
+
+  it("shows a zero reconfiguration cooldown as 0 s", () => {
+    expect(
+      statsFor(
+        controllerHardpoint({
+          faceType: ComponentShieldFaceTypeEnum.QUADRANT,
+          reconfigurationCooldown: 0,
+        }),
+      ).map((stat) => stat.value),
+    ).toEqual(["labels.hardpoint.controllers.faces.quadrant", "0 s"]);
   });
 
   it("leaves the reconfiguration cooldown off a bubble shield", () => {

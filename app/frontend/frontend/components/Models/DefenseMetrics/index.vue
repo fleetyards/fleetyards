@@ -47,6 +47,9 @@ const countermeasures = useCountermeasureStats(() => props.hardpoints);
 const controllers = useControllerStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
+// A zero is a real figure -- the shield shifts at once -- which `toNumber`
+// would print as not available.
+const seconds = (value: number) => (value ? toNumber(value) : "0");
 // `toNumber` renders any falsy value as "N/A", which is wrong for a genuine
 // zero — nothing absorbed is a real result, not missing data.
 const num = (value: number) => (value ? toNumber(value, "integer") : "0");
@@ -164,13 +167,14 @@ const openDeflectionCheck = () => {
           <span
             v-if="
               controllers.shieldFaceType === 'quadrant' &&
-              controllers.reconfigurationCooldown
+              typeof controllers.reconfigurationCooldown === 'number'
             "
             class="stat-rows__sub"
+            data-test="shield-reconfiguration"
           >
             ·
             {{ t("labels.hardpoint.controllers.reconfigurationCooldown") }}
-            {{ toNumber(controllers.reconfigurationCooldown) }} s
+            {{ seconds(controllers.reconfigurationCooldown) }} s
           </span>
         </dd>
       </template>

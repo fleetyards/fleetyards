@@ -1164,11 +1164,12 @@ export const useHardpointStats = (
       }
       if (
         controller.faceType === ComponentShieldFaceTypeEnum.QUADRANT &&
-        controller.reconfigurationCooldown
+        typeof controller.reconfigurationCooldown === "number"
       ) {
+        const cooldown = controller.reconfigurationCooldown;
         result.push({
           label: t("labels.hardpoint.controllers.reconfigurationCooldown"),
-          value: `${toNumber(controller.reconfigurationCooldown)} s`,
+          value: `${cooldown ? toNumber(cooldown) : "0"} s`,
         });
       }
       if (controller.maxArmedMissiles) {
