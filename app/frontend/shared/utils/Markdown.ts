@@ -2,16 +2,20 @@ import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
+import {
+  CATALOGUE_TOKEN_PATTERN,
+  catalogueTokenName,
+} from "@/shared/utils/CatalogueTokens";
 
 // Renders the markdown the editor writes: ATX and underlined headings,
 // bulleted and numbered lists (nested by indentation), block quotes, fenced
 // code, horizontal rules, paragraphs, bold, italic, strikethrough, inline
-// code, links, images (sized with `{width=50%}`) and a `:::center` ... `:::`
-// block, the container syntax Tiptap's markdown extension reads and writes
-// (without a space after the colons). Anything else is passed through as
-// text. Everything is HTML-escaped before a single tag is added, so the result
-// is safe to hand to v-html -- which is why user-written text goes through
-// here too.
+// code, links, images (sized with `{width=50%}`), catalogue tokens
+// (`[*Name*]`) and a `:::center` ... `:::` block, the container syntax
+// Tiptap's markdown extension reads and writes (without a space after the
+// colons). Anything else is passed through as text. Everything is
+// HTML-escaped before a single tag is added, so the result is safe to hand to
+// v-html -- which is why user-written text goes through here too.
 
 const escapeHtml = (value: string) =>
   value
@@ -99,6 +103,18 @@ const formatText = (value: string, resolve: (text: string) => string) => {
   );
 };
 
+// A catalogue token becomes an inert mark that shows the item's name. The
+// Markdown component resolves the marks and mounts a link to the item into
+// them; unresolved, the name is all a reader sees. Run on escaped text, so
+// the token can go into the attribute as it is, and before the formatting
+// rules, which would otherwise read its asterisks as emphasis.
+const markCatalogueTokens = (escaped: string) =>
+  escaped.replace(
+    CATALOGUE_TOKEN_PATTERN,
+    (_, token: string) =>
+      `<span class="catalogue-token" data-catalogue-token="${token.trim()}"><span class="catalogue-token__name">${catalogueTokenName(token)}</span></span>`,
+  );
+
 const renderText = (value: string) => {
   const literals: string[] = [];
 
@@ -134,7 +150,7 @@ const renderText = (value: string) => {
       escapeHtml(literalAt(index)),
     );
 
-  return resolve(formatText(escapeHtml(marked), resolve));
+  return resolve(formatText(markCatalogueTokens(escapeHtml(marked)), resolve));
 };
 
 // Code spans are cut out first so nothing inside them is formatted or

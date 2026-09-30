@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, defineAsyncComponent } from "vue";
 import App from "@/frontend/App.vue";
 import router from "@/frontend/plugins/Router";
 import { queryClient } from "@/frontend/plugins/QueryClient";
@@ -6,6 +6,7 @@ import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { setupAppsignal } from "@/shared/plugins/Appsignal";
 import Tooltip from "@/shared/plugins/Tooltip";
+import { MARKDOWN_CATALOGUE_TOKEN } from "@/shared/components/Markdown/catalogueTokens";
 import veeValidate from "@/frontend/plugins/VeeValidate";
 import {
   VueQueryPlugin,
@@ -58,5 +59,13 @@ app.use(pinia);
 setupAppsignal(app);
 app.use(Tooltip);
 app.use(veeValidate);
+// Items named inline in markdown, `[*Name*]`, link to their page and show
+// their stats card. Loaded with the first text that names one.
+app.provide(
+  MARKDOWN_CATALOGUE_TOKEN,
+  defineAsyncComponent(
+    () => import("@/frontend/components/CatalogueItemPopover/index.vue"),
+  ),
+);
 
 app.mount("#app");

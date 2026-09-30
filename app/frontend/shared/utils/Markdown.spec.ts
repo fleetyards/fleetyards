@@ -26,6 +26,14 @@ describe("markdownToPlainText", () => {
     );
   });
 
+  it("reads a catalogue token as the item's name", () => {
+    expect(
+      markdownToPlainText(
+        "Fit [*Attrition-3 Repeater*] or [*commodity:Mercury*]",
+      ),
+    ).toBe("Fit Attrition-3 Repeater or Mercury");
+  });
+
   it("gives nothing for an empty source", () => {
     expect(markdownToPlainText("")).toBe("");
   });

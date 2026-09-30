@@ -63,6 +63,11 @@
     margin: 0;
   }
 
+  // Resolved, the link mounted into the token replaces its plain name.
+  .catalogue-token--resolved > .catalogue-token__name {
+    display: none;
+  }
+
   .markdown__center {
     text-align: center;
 
