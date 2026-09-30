@@ -196,11 +196,8 @@ module ScData
           end
         end
 
-        if values.dig("Components", "SHealthComponentParams")
-          item[:durability] = {
-            health: values.dig("Components", "SHealthComponentParams", "Health").to_f
-          }
-        end
+        durability = extract_durability(values["Components"] || {})
+        item[:durability] = durability if durability.present?
 
         if values.dig("Components", "EntityComponentHeatConnection")
           item[:heat_connection] = {
@@ -804,6 +801,56 @@ module ScData
         ITEM_CLASS_TAGS
           .sort_by { |candidate| -candidate.length }
           .find { |candidate| tags.any? { |tag| tag.end_with?(candidate) } }
+      end
+
+      DAMAGE_RESISTANCES = {
+        physical: "PhysicalResistance",
+        energy: "EnergyResistance",
+        distortion: "DistortionResistance",
+        thermal: "ThermalResistance",
+        biochemical: "BiochemicalResistance",
+        stun: "StunResistance"
+      }.freeze
+
+      # What it takes to break a component and bring it back, read the same way
+      # for every item: health and the damage multipliers it takes, its mass,
+      # the one-off repair it runs on its own, and how much distortion it soaks
+      # up before it shuts down. An item missing a block has none of it -- one
+      # with no distortion block cannot be distorted at all.
+      private def extract_durability(components)
+        health = components["SHealthComponentParams"]
+        resistances = health&.dig("DamageResistances", "DamageResistance")
+        repair = components.dig("ItemResourceComponentParams", "selfRepair")
+        distortion = components["SDistortionParams"]
+
+        {
+          health: health&.dig("Health")&.to_f,
+          mass: extract_mass(components),
+          resistances: DAMAGE_RESISTANCES.to_h { |key, name|
+            [key, resistances&.dig(name, "Multiplier")&.to_f]
+          }.compact.presence,
+          self_repair: repair && {
+            time: repair["timeToRepair"]&.to_f,
+            health_ratio: repair["healthRatio"]&.to_f,
+            max_repairs: repair["maxRepairCount"]&.to_i
+          }.compact.presence,
+          distortion: distortion && {
+            maximum: distortion["Maximum"]&.to_f,
+            warning_ratio: distortion["WarningRatio"]&.to_f,
+            recovery_ratio: distortion["RecoveryRatio"]&.to_f,
+            decay_rate: distortion["DecayRate"]&.to_f,
+            decay_delay: distortion["DecayDelay"]&.to_f
+          }.compact.presence
+        }.compact
+      end
+
+      # Rigid for nearly every item, static for a handful of fixtures; either
+      # names its mass the same way.
+      private def extract_mass(components)
+        physics = components.dig("SEntityPhysicsControllerParams", "PhysType")
+        return unless physics.is_a?(Hash)
+
+        physics.values.filter_map { |params| params["Mass"] if params.is_a?(Hash) }.first&.to_f
       end
 
       private def extract_item_loadout(values)
