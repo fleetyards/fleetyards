@@ -81,6 +81,18 @@ describe("useHardpointStats for flight controllers", () => {
     expect(valueOf(stats, "boostRamp")).toBe("0,6 / 0 s");
   });
 
+  it("groups a large capacity and keeps a fractional regen", () => {
+    const stats = statsFor(
+      controller({
+        ...blade,
+        boostCapacitor: { capacity: 2800, regenPerSecond: 1.25 },
+      }),
+    );
+
+    expect(valueOf(stats, "boostCapacity")).toBe("2\u202F800");
+    expect(valueOf(stats, "boostRegen")).toBe("1,25/s");
+  });
+
   it("writes a fixed rotation axis as 0", () => {
     const stats = statsFor(
       controller({
