@@ -2,6 +2,11 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 
+// Images load only from the hosts the page names as its own and RSI's.
+window.API_ENDPOINT = "https://api.fleetyards.test/v1";
+window.FRONTEND_ENDPOINT = "https://fleetyards.test";
+window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
+
 describe("Markdown", () => {
   const mount = (source: string) =>
     mountWithDefaults<typeof Component>(Component, { props: { source } });
@@ -102,11 +107,25 @@ describe("Markdown", () => {
     ]);
   });
 
-  it("keeps a refused image as text rather than a link", async () => {
-    const wrapper = await mount("![cover](http://example.com/a.jpg)");
+  it("links an image from a host the page may not load", async () => {
+    const wrapper = await mount(
+      "![cover](https://imgur.test/a.jpg) ![](https://imgur.test/b.jpg)",
+    );
+
+    expect(wrapper.find("img").exists()).toBe(false);
+    const links = wrapper.findAll("a");
+    expect(links.map((link) => link.text())).toEqual([
+      "cover",
+      "https://imgur.test/b.jpg",
+    ]);
+    expect(links[0].attributes("href")).toBe("https://imgur.test/a.jpg");
+  });
+
+  it("keeps an image that is neither loadable nor linkable as text", async () => {
+    const wrapper = await mount("![cover](javascript:alert(1))");
 
     expect(wrapper.find("a").exists()).toBe(false);
-    expect(wrapper.text()).toContain("![cover](http://example.com/a.jpg)");
+    expect(wrapper.text()).toContain("![cover](javascript:alert(1))");
   });
 
   it("treats //host and /\\host as another origin", async () => {
@@ -286,22 +305,25 @@ describe("Markdown", () => {
     expect(wrapper.find("a").text()).toBe("Team [A]");
   });
 
-  it("renders https images only", async () => {
+  it("renders images from Fleetyards and RSI only", async () => {
     const wrapper = await mount(
-      "![cover](https://robertsspaceindustries.com/cover.jpg) ![x](http://example.com/a.jpg) ![y](javascript:alert(1))",
+      "![cover](https://robertsspaceindustries.com/cover.jpg) ![up](https://api.fleetyards.test/files/a.webp) ![here](/files/b.webp) ![x](https://imgur.test/a.jpg) ![y](http://robertsspaceindustries.com/c.jpg)",
     );
 
-    const images = wrapper.findAll("img");
-    expect(images).toHaveLength(1);
-    expect(images[0].attributes("src")).toBe(
+    expect(wrapper.findAll("img").map((img) => img.attributes("src"))).toEqual([
       "https://robertsspaceindustries.com/cover.jpg",
-    );
-    expect(images[0].attributes("alt")).toBe("cover");
+      "https://api.fleetyards.test/files/a.webp",
+      "/files/b.webp",
+    ]);
+    expect(wrapper.find("img").attributes("alt")).toBe("cover");
   });
 
   it("keeps an image source from breaking out of its attribute", async () => {
-    const wrapper = await mount('![a](https://x.test/"onerror="alert(1))');
+    const wrapper = await mount(
+      '![a](https://robertsspaceindustries.com/"onerror="alert(1))',
+    );
 
+    expect(wrapper.find("img").exists()).toBe(true);
     expect(wrapper.find("img").attributes("onerror")).toBeUndefined();
   });
 });

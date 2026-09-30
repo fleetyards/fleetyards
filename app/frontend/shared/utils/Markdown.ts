@@ -73,12 +73,19 @@ const formatText = (value: string, resolve: (text: string) => string) => {
       .replace(/~~([^~]+)~~/g, "<del>$1</del>")
       .replace(
         /!\[((?:[^[\]]|\[[^[\]]*\])*)\]\(([^)\s]+)\)/g,
-        (match, alt, url: string) =>
-          isSafeMarkdownSrc(target(url))
-            ? `<img src="${url}" alt="${alt}" loading="lazy">`
-            : match,
+        (match, alt, url: string) => {
+          if (isSafeMarkdownSrc(target(url))) {
+            return `<img src="${url}" alt="${alt}" loading="lazy">`;
+          }
+
+          // An image from a host the page may not load is still worth
+          // reaching: it becomes a link to it, named by its description.
+          return isSafeMarkdownHref(target(url))
+            ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${alt || url}</a>`
+            : match;
+        },
       )
-      // A leading `!` is an image the pass above refused: it stays text.
+      // A leading `!` is an image the pass above left as text.
       .replace(
         /(!?)\[((?:[^[\]]|\[[^[\]]*\])+)\]\(([^)\s]+)\)/g,
         (match, bang: string, label, url: string) =>

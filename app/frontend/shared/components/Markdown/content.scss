@@ -65,6 +65,12 @@
 
   .markdown__center {
     text-align: center;
+
+    // Images are blocks, which text-align does not move.
+    img {
+      margin-right: auto;
+      margin-left: auto;
+    }
   }
 
   img {
