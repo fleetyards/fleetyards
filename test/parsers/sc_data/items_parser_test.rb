@@ -161,6 +161,28 @@ module ScData
         assert_in_delta 35.0, parsed_item("slaved_turret")["type_data"]["yaw_speed"]
       end
 
+      test "reads no turn rate for an axis only a slaved joint turns" do
+        write_item("slaved_only", name: "@item_Nameslaved_only", category: "turret", type: "Turret", sub_type: "GunTurret", components: <<~XML)
+          <SCItemTurretParams>
+            <movementList>
+              <SCItemTurretJointMovementParams jointName="follower" slavedOnly="1">
+                <yawAxis>
+                  <SCItemTurretJointMovementAxisParams speed="200" />
+                </yawAxis>
+              </SCItemTurretJointMovementParams>
+            </movementList>
+          </SCItemTurretParams>
+        XML
+
+        assert_nil parsed_item("slaved_only")["type_data"]["yaw_speed"]
+      end
+
+      test "marks a point-defence turret by a tag written with its prefix" do
+        write_turret("pdc_tagged", tags: "$flightReady $PDC")
+
+        assert_equal "pds", parsed_item("pdc_tagged")["type_data"]["control"]
+      end
+
       test "marks a turret aimed from a remote seat" do
         write_turret("remote_turret", remote: true)
 
@@ -179,10 +201,10 @@ module ScData
         assert_equal "pds", parsed_item("pdc_turret")["type_data"]["control"]
       end
 
-      private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, extra_joints: "")
+      private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "")
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 
-        write_item(key, name: "@item_Name#{key}", category: "turret", type:, sub_type:, components: <<~XML)
+        write_item(key, name: "@item_Name#{key}", category: "turret", type:, sub_type:, tags:, components: <<~XML)
           <SCItemTurretParams rotationStyle="SingleAxis">
             <movementList>
               <SCItemTurretJointMovementParams jointName="yaw_part" slavedOnly="0">

@@ -661,7 +661,7 @@ module ScData
       private def extract_turret_axis_speed(turret_data, axis)
         joints = Array.wrap(turret_data.dig("movementList", "SCItemTurretJointMovementParams"))
         driven = joints.reject { |joint| joint["slavedOnly"] == "1" }
-        speeds = (driven.presence || joints).filter_map do |joint|
+        speeds = driven.filter_map do |joint|
           Array.wrap(joint[axis]).first&.dig("SCItemTurretJointMovementAxisParams", "speed")&.to_f
         end
 
@@ -672,7 +672,7 @@ module ScData
       # mount with none of these, and a gimbal inside a manned or remote turret
       # is aimed by that turret's operator instead.
       private def extract_turret_control(values, turret_data, sub_type, tags)
-        if sub_type == "PDCTurret" || tags.include?("PDC")
+        if sub_type == "PDCTurret" || tags.map { |tag| tag.delete_prefix("$") }.include?("PDC")
           "pds"
         elsif turret_data.dig("remoteTurret", "SCItemTurretRemoteParams").present?
           "remote"
