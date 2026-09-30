@@ -51,5 +51,12 @@ module Push
 
       assert_operator subject.to_json.bytesize, :<, 3_900
     end
+
+    test "an overlong link falls back to the site so the push still fits" do
+      subject = payload(title: "🚀" * 500, body: "🚀" * 5000, link: "/#{"a" * 5000}")
+
+      assert_equal FRONTEND_ENDPOINT, subject.to_h[:url]
+      assert_operator subject.to_json.bytesize, :<=, Payload::MAX_BYTES
+    end
   end
 end

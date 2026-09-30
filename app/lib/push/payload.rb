@@ -11,19 +11,30 @@ module Push
 
     TITLE_MAX_BYTES = 400
     BODY_MAX_BYTES = 2_000
+    # The whole JSON, leaving room for the encryption overhead under 4 KB.
+    MAX_BYTES = 3_500
 
     def initialize(notification)
       @notification = notification
     end
 
+    # The link is not ours to cut, so an overlong one falls back to the site
+    # rather than making the push impossible to encrypt.
     def to_h
-      {
+      payload = {
         title: @notification.title.to_s.truncate_bytes(TITLE_MAX_BYTES),
         body: body,
         url: url,
         tag: tag,
         notificationId: @notification.id
       }.compact
+
+      payload[:url] = FRONTEND_ENDPOINT unless fits?(payload)
+      payload
+    end
+
+    private def fits?(payload)
+      payload.to_json.bytesize <= MAX_BYTES
     end
 
     def to_json(*)
