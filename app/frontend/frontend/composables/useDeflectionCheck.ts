@@ -94,6 +94,91 @@ export function deflectionAtHealth(
   return base * ratio;
 }
 
+// How one weapon fares against one ship's shields and armor. Null when the
+// weapon has nothing to test: a beam, or no damage per shot at all.
+export function evaluateWeapon(
+  weapon: WeaponIndexItem,
+  armor: ArmorStats,
+  shield: ShieldStats,
+  shieldHealth: number,
+  armorHealth: number,
+): DeflectionResult | null {
+  // erkul excludes laser beams: they deal continuous damage rather than
+  // discrete shots, so there is no per-shot alpha to test against a threshold.
+  if (weapon.beam) return null;
+
+  const types: DeflectionTypeResult[] = [];
+  // Alpha is compared per pellet — a scattergun's shot is split across its
+  // pellets, and each pellet meets the deflection threshold on its own.
+  const pellets = Math.max(weapon.pelletsPerShot ?? 1, 1);
+
+  for (const { key, label } of DEFLECTION_DAMAGE_TYPES) {
+    const perShot =
+      (weapon.damagePerShot as Record<string, number | undefined>)?.[key] ?? 0;
+    if (perShot <= 0) continue;
+
+    const raw = perShot / pellets;
+
+    // What survives the shield is what meets the armor's deflection
+    // threshold. The armor's own damage reduction is deliberately absent:
+    // measured against erkul, an Asgard at zero shields reports effective
+    // damage equal to raw alpha, which its 30% physical reduction would rule
+    // out. The Gladius made these indistinguishable — its armor reduction
+    // (0.75) and shield resistance (1 - 0.25) happen to be the same number.
+    const absorption = absorptionAtHealth(shield, key, shieldHealth);
+    const resistance = resistanceAtHealth(shield, key, shieldHealth);
+    const deflection = deflectionAtHealth(armor, key, armorHealth);
+
+    const effective = raw * (1 - absorption) * (1 - resistance);
+
+    types.push({
+      key,
+      label,
+      raw,
+      effective,
+      deflection,
+      absorbed: absorption >= 1,
+      pierces: effective > deflection,
+    });
+  }
+
+  if (!types.length) return null;
+
+  const reaching = types.filter((entry) => !entry.absorbed);
+
+  if (!reaching.length) {
+    return { weapon, types, best: null, margin: null, outcome: "absorbed" };
+  }
+
+  // Rank by how far past the threshold each type gets; the weapon as a whole
+  // pierces if any single type that reaches the armor does.
+  const best = reaching.reduce((leader, entry) =>
+    entry.effective - entry.deflection > leader.effective - leader.deflection
+      ? entry
+      : leader,
+  );
+
+  return {
+    weapon,
+    types,
+    best,
+    margin: best.effective - best.deflection,
+    outcome: reaching.some((entry) => entry.pierces) ? "pierces" : "deflected",
+  };
+}
+
+// Absorbed entries lead — nothing gets through at all — then the rest ranked
+// by how close they come to beating the armor threshold.
+export function byMargin(
+  a: { margin: number | null },
+  b: { margin: number | null },
+): number {
+  if (a.margin === null && b.margin === null) return 0;
+  if (a.margin === null) return -1;
+  if (b.margin === null) return 1;
+  return a.margin - b.margin;
+}
+
 export function computeDeflectionCheck(
   weapons: WeaponIndexItem[] | undefined,
   armor: ArmorStats,
@@ -101,91 +186,13 @@ export function computeDeflectionCheck(
   shieldHealth: number,
   armorHealth: number,
 ): DeflectionSummary {
-  const results: DeflectionResult[] = [];
+  const results = (weapons || [])
+    .map((weapon) =>
+      evaluateWeapon(weapon, armor, shield, shieldHealth, armorHealth),
+    )
+    .filter((entry): entry is DeflectionResult => entry !== null);
 
-  for (const weapon of weapons || []) {
-    // erkul excludes laser beams: they deal continuous damage rather than
-    // discrete shots, so there is no per-shot alpha to test against a threshold.
-    if (weapon.beam) continue;
-
-    const types: DeflectionTypeResult[] = [];
-    // Alpha is compared per pellet — a scattergun's shot is split across its
-    // pellets, and each pellet meets the deflection threshold on its own.
-    const pellets = Math.max(weapon.pelletsPerShot ?? 1, 1);
-
-    for (const { key, label } of DEFLECTION_DAMAGE_TYPES) {
-      const perShot =
-        (weapon.damagePerShot as Record<string, number | undefined>)?.[key] ??
-        0;
-      if (perShot <= 0) continue;
-
-      const raw = perShot / pellets;
-
-      // What survives the shield is what meets the armor's deflection
-      // threshold. The armor's own damage reduction is deliberately absent:
-      // measured against erkul, an Asgard at zero shields reports effective
-      // damage equal to raw alpha, which its 30% physical reduction would rule
-      // out. The Gladius made these indistinguishable — its armor reduction
-      // (0.75) and shield resistance (1 - 0.25) happen to be the same number.
-      const absorption = absorptionAtHealth(shield, key, shieldHealth);
-      const resistance = resistanceAtHealth(shield, key, shieldHealth);
-      const deflection = deflectionAtHealth(armor, key, armorHealth);
-
-      const effective = raw * (1 - absorption) * (1 - resistance);
-
-      types.push({
-        key,
-        label,
-        raw,
-        effective,
-        deflection,
-        absorbed: absorption >= 1,
-        pierces: effective > deflection,
-      });
-    }
-
-    if (!types.length) continue;
-
-    const reaching = types.filter((entry) => !entry.absorbed);
-
-    if (!reaching.length) {
-      results.push({
-        weapon,
-        types,
-        best: null,
-        margin: null,
-        outcome: "absorbed",
-      });
-      continue;
-    }
-
-    // Rank by how far past the threshold each type gets; the weapon as a whole
-    // pierces if any single type that reaches the armor does.
-    const best = reaching.reduce((leader, entry) =>
-      entry.effective - entry.deflection > leader.effective - leader.deflection
-        ? entry
-        : leader,
-    );
-
-    results.push({
-      weapon,
-      types,
-      best,
-      margin: best.effective - best.deflection,
-      outcome: reaching.some((entry) => entry.pierces)
-        ? "pierces"
-        : "deflected",
-    });
-  }
-
-  // Fully absorbed weapons lead — nothing gets through at all — then the rest
-  // ranked by how close they come to beating the armor threshold.
-  results.sort((a, b) => {
-    if (a.margin === null && b.margin === null) return 0;
-    if (a.margin === null) return -1;
-    if (b.margin === null) return 1;
-    return a.margin - b.margin;
-  });
+  results.sort(byMargin);
 
   return {
     results,
