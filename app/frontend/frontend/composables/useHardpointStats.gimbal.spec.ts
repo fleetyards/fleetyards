@@ -43,7 +43,11 @@ describe("useHardpointStats for a gun's gimbal mode and aim assist", () => {
     const stats = statsFor(
       gunHardpoint({
         fireRate: 600,
-        gimbalMode: { fireRateMultiplier: 0.85, spreadMinMultiplier: 0.5 },
+        gimbalMode: {
+          fireRateMultiplier: 0.85,
+          spreadMinMultiplier: 0.5,
+          spreadMaxMultiplier: 0.5,
+        },
         aimAssist: {
           nudgeAngle: 2.25,
           closeOuterAngle: 16,
@@ -62,6 +66,28 @@ describe("useHardpointStats for a gun's gimbal mode and aim assist", () => {
     expect(valueOf(stats, "labels.hardpoint.weapons.aimAssist")).toBe("2,25°");
     expect(valueOf(stats, "labels.hardpoint.weapons.closeAimAssist")).toBe(
       "16° (75–150 m)",
+    );
+  });
+
+  it("shows a spread change on the maximum alone", () => {
+    const stats = statsFor(
+      gunHardpoint({
+        gimbalMode: { spreadMinMultiplier: 1, spreadMaxMultiplier: 0.5 },
+      }),
+    );
+
+    expect(valueOf(stats, "labels.hardpoint.weapons.gimbalSpread")).toBe(
+      "×1 / ×0,5",
+    );
+  });
+
+  it("does not invent a close-range start the record leaves out", () => {
+    const stats = statsFor(
+      gunHardpoint({ aimAssist: { closeOuterAngle: 16, closeRangeMax: 150 } }),
+    );
+
+    expect(valueOf(stats, "labels.hardpoint.weapons.closeAimAssist")).toBe(
+      "16° (≤ 150 m)",
     );
   });
 

@@ -772,11 +772,15 @@ export const useHardpointStats = (
             ),
           );
         }
-        const gimbalSpread = weapon.gimbalMode?.spreadMinMultiplier;
-        if (gimbalSpread && gimbalSpread !== 1) {
+        const spreadMin = weapon.gimbalMode?.spreadMinMultiplier ?? 1;
+        const spreadMax = weapon.gimbalMode?.spreadMaxMultiplier ?? 1;
+        if (spreadMin !== 1 || spreadMax !== 1) {
           result.push({
             label: t("labels.hardpoint.weapons.gimbalSpread"),
-            value: `×${preciseNumber(gimbalSpread)}`,
+            value:
+              spreadMin === spreadMax
+                ? `×${preciseNumber(spreadMin)}`
+                : `×${preciseNumber(spreadMin)} / ×${preciseNumber(spreadMax)}`,
           });
         }
         if (weapon.aimAssist?.nudgeAngle) {
@@ -787,9 +791,13 @@ export const useHardpointStats = (
         }
         const assist = weapon.aimAssist;
         if (assist?.closeOuterAngle && assist.closeRangeMax) {
+          const band =
+            typeof assist.closeRangeMin === "number"
+              ? `${preciseNumber(assist.closeRangeMin)}–${preciseNumber(assist.closeRangeMax)} m`
+              : `≤ ${preciseNumber(assist.closeRangeMax)} m`;
           result.push({
             label: t("labels.hardpoint.weapons.closeAimAssist"),
-            value: `${preciseNumber(assist.closeOuterAngle)}° (${preciseNumber(assist.closeRangeMin || 0)}–${preciseNumber(assist.closeRangeMax)} m)`,
+            value: `${preciseNumber(assist.closeOuterAngle)}° (${band})`,
           });
         }
         if (weapon.damagePerShot) {
