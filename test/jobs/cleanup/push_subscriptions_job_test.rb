@@ -35,16 +35,12 @@ module Cleanup
       assert PushSubscription.exists?(renewed.id)
     end
 
-    # What the settings page does for a subscribed browser on every visit.
+    # A signed-in visit touches the browser's row, which is what the app does
+    # for a subscribed browser on every load.
     test "#perform keeps a browser that visits but was never pushed to" do
       subscription = stale_for(PushSubscription::STALE_AFTER + 1.day)
 
-      PushSubscription.subscribe(
-        user: subscription.user,
-        endpoint: subscription.endpoint,
-        p256dh_key: subscription.p256dh_key,
-        auth_key: subscription.auth_key
-      )
+      subscription.touch
       ::Cleanup::PushSubscriptionsJob.new.perform
 
       assert PushSubscription.exists?(subscription.id)
