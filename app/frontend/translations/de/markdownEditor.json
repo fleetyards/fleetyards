@@ -13,7 +13,12 @@
       "linkUrlPlaceholder": "https://…",
       "linkApply": "Übernehmen",
       "linkRemove": "Link entfernen",
-      "linkInvalid": "Verlinkt werden können nur http(s)-Adressen oder Pfade auf dieser Seite."
+      "linkInvalid": "Verlinkt werden können nur http(s)-Adressen oder Pfade auf dieser Seite.",
+      "image": "Bild",
+      "imageUrl": "Bildadresse",
+      "imageAlt": "Beschreibung des Bildes",
+      "imageApply": "Einfügen",
+      "imageInvalid": "Als Bild angezeigt werden können nur https-Adressen oder Pfade auf dieser Seite."
     }
   }
 }

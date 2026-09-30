@@ -144,9 +144,72 @@ describe("FormMarkdownEditor", () => {
       .trigger("click");
 
     expect(
-      subject.find('[role="alert"].base-markdown-editor__link-error').exists(),
+      subject
+        .find('[role="alert"].base-markdown-editor__url-form-error')
+        .exists(),
     ).toBe(true);
     expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
+  it("inserts an image from an https address, with its description", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "Our banner",
+    });
+
+    await button(subject, "image").trigger("click");
+    await subject
+      .find('[data-test="markdown-editor-image-url"]')
+      .setValue("https://robertsspaceindustries.com/cover.jpg");
+    await subject
+      .find('[data-test="markdown-editor-image-alt"]')
+      .setValue("Fleet cover");
+    await subject
+      .find('[data-test="markdown-editor-image-apply"]')
+      .trigger("click");
+
+    expect(lastEmitted(subject)).toContain(
+      "![Fleet cover](https://robertsspaceindustries.com/cover.jpg)",
+    );
+    expect(
+      subject.find('[data-test="markdown-editor-image-form"]').exists(),
+    ).toBe(false);
+  });
+
+  it("refuses an image the page would not load", async () => {
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "Our banner",
+    });
+
+    await button(subject, "image").trigger("click");
+    await subject
+      .find('[data-test="markdown-editor-image-url"]')
+      .setValue("http://insecure.test/cover.jpg");
+    await subject
+      .find('[data-test="markdown-editor-image-apply"]')
+      .trigger("click");
+
+    expect(
+      subject
+        .find('[data-test="markdown-editor-image-form"] [role="alert"]')
+        .exists(),
+    ).toBe(true);
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
+  it("opens only one address form at a time", async () => {
+    const subject = await mountEditor({ name: "description", modelValue: "" });
+
+    await button(subject, "link").trigger("click");
+    await button(subject, "image").trigger("click");
+
+    expect(
+      subject.find('[data-test="markdown-editor-link-form"]').exists(),
+    ).toBe(false);
+    expect(
+      subject.find('[data-test="markdown-editor-image-form"]').exists(),
+    ).toBe(true);
   });
 
   it("takes a new value from outside", async () => {

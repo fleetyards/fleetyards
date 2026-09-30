@@ -13,7 +13,12 @@
       "linkUrlPlaceholder": "https://…",
       "linkApply": "应用",
       "linkRemove": "移除链接",
-      "linkInvalid": "只能链接 http(s) 地址或本站路径。"
+      "linkInvalid": "只能链接 http(s) 地址或本站路径。",
+      "image": "图片",
+      "imageUrl": "图片地址",
+      "imageAlt": "图片描述",
+      "imageApply": "插入",
+      "imageInvalid": "只能以图片显示 https 地址或本站路径。"
     }
   }
 }

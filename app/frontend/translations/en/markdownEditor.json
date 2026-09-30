@@ -13,7 +13,12 @@
       "linkUrlPlaceholder": "https://…",
       "linkApply": "Apply",
       "linkRemove": "Remove link",
-      "linkInvalid": "Only http(s) addresses or paths on this site can be linked."
+      "linkInvalid": "Only http(s) addresses or paths on this site can be linked.",
+      "image": "Image",
+      "imageUrl": "Image address",
+      "imageAlt": "Description of the image",
+      "imageApply": "Insert",
+      "imageInvalid": "Only https addresses or paths on this site can be shown as an image."
     }
   }
 }

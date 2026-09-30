@@ -11,7 +11,10 @@ import { type MaybeRef } from "vue";
 import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
-import { isSafeMarkdownHref } from "@/shared/utils/MarkdownUrls";
+import {
+  isSafeMarkdownHref,
+  isSafeMarkdownSrc,
+} from "@/shared/utils/MarkdownUrls";
 import { markdownExtensions, toMarkdown } from "./extensions";
 
 type Props = {
@@ -48,6 +51,8 @@ const labelId = `${id}-label`;
 const errorId = `${id}-error`;
 const counterId = `${id}-counter`;
 const linkInputId = `${id}-link`;
+const imageInputId = `${id}-image`;
+const imageAltId = `${id}-image-alt`;
 
 const innerLabel = computed(() => {
   if (props.label) {
@@ -195,6 +200,7 @@ const linkInput = ref<HTMLInputElement>();
 const linkActive = computed(() => !!editor.value?.isActive("link"));
 
 const openLink = () => {
+  imageOpen.value = false;
   linkUrl.value = editor.value?.getAttributes("link").href ?? "";
   linkInvalid.value = false;
   linkOpen.value = true;
@@ -240,6 +246,42 @@ const applyLink = () => {
 const removeLink = () => {
   chain().extendMarkRange("link").unsetLink().run();
   linkOpen.value = false;
+};
+
+const imageOpen = ref(false);
+const imageUrl = ref("");
+const imageAlt = ref("");
+const imageInvalid = ref(false);
+const imageInput = ref<HTMLInputElement>();
+
+const openImage = () => {
+  linkOpen.value = false;
+  imageUrl.value = "";
+  imageAlt.value = "";
+  imageInvalid.value = false;
+  imageOpen.value = true;
+  void nextTick(() => imageInput.value?.focus());
+};
+
+const closeImage = () => {
+  imageOpen.value = false;
+  editor.value?.commands.focus();
+};
+
+const applyImage = () => {
+  const src = imageUrl.value.trim();
+
+  // Anything the page would not load is refused here rather than saved as
+  // markdown that shows up as its own source text.
+  if (!isSafeMarkdownSrc(src)) {
+    imageInvalid.value = true;
+    return;
+  }
+
+  chain()
+    .setImage({ src, alt: imageAlt.value.trim() || undefined })
+    .run();
+  imageOpen.value = false;
 };
 
 const focusEditor = () => {
@@ -304,10 +346,23 @@ defineExpose({ setFocus: focusEditor });
         >
           <i class="fa-regular fa-link" />
         </button>
+        <button
+          v-tooltip.bottom="t('markdownEditor.image')"
+          type="button"
+          class="base-markdown-editor__action"
+          :aria-expanded="imageOpen"
+          :aria-label="t('markdownEditor.image')"
+          :disabled="disabled"
+          data-test="markdown-editor-image"
+          @mousedown.prevent
+          @click="imageOpen ? closeImage() : openImage()"
+        >
+          <i class="fa-regular fa-image" />
+        </button>
       </div>
       <div
         v-if="linkOpen"
-        class="base-markdown-editor__link"
+        class="base-markdown-editor__url-form"
         data-test="markdown-editor-link-form"
       >
         <label :for="linkInputId" class="sr-only">
@@ -327,7 +382,7 @@ defineExpose({ setFocus: focusEditor });
         />
         <button
           type="button"
-          class="base-markdown-editor__link-action"
+          class="base-markdown-editor__url-form-action"
           data-test="markdown-editor-link-apply"
           @click="applyLink"
         >
@@ -336,7 +391,7 @@ defineExpose({ setFocus: focusEditor });
         <button
           v-if="linkActive"
           type="button"
-          class="base-markdown-editor__link-action"
+          class="base-markdown-editor__url-form-action"
           data-test="markdown-editor-link-remove"
           @click="removeLink"
         >
@@ -344,10 +399,58 @@ defineExpose({ setFocus: focusEditor });
         </button>
         <p
           v-if="linkInvalid"
-          class="base-markdown-editor__link-error"
+          class="base-markdown-editor__url-form-error"
           role="alert"
         >
           {{ t("markdownEditor.linkInvalid") }}
+        </p>
+      </div>
+      <div
+        v-if="imageOpen"
+        class="base-markdown-editor__url-form"
+        data-test="markdown-editor-image-form"
+      >
+        <label :for="imageInputId" class="sr-only">
+          {{ t("markdownEditor.imageUrl") }}
+        </label>
+        <input
+          :id="imageInputId"
+          ref="imageInput"
+          v-model="imageUrl"
+          type="url"
+          inputmode="url"
+          :placeholder="t('markdownEditor.linkUrlPlaceholder')"
+          :aria-invalid="imageInvalid"
+          data-test="markdown-editor-image-url"
+          @keydown.enter.prevent="applyImage"
+          @keydown.esc.prevent="closeImage"
+        />
+        <label :for="imageAltId" class="sr-only">
+          {{ t("markdownEditor.imageAlt") }}
+        </label>
+        <input
+          :id="imageAltId"
+          v-model="imageAlt"
+          type="text"
+          :placeholder="t('markdownEditor.imageAlt')"
+          data-test="markdown-editor-image-alt"
+          @keydown.enter.prevent="applyImage"
+          @keydown.esc.prevent="closeImage"
+        />
+        <button
+          type="button"
+          class="base-markdown-editor__url-form-action"
+          data-test="markdown-editor-image-apply"
+          @click="applyImage"
+        >
+          {{ t("markdownEditor.imageApply") }}
+        </button>
+        <p
+          v-if="imageInvalid"
+          class="base-markdown-editor__url-form-error"
+          role="alert"
+        >
+          {{ t("markdownEditor.imageInvalid") }}
         </p>
       </div>
       <EditorContent

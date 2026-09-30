@@ -13,7 +13,12 @@
       "linkUrlPlaceholder": "https://…",
       "linkApply": "Aplicar",
       "linkRemove": "Quitar enlace",
-      "linkInvalid": "Solo se pueden enlazar direcciones http(s) o rutas de este sitio."
+      "linkInvalid": "Solo se pueden enlazar direcciones http(s) o rutas de este sitio.",
+      "image": "Imagen",
+      "imageUrl": "Dirección de la imagen",
+      "imageAlt": "Descripción de la imagen",
+      "imageApply": "Insertar",
+      "imageInvalid": "Solo se pueden mostrar como imagen direcciones https o rutas de este sitio."
     }
   }
 }

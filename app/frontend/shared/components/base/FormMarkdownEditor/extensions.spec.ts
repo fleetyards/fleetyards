@@ -38,6 +38,10 @@ describe("markdownExtensions round trip", () => {
     ["a link", "[The Fleet](https://fleetyards.net/fleets/maru/ships/)"],
     ["a same-origin link", "[Stats](/fleets/maru/stats/)"],
     ["an image", "![](https://robertsspaceindustries.com/cover.jpg)"],
+    [
+      "an image with a description",
+      "![Fleet cover](https://robertsspaceindustries.com/cover.jpg)",
+    ],
     ["a rule", "Above\n\n---\n\nBelow"],
     ["a hard break", "Line one  \nhard break"],
   ])("keeps %s", (_, markdown) => {

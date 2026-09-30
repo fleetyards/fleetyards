@@ -13,7 +13,12 @@
       "linkUrlPlaceholder": "https://…",
       "linkApply": "Applica",
       "linkRemove": "Rimuovi link",
-      "linkInvalid": "Si possono collegare solo indirizzi http(s) o percorsi di questo sito."
+      "linkInvalid": "Si possono collegare solo indirizzi http(s) o percorsi di questo sito.",
+      "image": "Immagine",
+      "imageUrl": "Indirizzo dell'immagine",
+      "imageAlt": "Descrizione dell'immagine",
+      "imageApply": "Inserisci",
+      "imageInvalid": "Si possono mostrare come immagine solo indirizzi https o percorsi di questo sito."
     }
   }
 }
