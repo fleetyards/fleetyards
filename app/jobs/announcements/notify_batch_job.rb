@@ -63,10 +63,10 @@ module Announcements
 
       stored = NotificationPreference
         .where(user_id: user_ids, notification_type: Announcement::NOTIFICATION_TYPE)
-        .pluck(:user_id, :app, :mail, :discord)
-        .to_h { |user_id, app, mail, discord| [user_id, {app:, mail:, discord:}] }
+        .pluck(:user_id, :app, :mail, :push, :discord)
+        .to_h { |user_id, app, mail, push, discord| [user_id, {app:, mail:, push:, discord:}] }
 
-      user_ids.index_with { |user_id| stored[user_id] || defaults.slice(:app, :mail, :discord) }
+      user_ids.index_with { |user_id| stored[user_id] || defaults.slice(:app, :mail, :push, :discord) }
     end
 
     # The in-app delivery is done when every reader has a row, which each batch
@@ -94,10 +94,12 @@ module Announcements
     private def deliver(notifications, preferences)
       app_user_ids = preferences.select { |_id, channels| channels[:app] }.keys
       mail_user_ids = preferences.select { |_id, channels| channels[:mail] }.keys
+      push_user_ids = preferences.select { |_id, channels| channels[:push] }.keys
       discord_user_ids = preferences.select { |_id, channels| channels[:discord] }.keys
 
       broadcast(notifications, app_user_ids)
       mail(notifications, mail_user_ids)
+      push(notifications, push_user_ids)
       direct_message(notifications, discord_user_ids)
     end
 
@@ -133,6 +135,13 @@ module Announcements
       Notification.where(id: notification_ids(notifications, user_ids)).find_each do |notification|
         AnnouncementMailer.published(notification).deliver_later
       end
+    end
+
+    private def push(notifications, user_ids)
+      return if user_ids.empty?
+
+      ids = notification_ids(notifications, user_ids)
+      ::Push::DeliverNotificationJob.perform_bulk(ids.zip) if ids.any?
     end
 
     private def direct_message(notifications, user_ids)

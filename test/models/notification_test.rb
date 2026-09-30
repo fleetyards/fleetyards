@@ -188,8 +188,8 @@ class NotificationTest < ActiveSupport::TestCase
     end
   end
 
-  test "hangar_sync_finished supports app and discord channels" do
-    assert_equal %i[app discord], Notification.channels_for(:hangar_sync_finished)
+  test "hangar_sync_finished supports app, push and discord channels" do
+    assert_equal %i[app push discord], Notification.channels_for(:hangar_sync_finished)
   end
 
   %i[new_model fleet_event_locked fleet_event_completed].each do |type|
@@ -203,8 +203,8 @@ class NotificationTest < ActiveSupport::TestCase
     hangar_sync_failed friend_request_received fleet_ally_request_received tour_join_request_received
     fleet_contract_crew_requested payout_entry_pending_review rsi_handle_verification_lost
   ].each do |type|
-    test "#{type} supports app, mail and discord channels" do
-      assert_equal %i[app mail discord], Notification.channels_for(type)
+    test "#{type} supports app, mail, push and discord channels" do
+      assert_equal %i[app mail push discord], Notification.channels_for(type)
     end
   end
 
