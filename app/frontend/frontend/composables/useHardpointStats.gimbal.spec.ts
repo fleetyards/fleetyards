@@ -69,7 +69,23 @@ describe("useHardpointStats for a gun's gimbal mode and aim assist", () => {
     );
   });
 
-  it("shows a spread change on the maximum alone", () => {
+  it("shows only the known end when the record settles one", () => {
+    const maxOnly = statsFor(
+      gunHardpoint({ gimbalMode: { spreadMaxMultiplier: 0.5 } }),
+    );
+    const minOnly = statsFor(
+      gunHardpoint({ gimbalMode: { spreadMinMultiplier: 0.5 } }),
+    );
+
+    expect(valueOf(maxOnly, "labels.hardpoint.weapons.gimbalSpread")).toBe(
+      "×0,5 (labels.hardpoint.weapons.spreadMax)",
+    );
+    expect(valueOf(minOnly, "labels.hardpoint.weapons.gimbalSpread")).toBe(
+      "×0,5 (labels.hardpoint.weapons.spreadMin)",
+    );
+  });
+
+  it("shows both ends when both are known and differ", () => {
     const stats = statsFor(
       gunHardpoint({
         gimbalMode: { spreadMinMultiplier: 1, spreadMaxMultiplier: 0.5 },

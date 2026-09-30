@@ -1406,6 +1406,8 @@
           "heatPerSecond": "Calore/s",
           "gimbalFireRate": "Cadenza (gimbal)",
           "gimbalSpread": "Dispersione (gimbal)",
+          "spreadMin": "min.",
+          "spreadMax": "max.",
           "aimAssist": "Assistenza alla mira",
           "closeAimAssist": "Assistenza a corto raggio",
           "chargeTime": "Tempo di carica",

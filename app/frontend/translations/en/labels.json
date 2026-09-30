@@ -1406,6 +1406,8 @@
           "heatPerSecond": "Heat/s",
           "gimbalFireRate": "Fire Rate (Gimbal)",
           "gimbalSpread": "Spread (Gimbal)",
+          "spreadMin": "min",
+          "spreadMax": "max",
           "aimAssist": "Aim Assist",
           "closeAimAssist": "Close-Range Assist",
           "chargeTime": "Charge Time",

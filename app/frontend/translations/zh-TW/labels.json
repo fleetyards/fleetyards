@@ -1406,6 +1406,8 @@
           "heatPerSecond": "熱量/秒",
           "gimbalFireRate": "射速（萬向）",
           "gimbalSpread": "散布（萬向）",
+          "spreadMin": "最小",
+          "spreadMax": "最大",
           "aimAssist": "瞄準輔助",
           "closeAimAssist": "近距離瞄準輔助",
           "chargeTime": "充能時間",

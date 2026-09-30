@@ -772,15 +772,29 @@ export const useHardpointStats = (
             ),
           );
         }
-        const spreadMin = weapon.gimbalMode?.spreadMinMultiplier ?? 1;
-        const spreadMax = weapon.gimbalMode?.spreadMaxMultiplier ?? 1;
-        if (spreadMin !== 1 || spreadMax !== 1) {
+        // A bound the record does not settle is unknown, not ×1, so only the
+        // known ones are shown -- each marked with the end it applies to.
+        const spreadMin = weapon.gimbalMode?.spreadMinMultiplier;
+        const spreadMax = weapon.gimbalMode?.spreadMaxMultiplier;
+        const spreadValue = (() => {
+          if (spreadMin != null && spreadMax != null) {
+            if (spreadMin === 1 && spreadMax === 1) return undefined;
+            return spreadMin === spreadMax
+              ? `×${preciseNumber(spreadMin)}`
+              : `×${preciseNumber(spreadMin)} / ×${preciseNumber(spreadMax)}`;
+          }
+          if (spreadMin != null && spreadMin !== 1) {
+            return `×${preciseNumber(spreadMin)} (${t("labels.hardpoint.weapons.spreadMin")})`;
+          }
+          if (spreadMax != null && spreadMax !== 1) {
+            return `×${preciseNumber(spreadMax)} (${t("labels.hardpoint.weapons.spreadMax")})`;
+          }
+          return undefined;
+        })();
+        if (spreadValue) {
           result.push({
             label: t("labels.hardpoint.weapons.gimbalSpread"),
-            value:
-              spreadMin === spreadMax
-                ? `×${preciseNumber(spreadMin)}`
-                : `×${preciseNumber(spreadMin)} / ×${preciseNumber(spreadMax)}`,
+            value: spreadValue,
           });
         }
         if (weapon.aimAssist?.nudgeAngle) {
