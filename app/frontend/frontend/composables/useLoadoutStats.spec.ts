@@ -128,6 +128,19 @@ describe("computeLoadoutStats", () => {
     expect(stats.hasData).toBe(false);
   });
 
+  it("leaves mining lasers out of the ship's firepower", () => {
+    const stats = computeLoadoutStats([
+      weaponHardpoint({
+        beam: true,
+        damagePerSecond: { energy: 2340 },
+        mining: { fracturePowerMax: 2340 },
+      }),
+    ]);
+
+    expect(stats.weaponCount).toBe(0);
+    expect(stats.dps.total).toBe(0);
+  });
+
   it("recurses into nested turret hardpoints and sums damage types", () => {
     const stats = computeLoadoutStats([
       weaponHardpoint(
