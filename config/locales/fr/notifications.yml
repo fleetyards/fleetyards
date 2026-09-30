@@ -116,6 +116,7 @@ fr:
     payout_entry_declined:
       title: "Votre dépense \"%{description}\" sur %{subject} a été refusée"
     fleet_contract:
+      someone: "Un membre"
       published:
         title: "Nouveau contrat dans %{fleet} : %{title}"
         body: "%{fleet} vient de publier un nouveau contrat."
@@ -134,6 +135,7 @@ fr:
     fleet_inventory_item_added:
       title: "Nouvel objet dans l'inventaire de %{fleet} : %{item_name}"
     fleet_event:
+      someone: "Un membre"
       published:
         title: "Nouvel événement dans %{fleet} : %{title}"
         body: "%{fleet} vient de publier un nouvel événement."

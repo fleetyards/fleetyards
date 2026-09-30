@@ -116,6 +116,7 @@ zh-TW:
     payout_entry_declined:
       title: "你在 %{subject} 的支出「%{description}」已被拒絕"
     fleet_contract:
+      someone: "一名成員"
       published:
         title: "%{fleet} 發布了新合約：%{title}"
         body: "%{fleet} 剛剛發布了一個新合約。"
@@ -134,6 +135,7 @@ zh-TW:
     fleet_inventory_item_added:
       title: "%{fleet} 的庫存新增物品：%{item_name}"
     fleet_event:
+      someone: "一名成員"
       published:
         title: "%{fleet} 有新活動：%{title}"
         body: "%{fleet} 剛剛發布了一個新活動。"

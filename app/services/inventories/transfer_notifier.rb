@@ -18,13 +18,15 @@ module Inventories
       return if @transfer.immediate?
 
       recipients.each do |user|
-        ::Notification.notify!(
-          user:,
-          type: :inventory_transfer_received,
-          title: received_title,
-          link: inbox_link,
-          record: @transfer
-        )
+        I18n.with_locale(user.notification_locale) do
+          ::Notification.notify!(
+            user:,
+            type: :inventory_transfer_received,
+            title: received_title,
+            link: inbox_link,
+            record: @transfer
+          )
+        end
       end
     end
 
@@ -36,17 +38,19 @@ module Inventories
       # The person who answered it already knows.
       return if initiator == @transfer.resolved_by
 
-      ::Notification.notify!(
-        user: initiator,
-        type: :inventory_transfer_resolved,
-        title: I18n.t(
-          "notifications.inventory_transfer_resolved.title",
-          recipient: party_name(@transfer.recipient_party),
-          outcome: @transfer.aasm_state
-        ),
-        link: inbox_link,
-        record: @transfer
-      )
+      I18n.with_locale(initiator.notification_locale) do
+        ::Notification.notify!(
+          user: initiator,
+          type: :inventory_transfer_resolved,
+          title: I18n.t(
+            "notifications.inventory_transfer_resolved.title",
+            recipient: party_name(@transfer.recipient_party),
+            outcome: @transfer.aasm_state
+          ),
+          link: inbox_link,
+          record: @transfer
+        )
+      end
     end
 
     # A user is one person. A fleet is whoever could actually answer for it --

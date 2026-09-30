@@ -129,28 +129,32 @@ class TourJoinRequest < ApplicationRecord
     return if tour.blank? || tour.fleet.blank?
 
     deciders.each do |decider|
-      Notification.notify!(
-        user: decider,
-        type: :tour_join_request_received,
-        title: I18n.t("notifications.tour_join_request_received.title", username: user&.username, tour: tour.title),
-        link: tour_link,
-        icon: "fa-duotone fa-coins",
-        record: tour
-      )
+      I18n.with_locale(decider.notification_locale) do
+        Notification.notify!(
+          user: decider,
+          type: :tour_join_request_received,
+          title: I18n.t("notifications.tour_join_request_received.title", username: user&.username, tour: tour.title),
+          link: tour_link,
+          icon: "fa-duotone fa-coins",
+          record: tour
+        )
+      end
     end
   end
 
   private def notify_asker
     return if user.blank? || tour.blank?
 
-    Notification.notify!(
-      user:,
-      type: :tour_join_request_accepted,
-      title: I18n.t("notifications.tour_join_request_accepted.title", tour: tour.title),
-      link: tour_link,
-      icon: "fa-duotone fa-coins",
-      record: tour
-    )
+    I18n.with_locale(user.notification_locale) do
+      Notification.notify!(
+        user:,
+        type: :tour_join_request_accepted,
+        title: I18n.t("notifications.tour_join_request_accepted.title", tour: tour.title),
+        link: tour_link,
+        icon: "fa-duotone fa-coins",
+        record: tour
+      )
+    end
   end
 
   private def tour_link

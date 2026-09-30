@@ -72,13 +72,15 @@ class FleetInventoryItem < ApplicationRecord
     end
 
     recipients.each do |recipient|
-      Notification.notify!(
-        user: recipient,
-        type: :fleet_inventory_item_added,
-        title: I18n.t("notifications.fleet_inventory_item_added.title", item_name: name, fleet: fleet.name),
-        link: "/fleets/#{fleet.slug}/logistics/inventories/#{fleet_inventory.slug}",
-        record: fleet_inventory
-      )
+      I18n.with_locale(recipient.notification_locale) do
+        Notification.notify!(
+          user: recipient,
+          type: :fleet_inventory_item_added,
+          title: I18n.t("notifications.fleet_inventory_item_added.title", item_name: name, fleet: fleet.name),
+          link: "/fleets/#{fleet.slug}/logistics/inventories/#{fleet_inventory.slug}",
+          record: fleet_inventory
+        )
+      end
     end
   end
 end

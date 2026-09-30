@@ -14,14 +14,16 @@ module Notifications
       Vehicle.where(model_id:, sale_notify: true, wanted: true, loaner: false, user_id: user_ids, notify: true).find_each do |vehicle|
         OnSaleHangarChannel.broadcast_to(vehicle.user, vehicle.to_jbuilder_hash)
 
-        Notification.notify!(
-          user: vehicle.user,
-          type: :model_on_sale,
-          title: I18n.t("notifications.model_on_sale.title", model: model.name),
-          body: I18n.t("notifications.model_on_sale.body", model: model.name),
-          link: Rails.application.routes.url_helpers.frontend_model_path(model.slug),
-          record: vehicle
-        )
+        I18n.with_locale(vehicle.user.notification_locale) do
+          Notification.notify!(
+            user: vehicle.user,
+            type: :model_on_sale,
+            title: I18n.t("notifications.model_on_sale.title", model: model.name),
+            body: I18n.t("notifications.model_on_sale.body", model: model.name),
+            link: Rails.application.routes.url_helpers.frontend_model_path(model.slug),
+            record: vehicle
+          )
+        end
       end
     end
   end

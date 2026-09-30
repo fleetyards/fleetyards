@@ -294,7 +294,9 @@ class PayoutLedger < ApplicationRecord
     recipients << subject.created_by if subject.is_a?(FleetContract)
 
     recipients.compact.uniq.reject { |recipient| recipient == settler }.each do |recipient|
-      Notification.notify!(user: recipient, record: subject, icon: "fa-duotone fa-coins", **settled_notification)
+      I18n.with_locale(recipient.notification_locale) do
+        Notification.notify!(user: recipient, record: subject, icon: "fa-duotone fa-coins", **settled_notification)
+      end
     rescue => e
       Rails.logger.error("[PayoutLedger] settle notification failed: #{e.class}: #{e.message}")
     end

@@ -118,6 +118,7 @@ en:
     fleet_inventory_item_added:
       title: "New inventory item in %{fleet}: %{item_name}"
     fleet_contract:
+      someone: "A member"
       published:
         title: "New contract in %{fleet}: %{title}"
         body: "%{fleet} just posted a new contract."
@@ -134,6 +135,7 @@ en:
       crew_declined:
         title: "Your request to join %{title} was declined"
     fleet_event:
+      someone: "A member"
       published:
         title: "New event in %{fleet}: %{title}"
         body: "%{fleet} just published a new event."
