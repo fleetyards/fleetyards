@@ -108,6 +108,16 @@ class PushSubscriptionTest < ActiveSupport::TestCase
     assert subscription.errors.added?(:p256dh_key, :invalid)
   end
 
+  test "rejects a hybrid-encoded public key" do
+    hybrid = Base64.urlsafe_decode64(P256DH).b
+    hybrid.setbyte(0, hybrid.getbyte(64).odd? ? 0x07 : 0x06)
+
+    subscription = subscribe(p256dh_key: Base64.urlsafe_encode64(hybrid, padding: false))
+
+    refute subscription.persisted?
+    assert subscription.errors.added?(:p256dh_key, :invalid)
+  end
+
   test "re-subscribing with nothing changed still counts as recent for the cap" do
     subscription = subscribe
     subscription.update_columns(updated_at: 1.year.ago)

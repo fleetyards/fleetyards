@@ -141,10 +141,12 @@ class PushSubscription < ApplicationRecord
     errors.add(:auth_key, :invalid) if auth_key.present? && auth&.bytesize != AUTH_BYTES
   end
 
-  # The right length and prefix are not enough: the payload is encrypted to
-  # this point, and one off the curve cannot be encrypted to at all.
+  # Uncompressed (0x04) and on the curve. OpenSSL also parses the hybrid 0x06
+  # and 0x07 forms, which Web Push does not accept; and the right length and
+  # prefix alone are not enough, since a point off the curve cannot be
+  # encrypted to at all.
   private def p256_point?(bytes)
-    return false unless bytes&.bytesize == P256DH_BYTES
+    return false unless bytes&.bytesize == P256DH_BYTES && bytes.getbyte(0) == 0x04
 
     OpenSSL::PKey::EC::Point.new(P256_GROUP, OpenSSL::BN.new(bytes, 2)).on_curve?
   rescue OpenSSL::PKey::EC::Point::Error
