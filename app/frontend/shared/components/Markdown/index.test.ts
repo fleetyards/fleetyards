@@ -258,6 +258,34 @@ describe("Markdown", () => {
     );
   });
 
+  it("keeps a code block inside its list item", async () => {
+    const wrapper = await mount(
+      "- Join with\n\n  ```\n  /join *fleet*\n  ```\n- Then wait",
+    );
+
+    const items = wrapper.findAll("ul > li");
+    expect(items).toHaveLength(2);
+    expect(items[0].find("pre code").text()).toBe("/join *fleet*");
+    expect(wrapper.find("em").exists()).toBe(false);
+  });
+
+  it("does not end a code block on a line that only starts like a fence", async () => {
+    const wrapper = await mount("```\n```still-code\n**second**\n```\nAfter");
+
+    expect(wrapper.find("pre code").text()).toBe("```still-code\n**second**");
+    expect(wrapper.find("strong").exists()).toBe(false);
+    expect(wrapper.find("p").text()).toBe("After");
+  });
+
+  it("shows an image whose description has brackets", async () => {
+    const wrapper = await mount(
+      "![Fleet [Alpha]](https://robertsspaceindustries.com/a.jpg) [Team [A]](/fleets/a)",
+    );
+
+    expect(wrapper.find("img").attributes("alt")).toBe("Fleet [Alpha]");
+    expect(wrapper.find("a").text()).toBe("Team [A]");
+  });
+
   it("renders https images only", async () => {
     const wrapper = await mount(
       "![cover](https://robertsspaceindustries.com/cover.jpg) ![x](http://example.com/a.jpg) ![y](javascript:alert(1))",

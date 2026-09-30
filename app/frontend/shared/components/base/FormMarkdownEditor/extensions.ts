@@ -11,7 +11,7 @@ import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
-import { splitCodeSpans } from "@/shared/utils/Markdown";
+import { closesFence, splitCodeSpans } from "@/shared/utils/Markdown";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -76,23 +76,31 @@ export const protectHtml = (markdown: string) => {
   return markdown
     .split("\n")
     .map((line) => {
-      const fenceMarker = /^ {0,3}(`{3,}|~{3,})/.exec(line)?.[1];
+      // A fence can sit inside a quote or a list item: look past the `>`
+      // markers and the indentation for it.
+      const prefix = /^(?:[ \t]*>[ \t]?)*/.exec(line)?.[0] ?? "";
+      const body = line.slice(prefix.length);
 
       if (fence) {
-        if (line.trim().startsWith(fence)) fence = undefined;
+        if (closesFence(body.trimStart(), fence)) fence = undefined;
         return line;
       }
+
+      const fenceMarker = /^[ \t]*(`{3,}|~{3,})/.exec(body)?.[1];
 
       if (fenceMarker) {
         fence = fenceMarker;
         return line;
       }
 
-      return splitCodeSpans(line)
-        .map((part) =>
-          part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
-        )
-        .join("");
+      return (
+        prefix +
+        splitCodeSpans(body)
+          .map((part) =>
+            part.code ? `\`${part.text}\`` : part.text.replaceAll("<", "&lt;"),
+          )
+          .join("")
+      );
     })
     .join("\n");
 };

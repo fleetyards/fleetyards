@@ -60,6 +60,8 @@ const PLACEHOLDER_PATTERN = /\ue000([\ue100-\uf8ff])/g;
 const LITERAL_PATTERN =
   /\\([!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])|&(#x[\da-f]+|#\d+|[a-z]+);/gi;
 
+// Link text and image descriptions may hold one level of balanced brackets
+// (`[Team [A]](…)`), which is what a markdown writer leaves unescaped.
 const formatText = (value: string, resolve: (text: string) => string) => {
   // A URL is judged by what the browser will get, with every escape and
   // entity in it resolved -- `/\/host` is `//host` once the backslash goes.
@@ -69,14 +71,16 @@ const formatText = (value: string, resolve: (text: string) => string) => {
     value
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
       .replace(/~~([^~]+)~~/g, "<del>$1</del>")
-      .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match, alt, url: string) =>
-        isSafeMarkdownSrc(target(url))
-          ? `<img src="${url}" alt="${alt}" loading="lazy">`
-          : match,
+      .replace(
+        /!\[((?:[^[\]]|\[[^[\]]*\])*)\]\(([^)\s]+)\)/g,
+        (match, alt, url: string) =>
+          isSafeMarkdownSrc(target(url))
+            ? `<img src="${url}" alt="${alt}" loading="lazy">`
+            : match,
       )
       // A leading `!` is an image the pass above refused: it stays text.
       .replace(
-        /(!?)\[([^\]]+)\]\(([^)\s]+)\)/g,
+        /(!?)\[((?:[^[\]]|\[[^[\]]*\])+)\]\(([^)\s]+)\)/g,
         (match, bang: string, label, url: string) =>
           !bang && isSafeMarkdownHref(target(url))
             ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
@@ -170,48 +174,60 @@ const renderInline = (value: string) =>
     )
     .join("");
 
-type OpenList = {
-  type: "ul" | "ol";
-  indent: number;
-  start: number;
-  items: string[];
-};
-
 const indentOf = (line: string) =>
   [...(/^[ \t]*/.exec(line)?.[0] ?? "")].reduce(
     (width, char) => width + (char === "\t" ? 4 : 1),
     0,
   );
 
+// Removes `width` columns of leading indentation, a tab counting as four.
+const dedent = (line: string, width: number) => {
+  let column = 0;
+  let index = 0;
+
+  while (index < line.length && column < width) {
+    if (line[index] === " ") column += 1;
+    else if (line[index] === "\t") column += 4;
+    else break;
+    index += 1;
+  }
+
+  return line.slice(index);
+};
+
+const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
+
+// A closing fence is a line of nothing but the opening's character, at least
+// as many of them -- ```still-code is a line of code, not the end of it.
+export const closesFence = (line: string, marker: string) => {
+  const close = /^ {0,3}(`{3,}|~{3,})\s*$/.exec(line);
+
+  return (
+    !!close && close[1][0] === marker[0] && close[1].length >= marker.length
+  );
+};
+
+const LIST_ITEM = /^([ \t]*)([-*+]|\d{1,9}[.)])([ \t]+|$)(.*)$/;
+
+type List = { type: "ul" | "ol"; start: number; items: string[] };
+
 export const renderMarkdown = (source: string): string => {
+  const lines = source.split("\n");
   const blocks: string[] = [];
 
-  const lists: OpenList[] = [];
+  let list: List | undefined;
   let paragraph: string[] = [];
   let quote: string[] | undefined;
-  let fence: { marker: string; lines: string[] } | undefined;
   let centred = false;
 
-  const closeList = () => {
-    const list = lists.pop();
-
+  const flushList = () => {
     if (!list) return;
 
     const items = list.items.map((item) => `<li>${item}</li>`).join("");
     const start =
       list.type === "ol" && list.start !== 1 ? ` start="${list.start}"` : "";
-    const html = `<${list.type}${start}>${items}</${list.type}>`;
-    const parent = lists.at(-1);
-
-    if (parent) {
-      parent.items[parent.items.length - 1] += html;
-    } else {
-      blocks.push(html);
-    }
-  };
-
-  const flushLists = () => {
-    while (lists.length) closeList();
+    blocks.push(`<${list.type}${start}>${items}</${list.type}>`);
+    list = undefined;
   };
 
   const flushParagraph = () => {
@@ -231,85 +247,55 @@ export const renderMarkdown = (source: string): string => {
   };
 
   const flush = () => {
-    flushLists();
+    flushList();
     flushParagraph();
     flushQuote();
   };
 
-  const addItem = (
-    type: "ul" | "ol",
-    content: string,
-    indent: number,
-    start = 1,
-  ) => {
-    flushParagraph();
-    flushQuote();
-
-    while (lists.length && indent < lists[lists.length - 1].indent) {
-      closeList();
-    }
-
-    const current = lists.at(-1);
-
-    if (current && indent === current.indent && current.type !== type) {
-      closeList();
-    }
-
-    const parent = lists.at(-1);
-
-    if (!parent || indent > parent.indent) {
-      lists.push({ type, indent, start, items: [] });
-    }
-
-    lists[lists.length - 1].items.push(renderInline(content));
-  };
-
-  source.split("\n").forEach((line) => {
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
     const trimmed = line.trim();
-
-    if (fence) {
-      if (trimmed.startsWith(fence.marker)) {
-        blocks.push(
-          `<pre><code>${escapeHtml(fence.lines.join("\n"))}</code></pre>`,
-        );
-        fence = undefined;
-      } else {
-        fence.lines.push(line);
-      }
-      return;
-    }
-
-    const fenceOpen = /^ {0,3}(`{3,}|~{3,})/.exec(line);
-
-    if (fenceOpen) {
-      flush();
-      fence = { marker: fenceOpen[1], lines: [] };
-      return;
-    }
 
     const quoted = /^ {0,3}>\s?(.*)$/.exec(line);
 
     if (quoted) {
-      flushLists();
+      flushList();
       flushParagraph();
       quote = [...(quote ?? []), quoted[1]];
-      return;
+      continue;
     }
 
     flushQuote();
+
+    const fenceOpen = FENCE_OPEN.exec(line);
+
+    if (fenceOpen) {
+      flush();
+
+      const code: string[] = [];
+      index += 1;
+
+      while (index < lines.length && !closesFence(lines[index], fenceOpen[1])) {
+        code.push(lines[index]);
+        index += 1;
+      }
+
+      blocks.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
+      continue;
+    }
 
     if (!centred && /^:::\s*center$/.test(trimmed)) {
       flush();
       blocks.push('<div class="markdown__center">');
       centred = true;
-      return;
+      continue;
     }
 
     if (centred && trimmed === ":::") {
       flush();
       blocks.push("</div>");
       centred = false;
-      return;
+      continue;
     }
 
     // A line of = or - under a paragraph makes that paragraph a heading (the
@@ -320,13 +306,13 @@ export const renderMarkdown = (source: string): string => {
       const level = underline[1].startsWith("=") ? 3 : 4;
       blocks.push(`<h${level}>${paragraph.join(" ")}</h${level}>`);
       paragraph = [];
-      return;
+      continue;
     }
 
     if (/^([-*_])(\s*\1){2,}$/.test(trimmed)) {
       flush();
       blocks.push("<hr>");
-      return;
+      continue;
     }
 
     const heading = /^(#{1,6})\s+(.*)$/.exec(trimmed);
@@ -336,36 +322,64 @@ export const renderMarkdown = (source: string): string => {
 
       const level = Math.min(heading[1].length + 2, 6);
       blocks.push(`<h${level}>${renderInline(heading[2])}</h${level}>`);
-      return;
+      continue;
     }
 
-    const item = /^[-*+]\s+(.*)$/.exec(trimmed);
+    // An item is a container: every following line indented at least as far
+    // as its text belongs to it -- a nested list, a second paragraph, a code
+    // block -- and is rendered as markdown of its own.
+    const item = LIST_ITEM.exec(line);
 
     if (item) {
-      addItem("ul", item[1], indentOf(line));
-      return;
-    }
+      flushParagraph();
 
-    const numbered = /^(\d{1,9})[.)]\s+(.*)$/.exec(trimmed);
+      const marker = item[2];
+      const type = /\d/.test(marker) ? "ol" : "ul";
+      const contentColumn =
+        indentOf(item[1]) + marker.length + Math.max(item[3].length, 1);
+      const content = [item[4]];
 
-    if (numbered) {
-      addItem("ol", numbered[2], indentOf(line), Number(numbered[1]));
-      return;
+      while (index + 1 < lines.length) {
+        const next = lines[index + 1];
+
+        if (next.trim()) {
+          if (indentOf(next) < contentColumn) break;
+        } else {
+          const following = lines
+            .slice(index + 2)
+            .find((candidate) => candidate.trim());
+
+          if (!following || indentOf(following) < contentColumn) break;
+        }
+
+        content.push(dedent(next, contentColumn));
+        index += 1;
+      }
+
+      if (list && list.type !== type) {
+        flushList();
+      }
+
+      list ??= {
+        type,
+        start: type === "ol" ? parseInt(marker, 10) : 1,
+        items: [],
+      };
+
+      // A single paragraph is the item's text itself, as in a tight list.
+      const rendered = renderMarkdown(content.join("\n"));
+      const single = /^<p>((?:(?!<p>)[\s\S])*)<\/p>$/.exec(rendered);
+      list.items.push(single ? single[1] : rendered);
+      continue;
     }
 
     if (!trimmed) {
       flush();
-      return;
+      continue;
     }
 
-    flushLists();
+    flushList();
     paragraph.push(renderInline(trimmed));
-  });
-
-  if (fence) {
-    blocks.push(
-      `<pre><code>${escapeHtml(fence.lines.join("\n"))}</code></pre>`,
-    );
   }
 
   flush();

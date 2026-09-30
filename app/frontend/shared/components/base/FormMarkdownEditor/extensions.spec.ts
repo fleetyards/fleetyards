@@ -120,6 +120,24 @@ describe("markdownExtensions and angle brackets", () => {
     expect(rendered.find("b").exists()).toBe(false);
   });
 
+  it("leaves angle brackets inside fenced code in a quote or list alone", async () => {
+    expect(protectHtml("> ```\n> <tag>\n> ```\n> <tag>")).toBe(
+      "> ```\n> <tag>\n> ```\n> &lt;tag>",
+    );
+    expect(protectHtml("- item\n\n  ```\n  <tag>\n  ```")).toBe(
+      "- item\n\n  ```\n  <tag>\n  ```",
+    );
+
+    const rendered = await render(roundTrip("> ```\n> <tag>\n> ```"));
+    expect(rendered.find("blockquote pre code").text()).toBe("<tag>");
+  });
+
+  it("keeps a fence open past a line that only starts like one", () => {
+    expect(protectHtml("```\n```x <a>\n```\n<a>")).toBe(
+      "```\n```x <a>\n```\n&lt;a>",
+    );
+  });
+
   it("leaves angle brackets inside fenced code alone", () => {
     expect(protectHtml("```\n<tag>\n```\n<tag>")).toBe(
       "```\n<tag>\n```\n&lt;tag>",
@@ -142,6 +160,38 @@ describe("markdownExtensions links from the toolbar", () => {
     expect(rendered.find("a").attributes("href")).toBe(
       "https://fleetyards.net/",
     );
+  });
+});
+
+describe("markdownExtensions images", () => {
+  it("renders an image whose description has brackets as an image", async () => {
+    const editor = load("");
+    editor.commands.setImage({
+      src: "https://robertsspaceindustries.com/a.jpg",
+      alt: "Fleet [Alpha]",
+    });
+    const rendered = await render(toMarkdown(editor));
+    editor.destroy();
+
+    expect(rendered.find("img").attributes("alt")).toBe("Fleet [Alpha]");
+  });
+
+  it("keeps numbered lists nested where the editor put them", async () => {
+    const rendered = await render(
+      roundTrip("1. Crew\n   1. Pilot\n   2. Gunner\n2. Ships\n   - Aurora"),
+    );
+
+    expect(rendered.findAll("ol > li > ol > li")).toHaveLength(2);
+    expect(rendered.find("ol > li > ul > li").text()).toBe("Aurora");
+    expect(rendered.find("ol").element.children).toHaveLength(2);
+  });
+
+  it("keeps a code block inside a list item where the editor put it", async () => {
+    const rendered = await render(
+      roundTrip("- Join with\n\n  ```\n  /join\n  ```\n\n- Then wait"),
+    );
+
+    expect(rendered.find("ul > li pre code").text()).toBe("/join");
   });
 });
 
