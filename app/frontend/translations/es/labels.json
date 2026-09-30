@@ -907,6 +907,11 @@
         "hardpoints": "Puntos de montaje"
       },
       "flight": {
+        "boostCapacitor": "Condensador de impulso",
+        "boostCapacity": "Capacidad",
+        "boostRegen": "Regeneración",
+        "boostRegenDelay": "Retardo de regeneración",
+        "boostRamp": "Arranque / parada",
         "title": "Vuelo",
         "scm": "crucero de combate",
         "nav": "crucero",
@@ -1471,6 +1476,17 @@
         "powerPlants": {
           "output": "Potencia",
           "pips": "Pips"
+        },
+        "flightControllers": {
+          "scmSpeed": "Velocidad SCM",
+          "boostSpeed": "Velocidad de impulso",
+          "navSpeed": "Velocidad Nav",
+          "rotation": "Cabeceo / Guiñada / Alabeo",
+          "boostedRotation": "Cabeceo / Guiñada / Alabeo con impulso",
+          "boostCapacity": "Capacidad de impulso",
+          "boostRegen": "Regeneración de impulso",
+          "boostRegenDelay": "Retardo de regeneración de impulso",
+          "boostRamp": "Arranque / parada del impulso"
         },
         "quantumDrives": {
           "speed": "Velocidad",

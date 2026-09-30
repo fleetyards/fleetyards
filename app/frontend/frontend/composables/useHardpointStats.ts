@@ -21,6 +21,7 @@ import {
   type ComponentMiningModifiers,
   type ComponentMiningModule,
   type ComponentSalvageModifier,
+  type ComponentController,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -888,6 +889,78 @@ export const useHardpointStats = (
             "integer",
           ),
         );
+      }
+    } else if (
+      category === HardpointCategoryEnum.CONTROLLER &&
+      (typeData as ComponentController).scmSpeed
+    ) {
+      // Only a flight controller carries speeds; shield and missile
+      // controllers share the category and have none of these.
+      const flight = typeData as ComponentController;
+
+      result.push(
+        stat("flightControllers.scmSpeed", flight.scmSpeed!, "speed", true),
+      );
+      if (flight.scmSpeedBoosted) {
+        result.push(
+          stat("flightControllers.boostSpeed", flight.scmSpeedBoosted, "speed"),
+        );
+      }
+      if (flight.maxSpeed) {
+        result.push(
+          stat("flightControllers.navSpeed", flight.maxSpeed, "speed"),
+        );
+      }
+
+      const axes = (rotation?: typeof flight.angularVelocity) =>
+        rotation && (rotation.pitch || rotation.yaw || rotation.roll)
+          ? `${[rotation.pitch, rotation.yaw, rotation.roll]
+              .map((value) =>
+                String(toNumber(Math.round(value || 0), "integer")),
+              )
+              .join(" / ")} °/s`
+          : null;
+      const rotation = axes(flight.angularVelocity);
+      if (rotation) {
+        result.push({
+          label: t("labels.hardpoint.flightControllers.rotation"),
+          value: rotation,
+        });
+      }
+      const boostedRotation = axes(flight.boostedAngularVelocity);
+      if (boostedRotation && boostedRotation !== rotation) {
+        result.push({
+          label: t("labels.hardpoint.flightControllers.boostedRotation"),
+          value: boostedRotation,
+        });
+      }
+
+      const capacitor = flight.boostCapacitor;
+      if (capacitor?.capacity) {
+        result.push({
+          label: t("labels.hardpoint.flightControllers.boostCapacity"),
+          value: String(toNumber(capacitor.capacity, "integer")),
+        });
+      }
+      if (capacitor?.regenPerSecond) {
+        result.push({
+          label: t("labels.hardpoint.flightControllers.boostRegen"),
+          value: `${String(toNumber(capacitor.regenPerSecond, "integer"))}/s`,
+        });
+      }
+      if (capacitor?.regenDelay) {
+        result.push({
+          label: t("labels.hardpoint.flightControllers.boostRegenDelay"),
+          value: String(toNumber(capacitor.regenDelay, "seconds")),
+        });
+      }
+      if (capacitor?.rampUpTime || capacitor?.rampDownTime) {
+        result.push({
+          label: t("labels.hardpoint.flightControllers.boostRamp"),
+          value: `${[capacitor.rampUpTime, capacitor.rampDownTime]
+            .map((value) => (value ? String(toNumber(value, "integer")) : "0"))
+            .join(" / ")} s`,
+        });
       }
     } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
       const qd = typeData as ComponentQuantumDrive;

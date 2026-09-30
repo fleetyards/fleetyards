@@ -907,6 +907,11 @@
         "hardpoints": "Hardpoints"
       },
       "flight": {
+        "boostCapacitor": "Boost Capacitor",
+        "boostCapacity": "Capacity",
+        "boostRegen": "Regen",
+        "boostRegenDelay": "Regen Delay",
+        "boostRamp": "Ramp Up / Down",
         "title": "Flight",
         "scm": "combat cruise",
         "nav": "cruise",
@@ -1471,6 +1476,17 @@
         "powerPlants": {
           "output": "Output",
           "pips": "Pips"
+        },
+        "flightControllers": {
+          "scmSpeed": "SCM Speed",
+          "boostSpeed": "Boost Speed",
+          "navSpeed": "Nav Speed",
+          "rotation": "Pitch / Yaw / Roll",
+          "boostedRotation": "Boosted Pitch / Yaw / Roll",
+          "boostCapacity": "Boost Capacity",
+          "boostRegen": "Boost Regen",
+          "boostRegenDelay": "Boost Regen Delay",
+          "boostRamp": "Boost Ramp Up / Down"
         },
         "quantumDrives": {
           "speed": "Speed",

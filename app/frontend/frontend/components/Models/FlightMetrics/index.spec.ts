@@ -43,11 +43,15 @@ const model = () =>
     metrics: { isGroundVehicle: false },
   }) as never;
 
-function mountFlight(ratio: number, powered = true) {
+function mountFlight(
+  ratio: number,
+  powered = true,
+  boostCapacitor?: Record<string, number>,
+) {
   const enginePowerRatio = ref(ratio);
   const enginePowered = ref(powered);
   const wrapper = mount(FlightMetrics, {
-    props: { model: model() },
+    props: { model: model(), boostCapacitor } as never,
     global: {
       provide: { enginePowerRatio, enginePowered },
       stubs: { MetricsCard: { template: "<div><slot /></div>" } },
@@ -97,5 +101,37 @@ describe("FlightMetrics engine reactivity", () => {
     expect(
       wrapper.findAll(".metrics-card__tile__value").map((n) => n.text()),
     ).toEqual(["0", "0", "0"]);
+  });
+});
+
+describe("FlightMetrics boost capacitor", () => {
+  it("lists the installed controller's boost pool", () => {
+    const { wrapper } = mountFlight(1, true, {
+      capacity: 25,
+      regenPerSecond: 0.75,
+      regenDelay: 1.1,
+      rampUpTime: 0.4,
+      rampDownTime: 0,
+    });
+
+    const rows = wrapper
+      .findAll(".metrics-card__row")
+      .map((row) => [
+        row.find(".metrics-card__row__label").text(),
+        row.find(".metrics-card__row__value").text(),
+      ]);
+
+    expect(rows).toEqual([
+      ["labels.flight.boostCapacity", "25"],
+      ["labels.flight.boostRegen", "0.75/s"],
+      ["labels.flight.boostRegenDelay", "1.1 s"],
+      ["labels.flight.boostRamp", "0.4 / 0 s"],
+    ]);
+  });
+
+  it("shows no boost section without a controller", () => {
+    const { wrapper } = mountFlight(1);
+
+    expect(wrapper.text()).not.toContain("labels.flight.boostCapacitor");
   });
 });
