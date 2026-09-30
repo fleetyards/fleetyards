@@ -425,6 +425,56 @@ module ScData
         assert_in_delta 3.0, type_data["respool_time"]
       end
 
+      test "reads a flight controller's speeds, rotation and boosted rotation" do
+        write_flight_controller("ctrl_flight")
+
+        type_data = parsed_item("ctrl_flight")["type_data"]
+
+        assert_in_delta 262.0, type_data["scm_speed"]
+        assert_in_delta 610.0, type_data["scm_speed_boosted"]
+        assert_in_delta 1425.0, type_data["max_speed"]
+        assert_equal({"pitch" => 53.0, "yaw" => 48.0, "roll" => 190.0}, type_data["angular_velocity"])
+        assert_in_delta 63.6, type_data["boosted_angular_velocity"]["pitch"]
+        assert_in_delta 228.0, type_data["boosted_angular_velocity"]["roll"]
+      end
+
+      test "reads the boost capacitor off the block that carries a ship's own tuning" do
+        write_flight_controller("ctrl_capacitor")
+
+        capacitor = parsed_item("ctrl_capacitor")["type_data"]["boost_capacitor"]
+
+        assert_in_delta 25.0, capacitor["capacity"]
+        assert_in_delta 0.75, capacitor["regen_per_second"]
+        assert_in_delta 1.1, capacitor["regen_delay"]
+        assert_in_delta 1.0, capacitor["idle_cost"]
+        assert_in_delta 0.4, capacitor["ramp_up_time"]
+        assert_in_delta 0.2, capacitor["ramp_down_time"]
+      end
+
+      test "carries no boost capacitor for a controller without an afterburner" do
+        write_item("ctrl_no_boost", name: "@item_Namectrl_no_boost", category: "controller", type: "FlightController", components: <<~XML)
+          <IFCSParams scmSpeed="100" boostSpeedForward="200" boostSpeedBackward="50" maxSpeed="900">
+            <maxAngularVelocity x="10" y="20" z="30" />
+          </IFCSParams>
+        XML
+
+        assert_nil parsed_item("ctrl_no_boost")["type_data"]["boost_capacitor"]
+      end
+
+      private def write_flight_controller(key)
+        write_item(key, name: "@item_Name#{key}", category: "controller", type: "FlightController", components: <<~XML)
+          <IFCSParams scmSpeed="262" boostSpeedForward="610" boostSpeedBackward="280" maxSpeed="1425">
+            <afterburnerNew capacitorMax="20" capacitorRegenPerSec="0.75" capacitorRegenDelayAfterUse="0.2" afterburnerRampUpTime="0.6" afterburnerRampDownTime="0.3">
+              <afterburnAngVelocityMultiplier x="1.15" y="1" z="1.15" />
+            </afterburnerNew>
+            <maxAngularVelocity x="53" y="190" z="48" />
+            <afterburner capacitorMax="25" capacitorRegenPerSec="0.75" capacitorRegenDelayAfterUse="1.1" capacitorAfterburnerIdleCost="1" afterburnerRampUpTime="0.4" afterburnerRampDownTime="0.2">
+              <afterburnAngVelocityMultiplier x="1.2" y="1.2" z="1.2" />
+            </afterburner>
+          </IFCSParams>
+        XML
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 

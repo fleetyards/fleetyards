@@ -451,23 +451,8 @@ module ScData
           }
         end
 
-        if values.dig("Components", "IFCSParams")
-          item[:type_data] = {
-            scm_speed: values.dig("Components", "IFCSParams", "scmSpeed").to_f,
-            scm_speed_boosted: values.dig("Components", "IFCSParams", "boostSpeedForward").to_f,
-            reverse_speed_boosted: values.dig("Components", "IFCSParams", "boostSpeedBackward").to_f,
-            max_speed: values.dig("Components", "IFCSParams", "maxSpeed").to_f,
-            angular_velocity: {
-              pitch: values.dig("Components", "IFCSParams", "maxAngularVelocity", "x").to_f,
-              yaw: values.dig("Components", "IFCSParams", "maxAngularVelocity", "z").to_f,
-              roll: values.dig("Components", "IFCSParams", "maxAngularVelocity", "y").to_f
-            },
-            boosted_angular_velocity: {
-              pitch: values.dig("Components", "IFCSParams", "maxAngularVelocity", "x").to_f * values.dig("Components", "IFCSParams", "afterburner", "afterburnAngVelocityMultiplier", "x").to_f,
-              yaw: values.dig("Components", "IFCSParams", "maxAngularVelocity", "z").to_f * values.dig("Components", "IFCSParams", "afterburner", "afterburnAngVelocityMultiplier", "z").to_f,
-              roll: values.dig("Components", "IFCSParams", "maxAngularVelocity", "y").to_f * values.dig("Components", "IFCSParams", "afterburner", "afterburnAngVelocityMultiplier", "y").to_f
-            }
-          }
+        if (ifcs = values.dig("Components", "IFCSParams"))
+          item[:type_data] = extract_flight_controller(ifcs)
         end
 
         if values.dig("Components", "SCItemQuantumInterdictionGeneratorParams")
@@ -733,6 +718,56 @@ module ScData
         PlasmaCannon NeutronCannon TachyonCannon
         ScatterGun MassDriver
       ].freeze
+
+      # The afterburner block the flight numbers are read from. Controllers
+      # carry a second one, `afterburnerNew`, but it holds the same values on
+      # every controller -- a default, not a ship's tuning -- while this one
+      # differs ship by ship.
+      FLIGHT_AFTERBURNER_BLOCK = "afterburner"
+
+      private def extract_flight_controller(ifcs)
+        rotation = ifcs["maxAngularVelocity"] || {}
+        afterburner = ifcs[FLIGHT_AFTERBURNER_BLOCK] || {}
+        multiplier = afterburner["afterburnAngVelocityMultiplier"] || {}
+
+        {
+          scm_speed: ifcs["scmSpeed"].to_f,
+          scm_speed_boosted: ifcs["boostSpeedForward"].to_f,
+          reverse_speed_boosted: ifcs["boostSpeedBackward"].to_f,
+          max_speed: ifcs["maxSpeed"].to_f,
+          angular_velocity: {
+            pitch: rotation["x"].to_f,
+            yaw: rotation["z"].to_f,
+            roll: rotation["y"].to_f
+          },
+          boosted_angular_velocity: {
+            pitch: rotation["x"].to_f * multiplier["x"].to_f,
+            yaw: rotation["z"].to_f * multiplier["z"].to_f,
+            roll: rotation["y"].to_f * multiplier["y"].to_f
+          },
+          boost_capacitor: extract_boost_capacitor(afterburner)
+        }.compact
+      end
+
+      # The boost pool: what it holds, what boosting spends from it per second
+      # while idle, thrusting and turning, and how it refills. The ramps are how
+      # long boost takes to reach full effect and to let go of it.
+      private def extract_boost_capacitor(afterburner)
+        figures = {
+          capacity: afterburner["capacitorMax"],
+          regen_per_second: afterburner["capacitorRegenPerSec"],
+          regen_delay: afterburner["capacitorRegenDelayAfterUse"],
+          idle_cost: afterburner["capacitorAfterburnerIdleCost"],
+          linear_cost: afterburner["capacitorAfterburnerLinearCost"],
+          angular_cost: afterburner["capacitorAfterburnerAngularCost"],
+          threshold_ratio: afterburner["afterburnerCapacitorThresholdRatio"],
+          pre_delay: afterburner["afterburnerPreDelayTime"],
+          ramp_up_time: afterburner["afterburnerRampUpTime"],
+          ramp_down_time: afterburner["afterburnerRampDownTime"]
+        }.compact.transform_values(&:to_f)
+
+        figures.presence
+      end
 
       # A mount turns on one joint per axis, each with its own top speed in
       # degrees per second.
