@@ -35,6 +35,22 @@ module Cleanup
       assert PushSubscription.exists?(renewed.id)
     end
 
+    # What the settings page does for a subscribed browser on every visit.
+    test "#perform keeps a browser that visits but was never pushed to" do
+      subscription = stale_for(PushSubscription::STALE_AFTER + 1.day)
+
+      PushSubscription.subscribe(
+        user: subscription.user,
+        endpoint: subscription.endpoint,
+        p256dh_key: subscription.p256dh_key,
+        auth_key: subscription.auth_key
+      )
+      ::Cleanup::PushSubscriptionsJob.new.perform
+
+      assert PushSubscription.exists?(subscription.id)
+      assert_nil subscription.reload.last_delivered_at
+    end
+
     test "is scheduled" do
       schedule = YAML.safe_load(ERB.new(Rails.root.join("config/sidekiq_schedule.yml").read).result)
 
