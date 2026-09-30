@@ -11,7 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import BaseSelect, {
   type BaseSelectParams,
 } from "@/shared/components/base/Select/index.vue";
@@ -425,7 +425,7 @@ const onSubmit = handleSubmit(async (values) => {
         name="title"
         :label="t('labels.fleets.missions.title')"
       />
-      <FormTextarea
+      <FormMarkdownEditor
         v-model="description"
         v-bind="descriptionProps"
         name="description"

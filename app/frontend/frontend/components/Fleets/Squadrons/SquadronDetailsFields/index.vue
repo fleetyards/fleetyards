@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -71,7 +72,7 @@ const { t } = useI18n();
 
   <div class="row">
     <div class="col-12 squadron-description-field">
-      <FormTextarea
+      <FormMarkdownEditor
         v-model="props.fields.description"
         v-bind="props.fieldProps.description"
         name="description"
@@ -85,10 +86,10 @@ const { t } = useI18n();
 </template>
 
 <style lang="scss" scoped>
-// Taller than the default textarea: this is the page's prose, and the
+// Taller than the editor's default: this is the page's prose, and the
 // description of a squadron opening at the same three lines as its one-line
 // card subtitle read as though it wanted the same answer.
-.squadron-description-field :deep(textarea) {
-  min-height: 260px;
+.squadron-description-field :deep(.base-markdown-editor__scroller) {
+  height: 260px;
 }
 </style>

@@ -10,7 +10,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -109,7 +109,7 @@ const onSubmit = handleSubmit(async (values) => {
         name="title"
         :label="t('labels.fleets.events.title')"
       />
-      <FormTextarea
+      <FormMarkdownEditor
         v-model="description"
         v-bind="descriptionProps"
         name="description"
