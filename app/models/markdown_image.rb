@@ -101,10 +101,17 @@ class MarkdownImage < ApplicationRecord
       )
     end
 
+    # The latest snapshot only, as the restorer uses: an older one can no longer
+    # come back, and would hold its images forever.
+    restorable = PaperTrail::Version
+      .select("DISTINCT ON (versions.item_id) versions.id")
+      .where(item_type: "Fleet", event: "destroy")
+      .where.not(item_id: Fleet.unscoped.select(:id))
+      .order(Arel.sql("versions.item_id, versions.created_at DESC"))
+
     live + ids_in(
       PaperTrail::Version
-        .where(item_type: "Fleet", event: "destroy")
-        .where.not(item_id: Fleet.unscoped.select(:id))
+        .where(id: restorable)
         .where("object::text ILIKE ?", "%markdown-images/%"),
       "object::text"
     )

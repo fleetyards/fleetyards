@@ -82,12 +82,35 @@ module Cleanup
       assert MarkdownImage.exists?(image.id)
     end
 
+    # Only the latest snapshot can be restored, so an image only an older one
+    # names is gone for good.
+    test "#perform deletes an image only an earlier purge of a fleet names" do
+      earlier = old_image
+      latest = old_image
+      purged_fleet_id = SecureRandom.uuid
+      purge(purged_fleet_id, earlier, at: 2.days.ago)
+      purge(purged_fleet_id, latest, at: 1.day.ago)
+
+      ::Cleanup::MarkdownImagesJob.new.perform
+
+      refute MarkdownImage.exists?(earlier.id)
+      assert MarkdownImage.exists?(latest.id)
+    end
+
     test "#perform keeps a new image its form may not have saved yet" do
       image = create(:markdown_image)
 
       ::Cleanup::MarkdownImagesJob.new.perform
 
       assert MarkdownImage.exists?(image.id)
+    end
+
+    # A destroy snapshot of a fleet that no longer exists, naming the image.
+    private def purge(fleet_id, image, at:)
+      PaperTrail::Version.create!(
+        item_type: "Fleet", item_id: fleet_id, event: "destroy", created_at: at,
+        object: {description: "![banner](/v1/markdown-images/#{image.id})"}
+      )
     end
 
     private def old_image
