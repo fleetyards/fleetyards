@@ -58,9 +58,13 @@ module ScData
             update_params[:power_connection] = item[:power_connection]
           end
 
-          if item[:heat_connection].present?
-            update_params[:heat_connection] = item[:heat_connection]
-          end
+          # Written even when empty: the column still holds the pre-4.10 heat
+          # dumps, and a component whose temperature model is switched off must
+          # stop carrying one.
+          update_params[:heat_connection] = {
+            temperature: item[:temperature].presence,
+            misfire: item[:misfire].presence
+          }.compact.presence
 
           if item[:inventory_consumption].present?
             update_params[:inventory_consumption] = item[:inventory_consumption]

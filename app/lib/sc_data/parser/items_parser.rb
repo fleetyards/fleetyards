@@ -3,6 +3,7 @@ module ScData
     class ItemsParser < ScData::Parser::BaseParser
       def all
         load_ammo_params
+        load_weapon_records
         load_cargogrids
         load_items
       end
@@ -222,29 +223,11 @@ module ScData
         durability = extract_durability(values["Components"] || {})
         item[:durability] = durability if durability.present?
 
-        if values.dig("Components", "EntityComponentHeatConnection")
-          item[:heat_connection] = {
-            TemperatureToIR: values.dig("Components", "EntityComponentHeatConnection", "TemperatureToIR").to_f,
-            StartIRTemperature: values.dig("Components", "EntityComponentHeatConnection", "StartIRTemperature").to_f,
-            OverpowerHeat: values.dig("Components", "EntityComponentHeatConnection", "OverpowerHeat").to_f,
-            OverclockThresholdMinHeat: values.dig("Components", "EntityComponentHeatConnection", "OverclockThresholdMinHeat").to_f,
-            OverclockThresholdMaxHeat: values.dig("Components", "EntityComponentHeatConnection", "OverclockThresholdMaxHeat").to_f,
-            ThermalEnergyBase: values.dig("Components", "EntityComponentHeatConnection", "ThermalEnergyBase").to_f,
-            ThermalEnergyDraw: values.dig("Components", "EntityComponentHeatConnection", "ThermalEnergyDraw").to_f,
-            ThermalConductivity: values.dig("Components", "EntityComponentHeatConnection", "ThermalConductivity").to_f,
-            SpecificHeatCapacity: values.dig("Components", "EntityComponentHeatConnection", "SpecificHeatCapacity").to_f,
-            Mass: values.dig("Components", "EntityComponentHeatConnection", "Mass").to_f,
-            SurfaceArea: values.dig("Components", "EntityComponentHeatConnection", "SurfaceArea").to_f,
-            StartCoolingTemperature: values.dig("Components", "EntityComponentHeatConnection", "StartCoolingTemperature").to_f,
-            MaxCoolingRate: values.dig("Components", "EntityComponentHeatConnection", "MaxCoolingRate").to_f,
-            MaxTemperature: values.dig("Components", "EntityComponentHeatConnection", "MaxTemperature").to_f,
-            OverheatTemperature: values.dig("Components", "EntityComponentHeatConnection", "OverheatTemperature").to_f,
-            RecoveryTemperature: values.dig("Components", "EntityComponentHeatConnection", "RecoveryTemperature").to_f,
-            MinTemperature: values.dig("Components", "EntityComponentHeatConnection", "MinTemperature").to_f,
-            MisfireMinTemperature: values.dig("Components", "EntityComponentHeatConnection", "MisfireMinTemperature").to_f,
-            MisfireMaxTemperature: values.dig("Components", "EntityComponentHeatConnection", "MisfireMaxTemperature").to_f
-          }
-        end
+        temperature = extract_temperature(values)
+        item[:temperature] = temperature if temperature.present?
+
+        misfire = extract_misfire(values)
+        item[:misfire] = misfire if misfire.present?
 
         if values.dig("Components", "SCItemInventoryContainerComponentParams")
           item[:inventory_ref] = values.dig("Components", "SCItemInventoryContainerComponentParams", "containerParams")
@@ -360,7 +343,8 @@ module ScData
               min_jump_distance: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "minJumpDistance").to_f,
               ifcs_handover_down_time: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "ifcsHandoverDownTime").to_f,
               ifcs_handover_respool_time: values.dig("Components", "SCItemQuantumDriveParams", "quantumBoostParams", "ifcsHandoverRespoolTime").to_f
-            }
+            },
+            jump_heat: extract_jump_heat(values.dig("Components", "SCItemQuantumDriveParams", "heatParams"))
           }.compact
         end
 
@@ -387,6 +371,8 @@ module ScData
             signature_detection: extract_radar_signatures(detections),
             aim_assist_range: aim_assist&.dig("distanceMaxAssignment")&.to_f,
             aim_assist_min: aim_assist&.dig("distanceMinAssignment")&.to_f,
+            aim_assist_buffer: aim_assist&.dig("outsideRangeBufferDistance")&.to_f,
+            contact_sensitivity: extract_radar_contact_sensitivity(radar),
             ping_properties: {
               cooldown_time: radar.dig("pingProperties", "cooldownTime")&.to_f
             }
@@ -446,12 +432,15 @@ module ScData
             :main
           end
 
+          thruster = values.dig("Components", "SCItemThrusterParams")
           item[:type_data] = {
-            thrust_capacity: values.dig("Components", "SCItemThrusterParams", "thrustCapacity").to_f,
-            fuel_burn_rate_per10_k_newton: values.dig("Components", "SCItemThrusterParams", "fuelBurnRatePer10KNewton").to_f,
-            thruster_type: values.dig("Components", "SCItemThrusterParams", "thrusterType"),
-            thruster_class:
-          }
+            thrust_capacity: thruster["thrustCapacity"].to_f,
+            fuel_burn_rate_per10_k_newton: thruster["fuelBurnRatePer10KNewton"].to_f,
+            thruster_type: thruster["thrusterType"],
+            thruster_class:,
+            vtol_only: (thruster["onlyActiveInVTOL"] == "1") || nil,
+            gimbal: extract_thruster_gimbal(thruster["gimbal"])
+          }.compact
         end
 
         if values.dig("Components", "SCItemEMPParams")
@@ -468,23 +457,8 @@ module ScData
           }
         end
 
-        if values.dig("Components", "IFCSParams")
-          item[:type_data] = {
-            scm_speed: values.dig("Components", "IFCSParams", "scmSpeed").to_f,
-            scm_speed_boosted: values.dig("Components", "IFCSParams", "boostSpeedForward").to_f,
-            reverse_speed_boosted: values.dig("Components", "IFCSParams", "boostSpeedBackward").to_f,
-            max_speed: values.dig("Components", "IFCSParams", "maxSpeed").to_f,
-            angular_velocity: {
-              pitch: values.dig("Components", "IFCSParams", "maxAngularVelocity", "x").to_f,
-              yaw: values.dig("Components", "IFCSParams", "maxAngularVelocity", "z").to_f,
-              roll: values.dig("Components", "IFCSParams", "maxAngularVelocity", "y").to_f
-            },
-            boosted_angular_velocity: {
-              pitch: values.dig("Components", "IFCSParams", "maxAngularVelocity", "x").to_f * values.dig("Components", "IFCSParams", "afterburner", "afterburnAngVelocityMultiplier", "x").to_f,
-              yaw: values.dig("Components", "IFCSParams", "maxAngularVelocity", "z").to_f * values.dig("Components", "IFCSParams", "afterburner", "afterburnAngVelocityMultiplier", "z").to_f,
-              roll: values.dig("Components", "IFCSParams", "maxAngularVelocity", "y").to_f * values.dig("Components", "IFCSParams", "afterburner", "afterburnAngVelocityMultiplier", "y").to_f
-            }
-          }
+        if (ifcs = values.dig("Components", "IFCSParams"))
+          item[:type_data] = extract_flight_controller(ifcs)
         end
 
         if values.dig("Components", "SCItemQuantumInterdictionGeneratorParams")
@@ -562,7 +536,8 @@ module ScData
               range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
               ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i,
               max_ammo: max_ammo,
-              spread: extract_weapon_spread(fire_actions)
+              spread: extract_weapon_spread(fire_actions),
+              countermeasure: extract_countermeasure(ammo)
             }
 
             if charged.present?
@@ -687,6 +662,8 @@ module ScData
         if item[:type_data].present? && type == "WeaponGun"
           item[:type_data][:weapon_class] = extract_item_class(tags)
           item[:type_data][:mountable] = tags.include?("weaponMountUsable")
+          item[:type_data][:gimbal_mode] = extract_gimbal_mode(values.dig("Components", "SCItemWeaponComponentParams"))
+          item[:type_data][:aim_assist] = extract_aim_assist(values.dig("Components", "SCItemWeaponComponentParams"))
           item[:type_data].compact!
         end
 
@@ -698,6 +675,26 @@ module ScData
         if type == "SalvageModifier"
           salvage_modifier = extract_salvage_modifier_data(values)
           item[:type_data] = salvage_modifier if salvage_modifier.present?
+        end
+
+        # A shield controller decides whether the ship's shield is one bubble or
+        # four faces a pilot can shift strength between.
+        if (emitter = values.dig("Components", "SCItemShieldEmitterParams"))
+          item[:type_data] = {
+            face_type: emitter["FaceType"]&.downcase,
+            max_reallocation: emitter["MaxReallocation"]&.to_f,
+            reconfiguration_cooldown: emitter["ReconfigurationCooldown"]&.to_f
+          }.compact
+        end
+
+        # How many missiles the ship can hold locked and armed at once, and how
+        # soon it may fire the next.
+        if (missile_controller = values.dig("Components", "SCItemMissileControllerParams"))
+          item[:type_data] = {
+            max_armed_missiles: missile_controller["maxArmedMissiles"]&.to_i,
+            launch_cooldown: missile_controller["launchCooldownTime"]&.to_f,
+            lock_angle: missile_controller["lockAngleAtMax"]&.to_f
+          }.compact
         end
 
         if values.dig("Components", "SCItemTurretParams")
@@ -714,6 +711,12 @@ module ScData
         # inputs for the ship-wide power-allocation sim. Any component that draws Power gets this, even ones
         # without their own type_data block (e.g. life support), so the sim sees
         # every power consumer.
+        life_support = extract_resource_generation(values, "LifeSupport")
+        if life_support.present?
+          item[:type_data] = {} unless item[:type_data].is_a?(Hash)
+          item[:type_data][:life_support_generation] = life_support
+        end
+
         power_draw = extract_resource_consumption(values, "Power")
         if power_draw.present?
           item[:type_data] = {} unless item[:type_data].is_a?(Hash)
@@ -750,6 +753,56 @@ module ScData
         PlasmaCannon NeutronCannon TachyonCannon
         ScatterGun MassDriver
       ].freeze
+
+      # The afterburner block the flight numbers are read from. Controllers
+      # carry a second one, `afterburnerNew`, but it holds the same values on
+      # every controller -- a default, not a ship's tuning -- while this one
+      # differs ship by ship.
+      FLIGHT_AFTERBURNER_BLOCK = "afterburner"
+
+      private def extract_flight_controller(ifcs)
+        rotation = ifcs["maxAngularVelocity"] || {}
+        afterburner = ifcs[FLIGHT_AFTERBURNER_BLOCK] || {}
+        multiplier = afterburner["afterburnAngVelocityMultiplier"] || {}
+
+        {
+          scm_speed: ifcs["scmSpeed"].to_f,
+          scm_speed_boosted: ifcs["boostSpeedForward"].to_f,
+          reverse_speed_boosted: ifcs["boostSpeedBackward"].to_f,
+          max_speed: ifcs["maxSpeed"].to_f,
+          angular_velocity: {
+            pitch: rotation["x"].to_f,
+            yaw: rotation["z"].to_f,
+            roll: rotation["y"].to_f
+          },
+          boosted_angular_velocity: {
+            pitch: rotation["x"].to_f * multiplier["x"].to_f,
+            yaw: rotation["z"].to_f * multiplier["z"].to_f,
+            roll: rotation["y"].to_f * multiplier["y"].to_f
+          },
+          boost_capacitor: extract_boost_capacitor(afterburner)
+        }.compact
+      end
+
+      # The boost pool: what it holds, what boosting spends from it per second
+      # while idle, thrusting and turning, and how it refills. The ramps are how
+      # long boost takes to reach full effect and to let go of it.
+      private def extract_boost_capacitor(afterburner)
+        figures = {
+          capacity: afterburner["capacitorMax"],
+          regen_per_second: afterburner["capacitorRegenPerSec"],
+          regen_delay: afterburner["capacitorRegenDelayAfterUse"],
+          idle_cost: afterburner["capacitorAfterburnerIdleCost"],
+          linear_cost: afterburner["capacitorAfterburnerLinearCost"],
+          angular_cost: afterburner["capacitorAfterburnerAngularCost"],
+          threshold_ratio: afterburner["afterburnerCapacitorThresholdRatio"],
+          pre_delay: afterburner["afterburnerPreDelayTime"],
+          ramp_up_time: afterburner["afterburnerRampUpTime"],
+          ramp_down_time: afterburner["afterburnerRampDownTime"]
+        }.compact.transform_values(&:to_f)
+
+        figures.presence
+      end
 
       # A mount turns on one joint per axis, each with its own top speed in
       # degrees per second.
@@ -830,6 +883,86 @@ module ScData
         elsif sub_type == "MannedTurret" || values.dig("Components", "SCItemSeatParams").present?
           "manned"
         end
+      end
+
+      # The heat a quantum drive puts out in each phase of a jump. Every drive
+      # in the current build gives all five the same figure, but they are five
+      # values in the files and are kept as such.
+      private def extract_jump_heat(heat)
+        return if heat.blank?
+
+        {
+          pre_ramp_up: heat["preRampUpThermalEnergyDraw"]&.to_f,
+          ramp_up: heat["rampUpThermalEnergyDraw"]&.to_f,
+          in_flight: heat["inFlightThermalEnergyDraw"]&.to_f,
+          ramp_down: heat["rampDownThermalEnergyDraw"]&.to_f,
+          post_ramp_down: heat["postRampDownThermalEnergyDraw"]&.to_f
+        }.compact.presence
+      end
+
+      # The levels at which a component starts to misfire, one per stat, as
+      # fractions: heat, distortion, damage and wear (`degradation`, the stat
+      # the item's wear accumulators build up). The files name them trigger
+      # conditions but not what each fraction is measured against. The window
+      # is the block's own min/max length in seconds -- not how long a single
+      # misfire lasts, which each misfire event states separately.
+      #
+      # Only the stat condition is read. A block without one -- relays and
+      # batteries carry just the window, or a functionality condition -- has
+      # no trigger levels to show.
+      private def extract_misfire(values)
+        params = values.dig("Components", "EntityComponentMisfireParams")
+        return if params.blank?
+
+        condition = Array.wrap(params.dig("triggerConditions", "SMisfireStatCondition")).first
+        return if condition.blank?
+
+        {
+          heat: condition["heat"]&.to_f,
+          distortion: condition["distortion"]&.to_f,
+          damage: condition["damage"]&.to_f,
+          wear: condition["degradation"]&.to_f,
+          min_window: params["minWindowLength"]&.to_f,
+          max_window: params["maxWindowLength"]&.to_f
+        }.compact
+      end
+
+      # The temperature model an item runs on, in kelvin. It lives on the
+      # item's physics controller, and most items carry the block switched
+      # off -- guns and coolers among them -- which leaves them without one.
+      #
+      # The overheat thresholds and the misfire range only mean something on
+      # an item that can overheat; IR from temperature only on one whose
+      # signature is driven by it.
+      private def extract_temperature(values)
+        temperature = values.dig("Components", "SEntityPhysicsControllerParams", "PhysType")
+          &.values&.find { |physics| physics.is_a?(Hash) && physics["temperature"] }
+          &.dig("temperature")
+
+        return if temperature.blank? || temperature["enable"] != "1"
+
+        resource = temperature["itemResourceParams"] || {}
+        signature = temperature["signatureParams"] || {}
+        misfire = temperature["misfireTemperatureRange"] || {}
+
+        result = {min_cooling_temperature: resource["minCoolingTemperature"]&.to_f}
+
+        if resource["enableOverheat"] == "1"
+          result.merge!(
+            overheat_temperature: resource["overheatTemperature"]&.to_f,
+            overheat_warning_temperature: resource["overheatWarningTemperature"]&.to_f,
+            overheat_recovery_temperature: resource["overheatRecoveryTemperature"]&.to_f,
+            misfire_min_temperature: misfire["minimum"]&.to_f,
+            misfire_max_temperature: misfire["maximum"]&.to_f
+          )
+        end
+
+        if signature["enable"] == "1"
+          result[:ir_start_temperature] = signature["minimumTemperatureForIR"]&.to_f
+          result[:ir_per_kelvin] = signature["temperatureToIR"]&.to_f
+        end
+
+        result.compact
       end
 
       private def extract_item_class(tags)
@@ -976,6 +1109,62 @@ module ScData
         end
       end
 
+      # Guns name two shared records by reference: what changes while the gun
+      # runs in gimbal mode, and how far the game nudges its shots onto a
+      # target.
+      private def load_weapon_records
+        @weapon_records = {}
+        Dir.glob("#{base_path}/#{FOUNDRY_PATH}/entities/scitem/ships/weapons/{weapongimbalmodemodifiers,weaponaimableangles}/*.xml").each do |file|
+          values = Hash.from_xml(File.read(file)).values.first
+          ref = values&.dig("__ref")
+          @weapon_records[ref] = values if ref.present?
+        end
+      end
+
+      # A gimbal-mode record holds one modifier set per entry and nothing on the
+      # gun says which entry applies to it, so a multiplier is only carried when
+      # every entry agrees on it. The fire-rate penalty does, on every record in
+      # use; the spread change differs between entries of the default record.
+      #
+      # A reference that resolves to no record carries nothing: an unknown
+      # penalty is not the same as none.
+      private def extract_gimbal_mode(weapon_data)
+        record = @weapon_records[weapon_data&.dig("gimbalModeModifierRecord")]
+        return if record.blank?
+
+        entries = Array.wrap(record.dig("weaponGimbalModeModifiers", "SWeaponModifierParams")).filter_map { |entry| entry["weaponStats"] }
+        return if entries.empty?
+
+        agreed = ->(values) { values.uniq.one? ? values.first&.to_f : nil }
+
+        {
+          fire_rate_multiplier: agreed.call(entries.map { |stats| stats["fireRateMultiplier"] }),
+          spread_min_multiplier: agreed.call(entries.map { |stats| stats.dig("spreadModifier", "minMultiplier") }),
+          spread_max_multiplier: agreed.call(entries.map { |stats| stats.dig("spreadModifier", "maxMultiplier") })
+        }.compact.presence
+      end
+
+      # Degrees the game bends a shot towards the target: `nudge` at any range,
+      # and a wider cone between the two close-range distances. The null record
+      # is all zeros, which is a gun with no assist rather than one with a
+      # zero-degree cone.
+      private def extract_aim_assist(weapon_data)
+        record = @weapon_records[weapon_data&.dig("aimableAnglesRecord")]
+        return if record.blank?
+
+        assist = {
+          nudge_angle: record["maxNudgeAngle"]&.to_f,
+          inner_angle: record["innerThresholdAngle"]&.to_f,
+          outer_angle: record["outerThresholdAngle"]&.to_f,
+          close_range_min: record["closeDistanceMinRange"]&.to_f,
+          close_range_max: record["closeDistanceMaxRange"]&.to_f,
+          close_inner_angle: record["closeDistanceInnerAngle"]&.to_f,
+          close_outer_angle: record["closeDistanceOuterAngle"]&.to_f
+        }.compact
+
+        assist.values.all?(&:zero?) ? nil : assist.presence
+      end
+
       private def load_ammo_params
         @ammo_params = {}
         Dir.glob("#{base_path}/#{FOUNDRY_PATH}/ammoparams/**/*.xml").each do |file|
@@ -984,6 +1173,32 @@ module ScData
           ref = values.dig("__ref")
           @ammo_params[ref] = values if ref.present?
         end
+      end
+
+      # What a launched decoy or noise cloud presents to a seeker, from launch
+      # to burn-out, and how long it lasts: a flare for its projectile's
+      # lifetime, a noise cloud for its own volume lifetime once it spawns.
+      private def extract_countermeasure(ammo)
+        params = ammo&.dig("projectileParams", "CounterMeasureProjectileParams", "typeParams")
+        return if params.blank?
+
+        flare = params["CounterMeasureFlareParams"]
+        chaff = params["CounterMeasureChaffParams"]
+        signature = flare || chaff
+        return if signature.blank?
+
+        range = ->(name) {
+          {start: signature["Start#{name}"]&.to_f, end: signature["End#{name}"]&.to_f}.compact.presence
+        }
+
+        {
+          kind: flare ? "decoy" : "noise",
+          lifetime: (flare ? ammo["lifetime"] : chaff["volumeLifetime"])&.to_f,
+          spawn_delay: chaff&.dig("volumeSpawnDelay")&.to_f,
+          infrared: range.call("Infrared"),
+          electromagnetic: range.call("Electromagnetic"),
+          cross_section: range.call("CrossSection")
+        }.compact
       end
 
       private def extract_ammo_damage(ammo)
@@ -1218,10 +1433,57 @@ module ScData
 
           result[type] = {
             sensitivity: entry.dig("sensitivity")&.to_f,
-            piercing: entry.dig("piercing")&.to_f
+            piercing: entry.dig("piercing")&.to_f,
+            passive: flag(entry["permitPassiveDetection"]),
+            active: flag(entry["permitActiveDetection"])
           }.compact
         end
         result.presence
+      end
+
+      # How much a radar's sensitivity shifts against particular kinds of
+      # contact, one entry per modifier with every contact group it names. In
+      # 4.10 each radar carries a single one, for ground vehicles -- which is
+      # why they are so much harder to pick up than ships.
+      private def extract_radar_contact_sensitivity(radar)
+        Array.wrap(radar.dig("sensitivityModifiers", "SCItemRadarSensitivityModifier")).filter_map { |modifier|
+          refs = Array.wrap(modifier.dig("modifierType", "SCItemRadarSensitivityModifierTypeContactGroups", "contactGroups", "Reference"))
+            .filter_map { |reference| reference["value"] }
+          addition = modifier["sensitivityAddition"]&.to_f
+          next if addition.nil? || refs.empty?
+
+          {
+            sensitivity_addition: addition,
+            contact_groups: refs.map { |ref| radar_contact_groups[ref] || ref }
+          }
+        }.presence
+      end
+
+      private def radar_contact_groups
+        @radar_contact_groups ||= Dir.glob("#{import_path}/radarsystem/radarcontactgroups*.xml").each_with_object({}) do |file, groups|
+          File.read(file).scan(/<RadarContactGroupEntry\.\S+ name="([^"]+)"[^>]*__ref="([^"]+)"/) do |name, ref|
+            groups[ref] = name
+          end
+        end
+      end
+
+      # An articulated thruster swings its nozzle to vector thrust; a fixed one
+      # carries the same block with `isFlex` off and its angles meaning nothing.
+      private def extract_thruster_gimbal(gimbal)
+        return if gimbal.blank? || gimbal["isFlex"] != "1"
+
+        {
+          min_pitch: gimbal.dig("pitchAxis", "angleMin")&.to_f,
+          max_pitch: gimbal.dig("pitchAxis", "angleMax")&.to_f,
+          min_yaw: gimbal.dig("yawAxis", "angleMin")&.to_f,
+          max_yaw: gimbal.dig("yawAxis", "angleMax")&.to_f
+        }.compact.presence
+      end
+
+      private def flag(value)
+        return if value.nil?
+
+        value == "1"
       end
 
       SHIELD_DAMAGE_TYPES = %i[physical energy distortion thermal biochemical stun].freeze

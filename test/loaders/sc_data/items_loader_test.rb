@@ -170,6 +170,26 @@ module ScData
           assert_in_delta 3500.0, durability.dig("distortion", "maximum")
         end
       end
+
+      test "#all stores a component's temperature model on the row and its build" do
+        items_loader.all
+
+        thruster = Component.find_by(sc_key: "aegs_avenger_thruster_main")
+
+        assert_in_delta 525.0, thruster.heat_connection.dig(:temperature, "overheat_temperature")
+        assert_in_delta 525.0, thruster.builds.sole.heat_connection.dig(:temperature, "overheat_temperature")
+        assert_in_delta 0.6, thruster.misfire["heat"]
+      end
+
+      # Rows loaded before 4.10 still hold the old heat dump, which no item
+      # carries any more.
+      test "#all clears the old heat dump from a component without a temperature model" do
+        gun = create(:component, sc_key: "aegs_avenger_nose_s3", heat_connection: {"MaxTemperature" => 450.0}, with_build: false)
+
+        items_loader.all
+
+        assert_nil gun.reload.heat_connection
+      end
     end
   end
 end

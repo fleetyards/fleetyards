@@ -447,6 +447,34 @@ class ComponentTest < ActiveSupport::TestCase
     assert_includes component.reload.description, "Warning: do not operate"
   end
 
+  test "#temperature keeps a build's switched-off model rather than reading the column" do
+    component = create(:component, :without_build, heat_connection: {"temperature" => {"overheat_temperature" => 383.0}})
+    create(:component_build, component:, heat_connection: nil)
+
+    assert_empty component.reload.temperature
+  end
+
+  test "#temperature falls back to the column for a component no load has given a build" do
+    component = create(:component, :without_build, version: nil, heat_connection: {"temperature" => {"overheat_temperature" => 383.0}})
+
+    assert_equal({"overheat_temperature" => 383.0}, component.temperature)
+  end
+
+  test "#temperature leaves out the keys of the pre-4.10 heat dump" do
+    component = create(:component, :without_build)
+    create(:component_build, component:, heat_connection: {"MaxTemperature" => 450.0, "OverheatTemperature" => 370.0})
+
+    assert_empty component.reload.temperature
+    assert_empty component.misfire
+  end
+
+  test "#misfire reads the trigger levels and window off the build" do
+    component = create(:component, :without_build)
+    create(:component_build, component:, heat_connection: {"misfire" => {"heat" => 0.8, "max_window" => 600.0, "stray" => 1}})
+
+    assert_equal({"heat" => 0.8, "max_window" => 600.0}, component.reload.misfire)
+  end
+
   private def statements_for
     statements = []
     subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|

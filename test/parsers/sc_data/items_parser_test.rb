@@ -425,6 +425,325 @@ module ScData
         assert_in_delta 3.0, type_data["respool_time"]
       end
 
+      test "reads a flight controller's speeds, rotation and boosted rotation" do
+        write_flight_controller("ctrl_flight")
+
+        type_data = parsed_item("ctrl_flight")["type_data"]
+
+        assert_in_delta 262.0, type_data["scm_speed"]
+        assert_in_delta 610.0, type_data["scm_speed_boosted"]
+        assert_in_delta 1425.0, type_data["max_speed"]
+        assert_equal({"pitch" => 53.0, "yaw" => 48.0, "roll" => 190.0}, type_data["angular_velocity"])
+        assert_in_delta 63.6, type_data["boosted_angular_velocity"]["pitch"]
+        assert_in_delta 228.0, type_data["boosted_angular_velocity"]["roll"]
+      end
+
+      test "reads the boost capacitor off the block that carries a ship's own tuning" do
+        write_flight_controller("ctrl_capacitor")
+
+        capacitor = parsed_item("ctrl_capacitor")["type_data"]["boost_capacitor"]
+
+        assert_in_delta 25.0, capacitor["capacity"]
+        assert_in_delta 0.75, capacitor["regen_per_second"]
+        assert_in_delta 1.1, capacitor["regen_delay"]
+        assert_in_delta 1.0, capacitor["idle_cost"]
+        assert_in_delta 0.4, capacitor["ramp_up_time"]
+        assert_in_delta 0.2, capacitor["ramp_down_time"]
+      end
+
+      test "carries no boost capacitor for a controller without an afterburner" do
+        write_item("ctrl_no_boost", name: "@item_Namectrl_no_boost", category: "controller", type: "FlightController", components: <<~XML)
+          <IFCSParams scmSpeed="100" boostSpeedForward="200" boostSpeedBackward="50" maxSpeed="900">
+            <maxAngularVelocity x="10" y="20" z="30" />
+          </IFCSParams>
+        XML
+
+        assert_nil parsed_item("ctrl_no_boost")["type_data"]["boost_capacitor"]
+      end
+
+      private def write_flight_controller(key)
+        write_item(key, name: "@item_Name#{key}", category: "controller", type: "FlightController", components: <<~XML)
+          <IFCSParams scmSpeed="262" boostSpeedForward="610" boostSpeedBackward="280" maxSpeed="1425">
+            <afterburnerNew capacitorMax="20" capacitorRegenPerSec="0.75" capacitorRegenDelayAfterUse="0.2" afterburnerRampUpTime="0.6" afterburnerRampDownTime="0.3">
+              <afterburnAngVelocityMultiplier x="1.15" y="1" z="1.15" />
+            </afterburnerNew>
+            <maxAngularVelocity x="53" y="190" z="48" />
+            <afterburner capacitorMax="25" capacitorRegenPerSec="0.75" capacitorRegenDelayAfterUse="1.1" capacitorAfterburnerIdleCost="1" afterburnerRampUpTime="0.4" afterburnerRampDownTime="0.2">
+              <afterburnAngVelocityMultiplier x="1.2" y="1.2" z="1.2" />
+            </afterburner>
+          </IFCSParams>
+        XML
+      end
+
+      test "reads which signatures a radar picks up passively and actively, and its ground-vehicle penalty" do
+        groups_folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/radarsystem"
+        FileUtils.mkdir_p(groups_folder)
+        File.write("#{groups_folder}/radarcontactgroups.records.xml", <<~XML)
+          <RadarContactGroupDefinition.RadarContactGroups>
+            <RadarContactGroupEntry.00000000-0000-0000-0000-00000000a001 name="GroundVehicle" __type="RadarContactGroupEntry" __ref="00000000-0000-0000-0000-00000000a001" />
+          </RadarContactGroupDefinition.RadarContactGroups>
+        XML
+
+        write_item("radr_probe", name: "@item_Nameradr_probe", category: "radar", components: <<~XML)
+          <SCItemRadarComponentParams>
+            <signatureDetection>
+              <SCItemRadarSignatureDetection sensitivity="0.75" piercing="1" permitPassiveDetection="1" permitActiveDetection="1" />
+              <SCItemRadarSignatureDetection sensitivity="0.75" piercing="0.25" permitPassiveDetection="1" permitActiveDetection="1" />
+              <SCItemRadarSignatureDetection sensitivity="0.5" piercing="0.25" permitPassiveDetection="0" permitActiveDetection="1" />
+            </signatureDetection>
+            <sensitivityModifiers>
+              <SCItemRadarSensitivityModifier sensitivityAddition="-0.65">
+                <modifierType>
+                  <SCItemRadarSensitivityModifierTypeContactGroups>
+                    <contactGroups><Reference value="00000000-0000-0000-0000-00000000a001" /></contactGroups>
+                  </SCItemRadarSensitivityModifierTypeContactGroups>
+                </modifierType>
+              </SCItemRadarSensitivityModifier>
+            </sensitivityModifiers>
+            <aimAssist distanceMinAssignment="630" distanceMaxAssignment="632.5" outsideRangeBufferDistance="80" />
+          </SCItemRadarComponentParams>
+        XML
+
+        type_data = parsed_item("radr_probe")["type_data"]
+
+        assert_equal({"sensitivity" => 0.5, "piercing" => 0.25, "passive" => false, "active" => true}, type_data.dig("signature_detection", "cs"))
+        assert_equal([{"sensitivity_addition" => -0.65, "contact_groups" => ["GroundVehicle"]}], type_data["contact_sensitivity"])
+        assert_in_delta 80.0, type_data["aim_assist_buffer"]
+      end
+
+      test "keeps every sensitivity modifier a radar carries, with all its contact groups" do
+        groups_folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/radarsystem"
+        FileUtils.mkdir_p(groups_folder)
+        File.write("#{groups_folder}/radarcontactgroups.records.xml", <<~XML)
+          <RadarContactGroupDefinition.RadarContactGroups>
+            <RadarContactGroupEntry.00000000-0000-0000-0000-00000000a001 name="GroundVehicle" __type="RadarContactGroupEntry" __ref="00000000-0000-0000-0000-00000000a001" />
+            <RadarContactGroupEntry.00000000-0000-0000-0000-00000000a002 name="Person" __type="RadarContactGroupEntry" __ref="00000000-0000-0000-0000-00000000a002" />
+          </RadarContactGroupDefinition.RadarContactGroups>
+        XML
+
+        modifier = ->(addition, *refs) {
+          references = refs.map { |ref| %(<Reference value="#{ref}" />) }.join
+          <<~XML
+            <SCItemRadarSensitivityModifier sensitivityAddition="#{addition}">
+              <modifierType>
+                <SCItemRadarSensitivityModifierTypeContactGroups>
+                  <contactGroups>#{references}</contactGroups>
+                </SCItemRadarSensitivityModifierTypeContactGroups>
+              </modifierType>
+            </SCItemRadarSensitivityModifier>
+          XML
+        }
+
+        write_item("radr_multi", name: "@item_Nameradr_multi", category: "radar", components: <<~XML)
+          <SCItemRadarComponentParams>
+            <sensitivityModifiers>
+              #{modifier.call("-0.5", "00000000-0000-0000-0000-00000000a001", "00000000-0000-0000-0000-00000000a002")}
+              #{modifier.call("0.25", "00000000-0000-0000-0000-00000000ffff")}
+            </sensitivityModifiers>
+          </SCItemRadarComponentParams>
+        XML
+
+        assert_equal [
+          {"sensitivity_addition" => -0.5, "contact_groups" => ["GroundVehicle", "Person"]},
+          {"sensitivity_addition" => 0.25, "contact_groups" => ["00000000-0000-0000-0000-00000000ffff"]}
+        ], parsed_item("radr_multi")["type_data"]["contact_sensitivity"]
+      end
+
+      test "reads a flex thruster's vectoring range and a VTOL-only thruster" do
+        write_item("thruster_flex", name: "@item_Namethruster_flex", category: "thrusters", components: <<~XML)
+          <SCItemThrusterParams thrustCapacity="1282107" fuelBurnRatePer10KNewton="0.05" thrusterType="Retro" onlyActiveInVTOL="1">
+            <gimbal isFlex="1">
+              <pitchAxis angleMin="-90" angleMax="90" />
+              <yawAxis angleMin="-30" angleMax="30" />
+            </gimbal>
+          </SCItemThrusterParams>
+        XML
+        write_item("thruster_fixed", name: "@item_Namethruster_fixed", category: "thrusters", components: <<~XML)
+          <SCItemThrusterParams thrustCapacity="1000" fuelBurnRatePer10KNewton="0.05" thrusterType="Main" onlyActiveInVTOL="0">
+            <gimbal isFlex="0">
+              <pitchAxis angleMin="-10" angleMax="10" />
+            </gimbal>
+          </SCItemThrusterParams>
+        XML
+
+        flex = parsed_item("thruster_flex")["type_data"]
+        fixed = parsed_item("thruster_fixed")["type_data"]
+
+        assert flex["vtol_only"]
+        assert_equal({"min_pitch" => -90.0, "max_pitch" => 90.0, "min_yaw" => -30.0, "max_yaw" => 30.0}, flex["gimbal"])
+        assert_nil fixed["vtol_only"]
+        assert_nil fixed["gimbal"]
+      end
+
+      test "reads how much air a life-support unit makes" do
+        write_item("lfsp_probe", name: "@item_Namelfsp_probe", category: "lifesupport", components: <<~XML)
+          <ItemResourceComponentParams>
+            <states>
+              <ItemResourceState name="Online">
+                <deltas>
+                  <ItemResourceDeltaConversion minimumConsumptionFraction="0.4">
+                    <consumption resource="Power"><resourceAmountPerSecond><SPowerSegmentResourceUnit units="1" /></resourceAmountPerSecond></consumption>
+                    <generation resource="LifeSupport"><resourceAmountPerSecond><SStandardResourceUnit standardResourceUnits="0.05" /></resourceAmountPerSecond></generation>
+                  </ItemResourceDeltaConversion>
+                </deltas>
+              </ItemResourceState>
+            </states>
+          </ItemResourceComponentParams>
+        XML
+
+        type_data = parsed_item("lfsp_probe")["type_data"]
+
+        assert_in_delta 0.05, type_data["life_support_generation"]
+        assert_in_delta 1.0, type_data["power_consumption"]
+      end
+
+      test "carries a gun's gimbal-mode fire-rate penalty, and a spread change only where every entry agrees" do
+        write_weapon_record("weapongimbalmodemodifiers", "gimbal_default", <<~XML)
+          <weaponGimbalModeModifiers>
+            <SWeaponModifierParams><weaponStats fireRateMultiplier="0.85"><spreadModifier minMultiplier="0.5" maxMultiplier="0.5" /></weaponStats></SWeaponModifierParams>
+            <SWeaponModifierParams><weaponStats fireRateMultiplier="0.85"><spreadModifier minMultiplier="1" maxMultiplier="1" /></weaponStats></SWeaponModifierParams>
+          </weaponGimbalModeModifiers>
+        XML
+        write_record_gun("gimbal_gun", gimbal: "gimbal_default")
+
+        gimbal_mode = parsed_item("gimbal_gun")["type_data"]["gimbal_mode"]
+
+        assert_in_delta 0.85, gimbal_mode["fire_rate_multiplier"]
+        assert_nil gimbal_mode["spread_min_multiplier"]
+        assert_nil gimbal_mode["spread_max_multiplier"]
+      end
+
+      test "carries no gimbal-mode penalty for a record that does not resolve" do
+        write_record_gun("unresolved_gun", gimbal: "missing")
+
+        assert_nil parsed_item("unresolved_gun")["type_data"]["gimbal_mode"]
+      end
+
+      test "reads a gun's aim-assist cone off its aimable-angles record" do
+        write_weapon_record("weaponaimableangles", "aim_high", "", attributes: 'maxNudgeAngle="2.25" innerThresholdAngle="0" outerThresholdAngle="3" closeDistanceMaxRange="150" closeDistanceMinRange="75" closeDistanceOuterAngle="16" closeDistanceInnerAngle="8"')
+        write_record_gun("assisted_gun", aim: "aim_high")
+
+        assist = parsed_item("assisted_gun")["type_data"]["aim_assist"]
+
+        assert_in_delta 2.25, assist["nudge_angle"]
+        assert_in_delta 3.0, assist["outer_angle"]
+        assert_in_delta 75.0, assist["close_range_min"]
+        assert_in_delta 150.0, assist["close_range_max"]
+        assert_in_delta 16.0, assist["close_outer_angle"]
+      end
+
+      test "reads an all-zero aim-assist record as no assist" do
+        write_weapon_record("weaponaimableangles", "aim_null", "", attributes: 'maxNudgeAngle="0" innerThresholdAngle="0" outerThresholdAngle="0" closeDistanceMaxRange="0" closeDistanceMinRange="0" closeDistanceOuterAngle="0" closeDistanceInnerAngle="0"')
+        write_record_gun("unassisted_gun", aim: "aim_null")
+
+        assert_nil parsed_item("unassisted_gun")["type_data"]["aim_assist"]
+      end
+
+      private def record_ref(name)
+        Digest::UUID.uuid_v5(Digest::UUID::OID_NAMESPACE, name)
+      end
+
+      private def write_weapon_record(folder, name, body, attributes: "")
+        path = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/entities/scitem/ships/weapons/#{folder}"
+        FileUtils.mkdir_p(path)
+
+        File.write("#{path}/#{name}.xml", <<~XML)
+          <WeaponRecord.#{name} #{attributes} __ref="#{record_ref(name)}">
+            #{body}
+          </WeaponRecord.#{name}>
+        XML
+      end
+
+      private def write_record_gun(key, gimbal: nil, aim: nil)
+        references = [
+          gimbal && "gimbalModeModifierRecord=\"#{record_ref(gimbal)}\"",
+          aim && "aimableAnglesRecord=\"#{record_ref(aim)}\""
+        ].compact.join(" ")
+
+        write_item(key, name: "@item_Name#{key}", category: "weapons", type: "WeaponGun", sub_type: "Gun", components: <<~XML)
+          <SCItemWeaponComponentParams #{references}>
+            <fireActions>
+              <SWeaponActionFireSingleParams fireRate="600" heatPerShot="0" />
+            </fireActions>
+          </SCItemWeaponComponentParams>
+        XML
+      end
+
+      test "reads whether a shield controller runs one bubble or four faces" do
+        write_item("controller_shield_quad", name: "@item_Namecontroller_shield_quad", category: "controller", type: "ShieldController", components: <<~XML)
+          <SCItemShieldEmitterParams FaceType="Quadrant" MaxReallocation="1" ReconfigurationCooldown="2.5" />
+        XML
+
+        type_data = parsed_item("controller_shield_quad")["type_data"]
+
+        assert_equal "quadrant", type_data["face_type"]
+        assert_in_delta 1.0, type_data["max_reallocation"]
+        assert_in_delta 2.5, type_data["reconfiguration_cooldown"]
+      end
+
+      test "reads how many missiles a controller keeps armed and its launch cooldown" do
+        write_item("controller_missile_probe", name: "@item_Namecontroller_missile_probe", category: "controller", type: "MissileController", components: <<~XML)
+          <SCItemMissileControllerParams lockAngleAtMin="18" lockAngleAtMax="18" maxArmedMissiles="4" launchCooldownTime="4" />
+        XML
+
+        type_data = parsed_item("controller_missile_probe")["type_data"]
+
+        assert_equal 4, type_data["max_armed_missiles"]
+        assert_in_delta 4.0, type_data["launch_cooldown"]
+        assert_in_delta 18.0, type_data["lock_angle"]
+      end
+
+      test "reads what a decoy presents to a seeker and how long it burns" do
+        write_countermeasure("cml_flare_probe", <<~XML, lifetime: 12)
+          <CounterMeasureFlareParams StartInfrared="50000" EndInfrared="20000" StartElectromagnetic="60000" EndElectromagnetic="60000" StartCrossSection="1000" EndCrossSection="1000" />
+        XML
+
+        countermeasure = parsed_item("cml_flare_probe")["type_data"]["countermeasure"]
+
+        assert_equal "decoy", countermeasure["kind"]
+        assert_in_delta 12.0, countermeasure["lifetime"]
+        assert_equal({"start" => 50000.0, "end" => 20000.0}, countermeasure["infrared"])
+        assert_in_delta 1000.0, countermeasure["cross_section"]["start"]
+        assert_nil countermeasure["spawn_delay"]
+      end
+
+      test "reads a noise cloud's lifetime off the cloud, not the canister" do
+        write_countermeasure("cml_chaff_probe", <<~XML, lifetime: 0.8)
+          <CounterMeasureChaffParams volumeSpawnDelay="1" volumeLifetime="8" StartInfrared="30000" EndInfrared="30000" StartElectromagnetic="30000" EndElectromagnetic="30000" StartCrossSection="20000" EndCrossSection="20000" />
+        XML
+
+        countermeasure = parsed_item("cml_chaff_probe")["type_data"]["countermeasure"]
+
+        assert_equal "noise", countermeasure["kind"]
+        assert_in_delta 8.0, countermeasure["lifetime"]
+        assert_in_delta 1.0, countermeasure["spawn_delay"]
+      end
+
+      private def write_countermeasure(key, params, lifetime:)
+        ref = Digest::UUID.uuid_v5(Digest::UUID::OID_NAMESPACE, key)
+        folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/ammoparams/vehicle"
+        FileUtils.mkdir_p(folder)
+
+        File.write("#{folder}/#{key}_ammo.xml", <<~XML)
+          <AmmoParams.#{key} lifetime="#{lifetime}" speed="180" __ref="#{ref}">
+            <projectileParams>
+              <CounterMeasureProjectileParams>
+                <typeParams>#{params}</typeParams>
+              </CounterMeasureProjectileParams>
+            </projectileParams>
+          </AmmoParams.#{key}>
+        XML
+
+        write_item(key, name: "@item_Name#{key}", category: "countermeasures", type: "WeaponDefensive", sub_type: "CountermeasureLauncher", components: <<~XML)
+          <SCItemWeaponComponentParams>
+            <fireActions>
+              <SWeaponActionFireSingleParams fireRate="50" heatPerShot="0" />
+            </fireActions>
+          </SCItemWeaponComponentParams>
+          <SAmmoContainerComponentParams maxAmmoCount="20" ammoParamsRecord="#{ref}" />
+        XML
+      end
+
       private def write_turret(key, yaw_speed: 50, pitch_speed: 50, type: "Turret", sub_type: "GunTurret", remote: false, tags: nil, extra_joints: "", yaw_limits: nil, pitch_limits: nil)
         remote_params = remote ? "<remoteTurret><SCItemTurretRemoteParams remoteCamera=\"00000000-0000-0000-0000-000000000001\" /></remoteTurret>" : ""
 
@@ -604,6 +923,95 @@ module ScData
         assert_in_delta 1.0, type_data["extraction_efficiency"]
         tractor = JSON.parse(File.read("#{@base_folder}/parsed/test/items/salvage_tractor_probe.json"))
         assert_nil tractor["type_data"]
+      end
+
+      test "reads the temperature model off the physics controller" do
+        write_item("qdrv_hot", name: "@item_Nameqdrv_hot", components: temperature_xml(overheat: "1", signature: "1"))
+
+        temperature = parsed_item("qdrv_hot")["temperature"]
+
+        assert_equal(
+          {
+            "min_cooling_temperature" => 303.0,
+            "overheat_temperature" => 383.0,
+            "overheat_warning_temperature" => 373.0,
+            "overheat_recovery_temperature" => 378.0,
+            "misfire_min_temperature" => 380.0,
+            "misfire_max_temperature" => 383.0,
+            "ir_start_temperature" => 318.0,
+            "ir_per_kelvin" => 10.0
+          },
+          temperature
+        )
+      end
+
+      test "leaves out the overheat thresholds and IR of an item that uses neither" do
+        write_item("powr_cool", name: "@item_Namepowr_cool", components: temperature_xml(overheat: "0", signature: "0"))
+
+        assert_equal({"min_cooling_temperature" => 303.0}, parsed_item("powr_cool")["temperature"])
+      end
+
+      test "gives no temperature to an item whose model is switched off" do
+        write_item("gun_cold", name: "@item_Namegun_cold", components: temperature_xml(enable: "0", overheat: "1", signature: "1"))
+
+        assert_nil parsed_item("gun_cold")["temperature"]
+      end
+
+      test "reads the levels a component starts to misfire at, and its window" do
+        write_item("shld_misfire", name: "@item_Nameshld_misfire", components: <<~XML)
+          <EntityComponentMisfireParams maxWindowLength="600" minWindowLength="45">
+            <triggerConditions>
+              <SMisfireStatCondition degradation="1" damage="0.9" heat="0.8" distortion="0.6" />
+            </triggerConditions>
+          </EntityComponentMisfireParams>
+        XML
+
+        assert_equal(
+          {"heat" => 0.8, "distortion" => 0.6, "damage" => 0.9, "wear" => 1.0, "min_window" => 45.0, "max_window" => 600.0},
+          parsed_item("shld_misfire")["misfire"]
+        )
+      end
+
+      test "gives no misfire to a component whose block names no stat levels" do
+        write_item("batt_misfire", name: "@item_Namebatt_misfire", components: <<~XML)
+          <EntityComponentMisfireParams maxWindowLength="120" minWindowLength="15">
+            <triggerConditions>
+              <SMisfireFunctionalityCondition functionalityMin="0" minTimeForTrigger="60" />
+            </triggerConditions>
+          </EntityComponentMisfireParams>
+        XML
+
+        assert_nil parsed_item("batt_misfire")["misfire"]
+      end
+
+      test "reads a quantum drive's heat per jump phase" do
+        write_item("qdrv_heat", name: "@item_Nameqdrv_heat", components: <<~XML)
+          <SCItemQuantumDriveParams quantumFuelRequirement="1" jumpRange="1" disconnectRange="1">
+            <params driveSpeed="1" />
+            <heatParams preRampUpThermalEnergyDraw="573" rampUpThermalEnergyDraw="600" inFlightThermalEnergyDraw="6000" rampDownThermalEnergyDraw="600" postRampDownThermalEnergyDraw="573" />
+          </SCItemQuantumDriveParams>
+        XML
+
+        assert_equal(
+          {"pre_ramp_up" => 573.0, "ramp_up" => 600.0, "in_flight" => 6000.0, "ramp_down" => 600.0, "post_ramp_down" => 573.0},
+          parsed_item("qdrv_heat")["type_data"]["jump_heat"]
+        )
+      end
+
+      private def temperature_xml(overheat:, signature:, enable: "1")
+        <<~XML
+          <SEntityPhysicsControllerParams>
+            <PhysType>
+              <SEntityRigidPhysicsControllerParams Mass="630">
+                <temperature enable="#{enable}" initialTemperature="-1">
+                  <signatureParams enable="#{signature}" minimumTemperatureForIR="318" temperatureToIR="10" />
+                  <itemResourceParams minCoolingTemperature="303" enableOverheat="#{overheat}" overheatTemperature="383" overheatWarningTemperature="373" overheatRecoveryTemperature="378" />
+                  <misfireTemperatureRange minimum="380" maximum="383" />
+                </temperature>
+              </SEntityRigidPhysicsControllerParams>
+            </PhysType>
+          </SEntityPhysicsControllerParams>
+        XML
       end
 
       private def write_item(key, name:, short_name: "@LOC_EMPTY", description: "@LOC_EMPTY", tags: nil, required_tags: nil, category: "armor", type: "Armor", sub_type: "UNDEFINED", components: "")
