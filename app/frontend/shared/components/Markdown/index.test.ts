@@ -82,6 +82,15 @@ describe("Markdown", () => {
     expect(wrapper.find("em").exists()).toBe(false);
   });
 
+  it("formats nothing inside a token, its attribute included", async () => {
+    const wrapper = await mount("[*Mk ~~2~~ Rifle*] and ~~gone~~");
+
+    const mark = wrapper.find("[data-catalogue-token]");
+    expect(mark.attributes("data-catalogue-token")).toBe("Mk ~~2~~ Rifle");
+    expect(mark.find("del").exists()).toBe(false);
+    expect(wrapper.find("del").text()).toBe("gone");
+  });
+
   it("leaves a token inside code as written", async () => {
     const wrapper = await mount("Type `[*Name*]` to name an item");
 

@@ -63,8 +63,10 @@
     margin: 0;
   }
 
-  // Resolved, the link mounted into the token replaces its plain name.
-  .catalogue-token--resolved > .catalogue-token__name {
+  // The plain name stays until the link is mounted beside it -- not merely
+  // resolved, since the link's own code may still be loading, or fail to.
+  .catalogue-token:has(> :not(.catalogue-token__name))
+    > .catalogue-token__name {
     display: none;
   }
 

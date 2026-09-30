@@ -82,8 +82,8 @@ describe("Markdown catalogue tokens", () => {
     const links = subject.findAll(".item-link");
     expect(links).toHaveLength(1);
     expect(links[0].attributes("data-slug")).toBe("attrition-3-repeater");
-    expect(subject.find("[data-catalogue-token]").classes()).toContain(
-      "catalogue-token--resolved",
+    expect(subject.find("[data-catalogue-token] .item-link").exists()).toBe(
+      true,
     );
   });
 

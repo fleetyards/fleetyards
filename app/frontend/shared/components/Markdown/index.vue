@@ -88,13 +88,6 @@ const resolvedMarks = computed(() =>
       : [];
   }),
 );
-
-// The plain name stays until the link is there to replace it.
-watch(resolvedMarks, (resolved) => {
-  resolved.forEach(({ element }) =>
-    element.classList.add("catalogue-token--resolved"),
-  );
-});
 </script>
 
 <template>
