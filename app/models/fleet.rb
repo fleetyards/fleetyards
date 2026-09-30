@@ -177,12 +177,10 @@ class Fleet < ApplicationRecord
   # description on record is a little over 5000 characters -- so it bounds the
   # column without invalidating a fleet that is already there. The form draws
   # the same number as a running count.
-  validates :description,
-    length: {maximum: 10_000},
-    format: {
-      with: /^[\d\w\bÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸÄÖßÁÍÑÓÚàâæçéèêëïîôœùûüÿäöáíñóú\[\]()\-_'".,?!:;\s]*$/,
-      multiline: true
-    }
+  #
+  # No character whitelist: the description is markdown and the page renders it
+  # escaped, so the characters it may hold are not what keeps it safe.
+  validates :description, length: {maximum: 10_000}
 
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
