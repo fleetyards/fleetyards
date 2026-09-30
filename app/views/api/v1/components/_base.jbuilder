@@ -52,6 +52,12 @@ if (temperature = component.temperature).present?
   end
 end
 
+if (misfire = component.misfire).present?
+  json.misfire do
+    misfire.each { |key, value| json.set! key, value }
+  end
+end
+
 # `inventoryConsumption`, `ammunition` and `powerConnection` are all absent on
 # purpose. The last two are raw game-file dumps, so no honest schema can
 # describe them until the parser gives them consistent keys. The first is

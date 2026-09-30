@@ -42,6 +42,12 @@ if (temperature = component.temperature).present?
   end
 end
 
+if (misfire = component.misfire).present?
+  json.misfire do
+    misfire.each { |key, value| json.set! key, value }
+  end
+end
+
 json.tracking_signal component.tracking_signal
 json.tracking_signal_label component.tracking_signal_label
 json.type component.item_type

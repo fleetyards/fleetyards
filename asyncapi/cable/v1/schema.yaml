@@ -540,6 +540,8 @@ components:
           "$ref": "#/components/schemas/ComponentDurability"
         temperature:
           "$ref": "#/components/schemas/ComponentTemperature"
+        misfire:
+          "$ref": "#/components/schemas/ComponentMisfire"
         hardpoints:
           type: array
           items:
@@ -877,6 +879,22 @@ components:
       x-enumNames:
       - ACTIVE
       - PASSIVE
+    ComponentMisfire:
+      type: object
+      properties:
+        heat:
+          type: number
+        distortion:
+          type: number
+        damage:
+          type: number
+        wear:
+          type: number
+        minWindow:
+          type: number
+        maxWindow:
+          type: number
+      additionalProperties: false
     ComponentMissile:
       type: object
       properties:
@@ -1038,6 +1056,8 @@ components:
           "$ref": "#/components/schemas/ComponentQuantumDriveJump"
         quantumBoostParams:
           "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
+        jumpHeat:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJumpHeat"
         powerConsumption:
           type: number
         powerMinimumFraction:
@@ -1097,6 +1117,20 @@ components:
         spoolUpTime:
           type: number
         interdictionEffectTime:
+          type: number
+      additionalProperties: false
+    ComponentQuantumDriveJumpHeat:
+      type: object
+      properties:
+        preRampUp:
+          type: number
+        rampUp:
+          type: number
+        inFlight:
+          type: number
+        rampDown:
+          type: number
+        postRampDown:
           type: number
       additionalProperties: false
     ComponentRadar:

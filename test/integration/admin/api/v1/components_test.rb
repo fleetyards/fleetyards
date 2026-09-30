@@ -184,8 +184,8 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /components serves a component's temperature model" do
-    create(:component, name: "Tempprobe Hot", heat_connection: {"overheat_temperature" => 383.0})
+  test "GET /components serves a component's temperature model and misfire triggers" do
+    create(:component, name: "Tempprobe Hot", heat_connection: {"temperature" => {"overheat_temperature" => 383.0}, "misfire" => {"heat" => 0.8, "min_window" => 45.0}})
     create(:component, name: "Tempprobe Cold")
 
     sign_in @user
@@ -194,6 +194,7 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       by_name = parsed_body["items"].index_by { |item| item["name"] }
 
       assert_equal({"overheatTemperature" => 383.0}, by_name["Tempprobe Hot"]["temperature"])
+      assert_equal({"heat" => 0.8, "minWindow" => 45.0}, by_name["Tempprobe Hot"]["misfire"])
       assert_not by_name["Tempprobe Cold"].key?("temperature")
     end
   end
