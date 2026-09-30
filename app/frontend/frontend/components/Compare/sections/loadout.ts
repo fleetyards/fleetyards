@@ -22,11 +22,16 @@ import {
   type ArmorStats,
 } from "@/frontend/composables/useArmorStats";
 import {
+  computeControllerStats,
+  type ControllerStats,
+} from "@/frontend/composables/useControllerStats";
+import {
   computeHullPartGroups,
   HULL_CATEGORY_COLORS,
 } from "@/frontend/composables/useHullParts";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  ComponentShieldFaceTypeEnum,
   HardpointCategoryEnum,
   type Hardpoint,
   type Model,
@@ -150,7 +155,13 @@ export const useLoadoutSections = (
   hardpointsFor: (model: Model) => Hardpoint[],
 ) => {
   const { t } = useI18n();
-  const { rounded, percent } = useCompareFormat();
+  const { number, rounded, percent } = useCompareFormat();
+
+  // Only a quadrant shield has faces to shift strength between.
+  const quadrantCooldown = (controllers: ControllerStats) =>
+    controllers.shieldFaceType === ComponentShieldFaceTypeEnum.QUADRANT
+      ? controllers.reconfigurationCooldown
+      : undefined;
 
   const section = (
     id: string,
@@ -174,7 +185,10 @@ export const useLoadoutSections = (
 
   const defenseStats = computed(
     () =>
-      new Map<string, { shield: ShieldStats; armor: ArmorStats }>(
+      new Map<
+        string,
+        { shield: ShieldStats; armor: ArmorStats; controllers: ControllerStats }
+      >(
         toValue(models).map((model) => {
           const hardpoints = hardpointsFor(model);
 
@@ -183,6 +197,7 @@ export const useLoadoutSections = (
             {
               shield: computeShieldStats(hardpoints),
               armor: computeArmorStats(hardpoints),
+              controllers: computeControllerStats(hardpoints),
             },
           ];
         }),
@@ -203,33 +218,36 @@ export const useLoadoutSections = (
         label: t("labels.combat.dps"),
         unit: "DPS",
         direction: "higher",
-        raw: (s) => (s.hasData ? s.dps.total : undefined),
-        value: (s) => (s.hasData ? rounded(s.dps.total, "integer") : undefined),
+        raw: (s) => (s.weaponCount > 0 ? s.dps.total : undefined),
+        value: (s) =>
+          s.weaponCount > 0 ? rounded(s.dps.total, "integer") : undefined,
       },
       {
         key: "sustained",
         label: t("labels.combat.sustained"),
         unit: "DPS",
         direction: "higher",
-        raw: (s) => (s.hasData ? s.sustainedDps.total : undefined),
+        raw: (s) => (s.weaponCount > 0 ? s.sustainedDps.total : undefined),
         value: (s) =>
-          s.hasData ? rounded(s.sustainedDps.total, "integer") : undefined,
+          s.weaponCount > 0
+            ? rounded(s.sustainedDps.total, "integer")
+            : undefined,
       },
       {
         key: "alpha",
         label: t("labels.combat.alpha"),
         unit: "DMG",
         direction: "higher",
-        raw: (s) => (s.hasData ? s.alpha.total : undefined),
+        raw: (s) => (s.weaponCount > 0 ? s.alpha.total : undefined),
         value: (s) =>
-          s.hasData ? rounded(s.alpha.total, "integer") : undefined,
+          s.weaponCount > 0 ? rounded(s.alpha.total, "integer") : undefined,
       },
       {
         key: "weapons",
         label: t("labels.combat.weapons"),
         direction: "higher",
-        raw: (s) => (s.hasData ? s.weaponCount : undefined),
-        value: (s) => (s.hasData ? String(s.weaponCount) : undefined),
+        raw: (s) => (s.weaponCount > 0 ? s.weaponCount : undefined),
+        value: (s) => (s.weaponCount > 0 ? String(s.weaponCount) : undefined),
       },
       {
         key: "missile-damage",
@@ -239,6 +257,24 @@ export const useLoadoutSections = (
         value: (s) =>
           s.missileDamage ? rounded(s.missileDamage, "integer") : undefined,
         visible: (all) => all.some((s) => s.missileDamage > 0),
+      },
+      {
+        key: "armed-missiles",
+        label: t("labels.combat.armedMissiles"),
+        direction: "higher",
+        raw: (s) => s.maxArmedMissiles,
+        value: (s) =>
+          s.maxArmedMissiles ? String(s.maxArmedMissiles) : undefined,
+        visible: (all) => all.some((s) => (s.maxArmedMissiles || 0) > 0),
+      },
+      {
+        key: "launch-cooldown",
+        label: t("labels.hardpoint.controllers.launchCooldown"),
+        unit: "s",
+        direction: "lower",
+        raw: (s) => s.launchCooldown,
+        value: (s) => number(s.launchCooldown),
+        visible: (all) => all.some((s) => typeof s.launchCooldown === "number"),
       },
     ];
 
@@ -282,7 +318,11 @@ export const useLoadoutSections = (
       subject: defenseStats.value.get(model.slug)!,
     }));
 
-    type Defense = { shield: ShieldStats; armor: ArmorStats };
+    type Defense = {
+      shield: ShieldStats;
+      armor: ArmorStats;
+      controllers: ControllerStats;
+    };
 
     const metrics: CompareMetric<Defense>[] = [
       {
@@ -302,6 +342,33 @@ export const useLoadoutSections = (
         raw: ({ shield }) => (shield.hasData ? shield.totalRegen : undefined),
         value: ({ shield }) =>
           shield.hasData ? rounded(shield.totalRegen, "integer") : undefined,
+      },
+      {
+        key: "shield-faces",
+        label: t("labels.defense.shieldFaces"),
+        value: ({ shield, controllers }) =>
+          shield.hasData && controllers.shieldFaceType
+            ? t(
+                `labels.hardpoint.controllers.faces.${controllers.shieldFaceType}`,
+              )
+            : undefined,
+        visible: (all) =>
+          all.some(
+            ({ shield, controllers }) =>
+              shield.hasData && !!controllers.shieldFaceType,
+          ),
+      },
+      {
+        key: "shield-reconfiguration",
+        label: t("labels.hardpoint.controllers.reconfigurationCooldown"),
+        unit: "s",
+        direction: "lower",
+        raw: ({ controllers }) => quadrantCooldown(controllers),
+        value: ({ controllers }) => number(quadrantCooldown(controllers)),
+        visible: (all) =>
+          all.some(
+            ({ controllers }) => quadrantCooldown(controllers) !== undefined,
+          ),
       },
       {
         key: "armor-hp",

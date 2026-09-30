@@ -125,7 +125,57 @@ describe("computeLoadoutStats", () => {
     ]);
 
     expect(stats.weaponCount).toBe(0);
-    expect(stats.hasData).toBe(false);
+    expect(stats.missileDamage).toBe(9999);
+  });
+
+  it("counts a missile-only ship as a loadout, with its armed-missile capacity", () => {
+    const controller = {
+      id: "controller",
+      name: "controller",
+      category: HardpointCategoryEnum.CONTROLLER,
+      component: {
+        name: "Missile Controller",
+        typeData: { maxArmedMissiles: 8, launchCooldown: 0 },
+      } as unknown as Hardpoint["component"],
+      hardpoints: [],
+      createdAt: "",
+      updatedAt: "",
+    } as Hardpoint;
+
+    const stats = computeLoadoutStats([
+      controller,
+      weaponHardpoint({
+        trackingSignal: "infrared",
+        damagePerShot: { physical: 2000 },
+      } as ComponentWeapon),
+    ]);
+
+    expect(stats.hasData).toBe(true);
+    expect(stats.weaponCount).toBe(0);
+    expect(stats.maxArmedMissiles).toBe(8);
+    expect(stats.launchCooldown).toBe(0);
+  });
+
+  it("leaves the armed-missile capacity off a ship without missiles", () => {
+    const controller = {
+      id: "controller",
+      name: "controller",
+      category: HardpointCategoryEnum.CONTROLLER,
+      component: {
+        name: "Missile Controller",
+        typeData: { maxArmedMissiles: 4 },
+      } as unknown as Hardpoint["component"],
+      hardpoints: [],
+      createdAt: "",
+      updatedAt: "",
+    } as Hardpoint;
+
+    const stats = computeLoadoutStats([
+      controller,
+      weaponHardpoint({ fireRate: 60, damagePerShot: { energy: 100 } }),
+    ]);
+
+    expect(stats.maxArmedMissiles).toBeUndefined();
   });
 
   it("leaves mining lasers out of the ship's firepower", () => {

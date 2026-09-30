@@ -161,6 +161,17 @@ const openDeflectionCheck = () => {
               `labels.hardpoint.controllers.faces.${controllers.shieldFaceType}`,
             )
           }}
+          <span
+            v-if="
+              controllers.shieldFaceType === 'quadrant' &&
+              controllers.reconfigurationCooldown
+            "
+            class="stat-rows__sub"
+          >
+            ·
+            {{ t("labels.hardpoint.controllers.reconfigurationCooldown") }}
+            {{ toNumber(controllers.reconfigurationCooldown) }} s
+          </span>
         </dd>
       </template>
 
@@ -297,6 +308,10 @@ const openDeflectionCheck = () => {
 
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
+
+.stat-rows__sub {
+  color: var(--color-text-dim);
+}
 
 // Matches the composition bar's pill look, as a single animated fill + percent.
 .regen-bar {

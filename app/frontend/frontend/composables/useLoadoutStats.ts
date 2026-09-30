@@ -8,6 +8,7 @@ import {
   ComponentTurretControlEnum,
 } from "@/services/fyApi";
 import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
+import { computeControllerStats } from "@/frontend/composables/useControllerStats";
 
 export type DamageBreakdown = {
   total: number;
@@ -43,7 +44,13 @@ export type LoadoutStats = {
   weapons: WeaponStat[];
   weaponCount: number;
   missileDamage: number;
+  // How many missiles the ship keeps armed at once, and the time between
+  // launches -- only for a ship that carries missiles, since nearly every
+  // ship has a missile controller whether or not it has a rack.
+  maxArmedMissiles?: number;
+  launchCooldown?: number;
   weaponPowerRatio: number;
+  // A ship with only missiles still has a combat loadout to show.
   hasData: boolean;
 };
 
@@ -165,6 +172,7 @@ export function computeLoadoutStats(
   overrides?: PortOverrides,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
+  const controllers = computeControllerStats(hardpoints);
   const sim = simulateLoadoutPower(
     hardpoints,
     weaponPoolSize,
@@ -245,8 +253,14 @@ export function computeLoadoutStats(
     weapons,
     weaponCount: weapons.length,
     missileDamage,
+    ...(missileDamage > 0
+      ? {
+          maxArmedMissiles: controllers.maxArmedMissiles,
+          launchCooldown: controllers.launchCooldown,
+        }
+      : {}),
     weaponPowerRatio: powerRatio,
-    hasData: weapons.length > 0,
+    hasData: weapons.length > 0 || missileDamage > 0,
   };
 }
 
