@@ -11,24 +11,45 @@ import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import { fidAtRisk } from "@/frontend/utils/rsiSid";
 import { type Fleet, useFleetFidClaim } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFleetStore } from "@/frontend/stores/fleet";
 
 type Props = {
   fleet: Fleet;
+  dismissible?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  dismissible: false,
+});
 
 const slots = useSlots();
 
 const { t, l } = useI18n();
 
+const fleetStore = useFleetStore();
+
 const { data: claimStatus } = useFleetFidClaim(() => props.fleet.slug);
 
 const incomingClaim = computed(() => claimStatus.value?.incoming);
 
-const showFidWarning = computed(
-  () => !incomingClaim.value && fidAtRisk(props.fleet),
+// An incoming claim has a deadline, so only the standing at-risk warning can
+// be put away -- and only where the caller allows it.
+const fidWarningDismissed = computed(
+  () =>
+    props.dismissible &&
+    fleetStore.dismissedFidWarnings.includes(props.fleet.slug),
 );
+
+const showFidWarning = computed(
+  () =>
+    !incomingClaim.value &&
+    !fidWarningDismissed.value &&
+    fidAtRisk(props.fleet),
+);
+
+const dismissFidWarning = () => {
+  fleetStore.dismissFidWarning(props.fleet.slug);
+};
 </script>
 
 <template>
@@ -61,7 +82,9 @@ const showFidWarning = computed(
     v-else-if="showFidWarning"
     :variant="AlertVariantsEnum.WARNING"
     :title="t('labels.fleet.rsiVerification.fidAtRiskTitle')"
+    :dismissible="dismissible"
     data-test="fleet-fid-at-risk"
+    @dismiss="dismissFidWarning"
   >
     {{ t("labels.fleet.rsiVerification.fidAtRisk", { fid: fleet.fid }) }}
     <template v-if="slots.actions" #actions>

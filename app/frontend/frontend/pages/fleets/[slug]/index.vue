@@ -105,7 +105,7 @@ const showFidNotice = computed(
         />
         <span class="title"> {{ fleet.name }} ({{ fleet.fid }}) </span>
       </h1>
-      <FidNotice v-if="showFidNotice" :fleet="fleet">
+      <FidNotice v-if="showFidNotice" :fleet="fleet" dismissible>
         <template #actions>
           <router-link
             :to="{ name: 'fleet-settings-rsi', params: { slug: fleet.slug } }"

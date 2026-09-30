@@ -2,6 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import type { Fleet, FleetFidClaimStatus } from "@/services/fyApi";
+import { useFleetStore } from "@/frontend/stores/fleet";
 import Component from "./index.vue";
 
 const claimStatus = ref<FleetFidClaimStatus | undefined>();
@@ -16,8 +17,14 @@ vi.mock("@/services/fyApi", async () => {
 const fleet = (attributes: Partial<Fleet> = {}) =>
   ({ slug: "test", fid: "test", rsiVerified: false, ...attributes }) as Fleet;
 
-const mountNotice = (props: { fleet: Fleet }) =>
-  mountWithDefaults(Component, { props });
+const mountNotice = (
+  props: { fleet: Fleet; dismissible?: boolean },
+  dismissedFidWarnings: string[] = [],
+) =>
+  mountWithDefaults(Component, {
+    props,
+    initialState: { fleet: { dismissedFidWarnings } },
+  });
 
 describe("FleetFidNotice", () => {
   it("warns a holder whose FID another fleet claims", async () => {
@@ -65,5 +72,35 @@ describe("FleetFidNotice", () => {
     });
 
     expect(wrapper.text()).toBe("");
+  });
+
+  it("keeps the at-risk warning permanent unless asked otherwise", async () => {
+    claimStatus.value = { availability: "unverified", fid: null };
+    const wrapper = await mountNotice({ fleet: fleet() }, ["test"]);
+
+    expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="alert-dismiss"]').exists()).toBe(false);
+  });
+
+  it("remembers a dismissed at-risk warning per fleet", async () => {
+    claimStatus.value = { availability: "unverified", fid: null };
+    const wrapper = await mountNotice({ fleet: fleet(), dismissible: true });
+
+    const dismiss = vi.spyOn(useFleetStore(), "dismissFidWarning");
+
+    await wrapper.find('[data-test="alert-dismiss"]').trigger("click");
+
+    expect(dismiss).toHaveBeenCalledWith("test");
+  });
+
+  it("hides a dismissed at-risk warning", async () => {
+    claimStatus.value = { availability: "unverified", fid: null };
+    const wrapper = await mountNotice({ fleet: fleet(), dismissible: true }, [
+      "test",
+    ]);
+
+    expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(
+      false,
+    );
   });
 });
