@@ -59,6 +59,10 @@ cleanup_unattached_check_job:
   cron: '0 2 */1 * *' # Daily at 2:00
   class: 'Cleanup::UnattachedCheckJob'
   queue: 'cleanup'
+cleanup_markdown_images_job:
+  cron: '30 2 */1 * *' # Daily at 2:30
+  class: 'Cleanup::MarkdownImagesJob'
+  queue: 'cleanup'
 loaders_paints_import_job:
   cron: '0 19 * * 0' # Weekly on Sunday 19:00
   class: 'Loaders::PaintsImportJob'

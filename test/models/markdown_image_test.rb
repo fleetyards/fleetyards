@@ -85,4 +85,36 @@ class MarkdownImageTest < ActiveSupport::TestCase
   private def insert_images(count, created_at:)
     MarkdownImage.insert_all(Array.new(count) { {user_id: @user.id, created_at:, updated_at: created_at} })
   end
+
+  # A text column on a fleet-owned table is written through the markdown editor
+  # unless it is listed here. A new one has to be registered, or the cleanup job
+  # would delete the images embedded in it.
+  NOT_MARKDOWN = {
+    "FleetInventory" => %w[description],
+    "FleetEventSlot" => %w[description],
+    "MissionSlot" => %w[description]
+  }.freeze
+
+  test "every fleet description column is known to the image cleanup" do
+    Rails.application.eager_load!
+
+    ApplicationRecord.descendants.each do |model|
+      next if model.abstract_class? || !model.name.start_with?("Fleet", "Mission")
+      next unless model.table_exists?
+
+      columns = model.columns.select { |column| column.type == :text && column.name.in?(%w[description briefing]) }.map(&:name)
+      registered = MarkdownImage::REFERENCING_COLUMNS.fetch(model.name, []).map(&:to_s)
+      unaccounted = columns - registered - NOT_MARKDOWN.fetch(model.name, [])
+
+      assert_empty unaccounted, "#{model.name} has #{unaccounted.join(", ")}: add it to MarkdownImage::REFERENCING_COLUMNS, or to NOT_MARKDOWN here if it is plain text"
+    end
+  end
+
+  test "every registered column exists" do
+    MarkdownImage::REFERENCING_COLUMNS.each do |class_name, columns|
+      model = class_name.constantize
+
+      columns.each { |column| assert model.column_names.include?(column.to_s), "#{class_name} has no #{column}" }
+    end
+  end
 end

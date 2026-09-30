@@ -25,6 +25,28 @@ class MarkdownImage < ApplicationRecord
   DAILY_LIMIT = 100
   DISPLAY_SIZE = :large
 
+  # Every text a description image can be embedded in. An image stays while
+  # one of them names it -- the current text, or, for a type whose history an
+  # admin can revert a field from, any recorded version of it.
+  REFERENCING_COLUMNS = {
+    "Fleet" => %i[description],
+    "FleetContract" => %i[description],
+    "FleetEvent" => %i[description briefing],
+    "FleetEventOccurrenceState" => %i[description briefing],
+    "FleetEventShip" => %i[description],
+    "FleetEventTeam" => %i[description],
+    "FleetSquadron" => %i[description],
+    "Mission" => %i[description],
+    "MissionShip" => %i[description],
+    "MissionTeam" => %i[description]
+  }.freeze
+
+  # Time to save the form an image was inserted into, before an image no text
+  # names counts as abandoned.
+  UNREFERENCED_GRACE = 7.days
+
+  REFERENCE_PATTERN = "markdown-images/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})"
+
   belongs_to :user
 
   has_one_attached :file
@@ -35,6 +57,39 @@ class MarkdownImage < ApplicationRecord
   validate :file_is_a_supported_image
   validate :file_within_size_limit
   validate :daily_limit_not_reached, on: :create
+
+  def self.referenced_ids
+    ids = REFERENCING_COLUMNS.flat_map do |class_name, columns|
+      model = class_name.constantize
+
+      columns.flat_map do |column|
+        quoted = model.connection.quote_column_name(column)
+
+        ids_in(model.unscoped.where("#{quoted} LIKE ?", "%markdown-images/%"), quoted)
+      end
+    end
+
+    ids.concat(ids_in_history).to_set
+  end
+
+  def self.unreferenced
+    where(created_at: ..UNREFERENCED_GRACE.ago).where.not(id: referenced_ids.to_a)
+  end
+
+  private_class_method def self.ids_in(scope, expression)
+    scope.pluck(Arel.sql("(regexp_matches(#{expression}, '#{REFERENCE_PATTERN}', 'g'))[1]"))
+  end
+
+  private_class_method def self.ids_in_history
+    history = "concat(object::text, object_changes::text, old_object, old_object_changes)"
+
+    ids_in(
+      PaperTrail::Version
+        .where(item_type: REFERENCING_COLUMNS.keys & ::VersionedItem::TYPES)
+        .where("#{history} LIKE ?", "%markdown-images/%"),
+      history
+    )
+  end
 
   def display_representation
     file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[DISPLAY_SIZE])
