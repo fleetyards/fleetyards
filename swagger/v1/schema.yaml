@@ -31248,6 +31248,13 @@ components:
           - 'null'
         keys:
           "$ref": "#/components/schemas/PushSubscriptionKeysInput"
+        replaces:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The row of the endpoint this subscription renews; removed with
+            it
       required:
       - endpoint
       - keys

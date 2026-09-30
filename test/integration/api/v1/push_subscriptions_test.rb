@@ -177,6 +177,16 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     assert_equal 1, PushSubscription.count
   end
 
+  test "POST with replaces removes the renewed endpoint's row" do
+    old = create(:push_subscription, user: @user)
+    sign_in @user
+
+    assert_api_response :post, 201, body: subscription_body.merge(replaces: old.id)
+
+    refute PushSubscription.exists?(old.id)
+    assert_equal 1, @user.push_subscriptions.count
+  end
+
   test "POST rejects an endpoint that is not a push service" do
     sign_in @user
 

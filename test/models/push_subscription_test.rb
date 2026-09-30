@@ -145,6 +145,35 @@ class PushSubscriptionTest < ActiveSupport::TestCase
     refute PushSubscription.exists?(oldest.id)
   end
 
+  # A renewed endpoint at the cap: the dead one goes, not a live device.
+  test "a renewal replaces its old row before the cap applies" do
+    live = create_list(:push_subscription, PushSubscription::MAX_PER_USER - 1, user: @user, updated_at: 1.month.ago)
+    old = create(:push_subscription, user: @user, updated_at: Time.current)
+
+    renewed = subscribe(endpoint: "https://fcm.googleapis.com/fcm/send/renewed", replaces: old.id)
+
+    refute PushSubscription.exists?(old.id)
+    assert PushSubscription.exists?(renewed.id)
+    assert_equal live.map(&:id).sort, (@user.push_subscriptions.pluck(:id) - [renewed.id]).sort
+  end
+
+  test "replaces never removes another user's row" do
+    other = create(:push_subscription)
+
+    subscribe(replaces: other.id)
+
+    assert PushSubscription.exists?(other.id)
+  end
+
+  test "a failed save keeps the row it would have replaced" do
+    old = create(:push_subscription, user: @user)
+
+    subscription = subscribe(endpoint: "https://169.254.169.254/", replaces: old.id)
+
+    refute subscription.persisted?
+    assert PushSubscription.exists?(old.id)
+  end
+
   test "the cap does not touch another user's subscriptions" do
     other = create(:push_subscription, updated_at: 1.year.ago)
     create_list(:push_subscription, PushSubscription::MAX_PER_USER, user: @user)

@@ -31,7 +31,8 @@ module Api
           endpoint: subscription_params[:endpoint],
           p256dh_key: subscription_params.dig(:keys, :p256dh),
           auth_key: subscription_params.dig(:keys, :auth),
-          user_agent: request.user_agent
+          user_agent: request.user_agent,
+          replaces: subscription_params[:replaces]
         )
 
         if @push_subscription.persisted? && @push_subscription.errors.empty?
@@ -76,7 +77,7 @@ module Api
       end
 
       private def subscription_params
-        params.permit(:endpoint, :expiration_time, keys: %i[p256dh auth])
+        params.permit(:endpoint, :expiration_time, :replaces, keys: %i[p256dh auth])
       end
     end
   end
