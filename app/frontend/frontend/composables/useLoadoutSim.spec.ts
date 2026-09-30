@@ -473,6 +473,21 @@ describe("heat (cooling ratio)", () => {
     );
   });
 
+  it("powers a mining laser on its own, outside the guns' shared pool", () => {
+    const guns = weapons(2, 2);
+    const laser = hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 1 });
+    laser.component!.type = "WeaponMining";
+
+    const without = simulateLoadoutPower([plant(20, 2), ...guns], 4);
+    const withLaser = simulateLoadoutPower([plant(20, 2), ...guns, laser], 4);
+
+    expect(familyCapacity(withLaser, "miningLaser")).toBe(1);
+    expect(familyCapacity(withLaser, "weapon")).toBe(
+      familyCapacity(without, "weapon"),
+    );
+    expect(withLaser.weaponPoolRatio).toBeCloseTo(without.weaponPoolRatio, 5);
+  });
+
   it("does not count tractor beams toward the heat load", () => {
     const base = [
       plant(40, 2),

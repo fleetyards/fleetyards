@@ -250,13 +250,14 @@ function collectPorts(
           });
         }
       } else {
-        // Tractor/towing beams are miscategorised (weapons/turret/unknown), so
-        // their component type is the reliable signal — it also keeps them out
-        // of the shared weapon pool.
+        // Tractor/towing beams and mining lasers sit in the weapons category
+        // but draw whole segments of their own rather than from the guns'
+        // shared pool, so their component type is the reliable signal.
         const componentType = hardpoint.component?.type;
         let family = POWER_FAMILY_BY_CATEGORY[category];
         if (componentType === "TractorBeam") family = "tractorBeam";
         else if (componentType === "TowingBeam") family = "towingbeam";
+        else if (componentType === "WeaponMining") family = "miningLaser";
         const draw = numeric(typeData.powerConsumption);
         if (family === "weapon") {
           acc.weaponUnits += draw;
