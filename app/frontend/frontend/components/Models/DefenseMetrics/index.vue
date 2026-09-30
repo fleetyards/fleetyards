@@ -12,6 +12,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import { useArmorStats } from "@/frontend/composables/useArmorStats";
+import { useCountermeasureStats } from "@/frontend/composables/useCountermeasureStats";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -41,6 +42,7 @@ const shield = useShieldStats(
   () => toValue(shieldPoolRatio),
 );
 const armor = useArmorStats(() => props.hardpoints);
+const countermeasures = useCountermeasureStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
 // `toNumber` renders any falsy value as "N/A", which is wrong for a genuine
@@ -57,7 +59,12 @@ const regenPercent = computed(() =>
   Math.round((toValue(shieldPoolRatio) ?? 1) * 100),
 );
 
-const hasData = computed(() => shield.value.hasData || armor.value.hasData);
+const hasData = computed(
+  () =>
+    shield.value.hasData ||
+    armor.value.hasData ||
+    countermeasures.value.hasData,
+);
 
 const percent = (value: number) => `${Math.round(value * 100)}%`;
 
@@ -236,6 +243,24 @@ const openDeflectionCheck = () => {
             </span>
           </dd>
         </template>
+      </dl>
+    </template>
+
+    <template v-if="countermeasures.hasData">
+      <div class="metrics-card__divider" />
+
+      <dl class="stat-rows">
+        <dt>{{ t("labels.defense.countermeasures") }}</dt>
+        <dd>
+          <span
+            v-for="entry in countermeasures.counts"
+            :key="entry.key"
+            class="chip"
+          >
+            <span class="chip__label">{{ t(entry.label) }}</span>
+            <span class="chip__value">{{ num(entry.value) }}</span>
+          </span>
+        </dd>
       </dl>
     </template>
 

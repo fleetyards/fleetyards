@@ -1022,6 +1022,11 @@
         "armorReduction": "伤害减免",
         "armorSelfResistance": "自身抗性",
         "armorSignature": "信号特征",
+        "countermeasures": "干扰措施",
+        "countermeasure": {
+          "decoy": "诱饵弹",
+          "noise": "干扰箔"
+        },
         "damageType": {
           "physical": "物理",
           "energy": "能量",
@@ -1033,7 +1038,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "护盾与装甲数值来自默认配置。吸收率低于 100% 表示该伤害类型在护盾仍在时就能打到船体。",
+        "hint": "护盾、装甲与干扰措施数值来自默认配置。吸收率低于 100% 表示该伤害类型在护盾仍在时就能打到船体。",
         "openDeflectionCheck": "偏转检测"
       },
       "deflectionCheck": {

@@ -1022,6 +1022,11 @@
         "armorReduction": "Riduzione del danno",
         "armorSelfResistance": "Autoresistenza",
         "armorSignature": "Firma",
+        "countermeasures": "Contromisure",
+        "countermeasure": {
+          "decoy": "Esca",
+          "noise": "Disturbo"
+        },
         "damageType": {
           "physical": "Fis.",
           "energy": "Energia",
@@ -1033,7 +1038,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Valori di scudi e corazza della configurazione predefinita. Un assorbimento inferiore al 100% significa che quel tipo di danno raggiunge lo scafo mentre gli scudi sono ancora attivi.",
+        "hint": "Valori di scudi, corazza e contromisure della configurazione predefinita. Un assorbimento inferiore al 100% significa che quel tipo di danno raggiunge lo scafo mentre gli scudi sono ancora attivi.",
         "openDeflectionCheck": "Verifica deflessione"
       },
       "deflectionCheck": {

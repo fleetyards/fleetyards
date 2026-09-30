@@ -1022,6 +1022,11 @@
         "armorReduction": "Réduction des dégâts",
         "armorSelfResistance": "Résistance propre",
         "armorSignature": "Signature",
+        "countermeasures": "Contre-mesures",
+        "countermeasure": {
+          "decoy": "Leurre",
+          "noise": "Brouillage"
+        },
         "damageType": {
           "physical": "Phys",
           "energy": "Énergie",
@@ -1033,7 +1038,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Valeurs de bouclier et de blindage de l'équipement par défaut. Une absorption inférieure à 100 % signifie que ce type de dégâts atteint la coque alors que les boucliers sont encore actifs.",
+        "hint": "Valeurs de bouclier, de blindage et de contre-mesures de l'équipement par défaut. Une absorption inférieure à 100 % signifie que ce type de dégâts atteint la coque alors que les boucliers sont encore actifs.",
         "openDeflectionCheck": "Test de déflexion"
       },
       "deflectionCheck": {

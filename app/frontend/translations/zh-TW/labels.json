@@ -1022,6 +1022,11 @@
         "armorReduction": "傷害減免",
         "armorSelfResistance": "自身抗性",
         "armorSignature": "訊號特徵",
+        "countermeasures": "干擾措施",
+        "countermeasure": {
+          "decoy": "誘餌彈",
+          "noise": "干擾箔"
+        },
         "damageType": {
           "physical": "物理",
           "energy": "能量",
@@ -1033,7 +1038,7 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "以預設配置計算的護盾與裝甲數值。吸收率低於 100% 表示該傷害類型在護盾還撐著的時候就會打到船體。",
+        "hint": "以預設配置計算的護盾、裝甲與干擾措施數值。吸收率低於 100% 表示該傷害類型在護盾還撐著的時候就會打到船體。",
         "openDeflectionCheck": "偏轉檢測"
       },
       "deflectionCheck": {
