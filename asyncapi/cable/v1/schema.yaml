@@ -534,6 +534,8 @@ components:
           - "$ref": "#/components/schemas/ComponentController"
           - "$ref": "#/components/schemas/ComponentTurret"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
+          - "$ref": "#/components/schemas/ComponentMiningModule"
+          - "$ref": "#/components/schemas/ComponentSalvageModifier"
         durability:
           "$ref": "#/components/schemas/ComponentDurability"
         hardpoints:
@@ -788,6 +790,75 @@ components:
         fuelUsageEfficiencyMultiplier:
           type: number
       additionalProperties: false
+    ComponentMiningLaser:
+      type: object
+      properties:
+        fracturePowerMin:
+          type: number
+        fracturePowerMax:
+          type: number
+        extractionPower:
+          type: number
+        optimalRange:
+          type: number
+        maxRange:
+          type: number
+        chargeUpTime:
+          type: number
+        chargeDownTime:
+          type: number
+        moduleSlots:
+          type: integer
+        modifiers:
+          "$ref": "#/components/schemas/ComponentMiningModifiers"
+      additionalProperties: false
+    ComponentMiningModifiers:
+      type: object
+      properties:
+        instability:
+          type: number
+        resistance:
+          type: number
+        optimalChargeWindow:
+          type: number
+        optimalChargeRate:
+          type: number
+        catastrophicChargeRate:
+          type: number
+        shatterDamage:
+          type: number
+        inertMaterials:
+          type: number
+      additionalProperties: false
+    ComponentMiningModule:
+      type: object
+      properties:
+        miningModule:
+          type: boolean
+        activation:
+          "$ref": "#/components/schemas/ComponentMiningModuleActivationEnum"
+        charges:
+          type: integer
+        duration:
+          type: number
+        fracturePower:
+          type: number
+        extractionPower:
+          type: number
+        modifiers:
+          "$ref": "#/components/schemas/ComponentMiningModifiers"
+      required:
+      - miningModule
+      - activation
+      additionalProperties: false
+    ComponentMiningModuleActivationEnum:
+      type: string
+      enum:
+      - active
+      - passive
+      x-enumNames:
+      - ACTIVE
+      - PASSIVE
     ComponentMissile:
       type: object
       properties:
@@ -1025,6 +1096,20 @@ components:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
+      additionalProperties: false
+    ComponentSalvageModifier:
+      type: object
+      properties:
+        salvageModifier:
+          type: boolean
+        salvageSpeed:
+          type: number
+        radius:
+          type: number
+        extractionEfficiency:
+          type: number
+      required:
+      - salvageModifier
       additionalProperties: false
     ComponentSelfRepair:
       type: object
@@ -1428,6 +1513,8 @@ components:
           "$ref": "#/components/schemas/ComponentWeaponPenetration"
         spread:
           "$ref": "#/components/schemas/ComponentWeaponSpread"
+        mining:
+          "$ref": "#/components/schemas/ComponentMiningLaser"
       additionalProperties: false
     ComponentWeaponDamage:
       type: object
