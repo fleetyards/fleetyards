@@ -102,12 +102,18 @@ class MarkdownImage < ApplicationRecord
     end
 
     # The latest snapshot only, as the restorer uses: an older one can no longer
-    # come back, and would hold its images forever.
-    restorable = PaperTrail::Version
-      .select("DISTINCT ON (versions.item_id) versions.id")
+    # come back, and would hold its images forever. Snapshots can share that
+    # latest second, and nothing breaks the tie the same way on both sides, so
+    # all of them count.
+    latest = PaperTrail::Version
+      .select(:item_id, "MAX(versions.created_at)")
       .where(item_type: "Fleet", event: "destroy")
       .where.not(item_id: Fleet.unscoped.select(:id))
-      .order(Arel.sql("versions.item_id, versions.created_at DESC"))
+      .group(:item_id)
+    restorable = PaperTrail::Version
+      .select(:id)
+      .where(item_type: "Fleet", event: "destroy")
+      .where("(versions.item_id, versions.created_at) IN (#{latest.to_sql})")
 
     live + ids_in(
       PaperTrail::Version

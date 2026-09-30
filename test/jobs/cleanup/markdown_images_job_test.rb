@@ -97,6 +97,22 @@ module Cleanup
       assert MarkdownImage.exists?(latest.id)
     end
 
+    # Versions keep whole seconds, and which of two snapshots from the same one
+    # the restorer takes is not settled, so both count.
+    test "#perform keeps the images of every snapshot from a fleet's last purge" do
+      first = old_image
+      second = old_image
+      purged_fleet_id = SecureRandom.uuid
+      at = 1.day.ago.change(usec: 0)
+      purge(purged_fleet_id, first, at:)
+      purge(purged_fleet_id, second, at:)
+
+      ::Cleanup::MarkdownImagesJob.new.perform
+
+      assert MarkdownImage.exists?(first.id)
+      assert MarkdownImage.exists?(second.id)
+    end
+
     test "#perform keeps a new image its form may not have saved yet" do
       image = create(:markdown_image)
 
