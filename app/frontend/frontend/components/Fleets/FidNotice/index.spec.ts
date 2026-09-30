@@ -15,7 +15,13 @@ vi.mock("@/services/fyApi", async () => {
 });
 
 const fleet = (attributes: Partial<Fleet> = {}) =>
-  ({ slug: "test", fid: "test", rsiVerified: false, ...attributes }) as Fleet;
+  ({
+    id: "fleet-a",
+    slug: "test",
+    fid: "test",
+    rsiVerified: false,
+    ...attributes,
+  }) as Fleet;
 
 const mountNotice = (
   props: { fleet: Fleet; dismissible?: boolean },
@@ -76,7 +82,7 @@ describe("FleetFidNotice", () => {
 
   it("keeps the at-risk warning permanent unless asked otherwise", async () => {
     claimStatus.value = { availability: "unverified", fid: null };
-    const wrapper = await mountNotice({ fleet: fleet() }, ["test"]);
+    const wrapper = await mountNotice({ fleet: fleet() }, ["fleet-a"]);
 
     expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
     expect(wrapper.find('[data-test="alert-dismiss"]').exists()).toBe(false);
@@ -90,17 +96,27 @@ describe("FleetFidNotice", () => {
 
     await wrapper.find('[data-test="alert-dismiss"]').trigger("click");
 
-    expect(dismiss).toHaveBeenCalledWith("test");
+    expect(dismiss).toHaveBeenCalledWith("fleet-a");
   });
 
   it("hides a dismissed at-risk warning", async () => {
     claimStatus.value = { availability: "unverified", fid: null };
     const wrapper = await mountNotice({ fleet: fleet(), dismissible: true }, [
-      "test",
+      "fleet-a",
     ]);
 
     expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(
       false,
     );
+  });
+
+  it("keeps warning a fleet that took over a dismissed fleet's FID", async () => {
+    claimStatus.value = { availability: "unverified", fid: null };
+    const wrapper = await mountNotice(
+      { fleet: fleet({ id: "fleet-b" }), dismissible: true },
+      ["fleet-a"],
+    );
+
+    expect(wrapper.find('[data-test="fleet-fid-at-risk"]').exists()).toBe(true);
   });
 });
