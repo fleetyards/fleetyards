@@ -98,4 +98,12 @@ class Api::V1::ModelsDefensesTest < ActionDispatch::IntegrationTest
       assert_empty parsed_body
     end
   end
+
+  test "GET /models/defenses leaves out a size the ship does not have" do
+    @model.update_column(:size, nil)
+
+    assert_api_response :get, 200 do
+      assert_not parsed_body.sole.key?("size")
+    end
+  end
 end

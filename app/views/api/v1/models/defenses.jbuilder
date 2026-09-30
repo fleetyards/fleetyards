@@ -8,8 +8,8 @@ json.array! @defenses do |row|
   json.id model.id
   json.name model.name
   json.slug model.slug
-  json.size model.size
-  json.manufacturer_code model.manufacturer&.code
+  json.size model.size if model.size.present?
+  json.manufacturer_code model.manufacturer.code if model.manufacturer&.code.present?
 
   if row.armor.present?
     json.armor do
