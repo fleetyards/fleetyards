@@ -35,6 +35,13 @@ json.media do
 end
 
 json.size component.size
+
+if (temperature = component.temperature).present?
+  json.temperature do
+    temperature.each { |key, value| json.set! key, value }
+  end
+end
+
 json.tracking_signal component.tracking_signal
 json.tracking_signal_label component.tracking_signal_label
 json.type component.item_type

@@ -184,6 +184,20 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a component's temperature model" do
+    create(:component, name: "Tempprobe Hot", heat_connection: {"overheat_temperature" => 383.0})
+    create(:component, name: "Tempprobe Cold")
+
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Tempprobe"}} do
+      by_name = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert_equal({"overheatTemperature" => 383.0}, by_name["Tempprobe Hot"]["temperature"])
+      assert_not by_name["Tempprobe Cold"].key?("temperature")
+    end
+  end
+
   test "GET /components carries the cheapest price of each direction" do
     component = create(:component, name: "CF-227 Badger")
     create(:item_price, item: component, price_type: :buy, price: 3400)
