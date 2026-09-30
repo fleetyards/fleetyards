@@ -329,6 +329,12 @@ describe("Markdown", () => {
     expect(wrapper.text()).toContain("{width=33%}");
   });
 
+  it("refuses an image with the page's origin but another scheme", async () => {
+    const wrapper = await mount("![b](blob:https://fleetyards.test/1234)");
+
+    expect(wrapper.find("img").exists()).toBe(false);
+  });
+
   it("keeps an image source from breaking out of its attribute", async () => {
     const wrapper = await mount(
       '![a](https://robertsspaceindustries.com/"onerror="alert(1))',

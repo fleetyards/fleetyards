@@ -37,6 +37,10 @@ export const isSafeMarkdownSrc = (url: string) => {
   if (UNSAFE_CHARACTER.test(url)) return false;
   if (SAME_ORIGIN_PATH.test(url)) return true;
 
+  // The origin alone would let `blob:https://fleetyards.net/…` through, which
+  // has the page's origin but is no address on it.
+  if (!/^https?:\/\//i.test(url)) return false;
+
   const origin = originOf(url);
 
   return !!origin && imageOrigins().has(origin);
