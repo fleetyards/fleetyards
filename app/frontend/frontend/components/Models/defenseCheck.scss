@@ -1,0 +1,444 @@
+// Shared by the deflection and penetration checks: the same health pools,
+// size filter, tally and threshold-split table, read from opposite ends.
+.intro {
+  font-size: 12px;
+  color: $gray-light;
+  margin-bottom: 14px;
+}
+
+.empty {
+  padding: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: $gray;
+}
+
+// Filter and size buttons share one full-width row; the tally sits on its own
+// line below so neither has to compete with it for space.
+.controls {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 8px;
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+  }
+}
+
+.pools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pool {
+  padding: 10px 12px;
+  background: $gray-black;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 6px;
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gray;
+  }
+
+  &__pct {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: $gold;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__range {
+    display: block;
+    width: 100%;
+    margin: 6px 0 8px;
+    accent-color: $gold;
+    cursor: ew-resize;
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    font-size: 11px;
+    color: $gray;
+  }
+
+  &__hp {
+    color: $gray-light;
+    font-variant-numeric: tabular-nums;
+
+    strong {
+      color: lighten($text-color, 15%);
+    }
+  }
+
+  &__kind {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__stat {
+    font-variant-numeric: tabular-nums;
+
+    strong {
+      color: lighten($text-color, 15%);
+    }
+  }
+}
+
+.type-filter {
+  flex: 0 0 210px;
+  min-width: 0;
+  margin: 0;
+
+  @media (max-width: 640px) {
+    flex: 1 1 100%;
+  }
+}
+
+.sizes {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 4px;
+
+  &__btn {
+    // Share the remaining width evenly rather than sitting cramped at the left,
+    // and wrap to a second line on a phone before a label is cut off.
+    flex: 1 1 0;
+    height: 43px;
+    min-width: 40px;
+    padding: 0 6px;
+    border-radius: 4px;
+    border: 1px solid rgba($gray-light, 0.28);
+    background: $gray-black;
+    color: $gray-light;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover {
+      color: lighten($text-color, 15%);
+      border-color: rgba($gray-light, 0.5);
+    }
+
+    &--active {
+      border-color: rgba($gold, 0.6);
+      color: $gold;
+    }
+  }
+}
+
+.tally {
+  margin-bottom: 14px;
+  text-align: right;
+  font-size: 12px;
+  color: $gray;
+
+  &__absorbed {
+    font-weight: 700;
+    color: $primary;
+  }
+
+  &__deflected {
+    font-weight: 700;
+    color: $success;
+  }
+
+  &__pierce {
+    font-weight: 700;
+    color: $danger;
+  }
+
+  &__sep {
+    margin: 0 4px;
+  }
+}
+
+// A fixed table layout is the whole point here: column widths are decided by
+// the colgroup alone, so no amount of long weapon names or six-figure margins
+// can push the table wider than the modal.
+// The modal body is itself a scroll container, so an inner scroller with its
+// own max-height gives two nested scrollbars. Capping the wrapper at the same
+// height means the body never scrolls and only the weapon list does.
+.check-modal {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 15rem);
+}
+
+.table-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dtable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  &__col-name {
+    width: auto;
+  }
+
+  &__col-bar {
+    width: 34%;
+  }
+
+  &__col-num {
+    width: 76px;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: $panel-bg;
+    text-align: left;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gray;
+    padding: 0 10px 6px 0;
+    border-bottom: 1px solid rgba($gray-light, 0.28);
+  }
+
+  td {
+    padding: 7px 10px 7px 0;
+    border-bottom: 1px solid rgba($gray-light, 0.18);
+    color: $text-color;
+    overflow: hidden;
+  }
+
+  .num {
+    text-align: right;
+    padding-right: 0;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  &__row {
+    cursor: default;
+
+    &:hover td {
+      background: rgba($gray-light, 0.06);
+    }
+  }
+
+  &__divider td {
+    padding: 6px 0;
+    text-align: center;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray;
+    border-bottom: 0;
+    border-top: 1px dashed rgba($gray-light, 0.4);
+  }
+
+  &__name {
+    // Long names ellipsis rather than widening the column.
+    max-width: 0;
+  }
+
+  &__title {
+    display: block;
+    font-size: 13.5px;
+    color: lighten($text-color, 15%);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 7px;
+    font-size: 11px;
+    color: $gray;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__size {
+    color: $gray-light;
+  }
+
+  &__type {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__shielded {
+    display: block;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $primary;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__alpha {
+    font-size: 14px;
+    font-weight: 700;
+    color: lighten($text-color, 15%);
+  }
+}
+
+.margin {
+  &--absorbed {
+    color: $gray;
+  }
+
+  &--deflected {
+    color: $success;
+    font-weight: 700;
+  }
+
+  &--pierces {
+    color: $danger;
+    font-weight: 700;
+  }
+}
+
+// Two halves meeting at the deflection threshold: deflected fills leftwards
+// from the centre, piercing fills rightwards.
+.bar {
+  display: flex;
+  align-items: center;
+  height: 10px;
+
+  &__half {
+    flex: 1 1 0;
+    display: flex;
+    height: 100%;
+    min-width: 0;
+    justify-content: flex-end;
+    border-right: 1px solid rgba($gray-light, 0.45);
+
+    &--right {
+      justify-content: flex-start;
+      border-right: 0;
+    }
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 2px;
+
+    &--deflect {
+      background: $success;
+    }
+
+    &--pierce {
+      background: $danger;
+    }
+  }
+}
+
+.detail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: $gray-black;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: $gray-light;
+  min-height: 40px;
+
+  &__name {
+    font-weight: 700;
+    color: lighten($text-color, 15%);
+  }
+
+  &__raw {
+    color: $gray;
+  }
+
+  &__absorbed {
+    color: $primary;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  &__verdict {
+    margin-left: auto;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    &--pierces {
+      background: rgba($danger, 0.18);
+      color: $danger;
+    }
+
+    &--deflected {
+      background: rgba($success, 0.18);
+      color: $success;
+    }
+
+    &--absorbed {
+      background: rgba($primary, 0.18);
+      color: $primary;
+    }
+  }
+
+  &__hint {
+    color: $gray;
+  }
+}
+
+.note {
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: $gray;
+}
