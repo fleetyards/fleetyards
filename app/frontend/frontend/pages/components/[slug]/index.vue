@@ -15,6 +15,8 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
+import { useComponentStats } from "@/frontend/composables/useComponentStats";
+import { useComponentDurability } from "@/frontend/composables/useComponentDurability";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import {
   type Component,
@@ -35,6 +37,14 @@ const { updateMetaInfo } = useMetaInfo();
 // query of its own -- the history tab is a sibling route and would otherwise
 // fetch the same component a second time.
 const component = computed(() => props.component);
+
+const stats = useComponentStats(component);
+
+// A component with durability figures and no category metrics has no metrics
+// card at all: its "nothing recorded" note would contradict the cards beside it.
+const durabilityGroups = useComponentDurability(
+  () => component.value?.durability,
+);
 
 // What this can be crafted from. Asked only once the component has arrived,
 // since the recipe is looked up by its id -- 476 of the catalogue's components
@@ -200,7 +210,10 @@ watch(
     </p>
 
     <div class="component-page__columns">
-      <ComponentStatsCard :component="component" />
+      <ComponentStatsCard
+        v-if="stats.length || !durabilityGroups.length"
+        :component="component"
+      />
 
       <div class="component-page__rail">
         <MetricsCard
