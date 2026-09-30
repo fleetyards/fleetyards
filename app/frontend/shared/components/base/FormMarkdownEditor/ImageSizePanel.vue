@@ -32,19 +32,16 @@ const options: { size: ImageSize | null; key: string }[] = [
 
 <template>
   <div
-    class="base-markdown-editor__panel"
-    role="group"
+    class="markdown-image-size"
+    role="toolbar"
     :aria-label="t('markdownEditor.imageSize')"
     data-test="markdown-editor-image-size"
   >
-    <span class="base-markdown-editor__panel-label">
-      {{ t("markdownEditor.imageSize") }}
-    </span>
-    <div class="base-markdown-editor__panel-actions">
+    <div class="markdown-image-size__options">
       <Btn
         v-for="option in options"
         :key="option.key"
-        :size="BtnSizesEnum.SM"
+        :size="BtnSizesEnum.XS"
         :active="option.size === size"
         :aria-pressed="option.size === size"
         :data-test="`markdown-editor-image-size-${option.size ?? 'full'}`"
@@ -58,10 +55,17 @@ const options: { size: ImageSize | null; key: string }[] = [
 </template>
 
 <style lang="scss" scoped>
-@import "./panel";
+// Floats over the selected image, so it carries its own surface.
+.markdown-image-size {
+  padding: 4px;
+  background-color: var(--color-field, rgb(18 20 23 / 0.96));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-control, 8px);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.4);
+}
 
-.base-markdown-editor__panel-label {
-  color: var(--color-text-dim, #959595);
-  font-size: 0.875rem;
+.markdown-image-size__options {
+  display: flex;
+  gap: 4px;
 }
 </style>

@@ -1,7 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { EditorContent } from "@tiptap/vue-3";
 import type { Editor } from "@tiptap/core";
-import { flushPromises, type VueWrapper } from "@vue/test-utils";
+import { DOMWrapper, flushPromises, type VueWrapper } from "@vue/test-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { nextTick } from "vue";
 import Component from "./index.vue";
@@ -54,6 +54,24 @@ const nextFrames = async () => {
   }
   await nextTick();
 };
+
+// The size toolbar floats: the menu plugin moves it and hides it by style.
+const sizeToolbar = () =>
+  document.querySelector<HTMLElement>(
+    '[data-test="markdown-editor-image-size"]',
+  );
+
+const sizeToolbarShown = () => {
+  const toolbar = sizeToolbar();
+  return !!toolbar && toolbar.parentElement?.style.visibility !== "hidden";
+};
+
+const sizeButton = (size: string) =>
+  new DOMWrapper(
+    document.querySelector(
+      `[data-test="markdown-editor-image-size-${size}"]`,
+    ) as Element,
+  );
 
 const button = (subject: VueWrapper, key: string) =>
   subject.find(`[data-test="markdown-editor-${key}"]`);
@@ -240,36 +258,28 @@ describe("FormMarkdownEditor", () => {
     expect(lastEmitted(subject)).toBe("Cargo & mining");
   });
 
-  it("offers the size of a selected image and changes it", async () => {
+  it("offers the size of a selected image over it and changes it", async () => {
     const subject = await mountEditor({
       name: "description",
       modelValue: "![cover](https://robertsspaceindustries.com/a.jpg)",
     });
+    await nextFrames();
 
-    expect(
-      subject.find('[data-test="markdown-editor-image-size"]').exists(),
-    ).toBe(false);
+    expect(sizeToolbarShown()).toBe(false);
 
     editorOf(subject).chain().focus().setNodeSelection(0).run();
     await nextFrames();
+    expect(sizeToolbarShown()).toBe(true);
 
-    await subject
-      .find('[data-test="markdown-editor-image-size-50"]')
-      .trigger("click");
+    await sizeButton("50").trigger("click");
     expect(lastEmitted(subject)).toBe(
       "![cover](https://robertsspaceindustries.com/a.jpg){width=50%}",
     );
 
     await nextFrames();
-    expect(
-      subject
-        .find('[data-test="markdown-editor-image-size-50"]')
-        .attributes("aria-pressed"),
-    ).toBe("true");
+    expect(sizeButton("50").attributes("aria-pressed")).toBe("true");
 
-    await subject
-      .find('[data-test="markdown-editor-image-size-full"]')
-      .trigger("click");
+    await sizeButton("full").trigger("click");
     expect(lastEmitted(subject)).toBe(
       "![cover](https://robertsspaceindustries.com/a.jpg)",
     );

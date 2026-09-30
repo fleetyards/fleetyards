@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
+import { BubbleMenu } from "@tiptap/vue-3/menus";
+import type { Editor as TiptapEditor } from "@tiptap/core";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import { defineAsyncComponent, type MaybeRef } from "vue";
 import { useField, type RuleExpression } from "vee-validate";
@@ -114,8 +116,6 @@ let emitted: string | null = props.modelValue ?? null;
 let loaded = props.modelValue ?? "";
 let loadedAs: string | undefined;
 
-const focused = ref(false);
-
 const setMarkdown = (markdown: string) => {
   if (markdown === emitted) return;
 
@@ -147,11 +147,7 @@ const editor = useEditor({
 
     setMarkdown(markdown === loadedAs ? loaded : markdown);
   },
-  onFocus: () => {
-    focused.value = true;
-  },
   onBlur: () => {
-    focused.value = false;
     handleBlur(undefined, true);
   },
 });
@@ -314,11 +310,27 @@ const closeImageDialog = () => {
   editor.value?.commands.focus();
 };
 
-// Selecting an image in the text offers its size -- while the text is being
-// edited, not because a description happens to open on an image.
-const imageSelected = computed(
-  () => focused.value && !sourceMode.value && !!editor.value?.isActive("image"),
-);
+// A selected image offers its size in a small toolbar over it -- while the
+// text is being edited, not because a description opens on an image.
+const showImageSize = ({
+  editor: instance,
+  view,
+}: {
+  editor: TiptapEditor;
+  view: TiptapEditor["view"];
+}) =>
+  instance.isEditable &&
+  !sourceMode.value &&
+  view.hasFocus() &&
+  instance.isActive("image");
+
+// Inside the image's top edge rather than above it: above, it would sit on the
+// editor's own toolbar whenever the image is at the top of the text.
+const imageSizeMenuOptions = {
+  placement: "top" as const,
+  offset: -44,
+  shift: { padding: 8 },
+};
 
 const imageSize = computed(
   () => (editor.value?.getAttributes("image").size as ImageSize | null) ?? null,
@@ -443,11 +455,6 @@ defineExpose({ setFocus: focusEditor });
         @remove="removeLink"
         @close="closePanel"
       />
-      <ImageSizePanel
-        v-if="imageSelected && !panel"
-        :size="imageSize"
-        @select="setImageSize"
-      />
       <Teleport to="body">
         <ImageDialog
           v-if="imageDialogOpen"
@@ -471,6 +478,16 @@ defineExpose({ setFocus: focusEditor });
         @input="onSourceInput"
         @blur="handleBlur(undefined, true)"
       />
+      <BubbleMenu
+        v-if="editor"
+        :editor="editor"
+        plugin-key="markdownEditorImageSize"
+        :should-show="showImageSize"
+        :update-delay="0"
+        :options="imageSizeMenuOptions"
+      >
+        <ImageSizePanel :size="imageSize" @select="setImageSize" />
+      </BubbleMenu>
       <EditorContent
         v-show="!sourceMode"
         :id="id"
