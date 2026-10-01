@@ -63,7 +63,7 @@ Fleetyards frontend. Components here should be:
 - **BreadCrumbs/** — Breadcrumb navigation
 - **Chart/** — Chart/graph component
 - **CommunityLogo/** — Community/project logo
-- **AppNavigation/** — Main navigation (with NavItem, Items, Mobile, etc.)
+- **AppNavigation/** — Main navigation (with NavItem, Items, Mobile, etc.), and the header's BackButton, shown only in an installed app
 - **Avatar/** — User avatar
 - **BackgroundImage/** — Background image utility
 - **AppFooter/** — Application footer
