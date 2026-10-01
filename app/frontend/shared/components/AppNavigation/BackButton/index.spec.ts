@@ -81,10 +81,12 @@ describe("AppNavigationBackButton", () => {
       "/ships/carrack",
       "/components/size-4-quantum-drive",
     ]);
-    const back = vi.spyOn(router, "back");
+    const arrived = new Promise<string>((resolve) => {
+      router.afterEach((to) => resolve(to.fullPath));
+    });
 
     await backButton(wrapper).trigger("click");
 
-    expect(back).toHaveBeenCalled();
+    expect(await arrived).toBe("/ships/carrack");
   });
 });
