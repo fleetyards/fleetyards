@@ -20191,9 +20191,13 @@ components:
           type: number
         powerConsumption:
           type: number
+        powerMinimumFraction:
+          type: number
         powerRanges:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
+          type: number
+        signatureIr:
           type: number
         damagePerShot:
           "$ref": "#/components/schemas/ComponentWeaponDamage"
