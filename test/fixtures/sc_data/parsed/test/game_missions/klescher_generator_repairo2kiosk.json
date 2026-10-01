@@ -34,5 +34,9 @@
   ],
   "blueprint_pools": [],
   "location_kind": "surface",
-  "needs_landing": true
+  "needs_landing": true,
+  "location_template_refs": [
+    "0b300a25-8b9d-48cc-86db-7fe4c11bf9e2",
+    "27883d79-3de2-41cf-85cd-31c2191a5103"
+  ]
 }

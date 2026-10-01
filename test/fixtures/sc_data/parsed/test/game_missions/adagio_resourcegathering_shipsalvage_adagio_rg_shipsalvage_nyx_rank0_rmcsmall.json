@@ -36,5 +36,6 @@
     "16a99583-68a3-4f0e-b03c-87d70f6172dc"
   ],
   "location_kind": "space",
-  "needs_landing": false
+  "needs_landing": false,
+  "location_template_refs": []
 }

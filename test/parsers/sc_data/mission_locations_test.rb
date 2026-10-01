@@ -115,7 +115,16 @@ module ScData
       test "a contract without a location slot is unknown" do
         result = classify({"Speed" => {"MissionPropertyValue_Float" => {"value" => "1"}}})
 
-        assert_equal({location_kind: "unknown", needs_landing: false}, result)
+        assert_equal({location_kind: "unknown", needs_landing: false, location_template_refs: []}, result)
+      end
+
+      # Which templates a slot can pick is what ties a contract to a place; the
+      # starmap parser says which place each template stands for.
+      test "the templates a slot can pick are returned by ref" do
+        location(TAG_IDS[:surface], TAG_IDS[:stanton1])
+        location(TAG_IDS[:space], TAG_IDS[:mercenary])
+
+        assert_equal [location_ref(0)], classify(search(TAG_IDS[:stanton1]))[:location_template_refs]
       end
 
       test "a surface delivery needs landing" do
@@ -202,12 +211,17 @@ module ScData
         @locations << {
           key: "Location#{@locations.size}",
           values: {
+            "__ref" => location_ref(@locations.size),
             "locationData" => {
               "disabled" => disabled ? "1" : "0",
               "generalTags" => {"tags" => {"Reference" => tags.map { |id| {"value" => id} }}}
             }
           }
         }
+      end
+
+      private def location_ref(index)
+        format("20000000-0000-4000-8000-%012d", index)
       end
 
       private def loader(templates)

@@ -85,6 +85,7 @@ module ScData
         ::ScData::Parser::EquipmentParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::BlueprintsParser.new(base_folder:, sc_version:, sc_environment:).all
         ::ScData::Parser::ContractsParser.new(base_folder:, sc_version:, sc_environment:).all
+        ::ScData::Parser::StarmapParser.new(base_folder:, sc_version:, sc_environment:).all
 
         write_manifest(base_folder:, sc_version:, sc_environment:)
       end

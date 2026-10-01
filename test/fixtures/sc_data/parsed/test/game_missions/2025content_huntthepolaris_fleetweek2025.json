@@ -32,5 +32,6 @@
   ],
   "blueprint_pools": [],
   "location_kind": "space",
-  "needs_landing": false
+  "needs_landing": false,
+  "location_template_refs": []
 }
