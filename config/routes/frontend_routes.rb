@@ -39,6 +39,10 @@ namespace :frontend, **frontend_options do
   # anywhere else.
   get "catalogue/missions/:slug", to: "base#mission", as: :game_mission
 
+  # The same, for a place. Top level rather than under the catalogue: a place
+  # is somewhere you go, not something you buy or fit.
+  get "locations/:slug", to: "base#location", as: :location
+
   # Where the trade routes page lived until the Vue 3 migration dropped it.
   # External link lists still point here.
   get "trade-routes", to: redirect("/tools/trade-routes/", status: 301)
