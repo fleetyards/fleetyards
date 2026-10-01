@@ -128,6 +128,24 @@
       bottom: -1px;
     }
 
+    /*
+     * Loading options, the bottom cap runs the way a loading button's does: it
+     * fills left to right and clears the same way. The keyframes are this
+     * component's own copy, since a scoped stylesheet cannot reach another's.
+     */
+    &.is-loading::after {
+      background-color: rgb(122 130 136 / 0.35);
+      background-image: linear-gradient(
+        to right,
+        var(--color-primary, #428bca) 80%,
+        transparent 100%
+      );
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: 0% 100%;
+      animation: base-select-fill-rightward 1.8s linear infinite;
+    }
+
     &:focus-visible {
       --field-cap: var(--color-primary, #428bca);
 
@@ -395,5 +413,32 @@
     right: 0;
     width: max-content;
     min-width: 8rem;
+  }
+}
+
+@keyframes base-select-fill-rightward {
+  0% {
+    background-position: left center;
+    background-size: 0% 100%;
+  }
+  50% {
+    background-position: left center;
+    background-size: 100% 100%;
+  }
+  50.01% {
+    background-position: right center;
+    background-size: 100% 100%;
+  }
+  100% {
+    background-position: right center;
+    background-size: 0% 100%;
+  }
+}
+
+// Still says it is working, without the run travelling.
+@media (prefers-reduced-motion: reduce) {
+  .base-select-title.is-loading::after {
+    animation: none;
+    background-size: 100% 100%;
   }
 }

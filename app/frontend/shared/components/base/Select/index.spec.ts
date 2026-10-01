@@ -217,21 +217,21 @@ describe("BaseSelect", () => {
       ).toBe(true);
     });
 
-    it("runs a loading line under the trigger while it queries", async () => {
+    it("runs its caps the way a loading button does while it queries", async () => {
       const queryFn = vi.fn().mockReturnValue(new Promise(() => {}));
       const wrapper = await mount({ options: undefined, queryFn });
 
-      const line = wrapper.find(
-        "[data-test='base-select-title'] [data-test='loading-line']",
-      );
-      expect(line.classes()).toContain("loading-line--active");
-      expect(line.classes()).toContain("loading-line--top");
+      const trigger = wrapper.find("[data-test='base-select-title']");
+      expect(trigger.classes()).toContain("is-loading");
+      expect(trigger.find("[role='status']").text()).not.toBe("");
     });
 
-    it("has no loading line without a query", async () => {
+    it("never shows a loading state without a query", async () => {
       const wrapper = await mount();
 
-      expect(wrapper.find("[data-test='loading-line']").exists()).toBe(false);
+      const trigger = wrapper.find("[data-test='base-select-title']");
+      expect(trigger.classes()).not.toContain("is-loading");
+      expect(trigger.find("[role='status']").exists()).toBe(false);
     });
 
     it("debounces the search and resets to the first page", async () => {

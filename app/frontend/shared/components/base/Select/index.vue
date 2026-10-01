@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup generic="T">
 import Collapsed from "@/shared/components/Collapsed.vue";
-import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
@@ -202,6 +201,9 @@ const triggerLabel = computed(() =>
 const loading = computed(() => {
   return isLoading.value || isFetching.value;
 });
+
+// Only a select that asks for its options waits on anything.
+const querying = computed(() => !!props.queryFn && loading.value);
 
 /* eslint-disable @tanstack/query/exhaustive-deps */
 const { isLoading, isFetching, data, refetch } = useQuery({
@@ -1046,6 +1048,7 @@ defineExpose({
         disabled,
         selected: selectedOptions.length > 0,
         hasLabel: labelVisible,
+        'is-loading': querying,
       }"
       class="base-select-title"
       data-test="base-select-title"
@@ -1054,9 +1057,11 @@ defineExpose({
       <span class="base-select-title-prompt">
         {{ prompt }}
       </span>
-      <!-- The top edge: the bottom one carries the trigger's focus and error
-           bar. -->
-      <LoadingLine v-if="props.queryFn" :loading="loading" />
+      <!-- Mounted for the select's whole life and only its text changes: a
+           live region announces a change, not its own arrival. -->
+      <span v-if="props.queryFn" class="sr-only" role="status">
+        {{ querying ? t("labels.loading") : "" }}
+      </span>
       <i class="fa fa-chevron-down" />
     </button>
     <Collapsed
