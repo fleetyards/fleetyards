@@ -100,7 +100,9 @@ const ownRoute = computed(() =>
   >
     <template v-if="craftable?.name || materials.length" #default>
       <div v-if="craftable?.name" class="blueprint-stats-card__section">
-        <span class="stats-card__label">{{ t("labels.blueprint.makes") }}</span>
+        <span class="blueprint-stats-card__label">{{
+          t("labels.blueprint.makes")
+        }}</span>
         <!-- A link, not another hover card: a card opening inside a card would
            leave the reader two layers deep in something meant as a glance. -->
         <router-link
@@ -120,7 +122,7 @@ const ownRoute = computed(() =>
       </div>
 
       <div v-if="materials.length" class="blueprint-stats-card__section">
-        <span class="stats-card__label">
+        <span class="blueprint-stats-card__label">
           {{ t("labels.blueprint.materials") }}
         </span>
         <div class="blueprint-stats-card__materials">
@@ -141,8 +143,13 @@ const ownRoute = computed(() =>
 
 <style lang="scss" scoped>
 @import "@/shared/components/catalogueToken";
+@import "@/frontend/components/StatsCard/label";
 
 .blueprint-stats-card {
+  &__label {
+    @include stats-card-label;
+  }
+
   &__section {
     display: flex;
     flex-direction: column;

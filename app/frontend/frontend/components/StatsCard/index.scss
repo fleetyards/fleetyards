@@ -3,21 +3,7 @@
 // compact card floating over a list has its own, denser layout below.
 @import "@/shared/components/metricsCard";
 @import "@/shared/components/skeleton";
-
-@mixin stats-card-label {
-  font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-text-dim, #959595);
-}
-
-// The per-type cards add sections of their own through the slot, labelled the
-// way the card's own are. Slotted markup keeps its author's scope, so the rule
-// has to reach it explicitly.
-:slotted(.stats-card__label) {
-  @include stats-card-label;
-}
+@import "label";
 
 .stats-card__note {
   margin: 0;

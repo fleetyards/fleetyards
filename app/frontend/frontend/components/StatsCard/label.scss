@@ -1,0 +1,10 @@
+// The card's small tracked labels, shared with the per-type cards that add
+// sections of their own through its slot: slotted markup keeps its author's
+// scope, so the card's own rule cannot reach it.
+@mixin stats-card-label {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+}
