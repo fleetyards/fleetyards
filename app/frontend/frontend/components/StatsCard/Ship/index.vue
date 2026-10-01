@@ -35,10 +35,10 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t } = useI18n();
 
-// Flyable is the state worth calling out; the rest are steps on the way.
+// Flyable is the state worth calling out. Hangar ready is not flyable, so it
+// stays neutral with the other steps on the way.
 const STATUS_TONES: Record<string, StatsCardStatusTone> = {
   "flight-ready": "success",
-  ready: "success",
   "in-production": "warning",
 };
 
