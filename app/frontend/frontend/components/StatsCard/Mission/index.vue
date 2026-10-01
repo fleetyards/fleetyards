@@ -9,6 +9,7 @@ import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 import { useI18n } from "@/shared/composables/useI18n";
+import { missionTextPlain } from "@/frontend/components/MissionText/index";
 import { type GameMission } from "@/services/fyApi";
 
 type Props = {
@@ -78,7 +79,7 @@ const ownRoute = computed(() =>
 <template>
   <StatsCard
     compact
-    :title="mission?.name || name || ''"
+    :title="missionTextPlain(mission?.name || name || '')"
     variant="slim"
     :subtitle="subtitle"
     :stats="stats"
