@@ -1099,7 +1099,16 @@
         "armorHealth": "Panzerungszustand des Ziels",
         "ship": "Schiff",
         "hoverHint": "Fahre über ein Schiff für die Aufschlüsselung je Waffe.",
-        "note": "Jedes gewählte Geschütz wird nach denselben Regeln wie bei der Ablenkungsprüfung gegen die Schilde und die Panzerungsablenkung jedes Schiffs geprüft; ein Schiff gilt als durchschlagen, sobald eines davon durchkommt, und wird nach dem Geschütz sortiert, das am nächsten herankommt. Schiffe ohne Panzerung fehlen, da es keine Schwelle zu überschreiten gibt."
+        "note": "Jedes gewählte Geschütz wird nach denselben Regeln wie bei der Ablenkungsprüfung gegen die Schilde und die Panzerungsablenkung jedes Schiffs geprüft; ein Schiff gilt als durchschlagen, sobald eines davon durchkommt, und wird nach dem Geschütz sortiert, das am nächsten herankommt. Schiffe ohne Panzerung fehlen, da es keine Schwelle zu überschreiten gibt.",
+        "sortBy": "Sortieren nach",
+        "sort": {
+          "margin": "Abstand",
+          "ttk": "Zeit bis zur Zerstörung"
+        },
+        "ttk": "TTK",
+        "effectiveHp": "Effektive HP",
+        "shieldsDown": "Schilde unten",
+        "ttkNote": "Die Zeit bis zur Zerstörung nutzt den anhaltenden Schaden pro Sekunde der gewählten Geschütze bei der aktuellen Energieverteilung, ausgehend von der oben eingestellten Schild- und Panzerungsgesundheit. Schilde nehmen den Schaden, den sie absorbieren, abzüglich ihres Widerstands, und reichen den Rest an die Panzerung weiter, die ihn trägt, bis sie bricht, und ihn dann an die Hülle weitergibt; Verzerrung zehrt nur an den Schilden. Schilde regenerieren nur, solange jedes Geschütz länger als ihre Regenerationsverzögerung pausiert, und einmal unten bleiben sie unten. Effektive HP sind der Rohschaden eines Typs, der nötig ist, um das Schiff zu zerstören, ohne Ablenkung. Strahlwaffen und Raketen fehlen, wie bei der Durchschlagsprüfung."
       },
       "deflectionCheck": {
         "title": "Ablenkungsprüfung",

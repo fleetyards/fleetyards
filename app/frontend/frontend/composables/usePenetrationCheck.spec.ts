@@ -49,6 +49,7 @@ const GLADIUS: ModelDefense = {
   shields: [
     {
       maxHealth: 6336,
+      maxRegen: 0,
       absorption: {
         physical: { min: 0, max: 0.45 },
         energy: { min: 1, max: 1 },
@@ -76,7 +77,7 @@ const NO_ARMOR: ModelDefense = {
   id: "bare",
   name: "Bare",
   slug: "bare",
-  shields: [{ maxHealth: 1000 }],
+  shields: [{ maxHealth: 1000, maxRegen: 0 }],
 };
 
 const targets = () => penetrationTargets([GLADIUS, ASGARD, NO_ARMOR]);
@@ -232,6 +233,30 @@ describe("collectLoadoutWeapons", () => {
     ]);
     expect(weapons[0].damagePerShot.energy).toBe(30);
     expect(weapons[0].damagePerShot.physical).toBe(0);
+  });
+
+  it("carries each gun's sustained damage and duty cycle", () => {
+    // 600 rpm, overheating after 5 s of fire and recovering in 5 s.
+    const [cannon] = collectLoadoutWeapons([
+      gun("cannon", {
+        damagePerShot: { physical: 100 },
+        fireRate: 600,
+        heatPerShot: 2,
+        heat: { overheatTemperature: 100, overheatFixTime: 5 },
+      }),
+    ]);
+
+    expect(cannon.sustainedDps.physical).toBeCloseTo(500);
+    expect(cannon.duty).toEqual({ ratio: 0.5, offTime: 5, cycle: 10 });
+  });
+
+  it("fires nothing with the weapon system unpowered", () => {
+    const [cannon] = collectLoadoutWeapons(
+      [gun("cannon", { damagePerShot: { physical: 100 }, fireRate: 600 })],
+      0,
+    );
+
+    expect(cannon.sustainedDps.physical).toBe(0);
   });
 
   it("ignores guns whose only damage the check does not weigh", () => {

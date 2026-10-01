@@ -19,7 +19,11 @@ module V1
             deflectionPhysical: {type: :number},
             deflectionEnergy: {type: :number},
             deflectionDistortion: {type: :number},
-            deflectionThermal: {type: :number}
+            deflectionThermal: {type: :number},
+            selfResistancePhysical: {type: :number},
+            selfResistanceEnergy: {type: :number},
+            selfResistanceDistortion: {type: :number},
+            selfResistanceThermal: {type: :number}
           },
           additionalProperties: false
         })

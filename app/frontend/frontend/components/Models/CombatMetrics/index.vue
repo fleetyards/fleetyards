@@ -112,6 +112,7 @@ const openPenetrationCheck = () => {
     props: {
       modelName: props.modelName,
       hardpoints: props.hardpoints,
+      powerRatio: stats.value.weaponPowerRatio,
     },
   });
 };

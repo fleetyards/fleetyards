@@ -16,15 +16,24 @@ import {
   usePenetrationCheck,
   type PenetrationResult,
 } from "@/frontend/composables/usePenetrationCheck";
+import {
+  effectiveHp,
+  killProfile,
+  timeToKill,
+} from "@/frontend/composables/useTimeToKill";
+import { DEFLECTION_DAMAGE_TYPES } from "@/frontend/composables/useDeflectionCheck";
 
 type Props = {
   modelName?: string;
   hardpoints?: Hardpoint[];
+  // Share of the weapon pool the power allocation feeds, as on the combat card.
+  powerRatio?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelName: "",
   hardpoints: () => [],
+  powerRatio: 1,
 });
 
 const { t, toNumber } = useI18n();
@@ -40,7 +49,9 @@ const SIZE_ORDER = [
   "capital",
 ];
 
-const loadoutWeapons = computed(() => collectLoadoutWeapons(props.hardpoints));
+const loadoutWeapons = computed(() =>
+  collectLoadoutWeapons(props.hardpoints, props.powerRatio),
+);
 
 // Everything the loadout mounts starts selected; a click takes a gun out of
 // (or back into) the comparison.
@@ -90,6 +101,77 @@ const check = usePenetrationCheck(
   () => armorHealth.value / 100,
 );
 
+const SORT_OPTIONS = ["margin", "ttk"] as const;
+
+const sortBy = ref<(typeof SORT_OPTIONS)[number]>("margin");
+
+const start = computed(() => ({
+  shieldHealth: shieldHealth.value / 100,
+  armorHealth: armorHealth.value / 100,
+}));
+
+const profiles = computed(
+  () =>
+    new Map(
+      filteredTargets.value.map((target) => [
+        target.model.id,
+        killProfile(target.model, target.shield, target.armor),
+      ]),
+    ),
+);
+
+const kills = computed(
+  () =>
+    new Map(
+      [...profiles.value].map(([id, profile]) => [
+        id,
+        timeToKill(profile, selectedWeapons.value, start.value),
+      ]),
+    ),
+);
+
+const killTime = (entry: PenetrationResult) =>
+  kills.value.get(entry.model.id)?.kill ?? null;
+
+// Ships the loadout never brings down sort after every kill, and ships with no
+// hull health to measure after those.
+const killRank = (time: number | null) => {
+  if (time === null) return 2;
+  return Number.isFinite(time) ? 0 : 1;
+};
+
+const byKillTime = (a: PenetrationResult, b: PenetrationResult) => {
+  const timeA = killTime(a);
+  const timeB = killTime(b);
+  const rank = killRank(timeA) - killRank(timeB);
+
+  if (rank !== 0 || killRank(timeA) !== 0) return rank;
+  return timeA! - timeB!;
+};
+
+const rows = computed(() =>
+  sortBy.value === "ttk"
+    ? [...check.value.results].sort(byKillTime)
+    : check.value.results,
+);
+
+// Tenths of a second under a minute, whole seconds as m:ss beyond it. Rounded
+// before the branch so 59.97 s reads 1:00, not 60 s.
+const formatTime = (seconds: number | null) => {
+  if (seconds === null) return "—";
+  if (!Number.isFinite(seconds)) return "∞";
+
+  const tenths = Math.round(seconds * 10) / 10;
+  if (tenths < 60) {
+    return tenths
+      ? toNumber(tenths, "seconds")
+      : t("number.seconds", { count: 0 });
+  }
+
+  const whole = Math.round(seconds);
+  return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, "0")}`;
+};
+
 const humanizeSize = (size: string) => {
   const words = size.replace(/_/g, " ");
   return words.charAt(0).toUpperCase() + words.slice(1);
@@ -123,6 +205,18 @@ const detail = computed(
     check.value.results.find((entry) => entry.model.id === hovered.value) ??
     null,
 );
+
+// Effective HP does not depend on the guns, and only the hovered ship shows it.
+const detailSurvival = computed(() => {
+  const id = detail.value?.model.id;
+  const profile = id ? profiles.value.get(id) : undefined;
+  if (!id || !profile) return undefined;
+
+  return {
+    ehp: effectiveHp(profile, start.value),
+    ttk: kills.value.get(id)!,
+  };
+});
 </script>
 
 <template>
@@ -229,6 +323,25 @@ const detail = computed(
               {{ humanizeSize(size) }}
             </button>
           </div>
+
+          <div
+            class="sizes"
+            role="group"
+            :aria-label="t('labels.penetrationCheck.sortBy')"
+          >
+            <button
+              v-for="option in SORT_OPTIONS"
+              :key="option"
+              type="button"
+              class="sizes__btn"
+              data-test="penetration-sort"
+              :class="{ 'sizes__btn--active': sortBy === option }"
+              :aria-pressed="sortBy === option"
+              @click="sortBy = option"
+            >
+              {{ t(`labels.penetrationCheck.sort.${option}`) }}
+            </button>
+          </div>
         </div>
 
         <div class="tally" data-test="penetration-tally">
@@ -264,6 +377,7 @@ const detail = computed(
                 <col class="dtable__col-bar" />
                 <col class="dtable__col-num" />
                 <col class="dtable__col-num" />
+                <col class="dtable__col-num" />
               </colgroup>
               <thead>
                 <tr>
@@ -273,22 +387,21 @@ const detail = computed(
                   </th>
                   <th class="num">{{ t("labels.deflectionCheck.margin") }}</th>
                   <th class="num">{{ t("labels.deflectionCheck.defl") }}</th>
+                  <th class="num">{{ t("labels.penetrationCheck.ttk") }}</th>
                 </tr>
               </thead>
               <tbody>
-                <template
-                  v-for="(entry, index) in check.results"
-                  :key="entry.model.id"
-                >
+                <template v-for="(entry, index) in rows" :key="entry.model.id">
                   <tr
                     v-if="
+                      sortBy === 'margin' &&
                       index > 0 &&
-                      entry.outcome !== check.results[index - 1].outcome &&
+                      entry.outcome !== rows[index - 1].outcome &&
                       entry.outcome !== 'absorbed'
                     "
                     class="dtable__divider"
                   >
-                    <td colspan="4">
+                    <td colspan="5">
                       {{
                         entry.outcome === "pierces"
                           ? t("labels.deflectionCheck.threshold")
@@ -359,6 +472,10 @@ const detail = computed(
                         {{ num(round(threshold(entry)!)) }}
                       </template>
                     </td>
+
+                    <td class="num" data-test="penetration-ttk">
+                      {{ formatTime(killTime(entry)) }}
+                    </td>
                   </tr>
                 </template>
               </tbody>
@@ -391,6 +508,38 @@ const detail = computed(
               >
                 {{ t(`labels.deflectionCheck.verdict.${detail.outcome}`) }}
               </span>
+              <template v-if="detailSurvival">
+                <span class="detail__break" />
+                <span class="detail__name">
+                  {{ t("labels.penetrationCheck.effectiveHp") }}
+                </span>
+                <span
+                  v-for="type in DEFLECTION_DAMAGE_TYPES"
+                  :key="type.key"
+                  class="detail__type"
+                  data-test="penetration-ehp"
+                >
+                  {{ t(type.label) }}
+                  <strong>
+                    <template v-if="detailSurvival.ehp[type.key] === null">
+                      —
+                    </template>
+                    <template v-else>
+                      {{ num(round(detailSurvival.ehp[type.key]!)) }}
+                    </template>
+                  </strong>
+                </span>
+                <span class="detail__type">
+                  {{ t("labels.penetrationCheck.shieldsDown") }}
+                  <strong>
+                    {{ formatTime(detailSurvival.ttk.shieldsDown) }}
+                  </strong>
+                </span>
+                <span class="detail__type">
+                  {{ t("labels.penetrationCheck.ttk") }}
+                  <strong>{{ formatTime(detailSurvival.ttk.kill) }}</strong>
+                </span>
+              </template>
             </template>
             <span v-else class="detail__hint">
               {{ t("labels.penetrationCheck.hoverHint") }}
@@ -398,6 +547,7 @@ const detail = computed(
           </div>
 
           <p class="note">{{ t("labels.penetrationCheck.note") }}</p>
+          <p class="note">{{ t("labels.penetrationCheck.ttkNote") }}</p>
         </template>
       </template>
     </div>
@@ -406,6 +556,11 @@ const detail = computed(
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/defenseCheck";
+
+.detail__break {
+  flex-basis: 100%;
+  height: 0;
+}
 
 .weapons {
   display: flex;

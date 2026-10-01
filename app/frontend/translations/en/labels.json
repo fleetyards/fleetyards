@@ -1099,7 +1099,16 @@
         "armorHealth": "Target armor health",
         "ship": "Ship",
         "hoverHint": "Hover a ship for the per-weapon breakdown.",
-        "note": "Each selected gun is tested against every ship's shields and armor deflection with the same rules as the deflection check; a ship is pierced when any one of them gets through, and ranked by the gun that comes closest. Ships without armor are left out, since there is no threshold to cross."
+        "note": "Each selected gun is tested against every ship's shields and armor deflection with the same rules as the deflection check; a ship is pierced when any one of them gets through, and ranked by the gun that comes closest. Ships without armor are left out, since there is no threshold to cross.",
+        "sortBy": "Sort by",
+        "sort": {
+          "margin": "Margin",
+          "ttk": "Time to kill"
+        },
+        "ttk": "TTK",
+        "effectiveHp": "Effective HP",
+        "shieldsDown": "Shields down",
+        "ttkNote": "Time to kill uses the selected guns' sustained damage per second, under the current power allocation, from the shield and armor health set above. Shields take the damage they absorb, less their resistance, and pass the rest to the armor, which takes it until it breaks and then hands it to the hull; distortion only ever drains shields. Shields regenerate only while every gun is paused for longer than their regen delay, and once down they stay down. Effective HP is the raw damage of one type it takes to destroy the ship, without deflection. Beams and missiles are left out, as in the penetration check."
       },
       "deflectionCheck": {
         "title": "Deflection Check",

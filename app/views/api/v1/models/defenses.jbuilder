@@ -10,6 +10,7 @@ json.array! @defenses do |row|
   json.slug model.slug
   json.size model.size if model.size.present?
   json.manufacturer_code model.manufacturer.code if model.manufacturer&.code.present?
+  json.hull_health model.hull_health.to_f if model.hull_health.present?
 
   if row.armor.present?
     json.armor do
@@ -18,12 +19,15 @@ json.array! @defenses do |row|
       damage_types.each do |type|
         json.set! "damage_#{type}", (row.armor["damage_#{type}"] || 1).to_f
         json.set! "deflection_#{type}", row.armor["deflection_#{type}"].to_f
+        json.set! "self_resistance_#{type}", (row.armor["self_resistance_#{type}"] || 1).to_f
       end
     end
   end
 
   json.shields row.shields do |shield|
     json.max_health shield["max_health"].to_f
+    json.max_regen shield["max_regen"].to_f
+    json.damaged_regen_delay shield["damaged_regen_delay"].to_f if shield["damaged_regen_delay"].present?
 
     %w[absorption resistance].each do |field|
       ranges = shield[field]

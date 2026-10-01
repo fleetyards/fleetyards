@@ -141,32 +141,55 @@ function isMissile(weapon: ComponentWeapon): boolean {
 // power pool can't feed every gun at once) scales an energy weapon's effective
 // pool and regen, shrinking its uptime — the shared-pool sustained throttle.
 // Heat-limited (ballistic) weapons aren't power-fed, so they ignore powerRatio.
+export function shotsPerSecond(weapon: ComponentWeapon): number {
+  return ((weapon.pelletsPerShot || 1) * (weapon.fireRate || 0)) / 60;
+}
+
 export function sustainedRatio(
   weapon: ComponentWeapon,
   powerRatio = 1,
 ): number {
+  return dutyCycle(weapon, powerRatio).ratio;
+}
+
+export type DutyCycle = {
+  ratio: number;
+  // Seconds the weapon spends not firing in each cycle, and the cycle's length.
+  // Zero off-time is a weapon that never has to stop.
+  offTime: number;
+  cycle: number;
+};
+
+const CONTINUOUS: DutyCycle = { ratio: 1, offTime: 0, cycle: 0 };
+const SILENT: DutyCycle = { ratio: 0, offTime: Infinity, cycle: Infinity };
+
+export function dutyCycle(weapon: ComponentWeapon, powerRatio = 1): DutyCycle {
   const fireRate = weapon.fireRate ? weapon.fireRate / 60 : 0;
-  if (fireRate <= 0) return 1;
+  if (fireRate <= 0) return CONTINUOUS;
 
   const regen = weapon.regen;
   if (regen?.maxAmmoLoad && regen.maxRegenPerSecond) {
     const pool = Math.round(regen.maxAmmoLoad * powerRatio);
     const regenPerSecond = regen.maxRegenPerSecond * powerRatio;
-    if (pool <= 0 || regenPerSecond <= 0) return 0;
+    if (pool <= 0 || regenPerSecond <= 0) return SILENT;
     const timeFiring = pool / fireRate;
-    const timeRegen = pool / regenPerSecond;
-    const cooldown = regen.regenerationCooldown || 0;
-    return timeFiring / (timeFiring + cooldown + timeRegen);
+    const offTime = (regen.regenerationCooldown || 0) + pool / regenPerSecond;
+    return cycleOf(timeFiring, offTime);
   }
 
   const heat = weapon.heat;
   if (heat?.overheatTemperature && weapon.heatPerShot && heat.overheatFixTime) {
     const timeFiring =
       heat.overheatTemperature / (weapon.heatPerShot * fireRate);
-    return timeFiring / (timeFiring + heat.overheatFixTime);
+    return cycleOf(timeFiring, heat.overheatFixTime);
   }
 
-  return 1;
+  return CONTINUOUS;
+}
+
+function cycleOf(timeFiring: number, offTime: number): DutyCycle {
+  const cycle = timeFiring + offTime;
+  return { ratio: timeFiring / cycle, offTime, cycle };
 }
 
 export function computeLoadoutStats(
@@ -214,11 +237,11 @@ export function computeLoadoutStats(
       addBreakdown(weaponDps, weapon.damagePerSecond, powered);
     } else if (!isMissile(weapon) && weapon.fireRate && weapon.damagePerShot) {
       const pellets = weapon.pelletsPerShot || 1;
-      const shotsPerSecond = (pellets * weapon.fireRate) / 60;
+      const rate = shotsPerSecond(weapon);
       addBreakdown(alpha, weapon.damagePerShot, pellets * powered);
-      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond * powered);
-      addBreakdown(sustainedDps, weapon.damagePerShot, shotsPerSecond * ratio);
-      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond * powered);
+      addBreakdown(dps, weapon.damagePerShot, rate * powered);
+      addBreakdown(sustainedDps, weapon.damagePerShot, rate * ratio);
+      addBreakdown(weaponDps, weapon.damagePerShot, rate * powered);
     } else {
       // Missiles (and other non-DPS munitions) don't contribute to DPS/alpha,
       // but their total payload damage is surfaced separately.
