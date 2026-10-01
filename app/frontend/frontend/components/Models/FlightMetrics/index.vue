@@ -7,11 +7,13 @@ export default {
 <script lang="ts" setup>
 import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import type { Model } from "@/services/fyApi";
+import { formatBoostFigure } from "@/frontend/composables/useHardpointStats";
+import type { ComponentBoostCapacitor, Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   model: Model;
+  boostCapacitor?: ComponentBoostCapacitor;
 };
 
 const props = defineProps<Props>();
@@ -49,6 +51,34 @@ const hasFuel = computed(
     !!props.model.metrics.hydrogenFuelTankSize ||
     !!props.model.metrics.quantumFuelTankSize,
 );
+
+// The installed flight controller's boost pool. Ground vehicles have none.
+const boostRows = computed(() => {
+  const capacitor = props.boostCapacitor;
+  if (!capacitor || isGroundVehicle.value) return [];
+
+  const figure = (value?: number) =>
+    formatBoostFigure(value, t("number.format.separator"));
+
+  return [
+    capacitor.capacity && {
+      label: t("labels.flight.boostCapacity"),
+      value: figure(capacitor.capacity),
+    },
+    capacitor.regenPerSecond && {
+      label: t("labels.flight.boostRegen"),
+      value: `${figure(capacitor.regenPerSecond)}/s`,
+    },
+    capacitor.regenDelay && {
+      label: t("labels.flight.boostRegenDelay"),
+      value: `${figure(capacitor.regenDelay)} s`,
+    },
+    (capacitor.rampUpTime || capacitor.rampDownTime) && {
+      label: t("labels.flight.boostRamp"),
+      value: `${figure(capacitor.rampUpTime)} / ${figure(capacitor.rampDownTime)} s`,
+    },
+  ].filter((row): row is { label: string; value: string } => !!row);
+});
 
 // Fuel is what the speeds are spent on, so it reads here rather than among the
 // base dimensions — and a ship with tanks but no recorded speeds still shows it.
@@ -182,6 +212,23 @@ const rotations = computed(() =>
             </span>
           </span>
           <span class="flight-rot__label">{{ axis.label }}</span>
+        </div>
+      </div>
+    </template>
+
+    <template v-if="hasSpeeds && boostRows.length">
+      <div class="metrics-card__divider" />
+      <div class="metrics-card__section-label">
+        {{ t("labels.flight.boostCapacitor") }}
+      </div>
+      <div class="metrics-card__rows metrics-card__rows--split">
+        <div
+          v-for="row in boostRows"
+          :key="row.label"
+          class="metrics-card__row"
+        >
+          <span class="metrics-card__row__label">{{ row.label }}</span>
+          <span class="metrics-card__row__value">{{ row.value }}</span>
         </div>
       </div>
     </template>

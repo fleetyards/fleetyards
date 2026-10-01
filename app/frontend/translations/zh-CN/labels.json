@@ -907,6 +907,11 @@
         "hardpoints": "挂载点"
       },
       "flight": {
+        "boostCapacitor": "加力电容",
+        "boostCapacity": "容量",
+        "boostRegen": "恢复",
+        "boostRegenDelay": "恢复延迟",
+        "boostRamp": "升 / 降时间",
         "title": "飞行",
         "scm": "战斗巡航",
         "nav": "巡航",
@@ -1471,6 +1476,17 @@
         "powerPlants": {
           "output": "输出",
           "pips": "能量档"
+        },
+        "flightControllers": {
+          "scmSpeed": "SCM 速度",
+          "boostSpeed": "加力速度",
+          "navSpeed": "导航速度",
+          "rotation": "俯仰 / 偏航 / 滚转",
+          "boostedRotation": "加力俯仰 / 偏航 / 滚转",
+          "boostCapacity": "加力容量",
+          "boostRegen": "加力恢复",
+          "boostRegenDelay": "加力恢复延迟",
+          "boostRamp": "加力升 / 降时间"
         },
         "quantumDrives": {
           "speed": "速度",

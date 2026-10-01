@@ -31,9 +31,11 @@ import {
 } from "@/frontend/composables/useEquippedHardpoints";
 import {
   useModelHardpoints as useModelHardpointsQuery,
+  HardpointCategoryEnum,
   HardpointGroupEnum,
   HardpointSourceEnum,
   type CargoHold,
+  type ComponentController,
   type Hardpoint,
   type Model,
 } from "@/services/fyApi";
@@ -127,6 +129,30 @@ const equippedModules = inject<Ref<EquippedModules>>(
 const loadoutHardpoints = useEquippedHardpoints(
   () => hardpoints.value as Hardpoint[] | undefined,
   equippedModules,
+);
+
+// Only a flight controller carries speeds, which tells it apart from the
+// shield and missile controllers sharing its category.
+const findFlightController = (
+  list?: Hardpoint[],
+): ComponentController | undefined => {
+  for (const hardpoint of list || []) {
+    const typeData = hardpoint.component?.typeData as
+      ComponentController | undefined;
+    if (
+      hardpoint.category === HardpointCategoryEnum.CONTROLLER &&
+      typeData?.scmSpeed
+    ) {
+      return typeData;
+    }
+    const nested = findFlightController(hardpoint.hardpoints);
+    if (nested) return nested;
+  }
+  return undefined;
+};
+
+const flightController = computed(() =>
+  findFlightController(toValue(loadoutHardpoints)),
 );
 
 // User pip choices from the Power Distribution control; empty = auto (default).
@@ -261,7 +287,10 @@ useMetricsMasonry(metricsGrid);
           :hull-parts="model.metrics.hullParts"
           :hull-doors="model.metrics.hullDoors"
         />
-        <ModelFlightMetrics :model="model" />
+        <ModelFlightMetrics
+          :model="model"
+          :boost-capacitor="flightController?.boostCapacitor"
+        />
         <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
         <ModelExternalFuelTanks :model="model" />
         <ModelRefuelBoom :model="model" />

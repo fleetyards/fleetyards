@@ -907,6 +907,11 @@
         "hardpoints": "Aufhängungspunkte"
       },
       "flight": {
+        "boostCapacitor": "Boost-Kondensator",
+        "boostCapacity": "Kapazität",
+        "boostRegen": "Regeneration",
+        "boostRegenDelay": "Regenerationsverzögerung",
+        "boostRamp": "Anlauf / Auslauf",
         "title": "Flug",
         "scm": "Kampfgeschwindigkeit",
         "nav": "Reisegeschwindigkeit",
@@ -1471,6 +1476,17 @@
         "powerPlants": {
           "output": "Leistung",
           "pips": "Pips"
+        },
+        "flightControllers": {
+          "scmSpeed": "SCM-Geschwindigkeit",
+          "boostSpeed": "Boost-Geschwindigkeit",
+          "navSpeed": "Nav-Geschwindigkeit",
+          "rotation": "Nicken / Gieren / Rollen",
+          "boostedRotation": "Nicken / Gieren / Rollen mit Boost",
+          "boostCapacity": "Boost-Kapazität",
+          "boostRegen": "Boost-Regeneration",
+          "boostRegenDelay": "Boost-Regenerationsverzögerung",
+          "boostRamp": "Boost-Anlauf / -Auslauf"
         },
         "quantumDrives": {
           "speed": "Geschwindigkeit",
