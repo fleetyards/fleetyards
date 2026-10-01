@@ -8,7 +8,6 @@ export default {
 import html2canvas from "html2canvas";
 import downloadJs from "downloadjs";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   BtnSizesEnum,
@@ -84,7 +83,6 @@ const download = async () => {
     :size="size"
     @click="download"
   >
-    <SmallLoader :loading="downloading" />
     <i class="fa-duotone fa-image" />
     <span v-if="withLabel">
       {{ t("actions.saveScreenshot") }}
