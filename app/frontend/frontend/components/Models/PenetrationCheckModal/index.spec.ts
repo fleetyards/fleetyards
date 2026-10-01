@@ -113,7 +113,7 @@ describe("ModelPenetrationCheckModal", () => {
 
     expect(times()).toEqual([
       ["heavy", "∞"],
-      ["light", "2.0 s"],
+      ["light", "2 s"],
     ]);
 
     const byTtk = wrapper

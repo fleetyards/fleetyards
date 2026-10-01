@@ -110,47 +110,66 @@ const start = computed(() => ({
   armorHealth: armorHealth.value / 100,
 }));
 
-const survival = computed(
+const profiles = computed(
   () =>
     new Map(
-      filteredTargets.value.map((target) => {
-        const profile = killProfile(target.model, target.shield, target.armor);
+      filteredTargets.value.map((target) => [
+        target.model.id,
+        killProfile(target.model, target.shield, target.armor),
+      ]),
+    ),
+);
 
-        return [
-          target.model.id,
-          {
-            ehp: effectiveHp(profile, start.value),
-            ttk: timeToKill(profile, selectedWeapons.value, start.value),
-          },
-        ];
-      }),
+const kills = computed(
+  () =>
+    new Map(
+      [...profiles.value].map(([id, profile]) => [
+        id,
+        timeToKill(profile, selectedWeapons.value, start.value),
+      ]),
     ),
 );
 
 const killTime = (entry: PenetrationResult) =>
-  survival.value.get(entry.model.id)?.ttk.kill ?? null;
+  kills.value.get(entry.model.id)?.kill ?? null;
 
-// Ships with no hull health to measure sort last, after those the loadout
-// never brings down.
-const killOrder = (entry: PenetrationResult) => {
-  const time = killTime(entry);
-  return time === null ? Number.MAX_VALUE : time;
+// Ships the loadout never brings down sort after every kill, and ships with no
+// hull health to measure after those.
+const killRank = (time: number | null) => {
+  if (time === null) return 2;
+  return Number.isFinite(time) ? 0 : 1;
+};
+
+const byKillTime = (a: PenetrationResult, b: PenetrationResult) => {
+  const timeA = killTime(a);
+  const timeB = killTime(b);
+  const rank = killRank(timeA) - killRank(timeB);
+
+  if (rank !== 0 || killRank(timeA) !== 0) return rank;
+  return timeA! - timeB!;
 };
 
 const rows = computed(() =>
   sortBy.value === "ttk"
-    ? [...check.value.results].sort((a, b) => killOrder(a) - killOrder(b))
+    ? [...check.value.results].sort(byKillTime)
     : check.value.results,
 );
 
+// Tenths of a second under a minute, whole seconds as m:ss beyond it. Rounded
+// before the branch so 59.97 s reads 1:00, not 60 s.
 const formatTime = (seconds: number | null) => {
   if (seconds === null) return "—";
   if (!Number.isFinite(seconds)) return "∞";
-  if (seconds < 60) return `${seconds.toFixed(seconds < 10 ? 1 : 0)} s`;
 
-  const minutes = Math.floor(seconds / 60);
-  const rest = Math.round(seconds % 60);
-  return `${minutes}:${String(rest).padStart(2, "0")}`;
+  const tenths = Math.round(seconds * 10) / 10;
+  if (tenths < 60) {
+    return tenths
+      ? toNumber(tenths, "seconds")
+      : t("number.seconds", { count: 0 });
+  }
+
+  const whole = Math.round(seconds);
+  return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, "0")}`;
 };
 
 const humanizeSize = (size: string) => {
@@ -187,9 +206,17 @@ const detail = computed(
     null,
 );
 
-const detailSurvival = computed(() =>
-  detail.value ? survival.value.get(detail.value.model.id) : undefined,
-);
+// Effective HP does not depend on the guns, and only the hovered ship shows it.
+const detailSurvival = computed(() => {
+  const id = detail.value?.model.id;
+  const profile = id ? profiles.value.get(id) : undefined;
+  if (!id || !profile) return undefined;
+
+  return {
+    ehp: effectiveHp(profile, start.value),
+    ttk: kills.value.get(id)!,
+  };
+});
 </script>
 
 <template>
