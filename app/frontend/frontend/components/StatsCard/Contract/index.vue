@@ -63,11 +63,14 @@ const badges = computed<StatsCardBadge[]>(() => {
   const contract = props.contract;
   if (!contract) return [];
 
+  // `toNumber` reads zero as a missing figure, and a contract may pay nothing.
+  const reward = Number(contract.reward);
+
   return [
     {
       key: "reward",
       label: t("labels.fleets.contracts.reward"),
-      value: String(toNumber(contract.reward, "integer")),
+      value: reward ? String(toNumber(reward, "integer")) : "0",
       unit: t("number.units.uec"),
     },
     ...(contract.deadline
