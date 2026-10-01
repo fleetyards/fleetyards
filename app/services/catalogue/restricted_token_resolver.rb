@@ -22,8 +22,9 @@ module Catalogue
 
     TYPES = [*FLEET_TYPES.values.map { |type| type[:model].name }, ::User.name].freeze
 
-    # What a token cannot hold, so a title carrying one cannot be offered.
-    UNWRITABLE = /[*\]\n]/
+    # How many rows the search reads per result it may offer, for the ones the
+    # policy turns down.
+    CANDIDATES_PER_RESULT = 5
 
     # `fleet_reader` is who the fleet tokens resolve for, which is nobody when
     # the request's OAuth token may not read fleets: the pages would refuse it.
@@ -104,14 +105,14 @@ module Catalogue
     end
 
     # The reader's friends and the people who share a fleet with them -- the
-    # ones a writer means when naming somebody. Whether a token then links is
-    # still the reader's question, asked again at lookup.
+    # ones a writer means when naming somebody. Fleet-mates only for a fleet
+    # reader, since who is in a fleet is fleet data. Whether a token then
+    # links is still the reader's question, asked again at lookup.
     private def search_users(query)
       return [] if @reader.blank?
 
       escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
-      fleet_ids = ::FleetMembership.kept.accepted.where(user: @reader, fleet: ::Fleet.kept).select(:fleet_id)
-      fleet_mate_ids = ::FleetMembership.kept.accepted.where(fleet_id: fleet_ids).select(:user_id)
+      fleet_mate_ids = ::FleetMembership.kept.accepted.where(fleet_id: readable_fleets.select(:id)).select(:user_id)
 
       ::User.where(id: ::Friendship.partner_ids_for(@reader)).or(::User.where(id: fleet_mate_ids))
         .where.not(id: @reader.id)
@@ -124,34 +125,42 @@ module Catalogue
         end
     end
 
-    # A query may name the fleet the way the token does, `FID/Title`.
+    # A query may name the fleet the way the token does, `FID/Title`. One
+    # whose part before the slash is no fleet of the reader's is a title with
+    # a slash in it.
     private def search_fleet_records(prefix, query)
-      fid, title = query.include?("/") ? query.split("/", 2).map(&:strip) : [nil, query]
-      return [] if title.blank?
+      fleets = readable_fleets.select { |fleet| fleet_type_open?(prefix, fleet) }
+      fid, title = query.split("/", 2).map(&:strip) if query.include?("/")
+
+      if fid.present? && (named = fleets.select { |fleet| fleet.normalized_fid == fid.downcase }).any?
+        fleets = named
+      else
+        title = query
+      end
+
+      return [] if title.blank? || fleets.empty?
 
       type = FLEET_TYPES.fetch(prefix)
-      fleets = readable_fleets
-      fleets = fleets.where(normalized_fid: fid.downcase) if fid.present?
-      fleets = fleets.select { |fleet| fleet_type_open?(prefix, fleet) }.index_by(&:id)
-      return [] if fleets.empty?
+      fleets = fleets.index_by(&:id)
 
       escaped = ActiveRecord::Base.sanitize_sql_like(title.downcase)
 
       # Only titles one record of its fleet carries, which are the ones a token
-      # can name; the slug of a group of one is its record's.
-      found = type[:model].where(fleet_id: fleets.keys)
+      # can name; the id of a group of one is its record's. The policy then
+      # drops what the reader may not open, so the database is asked for more
+      # than is offered.
+      ids = type[:model].where(fleet_id: fleets.keys)
         .where("lower(title) LIKE ?", "%#{escaped}%")
+        .where.not("title LIKE '%*%' OR title LIKE '%]%' OR title LIKE ?", "%\n%")
         .group(:fleet_id, Arel.sql("lower(title)"))
         .having("count(*) = 1")
         .order(starts_with("lower(title)", escaped), Arel.sql("min(length(title))"), Arel.sql("lower(title)"))
-        .limit(TokenResolver::SEARCH_LIMIT)
-        .pluck(:fleet_id, Arel.sql("min(slug)"))
+        .limit(TokenResolver::SEARCH_LIMIT * CANDIDATES_PER_RESULT)
+        .pluck(Arel.sql("min(id::text)"))
 
-      records = found.group_by(&:first).flat_map do |fleet_id, slugs|
-        type[:model].where(fleet_id:, slug: slugs.map(&:last)).to_a
-      end
+      records = type[:model].where(id: ids).index_by { |record| record.id.to_s }.values_at(*ids).compact
 
-      records.reject { |record| record.title.match?(UNWRITABLE) }.select { |record| visible?(type, record) }.map do |record|
+      records.select { |record| visible?(type, record) }.first(TokenResolver::SEARCH_LIMIT).map do |record|
         fleet = fleets.fetch(record.fleet_id)
 
         ranked(record.title, title, TokenResolver::Match.new(token: "#{prefix}:#{fleet.fid}/#{record.title}",

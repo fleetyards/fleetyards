@@ -195,5 +195,40 @@ module Catalogue
       assert_equal ["user:pilot-mate", "user:pilot-friend"].sort, searched(@member, "user:pilot").sort
       assert_empty searched(nil, "user:pilot")
     end
+
+    test "offers fleet-mates only to a fleet reader" do
+      friend = create(:user, username: "pilot-friend")
+      create(:friendship, :accepted, requester: friend, addressee: @member)
+      create(:fleet_membership, :accepted, fleet: @fleet, user: create(:user, username: "pilot-mate"))
+
+      found = TokenResolver.new(reader: @member, fleet_reader: nil).search("user:pilot").map(&:token)
+
+      assert_equal ["user:pilot-friend"], found
+    end
+
+    # The policy filters after the database has picked its rows, so a page of
+    # rows the reader may not open must not leave them with nothing.
+    test "offers a visible contract behind more hidden ones than one page holds" do
+      create_list(:fleet_contract, TokenResolver::SEARCH_LIMIT, fleet: @fleet, created_by: @admin) do |contract, index|
+        contract.update!(title: "Cargo #{index}")
+      end
+      create(:fleet_contract, :published, fleet: @fleet, created_by: @admin, title: "Cargo Run Extended")
+
+      assert_equal ["contract:MARU/Cargo Run Extended"], searched(@member, "contract:cargo")
+    end
+
+    test "searches a title with a slash in it without its FID" do
+      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Ops 1/2")
+
+      assert_equal ["event:MARU/Ops 1/2"], searched(@member, "event:ops 1/2")
+      assert_equal ["event:MARU/Ops 1/2"], searched(@member, "event:maru/ops 1/2")
+    end
+
+    test "offers no title a token cannot hold" do
+      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Mining *Night*")
+
+      assert_empty searched(@member, "event:mining night")
+      assert_equal ["event:MARU/Weekly Mining"], searched(@member, "event:mining")
+    end
   end
 end
