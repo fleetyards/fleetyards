@@ -83,6 +83,11 @@ module Shared
 
             durability: ::Shared::V1::Schemas::ComponentDurability,
 
+            # Absent for an item whose temperature model is switched off, which
+            # is most of them.
+            temperature: ::Shared::V1::Schemas::ComponentTemperature,
+            misfire: ::Shared::V1::Schemas::ComponentMisfire,
+
             # Detail responses only -- a list omits it rather than paying an
             # association hit per row, which is why it is not required.
             hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},

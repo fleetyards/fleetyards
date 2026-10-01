@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import ComponentThermalMetrics from "@/frontend/components/Components/ThermalMetrics/index.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import DurabilityMetrics from "@/frontend/components/Components/DurabilityMetrics/index.vue";
 import StatGroups from "@/frontend/components/Components/StatGroups/index.vue";
@@ -249,6 +250,8 @@ watch(
         <StatGroups :groups="modeGroups" test-prefix="mode" />
 
         <DurabilityMetrics :durability="component.durability" />
+
+        <ComponentThermalMetrics :component="component" />
 
         <!-- Above the recipe card, because when nothing sells a component the
              answer it gives is "made from the recipe below". -->

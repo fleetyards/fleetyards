@@ -503,6 +503,8 @@
         "contractCovers": "Contract covers"
       },
       "component": {
+        "temperature": "Temperature",
+        "misfire": "Misfire",
         "history": "History",
         "craftedFrom": "Crafted from",
         "identity": "Details",

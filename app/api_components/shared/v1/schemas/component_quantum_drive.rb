@@ -29,6 +29,7 @@ module Shared
             interdictionEffectTime: {type: :number},
             splineJumpParams: ::Shared::V1::Schemas::ComponentQuantumDriveJump,
             quantumBoostParams: ::Shared::V1::Schemas::ComponentQuantumDriveBoost,
+            jumpHeat: ::Shared::V1::Schemas::ComponentQuantumDriveJumpHeat,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

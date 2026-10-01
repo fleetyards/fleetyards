@@ -501,6 +501,8 @@
         "contractCovers": "Visuels de contrat"
       },
       "component": {
+        "temperature": "Température",
+        "misfire": "Défaillance",
         "history": "Historique",
         "craftedFrom": "Fabriqué à partir de",
         "identity": "Détails",

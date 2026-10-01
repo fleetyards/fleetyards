@@ -1297,6 +1297,23 @@
         "copySameModel": "La nave di destinazione deve essere diversa da quella di origine."
       },
       "component": {
+        "temperature": {
+          "minCooling": "Raffredda da",
+          "overheat": "Surriscalda a",
+          "warning": "Avviso a",
+          "recovery": "Si riprende a",
+          "misfireRange": "Intervallo di malfunzionamento",
+          "irStart": "IR da",
+          "irPerKelvin": "IR per K"
+        },
+        "misfire": {
+          "heat": "Calore",
+          "distortion": "Distorsione",
+          "damage": "Danno",
+          "wear": "Usura",
+          "window": "Finestra",
+          "hint": "Il livello di ogni stato da cui il componente può iniziare a malfunzionare, come lo indicano i file di gioco."
+        },
         "availability": {
           "retired": "I prezzi sono rilevati per la build su cui si trova il catalogo, e questo pezzo non ne fa parte.",
           "craftedOnly": "Nessun terminale lo vende: si produce con la ricetta qui sotto.",
@@ -1503,7 +1520,8 @@
           "splineAccel": "Accelerazione in orbita",
           "splineSpoolUpTime": "Avvio in orbita",
           "splineCooldownTime": "Raffreddamento in orbita",
-          "splineInterdictionTime": "Interdizione in orbita"
+          "splineInterdictionTime": "Interdizione in orbita",
+          "jumpHeat": "Calore di salto"
         },
         "jumpDrives": {
           "fuelEfficiency": "Efficienza carburante",

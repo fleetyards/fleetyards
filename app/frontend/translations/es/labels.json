@@ -1297,6 +1297,23 @@
         "copySameModel": "La nave de destino debe ser distinta de la nave de origen."
       },
       "component": {
+        "temperature": {
+          "minCooling": "Refrigera desde",
+          "overheat": "Se sobrecalienta a",
+          "warning": "Aviso a",
+          "recovery": "Se recupera a",
+          "misfireRange": "Rango de fallo",
+          "irStart": "IR desde",
+          "irPerKelvin": "IR por K"
+        },
+        "misfire": {
+          "heat": "Calor",
+          "distortion": "Distorsión",
+          "damage": "Daño",
+          "wear": "Desgaste",
+          "window": "Ventana",
+          "hint": "El nivel de cada estado a partir del cual el componente puede empezar a fallar, según los archivos del juego."
+        },
         "availability": {
           "retired": "Los precios se registran para la versión en la que está el catálogo, y esta pieza no está en ella.",
           "craftedOnly": "Ninguna terminal lo vende: se fabrica con la receta de abajo.",
@@ -1503,7 +1520,8 @@
           "splineAccel": "Aceleración en órbita",
           "splineSpoolUpTime": "Carga en órbita",
           "splineCooldownTime": "Enfriamiento en órbita",
-          "splineInterdictionTime": "Interdicción en órbita"
+          "splineInterdictionTime": "Interdicción en órbita",
+          "jumpHeat": "Calor de salto"
         },
         "jumpDrives": {
           "fuelEfficiency": "Eficiencia de combustible",

@@ -1015,6 +1015,32 @@ export const useHardpointStats = (
       if (qd.cooldownTime) {
         result.push(secondsStat("quantumDrives.cooldownTime", qd.cooldownTime));
       }
+      // One figure when every phase of the jump puts out the same heat, as
+      // every drive in the current build does; the five in order otherwise.
+      const jumpHeat = qd.jumpHeat
+        ? [
+            qd.jumpHeat.preRampUp,
+            qd.jumpHeat.rampUp,
+            qd.jumpHeat.inFlight,
+            qd.jumpHeat.rampDown,
+            qd.jumpHeat.postRampDown,
+          ].filter((heat): heat is number => typeof heat === "number")
+        : [];
+      if (jumpHeat.length) {
+        result.push({
+          label: t("labels.hardpoint.quantumDrives.jumpHeat"),
+          value: (new Set(jumpHeat).size === 1
+            ? jumpHeat.slice(0, 1)
+            : jumpHeat
+          )
+            .map((heat) =>
+              Math.round(heat) === 0
+                ? "0"
+                : String(toNumber(Math.round(heat), "integer")),
+            )
+            .join(" / "),
+        });
+      }
       if (qd.stageOneAccelRate && qd.stageTwoAccelRate) {
         result.push({
           label: t("labels.hardpoint.quantumDrives.accel"),

@@ -501,6 +501,8 @@
         "contractCovers": "Portadas de contrato"
       },
       "component": {
+        "temperature": "Temperatura",
+        "misfire": "Fallo",
         "history": "Historial",
         "craftedFrom": "Se fabrica con",
         "identity": "Detalles",

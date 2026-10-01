@@ -501,6 +501,8 @@
         "contractCovers": "Auftrags-Titelbilder"
       },
       "component": {
+        "temperature": "Temperatur",
+        "misfire": "Fehlfunktion",
         "history": "Historie",
         "craftedFrom": "Herstellbar aus",
         "identity": "Details",

@@ -1297,6 +1297,23 @@
         "copySameModel": "目标飞船必须与源飞船不同。"
       },
       "component": {
+        "temperature": {
+          "minCooling": "冷却起始",
+          "overheat": "过热温度",
+          "warning": "警告温度",
+          "recovery": "恢复温度",
+          "misfireRange": "故障温度范围",
+          "irStart": "红外起始",
+          "irPerKelvin": "每开红外"
+        },
+        "misfire": {
+          "heat": "热量",
+          "distortion": "扭曲",
+          "damage": "损伤",
+          "wear": "磨损",
+          "window": "时间窗口",
+          "hint": "游戏文件中给出的各项状态阈值，达到后组件可能开始发生故障。"
+        },
         "availability": {
           "retired": "价格只针对目录当前所在的版本记录，而该部件不在其中。",
           "craftedOnly": "没有终端出售此物品——它由下方的配方制造。",
@@ -1503,7 +1520,8 @@
           "splineAccel": "轨道加速",
           "splineSpoolUpTime": "轨道预热",
           "splineCooldownTime": "轨道冷却",
-          "splineInterdictionTime": "轨道拦截"
+          "splineInterdictionTime": "轨道拦截",
+          "jumpHeat": "跃迁热量"
         },
         "jumpDrives": {
           "fuelEfficiency": "燃料效率",
