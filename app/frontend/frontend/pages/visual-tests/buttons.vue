@@ -151,22 +151,23 @@ const toggleLoadingShowcase = () => {
     </div>
   </div>
 
-  <Heading :level="HeadingLevelEnum.H2">Loading — the caps carry it</Heading>
+  <Heading :level="HeadingLevelEnum.H2"
+    >Loading — the bottom cap carries it</Heading
+  >
   <p>
-    One fill travels around the outside: left to right along the top cap, on
-    along the bottom cap right to left, and the top clears behind it as soon as
-    the bottom picks the run up — so the lit run is one cap long and neither cap
-    waits. Nothing is inserted beside the label, so the button neither grows nor
-    reflows when it starts working. It also needs no opt-in: the
-    <code>spinner</code> prop this replaces was passed at 12 of 51 loading call
-    sites, so most of them showed nothing at all. A fill is always one run
-    anchored to an edge, which is what makes it hold on a 23px icon-button cap
-    where a travelling marker read as two nubs in the corners. Where there are
-    no caps the surface takes the same run in the one direction it has, in from
-    the left and out to the right, at half the pace: it is the whole control
-    rather than a 2px edge, and at the cap's speed it reads as the button
-    flashing. Neutral borrows the hover accent, since its resting cap is already
-    grey.
+    The bottom cap fills left to right and clears the same way, one run that
+    never doubles back, while the top cap stays as it is. The bottom cap is
+    where every surface says it is loading - a select's trigger, a panel, a
+    modal - so a button speaks the same language. Nothing is inserted beside the
+    label, so the button neither grows nor reflows when it starts working. It
+    also needs no opt-in: the <code>spinner</code> prop this replaces was passed
+    at 12 of 51 loading call sites, so most of them showed nothing at all. A
+    fill is always one run anchored to an edge, which is what makes it hold on a
+    23px icon-button cap where a travelling marker read as a nub in a corner.
+    Where there are no caps the surface takes the same run, at half the pace: it
+    is the whole control rather than a 2px edge, and at the cap's speed it reads
+    as the button flashing. Neutral borrows the hover accent, since its resting
+    cap is already grey.
   </p>
   <div class="row">
     <div class="col-12 vt-row" data-test="loading-showcase">

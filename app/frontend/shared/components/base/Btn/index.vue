@@ -668,76 +668,50 @@ const handleClick = (event: MouseEvent) => {
 }
 
 /*
- * The two caps carry the state, as one run travelling around the outside: it
- * fills the top cap left to right, carries on along the bottom cap right to
- * left, and the tail follows the same way round. One direction, so the eye
- * follows it rather than watching two things meet. Nothing is inserted next to
- * the label, so the button neither grows nor reflows on the frame it starts
- * working.
+ * The bottom cap carries the state: it fills left to right and clears the same
+ * way, one run that never doubles back. The bottom cap is where every surface
+ * here says it is loading - a select's trigger, a panel, a modal - so a button
+ * speaks the same language rather than a circuit of its own. The top cap stays
+ * as it is. Nothing is inserted next to the label, so the button neither grows
+ * nor reflows on the frame it starts working.
  *
  * This is the state the component had no answer for. It used to depend on an
  * opt-in `spinner`, which was passed at 12 of 51 loading call sites - the other
  * 39 showed nothing at all and only read as a button that had gone dead. The
- * caps answer for every one of them, so that prop is gone: the caps are already
- * this component's signature, the same call the hover and tone rules above make,
- * and a rhombus dropped into the content row cost a reflow besides.
+ * cap answers for every one of them, so that prop is gone.
  *
  * A marker travelling along the cap was the first shape of this and it does not
  * survive the narrow case: an icon-only sm button leaves a 23px cap, where the
- * segment read as two nubs parked in the corners rather than as motion. A fill
- * is always one run anchored to an edge, so it still reads at that length.
- *
- * Two legs of 0.9s, and neither cap ever waits: the moment the head moves onto
- * the bottom cap, the top starts clearing behind it, so the lit run is one cap
- * long and always moving. That also means each cap only ever travels one way -
- * the top rightwards whether it is filling or clearing, the bottom leftwards -
- * which is what lets two bars read as one thing going round. The anchor swaps
- * once per leg, always while the cap is full or empty, where it cannot be seen.
+ * segment read as a nub parked in a corner rather than as motion. A fill is
+ * always one run anchored to an edge, so it still reads at that length.
  */
-.btn.is-loading::before,
 .btn.is-loading::after {
   /* The empty cap, dimmer than at rest, so a cap the run has left is visibly the
      same cap rather than one that went missing. */
   background-color: rgb(122 130 136 / 0.35);
   background-repeat: no-repeat;
   background-size: 0% 100%;
-  /* Linear, not eased: an ease per leg puts a hesitation at each corner, and
-     this is one run going round at one speed. */
-  animation-duration: 1.8s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  /* A loading button renders disabled, and the disabled rule halves the caps.
-     The part carrying the state has to stay at full strength - this has to sit
-     below that rule, which it ties with on specificity. */
-  opacity: 1;
-}
-
-/* The leading edge fades rather than ending on a hard line: a solid edge reads
-   as a progress bar reporting a percentage, and there is nothing to report. */
-.btn.is-loading::before {
+  /* The leading edge fades rather than ending on a hard line: a solid edge reads
+     as a progress bar reporting a percentage, and there is nothing to report. */
   background-image: linear-gradient(
     to right,
     var(--btn-cap, var(--color-endcap, #7a8288)) 80%,
     transparent 100%
   );
   background-position: left center;
-  animation-name: btn-fill-rightward;
-}
-
-.btn.is-loading::after {
-  background-image: linear-gradient(
-    to left,
-    var(--btn-cap, var(--color-endcap, #7a8288)) 80%,
-    transparent 100%
-  );
-  background-position: right center;
-  animation-name: btn-fill-leftward;
+  /* Linear, not eased: an ease puts a hesitation at the turn, and this is one
+     run at one speed. */
+  animation: btn-fill-rightward 1.8s linear infinite;
+  /* A loading button renders disabled, and the disabled rule halves the caps.
+     The part carrying the state has to stay at full strength - this has to sit
+     below that rule, which it ties with on specificity. */
+  opacity: 1;
 }
 
 /* In from the left, then out to the right: the fill grows from the left edge,
    and once it covers the whole run the anchor moves to the right edge so the
-   second half clears it in the same direction rather than retreating. The top
-   cap and every cap-less surface run on this one. */
+   second half clears it in the same direction rather than retreating. The
+   anchor swaps while the cap is full, where it cannot be seen. */
 @keyframes btn-fill-rightward {
   0% {
     background-position: left center;
@@ -754,28 +728,6 @@ const handleClick = (event: MouseEvent) => {
   100% {
     background-position: right center;
     background-size: 0% 100%;
-  }
-}
-
-/* The same run mirrored, and half a cycle into it: the bottom cap clears
-   leftwards while the top fills, and fills from the right while the top clears.
-   That is the hand-over at each corner. */
-@keyframes btn-fill-leftward {
-  0% {
-    background-position: left center;
-    background-size: 100% 100%;
-  }
-  50% {
-    background-position: left center;
-    background-size: 0% 100%;
-  }
-  50.01% {
-    background-position: right center;
-    background-size: 0% 100%;
-  }
-  100% {
-    background-position: right center;
-    background-size: 100% 100%;
   }
 }
 
@@ -805,7 +757,7 @@ const handleClick = (event: MouseEvent) => {
  * ones - have nothing to fill, and the edges are not theirs to use: a rail along
  * a group member's bottom lands directly under the group's own cap and reads as
  * a dirty edge, clipped by the track's rounding at that. So the surface fills
- * instead, in the tone colour and on the top cap's own keyframes: head in from
+ * instead, in the tone colour and on the bottom cap's own keyframes: head in from
  * the left, tail out to the right, always that way. There is no circuit to run
  * on a surface, so it takes the one leg rather than doubling back. The fill is
  * the language; only the thing being filled changes with the context.
@@ -834,7 +786,7 @@ const handleClick = (event: MouseEvent) => {
      tone. */
   opacity: 0.16;
   z-index: 0;
-  /* The top cap's run, but at half its pace. A surface is the whole control
+  /* The bottom cap's run, but at half its pace. A surface is the whole control
      rather than a 2px edge, so the same speed reads as the button flashing;
      slower, it reads as the same idea kept quiet. */
   animation: btn-fill-rightward 3.6s linear infinite;
@@ -849,10 +801,9 @@ const handleClick = (event: MouseEvent) => {
     transition-duration: 1ms;
   }
 
-  /* Nothing fills. Both caps hold steady at the tone colour, and the wash holds
-     at its lit end, so the state is still marked where motion was the only
-     thing carrying it. */
-  .btn.is-loading::before,
+  /* Nothing fills. The bottom cap holds steady at the tone colour, and the wash
+     holds at its lit end, so the state is still marked where motion was the
+     only thing carrying it. */
   .btn.is-loading::after {
     animation-name: none;
     background-image: none;
