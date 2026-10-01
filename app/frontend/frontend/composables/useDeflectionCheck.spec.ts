@@ -283,10 +283,24 @@ describe("computeDeflectionCheck", () => {
 
 describe("computeDeflectionCheck rules read off erkul's footnote", () => {
   it("compares alpha per pellet, not per shot", () => {
-    // 8 pellets of 45 each: as one 360-damage shot it would pierce easily,
-    // but each pellet meets the threshold alone.
+    // Eight pellets of 15: as one 120-damage volley it would pierce easily,
+    // but each pellet meets the threshold alone and is turned away.
     const { results } = computeDeflectionCheck(
-      [weapon("Scattergun", { physical: 360 }, "3", { pelletsPerShot: 8 })],
+      [weapon("Scattergun", { physical: 15 }, "3", { pelletsPerShot: 8 })],
+      armor(),
+      shield(),
+      1,
+      1,
+    );
+
+    expect(results[0].types[0].raw).toBeCloseTo(15);
+    expect(results[0].outcome).toBe("deflected");
+  });
+
+  it("tests each pellet at its full damage", () => {
+    // The game data stores one pellet's damage, so the count never divides it.
+    const { results } = computeDeflectionCheck(
+      [weapon("Scattergun", { physical: 45 }, "3", { pelletsPerShot: 8 })],
       armor(),
       shield(),
       1,
@@ -295,6 +309,7 @@ describe("computeDeflectionCheck rules read off erkul's footnote", () => {
 
     expect(results[0].types[0].raw).toBeCloseTo(45);
     expect(results[0].types[0].effective).toBeCloseTo(18.56, 2);
+    expect(results[0].outcome).toBe("pierces");
   });
 
   it("excludes laser beams", () => {

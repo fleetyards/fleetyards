@@ -6,6 +6,7 @@ import type { LoadoutWeapon } from "@/frontend/composables/usePenetrationCheck";
 import {
   absorptionAtHealth,
   deflectionAtHealth,
+  pelletDamage,
   resistanceAtHealth,
 } from "@/frontend/composables/useDeflectionCheck";
 
@@ -248,19 +249,16 @@ export function effectiveHp(
 }
 
 export function loadoutSources(weapons: LoadoutWeapon[]): KillSource[] {
-  return weapons.flatMap((weapon) => {
-    const pellets = Math.max(weapon.pelletsPerShot ?? 1, 1);
-
-    return DAMAGE_TYPES.filter((type) => weapon.sustainedDps[type] > 0).map(
+  return weapons.flatMap((weapon) =>
+    DAMAGE_TYPES.filter((type) => weapon.sustainedDps[type] > 0).map(
       (type) => ({
         type,
         dps: weapon.sustainedDps[type] * weapon.count,
-        pellet:
-          ((weapon.damagePerShot as Record<string, number | undefined>)[type] ??
-            0) / pellets,
+        // A beam deals no discrete hit for the armor to turn away.
+        pellet: weapon.beam ? Infinity : pelletDamage(weapon, type),
       }),
-    );
-  });
+    ),
+  );
 }
 
 export function timeToKill(

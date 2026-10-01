@@ -1108,7 +1108,7 @@
         "ttk": "TTK",
         "effectiveHp": "PV effettivi",
         "shieldsDown": "Scudi abbattuti",
-        "ttkNote": "Il tempo di distruzione usa il danno sostenuto al secondo dei cannoni selezionati, con la ripartizione di energia attuale, a partire dalla salute di scudo e corazza impostata sopra. Gli scudi subiscono il danno che assorbono, meno la loro resistenza, e passano il resto alla corazza, che lo subisce finché non cede e poi lo passa allo scafo; la distorsione consuma solo gli scudi. Gli scudi si rigenerano solo mentre ogni cannone è in pausa più a lungo del loro ritardo di rigenerazione, e una volta abbattuti restano abbattuti. I PV effettivi sono il danno grezzo di un tipo necessario per distruggere la nave, senza deflessione. Raggi e missili sono esclusi, come nella verifica di penetrazione."
+        "ttkNote": "Il tempo di distruzione usa il danno sostenuto al secondo dei cannoni selezionati, con la ripartizione di energia attuale, a partire dalla salute di scudo e corazza impostata sopra. Gli scudi subiscono il danno che assorbono, meno la loro resistenza, e passano il resto alla corazza, che lo subisce finché non cede e poi lo passa allo scafo; la distorsione consuma solo gli scudi. Gli scudi si rigenerano solo mentre ogni cannone è in pausa più a lungo del loro ritardo di rigenerazione, e una volta abbattuti restano abbattuti. I PV effettivi sono il danno grezzo di un tipo necessario per distruggere la nave, senza deflessione. I raggi, contrassegnati TTK, contano solo per il tempo di distruzione: la corazza non li devia mai e, senza alfa per colpo, non entrano nel margine. I missili sono esclusi."
       },
       "deflectionCheck": {
         "title": "Verifica della deflessione",

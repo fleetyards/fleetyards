@@ -54,6 +54,21 @@ const gun = (id: string, physical: number): Hardpoint =>
     hardpoints: [],
   }) as unknown as Hardpoint;
 
+const beam = (id: string, energy: number): Hardpoint =>
+  ({
+    id: `slot-${id}`,
+    name: "hardpoint_weapon",
+    category: HardpointCategoryEnum.WEAPONS,
+    component: {
+      id,
+      name: id,
+      slug: id,
+      size: "3",
+      typeData: { beam: true, damagePerSecond: { energy } },
+    },
+    hardpoints: [],
+  }) as unknown as Hardpoint;
+
 const mountModal = (hardpoints: Hardpoint[]) =>
   mountWithDefaults(Component, { props: { modelName: "Arrow", hardpoints } });
 
@@ -136,6 +151,38 @@ describe("ModelPenetrationCheckModal", () => {
     expect(ehp[0].text().replace(/\D/g, "")).toBe("2000");
     // No shields, so there is nothing for distortion to drain.
     expect(ehp[2].text()).toContain("—");
+  });
+
+  it("lets a beam shorten the time to kill without touching the margin", async () => {
+    // The 1000 DPS beam doubles the light ship's incoming damage. The heavy
+    // armor cannot turn it away, and once the beam has worn it down far enough
+    // the cannon's 100 alpha beats the weakened deflection too.
+    const wrapper = await mountModal([gun("cannon", 100), beam("lance", 1000)]);
+
+    const ttk = () =>
+      wrapper
+        .findAll('[data-test="penetration-ttk"]')
+        .map((cell) => cell.text().replace(",", "."));
+    const tally = () => wrapper.find('[data-test="penetration-tally"]').text();
+
+    expect(ttk()).toEqual(["1.2 s", "1 s"]);
+    const before = tally();
+
+    const lance = wrapper
+      .findAll('[data-test="penetration-weapon"]')
+      .find((button) => button.text().includes("lance"))!;
+    expect(lance.find('[data-test="penetration-beam"]').exists()).toBe(true);
+    await lance.trigger("click");
+
+    expect(ttk()).toEqual(["∞", "2 s"]);
+    expect(tally()).toBe(before);
+  });
+
+  it("has nothing to check for a loadout of beams alone", async () => {
+    const wrapper = await mountModal([beam("lance", 1000)]);
+
+    expect(wrapper.find(".empty").exists()).toBe(true);
+    expect(wrapper.findAll('[data-test="penetration-row"]')).toHaveLength(0);
   });
 
   it("says so when the defenses cannot be loaded", async () => {

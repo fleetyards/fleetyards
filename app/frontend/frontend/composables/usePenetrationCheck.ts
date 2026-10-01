@@ -67,6 +67,8 @@ function isMissile(weapon: ComponentWeapon): boolean {
 
 // The guns a loadout mounts, in the shape the deflection pipeline reads. Nested
 // slots count as well: most guns sit on a gimbal or turret, not on the hull.
+// Beams are included for their damage over time; with no per-shot alpha they
+// never enter the deflection margin.
 export function collectLoadoutWeapons(
   hardpoints: Hardpoint[] | undefined,
   powerRatio = 1,
@@ -78,15 +80,18 @@ export function collectLoadoutWeapons(
       const component = hardpoint.component;
       const weapon = component?.typeData as ComponentWeapon | undefined;
 
+      // A beam's damage is per second, a gun's per shot.
+      const damage = weapon?.beam
+        ? weapon.damagePerSecond
+        : weapon?.damagePerShot;
+
       if (
         component &&
         weapon &&
         hardpoint.category === HardpointCategoryEnum.WEAPONS &&
         !isMissile(weapon) &&
-        !weapon.beam &&
-        DEFLECTION_DAMAGE_TYPES.some(
-          ({ key }) => (weapon.damagePerShot?.[key] ?? 0) > 0,
-        )
+        !weapon.mining &&
+        DEFLECTION_DAMAGE_TYPES.some(({ key }) => (damage?.[key] ?? 0) > 0)
       ) {
         const existing = byComponent.get(component.id);
 
@@ -95,9 +100,12 @@ export function collectLoadoutWeapons(
         } else {
           const duty = dutyCycle(weapon, powerRatio);
           // An unpowered weapon system fires nothing, heat-limited guns included.
-          const rate = powerRatio > 0 ? shotsPerSecond(weapon) : 0;
+          const powered = powerRatio > 0 ? 1 : 0;
+          const rate = weapon.beam ? 1 : shotsPerSecond(weapon);
           const sustained = (key: DamageType) =>
-            (weapon.damagePerShot?.[key] ?? 0) * rate * duty.ratio;
+            (damage?.[key] ?? 0) * rate * duty.ratio * powered;
+          const perShot = (key: DamageType) =>
+            weapon.beam ? 0 : (damage?.[key] ?? 0);
 
           byComponent.set(component.id, {
             id: component.id,
@@ -105,13 +113,13 @@ export function collectLoadoutWeapons(
             slug: component.slug,
             size: component.size,
             manufacturerCode: component.manufacturer?.code,
-            beam: false,
+            beam: !!weapon.beam,
             pelletsPerShot: weapon.pelletsPerShot,
             damagePerShot: {
-              physical: weapon.damagePerShot?.physical ?? 0,
-              energy: weapon.damagePerShot?.energy ?? 0,
-              distortion: weapon.damagePerShot?.distortion ?? 0,
-              thermal: weapon.damagePerShot?.thermal ?? 0,
+              physical: perShot("physical"),
+              energy: perShot("energy"),
+              distortion: perShot("distortion"),
+              thermal: perShot("thermal"),
             },
             count: 1,
             sustainedDps: {
@@ -134,6 +142,12 @@ export function collectLoadoutWeapons(
   return [...byComponent.values()].sort(
     (a, b) => Number(b.size ?? 0) - Number(a.size ?? 0),
   );
+}
+
+// Whether any of the guns has per-shot alpha to test against deflection. Beams
+// alone only feed the time to kill.
+export function hasAlphaGuns(weapons: LoadoutWeapon[]): boolean {
+  return weapons.some((weapon) => !weapon.beam);
 }
 
 // Ships whose build installs no armor are left out: with no threshold there is

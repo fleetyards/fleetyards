@@ -265,15 +265,44 @@ describe("collectLoadoutWeapons", () => {
     ).toEqual([]);
   });
 
-  it("ignores missiles and beams", () => {
+  it("ignores missiles and mining lasers", () => {
     const weapons = collectLoadoutWeapons([
       gun("missile", {
         damagePerShot: { physical: 5000 },
         trackingSignal: "IR",
       }),
-      gun("beam", { damagePerShot: { energy: 10 }, beam: true }),
+      gun("mining", {
+        damagePerSecond: { energy: 500 },
+        beam: true,
+        mining: true,
+      }),
     ]);
 
     expect(weapons).toEqual([]);
+  });
+
+  it("carries a beam's damage per second, with no alpha to test", () => {
+    const [beam] = collectLoadoutWeapons([
+      gun("beam", { damagePerSecond: { energy: 250 }, beam: true }),
+    ]);
+
+    expect(beam.beam).toBe(true);
+    expect(beam.sustainedDps.energy).toBeCloseTo(250);
+    expect(beam.damagePerShot.energy).toBe(0);
+  });
+
+  it("leaves a beam out of the deflection margin", () => {
+    const [beam] = collectLoadoutWeapons([
+      gun("beam", { damagePerSecond: { energy: 250 }, beam: true }),
+    ]);
+
+    const { results } = computePenetrationCheck(
+      [beam],
+      penetrationTargets([GLADIUS]),
+      1,
+      1,
+    );
+
+    expect(results).toEqual([]);
   });
 });

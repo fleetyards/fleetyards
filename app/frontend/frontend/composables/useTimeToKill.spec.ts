@@ -141,6 +141,27 @@ describe("timeToKill", () => {
     expect(ttk.kill).toBeCloseTo(25);
   });
 
+  it("tests each of a scattergun's pellets at its full damage", () => {
+    // Eight 30-damage pellets, halved by the shield, each beat a deflection of
+    // 10, so the armor takes damage while the shields are still up.
+    const scattergun = {
+      ...gun("physical", 30, 100, undefined, 2),
+      pelletsPerShot: 8,
+    };
+
+    const ttk = timeToKill(profileOf(TARGET), [scattergun], FULL);
+
+    expect(ttk.shieldsDown).toBeCloseTo(10);
+    // Turned away until the shields fell, it would take 25 s.
+    expect(ttk.kill).toBeCloseTo(20);
+  });
+
+  it("never lets the armor turn a beam away", () => {
+    const beam = { ...gun("physical", 0, 200), beam: true };
+
+    expect(timeToKill(profileOf(TARGET), [beam], FULL).kill).toBeCloseTo(20);
+  });
+
   it("lets the shields regenerate through a loadout's pauses", () => {
     // Three seconds off in every ten, one of them inside the regen delay: the
     // shields regenerate 20% of the time, 10 HP/s against 100 DPS.
