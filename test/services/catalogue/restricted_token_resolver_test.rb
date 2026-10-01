@@ -291,5 +291,16 @@ module Catalogue
       assert_empty resolved(@member, "event:MARU/Weekly Op")
       assert_empty searched(@member, "event:weekly op")
     end
+
+    test "follows a split series whose first part has been renamed" do
+      series = weekly("Weekly Op")
+      second = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
+      last = FleetEvents::SeriesSplit.new(second, "2026-06-18").call
+      series.update!(title: "Old Op")
+
+      assert_equal({"event:MARU/Weekly Op" => ["FleetEvent", last.slug, @fleet.slug]},
+        resolved(@member, "event:MARU/Weekly Op"))
+      assert_equal ["event:MARU/Weekly Op"], searched(@member, "event:weekly op")
+    end
   end
 end

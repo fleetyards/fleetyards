@@ -147,20 +147,30 @@ module Catalogue
       escaped = ActiveRecord::Base.sanitize_sql_like(title.downcase)
 
       # Only titles a token can name: one record of its fleet carries them, or,
-      # for a type with a lineage, records of which only one starts a chain --
-      # which `named_by_title` then checks. The policy drops what the reader may
-      # not open, so the database is asked for more than is offered.
+      # for a type with a lineage, exactly one of them starts the chain the rest
+      # continue -- a part whose predecessor carries another title starts one
+      # too. The policy then drops what the reader may not open, so the
+      # database is asked for more than is offered.
+      table = type[:model].table_name
+      scope = type[:model].where(fleet_id: fleets.keys)
       having = "count(*) = 1"
-      having += " OR count(*) FILTER (WHERE #{type[:lineage]} IS NULL) = 1" if type[:lineage]
 
-      groups = type[:model].where(fleet_id: fleets.keys)
-        .where("lower(title) LIKE ?", "%#{escaped}%")
-        .where.not("title LIKE '%*%' OR title LIKE '%]%' OR title LIKE ?", "%\n%")
-        .group(:fleet_id, Arel.sql("lower(title)"))
+      if type[:lineage]
+        scope = scope.joins(<<~SQL.squish)
+          LEFT JOIN #{table} predecessors ON predecessors.id = #{table}.#{type[:lineage]}
+            AND predecessors.fleet_id = #{table}.fleet_id AND lower(predecessors.title) = lower(#{table}.title)
+        SQL
+        having = "count(*) FILTER (WHERE predecessors.id IS NULL) = 1"
+      end
+
+      groups = scope
+        .where("lower(#{table}.title) LIKE ?", "%#{escaped}%")
+        .where.not("#{table}.title LIKE '%*%' OR #{table}.title LIKE '%]%' OR #{table}.title LIKE ?", "%\n%")
+        .group("#{table}.fleet_id", Arel.sql("lower(#{table}.title)"))
         .having(having)
-        .order(starts_with("lower(title)", escaped), Arel.sql("min(length(title))"), Arel.sql("lower(title)"))
+        .order(starts_with("lower(#{table}.title)", escaped), Arel.sql("min(length(#{table}.title))"), Arel.sql("lower(#{table}.title)"))
         .limit(TokenResolver::SEARCH_LIMIT * CANDIDATES_PER_RESULT)
-        .pluck(Arel.sql("array_agg(id::text)"))
+        .pluck(Arel.sql("array_agg(#{table}.id::text)"))
 
       loaded = type[:model].where(id: groups.flatten).index_by { |record| record.id.to_s }
       records = groups.filter_map { |ids| named_by_title(type, loaded.values_at(*ids).compact) }
@@ -179,14 +189,12 @@ module Catalogue
     # same, so a hidden namesake cannot send a token elsewhere.
     private def named_by_title(type, records)
       return records.first if records.one?
-      return unless type[:lineage] && records.any?
+      return unless type[:lineage]
 
       ids = records.to_set(&:id)
       starts = records.reject { |record| ids.include?(record.public_send(type[:lineage])) }
-      return unless starts.one?
 
-      latest = records.max_by(&:starts_at)
-      latest if records.one? { |record| record.starts_at == latest.starts_at }
+      records.max_by(&:starts_at) if starts.one?
     end
 
     private def ranked(name, query, match)
