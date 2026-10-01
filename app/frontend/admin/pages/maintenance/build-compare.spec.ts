@@ -18,12 +18,13 @@ const empty = () => ({
 
 const builds = ref<{ items: unknown[] } | undefined>(undefined);
 const comparison = ref<unknown>(undefined);
+const comparePending = ref(false);
 
 vi.mock("@/services/fyApi", () => ({
   useScDataBuilds: () => ({ data: builds, isPending: ref(false) }),
   useScDataCompare: () => ({
     data: comparison,
-    isPending: ref(false),
+    isPending: comparePending,
     isError: ref(false),
   }),
 }));
@@ -46,7 +47,6 @@ const mountPage = async () => {
         BasePanel: { template: "<div><slot /></div>" },
         BasePill: { template: "<span><slot /></span>" },
         BaseSelect: true,
-        SmallLoader: true,
       },
     },
   });
@@ -73,6 +73,17 @@ describe("BuildComparePage", () => {
       ],
     };
     comparison.value = undefined;
+    comparePending.value = false;
+  });
+
+  it("holds the result's place with a skeleton and the loading line while comparing", async () => {
+    comparePending.value = true;
+    const wrapper = await mountPage();
+
+    const loading = wrapper.find('[data-test="build-compare-loading"]');
+    expect(loading.exists()).toBe(true);
+    expect(loading.find(".loading-line--active").exists()).toBe(true);
+    expect(loading.find('[data-test="rows-skeleton"]').exists()).toBe(true);
   });
 
   it("names what appeared and vanished rather than listing identifiers", async () => {
