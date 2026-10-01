@@ -156,7 +156,7 @@ const toggleLoadingShowcase = () => {
   >
   <p>
     The bottom cap fills left to right and clears the same way, one run that
-    never doubles back, while the top cap stays as it is. The bottom cap is
+    never doubles back, while the top cap goes quiet. The bottom cap is
     where every surface says it is loading - a select's trigger, a panel, a
     modal - so a button speaks the same language. Nothing is inserted beside the
     label, so the button neither grows nor reflows when it starts working. It

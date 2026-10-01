@@ -671,9 +671,10 @@ const handleClick = (event: MouseEvent) => {
  * The bottom cap carries the state: it fills left to right and clears the same
  * way, one run that never doubles back. The bottom cap is where every surface
  * here says it is loading - a select's trigger, a panel, a modal - so a button
- * speaks the same language rather than a circuit of its own. The top cap stays
- * as it is. Nothing is inserted next to the label, so the button neither grows
- * nor reflows on the frame it starts working.
+ * speaks the same language rather than a circuit of its own. The top cap goes
+ * quiet, so the bottom one is the only lit, moving part. Nothing is inserted
+ * next to the label, so the button neither grows nor reflows on the frame it
+ * starts working.
  *
  * This is the state the component had no answer for. It used to depend on an
  * opt-in `spinner`, which was passed at 12 of 51 loading call sites - the other
@@ -712,6 +713,12 @@ const handleClick = (event: MouseEvent) => {
    and once it covers the whole run the anchor moves to the right edge so the
    second half clears it in the same direction rather than retreating. The
    anchor swaps while the cap is full, where it cannot be seen. */
+/* The empty cap's grey, whatever the tone: a lit top cap beside the running
+   bottom one read as both caps carrying the state. */
+.btn.is-loading::before {
+  background-color: rgb(122 130 136 / 0.35);
+}
+
 @keyframes btn-fill-rightward {
   0% {
     background-position: left center;

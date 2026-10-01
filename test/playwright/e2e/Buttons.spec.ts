@@ -98,15 +98,17 @@ test.describe("Buttons", () => {
         return {
           content: cs.content,
           animationName: cs.animationName,
+          backgroundColor: cs.backgroundColor,
           opacity: cs.opacity,
         };
       }),
     );
 
     // The bottom cap is where every surface says it is loading; the top one
-    // stays as it is.
+    // goes quiet, in the empty cap's grey whatever the tone.
     expect(top.content).not.toBe("none");
     expect(top.animationName).toBe("none");
+    expect(top.backgroundColor).toBe("rgba(122, 130, 136, 0.35)");
 
     expect(bottom.content).not.toBe("none");
     // A loading button renders disabled, and the disabled rule halves the
