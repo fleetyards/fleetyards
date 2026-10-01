@@ -156,18 +156,18 @@ const toggleLoadingShowcase = () => {
   >
   <p>
     The bottom cap fills left to right and clears the same way, one run that
-    never doubles back, while the top cap goes quiet. The bottom cap is
-    where every surface says it is loading - a select's trigger, a panel, a
-    modal - so a button speaks the same language. Nothing is inserted beside the
-    label, so the button neither grows nor reflows when it starts working. It
-    also needs no opt-in: the <code>spinner</code> prop this replaces was passed
-    at 12 of 51 loading call sites, so most of them showed nothing at all. A
-    fill is always one run anchored to an edge, which is what makes it hold on a
-    23px icon-button cap where a travelling marker read as a nub in a corner.
-    Where there are no caps the surface takes the same run, at half the pace: it
-    is the whole control rather than a 2px edge, and at the cap's speed it reads
-    as the button flashing. Neutral borrows the hover accent, since its resting
-    cap is already grey.
+    never doubles back, while the top cap goes quiet. The bottom cap is where
+    every surface says it is loading - a select's trigger, a panel, a modal - so
+    a button speaks the same language. Nothing is inserted beside the label, so
+    the button neither grows nor reflows when it starts working. It also needs
+    no opt-in: the <code>spinner</code> prop this replaces was passed at 12 of
+    51 loading call sites, so most of them showed nothing at all. A fill is
+    always one run anchored to an edge, which is what makes it hold on a 23px
+    icon-button cap where a travelling marker read as a nub in a corner. Where
+    there are no caps the surface takes the same run, at half the pace: it is
+    the whole control rather than a 2px edge, and at the cap's speed it reads as
+    the button flashing. Neutral borrows the hover accent, since its resting cap
+    is already grey.
   </p>
   <div class="row">
     <div class="col-12 vt-row" data-test="loading-showcase">
