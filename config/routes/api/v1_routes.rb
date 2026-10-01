@@ -61,6 +61,7 @@ v1_api_routes = lambda do
   draw "api/trade_routes_routes"
   draw "api/equipment_routes"
   draw "api/game_missions_routes"
+  draw "api/locations_routes"
   draw "api/imports_routes"
   draw "api/notifications_routes"
   draw "api/notification_preferences_routes"

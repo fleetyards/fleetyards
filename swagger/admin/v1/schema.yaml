@@ -16619,6 +16619,57 @@ components:
       - 'TRUE'
       - ONLY
       title: LoanerFilterEnum
+    LocationKindEnum:
+      type: string
+      enum:
+      - system
+      - star
+      - planet
+      - moon
+      - city
+      - station
+      - outpost
+      - asteroid
+      - anomaly
+      - jump_point
+      - point_of_interest
+      - nav_point
+      - other
+      x-enumNames:
+      - SYSTEM
+      - STAR
+      - PLANET
+      - MOON
+      - CITY
+      - STATION
+      - OUTPOST
+      - ASTEROID
+      - ANOMALY
+      - JUMP_POINT
+      - POINT_OF_INTEREST
+      - NAV_POINT
+      - OTHER
+      title: LocationKindEnum
+    LocationLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      title: LocationLink
     Manufacturer:
       type: object
       properties:

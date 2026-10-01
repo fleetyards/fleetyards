@@ -11144,6 +11144,63 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/locations":
+    get:
+      summary: Locations list
+      tags:
+      - Locations
+      operationId: locations
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/LocationQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Locations"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}":
+    get:
+      summary: Location detail
+      tags:
+      - Locations
+      operationId: location
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Location"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -28298,6 +28355,215 @@ components:
       - 'TRUE'
       - ONLY
       title: LoanerFilterEnum
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        scKey:
+          type: string
+        gameType:
+          type:
+          - string
+          - 'null'
+        retired:
+          type: boolean
+        shownOnStarmap:
+          type: boolean
+        shownWithParentOnly:
+          type: boolean
+        alwaysShown:
+          type: boolean
+        quantumTravelDestination:
+          type: boolean
+        parent:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        ancestors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        mapParent:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        childrenCount:
+          type: integer
+        terminals:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationTerminal"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - scKey
+      - retired
+      - shownOnStarmap
+      - shownWithParentOnly
+      - alwaysShown
+      - quantumTravelDestination
+      - parent
+      - createdAt
+      - updatedAt
+      title: Location
+    LocationKindEnum:
+      type: string
+      enum:
+      - system
+      - star
+      - planet
+      - moon
+      - city
+      - station
+      - outpost
+      - asteroid
+      - anomaly
+      - jump_point
+      - point_of_interest
+      - nav_point
+      - other
+      x-enumNames:
+      - SYSTEM
+      - STAR
+      - PLANET
+      - MOON
+      - CITY
+      - STATION
+      - OUTPOST
+      - ASTEROID
+      - ANOMALY
+      - JUMP_POINT
+      - POINT_OF_INTEREST
+      - NAV_POINT
+      - OTHER
+      title: LocationKindEnum
+    LocationLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      title: LocationLink
+    LocationQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        kindEq:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        kindIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationKindEnum"
+        parentIdEq:
+          type: string
+          format: uuid
+        systemIdEq:
+          type: string
+          format: uuid
+        shownOnStarmapEq:
+          type: boolean
+        quantumTravelDestinationEq:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          "$ref": "#/components/schemas/LocationSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: LocationQuery
+    LocationSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - kind asc
+      - kind desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - KIND_ASC
+      - KIND_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: LocationSortingEnum
+    LocationTerminal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: LocationTerminal
+    Locations:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Location"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Locations
     Manufacturer:
       type: object
       properties:
