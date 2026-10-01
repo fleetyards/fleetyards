@@ -985,6 +985,8 @@
         "alphaSub": "par salve",
         "weapons": "Armes",
         "missileDamage": "Dégâts des missiles",
+        "armedMissiles": "Missiles armés",
+        "armedMissilesSub": "%{cooldown} s entre deux tirs",
         "composition": "Composition des dégâts",
         "damagePhysical": "Physique",
         "damageEnergy": "Énergie",
@@ -1036,6 +1038,7 @@
         "shieldRegen": "Régénération",
         "shieldResistances": "Résistance",
         "shieldAbsorption": "Absorption",
+        "shieldFaces": "Faces du bouclier",
         "armor": "Blindage",
         "deflection": "Déflexion",
         "armorReduction": "Réduction des dégâts",
@@ -1400,6 +1403,17 @@
           "captureRadius": "Rayon de capture",
           "fuelFlowRate": "Débit de carburant",
           "quantumFuelFlowRate": "Débit de carburant Quantum"
+        },
+        "controllers": {
+          "faceType": "Type de bouclier",
+          "faces": {
+            "bubble": "Bulle",
+            "quadrant": "Quadrants"
+          },
+          "reconfigurationCooldown": "Reconfiguration",
+          "armedMissiles": "Missiles armés",
+          "launchCooldown": "Délai de lancement",
+          "lockAngle": "Angle de verrouillage"
         },
         "turrets": {
           "turnRate": "Vitesse de rotation",

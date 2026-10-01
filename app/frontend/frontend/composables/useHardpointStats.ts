@@ -25,6 +25,9 @@ import {
   type ComponentEmp,
   type ComponentLifeSupport,
   type ComponentPowerRanges,
+  type ComponentShieldController,
+  type ComponentMissileController,
+  ComponentShieldFaceTypeEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -1545,6 +1548,52 @@ export const useHardpointStats = (
           label: t("labels.hardpoint.lifeSupport.output"),
           value: `${precise(lifeSupport.lifeSupportGeneration)}/s`,
           primary: true,
+        });
+      }
+    } else if (category === HardpointCategoryEnum.CONTROLLER) {
+      const controller = typeData as ComponentShieldController &
+        ComponentMissileController;
+
+      if (controller.faceType) {
+        result.push({
+          label: t("labels.hardpoint.controllers.faceType"),
+          value: t(`labels.hardpoint.controllers.faces.${controller.faceType}`),
+          primary: true,
+        });
+      }
+      if (
+        controller.faceType === ComponentShieldFaceTypeEnum.QUADRANT &&
+        typeof controller.reconfigurationCooldown === "number"
+      ) {
+        const cooldown = controller.reconfigurationCooldown;
+        result.push({
+          label: t("labels.hardpoint.controllers.reconfigurationCooldown"),
+          value: `${cooldown ? toNumber(cooldown) : "0"} s`,
+        });
+      }
+      if (controller.maxArmedMissiles) {
+        result.push(
+          stat(
+            "controllers.armedMissiles",
+            controller.maxArmedMissiles,
+            "integer",
+            true,
+          ),
+        );
+      }
+      // A zero cooldown is a real figure -- missiles can go back to back --
+      // and `toNumber` would print it as not available.
+      if (typeof controller.launchCooldown === "number") {
+        const cooldown = controller.launchCooldown;
+        result.push({
+          label: t("labels.hardpoint.controllers.launchCooldown"),
+          value: `${cooldown ? toNumber(cooldown) : "0"} s`,
+        });
+      }
+      if (controller.lockAngle) {
+        result.push({
+          label: t("labels.hardpoint.controllers.lockAngle"),
+          value: `${toNumber(controller.lockAngle)}°`,
         });
       }
     } else if (category === HardpointCategoryEnum.COUNTERMEASURES) {

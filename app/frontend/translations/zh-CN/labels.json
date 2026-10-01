@@ -985,6 +985,8 @@
         "alphaSub": "每次齐射",
         "weapons": "武器",
         "missileDamage": "导弹伤害",
+        "armedMissiles": "可武装导弹",
+        "armedMissilesSub": "发射间隔 %{cooldown} 秒",
         "composition": "伤害构成",
         "damagePhysical": "物理",
         "damageEnergy": "能量",
@@ -1036,6 +1038,7 @@
         "shieldRegen": "回复",
         "shieldResistances": "抗性",
         "shieldAbsorption": "吸收",
+        "shieldFaces": "护盾面",
         "armor": "装甲",
         "deflection": "偏转",
         "armorReduction": "伤害减免",
@@ -1400,6 +1403,17 @@
           "captureRadius": "捕获半径",
           "fuelFlowRate": "燃料流速",
           "quantumFuelFlowRate": "量子燃料流速"
+        },
+        "controllers": {
+          "faceType": "护盾类型",
+          "faces": {
+            "bubble": "气泡",
+            "quadrant": "四象限"
+          },
+          "reconfigurationCooldown": "重新分配",
+          "armedMissiles": "可武装导弹",
+          "launchCooldown": "发射冷却",
+          "lockAngle": "锁定角度"
         },
         "turrets": {
           "turnRate": "转向速率",

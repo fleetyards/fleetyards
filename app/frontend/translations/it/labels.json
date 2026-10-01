@@ -985,6 +985,8 @@
         "alphaSub": "per salva",
         "weapons": "Armi",
         "missileDamage": "Danno dei missili",
+        "armedMissiles": "Missili armati",
+        "armedMissilesSub": "%{cooldown} s tra i lanci",
         "composition": "Composizione del danno",
         "damagePhysical": "Fisico",
         "damageEnergy": "Energia",
@@ -1036,6 +1038,7 @@
         "shieldRegen": "Rigenerazione",
         "shieldResistances": "Resistenza",
         "shieldAbsorption": "Assorbimento",
+        "shieldFaces": "Facce dello scudo",
         "armor": "Corazza",
         "deflection": "Deflessione",
         "armorReduction": "Riduzione del danno",
@@ -1400,6 +1403,17 @@
           "captureRadius": "Raggio di aggancio",
           "fuelFlowRate": "Portata carburante",
           "quantumFuelFlowRate": "Portata carburante Quantum"
+        },
+        "controllers": {
+          "faceType": "Tipo di scudo",
+          "faces": {
+            "bubble": "Bolla",
+            "quadrant": "Quadranti"
+          },
+          "reconfigurationCooldown": "Riconfigurazione",
+          "armedMissiles": "Missili armati",
+          "launchCooldown": "Ricarica di lancio",
+          "lockAngle": "Angolo di aggancio"
         },
         "turrets": {
           "turnRate": "Velocità di rotazione",

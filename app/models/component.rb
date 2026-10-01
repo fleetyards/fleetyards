@@ -162,6 +162,10 @@ class Component < ApplicationRecord
   # pilot, for a gimbal on the hull.
   TURRET_CONTROLS = %w[manned remote pds].freeze
 
+  # Whether a shield controller runs the ship's shield as one bubble or as
+  # four faces that can trade strength.
+  SHIELD_FACE_TYPES = %w[bubble quadrant].freeze
+
   # What the public catalogue lists. `with_facts` has to be applied by the
   # caller -- the category is read off the joined build.
   #
