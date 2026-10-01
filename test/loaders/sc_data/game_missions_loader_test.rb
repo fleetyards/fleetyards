@@ -9,6 +9,9 @@ module ScData
       include ScDataFixtureTree
 
       setup do
+        GameMissionLocation.delete_all
+        LocationBuild.delete_all
+        Location.delete_all
         GameMissionReward.delete_all
         GameMissionBuild.delete_all
         GameMission.delete_all
@@ -212,6 +215,36 @@ module ScData
 
         assert_nil dropped.version
         assert_empty dropped.builds.current(fixture_source)
+      end
+
+      # The Firesale resupply's slots can only pick templates that stand for
+      # PYR2 L4, and its description names Pyro -- the star, not "Pyro
+      # System", which the longer name would have been.
+      test "#all links a mission to the places its templates stand for and its text names" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        loader.all
+
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        links = firesale.game_mission_locations.includes(:location).map { |link| [link.source, link.location.name] }
+
+        assert_equal [["template", "PYR2 L4"], ["text", "Pyro"]], links.sort
+      end
+
+      test "#all links nothing when no place is loaded" do
+        loader.all
+
+        assert_equal 0, GameMissionLocation.count
+      end
+
+      test "#all rewrites a mission's places on a reload" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        loader.all
+        before = GameMissionLocation.count
+
+        loader.all
+
+        assert_equal before, GameMissionLocation.count
+        assert_operator before, :>, 0
       end
 
       # What a build whose files failed to sync looks like from the loader's

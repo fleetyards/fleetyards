@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_01_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_01_120100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1213,6 +1213,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_120000) do
     t.index ["game_mission_id", "environment", "version"], name: "index_game_mission_builds_on_mission_and_build", unique: true
     t.index ["game_mission_id"], name: "index_game_mission_builds_on_game_mission_id"
     t.index ["reward_kinds"], name: "index_game_mission_builds_on_reward_kinds", using: :gin
+  end
+
+  create_table "game_mission_locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "game_mission_id", null: false
+    t.uuid "location_id", null: false
+    t.string "source", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_mission_id", "location_id", "source"], name: "index_game_mission_locations_uniqueness", unique: true
+    t.index ["game_mission_id"], name: "index_game_mission_locations_on_game_mission_id"
+    t.index ["location_id"], name: "index_game_mission_locations_on_location_id"
   end
 
   create_table "game_mission_rewards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2684,6 +2695,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_120000) do
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
   add_foreign_key "game_mission_builds", "game_missions", on_delete: :cascade
+  add_foreign_key "game_mission_locations", "game_missions", on_delete: :cascade
+  add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
