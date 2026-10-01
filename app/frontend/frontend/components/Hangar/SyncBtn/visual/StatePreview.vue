@@ -10,6 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
+import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -23,10 +24,12 @@ type Props = {
   finishedWithErrors: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: "Hangar Sync",
   result: undefined,
 });
+
+const working = computed(() => isSyncStepRunning(props.processSteps));
 
 const comlink = useComlink();
 
@@ -38,7 +41,7 @@ const close = () => {
 </script>
 
 <template>
-  <Modal :title="title">
+  <Modal :title="title" :loading="working">
     <SyncResultPanel
       :process-steps="processSteps"
       :current-page="currentPage"

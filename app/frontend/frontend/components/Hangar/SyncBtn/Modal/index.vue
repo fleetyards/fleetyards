@@ -21,6 +21,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
+import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
@@ -194,9 +195,7 @@ const updateStep = (step: string, status: SyncProcessStep["status"]) => {
 
 // Checking the RSI identity or running a step: the modal's bottom cap says so.
 const working = computed(
-  () =>
-    loadingIdentity.value ||
-    processSteps.value.some((step) => step.status === "processing"),
+  () => loadingIdentity.value || isSyncStepRunning(processSteps.value),
 );
 
 const finished = computed(() =>
