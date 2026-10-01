@@ -76,6 +76,13 @@ export const formatBoostFigure = (
   return decimal ? `${grouped}${separator || ","}${decimal}` : grouped;
 };
 
+const THRUSTER_CATEGORIES: HardpointCategoryEnum[] = [
+  HardpointCategoryEnum.MAIN_THRUSTERS,
+  HardpointCategoryEnum.MANEUVERING_THRUSTERS,
+  HardpointCategoryEnum.RETRO_THRUSTERS,
+  HardpointCategoryEnum.VTOL_THRUSTERS,
+];
+
 export const useHardpointStats = (
   hardpoint: MaybeRefOrGetter<Hardpoint | undefined>,
   count?: MaybeRefOrGetter<number>,
@@ -370,10 +377,21 @@ export const useHardpointStats = (
   // What every powered item draws and gives off, on the row as well as the
   // page. The draw reads as the range the power allocator can set it to:
   // from its minimum share up to the full draw.
-  const poweredStats = (data: PoweredTypeData): HardpointStat[] => {
+  const poweredStats = (
+    data: PoweredTypeData,
+    category?: HardpointCategoryEnum,
+  ): HardpointStat[] => {
     const powered: HardpointStat[] = [];
 
-    if (typeof data.powerConsumption === "number" && data.powerConsumption) {
+    // A thruster takes no pips: the ship's Engine group draws through the
+    // flight controller, so a thruster's own figure is no allocatable segment.
+    const allocatable = !category || !THRUSTER_CATEGORIES.includes(category);
+
+    if (
+      allocatable &&
+      typeof data.powerConsumption === "number" &&
+      data.powerConsumption
+    ) {
       const full = data.powerConsumption;
       // The block the power allocator always keeps powered, as it sizes it.
       const minimum = criticalSize(full, data.powerMinimumFraction);
@@ -414,8 +432,9 @@ export const useHardpointStats = (
     start?: number;
     end?: number;
   }): string | null => {
-    const start = range?.start;
-    const end = range?.end ?? start;
+    // A missing end is unknown, not zero: only the end the data gives is shown.
+    const start = range?.start ?? range?.end;
+    const end = range?.end ?? range?.start;
     if (!start && !end) return null;
 
     // A cloud that fades to nothing ends at a real 0, which `toNumber`
@@ -1368,12 +1387,7 @@ export const useHardpointStats = (
           value: rate(jump.tuningDecayRate),
         });
       }
-    } else if (
-      category === HardpointCategoryEnum.MAIN_THRUSTERS ||
-      category === HardpointCategoryEnum.MANEUVERING_THRUSTERS ||
-      category === HardpointCategoryEnum.RETRO_THRUSTERS ||
-      category === HardpointCategoryEnum.VTOL_THRUSTERS
-    ) {
+    } else if (category && THRUSTER_CATEGORIES.includes(category)) {
       const thruster = typeData as ComponentThruster;
 
       if (thruster.thrustCapacity) {
@@ -1549,11 +1563,11 @@ export const useHardpointStats = (
           value: t(`labels.combat.controlGroups.${turret.control}`),
         });
       }
-      // A ship slot always lists its children, empty or not; the mount's own
-      // ports are the fallback when it has none, as in the loadout tree.
-      const ports = gunPorts(
-        hp.hardpoints?.length ? hp.hardpoints : hp.component?.hardpoints,
-      );
+      // A ship slot lists its children, empty or not, and the mount's own
+      // ports are the fallback when none of them takes a gun -- a turret slot
+      // can list only its seat or camera while the turret declares the guns.
+      const ports =
+        gunPorts(hp.hardpoints) ?? gunPorts(hp.component?.hardpoints);
       if (ports) {
         result.push({
           label: t("labels.hardpoint.turrets.gunPorts"),
@@ -1819,7 +1833,7 @@ export const useHardpointStats = (
       }
     }
 
-    result.push(...poweredStats(typeData as PoweredTypeData));
+    result.push(...poweredStats(typeData as PoweredTypeData, category));
 
     return result;
   });

@@ -155,6 +155,33 @@ describe("useHardpointStats rows", () => {
     );
   });
 
+  it("falls back to a mount's own ports when its ship slot lists only a seat", () => {
+    const slot = hardpoint(HardpointCategoryEnum.TURRET, { yawSpeed: 80 }, [
+      { category: HardpointCategoryEnum.SEAT, maxSize: 1 },
+    ]);
+    slot.component!.hardpoints = [
+      { category: HardpointCategoryEnum.WEAPON_MOUNTS, maxSize: 4 },
+      { category: HardpointCategoryEnum.WEAPON_MOUNTS, maxSize: 4 },
+    ] as Hardpoint[];
+
+    expect(valueOf(statsFor(slot), "labels.hardpoint.turrets.gunPorts")).toBe(
+      "2 × S4",
+    );
+  });
+
+  it("gives a thruster its signatures but no power segments", () => {
+    const stats = statsFor(
+      hardpoint(HardpointCategoryEnum.MAIN_THRUSTERS, {
+        thrustCapacity: 1_000_000,
+        powerConsumption: 2,
+        signatureIr: 150,
+      }),
+    );
+
+    expect(valueOf(stats, "labels.hardpoint.powerConsumption")).toBeUndefined();
+    expect(valueOf(stats, "labels.hardpoint.signatureIr")).toBe("150");
+  });
+
   it("counts a mount's gun ports by size, leaving out its other slots", () => {
     const stats = statsFor(
       hardpoint(HardpointCategoryEnum.TURRET, { yawSpeed: 80 }, [

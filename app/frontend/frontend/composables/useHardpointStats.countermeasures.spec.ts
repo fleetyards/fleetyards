@@ -86,6 +86,25 @@ describe("useHardpointStats for a countermeasure's ammo", () => {
     ).toBe("0 → 30000");
   });
 
+  it("shows only the end the data gives, never an invented 0", () => {
+    const stats = statsFor(
+      launcherHardpoint({
+        countermeasure: {
+          kind: ComponentCountermeasureKindEnum.DECOY,
+          infrared: { end: 20000 },
+          electromagnetic: { start: 60000 },
+        },
+      }),
+    );
+
+    expect(
+      valueOf(stats, "labels.hardpoint.countermeasureStats.infrared"),
+    ).toBe("20000");
+    expect(
+      valueOf(stats, "labels.hardpoint.countermeasureStats.electromagnetic"),
+    ).toBe("60000");
+  });
+
   it("shows when a noise cloud deploys", () => {
     const stats = statsFor(
       launcherHardpoint({
