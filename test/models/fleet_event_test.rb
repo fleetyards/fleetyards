@@ -537,4 +537,15 @@ class FleetEventTest < ActiveSupport::TestCase
       assert_nil event.open_at
     end
   end
+
+  test "hands a removed part's successors to the part before it" do
+    first = create(:fleet_event, :open, starts_at: Time.zone.parse("2026-05-14 20:00 UTC"), timezone: "UTC",
+      recurring: true, recurrence_interval: "weekly", recurrence_every: 1)
+    middle = FleetEvents::SeriesSplit.new(first, "2026-06-04").call
+    last = FleetEvents::SeriesSplit.new(middle, "2026-06-18").call
+
+    middle.destroy!
+
+    assert_equal first.id, last.reload.split_from_id
+  end
 end

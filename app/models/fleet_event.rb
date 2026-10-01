@@ -79,6 +79,12 @@ class FleetEvent < ApplicationRecord
   # The series this one continues, when it was split off as "this and
   # following". The two share a title, and this is what says they are one.
   belongs_to :split_from, class_name: "FleetEvent", optional: true
+  has_many :split_successors, class_name: "FleetEvent", foreign_key: :split_from_id,
+    inverse_of: :split_from, dependent: nil
+
+  # A part removed from the middle of a split series hands its successors to
+  # the part before it, so what is left still reads as one series.
+  before_destroy -> { split_successors.update_all(split_from_id:) } # rubocop:disable Rails/SkipsModelValidations
 
   has_many :fleet_event_teams, dependent: :destroy
   has_many :fleet_event_ships, through: :fleet_event_teams
