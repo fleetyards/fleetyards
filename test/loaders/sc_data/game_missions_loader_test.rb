@@ -230,6 +230,17 @@ module ScData
         assert_equal [["template", "PYR2 L4"], ["text", "Pyro"]], links.sort
       end
 
+      # Hurston is a planet and a company. Followed by a capitalised word it is
+      # the company.
+      test "#all reads a place name inside a company name as the company" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+
+        links = loader.send(:text_locations, {"title" => "Hurston Dynamics needs a courier", "description" => "Head to Lorville on Hurston."})
+
+        assert_equal ["Hurston", "Lorville"], Location.where(id: links).pluck(:name).sort
+        assert_empty loader.send(:text_locations, {"title" => "Hurston Dynamics needs a courier"})
+      end
+
       test "#all links nothing when no place is loaded" do
         loader.all
 

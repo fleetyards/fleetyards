@@ -156,14 +156,16 @@ module ScData
       end
 
       # Longest name first, so "Stanton System" is read as the system rather
-      # than as the star inside it.
+      # than as the star inside it. A name followed by a capitalised word is
+      # part of a longer proper noun -- "Crusader Security", "Hurston
+      # Dynamics", "Stanton Branch" -- and names the company, not the place.
       private def location_name_pattern
         return @location_name_pattern if defined?(@location_name_pattern)
 
         names = location_names.keys.sort_by { |name| -name.length }
 
         @location_name_pattern = if names.any?
-          /(?<![\p{L}\d])(#{names.map { |name| Regexp.escape(name) }.join("|")})(?![\p{L}\d])/
+          /(?<![\p{L}\d])(#{names.map { |name| Regexp.escape(name) }.join("|")})(?![\p{L}\d])(?! \p{Lu})/
         end
       end
 
