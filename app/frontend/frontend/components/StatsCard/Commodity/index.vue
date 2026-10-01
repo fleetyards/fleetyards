@@ -8,7 +8,10 @@ export default {
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
-import { useCommodityStats } from "@/frontend/composables/useCommodityStats";
+import {
+  useCommodityStats,
+  useCommodityTypeLabel,
+} from "@/frontend/composables/useCommodityStats";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Commodity } from "@/services/fyApi";
 
@@ -35,27 +38,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ navigate: [] }>();
 
-const { t, tExists, toNumber } = useI18n();
+const { t, toNumber } = useI18n();
 
-const allStats = useCommodityStats(() => props.commodity);
+const typeLabel = useCommodityTypeLabel(() => props.commodity);
 
-const typeLabel = computed(() => {
-  const type = props.commodity?.commodityType;
-  if (!type) return undefined;
-
-  const path = `labels.commodity.types.${type}`;
-
-  return tExists(path) ? t(path) : type;
+const stats = useCommodityStats(() => props.commodity, {
+  withType: () => !props.compact,
 });
-
-// The compact card names the type in its eyebrow already.
-const stats = computed(() =>
-  props.compact
-    ? allStats.value.filter(
-        (stat) => stat.label !== t("labels.commodity.commodityType"),
-      )
-    : allStats.value,
-);
 
 // What it trades at, the way the catalogue row states it. Shop-perspective, as
 // `item_prices` stores it: what a terminal sells it for is what the reader
@@ -119,6 +108,8 @@ const ownRoute = computed(() =>
     <template v-if="$slots.rows" #rows>
       <slot name="rows" />
     </template>
-    <slot />
+    <template v-if="$slots.default" #default>
+      <slot />
+    </template>
   </StatsCard>
 </template>

@@ -113,6 +113,8 @@ const ownRoute = computed(() =>
     :unavailable="compact && !loading && !component"
     @navigate="emit('navigate')"
   >
-    <slot />
+    <template v-if="$slots.default" #default>
+      <slot />
+    </template>
   </StatsCard>
 </template>

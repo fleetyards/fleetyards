@@ -33,6 +33,10 @@
   width: 320px;
   max-width: 100%;
 
+  &__media {
+    position: relative;
+  }
+
   &__image {
     display: block;
     width: 100%;
@@ -44,9 +48,9 @@
 
   &__head {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px 12px;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
   }
 
   &__icon {
@@ -68,19 +72,11 @@
     font-size: 16px;
   }
 
-  &__heading {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-  }
-
   &__eyebrow-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
+    margin-bottom: 4px;
   }
 
   &__eyebrow,
@@ -89,6 +85,7 @@
   }
 
   &__eyebrow {
+    flex: 1;
     min-width: 0;
     overflow: hidden;
     font-weight: 600;
@@ -121,6 +118,21 @@
 
     &--neutral {
       color: var(--color-text-dim, #959595);
+    }
+
+    // Over a photo the tinted fill alone would vanish into the hull, so it
+    // sits on an opaque chip of the popover's surface.
+    &--over-image {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background:
+        linear-gradient(
+          color-mix(in srgb, currentColor 18%, transparent),
+          color-mix(in srgb, currentColor 18%, transparent)
+        ),
+        var(--color-gray-darker, #272b30);
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.45);
     }
   }
 
@@ -277,6 +289,13 @@
     }
   }
 
+  &__image-well {
+    height: 150px;
+    border-radius: 0;
+  }
+
+  // Each bar sized by its own class: a shared size on `.skeleton-bar` here
+  // would outrank them and flatten the hero to a line's height.
   &__skeleton {
     .stats-card__spec {
       gap: 6px;
@@ -285,10 +304,6 @@
     .stats-card__body {
       gap: 10px;
     }
-
-    .skeleton-bar {
-      font-size: 10px;
-    }
   }
 
   &__skeleton-label {
@@ -296,9 +311,17 @@
     font-size: 8px;
   }
 
+  &__skeleton-value {
+    font-size: 11px;
+  }
+
   &__skeleton-hero {
     width: 96px;
     font-size: 22px;
+  }
+
+  &__skeleton-line {
+    font-size: 10px;
   }
 
   // A dropdown menu's last row rather than a button: the card is a menu-like

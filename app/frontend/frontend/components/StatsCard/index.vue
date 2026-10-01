@@ -118,8 +118,23 @@ const badgeColumns = computed(() => {
     return `repeat(${count}, minmax(0, 1fr))`;
   }
 
-  return `repeat(${count - 1}, max-content) minmax(0, 1fr)`;
+  // `minmax(0, …)` so a cell that runs long still shrinks to the card rather
+  // than pushing the strip past its edge.
+  return `repeat(${count - 1}, minmax(0, max-content)) minmax(0, 1fr)`;
 });
+
+// Without a name the generic text, rather than "Loading" and a blank.
+const loadingLabel = computed(() =>
+  props.title
+    ? t("labels.statsCard.loading", { name: props.title })
+    : undefined,
+);
+
+// Only a ship's card carries an image, and a fetched one would otherwise grow
+// by its height the moment the record lands.
+const showsImage = computed(() => !!props.image && !props.loading);
+
+const holdsImage = computed(() => props.loading && props.kind === "Model");
 
 const hasBody = computed(
   () =>
@@ -139,39 +154,46 @@ const hasBody = computed(
     :aria-busy="loading"
     data-test="stats-card"
   >
-    <LoadingLine
-      :loading="loading"
-      :label="t('labels.statsCard.loading', { name: title })"
+    <LoadingLine :loading="loading" :label="loadingLabel" />
+
+    <span
+      v-if="holdsImage"
+      class="skeleton-well stats-card__image-well"
+      aria-hidden="true"
     />
 
-    <img
-      v-if="image && !loading"
-      :src="image"
-      :alt="title"
-      class="stats-card__image"
-      loading="lazy"
-    />
-
-    <div class="stats-card__head">
-      <span v-if="kind" class="stats-card__icon">
-        <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
+    <div v-if="showsImage" class="stats-card__media">
+      <img :src="image" :alt="title" class="stats-card__image" loading="lazy" />
+      <span
+        v-if="status"
+        class="stats-card__status stats-card__status--over-image"
+        :class="`stats-card__status--${status.tone}`"
+        data-test="stats-card-status"
+      >
+        {{ status.label }}
       </span>
-      <div class="stats-card__heading">
-        <div v-if="eyebrow || status" class="stats-card__eyebrow-row">
-          <span v-if="eyebrow" class="stats-card__eyebrow">{{ eyebrow }}</span>
-          <span
-            v-if="status && !loading"
-            class="stats-card__status"
-            :class="`stats-card__status--${status.tone}`"
-            data-test="stats-card-status"
-          >
-            {{ status.label }}
-          </span>
-        </div>
-        <div class="stats-card__title">{{ title }}</div>
-        <div v-if="subtitle && !loading" class="stats-card__subtitle">
-          {{ subtitle }}
-        </div>
+    </div>
+
+    <!-- The icon rides in the eyebrow's line so the name below it can take
+         the card's full width. -->
+    <div class="stats-card__head">
+      <div v-if="kind || eyebrow || status" class="stats-card__eyebrow-row">
+        <span v-if="kind" class="stats-card__icon">
+          <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
+        </span>
+        <span v-if="eyebrow" class="stats-card__eyebrow">{{ eyebrow }}</span>
+        <span
+          v-if="status && !loading && !showsImage"
+          class="stats-card__status"
+          :class="`stats-card__status--${status.tone}`"
+          data-test="stats-card-status"
+        >
+          {{ status.label }}
+        </span>
+      </div>
+      <div class="stats-card__title">{{ title }}</div>
+      <div v-if="subtitle && !loading" class="stats-card__subtitle">
+        {{ subtitle }}
       </div>
     </div>
 
@@ -195,13 +217,19 @@ const hasBody = computed(
           class="stats-card__spec"
         >
           <span class="skeleton-bar stats-card__skeleton-label" />
-          <span class="skeleton-bar" :style="{ width: `${width}px` }" />
+          <span
+            class="skeleton-bar stats-card__skeleton-value"
+            :style="{ width: `${width}px` }"
+          />
         </div>
       </div>
       <div class="stats-card__body">
         <span class="skeleton-bar stats-card__skeleton-hero" />
-        <span class="skeleton-bar" />
-        <span class="skeleton-bar" :style="{ width: '70%' }" />
+        <span class="skeleton-bar stats-card__skeleton-line" />
+        <span
+          class="skeleton-bar stats-card__skeleton-line"
+          :style="{ width: '70%' }"
+        />
       </div>
     </div>
 

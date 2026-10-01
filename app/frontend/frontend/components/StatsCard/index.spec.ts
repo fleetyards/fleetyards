@@ -71,7 +71,7 @@ describe("StatsCard", () => {
 
     const strip = wrapper.find(".stats-card__specs");
     expect(strip.attributes("style")).toContain(
-      "grid-template-columns: repeat(2, max-content) minmax(0, 1fr)",
+      "grid-template-columns: repeat(2, minmax(0, max-content)) minmax(0, 1fr)",
     );
     // The full value stays readable where the strip cuts it short.
     expect(
@@ -126,6 +126,46 @@ describe("StatsCard", () => {
     expect(wrapper.find("[role='status']").text()).toContain("Glacier");
     // The name is known before the record arrives.
     expect(wrapper.find(".stats-card__title").text()).toBe("Glacier");
+  });
+
+  it("lays a status over the image when there is one", async () => {
+    const wrapper = await mount({
+      kind: "Model",
+      image: "https://example.test/carrack.webp",
+      status: { label: "Flight Ready", tone: "success" },
+    });
+
+    const status = wrapper.find("[data-test='stats-card-status']");
+    expect(status.classes()).toContain("stats-card__status--over-image");
+    expect(
+      wrapper.find(".stats-card__media").element.contains(status.element),
+    ).toBe(true);
+    expect(wrapper.findAll("[data-test='stats-card-status']")).toHaveLength(1);
+  });
+
+  it("holds a ship's image space while it loads", async () => {
+    const wrapper = await mount({ kind: "Model", loading: true });
+
+    expect(wrapper.find(".stats-card__image-well").exists()).toBe(true);
+  });
+
+  it("announces the generic loading text when it has no name", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { compact: true, title: "", loading: true },
+      plugins: [router()],
+    });
+
+    const status = wrapper.find("[role='status']").text();
+    expect(status).not.toBe("");
+    expect(status).not.toMatch(/\s…$/);
+  });
+
+  it("renders no empty body for a slot that carries nothing", async () => {
+    const wrapper = await mount({
+      badges: [{ key: "size", label: "Size", value: "2" }],
+    });
+
+    expect(wrapper.find(".stats-card__body").exists()).toBe(false);
   });
 
   it("links to the detail page and reports the navigation", async () => {
