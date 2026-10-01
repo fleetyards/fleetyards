@@ -70,10 +70,11 @@ module Catalogue
       query = query.to_s.strip
       return [] if query.length < 2 || query.length > MAX_NAME_LENGTH
 
-      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(query.downcase)}%"
-      # Only names one item carries, chosen by the database: a name repeated
-      # hundreds of times would otherwise fill the row budget and push the
-      # names that resolve out of it.
+      escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
+      pattern = "%#{escaped}%"
+      # Only names one item carries, chosen by the database, and those that
+      # start with the query first -- the order the results are ranked in, so
+      # the row budget cannot drop a better match for shorter, weaker ones.
       found = CATALOGUES.keys.flat_map do |prefix|
         name = name_sql(prefix)
 
@@ -81,7 +82,7 @@ module Catalogue
           .where("lower(#{name}) LIKE ?", pattern)
           .group(Arel.sql("lower(#{name})"))
           .having("count(*) = 1")
-          .order(Arel.sql("min(length(#{name}))"), Arel.sql("lower(#{name})"))
+          .order(starts_with(name, escaped), Arel.sql("min(length(#{name}))"), Arel.sql("lower(#{name})"))
           .limit(SEARCH_LIMIT)
           .pluck(Arel.sql("min(#{name})"))
       end
@@ -110,6 +111,10 @@ module Catalogue
           .pluck(Arel.sql(name_sql(prefix)), Arel.sql("#{CATALOGUES.fetch(prefix).table_name}.slug"))
           .map { |name, slug| {prefix:, name:, slug:} }
       end.group_by { |row| row[:name].downcase }
+    end
+
+    private def starts_with(name, escaped)
+      Arel.sql(ActiveRecord::Base.sanitize_sql_array(["CASE WHEN lower(#{name}) LIKE ? THEN 0 ELSE 1 END", "#{escaped}%"]))
     end
 
     # A ship's name is its row's; the game-file catalogues read theirs off the

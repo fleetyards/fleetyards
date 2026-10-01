@@ -110,6 +110,13 @@ module Catalogue
       assert_equal ["Internal Tank Mk II"], @resolver.search("tank").map(&:token)
     end
 
+    test "search keeps a longer name that starts with the query" do
+      (1..TokenResolver::SEARCH_LIMIT).each { |n| create(:equipment, name: "A Tank #{n}") }
+      create(:equipment, name: "Tank Mk II Heavy")
+
+      assert_equal "Tank Mk II Heavy", @resolver.search("tank").first.token
+    end
+
     test "search ignores a query longer than any name" do
       assert_empty @resolver.search("x" * (TokenResolver::MAX_NAME_LENGTH + 1))
     end
