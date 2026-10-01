@@ -20,6 +20,8 @@ import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/route
 import BasePopover from "@/shared/components/Popover/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
+import ShipStatsCard from "@/frontend/components/StatsCard/Ship/index.vue";
+import storeImage from "@/images/fallback/store_image.webp";
 import {
   EquipmentTypeEnum,
   type Blueprint,
@@ -194,7 +196,7 @@ const demoShip = {
   pledgePriceLabel: "$600",
   crew: { minLabel: "4", maxLabel: "6" },
   manufacturer: { name: "Anvil Aerospace" },
-  media: {},
+  media: { storeImage: { smallUrl: storeImage } },
 } as unknown as Model;
 
 const demoBlueprint = {
@@ -318,7 +320,8 @@ const demoMission = {
     first tap opens the card instead of following the link, and a tap outside,
     Escape or a scroll closes it. Each of these carries its record, so nothing
     is fetched; the armour has no page link here and is focusable on its own.
-    The last one stays loading, to show the skeleton and the loading line.
+    The last two stay loading, to show the skeleton and the loading line; a
+    ship's also holds its image's height.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
@@ -370,6 +373,12 @@ const demoMission = {
         <a href="#popover">Still loading</a>
         <template #content>
           <ComponentStatsCard compact loading name="Glacier" />
+        </template>
+      </BasePopover>
+      <BasePopover label="Loading a ship" data-test="popover-demo-ship-loading">
+        <a href="#popover">Ship still loading</a>
+        <template #content>
+          <ShipStatsCard loading name="Carrack" />
         </template>
       </BasePopover>
     </div>

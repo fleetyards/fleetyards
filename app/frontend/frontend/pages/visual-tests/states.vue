@@ -29,6 +29,7 @@ import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Offline from "@/shared/components/Offline/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
@@ -346,6 +347,30 @@ const updatePerPage = (value: number | string) => {
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2">LoadingLine</Heading>
+  <p>
+    The one moving element beside a still skeleton: a thin line along an edge of
+    the area that is waiting, with a live region a screen reader announces. With
+    reduced motion it fades in place instead of sliding. The hover cards run it
+    along their top edge, the metrics panels under their heading.
+  </p>
+  <div class="row" data-test="loading-line-demo">
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>top edge</BaseText>
+      <div class="vt-loading-line">
+        <LoadingLine loading label="Loading the demo" />
+        <RowsSkeleton :count="2" :meta="false" />
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>bottom edge</BaseText>
+      <div class="vt-loading-line">
+        <LoadingLine loading edge="bottom" label="Loading the demo" />
+        <RowsSkeleton :count="2" :meta="false" />
+      </div>
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">SmallLoader</Heading>
   <p>The inline rhombus spinner, at each alignment.</p>
   <div class="row">
@@ -440,5 +465,13 @@ const updatePerPage = (value: number | string) => {
 .vt-narrow-column {
   width: 361px;
   outline: 1px dashed rgba(#fff, 0.15);
+}
+
+// The line lies over its positioned parent's edge, so the demo box is one.
+.vt-loading-line {
+  position: relative;
+  padding: 16px;
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-control, 8px);
 }
 </style>

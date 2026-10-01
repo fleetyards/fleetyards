@@ -148,6 +148,22 @@ const sampleMetrics = [
       </MetricsCard>
     </div>
   </div>
+  <p>
+    While loading, a thin line runs under the heading and a screen reader hears
+    which card is loading. The body stays as the consumer renders it.
+  </p>
+  <div class="row" data-test="metrics-card-loading">
+    <div class="col-12 col-lg-6">
+      <MetricsCard title="Loading" loading>
+        The figures arrive once the loadout is read.
+      </MetricsCard>
+    </div>
+    <div class="col-12 col-lg-6">
+      <MetricsCard title="Slim | Loading" variant="slim" loading>
+        The same line, under the slim heading's divider.
+      </MetricsCard>
+    </div>
+  </div>
 
   <Heading :level="HeadingLevelEnum.H2"
     >MetricsCard | Content Primitives</Heading
