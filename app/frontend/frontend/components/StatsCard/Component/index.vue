@@ -54,12 +54,6 @@ const categoryLabel = computed(() => {
   return tExists(path) ? t(path) : key;
 });
 
-const subtitle = computed(() =>
-  [props.component?.manufacturer?.name, categoryLabel.value]
-    .filter(Boolean)
-    .join(" · "),
-);
-
 const badges = computed<StatsCardBadge[]>(() => {
   const component = props.component;
   if (!component) return [];
@@ -108,7 +102,9 @@ const ownRoute = computed(() =>
     :title="
       compact ? component?.name || name || '' : t('headlines.component.metrics')
     "
-    :subtitle="subtitle || undefined"
+    kind="Component"
+    :category="categoryLabel"
+    :subtitle="component?.manufacturer?.name || undefined"
     :badges="badges"
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"

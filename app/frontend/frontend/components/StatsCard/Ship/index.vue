@@ -7,7 +7,11 @@ export default {
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
-import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
+import {
+  type StatsCardBadge,
+  type StatsCardStatus,
+  type StatsCardStatusTone,
+} from "@/frontend/components/StatsCard/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Model } from "@/services/fyApi";
 
@@ -31,34 +35,46 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t } = useI18n();
 
-const stats = computed<HardpointStat[]>(() => {
+// Flyable is the state worth calling out; the rest are steps on the way.
+const STATUS_TONES: Record<string, StatsCardStatusTone> = {
+  "flight-ready": "success",
+  ready: "success",
+  "in-production": "warning",
+};
+
+const status = computed<StatsCardStatus | undefined>(() => {
+  const productionStatus = props.model?.productionStatus;
+  if (!productionStatus) return undefined;
+
+  return {
+    label: t(`labels.model.productionStatus.${productionStatus}`),
+    tone: STATUS_TONES[productionStatus] ?? "neutral",
+  };
+});
+
+const badges = computed<StatsCardBadge[]>(() => {
   const model = props.model;
   if (!model) return [];
 
   const crew = [model.crew.minLabel, model.crew.maxLabel].filter(Boolean);
 
   return [
-    {
-      label: t("labels.model.manufacturer"),
-      value: model.manufacturer.name,
-      wide: true,
-    },
     crew.length
-      ? { label: t("labels.model.minCrew"), value: crew.join(" – ") }
-      : undefined,
-    model.pledgePriceLabel
-      ? { label: t("labels.model.pledgePrice"), value: model.pledgePriceLabel }
-      : undefined,
-    model.productionStatus
       ? {
-          label: t("labels.models.table.columns.productionStatus"),
-          value: t(`labels.model.productionStatus.${model.productionStatus}`),
+          key: "crew",
+          label: t("labels.model.minCrew"),
+          value: crew.join(" – "),
         }
       : undefined,
-  ].filter((stat): stat is HardpointStat => !!stat);
+    model.pledgePriceLabel
+      ? {
+          key: "pledge",
+          label: t("labels.model.pledgePrice"),
+          value: model.pledgePriceLabel,
+        }
+      : undefined,
+  ].filter((badge): badge is StatsCardBadge => !!badge);
 });
-
-const subtitle = computed(() => props.model?.classificationLabel || undefined);
 
 const image = computed(
   () =>
@@ -77,30 +93,15 @@ const ownRoute = computed(() =>
   <StatsCard
     compact
     :title="model?.name || name || ''"
-    variant="slim"
-    :subtitle="subtitle"
-    :stats="stats"
+    kind="Model"
+    :category="model?.classificationLabel || undefined"
+    :subtitle="model?.manufacturer.name"
+    :status="status"
+    :image="image"
+    :badges="badges"
     :to="to === false ? undefined : (to ?? ownRoute)"
     :loading="loading"
     :unavailable="!loading && !model"
     @navigate="emit('navigate')"
-  >
-    <img
-      v-if="image"
-      :src="image"
-      :alt="model?.name"
-      class="ship-stats-card__image"
-      loading="lazy"
-    />
-  </StatsCard>
+  />
 </template>
-
-<style lang="scss" scoped>
-.ship-stats-card__image {
-  display: block;
-  width: 100%;
-  max-height: 140px;
-  object-fit: cover;
-  border-radius: var(--radius-control, 8px);
-}
-</style>

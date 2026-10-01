@@ -7,9 +7,14 @@ export default {
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
-import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
+import {
+  type StatsCardBadge,
+  type StatsCardStatus,
+} from "@/frontend/components/StatsCard/types";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { useI18n } from "@/shared/composables/useI18n";
+import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
 import { type Blueprint } from "@/services/fyApi";
 
 type Props = {
@@ -31,43 +36,47 @@ const emit = defineEmits<{ navigate: [] }>();
 const { t } = useI18n();
 const { format: formatCraftTime } = useCraftTime();
 
-const stats = computed<HardpointStat[]>(() => {
+const badges = computed<StatsCardBadge[]>(() => {
   const blueprint = props.blueprint;
   if (!blueprint) return [];
 
   const craftTime = formatCraftTime(blueprint.craftTime);
 
   return [
-    blueprint.craftable?.name
-      ? {
-          label: t("labels.blueprint.makesA"),
-          value: blueprint.craftable.name,
-          wide: true,
-        }
-      : undefined,
     craftTime
-      ? { label: t("labels.blueprint.craftTime"), value: craftTime }
+      ? {
+          key: "craftTime",
+          label: t("labels.blueprint.craftTime"),
+          value: craftTime,
+        }
       : undefined,
     blueprint.slotCount
       ? {
+          key: "slots",
           label: t("labels.blueprint.slots"),
           value: String(blueprint.slotCount),
         }
       : undefined,
-  ].filter((stat): stat is HardpointStat => !!stat);
+  ].filter((badge): badge is StatsCardBadge => !!badge);
 });
 
-const subtitle = computed(
-  () =>
-    [
-      props.blueprint?.craftable?.type
-        ? t(`labels.blueprint.craftableTypes.${props.blueprint.craftable.type}`)
-        : undefined,
-      props.blueprint?.retired ? t("labels.blueprint.retired") : undefined,
-    ]
-      .filter(Boolean)
-      .join(" · ") || undefined,
+const category = computed(() =>
+  props.blueprint?.craftable?.type
+    ? t(`labels.blueprint.craftableTypes.${props.blueprint.craftable.type}`)
+    : undefined,
 );
+
+const status = computed<StatsCardStatus | undefined>(() =>
+  props.blueprint?.retired
+    ? { label: t("labels.blueprint.retired"), tone: "neutral" }
+    : undefined,
+);
+
+const craftable = computed(() => props.blueprint?.craftable);
+
+const craftableRoute = computed(() => catalogueItemRoute(craftable.value));
+
+const materials = computed(() => props.blueprint?.materials ?? []);
 
 const ownRoute = computed(() =>
   props.blueprint?.slug
@@ -80,12 +89,107 @@ const ownRoute = computed(() =>
   <StatsCard
     compact
     :title="blueprint?.name || name || ''"
-    variant="slim"
-    :subtitle="subtitle"
-    :stats="stats"
+    kind="Blueprint"
+    :category="category"
+    :status="status"
+    :badges="badges"
     :to="to === false ? undefined : (to ?? ownRoute)"
     :loading="loading"
     :unavailable="!loading && !blueprint"
     @navigate="emit('navigate')"
-  />
+  >
+    <div v-if="craftable?.name" class="blueprint-stats-card__section">
+      <span class="stats-card__label">{{ t("labels.blueprint.makes") }}</span>
+      <!-- A link, not another hover card: a card opening inside a card would
+           leave the reader two layers deep in something meant as a glance. -->
+      <router-link
+        v-if="craftableRoute"
+        :to="craftableRoute"
+        class="blueprint-stats-card__makes"
+        data-test="blueprint-stats-card-makes"
+        @click="emit('navigate')"
+      >
+        <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
+        [{{ craftable.name }}]
+      </router-link>
+      <span v-else class="blueprint-stats-card__makes">
+        <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
+        [{{ craftable.name }}]
+      </span>
+    </div>
+
+    <div v-if="materials.length" class="blueprint-stats-card__section">
+      <span class="stats-card__label">
+        {{ t("labels.blueprint.materials") }}
+      </span>
+      <div class="blueprint-stats-card__materials">
+        <router-link
+          v-for="material in materials"
+          :key="material.id"
+          :to="{ name: 'commodity', params: { slug: material.slug } }"
+          class="blueprint-stats-card__material"
+          @click="emit('navigate')"
+        >
+          {{ material.name }}
+        </router-link>
+      </div>
+    </div>
+  </StatsCard>
 </template>
+
+<style lang="scss" scoped>
+.blueprint-stats-card {
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  // Marked the way an item named in text is: its type's icon, its name in
+  // brackets.
+  &__makes {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+    align-self: flex-start;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary, #428bca);
+    text-decoration: none;
+
+    i {
+      font-size: 0.85em;
+    }
+  }
+
+  a.blueprint-stats-card__makes:hover,
+  a.blueprint-stats-card__makes:focus-visible {
+    color: var(--color-primary-tint, #6aa5dc);
+  }
+
+  &__materials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__material {
+    padding: 3px 9px;
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control-bare, 6px);
+    background: rgb(0 0 0 / 0.2);
+    font-size: 0.8rem;
+    color: var(--color-text, #c8c8c8);
+    text-decoration: none;
+    transition:
+      border-color 150ms ease,
+      color 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--color-primary, #428bca);
+      color: var(--color-lifted, #eee);
+    }
+  }
+}
+</style>

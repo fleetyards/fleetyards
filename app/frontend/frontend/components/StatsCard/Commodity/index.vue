@@ -35,9 +35,27 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ navigate: [] }>();
 
-const { t, toNumber } = useI18n();
+const { t, tExists, toNumber } = useI18n();
 
-const stats = useCommodityStats(() => props.commodity);
+const allStats = useCommodityStats(() => props.commodity);
+
+const typeLabel = computed(() => {
+  const type = props.commodity?.commodityType;
+  if (!type) return undefined;
+
+  const path = `labels.commodity.types.${type}`;
+
+  return tExists(path) ? t(path) : type;
+});
+
+// The compact card names the type in its eyebrow already.
+const stats = computed(() =>
+  props.compact
+    ? allStats.value.filter(
+        (stat) => stat.label !== t("labels.commodity.commodityType"),
+      )
+    : allStats.value,
+);
 
 // What it trades at, the way the catalogue row states it. Shop-perspective, as
 // `item_prices` stores it: what a terminal sells it for is what the reader
@@ -61,7 +79,13 @@ const badges = computed<StatsCardBadge[]>(() => {
   ].flatMap((badge) =>
     badge.value == null
       ? []
-      : [{ ...badge, value: String(toNumber(badge.value, "integer")) }],
+      : [
+          {
+            ...badge,
+            value: String(toNumber(badge.value, "integer")),
+            unit: t("number.units.uec"),
+          },
+        ],
   );
 });
 
@@ -81,7 +105,11 @@ const ownRoute = computed(() =>
         : t('headlines.commodity.identity')
     "
     variant="slim"
+    kind="Commodity"
+    :category="typeLabel"
+    :description="commodity?.description || undefined"
     :badges="badges"
+    prominent-badges
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"
     :loading="loading"

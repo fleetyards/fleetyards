@@ -218,7 +218,25 @@
       },
       "statsCard": {
         "more": "+%{count} more on the detail page",
-        "unavailable": "Could not load these details."
+        "unavailable": "Could not load these details.",
+        "loading": "Loading %{name}…",
+        "offeredBy": "Offered by %{name}",
+        "types": {
+          "Component": "Component",
+          "Equipment": "Equipment",
+          "Commodity": "Commodity",
+          "Model": "Ship",
+          "Blueprint": "Blueprint",
+          "GameMission": "Mission"
+        },
+        "open": {
+          "Component": "Open component",
+          "Equipment": "Open equipment",
+          "Commodity": "Open commodity",
+          "Model": "Open ship",
+          "Blueprint": "Open blueprint",
+          "GameMission": "Open mission"
+        }
       },
       "stats": {
         "quickStats": {
@@ -3350,6 +3368,7 @@
         "heldIn": "in",
         "heldOn": "on",
         "fromHangar": "Hangar",
+        "makes": "Makes",
         "makesA": "Crafting recipe · makes a",
         "makesUnknown": "Crafting recipe · makes something no catalogue here carries",
         "retired": "Retired",

@@ -218,7 +218,25 @@
       },
       "statsCard": {
         "more": "+%{count} altri nella pagina dei dettagli",
-        "unavailable": "Impossibile caricare questi dettagli."
+        "unavailable": "Impossibile caricare questi dettagli.",
+        "loading": "Caricamento di %{name}…",
+        "offeredBy": "Offerta da %{name}",
+        "types": {
+          "Component": "Componente",
+          "Equipment": "Equipaggiamento",
+          "Commodity": "Merce",
+          "Model": "Nave",
+          "Blueprint": "Progetto",
+          "GameMission": "Missione"
+        },
+        "open": {
+          "Component": "Apri componente",
+          "Equipment": "Apri equipaggiamento",
+          "Commodity": "Apri merce",
+          "Model": "Apri nave",
+          "Blueprint": "Apri progetto",
+          "GameMission": "Apri missione"
+        }
       },
       "stats": {
         "quickStats": {
@@ -3336,6 +3354,7 @@
         "heldIn": "in",
         "heldOn": "su",
         "fromHangar": "Hangar",
+        "makes": "Produce",
         "makesA": "Progetto di fabbricazione · produce",
         "makesUnknown": "Progetto di fabbricazione · produce qualcosa che nessun catalogo qui riporta",
         "retired": "Ritirato",

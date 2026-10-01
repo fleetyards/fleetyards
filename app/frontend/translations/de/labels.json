@@ -218,7 +218,25 @@
       },
       "statsCard": {
         "more": "+%{count} weitere auf der Detailseite",
-        "unavailable": "Diese Details konnten nicht geladen werden."
+        "unavailable": "Diese Details konnten nicht geladen werden.",
+        "loading": "%{name} wird geladen…",
+        "offeredBy": "Angeboten von %{name}",
+        "types": {
+          "Component": "Komponente",
+          "Equipment": "Ausrüstung",
+          "Commodity": "Rohstoff",
+          "Model": "Schiff",
+          "Blueprint": "Bauplan",
+          "GameMission": "Mission"
+        },
+        "open": {
+          "Component": "Komponente öffnen",
+          "Equipment": "Ausrüstung öffnen",
+          "Commodity": "Rohstoff öffnen",
+          "Model": "Schiff öffnen",
+          "Blueprint": "Bauplan öffnen",
+          "GameMission": "Mission öffnen"
+        }
       },
       "stats": {
         "quickStats": {
@@ -3336,6 +3354,7 @@
         "heldIn": "in",
         "heldOn": "auf",
         "fromHangar": "Hangar",
+        "makes": "Fertigt",
         "makesA": "Bauplan · fertigt",
         "makesUnknown": "Bauplan · fertigt etwas, das hier in keinem Katalog steht",
         "retired": "Ausgemustert",

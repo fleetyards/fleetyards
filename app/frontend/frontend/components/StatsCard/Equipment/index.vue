@@ -40,11 +40,7 @@ const { t } = useI18n();
 const stats = useEquipmentStats(() => props.equipment);
 
 const subtitle = computed(() =>
-  [
-    props.equipment?.manufacturer?.name,
-    props.equipment?.equipmentTypeLabel,
-    props.equipment?.itemTypeLabel,
-  ]
+  [props.equipment?.manufacturer?.name, props.equipment?.itemTypeLabel]
     .filter(Boolean)
     .join(" · "),
 );
@@ -81,7 +77,10 @@ const ownRoute = computed(() =>
     :title="
       compact ? equipment?.name || name || '' : t('headlines.equipment.metrics')
     "
+    kind="Equipment"
+    :category="equipment?.equipmentTypeLabel || undefined"
     :subtitle="subtitle || undefined"
+    :description="equipment?.description || undefined"
     :badges="badges"
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"

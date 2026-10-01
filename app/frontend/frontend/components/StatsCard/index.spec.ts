@@ -36,17 +36,74 @@ describe("StatsCard", () => {
   it("leads with one key figure even when two are marked key", async () => {
     const wrapper = await mount({ stats: stats(4, 2) });
 
-    const tiles = wrapper.findAll(".metrics-card__tile");
-    expect(tiles).toHaveLength(1);
-    expect(tiles[0].text()).toContain("Stat 0");
-    expect(wrapper.findAll(".metrics-card__row")).toHaveLength(3);
+    const heroes = wrapper.findAll("[data-test='stats-card-hero']");
+    expect(heroes).toHaveLength(1);
+    expect(heroes[0].text()).toContain("Stat 0");
+    expect(wrapper.findAll("[data-test='stats-card-row']")).toHaveLength(3);
   });
 
   it("caps the rows and says how many more the detail page has", async () => {
     const wrapper = await mount({ stats: stats(15), maxStats: 10 });
 
-    expect(wrapper.findAll(".metrics-card__row")).toHaveLength(10);
+    expect(wrapper.findAll("[data-test='stats-card-row']")).toHaveLength(10);
     expect(wrapper.find(".stats-card__note").text()).toContain("4");
+  });
+
+  it("names its type and category above the title, with the type's icon", async () => {
+    const wrapper = await mount({ kind: "Component", category: "Weapons" });
+
+    expect(wrapper.find(".stats-card__eyebrow").text()).toBe(
+      "Component · Weapons",
+    );
+    expect(wrapper.find(".stats-card__icon i").classes()).toContain(
+      "fa-microchip",
+    );
+  });
+
+  it("gives a long last spec the room the short ones leave", async () => {
+    const wrapper = await mount({
+      badges: [
+        { key: "size", label: "Size", value: "2" },
+        { key: "grade", label: "Grade", value: "A" },
+        { key: "class", label: "Class", value: "Ballistic cannon" },
+      ],
+    });
+
+    const strip = wrapper.find(".stats-card__specs");
+    expect(strip.attributes("style")).toContain(
+      "grid-template-columns: repeat(2, max-content) minmax(0, 1fr)",
+    );
+    // The full value stays readable where the strip cuts it short.
+    expect(
+      wrapper.findAll(".stats-card__spec-value")[2].attributes("title"),
+    ).toBe("Ballistic cannon");
+  });
+
+  it("sets prominent badges as equal tiles, with their unit", async () => {
+    const wrapper = await mount({
+      prominentBadges: true,
+      badges: [
+        { key: "buy", label: "Buy", value: "6,840", unit: "aUEC" },
+        { key: "sell", label: "Sell", value: "7,200", unit: "aUEC" },
+      ],
+    });
+
+    const strip = wrapper.find(".stats-card__specs");
+    expect(strip.classes()).toContain("stats-card__specs--prominent");
+    expect(strip.attributes("style")).toContain(
+      "grid-template-columns: repeat(2, minmax(0, 1fr))",
+    );
+    expect(strip.text()).toContain("aUEC");
+  });
+
+  it("shows a status pill in its tone", async () => {
+    const wrapper = await mount({
+      status: { label: "Flight Ready", tone: "success" },
+    });
+
+    const status = wrapper.find("[data-test='stats-card-status']");
+    expect(status.text()).toBe("Flight Ready");
+    expect(status.classes()).toContain("stats-card__status--success");
   });
 
   it("says so when there is nothing to show", async () => {
@@ -55,21 +112,32 @@ describe("StatsCard", () => {
     expect(wrapper.find(".stats-card__note").text()).toBe("Nothing recorded.");
   });
 
-  it("shows a loader instead of figures while loading", async () => {
+  it("holds its shape with a still skeleton while loading, and says it is loading", async () => {
     const wrapper = await mount({ stats: stats(3), loading: true });
 
-    expect(wrapper.find(".metrics-card__row").exists()).toBe(false);
-    expect(wrapper.find(".stats-card__loading").exists()).toBe(true);
+    expect(wrapper.find("[data-test='stats-card-row']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='stats-card-skeleton']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find(".stats-card").attributes("aria-busy")).toBe("true");
+    expect(wrapper.find(".loading-line").classes()).toContain(
+      "loading-line--active",
+    );
+    expect(wrapper.find("[role='status']").text()).toContain("Glacier");
+    // The name is known before the record arrives.
+    expect(wrapper.find(".stats-card__title").text()).toBe("Glacier");
   });
 
   it("links to the detail page and reports the navigation", async () => {
     const wrapper = await mount({
       stats: stats(2),
+      kind: "Component",
       to: { name: "component", params: { slug: "glacier" } },
     });
 
     const link = wrapper.find("[data-test='stats-card-link']");
     expect(link.attributes("href")).toBe("#/components/glacier");
+    expect(link.text()).toBe("Open component");
 
     await link.trigger("click");
     expect(wrapper.emitted("navigate")).toHaveLength(1);
