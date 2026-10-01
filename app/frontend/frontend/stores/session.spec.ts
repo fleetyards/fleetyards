@@ -7,6 +7,7 @@ import {
   getFleetRsiVerificationQueryKey,
   getMyRsiVerificationQueryKey,
   getMySupporterClaimKeyQueryKey,
+  destroySession,
   me,
 } from "@/services/fyApi";
 import { useSessionStore } from "./session";
@@ -66,6 +67,34 @@ describe("session store", () => {
     await useSessionStore().logout();
 
     expect(queryClient.getQueryData(key)).toBeUndefined();
+  });
+
+  // The reset on clearing the session can refetch under the cookie logout is
+  // about to destroy, so the lookup is asked again once it is gone.
+  it("asks for the resolved tokens again after the session is destroyed", async () => {
+    const order: string[] = [];
+    vi.mocked(destroySession).mockImplementationOnce(async () => {
+      order.push("destroySession");
+
+      return { code: "success", message: "" };
+    });
+    const reset = vi
+      .spyOn(queryClient, "resetQueries")
+      .mockImplementation(async (filters) => {
+        if (
+          filters &&
+          "queryKey" in filters &&
+          filters.queryKey?.[0] === "catalogueLookup"
+        ) {
+          order.push("reset");
+        }
+      });
+
+    await useSessionStore().logout();
+
+    expect(order.at(-1)).toBe("reset");
+    expect(order).toContain("destroySession");
+    reset.mockRestore();
   });
 
   it("drops the reader's cached verification token on logout", async () => {

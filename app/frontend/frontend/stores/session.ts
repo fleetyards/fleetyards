@@ -144,6 +144,10 @@ export const useSessionStore = defineStore("session", {
       this.clearSession();
 
       await destroySession().catch(() => {});
+
+      // The reset in `clearSession` refetched while the old cookie was still
+      // valid; this one cancels that request and asks as nobody.
+      await queryClient.resetQueries({ queryKey: ["catalogueLookup"] });
     },
     confirmAccess() {
       this.accessConfirmed = formatISO(new Date());
