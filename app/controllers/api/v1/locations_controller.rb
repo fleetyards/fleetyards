@@ -13,7 +13,7 @@ module Api
 
         @q = Location.current_version(current_version)
           .with_facts(current_version)
-          .includes(:parent, build: [], last_build: [])
+          .includes({parent: [:parent, :build, :last_build]}, :build, :last_build)
           .ransack(locations_query_params)
 
         @locations = @q.result
@@ -25,7 +25,7 @@ module Api
       # answers them, filtered on `parentIdEq`.
       def show
         @location = Location.current_version(current_version)
-          .includes(:map_parent, :terminals, build: [], last_build: [])
+          .includes({map_parent: [:parent, :build, :last_build]}, {parent: [:parent, :build, :last_build]}, :terminals, :build, :last_build)
           .find_by!(slug: params[:slug].to_s.downcase)
 
         @ancestors = @location.ancestors.reverse

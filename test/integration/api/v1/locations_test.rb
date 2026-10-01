@@ -48,6 +48,7 @@ class Api::V1::LocationsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {q: {parentIdEq: @hurston.id}} do
       assert_equal ["Lorville"], parsed_body["items"].pluck("name")
       assert_equal "Hurston", parsed_body["items"].first.dig("parent", "name")
+      assert_equal "Stanton", parsed_body["items"].first.dig("parent", "parentName")
     end
   end
 

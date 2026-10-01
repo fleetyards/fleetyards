@@ -13,10 +13,12 @@ module Shared
             id: {type: :string, format: :uuid},
             name: {type: [:string, :null]},
             slug: {type: :string},
-            kind: ::Shared::V1::Schemas::Enums::LocationKindEnum
+            kind: ::Shared::V1::Schemas::Enums::LocationKindEnum,
+            # Null for a system.
+            parentName: {type: [:string, :null]}
           },
           additionalProperties: false,
-          required: %w[id slug kind]
+          required: %w[id slug kind parentName]
         })
       end
     end
