@@ -20,6 +20,8 @@ type Props = {
   bgRounded?: `${PanelRoundedEnum}`;
   fillHeight?: boolean;
   inset?: boolean;
+  // The bottom cap carries it, as it does on a button and a select.
+  loading?: boolean;
   outerSpacing?: boolean;
   tone?: `${PanelTonesEnum}`;
   translucent?: boolean;
@@ -33,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   bgRounded: PanelRoundedEnum.ALL,
   fillHeight: false,
   inset: false,
+  loading: false,
   outerSpacing: true,
   tone: PanelTonesEnum.NEUTRAL,
   translucent: false,
@@ -44,6 +47,7 @@ const cssClasses = computed(() => ({
   [`panel--${props.tone}`]: props.tone !== PanelTonesEnum.NEUTRAL,
   "panel--animated": props.animated,
   "panel--fill-height": props.fillHeight,
+  "panel--loading": props.loading,
   "panel--outer-spacing": props.outerSpacing,
   "panel--translucent": props.translucent,
   "panel--has-bg": !!props.bgImage,
@@ -139,6 +143,43 @@ const hasInner = computed(
 .panel::after {
   bottom: -2px;
   border-radius: var(--cap-r, 3px) var(--cap-r, 3px) 0 0;
+}
+
+/*
+ * Loading, the bottom cap fills left to right and clears the same way - the run
+ * a loading button and a select draw. The keyframes are this component's own
+ * copy, since a scoped stylesheet cannot reach another's.
+ */
+.panel--loading::after {
+  background-color: rgb(122 130 136 / 0.35);
+  background-image: linear-gradient(
+    to right,
+    var(--color-primary, #428bca) 80%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  animation: panel-cap-fill 1.8s linear infinite;
+}
+
+@keyframes panel-cap-fill {
+  0% {
+    background-position: left center;
+    background-size: 0% 100%;
+  }
+  50% {
+    background-position: left center;
+    background-size: 100% 100%;
+  }
+  50.01% {
+    background-position: right center;
+    background-size: 100% 100%;
+  }
+  100% {
+    background-position: right center;
+    background-size: 0% 100%;
+  }
 }
 
 /* ---------- variants ---------- */
@@ -355,6 +396,12 @@ const hasInner = computed(
   .panel--animated.panel--slim.panel--error,
   .panel--animated.panel--slim.panel--success {
     animation: none;
+  }
+
+  /* Held full rather than travelling, so the state is still marked. */
+  .panel--loading::after {
+    animation: none;
+    background-size: 100% 100%;
   }
 }
 </style>
