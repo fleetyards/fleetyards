@@ -217,6 +217,26 @@ describe("BaseSelect", () => {
       ).toBe(true);
     });
 
+    it("runs its caps the way a loading button does while it queries", async () => {
+      const queryFn = vi.fn().mockReturnValue(new Promise(() => {}));
+      const wrapper = await mount({ options: undefined, queryFn });
+
+      const trigger = wrapper.find("[data-test='base-select-title']");
+      expect(trigger.classes()).toContain("is-loading");
+      // A moment after mounting, so a select that mounts querying is announced.
+      await vi.waitFor(() =>
+        expect(trigger.find("[role='status']").text()).not.toBe(""),
+      );
+    });
+
+    it("never shows a loading state without a query", async () => {
+      const wrapper = await mount();
+
+      const trigger = wrapper.find("[data-test='base-select-title']");
+      expect(trigger.classes()).not.toContain("is-loading");
+      expect(trigger.find("[role='status']").exists()).toBe(false);
+    });
+
     it("debounces the search and resets to the first page", async () => {
       const queryFn = vi.fn().mockResolvedValue([]);
       const wrapper = await mount({

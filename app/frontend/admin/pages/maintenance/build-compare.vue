@@ -12,7 +12,8 @@ import BasePanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import BasePanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
@@ -157,7 +158,14 @@ const entryName = (entry: Entry | Change) => entry.name || entry.id;
     {{ t("labels.buildCompare.failed") }}
   </p>
 
-  <SmallLoader v-else-if="comparePending" />
+  <div
+    v-else-if="comparePending"
+    class="build-compare__loading"
+    data-test="build-compare-loading"
+  >
+    <LoadingLine loading />
+    <RowsSkeleton :count="4" :meta="false" trailing />
+  </div>
 
   <div v-else class="build-compare__catalogues">
     <BasePanel
@@ -280,6 +288,11 @@ const entryName = (entry: Entry | Change) => entry.name || entry.id;
 </template>
 
 <style lang="scss" scoped>
+.build-compare__loading {
+  position: relative;
+  padding-top: 12px;
+}
+
 .build-compare__picker {
   display: flex;
   flex-wrap: wrap;

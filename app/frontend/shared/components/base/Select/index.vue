@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup generic="T">
 import Collapsed from "@/shared/components/Collapsed.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
@@ -21,6 +20,7 @@ import {
 } from "@tanstack/vue-query";
 import { type BaseList, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useLoadingAnnouncement } from "@/shared/composables/useLoadingAnnouncement";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { InputVariantsEnum } from "@/shared/components/base/FormInput/types";
 
@@ -203,6 +203,9 @@ const loading = computed(() => {
   return isLoading.value || isFetching.value;
 });
 
+// Only a select that asks for its options waits on anything.
+const querying = computed(() => !!props.queryFn && loading.value);
+
 /* eslint-disable @tanstack/query/exhaustive-deps */
 const { isLoading, isFetching, data, refetch } = useQuery({
   refetchOnWindowFocus: false,
@@ -242,6 +245,10 @@ const { isLoading, isFetching, data, refetch } = useQuery({
   placeholderData: keepPreviousData,
   enabled: !!props.queryFn,
 });
+
+// A select can mount already querying, so the text has to arrive after the
+// region does for a screen reader to announce it.
+const queryAnnouncement = useLoadingAnnouncement(querying, undefined);
 /* eslint-enable @tanstack/query/exhaustive-deps */
 
 watch(
@@ -1046,6 +1053,7 @@ defineExpose({
         disabled,
         selected: selectedOptions.length > 0,
         hasLabel: labelVisible,
+        'is-loading': querying,
       }"
       class="base-select-title"
       data-test="base-select-title"
@@ -1054,7 +1062,10 @@ defineExpose({
       <span class="base-select-title-prompt">
         {{ prompt }}
       </span>
-      <SmallLoader v-if="props.queryFn" :loading="loading" />
+      <!-- Mounted for the select's whole life and only its text changes. -->
+      <span v-if="props.queryFn" class="sr-only" role="status">
+        {{ queryAnnouncement }}
+      </span>
       <i class="fa fa-chevron-down" />
     </button>
     <Collapsed

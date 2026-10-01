@@ -11,6 +11,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 export type ModalProps = {
   title?: string;
   fixed?: boolean;
+  // Runs the bottom cap while the dialog waits on something it started.
+  loading?: boolean;
   // For a dialog that is not the app's modal -- one opened above it -- whose
   // close button must close only itself.
   onClose?: () => void;
@@ -19,6 +21,7 @@ export type ModalProps = {
 const props = withDefaults(defineProps<ModalProps>(), {
   title: "",
   fixed: false,
+  loading: false,
   onClose: undefined,
 });
 
@@ -36,7 +39,7 @@ const close = () => {
 
 <template>
   <div class="modal-inner">
-    <Panel :outer-spacing="false">
+    <Panel :outer-spacing="false" :loading="loading">
       <div class="modal-content">
         <div class="modal-header">
           <a v-if="!fixed" class="close" aria-label="Close" @click="close">

@@ -11,7 +11,8 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -209,7 +210,8 @@ const summary = (item: Import) => {
 
     <template #expanded="{ item }">
       <div v-if="item.id === expandedId" class="import-details">
-        <SmallLoader :loading="isLoadingDetails" />
+        <LoadingLine :loading="isLoadingDetails" />
+        <RowsSkeleton v-if="isLoadingDetails" :count="2" :meta="false" />
 
         <p
           v-if="!isLoadingDetails && !detailSections.length"
@@ -319,6 +321,7 @@ const summary = (item: Import) => {
 }
 
 .import-details {
+  position: relative;
   padding: 0 1rem 1rem;
 }
 

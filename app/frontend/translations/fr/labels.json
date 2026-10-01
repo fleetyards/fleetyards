@@ -3,6 +3,7 @@
     "labels": {
       "sortOptions": "Options de tri",
       "loading": "Chargement…",
+      "loadingNamed": "Chargement de %{name}…",
       "true": "Oui",
       "false": "Non",
       "null": "nul",

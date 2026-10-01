@@ -3,6 +3,7 @@
     "labels": {
       "sortOptions": "Sort Options",
       "loading": "Loading…",
+      "loadingNamed": "Loading %{name}…",
       "true": "Yes",
       "false": "No",
       "null": "-",

@@ -8,7 +8,6 @@ export default {
 import html2canvas from "html2canvas";
 import downloadJs from "downloadjs";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   BtnSizesEnum,
@@ -49,7 +48,11 @@ const download = async () => {
 
   const element = document.querySelector(props.element) as HTMLElement;
 
+  // Nothing to capture yet, such as a fleetchart still rendering. The
+  // button's loading state is its only indicator, and a loading button cannot
+  // be clicked, so it has to end here too.
   if (!element) {
+    downloading.value = false;
     return;
   }
 
@@ -84,7 +87,6 @@ const download = async () => {
     :size="size"
     @click="download"
   >
-    <SmallLoader :loading="downloading" />
     <i class="fa-duotone fa-image" />
     <span v-if="withLabel">
       {{ t("actions.saveScreenshot") }}

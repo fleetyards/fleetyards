@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from "@/shared/composables/useI18n";
+import { useLoadingAnnouncement } from "@/shared/composables/useLoadingAnnouncement";
 
 type Props = {
   loading?: boolean;
@@ -22,41 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
   edge: "top",
 });
 
-const { t } = useI18n();
-
-// A live region only announces a change to text that was already in the
-// document, and many of these mount already loading - an expanded row, a step
-// that appears once it starts. So the text always arrives a moment after the
-// region does, which screen readers pick up whichever way the line appeared.
-const ANNOUNCE_DELAY = 150;
-
-const statusText = ref("");
-
-let announceTimer: ReturnType<typeof setTimeout> | undefined;
-
-const clearAnnounce = () => {
-  if (announceTimer) clearTimeout(announceTimer);
-  announceTimer = undefined;
-};
-
-watch(
-  () => [props.loading, props.label] as const,
-  ([loading, label]) => {
-    clearAnnounce();
-
-    if (!loading) {
-      statusText.value = "";
-      return;
-    }
-
-    announceTimer = setTimeout(() => {
-      statusText.value = label || t("labels.loading");
-    }, ANNOUNCE_DELAY);
-  },
-  { immediate: true },
+const statusText = useLoadingAnnouncement(
+  () => props.loading,
+  () => props.label,
 );
-
-onBeforeUnmount(clearAnnounce);
 </script>
 
 <!-- The motion a still skeleton deliberately lacks, scoped to the one area

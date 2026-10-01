@@ -77,7 +77,6 @@ const mountModal = async () => {
         // has no reason to stand up: every assertion below drives the store.
         BaseSelect: true,
         SyncResultPanel: true,
-        SmallLoader: true,
       },
       directives: { Tooltip: {} },
     },

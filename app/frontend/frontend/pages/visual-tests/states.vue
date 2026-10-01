@@ -28,8 +28,14 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Offline from "@/shared/components/Offline/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import LoadingLine from "@/shared/components/LoadingLine/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import DirectUploadPreview from "@/shared/components/DirectUpload/Preview/index.vue";
+import { type FileUpload } from "@/shared/components/DirectUpload/index.vue";
+import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
+import AppModalInner from "@/shared/components/AppModal/Inner/index.vue";
+import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
+import storeImage from "@/images/fallback/store_image.webp";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
@@ -141,6 +147,28 @@ const perPage = ref<number | string>(25);
 const updatePerPage = (value: number | string) => {
   perPage.value = value;
 };
+
+// Never settles, so the select stays in the state it is in while its options
+// are on their way.
+const pendingQuery = () => new Promise<never>(() => {});
+
+const syncSteps: SyncProcessStep[] = [
+  { name: "fetchHangar", status: "success" },
+  { name: "submitData", status: "processing" },
+];
+
+const uploading = ref<FileUpload>();
+
+onMounted(async () => {
+  const blob = await (await fetch(storeImage)).blob();
+
+  uploading.value = {
+    key: "vt-upload",
+    file: new File([blob], "store_image.webp", { type: blob.type }),
+    progress: 40,
+    status: "uploading",
+  };
+});
 </script>
 
 <template>
@@ -371,20 +399,40 @@ const updatePerPage = (value: number | string) => {
     </div>
   </div>
 
-  <Heading :level="HeadingLevelEnum.H2">SmallLoader</Heading>
-  <p>The inline rhombus spinner, at each alignment.</p>
-  <div class="row">
-    <div class="col-12 col-lg-4">
-      <BaseText muted no-spacing>left</BaseText>
-      <SmallLoader loading alignment="left" />
+  <Heading :level="HeadingLevelEnum.H2">Loading states</Heading>
+  <p>
+    The real components, each held in the state it is in while it waits. A
+    select and a modal run their bottom cap, as a loading button does; a step
+    still in progress takes three dots; an upload runs the loading line. The
+    build comparison and an import's details use the skeleton and line shown
+    above.
+  </p>
+  <div class="row" data-test="loading-states-demo">
+    <div class="col-12 col-lg-4" data-test="loading-state-select">
+      <BaseText muted no-spacing>a select querying its options</BaseText>
+      <BaseSelect
+        name="vt-loading-select"
+        label="Paint"
+        :query-fn="pendingQuery"
+      />
     </div>
-    <div class="col-12 col-lg-4">
-      <BaseText muted no-spacing>center</BaseText>
-      <SmallLoader loading alignment="center" />
+    <div class="col-12 col-lg-4" data-test="loading-state-sync">
+      <BaseText muted no-spacing>the hangar sync modal at work</BaseText>
+      <AppModalInner title="Sync your RSI Hangar" fixed loading>
+        <HangarSyncResult
+          :process-steps="syncSteps"
+          :current-page="2"
+          :pledges="[]"
+          :finished="false"
+          :finished-with-errors="false"
+        />
+      </AppModalInner>
     </div>
-    <div class="col-12 col-lg-4">
-      <BaseText muted no-spacing>right</BaseText>
-      <SmallLoader loading alignment="right" />
+    <div class="col-12 col-lg-4" data-test="loading-state-upload">
+      <BaseText muted no-spacing>an upload at 40%</BaseText>
+      <div class="vt-upload-preview">
+        <DirectUploadPreview v-if="uploading" :file="uploading" />
+      </div>
     </div>
   </div>
 
@@ -465,6 +513,10 @@ const updatePerPage = (value: number | string) => {
 .vt-narrow-column {
   width: 361px;
   outline: 1px dashed rgba(#fff, 0.15);
+}
+
+.vt-upload-preview {
+  width: 240px;
 }
 
 // The line lies over its positioned parent's edge, so the demo box is one.

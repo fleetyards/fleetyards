@@ -15,12 +15,13 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingDots from "@/shared/components/LoadingDots/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
+import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
@@ -191,6 +192,11 @@ const updateStep = (step: string, status: SyncProcessStep["status"]) => {
     processSteps.value[index].status = status;
   }
 };
+
+// Checking the RSI identity or running a step: the modal's bottom cap says so.
+const working = computed(
+  () => loadingIdentity.value || isSyncStepRunning(processSteps.value),
+);
 
 const finished = computed(() =>
   processSteps.value.every((step) => step.status === "success"),
@@ -399,7 +405,7 @@ const refreshPage = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.syncExtension')" :fixed="true">
+  <Modal :title="t('headlines.syncExtension')" :fixed="true" :loading="working">
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
@@ -427,7 +433,7 @@ const refreshPage = async () => {
         >
           {{ t("labels.syncExtension.sessionStatus") }}:
           {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
-          <SmallLoader :loading="loadingIdentity" alignment="right" />
+          <LoadingDots :loading="loadingIdentity" />
           <Btn
             v-if="identityStatus === 'notFound'"
             v-tooltip="t('labels.syncExtension.checkIdentity')"

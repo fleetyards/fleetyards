@@ -84,7 +84,7 @@ test.describe("Buttons", () => {
     }
   });
 
-  test("a loading button runs one fill around both caps", async ({ page }) => {
+  test("a loading button fills its bottom cap", async ({ page }) => {
     // The state used to be carried by an opt-in spinner, so 40 of 51 loading
     // call sites showed nothing at all and read as a button gone dead.
     const btn = page
@@ -92,33 +92,30 @@ test.describe("Buttons", () => {
       .locator(".btn--solid.is-loading")
       .first();
 
-    const caps = await btn.evaluate((el) =>
+    const [top, bottom] = await btn.evaluate((el) =>
       ["::before", "::after"].map((pseudo) => {
         const cs = getComputedStyle(el, pseudo);
         return {
           content: cs.content,
           animationName: cs.animationName,
-          animationDelay: cs.animationDelay,
+          backgroundColor: cs.backgroundColor,
           opacity: cs.opacity,
         };
       }),
     );
 
-    for (const cap of caps) {
-      expect(cap.content).not.toBe("none");
-      // A loading button renders disabled, and the disabled rule halves the
-      // caps - the part carrying the state has to stay at full strength.
-      expect(cap.opacity).toBe("1");
-      expect(cap.animationDelay).toBe("0s");
-    }
+    // The bottom cap is where every surface says it is loading; the top one
+    // goes quiet, in the empty cap's grey whatever the tone.
+    expect(top.content).not.toBe("none");
+    expect(top.animationName).toBe("none");
+    expect(top.backgroundColor).toBe("rgba(122, 130, 136, 0.35)");
 
-    // One run around the outside: the top only ever travels rightwards and the
-    // bottom leftwards, filling or clearing, which is what lets two bars read as
-    // one thing going round. Scoped styles suffix the keyframes name, so match
-    // the stem. The anchors are animated, so they are not assertable from a
-    // computed value at an arbitrary moment - the two names carry the direction.
-    expect(caps[0].animationName).toMatch(/^btn-fill-rightward/);
-    expect(caps[1].animationName).toMatch(/^btn-fill-leftward/);
+    expect(bottom.content).not.toBe("none");
+    // A loading button renders disabled, and the disabled rule halves the
+    // caps - the part carrying the state has to stay at full strength.
+    expect(bottom.opacity).toBe("1");
+    // Scoped styles suffix the keyframes name, so match the stem.
+    expect(bottom.animationName).toMatch(/^btn-fill-rightward/);
   });
 
   test("a loading button dims its label", async ({ page }) => {
