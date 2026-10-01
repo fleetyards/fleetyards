@@ -200,7 +200,10 @@ class Location < ApplicationRecord
       self.class.slug_for([own_name, parent&.[](:name)].compact.join(" ")),
       "#{base}-#{self.class.slug_for(sc_key.tr("_", "-"))}"
     ].compact.uniq
-    return if persisted? && candidates.include?(slug)
+    # A place keeps the URL it has while its name does: a namesake arriving
+    # in a later build -- or in a ptu tree, which shares these rows -- takes
+    # the longer slug instead of renaming the incumbent.
+    return if persisted? && slug.present? && (slug == base || slug.start_with?("#{base}-"))
 
     self.slug = candidates.find { |candidate| !self.class.where(slug: candidate).where.not(id:).exists? } || candidates.last
   end

@@ -60,6 +60,19 @@ module ScData
         assert_equal "lorville", Location.find_by!(sc_key: "Stanton1_Lorville").slug
       end
 
+      # A namesake arriving in a later build, or in a ptu tree that shares these
+      # rows, takes the longer slug and leaves the incumbent's URL alone.
+      test "#all keeps a place's slug when a namesake appears" do
+        loader.all
+        lorville = Location.find_by!(sc_key: "Stanton1_Lorville")
+
+        newcomer = create(:location, name: "Lorville", parent: Location.find_by!(sc_key: "Stanton1b"))
+        loader.all
+
+        assert_equal "lorville", lorville.reload.slug
+        assert_equal "lorville-aberdeen", newcomer.slug
+      end
+
       test "#all is idempotent" do
         loader.all
         slugs = Location.order(:sc_key).pluck(:sc_key, :slug, :parent_id, :map_parent_id)
