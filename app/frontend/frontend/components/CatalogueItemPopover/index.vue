@@ -90,8 +90,11 @@ const fetches = (type: Ref<boolean>) =>
     () => requested.value && type.value && !props.record && !!slug.value,
   );
 
-const fetchesInFleet = (type: Ref<boolean>) =>
-  computed(() => fetches(type).value && !!fleetSlug.value);
+const fetchesInFleet = (type: Ref<boolean>) => {
+  const fetching = fetches(type);
+
+  return computed(() => fetching.value && !!fleetSlug.value);
+};
 
 const { data: fetchedComponent, isPending: componentPending } =
   useComponentQuery(slug, { query: { enabled: fetches(isComponent) } });
