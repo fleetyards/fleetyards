@@ -21,7 +21,7 @@ end
 
 json.children_count @children_count
 
-json.terminals @location.terminals.sort_by(&:name) do |terminal|
+json.terminals @location.terminals.select(&:available).sort_by(&:name) do |terminal|
   json.id terminal.id
   json.name terminal.name
 end

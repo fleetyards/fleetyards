@@ -34,6 +34,7 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
       description: "A self-sustaining port of political activists.", always_shown: true)
     create(:location, name: "Mercy Hospital", kind: "outpost", parent: @levski, system: @system, shown_on_starmap: false)
     create(:terminal, name: "Admin - Levski", location: @levski)
+    create(:terminal, name: "Closed Kiosk - Levski", location: @levski, available: false)
   end
 
   test "GET /locations/{slug} returns the place where it sits and where the map draws it" do
