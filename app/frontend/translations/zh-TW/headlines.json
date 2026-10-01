@@ -5,6 +5,9 @@
         "index": "地點"
       },
       "admin": {
+        "locations": {
+          "index": "地點"
+        },
         "blueprints": {
           "index": "藍圖",
           "materials": "材料",

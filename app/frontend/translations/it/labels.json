@@ -2411,6 +2411,22 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Superiore",
+          "system": "Sistema",
+          "scKey": "Chiave del gioco",
+          "scRefs": "Riferimenti del gioco",
+          "slug": "Slug",
+          "gameType": "Tipo del gioco",
+          "build": "Build",
+          "children": "Luoghi all'interno",
+          "missions": "Missioni collegate",
+          "missionTemplates": "Modelli di missione",
+          "shownWithParentOnly": "Visibile solo con il superiore",
+          "yes": "Sì",
+          "no": "No",
+          "unavailable": "non disponibile"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Fonte nota",
@@ -2563,6 +2579,7 @@
             "system": "Sistema"
           },
           "privileges": {
+            "locations": "Luoghi",
             "blueprints": "Progetti",
             "models": "Modelli",
             "model_modules": "Moduli dei modelli",

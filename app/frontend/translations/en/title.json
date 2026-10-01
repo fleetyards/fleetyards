@@ -204,6 +204,10 @@
         "notificationCenter": "Notification Center - Visual Tests"
       },
       "admin": {
+        "locations": {
+          "index": "Locations",
+          "show": "%{location}"
+        },
         "blueprints": {
           "index": "Blueprints",
           "show": "%{blueprint}"

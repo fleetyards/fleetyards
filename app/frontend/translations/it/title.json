@@ -204,6 +204,10 @@
         "notificationCenter": "Centro notifiche - Test Visivi"
       },
       "admin": {
+        "locations": {
+          "index": "Luoghi",
+          "show": "%{location}"
+        },
         "blueprints": {
           "index": "Progetti",
           "show": "%{blueprint}"

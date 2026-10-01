@@ -5,6 +5,9 @@
         "index": "Ubicaciones"
       },
       "admin": {
+        "locations": {
+          "index": "Ubicaciones"
+        },
         "blueprints": {
           "index": "Planos",
           "materials": "Materiales",

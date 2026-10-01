@@ -2411,6 +2411,22 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Parent",
+          "system": "System",
+          "scKey": "Game key",
+          "scRefs": "Game refs",
+          "slug": "Slug",
+          "gameType": "Game type",
+          "build": "Build",
+          "children": "Places inside",
+          "missions": "Missions linked",
+          "missionTemplates": "Mission templates",
+          "shownWithParentOnly": "Only shown with its parent",
+          "yes": "Yes",
+          "no": "No",
+          "unavailable": "unavailable"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Source known",
@@ -2577,6 +2593,7 @@
             "system": "System"
           },
           "privileges": {
+            "locations": "Locations",
             "blueprints": "Blueprints",
             "models": "Models",
             "model_modules": "Model Modules",

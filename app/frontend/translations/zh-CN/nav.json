@@ -178,6 +178,9 @@
         "themes": "主题"
       },
       "admin": {
+        "locations": {
+          "index": "地点"
+        },
         "blueprints": {
           "index": "蓝图"
         },

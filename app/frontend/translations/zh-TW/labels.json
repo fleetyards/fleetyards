@@ -2411,6 +2411,22 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "上級",
+          "system": "星系",
+          "scKey": "遊戲鍵",
+          "scRefs": "遊戲參照",
+          "slug": "Slug",
+          "gameType": "遊戲類型",
+          "build": "版本",
+          "children": "內部地點",
+          "missions": "關聯任務",
+          "missionTemplates": "任務範本",
+          "shownWithParentOnly": "僅隨上級顯示",
+          "yes": "是",
+          "no": "否",
+          "unavailable": "無法使用"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "來源已知",
@@ -2563,6 +2579,7 @@
             "system": "系統"
           },
           "privileges": {
+            "locations": "地點",
             "blueprints": "藍圖",
             "models": "型號",
             "model_modules": "型號模組",

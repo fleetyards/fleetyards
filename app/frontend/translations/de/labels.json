@@ -2411,6 +2411,22 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Übergeordnet",
+          "system": "System",
+          "scKey": "Spiel-Schlüssel",
+          "scRefs": "Spiel-Referenzen",
+          "slug": "Slug",
+          "gameType": "Spieltyp",
+          "build": "Build",
+          "children": "Orte darin",
+          "missions": "Verknüpfte Missionen",
+          "missionTemplates": "Missionsvorlagen",
+          "shownWithParentOnly": "Nur mit übergeordnetem Ort sichtbar",
+          "yes": "Ja",
+          "no": "Nein",
+          "unavailable": "nicht verfügbar"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Quelle bekannt",
@@ -2563,6 +2579,7 @@
             "system": "System"
           },
           "privileges": {
+            "locations": "Orte",
             "blueprints": "Baupläne",
             "models": "Modelle",
             "model_modules": "Modell-Module",

@@ -204,6 +204,10 @@
         "notificationCenter": "Benachrichtigungszentrale - Visuelle Tests"
       },
       "admin": {
+        "locations": {
+          "index": "Orte",
+          "show": "%{location}"
+        },
         "blueprints": {
           "index": "Baupläne",
           "show": "%{blueprint}"

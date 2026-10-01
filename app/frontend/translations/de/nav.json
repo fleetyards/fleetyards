@@ -178,6 +178,9 @@
         "themes": "Themes"
       },
       "admin": {
+        "locations": {
+          "index": "Orte"
+        },
         "blueprints": {
           "index": "Baupläne"
         },

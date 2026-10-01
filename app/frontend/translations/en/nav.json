@@ -178,6 +178,9 @@
         "themes": "Themes"
       },
       "admin": {
+        "locations": {
+          "index": "Locations"
+        },
         "blueprints": {
           "index": "Blueprints"
         },

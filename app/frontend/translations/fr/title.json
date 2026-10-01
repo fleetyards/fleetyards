@@ -204,6 +204,10 @@
         "notificationCenter": "Centre de notifications - Tests Visuels"
       },
       "admin": {
+        "locations": {
+          "index": "Lieux",
+          "show": "%{location}"
+        },
         "blueprints": {
           "index": "Plans",
           "show": "%{blueprint}"

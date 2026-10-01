@@ -204,6 +204,10 @@
         "notificationCenter": "通知中心 - 視覺測試"
       },
       "admin": {
+        "locations": {
+          "index": "地點",
+          "show": "%{location}"
+        },
         "blueprints": {
           "index": "藍圖",
           "show": "%{blueprint}"

@@ -2411,6 +2411,22 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "上级",
+          "system": "星系",
+          "scKey": "游戏键",
+          "scRefs": "游戏引用",
+          "slug": "Slug",
+          "gameType": "游戏类型",
+          "build": "版本",
+          "children": "内部地点",
+          "missions": "关联任务",
+          "missionTemplates": "任务模板",
+          "shownWithParentOnly": "仅随上级显示",
+          "yes": "是",
+          "no": "否",
+          "unavailable": "不可用"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "来源已知",
@@ -2563,6 +2579,7 @@
             "system": "系统"
           },
           "privileges": {
+            "locations": "地点",
             "blueprints": "蓝图",
             "models": "型号",
             "model_modules": "型号模块",

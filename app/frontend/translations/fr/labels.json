@@ -2411,6 +2411,22 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Parent",
+          "system": "Système",
+          "scKey": "Clé du jeu",
+          "scRefs": "Références du jeu",
+          "slug": "Slug",
+          "gameType": "Type du jeu",
+          "build": "Version",
+          "children": "Lieux à l'intérieur",
+          "missions": "Missions liées",
+          "missionTemplates": "Modèles de mission",
+          "shownWithParentOnly": "Affiché seulement avec son parent",
+          "yes": "Oui",
+          "no": "Non",
+          "unavailable": "indisponible"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Source connue",
@@ -2563,6 +2579,7 @@
             "system": "Système"
           },
           "privileges": {
+            "locations": "Lieux",
             "blueprints": "Plans",
             "models": "Modèles",
             "model_modules": "Modules de modèle",
