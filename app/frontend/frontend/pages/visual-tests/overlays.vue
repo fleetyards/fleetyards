@@ -22,9 +22,12 @@ import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/ind
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import {
   EquipmentTypeEnum,
+  type Blueprint,
   type Commodity,
   type Component,
   type Equipment,
+  type GameMission,
+  type Model,
 } from "@/services/fyApi";
 
 /*
@@ -181,6 +184,47 @@ const demoCommodity = {
   sellPrice: 2640,
   buyPrice: 2410,
 } as unknown as Commodity;
+
+const demoShip = {
+  id: "demo-ship",
+  name: "Carrack",
+  slug: "carrack",
+  classificationLabel: "Exploration",
+  productionStatus: "flight-ready",
+  pledgePriceLabel: "$600",
+  crew: { minLabel: "4", maxLabel: "6" },
+  manufacturer: { name: "Anvil Aerospace" },
+  media: {},
+} as unknown as Model;
+
+const demoBlueprint = {
+  id: "demo-blueprint",
+  name: "Glacier",
+  slug: "glacier-blueprint",
+  craftTime: 960,
+  slotCount: 3,
+  retired: false,
+  craftable: {
+    type: "Component",
+    name: "Glacier",
+    slug: "glacier",
+    listed: true,
+  },
+  materials: [
+    { id: "iron", name: "Iron", slug: "iron" },
+    { id: "titanium", name: "Titanium", slug: "titanium" },
+  ],
+} as unknown as Blueprint;
+
+const demoMission = {
+  id: "demo-mission",
+  name: "A Challenging Contract",
+  slug: "a-challenging-contract",
+  kind: "career",
+  org: { name: "Vaughn" },
+  retired: false,
+  released: false,
+} as unknown as GameMission;
 </script>
 
 <template>
@@ -274,6 +318,7 @@ const demoCommodity = {
     first tap opens the card instead of following the link, and a tap outside,
     Escape or a scroll closes it. Each of these carries its record, so nothing
     is fetched; the armour has no page link here and is focusable on its own.
+    The last one stays loading, to show the skeleton and the loading line.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
@@ -295,10 +340,36 @@ const demoCommodity = {
           :record="demoCommodity"
         />
       </span>
+      <span data-test="popover-demo-ship">
+        <CatalogueItemPopover
+          :item="{ type: 'Model', slug: 'carrack', name: 'Carrack' }"
+          :record="demoShip"
+        />
+      </span>
+      <span data-test="popover-demo-blueprint">
+        <CatalogueItemPopover
+          :item="{
+            type: 'Blueprint',
+            slug: 'glacier-blueprint',
+            name: 'Glacier',
+          }"
+          :record="demoBlueprint"
+        />
+      </span>
+      <span data-test="popover-demo-mission">
+        <CatalogueItemPopover
+          :item="{
+            type: 'GameMission',
+            slug: 'a-challenging-contract',
+            name: 'A Challenging Contract',
+          }"
+          :record="demoMission"
+        />
+      </span>
       <BasePopover label="Loading" data-test="popover-demo-loading">
         <a href="#popover">Still loading</a>
         <template #content>
-          <ComponentStatsCard compact loading />
+          <ComponentStatsCard compact loading name="Glacier" />
         </template>
       </BasePopover>
     </div>
