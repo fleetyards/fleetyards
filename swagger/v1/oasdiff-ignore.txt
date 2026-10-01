@@ -1500,3 +1500,9 @@ PUT /notifications/{id}/archive added the new `rsi_handle_verification_lost` enu
 PUT /notifications/{id}/read added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `rsi_handle_verification_lost` enum value to the `notificationType` response property for the response status `200`
+GET /catalogue/lookup added the new `FleetContract` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/lookup added the new `FleetEvent` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/lookup added the new `User` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/search added the new `FleetContract` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/search added the new `FleetEvent` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/search added the new `User` enum value to the `items/items/type` response property for the response status `200`
