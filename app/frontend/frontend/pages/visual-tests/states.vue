@@ -28,7 +28,6 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Offline from "@/shared/components/Offline/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -368,23 +367,6 @@ const updatePerPage = (value: number | string) => {
         <LoadingLine loading edge="bottom" label="Loading the demo" />
         <RowsSkeleton :count="2" :meta="false" />
       </div>
-    </div>
-  </div>
-
-  <Heading :level="HeadingLevelEnum.H2">SmallLoader</Heading>
-  <p>The inline rhombus spinner, at each alignment.</p>
-  <div class="row">
-    <div class="col-12 col-lg-4">
-      <BaseText muted no-spacing>left</BaseText>
-      <SmallLoader loading alignment="left" />
-    </div>
-    <div class="col-12 col-lg-4">
-      <BaseText muted no-spacing>center</BaseText>
-      <SmallLoader loading alignment="center" />
-    </div>
-    <div class="col-12 col-lg-4">
-      <BaseText muted no-spacing>right</BaseText>
-      <SmallLoader loading alignment="right" />
     </div>
   </div>
 

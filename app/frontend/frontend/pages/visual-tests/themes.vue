@@ -16,7 +16,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import Slider from "@/shared/components/base/Slider/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -184,7 +184,7 @@ const toggled = ref(true);
             <Loader loading relative />
           </div>
           <div class="vt-theme-loaders vt-theme-loaders--small">
-            <SmallLoader loading />
+            <LoadingLine loading />
           </div>
         </PanelBody>
       </Panel>
