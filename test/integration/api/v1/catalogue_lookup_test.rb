@@ -68,4 +68,23 @@ class Api::V1::CatalogueLookupTest < ActionDispatch::IntegrationTest
       assert_equal ["contract:MARU/Salvage Run"], parsed_body["items"].map { |item| item["token"] }
     end
   end
+
+  test "GET /catalogue/lookup resolves nothing for an expired or revoked OAuth token" do
+    Flipper.enable("fleet_contracts")
+    member = create(:user)
+    fleet = create(:fleet, fid: "MARU", members: [member])
+    create(:fleet_contract, :published, fleet:, title: "Salvage Run")
+    friend = create(:user, username: "FriendsOnly", public_hangar: false, friends_hangar: true)
+    create(:friendship, :accepted, requester: member, addressee: friend)
+    params = {names: ["contract:MARU/Salvage Run", "user:FriendsOnly"]}
+
+    revoked = create(:oauth_access_token, resource_owner_id: member.id, scopes: ["fleet:read"], revoked_at: 1.minute.ago)
+    expired = create(:oauth_access_token, resource_owner_id: member.id, scopes: ["fleet:read"], expires_in: 60, created_at: 1.hour.ago)
+
+    [revoked, expired].each do |token|
+      assert_api_response :get, 200, params:, headers: {"Authorization" => "Bearer #{token.token}"} do
+        assert_empty parsed_body["items"]
+      end
+    end
+  end
 end

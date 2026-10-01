@@ -22,15 +22,23 @@ module Api
       end
 
       private def resolver
-        ::Catalogue::TokenResolver.new(reader: current_resource_owner, fleet_reader:)
+        ::Catalogue::TokenResolver.new(reader:, fleet_reader:)
+      end
+
+      # An expired or revoked OAuth token still names its owner, so it is asked
+      # whether it is usable before anything is resolved for them.
+      private def reader
+        return current_resource_owner if doorkeeper_token.blank?
+
+        current_resource_owner if doorkeeper_token.accessible?
       end
 
       # The fleet pages refuse an OAuth token that may not read fleets, so
       # their tokens do not resolve for one either.
       private def fleet_reader
-        return current_resource_owner if doorkeeper_token.blank?
+        return reader if doorkeeper_token.blank?
 
-        current_resource_owner if doorkeeper_token.includes_scope?(*FLEET_SCOPES)
+        reader if doorkeeper_token.acceptable?(FLEET_SCOPES)
       end
     end
   end
