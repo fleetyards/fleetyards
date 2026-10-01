@@ -50,6 +50,7 @@ require "test_helper"
 #  discord_message_id        :string
 #  fleet_id                  :uuid             not null
 #  mission_id                :uuid
+#  split_from_id             :uuid
 #
 # Indexes
 #
@@ -59,12 +60,14 @@ require "test_helper"
 #  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
 #  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)
 #  index_fleet_events_on_mission_id              (mission_id)
+#  index_fleet_events_on_split_from_id           (split_from_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (mission_id => missions.id)
+#  fk_rails_...  (split_from_id => fleet_events.id) ON DELETE => nullify
 #
 class FleetEventTest < ActiveSupport::TestCase
   class SignupsCountTest < FleetEventTest
@@ -533,5 +536,16 @@ class FleetEventTest < ActiveSupport::TestCase
       assert_nil event.published_at
       assert_nil event.open_at
     end
+  end
+
+  test "hands a removed part's successors to the part before it" do
+    first = create(:fleet_event, :open, starts_at: Time.zone.parse("2026-05-14 20:00 UTC"), timezone: "UTC",
+      recurring: true, recurrence_interval: "weekly", recurrence_every: 1)
+    middle = FleetEvents::SeriesSplit.new(first, "2026-06-04").call
+    last = FleetEvents::SeriesSplit.new(middle, "2026-06-18").call
+
+    middle.destroy!
+
+    assert_equal first.id, last.reload.split_from_id
   end
 end

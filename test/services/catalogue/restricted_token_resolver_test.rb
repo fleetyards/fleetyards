@@ -238,5 +238,78 @@ module Catalogue
       assert_empty searched(@member, "event:mining night")
       assert_equal ["event:MARU/Weekly Mining"], searched(@member, "event:mining")
     end
+
+    def weekly(title, starts_at: Time.zone.parse("2026-05-14 20:00 UTC"), **attributes)
+      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title:, starts_at:, timezone: "UTC",
+        recurring: true, recurrence_interval: "weekly", recurrence_every: 1, **attributes)
+    end
+
+    test "resolves a split series to its latest part, and offers it" do
+      series = weekly("Weekly Op")
+      successor = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
+
+      assert_equal({"event:MARU/Weekly Op" => ["FleetEvent", successor.slug, @fleet.slug]},
+        resolved(@member, "event:MARU/Weekly Op"))
+      assert_equal ["event:MARU/Weekly Op"], searched(@member, "event:weekly op")
+    end
+
+    test "follows a series split more than once to the part that starts last" do
+      series = weekly("Weekly Op")
+      FleetEvents::SeriesSplit.new(series, "2026-06-04").call
+      last = FleetEvents::SeriesSplit.new(series.reload, "2026-05-28").call
+      later = FleetEvents::SeriesSplit.new(FleetEvent.find_by!(title: "Weekly Op", starts_at: Time.zone.parse("2026-06-04 20:00 UTC")), "2026-06-18").call
+
+      assert_operator later.starts_at, :>, last.starts_at
+      assert_equal({"event:MARU/Weekly Op" => ["FleetEvent", later.slug, @fleet.slug]},
+        resolved(@member, "event:MARU/Weekly Op"))
+    end
+
+    # A token written for an event that has finished must not move to a newer
+    # one that merely carries its name.
+    test "keeps a title an unrelated event repeats ambiguous, finished or not" do
+      @event.update!(starts_at: 2.months.ago, ends_at: 2.months.ago + 2.hours, status: "completed")
+      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Weekly Mining")
+
+      assert_empty resolved(@member, "event:MARU/Weekly Mining")
+      assert_empty searched(@member, "event:weekly mining")
+    end
+
+    test "keeps a split series ambiguous once an unrelated event takes its title" do
+      FleetEvents::SeriesSplit.new(weekly("Weekly Op"), "2026-06-04").call
+      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Weekly Op")
+
+      assert_empty resolved(@member, "event:MARU/Weekly Op")
+      assert_empty searched(@member, "event:weekly op")
+    end
+
+    test "sends nobody to the earlier part when the latest is hidden from them" do
+      squadron = create(:fleet_squadron, fleet: @fleet)
+      series = weekly("Weekly Op", visibility: "squadron", fleet_squadrons: [squadron])
+      FleetEvents::SeriesSplit.new(series, "2026-06-04").call
+      series.update!(visibility: "members", fleet_squadrons: [])
+
+      assert_empty resolved(@member, "event:MARU/Weekly Op")
+      assert_empty searched(@member, "event:weekly op")
+    end
+
+    test "follows a split series whose first part has been renamed" do
+      series = weekly("Weekly Op")
+      second = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
+      last = FleetEvents::SeriesSplit.new(second, "2026-06-18").call
+      series.update!(title: "Old Op")
+
+      assert_equal({"event:MARU/Weekly Op" => ["FleetEvent", last.slug, @fleet.slug]},
+        resolved(@member, "event:MARU/Weekly Op"))
+      assert_equal ["event:MARU/Weekly Op"], searched(@member, "event:weekly op")
+    end
+
+    test "names no part of a split series when two start together" do
+      series = weekly("Weekly Op")
+      successor = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
+      series.update_columns(starts_at: successor.starts_at) # rubocop:disable Rails/SkipsModelValidations
+
+      assert_empty resolved(@member, "event:MARU/Weekly Op")
+      assert_empty searched(@member, "event:weekly op")
+    end
   end
 end
