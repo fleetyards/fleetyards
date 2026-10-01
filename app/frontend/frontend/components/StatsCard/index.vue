@@ -174,26 +174,26 @@ const hasBody = computed(
       </span>
     </div>
 
-    <!-- The icon rides in the eyebrow's line so the name below it can take
-         the card's full width. -->
     <div class="stats-card__head">
-      <div v-if="kind || eyebrow || status" class="stats-card__eyebrow-row">
-        <span v-if="kind" class="stats-card__icon">
-          <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
-        </span>
-        <span v-if="eyebrow" class="stats-card__eyebrow">{{ eyebrow }}</span>
-        <span
-          v-if="status && !loading && !showsImage"
-          class="stats-card__status"
-          :class="`stats-card__status--${status.tone}`"
-          data-test="stats-card-status"
-        >
-          {{ status.label }}
-        </span>
-      </div>
-      <div class="stats-card__title">{{ title }}</div>
-      <div v-if="subtitle && !loading" class="stats-card__subtitle">
-        {{ subtitle }}
+      <span v-if="kind" class="stats-card__icon">
+        <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
+      </span>
+      <div class="stats-card__heading">
+        <div v-if="eyebrow || status" class="stats-card__eyebrow-row">
+          <span v-if="eyebrow" class="stats-card__eyebrow">{{ eyebrow }}</span>
+          <span
+            v-if="status && !loading && !showsImage"
+            class="stats-card__status"
+            :class="`stats-card__status--${status.tone}`"
+            data-test="stats-card-status"
+          >
+            {{ status.label }}
+          </span>
+        </div>
+        <div class="stats-card__title">{{ title }}</div>
+        <div v-if="subtitle && !loading" class="stats-card__subtitle">
+          {{ subtitle }}
+        </div>
       </div>
     </div>
 
