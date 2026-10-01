@@ -99,6 +99,14 @@ export function deflectionAtHealth(
 
 // How one weapon fares against one ship's shields and armor. Null when the
 // weapon has nothing to test: a beam, or no damage per shot at all.
+// Alpha is compared per pellet, and `damagePerShot` already is one pellet's
+// damage: it is read off the ammo, and `pelletsPerShot` says how many fly.
+export function pelletDamage(weapon: WeaponIndexItem, key: string): number {
+  return (
+    (weapon.damagePerShot as Record<string, number | undefined>)?.[key] ?? 0
+  );
+}
+
 export function evaluateWeapon(
   weapon: WeaponIndexItem,
   armor: ArmorStats,
@@ -113,10 +121,7 @@ export function evaluateWeapon(
   const types: DeflectionTypeResult[] = [];
 
   for (const { key, label } of DEFLECTION_DAMAGE_TYPES) {
-    // Alpha is compared per pellet, and `damagePerShot` already is one pellet's
-    // damage: it is read off the ammo, and a scattergun fires eight of them.
-    const raw =
-      (weapon.damagePerShot as Record<string, number | undefined>)?.[key] ?? 0;
+    const raw = pelletDamage(weapon, key);
     if (raw <= 0) continue;
 
     // What survives the shield is what meets the armor's deflection

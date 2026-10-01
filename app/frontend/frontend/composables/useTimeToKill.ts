@@ -6,6 +6,7 @@ import type { LoadoutWeapon } from "@/frontend/composables/usePenetrationCheck";
 import {
   absorptionAtHealth,
   deflectionAtHealth,
+  pelletDamage,
   resistanceAtHealth,
 } from "@/frontend/composables/useDeflectionCheck";
 
@@ -253,9 +254,7 @@ export function loadoutSources(weapons: LoadoutWeapon[]): KillSource[] {
       (type) => ({
         type,
         dps: weapon.sustainedDps[type] * weapon.count,
-        pellet:
-          (weapon.damagePerShot as Record<string, number | undefined>)[type] ??
-          0,
+        pellet: pelletDamage(weapon, type),
       }),
     ),
   );

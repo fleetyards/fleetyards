@@ -149,9 +149,11 @@ describe("timeToKill", () => {
       pelletsPerShot: 8,
     };
 
-    expect(timeToKill(profileOf(TARGET), [scattergun], FULL).kill).toBeCloseTo(
-      20,
-    );
+    const ttk = timeToKill(profileOf(TARGET), [scattergun], FULL);
+
+    expect(ttk.shieldsDown).toBeCloseTo(10);
+    // Turned away until the shields fell, it would take 25 s.
+    expect(ttk.kill).toBeCloseTo(20);
   });
 
   it("lets the shields regenerate through a loadout's pauses", () => {
