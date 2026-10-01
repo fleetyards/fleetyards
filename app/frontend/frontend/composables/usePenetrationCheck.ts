@@ -80,18 +80,18 @@ export function collectLoadoutWeapons(
       const component = hardpoint.component;
       const weapon = component?.typeData as ComponentWeapon | undefined;
 
+      // A beam's damage is per second, a gun's per shot.
+      const damage = weapon?.beam
+        ? weapon.damagePerSecond
+        : weapon?.damagePerShot;
+
       if (
         component &&
         weapon &&
         hardpoint.category === HardpointCategoryEnum.WEAPONS &&
         !isMissile(weapon) &&
         !weapon.mining &&
-        DEFLECTION_DAMAGE_TYPES.some(
-          ({ key }) =>
-            ((weapon.beam ? weapon.damagePerSecond : weapon.damagePerShot)?.[
-              key
-            ] ?? 0) > 0,
-        )
+        DEFLECTION_DAMAGE_TYPES.some(({ key }) => (damage?.[key] ?? 0) > 0)
       ) {
         const existing = byComponent.get(component.id);
 
@@ -101,14 +101,11 @@ export function collectLoadoutWeapons(
           const duty = dutyCycle(weapon, powerRatio);
           // An unpowered weapon system fires nothing, heat-limited guns included.
           const powered = powerRatio > 0 ? 1 : 0;
+          const rate = weapon.beam ? 1 : shotsPerSecond(weapon);
           const sustained = (key: DamageType) =>
-            (weapon.beam
-              ? (weapon.damagePerSecond?.[key] ?? 0)
-              : (weapon.damagePerShot?.[key] ?? 0) * shotsPerSecond(weapon)) *
-            duty.ratio *
-            powered;
+            (damage?.[key] ?? 0) * rate * duty.ratio * powered;
           const perShot = (key: DamageType) =>
-            weapon.beam ? 0 : (weapon.damagePerShot?.[key] ?? 0);
+            weapon.beam ? 0 : (damage?.[key] ?? 0);
 
           byComponent.set(component.id, {
             id: component.id,
@@ -145,6 +142,12 @@ export function collectLoadoutWeapons(
   return [...byComponent.values()].sort(
     (a, b) => Number(b.size ?? 0) - Number(a.size ?? 0),
   );
+}
+
+// Whether any of the guns has per-shot alpha to test against deflection. Beams
+// alone only feed the time to kill.
+export function hasAlphaGuns(weapons: LoadoutWeapon[]): boolean {
+  return weapons.some((weapon) => !weapon.beam);
 }
 
 // Ships whose build installs no armor are left out: with no threshold there is

@@ -12,6 +12,7 @@ import { useModelDefenses as useModelDefensesQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   collectLoadoutWeapons,
+  hasAlphaGuns,
   penetrationTargets,
   usePenetrationCheck,
   type PenetrationResult,
@@ -52,6 +53,8 @@ const SIZE_ORDER = [
 const loadoutWeapons = computed(() =>
   collectLoadoutWeapons(props.hardpoints, props.powerRatio),
 );
+
+const testable = computed(() => hasAlphaGuns(loadoutWeapons.value));
 
 // Everything the loadout mounts starts selected; a click takes a gun out of
 // (or back into) the comparison.
@@ -227,7 +230,7 @@ const detailSurvival = computed(() => {
         {{ t("labels.penetrationCheck.intro") }}
       </p>
 
-      <div v-if="!loadoutWeapons.some((weapon) => !weapon.beam)" class="empty">
+      <div v-if="!testable" class="empty">
         {{ t("labels.penetrationCheck.noWeapons") }}
       </div>
 
@@ -256,6 +259,13 @@ const detailSurvival = computed(() => {
               S{{ weapon.size }}
             </span>
             {{ weapon.name }}
+            <span
+              v-if="weapon.beam"
+              class="weapons__beam"
+              data-test="penetration-beam"
+            >
+              {{ t("labels.penetrationCheck.ttk") }}
+            </span>
           </button>
         </div>
 
@@ -589,6 +599,14 @@ const detailSurvival = computed(() => {
       border-color: rgba($gold, 0.6);
       color: $gold;
     }
+  }
+
+  // A beam only changes the time to kill, never the margin.
+  &__beam {
+    margin-left: 4px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--color-text-dim);
   }
 
   &__count,

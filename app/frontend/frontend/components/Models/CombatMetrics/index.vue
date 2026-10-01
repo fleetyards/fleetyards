@@ -18,7 +18,10 @@ import {
   type DamageBreakdown,
 } from "@/frontend/composables/useLoadoutStats";
 import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
-import { collectLoadoutWeapons } from "@/frontend/composables/usePenetrationCheck";
+import {
+  collectLoadoutWeapons,
+  hasAlphaGuns,
+} from "@/frontend/composables/usePenetrationCheck";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -101,7 +104,7 @@ const composition = computed(() =>
 // Beams and missiles have no per-shot alpha to test, so a loadout of only
 // those has nothing to put in the check.
 const hasTestableGuns = computed(() =>
-  collectLoadoutWeapons(props.hardpoints).some((weapon) => !weapon.beam),
+  hasAlphaGuns(collectLoadoutWeapons(props.hardpoints)),
 );
 
 const openPenetrationCheck = () => {
