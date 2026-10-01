@@ -222,13 +222,17 @@
         "unavailable": "Could not load these details.",
         "loading": "Loading %{name}…",
         "offeredBy": "Offered by %{name}",
+        "rsiHandle": "RSI handle %{handle}",
         "types": {
           "Component": "Component",
           "Equipment": "Equipment",
           "Commodity": "Commodity",
           "Model": "Ship",
           "Blueprint": "Blueprint",
-          "GameMission": "Mission"
+          "GameMission": "Mission",
+          "FleetContract": "Contract",
+          "FleetEvent": "Event",
+          "User": "User"
         },
         "open": {
           "Component": "Open component",
@@ -236,7 +240,10 @@
           "Commodity": "Open commodity",
           "Model": "Open ship",
           "Blueprint": "Open blueprint",
-          "GameMission": "Open mission"
+          "GameMission": "Open mission",
+          "FleetContract": "Open contract",
+          "FleetEvent": "Open event",
+          "User": "Open hangar"
         }
       },
       "stats": {

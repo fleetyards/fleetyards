@@ -36,6 +36,11 @@ class MarkdownPlainTextTest < ActiveSupport::TestCase
     assert_equal "Fit Attrition-3 Repeater or Mercury", MarkdownPlainText.render("Fit [*Attrition-3 Repeater*] or [*commodity:Mercury*]")
   end
 
+  test "reads a contract or event token as its title, and a user token as the handle" do
+    assert_equal "Run Salvage Run, join Weekly Mining with mortik",
+      MarkdownPlainText.render("Run [*contract:MARU/Salvage Run*], join [*event:MARU/Weekly Mining*] with [*user:mortik*]")
+  end
+
   test "keeps a token written as code" do
     text = MarkdownPlainText.render("Type `[*Name*]` to name one\n\n```\n[*ship:Carrack*]\n```\n\nor [*ship:Carrack*]")
 

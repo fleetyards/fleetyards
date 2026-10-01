@@ -3,8 +3,11 @@ import {
   type Commodity,
   type Component,
   type Equipment,
+  type FleetContractDetail,
+  type FleetEvent,
   type GameMission,
   type Model,
+  type UserPublic,
 } from "@/services/fyApi";
 
 // The shape every catalogue reference already has -- a recipe's output, a
@@ -13,10 +16,20 @@ import {
 export interface CatalogueItemRef {
   type?: string | null;
   slug?: string | null;
+  // The fleet a contract or an event belongs to.
+  fleetSlug?: string | null;
   name?: string | null;
   // False for a record the catalogue leaves out, whose page would 404.
   listed?: boolean;
 }
 
 export type CatalogueRecord =
-  Component | Equipment | Commodity | Model | Blueprint | GameMission;
+  | Component
+  | Equipment
+  | Commodity
+  | Model
+  | Blueprint
+  | GameMission
+  | FleetContractDetail
+  | FleetEvent
+  | UserPublic;

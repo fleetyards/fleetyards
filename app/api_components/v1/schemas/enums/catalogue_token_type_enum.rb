@@ -3,12 +3,15 @@
 module V1
   module Schemas
     module Enums
-      # What an inline `[*…*]` token can name. Sourced from the resolver, so the
-      # schema cannot drift from what the lookup answers.
+      # What an inline `[*…*]` token can name. Sourced from the resolvers, so
+      # the schema cannot drift from what the lookup answers.
       class CatalogueTokenTypeEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = ::Catalogue::TokenResolver::CATALOGUES.values.map(&:name).freeze
+        VALUES = [
+          *::Catalogue::TokenResolver::CATALOGUES.values.map(&:name),
+          *::Catalogue::RestrictedTokenResolver::TYPES
+        ].freeze
 
         schema({
           type: :string,

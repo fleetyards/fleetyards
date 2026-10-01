@@ -15,12 +15,16 @@ const { enabled, query, settle } = vi.hoisted(() => {
     { data: Ref<unknown>; isPending: Ref<boolean> }
   > = {};
 
-  const query = (key: string) => (_slug: unknown, options: QueryOptions) => {
-    enabled[key] = () => options.query.enabled.value;
-    states[key] = { data: ref(undefined), isPending: ref(true) };
+  // `at` is where the options sit: after a fleet's slug, or an event's params.
+  const query =
+    (key: string, at = 1) =>
+    (...args: unknown[]) => {
+      const options = args[at] as QueryOptions;
+      enabled[key] = () => options.query.enabled.value;
+      states[key] = { data: ref(undefined), isPending: ref(true) };
 
-    return states[key];
-  };
+      return states[key];
+    };
 
   const settle = (key: string, data?: unknown) => {
     states[key].data.value = data;
@@ -35,6 +39,9 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useComponent: query("component"),
   useEquipmentItem: query("equipment"),
   useCommodity: query("commodity"),
+  useFleetContract: query("contract", 2),
+  useFleetEvent: query("event", 3),
+  usePublicUser: query("user"),
 }));
 
 import Component from "./index.vue";
@@ -49,6 +56,21 @@ const router = () =>
         name,
         component: { template: "<div />" },
       })),
+      {
+        path: "/fleets/:slug/contracts/:contract",
+        name: "fleet-contract",
+        component: { template: "<div />" },
+      },
+      {
+        path: "/fleets/:slug/events/:event",
+        name: "fleet-event",
+        component: { template: "<div />" },
+      },
+      {
+        path: "/hangar/:username",
+        name: "hangar-public",
+        component: { template: "<div />" },
+      },
     ],
   });
 
@@ -104,6 +126,65 @@ describe("CatalogueItemPopover", () => {
       .filter(([other]) => other !== key)
       .forEach(([, isEnabled]) => expect(isEnabled()).toBe(false));
     expect(card()).not.toBeNull();
+  });
+
+  it.each([
+    [
+      "FleetContract",
+      "contract",
+      {
+        title: "Salvage Run",
+        state: "open",
+        kind: "transport",
+        reward: "5000",
+      },
+      "#/fleets/maru/contracts/salvage-run",
+    ],
+    [
+      "FleetEvent",
+      "event",
+      {
+        title: "Salvage Run",
+        status: "open",
+        startsAt: "2026-10-02T18:00:00Z",
+        past: false,
+      },
+      "#/fleets/maru/events/salvage-run",
+    ],
+    ["User", "user", { username: "Salvage Run" }, "#/hangar/salvage-run"],
+  ])(
+    "links a %s and fetches its card once it opens",
+    async (type, key, record, href) => {
+      const wrapper = await mount({
+        item: {
+          type,
+          slug: "salvage-run",
+          fleetSlug: "maru",
+          name: "Salvage Run",
+        },
+      });
+
+      expect(wrapper.find("a").attributes("href")).toBe(href);
+      expect(enabled[key]()).toBe(false);
+
+      await tapOpen(wrapper);
+
+      expect(enabled[key]()).toBe(true);
+
+      settle(key, record);
+      await nextTick();
+
+      expect(card()?.textContent).toContain("Salvage Run");
+    },
+  );
+
+  it("is plain text for a contract without its fleet", async () => {
+    const wrapper = await mount({
+      item: { type: "FleetContract", slug: "salvage-run", name: "Salvage Run" },
+    });
+
+    expect(wrapper.find("[data-test='popover-trigger']").exists()).toBe(false);
+    expect(wrapper.text()).toBe("Salvage Run");
   });
 
   it("fetches nothing when handed the record itself", async () => {

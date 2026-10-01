@@ -14,6 +14,36 @@ describe("catalogueItemRoute", () => {
     );
   });
 
+  it("routes a contract and an event under their fleet, and a user to the hangar", () => {
+    expect(
+      catalogueItemRoute({
+        type: "FleetContract",
+        slug: "haul",
+        fleetSlug: "maru",
+      }),
+    ).toEqual({
+      name: "fleet-contract",
+      params: { slug: "maru", contract: "haul" },
+    });
+    expect(
+      catalogueItemRoute({
+        type: "FleetEvent",
+        slug: "mining",
+        fleetSlug: "maru",
+      }),
+    ).toEqual({
+      name: "fleet-event",
+      params: { slug: "maru", event: "mining" },
+    });
+    expect(catalogueItemRoute({ type: "User", slug: "mortik" })).toEqual({
+      name: "hangar-public",
+      params: { username: "mortik" },
+    });
+    expect(
+      catalogueItemRoute({ type: "FleetEvent", slug: "mining" }),
+    ).toBeUndefined();
+  });
+
   // A reference the catalogue cannot resolve reads as plain text rather than
   // as a link to the not-found page.
   it("gives no route without a slug or for a type with no page", () => {

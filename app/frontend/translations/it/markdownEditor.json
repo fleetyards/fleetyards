@@ -37,7 +37,10 @@
         "Commodity": "Merce",
         "Model": "Nave",
         "Blueprint": "Progetto",
-        "GameMission": "Missione"
+        "GameMission": "Missione",
+        "FleetContract": "Contratto",
+        "FleetEvent": "Evento",
+        "User": "Utente"
       }
     }
   }

@@ -222,13 +222,17 @@
         "unavailable": "No se pudieron cargar estos detalles.",
         "loading": "Cargando %{name}…",
         "offeredBy": "Ofrecida por %{name}",
+        "rsiHandle": "Handle de RSI: %{handle}",
         "types": {
           "Component": "Componente",
           "Equipment": "Equipo",
           "Commodity": "Mercancía",
           "Model": "Nave",
           "Blueprint": "Plano",
-          "GameMission": "Misión"
+          "GameMission": "Misión",
+          "FleetContract": "Contrato",
+          "FleetEvent": "Evento",
+          "User": "Usuario"
         },
         "open": {
           "Component": "Abrir componente",
@@ -236,7 +240,10 @@
           "Commodity": "Abrir mercancía",
           "Model": "Abrir nave",
           "Blueprint": "Abrir plano",
-          "GameMission": "Abrir misión"
+          "GameMission": "Abrir misión",
+          "FleetContract": "Abrir contrato",
+          "FleetEvent": "Abrir evento",
+          "User": "Abrir hangar"
         }
       },
       "stats": {

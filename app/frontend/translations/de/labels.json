@@ -222,13 +222,17 @@
         "unavailable": "Diese Details konnten nicht geladen werden.",
         "loading": "%{name} wird geladen…",
         "offeredBy": "Angeboten von %{name}",
+        "rsiHandle": "RSI-Handle %{handle}",
         "types": {
           "Component": "Komponente",
           "Equipment": "Ausrüstung",
           "Commodity": "Rohstoff",
           "Model": "Schiff",
           "Blueprint": "Bauplan",
-          "GameMission": "Mission"
+          "GameMission": "Mission",
+          "FleetContract": "Auftrag",
+          "FleetEvent": "Event",
+          "User": "Benutzer"
         },
         "open": {
           "Component": "Komponente öffnen",
@@ -236,7 +240,10 @@
           "Commodity": "Rohstoff öffnen",
           "Model": "Schiff öffnen",
           "Blueprint": "Bauplan öffnen",
-          "GameMission": "Mission öffnen"
+          "GameMission": "Mission öffnen",
+          "FleetContract": "Auftrag öffnen",
+          "FleetEvent": "Event öffnen",
+          "User": "Hangar öffnen"
         }
       },
       "stats": {

@@ -12,6 +12,8 @@ const DETAIL_ROUTES: Record<string, string> = {
 type CatalogueRef = {
   type?: string | null;
   slug?: string | null;
+  // The fleet a contract or an event belongs to.
+  fleetSlug?: string | null;
   // False for a record the catalogue leaves out, such as a hidden equipment
   // variant, whose page would 404.
   listed?: boolean;
@@ -24,6 +26,26 @@ type CatalogueRef = {
 export const catalogueItemRoute = (
   ref?: CatalogueRef | null,
 ): RouteLocationRaw | undefined => {
+  if (!ref?.slug) return undefined;
+
+  if (ref.type === "User") {
+    return { name: "hangar-public", params: { username: ref.slug } };
+  }
+
+  if (ref.type === "FleetContract" || ref.type === "FleetEvent") {
+    if (!ref.fleetSlug) return undefined;
+
+    return ref.type === "FleetContract"
+      ? {
+          name: "fleet-contract",
+          params: { slug: ref.fleetSlug, contract: ref.slug },
+        }
+      : {
+          name: "fleet-event",
+          params: { slug: ref.fleetSlug, event: ref.slug },
+        };
+  }
+
   const name = ref?.type ? DETAIL_ROUTES[ref.type] : undefined;
 
   return name && ref?.slug && ref.listed !== false

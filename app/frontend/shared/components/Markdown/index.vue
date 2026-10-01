@@ -105,6 +105,7 @@ const resolvedMarks = computed(() =>
         :item="{
           type: mark.match.type,
           slug: mark.match.slug,
+          fleetSlug: mark.match.fleetSlug,
           name: mark.match.name,
         }"
       />

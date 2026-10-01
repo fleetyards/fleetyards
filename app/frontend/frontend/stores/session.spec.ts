@@ -7,6 +7,7 @@ import {
   getFleetRsiVerificationQueryKey,
   getMyRsiVerificationQueryKey,
   getMySupporterClaimKeyQueryKey,
+  destroySession,
   me,
 } from "@/services/fyApi";
 import { useSessionStore } from "./session";
@@ -46,6 +47,54 @@ describe("session store", () => {
     expect(
       queryClient.getQueryData(getMySupporterClaimKeyQueryKey()),
     ).toBeUndefined();
+  });
+
+  // What a text's contract, event and user tokens resolve to is the reader's
+  // own answer, which the next one in the same tab must not inherit.
+  it("forgets the resolved tokens on login and on logout", async () => {
+    const key = ["catalogueLookup", ["user:mortik"]];
+    const answer = { items: [{ token: "user:mortik", type: "User" }] };
+    const user = { username: "mortik" } as Parameters<
+      ReturnType<typeof useSessionStore>["login"]
+    >[0];
+
+    queryClient.setQueryData(key, answer);
+    useSessionStore().login(user);
+
+    expect(queryClient.getQueryData(key)).toBeUndefined();
+
+    queryClient.setQueryData(key, answer);
+    await useSessionStore().logout();
+
+    expect(queryClient.getQueryData(key)).toBeUndefined();
+  });
+
+  // The reset on clearing the session can refetch under the cookie logout is
+  // about to destroy, so the lookup is asked again once it is gone.
+  it("asks for the resolved tokens again after the session is destroyed", async () => {
+    const order: string[] = [];
+    vi.mocked(destroySession).mockImplementationOnce(async () => {
+      order.push("destroySession");
+
+      return { code: "success", message: "" };
+    });
+    const reset = vi
+      .spyOn(queryClient, "resetQueries")
+      .mockImplementation(async (filters) => {
+        if (
+          filters &&
+          "queryKey" in filters &&
+          filters.queryKey?.[0] === "catalogueLookup"
+        ) {
+          order.push("reset");
+        }
+      });
+
+    await useSessionStore().logout();
+
+    expect(order.at(-1)).toBe("reset");
+    expect(order).toContain("destroySession");
+    reset.mockRestore();
   });
 
   it("drops the reader's cached verification token on logout", async () => {

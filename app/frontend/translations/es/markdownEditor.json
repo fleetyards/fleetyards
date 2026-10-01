@@ -37,7 +37,10 @@
         "Commodity": "Mercancía",
         "Model": "Nave",
         "Blueprint": "Plano",
-        "GameMission": "Misión"
+        "GameMission": "Misión",
+        "FleetContract": "Contrato",
+        "FleetEvent": "Evento",
+        "User": "Usuario"
       }
     }
   }

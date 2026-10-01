@@ -5,4 +5,5 @@ json.items @matches do |match|
   json.name match.name
   json.type match.type
   json.slug match.slug
+  json.fleet_slug match.fleet_slug if match.fleet_slug
 end

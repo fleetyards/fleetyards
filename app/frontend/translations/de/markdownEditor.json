@@ -37,7 +37,10 @@
         "Commodity": "Rohstoff",
         "Model": "Schiff",
         "Blueprint": "Bauplan",
-        "GameMission": "Mission"
+        "GameMission": "Mission",
+        "FleetContract": "Auftrag",
+        "FleetEvent": "Event",
+        "User": "Benutzer"
       }
     }
   }
