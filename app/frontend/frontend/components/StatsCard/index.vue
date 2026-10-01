@@ -148,12 +148,7 @@ const hasBody = computed(
 </script>
 
 <template>
-  <div
-    v-if="compact"
-    class="stats-card"
-    :aria-busy="loading"
-    data-test="stats-card"
-  >
+  <div v-if="compact" class="stats-card" data-test="stats-card">
     <LoadingLine :loading="loading" :label="loadingLabel" />
 
     <span

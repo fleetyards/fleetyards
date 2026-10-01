@@ -44,7 +44,6 @@ const isSlim = computed(() => props.variant === "slim");
     :class="{ 'metrics-card--slim': isSlim }"
     :outer-spacing="false"
     :variant="isSlim ? PanelVariantsEnum.SLIM : PanelVariantsEnum.DEFAULT"
-    :aria-busy="loading"
   >
     <!-- A wrapper rather than a child of the heading: the heading's slots sit
          inside its title, whose text the e2e specs read, and inside its

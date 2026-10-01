@@ -112,14 +112,16 @@ describe("StatsCard", () => {
     expect(wrapper.find(".stats-card__note").text()).toBe("Nothing recorded.");
   });
 
-  it("holds its shape with a still skeleton while loading, and says it is loading", async () => {
+  it("holds its shape with a still skeleton while loading, and announces it", async () => {
     const wrapper = await mount({ stats: stats(3), loading: true });
 
     expect(wrapper.find("[data-test='stats-card-row']").exists()).toBe(false);
     expect(wrapper.find("[data-test='stats-card-skeleton']").exists()).toBe(
       true,
     );
-    expect(wrapper.find(".stats-card").attributes("aria-busy")).toBe("true");
+    // Not aria-busy: assistive tech holds back a busy subtree's live regions,
+    // which would swallow the very announcement the status carries.
+    expect(wrapper.find(".stats-card").attributes("aria-busy")).toBeUndefined();
     expect(wrapper.find(".loading-line").classes()).toContain(
       "loading-line--active",
     );

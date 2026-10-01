@@ -63,12 +63,12 @@ describe("MetricsCard", () => {
     );
   });
 
-  it("runs a loading line under its heading and is busy while loading", async () => {
+  it("runs a loading line under its heading and announces it while loading", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { title: "Combat", loading: true },
     });
 
-    expect(wrapper.find(".panel").attributes("aria-busy")).toBe("true");
+    expect(wrapper.find(".panel").attributes("aria-busy")).toBeUndefined();
     const line = wrapper.find(".metrics-card__head .loading-line");
     expect(line.classes()).toContain("loading-line--active");
     expect(line.classes()).toContain("loading-line--bottom");
