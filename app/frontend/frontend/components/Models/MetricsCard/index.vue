@@ -5,12 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   title: string;
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   variant: "default",
   loading: false,
 });
+
+const { t } = useI18n();
 
 const isSlim = computed(() => props.variant === "slim");
 </script>
@@ -41,18 +44,28 @@ const isSlim = computed(() => props.variant === "slim");
     :class="{ 'metrics-card--slim': isSlim }"
     :outer-spacing="false"
     :variant="isSlim ? PanelVariantsEnum.SLIM : PanelVariantsEnum.DEFAULT"
+    :aria-busy="loading"
   >
-    <PanelHeading
-      :tone="PanelHeadingTonesEnum.METRIC"
-      :compact="isSlim"
-      :divider="isSlim"
-    >
-      {{ title }}
-      <template #actions>
-        <SmallLoader :loading="loading" alignment="right" />
-        <slot name="head" />
-      </template>
-    </PanelHeading>
+    <!-- A wrapper rather than a child of the heading: the heading's slots sit
+         inside its title, whose text the e2e specs read, and inside its
+         absolutely positioned actions, which the line would run along. -->
+    <div class="metrics-card__head">
+      <PanelHeading
+        :tone="PanelHeadingTonesEnum.METRIC"
+        :compact="isSlim"
+        :divider="isSlim"
+      >
+        {{ title }}
+        <template v-if="$slots.head" #actions>
+          <slot name="head" />
+        </template>
+      </PanelHeading>
+      <LoadingLine
+        :loading="loading"
+        :label="t('labels.statsCard.loading', { name: title })"
+        edge="bottom"
+      />
+    </div>
 
     <PanelBody :class="{ 'metrics-card__body--slim': isSlim }">
       <slot />
@@ -69,6 +82,10 @@ const isSlim = computed(() => props.variant === "slim");
 .metrics-card,
 .metrics-card--slim {
   margin: 0 0 21px;
+}
+
+.metrics-card__head {
+  position: relative;
 }
 
 .metrics-card__body--slim {
