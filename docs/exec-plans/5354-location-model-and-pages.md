@@ -7,8 +7,6 @@ Every named starmap record exists as a `Location` with a public page, loaded fro
 
 ## Open questions
 - **PYR6 L1 station (awaiting an in-game check)** — the Lagrange point "PYR6 L1" is named and loaded. The station `RR_P6_L1` under it has no name in any locale or build, and its children "P6 L1_Clinic" and "P6 L1_Habs" are dropped with it. The tag rule would rescue only the habs, under PYR6 L1. Is there a station there in-game, and what is it called?
-- **Systems built from translations** — Ellis is the only one in 4.10.1 (for Green). The detection rule is still open: a key prefix (`Ellis3` → `Ellis`) whose translation names a system different from the record's starmap system.
-- **Match quality** — terminals link specifically (156 of 161), missions mostly at planet/moon level (854 of 2103 templates). Is a coarse "can take place on Hurston" mission link what we want, or only links to specific places?
 
 ## What changed
 
@@ -77,6 +75,9 @@ Every named starmap record exists as a `Location` with a public page, loaded fro
 
 ## Discovery Log
 
+- **2026-10-01** `Hash.from_xml` reads a dash in an element name as an underscore, so override keys take the underscore form (`RR_NYX_CASTRA_JP1_CLINIC`).
+- **2026-10-01** Real-data load: 1847 locations, 784 missions linked (3144 template links, 360 text links), 157 of 161 UEX commodity terminals matched. Grim HEX's two terminals stay unlinked: UEX names the station "Green Imperial Housing Exchange", a name the starmap does not use.
+
 - **2026-10-01** UEX terminals: of 161 commodity terminals, 153 match a location by normalised name; a name-prefix rule adds 3. The unmatched ones are Port Olisar (retired), "Admin - UEX Station" (no place), Green Imperial Housing Exchange ×2 (no starmap record), and Slowburn Depot (two identical records under Monox). The dev DB has no terminals; the measurement used the live `https://api.uexcorp.uk/2.0/terminals` feed.
 - **2026-10-01** Mission locations: no template references a starmap GUID. Through tags, 854 of 2103 templates resolve to one location: 410 planets, 187 stars, 141 moons, 94 asteroids, 20 landing zones, 2 manmade. 1061 carry no location tag, and 188 are ambiguous (Pyro asteroid tags RegionA–D, shared by about 35 bases each, and Orison). Child records reuse their parent's tag, and planets carry no tag of their own, hence the owner rules. `pu_missionlocality/*.xml` (17 files) lists starmap GUIDs and is referenced by 488 contract-generator records, a second, region-level bridge.
 
@@ -86,9 +87,9 @@ Every named starmap record exists as a `Location` with a public page, loaded fro
 - **2026-10-01** Initial research. The raw export has the full hierarchy as `StarMapObject` records; no parser reads `starmap/` yet. Terminals come from UEX, not sc_data. Mission locations carry tags only (`parser/mission_locations.rb:37-41`).
 
 ## Progress
-- [ ] Phase 1 — Parser
-- [ ] Phase 2 — Model + loader
-- [ ] Phase 2b — Links
-- [ ] Phase 3 — Public API
-- [ ] Phase 4 — Frontend
-- [ ] Phase 5 — Admin
+- [x] Phase 1 — Parser
+- [x] Phase 2 — Model + loader
+- [x] Phase 2b — Links
+- [x] Phase 3 — Public API
+- [x] Phase 4 — Frontend
+- [ ] Phase 5 — Admin (not built; ask whether it is wanted)
