@@ -149,6 +149,21 @@ class FleetEvent < ApplicationRecord
     )
   }
 
+  # An event with something still ahead of it: neither archived nor finished,
+  # and a one-off that has not ended or a series that has not run out. Two
+  # halves of a split series share a title, and once the first half is over
+  # this is what tells them apart.
+  scope :still_running, -> { where(still_running_sql) }
+
+  def self.still_running_sql(now = Time.current)
+    sanitize_sql_array([
+      "fleet_events.archived_at IS NULL AND fleet_events.status NOT IN ('completed', 'cancelled') AND (" \
+      "(fleet_events.recurring IS NOT TRUE AND COALESCE(fleet_events.ends_at, fleet_events.starts_at) >= :now) OR " \
+      "(fleet_events.recurring IS TRUE AND (fleet_events.recurrence_until IS NULL OR fleet_events.recurrence_until >= :today)))",
+      {now:, today: now.to_date}
+    ])
+  end
+
   AVAILABLE_PRIVILEGES = [
     "fleet:events:read",
     "fleet:events:create",
