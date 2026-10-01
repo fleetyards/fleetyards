@@ -141,6 +141,10 @@ function isMissile(weapon: ComponentWeapon): boolean {
 // power pool can't feed every gun at once) scales an energy weapon's effective
 // pool and regen, shrinking its uptime — the shared-pool sustained throttle.
 // Heat-limited (ballistic) weapons aren't power-fed, so they ignore powerRatio.
+export function shotsPerSecond(weapon: ComponentWeapon): number {
+  return ((weapon.pelletsPerShot || 1) * (weapon.fireRate || 0)) / 60;
+}
+
 export function sustainedRatio(
   weapon: ComponentWeapon,
   powerRatio = 1,
@@ -233,11 +237,11 @@ export function computeLoadoutStats(
       addBreakdown(weaponDps, weapon.damagePerSecond, powered);
     } else if (!isMissile(weapon) && weapon.fireRate && weapon.damagePerShot) {
       const pellets = weapon.pelletsPerShot || 1;
-      const shotsPerSecond = (pellets * weapon.fireRate) / 60;
+      const rate = shotsPerSecond(weapon);
       addBreakdown(alpha, weapon.damagePerShot, pellets * powered);
-      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond * powered);
-      addBreakdown(sustainedDps, weapon.damagePerShot, shotsPerSecond * ratio);
-      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond * powered);
+      addBreakdown(dps, weapon.damagePerShot, rate * powered);
+      addBreakdown(sustainedDps, weapon.damagePerShot, rate * ratio);
+      addBreakdown(weaponDps, weapon.damagePerShot, rate * powered);
     } else {
       // Missiles (and other non-DPS munitions) don't contribute to DPS/alpha,
       // but their total payload damage is surfaced separately.

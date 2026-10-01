@@ -23,6 +23,7 @@ import {
 } from "@/frontend/composables/useDeflectionCheck";
 import {
   dutyCycle,
+  shotsPerSecond,
   type DamageType,
   type DutyCycle,
 } from "@/frontend/composables/useLoadoutStats";
@@ -94,12 +95,9 @@ export function collectLoadoutWeapons(
         } else {
           const duty = dutyCycle(weapon, powerRatio);
           // An unpowered weapon system fires nothing, heat-limited guns included.
-          const shotsPerSecond =
-            powerRatio > 0
-              ? ((weapon.pelletsPerShot || 1) * (weapon.fireRate || 0)) / 60
-              : 0;
+          const rate = powerRatio > 0 ? shotsPerSecond(weapon) : 0;
           const sustained = (key: DamageType) =>
-            (weapon.damagePerShot?.[key] ?? 0) * shotsPerSecond * duty.ratio;
+            (weapon.damagePerShot?.[key] ?? 0) * rate * duty.ratio;
 
           byComponent.set(component.id, {
             id: component.id,
