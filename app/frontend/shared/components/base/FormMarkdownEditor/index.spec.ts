@@ -465,6 +465,36 @@ describe("FormMarkdownEditor", () => {
     expect(subject.emitted("update:modelValue")).toBeUndefined();
   });
 
+  it("asks for at most a hundred names at a time", async () => {
+    const lookupCatalogue = vi.fn(async (names: string[]) =>
+      names.map((name) => ({
+        token: name,
+        name,
+        type: "Commodity",
+        slug: name.toLowerCase(),
+      })),
+    );
+    const names = Array.from(
+      { length: 101 },
+      (_, index) => `Ore ${String(index).padStart(3, "0")}`,
+    );
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: names.map((name) => `[*${name}*]`).join(" "),
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(lookupCatalogue).toHaveBeenCalledTimes(2);
+    expect(lookupCatalogue.mock.calls[0][0]).toHaveLength(100);
+    expect(lookupCatalogue.mock.calls[1][0]).toEqual(["Ore 100"]);
+    expect(
+      subject.findAll(".ProseMirror .catalogue-token--unresolved"),
+    ).toHaveLength(0);
+  });
+
   it("needs no lookup for an item picked from the search", async () => {
     const lookupCatalogue = vi.fn(async () => []);
     const subject = await mountEditor({

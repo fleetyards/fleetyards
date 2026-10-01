@@ -272,6 +272,9 @@ const defaultLookup: CatalogueLookup = async (names) =>
 
 const LOOKUP_DELAY = 250;
 
+// The lookup's own limit on names per request.
+const LOOKUP_BATCH = 100;
+
 // Resolves the document's tokens the way the page will, so each chip shows its
 // real type's icon -- a token without a prefix could be any of three -- or
 // that it will not link at all. The answers only mark the nodes: the markdown
@@ -372,17 +375,21 @@ const resolveTokens = (
   storage.timer = setTimeout(() => {
     const names = [...unknown].sort();
 
-    lookup(names).then(
-      (matches) => {
-        const types = new Map(
-          matches.map((match) => [match.token, match.type]),
-        );
-        names.forEach((name) =>
-          storage.known.set(name, types.get(name) ?? null),
-        );
-        markKnown(editor, storage.known);
-      },
-      () => undefined,
-    );
+    for (let start = 0; start < names.length; start += LOOKUP_BATCH) {
+      const batch = names.slice(start, start + LOOKUP_BATCH);
+
+      lookup(batch).then(
+        (matches) => {
+          const types = new Map(
+            matches.map((match) => [match.token, match.type]),
+          );
+          batch.forEach((name) =>
+            storage.known.set(name, types.get(name) ?? null),
+          );
+          markKnown(editor, storage.known);
+        },
+        () => undefined,
+      );
+    }
   }, LOOKUP_DELAY);
 };
