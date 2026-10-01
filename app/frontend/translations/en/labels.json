@@ -1045,6 +1045,7 @@
         "armorSelfResistance": "Self resistance",
         "armorSignature": "Signature",
         "countermeasures": "Countermeasures",
+        "countermeasureDuration": "Duration",
         "countermeasure": {
           "decoy": "Decoy",
           "noise": "Noise"
@@ -1414,6 +1415,13 @@
           "armedMissiles": "Armed Missiles",
           "launchCooldown": "Launch Cooldown",
           "lockAngle": "Lock Angle"
+        },
+        "countermeasureStats": {
+          "duration": "Duration",
+          "spawnDelay": "Deploys After",
+          "infrared": "IR Signature",
+          "electromagnetic": "EM Signature",
+          "crossSection": "Cross Section"
         },
         "turrets": {
           "turnRate": "Turn Rate",

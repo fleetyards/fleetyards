@@ -409,6 +409,25 @@ export const useHardpointStats = (
       t("number.format.separator") || ",",
     );
 
+  // A signature that fades from launch to burn-out reads as its two ends.
+  const signatureRange = (range?: {
+    start?: number;
+    end?: number;
+  }): string | null => {
+    const start = range?.start;
+    const end = range?.end ?? start;
+    if (!start && !end) return null;
+
+    // A cloud that fades to nothing ends at a real 0, which `toNumber`
+    // would print as not available.
+    const format = (value?: number) => {
+      const rounded = Math.round(value || 0);
+      return rounded ? String(toNumber(rounded, "integer")) : "0";
+    };
+
+    return start === end ? format(start) : `${format(start)} → ${format(end)}`;
+  };
+
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
 
@@ -1614,6 +1633,34 @@ export const useHardpointStats = (
       if (cm.range) {
         result.push(stat("weapons.range", cm.range as number, "weaponRange"));
       }
+      const launched = (typeData as ComponentWeapon).countermeasure;
+      if (launched?.lifetime) {
+        result.push({
+          label: t("labels.hardpoint.countermeasureStats.duration"),
+          value: `${toNumber(launched.lifetime)} s`,
+        });
+      }
+      if (launched?.spawnDelay) {
+        result.push({
+          label: t("labels.hardpoint.countermeasureStats.spawnDelay"),
+          value: `${toNumber(launched.spawnDelay)} s`,
+        });
+      }
+      (
+        [
+          ["infrared", launched?.infrared],
+          ["electromagnetic", launched?.electromagnetic],
+          ["crossSection", launched?.crossSection],
+        ] as const
+      ).forEach(([key, signature]) => {
+        const value = signatureRange(signature);
+        if (value) {
+          result.push({
+            label: t(`labels.hardpoint.countermeasureStats.${key}`),
+            value,
+          });
+        }
+      });
     } else if (category === HardpointCategoryEnum.ARMOR) {
       const armor = typeData as ComponentArmor;
       if (armor.health && armor.health > 0) {

@@ -35,7 +35,8 @@ module Shared
             spread: ComponentWeaponSpread,
             mining: ComponentMiningLaser,
             gimbalMode: ComponentWeaponGimbalMode,
-            aimAssist: ComponentWeaponAimAssist
+            aimAssist: ComponentWeaponAimAssist,
+            countermeasure: ComponentCountermeasure
           },
           additionalProperties: false
         })

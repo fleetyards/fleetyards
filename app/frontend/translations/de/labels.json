@@ -1045,6 +1045,7 @@
         "armorSelfResistance": "Eigenresistenz",
         "armorSignature": "Signatur",
         "countermeasures": "Gegenmaßnahmen",
+        "countermeasureDuration": "Dauer",
         "countermeasure": {
           "decoy": "Täuschkörper",
           "noise": "Störsignal"
@@ -1414,6 +1415,13 @@
           "armedMissiles": "Scharfe Raketen",
           "launchCooldown": "Startabklingzeit",
           "lockAngle": "Aufschaltwinkel"
+        },
+        "countermeasureStats": {
+          "duration": "Dauer",
+          "spawnDelay": "Entfaltung nach",
+          "infrared": "IR-Signatur",
+          "electromagnetic": "EM-Signatur",
+          "crossSection": "Querschnitt"
         },
         "turrets": {
           "turnRate": "Drehrate",

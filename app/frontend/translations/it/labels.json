@@ -1045,6 +1045,7 @@
         "armorSelfResistance": "Autoresistenza",
         "armorSignature": "Firma",
         "countermeasures": "Contromisure",
+        "countermeasureDuration": "Durata",
         "countermeasure": {
           "decoy": "Esca",
           "noise": "Disturbo"
@@ -1414,6 +1415,13 @@
           "armedMissiles": "Missili armati",
           "launchCooldown": "Ricarica di lancio",
           "lockAngle": "Angolo di aggancio"
+        },
+        "countermeasureStats": {
+          "duration": "Durata",
+          "spawnDelay": "Si dispiega dopo",
+          "infrared": "Firma IR",
+          "electromagnetic": "Firma EM",
+          "crossSection": "Sezione trasversale"
         },
         "turrets": {
           "turnRate": "Velocità di rotazione",

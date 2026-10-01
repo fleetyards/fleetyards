@@ -1045,6 +1045,7 @@
         "armorSelfResistance": "自身抗性",
         "armorSignature": "訊號特徵",
         "countermeasures": "干擾措施",
+        "countermeasureDuration": "持續時間",
         "countermeasure": {
           "decoy": "誘餌彈",
           "noise": "干擾箔"
@@ -1414,6 +1415,13 @@
           "armedMissiles": "可武裝飛彈",
           "launchCooldown": "發射冷卻",
           "lockAngle": "鎖定角度"
+        },
+        "countermeasureStats": {
+          "duration": "持續時間",
+          "spawnDelay": "展開延遲",
+          "infrared": "紅外線訊號",
+          "electromagnetic": "電磁訊號",
+          "crossSection": "截面訊號"
         },
         "turrets": {
           "turnRate": "轉向速率",

@@ -1045,6 +1045,7 @@
         "armorSelfResistance": "自身抗性",
         "armorSignature": "信号特征",
         "countermeasures": "干扰措施",
+        "countermeasureDuration": "持续时间",
         "countermeasure": {
           "decoy": "诱饵弹",
           "noise": "干扰箔"
@@ -1414,6 +1415,13 @@
           "armedMissiles": "可武装导弹",
           "launchCooldown": "发射冷却",
           "lockAngle": "锁定角度"
+        },
+        "countermeasureStats": {
+          "duration": "持续时间",
+          "spawnDelay": "展开延迟",
+          "infrared": "红外信号",
+          "electromagnetic": "电磁信号",
+          "crossSection": "截面信号"
         },
         "turrets": {
           "turnRate": "转向速率",
