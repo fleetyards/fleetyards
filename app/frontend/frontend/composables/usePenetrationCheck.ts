@@ -21,10 +21,19 @@ import {
   type DeflectionOutcome,
   type DeflectionResult,
 } from "@/frontend/composables/useDeflectionCheck";
+import {
+  dutyCycle,
+  type DamageType,
+  type DutyCycle,
+} from "@/frontend/composables/useLoadoutStats";
 
 export type LoadoutWeapon = WeaponIndexItem & {
   // Identical guns share one row; how many of them the loadout mounts.
   count: number;
+  // One gun's sustained damage per second by type, the way the combat card
+  // counts it.
+  sustainedDps: Record<DamageType, number>;
+  duty: DutyCycle;
 };
 
 export type PenetrationTarget = {
@@ -59,6 +68,7 @@ function isMissile(weapon: ComponentWeapon): boolean {
 // slots count as well: most guns sit on a gimbal or turret, not on the hull.
 export function collectLoadoutWeapons(
   hardpoints: Hardpoint[] | undefined,
+  powerRatio = 1,
 ): LoadoutWeapon[] {
   const byComponent = new Map<string, LoadoutWeapon>();
 
@@ -82,6 +92,15 @@ export function collectLoadoutWeapons(
         if (existing) {
           existing.count += 1;
         } else {
+          const duty = dutyCycle(weapon, powerRatio);
+          // An unpowered weapon system fires nothing, heat-limited guns included.
+          const shotsPerSecond =
+            powerRatio > 0
+              ? ((weapon.pelletsPerShot || 1) * (weapon.fireRate || 0)) / 60
+              : 0;
+          const sustained = (key: DamageType) =>
+            (weapon.damagePerShot?.[key] ?? 0) * shotsPerSecond * duty.ratio;
+
           byComponent.set(component.id, {
             id: component.id,
             name: component.name,
@@ -97,6 +116,13 @@ export function collectLoadoutWeapons(
               thermal: weapon.damagePerShot?.thermal ?? 0,
             },
             count: 1,
+            sustainedDps: {
+              physical: sustained("physical"),
+              energy: sustained("energy"),
+              distortion: sustained("distortion"),
+              thermal: sustained("thermal"),
+            },
+            duty,
           });
         }
       }
