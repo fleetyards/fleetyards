@@ -37,7 +37,10 @@
         "Commodity": "Marchandise",
         "Model": "Vaisseau",
         "Blueprint": "Plan",
-        "GameMission": "Mission"
+        "GameMission": "Mission",
+        "FleetContract": "Contrat",
+        "FleetEvent": "Événement",
+        "User": "Utilisateur"
       }
     }
   }

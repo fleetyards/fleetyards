@@ -222,13 +222,17 @@
         "unavailable": "無法載入這些詳情。",
         "loading": "正在載入 %{name}…",
         "offeredBy": "由 %{name} 提供",
+        "rsiHandle": "RSI 使用者名稱 %{handle}",
         "types": {
           "Component": "組件",
           "Equipment": "裝備",
           "Commodity": "商品",
           "Model": "艦船",
           "Blueprint": "藍圖",
-          "GameMission": "任務"
+          "GameMission": "任務",
+          "FleetContract": "合約",
+          "FleetEvent": "活動",
+          "User": "使用者"
         },
         "open": {
           "Component": "開啟組件",
@@ -236,7 +240,10 @@
           "Commodity": "開啟商品",
           "Model": "開啟艦船",
           "Blueprint": "開啟藍圖",
-          "GameMission": "開啟任務"
+          "GameMission": "開啟任務",
+          "FleetContract": "開啟合約",
+          "FleetEvent": "開啟活動",
+          "User": "開啟機庫"
         }
       },
       "stats": {

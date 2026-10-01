@@ -37,7 +37,10 @@
         "Commodity": "商品",
         "Model": "艦船",
         "Blueprint": "藍圖",
-        "GameMission": "任務"
+        "GameMission": "任務",
+        "FleetContract": "合約",
+        "FleetEvent": "活動",
+        "User": "使用者"
       }
     }
   }

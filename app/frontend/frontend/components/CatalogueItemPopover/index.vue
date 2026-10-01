@@ -12,6 +12,9 @@ import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.
 import ShipStatsCard from "@/frontend/components/StatsCard/Ship/index.vue";
 import BlueprintStatsCard from "@/frontend/components/StatsCard/Blueprint/index.vue";
 import MissionStatsCard from "@/frontend/components/StatsCard/Mission/index.vue";
+import ContractStatsCard from "@/frontend/components/StatsCard/Contract/index.vue";
+import EventStatsCard from "@/frontend/components/StatsCard/Event/index.vue";
+import UserStatsCard from "@/frontend/components/StatsCard/User/index.vue";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
   useComponent as useComponentQuery,
@@ -20,12 +23,18 @@ import {
   useModel as useModelQuery,
   useBlueprint as useBlueprintQuery,
   useGameMission as useGameMissionQuery,
+  useFleetContract as useFleetContractQuery,
+  useFleetEvent as useFleetEventQuery,
+  usePublicUser as usePublicUserQuery,
   type Blueprint,
   type Commodity,
   type Component,
   type Equipment,
+  type FleetContractDetail,
+  type FleetEvent,
   type GameMission,
   type Model,
+  type UserPublic,
 } from "@/services/fyApi";
 import { type CatalogueItemRef, type CatalogueRecord } from "./types";
 
@@ -55,6 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
 const route = computed(() => catalogueItemRoute(props.item));
 
 const slug = computed(() => props.item.slug || "");
+const fleetSlug = computed(() => props.item.fleetSlug || "");
 
 const isComponent = computed(() => props.item.type === "Component");
 const isEquipment = computed(() => props.item.type === "Equipment");
@@ -62,6 +72,9 @@ const isCommodity = computed(() => props.item.type === "Commodity");
 const isShip = computed(() => props.item.type === "Model");
 const isBlueprint = computed(() => props.item.type === "Blueprint");
 const isMission = computed(() => props.item.type === "GameMission");
+const isContract = computed(() => props.item.type === "FleetContract");
+const isEvent = computed(() => props.item.type === "FleetEvent");
+const isUser = computed(() => props.item.type === "User");
 
 // Fetched the first time the card opens -- never for every link on a page --
 // and left enabled afterwards, so the query cache (shared with the detail
@@ -76,6 +89,9 @@ const fetches = (type: Ref<boolean>) =>
   computed(
     () => requested.value && type.value && !props.record && !!slug.value,
   );
+
+const fetchesInFleet = (type: Ref<boolean>) =>
+  computed(() => fetches(type).value && !!fleetSlug.value);
 
 const { data: fetchedComponent, isPending: componentPending } =
   useComponentQuery(slug, { query: { enabled: fetches(isComponent) } });
@@ -98,6 +114,22 @@ const { data: fetchedMission, isPending: missionPending } = useGameMissionQuery(
   { query: { enabled: fetches(isMission) } },
 );
 
+const { data: fetchedContract, isPending: contractPending } =
+  useFleetContractQuery(fleetSlug, slug, {
+    query: { enabled: fetchesInFleet(isContract) },
+  });
+
+const { data: fetchedEvent, isPending: eventPending } = useFleetEventQuery(
+  fleetSlug,
+  slug,
+  undefined,
+  { query: { enabled: fetchesInFleet(isEvent) } },
+);
+
+const { data: fetchedUser, isPending: userPending } = usePublicUserQuery(slug, {
+  query: { enabled: fetches(isUser) },
+});
+
 const component = computed(
   () => (props.record as Component | undefined) ?? fetchedComponent.value,
 );
@@ -117,6 +149,16 @@ const blueprint = computed(
 const mission = computed(
   () => (props.record as GameMission | undefined) ?? fetchedMission.value,
 );
+const contract = computed(
+  () =>
+    (props.record as FleetContractDetail | undefined) ?? fetchedContract.value,
+);
+const event = computed(
+  () => (props.record as FleetEvent | undefined) ?? fetchedEvent.value,
+);
+const user = computed(
+  () => (props.record as UserPublic | undefined) ?? fetchedUser.value,
+);
 
 const pending = (type: Ref<boolean>, isPending: Ref<boolean>) =>
   computed(() => !props.record && type.value && isPending.value);
@@ -127,6 +169,9 @@ const commodityLoading = pending(isCommodity, commodityPending);
 const shipLoading = pending(isShip, shipPending);
 const blueprintLoading = pending(isBlueprint, blueprintPending);
 const missionLoading = pending(isMission, missionPending);
+const contractLoading = pending(isContract, contractPending);
+const eventLoading = pending(isEvent, eventPending);
+const userLoading = pending(isUser, userPending);
 
 // A record the catalogue does not list still has figures worth reading -- a
 // door or a seat on a ship -- so a card needs a record or a page, not both.
@@ -137,7 +182,10 @@ const hasCard = computed(
       isCommodity.value ||
       isShip.value ||
       isBlueprint.value ||
-      isMission.value) &&
+      isMission.value ||
+      isContract.value ||
+      isEvent.value ||
+      isUser.value) &&
     (!!props.record || !!route.value),
 );
 
@@ -205,6 +253,30 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         :name="label"
         :mission="mission"
         :loading="missionLoading"
+        @navigate="close"
+      />
+      <ContractStatsCard
+        v-else-if="isContract"
+        :to="route ?? false"
+        :name="label"
+        :contract="contract"
+        :loading="contractLoading"
+        @navigate="close"
+      />
+      <EventStatsCard
+        v-else-if="isEvent"
+        :to="route ?? false"
+        :name="label"
+        :event="event"
+        :loading="eventLoading"
+        @navigate="close"
+      />
+      <UserStatsCard
+        v-else-if="isUser"
+        :to="route ?? false"
+        :name="label"
+        :user="user"
+        :loading="userLoading"
         @navigate="close"
       />
       <CommodityStatsCard
