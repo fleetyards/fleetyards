@@ -20,6 +20,7 @@ import {
 } from "@tanstack/vue-query";
 import { type BaseList, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useLoadingAnnouncement } from "@/shared/composables/useLoadingAnnouncement";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { InputVariantsEnum } from "@/shared/components/base/FormInput/types";
 
@@ -244,6 +245,10 @@ const { isLoading, isFetching, data, refetch } = useQuery({
   placeholderData: keepPreviousData,
   enabled: !!props.queryFn,
 });
+
+// A select can mount already querying, so the text has to arrive after the
+// region does for a screen reader to announce it.
+const queryAnnouncement = useLoadingAnnouncement(querying, undefined);
 /* eslint-enable @tanstack/query/exhaustive-deps */
 
 watch(
@@ -1057,10 +1062,9 @@ defineExpose({
       <span class="base-select-title-prompt">
         {{ prompt }}
       </span>
-      <!-- Mounted for the select's whole life and only its text changes: a
-           live region announces a change, not its own arrival. -->
+      <!-- Mounted for the select's whole life and only its text changes. -->
       <span v-if="props.queryFn" class="sr-only" role="status">
-        {{ querying ? t("labels.loading") : "" }}
+        {{ queryAnnouncement }}
       </span>
       <i class="fa fa-chevron-down" />
     </button>

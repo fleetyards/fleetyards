@@ -223,7 +223,10 @@ describe("BaseSelect", () => {
 
       const trigger = wrapper.find("[data-test='base-select-title']");
       expect(trigger.classes()).toContain("is-loading");
-      expect(trigger.find("[role='status']").text()).not.toBe("");
+      // A moment after mounting, so a select that mounts querying is announced.
+      await vi.waitFor(() =>
+        expect(trigger.find("[role='status']").text()).not.toBe(""),
+      );
     });
 
     it("never shows a loading state without a query", async () => {

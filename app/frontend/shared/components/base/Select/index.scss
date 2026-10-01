@@ -135,9 +135,11 @@
      */
     &.is-loading::after {
       background-color: rgb(122 130 136 / 0.35);
+      // The accent at rest, the error's colour on an invalid field, so a
+      // select that is wrong and still loading says both.
       background-image: linear-gradient(
         to right,
-        var(--color-primary, #428bca) 80%,
+        var(--field-loading-cap, var(--color-primary, #428bca)) 80%,
         transparent 100%
       );
       background-repeat: no-repeat;
@@ -323,6 +325,7 @@
  */
 .base-select--with-error .base-select-title {
   --field-cap: var(--color-danger, #dc3545);
+  --field-loading-cap: var(--color-danger, #dc3545);
 }
 
 .base-select__error {
