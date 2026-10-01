@@ -1,0 +1,18 @@
+{
+  "sc_key": "PyroStar",
+  "sc_refs": [
+    "a14bec87-5801-4440-8ca8-35597487ac9a"
+  ],
+  "name": "Pyro",
+  "description": "A K-type main sequence flare star.",
+  "kind": "star",
+  "game_type": "Star",
+  "parent_key": "PyroSolarSystem",
+  "map_parent_key": null,
+  "system_key": "PyroSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": []
+}

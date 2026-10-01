@@ -134,7 +134,7 @@ module ScData
     # before the check could read a single file.
     def self.builds
       [EquipmentBuild, ComponentBuild, CommodityBuild, ModelBuild, ModelModuleBuild, BlueprintBuild,
-        GameMissionBuild]
+        GameMissionBuild, LocationBuild]
     end
 
     attr_reader :version, :environment

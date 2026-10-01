@@ -1,0 +1,20 @@
+{
+  "sc_key": "Nyx_Levski",
+  "sc_refs": [
+    "468d4102-a210-47b5-8bc3-084f791a173c"
+  ],
+  "name": "Levski",
+  "description": "This mining facility was abandoned for years before UEE refugees took up residence. Dedicated to the creation of an egalitarian society, Levski has evolved into a self-sustaining port of political activists and those wishing to escape the eye of the Empire.",
+  "kind": "city",
+  "game_type": "Manmade",
+  "parent_key": "Delamar",
+  "map_parent_key": "NyxStar",
+  "system_key": "NyxSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": true,
+  "quantum_travel_destination": true,
+  "mission_template_refs": [
+    "e67960e9-c04f-429f-b94f-ea8fdb8ad1b7"
+  ]
+}

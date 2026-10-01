@@ -1,0 +1,18 @@
+{
+  "sc_key": "PyroSolarSystem",
+  "sc_refs": [
+    "286cb603-b4ae-4279-80a1-d4505fee1916"
+  ],
+  "name": "Pyro System",
+  "description": "With an unpredictable star creating a less than hospitable environment, the Pyro system was left unclaimed by the Empire, leaving unscrupulous mining consortiums, like Pyrotechnic Amalgamated, looking to harvest as much ore as they could. With the system now depleted, it is currently inhabited by down-on-their-luck settlers and fierce outlaws vying endlessly for control of the system's remaining resources.",
+  "kind": "system",
+  "game_type": "SolarSystem",
+  "parent_key": null,
+  "map_parent_key": null,
+  "system_key": null,
+  "shown_on_starmap": false,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": []
+}

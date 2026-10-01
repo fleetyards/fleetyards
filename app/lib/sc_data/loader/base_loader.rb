@@ -15,7 +15,8 @@ module ScData
       # Order matters -- items resolve their manufacturer, models resolve the
       # components a loadout names, modules hang off models, and a blueprint
       # resolves against all three of the catalogues a recipe can make or
-      # consume, so it runs last.
+      # consume. Missions link to the places they take place at, so locations
+      # load before them.
       def self.all
         [
           ::ScData::Loader::ManufacturersLoader,
@@ -25,6 +26,7 @@ module ScData
           ::ScData::Loader::CommoditiesLoader,
           ::ScData::Loader::EquipmentLoader,
           ::ScData::Loader::BlueprintsLoader,
+          ::ScData::Loader::LocationsLoader,
           ::ScData::Loader::GameMissionsLoader
         ].to_h do |loader_class|
           loader = loader_class.new

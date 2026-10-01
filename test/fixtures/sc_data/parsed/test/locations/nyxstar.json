@@ -1,0 +1,18 @@
+{
+  "sc_key": "NyxStar",
+  "sc_refs": [
+    "77ed5653-bd14-4952-b904-afd79faeef60"
+  ],
+  "name": "Nyx",
+  "description": null,
+  "kind": "star",
+  "game_type": "Star",
+  "parent_key": "NyxSolarSystem",
+  "map_parent_key": null,
+  "system_key": "NyxSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": []
+}

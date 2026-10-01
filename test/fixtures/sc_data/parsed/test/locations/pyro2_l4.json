@@ -1,0 +1,35 @@
+{
+  "sc_key": "Pyro2_L4",
+  "sc_refs": [
+    "586018a7-0b89-47d3-afc7-a21aba34e7ae"
+  ],
+  "name": "PYR2 L4",
+  "description": "A Lagrangian gravity well located in the orbit of Pyro II.",
+  "kind": "asteroid",
+  "game_type": "Asteroid",
+  "parent_key": "Pyro2",
+  "map_parent_key": "PyroStar",
+  "system_key": "PyroSolarSystem",
+  "shown_on_starmap": false,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": [
+    "0fab18e0-37c1-41cc-a380-63a6c46d29c1",
+    "13b1987f-eb72-4556-868e-66325d35e354",
+    "148cd3ef-d3b4-45d1-813d-085c4c899a36",
+    "2e4a894f-7c4b-4e42-abc2-d4ea618f6e3b",
+    "30ab49ef-f36a-4ba3-8efe-d2e597ff5f5f",
+    "4b66071f-da7c-425d-8750-6acdc0e710de",
+    "588b2195-850d-4bf4-956b-a97bae397dc1",
+    "5f85295c-b5c0-48e6-96a7-f0a9fec6fb69",
+    "605e119c-029d-433f-a0ca-11731681bcb5",
+    "72ed250c-9d7d-4ef0-aa89-f26e89e443e3",
+    "7adfb475-64d6-420d-8c99-656f74fb6a43",
+    "88c68e36-15a7-451f-bc85-669821f092db",
+    "ab9f0756-ff91-4acf-9ba4-c332cbdf8f58",
+    "d7869fc1-70e0-4f9e-adfb-d328df176c00",
+    "de865f9a-8e37-490c-a8c8-0a34ef343a8b",
+    "f8fc227a-f9c1-48b8-ad12-d096e7f52973"
+  ]
+}

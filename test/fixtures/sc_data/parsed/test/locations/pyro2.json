@@ -1,0 +1,18 @@
+{
+  "sc_key": "Pyro2",
+  "sc_refs": [
+    "ee842006-2374-4fe9-939d-8f02ac8cd4f3"
+  ],
+  "name": "Monox",
+  "description": "The coreless Monox, nicknamed for the toxic carbon monoxide in its part-oxygen atmosphere, bears the scars of old mining operations.\\n\\nPotential Ship Mineables:\\nHephaestanite\\nIron\\nTin\\nStileron\\n\\nPotential Ground Vehicle Mineables:\\nGlacosite\\n\\nPotential Hand Mineables:\\nAphorite\\nDolivine\\nHadanite\\nJanalite (Caves only)\\n\\nPotential Harvestables:\\nPingala Seeds\\nRanta Dung (Caves)\\nAmioshi Plague (Caves)\\nBluemoon Fungus (Caves)\\n\\nPotential Creatures:\\nQuasigrazer",
+  "kind": "planet",
+  "game_type": "Planet",
+  "parent_key": "PyroStar",
+  "map_parent_key": null,
+  "system_key": "PyroSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": true,
+  "mission_template_refs": []
+}

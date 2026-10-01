@@ -1,0 +1,18 @@
+{
+  "sc_key": "MiningFacility_Stanton1b_Reyes",
+  "sc_refs": [
+    "5d70de1f-9aa2-422a-a1d8-371c29480148"
+  ],
+  "name": "Outpost 54",
+  "description": null,
+  "kind": "outpost",
+  "game_type": "Outpost",
+  "parent_key": "Stanton1b",
+  "map_parent_key": null,
+  "system_key": "StantonSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": true,
+  "always_shown": false,
+  "quantum_travel_destination": true,
+  "mission_template_refs": []
+}

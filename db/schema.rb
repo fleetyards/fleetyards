@@ -1546,6 +1546,56 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_120000) do
     t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
   end
 
+  create_table "location_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "location_id", null: false
+    t.string "environment", null: false
+    t.string "version", null: false
+    t.string "name"
+    t.text "description"
+    t.string "kind"
+    t.string "game_type"
+    t.boolean "shown_on_starmap", default: false, null: false
+    t.boolean "shown_with_parent_only", default: false, null: false
+    t.boolean "always_shown", default: false, null: false
+    t.boolean "quantum_travel_destination", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["environment", "name"], name: "index_location_builds_on_environment_and_name"
+    t.index ["environment", "version"], name: "index_location_builds_on_environment_and_version"
+    t.index ["location_id", "environment", "version"], name: "index_location_builds_on_location_and_build", unique: true
+    t.index ["location_id"], name: "index_location_builds_on_location_id"
+  end
+
+  create_table "locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "sc_key", null: false
+    t.text "sc_refs", default: [], null: false, array: true
+    t.string "slug", null: false
+    t.string "name"
+    t.text "description"
+    t.string "kind"
+    t.string "game_type"
+    t.uuid "parent_id"
+    t.uuid "map_parent_id"
+    t.uuid "system_id"
+    t.boolean "shown_on_starmap", default: false, null: false
+    t.boolean "shown_with_parent_only", default: false, null: false
+    t.boolean "always_shown", default: false, null: false
+    t.boolean "quantum_travel_destination", default: false, null: false
+    t.text "mission_template_refs", default: [], null: false, array: true
+    t.string "version"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_parent_id"], name: "index_locations_on_map_parent_id"
+    t.index ["mission_template_refs"], name: "index_locations_on_mission_template_refs", using: :gin
+    t.index ["name"], name: "index_locations_on_name"
+    t.index ["parent_id"], name: "index_locations_on_parent_id"
+    t.index ["sc_key"], name: "index_locations_on_sc_key", unique: true
+    t.index ["sc_refs"], name: "index_locations_on_sc_refs", using: :gin
+    t.index ["slug"], name: "index_locations_on_slug", unique: true
+    t.index ["system_id"], name: "index_locations_on_system_id"
+    t.index ["version"], name: "index_locations_on_version"
+  end
+
   create_table "maintenance_tasks_runs", force: :cascade do |t|
     t.text "arguments"
     t.text "backtrace"
@@ -2665,6 +2715,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_120000) do
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
   add_foreign_key "item_prices", "terminals", on_delete: :nullify
+  add_foreign_key "location_builds", "locations", on_delete: :cascade
+  add_foreign_key "locations", "locations", column: "map_parent_id", on_delete: :nullify
+  add_foreign_key "locations", "locations", column: "parent_id", on_delete: :nullify
+  add_foreign_key "locations", "locations", column: "system_id", on_delete: :nullify
   add_foreign_key "markdown_images", "users", on_delete: :nullify
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
