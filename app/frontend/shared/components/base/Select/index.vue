@@ -1054,7 +1054,9 @@ defineExpose({
       <span class="base-select-title-prompt">
         {{ prompt }}
       </span>
-      <LoadingLine v-if="props.queryFn" :loading="loading" edge="bottom" />
+      <!-- The top edge: the bottom one carries the trigger's focus and error
+           bar. -->
+      <LoadingLine v-if="props.queryFn" :loading="loading" />
       <i class="fa fa-chevron-down" />
     </button>
     <Collapsed

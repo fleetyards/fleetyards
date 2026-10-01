@@ -225,7 +225,7 @@ describe("BaseSelect", () => {
         "[data-test='base-select-title'] [data-test='loading-line']",
       );
       expect(line.classes()).toContain("loading-line--active");
-      expect(line.classes()).toContain("loading-line--bottom");
+      expect(line.classes()).toContain("loading-line--top");
     });
 
     it("has no loading line without a query", async () => {
