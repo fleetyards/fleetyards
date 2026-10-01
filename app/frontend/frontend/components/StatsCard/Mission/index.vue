@@ -11,6 +11,7 @@ import {
   type StatsCardBadge,
   type StatsCardStatus,
 } from "@/frontend/components/StatsCard/types";
+import { missionTextPlain } from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type GameMission } from "@/services/fyApi";
 
@@ -85,7 +86,7 @@ const ownRoute = computed(() =>
 <template>
   <StatsCard
     compact
-    :title="mission?.name || name || ''"
+    :title="missionTextPlain(mission?.name || name || '')"
     kind="GameMission"
     :category="category"
     :subtitle="subtitle"
