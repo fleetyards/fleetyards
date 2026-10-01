@@ -7,6 +7,10 @@
   padding: 20px 15px;
   gap: 20px;
 
+  &__back {
+    flex: 0 0 auto;
+  }
+
   &__left {
     max-width: 400px;
     transition: max-width $transition-base-speed ease-in-out;
