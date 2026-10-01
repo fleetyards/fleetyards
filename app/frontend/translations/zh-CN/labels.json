@@ -3,6 +3,7 @@
     "labels": {
       "sortOptions": "排序选项",
       "loading": "加载中…",
+      "loadingNamed": "正在加载 %{name}…",
       "true": "是",
       "false": "否",
       "null": "-",

@@ -117,7 +117,11 @@ const hasWarnings = computed(
           <p>{{ t(`labels.syncExtension.processSteps.${step.name}`) }}</p>
           <LoadingLine
             :loading="step.status === 'processing'"
-            :label="t(`labels.syncExtension.processSteps.${step.name}`)"
+            :label="
+              t('labels.loadingNamed', {
+                name: t(`labels.syncExtension.processSteps.${step.name}`),
+              })
+            "
             edge="bottom"
           />
           <i

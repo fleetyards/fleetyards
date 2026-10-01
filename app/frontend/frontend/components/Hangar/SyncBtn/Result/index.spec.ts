@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import HangarSyncResult from "./index.vue";
 import type { SyncProcessStep } from "./types";
@@ -25,6 +25,8 @@ describe("HangarSyncResult", () => {
     expect(lines).toHaveLength(2);
     expect(lines[0].classes()).not.toContain("loading-line--active");
     expect(lines[1].classes()).toContain("loading-line--active");
-    expect(lines[1].find("[role='status']").text()).not.toBe("");
+    await vi.waitFor(() =>
+      expect(lines[1].find("[role='status']").text()).toContain("…"),
+    );
   });
 });
