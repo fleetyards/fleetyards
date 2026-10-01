@@ -1,5 +1,5 @@
-import { mount } from "@vue/test-utils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
 
 /*
@@ -9,8 +9,10 @@ import Component from "./index.vue";
  * title tone and the slim treatment - still reach the right places.
  */
 describe("MetricsCard", () => {
-  it("renders as a panel rather than its own surface", () => {
-    const wrapper = mount(Component, { props: { title: "Combat" } });
+  it("renders as a panel rather than its own surface", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { title: "Combat" },
+    });
 
     expect(wrapper.find(".panel").exists()).toBe(true);
     expect(wrapper.find(".panel").classes()).toContain("metrics-card");
@@ -18,8 +20,10 @@ describe("MetricsCard", () => {
     expect(wrapper.find(".panel-wrapper").exists()).toBe(false);
   });
 
-  it("titles itself with the metric tone", () => {
-    const wrapper = mount(Component, { props: { title: "Combat" } });
+  it("titles itself with the metric tone", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { title: "Combat" },
+    });
     const heading = wrapper.find(".panel-heading");
 
     expect(heading.classes()).toContain("panel-heading--metric");
@@ -30,8 +34,8 @@ describe("MetricsCard", () => {
     );
   });
 
-  it("carries no end-caps and a divided head when slim", () => {
-    const wrapper = mount(Component, {
+  it("carries no end-caps and a divided head when slim", async () => {
+    const wrapper = await mountWithDefaults(Component, {
       props: { title: "Weapons", variant: "slim" },
     });
 
@@ -44,16 +48,47 @@ describe("MetricsCard", () => {
     );
   });
 
-  it("keeps slotted content in the consumer's scope", () => {
+  it("keeps slotted content in the consumer's scope", async () => {
     // metricsCard.scss styles these classes from the consuming component, so
     // the card must not wrap or rewrite what it is handed.
-    const wrapper = mount(Component, {
+    const wrapper = await mountWithDefaults(Component, {
       props: { title: "Hull" },
-      slots: { default: '<div class="metrics-card__hero">tiles</div>' },
+      slots: {
+        default: () => [h("div", { class: "metrics-card__hero" }, "tiles")],
+      },
     });
 
     expect(wrapper.find(".panel-body > .metrics-card__hero").exists()).toBe(
       true,
     );
+  });
+
+  it("runs a loading line under its heading and announces it while loading", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { title: "Combat", loading: true },
+    });
+
+    expect(wrapper.find(".panel").attributes("aria-busy")).toBeUndefined();
+    const line = wrapper.find(".metrics-card__head .loading-line");
+    expect(line.classes()).toContain("loading-line--active");
+    expect(line.classes()).toContain("loading-line--bottom");
+    await vi.waitFor(() =>
+      expect(wrapper.find("[role='status']").text()).toContain("Combat"),
+    );
+    // The status text must not leak into the title the e2e specs read.
+    expect(wrapper.find("[data-test='panel-heading-title']").text()).toBe(
+      "Combat",
+    );
+  });
+
+  it("is idle, and announces nothing, once loaded", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { title: "Combat" },
+    });
+
+    expect(wrapper.find(".loading-line").classes()).not.toContain(
+      "loading-line--active",
+    );
+    expect(wrapper.find("[role='status']").text()).toBe("");
   });
 });

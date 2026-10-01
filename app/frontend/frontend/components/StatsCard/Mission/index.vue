@@ -7,9 +7,12 @@ export default {
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
-import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
-import { useI18n } from "@/shared/composables/useI18n";
+import {
+  type StatsCardBadge,
+  type StatsCardStatus,
+} from "@/frontend/components/StatsCard/types";
 import { missionTextPlain } from "@/frontend/components/MissionText/index";
+import { useI18n } from "@/shared/composables/useI18n";
 import { type GameMission } from "@/services/fyApi";
 
 type Props = {
@@ -30,43 +33,47 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t } = useI18n();
 
-const stats = computed<HardpointStat[]>(() => {
-  const mission = props.mission;
-  if (!mission) return [];
+const category = computed(() =>
+  props.mission?.kind
+    ? t(`labels.gameMission.kinds.${props.mission.kind}`)
+    : undefined,
+);
 
-  return [
-    mission.kind
-      ? {
-          label: t("labels.gameMission.kind"),
-          value: t(`labels.gameMission.kinds.${mission.kind}`),
-        }
-      : undefined,
-    mission.locationKind
-      ? {
-          label: t("labels.gameMission.location"),
-          value: t(`labels.gameMission.locationKinds.${mission.locationKind}`),
-        }
-      : undefined,
-    mission.org?.name
-      ? {
-          label: t("labels.gameMission.offeredBy"),
-          value: mission.org.name,
-          wide: true,
-        }
-      : undefined,
-  ].filter((stat): stat is HardpointStat => !!stat);
+const subtitle = computed(() =>
+  props.mission?.org?.name
+    ? t("labels.statsCard.offeredBy", { name: props.mission.org.name })
+    : undefined,
+);
+
+// Retired outranks unreleased: a mission the game dropped is no longer
+// waiting on a release.
+const status = computed<StatsCardStatus | undefined>(() => {
+  const mission = props.mission;
+  if (!mission) return undefined;
+
+  if (mission.retired) {
+    return { label: t("labels.gameMission.retired"), tone: "neutral" };
+  }
+
+  if (!mission.released) {
+    return { label: t("labels.gameMission.unreleased"), tone: "warning" };
+  }
+
+  return undefined;
 });
 
-const subtitle = computed(
-  () =>
-    [
-      props.mission?.retired ? t("labels.gameMission.retired") : undefined,
-      props.mission && !props.mission.released
-        ? t("labels.gameMission.unreleased")
-        : undefined,
-    ]
-      .filter(Boolean)
-      .join(" · ") || undefined,
+const badges = computed<StatsCardBadge[]>(() =>
+  props.mission?.locationKind
+    ? [
+        {
+          key: "location",
+          label: t("labels.gameMission.location"),
+          value: t(
+            `labels.gameMission.locationKinds.${props.mission.locationKind}`,
+          ),
+        },
+      ]
+    : [],
 );
 
 const ownRoute = computed(() =>
@@ -80,9 +87,11 @@ const ownRoute = computed(() =>
   <StatsCard
     compact
     :title="missionTextPlain(mission?.name || name || '')"
-    variant="slim"
+    kind="GameMission"
+    :category="category"
     :subtitle="subtitle"
-    :stats="stats"
+    :status="status"
+    :badges="badges"
     :to="to === false ? undefined : (to ?? ownRoute)"
     :loading="loading"
     :unavailable="!loading && !mission"

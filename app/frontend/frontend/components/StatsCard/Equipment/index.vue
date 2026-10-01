@@ -40,11 +40,7 @@ const { t } = useI18n();
 const stats = useEquipmentStats(() => props.equipment);
 
 const subtitle = computed(() =>
-  [
-    props.equipment?.manufacturer?.name,
-    props.equipment?.equipmentTypeLabel,
-    props.equipment?.itemTypeLabel,
-  ]
+  [props.equipment?.manufacturer?.name, props.equipment?.itemTypeLabel]
     .filter(Boolean)
     .join(" · "),
 );
@@ -53,17 +49,18 @@ const badges = computed<StatsCardBadge[]>(() => {
   const equipment = props.equipment;
   if (!equipment) return [];
 
+  // The slot's name runs longest, and the strip gives its last cell the room.
   return [
-    {
-      key: "slot",
-      label: t("labels.equipment.slot"),
-      value: equipment.slotLabel,
-    },
     { key: "size", label: t("labels.equipment.size"), value: equipment.size },
     {
       key: "grade",
       label: t("labels.equipment.grade"),
       value: equipment.grade,
+    },
+    {
+      key: "slot",
+      label: t("labels.equipment.slot"),
+      value: equipment.slotLabel,
     },
   ].filter((badge): badge is StatsCardBadge => Boolean(badge.value));
 });
@@ -81,7 +78,10 @@ const ownRoute = computed(() =>
     :title="
       compact ? equipment?.name || name || '' : t('headlines.equipment.metrics')
     "
+    kind="Equipment"
+    :category="equipment?.equipmentTypeLabel || undefined"
     :subtitle="subtitle || undefined"
+    :description="equipment?.description || undefined"
     :badges="badges"
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"
@@ -90,6 +90,8 @@ const ownRoute = computed(() =>
     :unavailable="compact && !loading && !equipment"
     @navigate="emit('navigate')"
   >
-    <slot />
+    <template v-if="$slots.default" #default>
+      <slot />
+    </template>
   </StatsCard>
 </template>

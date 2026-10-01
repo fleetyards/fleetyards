@@ -8,7 +8,10 @@ export default {
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
-import { useCommodityStats } from "@/frontend/composables/useCommodityStats";
+import {
+  useCommodityStats,
+  useCommodityTypeLabel,
+} from "@/frontend/composables/useCommodityStats";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Commodity } from "@/services/fyApi";
 
@@ -37,7 +40,11 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t, toNumber } = useI18n();
 
-const stats = useCommodityStats(() => props.commodity);
+const typeLabel = useCommodityTypeLabel(() => props.commodity);
+
+const stats = useCommodityStats(() => props.commodity, {
+  withType: () => !props.compact,
+});
 
 // What it trades at, the way the catalogue row states it. Shop-perspective, as
 // `item_prices` stores it: what a terminal sells it for is what the reader
@@ -61,7 +68,13 @@ const badges = computed<StatsCardBadge[]>(() => {
   ].flatMap((badge) =>
     badge.value == null
       ? []
-      : [{ ...badge, value: String(toNumber(badge.value, "integer")) }],
+      : [
+          {
+            ...badge,
+            value: String(toNumber(badge.value, "integer")),
+            unit: t("number.units.uec"),
+          },
+        ],
   );
 });
 
@@ -81,7 +94,11 @@ const ownRoute = computed(() =>
         : t('headlines.commodity.identity')
     "
     variant="slim"
+    kind="Commodity"
+    :category="typeLabel"
+    :description="commodity?.description || undefined"
     :badges="badges"
+    prominent-badges
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"
     :loading="loading"
@@ -91,6 +108,8 @@ const ownRoute = computed(() =>
     <template v-if="$slots.rows" #rows>
       <slot name="rows" />
     </template>
-    <slot />
+    <template v-if="$slots.default" #default>
+      <slot />
+    </template>
   </StatsCard>
 </template>

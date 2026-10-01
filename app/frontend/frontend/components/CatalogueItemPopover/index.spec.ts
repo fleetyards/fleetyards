@@ -181,14 +181,15 @@ describe("CatalogueItemPopover", () => {
     );
   });
 
-  it("spins while the lookup is in flight, and says so when it fails", async () => {
+  it("shows its skeleton while the lookup is in flight, and says so when it fails", async () => {
     const wrapper = await mount({
       item: { type: "Component", slug: "gone", name: "Gone" },
     });
 
     await tapOpen(wrapper);
 
-    expect(document.querySelector(".stats-card__loading")).not.toBeNull();
+    const skeleton = "[data-test='stats-card-skeleton']";
+    expect(document.querySelector(skeleton)).not.toBeNull();
     expect(
       document.querySelector("[data-test='stats-card-unavailable']"),
     ).toBeNull();
@@ -196,7 +197,7 @@ describe("CatalogueItemPopover", () => {
     settle("component");
     await nextTick();
 
-    expect(document.querySelector(".stats-card__loading")).toBeNull();
+    expect(document.querySelector(skeleton)).toBeNull();
     expect(
       document.querySelector("[data-test='stats-card-unavailable']"),
     ).not.toBeNull();

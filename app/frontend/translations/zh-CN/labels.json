@@ -218,7 +218,25 @@
       },
       "statsCard": {
         "more": "详情页另有 %{count} 项",
-        "unavailable": "无法加载这些详情。"
+        "unavailable": "无法加载这些详情。",
+        "loading": "正在加载 %{name}…",
+        "offeredBy": "由 %{name} 提供",
+        "types": {
+          "Component": "组件",
+          "Equipment": "装备",
+          "Commodity": "商品",
+          "Model": "舰船",
+          "Blueprint": "蓝图",
+          "GameMission": "任务"
+        },
+        "open": {
+          "Component": "打开组件",
+          "Equipment": "打开装备",
+          "Commodity": "打开商品",
+          "Model": "打开舰船",
+          "Blueprint": "打开蓝图",
+          "GameMission": "打开任务"
+        }
       },
       "stats": {
         "quickStats": {
@@ -3393,6 +3411,7 @@
         "heldIn": "存于",
         "heldOn": "存于",
         "fromHangar": "机库",
+        "makes": "产出",
         "makesA": "制造蓝图 · 产出",
         "makesUnknown": "制造蓝图 · 产出物不在任何目录中",
         "retired": "已移除",

@@ -218,7 +218,25 @@
       },
       "statsCard": {
         "more": "+%{count} de plus sur la page de détails",
-        "unavailable": "Impossible de charger ces détails."
+        "unavailable": "Impossible de charger ces détails.",
+        "loading": "Chargement de %{name}…",
+        "offeredBy": "Proposée par %{name}",
+        "types": {
+          "Component": "Composant",
+          "Equipment": "Équipement",
+          "Commodity": "Marchandise",
+          "Model": "Vaisseau",
+          "Blueprint": "Plan",
+          "GameMission": "Mission"
+        },
+        "open": {
+          "Component": "Ouvrir le composant",
+          "Equipment": "Ouvrir l’équipement",
+          "Commodity": "Ouvrir la marchandise",
+          "Model": "Ouvrir le vaisseau",
+          "Blueprint": "Ouvrir le plan",
+          "GameMission": "Ouvrir la mission"
+        }
       },
       "stats": {
         "quickStats": {
@@ -3393,6 +3411,7 @@
         "heldIn": "dans",
         "heldOn": "sur",
         "fromHangar": "Hangar",
+        "makes": "Produit",
         "makesA": "Plan de fabrication · produit",
         "makesUnknown": "Plan de fabrication · produit un objet absent de tous les catalogues",
         "retired": "Retiré",

@@ -1,72 +1,354 @@
-// The hero tiles and rows are the metrics card's own primitives, rendered here
-// rather than by each detail page, so a card on hover and the page it links to
-// cannot drift apart.
+// The detail page renders the metrics card's own hero tiles and rows, so a
+// stats card there and the ship pages' metric cards read as one family. The
+// compact card floating over a list has its own, denser layout below.
 @import "@/shared/components/metricsCard";
+@import "@/shared/components/skeleton";
+@import "label";
 
 .stats-card__note {
   margin: 0;
   color: var(--color-text-dim, #959595);
 }
 
+// The popover is the surface: its background, border and radius frame the
+// card, so the card only lays out what goes inside.
 .stats-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 300px;
+  width: 320px;
   max-width: 100%;
-  padding: 14px 16px;
+
+  &__media {
+    position: relative;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    background: $gray-black;
+    border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  }
 
   &__head {
     display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px 12px;
+  }
+
+  &__icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-control, 8px);
+    background: color-mix(
+      in srgb,
+      var(--color-primary, #428bca) 15%,
+      transparent
+    );
+    border: 1px solid
+      color-mix(in srgb, var(--color-primary, #428bca) 40%, transparent);
+    color: var(--color-primary, #428bca);
+    font-size: 16px;
+  }
+
+  &__heading {
+    display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__eyebrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__eyebrow,
+  &__label {
+    @include stats-card-label;
+  }
+
+  &__eyebrow {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__status {
+    flex: none;
+    padding: 1px 8px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+    background: color-mix(in srgb, currentColor 14%, transparent);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+
+    &--success {
+      color: var(--color-success, #5cb85c);
+    }
+
+    &--warning {
+      color: var(--color-warning, #fa6800);
+    }
+
+    &--danger {
+      color: var(--color-danger, #dc3545);
+    }
+
+    &--neutral {
+      color: var(--color-text-dim, #959595);
+    }
+
+    // Over a photo the tinted fill alone would vanish into the hull, so it
+    // sits on an opaque chip of the popover's surface.
+    &--over-image {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background:
+        linear-gradient(
+          color-mix(in srgb, currentColor 18%, transparent),
+          color-mix(in srgb, currentColor 18%, transparent)
+        ),
+        var(--color-gray-darker, #272b30);
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.45);
+    }
   }
 
   &__title {
-    color: var(--color-lifted, #eee);
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     line-height: 1.3;
+    color: var(--color-lifted, #eee);
   }
 
   &__subtitle {
-    color: var(--color-text-dim, #959595);
-    font-size: 0.85rem;
-  }
-
-  &__badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 12px;
-    margin-top: 4px;
-    color: var(--color-text, #c8c8c8);
-    font-size: 0.85rem;
-  }
-
-  &__badge-label {
+    font-size: 0.8rem;
+    line-height: 1.35;
     color: var(--color-text-dim, #959595);
   }
 
-  &__loading {
+  &__specs {
+    display: grid;
+    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    background: rgb(0 0 0 / 0.16);
+  }
+
+  // Only above a body: the link row draws its own line, and at the card's end
+  // the popover's border does.
+  &__specs + &__body {
+    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  }
+
+  &__spec {
     display: flex;
-    justify-content: center;
-    padding: 12px 0;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    padding: 8px 12px;
+    border-left: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+
+    &:first-child {
+      padding-left: 16px;
+      border-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 16px;
+    }
   }
 
-  // The hero keeps a bottom margin for the detail page's taller layout; the
-  // card's gap already spaces it here.
-  .metrics-card__hero {
-    margin-bottom: 0;
+  &__spec-value,
+  &__row-value {
+    overflow: hidden;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: lighten($text-color, 15%);
+    font-variant-numeric: tabular-nums;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .stats-card__note {
-    font-size: 0.85rem;
-  }
-
-  &__link {
-    display: inline-flex;
-    align-items: center;
+  &__specs--prominent &__spec {
     gap: 6px;
-    align-self: flex-start;
-    font-size: 0.9rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  &__specs--prominent &__spec-value {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-lifted, #eee);
+  }
+
+  &__unit {
+    margin-left: 2px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px 16px 16px;
+  }
+
+  &__description {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-text, #c8c8c8);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  &__hero {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__hero-value {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-lifted, #eee);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  // Two columns, the label above its value: side by side, a long label such
+  // as a power draw's would leave its value no room in half a card's width.
+  &__rows {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 20px;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+
+    &--wide {
+      grid-column: 1 / -1;
+
+      .stats-card__row-value {
+        white-space: normal;
+      }
+    }
+  }
+
+  &__body .stats-card__note {
+    font-size: 0.8rem;
+  }
+
+  &__unavailable {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 16px 16px;
+    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-text, #c8c8c8);
+
+    i {
+      margin-top: 3px;
+      color: var(--color-muted, #7a8288);
+    }
+  }
+
+  &__image-well {
+    height: 150px;
+    border-radius: 0;
+  }
+
+  // Each bar sized by its own class: a shared size on `.skeleton-bar` here
+  // would outrank them and flatten the hero to a line's height.
+  &__skeleton {
+    .stats-card__spec {
+      gap: 6px;
+    }
+
+    .stats-card__body {
+      gap: 10px;
+    }
+  }
+
+  &__skeleton-label {
+    width: 40px;
+    font-size: 8px;
+  }
+
+  &__skeleton-value {
+    font-size: 11px;
+  }
+
+  &__skeleton-hero {
+    width: 96px;
+    font-size: 22px;
+  }
+
+  &__skeleton-line {
+    font-size: 10px;
+  }
+
+  // A dropdown menu's last row rather than a button: the card is a menu-like
+  // surface, and its one way onwards spans it.
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    background: rgb(0 0 0 / 0.2);
+    color: var(--color-primary, #428bca);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background 150ms ease,
+      color 150ms ease;
+
+    &:hover,
+    &:focus-visible {
+      background: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 16%,
+        transparent
+      );
+      color: var(--color-lifted, #eee);
+      text-decoration: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary, #428bca);
+      outline-offset: -2px;
+    }
   }
 }

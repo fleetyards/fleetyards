@@ -7,22 +7,42 @@ import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
  * the same shape `useComponentStats` and `useEquipmentStats` hand a stats card.
  * A figure the commodity does not carry is left out rather than printed empty.
  */
-export const useCommodityStats = (
+export const useCommodityTypeLabel = (
   commodity: MaybeRefOrGetter<Commodity | undefined>,
 ) => {
-  const { t, tExists, toNumber } = useI18n();
+  const { t, tExists } = useI18n();
+
+  return computed(() => {
+    const type = toValue(commodity)?.commodityType;
+    if (!type) return undefined;
+
+    const path = `labels.commodity.types.${type}`;
+
+    return tExists(path) ? t(path) : type;
+  });
+};
+
+type Options = {
+  // Off where the type is already named, such as a hover card's eyebrow.
+  withType?: MaybeRefOrGetter<boolean>;
+};
+
+export const useCommodityStats = (
+  commodity: MaybeRefOrGetter<Commodity | undefined>,
+  options: Options = {},
+) => {
+  const { t, toNumber } = useI18n();
+
+  const typeLabel = useCommodityTypeLabel(commodity);
 
   return computed<HardpointStat[]>(() => {
     const value = toValue(commodity);
     if (!value) return [];
 
-    const type = value.commodityType;
-    const typePath = `labels.commodity.types.${type}`;
-
     return [
       {
         label: t("labels.commodity.commodityType"),
-        value: type ? (tExists(typePath) ? t(typePath) : type) : undefined,
+        value: toValue(options.withType ?? true) ? typeLabel.value : undefined,
       },
       {
         // Every size the game packages it in, from the hand-carried forms below

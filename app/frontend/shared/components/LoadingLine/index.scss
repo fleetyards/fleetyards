@@ -1,0 +1,69 @@
+// Laid over the parent's edge rather than taking a line of its own, so a load
+// starting or ending moves nothing around it.
+.loading-line {
+  position: absolute;
+  // Above whatever else its parent lays over itself, such as an upload's
+  // progress overlay: the line is the one thing that must stay visible.
+  z-index: 1;
+  display: block;
+  left: 0;
+  right: 0;
+  height: 2px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+
+  &--top {
+    top: 0;
+  }
+
+  &--bottom {
+    bottom: 0;
+  }
+
+  &--active {
+    opacity: 1;
+    background: rgba($gray-light, 0.18);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 40%;
+      background: var(--color-primary, #428bca);
+      animation: loading-line-slide 1.2s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes loading-line-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+// Still says something is happening, without anything travelling.
+@media (prefers-reduced-motion: reduce) {
+  .loading-line--active::before {
+    width: 100%;
+    animation: loading-line-breathe 2s ease-in-out infinite;
+  }
+}
+
+@keyframes loading-line-breathe {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}

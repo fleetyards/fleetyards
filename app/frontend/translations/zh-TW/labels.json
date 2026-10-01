@@ -218,7 +218,25 @@
       },
       "statsCard": {
         "more": "詳情頁另有 %{count} 項",
-        "unavailable": "無法載入這些詳情。"
+        "unavailable": "無法載入這些詳情。",
+        "loading": "正在載入 %{name}…",
+        "offeredBy": "由 %{name} 提供",
+        "types": {
+          "Component": "組件",
+          "Equipment": "裝備",
+          "Commodity": "商品",
+          "Model": "艦船",
+          "Blueprint": "藍圖",
+          "GameMission": "任務"
+        },
+        "open": {
+          "Component": "開啟組件",
+          "Equipment": "開啟裝備",
+          "Commodity": "開啟商品",
+          "Model": "開啟艦船",
+          "Blueprint": "開啟藍圖",
+          "GameMission": "開啟任務"
+        }
       },
       "stats": {
         "quickStats": {
@@ -3393,6 +3411,7 @@
         "heldIn": "存於",
         "heldOn": "存於",
         "fromHangar": "機庫",
+        "makes": "產出",
         "makesA": "製造藍圖 · 產出",
         "makesUnknown": "製造藍圖 · 產出物不在任何目錄中",
         "retired": "已移除",
