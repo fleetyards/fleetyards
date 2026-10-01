@@ -14,7 +14,9 @@ module Catalogue
       },
       "event" => {
         model: ::FleetEvent, policy: ::FleetEventPolicy,
-        feature: "fleet_mission_builder", capability: :events
+        feature: "fleet_mission_builder", capability: :events,
+        # Splitting a series copies its title to the half that continues it.
+        lineage: :split_from_id
       }
     }.freeze
 
@@ -92,11 +94,8 @@ module Catalogue
           .group_by { |record| record.title.downcase }
 
         in_fleet.filter_map do |target|
-          candidates = records.fetch(target[:title].downcase, [])
-          next unless candidates.one?
-
-          record = candidates.first
-          next unless visible?(type, record)
+          record = named_by_title(type, records.fetch(target[:title].downcase, []))
+          next unless record && visible?(type, record)
 
           TokenResolver::Match.new(token: target[:token], name: record.title, type: type[:model].name,
             slug: record.slug, fleet_slug: fleet.slug)
@@ -147,20 +146,24 @@ module Catalogue
 
       escaped = ActiveRecord::Base.sanitize_sql_like(title.downcase)
 
-      # Only titles one record of its fleet carries, which are the ones a token
-      # can name; the id of a group of one is its record's. The policy then
-      # drops what the reader may not open, so the database is asked for more
-      # than is offered.
-      ids = type[:model].where(fleet_id: fleets.keys)
+      # Only titles a token can name: one record of its fleet carries them, or,
+      # for a type with a lineage, records of which only one starts a chain --
+      # which `named_by_title` then checks. The policy drops what the reader may
+      # not open, so the database is asked for more than is offered.
+      having = "count(*) = 1"
+      having += " OR count(*) FILTER (WHERE #{type[:lineage]} IS NULL) = 1" if type[:lineage]
+
+      groups = type[:model].where(fleet_id: fleets.keys)
         .where("lower(title) LIKE ?", "%#{escaped}%")
         .where.not("title LIKE '%*%' OR title LIKE '%]%' OR title LIKE ?", "%\n%")
         .group(:fleet_id, Arel.sql("lower(title)"))
-        .having("count(*) = 1")
+        .having(having)
         .order(starts_with("lower(title)", escaped), Arel.sql("min(length(title))"), Arel.sql("lower(title)"))
         .limit(TokenResolver::SEARCH_LIMIT * CANDIDATES_PER_RESULT)
-        .pluck(Arel.sql("min(id::text)"))
+        .pluck(Arel.sql("array_agg(id::text)"))
 
-      records = type[:model].where(id: ids).index_by { |record| record.id.to_s }.values_at(*ids).compact
+      loaded = type[:model].where(id: groups.flatten).index_by { |record| record.id.to_s }
+      records = groups.filter_map { |ids| named_by_title(type, loaded.values_at(*ids).compact) }
 
       records.select { |record| visible?(type, record) }.first(TokenResolver::SEARCH_LIMIT).map do |record|
         fleet = fleets.fetch(record.fleet_id)
@@ -168,6 +171,22 @@ module Catalogue
         ranked(record.title, title, TokenResolver::Match.new(token: "#{prefix}:#{fleet.fid}/#{record.title}",
           name: record.title, type: type[:model].name, slug: record.slug, fleet_slug: fleet.slug))
       end
+    end
+
+    # The one record a fleet's title names: the only one carrying it, or, where
+    # a lineage ties several together as one series split into parts, its
+    # latest part. Records of the title the reader cannot see count all the
+    # same, so a hidden namesake cannot send a token elsewhere.
+    private def named_by_title(type, records)
+      return records.first if records.one?
+      return unless type[:lineage] && records.any?
+
+      ids = records.to_set(&:id)
+      starts = records.reject { |record| ids.include?(record.public_send(type[:lineage])) }
+      return unless starts.one?
+
+      latest = records.max_by(&:starts_at)
+      latest if records.one? { |record| record.starts_at == latest.starts_at }
     end
 
     private def ranked(name, query, match)
