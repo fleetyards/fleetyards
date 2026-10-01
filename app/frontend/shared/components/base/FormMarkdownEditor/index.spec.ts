@@ -438,6 +438,33 @@ describe("FormMarkdownEditor", () => {
     );
   });
 
+  it("loads a text naming a known item without reporting an edit", async () => {
+    const lookupCatalogue = vi.fn(async () => [
+      {
+        token: "Quantainium",
+        name: "Quantainium",
+        type: "Commodity",
+        slug: "quantainium",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "[*Quantainium*]",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await waitForSuggestions();
+    await nextFrames();
+
+    await subject.setProps({ modelValue: "Mine [*Quantainium*] & rocks" });
+    await nextFrames();
+
+    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
+      "fa-boxes-stacked",
+    );
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
   it("needs no lookup for an item picked from the search", async () => {
     const lookupCatalogue = vi.fn(async () => []);
     const subject = await mountEditor({

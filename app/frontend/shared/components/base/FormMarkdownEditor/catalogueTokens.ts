@@ -331,8 +331,11 @@ const markKnown = (editor: Editor, known: Map<string, string | null>) => {
     }
   });
 
+  // What a token is changes how it looks, not the text: no undo step, and no
+  // update -- one arriving while a new value loads would publish it as an edit.
   if (tr.docChanged) {
     tr.setMeta("addToHistory", false);
+    tr.setMeta("preventUpdate", true);
     editor.view.dispatch(tr);
   }
 };
