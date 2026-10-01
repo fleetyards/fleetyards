@@ -36,8 +36,13 @@ export type KillProfile = {
   // Multiplier on the damage the armor plate takes itself.
   armorSelf: Record<DamageType, number>;
   hull: number;
+  generators: ShieldGenerator[];
+};
+
+export type ShieldGenerator = {
   regen: number;
-  regenDelay: number;
+  // Seconds without a hit before the generator starts regenerating.
+  delay: number;
 };
 
 export type KillSource = {
@@ -72,28 +77,29 @@ export function killProfile(
     armorSelf[type] = model.armor?.[SELF_RESISTANCE[type]] ?? 1;
   }
 
-  // Each generator's delay counts by how much of the regen it supplies.
-  const weightedDelay = model.shields.reduce(
-    (sum, generator) =>
-      sum + (generator.damagedRegenDelay || 0) * (generator.maxRegen || 0),
-    0,
-  );
-  const regen = shield.totalRegen;
+  const generators =
+    shield.totalHp > 0
+      ? model.shields
+          .filter((generator) => (generator.maxRegen || 0) > 0)
+          .map((generator) => ({
+            regen: generator.maxRegen,
+            delay: generator.damagedRegenDelay || 0,
+          }))
+      : [];
 
   return {
     shield,
     armor,
     armorSelf,
     hull: model.hullHealth || 0,
-    regen: shield.totalHp > 0 ? regen : 0,
-    regenDelay: regen > 0 ? weightedDelay / regen : 0,
+    generators,
   };
 }
 
-// The share of the time the target's shields regenerate under this loadout's
-// fire. They only do once nothing has hit them for the damaged-regen delay, so
-// a single gun that never has to stop keeps them down for good. Guns are
-// assumed to cycle independently of each other.
+// The share of the time a generator regenerates under this loadout's fire. It
+// only does once nothing has hit it for its delay, so a single gun that never
+// has to stop keeps it down for good. Every gun, identical ones included, is
+// assumed to cycle independently of the others.
 export function regenUptime(
   weapons: LoadoutWeapon[],
   regenDelay: number,
@@ -103,10 +109,22 @@ export function regenUptime(
   );
   if (!firing.length) return 1;
 
-  return firing.reduce((uptime, { duty }) => {
+  return firing.reduce((uptime, { duty, count }) => {
     if (duty.offTime <= regenDelay) return 0;
-    return uptime * ((duty.offTime - regenDelay) / duty.cycle);
+    return uptime * ((duty.offTime - regenDelay) / duty.cycle) ** count;
   }, 1);
+}
+
+// Shield HP per second regenerated on average under this loadout's fire.
+export function regenUnderFire(
+  profile: KillProfile,
+  weapons: LoadoutWeapon[],
+): number {
+  return profile.generators.reduce(
+    (sum, generator) =>
+      sum + generator.regen * regenUptime(weapons, generator.delay),
+    0,
+  );
 }
 
 // Seconds for `sources` to bring the target from `start` to shields down, and
@@ -120,7 +138,7 @@ export function simulateKill(
   profile: KillProfile,
   sources: KillSource[],
   start: KillStart,
-  uptime = 0,
+  regen = 0,
 ): TimeToKill {
   const { shield, armor, armorSelf } = profile;
   const shieldMax = shield.totalHp;
@@ -175,7 +193,7 @@ export function simulateKill(
 
     // Shields that are down stay down: under fire they never sit out the
     // downed-regen delay.
-    if (shieldHp > 0) shieldRate -= profile.regen * uptime;
+    if (shieldHp > 0) shieldRate -= regen;
 
     const dt = Math.min(
       timeToNextSlice(shieldHp, shieldRate, shieldMax / SHIELD_SLICES),
@@ -249,7 +267,7 @@ export function timeToKill(
     profile,
     loadoutSources(weapons),
     start,
-    regenUptime(weapons, profile.regenDelay),
+    regenUnderFire(profile, weapons),
   );
 }
 

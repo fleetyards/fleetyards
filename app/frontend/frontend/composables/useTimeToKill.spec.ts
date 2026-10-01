@@ -6,6 +6,7 @@ import type { LoadoutWeapon } from "./usePenetrationCheck";
 import {
   effectiveHp,
   killProfile,
+  regenUnderFire,
   regenUptime,
   timeToKill,
   type KillProfile,
@@ -179,6 +180,26 @@ describe("timeToKill", () => {
   });
 });
 
+describe("regenUnderFire", () => {
+  it("lets each generator wait out its own delay", () => {
+    // A gun that pauses five seconds in ten: the 1 s generator regenerates
+    // 40% of the time, the 9 s one never does.
+    const profile = profileOf({
+      ...TARGET,
+      shields: [
+        { maxHealth: 500, maxRegen: 100, damagedRegenDelay: 1 },
+        { maxHealth: 500, maxRegen: 100, damagedRegenDelay: 9 },
+      ],
+    });
+
+    expect(
+      regenUnderFire(profile, [
+        gun("energy", 50, 100, { ratio: 0.5, offTime: 5, cycle: 10 }),
+      ]),
+    ).toBeCloseTo(40);
+  });
+});
+
 describe("regenUptime", () => {
   it("is zero while any gun fires without stopping", () => {
     expect(
@@ -202,6 +223,15 @@ describe("regenUptime", () => {
         1,
       ),
     ).toBeCloseTo(0.2);
+  });
+
+  it("counts every one of a group of identical guns", () => {
+    expect(
+      regenUptime(
+        [gun("energy", 50, 100, { ratio: 0.5, offTime: 5, cycle: 10 }, 2)],
+        0,
+      ),
+    ).toBeCloseTo(0.25);
   });
 
   it("is zero when every pause is shorter than the regen delay", () => {
