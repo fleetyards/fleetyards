@@ -34,6 +34,7 @@ const ship = (
   name: id,
   slug: id,
   size,
+  hullHealth: 1000,
   armor: { health: 1000, deflectionPhysical },
   shields: [],
 });
@@ -48,7 +49,7 @@ const gun = (id: string, physical: number): Hardpoint =>
       name: id,
       slug: id,
       size: "3",
-      typeData: { damagePerShot: { physical } },
+      typeData: { damagePerShot: { physical }, fireRate: 600 },
     },
     hardpoints: [],
   }) as unknown as Hardpoint;
@@ -95,6 +96,46 @@ describe("ModelPenetrationCheckModal", () => {
     await cannon.trigger("click");
 
     expect(wrapper.find(".tally__pierce").text()).toBe("0");
+  });
+
+  it("times the kill on every ship the loadout gets through to", async () => {
+    // 1000 DPS clears 1000 armor and 1000 hull; the heavy armor turns every
+    // shot away, so the cannon never gets there.
+    const wrapper = await mountModal([gun("cannon", 100)]);
+
+    const times = () =>
+      wrapper
+        .findAll('[data-test="penetration-row"]')
+        .map((row) => [
+          row.find(".dtable__title").text(),
+          row.find('[data-test="penetration-ttk"]').text(),
+        ]);
+
+    expect(times()).toEqual([
+      ["heavy", "∞"],
+      ["light", "2.0 s"],
+    ]);
+
+    const byTtk = wrapper
+      .findAll('[data-test="penetration-sort"]')
+      .find((button) => button.text() === "Time to kill")!;
+    await byTtk.trigger("click");
+
+    expect(times().map(([name]) => name)).toEqual(["light", "heavy"]);
+  });
+
+  it("shows a hovered ship's effective HP per damage type", async () => {
+    const wrapper = await mountModal([gun("cannon", 100)]);
+
+    const light = wrapper
+      .findAll('[data-test="penetration-row"]')
+      .find((row) => row.text().includes("light"))!;
+    await light.trigger("mouseenter");
+
+    const ehp = wrapper.findAll('[data-test="penetration-ehp"]');
+    expect(ehp[0].text().replace(/\D/g, "")).toBe("2000");
+    // No shields, so there is nothing for distortion to drain.
+    expect(ehp[2].text()).toContain("—");
   });
 
   it("says so when the defenses cannot be loaded", async () => {

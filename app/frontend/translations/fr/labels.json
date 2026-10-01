@@ -1092,7 +1092,16 @@
         "armorHealth": "Santé du blindage de la cible",
         "ship": "Vaisseau",
         "hoverHint": "Survolez un vaisseau pour le détail par arme.",
-        "note": "Chaque canon sélectionné est testé contre les boucliers et la déflexion du blindage de chaque vaisseau selon les mêmes règles que le test de déflexion ; un vaisseau est percé dès que l'un d'eux passe, et classé selon le canon qui s'en approche le plus. Les vaisseaux sans blindage sont exclus, faute de seuil à franchir."
+        "note": "Chaque canon sélectionné est testé contre les boucliers et la déflexion du blindage de chaque vaisseau selon les mêmes règles que le test de déflexion ; un vaisseau est percé dès que l'un d'eux passe, et classé selon le canon qui s'en approche le plus. Les vaisseaux sans blindage sont exclus, faute de seuil à franchir.",
+        "sortBy": "Trier par",
+        "sort": {
+          "margin": "Marge",
+          "ttk": "Temps de destruction"
+        },
+        "ttk": "TTK",
+        "effectiveHp": "PV effectifs",
+        "shieldsDown": "Boucliers tombés",
+        "ttkNote": "Le temps de destruction utilise les dégâts soutenus par seconde des canons sélectionnés, avec la répartition d'énergie actuelle, à partir de la santé du bouclier et du blindage réglée ci-dessus. Les boucliers encaissent les dégâts qu'ils absorbent, moins leur résistance, et transmettent le reste au blindage, qui l'encaisse jusqu'à rompre puis le transmet à la coque ; la distorsion n'épuise que les boucliers. Les boucliers ne se régénèrent que tant que chaque canon est en pause plus longtemps que leur délai de régénération, et une fois tombés ils le restent. Les PV effectifs sont les dégâts bruts d'un type nécessaires pour détruire le vaisseau, sans déflexion."
       },
       "deflectionCheck": {
         "title": "Test de déflexion",
