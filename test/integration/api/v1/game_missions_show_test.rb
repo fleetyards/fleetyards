@@ -39,6 +39,17 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     create(:game_mission_reward, :currency, build: @mission.build, position: 1)
   end
 
+  test "GET /missions/{slug} names the places it can take place at" do
+    levski = create(:location, name: "Levski", kind: "city")
+    retired = create(:location, name: "Port Olisar", version: nil, with_build: false)
+    create(:game_mission_location, game_mission: @mission, location: levski, source: "text")
+    create(:game_mission_location, game_mission: @mission, location: retired, source: "template")
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      assert_equal [["Levski", "text"]], parsed_body["locations"].map { |link| [link.dig("location", "name"), link["source"]] }
+    end
+  end
+
   test "GET /missions/{slug} returns the mission" do
     assert_api_response :get, 200, params: {slug: @mission.slug} do
       assert_equal "Yellow Level Contract: Ambush An Amateur", parsed_body["name"]

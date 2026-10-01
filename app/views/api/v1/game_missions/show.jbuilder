@@ -18,6 +18,13 @@ json.blueprints @blueprints do |blueprint|
   json.slug blueprint.slug
 end
 
+json.locations @locations do |link|
+  json.location do
+    json.partial! "api/v1/locations/link", location: link.location
+  end
+  json.source link.source
+end
+
 # Where in the export it came from. Not for reading -- `debug_name` is a
 # developer's note -- but it is what makes a row findable in the game files.
 json.generator_key @mission.generator_key

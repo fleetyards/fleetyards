@@ -15429,6 +15429,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionBlueprint"
+        locations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionLocation"
         generatorKey:
           type:
           - string
@@ -15519,6 +15523,18 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLocation:
+      type: object
+      properties:
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        source:
+          "$ref": "#/components/schemas/GameMissionLocationSourceEnum"
+      additionalProperties: false
+      required:
+      - location
+      - source
+      title: GameMissionLocation
     GameMissionLocationKindEnum:
       type: string
       enum:
@@ -15532,6 +15548,15 @@ components:
       - MIXED
       - UNKNOWN
       title: GameMissionLocationKindEnum
+    GameMissionLocationSourceEnum:
+      type: string
+      enum:
+      - template
+      - text
+      x-enumNames:
+      - TEMPLATE
+      - TEXT
+      title: GameMissionLocationSourceEnum
     GameMissionOrg:
       type: object
       properties:
