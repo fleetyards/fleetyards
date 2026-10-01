@@ -16,7 +16,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import LinkPanel from "./LinkPanel.vue";
 import ImageSizePanel from "./ImageSizePanel.vue";
 import type { MarkdownImageCreate } from "./ImageDialog.vue";
-import type { CatalogueSearch } from "./catalogueTokens";
+import type { CatalogueLookup, CatalogueSearch } from "./catalogueTokens";
 import {
   markdownExtensions,
   protectHtml,
@@ -46,6 +46,9 @@ type Props = {
   // Finds the catalogue items a `[*` token can name; the catalogue search by
   // default.
   searchCatalogue?: CatalogueSearch;
+  // Resolves the tokens in the text, for their icons; the catalogue lookup by
+  // default.
+  lookupCatalogue?: CatalogueLookup;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,6 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   createImage: undefined,
   searchCatalogue: undefined,
+  lookupCatalogue: undefined,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -130,7 +134,10 @@ const setMarkdown = (markdown: string) => {
 };
 
 const editor = useEditor({
-  extensions: markdownExtensions({ searchCatalogue: props.searchCatalogue }),
+  extensions: markdownExtensions({
+    searchCatalogue: props.searchCatalogue,
+    lookupCatalogue: props.lookupCatalogue,
+  }),
   content: protectHtml(props.modelValue ?? ""),
   contentType: "markdown",
   editable: !props.disabled,

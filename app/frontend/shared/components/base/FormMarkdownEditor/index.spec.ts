@@ -382,6 +382,84 @@ describe("FormMarkdownEditor", () => {
     ).toContain("Type an item's name");
   });
 
+  it("shows each token's resolved icon, and one nothing resolves as such", async () => {
+    const lookupCatalogue = vi.fn(async () => [
+      {
+        token: "Attrition-3 Repeater",
+        name: "Attrition-3 Repeater",
+        type: "Component",
+        slug: "attrition-3-repeater",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue:
+        "[*Attrition-3 Repeater*], [*Nothing Here*] and [*Attrition-3 Repeater*]",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(lookupCatalogue).toHaveBeenCalledOnce();
+    expect(lookupCatalogue).toHaveBeenCalledWith([
+      "Attrition-3 Repeater",
+      "Nothing Here",
+    ]);
+
+    const chips = subject.findAll(".ProseMirror .catalogue-token");
+    expect(chips[0].find("i").classes()).toContain("fa-microchip");
+    expect(chips[1].classes()).toContain("catalogue-token--unresolved");
+    expect(chips[1].text()).toBe("Nothing Here");
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
+  it("resolves the tokens of a text set from outside", async () => {
+    const lookupCatalogue = vi.fn(async () => [
+      {
+        token: "Quantainium",
+        name: "Quantainium",
+        type: "Commodity",
+        slug: "quantainium",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await subject.setProps({ modelValue: "Mine [*Quantainium*]" });
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
+      "fa-boxes-stacked",
+    );
+  });
+
+  it("needs no lookup for an item picked from the search", async () => {
+    const lookupCatalogue = vi.fn(async () => []);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    editorOf(subject)
+      .chain()
+      .focus()
+      .insertCatalogueToken("ship:Carrack", "Model")
+      .run();
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(lookupCatalogue).not.toHaveBeenCalled();
+    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
+      "fa-starship",
+    );
+  });
+
   it("closes the link panel when the image dialog opens", async () => {
     const subject = await mountEditor({ name: "description", modelValue: "" });
 

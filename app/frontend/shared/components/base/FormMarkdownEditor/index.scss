@@ -108,6 +108,13 @@
     }
   }
 
+  // Resolves to nothing, so the page will show it as plain text.
+  :deep(.catalogue-token--unresolved) {
+    color: var(--color-text-dim, #959595);
+    font-weight: normal;
+    border-style: dashed;
+  }
+
   // An image is selected as a whole, and its size row speaks to that one.
   :deep(.ProseMirror-selectednode) {
     outline: 2px solid var(--color-primary, #428bca);

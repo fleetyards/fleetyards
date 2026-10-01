@@ -14,7 +14,9 @@ import {
 import { closesFence, splitCodeSpans } from "@/shared/utils/Markdown";
 import {
   CatalogueToken,
+  CatalogueTokenResolution,
   CatalogueTokenSuggestion,
+  type CatalogueLookup,
   type CatalogueSearch,
 } from "./catalogueTokens";
 
@@ -180,7 +182,11 @@ export const protectHtml = (markdown: string) => {
 // the one left out -- markdown has no way to write it.
 export const markdownExtensions = ({
   searchCatalogue,
-}: { searchCatalogue?: CatalogueSearch } = {}): Extensions => [
+  lookupCatalogue,
+}: {
+  searchCatalogue?: CatalogueSearch;
+  lookupCatalogue?: CatalogueLookup;
+} = {}): Extensions => [
   StarterKit.configure({
     heading: { levels: [...HEADING_LEVELS] },
     underline: false,
@@ -197,6 +203,9 @@ export const markdownExtensions = ({
   CatalogueToken,
   CatalogueTokenSuggestion.configure(
     searchCatalogue ? { search: searchCatalogue } : {},
+  ),
+  CatalogueTokenResolution.configure(
+    lookupCatalogue ? { lookup: lookupCatalogue } : {},
   ),
   Markdown,
 ];

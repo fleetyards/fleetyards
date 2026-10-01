@@ -1,9 +1,13 @@
-import { Extension, Node, mergeAttributes } from "@tiptap/core";
+import { Extension, Node, mergeAttributes, type Editor } from "@tiptap/core";
 import { VueRenderer } from "@tiptap/vue-3";
 import { PluginKey } from "@tiptap/pm/state";
 import Suggestion, { type SuggestionOptions } from "@tiptap/suggestion";
 import { computePosition, flip, offset, shift } from "@floating-ui/dom";
-import { catalogueSearch, type CatalogueTokenMatch } from "@/services/fyApi";
+import {
+  catalogueLookup,
+  catalogueSearch,
+  type CatalogueTokenMatch,
+} from "@/services/fyApi";
 import {
   catalogueTokenIcon,
   catalogueTokenName,
@@ -15,7 +19,7 @@ import SuggestionList from "./CatalogueSuggestionList.vue";
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     catalogueToken: {
-      insertCatalogueToken: (token: string) => ReturnType;
+      insertCatalogueToken: (token: string, type?: string) => ReturnType;
     };
   }
 }
@@ -33,6 +37,8 @@ export const CatalogueToken = Node.create({
   atom: true,
   selectable: true,
 
+  // `type` and `state` are what the lookup answered -- they drive the icon and
+  // are never written to the markdown, which keeps only the token's text.
   addAttributes() {
     return {
       token: {
@@ -42,6 +48,17 @@ export const CatalogueToken = Node.create({
           "data-catalogue-token": attributes.token,
         }),
       },
+      type: {
+        default: null,
+        parseHTML: (element) => element.getAttribute("data-type"),
+        renderHTML: (attributes) =>
+          attributes.type ? { "data-type": attributes.type } : {},
+      },
+      state: {
+        default: "pending",
+        parseHTML: (element) => element.getAttribute("data-state") ?? "pending",
+        renderHTML: (attributes) => ({ "data-state": attributes.state }),
+      },
     };
   },
 
@@ -49,24 +66,32 @@ export const CatalogueToken = Node.create({
     return [{ tag: "span[data-catalogue-token]" }];
   },
 
-  // Marked as it will read on the page: the type's icon, then the name in
-  // brackets.
+  // Marked as it will read on the page: the resolved type's icon, then the
+  // name in brackets. A token nothing resolves is plain text there, so here it
+  // says so rather than looking like a link.
   renderHTML({ node, HTMLAttributes }) {
     const token = node.attrs.token as string;
+    const unresolved = node.attrs.state === "unresolved";
+    const name = catalogueTokenName(token);
 
     return [
       "span",
       mergeAttributes(HTMLAttributes, {
-        class: "catalogue-token catalogue-token--chip",
+        class: `catalogue-token catalogue-token--chip${unresolved ? " catalogue-token--unresolved" : ""}`,
       }),
       [
         "i",
         {
-          class: catalogueTokenIcon(catalogueTokenPrefix(token)),
+          class: unresolved
+            ? "fa-duotone fa-circle-question"
+            : catalogueTokenIcon(
+                (node.attrs.type as string | null) ??
+                  catalogueTokenPrefix(token),
+              ),
           "aria-hidden": "true",
         },
       ],
-      `[${catalogueTokenName(token)}]`,
+      unresolved ? name : `[${name}]`,
     ];
   },
 
@@ -98,10 +123,17 @@ export const CatalogueToken = Node.create({
   addCommands() {
     return {
       insertCatalogueToken:
-        (token) =>
+        (token, type) =>
         ({ commands }) =>
           commands.insertContent([
-            { type: this.name, attrs: { token } },
+            {
+              type: this.name,
+              attrs: {
+                token,
+                type: type ?? null,
+                state: type ? "resolved" : "pending",
+              },
+            },
             { type: "text", text: " " },
           ]),
     };
@@ -157,7 +189,7 @@ export const CatalogueTokenSuggestion = Extension.create<{
             .chain()
             .focus()
             .deleteRange(range)
-            .insertCatalogueToken(props.token)
+            .insertCatalogueToken(props.token, props.type)
             .run();
         },
         render: () => {
@@ -230,3 +262,124 @@ export const CatalogueTokenSuggestion = Extension.create<{
     ];
   },
 });
+
+export type CatalogueLookup = (
+  names: string[],
+) => Promise<CatalogueTokenMatch[]>;
+
+const defaultLookup: CatalogueLookup = async (names) =>
+  (await catalogueLookup({ names })).items;
+
+const LOOKUP_DELAY = 250;
+
+// Resolves the document's tokens the way the page will, so each chip shows its
+// real type's icon -- a token without a prefix could be any of three -- or
+// that it will not link at all. The answers only mark the nodes: the markdown
+// does not change, and the marking is kept out of the undo history.
+export const CatalogueTokenResolution = Extension.create<
+  { lookup: CatalogueLookup },
+  { known: Map<string, string | null>; timer?: ReturnType<typeof setTimeout> }
+>({
+  name: "catalogueTokenResolution",
+
+  addOptions() {
+    return { lookup: defaultLookup };
+  },
+
+  addStorage() {
+    return { known: new Map(), timer: undefined };
+  },
+
+  onCreate() {
+    resolveTokens(this.editor, this.options.lookup, this.storage);
+  },
+
+  // Every change to the document, not only an edit: text loaded from outside
+  // -- a new value, the source view switched back -- arrives without one.
+  onTransaction({ transaction }) {
+    if (!transaction.docChanged) return;
+
+    resolveTokens(this.editor, this.options.lookup, this.storage);
+  },
+
+  onDestroy() {
+    clearTimeout(this.storage.timer);
+  },
+});
+
+type ResolutionStorage = {
+  known: Map<string, string | null>;
+  timer?: ReturnType<typeof setTimeout>;
+};
+
+const markKnown = (editor: Editor, known: Map<string, string | null>) => {
+  if (editor.isDestroyed) return;
+
+  const { tr } = editor.state;
+
+  editor.state.doc.descendants((node, pos) => {
+    if (node.type.name !== "catalogueToken") return;
+
+    const token = node.attrs.token as string;
+    if (!known.has(token)) return;
+
+    const type = known.get(token) ?? null;
+    const state = type ? "resolved" : "unresolved";
+
+    if (node.attrs.type !== type || node.attrs.state !== state) {
+      tr.setNodeMarkup(pos, undefined, { ...node.attrs, type, state });
+    }
+  });
+
+  if (tr.docChanged) {
+    tr.setMeta("addToHistory", false);
+    editor.view.dispatch(tr);
+  }
+};
+
+const resolveTokens = (
+  editor: Editor,
+  lookup: CatalogueLookup,
+  storage: ResolutionStorage,
+) => {
+  const unknown = new Set<string>();
+
+  editor.state.doc.descendants((node) => {
+    if (node.type.name !== "catalogueToken") return;
+
+    const token = node.attrs.token as string;
+
+    // A token picked from the search already knows what it is.
+    if (
+      node.attrs.state === "resolved" &&
+      node.attrs.type &&
+      !storage.known.has(token)
+    ) {
+      storage.known.set(token, node.attrs.type as string);
+    }
+
+    if (!storage.known.has(token)) unknown.add(token);
+  });
+
+  markKnown(editor, storage.known);
+
+  if (!unknown.size) return;
+
+  clearTimeout(storage.timer);
+  storage.timer = setTimeout(() => {
+    const names = [...unknown].sort();
+
+    lookup(names).then(
+      (matches) => {
+        const types = new Map(
+          matches.map((match) => [match.token, match.type]),
+        );
+        names.forEach((name) =>
+          storage.known.set(name, types.get(name) ?? null),
+        );
+        markKnown(editor, storage.known);
+      },
+      () => undefined,
+    );
+  }, LOOKUP_DELAY);
+};
