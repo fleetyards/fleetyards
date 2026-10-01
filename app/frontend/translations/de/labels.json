@@ -985,6 +985,8 @@
         "alphaSub": "pro Salve",
         "weapons": "Waffen",
         "missileDamage": "Raketenschaden",
+        "armedMissiles": "Scharfe Raketen",
+        "armedMissilesSub": "%{cooldown} s zwischen Starts",
         "composition": "Schadensverteilung",
         "damagePhysical": "Physisch",
         "damageEnergy": "Energie",
@@ -1036,12 +1038,14 @@
         "shieldRegen": "Regeneration",
         "shieldResistances": "Resistenz",
         "shieldAbsorption": "Absorption",
+        "shieldFaces": "Schildseiten",
         "armor": "Panzerung",
         "deflection": "Ablenkung",
         "armorReduction": "Schadensreduzierung",
         "armorSelfResistance": "Eigenresistenz",
         "armorSignature": "Signatur",
         "countermeasures": "Gegenmaßnahmen",
+        "countermeasureDuration": "Dauer",
         "countermeasure": {
           "decoy": "Täuschkörper",
           "noise": "Störsignal"
@@ -1390,19 +1394,42 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "Modus",
+          "vtolOnly": "Nur VTOL",
+          "vectorPitch": "Schubvektor Nicken",
+          "vectorYaw": "Schubvektor Gieren"
         },
         "refuelBoom": {
           "captureRadius": "Fangradius",
           "fuelFlowRate": "Treibstoff-Durchflussrate",
           "quantumFuelFlowRate": "Quantum-Durchflussrate"
         },
+        "controllers": {
+          "faceType": "Schildtyp",
+          "faces": {
+            "bubble": "Blase",
+            "quadrant": "Quadranten"
+          },
+          "reconfigurationCooldown": "Umverteilung",
+          "armedMissiles": "Scharfe Raketen",
+          "launchCooldown": "Startabklingzeit",
+          "lockAngle": "Aufschaltwinkel"
+        },
+        "countermeasureStats": {
+          "duration": "Dauer",
+          "spawnDelay": "Entfaltung nach",
+          "infrared": "IR-Signatur",
+          "electromagnetic": "EM-Signatur",
+          "crossSection": "Querschnitt"
+        },
         "turrets": {
           "turnRate": "Drehrate",
           "control": "Steuerung",
           "yawRange": "Gierbereich",
           "pitchRange": "Nickbereich",
-          "limitsVary": "abhängig von der Drehung"
+          "limitsVary": "abhängig von der Drehung",
+          "gunPorts": "Waffenplätze"
         },
         "weapons": {
           "dps": "DPS",
@@ -1426,6 +1453,12 @@
           "costPerShot": "Energie/Schuss",
           "heatPerShot": "Hitze/Schuss",
           "heatPerSecond": "Hitze/s",
+          "gimbalFireRate": "Feuerrate (Gimbal)",
+          "gimbalSpread": "Streuung (Gimbal)",
+          "spreadMin": "min.",
+          "spreadMax": "max.",
+          "aimAssist": "Zielhilfe",
+          "closeAimAssist": "Zielhilfe (Nahbereich)",
           "chargeTime": "Ladezeit",
           "fullDamageRange": "Volle DMG-Reichweite",
           "zeroDamageRange": "Null-DMG-Reichweite",
@@ -1485,7 +1518,13 @@
           "damagedRegenDelay": "Schadens-Verzögerung",
           "resistancePhysical": "Phys. Res.",
           "resistanceEnergy": "Energie-Res.",
-          "resistanceDistortion": "Dist.-Res."
+          "resistanceDistortion": "Dist.-Res.",
+          "decay": "Abbau",
+          "absorption": {
+            "physical": "Physische Absorption",
+            "energy": "Energie-Absorption",
+            "distortion": "Verzerrungs-Absorption"
+          }
         },
         "coolers": {
           "coolingRate": "Kühlrate"
@@ -1538,7 +1577,14 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "Passive Erfassung",
+          "active": "Aktive Erfassung",
+          "aimAssistBuffer": "Zielhilfe-Puffer",
+          "sensitivityModifier": "Empfindlichkeitsmodifikator",
+          "contactGroups": {
+            "GroundVehicle": "Bodenfahrzeuge"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1697,7 +1743,18 @@
           "chargeTime": "Ladezeit",
           "cooldownTime": "Abklingzeit"
         },
-        "powerRanges": "Leistungskurve (Niedrig / Mittel / Hoch)"
+        "emp": {
+          "distortionDamage": "Verzerrungsschaden",
+          "radius": "Radius",
+          "chargeTime": "Ladezeit",
+          "unleashTime": "Auslösezeit",
+          "cooldownTime": "Abklingzeit"
+        },
+        "lifeSupport": {
+          "output": "Leistung"
+        },
+        "powerRanges": "Leistungskurve (Niedrig / Mittel / Hoch)",
+        "powerSegments": "Seg."
       },
       "blank": {
         "propulsion": "Kein Antrieb vorhanden",

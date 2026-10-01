@@ -505,6 +505,30 @@ describe("heat (cooling ratio)", () => {
   });
 });
 
+describe("thrusters", () => {
+  // The game powers the Engine group through the flight controller; a
+  // thruster draws fuel and coolant, never power segments.
+  it("gives thrusters no power column, even one that carries a draw", () => {
+    const engine = hp(HardpointCategoryEnum.CONTROLLER, {
+      powerConsumption: 4,
+      powerMinimumFraction: 0.25,
+    });
+    const thruster = hp(HardpointCategoryEnum.MAIN_THRUSTERS, {
+      thrustCapacity: 1_000_000,
+      thrusterType: "Main",
+      fuelBurnRatePer10KNewton: 0.05,
+      powerConsumption: 2,
+    });
+
+    const sim = simulateLoadoutPower([plant(40, 2), engine, thruster], 0);
+
+    expect(sim.columns.map((column) => column.portPath)).not.toContain(
+      thruster.id,
+    );
+    expect(familyCapacity(sim, "engine")).toBe(4);
+  });
+});
+
 describe("engine power ratio (flight scaling)", () => {
   it("is 1 when the engine fills to capacity and 0 when unpowered", () => {
     // Ample power fills every engine pip → full boost; pulling the pips to 0

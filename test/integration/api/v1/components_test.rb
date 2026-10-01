@@ -253,6 +253,23 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components serves a gun's gimbal-mode penalty and aim-assist cone" do
+    create(:component, name: "Gimbalprobe", category: "weapons",
+      type_data: {
+        "fire_rate" => 600.0,
+        "gimbal_mode" => {"fire_rate_multiplier" => 0.85},
+        "aim_assist" => {"nudge_angle" => 2.25, "outer_angle" => 3.0, "close_range_min" => 75.0, "close_range_max" => 150.0, "close_outer_angle" => 16.0}
+      })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Gimbalprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 0.85, type_data["gimbalMode"]["fireRateMultiplier"]
+      assert_in_delta 2.25, type_data["aimAssist"]["nudgeAngle"]
+      assert_in_delta 16.0, type_data["aimAssist"]["closeOuterAngle"]
+    end
+  end
+
   # Numerically, which is the whole reason `sizeOrder` exists as a name of its
   # own: `size` is a string ransacker, so ordering on it puts 10 and 12 ahead
   # of 2.
@@ -412,6 +429,56 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
 
       assert_in_delta 200.0, type_data["exitSpeed"]
       assert_in_delta 1300.0, type_data["maxTunnelSpeed"]
+    end
+  end
+
+  test "GET /components serves a radar's detection modes, ground-vehicle penalty and assist buffer" do
+    create(:component, name: "Radarprobe", category: "radar", type_data: {
+      "aim_assist_range" => 632.5, "aim_assist_buffer" => 80.0, "signature_ir" => 0.0,
+      "signature_detection" => {"cs" => {"sensitivity" => 0.5, "piercing" => 0.25, "passive" => false, "active" => true}},
+      "contact_sensitivity" => [{"sensitivity_addition" => -0.65, "contact_groups" => ["GroundVehicle"]}]
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Radarprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert_in_delta 80.0, type_data["aimAssistBuffer"]
+      assert_equal false, type_data.dig("signatureDetection", "cs", "passive")
+      assert_equal ["GroundVehicle"], type_data.dig("contactSensitivity", 0, "contactGroups")
+    end
+  end
+
+  test "GET /components serves a thruster's vectoring range and VTOL-only flag" do
+    create(:component, name: "Thrusterprobe", category: "thrusters", type_data: {
+      "thrust_capacity" => 1_282_107.0, "thruster_type" => "Retro", "fuel_burn_rate_per10_k_newton" => 0.05,
+      "vtol_only" => true, "signature_em" => 0.0, "power_consumption" => 1.0, "power_minimum_fraction" => 0.5,
+      "gimbal" => {"min_pitch" => -90.0, "max_pitch" => 90.0, "min_yaw" => -30.0, "max_yaw" => 30.0}
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "Thrusterprobe"}} do
+      type_data = parsed_body["items"].sole["typeData"]
+
+      assert type_data["vtolOnly"]
+      assert_in_delta 1.0, type_data["powerConsumption"]
+      assert_in_delta(-30.0, type_data.dig("gimbal", "minYaw"))
+    end
+  end
+
+  test "GET /components serves life-support output, EMP and QED typeData" do
+    create(:component, name: "Lifeprobe", category: "lifesupport", type_data: {"life_support_generation" => 0.05, "power_consumption" => 1.0})
+    create(:component, name: "Empprobe", category: "weapons", type_data: {"emp_radius" => 4500.0, "distortion_damage" => 6000.0, "charge_time" => 20.0, "signature_ir" => 0.0})
+    create(:component, name: "Qedprobe", category: "quantumenforcementdevice", type_data: {
+      "jammer_settings" => {"jammer_range" => 20_000.0},
+      "quantum_interdiction_pulse_settings" => {"radius_meters" => 20_000.0, "activation_phase_duration_seconds" => 1.0}
+    })
+
+    assert_api_response :get, 200, params: {q: {"nameCont" => "probe"}, perPage: 50} do
+      by_name = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert_in_delta 0.05, by_name["Lifeprobe"].dig("typeData", "lifeSupportGeneration")
+      assert_in_delta 4500.0, by_name["Empprobe"].dig("typeData", "empRadius")
+      assert_in_delta 20_000.0, by_name["Qedprobe"].dig("typeData", "jammerSettings", "jammerRange")
+      assert_in_delta 1.0, by_name["Qedprobe"].dig("typeData", "quantumInterdictionPulseSettings", "activationPhaseDurationSeconds")
     end
   end
 

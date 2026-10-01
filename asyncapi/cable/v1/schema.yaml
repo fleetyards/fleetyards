@@ -532,10 +532,15 @@ components:
           - "$ref": "#/components/schemas/ComponentCooler"
           - "$ref": "#/components/schemas/ComponentRadar"
           - "$ref": "#/components/schemas/ComponentController"
+          - "$ref": "#/components/schemas/ComponentShieldController"
+          - "$ref": "#/components/schemas/ComponentMissileController"
           - "$ref": "#/components/schemas/ComponentTurret"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
           - "$ref": "#/components/schemas/ComponentMiningModule"
           - "$ref": "#/components/schemas/ComponentSalvageModifier"
+          - "$ref": "#/components/schemas/ComponentEmp"
+          - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
+          - "$ref": "#/components/schemas/ComponentLifeSupport"
         durability:
           "$ref": "#/components/schemas/ComponentDurability"
         temperature:
@@ -705,6 +710,8 @@ components:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
+        signatureIr:
+          type: number
       additionalProperties: false
     ComponentCooler:
       type: object
@@ -724,6 +731,30 @@ components:
       additionalProperties: false
       required:
       - coolingRate
+    ComponentCountermeasure:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/ComponentCountermeasureKindEnum"
+        lifetime:
+          type: number
+        spawnDelay:
+          type: number
+        infrared:
+          "$ref": "#/components/schemas/ComponentSignatureRange"
+        electromagnetic:
+          "$ref": "#/components/schemas/ComponentSignatureRange"
+        crossSection:
+          "$ref": "#/components/schemas/ComponentSignatureRange"
+      additionalProperties: false
+    ComponentCountermeasureKindEnum:
+      type: string
+      enum:
+      - decoy
+      - noise
+      x-enumNames:
+      - DECOY
+      - NOISE
     ComponentDamageMultipliers:
       type: object
       properties:
@@ -792,6 +823,38 @@ components:
         distortion:
           "$ref": "#/components/schemas/ComponentDistortion"
       additionalProperties: false
+    ComponentEmp:
+      type: object
+      properties:
+        chargeTime:
+          type: number
+        unleashTime:
+          type: number
+        cooldownTime:
+          type: number
+        distortionDamage:
+          type: number
+        empRadius:
+          type: number
+        minEmpRadius:
+          type: number
+        physRadius:
+          type: number
+        minPhysRadius:
+          type: number
+        pressure:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
     ComponentItemClassEnum:
       type: string
       enum:
@@ -836,6 +899,24 @@ components:
         signatureIr:
           type: number
       additionalProperties: false
+    ComponentLifeSupport:
+      type: object
+      properties:
+        lifeSupportGeneration:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      required:
+      - lifeSupportGeneration
     ComponentMiningLaser:
       type: object
       properties:
@@ -965,6 +1046,26 @@ components:
         blastRadiusMin:
           type: number
         blastRadiusMax:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+    ComponentMissileController:
+      type: object
+      properties:
+        maxArmedMissiles:
+          type: integer
+        launchCooldown:
+          type: number
+        lockAngle:
           type: number
         powerConsumption:
           type: number
@@ -1159,6 +1260,72 @@ components:
         postRampDown:
           type: number
       additionalProperties: false
+    ComponentQuantumEnforcement:
+      type: object
+      properties:
+        basePowerDrawFraction:
+          type: number
+        pulsePowerFraction:
+          type: number
+        jammerPowerFraction:
+          type: number
+        jammerSettings:
+          "$ref": "#/components/schemas/ComponentQuantumJammer"
+        quantumInterdictionPulseSettings:
+          "$ref": "#/components/schemas/ComponentQuantumInterdictionPulse"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+    ComponentQuantumInterdictionPulse:
+      type: object
+      properties:
+        chargeTimeSecs:
+          type: number
+        dischargeTimeSecs:
+          type: number
+        cooldownTimeSecs:
+          type: number
+        radiusMeters:
+          type: number
+        decreaseChargeRateTimeSeconds:
+          type: number
+        increaseChargeRateTimeSeconds:
+          type: number
+        activationPhaseDurationSeconds:
+          type: number
+        disperseChargeTimeSeconds:
+          type: number
+        maxPowerDraw:
+          type: number
+        stopChargingPowerDrawFraction:
+          type: number
+        maxChargeRatePowerDrawFraction:
+          type: number
+        activePowerDrawFraction:
+          type: number
+        tetheringPowerDrawFraction:
+          type: number
+        greenZoneCheckRange:
+          type: number
+      additionalProperties: false
+    ComponentQuantumJammer:
+      type: object
+      properties:
+        jammerRange:
+          type: number
+        maxPowerDraw:
+          type: number
+        greenZoneCheckRange:
+          type: number
+      additionalProperties: false
     ComponentRadar:
       type: object
       properties:
@@ -1170,8 +1337,14 @@ components:
           type: number
         aimAssistMin:
           type: number
+        aimAssistBuffer:
+          type: number
         sensitivityModifiers:
           "$ref": "#/components/schemas/ComponentSensitivityModifiers"
+        contactSensitivity:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ComponentRadarContactSensitivity"
         powerConsumption:
           type: number
         powerMinimumFraction:
@@ -1180,7 +1353,22 @@ components:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
+        signatureIr:
+          type: number
       additionalProperties: false
+    ComponentRadarContactSensitivity:
+      type: object
+      properties:
+        sensitivityAddition:
+          type: number
+        contactGroups:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - sensitivityAddition
+      - contactGroups
     ComponentSalvageModifier:
       type: object
       properties:
@@ -1224,6 +1412,18 @@ components:
           type: number
         damagedRegenDelay:
           type: number
+        reservePoolInitialHealthRatio:
+          type: number
+        reservePoolMaxHealthRatio:
+          type: number
+        reservePoolRegenRateRatio:
+          type: number
+        reservePoolDrainRateRatio:
+          type: number
+        electricalChargeDamageResistance:
+          type: number
+        stunParams:
+          "$ref": "#/components/schemas/ComponentShieldStun"
         resistance:
           "$ref": "#/components/schemas/ComponentDamageTypeMap"
         absorption:
@@ -1236,10 +1436,52 @@ components:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
+        signatureIr:
+          type: number
       additionalProperties: false
       required:
       - maxHealth
       - maxRegen
+    ComponentShieldController:
+      type: object
+      properties:
+        faceType:
+          "$ref": "#/components/schemas/ComponentShieldFaceTypeEnum"
+        maxReallocation:
+          type: number
+        reconfigurationCooldown:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+    ComponentShieldFaceTypeEnum:
+      type: string
+      enum:
+      - bubble
+      - quadrant
+      x-enumNames:
+      - BUBBLE
+      - QUADRANT
+    ComponentShieldStun:
+      type: object
+      properties:
+        minAlphaDamageRatio:
+          type: number
+        maxAlphaDamageRatio:
+          type: number
+        minStunTime:
+          type: number
+        maxStunTime:
+          type: number
+      additionalProperties: false
     ComponentSignatureDetection:
       type: object
       properties:
@@ -1252,6 +1494,14 @@ components:
         rs:
           "$ref": "#/components/schemas/ComponentSignatureSensitivity"
       additionalProperties: false
+    ComponentSignatureRange:
+      type: object
+      properties:
+        start:
+          type: number
+        end:
+          type: number
+      additionalProperties: false
     ComponentSignatureSensitivity:
       type: object
       properties:
@@ -1259,6 +1509,10 @@ components:
           type: number
         piercing:
           type: number
+        passive:
+          type: boolean
+        active:
+          type: boolean
       additionalProperties: false
     ComponentTemperature:
       type: object
@@ -1291,11 +1545,37 @@ components:
           "$ref": "#/components/schemas/ThrusterClassEnum"
         fuelBurnRatePer10KNewton:
           type: number
+        vtolOnly:
+          type: boolean
+        gimbal:
+          "$ref": "#/components/schemas/ComponentThrusterGimbal"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
       additionalProperties: false
       required:
       - thrustCapacity
       - thrusterType
       - fuelBurnRatePer10KNewton
+    ComponentThrusterGimbal:
+      type: object
+      properties:
+        minPitch:
+          type: number
+        maxPitch:
+          type: number
+        minYaw:
+          type: number
+        maxYaw:
+          type: number
+      additionalProperties: false
     ComponentTractorBeam:
       type: object
       properties:
@@ -1581,9 +1861,13 @@ components:
           type: number
         powerConsumption:
           type: number
+        powerMinimumFraction:
+          type: number
         powerRanges:
           "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
+          type: number
+        signatureIr:
           type: number
         damagePerShot:
           "$ref": "#/components/schemas/ComponentWeaponDamage"
@@ -1619,6 +1903,30 @@ components:
           "$ref": "#/components/schemas/ComponentWeaponSpread"
         mining:
           "$ref": "#/components/schemas/ComponentMiningLaser"
+        gimbalMode:
+          "$ref": "#/components/schemas/ComponentWeaponGimbalMode"
+        aimAssist:
+          "$ref": "#/components/schemas/ComponentWeaponAimAssist"
+        countermeasure:
+          "$ref": "#/components/schemas/ComponentCountermeasure"
+      additionalProperties: false
+    ComponentWeaponAimAssist:
+      type: object
+      properties:
+        nudgeAngle:
+          type: number
+        innerAngle:
+          type: number
+        outerAngle:
+          type: number
+        closeRangeMin:
+          type: number
+        closeRangeMax:
+          type: number
+        closeInnerAngle:
+          type: number
+        closeOuterAngle:
+          type: number
       additionalProperties: false
     ComponentWeaponDamage:
       type: object
@@ -1634,6 +1942,16 @@ components:
         biochemical:
           type: number
         stun:
+          type: number
+      additionalProperties: false
+    ComponentWeaponGimbalMode:
+      type: object
+      properties:
+        fireRateMultiplier:
+          type: number
+        spreadMinMultiplier:
+          type: number
+        spreadMaxMultiplier:
           type: number
       additionalProperties: false
     ComponentWeaponHeat:

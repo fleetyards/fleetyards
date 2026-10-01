@@ -13,6 +13,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import { useArmorStats } from "@/frontend/composables/useArmorStats";
 import { useCountermeasureStats } from "@/frontend/composables/useCountermeasureStats";
+import { useControllerStats } from "@/frontend/composables/useControllerStats";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -43,8 +44,12 @@ const shield = useShieldStats(
 );
 const armor = useArmorStats(() => props.hardpoints);
 const countermeasures = useCountermeasureStats(() => props.hardpoints);
+const controllers = useControllerStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
+// A zero is a real figure -- the shield shifts at once -- which `toNumber`
+// would print as not available.
+const seconds = (value: number) => (value ? toNumber(value) : "0");
 // `toNumber` renders any falsy value as "N/A", which is wrong for a genuine
 // zero — nothing absorbed is a real result, not missing data.
 const num = (value: number) => (value ? toNumber(value, "integer") : "0");
@@ -70,6 +75,11 @@ const percent = (value: number) => `${Math.round(value * 100)}%`;
 
 const signed = (value: number) =>
   `${value > 0 ? "+" : ""}${Math.round(value * 100)}%`;
+
+const durationLabel = (entry: { min: number; max: number }) =>
+  entry.min === entry.max
+    ? `${toNumber(entry.max)} s`
+    : `${toNumber(entry.min)} – ${toNumber(entry.max)} s`;
 
 const absorptionLabel = (entry: { min: number; max: number }) =>
   entry.min === entry.max
@@ -147,6 +157,29 @@ const openDeflectionCheck = () => {
           >
             <span class="chip__label">{{ t(entry.label) }}</span>
             <span class="chip__value">{{ percent(entry.value) }}</span>
+          </span>
+        </dd>
+      </template>
+
+      <template v-if="shield.hasData && controllers.shieldFaceType">
+        <dt>{{ t("labels.defense.shieldFaces") }}</dt>
+        <dd>
+          {{
+            t(
+              `labels.hardpoint.controllers.faces.${controllers.shieldFaceType}`,
+            )
+          }}
+          <span
+            v-if="
+              controllers.shieldFaceType === 'quadrant' &&
+              typeof controllers.reconfigurationCooldown === 'number'
+            "
+            class="stat-rows__sub"
+            data-test="shield-reconfiguration"
+          >
+            ·
+            {{ t("labels.hardpoint.controllers.reconfigurationCooldown") }}
+            {{ seconds(controllers.reconfigurationCooldown) }} s
           </span>
         </dd>
       </template>
@@ -250,17 +283,33 @@ const openDeflectionCheck = () => {
       <div class="metrics-card__divider" />
 
       <dl class="stat-rows">
-        <dt>{{ t("labels.defense.countermeasures") }}</dt>
-        <dd>
-          <span
-            v-for="entry in countermeasures.counts"
-            :key="entry.key"
-            class="chip"
-          >
-            <span class="chip__label">{{ t(entry.label) }}</span>
-            <span class="chip__value">{{ num(entry.value) }}</span>
-          </span>
-        </dd>
+        <template v-if="countermeasures.counts.length">
+          <dt>{{ t("labels.defense.countermeasures") }}</dt>
+          <dd>
+            <span
+              v-for="entry in countermeasures.counts"
+              :key="entry.key"
+              class="chip"
+            >
+              <span class="chip__label">{{ t(entry.label) }}</span>
+              <span class="chip__value">{{ num(entry.value) }}</span>
+            </span>
+          </dd>
+        </template>
+
+        <template v-if="countermeasures.durations.length">
+          <dt>{{ t("labels.defense.countermeasureDuration") }}</dt>
+          <dd>
+            <span
+              v-for="entry in countermeasures.durations"
+              :key="entry.key"
+              class="chip"
+            >
+              <span class="chip__label">{{ t(entry.label) }}</span>
+              <span class="chip__value">{{ durationLabel(entry) }}</span>
+            </span>
+          </dd>
+        </template>
       </dl>
     </template>
 
@@ -284,6 +333,10 @@ const openDeflectionCheck = () => {
 
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
+
+.stat-rows__sub {
+  color: var(--color-text-dim);
+}
 
 // Matches the composition bar's pill look, as a single animated fill + percent.
 .regen-bar {

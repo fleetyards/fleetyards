@@ -3,16 +3,15 @@
 module Shared
   module V1
     module Schemas
-      class ComponentSignatureSensitivity
+      class ComponentSignatureRange
         include OpenapiRuby::Components::Base
 
+        # A signature at launch and at burn-out.
         schema({
           type: :object,
           properties: {
-            sensitivity: {type: :number},
-            piercing: {type: :number},
-            passive: {type: :boolean},
-            active: {type: :boolean}
+            start: {type: :number},
+            end: {type: :number}
           },
           additionalProperties: false
         })

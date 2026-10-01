@@ -985,6 +985,8 @@
         "alphaSub": "每次齊射",
         "weapons": "武器",
         "missileDamage": "飛彈傷害",
+        "armedMissiles": "可武裝飛彈",
+        "armedMissilesSub": "發射間隔 %{cooldown} 秒",
         "composition": "傷害組成",
         "damagePhysical": "物理",
         "damageEnergy": "能量",
@@ -1036,12 +1038,14 @@
         "shieldRegen": "回復",
         "shieldResistances": "抗性",
         "shieldAbsorption": "吸收",
+        "shieldFaces": "護盾面",
         "armor": "裝甲",
         "deflection": "偏轉",
         "armorReduction": "傷害減免",
         "armorSelfResistance": "自身抗性",
         "armorSignature": "訊號特徵",
         "countermeasures": "干擾措施",
+        "countermeasureDuration": "持續時間",
         "countermeasure": {
           "decoy": "誘餌彈",
           "noise": "干擾箔"
@@ -1390,19 +1394,42 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "模式",
+          "vtolOnly": "僅限垂直起降",
+          "vectorPitch": "推力向量俯仰",
+          "vectorYaw": "推力向量偏航"
         },
         "refuelBoom": {
           "captureRadius": "捕捉半徑",
           "fuelFlowRate": "燃料輸送速率",
           "quantumFuelFlowRate": "量子燃料輸送速率"
         },
+        "controllers": {
+          "faceType": "護盾類型",
+          "faces": {
+            "bubble": "氣泡",
+            "quadrant": "四象限"
+          },
+          "reconfigurationCooldown": "重新分配",
+          "armedMissiles": "可武裝飛彈",
+          "launchCooldown": "發射冷卻",
+          "lockAngle": "鎖定角度"
+        },
+        "countermeasureStats": {
+          "duration": "持續時間",
+          "spawnDelay": "展開延遲",
+          "infrared": "紅外線訊號",
+          "electromagnetic": "電磁訊號",
+          "crossSection": "截面訊號"
+        },
         "turrets": {
           "turnRate": "轉向速率",
           "control": "操控",
           "yawRange": "偏航範圍",
           "pitchRange": "俯仰範圍",
-          "limitsVary": "隨轉向變化"
+          "limitsVary": "隨轉向變化",
+          "gunPorts": "武器介面"
         },
         "weapons": {
           "dps": "DPS",
@@ -1426,6 +1453,12 @@
           "costPerShot": "能量/發",
           "heatPerShot": "熱量/發",
           "heatPerSecond": "熱量/秒",
+          "gimbalFireRate": "射速（萬向）",
+          "gimbalSpread": "散布（萬向）",
+          "spreadMin": "最小",
+          "spreadMax": "最大",
+          "aimAssist": "瞄準輔助",
+          "closeAimAssist": "近距離瞄準輔助",
           "chargeTime": "充能時間",
           "fullDamageRange": "全 DMG 距離",
           "zeroDamageRange": "零 DMG 距離",
@@ -1485,7 +1518,13 @@
           "damagedRegenDelay": "受損延遲",
           "resistancePhysical": "物理抗性",
           "resistanceEnergy": "能量抗性",
-          "resistanceDistortion": "扭曲抗性"
+          "resistanceDistortion": "扭曲抗性",
+          "decay": "衰減",
+          "absorption": {
+            "physical": "物理吸收",
+            "energy": "能量吸收",
+            "distortion": "扭曲吸收"
+          }
         },
         "coolers": {
           "coolingRate": "冷卻速率"
@@ -1538,7 +1577,14 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "被動探測",
+          "active": "主動探測",
+          "aimAssistBuffer": "輔助瞄準緩衝",
+          "sensitivityModifier": "靈敏度修正",
+          "contactGroups": {
+            "GroundVehicle": "地面載具"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1697,7 +1743,18 @@
           "chargeTime": "充能時間",
           "cooldownTime": "冷卻時間"
         },
-        "powerRanges": "功率曲線（低 / 中 / 高）"
+        "emp": {
+          "distortionDamage": "扭曲傷害",
+          "radius": "半徑",
+          "chargeTime": "充能時間",
+          "unleashTime": "釋放時間",
+          "cooldownTime": "冷卻"
+        },
+        "lifeSupport": {
+          "output": "輸出"
+        },
+        "powerRanges": "功率曲線（低 / 中 / 高）",
+        "powerSegments": "段"
       },
       "blank": {
         "propulsion": "沒有推進系統",

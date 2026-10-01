@@ -3,19 +3,22 @@
 module Shared
   module V1
     module Schemas
-      class ComponentController
+      class ComponentEmp
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            scmSpeed: {type: :number},
-            scmSpeedBoosted: {type: :number},
-            reverseSpeedBoosted: {type: :number},
-            maxSpeed: {type: :number},
-            angularVelocity: ComponentAngularVelocity,
-            boostedAngularVelocity: ComponentAngularVelocity,
-            boostCapacitor: ComponentBoostCapacitor,
+            chargeTime: {type: :number},
+            unleashTime: {type: :number},
+            cooldownTime: {type: :number},
+            distortionDamage: {type: :number},
+            # Radii in metres: the distortion burst, and the physical shove.
+            empRadius: {type: :number},
+            minEmpRadius: {type: :number},
+            physRadius: {type: :number},
+            minPhysRadius: {type: :number},
+            pressure: {type: :number},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

@@ -13,11 +13,15 @@ module Shared
             pingProperties: ComponentPingProperties,
             aimAssistRange: {type: :number},
             aimAssistMin: {type: :number},
+            # Metres past the aim-assist range before assist lets go.
+            aimAssistBuffer: {type: :number},
             sensitivityModifiers: ComponentSensitivityModifiers,
+            contactSensitivity: {type: :array, items: ComponentRadarContactSensitivity},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            signatureEm: {type: :number},
+            signatureIr: {type: :number}
           },
           additionalProperties: false
         })

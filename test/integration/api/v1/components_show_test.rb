@@ -52,6 +52,47 @@ class Api::V1::ComponentsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components/{slug} serves a shield controller's face type" do
+    controller = create(:component, name: "Quadrant Controller", category: "controller", component_type: "ShieldController",
+      type_data: {"face_type" => "quadrant", "max_reallocation" => 1.0, "reconfiguration_cooldown" => 2.5})
+
+    assert_api_response :get, 200, params: {slug: controller.slug} do
+      assert_equal "quadrant", parsed_body["typeData"]["faceType"]
+      assert_in_delta 2.5, parsed_body["typeData"]["reconfigurationCooldown"]
+    end
+  end
+
+  test "GET /components/{slug} serves a missile controller's lock capacity" do
+    controller = create(:component, name: "Missile Controller", category: "controller", component_type: "MissileController",
+      type_data: {"max_armed_missiles" => 4, "launch_cooldown" => 4.0, "lock_angle" => 18.0})
+
+    assert_api_response :get, 200, params: {slug: controller.slug} do
+      assert_equal 4, parsed_body["typeData"]["maxArmedMissiles"]
+      assert_in_delta 4.0, parsed_body["typeData"]["launchCooldown"]
+    end
+  end
+
+  test "GET /components/{slug} serves what a countermeasure presents to a seeker" do
+    launcher = create(:component, name: "Chaff Launcher", category: "countermeasures",
+      type_data: {
+        "fire_rate" => 50.0, "max_ammo" => 20,
+        "countermeasure" => {
+          "kind" => "noise", "lifetime" => 8.0, "spawn_delay" => 1.0,
+          "infrared" => {"start" => 30000.0, "end" => 30000.0},
+          "electromagnetic" => {"start" => 30000.0, "end" => 30000.0},
+          "cross_section" => {"start" => 20000.0, "end" => 20000.0}
+        }
+      })
+
+    assert_api_response :get, 200, params: {slug: launcher.slug} do
+      countermeasure = parsed_body["typeData"]["countermeasure"]
+
+      assert_equal "noise", countermeasure["kind"]
+      assert_in_delta 8.0, countermeasure["lifetime"]
+      assert_in_delta 20000.0, countermeasure["crossSection"]["start"]
+    end
+  end
+
   test "GET /components/{slug} carries the component's own ports" do
     assert_api_response :get, 200, params: {slug: @component.slug} do
       assert parsed_body.key?("hardpoints")

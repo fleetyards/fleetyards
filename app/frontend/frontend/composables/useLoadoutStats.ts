@@ -8,6 +8,7 @@ import {
   ComponentTurretControlEnum,
 } from "@/services/fyApi";
 import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
+import { computeControllerStats } from "@/frontend/composables/useControllerStats";
 
 export type DamageBreakdown = {
   total: number;
@@ -43,7 +44,16 @@ export type LoadoutStats = {
   weapons: WeaponStat[];
   weaponCount: number;
   missileDamage: number;
+  // Fitted missiles, whether or not their payload is parsed.
+  missileCount: number;
+  // How many missiles the ship keeps armed at once, and the time between
+  // launches -- only for a ship that carries missiles, since nearly every
+  // ship has a missile controller whether or not it has a rack.
+  maxArmedMissiles?: number;
+  launchCooldown?: number;
   weaponPowerRatio: number;
+  // Whether the card has a figure to show: guns, a missile payload, or the
+  // capacity of the missiles it carries. Fitted missiles alone are not one.
   hasData: boolean;
 };
 
@@ -165,6 +175,7 @@ export function computeLoadoutStats(
   overrides?: PortOverrides,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
+  const controllers = computeControllerStats(hardpoints);
   const sim = simulateLoadoutPower(
     hardpoints,
     weaponPoolSize,
@@ -189,6 +200,7 @@ export function computeLoadoutStats(
   const dpsByControl = emptyControlBreakdown();
   const weapons: WeaponStat[] = [];
   let missileDamage = 0;
+  let missileCount = 0;
 
   for (const { hardpoint, control } of weaponHardpoints) {
     const component = hardpoint.component!;
@@ -210,8 +222,9 @@ export function computeLoadoutStats(
     } else {
       // Missiles (and other non-DPS munitions) don't contribute to DPS/alpha,
       // but their total payload damage is surfaced separately.
-      if (isMissile(weapon) && weapon.damagePerShot) {
-        for (const value of Object.values(weapon.damagePerShot)) {
+      if (isMissile(weapon)) {
+        missileCount += 1;
+        for (const value of Object.values(weapon.damagePerShot || {})) {
           if (typeof value === "number") missileDamage += value;
         }
       }
@@ -245,8 +258,18 @@ export function computeLoadoutStats(
     weapons,
     weaponCount: weapons.length,
     missileDamage,
+    missileCount,
+    ...(missileCount > 0
+      ? {
+          maxArmedMissiles: controllers.maxArmedMissiles,
+          launchCooldown: controllers.launchCooldown,
+        }
+      : {}),
     weaponPowerRatio: powerRatio,
-    hasData: weapons.length > 0,
+    hasData:
+      weapons.length > 0 ||
+      missileDamage > 0 ||
+      (missileCount > 0 && (controllers.maxArmedMissiles || 0) > 0),
   };
 }
 

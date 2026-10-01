@@ -3,18 +3,14 @@
 module Shared
   module V1
     module Schemas
-      class ComponentThruster
+      class ComponentLifeSupport
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            thrustCapacity: {type: :number},
-            thrusterType: {type: :string},
-            thrusterClass: ::Shared::V1::Schemas::Enums::ThrusterClassEnum,
-            fuelBurnRatePer10KNewton: {type: :number},
-            vtolOnly: {type: :boolean},
-            gimbal: ComponentThrusterGimbal,
+            # Life-support units generated per second.
+            lifeSupportGeneration: {type: :number},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
@@ -22,7 +18,7 @@ module Shared
             signatureIr: {type: :number}
           },
           additionalProperties: false,
-          required: %w[thrustCapacity thrusterType fuelBurnRatePer10KNewton]
+          required: %w[lifeSupportGeneration]
         })
       end
     end

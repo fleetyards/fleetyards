@@ -3,26 +3,23 @@
 module Shared
   module V1
     module Schemas
-      class ComponentThruster
+      class ComponentShieldController
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            thrustCapacity: {type: :number},
-            thrusterType: {type: :string},
-            thrusterClass: ::Shared::V1::Schemas::Enums::ThrusterClassEnum,
-            fuelBurnRatePer10KNewton: {type: :number},
-            vtolOnly: {type: :boolean},
-            gimbal: ComponentThrusterGimbal,
+            faceType: ::Shared::V1::Schemas::Enums::ComponentShieldFaceTypeEnum,
+            maxReallocation: {type: :number},
+            # Seconds before a quadrant shield can shift strength again.
+            reconfigurationCooldown: {type: :number},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
             signatureEm: {type: :number},
             signatureIr: {type: :number}
           },
-          additionalProperties: false,
-          required: %w[thrustCapacity thrusterType fuelBurnRatePer10KNewton]
+          additionalProperties: false
         })
       end
     end

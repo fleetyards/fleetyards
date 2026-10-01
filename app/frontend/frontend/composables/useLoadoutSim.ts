@@ -135,6 +135,8 @@ export const POWER_FAMILY_BY_CATEGORY: Partial<
   [HardpointCategoryEnum.QUANTUMENFORCEMENTDEVICE]: "qed",
   [HardpointCategoryEnum.EMP]: "emp",
   [HardpointCategoryEnum.LIFESUPPORT]: "lifeSupport",
+  // The Engine group the game powers is the flight controller. Thrusters are
+  // not in it and take no pips: in 4.10 every one draws only fuel and coolant.
   [HardpointCategoryEnum.CONTROLLER]: "engine",
   [HardpointCategoryEnum.SALVAGEMUNCHING]: "salvage",
 };

@@ -74,10 +74,15 @@ module Shared
                 ::Shared::V1::Schemas::ComponentCooler,
                 ::Shared::V1::Schemas::ComponentRadar,
                 ::Shared::V1::Schemas::ComponentController,
+                ::Shared::V1::Schemas::ComponentShieldController,
+                ::Shared::V1::Schemas::ComponentMissileController,
                 ::Shared::V1::Schemas::ComponentTurret,
                 ::Shared::V1::Schemas::ComponentPowerPlant,
                 ::Shared::V1::Schemas::ComponentMiningModule,
-                ::Shared::V1::Schemas::ComponentSalvageModifier
+                ::Shared::V1::Schemas::ComponentSalvageModifier,
+                ::Shared::V1::Schemas::ComponentEmp,
+                ::Shared::V1::Schemas::ComponentQuantumEnforcement,
+                ::Shared::V1::Schemas::ComponentLifeSupport
               ]
             },
 

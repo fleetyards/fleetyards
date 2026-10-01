@@ -13,8 +13,10 @@ module Shared
             fireRate: {type: :number},
             heatPerShot: {type: :number},
             powerConsumption: {type: :number},
+            powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
             signatureEm: {type: :number},
+            signatureIr: {type: :number},
             damagePerShot: ComponentWeaponDamage,
             damagePerSecond: ComponentWeaponDamage,
             heatPerSecond: {type: :number},
@@ -31,7 +33,10 @@ module Shared
             heat: ComponentWeaponHeat,
             penetration: ComponentWeaponPenetration,
             spread: ComponentWeaponSpread,
-            mining: ComponentMiningLaser
+            mining: ComponentMiningLaser,
+            gimbalMode: ComponentWeaponGimbalMode,
+            aimAssist: ComponentWeaponAimAssist,
+            countermeasure: ComponentCountermeasure
           },
           additionalProperties: false
         })

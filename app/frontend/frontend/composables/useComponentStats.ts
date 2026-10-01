@@ -37,15 +37,13 @@ export const hardpointCategoryFor = (
   return known ? (category as HardpointCategoryEnum) : undefined;
 };
 
-// Power, heat and signature, which every powered item carries and which no
-// category branch renders -- they live beside the per-category figures rather
-// than inside any one of them. A ship page leaves them out on purpose (a
-// hardpoint list would drown in them); a component's own page is exactly where
-// they belong.
+// The power curve across the allocator's three settings. Draw and signature
+// come from `useHardpointStats` with the rest of the row; this one stays on
+// the component's own page, where there is room for it.
 const usePoweredStats = (
   component: MaybeRefOrGetter<Component | undefined>,
 ) => {
-  const { t, toNumber } = useI18n();
+  const { t } = useI18n();
 
   return computed<HardpointStat[]>(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,26 +51,6 @@ const usePoweredStats = (
     if (!data) return [];
 
     const stats: HardpointStat[] = [];
-    const push = (key: string, value: unknown, format: string) => {
-      if (typeof value !== "number" || !value) return;
-
-      stats.push({
-        label: t(`labels.hardpoint.${key}`),
-        value: String(toNumber(value, format)),
-      });
-    };
-
-    push("powerConsumption", data.powerConsumption, "integer");
-    push("signatureEm", data.signatureEm, "integer");
-    push("signatureIr", data.signatureIr, "integer");
-
-    // A fraction of full draw, so it reads as a percentage rather than "0.4".
-    if (typeof data.powerMinimumFraction === "number") {
-      stats.push({
-        label: t("labels.hardpoint.powerMinimumFraction"),
-        value: `${Math.round(data.powerMinimumFraction * 100)}%`,
-      });
-    }
 
     // What the item draws at each of the three power settings, as one row
     // rather than three: `low`/`medium`/`high` each carry a modifier, and on
