@@ -1101,7 +1101,7 @@
         "ttk": "TTK",
         "effectiveHp": "PV effectifs",
         "shieldsDown": "Boucliers tombés",
-        "ttkNote": "Le temps de destruction utilise les dégâts soutenus par seconde des canons sélectionnés, avec la répartition d'énergie actuelle, à partir de la santé du bouclier et du blindage réglée ci-dessus. Les boucliers encaissent les dégâts qu'ils absorbent, moins leur résistance, et transmettent le reste au blindage, qui l'encaisse jusqu'à rompre puis le transmet à la coque ; la distorsion n'épuise que les boucliers. Les boucliers ne se régénèrent que tant que chaque canon est en pause plus longtemps que leur délai de régénération, et une fois tombés ils le restent. Les PV effectifs sont les dégâts bruts d'un type nécessaires pour détruire le vaisseau, sans déflexion."
+        "ttkNote": "Le temps de destruction utilise les dégâts soutenus par seconde des canons sélectionnés, avec la répartition d'énergie actuelle, à partir de la santé du bouclier et du blindage réglée ci-dessus. Les boucliers encaissent les dégâts qu'ils absorbent, moins leur résistance, et transmettent le reste au blindage, qui l'encaisse jusqu'à rompre puis le transmet à la coque ; la distorsion n'épuise que les boucliers. Les boucliers ne se régénèrent que tant que chaque canon est en pause plus longtemps que leur délai de régénération, et une fois tombés ils le restent. Les PV effectifs sont les dégâts bruts d'un type nécessaires pour détruire le vaisseau, sans déflexion. Les rayons et les missiles sont exclus, comme dans le test de pénétration."
       },
       "deflectionCheck": {
         "title": "Test de déflexion",

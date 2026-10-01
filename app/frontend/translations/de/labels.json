@@ -1101,7 +1101,7 @@
         "ttk": "TTK",
         "effectiveHp": "Effektive HP",
         "shieldsDown": "Schilde unten",
-        "ttkNote": "Die Zeit bis zur Zerstörung nutzt den anhaltenden Schaden pro Sekunde der gewählten Geschütze bei der aktuellen Energieverteilung, ausgehend von der oben eingestellten Schild- und Panzerungsgesundheit. Schilde nehmen den Schaden, den sie absorbieren, abzüglich ihres Widerstands, und reichen den Rest an die Panzerung weiter, die ihn trägt, bis sie bricht, und ihn dann an die Hülle weitergibt; Verzerrung zehrt nur an den Schilden. Schilde regenerieren nur, solange jedes Geschütz länger als ihre Regenerationsverzögerung pausiert, und einmal unten bleiben sie unten. Effektive HP sind der Rohschaden eines Typs, der nötig ist, um das Schiff zu zerstören, ohne Ablenkung."
+        "ttkNote": "Die Zeit bis zur Zerstörung nutzt den anhaltenden Schaden pro Sekunde der gewählten Geschütze bei der aktuellen Energieverteilung, ausgehend von der oben eingestellten Schild- und Panzerungsgesundheit. Schilde nehmen den Schaden, den sie absorbieren, abzüglich ihres Widerstands, und reichen den Rest an die Panzerung weiter, die ihn trägt, bis sie bricht, und ihn dann an die Hülle weitergibt; Verzerrung zehrt nur an den Schilden. Schilde regenerieren nur, solange jedes Geschütz länger als ihre Regenerationsverzögerung pausiert, und einmal unten bleiben sie unten. Effektive HP sind der Rohschaden eines Typs, der nötig ist, um das Schiff zu zerstören, ohne Ablenkung. Strahlwaffen und Raketen fehlen, wie bei der Durchschlagsprüfung."
       },
       "deflectionCheck": {
         "title": "Ablenkungsprüfung",
