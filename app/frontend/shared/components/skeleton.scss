@@ -41,6 +41,13 @@
   );
   background-size: 200% 100%;
   animation: skeleton-sweep 1.5s ease-in-out infinite;
+
+  // The sweep travels across the well; with reduced motion the well is just
+  // the darkened area, still reading as where an image goes.
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    background-image: none;
+  }
 }
 
 @keyframes skeleton-sweep {
