@@ -151,8 +151,9 @@ paths:
         style: form
         explode: true
         required: true
-        description: 'Token texts: `Name` or `type:Name`, type being component, equipment
-          or commodity'
+        description: 'Token texts: `Name` or `type:Name`. A contract, an event or
+          a user (`contract:FID/Title`, `event:FID/Title`, `user:handle`) resolves
+          only for a reader allowed to see it'
       responses:
         '200':
           description: the names that resolve to exactly one listed item
@@ -174,7 +175,8 @@ paths:
         schema:
           type: string
         required: true
-        description: At least two characters of the name
+        description: At least two characters of the name, optionally after a type
+          prefix (`ship:`, `user:`, `contract:FID/`)
       responses:
         '200':
           description: names that would resolve, each with the token to insert
@@ -18469,6 +18471,10 @@ components:
           "$ref": "#/components/schemas/CatalogueTokenTypeEnum"
         slug:
           type: string
+          description: The record's slug, or a user's username
+        fleetSlug:
+          type: string
+          description: The fleet a contract or an event belongs to
       title: CatalogueTokenMatch
     CatalogueTokenMatches:
       type: object
@@ -18489,6 +18495,9 @@ components:
       - Model
       - Blueprint
       - GameMission
+      - FleetContract
+      - FleetEvent
+      - User
       x-enumNames:
       - COMPONENT
       - EQUIPMENT
@@ -18496,6 +18505,9 @@ components:
       - MODEL
       - BLUEPRINT
       - GAME_MISSION
+      - FLEET_CONTRACT
+      - FLEET_EVENT
+      - USER
       title: CatalogueTokenTypeEnum
     ChannelsEnum:
       type: string

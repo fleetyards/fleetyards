@@ -12,7 +12,8 @@ module V1
           token: {type: :string, description: "The token text between `[*` and `*]`, as written or to be inserted"},
           name: {type: :string},
           type: ::V1::Schemas::Enums::CatalogueTokenTypeEnum,
-          slug: {type: :string}
+          slug: {type: :string, description: "The record's slug, or a user's username"},
+          fleetSlug: {type: :string, description: "The fleet a contract or an event belongs to"}
         }
       })
     end

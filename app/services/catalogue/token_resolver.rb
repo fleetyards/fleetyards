@@ -2,7 +2,8 @@
 
 module Catalogue
   # Resolves the names a markdown text refers to with `[*Name*]` or
-  # `[*type:Name*]` against the public catalogues. Names are not unique -- every
+  # `[*type:Name*]` against the public catalogues, and hands the tokens that
+  # depend on who reads them to `RestrictedTokenResolver`. Names are not unique -- every
   # ship with a manned turret adds another "Manned Turret" -- so a name resolves
   # only when exactly one listed item carries it; anything else stays plain text
   # rather than a guess.
@@ -26,7 +27,18 @@ module Catalogue
     MAX_NAME_LENGTH = 200
     SEARCH_LIMIT = 20
 
-    Match = Data.define(:token, :name, :type, :slug)
+    # `fleet_slug` is set for what lives under a fleet, whose page needs both.
+    Match = Data.define(:token, :name, :type, :slug, :fleet_slug) do
+      def initialize(fleet_slug: nil, **)
+        super
+      end
+    end
+
+    PREFIXES = [*CATALOGUES.keys, *RestrictedTokenResolver::PREFIXES].freeze
+
+    def initialize(reader: nil, fleet_reader: reader)
+      @restricted = RestrictedTokenResolver.new(reader:, fleet_reader:)
+    end
 
     # What a reader can reach -- the same rows the catalogue pages list.
     def self.listed(prefix)
@@ -42,7 +54,7 @@ module Catalogue
 
     def self.parse(token)
       prefix, name = token.to_s.split(":", 2)
-      return [nil, token.to_s.strip] if name.nil? || !CATALOGUES.key?(prefix.to_s.strip.downcase)
+      return [nil, token.to_s.strip] if name.nil? || !PREFIXES.include?(prefix.to_s.strip.downcase)
 
       [prefix.strip.downcase, name.strip]
     end
@@ -52,30 +64,35 @@ module Catalogue
         .map { |token| [token, *self.class.parse(token)] }
         .reject { |_, _, name| name.blank? || name.length > MAX_NAME_LENGTH }
 
-      rows = rows_named(parsed.map { |_, _, name| name.downcase }.uniq)
+      restricted, catalogued = parsed.partition { |_, prefix, _| RestrictedTokenResolver::PREFIXES.include?(prefix) }
 
-      parsed.filter_map do |token, prefix, name|
+      rows = rows_named(catalogued.map { |_, _, name| name.downcase }.uniq)
+
+      catalogued.filter_map do |token, prefix, name|
         candidates = rows.fetch(name.downcase, []).select { |row| prefix ? row[:prefix] == prefix : BARE.include?(row[:prefix]) }
         next unless candidates.one?
 
         row = candidates.first
         Match.new(token:, name: row[:name], type: CATALOGUES.fetch(row[:prefix]).name, slug: row[:slug])
-      end
+      end + @restricted.resolve(restricted)
     end
 
     # Names that begin or contain `query`, each offered only when it resolves:
     # one item in its catalogue. A name another catalogue carries too gets its
-    # prefix, so the inserted token cannot be read two ways.
+    # prefix, so the inserted token cannot be read two ways. A query written
+    # with a prefix searches that type alone.
     def search(query)
-      query = query.to_s.strip
+      prefix, query = self.class.parse(query)
       return [] if query.length < 2 || query.length > MAX_NAME_LENGTH
+
+      prefixes = prefix ? [prefix] : PREFIXES
 
       escaped = ActiveRecord::Base.sanitize_sql_like(query.downcase)
       pattern = "%#{escaped}%"
       # Only names one item carries, chosen by the database, and those that
       # start with the query first -- the order the results are ranked in, so
       # the row budget cannot drop a better match for shorter, weaker ones.
-      found = CATALOGUES.keys.flat_map do |prefix|
+      found = (CATALOGUES.keys & prefixes).flat_map do |prefix|
         name = name_sql(prefix)
 
         self.class.listed(prefix)
@@ -91,14 +108,15 @@ module Catalogue
 
       rows.flat_map do |lower, named|
         named.group_by { |row| row[:prefix] }.filter_map do |prefix, in_catalogue|
-          next unless in_catalogue.one?
+          next unless prefixes.include?(prefix) && in_catalogue.one?
 
           row = in_catalogue.first
           shared = named.any? { |other| other[:prefix] != prefix && BARE.include?(other[:prefix]) }
           token = (shared || !BARE.include?(prefix)) ? "#{prefix}:#{row[:name]}" : row[:name]
           [lower.start_with?(query.downcase) ? 0 : 1, row[:name].length, Match.new(token:, name: row[:name], type: CATALOGUES.fetch(prefix).name, slug: row[:slug])]
         end
-      end.sort_by { |starts, length, match| [starts, length, match.name] }.first(SEARCH_LIMIT).map(&:last)
+      end.concat(@restricted.search(query, prefixes:))
+        .sort_by { |starts, length, match| [starts, length, match.name] }.first(SEARCH_LIMIT).map(&:last)
     end
 
     # Every listed row carrying one of `names`, keyed by its lowered name.
