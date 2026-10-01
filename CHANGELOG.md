@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.8.0](https://github.com/fleetyards/fleetyards/compare/v8.7.0...v8.8.0) (2026-10-01)
+
+
+### Features
+
+* **catalogue:** one hover card layout for every type, and a loading line in place of the spinner ([#5357](https://github.com/fleetyards/fleetyards/issues/5357)) ([5fc0bcd](https://github.com/fleetyards/fleetyards/commit/5fc0bcddabb906b466d6e390f79a16f9d6bbc018))
+* **components:** mining laser, mining module and salvage modifier stats ([#5323](https://github.com/fleetyards/fleetyards/issues/5323)) ([ace844f](https://github.com/fleetyards/fleetyards/commit/ace844fc43a824ffa362f7c59c7ec38fb63ea555))
+* **components:** quantum drive interdiction, calibration and orbit jump detail ([#5336](https://github.com/fleetyards/fleetyards/issues/5336)) ([64f4cdc](https://github.com/fleetyards/fleetyards/commit/64f4cdcfcd466a9e669709a3766b2a7c0c317e7d))
+* **fleets:** let managers dismiss the FID warning on the fleet page ([#5348](https://github.com/fleetyards/fleetyards/issues/5348)) ([e624aea](https://github.com/fleetyards/fleetyards/commit/e624aea71d2018364ddf27e06340de976a49b950))
+* **flight:** boost capacitor and flight controller handling ([#5339](https://github.com/fleetyards/fleetyards/issues/5339)) ([0f90631](https://github.com/fleetyards/fleetyards/commit/0f9063152febe8332775699da63591ad47945561))
+* **forms:** a Markdown editor for fleet-written descriptions ([#5338](https://github.com/fleetyards/fleetyards/issues/5338)) ([bf2528e](https://github.com/fleetyards/fleetyards/commit/bf2528eb7c236d42760c3c908d1c5e470a4819b0))
+* **hardpoints:** row details, gimbal and aim assist, shield faces, missile lock and countermeasure signatures ([#5358](https://github.com/fleetyards/fleetyards/issues/5358)) ([a9f7e30](https://github.com/fleetyards/fleetyards/commit/a9f7e3093d8e99adab973e3031bbc65f8c0009fd))
+* **markdown:** name catalogue items inline with [*Item Name*] ([#5351](https://github.com/fleetyards/fleetyards/issues/5351)) ([214b765](https://github.com/fleetyards/fleetyards/commit/214b765b60f1788f82246684340dab3456b18d97))
+* **notifications:** prune push subscriptions nothing reached for half a year ([#5345](https://github.com/fleetyards/fleetyards/issues/5345)) ([c23d43e](https://github.com/fleetyards/fleetyards/commit/c23d43e792adcd219a30a1f09ea170972e273abf))
+* **notifications:** send push notifications to subscribed browsers ([#5328](https://github.com/fleetyards/fleetyards/issues/5328)) ([4d9bf61](https://github.com/fleetyards/fleetyards/commit/4d9bf61bb59795e97408dd91dcbf4c6833e8b909))
+* **notifications:** turn push notifications on per device in settings ([#5344](https://github.com/fleetyards/fleetyards/issues/5344)) ([dc84ab7](https://github.com/fleetyards/fleetyards/commit/dc84ab7ff5c786995733597533268d9062412a76))
+* **pwa:** a service worker that shows push notifications ([#5342](https://github.com/fleetyards/fleetyards/issues/5342)) ([3cf92bb](https://github.com/fleetyards/fleetyards/commit/3cf92bb470558be05f939684eff08a9281d3b002))
+* **sc-data:** parse the stats of six open component PRs in one change ([#5352](https://github.com/fleetyards/fleetyards/issues/5352)) ([3b64b0b](https://github.com/fleetyards/fleetyards/commit/3b64b0b16995e1f0d3d100a441f62c919b459560))
+
+
+### Bug Fixes
+
+* **notifications:** write notifications in the reader's language ([#5350](https://github.com/fleetyards/fleetyards/issues/5350)) ([caf69ff](https://github.com/fleetyards/fleetyards/commit/caf69ff77cb137df28ed44d30cad01b528532bca))
+* **sc-data:** read the 4.10 temperature model instead of the dropped heat block ([#5326](https://github.com/fleetyards/fleetyards/issues/5326)) ([fb46df8](https://github.com/fleetyards/fleetyards/commit/fb46df8ad86e1f076f66963211ffa814d0a96afd))
+
+
+### Refactorings
+
+* **loading:** replace SmallLoader, and show loading in the bottom cap ([#5359](https://github.com/fleetyards/fleetyards/issues/5359)) ([939ff81](https://github.com/fleetyards/fleetyards/commit/939ff818e0626134b818625e951360d4c08b7a99))
+
 ## [8.7.0](https://github.com/fleetyards/fleetyards/compare/v8.6.0...v8.7.0) (2026-09-30)
 
 
