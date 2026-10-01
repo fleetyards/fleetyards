@@ -105,9 +105,10 @@ module Catalogue
     end
 
     # The reader's friends and the people who share a fleet with them -- the
-    # ones a writer means when naming somebody. Fleet-mates only for a fleet
-    # reader, since who is in a fleet is fleet data. Whether a token then
-    # links is still the reader's question, asked again at lookup.
+    # ones a writer means when naming somebody -- whose hangar the writer may
+    # open, since a token they could not follow would not link for them
+    # either. Fleet-mates only for a fleet reader, since who is in a fleet is
+    # fleet data.
     private def search_users(query)
       return [] if @reader.blank?
 
@@ -116,6 +117,7 @@ module Catalogue
 
       ::User.where(id: ::Friendship.partner_ids_for(@reader)).or(::User.where(id: fleet_mate_ids))
         .where.not(id: @reader.id)
+        .with_hangar_readable_by(@reader)
         .where("normalized_username LIKE ?", "%#{escaped}%")
         .order(starts_with("normalized_username", escaped), Arel.sql("length(normalized_username)"), :normalized_username)
         .limit(TokenResolver::SEARCH_LIMIT)

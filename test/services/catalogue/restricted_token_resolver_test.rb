@@ -196,6 +196,14 @@ module Catalogue
       assert_empty searched(nil, "user:pilot")
     end
 
+    test "offers nobody whose hangar the writer may not open" do
+      create(:fleet_membership, :accepted, fleet: @fleet,
+        user: create(:user, username: "pilot-private", public_hangar: false, friends_hangar: true))
+      create(:fleet_membership, :accepted, fleet: @fleet, user: create(:user, username: "pilot-open"))
+
+      assert_equal ["user:pilot-open"], searched(@member, "user:pilot")
+    end
+
     test "offers fleet-mates only to a fleet reader" do
       friend = create(:user, username: "pilot-friend")
       create(:friendship, :accepted, requester: friend, addressee: @member)
