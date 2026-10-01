@@ -104,7 +104,9 @@ describe("useHardpointStats for flight controllers", () => {
     expect(valueOf(stats, "rotation")).toBe("40 / 0 / 90 °/s");
   });
 
-  it("leaves a controller without speeds alone", () => {
-    expect(statsFor(controller({ signatureEm: 10 }))).toEqual([]);
+  it("gives a controller without speeds no flight rows", () => {
+    expect(statsFor(controller({ signatureEm: 10 }))).toEqual([
+      { label: "labels.hardpoint.signatureEm", value: "10" },
+    ]);
   });
 });
