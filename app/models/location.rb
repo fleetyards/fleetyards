@@ -147,7 +147,7 @@ class Location < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[created_at id name parent_id slug system_id updated_at version] + LocationBuild::FILTERABLE.map(&:to_s)
+    %w[created_at id name parent_id sc_key slug system_id updated_at version] + LocationBuild::FILTERABLE.map(&:to_s)
   end
 
   def self.ransackable_associations(auth_object = nil)
