@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup generic="T">
 import Collapsed from "@/shared/components/Collapsed.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import HintIcon from "@/shared/components/base/HintIcon/index.vue";
@@ -1054,7 +1054,7 @@ defineExpose({
       <span class="base-select-title-prompt">
         {{ prompt }}
       </span>
-      <SmallLoader v-if="props.queryFn" :loading="loading" />
+      <LoadingLine v-if="props.queryFn" :loading="loading" edge="bottom" />
       <i class="fa fa-chevron-down" />
     </button>
     <Collapsed

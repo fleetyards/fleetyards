@@ -15,7 +15,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -427,7 +427,7 @@ const refreshPage = async () => {
         >
           {{ t("labels.syncExtension.sessionStatus") }}:
           {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
-          <SmallLoader :loading="loadingIdentity" alignment="right" />
+          <LoadingLine :loading="loadingIdentity" edge="bottom" />
           <Btn
             v-if="identityStatus === 'notFound'"
             v-tooltip="t('labels.syncExtension.checkIdentity')"

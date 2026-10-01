@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { defineAsyncComponent } from "vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type FileUpload } from "@/shared/components/DirectUpload/index.vue";
 import { fileTypeMap } from "../types";
@@ -142,7 +142,7 @@ const holoModel = computed(() => {
     <div class="preview__name" v-if="!isImage && !isHolo">
       {{ file.file.name }}
     </div>
-    <SmallLoader :loading="loading" />
+    <LoadingLine :loading="loading" />
     <div
       v-if="progessVisible"
       :class="progressCssClasses"

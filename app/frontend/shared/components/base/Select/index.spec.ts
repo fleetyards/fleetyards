@@ -217,6 +217,23 @@ describe("BaseSelect", () => {
       ).toBe(true);
     });
 
+    it("runs a loading line under the trigger while it queries", async () => {
+      const queryFn = vi.fn().mockReturnValue(new Promise(() => {}));
+      const wrapper = await mount({ options: undefined, queryFn });
+
+      const line = wrapper.find(
+        "[data-test='base-select-title'] [data-test='loading-line']",
+      );
+      expect(line.classes()).toContain("loading-line--active");
+      expect(line.classes()).toContain("loading-line--bottom");
+    });
+
+    it("has no loading line without a query", async () => {
+      const wrapper = await mount();
+
+      expect(wrapper.find("[data-test='loading-line']").exists()).toBe(false);
+    });
+
     it("debounces the search and resets to the first page", async () => {
       const queryFn = vi.fn().mockResolvedValue([]);
       const wrapper = await mount({

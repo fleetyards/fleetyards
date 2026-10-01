@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import LoadingLine from "@/shared/components/LoadingLine/index.vue";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -115,9 +115,10 @@ const hasWarnings = computed(
       >
         <div class="process-steps-item-title">
           <p>{{ t(`labels.syncExtension.processSteps.${step.name}`) }}</p>
-          <SmallLoader
+          <LoadingLine
             :loading="step.status === 'processing'"
-            alignment="right"
+            :label="t(`labels.syncExtension.processSteps.${step.name}`)"
+            edge="bottom"
           />
           <i
             v-if="step.status === 'success'"
