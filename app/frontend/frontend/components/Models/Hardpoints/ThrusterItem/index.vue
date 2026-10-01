@@ -10,6 +10,8 @@ import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vu
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
+import HardpointStats from "@/frontend/components/Models/Hardpoints/Stats/index.vue";
+import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
 import {
   HardpointSourceEnum,
   type Hardpoint,
@@ -35,6 +37,22 @@ const typeData = computed(() => {
 
 const count = computed(() => {
   return props.hardpoints.length;
+});
+
+// Thrust stays the headline; the rest of what the composable knows about a
+// thruster -- fuel burn, VTOL-only, vectoring, signatures -- goes on the row,
+// as it does for every other component row.
+const stats = useHardpointStats(
+  () => hardpoint.value,
+  () => count.value,
+);
+
+const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
+
+const rowStats = computed(() => {
+  const rest = stats.value.filter((stat) => !stat.primary);
+
+  return typeof statLimit === "number" ? rest.slice(0, statLimit) : rest;
 });
 
 const subTypeLabel = computed(() => {
@@ -74,6 +92,7 @@ const subTypeLabel = computed(() => {
         :value="toNumber(typeData.thrustCapacity, 'thrust')"
         :unit="t('labels.hardpoint.thrusters.thrust')"
       />
+      <HardpointStats :stats="rowStats" />
     </template>
   </HardpointItem>
 </template>
