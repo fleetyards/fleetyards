@@ -194,7 +194,12 @@ module Catalogue
       ids = records.to_set(&:id)
       starts = records.reject { |record| ids.include?(record.public_send(type[:lineage])) }
 
-      records.max_by(&:starts_at) if starts.one?
+      return unless starts.one?
+
+      # Parts can be moved by an edit, so two may start together; neither is
+      # then the latest.
+      latest = records.max_by(&:starts_at)
+      latest if records.one? { |record| record.starts_at == latest.starts_at }
     end
 
     private def ranked(name, query, match)
