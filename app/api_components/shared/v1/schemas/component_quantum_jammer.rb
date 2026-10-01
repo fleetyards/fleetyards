@@ -3,16 +3,15 @@
 module Shared
   module V1
     module Schemas
-      class ComponentSignatureSensitivity
+      class ComponentQuantumJammer
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            sensitivity: {type: :number},
-            piercing: {type: :number},
-            passive: {type: :boolean},
-            active: {type: :boolean}
+            jammerRange: {type: :number},
+            maxPowerDraw: {type: :number},
+            greenZoneCheckRange: {type: :number}
           },
           additionalProperties: false
         })

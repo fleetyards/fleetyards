@@ -3,20 +3,22 @@
 module Shared
   module V1
     module Schemas
-      class ComponentRadar
+      class ComponentEmp
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            signatureDetection: ComponentSignatureDetection,
-            pingProperties: ComponentPingProperties,
-            aimAssistRange: {type: :number},
-            aimAssistMin: {type: :number},
-            # Metres past the aim-assist range before assist lets go.
-            aimAssistBuffer: {type: :number},
-            sensitivityModifiers: ComponentSensitivityModifiers,
-            contactSensitivity: {type: :array, items: ComponentRadarContactSensitivity},
+            chargeTime: {type: :number},
+            unleashTime: {type: :number},
+            cooldownTime: {type: :number},
+            distortionDamage: {type: :number},
+            # Radii in metres: the distortion burst, and the physical shove.
+            empRadius: {type: :number},
+            minEmpRadius: {type: :number},
+            physRadius: {type: :number},
+            minPhysRadius: {type: :number},
+            pressure: {type: :number},
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

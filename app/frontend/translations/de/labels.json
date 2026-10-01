@@ -1390,7 +1390,11 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "Modus",
+          "vtolOnly": "Nur VTOL",
+          "vectorPitch": "Schubvektor Nicken",
+          "vectorYaw": "Schubvektor Gieren"
         },
         "refuelBoom": {
           "captureRadius": "Fangradius",
@@ -1402,7 +1406,8 @@
           "control": "Steuerung",
           "yawRange": "Gierbereich",
           "pitchRange": "Nickbereich",
-          "limitsVary": "abhängig von der Drehung"
+          "limitsVary": "abhängig von der Drehung",
+          "gunPorts": "Waffenplätze"
         },
         "weapons": {
           "dps": "DPS",
@@ -1485,7 +1490,13 @@
           "damagedRegenDelay": "Schadens-Verzögerung",
           "resistancePhysical": "Phys. Res.",
           "resistanceEnergy": "Energie-Res.",
-          "resistanceDistortion": "Dist.-Res."
+          "resistanceDistortion": "Dist.-Res.",
+          "decay": "Abbau",
+          "absorption": {
+            "physical": "Physische Absorption",
+            "energy": "Energie-Absorption",
+            "distortion": "Verzerrungs-Absorption"
+          }
         },
         "coolers": {
           "coolingRate": "Kühlrate"
@@ -1538,7 +1549,14 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "Passive Erfassung",
+          "active": "Aktive Erfassung",
+          "aimAssistBuffer": "Zielhilfe-Puffer",
+          "sensitivityModifier": "Empfindlichkeitsmodifikator",
+          "contactGroups": {
+            "GroundVehicle": "Bodenfahrzeuge"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1697,7 +1715,18 @@
           "chargeTime": "Ladezeit",
           "cooldownTime": "Abklingzeit"
         },
-        "powerRanges": "Leistungskurve (Niedrig / Mittel / Hoch)"
+        "emp": {
+          "distortionDamage": "Verzerrungsschaden",
+          "radius": "Radius",
+          "chargeTime": "Ladezeit",
+          "unleashTime": "Auslösezeit",
+          "cooldownTime": "Abklingzeit"
+        },
+        "lifeSupport": {
+          "output": "Leistung"
+        },
+        "powerRanges": "Leistungskurve (Niedrig / Mittel / Hoch)",
+        "powerSegments": "Seg."
       },
       "blank": {
         "propulsion": "Kein Antrieb vorhanden",

@@ -1390,7 +1390,11 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "模式",
+          "vtolOnly": "仅限垂直起降",
+          "vectorPitch": "推力矢量俯仰",
+          "vectorYaw": "推力矢量偏航"
         },
         "refuelBoom": {
           "captureRadius": "捕获半径",
@@ -1402,7 +1406,8 @@
           "control": "操控",
           "yawRange": "偏航范围",
           "pitchRange": "俯仰范围",
-          "limitsVary": "随转向变化"
+          "limitsVary": "随转向变化",
+          "gunPorts": "武器接口"
         },
         "weapons": {
           "dps": "DPS",
@@ -1485,7 +1490,13 @@
           "damagedRegenDelay": "受损延迟",
           "resistancePhysical": "物理抗性",
           "resistanceEnergy": "能量抗性",
-          "resistanceDistortion": "扭曲抗性"
+          "resistanceDistortion": "扭曲抗性",
+          "decay": "衰减",
+          "absorption": {
+            "physical": "物理吸收",
+            "energy": "能量吸收",
+            "distortion": "扭曲吸收"
+          }
         },
         "coolers": {
           "coolingRate": "冷却速率"
@@ -1538,7 +1549,14 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "被动探测",
+          "active": "主动探测",
+          "aimAssistBuffer": "辅助瞄准缓冲",
+          "sensitivityModifier": "灵敏度修正",
+          "contactGroups": {
+            "GroundVehicle": "地面载具"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1697,7 +1715,18 @@
           "chargeTime": "充能时间",
           "cooldownTime": "冷却时间"
         },
-        "powerRanges": "功率曲线（低 / 中 / 高）"
+        "emp": {
+          "distortionDamage": "扭曲伤害",
+          "radius": "半径",
+          "chargeTime": "充能时间",
+          "unleashTime": "释放时间",
+          "cooldownTime": "冷却"
+        },
+        "lifeSupport": {
+          "output": "输出"
+        },
+        "powerRanges": "功率曲线（低 / 中 / 高）",
+        "powerSegments": "段"
       },
       "blank": {
         "propulsion": "没有推进系统",

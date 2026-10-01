@@ -22,13 +22,29 @@ import {
   type ComponentMiningModule,
   type ComponentSalvageModifier,
   type ComponentController,
+  type ComponentEmp,
+  type ComponentLifeSupport,
+  type ComponentPowerRanges,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
+import { criticalSize } from "@/frontend/composables/powerSim";
 import {
   powerPlantContextKey,
   powerPlantPips,
 } from "@/frontend/components/Models/Hardpoints/powerPlant";
+
+// The contact groups a radar's sensitivity modifier can name that have a
+// label; any other shows the game's own name.
+const RADAR_CONTACT_GROUPS = ["GroundVehicle"];
+
+interface PoweredTypeData {
+  powerConsumption?: number;
+  powerMinimumFraction?: number;
+  powerRanges?: ComponentPowerRanges;
+  signatureEm?: number;
+  signatureIr?: number;
+}
 
 export type HardpointStat = {
   label: string;
@@ -103,17 +119,26 @@ export const useHardpointStats = (
     value: String(toNumber(value, "seconds")),
   });
 
-  // For figures that live below the one-decimal stat format -- a 0.25 km/s²
-  // first stage, a 0.05/s air output -- where rounding would misstate them.
-  // Zero stays a zero rather than "not available". Thousands are grouped the
-  // way `toNumber` groups them.
+  // For figures the one-decimal stat format would misstate -- a 0.25 km/s²
+  // first stage, a 0.05/s air output, a 4.55 s shield delay. Zero stays a zero
+  // rather than "not available", and thousands are grouped the way `toNumber`
+  // groups them.
   const precise = (value: number, digits = 3): string => {
-    if (Math.abs(value) >= 1) return String(toNumber(value));
+    const rounded = Math.round(value * 10 ** digits) / 10 ** digits;
+    const [integer, decimal] = String(Math.abs(rounded)).split(".");
+    const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
+    const sign = rounded < 0 ? "-" : "";
 
-    const rounded = String(Math.round(value * 10 ** digits) / 10 ** digits);
-
-    return rounded.replace(".", t("number.format.separator") || ",");
+    return decimal
+      ? `${sign}${grouped}${t("number.format.separator") || ","}${decimal}`
+      : `${sign}${grouped}`;
   };
+
+  // Shield delays run to hundredths (4.55 s), which `secondsStat` rounds.
+  const delayStat = (labelKey: string, value: number): HardpointStat => ({
+    label: t(`labels.hardpoint.${labelKey}`),
+    value: `${precise(value, 2)} s`,
+  });
 
   const splineAccel = (stageOne: number, stageTwo: number) =>
     `${precise(stageOne / 1000)} / ${precise(stageTwo / 1000)} km/s²`;
@@ -314,6 +339,64 @@ export const useHardpointStats = (
   // format would round to 0.8.
   const boostFigure = (value?: number): string =>
     formatBoostFigure(value, t("number.format.separator"));
+
+  // A mount's own gun slots, by size: "2 × S3". Only the slots a gun or a
+  // gimbal plugs into count -- a turret's seat or camera does not.
+  const gunPorts = (ports?: Hardpoint[]): string | null => {
+    const bySize = new Map<number, number>();
+    (ports ?? []).forEach((port) => {
+      if (
+        port.category !== HardpointCategoryEnum.WEAPONS &&
+        port.category !== HardpointCategoryEnum.WEAPON_MOUNTS
+      ) {
+        return;
+      }
+      const size = port.maxSize ?? port.minSize;
+      if (typeof size !== "number") return;
+
+      bySize.set(size, (bySize.get(size) ?? 0) + 1);
+    });
+    if (!bySize.size) return null;
+
+    return [...bySize.entries()]
+      .sort(([a], [b]) => b - a)
+      .map(([size, total]) => `${total} × S${size}`)
+      .join(" + ");
+  };
+
+  // What every powered item draws and gives off, on the row as well as the
+  // page. The draw reads as the range the power allocator can set it to:
+  // from its minimum share up to the full draw.
+  const poweredStats = (data: PoweredTypeData): HardpointStat[] => {
+    const powered: HardpointStat[] = [];
+
+    if (typeof data.powerConsumption === "number" && data.powerConsumption) {
+      const full = data.powerConsumption;
+      // The block the power allocator always keeps powered, as it sizes it.
+      const minimum = criticalSize(full, data.powerMinimumFraction);
+      powered.push({
+        label: t("labels.hardpoint.powerConsumption"),
+        value:
+          minimum < full
+            ? `${precise(minimum)} – ${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`
+            : `${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`,
+      });
+    }
+    if (typeof data.signatureEm === "number" && data.signatureEm) {
+      powered.push({
+        label: t("labels.hardpoint.signatureEm"),
+        value: String(toNumber(data.signatureEm, "integer")),
+      });
+    }
+    if (typeof data.signatureIr === "number" && data.signatureIr) {
+      powered.push({
+        label: t("labels.hardpoint.signatureIr"),
+        value: String(toNumber(data.signatureIr, "integer")),
+      });
+    }
+
+    return powered;
+  };
 
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
@@ -540,6 +623,32 @@ export const useHardpointStats = (
         result.push(
           stat("tractorBeams.moveSpeed", tractor.movement.maxSpeed, "speed"),
         );
+      }
+    } else if ("empRadius" in typeData) {
+      // An EMP sits in a weapons slot but fires a charged burst, not rounds.
+      const emp = typeData as ComponentEmp;
+
+      if (emp.distortionDamage) {
+        result.push(
+          stat("emp.distortionDamage", emp.distortionDamage, "damage", true),
+        );
+      }
+      if (emp.empRadius) {
+        result.push({
+          label: t("labels.hardpoint.emp.radius"),
+          value: emp.minEmpRadius
+            ? `${String(toNumber(emp.minEmpRadius, "integer"))} – ${String(toNumber(emp.empRadius, "integer"))} m`
+            : `${String(toNumber(emp.empRadius, "integer"))} m`,
+        });
+      }
+      if (emp.chargeTime) {
+        result.push(secondsStat("emp.chargeTime", emp.chargeTime));
+      }
+      if (emp.unleashTime) {
+        result.push(secondsStat("emp.unleashTime", emp.unleashTime));
+      }
+      if (emp.cooldownTime) {
+        result.push(secondsStat("emp.cooldownTime", emp.cooldownTime));
       }
     } else if (category === HardpointCategoryEnum.WEAPONS) {
       const weapon = typeData as ComponentWeapon;
@@ -844,21 +953,16 @@ export const useHardpointStats = (
       }
       if (shield.downedRegenDelay) {
         result.push(
-          stat(
-            "shields.downedRegenDelay",
-            shield.downedRegenDelay,
-            "delayTime",
-          ),
+          delayStat("shields.downedRegenDelay", shield.downedRegenDelay),
         );
       }
       if (shield.damagedRegenDelay) {
         result.push(
-          stat(
-            "shields.damagedRegenDelay",
-            shield.damagedRegenDelay,
-            "delayTime",
-          ),
+          delayStat("shields.damagedRegenDelay", shield.damagedRegenDelay),
         );
+      }
+      if (shield.decayRatio) {
+        result.push(resistanceStat("shields.decay", shield.decayRatio));
       }
       if (shield.resistance) {
         const res = shield.resistance as Record<
@@ -881,6 +985,21 @@ export const useHardpointStats = (
           );
         }
       }
+      // Absorption is how much of a hit the shield takes before it reaches
+      // the hull, and it moves with the shield's health -- so a range.
+      const absorption = shield.absorption as
+        Record<string, { min?: number; max?: number }> | undefined;
+      (["physical", "energy", "distortion"] as const).forEach((type) => {
+        const range = absorption?.[type];
+        if (typeof range?.max !== "number" || !range.max) return;
+
+        const low = Math.round((range.min ?? range.max) * 100);
+        const high = Math.round(range.max * 100);
+        result.push({
+          label: t(`labels.hardpoint.shields.absorption.${type}`),
+          value: low === high ? `${high}%` : `${low} – ${high}%`,
+        });
+      });
     } else if (category === HardpointCategoryEnum.COOLER) {
       const cooler = typeData as ComponentCooler;
       if (cooler.coolingRate) {
@@ -1188,6 +1307,29 @@ export const useHardpointStats = (
           ),
         });
       }
+      if (thruster.vtolOnly) {
+        result.push({
+          label: t("labels.hardpoint.thrusters.mode"),
+          value: t("labels.hardpoint.thrusters.vtolOnly"),
+        });
+      }
+      const gimbal = thruster.gimbal;
+      if (gimbal) {
+        const pitch = turretRange(gimbal.minPitch, gimbal.maxPitch);
+        const yaw = turretRange(gimbal.minYaw, gimbal.maxYaw);
+        if (pitch) {
+          result.push({
+            label: t("labels.hardpoint.thrusters.vectorPitch"),
+            value: pitch,
+          });
+        }
+        if (yaw) {
+          result.push({
+            label: t("labels.hardpoint.thrusters.vectorYaw"),
+            value: yaw,
+          });
+        }
+      }
     } else if (category === HardpointCategoryEnum.RADAR) {
       const radar = typeData as Record<string, unknown>;
 
@@ -1216,7 +1358,66 @@ export const useHardpointStats = (
         if (sigs.rs?.sensitivity != null) {
           result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
         }
+
+        // Which signatures it sees while silent, and which only on a ping.
+        const modes = (["ir", "em", "cs", "rs"] as const).map((type) => ({
+          label: t(`labels.hardpoint.radar.${type}`),
+          ...(sigs[type] as { passive?: boolean; active?: boolean }),
+        }));
+        const passive = modes.filter((mode) => mode.passive);
+        const active = modes.filter((mode) => mode.active);
+        if (passive.length) {
+          result.push({
+            label: t("labels.hardpoint.radar.passive"),
+            value: passive.map((mode) => mode.label).join(" · "),
+          });
+        }
+        if (active.length) {
+          result.push({
+            label: t("labels.hardpoint.radar.active"),
+            value: active.map((mode) => mode.label).join(" · "),
+          });
+        }
       }
+      if (typeof radar.aimAssistBuffer === "number" && radar.aimAssistBuffer) {
+        result.push({
+          label: t("labels.hardpoint.radar.aimAssistBuffer"),
+          value: `${String(toNumber(radar.aimAssistBuffer, "integer"))} m`,
+        });
+      }
+      // One row per modifier, labelled by the contact groups it applies to.
+      // Radars last loaded before those were parsed carry only an addition in
+      // `sensitivityModifiers`, with no group to name.
+      const legacyModifier = radar.sensitivityModifiers as
+        { sensitivityAddition?: number } | undefined;
+      const contactSensitivity = (radar.contactSensitivity ??
+        (legacyModifier?.sensitivityAddition
+          ? [
+              {
+                sensitivityAddition: legacyModifier.sensitivityAddition,
+                contactGroups: [
+                  t("labels.hardpoint.radar.sensitivityModifier"),
+                ],
+              },
+            ]
+          : [])) as {
+        sensitivityAddition: number;
+        contactGroups: string[];
+      }[];
+      contactSensitivity.forEach((entry) => {
+        if (!entry.sensitivityAddition || !entry.contactGroups?.length) return;
+
+        result.push({
+          label: entry.contactGroups
+            .map((group) =>
+              RADAR_CONTACT_GROUPS.includes(group)
+                ? t(`labels.hardpoint.radar.contactGroups.${group}`)
+                : group,
+            )
+            .join(" · "),
+          value: `${Math.round(entry.sensitivityAddition * 100)}%`,
+        });
+      });
     } else if (
       category === HardpointCategoryEnum.TURRET ||
       category === HardpointCategoryEnum.WEAPON_MOUNTS
@@ -1264,6 +1465,26 @@ export const useHardpointStats = (
         result.push({
           label: t("labels.hardpoint.turrets.control"),
           value: t(`labels.combat.controlGroups.${turret.control}`),
+        });
+      }
+      // A ship slot always lists its children, empty or not; the mount's own
+      // ports are the fallback when it has none, as in the loadout tree.
+      const ports = gunPorts(
+        hp.hardpoints?.length ? hp.hardpoints : hp.component?.hardpoints,
+      );
+      if (ports) {
+        result.push({
+          label: t("labels.hardpoint.turrets.gunPorts"),
+          value: ports,
+        });
+      }
+    } else if (category === HardpointCategoryEnum.LIFESUPPORT) {
+      const lifeSupport = typeData as ComponentLifeSupport;
+      if (lifeSupport.lifeSupportGeneration) {
+        result.push({
+          label: t("labels.hardpoint.lifeSupport.output"),
+          value: `${precise(lifeSupport.lifeSupportGeneration)}/s`,
+          primary: true,
         });
       }
     } else if (category === HardpointCategoryEnum.COUNTERMEASURES) {
@@ -1441,6 +1662,8 @@ export const useHardpointStats = (
         });
       }
     }
+
+    result.push(...poweredStats(typeData as PoweredTypeData));
 
     return result;
   });

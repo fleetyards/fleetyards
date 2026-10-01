@@ -1390,7 +1390,11 @@
             "FlexThruster": "Flex",
             "Retro": "Fix",
             "Light": "Light"
-          }
+          },
+          "mode": "Mode",
+          "vtolOnly": "VTOL uniquement",
+          "vectorPitch": "Vectorisation tangage",
+          "vectorYaw": "Vectorisation lacet"
         },
         "refuelBoom": {
           "captureRadius": "Rayon de capture",
@@ -1402,7 +1406,8 @@
           "control": "Contrôle",
           "yawRange": "Amplitude en lacet",
           "pitchRange": "Amplitude en tangage",
-          "limitsVary": "selon la rotation"
+          "limitsVary": "selon la rotation",
+          "gunPorts": "Emplacements d'armes"
         },
         "weapons": {
           "dps": "DPS",
@@ -1485,7 +1490,13 @@
           "damagedRegenDelay": "Délai après dégâts",
           "resistancePhysical": "Rés. phys.",
           "resistanceEnergy": "Rés. énergie",
-          "resistanceDistortion": "Rés. distors."
+          "resistanceDistortion": "Rés. distors.",
+          "decay": "Dissipation",
+          "absorption": {
+            "physical": "Absorption physique",
+            "energy": "Absorption énergie",
+            "distortion": "Absorption distorsion"
+          }
         },
         "coolers": {
           "coolingRate": "Refroidissement"
@@ -1538,7 +1549,14 @@
           "ir": "IR",
           "em": "EM",
           "cs": "CS",
-          "rs": "RS"
+          "rs": "RS",
+          "passive": "Détection passive",
+          "active": "Détection active",
+          "aimAssistBuffer": "Marge d'assistance",
+          "sensitivityModifier": "Modificateur de sensibilité",
+          "contactGroups": {
+            "GroundVehicle": "Véhicules terrestres"
+          }
         },
         "armor": {
           "hp": "HP",
@@ -1697,7 +1715,18 @@
           "chargeTime": "Temps de charge",
           "cooldownTime": "Temps de recharge"
         },
-        "powerRanges": "Courbe de puissance (faible / moyenne / élevée)"
+        "emp": {
+          "distortionDamage": "Dégâts de distorsion",
+          "radius": "Rayon",
+          "chargeTime": "Temps de charge",
+          "unleashTime": "Temps de décharge",
+          "cooldownTime": "Recharge"
+        },
+        "lifeSupport": {
+          "output": "Production"
+        },
+        "powerRanges": "Courbe de puissance (faible / moyenne / élevée)",
+        "powerSegments": "seg."
       },
       "blank": {
         "propulsion": "Aucune propulsion présente",
