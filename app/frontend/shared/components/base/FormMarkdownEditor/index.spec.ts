@@ -465,15 +465,21 @@ describe("FormMarkdownEditor", () => {
     expect(subject.emitted("update:modelValue")).toBeUndefined();
   });
 
-  it("asks for at most a hundred names at a time", async () => {
-    const lookupCatalogue = vi.fn(async (names: string[]) =>
-      names.map((name) => ({
+  it("asks for at most a hundred names at a time, and each only once", async () => {
+    // The short batch answers last: the first answer must not ask again for
+    // the names still on their way.
+    const lookupCatalogue = vi.fn(async (names: string[]) => {
+      if (names.length < 100) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+
+      return names.map((name) => ({
         token: name,
         name,
         type: "Commodity",
         slug: name.toLowerCase(),
-      })),
-    );
+      }));
+    });
     const names = Array.from(
       { length: 101 },
       (_, index) => `Ore ${String(index).padStart(3, "0")}`,
@@ -484,6 +490,8 @@ describe("FormMarkdownEditor", () => {
       lookupCatalogue: lookupCatalogue as never,
     });
 
+    await waitForSuggestions();
+    await waitForSuggestions();
     await waitForSuggestions();
     await nextFrames();
 

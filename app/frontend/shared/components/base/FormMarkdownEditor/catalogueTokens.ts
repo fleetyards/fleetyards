@@ -281,7 +281,7 @@ const LOOKUP_BATCH = 100;
 // does not change, and the marking is kept out of the undo history.
 export const CatalogueTokenResolution = Extension.create<
   { lookup: CatalogueLookup },
-  { known: Map<string, string | null>; timer?: ReturnType<typeof setTimeout> }
+  ResolutionStorage
 >({
   name: "catalogueTokenResolution",
 
@@ -290,7 +290,7 @@ export const CatalogueTokenResolution = Extension.create<
   },
 
   addStorage() {
-    return { known: new Map(), timer: undefined };
+    return { known: new Map(), pending: new Set(), timer: undefined };
   },
 
   onCreate() {
@@ -312,6 +312,9 @@ export const CatalogueTokenResolution = Extension.create<
 
 type ResolutionStorage = {
   known: Map<string, string | null>;
+  // Names a request is out for: a batch's answer changes the document, and
+  // that change must not ask again for the names of a batch still on its way.
+  pending: Set<string>;
   timer?: ReturnType<typeof setTimeout>;
 };
 
@@ -364,32 +367,38 @@ const resolveTokens = (
       storage.known.set(token, node.attrs.type as string);
     }
 
-    if (!storage.known.has(token)) unknown.add(token);
+    if (!storage.known.has(token) && !storage.pending.has(token)) {
+      unknown.add(token);
+    }
   });
 
   markKnown(editor, storage.known);
 
+  clearTimeout(storage.timer);
+
   if (!unknown.size) return;
 
-  clearTimeout(storage.timer);
   storage.timer = setTimeout(() => {
     const names = [...unknown].sort();
 
     for (let start = 0; start < names.length; start += LOOKUP_BATCH) {
       const batch = names.slice(start, start + LOOKUP_BATCH);
+      batch.forEach((name) => storage.pending.add(name));
 
-      lookup(batch).then(
-        (matches) => {
-          const types = new Map(
-            matches.map((match) => [match.token, match.type]),
-          );
-          batch.forEach((name) =>
-            storage.known.set(name, types.get(name) ?? null),
-          );
-          markKnown(editor, storage.known);
-        },
-        () => undefined,
-      );
+      lookup(batch)
+        .then(
+          (matches) => {
+            const types = new Map(
+              matches.map((match) => [match.token, match.type]),
+            );
+            batch.forEach((name) =>
+              storage.known.set(name, types.get(name) ?? null),
+            );
+            markKnown(editor, storage.known);
+          },
+          () => undefined,
+        )
+        .finally(() => batch.forEach((name) => storage.pending.delete(name)));
     }
   }, LOOKUP_DELAY);
 };
