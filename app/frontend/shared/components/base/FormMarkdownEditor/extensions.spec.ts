@@ -57,6 +57,11 @@ describe("markdownExtensions round trip", () => {
     ["a strike", "~~cancelled~~ moved"],
     ["a fenced code block", "```\n/join fleet\n```"],
     ["a nested list", "- Ships\n  - Aurora\n  - Carrack\n- Crew"],
+    [
+      "catalogue tokens",
+      "Fit [*Attrition-3 Repeater*] or [*commodity:Mercury*] here",
+    ],
+    ["a token inside code, as text", "Type `[*Name*]` to name an item"],
   ])("keeps %s", (_, markdown) => {
     expect(roundTrip(markdown)).toBe(markdown);
   });
@@ -231,6 +236,31 @@ describe("markdownExtensions images", () => {
     );
 
     expect(rendered.find("ul > li pre code").text()).toBe("/join");
+  });
+});
+
+describe("markdownExtensions catalogue tokens", () => {
+  it("keeps a token as one node, not emphasis", () => {
+    const editor = load("Fit [*Attrition-3 Repeater*] now");
+    const nodes: string[] = [];
+    editor.state.doc.descendants((node) => {
+      nodes.push(node.type.name);
+    });
+    editor.destroy();
+
+    expect(nodes).toContain("catalogueToken");
+    expect(nodes).not.toContain("italic");
+  });
+
+  it("renders a saved token as the renderer's mark", async () => {
+    const rendered = await render(roundTrip("Fit [*equipment:Arden-SL Core*]"));
+
+    expect(
+      rendered
+        .find("[data-catalogue-token]")
+        .attributes("data-catalogue-token"),
+    ).toBe("equipment:Arden-SL Core");
+    expect(rendered.text()).toBe("Fit Arden-SL Core");
   });
 });
 

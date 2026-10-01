@@ -69,13 +69,33 @@ describe("Markdown", () => {
     expect(wrapper.text()).toContain("2 * 3 = 6");
   });
 
-  it("leaves a [*catalogue token*] for the token parser", async () => {
+  it("marks a catalogue token with its name, not as emphasis", async () => {
     const wrapper = await mount(
-      "Fit a [*Attrition-3*] and [*equipment:Arden-SL*]",
+      "Fit a [*Attrition-3 Repeater*] and [*equipment:Arden-SL Core*]",
     );
 
+    const marks = wrapper.findAll("[data-catalogue-token]");
+    expect(
+      marks.map((mark) => mark.attributes("data-catalogue-token")),
+    ).toEqual(["Attrition-3 Repeater", "equipment:Arden-SL Core"]);
+    expect(wrapper.text()).toBe("Fit a Attrition-3 Repeater and Arden-SL Core");
     expect(wrapper.find("em").exists()).toBe(false);
-    expect(wrapper.text()).toContain("[*Attrition-3*]");
+  });
+
+  it("formats nothing inside a token, its attribute included", async () => {
+    const wrapper = await mount("[*Mk ~~2~~ Rifle*] and ~~gone~~");
+
+    const mark = wrapper.find("[data-catalogue-token]");
+    expect(mark.attributes("data-catalogue-token")).toBe("Mk ~~2~~ Rifle");
+    expect(mark.find("del").exists()).toBe(false);
+    expect(wrapper.find("del").text()).toBe("gone");
+  });
+
+  it("leaves a token inside code as written", async () => {
+    const wrapper = await mount("Type `[*Name*]` to name an item");
+
+    expect(wrapper.find("[data-catalogue-token]").exists()).toBe(false);
+    expect(wrapper.find("code").text()).toBe("[*Name*]");
   });
 
   it("centres the lines inside a :::center block", async () => {

@@ -48,6 +48,7 @@
     "@tiptap/markdown": "^3.31.3",
     "@tiptap/pm": "^3.31.3",
     "@tiptap/starter-kit": "^3.31.3",
+    "@tiptap/suggestion": "^3.31.3",
     "@tiptap/vue-3": "^3.31.3",
     "@tresjs/cientos": "^5.7.2",
     "@tresjs/core": "^5.8.1",

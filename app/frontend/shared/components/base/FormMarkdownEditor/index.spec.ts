@@ -73,6 +73,18 @@ const sizeButton = (size: string) =>
     ) as Element,
   );
 
+// The item search waits a moment after typing before it asks.
+const waitForSuggestions = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  await flushPromises();
+  await nextTick();
+};
+
+const suggestion = (slug: string) =>
+  document.querySelector(
+    `[data-test="markdown-editor-item-suggestion-${slug}"]`,
+  );
+
 const button = (subject: VueWrapper, key: string) =>
   subject.find(`[data-test="markdown-editor-${key}"]`);
 
@@ -312,6 +324,205 @@ describe("FormMarkdownEditor", () => {
     await nextFrames();
 
     expect(sizeToolbarShown()).toBe(false);
+  });
+
+  it("offers catalogue items after [* and inserts the one picked", async () => {
+    const searchCatalogue = vi.fn(async () => [
+      {
+        token: "Quantainium",
+        name: "Quantainium",
+        type: "Commodity",
+        slug: "quantainium",
+      },
+      {
+        token: "Raw Quantainium",
+        name: "Raw Quantainium",
+        type: "Commodity",
+        slug: "raw-quantainium",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      searchCatalogue: searchCatalogue as never,
+    });
+    const editor = editorOf(subject);
+
+    editor.chain().focus().insertContent("Mine [*quan").run();
+    await waitForSuggestions();
+
+    expect(searchCatalogue).toHaveBeenCalledWith("quan");
+    expect(suggestion("raw-quantainium")).not.toBeNull();
+
+    editor.view.dom.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
+    );
+    editor.view.dom.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
+    );
+
+    expect(lastEmitted(subject)).toBe("Mine [*Raw Quantainium*]");
+  });
+
+  it("opens the item search from the toolbar", async () => {
+    const searchCatalogue = vi.fn(async () => []);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      searchCatalogue: searchCatalogue as never,
+    });
+
+    editorOf(subject).commands.focus();
+    await button(subject, "item").trigger("click");
+    await waitForSuggestions();
+
+    expect(
+      document.querySelector('[data-test="markdown-editor-item-suggestions"]')
+        ?.textContent,
+    ).toContain("Type an item's name");
+  });
+
+  it("shows each token's resolved icon, and one nothing resolves as such", async () => {
+    const lookupCatalogue = vi.fn(async () => [
+      {
+        token: "Attrition-3 Repeater",
+        name: "Attrition-3 Repeater",
+        type: "Component",
+        slug: "attrition-3-repeater",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue:
+        "[*Attrition-3 Repeater*], [*Nothing Here*] and [*Attrition-3 Repeater*]",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(lookupCatalogue).toHaveBeenCalledOnce();
+    expect(lookupCatalogue).toHaveBeenCalledWith([
+      "Attrition-3 Repeater",
+      "Nothing Here",
+    ]);
+
+    const chips = subject.findAll(".ProseMirror .catalogue-token");
+    expect(chips[0].find("i").classes()).toContain("fa-microchip");
+    expect(chips[1].classes()).toContain("catalogue-token--unresolved");
+    expect(chips[1].text()).toBe("Nothing Here");
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
+  it("resolves the tokens of a text set from outside", async () => {
+    const lookupCatalogue = vi.fn(async () => [
+      {
+        token: "Quantainium",
+        name: "Quantainium",
+        type: "Commodity",
+        slug: "quantainium",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await subject.setProps({ modelValue: "Mine [*Quantainium*]" });
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
+      "fa-boxes-stacked",
+    );
+  });
+
+  it("loads a text naming a known item without reporting an edit", async () => {
+    const lookupCatalogue = vi.fn(async () => [
+      {
+        token: "Quantainium",
+        name: "Quantainium",
+        type: "Commodity",
+        slug: "quantainium",
+      },
+    ]);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "[*Quantainium*]",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await waitForSuggestions();
+    await nextFrames();
+
+    await subject.setProps({ modelValue: "Mine [*Quantainium*] & rocks" });
+    await nextFrames();
+
+    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
+      "fa-boxes-stacked",
+    );
+    expect(subject.emitted("update:modelValue")).toBeUndefined();
+  });
+
+  it("asks for at most a hundred names at a time, and each only once", async () => {
+    // The short batch answers last: the first answer must not ask again for
+    // the names still on their way.
+    const lookupCatalogue = vi.fn(async (names: string[]) => {
+      if (names.length < 100) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+
+      return names.map((name) => ({
+        token: name,
+        name,
+        type: "Commodity",
+        slug: name.toLowerCase(),
+      }));
+    });
+    const names = Array.from(
+      { length: 101 },
+      (_, index) => `Ore ${String(index).padStart(3, "0")}`,
+    );
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: names.map((name) => `[*${name}*]`).join(" "),
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    await waitForSuggestions();
+    await waitForSuggestions();
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(lookupCatalogue).toHaveBeenCalledTimes(2);
+    expect(lookupCatalogue.mock.calls[0][0]).toHaveLength(100);
+    expect(lookupCatalogue.mock.calls[1][0]).toEqual(["Ore 100"]);
+    expect(
+      subject.findAll(".ProseMirror .catalogue-token--unresolved"),
+    ).toHaveLength(0);
+  });
+
+  it("needs no lookup for an item picked from the search", async () => {
+    const lookupCatalogue = vi.fn(async () => []);
+    const subject = await mountEditor({
+      name: "description",
+      modelValue: "",
+      lookupCatalogue: lookupCatalogue as never,
+    });
+
+    editorOf(subject)
+      .chain()
+      .focus()
+      .insertCatalogueToken("ship:Carrack", "Model")
+      .run();
+    await waitForSuggestions();
+    await nextFrames();
+
+    expect(lookupCatalogue).not.toHaveBeenCalled();
+    expect(subject.find(".ProseMirror .catalogue-token i").classes()).toContain(
+      "fa-starship",
+    );
   });
 
   it("closes the link panel when the image dialog opens", async () => {

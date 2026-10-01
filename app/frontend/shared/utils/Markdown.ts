@@ -2,16 +2,20 @@ import {
   isSafeMarkdownHref,
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
+import {
+  CATALOGUE_TOKEN_PATTERN,
+  catalogueTokenName,
+} from "@/shared/utils/CatalogueTokens";
 
 // Renders the markdown the editor writes: ATX and underlined headings,
 // bulleted and numbered lists (nested by indentation), block quotes, fenced
 // code, horizontal rules, paragraphs, bold, italic, strikethrough, inline
-// code, links, images (sized with `{width=50%}`) and a `:::center` ... `:::`
-// block, the container syntax Tiptap's markdown extension reads and writes
-// (without a space after the colons). Anything else is passed through as
-// text. Everything is HTML-escaped before a single tag is added, so the result
-// is safe to hand to v-html -- which is why user-written text goes through
-// here too.
+// code, links, images (sized with `{width=50%}`), catalogue tokens
+// (`[*Name*]`) and a `:::center` ... `:::` block, the container syntax
+// Tiptap's markdown extension reads and writes (without a space after the
+// colons). Anything else is passed through as text. Everything is
+// HTML-escaped before a single tag is added, so the result is safe to hand to
+// v-html -- which is why user-written text goes through here too.
 
 const escapeHtml = (value: string) =>
   value
@@ -99,13 +103,36 @@ const formatText = (value: string, resolve: (text: string) => string) => {
   );
 };
 
+// A catalogue token becomes an inert mark that shows the item's name. The
+// Markdown component resolves the marks and mounts a link to the item into
+// them; unresolved, the name is all a reader sees. Marked on escaped text, so
+// the token goes into the attribute as it is, and swapped for a placeholder of
+// its own until the formatting rules are done -- a rule matching inside the
+// mark would rewrite its attribute.
+const FRAGMENT = "\ue001";
+const FRAGMENT_PATTERN = /\ue001([\ue100-\uf8ff])/g;
+
+const markCatalogueTokens = (escaped: string, fragments: string[]) =>
+  escaped.replace(CATALOGUE_TOKEN_PATTERN, (match, token: string) => {
+    if (PLACEHOLDER_BASE + fragments.length > PLACEHOLDER_LAST) return match;
+
+    fragments.push(
+      `<span class="catalogue-token" data-catalogue-token="${token.trim()}"><span class="catalogue-token__name">${catalogueTokenName(token)}</span></span>`,
+    );
+
+    return (
+      FRAGMENT + String.fromCharCode(PLACEHOLDER_BASE + fragments.length - 1)
+    );
+  });
+
 const renderText = (value: string) => {
   const literals: string[] = [];
 
-  // The placeholder marker itself cannot appear in the text, or it would read
-  // as one.
+  // The placeholder markers themselves cannot appear in the text, or they
+  // would read as one.
   const marked = value
     .replaceAll(PLACEHOLDER, "")
+    .replaceAll(FRAGMENT, "")
     .replace(
       LITERAL_PATTERN,
       (match, escaped: string | undefined, entity: string | undefined) => {
@@ -134,7 +161,16 @@ const renderText = (value: string) => {
       escapeHtml(literalAt(index)),
     );
 
-  return resolve(formatText(escapeHtml(marked), resolve));
+  const fragments: string[] = [];
+  const formatted = formatText(
+    markCatalogueTokens(escapeHtml(marked), fragments),
+    resolve,
+  ).replace(
+    FRAGMENT_PATTERN,
+    (_, index: string) => fragments[index.charCodeAt(0) - PLACEHOLDER_BASE],
+  );
+
+  return resolve(formatted);
 };
 
 // Code spans are cut out first so nothing inside them is formatted or

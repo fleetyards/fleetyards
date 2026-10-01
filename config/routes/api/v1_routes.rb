@@ -24,6 +24,9 @@ v1_api_routes = lambda do
 
   resources :markdown_images, path: "markdown-images", only: %i[create show]
 
+  get "catalogue/lookup", to: "catalogue#lookup"
+  get "catalogue/search", to: "catalogue#search"
+
   resource :sessions, only: %i[create destroy] do
     collection do
       post "confirm-access", to: "sessions#confirm_access"

@@ -27,7 +27,18 @@
       "imageSize25": "Klein",
       "imageSize50": "Mittel",
       "imageSize75": "Groß",
-      "imageSizeFull": "Volle Breite"
+      "imageSizeFull": "Volle Breite",
+      "item": "Katalogeintrag",
+      "itemSearchHint": "Gib den Namen eines Eintrags ein",
+      "itemSearchEmpty": "Kein gelisteter Eintrag mit diesem Namen",
+      "itemType": {
+        "Component": "Komponente",
+        "Equipment": "Ausrüstung",
+        "Commodity": "Rohstoff",
+        "Model": "Schiff",
+        "Blueprint": "Bauplan",
+        "GameMission": "Mission"
+      }
     }
   }
 }

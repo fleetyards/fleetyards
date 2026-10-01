@@ -32,6 +32,22 @@ class MarkdownPlainTextTest < ActiveSupport::TestCase
     assert_includes MarkdownPlainText.render("![a](https://x.test/a.jpg){width=33%}"), "{width=33%}"
   end
 
+  test "reads a catalogue token as the item's name" do
+    assert_equal "Fit Attrition-3 Repeater or Mercury", MarkdownPlainText.render("Fit [*Attrition-3 Repeater*] or [*commodity:Mercury*]")
+  end
+
+  test "keeps a token written as code" do
+    text = MarkdownPlainText.render("Type `[*Name*]` to name one\n\n```\n[*ship:Carrack*]\n```\n\nor [*ship:Carrack*]")
+
+    assert_includes text, "[*Name*]"
+    assert_includes text, "[*ship:Carrack*]"
+    assert text.end_with?("or Carrack"), text
+  end
+
+  test "reads a token between escaped backticks as prose" do
+    assert_equal "See `Carrack` here", MarkdownPlainText.render("See \\`[*ship:Carrack*]\\` here")
+  end
+
   test "is empty for no text" do
     assert_equal "", MarkdownPlainText.render(nil)
   end

@@ -9,14 +9,23 @@ import BasePopover from "@/shared/components/Popover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
 import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.vue";
+import ShipStatsCard from "@/frontend/components/StatsCard/Ship/index.vue";
+import BlueprintStatsCard from "@/frontend/components/StatsCard/Blueprint/index.vue";
+import MissionStatsCard from "@/frontend/components/StatsCard/Mission/index.vue";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
   useComponent as useComponentQuery,
   useEquipmentItem as useEquipmentItemQuery,
   useCommodity as useCommodityQuery,
+  useModel as useModelQuery,
+  useBlueprint as useBlueprintQuery,
+  useGameMission as useGameMissionQuery,
+  type Blueprint,
   type Commodity,
   type Component,
   type Equipment,
+  type GameMission,
+  type Model,
 } from "@/services/fyApi";
 import { type CatalogueItemRef, type CatalogueRecord } from "./types";
 
@@ -50,6 +59,9 @@ const slug = computed(() => props.item.slug || "");
 const isComponent = computed(() => props.item.type === "Component");
 const isEquipment = computed(() => props.item.type === "Equipment");
 const isCommodity = computed(() => props.item.type === "Commodity");
+const isShip = computed(() => props.item.type === "Model");
+const isBlueprint = computed(() => props.item.type === "Blueprint");
+const isMission = computed(() => props.item.type === "GameMission");
 
 // Fetched the first time the card opens -- never for every link on a page --
 // and left enabled afterwards, so the query cache (shared with the detail
@@ -74,6 +86,18 @@ const { data: fetchedEquipment, isPending: equipmentPending } =
 const { data: fetchedCommodity, isPending: commodityPending } =
   useCommodityQuery(slug, { query: { enabled: fetches(isCommodity) } });
 
+const { data: fetchedShip, isPending: shipPending } = useModelQuery(slug, {
+  query: { enabled: fetches(isShip) },
+});
+
+const { data: fetchedBlueprint, isPending: blueprintPending } =
+  useBlueprintQuery(slug, { query: { enabled: fetches(isBlueprint) } });
+
+const { data: fetchedMission, isPending: missionPending } = useGameMissionQuery(
+  slug,
+  { query: { enabled: fetches(isMission) } },
+);
+
 const component = computed(
   () => (props.record as Component | undefined) ?? fetchedComponent.value,
 );
@@ -84,18 +108,36 @@ const commodity = computed(
   () => (props.record as Commodity | undefined) ?? fetchedCommodity.value,
 );
 
+const ship = computed(
+  () => (props.record as Model | undefined) ?? fetchedShip.value,
+);
+const blueprint = computed(
+  () => (props.record as Blueprint | undefined) ?? fetchedBlueprint.value,
+);
+const mission = computed(
+  () => (props.record as GameMission | undefined) ?? fetchedMission.value,
+);
+
 const pending = (type: Ref<boolean>, isPending: Ref<boolean>) =>
   computed(() => !props.record && type.value && isPending.value);
 
 const componentLoading = pending(isComponent, componentPending);
 const equipmentLoading = pending(isEquipment, equipmentPending);
 const commodityLoading = pending(isCommodity, commodityPending);
+const shipLoading = pending(isShip, shipPending);
+const blueprintLoading = pending(isBlueprint, blueprintPending);
+const missionLoading = pending(isMission, missionPending);
 
 // A record the catalogue does not list still has figures worth reading -- a
 // door or a seat on a ship -- so a card needs a record or a page, not both.
 const hasCard = computed(
   () =>
-    (isComponent.value || isEquipment.value || isCommodity.value) &&
+    (isComponent.value ||
+      isEquipment.value ||
+      isCommodity.value ||
+      isShip.value ||
+      isBlueprint.value ||
+      isMission.value) &&
     (!!props.record || !!route.value),
 );
 
@@ -139,6 +181,30 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         :name="label"
         :equipment="equipment"
         :loading="equipmentLoading"
+        @navigate="close"
+      />
+      <ShipStatsCard
+        v-else-if="isShip"
+        :to="route ?? false"
+        :name="label"
+        :model="ship"
+        :loading="shipLoading"
+        @navigate="close"
+      />
+      <BlueprintStatsCard
+        v-else-if="isBlueprint"
+        :to="route ?? false"
+        :name="label"
+        :blueprint="blueprint"
+        :loading="blueprintLoading"
+        @navigate="close"
+      />
+      <MissionStatsCard
+        v-else-if="isMission"
+        :to="route ?? false"
+        :name="label"
+        :mission="mission"
+        :loading="missionLoading"
         @navigate="close"
       />
       <CommodityStatsCard

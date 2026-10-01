@@ -27,7 +27,18 @@
       "imageSize25": "Piccola",
       "imageSize50": "Media",
       "imageSize75": "Grande",
-      "imageSizeFull": "Larghezza piena"
+      "imageSizeFull": "Larghezza piena",
+      "item": "Voce del catalogo",
+      "itemSearchHint": "Digita il nome di una voce",
+      "itemSearchEmpty": "Nessuna voce elencata con quel nome",
+      "itemType": {
+        "Component": "Componente",
+        "Equipment": "Equipaggiamento",
+        "Commodity": "Merce",
+        "Model": "Nave",
+        "Blueprint": "Progetto",
+        "GameMission": "Missione"
+      }
     }
   }
 }

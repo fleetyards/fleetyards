@@ -27,7 +27,18 @@
       "imageSize25": "Small",
       "imageSize50": "Medium",
       "imageSize75": "Large",
-      "imageSizeFull": "Full width"
+      "imageSizeFull": "Full width",
+      "item": "Catalogue item",
+      "itemSearchHint": "Type an item's name",
+      "itemSearchEmpty": "No listed item by that name",
+      "itemType": {
+        "Component": "Component",
+        "Equipment": "Equipment",
+        "Commodity": "Commodity",
+        "Model": "Ship",
+        "Blueprint": "Blueprint",
+        "GameMission": "Mission"
+      }
     }
   }
 }

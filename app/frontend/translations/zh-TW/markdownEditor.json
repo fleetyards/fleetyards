@@ -27,7 +27,18 @@
       "imageSize25": "小",
       "imageSize50": "中",
       "imageSize75": "大",
-      "imageSizeFull": "全寬"
+      "imageSizeFull": "全寬",
+      "item": "目錄物品",
+      "itemSearchHint": "輸入物品名稱",
+      "itemSearchEmpty": "沒有該名稱的已列出物品",
+      "itemType": {
+        "Component": "組件",
+        "Equipment": "裝備",
+        "Commodity": "商品",
+        "Model": "艦船",
+        "Blueprint": "藍圖",
+        "GameMission": "任務"
+      }
     }
   }
 }

@@ -12,6 +12,13 @@ import {
   isSafeMarkdownSrc,
 } from "@/shared/utils/MarkdownUrls";
 import { closesFence, splitCodeSpans } from "@/shared/utils/Markdown";
+import {
+  CatalogueToken,
+  CatalogueTokenResolution,
+  CatalogueTokenSuggestion,
+  type CatalogueLookup,
+  type CatalogueSearch,
+} from "./catalogueTokens";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -173,7 +180,13 @@ export const protectHtml = (markdown: string) => {
 // not: a block the editor has no node for is flattened when a description is
 // opened, and the next save would write the flattened text back. Underline is
 // the one left out -- markdown has no way to write it.
-export const markdownExtensions = (): Extensions => [
+export const markdownExtensions = ({
+  searchCatalogue,
+  lookupCatalogue,
+}: {
+  searchCatalogue?: CatalogueSearch;
+  lookupCatalogue?: CatalogueLookup;
+} = {}): Extensions => [
   StarterKit.configure({
     heading: { levels: [...HEADING_LEVELS] },
     underline: false,
@@ -187,6 +200,13 @@ export const markdownExtensions = (): Extensions => [
   }),
   SafeImage,
   Center,
+  CatalogueToken,
+  CatalogueTokenSuggestion.configure(
+    searchCatalogue ? { search: searchCatalogue } : {},
+  ),
+  CatalogueTokenResolution.configure(
+    lookupCatalogue ? { lookup: lookupCatalogue } : {},
+  ),
   Markdown,
 ];
 

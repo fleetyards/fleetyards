@@ -16,6 +16,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import LinkPanel from "./LinkPanel.vue";
 import ImageSizePanel from "./ImageSizePanel.vue";
 import type { MarkdownImageCreate } from "./ImageDialog.vue";
+import type { CatalogueLookup, CatalogueSearch } from "./catalogueTokens";
 import {
   markdownExtensions,
   protectHtml,
@@ -42,6 +43,12 @@ type Props = {
   // Turns an uploaded image into the address to embed; the upload endpoint by
   // default.
   createImage?: MarkdownImageCreate;
+  // Finds the catalogue items a `[*` token can name; the catalogue search by
+  // default.
+  searchCatalogue?: CatalogueSearch;
+  // Resolves the tokens in the text, for their icons; the catalogue lookup by
+  // default.
+  lookupCatalogue?: CatalogueLookup;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +61,8 @@ const props = withDefaults(defineProps<Props>(), {
   maxlength: undefined,
   disabled: false,
   createImage: undefined,
+  searchCatalogue: undefined,
+  lookupCatalogue: undefined,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -125,7 +134,10 @@ const setMarkdown = (markdown: string) => {
 };
 
 const editor = useEditor({
-  extensions: markdownExtensions(),
+  extensions: markdownExtensions({
+    searchCatalogue: props.searchCatalogue,
+    lookupCatalogue: props.lookupCatalogue,
+  }),
   content: protectHtml(props.modelValue ?? ""),
   contentType: "markdown",
   editable: !props.disabled,
@@ -242,6 +254,13 @@ const actions: ToolbarAction[] = [
     icon: "fa-regular fa-list-ol",
     isActive: () => !!editor.value?.isActive("orderedList"),
     run: () => chain().toggleOrderedList().run(),
+  },
+  {
+    key: "item",
+    icon: "fa-regular fa-cube",
+    isActive: () => false,
+    // Opens the item search, as typing the two characters would.
+    run: () => chain().insertContent("[*").run(),
   },
   {
     key: "center",

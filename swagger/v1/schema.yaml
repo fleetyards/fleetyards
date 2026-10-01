@@ -134,6 +134,56 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/catalogue/lookup":
+    get:
+      summary: Resolve the catalogue items a text names inline
+      tags:
+      - Catalogue
+      operationId: catalogueLookup
+      parameters:
+      - name: names
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 100
+        style: form
+        explode: true
+        required: true
+        description: 'Token texts: `Name` or `type:Name`, type being component, equipment
+          or commodity'
+      responses:
+        '200':
+          description: the names that resolve to exactly one listed item
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CatalogueTokenMatches"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/catalogue/search":
+    get:
+      summary: Search the catalogue for an item to name inline
+      tags:
+      - Catalogue
+      operationId: catalogueSearch
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: true
+        description: At least two characters of the name
+      responses:
+        '200':
+          description: names that would resolve, each with the token to insert
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CatalogueTokenMatches"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -18402,6 +18452,51 @@ components:
       - "y"
       - z
       title: CargoHoldOffset
+    CatalogueTokenMatch:
+      type: object
+      required:
+      - token
+      - name
+      - type
+      - slug
+      properties:
+        token:
+          type: string
+          description: The token text between `[*` and `*]`, as written or to be inserted
+        name:
+          type: string
+        type:
+          "$ref": "#/components/schemas/CatalogueTokenTypeEnum"
+        slug:
+          type: string
+      title: CatalogueTokenMatch
+    CatalogueTokenMatches:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CatalogueTokenMatch"
+      title: CatalogueTokenMatches
+    CatalogueTokenTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      - Model
+      - Blueprint
+      - GameMission
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      - MODEL
+      - BLUEPRINT
+      - GAME_MISSION
+      title: CatalogueTokenTypeEnum
     ChannelsEnum:
       type: string
       enum:

@@ -1,7 +1,10 @@
 import {
+  type Blueprint,
   type Commodity,
   type Component,
   type Equipment,
+  type GameMission,
+  type Model,
 } from "@/services/fyApi";
 
 // The shape every catalogue reference already has -- a recipe's output, a
@@ -15,4 +18,5 @@ export interface CatalogueItemRef {
   listed?: boolean;
 }
 
-export type CatalogueRecord = Component | Equipment | Commodity;
+export type CatalogueRecord =
+  Component | Equipment | Commodity | Model | Blueprint | GameMission;
