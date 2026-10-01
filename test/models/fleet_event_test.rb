@@ -534,19 +534,4 @@ class FleetEventTest < ActiveSupport::TestCase
       assert_nil event.open_at
     end
   end
-
-  test "still_running keeps what has something ahead of it" do
-    fleet = create(:fleet)
-    upcoming = create(:fleet_event, fleet:)
-    ongoing = create(:fleet_event, fleet:, starts_at: 1.hour.ago, ends_at: 1.hour.from_now)
-    series = create(:fleet_event, fleet:, starts_at: 2.weeks.ago, recurring: true,
-      recurrence_interval: "weekly", recurrence_every: 1, recurrence_until: Date.current)
-    create(:fleet_event, fleet:, starts_at: 2.hours.ago, ends_at: 1.hour.ago)
-    create(:fleet_event, fleet:, starts_at: 2.weeks.ago, recurring: true,
-      recurrence_interval: "weekly", recurrence_every: 1, recurrence_until: Date.yesterday)
-    create(:fleet_event, :cancelled, fleet:)
-    create(:fleet_event, fleet:, archived_at: Time.current)
-
-    assert_equal [upcoming, ongoing, series].map(&:id).sort, fleet.fleet_events.still_running.pluck(:id).sort
-  end
 end

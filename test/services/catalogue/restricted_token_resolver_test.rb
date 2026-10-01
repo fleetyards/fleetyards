@@ -238,50 +238,5 @@ module Catalogue
       assert_empty searched(@member, "event:mining night")
       assert_equal ["event:MARU/Weekly Mining"], searched(@member, "event:mining")
     end
-
-    test "resolves a split series to the half still running" do
-      series = create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Weekly Op",
-        starts_at: Time.zone.parse("2026-05-14 20:00 UTC"), timezone: "UTC",
-        recurring: true, recurrence_interval: "weekly", recurrence_every: 1)
-
-      travel_to Time.zone.parse("2026-05-20 12:00 UTC")
-      successor = FleetEvents::SeriesSplit.new(series, "2026-06-04").call
-
-      # Until the first half has had its last occurrence, both are running.
-      assert_empty resolved(@member, "event:MARU/Weekly Op")
-
-      travel_to Time.zone.parse("2026-06-05 12:00 UTC")
-
-      assert_equal({"event:MARU/Weekly Op" => ["FleetEvent", successor.slug, @fleet.slug]},
-        resolved(@member, "event:MARU/Weekly Op"))
-      assert_includes searched(@member, "event:weekly op"), "event:MARU/Weekly Op"
-    end
-
-    test "passes over a finished, cancelled or archived namesake" do
-      create(:fleet_event, fleet: @fleet, created_by: @admin, title: "Weekly Mining",
-        starts_at: 2.days.ago, ends_at: 2.days.ago + 2.hours)
-      create(:fleet_event, :cancelled, fleet: @fleet, created_by: @admin, title: "Weekly Mining")
-      create(:fleet_event, fleet: @fleet, created_by: @admin, title: "Weekly Mining", archived_at: Time.current)
-
-      assert_equal({"event:MARU/Weekly Mining" => ["FleetEvent", @event.slug, @fleet.slug]},
-        resolved(@member, "event:MARU/Weekly Mining"))
-      assert_equal ["event:MARU/Weekly Mining"], searched(@member, "event:weekly")
-    end
-
-    test "leaves a title two running events carry unresolved, and unoffered" do
-      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Weekly Mining")
-
-      assert_empty resolved(@member, "event:MARU/Weekly Mining")
-      assert_empty searched(@member, "event:weekly")
-    end
-
-    test "resolves nothing when the one running namesake is hidden from the reader" do
-      @event.update!(starts_at: 2.days.ago, ends_at: 2.days.ago + 2.hours)
-      create(:fleet_event, :open, fleet: @fleet, created_by: @admin, title: "Weekly Mining", visibility: "squadron",
-        fleet_squadrons: [create(:fleet_squadron, fleet: @fleet)])
-
-      assert_empty resolved(@member, "event:MARU/Weekly Mining")
-      assert_empty searched(@member, "event:weekly")
-    end
   end
 end

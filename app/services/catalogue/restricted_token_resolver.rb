@@ -14,9 +14,7 @@ module Catalogue
       },
       "event" => {
         model: ::FleetEvent, policy: ::FleetEventPolicy,
-        feature: "fleet_mission_builder", capability: :events,
-        # Event titles repeat, and a split series repeats its own.
-        tie_break: :still_running
+        feature: "fleet_mission_builder", capability: :events
       }
     }.freeze
 
@@ -92,13 +90,9 @@ module Catalogue
         records = type[:model].where(fleet:)
           .where("lower(title) IN (?)", in_fleet.map { |target| target[:title].downcase }.uniq)
           .group_by { |record| record.title.downcase }
-        # Of a title several records carry, the one still running -- which is
-        # still read across all of them, so a hidden one keeps it ambiguous.
-        running = tie_broken_ids(type, records.values.select { |named| named.size > 1 }.flatten)
 
         in_fleet.filter_map do |target|
           candidates = records.fetch(target[:title].downcase, [])
-          candidates = candidates.select { |record| running.include?(record.id) } unless candidates.one?
           next unless candidates.one?
 
           record = candidates.first
@@ -153,19 +147,18 @@ module Catalogue
 
       escaped = ActiveRecord::Base.sanitize_sql_like(title.downcase)
 
-      # Only titles a token can name: one record of its fleet carries them, or
-      # one of those that do is still running, whose id the group then answers.
-      # The policy then drops what the reader may not open, so the database is
-      # asked for more than is offered.
-      single = "count(*) = 1"
+      # Only titles one record of its fleet carries, which are the ones a token
+      # can name; the id of a group of one is its record's. The policy then
+      # drops what the reader may not open, so the database is asked for more
+      # than is offered.
       ids = type[:model].where(fleet_id: fleets.keys)
         .where("lower(title) LIKE ?", "%#{escaped}%")
         .where.not("title LIKE '%*%' OR title LIKE '%]%' OR title LIKE ?", "%\n%")
         .group(:fleet_id, Arel.sql("lower(title)"))
-        .having(type[:tie_break] ? "#{single} OR count(*) FILTER (WHERE #{tie_break_sql(type)}) = 1" : single)
+        .having("count(*) = 1")
         .order(starts_with("lower(title)", escaped), Arel.sql("min(length(title))"), Arel.sql("lower(title)"))
         .limit(TokenResolver::SEARCH_LIMIT * CANDIDATES_PER_RESULT)
-        .pluck(Arel.sql(type[:tie_break] ? "CASE WHEN #{single} THEN min(id::text) ELSE min(id::text) FILTER (WHERE #{tie_break_sql(type)}) END" : "min(id::text)"))
+        .pluck(Arel.sql("min(id::text)"))
 
       records = type[:model].where(id: ids).index_by { |record| record.id.to_s }.values_at(*ids).compact
 
@@ -175,16 +168,6 @@ module Catalogue
         ranked(record.title, title, TokenResolver::Match.new(token: "#{prefix}:#{fleet.fid}/#{record.title}",
           name: record.title, type: type[:model].name, slug: record.slug, fleet_slug: fleet.slug))
       end
-    end
-
-    private def tie_broken_ids(type, records)
-      return Set.new if records.empty? || !type[:tie_break]
-
-      type[:model].where(id: records.map(&:id)).public_send(type[:tie_break]).pluck(:id).to_set
-    end
-
-    private def tie_break_sql(type)
-      type[:model].public_send(:"#{type[:tie_break]}_sql")
     end
 
     private def ranked(name, query, match)
