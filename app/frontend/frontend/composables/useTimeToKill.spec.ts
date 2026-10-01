@@ -156,6 +156,12 @@ describe("timeToKill", () => {
     expect(ttk.kill).toBeCloseTo(20);
   });
 
+  it("never lets the armor turn a beam away", () => {
+    const beam = { ...gun("physical", 0, 200), beam: true };
+
+    expect(timeToKill(profileOf(TARGET), [beam], FULL).kill).toBeCloseTo(20);
+  });
+
   it("lets the shields regenerate through a loadout's pauses", () => {
     // Three seconds off in every ten, one of them inside the regen delay: the
     // shields regenerate 20% of the time, 10 HP/s against 100 DPS.

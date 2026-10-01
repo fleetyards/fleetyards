@@ -100,8 +100,8 @@ const composition = computed(() =>
 
 // Beams and missiles have no per-shot alpha to test, so a loadout of only
 // those has nothing to put in the check.
-const hasTestableGuns = computed(
-  () => collectLoadoutWeapons(props.hardpoints).length > 0,
+const hasTestableGuns = computed(() =>
+  collectLoadoutWeapons(props.hardpoints).some((weapon) => !weapon.beam),
 );
 
 const openPenetrationCheck = () => {

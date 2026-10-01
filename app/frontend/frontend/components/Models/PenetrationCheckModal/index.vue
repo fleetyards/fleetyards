@@ -227,7 +227,7 @@ const detailSurvival = computed(() => {
         {{ t("labels.penetrationCheck.intro") }}
       </p>
 
-      <div v-if="!loadoutWeapons.length" class="empty">
+      <div v-if="!loadoutWeapons.some((weapon) => !weapon.beam)" class="empty">
         {{ t("labels.penetrationCheck.noWeapons") }}
       </div>
 
