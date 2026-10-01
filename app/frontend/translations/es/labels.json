@@ -1108,7 +1108,7 @@
         "ttk": "TTK",
         "effectiveHp": "PV efectivos",
         "shieldsDown": "Escudos caídos",
-        "ttkNote": "El tiempo hasta destruir usa el daño sostenido por segundo de los cañones seleccionados, con la distribución de energía actual, desde la salud de escudo y blindaje fijada arriba. Los escudos reciben el daño que absorben, menos su resistencia, y pasan el resto al blindaje, que lo recibe hasta romperse y luego lo pasa al casco; la distorsión solo agota los escudos. Los escudos solo se regeneran mientras todos los cañones están en pausa más tiempo que su retardo de regeneración, y una vez caídos siguen caídos. Los PV efectivos son el daño bruto de un tipo necesario para destruir la nave, sin deflexión. Los rayos y los misiles se omiten, como en la comprobación de penetración."
+        "ttkNote": "El tiempo hasta destruir usa el daño sostenido por segundo de los cañones seleccionados, con la distribución de energía actual, desde la salud de escudo y blindaje fijada arriba. Los escudos reciben el daño que absorben, menos su resistencia, y pasan el resto al blindaje, que lo recibe hasta romperse y luego lo pasa al casco; la distorsión solo agota los escudos. Los escudos solo se regeneran mientras todos los cañones están en pausa más tiempo que su retardo de regeneración, y una vez caídos siguen caídos. Los PV efectivos son el daño bruto de un tipo necesario para destruir la nave, sin deflexión. Los rayos, marcados con TTK, solo cuentan para el tiempo hasta destruir: el blindaje nunca los desvía y, sin alfa por disparo, no entran en el margen. Los misiles se omiten."
       },
       "deflectionCheck": {
         "title": "Comprobación de deflexión",

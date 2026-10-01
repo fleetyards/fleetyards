@@ -254,7 +254,8 @@ export function loadoutSources(weapons: LoadoutWeapon[]): KillSource[] {
       (type) => ({
         type,
         dps: weapon.sustainedDps[type] * weapon.count,
-        pellet: pelletDamage(weapon, type),
+        // A beam deals no discrete hit for the armor to turn away.
+        pellet: weapon.beam ? Infinity : pelletDamage(weapon, type),
       }),
     ),
   );
