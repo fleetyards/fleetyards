@@ -1,6 +1,9 @@
 {
   "en": {
     "title": {
+      "locations": {
+        "index": "Locations"
+      },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",
       "defaultAdmin": "FleetYards.net Command",

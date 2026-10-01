@@ -1,6 +1,48 @@
 {
   "de": {
     "labels": {
+      "location": {
+        "name": "Name",
+        "kind": "Art",
+        "breadcrumb": "Lage",
+        "retired": "Nicht in diesem Build",
+        "starmap": "Sternenkarte",
+        "starmapVisibility": "Karte im Spiel",
+        "starmapHidden": "Auf der Karte verborgen",
+        "starmapAlways": "Immer auf der Karte sichtbar",
+        "starmapWithParent": "Sichtbar, sobald %{parent} ausgewählt ist",
+        "starmapShown": "Auf der Karte sichtbar",
+        "quantumTravel": "Quantenreise",
+        "quantumTravelYes": "Ein Ziel für Quantenreisen",
+        "quantumTravelNo": "Kein Ziel für Quantenreisen",
+        "mapParent": "Eingezeichnet unter",
+        "mapParentNote": "Die Karte im Spiel zeigt den Ort unter %{mapParent}, obwohl er in %{parent} liegt.",
+        "children": {
+          "one": "%{count} Ort darin",
+          "other": "%{count} Orte darin"
+        },
+        "allChildren": "Alle %{count} Orte darin",
+        "missions": "Missionen, die hier stattfinden können",
+        "allMissions": "Alle Missionen, die hier stattfinden können",
+        "terminals": "Handelsterminals",
+        "alwaysShown": "Immer auf der Karte",
+        "hiddenOnStarmap": "Auf der Karte verborgen",
+        "kinds": {
+          "system": "Sternsystem",
+          "star": "Stern",
+          "planet": "Planet",
+          "moon": "Mond",
+          "city": "Stadt",
+          "station": "Station",
+          "outpost": "Außenposten",
+          "asteroid": "Asteroid",
+          "anomaly": "Anomalie",
+          "jump_point": "Sprungpunkt",
+          "point_of_interest": "Ort von Interesse",
+          "nav_point": "Navigationspunkt",
+          "other": "Sonstiges"
+        }
+      },
       "sortOptions": "Sortieroptionen",
       "loading": "Lädt…",
       "loadingNamed": "%{name} wird geladen…",
@@ -1947,6 +1989,14 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "Orte durchsuchen",
+          "system": "System",
+          "kind": "Art",
+          "starmap": "Karte im Spiel",
+          "shownOnStarmap": "Auf der Karte sichtbar",
+          "hiddenOnStarmap": "Auf der Karte verborgen"
+        },
         "components": {
           "name": "Name",
           "itemType": "Gegenstandstyp",
@@ -3474,6 +3524,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "im Briefing genannt",
+        "locations": "Wo sie stattfindet",
         "locationKinds": {
           "surface": "Auf Planet oder Mond",
           "space": "Im Weltraum",

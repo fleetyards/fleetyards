@@ -1,6 +1,9 @@
 {
   "zh-CN": {
     "title": {
+      "locations": {
+        "index": "地点"
+      },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",
       "defaultAdmin": "FleetYards.net Command",

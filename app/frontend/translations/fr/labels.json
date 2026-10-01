@@ -1,6 +1,48 @@
 {
   "fr": {
     "labels": {
+      "location": {
+        "name": "Nom",
+        "kind": "Type",
+        "breadcrumb": "Emplacement",
+        "retired": "Absent de cette version",
+        "starmap": "Carte stellaire",
+        "starmapVisibility": "Carte en jeu",
+        "starmapHidden": "Masqué sur la carte",
+        "starmapAlways": "Toujours affiché sur la carte",
+        "starmapWithParent": "Affiché une fois %{parent} sélectionné",
+        "starmapShown": "Affiché sur la carte",
+        "quantumTravel": "Voyage quantique",
+        "quantumTravelYes": "Une destination de voyage quantique",
+        "quantumTravelNo": "Pas une destination de voyage quantique",
+        "mapParent": "Dessiné sous",
+        "mapParentNote": "La carte en jeu le dessine sous %{mapParent}, bien qu'il se trouve dans %{parent}.",
+        "children": {
+          "one": "%{count} lieu à l'intérieur",
+          "other": "%{count} lieux à l'intérieur"
+        },
+        "allChildren": "Les %{count} lieux à l'intérieur",
+        "missions": "Missions pouvant se dérouler ici",
+        "allMissions": "Toutes les missions pouvant se dérouler ici",
+        "terminals": "Terminaux commerciaux",
+        "alwaysShown": "Toujours sur la carte",
+        "hiddenOnStarmap": "Masqué sur la carte",
+        "kinds": {
+          "system": "Système stellaire",
+          "star": "Étoile",
+          "planet": "Planète",
+          "moon": "Lune",
+          "city": "Ville",
+          "station": "Station",
+          "outpost": "Avant-poste",
+          "asteroid": "Astéroïde",
+          "anomaly": "Anomalie",
+          "jump_point": "Point de saut",
+          "point_of_interest": "Point d'intérêt",
+          "nav_point": "Point de navigation",
+          "other": "Autre"
+        }
+      },
       "sortOptions": "Options de tri",
       "loading": "Chargement…",
       "loadingNamed": "Chargement de %{name}…",
@@ -1947,6 +1989,14 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "Rechercher des lieux",
+          "system": "Système",
+          "kind": "Type",
+          "starmap": "Carte en jeu",
+          "shownOnStarmap": "Affiché sur la carte",
+          "hiddenOnStarmap": "Masqué sur la carte"
+        },
         "components": {
           "name": "Nom",
           "itemType": "Type d'objet",
@@ -3474,6 +3524,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "cité dans le briefing",
+        "locations": "Où elle se déroule",
         "locationKinds": {
           "surface": "Sur une planète ou une lune",
           "space": "Dans l'espace",

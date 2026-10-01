@@ -188,6 +188,11 @@ const settingsActive = computed(() => {
              the catalogue reachable only by typing the address. -->
         <CatalogueNav />
         <NavItem
+          :to="{ name: 'locations' }"
+          :label="t('nav.locations')"
+          icon="fa-duotone fa-planet-ringed"
+        />
+        <NavItem
           :to="{ name: 'compare' }"
           :label="t('nav.compare.ships')"
           icon="fa-duotone fa-code-compare"

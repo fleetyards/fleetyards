@@ -1,6 +1,9 @@
 {
   "es": {
     "headlines": {
+      "locations": {
+        "index": "Ubicaciones"
+      },
       "admin": {
         "blueprints": {
           "index": "Planos",

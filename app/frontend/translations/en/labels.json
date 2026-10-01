@@ -1,6 +1,48 @@
 {
   "en": {
     "labels": {
+      "location": {
+        "name": "Name",
+        "kind": "Kind",
+        "breadcrumb": "Where it is",
+        "retired": "Not in this build",
+        "starmap": "Star map",
+        "starmapVisibility": "In-game map",
+        "starmapHidden": "Hidden on the map",
+        "starmapAlways": "Always shown on the map",
+        "starmapWithParent": "Shown once %{parent} is selected",
+        "starmapShown": "Shown on the map",
+        "quantumTravel": "Quantum travel",
+        "quantumTravelYes": "A quantum travel destination",
+        "quantumTravelNo": "Not a quantum travel destination",
+        "mapParent": "Drawn under",
+        "mapParentNote": "The in-game map draws it under %{mapParent}, although it sits inside %{parent}.",
+        "children": {
+          "one": "%{count} place inside",
+          "other": "%{count} places inside"
+        },
+        "allChildren": "All %{count} places inside",
+        "missions": "Missions that can take place here",
+        "allMissions": "All missions that can take place here",
+        "terminals": "Trade terminals",
+        "alwaysShown": "Always on the map",
+        "hiddenOnStarmap": "Hidden on the map",
+        "kinds": {
+          "system": "Star system",
+          "star": "Star",
+          "planet": "Planet",
+          "moon": "Moon",
+          "city": "City",
+          "station": "Station",
+          "outpost": "Outpost",
+          "asteroid": "Asteroid",
+          "anomaly": "Anomaly",
+          "jump_point": "Jump point",
+          "point_of_interest": "Point of interest",
+          "nav_point": "Nav point",
+          "other": "Other"
+        }
+      },
       "sortOptions": "Sort Options",
       "loading": "Loading…",
       "loadingNamed": "Loading %{name}…",
@@ -1947,6 +1989,14 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "Search locations",
+          "system": "System",
+          "kind": "Kind",
+          "starmap": "In-game map",
+          "shownOnStarmap": "Shown on the map",
+          "hiddenOnStarmap": "Hidden on the map"
+        },
         "components": {
           "name": "Name",
           "itemType": "Item Type",
@@ -3488,6 +3538,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "named in the briefing",
+        "locations": "Where it takes place",
         "locationKinds": {
           "surface": "On a planet or moon",
           "space": "In space",

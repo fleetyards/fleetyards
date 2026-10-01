@@ -118,6 +118,28 @@
     color: var(--color-text-dim, #959595);
   }
 
+  // A place and what tells it apart -- its parent -- on one line.
+  &__places {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__place {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 14px;
+
+    span {
+      font-size: 12px;
+      color: var(--color-text-dim, #959595);
+    }
+  }
+
   &__blueprints {
     display: flex;
     flex-wrap: wrap;

@@ -1,6 +1,48 @@
 {
   "zh-CN": {
     "labels": {
+      "location": {
+        "name": "名称",
+        "kind": "类型",
+        "breadcrumb": "位置",
+        "retired": "不在此版本中",
+        "starmap": "星图",
+        "starmapVisibility": "游戏内地图",
+        "starmapHidden": "在地图上隐藏",
+        "starmapAlways": "始终显示在地图上",
+        "starmapWithParent": "选中 %{parent} 后显示",
+        "starmapShown": "显示在地图上",
+        "quantumTravel": "量子旅行",
+        "quantumTravelYes": "量子旅行目的地",
+        "quantumTravelNo": "不是量子旅行目的地",
+        "mapParent": "地图上位于",
+        "mapParentNote": "游戏内地图将其显示在 %{mapParent} 下，但它实际位于 %{parent} 内。",
+        "children": {
+          "one": "内部有 %{count} 个地点",
+          "other": "内部有 %{count} 个地点"
+        },
+        "allChildren": "内部全部 %{count} 个地点",
+        "missions": "可在此进行的任务",
+        "allMissions": "所有可在此进行的任务",
+        "terminals": "交易终端",
+        "alwaysShown": "始终在地图上",
+        "hiddenOnStarmap": "在地图上隐藏",
+        "kinds": {
+          "system": "星系",
+          "star": "恒星",
+          "planet": "行星",
+          "moon": "卫星",
+          "city": "城市",
+          "station": "空间站",
+          "outpost": "前哨站",
+          "asteroid": "小行星",
+          "anomaly": "异常点",
+          "jump_point": "跳跃点",
+          "point_of_interest": "兴趣点",
+          "nav_point": "导航点",
+          "other": "其他"
+        }
+      },
       "sortOptions": "排序选项",
       "loading": "加载中…",
       "loadingNamed": "正在加载 %{name}…",
@@ -1947,6 +1989,14 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "搜索地点",
+          "system": "星系",
+          "kind": "类型",
+          "starmap": "游戏内地图",
+          "shownOnStarmap": "显示在地图上",
+          "hiddenOnStarmap": "在地图上隐藏"
+        },
         "components": {
           "name": "名称",
           "itemType": "物品类型",
@@ -3474,6 +3524,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "简报中提及",
+        "locations": "任务地点",
         "locationKinds": {
           "surface": "在行星或卫星上",
           "space": "在太空中",

@@ -1,6 +1,9 @@
 {
   "it": {
     "headlines": {
+      "locations": {
+        "index": "Luoghi"
+      },
       "admin": {
         "blueprints": {
           "index": "Progetti",

@@ -1,6 +1,9 @@
 {
   "de": {
     "headlines": {
+      "locations": {
+        "index": "Orte"
+      },
       "admin": {
         "blueprints": {
           "index": "Baupläne",

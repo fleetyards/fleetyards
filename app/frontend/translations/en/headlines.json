@@ -1,6 +1,9 @@
 {
   "en": {
     "headlines": {
+      "locations": {
+        "index": "Locations"
+      },
       "admin": {
         "blueprints": {
           "index": "Blueprints",

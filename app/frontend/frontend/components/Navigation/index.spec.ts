@@ -50,6 +50,7 @@ const routes = [
   "settings",
   "ships",
   "compare",
+  "locations",
   "images",
   "stats",
   "login",

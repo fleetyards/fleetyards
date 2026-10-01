@@ -1,6 +1,9 @@
 {
   "zh-CN": {
     "headlines": {
+      "locations": {
+        "index": "地点"
+      },
       "admin": {
         "blueprints": {
           "index": "蓝图",

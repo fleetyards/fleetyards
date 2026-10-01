@@ -1,6 +1,9 @@
 {
   "it": {
     "title": {
+      "locations": {
+        "index": "Luoghi"
+      },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",
       "defaultAdmin": "FleetYards.net Command",

@@ -1,6 +1,9 @@
 {
   "zh-TW": {
     "headlines": {
+      "locations": {
+        "index": "地點"
+      },
       "admin": {
         "blueprints": {
           "index": "藍圖",
