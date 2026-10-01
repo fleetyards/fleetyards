@@ -48,6 +48,26 @@ describe("session store", () => {
     ).toBeUndefined();
   });
 
+  // What a text's contract, event and user tokens resolve to is the reader's
+  // own answer, which the next one in the same tab must not inherit.
+  it("forgets the resolved tokens on login and on logout", async () => {
+    const key = ["catalogueLookup", ["user:mortik"]];
+    const answer = { items: [{ token: "user:mortik", type: "User" }] };
+    const user = { username: "mortik" } as Parameters<
+      ReturnType<typeof useSessionStore>["login"]
+    >[0];
+
+    queryClient.setQueryData(key, answer);
+    useSessionStore().login(user);
+
+    expect(queryClient.getQueryData(key)).toBeUndefined();
+
+    queryClient.setQueryData(key, answer);
+    await useSessionStore().logout();
+
+    expect(queryClient.getQueryData(key)).toBeUndefined();
+  });
+
   it("drops the reader's cached verification token on logout", async () => {
     queryClient.setQueryData(getMyRsiVerificationQueryKey(), {
       token: "FLEETYARDS-ABCDEFGHIJ",

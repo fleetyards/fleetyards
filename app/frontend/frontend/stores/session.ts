@@ -77,6 +77,10 @@ export const useSessionStore = defineStore("session", {
       // the answer for nobody rather than for the person who just arrived.
       queryClient.removeQueries({ queryKey: ["blueprints"] });
 
+      // What a text's contract, event and user tokens link to is the reader's
+      // own answer. Reset rather than removed, so a text on screen asks again.
+      void queryClient.resetQueries({ queryKey: ["catalogueLookup"] });
+
       this.authenticated = true;
       this.currentUser = user;
     },
@@ -120,6 +124,9 @@ export const useSessionStore = defineStore("session", {
         predicate: (query) =>
           query.queryKey[0] === "fleets" && query.queryKey[2] === "blueprints",
       });
+
+      // And the links in a text, which name what only this reader may open.
+      void queryClient.resetQueries({ queryKey: ["catalogueLookup"] });
 
       // The reader's own RSI verification, token included.
       queryClient.removeQueries({ queryKey: getMyRsiVerificationQueryKey() });
