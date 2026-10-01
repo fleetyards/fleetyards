@@ -23,9 +23,16 @@ const { t } = useI18n();
 
 const route = useRoute();
 
+// Into the list, wherever the row is: a place's page lists what sits inside
+// it with these rows too, and filtering that page's own route would only
+// change the address.
 const filterLink = (key: string, value: string | string[]) => ({
-  name: route.name as string,
-  query: { ...route.query, page: undefined, [key]: value },
+  name: "locations",
+  query: {
+    ...(route.name === "locations" ? route.query : {}),
+    page: undefined,
+    [key]: value,
+  },
 });
 
 const tags = computed<RowListItemTag[]>(() => [

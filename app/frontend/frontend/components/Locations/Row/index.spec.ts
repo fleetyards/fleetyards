@@ -68,6 +68,16 @@ describe("LocationRow", () => {
     expect(wrapper.text()).toContain("Hurston");
   });
 
+  // The same row lists what sits inside a place on that place's page, where
+  // filtering the page's own route would change nothing.
+  it("filters the list by kind from wherever the row is", async () => {
+    const wrapper = await mount();
+
+    const tag = wrapper.find('a[href*="kindIn"]');
+
+    expect(tag.attributes("href")).toContain("/locations?kindIn=outpost");
+  });
+
   it("marks a place hidden on the in-game map", async () => {
     const wrapper = await mount({ shownOnStarmap: false });
 
