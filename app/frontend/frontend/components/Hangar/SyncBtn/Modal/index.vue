@@ -15,7 +15,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
-import LoadingLine from "@/shared/components/LoadingLine/index.vue";
+import LoadingDots from "@/shared/components/LoadingDots/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -191,6 +191,13 @@ const updateStep = (step: string, status: SyncProcessStep["status"]) => {
     processSteps.value[index].status = status;
   }
 };
+
+// Checking the RSI identity or running a step: the modal's bottom cap says so.
+const working = computed(
+  () =>
+    loadingIdentity.value ||
+    processSteps.value.some((step) => step.status === "processing"),
+);
 
 const finished = computed(() =>
   processSteps.value.every((step) => step.status === "success"),
@@ -399,7 +406,7 @@ const refreshPage = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.syncExtension')" :fixed="true">
+  <Modal :title="t('headlines.syncExtension')" :fixed="true" :loading="working">
     <transition name="fade" mode="out-in">
       <div v-if="!hangarStore.extensionReady">
         <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
@@ -427,7 +434,7 @@ const refreshPage = async () => {
         >
           {{ t("labels.syncExtension.sessionStatus") }}:
           {{ t(`labels.syncExtension.identityStatus.${identityStatus}`) }}
-          <LoadingLine :loading="loadingIdentity" edge="bottom" />
+          <LoadingDots :loading="loadingIdentity" />
           <Btn
             v-if="identityStatus === 'notFound'"
             v-tooltip="t('labels.syncExtension.checkIdentity')"

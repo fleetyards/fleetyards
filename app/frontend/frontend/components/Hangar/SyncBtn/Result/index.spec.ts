@@ -15,18 +15,18 @@ const mount = (processSteps: SyncProcessStep[]) =>
   });
 
 describe("HangarSyncResult", () => {
-  it("runs the loading line under the step in progress, named for it", async () => {
+  it("runs the dots on the step in progress, and announces it by name", async () => {
     const wrapper = await mount([
       { name: "fetchHangar", status: "success" },
       { name: "submitData", status: "processing" },
     ]);
 
-    const lines = wrapper.findAll("[data-test='loading-line']");
-    expect(lines).toHaveLength(2);
-    expect(lines[0].classes()).not.toContain("loading-line--active");
-    expect(lines[1].classes()).toContain("loading-line--active");
+    const dots = wrapper.findAll("[data-test='loading-dots']");
+    expect(dots).toHaveLength(2);
+    expect(dots[0].find(".loading-dots__dots").exists()).toBe(false);
+    expect(dots[1].find(".loading-dots__dots").exists()).toBe(true);
     await vi.waitFor(() =>
-      expect(lines[1].find("[role='status']").text()).toContain("…"),
+      expect(dots[1].find("[role='status']").text()).toContain("…"),
     );
   });
 });
