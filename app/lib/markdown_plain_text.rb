@@ -19,7 +19,6 @@ module MarkdownPlainText
   IMAGE_SIZE = /(!\[(?:[^\[\]\\]|\\.|\[[^\[\]]*\])*\]\([^)\s]+\))\{width=(?:25|50|75)%\}/
 
   CODE_FENCE = /\A {0,3}(`{3,}|~{3,})/
-  CODE_SPAN = /(`[^`]+`)/
 
   def self.render(text)
     return "" if text.blank?
@@ -48,10 +47,43 @@ module MarkdownPlainText
         next line
       end
 
-      line.split(CODE_SPAN).each_with_index.map { |part, index| index.odd? ? part : yield(part) }.join
+      code_spans(line).map { |part, code| code ? part : yield(part) }.join
     end.join
   end
   private_class_method :outside_code
+
+  # The frontend's split: a backtick opens a span only when it is not escaped,
+  # so `\`` is prose.
+  def self.code_spans(line)
+    parts = []
+    text = +""
+    index = 0
+
+    while index < line.length
+      char = line[index]
+
+      if char == "\\" && index + 1 < line.length
+        text << line[index, 2]
+        index += 2
+        next
+      end
+
+      if char == "`" && (close = line.index("`", index + 1)) && close > index + 1
+        parts << [text, false] unless text.empty?
+        parts << [line[index..close], true]
+        text = +""
+        index = close + 1
+        next
+      end
+
+      text << char
+      index += 1
+    end
+
+    parts << [text, false] unless text.empty?
+    parts
+  end
+  private_class_method :code_spans
 
   def self.renderer
     @renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::StripDown)

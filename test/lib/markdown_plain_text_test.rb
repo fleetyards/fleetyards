@@ -44,6 +44,10 @@ class MarkdownPlainTextTest < ActiveSupport::TestCase
     assert text.end_with?("or Carrack"), text
   end
 
+  test "reads a token between escaped backticks as prose" do
+    assert_equal "See `Carrack` here", MarkdownPlainText.render("See \\`[*ship:Carrack*]\\` here")
+  end
+
   test "is empty for no text" do
     assert_equal "", MarkdownPlainText.render(nil)
   end
