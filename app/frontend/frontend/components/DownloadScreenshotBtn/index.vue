@@ -48,7 +48,11 @@ const download = async () => {
 
   const element = document.querySelector(props.element) as HTMLElement;
 
+  // Nothing to capture yet, such as a fleetchart still rendering. The
+  // button's loading state is its only indicator, and a loading button cannot
+  // be clicked, so it has to end here too.
   if (!element) {
+    downloading.value = false;
     return;
   }
 
