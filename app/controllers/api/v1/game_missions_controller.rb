@@ -30,7 +30,8 @@ module Api
         @locations = @mission.game_mission_locations
           .where(location_id: Location.current_version.select(:id))
           .includes(location: [:parent, :build, :last_build])
-          .sort_by { |link| [link.source, link.location.name.to_s] }
+          .sort_by { |link| [link.location.name.to_s, link.source] }
+          .uniq(&:location_id)
       end
 
       def index

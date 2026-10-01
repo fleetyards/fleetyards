@@ -50,6 +50,16 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions/{slug} lists a place its templates and its text both reach once" do
+    lorville = create(:location, name: "Lorville", kind: "city")
+    create(:game_mission_location, game_mission: @mission, location: lorville, source: "template")
+    create(:game_mission_location, game_mission: @mission, location: lorville, source: "text")
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      assert_equal [["Lorville", "template"]], parsed_body["locations"].map { |link| [link.dig("location", "name"), link["source"]] }
+    end
+  end
+
   test "GET /missions/{slug} returns the mission" do
     assert_api_response :get, 200, params: {slug: @mission.slug} do
       assert_equal "Yellow Level Contract: Ambush An Amateur", parsed_body["name"]
