@@ -120,7 +120,9 @@ const markCatalogueTokens = (escaped: string, fragments: string[]) =>
       `<span class="catalogue-token" data-catalogue-token="${token.trim()}"><span class="catalogue-token__name">${catalogueTokenName(token)}</span></span>`,
     );
 
-    return FRAGMENT + String.fromCharCode(PLACEHOLDER_BASE + fragments.length - 1);
+    return (
+      FRAGMENT + String.fromCharCode(PLACEHOLDER_BASE + fragments.length - 1)
+    );
   });
 
 const renderText = (value: string) => {
