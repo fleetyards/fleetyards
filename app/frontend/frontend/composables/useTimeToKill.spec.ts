@@ -192,6 +192,18 @@ describe("regenUptime", () => {
     ).toBe(0);
   });
 
+  it("ignores a gun that deals no sustained damage", () => {
+    expect(
+      regenUptime(
+        [
+          gun("energy", 50, 100, { ratio: 0.7, offTime: 3, cycle: 10 }),
+          gun("physical", 30, 0),
+        ],
+        1,
+      ),
+    ).toBeCloseTo(0.2);
+  });
+
   it("is zero when every pause is shorter than the regen delay", () => {
     expect(
       regenUptime(

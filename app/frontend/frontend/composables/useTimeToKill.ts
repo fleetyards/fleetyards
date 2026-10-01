@@ -72,13 +72,13 @@ export function killProfile(
     armorSelf[type] = model.armor?.[SELF_RESISTANCE[type]] ?? 1;
   }
 
-  let regen = 0;
-  let weightedDelay = 0;
-  for (const generator of model.shields) {
-    regen += generator.maxRegen || 0;
-    weightedDelay +=
-      (generator.damagedRegenDelay || 0) * (generator.maxRegen || 0);
-  }
+  // Each generator's delay counts by how much of the regen it supplies.
+  const weightedDelay = model.shields.reduce(
+    (sum, generator) =>
+      sum + (generator.damagedRegenDelay || 0) * (generator.maxRegen || 0),
+    0,
+  );
+  const regen = shield.totalRegen;
 
   return {
     shield,
@@ -98,7 +98,9 @@ export function regenUptime(
   weapons: LoadoutWeapon[],
   regenDelay: number,
 ): number {
-  const firing = weapons.filter((weapon) => weapon.duty.ratio > 0);
+  const firing = weapons.filter((weapon) =>
+    Object.values(weapon.sustainedDps).some((dps) => dps > 0),
+  );
   if (!firing.length) return 1;
 
   return firing.reduce((uptime, { duty }) => {
@@ -107,31 +109,39 @@ export function regenUptime(
   }, 1);
 }
 
-// Seconds for `sources` to bring the target from `start` to shields down, or
+// Seconds for `sources` to bring the target from `start` to shields down, and
 // to a destroyed hull. Shields take what they absorb, less their resistance;
-// what they let through meets the armor, which takes it until it breaks and
-// then hands it on to the hull. The armor's damage multiplier is left out, as
-// in the deflection check. Distortion stops at the shields: it never damages
-// armor or hull.
+// what they let through meets the armor, whose plate takes it at its own
+// resistance until it breaks and then hands it on to the hull. The armor's
+// multiplier on hull damage is left out, as in the deflection check.
+// Distortion stops at the shields: it never damages armor or hull. A ship with
+// no hull health has no kill time.
 export function simulateKill(
   profile: KillProfile,
   sources: KillSource[],
   start: KillStart,
-  until: "shields" | "kill",
   uptime = 0,
-): number {
+): TimeToKill {
   const { shield, armor, armorSelf } = profile;
   const shieldMax = shield.totalHp;
   const armorMax = armor.health;
+  const measuresKill = profile.hull > 0;
 
   let shieldHp = shieldMax * clamp(start.shieldHealth);
   let armorHp = armorMax * clamp(start.armorHealth);
   let hullHp = profile.hull;
   let elapsed = 0;
+  let shieldsDown = Infinity;
+
+  const result = (kill: number) => ({
+    shieldsDown,
+    kill: measuresKill ? kill : null,
+  });
 
   for (let step = 0; step < MAX_STEPS; step++) {
-    if (shieldHp <= 0 && until === "shields") return elapsed;
-    if (hullHp <= 0 && until === "kill") return elapsed;
+    if (shieldHp <= 0 && !Number.isFinite(shieldsDown)) shieldsDown = elapsed;
+    if (measuresKill && hullHp <= 0) return result(elapsed);
+    if (!measuresKill && shieldHp <= 0) return result(Infinity);
 
     const shieldRatio = shieldMax > 0 ? shieldHp / shieldMax : 0;
     const armorRatio = armorMax > 0 ? armorHp / armorMax : 0;
@@ -144,7 +154,7 @@ export function simulateKill(
       const absorption = absorptionAtHealth(shield, type, shieldRatio);
       const resistance = resistanceAtHealth(shield, type, shieldRatio);
 
-      // Same split the deflection check measures against erkul.
+      // The same split the deflection check uses for what reaches the armor.
       shieldRate += dps * absorption * (1 - resistance);
       if (type === "distortion") continue;
 
@@ -170,10 +180,10 @@ export function simulateKill(
     const dt = Math.min(
       timeToNextSlice(shieldHp, shieldRate, shieldMax / SHIELD_SLICES),
       timeToNextSlice(armorHp, armorRate, armorMax / ARMOR_SLICES),
-      hullRate > 0 && hullHp > 0 ? hullHp / hullRate : Infinity,
+      measuresKill && hullRate > 0 ? hullHp / hullRate : Infinity,
     );
 
-    if (!Number.isFinite(dt)) return Infinity;
+    if (!Number.isFinite(dt)) return result(Infinity);
 
     shieldHp = settle(shieldHp - Math.max(shieldRate, 0) * dt, shieldMax);
     armorHp = settle(armorHp - armorRate * dt, armorMax);
@@ -181,7 +191,7 @@ export function simulateKill(
     elapsed += dt;
   }
 
-  return Infinity;
+  return result(Infinity);
 }
 
 // Raw damage of one type it takes to destroy the ship, from the given state.
@@ -201,14 +211,14 @@ export function effectiveHp(
       continue;
     }
 
-    const value = simulateKill(
+    const { shieldsDown, kill } = simulateKill(
       profile,
       [{ type, dps: 1, pellet: Infinity }],
       start,
-      distortion ? "shields" : "kill",
     );
+    const value = distortion ? shieldsDown : kill;
 
-    result[type] = Number.isFinite(value) ? value : null;
+    result[type] = value !== null && Number.isFinite(value) ? value : null;
   }
 
   return result;
@@ -235,16 +245,12 @@ export function timeToKill(
   weapons: LoadoutWeapon[],
   start: KillStart,
 ): TimeToKill {
-  const sources = loadoutSources(weapons);
-  const uptime = regenUptime(weapons, profile.regenDelay);
-
-  return {
-    shieldsDown: simulateKill(profile, sources, start, "shields", uptime),
-    kill:
-      profile.hull > 0
-        ? simulateKill(profile, sources, start, "kill", uptime)
-        : null,
-  };
+  return simulateKill(
+    profile,
+    loadoutSources(weapons),
+    start,
+    regenUptime(weapons, profile.regenDelay),
+  );
 }
 
 function clamp(ratio: number): number {
