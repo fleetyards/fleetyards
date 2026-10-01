@@ -98,46 +98,50 @@ const ownRoute = computed(() =>
     :unavailable="!loading && !blueprint"
     @navigate="emit('navigate')"
   >
-    <div v-if="craftable?.name" class="blueprint-stats-card__section">
-      <span class="stats-card__label">{{ t("labels.blueprint.makes") }}</span>
-      <!-- A link, not another hover card: a card opening inside a card would
+    <template v-if="craftable?.name || materials.length" #default>
+      <div v-if="craftable?.name" class="blueprint-stats-card__section">
+        <span class="stats-card__label">{{ t("labels.blueprint.makes") }}</span>
+        <!-- A link, not another hover card: a card opening inside a card would
            leave the reader two layers deep in something meant as a glance. -->
-      <router-link
-        v-if="craftableRoute"
-        :to="craftableRoute"
-        class="blueprint-stats-card__makes"
-        data-test="blueprint-stats-card-makes"
-        @click="emit('navigate')"
-      >
-        <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
-        [{{ craftable.name }}]
-      </router-link>
-      <span v-else class="blueprint-stats-card__makes">
-        <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
-        [{{ craftable.name }}]
-      </span>
-    </div>
-
-    <div v-if="materials.length" class="blueprint-stats-card__section">
-      <span class="stats-card__label">
-        {{ t("labels.blueprint.materials") }}
-      </span>
-      <div class="blueprint-stats-card__materials">
         <router-link
-          v-for="material in materials"
-          :key="material.id"
-          :to="{ name: 'commodity', params: { slug: material.slug } }"
-          class="blueprint-stats-card__material"
+          v-if="craftableRoute"
+          :to="craftableRoute"
+          class="blueprint-stats-card__makes blueprint-stats-card__makes--link"
+          data-test="blueprint-stats-card-makes"
           @click="emit('navigate')"
         >
-          {{ material.name }}
+          <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
+          [{{ craftable.name }}]
         </router-link>
+        <span v-else class="blueprint-stats-card__makes">
+          <i :class="catalogueTokenIcon(craftable.type)" aria-hidden="true" />
+          [{{ craftable.name }}]
+        </span>
       </div>
-    </div>
+
+      <div v-if="materials.length" class="blueprint-stats-card__section">
+        <span class="stats-card__label">
+          {{ t("labels.blueprint.materials") }}
+        </span>
+        <div class="blueprint-stats-card__materials">
+          <router-link
+            v-for="material in materials"
+            :key="material.id"
+            :to="{ name: 'commodity', params: { slug: material.slug } }"
+            class="blueprint-stats-card__material"
+            @click="emit('navigate')"
+          >
+            {{ material.name }}
+          </router-link>
+        </div>
+      </div>
+    </template>
   </StatsCard>
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/catalogueToken";
+
 .blueprint-stats-card {
   &__section {
     display: flex;
@@ -145,26 +149,16 @@ const ownRoute = computed(() =>
     gap: 6px;
   }
 
-  // Marked the way an item named in text is: its type's icon, its name in
-  // brackets.
   &__makes {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.35em;
+    @include catalogue-token;
     align-self: flex-start;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--color-primary, #428bca);
-    text-decoration: none;
-
-    i {
-      font-size: 0.85em;
-    }
   }
 
-  a.blueprint-stats-card__makes:hover,
-  a.blueprint-stats-card__makes:focus-visible {
-    color: var(--color-primary-tint, #6aa5dc);
+  &__makes--link {
+    @include catalogue-token-link;
   }
 
   &__materials {

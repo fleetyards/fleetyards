@@ -35,30 +35,13 @@ defineProps<Props>();
 </template>
 
 <style lang="scss" scoped>
-// A flex row, so the markup's whitespace adds no spaces: the gap between icon
-// and name is this one, and nothing sits between the name and what follows.
-.catalogue-token-link {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.25em;
-  white-space: nowrap;
+@import "@/shared/components/catalogueToken";
 
-  i {
-    font-size: 0.85em;
-    color: var(--color-primary, #428bca);
-  }
+.catalogue-token-link {
+  @include catalogue-token;
 
   :deep(.catalogue-token-link__link) {
-    color: var(--color-primary, #428bca);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 150ms ease;
-
-    &:hover,
-    &:focus-visible {
-      color: var(--color-primary-tint, #6aa5dc);
-      text-decoration: none;
-    }
+    @include catalogue-token-link;
   }
 }
 </style>
