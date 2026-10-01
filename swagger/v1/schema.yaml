@@ -29152,6 +29152,8 @@ components:
           type: string
         manufacturerCode:
           type: string
+        hullHealth:
+          type: number
         armor:
           "$ref": "#/components/schemas/ModelDefenseArmor"
         shields:
@@ -29186,12 +29188,24 @@ components:
           type: number
         deflectionThermal:
           type: number
+        selfResistancePhysical:
+          type: number
+        selfResistanceEnergy:
+          type: number
+        selfResistanceDistortion:
+          type: number
+        selfResistanceThermal:
+          type: number
       additionalProperties: false
       title: ModelDefenseArmor
     ModelDefenseShield:
       type: object
       properties:
         maxHealth:
+          type: number
+        maxRegen:
+          type: number
+        damagedRegenDelay:
           type: number
         absorption:
           "$ref": "#/components/schemas/ComponentDamageTypeMap"
@@ -29200,6 +29214,7 @@ components:
       additionalProperties: false
       required:
       - maxHealth
+      - maxRegen
       title: ModelDefenseShield
     ModelDefensesList:
       type: array

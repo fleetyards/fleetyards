@@ -10,11 +10,13 @@ module V1
           type: :object,
           properties: {
             maxHealth: {type: :number},
+            maxRegen: {type: :number},
+            damagedRegenDelay: {type: :number},
             absorption: ::Shared::V1::Schemas::ComponentDamageTypeMap,
             resistance: ::Shared::V1::Schemas::ComponentDamageTypeMap
           },
           additionalProperties: false,
-          required: %w[maxHealth]
+          required: %w[maxHealth maxRegen]
         })
       end
     end

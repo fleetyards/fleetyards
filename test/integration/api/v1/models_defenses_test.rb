@@ -28,18 +28,20 @@ class Api::V1::ModelsDefensesTest < ActionDispatch::IntegrationTest
     "deflection_physical" => 11.0,
     "deflection_energy" => 9.0,
     "deflection_distortion" => 0.0,
-    "deflection_thermal" => 0.0
+    "deflection_thermal" => 0.0,
+    "self_resistance_physical" => 0.5
   }.freeze
 
   SHIELD_DATA = {
     "max_health" => 2160.0,
     "max_regen" => 410.0,
+    "damaged_regen_delay" => 1.5,
     "absorption" => {"physical" => {"min" => 0.0, "max" => 0.45}, "energy" => {"min" => 1.0, "max" => 1.0}},
     "resistance" => {"physical" => {"min" => 0.0, "max" => 0.25}}
   }.freeze
 
   setup do
-    @model = create(:model, name: "Gladius")
+    @model = create(:model, name: "Gladius", hull_health: 5400.0)
     armor = create(:component, category: "armor", type_data: ARMOR_DATA)
     shield = create(:component, category: "shieldgenerator", type_data: SHIELD_DATA)
 
@@ -56,9 +58,14 @@ class Api::V1::ModelsDefensesTest < ActionDispatch::IntegrationTest
       assert_equal 3840.0, entry.dig("armor", "health")
       assert_equal 0.75, entry.dig("armor", "damagePhysical")
       assert_equal 11.0, entry.dig("armor", "deflectionPhysical")
+      assert_equal 0.5, entry.dig("armor", "selfResistancePhysical")
+      assert_equal 1.0, entry.dig("armor", "selfResistanceEnergy")
+      assert_equal 5400.0, entry["hullHealth"]
 
       shield = entry["shields"].sole
       assert_equal 2160.0, shield["maxHealth"]
+      assert_equal 410.0, shield["maxRegen"]
+      assert_equal 1.5, shield["damagedRegenDelay"]
       assert_equal 0.45, shield.dig("absorption", "physical", "max")
       assert_equal 0.25, shield.dig("resistance", "physical", "max")
     end
@@ -96,6 +103,14 @@ class Api::V1::ModelsDefensesTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200 do
       assert_empty parsed_body
+    end
+  end
+
+  test "GET /models/defenses reads hull health from the build" do
+    create(:model_build, model: @model, hull_health: 7200.0)
+
+    assert_api_response :get, 200 do
+      assert_equal 7200.0, parsed_body.sole["hullHealth"]
     end
   end
 

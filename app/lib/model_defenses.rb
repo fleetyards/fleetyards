@@ -17,7 +17,7 @@ class ModelDefenses
   end
 
   def call
-    models = Model.visible.active.includes(:manufacturer).order(name: :asc).index_by(&:id)
+    models = Model.visible.active.includes(:manufacturer, :build, :last_build).order(name: :asc).index_by(&:id)
     defenses = collect(models.keys)
 
     models.values.filter_map do |model|
