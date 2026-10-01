@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
@@ -125,7 +125,9 @@ describe("StatsCard", () => {
     expect(wrapper.find(".loading-line").classes()).toContain(
       "loading-line--active",
     );
-    expect(wrapper.find("[role='status']").text()).toContain("Glacier");
+    await vi.waitFor(() =>
+      expect(wrapper.find("[role='status']").text()).toContain("Glacier"),
+    );
     // The name is known before the record arrives.
     expect(wrapper.find(".stats-card__title").text()).toBe("Glacier");
   });
@@ -157,8 +159,10 @@ describe("StatsCard", () => {
       plugins: [router()],
     });
 
+    await vi.waitFor(() =>
+      expect(wrapper.find("[role='status']").text()).not.toBe(""),
+    );
     const status = wrapper.find("[role='status']").text();
-    expect(status).not.toBe("");
     expect(status).not.toMatch(/\s…$/);
   });
 

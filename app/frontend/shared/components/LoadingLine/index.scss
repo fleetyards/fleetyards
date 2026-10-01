@@ -2,6 +2,10 @@
 // starting or ending moves nothing around it.
 .loading-line {
   position: absolute;
+  // Above whatever else its parent lays over itself, such as an upload's
+  // progress overlay: the line is the one thing that must stay visible.
+  z-index: 1;
+  display: block;
   left: 0;
   right: 0;
   height: 2px;

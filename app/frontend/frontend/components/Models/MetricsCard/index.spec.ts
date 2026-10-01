@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
 
@@ -72,7 +72,9 @@ describe("MetricsCard", () => {
     const line = wrapper.find(".metrics-card__head .loading-line");
     expect(line.classes()).toContain("loading-line--active");
     expect(line.classes()).toContain("loading-line--bottom");
-    expect(wrapper.find("[role='status']").text()).toContain("Combat");
+    await vi.waitFor(() =>
+      expect(wrapper.find("[role='status']").text()).toContain("Combat"),
+    );
     // The status text must not leak into the title the e2e specs read.
     expect(wrapper.find("[data-test='panel-heading-title']").text()).toBe(
       "Combat",
