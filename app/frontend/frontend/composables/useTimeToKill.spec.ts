@@ -168,6 +168,24 @@ describe("timeToKill", () => {
     expect(ttk.kill).toBe(Infinity);
   });
 
+  it("still times the shields when bleed-through kills the hull first", () => {
+    // 200 physical DPS: half bleeds through and kills 100 hull HP in a second,
+    // the other half drains 1000 shield HP in ten.
+    const ttk = timeToKill(
+      profileOf({
+        ...TARGET,
+        hullHealth: 100,
+        armor: undefined,
+        shields: [{ ...TARGET.shields[0], maxRegen: 0 }],
+      }),
+      [gun("physical", 30, 200)],
+      FULL,
+    );
+
+    expect(ttk.kill).toBeCloseTo(1);
+    expect(ttk.shieldsDown).toBeCloseTo(10);
+  });
+
   it("has no kill time without hull health", () => {
     const ttk = timeToKill(
       profileOf({ ...TARGET, hullHealth: undefined }),

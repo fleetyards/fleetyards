@@ -150,16 +150,21 @@ export function simulateKill(
   let hullHp = profile.hull;
   let elapsed = 0;
   let shieldsDown = Infinity;
+  let kill = Infinity;
 
-  const result = (kill: number) => ({
-    shieldsDown,
-    kill: measuresKill ? kill : null,
-  });
+  const result = () => ({ shieldsDown, kill: measuresKill ? kill : null });
 
+  // Fire continues past a kill: bleed-through can destroy the hull while the
+  // shields still stand, and the shields-down time is still worth knowing.
   for (let step = 0; step < MAX_STEPS; step++) {
     if (shieldHp <= 0 && !Number.isFinite(shieldsDown)) shieldsDown = elapsed;
-    if (measuresKill && hullHp <= 0) return result(elapsed);
-    if (!measuresKill && shieldHp <= 0) return result(Infinity);
+    if (measuresKill && hullHp <= 0 && !Number.isFinite(kill)) kill = elapsed;
+    if (
+      Number.isFinite(shieldsDown) &&
+      (!measuresKill || Number.isFinite(kill))
+    ) {
+      return result();
+    }
 
     const shieldRatio = shieldMax > 0 ? shieldHp / shieldMax : 0;
     const armorRatio = armorMax > 0 ? armorHp / armorMax : 0;
@@ -198,10 +203,10 @@ export function simulateKill(
     const dt = Math.min(
       timeToNextSlice(shieldHp, shieldRate, shieldMax / SHIELD_SLICES),
       timeToNextSlice(armorHp, armorRate, armorMax / ARMOR_SLICES),
-      measuresKill && hullRate > 0 ? hullHp / hullRate : Infinity,
+      measuresKill && hullHp > 0 && hullRate > 0 ? hullHp / hullRate : Infinity,
     );
 
-    if (!Number.isFinite(dt)) return result(Infinity);
+    if (!Number.isFinite(dt)) return result();
 
     shieldHp = settle(shieldHp - Math.max(shieldRate, 0) * dt, shieldMax);
     armorHp = settle(armorHp - armorRate * dt, armorMax);
@@ -209,7 +214,7 @@ export function simulateKill(
     elapsed += dt;
   }
 
-  return result(Infinity);
+  return result();
 }
 
 // Raw damage of one type it takes to destroy the ship, from the given state.
