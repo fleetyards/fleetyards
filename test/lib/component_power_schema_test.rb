@@ -10,6 +10,7 @@ class ComponentPowerSchemaTest < ActiveSupport::TestCase
   POWERED_SCHEMAS = %w[
     ComponentThruster ComponentRadar ComponentShield ComponentLifeSupport ComponentEmp
     ComponentQuantumEnforcement ComponentJumpDrive ComponentQuantumDrive ComponentWeapon
+    ComponentController ComponentShieldController ComponentMissileController
   ].freeze
 
   test "every powered component schema carries the power and signature fields" do

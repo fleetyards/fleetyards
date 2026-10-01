@@ -19,7 +19,8 @@ module Shared
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            signatureEm: {type: :number},
+            signatureIr: {type: :number}
           },
           additionalProperties: false
         })
