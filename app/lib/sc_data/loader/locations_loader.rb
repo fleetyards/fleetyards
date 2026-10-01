@@ -14,6 +14,10 @@ module ScData
         retire_absent_builds(LocationBuild, :location_id, loaded)
 
         prune_builds(LocationBuild)
+
+        # The UEX sync matches a terminal to a place as it writes it, which
+        # finds nothing for a place that arrived after the sync.
+        stats[Terminal.name][:updated] += ::Uex::TerminalLocationMatcher.relink
       end
 
       def one(item)

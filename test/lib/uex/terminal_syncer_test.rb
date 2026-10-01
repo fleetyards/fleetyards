@@ -40,6 +40,18 @@ module Uex
       assert_equal Time.zone.at(1766167856), terminal.source_updated_at
     end
 
+    test "#run links a terminal to the place it is at" do
+      system = create(:location, name: "Stanton System", kind: "system")
+      star = create(:location, name: "Stanton", kind: "star", parent: system)
+      arccorp = create(:location, name: "ArcCorp", kind: "planet", parent: star)
+      area18 = create(:location, name: "Area18", kind: "city", parent: arccorp)
+
+      sync
+
+      assert_equal area18, Terminal.find_by!(uex_id: 104).location
+      assert_nil Terminal.find_by!(uex_id: 102).location
+    end
+
     test "#run reads an unmeasured container size and an offline terminal" do
       sync
 

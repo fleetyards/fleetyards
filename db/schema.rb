@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_01_120100) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_01_120200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2357,6 +2357,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_120100) do
     t.string "star_system"
     t.integer "uex_id", null: false
     t.datetime "updated_at", null: false
+    t.uuid "location_id"
+    t.index ["location_id"], name: "index_terminals_on_location_id"
     t.index ["star_system"], name: "index_terminals_on_star_system"
     t.index ["uex_id"], name: "index_terminals_on_uex_id", unique: true
   end
@@ -2775,6 +2777,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_120100) do
   add_foreign_key "supporter_contributions", "fleets", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
   add_foreign_key "task_forces", "vehicles", on_delete: :cascade
+  add_foreign_key "terminals", "locations", on_delete: :nullify
   add_foreign_key "tour_join_requests", "tours", on_delete: :cascade
   add_foreign_key "tour_join_requests", "users", column: "decided_by_id", on_delete: :nullify
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade
