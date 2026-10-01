@@ -111,16 +111,13 @@ export function evaluateWeapon(
   if (weapon.beam) return null;
 
   const types: DeflectionTypeResult[] = [];
-  // Alpha is compared per pellet — a scattergun's shot is split across its
-  // pellets, and each pellet meets the deflection threshold on its own.
-  const pellets = Math.max(weapon.pelletsPerShot ?? 1, 1);
 
   for (const { key, label } of DEFLECTION_DAMAGE_TYPES) {
-    const perShot =
+    // Alpha is compared per pellet, and `damagePerShot` already is one pellet's
+    // damage: it is read off the ammo, and a scattergun fires eight of them.
+    const raw =
       (weapon.damagePerShot as Record<string, number | undefined>)?.[key] ?? 0;
-    if (perShot <= 0) continue;
-
-    const raw = perShot / pellets;
+    if (raw <= 0) continue;
 
     // What survives the shield is what meets the armor's deflection
     // threshold. The armor's own damage reduction is deliberately absent:

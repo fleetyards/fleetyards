@@ -284,9 +284,10 @@ describe("computeDeflectionCheck", () => {
 describe("computeDeflectionCheck rules read off erkul's footnote", () => {
   it("compares alpha per pellet, not per shot", () => {
     // 8 pellets of 45 each: as one 360-damage shot it would pierce easily,
-    // but each pellet meets the threshold alone.
+    // but each pellet meets the threshold alone. The game data stores the
+    // damage of one pellet.
     const { results } = computeDeflectionCheck(
-      [weapon("Scattergun", { physical: 360 }, "3", { pelletsPerShot: 8 })],
+      [weapon("Scattergun", { physical: 45 }, "3", { pelletsPerShot: 8 })],
       armor(),
       shield(),
       1,
