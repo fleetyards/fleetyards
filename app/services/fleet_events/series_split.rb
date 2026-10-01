@@ -72,7 +72,8 @@ module FleetEvents
         ends_at: duration && occurrence + duration,
         recurrence_count: remaining_count(occurrence),
         excluded_dates: event.excluded_dates.select { |d| d >= date },
-        fleet_squadron_ids: event.fleet_squadron_ids
+        fleet_squadron_ids: event.fleet_squadron_ids,
+        split_from: event
       )
       successor
     end

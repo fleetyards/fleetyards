@@ -48,6 +48,7 @@
 #  discord_message_id        :string
 #  fleet_id                  :uuid             not null
 #  mission_id                :uuid
+#  split_from_id             :uuid
 #
 # Indexes
 #
@@ -57,12 +58,14 @@
 #  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
 #  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)
 #  index_fleet_events_on_mission_id              (mission_id)
+#  index_fleet_events_on_split_from_id           (split_from_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (fleet_id => fleets.id)
 #  fk_rails_...  (mission_id => missions.id)
+#  fk_rails_...  (split_from_id => fleet_events.id) ON DELETE => nullify
 #
 class FleetEvent < ApplicationRecord
   include AASM
@@ -73,6 +76,9 @@ class FleetEvent < ApplicationRecord
   belongs_to :fleet, touch: true
   belongs_to :mission, optional: true
   belongs_to :created_by, class_name: "User"
+  # The series this one continues, when it was split off as "this and
+  # following". The two share a title, and this is what says they are one.
+  belongs_to :split_from, class_name: "FleetEvent", optional: true
 
   has_many :fleet_event_teams, dependent: :destroy
   has_many :fleet_event_ships, through: :fleet_event_teams

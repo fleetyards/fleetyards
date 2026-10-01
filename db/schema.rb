@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_30_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_01_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -871,6 +871,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_120000) do
     t.string "scenario"
     t.string "signup_approval", default: "direct", null: false
     t.string "slug", null: false
+    t.uuid "split_from_id"
     t.datetime "starting_soon_notified_at"
     t.datetime "starts_at", null: false
     t.string "status", default: "draft", null: false
@@ -884,6 +885,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_120000) do
     t.index ["fleet_id", "starts_at"], name: "index_fleet_events_on_fleet_id_and_starts_at"
     t.index ["fleet_id", "status"], name: "index_fleet_events_on_fleet_id_and_status"
     t.index ["mission_id"], name: "index_fleet_events_on_mission_id"
+    t.index ["split_from_id"], name: "index_fleet_events_on_split_from_id"
   end
 
   create_table "fleet_fid_claims", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2605,6 +2607,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_120000) do
   add_foreign_key "fleet_event_slots", "model_positions"
   add_foreign_key "fleet_event_teams", "fleet_events"
   add_foreign_key "fleet_event_teams", "mission_teams", column: "source_team_id", on_delete: :nullify
+  add_foreign_key "fleet_events", "fleet_events", column: "split_from_id", on_delete: :nullify
   add_foreign_key "fleet_events", "fleets"
   add_foreign_key "fleet_events", "missions"
   add_foreign_key "fleet_events", "users", column: "created_by_id"
