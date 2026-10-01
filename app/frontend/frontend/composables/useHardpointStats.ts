@@ -398,6 +398,14 @@ export const useHardpointStats = (
     return powered;
   };
 
+  // Angles and multipliers run to hundredths, which the one-decimal stat
+  // format would round away; written with the app's decimal separator.
+  const preciseNumber = (value: number): string =>
+    String(Math.round(value * 100) / 100).replace(
+      ".",
+      t("number.format.separator") || ",",
+    );
+
   const projectileBurstDps = (weapon: ComponentWeapon): number | null => {
     if (!weapon.fireRate || !weapon.damagePerShot) return null;
 
@@ -881,6 +889,58 @@ export const useHardpointStats = (
               value: `${degrees(decay)}/s`,
             });
           }
+        }
+        const gimbalFireRate = weapon.gimbalMode?.fireRateMultiplier;
+        if (weapon.fireRate && gimbalFireRate && gimbalFireRate !== 1) {
+          result.push(
+            stat(
+              "weapons.gimbalFireRate",
+              weapon.fireRate * gimbalFireRate,
+              "rateOfFire",
+            ),
+          );
+        }
+        // A bound the record does not settle is unknown, not ×1, so only the
+        // known ones are shown -- each marked with the end it applies to.
+        const spreadMin = weapon.gimbalMode?.spreadMinMultiplier;
+        const spreadMax = weapon.gimbalMode?.spreadMaxMultiplier;
+        const spreadValue = (() => {
+          if (spreadMin != null && spreadMax != null) {
+            if (spreadMin === 1 && spreadMax === 1) return undefined;
+            return spreadMin === spreadMax
+              ? `×${preciseNumber(spreadMin)}`
+              : `×${preciseNumber(spreadMin)} / ×${preciseNumber(spreadMax)}`;
+          }
+          if (spreadMin != null && spreadMin !== 1) {
+            return `×${preciseNumber(spreadMin)} (${t("labels.hardpoint.weapons.spreadMin")})`;
+          }
+          if (spreadMax != null && spreadMax !== 1) {
+            return `×${preciseNumber(spreadMax)} (${t("labels.hardpoint.weapons.spreadMax")})`;
+          }
+          return undefined;
+        })();
+        if (spreadValue) {
+          result.push({
+            label: t("labels.hardpoint.weapons.gimbalSpread"),
+            value: spreadValue,
+          });
+        }
+        if (weapon.aimAssist?.nudgeAngle) {
+          result.push({
+            label: t("labels.hardpoint.weapons.aimAssist"),
+            value: `${preciseNumber(weapon.aimAssist.nudgeAngle)}°`,
+          });
+        }
+        const assist = weapon.aimAssist;
+        if (assist?.closeOuterAngle && assist.closeRangeMax) {
+          const band =
+            typeof assist.closeRangeMin === "number"
+              ? `${preciseNumber(assist.closeRangeMin)}–${preciseNumber(assist.closeRangeMax)} m`
+              : `≤ ${preciseNumber(assist.closeRangeMax)} m`;
+          result.push({
+            label: t("labels.hardpoint.weapons.closeAimAssist"),
+            value: `${preciseNumber(assist.closeOuterAngle)}° (${band})`,
+          });
         }
         if (weapon.damagePerShot) {
           addDamageBreakdown(result, weapon.damagePerShot);
