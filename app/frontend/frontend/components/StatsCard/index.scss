@@ -282,9 +282,13 @@
     }
   }
 
+  // Still, like the rest of the card's skeleton: the loading line is the one
+  // thing that moves here, and the shared well would sweep beside it.
   &__image-well {
     height: 150px;
     border-radius: 0;
+    animation: none;
+    background-image: none;
   }
 
   // Each bar sized by its own class: a shared size on `.skeleton-bar` here
