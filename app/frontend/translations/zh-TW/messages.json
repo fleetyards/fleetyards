@@ -357,6 +357,12 @@
           "sort": {
             "failure": "無法儲存排序。"
           },
+          "ranks": {
+            "update": {
+              "success": "中隊職級已儲存。",
+              "failure": "無法儲存中隊職級。"
+            }
+          },
           "members": {
             "add": {
               "success": "已新增 %{count} 位成員。",

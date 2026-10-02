@@ -595,7 +595,16 @@
           "joinedAt": "Fecha de ingreso al escuadrón",
           "searchMembers": "Buscar miembros",
           "availableMembers": "miembros disponibles",
-          "selectedMembers": "%{count} seleccionados"
+          "selectedMembers": "%{count} seleccionados",
+          "rank": "Rango",
+          "ranks": "Rangos de escuadrón",
+          "ranksHint": "Los nombres que usa cada escuadrón de esta flota. Un rango renombrado conserva su lugar y sus permisos.",
+          "rankSlots": {
+            "leader": "Uno por escuadrón. Añade y quita miembros y asigna sus rangos.",
+            "co_leader": "Uno por escuadrón. Añade y quita miembros y asigna los rangos por debajo del suyo.",
+            "officer": "Cualquier número. Añade y quita a los miembros de rango inferior.",
+            "member": "Todo miembro nuevo empieza aquí."
+          }
         },
         "roles": {
           "permanent": "Permanente",

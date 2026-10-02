@@ -263,6 +263,8 @@
           "formDetails": "Details",
           "formAppearance": "Appearance",
           "formDiscord": "Discord",
+          "ranks": "Squadron Ranks",
+          "editMember": "Edit Squadron Member",
           "teams": "Teams",
           "addMembers": "Add Members",
           "members": "Members"

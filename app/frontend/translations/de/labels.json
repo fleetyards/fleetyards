@@ -595,7 +595,16 @@
           "joinedAt": "Beitritt zum Geschwader",
           "searchMembers": "Mitglieder suchen",
           "availableMembers": "verfügbare Mitglieder",
-          "selectedMembers": "%{count} ausgewählt"
+          "selectedMembers": "%{count} ausgewählt",
+          "rank": "Rang",
+          "ranks": "Staffelränge",
+          "ranksHint": "Die Namen, die jede Staffel dieser Flotte verwendet. Ein umbenannter Rang behält seinen Platz und seine Rechte.",
+          "rankSlots": {
+            "leader": "Einer pro Staffel. Fügt Mitglieder hinzu, entfernt sie und legt ihre Ränge fest.",
+            "co_leader": "Einer pro Staffel. Fügt Mitglieder hinzu, entfernt sie und legt die Ränge unter dem eigenen fest.",
+            "officer": "Beliebig viele. Fügt Mitglieder mit niedrigerem Rang hinzu und entfernt sie.",
+            "member": "Jedes neue Mitglied beginnt hier."
+          }
         },
         "roles": {
           "permanent": "Permanent",

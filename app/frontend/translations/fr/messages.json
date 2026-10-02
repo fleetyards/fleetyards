@@ -357,6 +357,12 @@
           "sort": {
             "failure": "L'ordre n'a pas pu être enregistré."
           },
+          "ranks": {
+            "update": {
+              "success": "Grades d'escadron enregistrés.",
+              "failure": "Les grades d'escadron n'ont pas pu être enregistrés."
+            }
+          },
           "members": {
             "add": {
               "success": "%{count} membres ajoutés.",

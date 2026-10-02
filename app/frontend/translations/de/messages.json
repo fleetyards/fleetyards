@@ -357,6 +357,12 @@
           "sort": {
             "failure": "Die Reihenfolge konnte nicht gespeichert werden."
           },
+          "ranks": {
+            "update": {
+              "success": "Staffelränge gespeichert.",
+              "failure": "Staffelränge konnten nicht gespeichert werden."
+            }
+          },
           "members": {
             "add": {
               "success": "%{count} Mitglieder hinzugefügt.",

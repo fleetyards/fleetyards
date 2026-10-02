@@ -261,6 +261,8 @@
           "formDetails": "詳細資訊",
           "formAppearance": "外觀",
           "formDiscord": "Discord",
+          "ranks": "中隊職級",
+          "editMember": "編輯中隊成員",
           "teams": "小隊",
           "addMembers": "新增成員",
           "members": "成員"

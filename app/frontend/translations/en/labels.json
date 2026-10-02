@@ -595,7 +595,16 @@
           "joinedAt": "Squadron joined at",
           "searchMembers": "Search Members",
           "availableMembers": "available Members",
-          "selectedMembers": "%{count} selected"
+          "selectedMembers": "%{count} selected",
+          "rank": "Rank",
+          "ranks": "Squadron Ranks",
+          "ranksHint": "The names every squadron in this fleet uses. Renaming a rank keeps its place and what it may do.",
+          "rankSlots": {
+            "leader": "One per squadron. Adds and removes members, and sets their ranks.",
+            "co_leader": "One per squadron. Adds and removes members, and sets the ranks below their own.",
+            "officer": "Any number. Adds and removes the members ranked below them.",
+            "member": "Every new member starts here."
+          }
         },
         "roles": {
           "permanent": "Permanent",
