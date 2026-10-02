@@ -66,7 +66,7 @@ module Api
 
       private def locations_query_params
         @locations_query_params ||= params.permit(q: [
-          :s, :sorts, :name_cont, :current_version,
+          :s, :sorts, :name_cont, :name_start, :current_version,
           :kind_eq, :parent_id_eq, :system_id_eq,
           :shown_on_starmap_eq, :quantum_travel_destination_eq,
           sorts: [], id_in: [], kind_in: [], name_in: []

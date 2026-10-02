@@ -10,6 +10,8 @@ module V1
           type: :object,
           properties: {
             nameCont: {type: :string},
+            # A name that begins with it, which a picker ranks first.
+            nameStart: {type: :string},
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}},
 

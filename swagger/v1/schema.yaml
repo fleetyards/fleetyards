@@ -29783,6 +29783,8 @@ components:
       properties:
         nameCont:
           type: string
+        nameStart:
+          type: string
         idIn:
           type: array
           items:

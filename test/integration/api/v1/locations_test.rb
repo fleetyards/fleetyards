@@ -52,6 +52,15 @@ class Api::V1::LocationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations finds names that begin with the text" do
+    create(:location, name: "Lazarus Transport Hub", kind: "station")
+    create(:location, name: "Port Tressler", kind: "station")
+
+    assert_api_response :get, 200, params: {q: {nameStart: "port"}} do
+      assert_equal ["Port Tressler"], parsed_body["items"].pluck("name")
+    end
+  end
+
   test "GET /locations filters by kind" do
     assert_api_response :get, 200, params: {q: {kindEq: "system"}} do
       assert_equal ["Stanton System"], parsed_body["items"].pluck("name")
