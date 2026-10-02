@@ -881,9 +881,13 @@ const documentClick = (event: Event) => {
   }
 };
 
+// A search or another page is a normal browse again: the selected option it
+// had to fetch by itself is already among the options, and still narrowing by
+// it would answer every search with that one option.
 const debouncedOnSearch = async () => {
   if (search.value) {
     page.value = 1;
+    missing.value = undefined;
 
     await refetch();
   }
@@ -908,6 +912,7 @@ const fetchMissingOption = async () => {
 
 const fetchMore = async () => {
   page.value += 1;
+  missing.value = undefined;
 
   await refetch();
 };
