@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -48,7 +47,6 @@ const initialValues = ref<UserUpdateInput>({
   avatar: undefined,
   rsiHandle: sessionStore.currentUser?.rsiHandle,
   location: sessionStore.currentUser?.location,
-  locationId: sessionStore.currentUser?.linkedLocation?.id ?? null,
   currentSystem: sessionStore.currentUser?.currentSystem,
   homepage: sessionStore.currentUser?.homepage,
   discord: sessionStore.currentUser?.discord,
@@ -66,8 +64,7 @@ const { defineField, handleSubmit } = useForm({
 
 const [avatar, avatarProps] = defineField("avatar");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
-const [location] = defineField("location");
-const [locationId] = defineField("locationId");
+const [location, locationProps] = defineField("location");
 const [currentSystem, currentSystemProps] = defineField("currentSystem");
 const [homepage, homepageProps] = defineField("homepage");
 const [discord, discordProps] = defineField("discord");
@@ -142,7 +139,6 @@ onMounted(() => {
 const setupForm = () => {
   rsiHandle.value = sessionStore.currentUser?.rsiHandle;
   location.value = sessionStore.currentUser?.location;
-  locationId.value = sessionStore.currentUser?.linkedLocation?.id ?? null;
   currentSystem.value = sessionStore.currentUser?.currentSystem;
   homepage.value = sessionStore.currentUser?.homepage;
   discord.value = sessionStore.currentUser?.discord;
@@ -299,11 +295,11 @@ const onSubmit = handleSubmit(async (values) => {
         </FormInputGroup>
       </div>
       <div class="col-12 col-md-6">
-        <LocationInput
+        <FormInput
           v-model="location"
-          v-model:location-id="locationId"
-          :linked="sessionStore.currentUser?.linkedLocation"
           name="location"
+          v-bind="locationProps"
+          icon="fa-duotone fa-location-dot"
           translation-key="user.location"
         />
       </div>

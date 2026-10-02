@@ -2570,7 +2570,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_160000) do
     t.string "username", limit: 255, default: "", null: false
     t.integer "wanted_vehicles_count", default: 0, null: false
     t.string "youtube"
-    t.uuid "location_id"
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
@@ -2580,7 +2579,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_160000) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"
     t.index ["last_active_at"], name: "index_users_on_last_active_at"
-    t.index ["location_id"], name: "index_users_on_location_id"
     t.index ["normalized_email"], name: "index_users_on_normalized_email"
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -2862,6 +2860,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_160000) do
   add_foreign_key "user_blueprints", "blueprints", on_delete: :cascade
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
-  add_foreign_key "users", "locations", on_delete: :nullify
   add_foreign_key "vehicle_loadouts", "vehicles"
 end

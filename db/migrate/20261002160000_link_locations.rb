@@ -9,7 +9,6 @@ class LinkLocations < ActiveRecord::Migration[8.1]
     fleet_inventories: %i[location],
     fleet_events: %i[location meetup_location],
     fleet_event_occurrence_states: %i[location meetup_location],
-    users: %i[location],
     fleets: %i[headquarters_location]
   }.freeze
 

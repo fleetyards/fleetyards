@@ -31,8 +31,6 @@ module V1
             tracking: {type: :boolean},
             showOnlineStatus: {type: :boolean},
             location: {type: [:string, :null]},
-            # One of our places the text names, where it is one.
-            locationId: {type: [:string, :null], format: :uuid},
             currentSystem: {type: [:string, :null]}
           },
           additionalProperties: false
