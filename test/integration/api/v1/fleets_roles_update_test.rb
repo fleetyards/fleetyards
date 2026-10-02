@@ -49,8 +49,9 @@ class Api::V1::FleetsRolesUpdateTest < ActionDispatch::IntegrationTest
 
   setup do
     @admin = create(:user)
+    @officer = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member])
+    @fleet = create(:fleet, admins: [@admin], officers: [@officer], members: [@member])
     @member_role = @fleet.fleet_roles.find_by!(slug: "member")
   end
 
@@ -89,5 +90,20 @@ class Api::V1::FleetsRolesUpdateTest < ActionDispatch::IntegrationTest
 
   test "PUT /fleets/:slug/roles/:id returns 401 when not signed in" do
     assert_api_response :put, 401, path_params: path_params, body: {name: "Recruit"}
+  end
+
+  test "PUT /fleets/:slug/roles/:id lets an officer rename the roles below Admin" do
+    sign_in @officer
+
+    assert_api_response :put, 200, path_params: path_params, body: {name: "Recruit"}
+  end
+
+  # The permanent Admin role names who runs the fleet.
+  test "PUT /fleets/:slug/roles/:id refuses an officer renaming the Admin role" do
+    sign_in @officer
+
+    assert_api_response :put, 403,
+      path_params: path_params(@fleet.fleet_roles.find_by!(slug: "admin").id),
+      body: {name: "Recruit"}
   end
 end

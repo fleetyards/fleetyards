@@ -4,7 +4,7 @@ module Api
   module V1
     class FleetRolesController < ::Api::BaseController
       rescue_from ActiveRecord::RecordNotFound do |_exception|
-        not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
+        not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
       end
 
       before_action :authenticate_user!, only: []
@@ -25,9 +25,9 @@ module Api
 
       def update
         authorize! @fleet, to: :show?, with: FleetPolicy
-        authorize! with: FleetRolePolicy, context: {fleet: @fleet}
-
         @fleet_role = @fleet.fleet_roles.find(params[:id])
+
+        authorize! @fleet_role, with: FleetRolePolicy, context: {fleet: @fleet}
 
         if @fleet_role.update(fleet_role_params)
           render :show

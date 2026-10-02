@@ -5,7 +5,12 @@
 class FleetRolePolicy < FleetBasePolicy
   UPDATE_PRIVILEGES = ["fleet:manage", "fleet:roles:manage", "fleet:roles:update"].freeze
 
+  # The permanent Admin role names who runs the fleet; an officer holding
+  # fleet:roles:manage renames the roles below it.
   def update?
-    accepted_fleet_membership&.has_access?(UPDATE_PRIVILEGES) || false
+    return false unless accepted_fleet_membership&.has_access?(UPDATE_PRIVILEGES)
+    return true unless record.try(:permanent?)
+
+    accepted_fleet_membership.has_access?(["fleet:manage"])
   end
 end
