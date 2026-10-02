@@ -38,6 +38,8 @@ module Api
 
       private def relation_class = ::Friendship
 
+      private def relationship_includes = [{requester: {current_location: :parent}}, {addressee: {current_location: :parent}}]
+
       private def relationship_policy = ::FriendshipPolicy
 
       private def acting_party = current_resource_owner

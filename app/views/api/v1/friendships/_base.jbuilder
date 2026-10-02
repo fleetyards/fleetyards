@@ -25,6 +25,10 @@ json.user do
 
     online = online_status_for(other)
     json.online online unless online.nil?
+
+    # Where they are in the game, linked where it is one of our places.
+    json.current_system other&.current_system.presence
+    json.partial! "api/v1/locations/linked", key: :current_location, location: other&.current_location
   end
 end
 

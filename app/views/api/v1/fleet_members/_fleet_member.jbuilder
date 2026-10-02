@@ -6,7 +6,7 @@
 # touch neither, to the microsecond, and the flag itself: a change can land
 # within the second of the last write.
 # The role is in the key too: a renamed role touches only the fleet.
-json.cache! ["v10", member, member.fleet_role, member.verified?, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verification_cache_key, member.user.rsi_organizations_cache_key, member.user.current_system_code] do
+json.cache! ["v10", member, member.fleet_role, member.verified?, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verification_cache_key, member.user.rsi_organizations_cache_key, member.user.current_system_code, member.user.current_system, member.user.current_location&.link_cache_key].compact do
   json.partial! "api/v1/fleet_members/base", member: member
 end
 

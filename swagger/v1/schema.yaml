@@ -25196,6 +25196,14 @@ components:
           format: double
         currentSystemCode:
           type: string
+        currentSystem:
+          type:
+          - string
+          - 'null'
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         online:
           type: boolean
         isDestroyAllowed:
@@ -34277,6 +34285,14 @@ components:
           format: date-time
         online:
           type: boolean
+        currentSystem:
+          type:
+          - string
+          - 'null'
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
       additionalProperties: false
       required:
       - id
