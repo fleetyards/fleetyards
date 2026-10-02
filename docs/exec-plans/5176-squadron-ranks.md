@@ -8,8 +8,10 @@ Every squadron membership holds one of its fleet's four squadron ranks (Leader, 
 
 ## Open questions
 
-- **Who can remove a Leader?** May an Officer remove the Leader from the squadron? Can the Leader step down to an empty Leader slot?
-- **Team squadrons too?** Ranks on `team: true` squadrons, or ordinary squadrons only?
+Defaults taken while building, listed in the PR for the user to confirm:
+
+- **Nobody in the squadron outranks the Leader.** Only a fleet-wide privilege removes or appoints a Leader. Anyone, the Leader included, may step down.
+- **Teams carry ranks too**, under the same rules, because a team's row is the same join.
 
 ## What changed
 
@@ -19,7 +21,7 @@ Every squadron membership holds one of its fleet's four squadron ranks (Leader, 
 3. `setup_default_squadron_roles!`, called from `Fleet#after_create` and from `Fleets::PurgedFleetRestorer`.
 4. `fleet_squadron_memberships.fleet_squadron_role_id` (FK). A data migration seeds the ranks for existing fleets and backfills every membership to Member, then the column becomes not null.
 5. Validation: the rank must belong to the squadron's fleet, like `membership_belongs_to_same_fleet`. New memberships default to the fleet's Member rank.
-6. One holder per single rank: a validation that locks the squadron row, like `exclusive_squadron_is_the_only_one` does, plus a DB guard. A partial index can't reach the role's key, so `fleet_squadron_memberships` gets a denormalised `single_role_key` (null unless leader or co_leader) and a unique index on (fleet_squadron_id, single_role_key).
+6. One holder per single rank: a validation that locks the squadron row, the way `exclusive_squadron_is_the_only_one` locks the membership. There's no DB guard, because a partial index can't reach the role's key. A concurrency test covers the lock.
 
 ### Phase 2 — Policies and capabilities
 1. `FleetSquadronMembershipPolicy`: create?/destroy?/update? pass on the existing fleet privileges, **or** when the caller's own rank in *this* squadron manages members. Changing a rank needs a Leader or Co-Leader rank (or the fleet privilege). Neither Officers nor Co-Leaders can change the Leader's rank. The squadron goes into the policy context.
@@ -28,7 +30,7 @@ Every squadron membership holds one of its fleet's four squadron ranks (Leader, 
 
 ### Phase 3 — API
 1. `GET /fleets/:slug/squadron-roles` (index) for the rank select, and `PUT /fleets/:slug/squadron-roles/:key` to rename a rank. Renaming needs `fleet:squadrons:manage` (or `fleet:manage`).
-2. The update input gets `fleetSquadronRoleId`, and `createdAt` becomes optional. The create input gets an optional rank.
+2. The update input gets `fleetSquadronRoleId`, and `createdAt` becomes optional. New members always start as Member, so the create input is unchanged.
 3. The `squadrons` block in `_fleet_member.jbuilder` and `FleetSquadronRef` gain `role { id, name, slug }`. Keep the `list_endpoint_query_counts_test` budget.
 4. Locales: `validation_error.fleet_squadron_members.*` and the privilege labels, in all seven locales.
 5. Regenerate the schema and check oasdiff (`createdAt` going optional changes the request side only).
@@ -80,9 +82,12 @@ Every squadron membership holds one of its fleet's four squadron ranks (Leader, 
 - **2026-10-02** Initial research and plan creation. A per-squadron rank was already in the squadrons backlog (`git show a7deea5968:docs/exec-plans/fleet-squadrons.md`). `fleet_squadrons.rank` is the squadron's lexorank position, so the membership side uses `fleet_squadron_role` to avoid the name clash.
 - **2026-10-02** Four fixed slots (one Leader, one Co-Leader, many Officers and Members), renameable in settings. The slot key moves the order and the privileges off `rank`/`resource_access`, which `FleetRole` needs only because its rows are free-form.
 
+- **2026-10-02** The member update 400 now declares `ValidationError`, which replaces openapi-ruby's injected `SchemaValidationError`. Two oasdiff ignore entries were generated with the pinned 1.18.1. The endpoint already returned a `ValidationError` before this change.
+- **2026-10-02** Renaming ranks needed a `manage_squadrons` capability (`fleet:manage` / `fleet:squadrons:manage`), because none of the existing ones meant "manage squadrons themselves".
+
 ## Progress
 
-- [ ] Phase 1 — Data model
-- [ ] Phase 2 — Policies and capabilities
-- [ ] Phase 3 — API
-- [ ] Phase 4 — Frontend
+- [x] Phase 1 — Data model
+- [x] Phase 2 — Policies and capabilities
+- [x] Phase 3 — API
+- [x] Phase 4 — Frontend
