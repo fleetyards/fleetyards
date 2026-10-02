@@ -53,9 +53,11 @@ module Admin
         end
 
         # A planet or moon given a picture and no colour takes its colour from
-        # the picture, for the circle it is drawn with.
+        # the picture, for the circle it is drawn with. Read off the saved
+        # place, not the request: an update that only sends a picture keeps
+        # the colour already chosen.
         private def fill_color_from_image
-          return if location_params[:image].blank? || location_params[:color].present?
+          return if location_params[:image].blank? || @location.color.present?
           return unless %w[planet moon].include?(@location.kind) && @location.image.attached?
 
           color = ::Locations::ImageColor.new(@location.image.blob).call

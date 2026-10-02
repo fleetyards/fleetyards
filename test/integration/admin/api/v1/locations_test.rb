@@ -198,6 +198,21 @@ class Admin::Api::V1::LocationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /locations/{id} keeps a saved colour when only a picture is sent" do
+    hurston = create(:location, name: "Hurston", kind: "planet", parent: @star, system: @system, color: "#a0522d")
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: Rails.root.join("test/fixtures/files/test.png").open,
+      filename: "test.png",
+      content_type: "image/png"
+    )
+
+    assert_api_response :put, 200, path_params: {id: hurston.id}, body: {image: blob.signed_id} do
+      assert_equal "#a0522d", parsed_body["color"]
+    end
+  end
+
   test "PUT /locations/{id} keeps a colour given with the picture" do
     hurston = create(:location, name: "Hurston", kind: "planet", parent: @star, system: @system)
     sign_in @user
