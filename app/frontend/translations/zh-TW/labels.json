@@ -33,7 +33,7 @@
         "quantumTravelNo": "不是量子旅行目的地",
         "mapParent": "地圖上位於",
         "mapParentNote": "遊戲內地圖將其顯示在 %{mapParent} 下，但它實際位於 %{parent} 內。",
-        "missions": "可在此進行的任務",
+        "missions": "任務",
         "allMissions": "所有可在此進行的任務",
         "terminals": "交易終端",
         "alwaysShown": "始終在地圖上",

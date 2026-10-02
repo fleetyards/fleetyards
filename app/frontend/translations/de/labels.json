@@ -33,7 +33,7 @@
         "quantumTravelNo": "Kein Ziel für Quantenreisen",
         "mapParent": "Eingezeichnet unter",
         "mapParentNote": "Die Karte im Spiel zeigt den Ort unter %{mapParent}, obwohl er in %{parent} liegt.",
-        "missions": "Missionen, die hier stattfinden können",
+        "missions": "Missionen",
         "allMissions": "Alle Missionen, die hier stattfinden können",
         "terminals": "Handelsterminals",
         "alwaysShown": "Immer auf der Karte",

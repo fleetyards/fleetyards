@@ -12,7 +12,7 @@ import ContentsList from "@/frontend/components/Locations/Contents/index.vue";
 import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
 import StarmapFacts from "@/frontend/components/Locations/StarmapFacts/index.vue";
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
-import MissionsList from "@/frontend/components/Missions/List/index.vue";
+import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import {
@@ -120,8 +120,9 @@ const { data: contents } = useLocationContents(slug, {
   },
 });
 
-// A handful on the page; the mission list, filtered to here, has the rest.
-const MISSIONS_PER_PAGE = 5;
+// A page's worth in the rail, grouped by who offers them; the mission list,
+// filtered to here, has the rest.
+const MISSIONS_PER_PAGE = 100;
 
 const { data: missions } = useGameMissions(
   computed(() => ({
@@ -134,10 +135,6 @@ const { data: missions } = useGameMissions(
 // The export writes line breaks as a literal `\n`.
 const description = computed(() =>
   location.value?.description?.replaceAll("\\n", "\n"),
-);
-
-const moreMissions = computed(
-  () => (missions.value?.meta?.pagination?.totalCount ?? 0) > MISSIONS_PER_PAGE,
 );
 
 watch(
@@ -244,26 +241,6 @@ watch(
               :groups="contentGroups"
               :parent-id="location.id"
             />
-
-            <section
-              v-if="missions?.items?.length"
-              class="location-page__panel"
-            >
-              <h2 class="location-page__panel-title">
-                {{ t("labels.location.missions") }} ·
-                {{ missions.meta.pagination?.totalCount }}
-              </h2>
-
-              <MissionsList :missions="missions.items" />
-
-              <router-link
-                v-if="moreMissions"
-                class="location-page__more"
-                :to="{ name: 'missions', query: { atLocation: location.id } }"
-              >
-                {{ t("labels.location.allMissions") }}
-              </router-link>
-            </section>
           </div>
 
           <aside class="location-page__aside">
@@ -293,6 +270,14 @@ watch(
                 </li>
               </ul>
             </section>
+            <LocationMissions
+              v-if="missions?.items?.length"
+              :missions="missions.items"
+              :total="
+                missions.meta.pagination?.totalCount ?? missions.items.length
+              "
+              :location-id="location.id"
+            />
           </aside>
         </div>
       </div>

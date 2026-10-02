@@ -33,7 +33,7 @@
         "quantumTravelNo": "No es un destino de viaje cuántico",
         "mapParent": "Dibujado bajo",
         "mapParentNote": "El mapa del juego lo dibuja bajo %{mapParent}, aunque está dentro de %{parent}.",
-        "missions": "Misiones que pueden tener lugar aquí",
+        "missions": "Misiones",
         "allMissions": "Todas las misiones que pueden tener lugar aquí",
         "terminals": "Terminales comerciales",
         "alwaysShown": "Siempre en el mapa",

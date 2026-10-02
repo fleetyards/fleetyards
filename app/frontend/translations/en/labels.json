@@ -33,7 +33,7 @@
         "quantumTravelNo": "Not a quantum travel destination",
         "mapParent": "Drawn under",
         "mapParentNote": "The in-game map draws it under %{mapParent}, although it sits inside %{parent}.",
-        "missions": "Missions that can take place here",
+        "missions": "Missions",
         "allMissions": "All missions that can take place here",
         "terminals": "Trade terminals",
         "alwaysShown": "Always on the map",
