@@ -58,6 +58,12 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     refute membership_with(["fleet:squadrons:manage"]).capabilities[:enable_squadrons]
   end
 
+  test "renaming roles follows FleetRolePolicy" do
+    assert membership_with(["fleet:roles:update"]).capabilities[:update_roles]
+    refute membership_with(["fleet:roles:read"]).capabilities[:update_roles]
+    assert_equal FleetRolePolicy::UPDATE_PRIVILEGES, FleetMembership::CAPABILITY_PRIVILEGES[:update_roles]
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort

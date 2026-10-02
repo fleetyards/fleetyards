@@ -451,6 +451,10 @@ es:
           attributes:
             base:
               cannot_destroy_with_members: No se puede eliminar un rol que todavía está asignado a miembros
+              cannot_destroy_default: "No se puede eliminar el rol que reciben los miembros nuevos: primero haz predeterminado otro rol"
+            new_member_default:
+              permanent: "no puede ser el rol de Admin: un miembro nuevo nunca debe recibir el control total de la flota"
+              required: "es necesario: haz predeterminado otro rol en su lugar"
             resource_access:
               changed: Los privilegios de acceso no se pueden cambiar
         fleet_membership:

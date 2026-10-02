@@ -337,6 +337,7 @@
           "reassignSlotFor": "为 %{username} 重新分配席位"
         },
         "memberNickname": "成员昵称",
+        "editRole": "编辑角色",
         "contracts": {
           "index": "合约",
           "create": "创建合约",

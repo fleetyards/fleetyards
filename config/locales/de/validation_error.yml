@@ -95,6 +95,8 @@ de:
       update: Staffelmitgliedschaft konnte nicht aktualisiert werden.
     fleet_squadron_roles:
       update: "Der Staffelrang konnte nicht umbenannt werden."
+    fleet_roles:
+      update: "Die Rolle konnte nicht umbenannt werden."
     fleet_squadrons:
       create: Staffel konnte nicht erstellt werden.
       update: Staffel konnte nicht aktualisiert werden.

@@ -159,6 +159,31 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The filter names roles by slug, so a renamed role still filters.
+  test "GET /fleets/:slug/members filters by role after the role is renamed" do
+    @fleet.fleet_roles.find_by!(slug: "admin").update!(name: "Commander")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"roleIn" => ["admin"]}} do
+      assert_equal [@admin.username], parsed_body["items"].map { |item| item["username"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members shows a renamed role on a cached roster" do
+    sign_in @admin
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+      @fleet.fleet_roles.find_by!(slug: "member").update!(name: "Recruit")
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+    end
+
+    roles = JSON.parse(response.body)["items"].to_h { |item| [item["username"], item.dig("fleetRole", "name")] }
+    assert_equal "Recruit", roles.fetch(@member.username)
+  end
+
   test "GET /fleets/:slug/members searches by nickname" do
     @fleet.fleet_memberships.find_by(user: @member).update!(nickname: "Wingman Zed")
     sign_in @admin

@@ -87,6 +87,8 @@ zh-CN:
       update: 无法更新中队成员关系。
     fleet_squadron_roles:
       update: "无法重命名中队职级。"
+    fleet_roles:
+      update: "无法重命名角色。"
     fleet_squadrons:
       create: 无法创建中队。
       update: 无法更新中队。

@@ -9,7 +9,11 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
+import {
+  FleetMemberQuery,
+  type FilterOption,
+  useFleetRoles,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import {
@@ -77,20 +81,20 @@ watch(
   { deep: true },
 );
 
-const roleOptions: FilterOption[] = [
-  {
-    label: t("labels.fleet.members.roles.admin"),
-    value: "admin",
-  },
-  {
-    label: t("labels.fleet.members.roles.officer"),
-    value: "officer",
-  },
-  {
-    label: t("labels.fleet.members.roles.member"),
-    value: "member",
-  },
-];
+const route = useRoute();
+
+const fleetSlug = computed(() => route.params.slug as string);
+
+const { data: fleetRoles } = useFleetRoles(fleetSlug);
+
+// The fleet's own names, keyed by slug: a renamed role keeps its slug, so a
+// saved filter or a shared link still means the same role.
+const roleOptions = computed<FilterOption[]>(() =>
+  (fleetRoles.value ?? []).map((role) => ({
+    label: role.name,
+    value: role.slug,
+  })),
+);
 
 const stateOptions: FilterOption[] = [
   {

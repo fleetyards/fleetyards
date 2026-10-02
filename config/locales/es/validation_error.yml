@@ -91,6 +91,8 @@ es:
       update: No se pudo actualizar la membresía del escuadrón.
     fleet_squadron_roles:
       update: "No se pudo cambiar el nombre del rango de escuadrón."
+    fleet_roles:
+      update: "No se pudo cambiar el nombre del rol."
     fleet_squadrons:
       create: No se pudo crear el escuadrón.
       update: No se pudo actualizar el escuadrón.

@@ -48,6 +48,7 @@ class Api::V1::FleetsRolesIndexTest < ActionDispatch::IntegrationTest
       assert parsed_body.first.key?("name")
       assert parsed_body.first.key?("resourceAccess")
       assert parsed_body.first.key?("permanent")
+      assert_equal %w[member], parsed_body.select { |role| role["defaultRole"] }.map { |role| role["slug"] }
     end
   end
 

@@ -558,11 +558,6 @@
           "pending": "待处理的邀请与请求",
           "accepted": "成员",
           "role": "角色",
-          "roles": {
-            "admin": "管理员",
-            "officer": "军官",
-            "member": "成员"
-          },
           "contact": "Contact",
           "spectrumDm": "Message on Spectrum",
           "discordContact": "Discord",
@@ -609,6 +604,8 @@
         },
         "roles": {
           "permanent": "永久",
+          "default": "默认",
+          "defaultToggle": "新成员获得此角色",
           "privilegeGroups": {
             "fleet": "舰队",
             "memberships": "成员",

@@ -340,6 +340,12 @@
             "failure": "Impossibile salvare il soprannome."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Ruolo salvato.",
+            "failure": "Non è stato possibile salvare il ruolo."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Squadrone creato.",

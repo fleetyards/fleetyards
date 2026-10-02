@@ -72,6 +72,59 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
     assert_equal "Flight Lead", again.fleet_squadron_roles.find_by!(key: "leader").name
   end
 
+  test "brings back a renamed role and which role is the default" do
+    fleet = create(:fleet, name: "Role Fleet", fid: "ROLEFLEET")
+    fleet.fleet_roles.find_by!(slug: "member").update!(name: "Recruit")
+    fleet.fleet_roles.find_by!(slug: "officer").make_default!
+    fleet_id = fleet.id
+
+    Fleet.find(fleet_id).destroy!
+    restored = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_equal %w[Admin Officer Recruit], restored.fleet_roles.pluck(:name).sort
+    assert_equal "officer", restored.default_member_role.slug
+  end
+
+  test "a second restore takes the role names from the latest purge" do
+    fleet = create(:fleet, name: "Twice Role Fleet", fid: "TWICEROLE")
+    fleet.fleet_roles.find_by!(slug: "member").update!(name: "Recruit")
+    fleet_id = fleet.id
+
+    Fleet.find(fleet_id).destroy!
+    Fleets::PurgedFleetRestorer.new(fleet_id).call.fleet_roles.find_by!(slug: "member").update!(name: "Cadet")
+    Fleet.find(fleet_id).destroy!
+
+    again = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_equal "Cadet", again.fleet_roles.find_by!(slug: "member").name
+  end
+
+  test "restores two roles that swapped names" do
+    fleet = create(:fleet, name: "Swap Fleet", fid: "SWAPFLEET")
+    fleet.fleet_roles.find_by!(slug: "officer").update!(name: "Lieutenant")
+    fleet.fleet_roles.find_by!(slug: "member").update!(name: "Officer")
+    fleet_id = fleet.id
+
+    Fleet.find(fleet_id).destroy!
+    restored = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_equal "Lieutenant", restored.fleet_roles.find_by!(slug: "officer").name
+    assert_equal "Officer", restored.fleet_roles.find_by!(slug: "member").name
+  end
+
+  test "a second restore keeps the default of the latest purge" do
+    fleet = create(:fleet, name: "Default Fleet", fid: "DEFAULTFLEET")
+    fleet_id = fleet.id
+
+    Fleet.find(fleet_id).destroy!
+    Fleets::PurgedFleetRestorer.new(fleet_id).call.fleet_roles.find_by!(slug: "officer").make_default!
+    Fleet.find(fleet_id).destroy!
+
+    again = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_equal "officer", again.default_member_role.slug
+  end
+
   test "preserves discarded memberships instead of reactivating ex-members" do
     fleet = create(:fleet, created_by: @creator.id, officers: [@officer])
     fleet.fleet_memberships.find_by(user_id: @officer.id).discard

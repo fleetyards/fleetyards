@@ -558,11 +558,6 @@
           "pending": "Inviti e richieste in attesa",
           "accepted": "Membri",
           "role": "Ruolo",
-          "roles": {
-            "admin": "Admin",
-            "officer": "Ufficiale",
-            "member": "Membro"
-          },
           "contact": "Contact",
           "spectrumDm": "Message on Spectrum",
           "discordContact": "Discord",
@@ -609,6 +604,8 @@
         },
         "roles": {
           "permanent": "Permanente",
+          "default": "Predefinito",
+          "defaultToggle": "I nuovi membri ricevono questo ruolo",
           "privilegeGroups": {
             "fleet": "Flotta",
             "memberships": "Membri",

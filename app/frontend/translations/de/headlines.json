@@ -337,6 +337,7 @@
           "reassignSlotFor": "Slot für %{username} neu zuweisen"
         },
         "memberNickname": "Spitzname des Mitglieds",
+        "editRole": "Rolle bearbeiten",
         "contracts": {
           "index": "Aufträge",
           "create": "Auftrag erstellen",

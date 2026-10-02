@@ -340,6 +340,12 @@
             "failure": "無法儲存暱稱。"
           }
         },
+        "roles": {
+          "update": {
+            "success": "角色已儲存。",
+            "failure": "無法儲存角色。"
+          }
+        },
         "squadrons": {
           "create": {
             "success": "中隊已建立。",

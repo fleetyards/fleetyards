@@ -84,7 +84,12 @@ module Admin
         private def member_query_params
           @member_query_params ||= params.permit(q: [
             :username_cont, :state_eq, :role_cont, :s, :sorts, s: [], sorts: []
-          ]).fetch(:q, {})
+          ]).fetch(:q, {}).tap do |query|
+            # The name the admin list shows; the shared `role` alias is the
+            # slug the fleet filter needs.
+            role = query.delete(:role_cont)
+            query[:fleet_role_name_cont] = role if role.present?
+          end
         end
       end
     end

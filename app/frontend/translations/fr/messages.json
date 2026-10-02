@@ -340,6 +340,12 @@
             "failure": "Le surnom n'a pas pu être enregistré."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Rôle enregistré.",
+            "failure": "Le rôle n'a pas pu être enregistré."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Escadron créé.",

@@ -5,7 +5,8 @@
 # So are the user's handle verification and the read of their org list, which
 # touch neither, to the microsecond, and the flag itself: a change can land
 # within the second of the last write.
-json.cache! ["v8", member, member.verified?, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verification_cache_key, member.user.rsi_organizations_cache_key] do
+# The role is in the key too: a renamed role touches only the fleet.
+json.cache! ["v9", member, member.fleet_role, member.verified?, member.fleet.rsi_verification_cache_key, member.user.rsi_handle_verification_cache_key, member.user.rsi_organizations_cache_key] do
   json.partial! "api/v1/fleet_members/base", member: member
 end
 

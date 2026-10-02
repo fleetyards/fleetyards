@@ -350,6 +350,12 @@
             "failure": "Nickname could not be saved."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Role saved.",
+            "failure": "Role could not be saved."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Squadron created.",
