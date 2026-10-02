@@ -35,6 +35,9 @@ const prefillFormValues = (): LocationQuery => ({
   kindIn: asList(
     filters.value.kindIn ?? filters.value.kindEq,
   ) as LocationQuery["kindIn"],
+  // Folded into `kindIn` above, so a filter the form writes drops it: kept,
+  // ransack would intersect the two and an old kind would outlive the select.
+  kindEq: undefined,
   systemIdEq: filters.value.systemIdEq,
   parentIdEq: filters.value.parentIdEq,
   shownOnStarmapEq: filters.value.shownOnStarmapEq,
