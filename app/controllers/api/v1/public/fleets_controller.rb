@@ -33,6 +33,9 @@ module Api
           @q = Fleet.directory.with_member_count
             .includes(logo_attachment: :blob)
             .ransack(directory_query_params)
+          # Many fleets share a member count, so a sort on it alone leaves their
+          # order to the planner, and paging repeats some and skips others.
+          sorts = [*sorts, "name asc"] if sorts.none? { |sort| sort.start_with?("name ") }
           @q.sorts = sorts
 
           @fleets = @q.result

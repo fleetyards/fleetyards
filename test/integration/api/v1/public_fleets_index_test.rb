@@ -134,6 +134,14 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/fleets breaks a tie on member count by name" do
+    listed_fleet("ALPHA", name: "Alpha Wing", members: 2)
+
+    assert_api_response :get, 200, params: {q: {"s" => "memberCount desc"}} do
+      assert_equal ["Night Pirates", "Alpha Wing", "Deep Diggers"], names
+    end
+  end
+
   test "GET /public/fleets paginates" do
     assert_api_response :get, 200, params: {perPage: 1} do
       assert_equal ["Night Pirates"], names
