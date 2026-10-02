@@ -95,7 +95,7 @@ const cities = (body: LocationTreeNode) =>
               >
                 {{ moon.location.name }}
               </router-link>
-              <KindCounts :counts="moon.counts" />
+              <KindCounts :counts="moon.counts" :parent-id="moon.location.id" />
               <router-link
                 v-for="city in cities(moon)"
                 :key="city.location.id"
@@ -116,7 +116,7 @@ const cities = (body: LocationTreeNode) =>
           <span class="location-columns__caption">
             {{ countsLabel ?? t("labels.location.inOrbit") }}
           </span>
-          <KindCounts :counts="body.counts" />
+          <KindCounts :counts="body.counts" :parent-id="body.location.id" />
         </div>
 
         <div v-if="body.lagrangePoints.length" class="location-columns__group">

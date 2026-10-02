@@ -31,6 +31,11 @@ const router = async () => {
     routes: [
       { path: "/", name: "home", component: { template: "<div />" } },
       {
+        path: "/locations/places",
+        name: "locations-places",
+        component: { template: "<div />" },
+      },
+      {
         path: "/locations/:slug",
         name: "location",
         component: { template: "<div />" },
@@ -66,5 +71,21 @@ describe("LocationBodyColumns", () => {
       wrapper.get(".location-columns__moon-name").attributes("href"),
     ).toContain("/locations/delamar");
     expect(wrapper.findAll(".location-columns__moon a a")).toHaveLength(0);
+  });
+
+  it("opens the list of what a body counts", async () => {
+    const body = node("nyx-i", "Nyx I", LocationKindEnum.PLANET);
+    body.counts = [{ kind: LocationKindEnum.OUTPOST, count: 306 }];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { bodies: [body] },
+      plugins: [await router()],
+    });
+
+    const href = wrapper.get(".location-kind-counts__entry").attributes("href");
+
+    expect(href).toContain("/locations/places");
+    expect(href).toContain("parentIdEq=nyx-i");
+    expect(href).toContain("kindEq=outpost");
   });
 });
