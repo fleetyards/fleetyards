@@ -206,6 +206,31 @@ const details = computed((): Detail[] => {
 
       <!-- A wrong place is a parser or override fix; only its look is edited. -->
       <DetailList :details="details" data-test="location-details" />
+
+      <section
+        v-if="location?.shops?.length"
+        class="admin-location__shops"
+        data-test="location-shops"
+      >
+        <h2 class="admin-location__shops-title">
+          {{ t("labels.admin.locations.shops") }}
+        </h2>
+        <ul>
+          <li v-for="shop in location.shops" :key="shop.id">
+            <router-link
+              :to="{ name: 'admin-shop-edit', params: { id: shop.id } }"
+            >
+              {{ shop.name }}
+            </router-link>
+            <i
+              v-if="shop.hasImage"
+              class="fa-light fa-image"
+              :title="t('labels.admin.locations.image')"
+              aria-hidden="true"
+            />
+          </li>
+        </ul>
+      </section>
     </template>
   </AsyncData>
 </template>
@@ -271,6 +296,30 @@ const details = computed((): Detail[] => {
     height: 90px;
     object-fit: cover;
     border-radius: 8px;
+  }
+
+  &__shops {
+    margin-top: 24px;
+
+    ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 6px 16px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  &__shops-title {
+    margin: 0 0 8px;
+    font-size: 16px;
   }
 
   &__swatch {
