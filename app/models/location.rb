@@ -185,6 +185,13 @@ class Location < ApplicationRecord
     build || last_build
   end
 
+  # What a fragment that links to the place has to key on: the link names the
+  # parent too, and renaming the parent touches neither the place nor the
+  # record linking to it.
+  def link_cache_key
+    [self, parent]
+  end
+
   def retired?
     build.blank?
   end

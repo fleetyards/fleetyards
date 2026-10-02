@@ -5,6 +5,6 @@
 # touches the user record to say so. The public profile keys the same way.
 # The linked place is there too: its name is in the fragment, and renaming it
 # does not touch the user.
-json.cache! ["v3", user, user.rsi_handle_verification_cache_key, Date.current.beginning_of_month, user.current_location].compact do
+json.cache! ["v4", user, user.rsi_handle_verification_cache_key, Date.current.beginning_of_month, user.current_location&.link_cache_key].compact do
   json.partial!("api/v1/users/base", user:)
 end

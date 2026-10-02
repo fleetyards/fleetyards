@@ -6,7 +6,7 @@ visitor = local_assigns.fetch(:visitor, false)
 # seconds: a check can answer inside the second of the write before it.
 # The headquarters' place is in the key: its name is in the fragment, and
 # renaming it does not touch the fleet.
-json.cache!((visitor ? ["v3", "visitor", fleet, fleet.rsi_verification_cache_key, fleet.headquarters_location] : ["v3", fleet, fleet.rsi_verification_cache_key, fleet.headquarters_location]).compact) do
+json.cache!((visitor ? ["v4", "visitor", fleet, fleet.rsi_verification_cache_key, fleet.headquarters_location&.link_cache_key] : ["v4", fleet, fleet.rsi_verification_cache_key, fleet.headquarters_location&.link_cache_key]).compact) do
   json.partial!("api/v1/fleets/base", fleet:, visitor:)
 end
 
