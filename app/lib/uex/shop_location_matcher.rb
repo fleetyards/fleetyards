@@ -16,17 +16,34 @@ module Uex
     # Every price at a shop, linked to that shop, which is made the first time
     # UEX names it. Run after a price sync and after a load of the places,
     # which may have arrived after it.
+    #
+    # A moved link touches the price and what it prices: the catalogue caches
+    # an item's prices, shop links and all, under the newest of those.
+    # A shop no price names any more is gone from UEX, so it goes too.
     def self.relink(prices = ItemPrice.where(terminal_id: nil))
       matcher = new
       shops = {}
+      now = Time.current
 
-      prices.distinct.pluck(:location).sum do |location|
+      moved = prices.distinct.pluck(:location).sum do |location|
         shop_name, location_id = matcher.match(location)
         shop_id = if location_id
           shops[[location_id, shop_name]] ||= Shop.find_or_create_by!(location_id:, name: shop_name).id
         end
 
-        prices.where(location:).where("shop_id IS DISTINCT FROM ?", shop_id).update_all(shop_id:)
+        changed = prices.where(location:).where("shop_id IS DISTINCT FROM ?", shop_id)
+        touch_items(changed, now)
+        changed.update_all(shop_id:, updated_at: now)
+      end
+
+      Shop.where.missing(:item_prices).destroy_all
+
+      moved
+    end
+
+    private_class_method def self.touch_items(prices, now)
+      prices.distinct.pluck(:item_type, :item_id).group_by(&:first).each do |item_type, rows|
+        item_type.safe_constantize&.where(id: rows.map(&:last))&.update_all(updated_at: now)
       end
     end
 

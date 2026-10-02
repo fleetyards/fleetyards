@@ -55,6 +55,28 @@ module Uex
       assert_equal 1, Shop.count
     end
 
+    test ".relink touches what a moved link prices, for the caches keyed on it" do
+      item = create(:equipment)
+      item.update_columns(updated_at: 1.day.ago)
+      price = create(:item_price, item:, location: "Casaba Outlet - Everus Harbor", price_type: "sell", time_range: nil)
+      price.update_columns(updated_at: 1.day.ago)
+
+      ::Uex::ShopLocationMatcher.relink
+
+      assert_operator price.reload.updated_at, :>, 1.minute.ago
+      assert_operator item.reload.updated_at, :>, 1.minute.ago
+    end
+
+    test ".relink removes a shop no price names any more" do
+      price = create(:item_price, item: create(:equipment), location: "Casaba Outlet - Everus Harbor", price_type: "sell", time_range: nil)
+      ::Uex::ShopLocationMatcher.relink
+      price.destroy!
+
+      ::Uex::ShopLocationMatcher.relink
+
+      assert_equal 0, Shop.count
+    end
+
     private def match(value)
       ::Uex::ShopLocationMatcher.new.match(value)
     end
