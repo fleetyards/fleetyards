@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import type { Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import BodyColumns from "@/frontend/components/Locations/BodyColumns/index.vue";
 import ContentsList from "@/frontend/components/Locations/Contents/index.vue";
@@ -82,22 +84,16 @@ const moonColumns = computed(() =>
   ),
 );
 
-// The ancestors the strip already shows -- system, star, planet, moon, a
-// city on them -- would only repeat it. A place deeper than that names the
-// ones it cannot: the clinic inside Everus Harbor says Everus Harbor.
-const STRIP_KINDS: string[] = [
-  LocationKindEnum.SYSTEM,
-  LocationKindEnum.STAR,
-  LocationKindEnum.PLANET,
-  LocationKindEnum.MOON,
-  LocationKindEnum.CITY,
-];
-
-const unseenAncestors = computed(() =>
-  (location.value?.ancestors ?? []).filter(
-    (ancestor) => !STRIP_KINDS.includes(ancestor.kind),
-  ),
-);
+// The star opens the same page as its system, so it is left out.
+const crumbs = computed<Crumb[]>(() => [
+  { to: { name: "locations" }, label: t("labels.location.allSystems") },
+  ...(location.value?.ancestors ?? [])
+    .filter((ancestor) => ancestor.kind !== LocationKindEnum.STAR)
+    .map((ancestor) => ({
+      to: { name: "location", params: { slug: ancestor.slug } },
+      label: ancestor.name ?? undefined,
+    })),
+]);
 
 const contentGroups = computed(() =>
   (contents.value?.groups ?? []).filter(
@@ -217,59 +213,48 @@ watch(
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <div v-if="location" class="location-page">
-        <div class="location-page__masthead">
-          <div class="location-page__title">
-            <p v-if="unseenAncestors.length" class="location-page__within">
-              {{ t("labels.location.within") }}
-              <template
-                v-for="(ancestor, index) in unseenAncestors"
-                :key="ancestor.id"
-              >
-                <span v-if="index > 0" aria-hidden="true">›</span>
-                <router-link
-                  :to="{ name: 'location', params: { slug: ancestor.slug } }"
-                >
-                  {{ ancestor.name }}
-                </router-link>
-              </template>
-            </p>
+        <div>
+          <BreadCrumbs :crumbs="crumbs" />
 
-            <Heading hero>{{ location.name }}</Heading>
-          </div>
+          <div class="location-page__masthead">
+            <div class="location-page__title">
+              <Heading hero>{{ location.name }}</Heading>
+            </div>
 
-          <div class="location-page__badges">
-            <span
-              v-if="location.retired"
-              class="location-page__badge location-page__badge--retired"
-            >
-              <span class="location-page__badge-value">
-                {{ t("labels.location.retired") }}
-              </span>
-            </span>
-
-            <template v-if="isSystemView">
+            <div class="location-page__badges">
               <span
-                v-for="badge in systemBadges"
-                :key="badge.key"
-                class="location-page__badge"
+                v-if="location.retired"
+                class="location-page__badge location-page__badge--retired"
               >
+                <span class="location-page__badge-value">
+                  {{ t("labels.location.retired") }}
+                </span>
+              </span>
+
+              <template v-if="isSystemView">
+                <span
+                  v-for="badge in systemBadges"
+                  :key="badge.key"
+                  class="location-page__badge"
+                >
+                  <span class="location-page__badge-label">
+                    {{ badge.label }}
+                  </span>
+                  <span class="location-page__badge-value">
+                    {{ badge.value }}
+                  </span>
+                </span>
+              </template>
+
+              <span v-else class="location-page__badge">
                 <span class="location-page__badge-label">
-                  {{ badge.label }}
+                  {{ t("labels.location.kind") }}
                 </span>
                 <span class="location-page__badge-value">
-                  {{ badge.value }}
+                  {{ t(`labels.location.kinds.${location.kind}`) }}
                 </span>
               </span>
-            </template>
-
-            <span v-else class="location-page__badge">
-              <span class="location-page__badge-label">
-                {{ t("labels.location.kind") }}
-              </span>
-              <span class="location-page__badge-value">
-                {{ t(`labels.location.kinds.${location.kind}`) }}
-              </span>
-            </span>
+            </div>
           </div>
         </div>
 
@@ -303,6 +288,10 @@ watch(
 
         <div v-else class="location-page__layout">
           <div class="location-page__main">
+            <section v-if="description" class="location-page__panel">
+              <p class="location-page__description">{{ description }}</p>
+            </section>
+
             <BodyColumns
               v-if="moonColumns.length"
               :bodies="moonColumns"
@@ -317,10 +306,6 @@ watch(
           </div>
 
           <aside class="location-page__aside">
-            <section v-if="description" class="location-page__panel">
-              <p class="location-page__description">{{ description }}</p>
-            </section>
-
             <LocationResources
               v-if="location.resources?.length"
               :groups="location.resources"

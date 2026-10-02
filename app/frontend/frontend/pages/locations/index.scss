@@ -19,29 +19,6 @@
     min-width: 0;
   }
 
-  &__within {
-    margin: 0;
-  }
-
-  &__within,
-  &__breadcrumb {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 13px;
-    color: var(--color-text-dim, #959595);
-
-    a {
-      color: var(--color-text-dim, #959595);
-      transition: color 150ms ease;
-
-      &:hover,
-      &:focus-visible {
-        color: var(--color-text, #c8c8c8);
-      }
-    }
-  }
-
   &__badges {
     display: flex;
     flex-wrap: wrap;
