@@ -2445,7 +2445,11 @@
           "shownWithParentOnly": "僅隨上級顯示",
           "yes": "是",
           "no": "否",
-          "unavailable": "無法使用"
+          "unavailable": "無法使用",
+          "appearance": "外觀",
+          "image": "圖片",
+          "color": "顏色",
+          "appearanceHint": "圖片會填滿行星或衛星的圓圈。沒有圖片時，顏色會繪製成受光照的球體。"
         },
         "blueprints": {
           "status": {

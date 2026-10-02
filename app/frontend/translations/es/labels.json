@@ -2445,7 +2445,11 @@
           "shownWithParentOnly": "Solo visible con su superior",
           "yes": "Sí",
           "no": "No",
-          "unavailable": "no disponible"
+          "unavailable": "no disponible",
+          "appearance": "Apariencia",
+          "image": "Imagen",
+          "color": "Color",
+          "appearanceHint": "Una imagen llena el círculo de un planeta o luna. Sin ella, el color se dibuja como una esfera iluminada."
         },
         "blueprints": {
           "status": {

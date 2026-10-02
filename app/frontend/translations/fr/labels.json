@@ -2445,7 +2445,11 @@
           "shownWithParentOnly": "Affiché seulement avec son parent",
           "yes": "Oui",
           "no": "Non",
-          "unavailable": "indisponible"
+          "unavailable": "indisponible",
+          "appearance": "Apparence",
+          "image": "Image",
+          "color": "Couleur",
+          "appearanceHint": "Une image remplit le cercle d’une planète ou d’une lune. Sans image, la couleur est dessinée comme une sphère éclairée."
         },
         "blueprints": {
           "status": {

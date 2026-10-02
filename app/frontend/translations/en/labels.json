@@ -650,7 +650,7 @@
           "discordChannelHint": "Events held to this squadron are announced here and nowhere else on Discord. Without a channel, they are not announced on Discord at all.",
           "notAnnounced": "Not announced on Discord for %{names}: no Discord channel is set up.",
           "blockedBy": "Already in the %{squadron} squadron",
-          "color": "Colour",
+          "color": "Color",
           "colorSuggestions": "From the icon:",
           "memberCount": "%{count} Members",
           "members": "Members",
@@ -2445,7 +2445,11 @@
           "shownWithParentOnly": "Only shown with its parent",
           "yes": "Yes",
           "no": "No",
-          "unavailable": "unavailable"
+          "unavailable": "unavailable",
+          "appearance": "Appearance",
+          "image": "Image",
+          "color": "Color",
+          "appearanceHint": "A picture fills a planet or moon’s circle. Without one, the color is drawn as a lit sphere."
         },
         "blueprints": {
           "status": {

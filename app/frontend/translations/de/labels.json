@@ -2445,7 +2445,11 @@
           "shownWithParentOnly": "Nur mit übergeordnetem Ort sichtbar",
           "yes": "Ja",
           "no": "Nein",
-          "unavailable": "nicht verfügbar"
+          "unavailable": "nicht verfügbar",
+          "appearance": "Darstellung",
+          "image": "Bild",
+          "color": "Farbe",
+          "appearanceHint": "Ein Bild füllt den Kreis eines Planeten oder Mondes. Ohne Bild wird die Farbe als beleuchtete Kugel gezeichnet."
         },
         "blueprints": {
           "status": {

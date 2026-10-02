@@ -2445,7 +2445,11 @@
           "shownWithParentOnly": "仅随上级显示",
           "yes": "是",
           "no": "否",
-          "unavailable": "不可用"
+          "unavailable": "不可用",
+          "appearance": "外观",
+          "image": "图片",
+          "color": "颜色",
+          "appearanceHint": "图片会填满行星或卫星的圆圈。没有图片时，颜色会绘制成受光照的球体。"
         },
         "blueprints": {
           "status": {

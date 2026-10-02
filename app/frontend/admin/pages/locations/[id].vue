@@ -9,6 +9,8 @@ import { useLocation } from "@/services/fyAdminApi";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import DetailList from "@/admin/components/DetailList/index.vue";
 import { type Detail } from "@/admin/components/DetailList/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -130,12 +132,33 @@ const details = computed((): Detail[] => {
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" :current-id="locationId" />
 
-      <Heading hero class="mb-4">
-        {{ location?.name || location?.scKey }}
-      </Heading>
+      <div class="admin-location__head">
+        <Heading hero class="mb-4">
+          {{ location?.name || location?.scKey }}
+        </Heading>
 
-      <!-- Read only: a wrong place is a parser or override fix. -->
+        <Btn
+          :to="{ name: 'admin-location-edit', params: { id: locationId } }"
+          :size="BtnSizesEnum.MD"
+          data-test="location-edit"
+        >
+          <i class="fa-light fa-pen" aria-hidden="true" />
+          {{ t("actions.edit") }}
+        </Btn>
+      </div>
+
+      <!-- A wrong place is a parser or override fix; only its look is edited. -->
       <DetailList :details="details" data-test="location-details" />
     </template>
   </AsyncData>
 </template>
+
+<style lang="scss" scoped>
+.admin-location__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+</style>

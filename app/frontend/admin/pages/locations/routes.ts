@@ -11,7 +11,19 @@ export const routes: RouteRecordRaw[] = [
       access: ["locations"],
     },
   },
-  // Read only, like missions: a load replaces every fact.
+  // A load replaces every fact; only how a place is drawn is edited.
+  {
+    path: ":id/edit/",
+    name: "admin-location-edit",
+    component: () => import("@/admin/pages/locations/[id]/edit.vue"),
+    meta: {
+      customTitle: true,
+      needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-locations",
+      access: ["locations"],
+    },
+  },
   {
     path: ":id/",
     name: "admin-location",
