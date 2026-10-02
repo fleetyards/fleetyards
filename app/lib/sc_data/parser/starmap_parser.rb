@@ -22,6 +22,17 @@ module ScData
       # 2047 records in 4.10.1 resolve to one of these, or to nothing.
       FILLER_NAMES = ["<= UNINITIALIZED =>", "<= PLACEHOLDER =>"].freeze
 
+      # A body's description lists what can be mined, harvested or hunted on
+      # it, one section per kind: "Potential Ship Mineables:" and a name per
+      # line, some with a note in brackets -- "Janalite (Caves only)". 21
+      # bodies in 4.10.1 carry them. They are lifted out as data, and the
+      # description keeps the prose.
+      #
+      # The colon is not always there: Daymar's "Potential Creatures" has none,
+      # so a heading counts only with item lines under it.
+      RESOURCE_HEADING = /\APotential (?<kind>[A-Za-z ]+):?\z/
+      RESOURCE_NOTE = /\s*\((?<note>[^)]*)\)\s*\z/
+
       # Records that describe how a place is built rather than a place: the
       # template an outpost is cloned from, a barge spawned at Prospect Point.
       NON_PLACE_KEYS = [/_template\z/i, /\Adynamicspawned/i].freeze
@@ -94,6 +105,7 @@ module ScData
           sc_refs: place[:refs],
           name: place[:name],
           description: place[:description],
+          resources: place[:resources] || [],
           kind: place[:kind],
           game_type: record&.dig(:type),
           parent_key: place[:parent],
@@ -122,6 +134,7 @@ module ScData
             record:,
             name: record[:name],
             description: record[:description],
+            resources: record[:resources],
             kind: kind_of(record),
             parent: records[parent_ref]&.dig(:key),
             map_parent: records[record[:parent]]&.dig(:key),
@@ -451,7 +464,8 @@ module ScData
             key: item[:key],
             ref:,
             name: override["name"] || place_name(values["name"]),
-            description: place_description(values["description"]),
+            description: description_text(values["description"]),
+            resources: description_resources(values["description"]),
             type: type[:name],
             icon: values["navIcon"],
             parent: value_or_nil(values["parent"]),
@@ -474,6 +488,41 @@ module ScData
         description = translate(key)
 
         description.presence unless FILLER_NAMES.include?(description)
+      end
+
+      private def description_sections(key)
+        text = place_description(key)
+        return [] if text.nil?
+
+        # The export writes line breaks as a literal backslash-n.
+        text.gsub("\\n", "\n").split(/\n\s*\n/).map { |block| block.strip.lines.map(&:strip) }
+      end
+
+      private def description_text(key)
+        prose = description_sections(key).reject { |lines| resource_section?(lines) }
+        return if prose.empty?
+
+        prose.map { |lines| lines.join("\\n") }.join("\\n\\n")
+      end
+
+      private def resource_section?(lines)
+        lines.size > 1 && lines.first.to_s.match?(RESOURCE_HEADING)
+      end
+
+      private def description_resources(key)
+        description_sections(key).filter_map do |lines|
+          next unless resource_section?(lines)
+
+          match = lines.first.match(RESOURCE_HEADING)
+
+          items = lines.drop(1).reject(&:empty?).map do |line|
+            note = line.match(RESOURCE_NOTE)
+
+            {name: line.sub(RESOURCE_NOTE, ""), note: note && note[:note]}
+          end
+
+          {kind: match[:kind].parameterize(separator: "_"), items:} if items.any?
+        end
       end
 
       private def object_types

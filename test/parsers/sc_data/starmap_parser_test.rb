@@ -125,6 +125,25 @@ module ScData
         assert_equal "Pyro2", location("Pyro2_L4")[:parent_key]
       end
 
+      # The export writes line breaks as a literal backslash-n, and Daymar's
+      # creatures heading has no colon.
+      test "#locations lifts what can be mined and harvested out of the description" do
+        stanton
+        place("Stanton1a", "Arial", type: "Moon", parent: "Stanton1", description: [
+          "This moon was named after the 3rd CEO of Hurston Dynamics.",
+          "Potential Ship Mineables:\\nAluminum\\nTin",
+          "Potential Hand Mineables:\\nJanalite (Caves only)",
+          "Potential Creatures\\nJuvenile Valakkar"
+        ].join("\\n\\n"))
+
+        arial = location("Stanton1a")
+
+        assert_equal "This moon was named after the 3rd CEO of Hurston Dynamics.", arial[:description]
+        assert_equal %w[ship_mineables hand_mineables creatures], arial[:resources].pluck(:kind)
+        assert_equal [{name: "Aluminum", note: nil}, {name: "Tin", note: nil}], arial[:resources].first[:items]
+        assert_equal({name: "Janalite", note: "Caves only"}, arial[:resources].second[:items].sole)
+      end
+
       test "#locations places a record keyed after another system in that system" do
         stanton
         translate("Ellis" => "Ellis System", "Ellis_Desc" => "Home of the Murray Cup.")
@@ -239,13 +258,15 @@ module ScData
         place("Stanton1", "Hurston", type: "Planet", parent: "StantonStar")
       end
 
-      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false)
+      private def place(key, name, type:, parent:, icon: nil, tag: nil, hidden: false, parent_only: false, permanent: false, description: nil)
         ref = ref_for(key)
         name_key = "loc_#{key.downcase}"
         @translations[name_key] = name if name
+        @translations["#{name_key}_desc"] = description if description
 
         attributes = {
           name: "@#{name_key}",
+          description: description ? "@#{name_key}_desc" : nil,
           type: TYPES.fetch(type),
           navIcon: icon || "Default",
           parent: parent ? ref_for(parent) : nil,
