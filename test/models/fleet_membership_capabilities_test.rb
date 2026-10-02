@@ -51,6 +51,13 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     assert_equal FleetSquadron::MANAGE_PRIVILEGES, FleetMembership::CAPABILITY_PRIVILEGES[:manage_squadrons]
   end
 
+  # The switch is a fleet attribute, so it follows FleetPolicy#params_filter
+  # rather than the squadron privileges.
+  test "switching squadrons on needs the fleet update privilege" do
+    assert membership_with(["fleet:update"]).capabilities[:enable_squadrons]
+    refute membership_with(["fleet:squadrons:manage"]).capabilities[:enable_squadrons]
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort
