@@ -16934,9 +16934,7 @@ components:
         unstable:
           type: boolean
         bodyType:
-          anyOf:
-          - "$ref": "#/components/schemas/LocationBodyTypeEnum"
-          - type: 'null'
+          "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         mapParent:
@@ -16986,19 +16984,6 @@ components:
       - createdAt
       - updatedAt
       title: Location
-    LocationBodyTypeEnum:
-      type: string
-      enum:
-      - gas_giant
-      - ice_giant
-      - asteroid
-      - city
-      x-enumNames:
-      - GAS_GIANT
-      - ICE_GIANT
-      - ASTEROID
-      - CITY
-      title: LocationBodyTypeEnum
     LocationInput:
       type: object
       properties:
@@ -19843,6 +19828,40 @@ components:
       - UNKNOWN
       - 'NULL'
       title: NullableGameMissionLocationKindEnum
+    NullableItemPriceTimeRangeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      -
+      x-enumNames:
+      - 1_DAY
+      - 3_DAYS
+      - 7_DAYS
+      - 30_DAYS
+      - 'NULL'
+      title: NullableItemPriceTimeRangeEnum
+    NullableLocationBodyTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - gas_giant
+      - ice_giant
+      - asteroid
+      - city
+      -
+      x-enumNames:
+      - GAS_GIANT
+      - ICE_GIANT
+      - ASTEROID
+      - CITY
+      - 'NULL'
+      title: NullableLocationBodyTypeEnum
     NullableSupporterContributionSourceEnum:
       type:
       - string

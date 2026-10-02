@@ -33,7 +33,7 @@ module V1
           description: {type: [:string, :null]},
           color: {type: [:string, :null]},
           unstable: {type: :boolean},
-          bodyType: {anyOf: [::Shared::V1::Schemas::Enums::LocationBodyTypeEnum, {type: :null}]},
+          bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum,
           image: ::Shared::V1::Schemas::MediaFile,
           resources: {type: :array, items: ::V1::Schemas::LocationResourceGroup},
           ancestors: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
