@@ -245,6 +245,7 @@
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {
+        "directory": "Directorio de flotas",
         "owners": "Owners",
         "add": "Crear una nueva flota",
         "invites": "Invitaciones de flota",

@@ -2198,6 +2198,17 @@
           "releasedFilter": "正式版",
           "released": "在正式版中",
           "unreleased": "未在正式版"
+        },
+        "fleetDirectory": {
+          "search": "名稱、FID 或 SID",
+          "memberCountGteq": "最少成員數",
+          "activity": "活動",
+          "language": "語言",
+          "alignment": "陣營",
+          "commitment": "投入程度",
+          "timezone": "時區",
+          "recruiting": "僅招募中",
+          "roleplay": "僅角色扮演"
         }
       },
       "station": {
@@ -3562,6 +3573,16 @@
         "noRewards": "遊戲檔案未為此任務寫明獎勵。",
         "unreleased": "未在正式版",
         "retired": "已移除"
+      },
+      "fleetDirectory": {
+        "name": "艦隊",
+        "memberCount": "成員",
+        "createdAt": "最新",
+        "language": "語言",
+        "recruiting": "招募中",
+        "notRecruiting": "未招募",
+        "roleplay": "角色扮演",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

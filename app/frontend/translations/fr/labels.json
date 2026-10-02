@@ -2198,6 +2198,17 @@
           "releasedFilter": "Dans la version",
           "released": "Dans la version",
           "unreleased": "Hors version"
+        },
+        "fleetDirectory": {
+          "search": "Nom, FID ou SID",
+          "memberCountGteq": "Membres minimum",
+          "activity": "Activité",
+          "language": "Langue",
+          "alignment": "Alignement",
+          "commitment": "Engagement",
+          "timezone": "Fuseau horaire",
+          "recruiting": "Qui recrutent",
+          "roleplay": "Jeu de rôle uniquement"
         }
       },
       "station": {
@@ -3562,6 +3573,16 @@
         "noRewards": "Les fichiers n'indiquent aucune récompense pour celle-ci.",
         "unreleased": "Hors version",
         "retired": "Retirée"
+      },
+      "fleetDirectory": {
+        "name": "Flottes",
+        "memberCount": "Membres",
+        "createdAt": "Plus récentes",
+        "language": "Langue",
+        "recruiting": "Recrute",
+        "notRecruiting": "Ne recrute pas",
+        "roleplay": "Jeu de rôle",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

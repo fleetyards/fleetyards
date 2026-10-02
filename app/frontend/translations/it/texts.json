@@ -42,7 +42,8 @@
         }
       },
       "fleets": {
-        "leaveInfo": "Non puoi lasciare una flotta come amministratore."
+        "leaveInfo": "Non puoi lasciare una flotta come amministratore.",
+        "directory": "Flotte verificate che hanno scelto di farsi trovare. Ogni flotta qui ha dimostrato di guidare la propria organizzazione RSI."
       },
       "admin": {
         "destroyedFleets": {

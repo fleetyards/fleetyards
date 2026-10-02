@@ -2198,6 +2198,17 @@
           "releasedFilter": "正式版",
           "released": "在正式版中",
           "unreleased": "未在正式版"
+        },
+        "fleetDirectory": {
+          "search": "名称、FID 或 SID",
+          "memberCountGteq": "最少成员数",
+          "activity": "活动",
+          "language": "语言",
+          "alignment": "阵营",
+          "commitment": "投入程度",
+          "timezone": "时区",
+          "recruiting": "仅招募中",
+          "roleplay": "仅角色扮演"
         }
       },
       "station": {
@@ -3562,6 +3573,16 @@
         "noRewards": "游戏文件未为此任务写明奖励。",
         "unreleased": "未在正式版",
         "retired": "已移除"
+      },
+      "fleetDirectory": {
+        "name": "舰队",
+        "memberCount": "成员",
+        "createdAt": "最新",
+        "language": "语言",
+        "recruiting": "招募中",
+        "notRecruiting": "未招募",
+        "roleplay": "角色扮演",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

@@ -2198,6 +2198,17 @@
           "releasedFilter": "En la versión",
           "released": "En la versión",
           "unreleased": "Fuera de la versión"
+        },
+        "fleetDirectory": {
+          "search": "Nombre, FID o SID",
+          "memberCountGteq": "Mínimo de miembros",
+          "activity": "Actividad",
+          "language": "Idioma",
+          "alignment": "Alineamiento",
+          "commitment": "Compromiso",
+          "timezone": "Zona horaria",
+          "recruiting": "Solo reclutando",
+          "roleplay": "Solo rol"
         }
       },
       "station": {
@@ -3562,6 +3573,16 @@
         "noRewards": "Los archivos no indican ninguna recompensa para esta misión.",
         "unreleased": "Fuera de la versión",
         "retired": "Retirada"
+      },
+      "fleetDirectory": {
+        "name": "Flotas",
+        "memberCount": "Miembros",
+        "createdAt": "Más recientes",
+        "language": "Idioma",
+        "recruiting": "Reclutando",
+        "notRecruiting": "No recluta",
+        "roleplay": "Rol",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

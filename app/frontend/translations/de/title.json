@@ -126,7 +126,8 @@
           "edit": "Auftrag bearbeiten",
           "show": "Auftrag",
           "payouts": "%{fleet} Auftragsauszahlung"
-        }
+        },
+        "directory": "Flottenverzeichnis"
       },
       "roadmap": {
         "index": "Roadmap",

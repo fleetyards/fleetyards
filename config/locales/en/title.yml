@@ -25,6 +25,7 @@ en:
       fleet_settings_roles: "%{fleet} Roles"
       fleet_stats: "%{fleet} Stats"
       fleets: Fleets
+      fleets_directory: "Fleet Directory"
       fleets_add: Create new Fleet
       fleets_invites: Fleet Invites
       fleets_preview: Fleet Preview

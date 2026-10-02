@@ -105,7 +105,8 @@
         "contracts": {
           "index": "合约",
           "payouts": "分账"
-        }
+        },
+        "directory": "目录"
       },
       "rsiProfile": "RSI 档案",
       "rsiHangar": "RSI 机库",

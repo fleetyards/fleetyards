@@ -2198,6 +2198,17 @@
           "releasedFilter": "Im Release",
           "released": "Im Release",
           "unreleased": "Nicht im Release"
+        },
+        "fleetDirectory": {
+          "search": "Name, FID oder SID",
+          "memberCountGteq": "Mindestens Mitglieder",
+          "activity": "Aktivität",
+          "language": "Sprache",
+          "alignment": "Ausrichtung",
+          "commitment": "Engagement",
+          "timezone": "Zeitzone",
+          "recruiting": "Nur rekrutierende",
+          "roleplay": "Nur Rollenspiel"
         }
       },
       "station": {
@@ -3562,6 +3573,16 @@
         "noRewards": "Die Dateien nennen für diesen Auftrag keine Belohnung.",
         "unreleased": "Nicht im Release",
         "retired": "Entfernt"
+      },
+      "fleetDirectory": {
+        "name": "Flotten",
+        "memberCount": "Mitglieder",
+        "createdAt": "Neueste",
+        "language": "Sprache",
+        "recruiting": "Rekrutiert",
+        "notRecruiting": "Rekrutiert nicht",
+        "roleplay": "Rollenspiel",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

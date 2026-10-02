@@ -26,6 +26,7 @@ zh-TW:
       fleet_settings_roles: "%{fleet} 角色"
       fleet_stats: "%{fleet} 統計"
       fleets: 艦隊
+      fleets_directory: "艦隊目錄"
       fleets_add: 建立新艦隊
       fleets_invites: 艦隊邀請
       fleets_preview: 艦隊預覽
