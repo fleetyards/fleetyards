@@ -2040,6 +2040,14 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         name:
           type: string
         slug:
@@ -3049,6 +3057,10 @@ components:
         locationUrl:
           type: string
           format: uri
+        shop:
+          anyOf:
+          - "$ref": "#/components/schemas/ShopLink"
+          - type: 'null'
         scu:
           type:
           - integer
@@ -3112,6 +3124,64 @@ components:
       - BUY
       - SELL
       - RENTAL
+    LocationKindEnum:
+      type: string
+      enum:
+      - system
+      - star
+      - planet
+      - moon
+      - city
+      - station
+      - outpost
+      - clinic
+      - district
+      - asteroid
+      - anomaly
+      - jump_point
+      - point_of_interest
+      - nav_point
+      - other
+      x-enumNames:
+      - SYSTEM
+      - STAR
+      - PLANET
+      - MOON
+      - CITY
+      - STATION
+      - OUTPOST
+      - CLINIC
+      - DISTRICT
+      - ASTEROID
+      - ANOMALY
+      - JUMP_POINT
+      - POINT_OF_INTEREST
+      - NAV_POINT
+      - OTHER
+    LocationLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        parentName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - parentName
     Manufacturer:
       type: object
       properties:
@@ -4788,6 +4858,20 @@ components:
       x-enumNames:
       - CITIZENID
       - RSI_PROFILE
+    ShopLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - location
     StoreImageMedia:
       type: object
       properties:
