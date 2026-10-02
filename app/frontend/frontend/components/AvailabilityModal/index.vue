@@ -8,6 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import type { ItemPrice } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
 // Shop-perspective, the way `item_prices` stores it: `soldAt` is where a shop
 // sells the item, which is where a reader buys it. `boughtAt` is the other
@@ -26,6 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t, toNumber } = useI18n();
+const comlink = useComlink();
+
+// A link to one of our pages leaves the modal behind: nothing closes it on a
+// route change.
+const closeModal = () => comlink.emit("close-modal");
 
 const byPrice = (prices: ItemPrice[]) =>
   [...prices].sort((a, b) => a.price - b.price);
@@ -156,8 +162,17 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
                 class="availability__item"
               >
                 <span class="availability__loc">
+                  <router-link
+                    v-if="price.shop"
+                    :to="{ name: 'shop', params: { slug: price.shop.slug } }"
+                    class="availability__shop"
+                    data-test="availability-shop-link"
+                    @click="closeModal"
+                  >
+                    {{ shopName(price) }}
+                  </router-link>
                   <a
-                    v-if="linkUrl(price)"
+                    v-else-if="linkUrl(price)"
                     :href="linkUrl(price)"
                     class="availability__shop"
                     target="_blank"
@@ -168,7 +183,21 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
                   <span v-else class="availability__shop">
                     {{ shopName(price) }}
                   </span>
-                  <span v-if="placeName(price)" class="availability__place">
+                  <router-link
+                    v-if="price.shop"
+                    :to="{
+                      name: 'location',
+                      params: { slug: price.shop.location.slug },
+                    }"
+                    class="availability__place"
+                    @click="closeModal"
+                  >
+                    {{ placeName(price) || price.shop.location.name }}
+                  </router-link>
+                  <span
+                    v-else-if="placeName(price)"
+                    class="availability__place"
+                  >
                     {{ placeName(price) }}
                   </span>
                 </span>
