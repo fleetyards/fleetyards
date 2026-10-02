@@ -97,5 +97,8 @@ Nyx2:
 Nyx3:
   color: "#4a768c"
   image: db/seeds/locations/nyx-iii.webp
+# The Glaciem Ring.
+NyxSolarSystem:
+  image: db/seeds/locations/nyx-system.webp
 Nyx_Levski:
   image: db/seeds/locations/levski.webp
