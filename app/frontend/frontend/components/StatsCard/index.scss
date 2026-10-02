@@ -58,6 +58,12 @@
     font-size: 16px;
   }
 
+  // Drawn rather than a glyph: the circle is the icon, with no box around it.
+  &__icon--drawn {
+    background: none;
+    border: 0;
+  }
+
   &__heading {
     display: flex;
     flex: 1;

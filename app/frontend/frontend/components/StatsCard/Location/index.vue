@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
+import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
+import { isGlobeKind, sunStyle } from "@/shared/utils/LocationGlobe";
 import {
   type StatsCardBadge,
   type StatsCardStatus,
@@ -86,6 +88,17 @@ const image = computed(() => {
   return picture ? (picture.mediumUrl ?? picture.url) : undefined;
 });
 
+// A planet or a moon turns as its globe, a star glows as its sun; anything
+// else keeps the card's own icon.
+const drawn = computed(() => {
+  const kind = props.location?.kind;
+
+  if (isGlobeKind(kind)) return "globe";
+  if (kind === LocationKindEnum.STAR) return "sun";
+
+  return undefined;
+});
+
 const ownRoute = computed(() =>
   props.location?.slug
     ? { name: "location", params: { slug: props.location.slug } }
@@ -108,5 +121,40 @@ const ownRoute = computed(() =>
     :loading="loading"
     :unavailable="!loading && !location"
     @navigate="emit('navigate')"
-  />
+  >
+    <template v-if="drawn && location" #icon>
+      <LocationGlobe
+        v-if="drawn === 'globe'"
+        class="location-stats-card__globe"
+        :location="location"
+      />
+      <span
+        v-else
+        class="location-stats-card__sun"
+        :class="{ 'location-stats-card__sun--unstable': location.unstable }"
+        :style="sunStyle(location)"
+        aria-hidden="true"
+      />
+    </template>
+  </StatsCard>
 </template>
+
+<style lang="scss" scoped>
+@import "@/frontend/components/Locations/sun";
+
+.location-stats-card__globe,
+.location-stats-card__sun {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.location-stats-card__sun {
+  @include location-sun;
+
+  &--unstable {
+    @include location-sun-unstable;
+  }
+}
+</style>
