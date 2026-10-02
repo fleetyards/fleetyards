@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import SystemCardSkeleton from "@/frontend/components/Locations/SystemCard/Skeleton.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import { type Location, useLocationTree } from "@/services/fyApi";
 
 type Props = {
@@ -15,7 +17,13 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { data: tree } = useLocationTree(computed(() => props.system.slug));
+const { t } = useI18n();
+
+const {
+  data: tree,
+  isError,
+  refetch,
+} = useLocationTree(computed(() => props.system.slug));
 </script>
 
 <template>
@@ -27,6 +35,10 @@ const { data: tree } = useLocationTree(computed(() => props.system.slug));
       {{ system.name }}
     </router-link>
     <SystemStrip v-if="tree" :tree="tree" compact />
+    <p v-else-if="isError" class="location-system-card__error">
+      {{ t("labels.location.systemUnavailable") }}
+      <Btn @click="() => refetch()">{{ t("actions.retry") }}</Btn>
+    </p>
     <SystemCardSkeleton v-else :with-title="false" />
   </div>
 </template>
@@ -41,6 +53,15 @@ const { data: tree } = useLocationTree(computed(() => props.system.slug));
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 16px;
     color: var(--color-text, #c8c8c8);
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-text-dim, #959595);
   }
 }
 </style>

@@ -21,6 +21,8 @@
         "source": "價格與庫存來自 UEX。"
       },
       "location": {
+        "systemUnavailable": "無法載入此星系。",
+        "systemsUnavailable": "無法載入星系。",
         "resourceKinds": {
           "ship_mineables": "飛船採礦",
           "hand_mineables": "手持採礦",

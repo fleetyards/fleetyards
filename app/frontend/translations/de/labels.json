@@ -21,6 +21,8 @@
         "source": "Preise und Sortiment von UEX."
       },
       "location": {
+        "systemUnavailable": "Dieses System konnte nicht geladen werden.",
+        "systemsUnavailable": "Die Systeme konnten nicht geladen werden.",
         "resourceKinds": {
           "ship_mineables": "Schiffsabbau",
           "hand_mineables": "Handabbau",

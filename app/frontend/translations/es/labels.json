@@ -21,6 +21,8 @@
         "source": "Precios y existencias de UEX."
       },
       "location": {
+        "systemUnavailable": "No se pudo cargar este sistema.",
+        "systemsUnavailable": "No se pudieron cargar los sistemas.",
         "resourceKinds": {
           "ship_mineables": "Minables con nave",
           "hand_mineables": "Minables a mano",

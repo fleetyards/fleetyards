@@ -16,7 +16,12 @@ const { t } = useI18n();
 
 // Every system, laid out as its bodies. The list of every place has a page of
 // its own, with the filters.
-const { data: systems, isLoading } = useLocations({
+const {
+  data: systems,
+  isLoading,
+  isError,
+  refetch,
+} = useLocations({
   q: { kindEq: LocationKindEnum.SYSTEM },
 });
 
@@ -44,6 +49,11 @@ const PLACEHOLDERS = 4;
       <SystemCardSkeleton v-for="index in PLACEHOLDERS" :key="index" />
     </template>
 
+    <p v-else-if="isError" class="locations-systems__error">
+      {{ t("labels.location.systemsUnavailable") }}
+      <Btn @click="() => refetch()">{{ t("actions.retry") }}</Btn>
+    </p>
+
     <SystemCard
       v-for="system in systems?.items ?? []"
       v-else
@@ -58,6 +68,14 @@ const PLACEHOLDERS = 4;
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: var(--color-text-dim, #959595);
+  }
 
   &__head {
     display: flex;

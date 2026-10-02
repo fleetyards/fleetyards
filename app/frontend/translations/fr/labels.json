@@ -21,6 +21,8 @@
         "source": "Prix et stock issus d’UEX."
       },
       "location": {
+        "systemUnavailable": "Impossible de charger ce système.",
+        "systemsUnavailable": "Impossible de charger les systèmes.",
         "resourceKinds": {
           "ship_mineables": "Minerais au vaisseau",
           "hand_mineables": "Minerais à la main",

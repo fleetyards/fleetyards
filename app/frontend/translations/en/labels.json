@@ -21,6 +21,8 @@
         "source": "Prices and stock from UEX."
       },
       "location": {
+        "systemUnavailable": "Could not load this system.",
+        "systemsUnavailable": "Could not load the systems.",
         "resourceKinds": {
           "ship_mineables": "Ship mineables",
           "hand_mineables": "Hand mineables",

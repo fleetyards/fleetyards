@@ -21,6 +21,8 @@
         "source": "Prezzi e disponibilità da UEX."
       },
       "location": {
+        "systemUnavailable": "Impossibile caricare questo sistema.",
+        "systemsUnavailable": "Impossibile caricare i sistemi.",
         "resourceKinds": {
           "ship_mineables": "Estraibili con nave",
           "hand_mineables": "Estraibili a mano",

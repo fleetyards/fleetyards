@@ -21,6 +21,8 @@
         "source": "价格与库存来自 UEX。"
       },
       "location": {
+        "systemUnavailable": "无法加载此星系。",
+        "systemsUnavailable": "无法加载星系。",
         "resourceKinds": {
           "ship_mineables": "飞船采矿",
           "hand_mineables": "手持采矿",
