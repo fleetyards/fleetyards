@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type LocationTreeNode } from "@/services/fyApi";
-import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
+import { LocationKindEnum, type LocationTreeNode } from "@/services/fyApi";
 import { globeStyle } from "@/shared/utils/LocationGlobe";
 
 type Props = {
@@ -56,7 +56,7 @@ const cities = (body: LocationTreeNode) =>
         :to="{ name: 'location', params: { slug: city.location.slug } }"
         class="location-columns__city"
       >
-        <i :class="LOCATION_KIND_ICONS.city" aria-hidden="true" />
+        <LocationKindIcon :kind="LocationKindEnum.CITY" />
         {{ city.location.name }}
       </router-link>
 
@@ -81,7 +81,7 @@ const cities = (body: LocationTreeNode) =>
             class="location-columns__moon-dot location-columns__moon-dot--icon"
             aria-hidden="true"
           >
-            <i :class="LOCATION_KIND_ICONS[moon.location.kind]" />
+            <LocationKindIcon :kind="moon.location.kind" />
           </span>
           <span class="location-columns__moon-body">
             <span class="location-columns__moon-name">
@@ -93,7 +93,7 @@ const cities = (body: LocationTreeNode) =>
               :key="city.location.id"
               class="location-columns__moon-city"
             >
-              <i :class="LOCATION_KIND_ICONS.city" aria-hidden="true" />
+              <LocationKindIcon :kind="LocationKindEnum.CITY" />
               {{ city.location.name }}
             </span>
           </span>

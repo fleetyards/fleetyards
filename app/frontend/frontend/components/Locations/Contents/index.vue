@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type LocationContentsEntry,
   type LocationContentsGroup,
 } from "@/services/fyApi";
-import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
 
 type Props = {
   groups: LocationContentsGroup[];
@@ -58,7 +58,7 @@ const target = (entry: LocationContentsEntry) =>
       class="location-contents__group"
     >
       <h2 class="location-contents__title">
-        <i :class="LOCATION_KIND_ICONS[group.kind]" aria-hidden="true" />
+        <LocationKindIcon :kind="group.kind" />
         {{ t(`labels.location.kinds.${group.kind}`) }} · {{ group.count }}
       </h2>
 

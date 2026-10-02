@@ -5,12 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type LocationKindCount } from "@/services/fyApi";
-import {
-  LOCATION_KIND_ICONS,
-  LOCATION_KIND_ORDER,
-} from "@/frontend/components/Locations/kinds";
+import { LOCATION_KIND_ORDER } from "@/frontend/components/Locations/kinds";
 
 type Props = {
   counts: LocationKindCount[];
@@ -36,7 +34,7 @@ const sorted = computed(() =>
       class="location-kind-counts__item"
       :title="t(`labels.location.kinds.${entry.kind}`)"
     >
-      <i :class="LOCATION_KIND_ICONS[entry.kind]" aria-hidden="true" />
+      <LocationKindIcon :kind="entry.kind" />
       <span class="sr-only">{{
         t(`labels.location.kinds.${entry.kind}`)
       }}</span>
