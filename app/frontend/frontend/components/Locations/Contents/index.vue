@@ -10,6 +10,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   type LocationContentsEntry,
   type LocationContentsGroup,
+  LocationKindEnum,
 } from "@/services/fyApi";
 
 type Props = {
@@ -38,6 +39,13 @@ const toggle = (group: LocationContentsGroup) => {
     [group.kind]: !expanded.value[group.kind],
   };
 };
+
+// A room inside a station or city is never on the map, so saying so on every
+// clinic only adds noise.
+const ROOM_KINDS: string[] = [
+  LocationKindEnum.CLINIC,
+  LocationKindEnum.DISTRICT,
+];
 
 // A name several places share opens the list of all of them; a single place
 // opens its own page.
@@ -70,7 +78,7 @@ const target = (entry: LocationContentsEntry) =>
               {{ t("labels.location.namesakes", { count: entry.count }) }}
             </span>
             <span
-              v-if="!entry.shownOnStarmap"
+              v-if="!entry.shownOnStarmap && !ROOM_KINDS.includes(group.kind)"
               class="location-contents__hidden"
               :title="t('labels.location.hiddenOnStarmap')"
             >
