@@ -27,6 +27,19 @@
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
         "allPlaces": "All places",
+        "shops": "Shops",
+        "shopItems": {
+          "one": "%{count} item",
+          "other": "%{count} items"
+        },
+        "shopItemTypes": {
+          "Model": "Ship",
+          "ModelModule": "Module",
+          "ModelPaint": "Paint",
+          "Component": "Component",
+          "Equipment": "Equipment",
+          "Commodity": "Commodity"
+        },
         "bodyTypes": {
           "gas_giant": "Gas giant",
           "ice_giant": "Ice giant",

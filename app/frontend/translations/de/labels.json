@@ -27,6 +27,19 @@
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
         "allPlaces": "Alle Orte",
+        "shops": "Läden",
+        "shopItems": {
+          "one": "%{count} Artikel",
+          "other": "%{count} Artikel"
+        },
+        "shopItemTypes": {
+          "Model": "Schiff",
+          "ModelModule": "Modul",
+          "ModelPaint": "Lackierung",
+          "Component": "Komponente",
+          "Equipment": "Ausrüstung",
+          "Commodity": "Ware"
+        },
         "bodyTypes": {
           "gas_giant": "Gasriese",
           "ice_giant": "Eisriese",

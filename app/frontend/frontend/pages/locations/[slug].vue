@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationShops from "@/frontend/components/Locations/Shops/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -25,6 +26,7 @@ import {
   useGameMissions,
   useLocation,
   useLocationContents,
+  useLocationShops,
   useLocationTree,
 } from "@/services/fyApi";
 
@@ -201,6 +203,12 @@ const { data: contents } = useLocationContents(slug, {
   },
 });
 
+// The shops UEX lists here. The game files carry none, so this is the only
+// source; a system page has no shops of its own.
+const { data: shops } = useLocationShops(slug, {
+  query: { enabled: computed(() => loaded.value && !isSystemView.value) },
+});
+
 // A page's worth in the rail, grouped by who offers them; the mission list,
 // filtered to here, has the rest.
 const MISSIONS_PER_PAGE = 100;
@@ -368,6 +376,8 @@ watch(
               :groups="contentGroups"
               :parent-id="location.id"
             />
+
+            <LocationShops v-if="shops?.shops.length" :shops="shops.shops" />
           </div>
 
           <aside class="location-page__aside">

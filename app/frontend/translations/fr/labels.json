@@ -27,6 +27,19 @@
         "systemStrip": "%{system}, de son étoile vers l'extérieur",
         "allSystems": "Tous les systèmes",
         "allPlaces": "Tous les lieux",
+        "shops": "Boutiques",
+        "shopItems": {
+          "one": "%{count} article",
+          "other": "%{count} articles"
+        },
+        "shopItemTypes": {
+          "Model": "Vaisseau",
+          "ModelModule": "Module",
+          "ModelPaint": "Peinture",
+          "Component": "Composant",
+          "Equipment": "Équipement",
+          "Commodity": "Marchandise"
+        },
         "bodyTypes": {
           "gas_giant": "Géante gazeuse",
           "ice_giant": "Géante de glace",

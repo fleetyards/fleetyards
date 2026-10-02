@@ -27,6 +27,19 @@
         "systemStrip": "%{system}, desde su estrella hacia fuera",
         "allSystems": "Todos los sistemas",
         "allPlaces": "Todos los lugares",
+        "shops": "Tiendas",
+        "shopItems": {
+          "one": "%{count} artículo",
+          "other": "%{count} artículos"
+        },
+        "shopItemTypes": {
+          "Model": "Nave",
+          "ModelModule": "Módulo",
+          "ModelPaint": "Pintura",
+          "Component": "Componente",
+          "Equipment": "Equipo",
+          "Commodity": "Mercancía"
+        },
         "bodyTypes": {
           "gas_giant": "Gigante gaseoso",
           "ice_giant": "Gigante helado",

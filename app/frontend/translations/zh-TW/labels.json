@@ -27,6 +27,19 @@
         "systemStrip": "%{system}，從恆星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地點",
+        "shops": "商店",
+        "shopItems": {
+          "one": "%{count} 件商品",
+          "other": "%{count} 件商品"
+        },
+        "shopItemTypes": {
+          "Model": "艦船",
+          "ModelModule": "模組",
+          "ModelPaint": "塗裝",
+          "Component": "組件",
+          "Equipment": "裝備",
+          "Commodity": "商品"
+        },
         "bodyTypes": {
           "gas_giant": "氣態巨行星",
           "ice_giant": "冰巨星",
