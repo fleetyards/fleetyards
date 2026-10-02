@@ -1,0 +1,109 @@
+<script lang="ts">
+export default {
+  name: "LocationBodyColumns",
+};
+</script>
+
+<script lang="ts" setup>
+import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { type LocationTreeNode } from "@/services/fyApi";
+import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
+
+type Props = {
+  bodies: LocationTreeNode[];
+};
+
+defineProps<Props>();
+
+const { t } = useI18n();
+
+const moons = (body: LocationTreeNode) =>
+  body.children.filter((child) => child.location.kind !== "city");
+
+const cities = (body: LocationTreeNode) =>
+  body.children.filter((child) => child.location.kind === "city");
+</script>
+
+<template>
+  <div class="location-columns">
+    <section
+      v-for="body in bodies"
+      :key="body.location.id"
+      class="location-columns__body"
+    >
+      <router-link
+        :to="{ name: 'location', params: { slug: body.location.slug } }"
+        class="location-columns__head"
+      >
+        <span class="location-columns__planet" aria-hidden="true" />
+        <span class="location-columns__title">{{ body.location.name }}</span>
+      </router-link>
+
+      <router-link
+        v-for="city in cities(body)"
+        :key="city.location.id"
+        :to="{ name: 'location', params: { slug: city.location.slug } }"
+        class="location-columns__city"
+      >
+        <i :class="LOCATION_KIND_ICONS.city" aria-hidden="true" />
+        {{ city.location.name }}
+      </router-link>
+
+      <div v-if="moons(body).length" class="location-columns__group">
+        <span class="location-columns__caption">
+          {{ t("labels.location.moons", { count: moons(body).length }) }}
+        </span>
+        <router-link
+          v-for="moon in moons(body)"
+          :key="moon.location.id"
+          :to="{ name: 'location', params: { slug: moon.location.slug } }"
+          class="location-columns__moon"
+        >
+          <span class="location-columns__moon-dot" aria-hidden="true" />
+          <span class="location-columns__moon-body">
+            <span class="location-columns__moon-name">
+              {{ moon.location.name }}
+            </span>
+            <KindCounts :counts="moon.counts" />
+            <span
+              v-for="city in cities(moon)"
+              :key="city.location.id"
+              class="location-columns__moon-city"
+            >
+              <i :class="LOCATION_KIND_ICONS.city" aria-hidden="true" />
+              {{ city.location.name }}
+            </span>
+          </span>
+        </router-link>
+      </div>
+
+      <div v-if="body.counts.length" class="location-columns__group">
+        <span class="location-columns__caption">
+          {{ t("labels.location.inOrbit") }}
+        </span>
+        <KindCounts :counts="body.counts" />
+      </div>
+
+      <div v-if="body.lagrangePoints.length" class="location-columns__group">
+        <span class="location-columns__caption">
+          {{ t("labels.location.lagrangePoints") }}
+        </span>
+        <div class="location-columns__chips">
+          <router-link
+            v-for="point in body.lagrangePoints"
+            :key="point.id"
+            :to="{ name: 'location', params: { slug: point.slug } }"
+            class="location-columns__chip"
+          >
+            {{ point.name }}
+          </router-link>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

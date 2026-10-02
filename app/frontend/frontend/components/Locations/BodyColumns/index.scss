@@ -1,0 +1,118 @@
+// One column per body, in orbit order: what a reader would look for on it.
+.location-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  align-items: start;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-surface-slim, 12px);
+    min-width: 0;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__planet {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #1d2329;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
+  }
+
+  &__title {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 16px;
+    color: #fff;
+  }
+
+  &__city,
+  &__moon-city {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-text, #c8c8c8);
+
+    i {
+      color: var(--color-muted, #7a8288);
+    }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  }
+
+  &__caption {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__moon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background-color: rgb(0 0 0 / 0.25);
+    color: var(--color-text, #c8c8c8);
+  }
+
+  &__moon-dot {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #1d2329;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
+  }
+
+  &__moon-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__moon-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text, #c8c8c8);
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: 4px;
+  }
+}

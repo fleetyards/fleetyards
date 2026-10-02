@@ -2,6 +2,19 @@
   "de": {
     "labels": {
       "location": {
+        "elsewhere": "Sonst um %{star}",
+        "inside": "Darin",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "Lagrange-Punkte",
+        "inOrbit": "Im Orbit",
+        "moons": {
+          "one": "%{count} Mond",
+          "other": "%{count} Monde"
+        },
+        "drawnUnderStar": "Die Karte im Spiel zeigt diesen Ort auf Systemebene, unter %{star}",
+        "gateways": "Sprungtore",
+        "systemStrip": "%{system}, vom Stern nach außen",
+        "systems": "Sternsysteme",
         "name": "Name",
         "kind": "Art",
         "breadcrumb": "Lage",
@@ -17,11 +30,6 @@
         "quantumTravelNo": "Kein Ziel für Quantenreisen",
         "mapParent": "Eingezeichnet unter",
         "mapParentNote": "Die Karte im Spiel zeigt den Ort unter %{mapParent}, obwohl er in %{parent} liegt.",
-        "children": {
-          "one": "%{count} Ort darin",
-          "other": "%{count} Orte darin"
-        },
-        "allChildren": "Alle %{count} Orte darin",
         "missions": "Missionen, die hier stattfinden können",
         "allMissions": "Alle Missionen, die hier stattfinden können",
         "terminals": "Handelsterminals",

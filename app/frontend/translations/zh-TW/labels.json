@@ -2,6 +2,19 @@
   "zh-TW": {
     "labels": {
       "location": {
+        "elsewhere": "%{star} 周圍的其他地方",
+        "inside": "內部",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "拉格朗日點",
+        "inOrbit": "軌道上",
+        "moons": {
+          "one": "%{count} 顆衛星",
+          "other": "%{count} 顆衛星"
+        },
+        "drawnUnderStar": "遊戲內地圖將其顯示在星系層級，位於 %{star} 下",
+        "gateways": "跳躍門",
+        "systemStrip": "%{system}，從恆星向外",
+        "systems": "星系",
         "name": "名稱",
         "kind": "類型",
         "breadcrumb": "位置",
@@ -17,11 +30,6 @@
         "quantumTravelNo": "不是量子旅行目的地",
         "mapParent": "地圖上位於",
         "mapParentNote": "遊戲內地圖將其顯示在 %{mapParent} 下，但它實際位於 %{parent} 內。",
-        "children": {
-          "one": "內部有 %{count} 個地點",
-          "other": "內部有 %{count} 個地點"
-        },
-        "allChildren": "內部全部 %{count} 個地點",
         "missions": "可在此進行的任務",
         "allMissions": "所有可在此進行的任務",
         "terminals": "交易終端",

@@ -2,6 +2,19 @@
   "es": {
     "labels": {
       "location": {
+        "elsewhere": "En otros lugares alrededor de %{star}",
+        "inside": "Dentro",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "Puntos de Lagrange",
+        "inOrbit": "En órbita",
+        "moons": {
+          "one": "%{count} luna",
+          "other": "%{count} lunas"
+        },
+        "drawnUnderStar": "El mapa del juego lo dibuja a nivel de sistema, bajo %{star}",
+        "gateways": "Portales de salto",
+        "systemStrip": "%{system}, desde su estrella hacia fuera",
+        "systems": "Sistemas estelares",
         "name": "Nombre",
         "kind": "Tipo",
         "breadcrumb": "Dónde está",
@@ -17,11 +30,6 @@
         "quantumTravelNo": "No es un destino de viaje cuántico",
         "mapParent": "Dibujado bajo",
         "mapParentNote": "El mapa del juego lo dibuja bajo %{mapParent}, aunque está dentro de %{parent}.",
-        "children": {
-          "one": "%{count} lugar dentro",
-          "other": "%{count} lugares dentro"
-        },
-        "allChildren": "Los %{count} lugares de dentro",
         "missions": "Misiones que pueden tener lugar aquí",
         "allMissions": "Todas las misiones que pueden tener lugar aquí",
         "terminals": "Terminales comerciales",

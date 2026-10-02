@@ -2,6 +2,19 @@
   "en": {
     "labels": {
       "location": {
+        "elsewhere": "Elsewhere around %{star}",
+        "inside": "Inside",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "Lagrange points",
+        "inOrbit": "In orbit",
+        "moons": {
+          "one": "%{count} moon",
+          "other": "%{count} moons"
+        },
+        "drawnUnderStar": "The in-game map draws this at system level, under %{star}",
+        "gateways": "Jump gateways",
+        "systemStrip": "%{system}, from its star outward",
+        "systems": "Star systems",
         "name": "Name",
         "kind": "Kind",
         "breadcrumb": "Where it is",
@@ -17,11 +30,6 @@
         "quantumTravelNo": "Not a quantum travel destination",
         "mapParent": "Drawn under",
         "mapParentNote": "The in-game map draws it under %{mapParent}, although it sits inside %{parent}.",
-        "children": {
-          "one": "%{count} place inside",
-          "other": "%{count} places inside"
-        },
-        "allChildren": "All %{count} places inside",
         "missions": "Missions that can take place here",
         "allMissions": "All missions that can take place here",
         "terminals": "Trade terminals",

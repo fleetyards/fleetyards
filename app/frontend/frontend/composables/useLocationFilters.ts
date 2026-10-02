@@ -3,7 +3,7 @@ import { useFilters } from "@/shared/composables/useFilters";
 
 // `route.query` gives back a bare string when only one value is set, and the
 // schema rejects a string where it declared an array.
-const LIST_PARAMS = ["kindIn"] as const;
+const LIST_PARAMS = ["kindIn", "nameIn"] as const;
 
 export const useLocationFilters = (
   updateCallback?: (() => void) | (() => Promise<void>),

@@ -1,0 +1,170 @@
+// A system laid out the way it sits: the star, then its bodies in orbit
+// order along one line. Equal circles, because the export states no size.
+.location-strip {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  padding: 18px 24px;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+  overflow-x: auto;
+
+  &--compact {
+    padding: 14px 20px;
+  }
+
+  &__star,
+  &__body-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    color: var(--color-text, #c8c8c8);
+  }
+
+  &__sun,
+  &__planet {
+    display: block;
+    border-radius: 50%;
+    background-color: #1d2329;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
+  }
+
+  &__sun {
+    width: 64px;
+    height: 64px;
+    background-color: #3a2a17;
+    border-color: rgb(240 179 90 / 0.8);
+
+    .location-strip--compact & {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &__planet {
+    width: 44px;
+    height: 44px;
+
+    .location-strip--compact & {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__name {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__orbit {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 22px;
+      border-top: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.45));
+
+      .location-strip--compact & {
+        top: 12px;
+      }
+    }
+  }
+
+  &__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &--lit .location-strip__planet {
+      border-color: var(--color-primary, #428bca);
+      box-shadow: 0 0 0 4px rgb(66 139 202 / 0.25);
+    }
+
+    &--lit .location-strip__name {
+      color: #fff;
+    }
+  }
+
+  &__moons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0 0;
+    padding: 0 0 0 8px;
+    list-style: none;
+    border-left: 1px solid rgb(66 139 202 / 0.6);
+  }
+
+  &__moon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+    white-space: nowrap;
+
+    i {
+      color: var(--color-muted, #7a8288);
+    }
+
+    &--lit {
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+
+  &__gateways {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+    padding-left: 20px;
+    border-left: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.2));
+  }
+
+  &__caption {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__gateway {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-text, #c8c8c8);
+    white-space: nowrap;
+
+    i {
+      color: var(--color-muted, #7a8288);
+    }
+  }
+
+  &__map-note {
+    position: absolute;
+    left: 24px;
+    bottom: 4px;
+    margin: 0;
+    font-size: 12px;
+    color: #a9cbea;
+  }
+}

@@ -12,11 +12,16 @@ import LocationsList from "@/frontend/components/Locations/List/index.vue";
 import FilterForm from "@/frontend/components/Locations/FilterForm/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
+import SystemCard from "@/frontend/components/Locations/SystemCard/index.vue";
 import { useLocationSortFields } from "@/frontend/composables/useLocationSortFields";
 import { useLocationFilters } from "@/frontend/composables/useLocationFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useLocations, getLocationsQueryKey } from "@/services/fyApi";
+import {
+  LocationKindEnum,
+  useLocations,
+  getLocationsQueryKey,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -43,10 +48,28 @@ const {
 } = useLocations(locationsQueryParams);
 
 const sortFields = useLocationSortFields();
+
+// Every system, laid out as its bodies, above the list. Hidden while a
+// filter narrows the list: the reader is searching then, not browsing.
+const { data: systems } = useLocations({
+  q: { kindEq: LocationKindEnum.SYSTEM },
+});
 </script>
 
 <template>
   <Heading hidden>{{ t("headlines.locations.index") }}</Heading>
+
+  <section
+    v-if="!isFilterSelected && systems?.items.length"
+    class="locations-systems"
+    :aria-label="t('labels.location.systems')"
+  >
+    <SystemCard
+      v-for="system in systems.items"
+      :key="system.id"
+      :system="system"
+    />
+  </section>
 
   <FilteredList
     name="locations"
@@ -87,3 +110,12 @@ const sortFields = useLocationSortFields();
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+.locations-systems {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+</style>

@@ -7,12 +7,21 @@ export default {
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import LocationsList from "@/frontend/components/Locations/List/index.vue";
+import BodyColumns from "@/frontend/components/Locations/BodyColumns/index.vue";
+import ContentsList from "@/frontend/components/Locations/Contents/index.vue";
+import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
 import StarmapFacts from "@/frontend/components/Locations/StarmapFacts/index.vue";
+import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import MissionsList from "@/frontend/components/Missions/List/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useGameMissions, useLocation, useLocations } from "@/services/fyApi";
+import {
+  LocationKindEnum,
+  useGameMissions,
+  useLocation,
+  useLocationContents,
+  useLocationTree,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -23,17 +32,41 @@ const slug = computed(() => route.params.slug as string);
 const { data: location, ...asyncStatus } = useLocation(slug);
 
 const locationId = computed(() => location.value?.id);
+const loaded = computed(() => !!locationId.value);
 
-// A page's worth, with a link to the rest: the Nyx star holds 464 places.
-const CHILDREN_PER_PAGE = 60;
+// The system the place is in, as its bodies: drawn at the top of every page
+// so a reader always sees where they are.
+const { data: tree } = useLocationTree(slug, { query: { enabled: loaded } });
 
-const { data: children } = useLocations(
-  computed(() => ({
-    perPage: String(CHILDREN_PER_PAGE),
-    q: { parentIdEq: locationId.value },
-  })),
-  { query: { enabled: computed(() => !!locationId.value) } },
+// A system or its star reads as the whole system laid out; anything else as
+// the place, with the strip shrunk to a header above it.
+const isSystemView = computed(
+  () =>
+    location.value?.kind === LocationKindEnum.SYSTEM ||
+    location.value?.kind === LocationKindEnum.STAR,
 );
+
+const star = computed(() =>
+  tree.value?.children.find((node) => node.location.kind === "star"),
+);
+
+const bodies = computed(
+  () => star.value?.children ?? tree.value?.children ?? [],
+);
+
+const path = computed(() => [
+  ...(location.value?.ancestors ?? []).map((ancestor) => ancestor.id),
+  ...(locationId.value ? [locationId.value] : []),
+]);
+
+const { data: contents } = useLocationContents(slug, {
+  query: {
+    enabled: computed(
+      () =>
+        loaded.value && !isSystemView.value && !!location.value?.childrenCount,
+    ),
+  },
+});
 
 const MISSIONS_PER_PAGE = 20;
 
@@ -42,16 +75,12 @@ const { data: missions } = useGameMissions(
     perPage: String(MISSIONS_PER_PAGE),
     q: { atLocation: locationId.value },
   })),
-  { query: { enabled: computed(() => !!locationId.value) } },
+  { query: { enabled: computed(() => loaded.value && !isSystemView.value) } },
 );
 
 // The export writes line breaks as a literal `\n`.
 const description = computed(() =>
   location.value?.description?.replaceAll("\\n", "\n"),
-);
-
-const moreChildren = computed(
-  () => (location.value?.childrenCount ?? 0) > CHILDREN_PER_PAGE,
 );
 
 const moreMissions = computed(
@@ -76,10 +105,16 @@ watch(
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <div v-if="location" class="location-page">
+        <SystemStrip
+          v-if="tree"
+          :tree="tree"
+          :path="path"
+          :map-parent="location.mapParent"
+          :compact="!isSystemView"
+        />
+
         <div class="location-page__masthead">
           <div class="location-page__title">
-            <Heading hero>{{ location.name }}</Heading>
-
             <nav
               v-if="location.ancestors?.length"
               class="location-page__breadcrumb"
@@ -97,6 +132,8 @@ watch(
                 </router-link>
               </template>
             </nav>
+
+            <Heading hero>{{ location.name }}</Heading>
           </div>
 
           <div class="location-page__badges">
@@ -117,6 +154,15 @@ watch(
                 {{ t(`labels.location.kinds.${location.kind}`) }}
               </span>
             </span>
+
+            <span v-if="location.childrenCount" class="location-page__badge">
+              <span class="location-page__badge-label">
+                {{ t("labels.location.inside") }}
+              </span>
+              <span class="location-page__badge-value">
+                {{ location.childrenCount }}
+              </span>
+            </span>
           </div>
         </div>
 
@@ -124,63 +170,63 @@ watch(
           <p class="location-page__description">{{ description }}</p>
         </section>
 
-        <section class="location-page__panel">
-          <h2 class="location-page__panel-title">
-            {{ t("labels.location.starmap") }}
-          </h2>
+        <template v-if="isSystemView">
+          <BodyColumns :bodies="bodies" />
 
-          <StarmapFacts :location="location" />
-        </section>
+          <section v-if="star?.counts.length" class="location-page__panel">
+            <h2 class="location-page__panel-title">
+              {{ t("labels.location.elsewhere", { star: star.location.name }) }}
+            </h2>
+            <KindCounts :counts="star.counts" />
+          </section>
+        </template>
 
-        <section v-if="location.childrenCount" class="location-page__panel">
-          <h2 class="location-page__panel-title">
-            {{
-              t("labels.location.children", { count: location.childrenCount })
-            }}
-          </h2>
+        <template v-else>
+          <ContentsList
+            v-if="contents?.groups.length"
+            :groups="contents.groups"
+            :parent-id="location.id"
+          />
 
-          <LocationsList :locations="children?.items ?? []" />
+          <section class="location-page__panel">
+            <h2 class="location-page__panel-title">
+              {{ t("labels.location.starmap") }}
+            </h2>
 
-          <router-link
-            v-if="moreChildren"
-            class="location-page__more"
-            :to="{ name: 'locations', query: { parentIdEq: location.id } }"
+            <StarmapFacts :location="location" />
+          </section>
+
+          <section v-if="missions?.items?.length" class="location-page__panel">
+            <h2 class="location-page__panel-title">
+              {{ t("labels.location.missions") }}
+            </h2>
+
+            <MissionsList :missions="missions.items" />
+
+            <router-link
+              v-if="moreMissions"
+              class="location-page__more"
+              :to="{ name: 'missions', query: { atLocation: location.id } }"
+            >
+              {{ t("labels.location.allMissions") }}
+            </router-link>
+          </section>
+
+          <section
+            v-if="location.terminals?.length"
+            class="location-page__panel"
           >
-            {{
-              t("labels.location.allChildren", {
-                count: location.childrenCount,
-              })
-            }}
-          </router-link>
-        </section>
+            <h2 class="location-page__panel-title">
+              {{ t("labels.location.terminals") }}
+            </h2>
 
-        <section v-if="missions?.items?.length" class="location-page__panel">
-          <h2 class="location-page__panel-title">
-            {{ t("labels.location.missions") }}
-          </h2>
-
-          <MissionsList :missions="missions.items" />
-
-          <router-link
-            v-if="moreMissions"
-            class="location-page__more"
-            :to="{ name: 'missions', query: { atLocation: location.id } }"
-          >
-            {{ t("labels.location.allMissions") }}
-          </router-link>
-        </section>
-
-        <section v-if="location.terminals?.length" class="location-page__panel">
-          <h2 class="location-page__panel-title">
-            {{ t("labels.location.terminals") }}
-          </h2>
-
-          <ul class="location-page__terminals">
-            <li v-for="terminal in location.terminals" :key="terminal.id">
-              {{ terminal.name }}
-            </li>
-          </ul>
-        </section>
+            <ul class="location-page__terminals">
+              <li v-for="terminal in location.terminals" :key="terminal.id">
+                {{ terminal.name }}
+              </li>
+            </ul>
+          </section>
+        </template>
       </div>
     </template>
   </AsyncData>
