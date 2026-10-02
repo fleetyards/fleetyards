@@ -339,6 +339,7 @@
           "reassignSlotFor": "Reassign slot for %{username}"
         },
         "memberNickname": "Member Nickname",
+        "editRole": "Edit Role",
         "contracts": {
           "index": "Contracts",
           "create": "Create Contract",

@@ -340,6 +340,12 @@
             "failure": "Spitzname konnte nicht gespeichert werden."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Rolle gespeichert.",
+            "failure": "Rolle konnte nicht gespeichert werden."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Staffel angelegt.",

@@ -340,6 +340,12 @@
             "failure": "No se pudo guardar el apodo."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Rol guardado.",
+            "failure": "No se pudo guardar el rol."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Escuadrón creado.",

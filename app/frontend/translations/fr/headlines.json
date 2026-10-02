@@ -337,6 +337,7 @@
           "reassignSlotFor": "Réattribuer une place à %{username}"
         },
         "memberNickname": "Surnom du membre",
+        "editRole": "Modifier le rôle",
         "contracts": {
           "index": "Contrats",
           "create": "Créer un contrat",
