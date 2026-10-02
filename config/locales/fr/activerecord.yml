@@ -427,6 +427,8 @@ fr:
           not_an_rsi_sid: "doit être le SID de la page RSI de ton organisation, par exemple TEST"
           locked_while_verified: "est vérifié et ne peut pas être modifié ; demande d’abord au support de révoquer la vérification"
           reserved: "est réclamé par la flotte vérifiée pour cette organisation RSI et ne peut pas être pris"
+          route_name: "est le nom d’une page de Fleetyards et ne peut pas être un ID de flotte"
+          same_as_primary: "doit être différente de l’activité principale"
         fleet_squadron:
           attributes:
             team:

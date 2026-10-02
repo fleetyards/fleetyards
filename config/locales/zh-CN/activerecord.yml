@@ -427,6 +427,8 @@ zh-CN:
           not_an_rsi_sid: "必须是你的组织在 RSI 页面上的 SID，例如 TEST"
           locked_while_verified: "已验证，无法更改；请先联系支持团队撤销验证"
           reserved: "已被通过该 RSI 组织验证的舰队申领，无法使用"
+          route_name: "是 Fleetyards 上某个页面的名称，不能用作舰队 ID"
+          same_as_primary: "必须与主要活动不同"
         fleet_squadron:
           attributes:
             team:

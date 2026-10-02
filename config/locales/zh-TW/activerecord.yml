@@ -427,6 +427,8 @@ zh-TW:
           not_an_rsi_sid: "必須是你的組織在 RSI 頁面上的 SID，例如 TEST"
           locked_while_verified: "已驗證，無法變更；請先聯絡支援團隊撤銷驗證"
           reserved: "已被通過該 RSI 組織驗證的艦隊申領，無法使用"
+          route_name: "是 Fleetyards 上某個頁面的名稱，不能用作艦隊 ID"
+          same_as_primary: "必須與主要活動不同"
         fleet_squadron:
           attributes:
             team:

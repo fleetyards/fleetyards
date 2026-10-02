@@ -458,6 +458,8 @@ en:
           not_an_rsi_sid: "must be the SID from your organisation's RSI page, such as TEST"
           locked_while_verified: "is verified and cannot be changed; ask support to revoke the verification first"
           reserved: "is claimed by the fleet verified for that RSI organisation and cannot be taken"
+          route_name: "is the name of a page on Fleetyards and cannot be a fleet ID"
+          same_as_primary: "must differ from the primary activity"
         fleet_squadron:
           attributes:
             team:
