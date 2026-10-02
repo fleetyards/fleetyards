@@ -15,6 +15,7 @@
 #  mission_template_refs      :text             default([]), not null, is an Array
 #  name                       :string
 #  quantum_travel_destination :boolean          default(FALSE), not null
+#  resources                  :jsonb            not null
 #  sc_key                     :string           not null
 #  sc_refs                    :text             default([]), not null, is an Array
 #  shown_on_starmap           :boolean          default(FALSE), not null

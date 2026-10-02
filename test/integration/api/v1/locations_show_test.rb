@@ -61,6 +61,24 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug} lists what can be found there, linked to the commodity" do
+    aluminum = create(:commodity, name: "Aluminum")
+    resources = [
+      {"kind" => "ship_mineables", "items" => [{"name" => "Aluminum", "note" => nil}]},
+      {"kind" => "hand_mineables", "items" => [{"name" => "Janalite", "note" => "Caves only"}]}
+    ]
+    @delamar.update!(resources:)
+    @delamar.builds.update_all(resources:)
+
+    assert_api_response :get, 200, params: {slug: "delamar"} do
+      ship, hand = parsed_body["resources"]
+
+      assert_equal "ship_mineables", ship["kind"]
+      assert_equal aluminum.slug, ship["items"].sole.dig("commodity", "slug")
+      assert_equal ["Janalite", "Caves only", nil], hand["items"].sole.values_at("name", "note", "commodity")
+    end
+  end
+
   test "GET /locations/{slug} answers 404 for an unknown place" do
     assert_api_response :get, 404, params: {slug: "port-olisar"}
   end

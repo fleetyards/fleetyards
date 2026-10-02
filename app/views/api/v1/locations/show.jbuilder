@@ -4,6 +4,26 @@ json.partial! "api/v1/locations/base", location: @location
 
 json.description @location.description
 
+# What can be mined, harvested or hunted there, by kind, as the description
+# listed it. An item names its commodity where the catalogue has one.
+json.resources Array.wrap(@location.resources) do |group|
+  json.kind group["kind"]
+  json.items Array.wrap(group["items"]) do |item|
+    json.name item["name"]
+    json.note item["note"]
+
+    commodity = @commodities[item["name"].to_s.downcase]
+    if commodity
+      json.commodity do
+        json.name commodity.name
+        json.slug commodity.slug
+      end
+    else
+      json.commodity nil
+    end
+  end
+end
+
 # From the system down to the parent, for the breadcrumb.
 json.ancestors @ancestors do |ancestor|
   json.partial! "api/v1/locations/link", location: ancestor

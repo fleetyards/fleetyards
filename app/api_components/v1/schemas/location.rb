@@ -31,6 +31,7 @@ module V1
 
           # Detail responses only.
           description: {type: [:string, :null]},
+          resources: {type: :array, items: ::V1::Schemas::LocationResourceGroup},
           ancestors: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
           # Where the game's map draws the place, when that is not where it is:
           # Levski under the Nyx star, while it sits inside Delamar.

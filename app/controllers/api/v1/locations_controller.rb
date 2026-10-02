@@ -29,6 +29,7 @@ module Api
           .find_by!(slug: params[:slug].to_s.downcase)
 
         @ancestors = @location.ancestors.reverse
+        @commodities = resource_commodities(@location)
         @children_count = Location.current_version.where(parent_id: @location.id).count
       end
 
@@ -38,6 +39,15 @@ module Api
 
       def contents
         @groups = ::Locations::Contents.new(find_location).call
+      end
+
+      # What a resource name stands for in the commodity catalogue, matched on
+      # the name: 41 of the 54 names the 4.10.1 bodies list have one.
+      private def resource_commodities(location)
+        names = Array.wrap(location.resources).flat_map { |group| Array.wrap(group["items"]).pluck("name") }.compact.map(&:downcase).uniq
+        return {} if names.empty?
+
+        Commodity.current_version.where("lower(name) IN (?)", names).index_by { |commodity| commodity.name.downcase }
       end
 
       private def find_location

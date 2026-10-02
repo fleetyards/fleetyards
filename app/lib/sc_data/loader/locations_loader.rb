@@ -46,6 +46,7 @@ module ScData
         {
           name: item["name"],
           description: item["description"],
+          resources: Array.wrap(item["resources"]),
           kind: item["kind"],
           game_type: item["game_type"],
           shown_on_starmap: item["shown_on_starmap"] || false,

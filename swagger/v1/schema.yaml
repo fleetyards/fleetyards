@@ -28475,6 +28475,10 @@ components:
           type:
           - string
           - 'null'
+        resources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationResourceGroup"
         ancestors:
           type: array
           items:
@@ -28667,6 +28671,53 @@ components:
       additionalProperties: false
       example: {}
       title: LocationQuery
+    LocationResource:
+      type: object
+      properties:
+        name:
+          type: string
+        note:
+          type:
+          - string
+          - 'null'
+        commodity:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationResourceCommodity"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - name
+      - note
+      - commodity
+      title: LocationResource
+    LocationResourceCommodity:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: LocationResourceCommodity
+    LocationResourceGroup:
+      type: object
+      properties:
+        kind:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationResource"
+      additionalProperties: false
+      required:
+      - kind
+      - items
+      title: LocationResourceGroup
     LocationSortingEnum:
       type: string
       enum:

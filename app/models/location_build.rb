@@ -15,6 +15,7 @@
 #  kind                       :string
 #  name                       :string
 #  quantum_travel_destination :boolean          default(FALSE), not null
+#  resources                  :jsonb            not null
 #  shown_on_starmap           :boolean          default(FALSE), not null
 #  shown_with_parent_only     :boolean          default(FALSE), not null
 #  version                    :string           not null
@@ -37,7 +38,7 @@ class LocationBuild < ApplicationRecord
   belongs_to :location
 
   FACTS = %i[
-    name description kind game_type
+    name description resources kind game_type
     shown_on_starmap shown_with_parent_only always_shown quantum_travel_destination
   ].freeze
 
