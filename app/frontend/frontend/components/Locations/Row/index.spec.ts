@@ -4,7 +4,10 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type Location, LocationKindEnum } from "@/services/fyApi";
 import Component from "./index.vue";
 
-const routerOnList = async () => {
+const routerOn = async (
+  name: "locations-places" | "location",
+  query: Record<string, string> = {},
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -21,7 +24,11 @@ const routerOnList = async () => {
     ],
   });
 
-  await router.push({ name: "locations-places" });
+  await router.push(
+    name === "location"
+      ? { name, params: { slug: "aberdeen" }, query }
+      : { name, query },
+  );
   await router.isReady();
 
   return router;
@@ -54,7 +61,7 @@ const location = (attrs: Partial<Location> = {}) =>
 const mount = async (attrs: Partial<Location> = {}) =>
   mountWithDefaults(Component, {
     props: { location: location(attrs) },
-    plugins: [await routerOnList()],
+    plugins: [await routerOn("locations-places")],
   });
 
 describe("LocationRow", () => {
@@ -78,6 +85,18 @@ describe("LocationRow", () => {
     expect(tag.attributes("href")).toContain(
       "/locations/places?kindIn=outpost",
     );
+  });
+
+  it("leaves a place page's own query behind when it filters the list", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { location: location() },
+      plugins: [await routerOn("location", { tab: "missions" })],
+    });
+
+    const href = wrapper.find('a[href*="kindIn"]').attributes("href");
+
+    expect(href).toContain("/locations/places?kindIn=outpost");
+    expect(href).not.toContain("tab=");
   });
 
   it("marks a place hidden on the in-game map", async () => {
