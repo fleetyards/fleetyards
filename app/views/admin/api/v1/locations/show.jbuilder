@@ -5,6 +5,9 @@ json.partial! "admin/api/v1/locations/base", location: @location
 json.description @location.description
 
 json.partial! "api/v1/locations/appearance", location: @location, curated: true
+# What the public page draws when no colour is set -- a star's comes from its
+# class -- for the previews, without turning it into a curated colour.
+json.drawn_color @location.drawn_color
 
 if @location.map_parent
   json.map_parent do

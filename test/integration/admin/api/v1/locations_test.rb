@@ -160,6 +160,17 @@ class Admin::Api::V1::LocationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{id} gives a star with no colour set the one its class draws" do
+    @star.update!(description: "A G-type main sequence star.", color: nil)
+    @star.builds.update_all(description: "A G-type main sequence star.")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {id: @star.id} do
+      assert_nil parsed_body["color"]
+      assert_equal Location::STELLAR_COLORS["G"], parsed_body["drawnColor"]
+    end
+  end
+
   test "GET /locations/{id} 404s for an id nothing carries" do
     sign_in @user
 

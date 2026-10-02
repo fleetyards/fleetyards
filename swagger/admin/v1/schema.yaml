@@ -16931,6 +16931,10 @@ components:
           type:
           - string
           - 'null'
+        drawnColor:
+          type:
+          - string
+          - 'null'
         unstable:
           type: boolean
         bodyType:

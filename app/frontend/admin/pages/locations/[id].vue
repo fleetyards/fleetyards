@@ -162,10 +162,17 @@ const details = computed((): Detail[] => {
           class="admin-location__globe"
           :location="location"
         />
+        <!-- Drawn the way the public page draws it: a star with no colour set
+             glows in its class colour. -->
         <span
-          v-else-if="isStar"
+          v-else-if="isStar && location"
           class="admin-location__globe admin-location__globe--star"
-          :style="sunStyle(location)"
+          :style="
+            sunStyle({
+              ...location,
+              color: location.color ?? location.drawnColor,
+            })
+          "
           aria-hidden="true"
         />
         <img

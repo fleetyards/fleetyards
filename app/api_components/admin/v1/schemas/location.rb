@@ -30,6 +30,7 @@ module Admin
             # Detail responses only.
             description: {type: [:string, :null]},
             color: {type: [:string, :null]},
+            drawnColor: {type: [:string, :null]},
             unstable: {type: :boolean},
             bodyType: ::Shared::V1::Schemas::Enums::NullableLocationBodyTypeEnum,
             image: ::Shared::V1::Schemas::MediaFile,
