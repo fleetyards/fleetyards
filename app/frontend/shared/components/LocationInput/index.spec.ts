@@ -115,21 +115,21 @@ describe("LocationInput", () => {
   it("puts a place whose name starts with the text first", async () => {
     vi.useFakeTimers();
 
-    vi.mocked(locations).mockImplementation(
-      async (params) =>
-        (params?.q?.nameStart
-          ? {
-              items: [
-                { id: "tressler", name: "Port Tressler", slug: "tressler" },
-              ],
-            }
-          : {
-              items: [
-                { id: "hub", name: "Lazarus Transport Hub", slug: "hub" },
-                { id: "tressler", name: "Port Tressler", slug: "tressler" },
-              ],
-            }) as never,
-    );
+    vi.mocked(locations).mockImplementation((async (params?: {
+      q?: { nameStart?: string };
+    }) =>
+      params?.q?.nameStart
+        ? {
+            items: [
+              { id: "tressler", name: "Port Tressler", slug: "tressler" },
+            ],
+          }
+        : {
+            items: [
+              { id: "hub", name: "Lazarus Transport Hub", slug: "hub" },
+              { id: "tressler", name: "Port Tressler", slug: "tressler" },
+            ],
+          }) as never);
 
     const wrapper = await mountWithDefaults(Component, {
       props: { name: "location", modelValue: "", locationId: null },
