@@ -225,12 +225,14 @@ module ScData
         place("Base_02", "Mining Base #1", type: "Outpost", parent: "Stanton1")
 
         @overrides = {
+          "StantonStar" => {"description" => "A class-G main sequence star."},
           "Gateway_Clinic" => {"name" => "Clinic"},
           "Jericho_Copy" => {"skip" => true},
           "Base_01" => {"merge" => ["Base_02"]}
         }
 
         assert_equal "Clinic", location("Gateway_Clinic")[:name]
+        assert_equal "A class-G main sequence star.", location("StantonStar")[:description]
         assert_nil location("Jericho_Copy")
         assert_nil location("Base_02")
         assert_equal 2, location("Base_01")[:sc_refs].size

@@ -3,7 +3,8 @@
 # read as underscores, which is how the XML is parsed: `RR_NYX-CASTRA_JP1_CLINIC`
 # is `RR_NYX_CASTRA_JP1_CLINIC` here.
 #
-# `name:` replaces the resolved name. `skip: true` drops the record and
+# `name:` replaces the resolved name. `description:` fills a description the
+# export leaves empty. `skip: true` drops the record and
 # everything under it. `merge:` folds the listed records into this one: they
 # are copies of one place under one parent, and the location keeps this key.
 #
@@ -60,3 +61,9 @@ Pyro2_Outpost_col_m_hmstd_otlw_001:
 # every real one is keyed and tagged after its planet.
 AsteroidCluster_MiningBase_Stanton:
   skip: true
+
+# The export ships the Nyx star with an empty description, so nothing names
+# its class; the star is F-type in the published lore. The class is what the
+# star is coloured by.
+NyxStar:
+  description: An F-type main sequence star.

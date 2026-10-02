@@ -502,7 +502,7 @@ module ScData
             key: item[:key],
             ref:,
             name: override["name"] || place_name(values["name"]),
-            description: description_text(values["description"]),
+            description: override["description"] || description_text(values["description"]),
             resources: description_resources(values["description"]),
             type: type[:name],
             icon: values["navIcon"],
