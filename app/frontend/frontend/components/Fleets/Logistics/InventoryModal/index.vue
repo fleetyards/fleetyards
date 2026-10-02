@@ -160,7 +160,9 @@ const onSubmit = handleSubmit(async (values) => {
     fleetSquadronIds: restrictedToSquadrons.value
       ? (values.fleetSquadronIds ?? [])
       : [],
-    location: values.location || undefined,
+    // Null rather than left out: a cleared field clears the text, not just
+    // the link beside it.
+    location: values.location || null,
     locationId: values.locationId ?? null,
     // Passed through rather than coerced: `undefined` keeps what is attached,
     // `null` is the field saying it was cleared, and a signed id replaces it.
