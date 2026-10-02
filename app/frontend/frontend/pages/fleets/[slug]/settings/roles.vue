@@ -9,7 +9,10 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import {
   useFleetRoles as useFleetRolesQuery,
   useFleetResourceAccessCatalog,
@@ -24,9 +27,23 @@ type Props = {
   membership: FleetMember;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+const comlink = useComlink();
+
+const canRename = computed(
+  () => props.membership?.capabilities?.updateRoles ?? false,
+);
+
+const openRenameModal = (role: FleetRoleExtended) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/FleetRoleModal/index.vue"),
+    props: { fleetSlug: fleetSlug.value, role },
+  });
+};
 
 const route = useRoute();
 
@@ -81,6 +98,24 @@ const isImpliedByManage = (
         <span v-if="role.permanent" class="fleet-role-badge text-muted">
           ({{ t("labels.fleet.roles.permanent") }})
         </span>
+        <span
+          v-if="role.defaultRole"
+          class="fleet-role-badge text-muted"
+          :data-test="`fleet-role-default-${role.slug}`"
+        >
+          ({{ t("labels.fleet.roles.default") }})
+        </span>
+        <template v-if="canRename" #actions>
+          <Btn
+            v-tooltip="t('actions.edit')"
+            :variant="BtnVariantsEnum.BARE"
+            :aria-label="t('actions.edit')"
+            :data-test="`fleet-role-edit-${role.slug}`"
+            @click="openRenameModal(role)"
+          >
+            <i class="fa-duotone fa-pen" />
+          </Btn>
+        </template>
       </PanelHeading>
       <PanelBody>
         <div class="fleet-role-privileges">
