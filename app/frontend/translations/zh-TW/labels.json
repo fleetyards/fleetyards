@@ -2,6 +2,8 @@
   "zh-TW": {
     "labels": {
       "location": {
+        "places": "地點",
+        "within": "位於",
         "showFewer": "收合",
         "showAll": "顯示全部 %{count} 個",
         "elsewhere": "%{star} 周圍的其他地方",
@@ -19,7 +21,6 @@
         "systems": "星系",
         "name": "名稱",
         "kind": "類型",
-        "breadcrumb": "位置",
         "retired": "不在此版本中",
         "starmap": "星圖",
         "starmapVisibility": "遊戲內地圖",

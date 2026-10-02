@@ -2,6 +2,8 @@
   "en": {
     "labels": {
       "location": {
+        "places": "Places",
+        "within": "in",
         "showFewer": "Show fewer",
         "showAll": "Show all %{count}",
         "elsewhere": "Elsewhere around %{star}",
@@ -19,7 +21,6 @@
         "systems": "Star systems",
         "name": "Name",
         "kind": "Kind",
-        "breadcrumb": "Where it is",
         "retired": "Not in this build",
         "starmap": "Star map",
         "starmapVisibility": "In-game map",

@@ -2,6 +2,8 @@
   "it": {
     "labels": {
       "location": {
+        "places": "Luoghi",
+        "within": "in",
         "showFewer": "Mostra meno",
         "showAll": "Mostra tutti i %{count}",
         "elsewhere": "Altrove intorno a %{star}",
@@ -19,7 +21,6 @@
         "systems": "Sistemi stellari",
         "name": "Nome",
         "kind": "Tipo",
-        "breadcrumb": "Dove si trova",
         "retired": "Non presente in questa build",
         "starmap": "Mappa stellare",
         "starmapVisibility": "Mappa di gioco",

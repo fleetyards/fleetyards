@@ -17,6 +17,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import {
   LocationKindEnum,
+  type LocationTreeNode,
   useGameMissions,
   useLocation,
   useLocationContents,
@@ -52,6 +53,57 @@ const star = computed(() =>
 
 const bodies = computed(
   () => star.value?.children ?? tree.value?.children ?? [],
+);
+
+// The node the strip draws for this place, when it draws one: a planet's moons
+// are laid out as columns on its page, the way the system page lays out its
+// planets.
+const findNode = (
+  nodes: LocationTreeNode[],
+  id?: string,
+): LocationTreeNode | undefined => {
+  for (const node of nodes) {
+    if (node.location.id === id) return node;
+
+    const found = findNode(node.children, id);
+    if (found) return found;
+  }
+
+  return undefined;
+};
+
+const ownNode = computed(() =>
+  tree.value ? findNode([tree.value], locationId.value) : undefined,
+);
+
+const moonColumns = computed(() =>
+  (ownNode.value?.children ?? []).filter(
+    (child) => child.location.kind === LocationKindEnum.MOON,
+  ),
+);
+
+// The ancestors the strip already shows -- system, star, planet, moon, a
+// city on them -- would only repeat it. A place deeper than that names the
+// ones it cannot: the clinic inside Everus Harbor says Everus Harbor.
+const STRIP_KINDS: string[] = [
+  LocationKindEnum.SYSTEM,
+  LocationKindEnum.STAR,
+  LocationKindEnum.PLANET,
+  LocationKindEnum.MOON,
+  LocationKindEnum.CITY,
+];
+
+const unseenAncestors = computed(() =>
+  (location.value?.ancestors ?? []).filter(
+    (ancestor) => !STRIP_KINDS.includes(ancestor.kind),
+  ),
+);
+
+const contentGroups = computed(() =>
+  (contents.value?.groups ?? []).filter(
+    (group) =>
+      !moonColumns.value.length || group.kind !== LocationKindEnum.MOON,
+  ),
 );
 
 const path = computed(() => [
@@ -116,13 +168,10 @@ watch(
 
         <div class="location-page__masthead">
           <div class="location-page__title">
-            <nav
-              v-if="location.ancestors?.length"
-              class="location-page__breadcrumb"
-              :aria-label="t('labels.location.breadcrumb')"
-            >
+            <p v-if="unseenAncestors.length" class="location-page__within">
+              {{ t("labels.location.within") }}
               <template
-                v-for="(ancestor, index) in location.ancestors"
+                v-for="(ancestor, index) in unseenAncestors"
                 :key="ancestor.id"
               >
                 <span v-if="index > 0" aria-hidden="true">›</span>
@@ -132,7 +181,7 @@ watch(
                   {{ ancestor.name }}
                 </router-link>
               </template>
-            </nav>
+            </p>
 
             <Heading hero>{{ location.name }}</Heading>
           </div>
@@ -184,9 +233,15 @@ watch(
 
         <div v-else class="location-page__layout">
           <div class="location-page__main">
+            <BodyColumns
+              v-if="moonColumns.length"
+              :bodies="moonColumns"
+              :counts-label="t('labels.location.places')"
+            />
+
             <ContentsList
-              v-if="contents?.groups.length"
-              :groups="contents.groups"
+              v-if="contentGroups.length"
+              :groups="contentGroups"
               :parent-id="location.id"
             />
 

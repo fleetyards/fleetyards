@@ -12,9 +12,14 @@ import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
 
 type Props = {
   bodies: LocationTreeNode[];
+  // What the counts under a body are: around a planet, "in orbit"; on a moon
+  // they are the places on it.
+  countsLabel?: string;
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  countsLabel: undefined,
+});
 
 const { t } = useI18n();
 
@@ -80,7 +85,7 @@ const cities = (body: LocationTreeNode) =>
 
       <div v-if="body.counts.length" class="location-columns__group">
         <span class="location-columns__caption">
-          {{ t("labels.location.inOrbit") }}
+          {{ countsLabel ?? t("labels.location.inOrbit") }}
         </span>
         <KindCounts :counts="body.counts" />
       </div>

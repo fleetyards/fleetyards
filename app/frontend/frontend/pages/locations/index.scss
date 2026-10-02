@@ -19,6 +19,11 @@
     min-width: 0;
   }
 
+  &__within {
+    margin: 0;
+  }
+
+  &__within,
   &__breadcrumb {
     display: flex;
     flex-wrap: wrap;

@@ -2,6 +2,8 @@
   "de": {
     "labels": {
       "location": {
+        "places": "Orte",
+        "within": "in",
         "showFewer": "Weniger anzeigen",
         "showAll": "Alle %{count} anzeigen",
         "elsewhere": "Sonst um %{star}",
@@ -19,7 +21,6 @@
         "systems": "Sternsysteme",
         "name": "Name",
         "kind": "Art",
-        "breadcrumb": "Lage",
         "retired": "Nicht in diesem Build",
         "starmap": "Sternenkarte",
         "starmapVisibility": "Karte im Spiel",

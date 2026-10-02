@@ -2,6 +2,8 @@
   "fr": {
     "labels": {
       "location": {
+        "places": "Lieux",
+        "within": "dans",
         "showFewer": "Afficher moins",
         "showAll": "Afficher les %{count}",
         "elsewhere": "Ailleurs autour de %{star}",
@@ -19,7 +21,6 @@
         "systems": "Systèmes stellaires",
         "name": "Nom",
         "kind": "Type",
-        "breadcrumb": "Emplacement",
         "retired": "Absent de cette version",
         "starmap": "Carte stellaire",
         "starmapVisibility": "Carte en jeu",
