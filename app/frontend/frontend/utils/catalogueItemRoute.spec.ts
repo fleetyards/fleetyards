@@ -12,9 +12,10 @@ describe("catalogueItemRoute", () => {
     expect(catalogueItemRoute({ type: "Commodity", slug: "titanium" })).toEqual(
       { name: "commodity", params: { slug: "titanium" } },
     );
-    expect(catalogueItemRoute({ type: "Location", slug: "lorville" })).toEqual(
-      { name: "location", params: { slug: "lorville" } },
-    );
+    expect(catalogueItemRoute({ type: "Location", slug: "lorville" })).toEqual({
+      name: "location",
+      params: { slug: "lorville" },
+    });
   });
 
   it("routes a contract and an event under their fleet, and a user to the hangar", () => {
