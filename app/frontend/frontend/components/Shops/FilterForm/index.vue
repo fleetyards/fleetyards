@@ -42,11 +42,18 @@ const { filter, resetFilter, isFilterSelected, filters } =
 
 const form = ref<ShopItemQuery>(prefillFormValues());
 
-watch(
-  () => form.value,
-  () => filter(form.value),
-  { deep: true },
-);
+// The chips above the list can leave a category out. Choosing it here takes
+// it back in, so it has to leave the exclusions too, or the two cancel out.
+const applyFilter = () => {
+  const included = form.value.categoryIn ?? [];
+  const excluded = asList(filters.value.categoryNotIn).filter(
+    (category) => !included.includes(category),
+  );
+
+  filter({ ...form.value, categoryNotIn: excluded });
+};
+
+watch(() => form.value, applyFilter, { deep: true });
 
 const categoryLabel = (category: ShopCategory) =>
   category.label ?? t(`labels.location.shopItemTypes.${category.itemType}`);
@@ -60,7 +67,7 @@ const categoryOptions = computed(() =>
 </script>
 
 <template>
-  <form @submit.prevent="filter(form)">
+  <form @submit.prevent="applyFilter">
     <FormInput
       v-model="form.nameCont"
       name="nameCont"
