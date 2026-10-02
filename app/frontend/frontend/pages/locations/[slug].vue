@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import WikiLink from "@/shared/components/WikiLink/index.vue";
+import ExternalLinks from "@/shared/components/ExternalLinks/index.vue";
 import LocationShops from "@/frontend/components/Locations/Shops/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
@@ -329,10 +329,11 @@ watch(
                   }}
                 </span>
               </span>
-              <WikiLink v-if="location.name" :title="location.name" />
             </div>
           </div>
         </div>
+
+        <ExternalLinks v-if="location.name" :title="location.name" />
 
         <SystemStrip
           v-if="tree"

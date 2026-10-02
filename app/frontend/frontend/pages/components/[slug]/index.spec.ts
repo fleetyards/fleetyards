@@ -59,6 +59,7 @@ const mountPage = async (component: Component) => {
       plugins: [router],
       stubs: {
         BreadCrumbs: true,
+        ExternalLinks: true,
         Availability: true,
         Chip: true,
         MetricsCard: {

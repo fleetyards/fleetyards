@@ -26,6 +26,7 @@ Stanton1d:
   color: "#8e8275"
 Stanton2:
   color: "#776973"
+  image: db/seeds/locations/crusader.webp
 Stanton2a:
   color: "#59717d"
 Stanton2b:
