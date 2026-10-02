@@ -9,8 +9,8 @@ const router = async () => {
     history: createWebHashHistory(),
     routes: [
       {
-        path: "/locations",
-        name: "locations",
+        path: "/locations/places",
+        name: "locations-places",
         component: { template: "<div />" },
       },
       {
@@ -21,7 +21,7 @@ const router = async () => {
     ],
   });
 
-  await instance.push({ name: "locations" });
+  await instance.push({ name: "locations-places" });
   await instance.isReady();
 
   return instance;

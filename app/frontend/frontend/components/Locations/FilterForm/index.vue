@@ -5,15 +5,20 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BaseSelect from "@/shared/components/base/Select/index.vue";
+import BaseSelect, {
+  type BaseSelectParams,
+} from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLocationFilters } from "@/frontend/composables/useLocationFilters";
 import {
+  type FilterOption,
+  type Location,
   type LocationQuery,
   LocationKindEnum,
+  locations as fetchLocations,
   useLocations,
 } from "@/services/fyApi";
 
@@ -31,6 +36,7 @@ const prefillFormValues = (): LocationQuery => ({
     filters.value.kindIn ?? filters.value.kindEq,
   ) as LocationQuery["kindIn"],
   systemIdEq: filters.value.systemIdEq,
+  parentIdEq: filters.value.parentIdEq,
   shownOnStarmapEq: filters.value.shownOnStarmapEq,
 });
 
@@ -70,6 +76,24 @@ const systems = computed(() =>
     label: system.name ?? system.slug,
   })),
 );
+
+// Any place can hold others, so the parent is searched for rather than
+// listed: Nyx alone has 306 QV Logistics Stations to page through.
+const fetchParentOptions = (params: BaseSelectParams<FilterOption>) => {
+  const q: LocationQuery = {};
+  if (params.search) q.nameCont = params.search;
+  if (params.missing) q.idIn = [params.missing as string];
+
+  return fetchLocations({ page: String(params.page || 1), q });
+};
+
+const formatParents = (response: { items: Location[] }) =>
+  (response.items || []).map((location) => ({
+    label: location.parent?.name
+      ? `${location.name} · ${location.parent.name}`
+      : (location.name ?? location.slug),
+    value: location.id,
+  }));
 
 // Three states rather than a checkbox: shown, hidden, and no opinion.
 const starmapOptions = computed(() => [
@@ -115,6 +139,17 @@ const starmapValue = computed({
       :options="systems"
       :label="t('labels.filters.locations.system')"
       :no-label="true"
+    />
+
+    <BaseSelect
+      v-model="form.parentIdEq"
+      name="parent"
+      :query-fn="fetchParentOptions"
+      :query-response-formatter="formatParents"
+      :label="t('labels.filters.locations.parent')"
+      :no-label="true"
+      searchable
+      paginated
     />
 
     <BaseSelect

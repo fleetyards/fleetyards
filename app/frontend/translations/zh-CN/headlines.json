@@ -2,7 +2,8 @@
   "zh-CN": {
     "headlines": {
       "locations": {
-        "index": "地点"
+        "index": "地点",
+        "places": "所有地点"
       },
       "admin": {
         "locations": {

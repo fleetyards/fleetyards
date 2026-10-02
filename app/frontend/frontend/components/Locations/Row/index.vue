@@ -27,9 +27,9 @@ const route = useRoute();
 // it with these rows too, and filtering that page's own route would only
 // change the address.
 const filterLink = (key: string, value: string | string[]) => ({
-  name: "locations",
+  name: "locations-places",
   query: {
-    ...(route.name === "locations" ? route.query : {}),
+    ...(route.name === "locations-places" ? route.query : {}),
     page: undefined,
     [key]: value,
   },

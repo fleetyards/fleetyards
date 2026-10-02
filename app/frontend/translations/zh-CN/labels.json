@@ -26,6 +26,7 @@
         "gateways": "跳跃门",
         "systemStrip": "%{system}，从恒星向外",
         "allSystems": "所有星系",
+        "allPlaces": "所有地点",
         "systems": "星系",
         "name": "名称",
         "kind": "类型",
@@ -2011,6 +2012,7 @@
         "locations": {
           "name": "搜索地点",
           "system": "星系",
+          "parent": "位于",
           "kind": "类型",
           "starmap": "游戏内地图",
           "shownOnStarmap": "显示在地图上",

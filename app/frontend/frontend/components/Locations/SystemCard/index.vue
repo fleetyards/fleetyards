@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
+import SystemCardSkeleton from "@/frontend/components/Locations/SystemCard/Skeleton.vue";
 import { type Location, useLocationTree } from "@/services/fyApi";
 
 type Props = {
@@ -26,6 +27,7 @@ const { data: tree } = useLocationTree(computed(() => props.system.slug));
       {{ system.name }}
     </router-link>
     <SystemStrip v-if="tree" :tree="tree" compact />
+    <SystemCardSkeleton v-else :with-title="false" />
   </div>
 </template>
 

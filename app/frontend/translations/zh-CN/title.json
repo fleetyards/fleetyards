@@ -2,7 +2,8 @@
   "zh-CN": {
     "title": {
       "locations": {
-        "index": "地点"
+        "index": "地点",
+        "places": "所有地点"
       },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",

@@ -2,7 +2,8 @@
   "es": {
     "headlines": {
       "locations": {
-        "index": "Ubicaciones"
+        "index": "Ubicaciones",
+        "places": "Todos los lugares"
       },
       "admin": {
         "locations": {

@@ -26,6 +26,7 @@
         "gateways": "Sprungtore",
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
+        "allPlaces": "Alle Orte",
         "systems": "Sternsysteme",
         "name": "Name",
         "kind": "Art",
@@ -2011,6 +2012,7 @@
         "locations": {
           "name": "Orte durchsuchen",
           "system": "System",
+          "parent": "Innerhalb von",
           "kind": "Art",
           "starmap": "Karte im Spiel",
           "shownOnStarmap": "Auf der Karte sichtbar",

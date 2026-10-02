@@ -2,7 +2,8 @@
   "de": {
     "title": {
       "locations": {
-        "index": "Orte"
+        "index": "Orte",
+        "places": "Alle Orte"
       },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",

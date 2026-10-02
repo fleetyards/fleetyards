@@ -26,6 +26,7 @@
         "gateways": "Portali di salto",
         "systemStrip": "%{system}, dalla stella verso l'esterno",
         "allSystems": "Tutti i sistemi",
+        "allPlaces": "Tutti i luoghi",
         "systems": "Sistemi stellari",
         "name": "Nome",
         "kind": "Tipo",
@@ -2011,6 +2012,7 @@
         "locations": {
           "name": "Cerca luoghi",
           "system": "Sistema",
+          "parent": "All’interno di",
           "kind": "Tipo",
           "starmap": "Mappa di gioco",
           "shownOnStarmap": "Visibile sulla mappa",

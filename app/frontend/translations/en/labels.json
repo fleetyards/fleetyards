@@ -26,6 +26,7 @@
         "gateways": "Jump gateways",
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
+        "allPlaces": "All places",
         "systems": "Star systems",
         "name": "Name",
         "kind": "Kind",
@@ -2011,6 +2012,7 @@
         "locations": {
           "name": "Search locations",
           "system": "System",
+          "parent": "Inside",
           "kind": "Kind",
           "starmap": "In-game map",
           "shownOnStarmap": "Shown on the map",

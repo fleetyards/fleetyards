@@ -44,7 +44,7 @@ const toggle = (group: LocationContentsGroup) => {
 const target = (entry: LocationContentsEntry) =>
   entry.count > 1
     ? {
-        name: "locations",
+        name: "locations-places",
         query: { parentIdEq: props.parentId, nameIn: [entry.name ?? ""] },
       }
     : { name: "location", params: { slug: entry.location.slug } };

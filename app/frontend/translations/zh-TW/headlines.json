@@ -2,7 +2,8 @@
   "zh-TW": {
     "headlines": {
       "locations": {
-        "index": "地點"
+        "index": "地點",
+        "places": "所有地點"
       },
       "admin": {
         "locations": {

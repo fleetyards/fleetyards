@@ -2,7 +2,8 @@
   "fr": {
     "headlines": {
       "locations": {
-        "index": "Lieux"
+        "index": "Lieux",
+        "places": "Tous les lieux"
       },
       "admin": {
         "locations": {

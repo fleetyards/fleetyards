@@ -9,8 +9,8 @@ const routerOnList = async () => {
     history: createWebHashHistory(),
     routes: [
       {
-        path: "/locations",
-        name: "locations",
+        path: "/locations/places",
+        name: "locations-places",
         component: { template: "<div />" },
       },
       {
@@ -21,7 +21,7 @@ const routerOnList = async () => {
     ],
   });
 
-  await router.push({ name: "locations" });
+  await router.push({ name: "locations-places" });
   await router.isReady();
 
   return router;
@@ -75,7 +75,9 @@ describe("LocationRow", () => {
 
     const tag = wrapper.find('a[href*="kindIn"]');
 
-    expect(tag.attributes("href")).toContain("/locations?kindIn=outpost");
+    expect(tag.attributes("href")).toContain(
+      "/locations/places?kindIn=outpost",
+    );
   });
 
   it("marks a place hidden on the in-game map", async () => {

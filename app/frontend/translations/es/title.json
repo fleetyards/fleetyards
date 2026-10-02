@@ -2,7 +2,8 @@
   "es": {
     "title": {
       "locations": {
-        "index": "Ubicaciones"
+        "index": "Ubicaciones",
+        "places": "Todos los lugares"
       },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",
