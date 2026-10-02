@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "SquadronMemberDateModal",
+  name: "SquadronMemberEditModal",
 };
 </script>
 
@@ -8,6 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -16,6 +17,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FleetSquadronMemberUpdateInput,
+  type FleetSquadronRole,
   useUpdateFleetSquadronMember,
 } from "@/services/fyApi";
 
@@ -23,24 +25,58 @@ type Props = {
   fleetSlug: string;
   squadronSlug: string;
   username: string;
-  membershipCreatedAt: string;
+  membershipCreatedAt?: string;
+  roleId?: string;
+  // The ranks the editor may move this member between, the current one
+  // included. Empty when the rank is not theirs to change.
+  rankOptions?: FleetSquadronRole[];
+  dateEditable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  membershipCreatedAt: undefined,
+  roleId: undefined,
+  rankOptions: () => [],
+  dateEditable: true,
+});
+
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const submitting = ref(false);
 
+const rankEditable = computed(() => props.rankOptions.length > 1);
+
+const rankSelectOptions = computed(() =>
+  props.rankOptions.map((rank) => ({ label: rank.name, value: rank.id })),
+);
+
 const { defineField, handleSubmit, setErrors } =
   useForm<FleetSquadronMemberUpdateInput>({
     initialValues: {
-      createdAt: props.membershipCreatedAt.slice(0, 10),
+      createdAt: props.membershipCreatedAt?.slice(0, 10),
+      fleetSquadronRoleId: props.roleId,
     },
   });
 
 const [createdAt, createdAtProps] = defineField("createdAt");
+const [fleetSquadronRoleId, fleetSquadronRoleIdProps] = defineField(
+  "fleetSquadronRoleId",
+);
 const mutation = useUpdateFleetSquadronMember();
+
+// Only what the editor may change: the update is refused as a whole when it
+// carries a field the editor has no right to.
+const payload = (values: FleetSquadronMemberUpdateInput) => {
+  const data: FleetSquadronMemberUpdateInput = {};
+  if (props.dateEditable && values.createdAt) {
+    data.createdAt = values.createdAt;
+  }
+  if (rankEditable.value && values.fleetSquadronRoleId !== props.roleId) {
+    data.fleetSquadronRoleId = values.fleetSquadronRoleId;
+  }
+  return data;
+};
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -50,7 +86,7 @@ const onSubmit = handleSubmit(async (values) => {
       fleetSlug: props.fleetSlug,
       fleetSquadronSlug: props.squadronSlug,
       username: props.username,
-      data: values,
+      data: payload(values),
     });
     displaySuccess({ text: t("messages.fleet.squadrons.update.success") });
     comlink.emit("fleet-squadron-members-updated");
@@ -68,13 +104,25 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Modal :title="t('labels.fleet.members.joined')">
-    <form id="squadron-member-date-form" @submit.prevent="onSubmit">
+  <Modal :title="t('headlines.fleets.squadrons.editMember')">
+    <form id="squadron-member-edit-form" @submit.prevent="onSubmit">
+      <BaseSelect
+        v-if="rankEditable"
+        v-model="fleetSquadronRoleId"
+        v-bind="fleetSquadronRoleIdProps"
+        name="fleetSquadronRoleId"
+        :options="rankSelectOptions"
+        :label="t('labels.fleet.squadrons.rank')"
+        :searchable="false"
+        unsorted
+        data-test="squadron-member-rank"
+      />
       <FormDatePicker
+        v-if="dateEditable"
         v-model="createdAt"
         v-bind="createdAtProps"
         name="createdAt"
-        :label="t('labels.fleet.members.joined')"
+        :label="t('labels.fleet.squadrons.joinedAt')"
       />
     </form>
     <template #footer>

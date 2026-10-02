@@ -66,6 +66,10 @@ const joinedAt = (member: FleetMember) =>
         ?.membershipCreatedAt
     : member.acceptedAt;
 
+const squadronRankFor = (member: FleetMember) =>
+  member.squadrons?.find((squadron) => squadron.slug === props.squadronSlug)
+    ?.role?.name;
+
 const joinedAtColumn = computed(() =>
   props.squadronSlug ? "squadronMembershipCreatedAt" : "acceptedAt",
 );
@@ -90,6 +94,15 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     label: "",
     width: "10%",
   },
+  ...(props.squadronSlug
+    ? [
+        {
+          name: "squadronRank",
+          label: t("labels.fleet.squadrons.rank"),
+          width: "15%",
+        },
+      ]
+    : []),
   {
     name: joinedAtColumn.value,
     label: props.squadronSlug
@@ -156,6 +169,12 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 
     <template #col-role="{ record }">
       {{ record.fleetRole?.name }}
+    </template>
+
+    <template #col-squadronRank="{ record }">
+      <span :data-test="`squadron-rank-${record.username}`">
+        {{ squadronRankFor(record) }}
+      </span>
     </template>
 
     <template #[joinedAtSlot]="{ record }">

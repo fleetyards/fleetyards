@@ -19,7 +19,13 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import {
+  outranks,
+  rankOptionsFor,
+  type SquadronRankViewer,
+} from "@/frontend/utils/squadronRanks";
+import {
   useFleetSquadronMembers,
+  useFleetSquadronRoles,
   useDestroyFleetSquadronMember,
   getFleetSquadronMembersQueryKey,
   type Fleet,
@@ -27,6 +33,7 @@ import {
   type FleetSquadronMemberQuery,
   type FleetSquadronMembersParams,
   type FleetSquadron,
+  type FleetSquadronRole,
 } from "@/services/fyApi";
 
 type Props = {
@@ -45,9 +52,21 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const fleetSlug = computed(() => props.fleet.slug);
 const squadronSlug = computed(() => route.params.squadron as string);
 
-const canManageMembers = computed(
+const fleetWide = computed(
   () => props.membership?.capabilities?.manageSquadronMembers ?? false,
 );
+
+const canManageMembers = computed(
+  () => props.squadron.capabilities?.manageMembers ?? fleetWide.value,
+);
+
+const canManageRanks = computed(
+  () => props.squadron.capabilities?.manageRanks ?? fleetWide.value,
+);
+
+const viewerRole = computed(() => props.squadron.viewerRole);
+
+const { data: ranks } = useFleetSquadronRoles(fleetSlug);
 
 const { isFilterSelected, getQuery } = useFilters<FleetSquadronMemberQuery>({
   updateCallback: async () => {
@@ -82,22 +101,46 @@ const memberItems = computed(() => members.value?.items ?? []);
 
 const destroyMutation = useDestroyFleetSquadronMember();
 
-const joinedAtFor = (member: FleetMember) =>
-  member.squadrons?.find((item) => item.slug === squadronSlug.value)
-    ?.membershipCreatedAt;
+const entryFor = (member: FleetMember) =>
+  member.squadrons?.find((item) => item.slug === squadronSlug.value);
 
-const openJoinedAtModal = (member: FleetMember) => {
-  const membershipCreatedAt = joinedAtFor(member);
-  if (!membershipCreatedAt) return;
+const isSelf = (member: FleetMember) =>
+  member.username === props.membership?.username;
+
+const rankViewer = computed<SquadronRankViewer>(() => ({
+  fleetWide: fleetWide.value,
+  viewerRole: viewerRole.value,
+  canManageRanks: canManageRanks.value,
+}));
+
+const outranksMember = (member: FleetMember) =>
+  outranks(rankViewer.value, entryFor(member)?.role);
+
+const rankOptionsForMember = (member: FleetMember): FleetSquadronRole[] =>
+  rankOptionsFor(rankViewer.value, ranks.value ?? [], {
+    rank: entryFor(member)?.role,
+    isSelf: isSelf(member),
+  });
+
+const canEdit = (member: FleetMember) =>
+  !!entryFor(member) &&
+  (outranksMember(member) || rankOptionsForMember(member).length > 1);
+
+const openEditModal = (member: FleetMember) => {
+  const entry = entryFor(member);
+  if (!entry) return;
 
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronMemberDateModal/index.vue"),
+      import("@/frontend/components/Fleets/Squadrons/SquadronMemberEditModal/index.vue"),
     props: {
       fleetSlug: props.fleet.slug,
       squadronSlug: squadronSlug.value,
       username: member.username,
-      membershipCreatedAt,
+      membershipCreatedAt: entry.membershipCreatedAt ?? undefined,
+      roleId: entry.role?.id,
+      rankOptions: rankOptionsForMember(member),
+      dateEditable: outranksMember(member),
     },
   });
 };
@@ -178,16 +221,17 @@ onUnmounted(() => {
         <template v-if="canManageMembers" #row-actions="{ member }">
           <BtnGroup>
             <Btn
-              v-if="joinedAtFor(member)"
+              v-if="canEdit(member)"
               v-tooltip="t('actions.edit')"
               :variant="BtnVariantsEnum.BARE"
               :aria-label="t('actions.edit')"
-              :data-test="`squadron-member-date-${member.username}`"
-              @click="openJoinedAtModal(member)"
+              :data-test="`squadron-member-edit-${member.username}`"
+              @click="openEditModal(member)"
             >
-              <i class="fa-duotone fa-calendar-pen" />
+              <i class="fa-duotone fa-user-pen" />
             </Btn>
             <Btn
+              v-if="outranksMember(member)"
               v-tooltip="t('actions.fleet.squadrons.removeMember')"
               :variant="BtnVariantsEnum.BARE"
               :aria-label="t('actions.fleet.squadrons.removeMember')"
