@@ -109,4 +109,17 @@ describe("LocationSystemStrip", () => {
     expect(gateway.classes()).toContain("location-strip__gateway--lit");
     expect(gateway.attributes("aria-current")).toBe("page");
   });
+
+  // A clinic inside the gateway lights the gateway, but the page is the
+  // clinic's.
+  it("lights a gateway a place sits in without calling it the page", async () => {
+    const wrapper = await mount({
+      path: ["nyx-system", "pyro-gateway", "pyro-gateway-clinic"],
+    });
+
+    const gateway = wrapper.get(".location-strip__gateway");
+
+    expect(gateway.classes()).toContain("location-strip__gateway--lit");
+    expect(gateway.attributes("aria-current")).toBeUndefined();
+  });
 });
