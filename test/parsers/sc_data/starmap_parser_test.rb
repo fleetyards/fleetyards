@@ -116,6 +116,17 @@ module ScData
         assert_equal "StantonStar", location("RR_HUR_L1")[:map_parent_key]
       end
 
+      test "#locations puts an untagged place under the star at the body or base its key names" do
+        stanton
+        place("TheCollectorAsteroid_Stanton1", "Wikelo Emporium Dasi Station", type: "Manmade", parent: "StantonStar")
+        place("Dungeon_Executive_001", "PYAM-EXHANG-0-1", type: "Manmade", parent: "StantonStar")
+        place("Dungeon_Executive_001a", "Hangar 01", type: "Outpost", parent: "StantonStar", hidden: true)
+
+        assert_equal "Stanton1", location("TheCollectorAsteroid_Stanton1")[:parent_key]
+        assert_equal "StantonStar", location("TheCollectorAsteroid_Stanton1")[:map_parent_key]
+        assert_equal "Dungeon_Executive_001", location("Dungeon_Executive_001a")[:parent_key]
+      end
+
       test "#locations matches a rest stop coded by its planet's initial and number" do
         place("PyroSolarSystem", "Pyro System", type: "SolarSystem", parent: nil)
         place("PyroStar", "Pyro", type: "Star", parent: nil)

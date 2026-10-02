@@ -47,6 +47,13 @@ module ScData
         green_glade = Location.find_by!(sc_key: "RR_HUR_L1")
         assert_equal ["HUR L1", "Hurston"], [green_glade.parent.name, green_glade.parent.parent.name]
         assert_equal "Stanton", green_glade.map_parent.name
+
+        dasi = Location.find_by!(sc_key: "TheCollectorAsteroid_Stanton1")
+        assert_equal ["Hurston", "Stanton"], [dasi.parent.name, dasi.map_parent.name]
+
+        # Only the gateways orbit Stanton itself.
+        assert_equal ["Nyx Gateway", "Pyro Gateway", "Terra Gateway"], Location.find_by!(sc_key: "StantonStar").children.where.not(kind: "planet").map(&:name).sort
+        assert_equal 0, Location.where("name LIKE 'WIP %'").count
       end
     end
   end

@@ -148,6 +148,7 @@ module ScData
 
         place_stars(places)
         place_lagrange(places)
+        place_at_keyed_bodies(places)
         place_foreign_systems(places)
         drop_unplaced(places)
         merge_overrides(places)
@@ -295,6 +296,24 @@ module ScData
           end
 
           place[:parent] = point[:key] if point
+        end
+      end
+
+      # Untagged and drawn under the star, with where it is only in its key.
+      # Wikelo's Dasi Station is `TheCollectorAsteroid_Stanton1`, at Hurston.
+      # A key with a letter on another's goes inside it, the way `Stanton1a` is
+      # Hurston's first moon: the hangars `..._Executive_001a` to `c` are in
+      # the asteroid base `..._Executive_001`. The star stays the map parent.
+      private def place_at_keyed_bodies(places)
+        places.each_value do |place|
+          star = places[place[:parent]]
+          next unless star&.dig(:kind) == "star"
+
+          body = places[place[:key][/_([A-Za-z]+\d+[a-z]?)\z/, 1]]
+          body = nil unless body && body[:parent] == star[:key] && %w[planet moon].include?(body[:kind])
+          body ||= places[place[:key][/\A(.+\d)[a-z]\z/, 1]]&.then { |base| base if base[:parent] == star[:key] }
+
+          place[:parent] = body[:key] if body
         end
       end
 
