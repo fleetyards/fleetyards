@@ -66,6 +66,7 @@ const GROUPS = [
       "/equipment/",
       "/commodities/",
       "/missions/",
+      "/locations/",
     ],
   },
   {
