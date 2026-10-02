@@ -151,6 +151,15 @@ class Admin::Api::V1::LocationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{id} names the build its facts come from, not the last one loaded" do
+    @levski.update_columns(version: "4.99.0-ptu")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {id: @levski.id} do
+      assert_equal ScData::Source.version, parsed_body["version"]
+    end
+  end
+
   test "GET /locations/{id} 404s for an id nothing carries" do
     sign_in @user
 
