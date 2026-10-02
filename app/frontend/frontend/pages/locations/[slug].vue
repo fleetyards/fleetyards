@@ -262,7 +262,6 @@ watch(
           v-if="tree"
           :tree="tree"
           :path="path"
-          :map-parent="location.mapParent"
           :compact="!isSystemView"
         />
 

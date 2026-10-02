@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import {
-  LocationKindEnum,
-  type LocationLink,
-  type LocationTreeNode,
-} from "@/services/fyApi";
+import { LocationKindEnum, type LocationTreeNode } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const router = async () => {
@@ -74,14 +70,6 @@ const nyx = node("nyx-system", "Nyx System", LocationKindEnum.SYSTEM, [
   ),
 ]);
 
-const starLink: LocationLink = {
-  id: "nyx",
-  name: "Nyx",
-  slug: "nyx",
-  kind: LocationKindEnum.STAR,
-  parentName: "Nyx System",
-};
-
 const mount = async (props: Record<string, unknown>) =>
   mountWithDefaults(Component, {
     props: { tree: nyx, ...props },
@@ -111,12 +99,5 @@ describe("LocationSystemStrip", () => {
     );
     expect(wrapper.find(".location-strip__moon--lit").text()).toBe("Levski");
     expect(wrapper.text()).not.toContain("Pyro Gateway");
-  });
-
-  // Levski sits inside Delamar and the in-game map pins it under the star.
-  it("says when the in-game map draws a place at system level", async () => {
-    const wrapper = await mount({ compact: true, mapParent: starLink });
-
-    expect(wrapper.find(".location-strip__map-note").text()).toContain("Nyx");
   });
 });

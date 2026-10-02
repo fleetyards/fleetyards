@@ -7,22 +7,18 @@ export default {
 <script lang="ts" setup>
 import { globeStyle } from "@/shared/utils/LocationGlobe";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type LocationLink, type LocationTreeNode } from "@/services/fyApi";
+import { type LocationTreeNode } from "@/services/fyApi";
 import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
 
 type Props = {
   tree: LocationTreeNode;
   // The place being read and the places it sits in, which the strip lights.
   path?: string[];
-  // Where the in-game map draws the place, when that is the star rather than
-  // where it sits: Levski is drawn under Nyx and sits inside Delamar.
-  mapParent?: LocationLink | null;
   compact?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   path: () => [],
-  mapParent: null,
   compact: false,
 });
 
@@ -44,10 +40,6 @@ const isLit = (id: string) => props.path.includes(id);
 // moon page says which planet it orbits and which of its siblings it is.
 const litBody = computed(() =>
   bodies.value.find((node) => isLit(node.location.id)),
-);
-
-const drawnUnderStar = computed(
-  () => !!props.mapParent && props.mapParent.id === star.value?.location.id,
 );
 </script>
 
@@ -127,10 +119,6 @@ const drawnUnderStar = computed(
         {{ gateway.name }}
       </router-link>
     </div>
-
-    <p v-if="drawnUnderStar" class="location-strip__map-note">
-      {{ t("labels.location.drawnUnderStar", { star: mapParent?.name }) }}
-    </p>
   </section>
 </template>
 

@@ -23,7 +23,6 @@
           "one": "%{count} moon",
           "other": "%{count} moons"
         },
-        "drawnUnderStar": "The in-game map draws this at system level, under %{star}",
         "gateways": "Jump gateways",
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",

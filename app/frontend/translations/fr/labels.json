@@ -23,7 +23,6 @@
           "one": "%{count} lune",
           "other": "%{count} lunes"
         },
-        "drawnUnderStar": "La carte en jeu le dessine au niveau du système, sous %{star}",
         "gateways": "Portails de saut",
         "systemStrip": "%{system}, de son étoile vers l'extérieur",
         "allSystems": "Tous les systèmes",

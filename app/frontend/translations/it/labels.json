@@ -23,7 +23,6 @@
           "one": "%{count} luna",
           "other": "%{count} lune"
         },
-        "drawnUnderStar": "La mappa di gioco lo disegna a livello di sistema, sotto %{star}",
         "gateways": "Portali di salto",
         "systemStrip": "%{system}, dalla stella verso l'esterno",
         "allSystems": "Tutti i sistemi",

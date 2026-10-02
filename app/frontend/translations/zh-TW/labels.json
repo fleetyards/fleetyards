@@ -23,7 +23,6 @@
           "one": "%{count} 顆衛星",
           "other": "%{count} 顆衛星"
         },
-        "drawnUnderStar": "遊戲內地圖將其顯示在星系層級，位於 %{star} 下",
         "gateways": "跳躍門",
         "systemStrip": "%{system}，從恆星向外",
         "allSystems": "所有星系",

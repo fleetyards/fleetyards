@@ -23,7 +23,6 @@
           "one": "%{count} Mond",
           "other": "%{count} Monde"
         },
-        "drawnUnderStar": "Die Karte im Spiel zeigt diesen Ort auf Systemebene, unter %{star}",
         "gateways": "Sprungtore",
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
