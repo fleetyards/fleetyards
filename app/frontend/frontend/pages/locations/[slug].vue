@@ -222,7 +222,7 @@ const { data: missions } = useGameMissions(
     perPage: String(MISSIONS_PER_PAGE),
     q: { atLocation: locationId.value },
   })),
-  { query: { enabled: computed(() => loaded.value && !isSystemView.value) } },
+  { query: { enabled: loaded } },
 );
 
 // A star or a body is drawn before its name, as in the strip. A picture, of
@@ -365,6 +365,16 @@ watch(
               :parent-id="star?.location.id ?? location.id"
             />
           </section>
+
+          <!-- A mission can name the star itself: Pyro's Firesale contracts. -->
+          <LocationMissions
+            v-if="missions?.items?.length"
+            :missions="missions.items"
+            :total="
+              missions.meta.pagination?.totalCount ?? missions.items.length
+            "
+            :location-id="location.id"
+          />
         </template>
 
         <div v-else class="location-page__layout">
