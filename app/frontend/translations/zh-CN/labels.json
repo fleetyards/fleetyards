@@ -6,6 +6,12 @@
       },
       "galactapedia": "Galactapedia",
       "shopPage": {
+        "all": "全部",
+        "search": "在此商店中搜索",
+        "categories": "类别",
+        "sortName": "名称",
+        "sortPrice": "价格",
+        "emptyName": "物品",
         "kind": "商店",
         "items": "商品",
         "facts": "关键信息",

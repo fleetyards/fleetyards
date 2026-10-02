@@ -9,14 +9,27 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import RowList from "@/shared/components/RowList/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import ShopStockEquipment from "@/frontend/components/Shops/Stock/Equipment.vue";
-import ShopStockComponents from "@/frontend/components/Shops/Stock/Components.vue";
-import ShopStockShips from "@/frontend/components/Shops/Stock/Ships.vue";
+import ShopFilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
+import ShopCategoryFilters from "@/frontend/components/Shops/CategoryFilters/index.vue";
+import ShopItemRow from "@/frontend/components/Shops/ItemRow/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { type Component } from "vue";
-import { useShop } from "@/services/fyApi";
+import { useFilters } from "@/shared/composables/useFilters";
+import { usePagination } from "@/shared/composables/usePagination";
+import {
+  type ShopItem,
+  type ShopItemQuery,
+  getShopItemsQueryKey,
+  useShop,
+  useShopItems,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
@@ -34,33 +47,32 @@ const crumbs = computed<Crumb[]>(() => [
   })),
 ]);
 
-// What the shop sells, as the catalogue lists it: one list per catalogue, the
-// largest first, each narrowed to this shop.
-const STOCK_LISTS: Record<string, Component> = {
-  Equipment: ShopStockEquipment,
-  Component: ShopStockComponents,
-  Model: ShopStockShips,
-};
+const itemsParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
+  q: getQuery(),
+}));
 
-const stocks = computed(() => {
-  const counts = new Map<string, number>();
+const { perPage, page, updatePerPage } = usePagination(
+  computed(() => getShopItemsQueryKey(slug, itemsParams)),
+);
 
-  (shop.value?.categories ?? []).forEach((category) => {
-    counts.set(
-      category.itemType,
-      (counts.get(category.itemType) ?? 0) + category.count,
-    );
-  });
-
-  return [...counts.entries()]
-    .filter(([itemType]) => STOCK_LISTS[itemType])
-    .map(([itemType, count]) => ({
-      itemType,
-      count,
-      component: STOCK_LISTS[itemType],
-    }))
-    .sort((a, b) => b.count - a.count);
+const { isFilterSelected, getQuery } = useFilters<ShopItemQuery>({
+  updateCallback: async () => {
+    await refetch();
+  },
 });
+
+const {
+  data: items,
+  refetch,
+  ...itemsStatus
+} = useShopItems(slug, itemsParams);
+
+const sortFields = computed<BaseTableCol<ShopItem>[]>(() => [
+  { name: "name", label: t("labels.shopPage.sortName"), sortable: true },
+  { name: "price", label: t("labels.shopPage.sortPrice"), sortable: true },
+]);
 
 const headerImage = computed(() => {
   const image = shop.value?.image;
@@ -124,17 +136,56 @@ watch(
 
         <div class="location-page__layout">
           <div class="location-page__main">
-            <section
-              v-for="stock in stocks"
-              :key="stock.itemType"
-              class="shop-stock"
+            <FilteredList
+              name="shop-items"
+              :records="items?.items ?? []"
+              :async-status="itemsStatus"
+              :is-filter-selected="isFilterSelected"
             >
-              <h2 class="shop-stock__title">
-                {{ t(`labels.location.shopItemTypes.${stock.itemType}`) }} ·
-                {{ stock.count }}
-              </h2>
-              <component :is="stock.component" :shop="shop.slug" />
-            </section>
+              <template #filter>
+                <ShopFilterForm :categories="shop.categories" />
+              </template>
+
+              <template #pagination-top>
+                <Paginator
+                  :query-result-ref="items"
+                  :per-page="perPage"
+                  @update-per-page="updatePerPage"
+                />
+              </template>
+
+              <template #skeleton="{ count }">
+                <RowsSkeleton :count="count" icon meta trailing />
+              </template>
+
+              <template #sort>
+                <ShopCategoryFilters
+                  :categories="shop.categories"
+                  :total="shop.itemsCount"
+                />
+                <ListToolbar :columns="sortFields" default-sort="name asc" />
+              </template>
+
+              <template #default="{ records, emptyVisible: listEmpty }">
+                <RowList
+                  :records="records"
+                  :empty-visible="listEmpty"
+                  :empty-name="t('labels.shopPage.emptyName')"
+                >
+                  <template #default="{ record }">
+                    <ShopItemRow :item="record" />
+                  </template>
+                </RowList>
+              </template>
+
+              <template #pagination-bottom>
+                <Paginator
+                  :query-result-ref="items"
+                  :per-page="perPage"
+                  @update-per-page="updatePerPage"
+                />
+              </template>
+            </FilteredList>
           </div>
 
           <aside class="location-page__aside">
@@ -171,22 +222,6 @@ watch(
                     </router-link>
                   </span>
                 </div>
-
-                <div
-                  v-for="category in shop.categories"
-                  :key="`${category.itemType}:${category.key}`"
-                  class="metrics-card__row"
-                >
-                  <span class="metrics-card__row__label">
-                    {{
-                      category.label ??
-                      t(`labels.location.shopItemTypes.${category.itemType}`)
-                    }}
-                  </span>
-                  <span class="metrics-card__row__value">
-                    {{ category.count }}
-                  </span>
-                </div>
               </div>
 
               <p class="shop-facts__source">
@@ -203,23 +238,6 @@ watch(
 <style lang="scss" scoped>
 @import "@/frontend/pages/locations/index";
 @import "@/shared/components/metricsCard";
-
-.shop-stock {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  &__title {
-    margin: 0;
-    padding: 0 2px;
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-text-dim, #959595);
-  }
-}
 
 .shop-facts {
   &__source {

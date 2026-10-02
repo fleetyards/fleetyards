@@ -6,6 +6,12 @@
       },
       "galactapedia": "Galactapedia",
       "shopPage": {
+        "all": "Todo",
+        "search": "Buscar en esta tienda",
+        "categories": "Categorías",
+        "sortName": "Nombre",
+        "sortPrice": "Precio",
+        "emptyName": "artículo",
         "kind": "Tienda",
         "items": "Artículos",
         "facts": "Datos clave",
