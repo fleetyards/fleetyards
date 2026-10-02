@@ -53,9 +53,9 @@ A public, paginated, searchable and filterable directory of verified, public fle
    - Skip unless the fleet is `rsi_verified?`.
    - Fetch both sources and write the RSI columns + `rsi_synced_at` via `update_columns` (no touch storm; still bust the fleet cache key if the jbuilder caches on `updated_at`).
    - A failed or blocked source leaves its columns as they were. An activity or language we don't know is logged and stored as nil.
-4. `FleetRsiSyncAllJob` in `config/sidekiq_schedule.yml`, daily and production-only like the loaders:
-   - Enqueues one `FleetRsiSyncJob` per verified fleet.
-   - Spreads them over time (`perform_in` with an offset per index) so RSI doesn't see a burst.
+4. `FleetRsiRefreshJob`, hourly and production-only, modelled on `RsiOrganizationsRefreshJob`:
+   - Takes a 24th of the verified fleets per run, the oldest `rsi_sync_attempted_at` first.
+   - Pauses for the rest of the day when RSI answers 403 (`:blocked`).
 5. Enqueue `FleetRsiSyncJob` from `FleetRsiVerification#apply` when the status becomes `:verified`.
 
 ### Phase 3: Settings API and page
@@ -72,12 +72,11 @@ A public, paginated, searchable and filterable directory of verified, public fle
 ### Phase 4: Public directory API
 1. Route: `namespace :public { resources :fleets, only: %i[index show] }`.
 2. `Api::V1::Public::FleetsController#index`:
-   - `authorize!` + `authorized_scope` on `Fleet.directory`
+   - `skip_verify_authorized`, like the other public lists; `Fleet.directory` is the authorization
    - ransack `q` with a permitted list; `sorting_params(Fleet, …)` for `s`/`sorts`
    - Kaminari `per_page`, `pagination_header`
    - preload `logo_attachment: :blob`
-   - gated by the feature flag (404 when off)
-3. `Public::FleetPolicy#index?` and a relation scope.
+   - gated by the feature flag (403, as trade routes does)
 4. A slim partial with these fields, instead of the full public `_fleet` partial (it carries features and the settings booleans):
    - name, slug, fid, verified SID, logo
    - member count
@@ -90,9 +89,10 @@ A public, paginated, searchable and filterable directory of verified, public fle
 2. Route order:
    - `fleets/directory/` before `:slug/` in `pages/fleets/routes.ts`
    - the matching route before `get "fleets/:slug"` in `config/routes/frontend_routes.rb`
-3. The page uses `FilteredList` + `Paginator` + `ListToolbar` (sort) and `useFilters`, modelled on `pages/commodities/index.vue`. Components go under `components/Fleets/Directory/` (FilterForm, Row/card).
-4. A nav entry in `FleetsNav` (+ its active list) and in the mobile nav.
-5. Route meta titles in both `nav.*` and `title.*`, plus the Rails `title.yml` entry.
+3. The page uses `FilteredList` + `Paginator` + `ListToolbar` (sort) and `useFilters`, modelled on `pages/commodities/index.vue`. Components go under `components/Fleets/Directory/` (FilterForm, Row, Card, List).
+4. Card and list views, toggled through `DisplayOptionsModal` and persisted in a `fleetDirectory` store, as the missions list does.
+5. A nav entry in `FleetsNav` (+ its active list). The mobile tab bar is a fixed set of five icons and stays as it is.
+6. Route meta titles in both `nav.*` and `title.*`, plus the Rails `title.yml` entry.
 
 ### Phase 6: Translations
 1. Every new string goes into en, de, es, fr, it, zh-CN and zh-TW, by hand, in both the frontend JSON and the backend YAML. That covers the alignment, activity and commitment labels and the validation messages. Language names come from `Intl.DisplayNames`, not translation keys.
@@ -123,6 +123,7 @@ A public, paginated, searchable and filterable directory of verified, public fle
 - [ ] **Visibility:** a verified, public fleet with 2+ accepted members and `listed` not false appears. Unverifying it, making it private or dropping to 1 member removes it, with `listed` unchanged.
 - [ ] **Settings toggle:** hidden for an unverified fleet. Prefilled on for a public verified fleet and off for a private one. Only `fleet:manage` can change it.
 - [ ] **RSI sync:** after verifying, the fleet's activities, language, commitment, role play and recruiting match its RSI org. A change on RSI shows up after the next daily run. A failed fetch keeps the old values.
+- [ ] **Views:** cards and rows, the choice remembered per viewer.
 - [ ] **Directory contents:** name, FID, verified SID, logo, member count, alignment and the synced fields. Each entry links to the public Fleetyards fleet page.
 - [ ] **Search/filter/sort:** search by name/FID/SID. Filter by member count, alignment, activity, language, commitment, role play, recruiting, timezone. Sort by member count and newest.
 - [ ] **Feature flag:** with the flag off, the directory route, nav entry and API index are unavailable. With it on, `/fleets/` redirects to the directory.
@@ -173,10 +174,10 @@ A public, paginated, searchable and filterable directory of verified, public fle
 
 ## Progress
 
-- [ ] Phase 1: Data model
-- [ ] Phase 2: RSI sync
-- [ ] Phase 3: Settings API and page
-- [ ] Phase 4: Public directory API
-- [ ] Phase 5: Frontend directory page
+- [x] Phase 1: Data model
+- [x] Phase 2: RSI sync
+- [x] Phase 3: Settings API and page
+- [x] Phase 4: Public directory API
+- [x] Phase 5: Frontend directory page
 - [ ] Phase 6: Translations
 - [ ] Phase 7: Tests
