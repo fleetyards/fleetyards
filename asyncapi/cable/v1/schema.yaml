@@ -2273,6 +2273,8 @@ components:
           type: boolean
         manageSquadronMembers:
           type: boolean
+        manageSquadrons:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -2318,6 +2320,7 @@ components:
       - updateSquadrons
       - destroySquadrons
       - manageSquadronMembers
+      - manageSquadrons
       - readInvites
       - createInvites
       - destroyInvites
@@ -2544,6 +2547,8 @@ components:
           - string
           - 'null'
           format: date-time
+        role:
+          "$ref": "#/components/schemas/FleetSquadronRole"
         discordChannelId:
           type:
           - string
@@ -2556,6 +2561,36 @@ components:
       - name
       - slug
       - team
+    FleetSquadronRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          "$ref": "#/components/schemas/FleetSquadronRoleKeyEnum"
+        name:
+          type: string
+        position:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - key
+      - name
+      - position
+    FleetSquadronRoleKeyEnum:
+      type: string
+      enum:
+      - leader
+      - co_leader
+      - officer
+      - member
+      x-enumNames:
+      - LEADER
+      - CO_LEADER
+      - OFFICER
+      - MEMBER
     FuelTank:
       type: object
       properties:
