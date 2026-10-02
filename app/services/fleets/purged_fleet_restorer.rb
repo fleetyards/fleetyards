@@ -44,6 +44,7 @@ module Fleets
         fleet.save!(validate: false)
 
         role_map = restore_roles(fleet)
+        restore_squadron_role_names(fleet)
         restore_memberships(fleet, role_map)
         inventory_map = restore_inventories(fleet)
         restore_inventory_items(inventory_map)
@@ -83,6 +84,15 @@ module Fleets
       end
 
       map
+    end
+
+    # The four squadron ranks are reseeded on fleet save; what the fleet called
+    # them is the part worth bringing back.
+    def restore_squadron_role_names(fleet)
+      child_destroy_versions("FleetSquadronRole", "fleet_id", fleet.id).find_each do |version|
+        rank = version.reify
+        fleet.fleet_squadron_roles.find_by(key: rank.key)&.update!(name: rank.name)
+      end
     end
 
     # Role assignment is best effort: FleetRole nullifies its memberships when
