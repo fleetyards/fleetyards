@@ -100,4 +100,13 @@ describe("LocationSystemStrip", () => {
     expect(wrapper.find(".location-strip__moon--lit").text()).toBe("Levski");
     expect(wrapper.text()).toContain("Pyro Gateway");
   });
+
+  it("lights the gateway whose page is open", async () => {
+    const wrapper = await mount({ path: ["nyx-system", "pyro-gateway"] });
+
+    const gateway = wrapper.get(".location-strip__gateway");
+
+    expect(gateway.classes()).toContain("location-strip__gateway--lit");
+    expect(gateway.attributes("aria-current")).toBe("page");
+  });
 });

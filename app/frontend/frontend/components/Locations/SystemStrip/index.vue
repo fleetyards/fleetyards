@@ -117,6 +117,8 @@ const litBody = computed(() =>
         :key="gateway.id"
         :to="{ name: 'location', params: { slug: gateway.slug } }"
         class="location-strip__gateway"
+        :class="{ 'location-strip__gateway--lit': isLit(gateway.id) }"
+        :aria-current="isLit(gateway.id) ? 'page' : undefined"
       >
         <LocationKindIcon :kind="LocationKindEnum.JUMP_POINT" />
         {{ gateway.name }}

@@ -169,5 +169,14 @@
     .location-kind-icon {
       color: var(--color-muted, #7a8288);
     }
+
+    &--lit {
+      color: #fff;
+      font-weight: 600;
+
+      .location-kind-icon {
+        color: var(--color-text, #c8c8c8);
+      }
+    }
   }
 }
