@@ -2576,6 +2576,10 @@ components:
           type: string
         position:
           type: integer
+        permanent:
+          type: boolean
+        defaultRank:
+          type: boolean
         singleHolder:
           type: boolean
         managesMembers:
@@ -2588,6 +2592,8 @@ components:
       - key
       - name
       - position
+      - permanent
+      - defaultRank
       - singleHolder
       - managesMembers
       - managesRanks
