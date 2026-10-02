@@ -2450,7 +2450,8 @@
           "appearance": "Apparence",
           "image": "Image",
           "color": "Couleur",
-          "appearanceHint": "Une image remplit le cercle d’une planète ou d’une lune. Sans image, la couleur est dessinée comme une sphère éclairée."
+          "appearanceHint": "Une image remplit le cercle d’une planète ou d’une lune. Sans image, la couleur est dessinée comme une sphère éclairée.",
+          "headerImageHint": "L’image est affichée en en-tête sur la page du lieu."
         },
         "blueprints": {
           "status": {

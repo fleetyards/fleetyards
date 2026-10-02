@@ -24,7 +24,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { globeStyle } from "@/shared/utils/LocationGlobe";
+import { globeStyle, isGlobeKind } from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -76,6 +76,10 @@ watch(
   { immediate: true },
 );
 
+// A planet or moon is drawn as a sphere from its picture or colour; any other
+// place only has a picture, shown as a header on its page.
+const isBody = computed(() => isGlobeKind(location.value?.kind));
+
 const [color, colorProps] = defineField("color");
 const [image, imageProps] = defineField("image");
 
@@ -83,6 +87,7 @@ const [image, imageProps] = defineField("image");
 // preview shows what the strip will draw.
 const preview = computed(() =>
   globeStyle({
+    kind: location.value?.kind,
     color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "") ? values.color : null,
     image: values.image === null ? null : location.value?.image,
   }),
@@ -146,7 +151,11 @@ const handleCancel = async () => {
           {{ t("labels.admin.locations.appearance") }}
         </h2>
         <p class="admin-location-edit__hint">
-          {{ t("labels.admin.locations.appearanceHint") }}
+          {{
+            isBody
+              ? t("labels.admin.locations.appearanceHint")
+              : t("labels.admin.locations.headerImageHint")
+          }}
         </p>
 
         <div class="row">
@@ -161,6 +170,7 @@ const handleCancel = async () => {
               clearable
             />
             <FormInput
+              v-if="isBody"
               v-model="color"
               v-bind="colorProps"
               translation-key="admin.locations.color"
@@ -171,10 +181,18 @@ const handleCancel = async () => {
           </div>
           <div class="col-12 col-md-6">
             <span
+              v-if="isBody"
               class="admin-location-edit__globe"
               :style="preview"
               data-test="location-globe-preview"
               aria-hidden="true"
+            />
+            <img
+              v-else-if="location.image && image !== null"
+              :src="location.image.largeUrl ?? location.image.url"
+              alt=""
+              class="admin-location-edit__header"
+              data-test="location-header-preview"
             />
           </div>
         </div>
@@ -201,6 +219,14 @@ const handleCancel = async () => {
     margin: 0 0 16px;
     font-size: 13px;
     color: var(--color-text-dim, #959595);
+  }
+
+  &__header {
+    display: block;
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
   }
 
   &__globe {

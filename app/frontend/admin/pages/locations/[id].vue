@@ -15,7 +15,7 @@ import DetailList from "@/admin/components/DetailList/index.vue";
 import { type Detail } from "@/admin/components/DetailList/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { globeStyle } from "@/shared/utils/LocationGlobe";
+import { globeStyle, isGlobeKind } from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 
@@ -49,6 +49,8 @@ const crumbs = computed(() => [
 ]);
 
 const dash = "—";
+
+const isBody = computed(() => isGlobeKind(location.value?.kind));
 
 const yesNo = (value?: boolean) =>
   value ? t("labels.admin.locations.yes") : t("labels.admin.locations.no");
@@ -153,12 +155,19 @@ const details = computed((): Detail[] => {
         data-test="location-appearance"
       >
         <span
+          v-if="isBody"
           class="admin-location__globe"
           :style="globeStyle(location)"
           aria-hidden="true"
         />
+        <img
+          v-else-if="location?.image"
+          :src="location.image.smallUrl ?? location.image.url"
+          alt=""
+          class="admin-location__thumb"
+        />
         <dl class="admin-location__appearance-facts">
-          <div>
+          <div v-if="isBody">
             <dt>{{ t("labels.admin.locations.color") }}</dt>
             <dd>
               <span
@@ -239,6 +248,15 @@ const details = computed((): Detail[] => {
       gap: 6px;
       margin: 0;
     }
+  }
+
+  &__thumb {
+    display: block;
+    flex-shrink: 0;
+    width: 160px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
   }
 
   &__swatch {

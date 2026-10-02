@@ -2450,7 +2450,8 @@
           "appearance": "Apariencia",
           "image": "Imagen",
           "color": "Color",
-          "appearanceHint": "Una imagen llena el círculo de un planeta o luna. Sin ella, el color se dibuja como una esfera iluminada."
+          "appearanceHint": "Una imagen llena el círculo de un planeta o luna. Sin ella, el color se dibuja como una esfera iluminada.",
+          "headerImageHint": "La imagen se muestra como imagen de cabecera en la página del lugar."
         },
         "blueprints": {
           "status": {

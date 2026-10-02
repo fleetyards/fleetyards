@@ -17,7 +17,7 @@ import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { globeStyle } from "@/shared/utils/LocationGlobe";
+import { globeStyle, isGlobeKind } from "@/shared/utils/LocationGlobe";
 import {
   LocationKindEnum,
   type LocationTreeNode,
@@ -191,19 +191,21 @@ const { data: missions } = useGameMissions(
   { query: { enabled: computed(() => loaded.value && !isSystemView.value) } },
 );
 
-// A body is drawn before its name, as in the strip; any other place only when
-// it has a picture or a colour of its own.
-const GLOBE_KINDS: string[] = [
-  LocationKindEnum.STAR,
-  LocationKindEnum.PLANET,
-  LocationKindEnum.MOON,
-];
-
+// A star or a body is drawn before its name, as in the strip. Any other place
+// shows its picture as a header above the page instead.
 const showGlobe = computed(
   () =>
     !!location.value &&
-    (GLOBE_KINDS.includes(location.value.kind) || !!globeStyle(location.value)),
+    (location.value.kind === LocationKindEnum.STAR ||
+      isGlobeKind(location.value.kind)),
 );
+
+const headerImage = computed(() => {
+  const image = location.value?.image;
+  if (!image || isGlobeKind(location.value?.kind)) return undefined;
+
+  return image.xlargeUrl ?? image.largeUrl ?? image.url;
+});
 
 // The export writes line breaks as a literal `\n`.
 const description = computed(() =>
@@ -230,6 +232,14 @@ watch(
       <div v-if="location" class="location-page">
         <div>
           <BreadCrumbs :crumbs="crumbs" />
+
+          <img
+            v-if="headerImage"
+            :src="headerImage"
+            alt=""
+            class="location-page__header-image"
+            data-test="location-header-image"
+          />
 
           <div class="location-page__masthead">
             <div class="location-page__title">

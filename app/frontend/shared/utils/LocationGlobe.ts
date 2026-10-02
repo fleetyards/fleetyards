@@ -1,9 +1,17 @@
 import type { CSSProperties } from "vue";
 
 type Appearance = {
+  kind?: string;
   color?: string | null;
   image?: { smallUrl?: string; url: string } | null;
 };
+
+// Only a body is drawn as a sphere. Any other place's picture is a header on
+// its page instead.
+const GLOBE_KINDS = ["planet", "moon"];
+
+export const isGlobeKind = (kind?: string) =>
+  !!kind && GLOBE_KINDS.includes(kind);
 
 // Sized to the border box and not tiled: sized to the padding box, the next
 // tile's highlight shows through the 1px border as a bright sliver along the
@@ -21,6 +29,8 @@ const FILL: CSSProperties = {
 export const globeStyle = (
   appearance?: Appearance | null,
 ): CSSProperties | undefined => {
+  if (!isGlobeKind(appearance?.kind)) return undefined;
+
   const image = appearance?.image?.smallUrl ?? appearance?.image?.url;
 
   if (image) {
