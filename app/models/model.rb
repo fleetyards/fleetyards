@@ -941,15 +941,15 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    item_prices.select(&:sell?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:sell?).sort_by(&:price).uniq(&:location))
   end
 
   def bought_at
-    item_prices.select(&:buy?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:buy?).sort_by(&:price).uniq(&:location))
   end
 
   def rental_at
-    item_prices.select(&:rental?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:rental?).sort_by(&:price).uniq(&:location))
   end
 
   # The ships this one can be carried by. Twenty-odd models hold every dock that

@@ -6,7 +6,7 @@
 # invisible on every component that has been served once until this moves. The locale is in it because `itemClassLabel` is
 # translated, and a fragment filled in one language was served to every reader.
 json.cache! [
-  "v6", I18n.locale, component, ::ScData::Source.current, component.item_prices_cache_key,
+  "v7", I18n.locale, component, ::ScData::Source.current, component.item_prices_cache_key,
   Manufacturer.artwork_version
 ] do
   json.partial!("api/v1/components/base", component:)

@@ -35,6 +35,15 @@ class ItemPrice < ApplicationRecord
   # Uex::ShopLocationMatcher.
   belongs_to :shop, optional: true
 
+  # What a price's shop link reads: the shop, its place, and the parent that
+  # tells two places of one name apart.
+  SHOP_LINK = {shop: {location: :parent}}.freeze
+
+  def self.with_shop_links(prices)
+    ActiveRecord::Associations::Preloader.new(records: prices, associations: SHOP_LINK).call
+    prices
+  end
+
   enum :price_type,
     {buy: 0, sell: 1, rental: 2},
     validate: true

@@ -29440,6 +29440,10 @@ components:
         locationUrl:
           type: string
           format: uri
+        shop:
+          anyOf:
+          - "$ref": "#/components/schemas/ShopLink"
+          - type: 'null'
         scu:
           type:
           - integer
@@ -34776,6 +34780,21 @@ components:
       - label
       - count
       title: ShopCategory
+    ShopLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - location
+      title: ShopLink
     SortInput:
       type: object
       properties:

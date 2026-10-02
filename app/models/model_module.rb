@@ -136,11 +136,11 @@ class ModelModule < ApplicationRecord
   end
 
   def sold_at
-    item_prices.sell.order(price: :asc).uniq(&:location)
+    item_prices.sell.preload(ItemPrice::SHOP_LINK).order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    item_prices.buy.order(price: :asc).uniq(&:location)
+    item_prices.buy.preload(ItemPrice::SHOP_LINK).order(price: :asc).uniq(&:location)
   end
 
   def update_from_hardpoints

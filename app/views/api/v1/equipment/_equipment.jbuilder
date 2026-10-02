@@ -5,7 +5,7 @@
 # translated, and a fragment filled by one reader's language would otherwise be
 # served to everyone.
 json.cache! [
-  "v2", I18n.locale, equipment, ::ScData::Source.current, equipment.item_prices_cache_key,
+  "v3", I18n.locale, equipment, ::ScData::Source.current, equipment.item_prices_cache_key,
   Manufacturer.artwork_version
 ] do
   json.partial!("api/v1/equipment/base", equipment:)

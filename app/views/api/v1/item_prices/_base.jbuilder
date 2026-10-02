@@ -12,6 +12,18 @@ json.price_type item_price.price_type
 json.location item_price.location
 json.location_url item_price.location_url
 
+if item_price.shop
+  json.shop do
+    json.name item_price.shop.name
+    json.slug item_price.shop.slug
+    json.location do
+      json.partial! "api/v1/locations/link", location: item_price.shop.location
+    end
+  end
+else
+  json.shop nil
+end
+
 json.scu item_price.scu
 json.source_updated_at item_price.source_updated_at&.utc&.iso8601
 

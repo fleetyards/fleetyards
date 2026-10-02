@@ -16740,6 +16740,10 @@ components:
         locationUrl:
           type: string
           format: uri
+        shop:
+          anyOf:
+          - "$ref": "#/components/schemas/ShopLink"
+          - type: 'null'
         scu:
           type:
           - integer
@@ -20344,6 +20348,21 @@ components:
           - 'null'
       additionalProperties: false
       title: ShopInput
+    ShopLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - location
+      title: ShopLink
     StandardError:
       type: object
       properties:

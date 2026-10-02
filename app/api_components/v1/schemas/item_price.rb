@@ -16,6 +16,8 @@ module V1
           itemType: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum,
           location: {type: :string},
           locationUrl: {type: :string, format: :uri},
+          # The shop the location names, where it is matched to one of ours.
+          shop: {anyOf: [::Shared::V1::Schemas::ShopLink, {type: :null}]},
 
           # Commodity prices only: the SCU the terminal has to sell or will take
           # at this price, and when UEX last saw it. Null for everything else,
