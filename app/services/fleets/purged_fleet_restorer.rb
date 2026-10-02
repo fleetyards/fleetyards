@@ -76,17 +76,23 @@ module Fleets
     # again keeps the older purge's versions under the same fleet id.
     def restore_roles(fleet)
       map = {}
-      restored_by_slug = {}
+      latest = {}
 
       versions = child_destroy_versions("FleetRole", "fleet_id", fleet.id).order(created_at: :desc, id: :desc)
 
       versions.each do |version|
         role = version.reify
         slug = role.slug.presence || role.name.to_s.parameterize
-
-        restored_by_slug[slug] ||= restore_role(fleet, role, slug)
-        map[version.item_id] = restored_by_slug[slug]
+        latest[slug] ||= {role:, restored: find_or_create_role(fleet, role, slug)}
+        map[version.item_id] = latest[slug][:restored]
       end
+
+      rename_roles(latest.values)
+
+      # Newest first, so the first snapshot that held the default is the
+      # latest purge's -- an older purge's default must not win.
+      default = latest.values.find { |entry| entry[:role].try(:new_member_default) }
+      default&.dig(:restored)&.make_default!
 
       map
     end
@@ -112,13 +118,18 @@ module Fleets
       end
     end
 
-    def restore_role(fleet, role, slug)
-      restored = fleet.fleet_roles.find_by(slug:) ||
+    def find_or_create_role(fleet, role, slug)
+      fleet.fleet_roles.find_by(slug:) ||
         fleet.fleet_roles.create!(name: role.name, resource_access: role.resource_access, permanent: role.permanent)
+    end
 
-      restored.update!(name: role.name) if restored.name != role.name
-      restored.make_default! if role.try(:new_member_default)
-      restored
+    # Through placeholders first: two roles that swapped names would otherwise
+    # meet the case-insensitive uniqueness check halfway through.
+    def rename_roles(entries)
+      renamed = entries.reject { |entry| entry[:restored].name == entry[:role].name }
+
+      renamed.each { |entry| entry[:restored].update_columns(name: "restoring-#{entry[:restored].id}") }
+      renamed.each { |entry| entry[:restored].update!(name: entry[:role].name) }
     end
 
     # Role assignment is best effort: FleetRole nullifies its memberships when
