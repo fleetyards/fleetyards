@@ -83,11 +83,16 @@ Pyro5f:
 Pyro6:
   color: "#8fb3b8"
 
-# Nyx, from the descriptions: Nyx I terraformed against the odds, Nyx II under
-# clouds of acid and carbon dioxide. Nyx III, the ice giant, takes its colour
-# from its picture rather than the ice giant fallback.
+# Nyx. Nyx I keeps a colour read from its description, terraformed against the
+# odds: its picture is a low-orbit view whose average is a flat grey. Nyx II's
+# colour is taken from its concept art, clouds of acid and carbon dioxide, and
+# Nyx III's, the ice giant, from its picture rather than the fallback.
 Nyx1:
   color: "#7f8f7a"
+  image: db/seeds/locations/nyx-i.webp
+Nyx2:
+  color: "#9b893b"
+  image: db/seeds/locations/nyx-ii.webp
 Nyx3:
   color: "#4a768c"
   image: db/seeds/locations/nyx-iii.webp
