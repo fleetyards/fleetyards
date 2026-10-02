@@ -20,6 +20,9 @@ export type RelationshipRow = {
   userId?: string;
   online?: boolean;
   lastActiveAt?: string | null;
+  // Where a friend is in the game, once the friendship is accepted.
+  currentSystem?: string | null;
+  currentLocation?: { slug: string; name?: string | null } | null;
   state: RelationshipStateEnum;
   direction: RelationshipDirectionEnum;
   createdAt: string;
