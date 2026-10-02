@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
+
 type Props = {
   // The text the record keeps.
   text?: string | null;
@@ -18,13 +20,11 @@ defineProps<Props>();
 <!-- A place a record names: a link to its page where it is one of ours, its
      text where it is not. -->
 <template>
-  <router-link
-    v-if="linked"
-    :to="{ name: 'location', params: { slug: linked.slug } }"
-    class="location-name"
-    data-test="location-name"
-  >
-    {{ text || linked.name }}
-  </router-link>
+  <!-- With the hover card every catalogue link has. -->
+  <span v-if="linked" class="location-name" data-test="location-name">
+    <CatalogueItemPopover
+      :item="{ type: 'Location', slug: linked.slug, name: text || linked.name }"
+    />
+  </span>
   <span v-else-if="text" class="location-name">{{ text }}</span>
 </template>

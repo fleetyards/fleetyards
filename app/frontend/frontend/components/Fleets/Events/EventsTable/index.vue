@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LocationName from "@/shared/components/LocationName/index.vue";
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import { markdownToPlainText } from "@/shared/utils/Markdown";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";

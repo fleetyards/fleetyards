@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LocationName from "@/shared/components/LocationName/index.vue";
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import { useInventoryUpdates } from "@/frontend/composables/useInventoryUpdates";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";

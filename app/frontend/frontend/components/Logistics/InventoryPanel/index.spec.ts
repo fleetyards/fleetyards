@@ -92,7 +92,7 @@ describe("InventoryPanel", () => {
       }),
     );
 
-    const link = wrapper.get("[data-test='location-name']");
+    const link = wrapper.get("[data-test='location-name'] a");
 
     expect(link.text()).toBe("Lorville");
     expect(link.attributes("href")).toContain("/locations/lorville");

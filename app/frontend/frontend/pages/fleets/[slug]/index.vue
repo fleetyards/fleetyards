@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LocationName from "@/shared/components/LocationName/index.vue";
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";

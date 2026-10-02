@@ -6,6 +6,7 @@ import {
   type FleetContractDetail,
   type FleetEvent,
   type GameMission,
+  type Location,
   type Model,
   type UserPublic,
 } from "@/services/fyApi";
@@ -32,4 +33,5 @@ export type CatalogueRecord =
   | GameMission
   | FleetContractDetail
   | FleetEvent
-  | UserPublic;
+  | UserPublic
+  | Location;

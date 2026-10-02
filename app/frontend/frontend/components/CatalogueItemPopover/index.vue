@@ -15,6 +15,7 @@ import MissionStatsCard from "@/frontend/components/StatsCard/Mission/index.vue"
 import ContractStatsCard from "@/frontend/components/StatsCard/Contract/index.vue";
 import EventStatsCard from "@/frontend/components/StatsCard/Event/index.vue";
 import UserStatsCard from "@/frontend/components/StatsCard/User/index.vue";
+import LocationStatsCard from "@/frontend/components/StatsCard/Location/index.vue";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
   useComponent as useComponentQuery,
@@ -26,6 +27,7 @@ import {
   useFleetContract as useFleetContractQuery,
   useFleetEvent as useFleetEventQuery,
   usePublicUser as usePublicUserQuery,
+  useLocation as useLocationQuery,
   type Blueprint,
   type Commodity,
   type Component,
@@ -33,6 +35,7 @@ import {
   type FleetContractDetail,
   type FleetEvent,
   type GameMission,
+  type Location,
   type Model,
   type UserPublic,
 } from "@/services/fyApi";
@@ -75,6 +78,7 @@ const isMission = computed(() => props.item.type === "GameMission");
 const isContract = computed(() => props.item.type === "FleetContract");
 const isEvent = computed(() => props.item.type === "FleetEvent");
 const isUser = computed(() => props.item.type === "User");
+const isLocation = computed(() => props.item.type === "Location");
 
 // Fetched the first time the card opens -- never for every link on a page --
 // and left enabled afterwards, so the query cache (shared with the detail
@@ -133,6 +137,11 @@ const { data: fetchedUser, isPending: userPending } = usePublicUserQuery(slug, {
   query: { enabled: fetches(isUser) },
 });
 
+const { data: fetchedLocation, isPending: locationPending } = useLocationQuery(
+  slug,
+  { query: { enabled: fetches(isLocation) } },
+);
+
 const component = computed(
   () => (props.record as Component | undefined) ?? fetchedComponent.value,
 );
@@ -162,6 +171,9 @@ const event = computed(
 const user = computed(
   () => (props.record as UserPublic | undefined) ?? fetchedUser.value,
 );
+const location = computed(
+  () => (props.record as Location | undefined) ?? fetchedLocation.value,
+);
 
 const pending = (type: Ref<boolean>, isPending: Ref<boolean>) =>
   computed(() => !props.record && type.value && isPending.value);
@@ -175,6 +187,7 @@ const missionLoading = pending(isMission, missionPending);
 const contractLoading = pending(isContract, contractPending);
 const eventLoading = pending(isEvent, eventPending);
 const userLoading = pending(isUser, userPending);
+const locationLoading = pending(isLocation, locationPending);
 
 // A record the catalogue does not list still has figures worth reading -- a
 // door or a seat on a ship -- so a card needs a record or a page, not both.
@@ -188,7 +201,8 @@ const hasCard = computed(
       isMission.value ||
       isContract.value ||
       isEvent.value ||
-      isUser.value) &&
+      isUser.value ||
+      isLocation.value) &&
     (!!props.record || !!route.value),
 );
 
@@ -280,6 +294,14 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         :name="label"
         :user="user"
         :loading="userLoading"
+        @navigate="close"
+      />
+      <LocationStatsCard
+        v-else-if="isLocation"
+        :to="route ?? false"
+        :name="label"
+        :location="location"
+        :loading="locationLoading"
         @navigate="close"
       />
       <CommodityStatsCard

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LocationName from "@/shared/components/LocationName/index.vue";
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
