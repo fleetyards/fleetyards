@@ -51,6 +51,7 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
   test "GET /locations/{slug} counts the places inside and names its terminals" do
     assert_api_response :get, 200, params: {slug: "levski"} do
       assert_equal 1, parsed_body["childrenCount"]
+      assert_equal 4, parsed_body["placesCount"]
       assert_equal ["Admin - Levski"], parsed_body["terminals"].pluck("name")
     end
   end

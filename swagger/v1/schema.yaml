@@ -28489,6 +28489,8 @@ components:
           - type: 'null'
         childrenCount:
           type: integer
+        placesCount:
+          type: integer
         terminals:
           type: array
           items:

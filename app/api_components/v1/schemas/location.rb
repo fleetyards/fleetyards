@@ -37,6 +37,8 @@ module V1
           # Levski under the Nyx star, while it sits inside Delamar.
           mapParent: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
           childrenCount: {type: :integer},
+          # Every place in the system this one is in.
+          placesCount: {type: :integer},
           terminals: {type: :array, items: ::V1::Schemas::LocationTerminal},
 
           createdAt: {type: :string, format: "date-time"},

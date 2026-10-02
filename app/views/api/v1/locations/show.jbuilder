@@ -41,6 +41,9 @@ end
 
 json.children_count @children_count
 
+# Every place in the system, for a system's own page: 839 for Stanton.
+json.places_count @places_count
+
 json.terminals @location.terminals.select(&:available).sort_by(&:name) do |terminal|
   json.id terminal.id
   json.name terminal.name

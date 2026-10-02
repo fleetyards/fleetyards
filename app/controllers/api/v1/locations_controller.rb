@@ -31,6 +31,7 @@ module Api
         @ancestors = @location.ancestors.reverse
         @commodities = resource_commodities(@location)
         @children_count = Location.current_version.where(parent_id: @location.id).count
+        @places_count = Location.current_version.where(system_id: @location.system_id || @location.id).count
       end
 
       def tree
