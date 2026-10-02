@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.9.0](https://github.com/fleetyards/fleetyards/compare/v8.8.0...v8.9.0) (2026-10-02)
+
+
+### Features
+
+* **components:** durability panel under metrics, slimmer right rail ([#5383](https://github.com/fleetyards/fleetyards/issues/5383)) ([b412bfb](https://github.com/fleetyards/fleetyards/commit/b412bfbde7e84b2b59c821d158f0c7e5a5b4e654))
+* **fleets:** an explicit default role for new members, and renaming fleet roles ([#5381](https://github.com/fleetyards/fleetyards/issues/5381)) ([301db8d](https://github.com/fleetyards/fleetyards/commit/301db8d7a89f084ca7d05728308a4dc68fa628cc))
+* **fleets:** public fleet directory for verified fleets ([#5378](https://github.com/fleetyards/fleetyards/issues/5378)) ([fc6785b](https://github.com/fleetyards/fleetyards/commit/fc6785b1673bf057f7ff5fd5aa0ea9279a2a89d8))
+* **locations:** a model and pages for places, from the game's starmap ([#5371](https://github.com/fleetyards/fleetyards/issues/5371)) ([329c104](https://github.com/fleetyards/fleetyards/commit/329c1048a8d7f858bee3d958500d22b300b5de76))
+* **markdown:** inline tokens for fleet contracts, fleet events and users ([#5363](https://github.com/fleetyards/fleetyards/issues/5363)) ([0ea1e41](https://github.com/fleetyards/fleetyards/commit/0ea1e4117182fdd2509004b14ed9c2d47f07a11f))
+* **penetration-check:** effective HP and time to kill against the loadout ([#5364](https://github.com/fleetyards/fleetyards/issues/5364)) ([b600c47](https://github.com/fleetyards/fleetyards/commit/b600c4774eb61482b1325da5abaf61510536ee63))
+* **squadrons:** ranks within a squadron — Leader, Co-Leader, Officer, Member ([#5376](https://github.com/fleetyards/fleetyards/issues/5376)) ([ec280f2](https://github.com/fleetyards/fleetyards/commit/ec280f21fa4c0849ff135890cf67ccdfe42a9ccc))
+
+
+### Bug Fixes
+
+* **defense:** compare a pellet's full damage against armor deflection ([#5369](https://github.com/fleetyards/fleetyards/issues/5369)) ([9ab9a3d](https://github.com/fleetyards/fleetyards/commit/9ab9a3d7fafd309544a2575e62fd0c673b69c5c0))
+* **markdown:** keep event tokens linking across a series split ([#5366](https://github.com/fleetyards/fleetyards/issues/5366)) ([015886e](https://github.com/fleetyards/fleetyards/commit/015886ea84ac9facff8f37dfdc9bd3caca816cf5))
+* **navigation:** add a back button for the installed app ([#5361](https://github.com/fleetyards/fleetyards/issues/5361)) ([4cb6f2f](https://github.com/fleetyards/fleetyards/commit/4cb6f2f355075d972ee503b67c23d87f33548c4b))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/parser from 8.70.1 to 8.71.0 ([#5372](https://github.com/fleetyards/fleetyards/issues/5372)) ([979a10a](https://github.com/fleetyards/fleetyards/commit/979a10a055c84e8d243b154785ff97e8051017f9))
+* **deps:** bump @floating-ui/dom from 1.7.6 to 1.8.0 ([#5360](https://github.com/fleetyards/fleetyards/issues/5360)) ([bfd98a1](https://github.com/fleetyards/fleetyards/commit/bfd98a1f1decf3c0964e02ae976a8045c0676d1c))
+* **deps:** bump appsignal from 4.10.4 to 5.0.0 ([#5375](https://github.com/fleetyards/fleetyards/issues/5375)) ([46f6d35](https://github.com/fleetyards/fleetyards/commit/46f6d35954783aeaf36730f79f02f48485ac3001))
+* **deps:** bump aws-sdk-s3 from 1.232.2 to 1.232.3 ([#5374](https://github.com/fleetyards/fleetyards/issues/5374)) ([ff7cdb1](https://github.com/fleetyards/fleetyards/commit/ff7cdb1da10e0aa26f328478073c511e1f53a932))
+* **deps:** bump rdoc from 8.0.0 to 8.1.0 ([#5373](https://github.com/fleetyards/fleetyards/issues/5373)) ([bac21f8](https://github.com/fleetyards/fleetyards/commit/bac21f835395ad3c4ffeb2c0ceb1e5036e93b3e8))
+
 ## [8.8.0](https://github.com/fleetyards/fleetyards/compare/v8.7.0...v8.8.0) (2026-10-01)
 
 
