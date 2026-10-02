@@ -28,6 +28,8 @@
   &__sun,
   &__planet {
     display: block;
+    flex-shrink: 0;
+    aspect-ratio: 1;
     border-radius: 50%;
     background-color: #1d2329;
     border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
@@ -50,8 +52,13 @@
     height: 44px;
 
     .location-strip--compact & {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
+    }
+
+    .location-strip--compact .location-strip__body--lit & {
+      width: 28px;
+      height: 28px;
     }
   }
 
