@@ -106,6 +106,29 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /shops/{slug}/items leaves out what the catalogue does not list" do
+    hidden = create(:equipment, name: "Adiva Jacket Event Copy", equipment_type: "clothing", hidden: true)
+    create(:item_price, item: hidden, location: "Casaba Outlet - Everus Harbor", price: 210, price_type: "sell", time_range: nil, shop: @casaba)
+
+    assert_api_response :get, 200, api_path: "/shops/{slug}/items", params: {slug: @casaba.slug} do
+      assert_equal ["Adiva Jacket"], parsed_body["items"].pluck("name")
+    end
+
+    assert_api_response :get, 200, api_path: "/shops/{slug}", params: {slug: @casaba.slug} do
+      assert_equal 1, parsed_body["itemsCount"]
+    end
+  end
+
+  test "GET /shops/{slug}/items gives a rental price its period" do
+    model = create(:model, name: "Cutlass Black")
+    create(:item_price, item: model, location: "Casaba Outlet - Everus Harbor", price: 27_000, price_type: "rental", time_range: "3-days", shop: @casaba)
+    create(:item_price, item: model, location: "Casaba Outlet - Everus Harbor", price: 9_000, price_type: "rental", time_range: "1-day", shop: @casaba)
+
+    assert_api_response :get, 200, api_path: "/shops/{slug}/items", params: {slug: @casaba.slug, q: {categoryIn: ["Model"]}} do
+      assert_equal [9_000.0, "1-day"], parsed_body["items"].first.values_at("rentalPrice", "rentalTimeRange")
+    end
+  end
+
   test "GET /shops/{slug}/items answers 404 for an unknown shop" do
     assert_api_response :get, 404, api_path: "/shops/{slug}/items", params: {slug: "dumpers-depot-port-olisar"}
   end
