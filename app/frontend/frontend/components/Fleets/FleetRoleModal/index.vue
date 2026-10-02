@@ -19,14 +19,16 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FleetRoleExtended,
   type FleetRoleUpdateInput,
+  getFleetMembershipQueryKey,
+  getFleetMembersQueryKey,
   getFleetRolesQueryKey,
   useUpdateFleetRole,
 } from "@/services/fyApi";
 
-type Props = {
+interface Props {
   fleetSlug: string;
   role: FleetRoleExtended;
-};
+}
 
 const props = defineProps<Props>();
 
@@ -54,9 +56,14 @@ const onSubmit = handleSubmit(async (values) => {
       // the endpoint takes nothing else.
       data: { name: values.name },
     });
-    await queryClient.invalidateQueries({
-      queryKey: getFleetRolesQueryKey(props.fleetSlug),
-    });
+    // Every list that names the role, not just the roles page.
+    await Promise.all(
+      [
+        getFleetRolesQueryKey(props.fleetSlug),
+        getFleetMembersQueryKey(props.fleetSlug),
+        getFleetMembershipQueryKey(props.fleetSlug),
+      ].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
+    );
     displaySuccess({ text: t("messages.fleet.roles.update.success") });
     comlink.emit("close-modal");
   } catch (error) {

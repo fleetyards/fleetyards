@@ -33,9 +33,10 @@ const { t } = useI18n();
 
 const comlink = useComlink();
 
-const canRename = computed(
-  () => props.membership?.capabilities?.updateRoles ?? false,
-);
+// The permanent Admin role takes fleet:manage, as FleetRolePolicy has it.
+const canRename = (role: FleetRoleExtended) =>
+  (props.membership?.capabilities?.updateRoles ?? false) &&
+  (!role.permanent || (props.membership?.capabilities?.manageFleet ?? false));
 
 const openRenameModal = (role: FleetRoleExtended) => {
   comlink.emit("open-modal", {
@@ -105,7 +106,7 @@ const isImpliedByManage = (
         >
           ({{ t("labels.fleet.roles.default") }})
         </span>
-        <template v-if="canRename" #actions>
+        <template v-if="canRename(role)" #actions>
           <Btn
             v-tooltip="t('actions.edit')"
             :variant="BtnVariantsEnum.BARE"
