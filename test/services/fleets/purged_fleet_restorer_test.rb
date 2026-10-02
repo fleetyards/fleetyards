@@ -57,6 +57,21 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
     assert_equal %w[officer], restored.fleet_squadron_roles.where(default_rank: true).pluck(:key)
   end
 
+  test "a second restore brings back the names from the latest purge" do
+    fleet = create(:fleet, name: "Twice Fleet", fid: "TWICEFLEET")
+    fleet.fleet_squadron_roles.find_by!(key: "leader").update!(name: "Wing Commander")
+    fleet_id = fleet.id
+
+    Fleet.find(fleet_id).destroy!
+    restored = Fleets::PurgedFleetRestorer.new(fleet_id).call
+    restored.fleet_squadron_roles.find_by!(key: "leader").update!(name: "Flight Lead")
+    Fleet.find(fleet_id).destroy!
+
+    again = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_equal "Flight Lead", again.fleet_squadron_roles.find_by!(key: "leader").name
+  end
+
   test "preserves discarded memberships instead of reactivating ex-members" do
     fleet = create(:fleet, created_by: @creator.id, officers: [@officer])
     fleet.fleet_memberships.find_by(user_id: @officer.id).discard

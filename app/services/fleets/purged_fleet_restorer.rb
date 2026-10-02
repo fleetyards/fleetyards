@@ -88,9 +88,17 @@ module Fleets
 
     # The four squadron ranks are reseeded on fleet save; what the fleet called
     # them, and which one new members start on, is the part worth bringing back.
+    #
+    # Only the latest snapshot per rank: a fleet restored and purged again
+    # leaves both purges' versions under the same fleet id, and the older name
+    # must not land last.
     def restore_squadron_ranks(fleet)
-      child_destroy_versions("FleetSquadronRole", "fleet_id", fleet.id).find_each do |version|
-        rank = version.reify
+      latest = child_destroy_versions("FleetSquadronRole", "fleet_id", fleet.id)
+        .order(created_at: :desc, id: :desc)
+        .map(&:reify)
+        .uniq(&:key)
+
+      latest.each do |rank|
         restored = fleet.fleet_squadron_roles.find_by(key: rank.key)
         next if restored.nil?
 

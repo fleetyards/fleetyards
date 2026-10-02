@@ -65,13 +65,25 @@ class FleetSquadronRole < ApplicationRecord
 
   attr_accessor :handing_over_default
 
+  # Under the fleet's row lock, like every write that has to see the fleet's
+  # whole set of ranks: two first requests for an unseeded fleet would
+  # otherwise both miss a rank and race to insert it.
   def self.setup_defaults!(fleet)
-    KEYS.each_with_index do |key, position|
-      fleet.fleet_squadron_roles.find_or_create_by!(key:) do |role|
-        role.name = DEFAULT_NAMES.fetch(key)
-        role.position = position
-        role.default_rank = key == SEEDED_DEFAULT_KEY
+    with_fleet_lock(fleet) do
+      KEYS.each_with_index do |key, position|
+        fleet.fleet_squadron_roles.find_or_create_by!(key:) do |role|
+          role.name = DEFAULT_NAMES.fetch(key)
+          role.position = position
+          role.default_rank = key == SEEDED_DEFAULT_KEY
+        end
       end
+    end
+  end
+
+  def self.with_fleet_lock(fleet, &)
+    transaction do
+      Fleet.where(id: fleet.id).lock.take
+      yield
     end
   end
 
@@ -88,12 +100,15 @@ class FleetSquadronRole < ApplicationRecord
 
   # There is always exactly one default, so it moves rather than being set and
   # cleared: the old one gives it up in the same transaction, before the
-  # partial unique index sees two.
+  # partial unique index sees two. The fleet lock serialises two moves, and
+  # both rows are read again under it -- the default may have moved while
+  # this one waited.
   def make_default!
-    return if default_rank?
+    self.class.with_fleet_lock(fleet) do
+      reload
+      next if default_rank?
 
-    transaction do
-      fleet.fleet_squadron_roles.lock.where(default_rank: true).where.not(id:).find_each do |previous|
+      fleet.fleet_squadron_roles.where(default_rank: true).where.not(id:).find_each do |previous|
         previous.handing_over_default = true
         previous.update!(default_rank: false)
       end
