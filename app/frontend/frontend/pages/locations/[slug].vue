@@ -5,6 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import ExternalLinks from "@/shared/components/ExternalLinks/index.vue";
 import LocationShops from "@/frontend/components/Locations/Shops/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
@@ -343,9 +346,11 @@ watch(
         />
 
         <template v-if="isSystemView">
-          <section v-if="description" class="location-page__panel">
-            <p class="location-page__description">{{ description }}</p>
-          </section>
+          <Panel v-if="description">
+            <PanelBody>
+              <p class="location-page__description">{{ description }}</p>
+            </PanelBody>
+          </Panel>
 
           <BodyColumns :bodies="bodies" />
 
@@ -364,9 +369,11 @@ watch(
 
         <div v-else class="location-page__layout">
           <div class="location-page__main">
-            <section v-if="description" class="location-page__panel">
-              <p class="location-page__description">{{ description }}</p>
-            </section>
+            <Panel v-if="description">
+              <PanelBody>
+                <p class="location-page__description">{{ description }}</p>
+              </PanelBody>
+            </Panel>
 
             <BodyColumns
               v-if="moonColumns.length"
@@ -384,33 +391,35 @@ watch(
           </div>
 
           <aside class="location-page__aside">
-            <LocationResources
+            <MetricsCard
               v-if="location.resources?.length"
-              :groups="location.resources"
-            />
-
-            <section class="location-page__panel">
-              <h2 class="location-page__panel-title">
-                {{ t("labels.location.starmap") }}
-              </h2>
-
-              <StarmapFacts :location="location" />
-            </section>
-
-            <section
-              v-if="location.terminals?.length"
-              class="location-page__panel"
+              :title="t('labels.location.resources')"
+              variant="slim"
             >
-              <h2 class="location-page__panel-title">
-                {{ t("labels.location.terminals") }}
-              </h2>
+              <LocationResources :groups="location.resources" />
+            </MetricsCard>
 
-              <ul class="location-page__terminals">
-                <li v-for="terminal in location.terminals" :key="terminal.id">
-                  {{ terminal.name }}
-                </li>
-              </ul>
-            </section>
+            <MetricsCard :title="t('labels.location.starmap')" variant="slim">
+              <StarmapFacts :location="location" />
+            </MetricsCard>
+
+            <MetricsCard
+              v-if="location.terminals?.length"
+              :title="t('labels.location.terminals')"
+              variant="slim"
+            >
+              <div class="metrics-card__rows">
+                <div
+                  v-for="terminal in location.terminals"
+                  :key="terminal.id"
+                  class="metrics-card__row"
+                >
+                  <span class="location-page__terminal">
+                    {{ terminal.name }}
+                  </span>
+                </div>
+              </div>
+            </MetricsCard>
             <LocationMissions
               v-if="missions?.items?.length"
               :missions="missions.items"
@@ -428,4 +437,5 @@ watch(
 
 <style lang="scss" scoped>
 @import "index";
+@import "@/shared/components/metricsCard";
 </style>

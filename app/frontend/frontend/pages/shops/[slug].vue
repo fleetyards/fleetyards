@@ -9,7 +9,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import ShopStockEquipment from "@/frontend/components/Shops/Stock/Equipment.vue";
 import ShopStockComponents from "@/frontend/components/Shops/Stock/Components.vue";
 import ShopStockShips from "@/frontend/components/Shops/Stock/Ships.vue";
@@ -138,30 +138,29 @@ watch(
           </div>
 
           <aside class="location-page__aside">
-            <section class="location-page__panel">
-              <h2 class="location-page__panel-title">
-                {{ t("labels.shopPage.facts") }}
-              </h2>
-
-              <dl class="shop-facts" data-test="shop-facts">
-                <div class="shop-facts__fact">
-                  <dt>{{ t("labels.shopPage.place") }}</dt>
-                  <dd>
+            <MetricsCard :title="t('labels.shopPage.facts')" variant="slim">
+              <div class="metrics-card__rows" data-test="shop-facts">
+                <div class="metrics-card__row">
+                  <span class="metrics-card__row__label">
+                    {{ t("labels.shopPage.place") }}
+                  </span>
+                  <span class="metrics-card__row__value">
                     <router-link
                       :to="{
                         name: 'location',
                         params: { slug: shop.location.slug },
                       }"
                     >
-                      <LocationKindIcon :kind="shop.location.kind" />
                       {{ shop.location.name }}
                     </router-link>
-                  </dd>
+                  </span>
                 </div>
 
-                <div v-if="shop.system" class="shop-facts__fact">
-                  <dt>{{ t("labels.shopPage.system") }}</dt>
-                  <dd>
+                <div v-if="shop.system" class="metrics-card__row">
+                  <span class="metrics-card__row__label">
+                    {{ t("labels.shopPage.system") }}
+                  </span>
+                  <span class="metrics-card__row__value">
                     <router-link
                       :to="{
                         name: 'location',
@@ -170,30 +169,30 @@ watch(
                     >
                       {{ shop.system.name }}
                     </router-link>
-                  </dd>
+                  </span>
                 </div>
 
-                <div class="shop-facts__fact">
-                  <dt>{{ t("labels.shopPage.carries") }}</dt>
-                  <dd class="shop-facts__counts">
-                    <span
-                      v-for="category in shop.categories"
-                      :key="`${category.itemType}:${category.key}`"
-                    >
-                      {{
-                        category.label ??
-                        t(`labels.location.shopItemTypes.${category.itemType}`)
-                      }}
-                      <strong>{{ category.count }}</strong>
-                    </span>
-                  </dd>
+                <div
+                  v-for="category in shop.categories"
+                  :key="`${category.itemType}:${category.key}`"
+                  class="metrics-card__row"
+                >
+                  <span class="metrics-card__row__label">
+                    {{
+                      category.label ??
+                      t(`labels.location.shopItemTypes.${category.itemType}`)
+                    }}
+                  </span>
+                  <span class="metrics-card__row__value">
+                    {{ category.count }}
+                  </span>
                 </div>
-              </dl>
+              </div>
 
               <p class="shop-facts__source">
                 {{ t("labels.shopPage.source") }}
               </p>
-            </section>
+            </MetricsCard>
           </aside>
         </div>
       </div>
@@ -203,6 +202,7 @@ watch(
 
 <style lang="scss" scoped>
 @import "@/frontend/pages/locations/index";
+@import "@/shared/components/metricsCard";
 
 .shop-stock {
   display: flex;
@@ -222,43 +222,6 @@ watch(
 }
 
 .shop-facts {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 0;
-
-  &__fact {
-    display: grid;
-    grid-template-columns: 7em minmax(0, 1fr);
-    gap: 8px;
-
-    dt {
-      font-size: 13px;
-      color: var(--color-text-dim, #959595);
-    }
-
-    dd {
-      margin: 0;
-    }
-
-    a {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-  }
-
-  &__counts {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-
-    strong {
-      margin-left: 4px;
-      font-variant-numeric: tabular-nums;
-    }
-  }
-
   &__source {
     margin: 12px 0 0;
     font-size: 12px;

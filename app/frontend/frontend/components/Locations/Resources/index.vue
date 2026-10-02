@@ -26,10 +26,6 @@ const kindLabel = (kind: string) => {
 
 <template>
   <section class="location-resources">
-    <h2 class="location-resources__title">
-      {{ t("labels.location.resources") }}
-    </h2>
-
     <div
       v-for="group in groups"
       :key="group.kind"
@@ -62,16 +58,12 @@ const kindLabel = (kind: string) => {
 </template>
 
 <style lang="scss" scoped>
+// Inside a metrics card, which draws the frame and the title.
 .location-resources {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
-  background-color: var(--color-control, rgb(39 43 48 / 0.9));
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: var(--radius-surface-slim, 12px);
 
-  &__title,
   &__kind {
     margin: 0;
     font-family: "Orbitron", tahoma, sans-serif;

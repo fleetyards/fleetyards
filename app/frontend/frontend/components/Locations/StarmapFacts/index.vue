@@ -42,77 +42,71 @@ const visibility = computed(() => {
 });
 </script>
 
+<!-- The rows of a metrics card, which the page draws around them. -->
 <template>
-  <dl class="location-starmap">
-    <div class="location-starmap__fact">
-      <dt>{{ t("labels.location.starmapVisibility") }}</dt>
-      <dd data-test="starmap-visibility">{{ visibility }}</dd>
+  <div class="metrics-card__rows location-starmap">
+    <div class="metrics-card__row">
+      <span class="metrics-card__row__label">
+        {{ t("labels.location.starmapVisibility") }}
+      </span>
+      <span class="metrics-card__row__value" data-test="starmap-visibility">
+        {{ visibility }}
+      </span>
     </div>
 
-    <div class="location-starmap__fact">
-      <dt>{{ t("labels.location.quantumTravel") }}</dt>
-      <dd>
+    <div class="metrics-card__row">
+      <span class="metrics-card__row__label">
+        {{ t("labels.location.quantumTravel") }}
+      </span>
+      <span class="metrics-card__row__value">
         {{
           location.quantumTravelDestination
             ? t("labels.location.quantumTravelYes")
             : t("labels.location.quantumTravelNo")
         }}
-      </dd>
+      </span>
     </div>
 
-    <div v-if="location.mapParent" class="location-starmap__fact">
-      <dt>{{ t("labels.location.mapParent") }}</dt>
-      <dd data-test="starmap-map-parent">
+    <div
+      v-if="location.mapParent"
+      class="metrics-card__row metrics-card__row--stack"
+    >
+      <span class="metrics-card__row__label">
+        {{ t("labels.location.mapParent") }}
+      </span>
+      <span class="metrics-card__row__value" data-test="starmap-map-parent">
         <router-link
           :to="{ name: 'location', params: { slug: location.mapParent.slug } }"
         >
           {{ location.mapParent.name }}
         </router-link>
-        <p class="location-starmap__note">
+        <span class="location-starmap__note">
           {{
             t("labels.location.mapParentNote", {
               mapParent: location.mapParent.name,
               parent: location.parent?.name,
             })
           }}
-        </p>
-      </dd>
+        </span>
+      </span>
     </div>
-  </dl>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.location-starmap {
-  display: grid;
-  gap: 12px;
-  margin: 0;
+@import "@/shared/components/metricsCard";
 
-  &__fact {
-    display: grid;
-    grid-template-columns: minmax(140px, 220px) 1fr;
-    gap: 12px;
+// The values are sentences rather than figures, so they wrap where a figure
+// would be cut short.
+.location-starmap .metrics-card__row__value {
+  white-space: normal;
+}
 
-    @media (max-width: 575px) {
-      grid-template-columns: 1fr;
-      gap: 2px;
-    }
-  }
-
-  dt {
-    font-size: 13px;
-    color: var(--color-text-dim, #959595);
-  }
-
-  dd {
-    margin: 0;
-    font-size: 14px;
-    color: var(--color-text, #c8c8c8);
-  }
-
-  &__note {
-    margin: 4px 0 0;
-    font-size: 12px;
-    color: var(--color-text-dim, #959595);
-  }
+.location-starmap__note {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-dim, #959595);
 }
 </style>

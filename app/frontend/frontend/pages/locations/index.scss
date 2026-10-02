@@ -127,7 +127,11 @@
 
   // The facts come first on a phone, where the sidebar would otherwise sit
   // under every outpost on the moon.
+  // The cards in it are metrics cards, which bring their own bottom margin;
+  // a gap on top of it would double the space between them.
   &__aside {
+    gap: 0;
+
     @media (max-width: $desktop-breakpoint) {
       order: -1;
     }
@@ -152,8 +156,10 @@
     color: var(--color-text-dim, #959595);
   }
 
+  // Inside the default panel, with the room a block of prose wants.
   &__description {
     margin: 0;
+    padding: 10px 6px;
     font-size: 14px;
     line-height: 1.6;
     white-space: pre-line;
@@ -164,12 +170,8 @@
     font-size: 13px;
   }
 
-  &__terminals {
-    display: grid;
-    gap: 4px;
-    margin: 0;
-    padding-left: 18px;
-    font-size: 14px;
+  &__terminal {
+    font-size: 13.5px;
     color: var(--color-text, #c8c8c8);
   }
 }
