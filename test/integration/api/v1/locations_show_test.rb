@@ -80,6 +80,18 @@ class Api::V1::LocationsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug} links a resource by the name the build gives the commodity" do
+    ore = create(:commodity, name: "Old Ore")
+    ore.builds.update_all(name: "New Ore")
+    resources = [{"kind" => "ship_mineables", "items" => [{"name" => "New Ore", "note" => nil}]}]
+    @delamar.update!(resources:)
+    @delamar.builds.update_all(resources:)
+
+    assert_api_response :get, 200, params: {slug: "delamar"} do
+      assert_equal ore.slug, parsed_body["resources"].first["items"].sole.dig("commodity", "slug")
+    end
+  end
+
   test "GET /locations/{slug} answers 404 for an unknown place" do
     assert_api_response :get, 404, params: {slug: "port-olisar"}
   end

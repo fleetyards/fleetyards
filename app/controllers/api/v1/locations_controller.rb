@@ -47,12 +47,13 @@ module Api
       end
 
       # What a resource name stands for in the commodity catalogue, matched on
-      # the name: 41 of the 54 names the 4.10.1 bodies list have one.
+      # the name the served build gives it -- the row's own can be older: 41 of
+      # the 54 names the 4.10.1 bodies list have one.
       private def resource_commodities(location)
         names = Array.wrap(location.resources).flat_map { |group| Array.wrap(group["items"]).pluck("name") }.compact.map(&:downcase).uniq
         return {} if names.empty?
 
-        Commodity.current_version.where("lower(name) IN (?)", names).index_by { |commodity| commodity.name.downcase }
+        Commodity.with_facts(true).where("lower(#{Commodity.fact_sql(:name)}) IN (?)", names).index_by { |commodity| commodity.name.downcase }
       end
 
       private def find_location
