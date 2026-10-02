@@ -10,9 +10,12 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
-import ShopListing from "@/frontend/components/Shops/Listing/index.vue";
+import ShopStockEquipment from "@/frontend/components/Shops/Stock/Equipment.vue";
+import ShopStockComponents from "@/frontend/components/Shops/Stock/Components.vue";
+import ShopStockShips from "@/frontend/components/Shops/Stock/Ships.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { type Component } from "vue";
 import { useShop } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -30,6 +33,34 @@ const crumbs = computed<Crumb[]>(() => [
     label: ancestor.name ?? undefined,
   })),
 ]);
+
+// What the shop sells, as the catalogue lists it: one list per catalogue, the
+// largest first, each narrowed to this shop.
+const STOCK_LISTS: Record<string, Component> = {
+  Equipment: ShopStockEquipment,
+  Component: ShopStockComponents,
+  Model: ShopStockShips,
+};
+
+const stocks = computed(() => {
+  const counts = new Map<string, number>();
+
+  (shop.value?.categories ?? []).forEach((category) => {
+    counts.set(
+      category.itemType,
+      (counts.get(category.itemType) ?? 0) + category.count,
+    );
+  });
+
+  return [...counts.entries()]
+    .filter(([itemType]) => STOCK_LISTS[itemType])
+    .map(([itemType, count]) => ({
+      itemType,
+      count,
+      component: STOCK_LISTS[itemType],
+    }))
+    .sort((a, b) => b.count - a.count);
+});
 
 const headerImage = computed(() => {
   const image = shop.value?.image;
@@ -93,7 +124,17 @@ watch(
 
         <div class="location-page__layout">
           <div class="location-page__main">
-            <ShopListing :items="shop.items" />
+            <section
+              v-for="stock in stocks"
+              :key="stock.itemType"
+              class="shop-stock"
+            >
+              <h2 class="shop-stock__title">
+                {{ t(`labels.location.shopItemTypes.${stock.itemType}`) }} ·
+                {{ stock.count }}
+              </h2>
+              <component :is="stock.component" :shop="shop.slug" />
+            </section>
           </div>
 
           <aside class="location-page__aside">
@@ -162,6 +203,23 @@ watch(
 
 <style lang="scss" scoped>
 @import "@/frontend/pages/locations/index";
+
+.shop-stock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__title {
+    margin: 0;
+    padding: 0 2px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-dim, #959595);
+  }
+}
 
 .shop-facts {
   display: flex;

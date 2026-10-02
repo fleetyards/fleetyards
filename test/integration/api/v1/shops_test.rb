@@ -36,13 +36,12 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
     create(:item_price, item: jacket, location: "Casaba Outlet - Everus Harbor", price: 210, price_type: "sell", time_range: nil, shop: @casaba)
   end
 
-  test "GET /shops/{slug} returns the shop, its place and what it sells" do
+  test "GET /shops/{slug} returns the shop, its place and what kinds of thing it sells" do
     assert_api_response :get, 200, params: {slug: @casaba.slug} do
       assert_equal "Casaba Outlet", parsed_body["name"]
       assert_equal "Everus Harbor", parsed_body.dig("location", "name")
       assert_equal ["Stanton System", "Hurston", "Everus Harbor"], parsed_body["ancestors"].pluck("name")
-      assert_equal [["Adiva Jacket", "Equipment"]], parsed_body["items"].map { |item| item.values_at("name", "itemType") }
-      assert_equal 210.0, parsed_body.dig("items", 0, "prices", 0, "price")
+      assert_equal 1, parsed_body["itemsCount"]
       assert_equal [["clothing", "Clothing", 1]], parsed_body["categories"].map { |category| category.values_at("key", "label", "count") }
     end
   end

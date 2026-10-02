@@ -34630,10 +34630,6 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ShopCategory"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/ShopItem"
         createdAt:
           type: string
           format: date-time
@@ -34650,7 +34646,6 @@ components:
       - system
       - itemsCount
       - categories
-      - items
       - createdAt
       - updatedAt
       title: Shop
@@ -34676,61 +34671,6 @@ components:
       - label
       - count
       title: ShopCategory
-    ShopItem:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-        slug:
-          type:
-          - string
-          - 'null'
-        itemType:
-          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
-        category:
-          type:
-          - string
-          - 'null'
-        categoryLabel:
-          type:
-          - string
-          - 'null'
-        prices:
-          type: array
-          items:
-            "$ref": "#/components/schemas/ShopItemPrice"
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      - itemType
-      - category
-      - categoryLabel
-      - prices
-      title: ShopItem
-    ShopItemPrice:
-      type: object
-      properties:
-        priceType:
-          "$ref": "#/components/schemas/ItemPriceTypeEnum"
-        price:
-          type: number
-        timeRange:
-          anyOf:
-          - "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
-          - type: 'null'
-      additionalProperties: false
-      required:
-      - priceType
-      - price
-      - timeRange
-      title: ShopItemPrice
     SortInput:
       type: object
       properties:
