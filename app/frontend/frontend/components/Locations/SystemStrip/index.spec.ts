@@ -40,6 +40,7 @@ const node = (
     kind,
     parentName: null,
     shownOnStarmap: true,
+    color: null,
   },
   counts: [],
   lagrangePoints: [],

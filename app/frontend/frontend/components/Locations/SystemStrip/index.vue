@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { globeStyle } from "@/shared/utils/LocationGlobe";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type LocationLink, type LocationTreeNode } from "@/services/fyApi";
 import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
@@ -63,7 +64,11 @@ const drawnUnderStar = computed(
       :to="{ name: 'location', params: { slug: tree.location.slug } }"
       class="location-strip__star"
     >
-      <span class="location-strip__sun" aria-hidden="true" />
+      <span
+        class="location-strip__sun"
+        :style="globeStyle(star.location)"
+        aria-hidden="true"
+      />
       <span class="location-strip__name">{{ star.location.name }}</span>
     </router-link>
 
@@ -79,7 +84,11 @@ const drawnUnderStar = computed(
           class="location-strip__body-link"
           :aria-current="path.at(-1) === body.location.id ? 'page' : undefined"
         >
-          <span class="location-strip__planet" aria-hidden="true" />
+          <span
+            class="location-strip__planet"
+            :style="globeStyle(body.location)"
+            aria-hidden="true"
+          />
           <span class="location-strip__name">{{ body.location.name }}</span>
         </router-link>
 

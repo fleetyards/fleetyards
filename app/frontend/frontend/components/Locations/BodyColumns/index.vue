@@ -9,6 +9,7 @@ import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type LocationTreeNode } from "@/services/fyApi";
 import { LOCATION_KIND_ICONS } from "@/frontend/components/Locations/kinds";
+import { globeStyle } from "@/shared/utils/LocationGlobe";
 
 type Props = {
   bodies: LocationTreeNode[];
@@ -41,7 +42,11 @@ const cities = (body: LocationTreeNode) =>
         :to="{ name: 'location', params: { slug: body.location.slug } }"
         class="location-columns__head"
       >
-        <span class="location-columns__planet" aria-hidden="true" />
+        <span
+          class="location-columns__planet"
+          :style="globeStyle(body.location)"
+          aria-hidden="true"
+        />
         <span class="location-columns__title">{{ body.location.name }}</span>
       </router-link>
 
@@ -65,7 +70,11 @@ const cities = (body: LocationTreeNode) =>
           :to="{ name: 'location', params: { slug: moon.location.slug } }"
           class="location-columns__moon"
         >
-          <span class="location-columns__moon-dot" aria-hidden="true" />
+          <span
+            class="location-columns__moon-dot"
+            :style="globeStyle(moon.location)"
+            aria-hidden="true"
+          />
           <span class="location-columns__moon-body">
             <span class="location-columns__moon-name">
               {{ moon.location.name }}
