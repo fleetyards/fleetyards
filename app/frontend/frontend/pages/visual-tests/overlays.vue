@@ -29,6 +29,8 @@ import {
   type Component,
   type Equipment,
   type GameMission,
+  type Location,
+  LocationKindEnum,
   type Model,
 } from "@/services/fyApi";
 
@@ -227,6 +229,68 @@ const demoMission = {
   retired: false,
   released: false,
 } as unknown as GameMission;
+
+const demoLocation = {
+  id: "demo-location",
+  name: "Lorville",
+  slug: "lorville",
+  kind: LocationKindEnum.CITY,
+  description:
+    "Hurston Dynamics' company town, under a sky the factories keep orange.",
+  quantumTravelDestination: true,
+  childrenCount: 4,
+  retired: false,
+  image: { url: storeImage, mediumUrl: storeImage },
+  ancestors: [
+    {
+      id: "demo-stanton",
+      name: "Stanton System",
+      slug: "stanton-system",
+      kind: LocationKindEnum.SYSTEM,
+      parentName: null,
+    },
+    {
+      id: "demo-hurston",
+      name: "Hurston",
+      slug: "hurston",
+      kind: LocationKindEnum.PLANET,
+      parentName: "Stanton",
+    },
+  ],
+} as unknown as Location;
+
+// A planet is drawn as its turning globe, a star as its sun.
+const demoPlanet = {
+  ...demoLocation,
+  id: "demo-planet",
+  name: "Hurston",
+  slug: "hurston",
+  kind: LocationKindEnum.PLANET,
+  color: "#9c846e",
+  image: undefined,
+  description: "A world strip-mined by the company that owns it.",
+  ancestors: demoLocation.ancestors?.slice(0, 1),
+} as unknown as Location;
+
+const demoStar = {
+  ...demoPlanet,
+  id: "demo-star",
+  name: "Pyro",
+  slug: "pyro",
+  kind: LocationKindEnum.STAR,
+  color: "#ffb066",
+  unstable: true,
+  description: "A K-type main sequence flare star.",
+  ancestors: [
+    {
+      id: "demo-pyro-system",
+      name: "Pyro System",
+      slug: "pyro-system",
+      kind: LocationKindEnum.SYSTEM,
+      parentName: null,
+    },
+  ],
+} as unknown as Location;
 </script>
 
 <template>
@@ -367,6 +431,24 @@ const demoMission = {
             name: 'A Challenging Contract',
           }"
           :record="demoMission"
+        />
+      </span>
+      <span data-test="popover-demo-location">
+        <CatalogueItemPopover
+          :item="{ type: 'Location', slug: 'lorville', name: 'Lorville' }"
+          :record="demoLocation"
+        />
+      </span>
+      <span data-test="popover-demo-planet">
+        <CatalogueItemPopover
+          :item="{ type: 'Location', slug: 'hurston', name: 'Hurston' }"
+          :record="demoPlanet"
+        />
+      </span>
+      <span data-test="popover-demo-star">
+        <CatalogueItemPopover
+          :item="{ type: 'Location', slug: 'pyro', name: 'Pyro' }"
+          :record="demoStar"
         />
       </span>
       <BasePopover label="Loading" data-test="popover-demo-loading">
