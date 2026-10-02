@@ -2450,7 +2450,7 @@
           "appearance": "Appearance",
           "image": "Image",
           "color": "Color",
-          "appearanceHint": "A picture fills a planet or moon’s circle. Without one, the color is drawn as a lit sphere.",
+          "appearanceHint": "The color fills the planet or moon’s circle, shaded as a lit sphere. Left empty, it is taken from the picture when one is uploaded.",
           "headerImageHint": "The picture is shown as a header image on the place’s page."
         },
         "blueprints": {

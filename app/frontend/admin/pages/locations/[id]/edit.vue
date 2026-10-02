@@ -83,13 +83,11 @@ const isBody = computed(() => isGlobeKind(location.value?.kind));
 const [color, colorProps] = defineField("color");
 const [image, imageProps] = defineField("image");
 
-// The colour as it is typed, over the picture already uploaded, so the
-// preview shows what the strip will draw.
+// The colour as it is typed, so the preview shows what the strip will draw.
 const preview = computed(() =>
   globeStyle({
     kind: location.value?.kind,
     color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "") ? values.color : null,
-    image: values.image === null ? null : location.value?.image,
   }),
 );
 
@@ -151,11 +149,10 @@ const handleCancel = async () => {
           {{ t("labels.admin.locations.appearance") }}
         </h2>
         <p class="admin-location-edit__hint">
-          {{
-            isBody
-              ? t("labels.admin.locations.appearanceHint")
-              : t("labels.admin.locations.headerImageHint")
-          }}
+          {{ t("labels.admin.locations.headerImageHint") }}
+          <template v-if="isBody">
+            {{ t("labels.admin.locations.appearanceHint") }}
+          </template>
         </p>
 
         <div class="row">
@@ -188,7 +185,7 @@ const handleCancel = async () => {
               aria-hidden="true"
             />
             <img
-              v-else-if="location.image && image !== null"
+              v-if="location.image && image !== null"
               :src="location.image.largeUrl ?? location.image.url"
               alt=""
               class="admin-location-edit__header"

@@ -3,11 +3,10 @@ import type { CSSProperties } from "vue";
 type Appearance = {
   kind?: string;
   color?: string | null;
-  image?: { smallUrl?: string; url: string } | null;
 };
 
-// Only a body is drawn as a sphere. Any other place's picture is a header on
-// its page instead.
+// Only a body is drawn as a sphere, from its colour. A picture, of a body or
+// any other place, is the header on its page.
 const GLOBE_KINDS = ["planet", "moon"];
 
 export const isGlobeKind = (kind?: string) =>
@@ -23,24 +22,12 @@ const FILL: CSSProperties = {
   "--globe-border": "transparent",
 };
 
-// How a body's circle is filled: its picture where one was uploaded, else its
-// colour shaded like a lit sphere, else nothing -- the circle keeps the plain
-// fill its stylesheet gives it.
+// How a body's circle is filled: its colour shaded like a lit sphere, or
+// nothing -- the circle keeps the plain fill its stylesheet gives it.
 export const globeStyle = (
   appearance?: Appearance | null,
 ): CSSProperties | undefined => {
   if (!isGlobeKind(appearance?.kind)) return undefined;
-
-  const image = appearance?.image?.smallUrl ?? appearance?.image?.url;
-
-  if (image) {
-    return {
-      backgroundImage: `url("${image}")`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      ...FILL,
-    };
-  }
 
   const color = appearance?.color;
 

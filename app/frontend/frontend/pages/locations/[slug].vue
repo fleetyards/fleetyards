@@ -191,8 +191,8 @@ const { data: missions } = useGameMissions(
   { query: { enabled: computed(() => loaded.value && !isSystemView.value) } },
 );
 
-// A star or a body is drawn before its name, as in the strip. Any other place
-// shows its picture as a header above the page instead.
+// A star or a body is drawn before its name, as in the strip. A picture, of
+// any place, is the header above the page.
 const showGlobe = computed(
   () =>
     !!location.value &&
@@ -202,7 +202,7 @@ const showGlobe = computed(
 
 const headerImage = computed(() => {
   const image = location.value?.image;
-  if (!image || isGlobeKind(location.value?.kind)) return undefined;
+  if (!image) return undefined;
 
   return image.xlargeUrl ?? image.largeUrl ?? image.url;
 });

@@ -161,7 +161,7 @@ const details = computed((): Detail[] => {
           aria-hidden="true"
         />
         <img
-          v-else-if="location?.image"
+          v-if="location?.image"
           :src="location.image.smallUrl ?? location.image.url"
           alt=""
           class="admin-location__thumb"

@@ -2450,7 +2450,7 @@
           "appearance": "Aspetto",
           "image": "Immagine",
           "color": "Colore",
-          "appearanceHint": "Un’immagine riempie il cerchio di un pianeta o di una luna. Senza immagine, il colore è disegnato come una sfera illuminata.",
+          "appearanceHint": "Il colore riempie il cerchio del pianeta o della luna, ombreggiato come una sfera illuminata. Se lasciato vuoto, viene preso dall’immagine al caricamento.",
           "headerImageHint": "L’immagine viene mostrata come intestazione nella pagina del luogo."
         },
         "blueprints": {
