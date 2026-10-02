@@ -57,6 +57,15 @@ const ALIGNMENT_TONES: Record<string, RowListItemTonesEnum> = {
 const tags = computed<RowListItemTag[]>(() => {
   const list: RowListItemTag[] = [];
 
+  if (props.fleet.recruiting) {
+    list.push({
+      key: "recruiting",
+      label: t("labels.fleetDirectory.recruiting"),
+      to: filterLink("recruitingEq", "true"),
+      tone: RowListItemTonesEnum.PRIMARY,
+    });
+  }
+
   if (props.fleet.alignment) {
     list.push({
       key: "alignment",
@@ -85,35 +94,16 @@ const tags = computed<RowListItemTag[]>(() => {
   return list;
 });
 
-const badges = computed<RowListItemBadge[]>(() => {
-  const list: RowListItemBadge[] = [
-    {
-      key: "members",
-      label: t("labels.fleetDirectory.memberCount"),
-      value: String(toNumber(props.fleet.memberCount, "integer")),
-    },
-  ];
-
-  if (props.fleet.language) {
-    list.push({
-      key: "language",
-      label: t("labels.fleetDirectory.language"),
-      value: languageLabel(props.fleet.language) ?? props.fleet.language,
-    });
-  }
-
-  if (props.fleet.recruiting !== null && props.fleet.recruiting !== undefined) {
-    list.push({
-      key: "recruiting",
-      value: props.fleet.recruiting
-        ? t("labels.fleetDirectory.recruiting")
-        : t("labels.fleetDirectory.notRecruiting"),
-      quiet: !props.fleet.recruiting,
-    });
-  }
-
-  return list;
-});
+// One badge, like the catalogue rows: badges never wrap, so a second and third
+// pushed the name off a phone screen. The rest sits in the sub-line and the
+// tags, which give way on a narrow screen.
+const badges = computed<RowListItemBadge[]>(() => [
+  {
+    key: "members",
+    label: t("labels.fleetDirectory.memberCount"),
+    value: String(toNumber(props.fleet.memberCount, "integer")),
+  },
+]);
 </script>
 
 <template>
@@ -138,6 +128,12 @@ const badges = computed<RowListItemBadge[]>(() => {
       <span>{{
         t("labels.fleetDirectory.rsiSid", { sid: fleet.rsiSid })
       }}</span>
+      <router-link
+        v-if="fleet.language"
+        :to="filterLink('languageIn', fleet.language)"
+      >
+        {{ languageLabel(fleet.language) }}
+      </router-link>
     </template>
   </RowListItem>
 </template>

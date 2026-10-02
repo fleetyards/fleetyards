@@ -358,14 +358,20 @@ const onDestroy = async () => {
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-md-6">
           <p class="text-muted">{{ t("labels.fleet.rsiProfile.info") }}</p>
-          <dl class="fleet-rsi-profile" data-test="fleet-rsi-profile">
-            <template v-for="item in rsiProfile" :key="item.key">
-              <dt>{{ t(`labels.fleet.rsiProfile.${item.key}`) }}</dt>
-              <dd>{{ item.value }}</dd>
-            </template>
-          </dl>
+          <div class="metrics-card__rows" data-test="fleet-rsi-profile">
+            <div
+              v-for="item in rsiProfile"
+              :key="item.key"
+              class="metrics-card__row"
+            >
+              <div class="metrics-card__row__label">
+                {{ t(`labels.fleet.rsiProfile.${item.key}`) }}
+              </div>
+              <div class="metrics-card__row__value">{{ item.value }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -464,3 +470,7 @@ const onDestroy = async () => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/shared/components/metricsCard";
+</style>

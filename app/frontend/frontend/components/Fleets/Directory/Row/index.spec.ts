@@ -69,13 +69,19 @@ describe("Fleets/Directory/Row", () => {
     expect(hrefs).toContain("#/fleets/directory?activityIn=smuggling");
   });
 
-  it("names the SID, the language and whether the fleet recruits", async () => {
+  it("names the SID and narrows by the language", async () => {
     const wrapper = await mount();
-    const text = wrapper.text();
+    const hrefs = wrapper.findAll("a").map((link) => link.attributes("href"));
 
-    expect(text).toContain("PIRATES");
-    expect(text).toContain("German");
-    expect(text).toContain("Not recruiting");
+    expect(wrapper.text()).toContain("PIRATES");
+    expect(wrapper.text()).toContain("German");
+    expect(hrefs).toContain("#/fleets/directory?languageIn=de");
+  });
+
+  it("carries a single badge, so the name keeps its room on a phone", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.findAll(".row-list-item__badge")).toHaveLength(1);
   });
 
   it("leaves out what RSI has not told us", async () => {
