@@ -51,11 +51,18 @@ const subtitle = computed(() => {
   return names.length ? names.join(" · ") : undefined;
 });
 
-const status = computed<StatsCardStatus | undefined>(() =>
-  props.location?.retired
-    ? { label: t("labels.location.retired"), tone: "neutral" }
-    : undefined,
-);
+// Retired outranks unstable: a star the build dropped is not flaring.
+const status = computed<StatsCardStatus | undefined>(() => {
+  if (props.location?.retired) {
+    return { label: t("labels.location.retired"), tone: "neutral" };
+  }
+
+  if (props.location?.unstable) {
+    return { label: t("labels.location.unstable"), tone: "warning" };
+  }
+
+  return undefined;
+});
 
 const badges = computed<StatsCardBadge[]>(() => {
   const location = props.location;

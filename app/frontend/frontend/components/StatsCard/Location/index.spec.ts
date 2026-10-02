@@ -70,4 +70,22 @@ describe("LocationStatsCard", () => {
     expect(wrapper.text()).toContain("Hurston Dynamics' company town.");
     expect(wrapper.text()).toContain("4");
   });
+
+  it("marks a flare star unstable", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        location: {
+          ...lorville,
+          name: "Pyro",
+          kind: LocationKindEnum.STAR,
+          unstable: true,
+        } as Location,
+      },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.get("[data-test='stats-card-status']").text()).toBe(
+      "Unstable",
+    );
+  });
 });
