@@ -606,7 +606,6 @@
           "permanent": "Permanent",
           "default": "Default",
           "defaultToggle": "New members get this role",
-          "name": "Name",
           "privilegeGroups": {
             "fleet": "Fleet",
             "memberships": "Members",

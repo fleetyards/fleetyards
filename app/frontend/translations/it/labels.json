@@ -606,7 +606,6 @@
           "permanent": "Permanente",
           "default": "Predefinito",
           "defaultToggle": "I nuovi membri ricevono questo ruolo",
-          "name": "Nome",
           "privilegeGroups": {
             "fleet": "Flotta",
             "memberships": "Membri",

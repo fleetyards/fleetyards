@@ -606,7 +606,6 @@
           "permanent": "永久",
           "default": "預設",
           "defaultToggle": "新成員獲得此角色",
-          "name": "名稱",
           "privilegeGroups": {
             "fleet": "艦隊",
             "memberships": "成員",
