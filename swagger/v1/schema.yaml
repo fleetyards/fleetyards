@@ -34889,6 +34889,10 @@ components:
           type: array
           items:
             type: string
+        categoryNotIn:
+          type: array
+          items:
+            type: string
         s:
           "$ref": "#/components/schemas/ShopItemSortingEnum"
       additionalProperties: false

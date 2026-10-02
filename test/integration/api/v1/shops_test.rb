@@ -97,6 +97,10 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
       assert_equal [["Cutlass Black", "Model"]], parsed_body["items"].map { |item| item.values_at("name", "categoryId") }
     end
 
+    assert_api_response :get, 200, api_path: "/shops/{slug}/items", params: {slug: @casaba.slug, q: {categoryNotIn: ["Model"]}} do
+      assert_equal ["Adiva Jacket"], parsed_body["items"].pluck("name")
+    end
+
     assert_api_response :get, 200, api_path: "/shops/{slug}/items", params: {slug: @casaba.slug, q: {nameCont: "jack"}} do
       assert_equal ["Adiva Jacket"], parsed_body["items"].pluck("name")
     end

@@ -29,10 +29,11 @@ module Shops
       end
     end
 
-    def initialize(shop, name_cont: nil, category_in: nil, sort: nil)
+    def initialize(shop, name_cont: nil, category_in: nil, category_not_in: nil, sort: nil)
       @shop = shop
       @name_cont = name_cont.to_s.strip.downcase.presence
       @category_in = Array(category_in).map(&:to_s).compact_blank.presence
+      @category_not_in = Array(category_not_in).map(&:to_s).compact_blank.presence
       @sort = SORTS.include?(sort) ? sort : SORTS.first
     end
 
@@ -44,6 +45,7 @@ module Shops
 
       rows = rows.select { |row| row.item.name.to_s.downcase.include?(@name_cont) } if @name_cont
       rows = rows.select { |row| @category_in.include?(row.category_id) } if @category_in
+      rows = rows.reject { |row| @category_not_in.include?(row.category_id) } if @category_not_in
 
       preload_manufacturers(rows)
       sorted(rows)
