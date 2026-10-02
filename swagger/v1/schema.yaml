@@ -21175,6 +21175,7 @@ components:
       enum:
       - fleet_allies
       - fleet_contracts
+      - fleet_directory
       - fleet_logistics
       - fleet_mission_builder
       - fleet_squadrons
@@ -21200,6 +21201,7 @@ components:
       x-enumNames:
       - FLEET_ALLIES
       - FLEET_CONTRACTS
+      - FLEET_DIRECTORY
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_SQUADRONS
@@ -21316,6 +21318,35 @@ components:
           type: boolean
         defaultTimezone:
           type: string
+        listed:
+          type:
+          - boolean
+          - 'null'
+        listedInDirectory:
+          type: boolean
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        primaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        secondaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        commitment:
+          "$ref": "#/components/schemas/NullableFleetCommitmentEnum"
+        language:
+          "$ref": "#/components/schemas/NullableFleetLanguageEnum"
+        roleplay:
+          type:
+          - boolean
+          - 'null'
+        recruiting:
+          type:
+          - boolean
+          - 'null'
+        rsiSyncedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         calendarFeedToken:
           type: string
         logo:
@@ -21350,11 +21381,65 @@ components:
       - alliesFleetStats
       - alliesFleetMembers
       - squadronsEnabled
+      - listed
+      - listedInDirectory
+      - alignment
+      - primaryActivity
+      - secondaryActivity
+      - commitment
+      - language
+      - roleplay
+      - recruiting
+      - rsiSyncedAt
       - features
       - subscribed
       - createdAt
       - updatedAt
       title: Fleet
+    FleetActivityEnum:
+      type: string
+      enum:
+      - bounty_hunting
+      - engineering
+      - exploration
+      - freelancing
+      - infiltration
+      - medical
+      - piracy
+      - resources
+      - scouting
+      - security
+      - smuggling
+      - social
+      - trading
+      - transport
+      x-enumNames:
+      - BOUNTY_HUNTING
+      - ENGINEERING
+      - EXPLORATION
+      - FREELANCING
+      - INFILTRATION
+      - MEDICAL
+      - PIRACY
+      - RESOURCES
+      - SCOUTING
+      - SECURITY
+      - SMUGGLING
+      - SOCIAL
+      - TRADING
+      - TRANSPORT
+      title: FleetActivityEnum
+    FleetAlignmentEnum:
+      type: string
+      enum:
+      - lawful
+      - neutral
+      - outlaw
+      x-enumNames:
+      - LAWFUL
+      - NEUTRAL
+      - OUTLAW
+      title: FleetAlignmentEnum
     FleetAlliance:
       type: object
       properties:
@@ -21474,6 +21559,17 @@ components:
       required:
       - items
       title: FleetCalendar
+    FleetCommitmentEnum:
+      type: string
+      enum:
+      - casual
+      - regular
+      - hardcore
+      x-enumNames:
+      - CASUAL
+      - REGULAR
+      - HARDCORE
+      title: FleetCommitmentEnum
     FleetContract:
       type: object
       properties:
@@ -24026,6 +24122,379 @@ components:
       items:
         "$ref": "#/components/schemas/FleetMember"
       title: FleetInvitesList
+    FleetLanguageEnum:
+      type: string
+      enum:
+      - ab
+      - aa
+      - af
+      - ak
+      - sq
+      - am
+      - ar
+      - an
+      - hy
+      - as
+      - av
+      - ae
+      - ay
+      - az
+      - bm
+      - ba
+      - eu
+      - be
+      - bn
+      - bh
+      - bi
+      - nb
+      - bs
+      - br
+      - bg
+      - my
+      - ca
+      - km
+      - ch
+      - ce
+      - ny
+      - zh
+      - cu
+      - cv
+      - kw
+      - co
+      - cr
+      - hr
+      - cs
+      - da
+      - nl
+      - dz
+      - en
+      - eo
+      - et
+      - ee
+      - fo
+      - fj
+      - fi
+      - fr
+      - ff
+      - gd
+      - gl
+      - lg
+      - ka
+      - de
+      - el
+      - gn
+      - gu
+      - ht
+      - ha
+      - he
+      - hz
+      - hi
+      - ho
+      - hu
+      - is
+      - io
+      - ig
+      - id
+      - ia
+      - ie
+      - iu
+      - ik
+      - ga
+      - it
+      - ja
+      - jv
+      - kl
+      - kn
+      - kr
+      - ks
+      - kk
+      - ki
+      - rw
+      - ky
+      - kv
+      - kg
+      - ko
+      - kj
+      - ku
+      - lo
+      - la
+      - lv
+      - li
+      - ln
+      - lt
+      - lu
+      - lb
+      - mk
+      - mg
+      - ms
+      - ml
+      - dv
+      - mt
+      - gv
+      - mi
+      - mr
+      - mh
+      - mn
+      - na
+      - nv
+      - nd
+      - nr
+      - ng
+      - ne
+      - se
+      - 'no'
+      - nn
+      - oc
+      - oj
+      - or
+      - om
+      - os
+      - pi
+      - pa
+      - fa
+      - pl
+      - pt
+      - ps
+      - qu
+      - ro
+      - rm
+      - rn
+      - ru
+      - sm
+      - sg
+      - sa
+      - sc
+      - sr
+      - sn
+      - ii
+      - sd
+      - si
+      - sk
+      - sl
+      - so
+      - st
+      - es
+      - su
+      - sw
+      - ss
+      - sv
+      - tl
+      - ty
+      - tg
+      - ta
+      - tt
+      - te
+      - th
+      - bo
+      - ti
+      - to
+      - ts
+      - tn
+      - tr
+      - tk
+      - tw
+      - ug
+      - uk
+      - ur
+      - uz
+      - ve
+      - vi
+      - vo
+      - wa
+      - cy
+      - fy
+      - wo
+      - xh
+      - yi
+      - yo
+      - za
+      - zu
+      x-enumNames:
+      - AB
+      - AA
+      - AF
+      - AK
+      - SQ
+      - AM
+      - AR
+      - AN
+      - HY
+      - AS
+      - AV
+      - AE
+      - AY
+      - AZ
+      - BM
+      - BA
+      - EU
+      - BE
+      - BN
+      - BH
+      - BI
+      - NB
+      - BS
+      - BR
+      - BG
+      - MY
+      - CA
+      - KM
+      - CH
+      - CE
+      - NY
+      - ZH
+      - CU
+      - CV
+      - KW
+      - CO
+      - CR
+      - HR
+      - CS
+      - DA
+      - NL
+      - DZ
+      - EN
+      - EO
+      - ET
+      - EE
+      - FO
+      - FJ
+      - FI
+      - FR
+      - FF
+      - GD
+      - GL
+      - LG
+      - KA
+      - DE
+      - EL
+      - GN
+      - GU
+      - HT
+      - HA
+      - HE
+      - HZ
+      - HI
+      - HO
+      - HU
+      - IS
+      - IO
+      - IG
+      - ID
+      - IA
+      - IE
+      - IU
+      - IK
+      - GA
+      - IT
+      - JA
+      - JV
+      - KL
+      - KN
+      - KR
+      - KS
+      - KK
+      - KI
+      - RW
+      - KY
+      - KV
+      - KG
+      - KO
+      - KJ
+      - KU
+      - LO
+      - LA
+      - LV
+      - LI
+      - LN
+      - LT
+      - LU
+      - LB
+      - MK
+      - MG
+      - MS
+      - ML
+      - DV
+      - MT
+      - GV
+      - MI
+      - MR
+      - MH
+      - MN
+      - NA
+      - NV
+      - ND
+      - NR
+      - NG
+      - NE
+      - SE
+      - 'NO'
+      - NN
+      - OC
+      - OJ
+      - OR
+      - OM
+      - OS
+      - PI
+      - PA
+      - FA
+      - PL
+      - PT
+      - PS
+      - QU
+      - RO
+      - RM
+      - RN
+      - RU
+      - SM
+      - SG
+      - SA
+      - SC
+      - SR
+      - SN
+      - II
+      - SD
+      - SI
+      - SK
+      - SL
+      - SO
+      - ST
+      - ES
+      - SU
+      - SW
+      - SS
+      - SV
+      - TL
+      - TY
+      - TG
+      - TA
+      - TT
+      - TE
+      - TH
+      - BO
+      - TI
+      - TO
+      - TS
+      - TN
+      - TR
+      - TK
+      - TW
+      - UG
+      - UK
+      - UR
+      - UZ
+      - VE
+      - VI
+      - VO
+      - WA
+      - CY
+      - FY
+      - WO
+      - XH
+      - YI
+      - YO
+      - ZA
+      - ZU
+      title: FleetLanguageEnum
     FleetMember:
       type: object
       properties:
@@ -25235,6 +25704,10 @@ components:
           type: boolean
         squadronsEnabled:
           type: boolean
+        listed:
+          type: boolean
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
         homepage:
           type:
           - string
@@ -30997,6 +31470,73 @@ components:
       - name
       - slug
       title: NullableCommodityRef
+    NullableFleetActivityEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - bounty_hunting
+      - engineering
+      - exploration
+      - freelancing
+      - infiltration
+      - medical
+      - piracy
+      - resources
+      - scouting
+      - security
+      - smuggling
+      - social
+      - trading
+      - transport
+      -
+      x-enumNames:
+      - BOUNTY_HUNTING
+      - ENGINEERING
+      - EXPLORATION
+      - FREELANCING
+      - INFILTRATION
+      - MEDICAL
+      - PIRACY
+      - RESOURCES
+      - SCOUTING
+      - SECURITY
+      - SMUGGLING
+      - SOCIAL
+      - TRADING
+      - TRANSPORT
+      - 'NULL'
+      title: NullableFleetActivityEnum
+    NullableFleetAlignmentEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - lawful
+      - neutral
+      - outlaw
+      -
+      x-enumNames:
+      - LAWFUL
+      - NEUTRAL
+      - OUTLAW
+      - 'NULL'
+      title: NullableFleetAlignmentEnum
+    NullableFleetCommitmentEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - casual
+      - regular
+      - hardcore
+      -
+      x-enumNames:
+      - CASUAL
+      - REGULAR
+      - HARDCORE
+      - 'NULL'
+      title: NullableFleetCommitmentEnum
     NullableFleetEventRecurrenceIntervalEnum:
       type:
       - string
@@ -31044,6 +31584,383 @@ components:
       - ADMIN
       - 'NULL'
       title: NullableFleetFidClaimCancelReasonEnum
+    NullableFleetLanguageEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - ab
+      - aa
+      - af
+      - ak
+      - sq
+      - am
+      - ar
+      - an
+      - hy
+      - as
+      - av
+      - ae
+      - ay
+      - az
+      - bm
+      - ba
+      - eu
+      - be
+      - bn
+      - bh
+      - bi
+      - nb
+      - bs
+      - br
+      - bg
+      - my
+      - ca
+      - km
+      - ch
+      - ce
+      - ny
+      - zh
+      - cu
+      - cv
+      - kw
+      - co
+      - cr
+      - hr
+      - cs
+      - da
+      - nl
+      - dz
+      - en
+      - eo
+      - et
+      - ee
+      - fo
+      - fj
+      - fi
+      - fr
+      - ff
+      - gd
+      - gl
+      - lg
+      - ka
+      - de
+      - el
+      - gn
+      - gu
+      - ht
+      - ha
+      - he
+      - hz
+      - hi
+      - ho
+      - hu
+      - is
+      - io
+      - ig
+      - id
+      - ia
+      - ie
+      - iu
+      - ik
+      - ga
+      - it
+      - ja
+      - jv
+      - kl
+      - kn
+      - kr
+      - ks
+      - kk
+      - ki
+      - rw
+      - ky
+      - kv
+      - kg
+      - ko
+      - kj
+      - ku
+      - lo
+      - la
+      - lv
+      - li
+      - ln
+      - lt
+      - lu
+      - lb
+      - mk
+      - mg
+      - ms
+      - ml
+      - dv
+      - mt
+      - gv
+      - mi
+      - mr
+      - mh
+      - mn
+      - na
+      - nv
+      - nd
+      - nr
+      - ng
+      - ne
+      - se
+      - 'no'
+      - nn
+      - oc
+      - oj
+      - or
+      - om
+      - os
+      - pi
+      - pa
+      - fa
+      - pl
+      - pt
+      - ps
+      - qu
+      - ro
+      - rm
+      - rn
+      - ru
+      - sm
+      - sg
+      - sa
+      - sc
+      - sr
+      - sn
+      - ii
+      - sd
+      - si
+      - sk
+      - sl
+      - so
+      - st
+      - es
+      - su
+      - sw
+      - ss
+      - sv
+      - tl
+      - ty
+      - tg
+      - ta
+      - tt
+      - te
+      - th
+      - bo
+      - ti
+      - to
+      - ts
+      - tn
+      - tr
+      - tk
+      - tw
+      - ug
+      - uk
+      - ur
+      - uz
+      - ve
+      - vi
+      - vo
+      - wa
+      - cy
+      - fy
+      - wo
+      - xh
+      - yi
+      - yo
+      - za
+      - zu
+      -
+      x-enumNames:
+      - AB
+      - AA
+      - AF
+      - AK
+      - SQ
+      - AM
+      - AR
+      - AN
+      - HY
+      - AS
+      - AV
+      - AE
+      - AY
+      - AZ
+      - BM
+      - BA
+      - EU
+      - BE
+      - BN
+      - BH
+      - BI
+      - NB
+      - BS
+      - BR
+      - BG
+      - MY
+      - CA
+      - KM
+      - CH
+      - CE
+      - NY
+      - ZH
+      - CU
+      - CV
+      - KW
+      - CO
+      - CR
+      - HR
+      - CS
+      - DA
+      - NL
+      - DZ
+      - EN
+      - EO
+      - ET
+      - EE
+      - FO
+      - FJ
+      - FI
+      - FR
+      - FF
+      - GD
+      - GL
+      - LG
+      - KA
+      - DE
+      - EL
+      - GN
+      - GU
+      - HT
+      - HA
+      - HE
+      - HZ
+      - HI
+      - HO
+      - HU
+      - IS
+      - IO
+      - IG
+      - ID
+      - IA
+      - IE
+      - IU
+      - IK
+      - GA
+      - IT
+      - JA
+      - JV
+      - KL
+      - KN
+      - KR
+      - KS
+      - KK
+      - KI
+      - RW
+      - KY
+      - KV
+      - KG
+      - KO
+      - KJ
+      - KU
+      - LO
+      - LA
+      - LV
+      - LI
+      - LN
+      - LT
+      - LU
+      - LB
+      - MK
+      - MG
+      - MS
+      - ML
+      - DV
+      - MT
+      - GV
+      - MI
+      - MR
+      - MH
+      - MN
+      - NA
+      - NV
+      - ND
+      - NR
+      - NG
+      - NE
+      - SE
+      - 'NO'
+      - NN
+      - OC
+      - OJ
+      - OR
+      - OM
+      - OS
+      - PI
+      - PA
+      - FA
+      - PL
+      - PT
+      - PS
+      - QU
+      - RO
+      - RM
+      - RN
+      - RU
+      - SM
+      - SG
+      - SA
+      - SC
+      - SR
+      - SN
+      - II
+      - SD
+      - SI
+      - SK
+      - SL
+      - SO
+      - ST
+      - ES
+      - SU
+      - SW
+      - SS
+      - SV
+      - TL
+      - TY
+      - TG
+      - TA
+      - TT
+      - TE
+      - TH
+      - BO
+      - TI
+      - TO
+      - TS
+      - TN
+      - TR
+      - TK
+      - TW
+      - UG
+      - UK
+      - UR
+      - UZ
+      - VE
+      - VI
+      - VO
+      - WA
+      - CY
+      - FY
+      - WO
+      - XH
+      - YI
+      - YO
+      - ZA
+      - ZU
+      - 'NULL'
+      title: NullableFleetLanguageEnum
     NullableFleetRsiVerificationStatusEnum:
       type:
       - string

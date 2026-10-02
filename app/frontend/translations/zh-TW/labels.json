@@ -748,6 +748,44 @@
         "alliesStats": "盟友可見統計",
         "alliesMembers": "盟友可見成員列表",
         "squadronsEnabled": "使用中隊",
+        "listed": "在艦隊目錄中顯示",
+        "listedInfo": "已驗證、公開且至少有兩名成員的艦隊會出現在艦隊目錄中。私人艦隊永遠不會被列出。",
+        "alignment": "陣營",
+        "alignments": {
+          "lawful": "守法",
+          "neutral": "中立",
+          "outlaw": "非法"
+        },
+        "activities": {
+          "bounty_hunting": "賞金獵人",
+          "engineering": "工程",
+          "exploration": "探索",
+          "freelancing": "自由職業",
+          "infiltration": "滲透",
+          "medical": "醫療",
+          "piracy": "海盜",
+          "resources": "資源",
+          "scouting": "偵察",
+          "security": "保安",
+          "smuggling": "走私",
+          "social": "社交",
+          "trading": "貿易",
+          "transport": "運輸"
+        },
+        "commitments": {
+          "casual": "休閒",
+          "regular": "一般",
+          "hardcore": "硬核"
+        },
+        "rsiProfile": {
+          "info": "每天從你的組織的 RSI 頁面同步一次。請在 RSI 上修改這些資訊。",
+          "primaryActivity": "主要活動",
+          "secondaryActivity": "次要活動",
+          "language": "語言",
+          "commitment": "投入程度",
+          "recruiting": "招募中",
+          "roleplay": "角色扮演"
+        },
         "contractCovers": {
           "transport": "運送封面圖",
           "procurement": "採購封面圖",

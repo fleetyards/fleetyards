@@ -748,6 +748,44 @@
         "alliesStats": "Estadísticas visibles para los aliados",
         "alliesMembers": "Lista de miembros visible para los aliados",
         "squadronsEnabled": "Usar escuadrones",
+        "listed": "Mostrar en el directorio de flotas",
+        "listedInfo": "Una flota verificada y pública con al menos dos miembros aparece en el directorio de flotas. Una flota privada nunca aparece.",
+        "alignment": "Alineamiento",
+        "alignments": {
+          "lawful": "Legal",
+          "neutral": "Neutral",
+          "outlaw": "Forajido"
+        },
+        "activities": {
+          "bounty_hunting": "Caza de recompensas",
+          "engineering": "Ingeniería",
+          "exploration": "Exploración",
+          "freelancing": "Trabajo autónomo",
+          "infiltration": "Infiltración",
+          "medical": "Medicina",
+          "piracy": "Piratería",
+          "resources": "Recursos",
+          "scouting": "Reconocimiento",
+          "security": "Seguridad",
+          "smuggling": "Contrabando",
+          "social": "Social",
+          "trading": "Comercio",
+          "transport": "Transporte"
+        },
+        "commitments": {
+          "casual": "Casual",
+          "regular": "Regular",
+          "hardcore": "Hardcore"
+        },
+        "rsiProfile": {
+          "info": "Se sincroniza una vez al día desde la página de RSI de tu organización. Cámbialo en RSI.",
+          "primaryActivity": "Actividad principal",
+          "secondaryActivity": "Actividad secundaria",
+          "language": "Idioma",
+          "commitment": "Compromiso",
+          "recruiting": "Reclutando",
+          "roleplay": "Rol"
+        },
         "contractCovers": {
           "transport": "Portada de transporte",
           "procurement": "Portada de adquisición",

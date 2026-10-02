@@ -14,6 +14,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
   FeatureFlagName,
@@ -28,6 +29,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
 
 type Props = {
   fleet: Fleet;
@@ -74,6 +76,9 @@ const initialValues = ref<FleetUpdateInput>({
   alliesFleetStats: props.fleet.alliesFleetStats,
   alliesFleetMembers: props.fleet.alliesFleetMembers,
   squadronsEnabled: props.fleet.squadronsEnabled,
+  // A fleet that never chose follows publicFleet, so that is what it shows.
+  listed: props.fleet.listed ?? props.fleet.publicFleet,
+  alignment: props.fleet.alignment,
 });
 
 const validationSchema = {
@@ -104,6 +109,8 @@ const [alliesFleetMembers, alliesFleetMembersProps] =
 const [squadronsEnabled, squadronsEnabledProps] =
   defineField("squadronsEnabled");
 const [logo, logoProps] = defineField("logo");
+const [listed, listedProps] = defineField("listed");
+const [alignment, alignmentProps] = defineField("alignment");
 
 // See `narrowerAudienceDisabled`. The roster has no public form at all, which
 // is why the third toggle is never passed one.
@@ -117,13 +124,67 @@ const squadronsAvailable = computed(() =>
   isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
 );
 
+const { activityLabel, commitmentLabel, languageLabel, alignmentOptions } =
+  useFleetProfileLabels();
+
+// Only a verified fleet can be listed, and the directory has to be rolled out
+// for the choice to mean anything.
+const directoryAvailable = computed(
+  () =>
+    props.fleet.rsiVerified &&
+    isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_DIRECTORY),
+);
+
+const canManage = computed(
+  () => props.membership.capabilities?.manageFleet ?? false,
+);
+
+const rsiProfile = computed(() =>
+  [
+    {
+      key: "primaryActivity",
+      value: activityLabel(props.fleet.primaryActivity),
+    },
+    {
+      key: "secondaryActivity",
+      value: activityLabel(props.fleet.secondaryActivity),
+    },
+    { key: "language", value: languageLabel(props.fleet.language) },
+    { key: "commitment", value: commitmentLabel(props.fleet.commitment) },
+    { key: "recruiting", value: yesNo(props.fleet.recruiting) },
+    { key: "roleplay", value: yesNo(props.fleet.roleplay) },
+  ].map((item) => ({ ...item, value: item.value ?? "-" })),
+);
+
+function yesNo(value?: boolean | null) {
+  if (value === null || value === undefined) return undefined;
+
+  return t(value ? "labels.true" : "labels.false");
+}
+
+// Sent only once a manager touches it: saving the form must not turn a choice
+// nobody made into an explicit one, which would stop it following publicFleet.
+const payloadFrom = (values: FleetUpdateInput): FleetUpdateInput => {
+  if (props.fleet.listed !== null && props.fleet.listed !== undefined) {
+    return values;
+  }
+
+  if (values.listed === initialValues.value.listed) {
+    const { listed: _listed, ...rest } = values;
+
+    return rest;
+  }
+
+  return values;
+};
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await updateMutation
     .mutateAsync({
       slug: route.params.slug as string,
-      data: values,
+      data: payloadFrom(values),
     })
     .then(() => {
       displaySuccess({
@@ -270,6 +331,44 @@ const onDestroy = async () => {
         />
       </div>
     </div>
+    <template v-if="directoryAvailable">
+      <hr />
+      <div class="row" data-test="fleet-directory-settings">
+        <div v-if="canManage" class="col-12 col-md-6">
+          <FormToggle
+            v-model="listed"
+            name="listed"
+            translation-key="fleet.listed"
+            :info="t('labels.fleet.listedInfo')"
+            v-bind="listedProps"
+            :disabled="submitting || !publicFleet"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <BaseSelect
+            v-model="alignment"
+            v-bind="alignmentProps"
+            :options="alignmentOptions"
+            :label="t('labels.fleet.alignment')"
+            name="alignment"
+            :searchable="false"
+            unsorted
+            nullable
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p class="text-muted">{{ t("labels.fleet.rsiProfile.info") }}</p>
+          <dl class="fleet-rsi-profile" data-test="fleet-rsi-profile">
+            <template v-for="item in rsiProfile" :key="item.key">
+              <dt>{{ t(`labels.fleet.rsiProfile.${item.key}`) }}</dt>
+              <dd>{{ item.value }}</dd>
+            </template>
+          </dl>
+        </div>
+      </div>
+    </template>
     <template v-if="squadronsAvailable">
       <hr />
       <div class="row">
