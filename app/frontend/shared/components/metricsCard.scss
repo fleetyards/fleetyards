@@ -103,9 +103,12 @@
   // A list of secondary stats. `__aux` covers a single one-line stat and carries
   // its own bottom margin, so it cannot serve a card that has five or more of
   // them; these stack, and pair up two-per-line where the card is wide enough.
+  // Also drawn as a `dl`, a `dt` and a `dd` where the rows are label and
+  // value, so the browser's list margins are reset here.
   &__rows {
     display: flex;
     flex-direction: column;
+    margin: 0;
 
     &--split {
       display: grid;
@@ -132,6 +135,13 @@
       border-bottom: 0;
     }
 
+    // A name that must be read whole — a place a link goes to — wraps beside
+    // its label instead of being cut off.
+    &--wrap .metrics-card__row__value {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
     // For values too long to sit beside their label — a list of locations, say.
     &--stack {
       flex-direction: column;
@@ -151,10 +161,12 @@
       text-transform: uppercase;
       color: $gray-light;
       flex: none;
+      margin: 0;
     }
 
     &__value {
       min-width: 0;
+      margin: 0;
       overflow: hidden;
       font-size: 13.5px;
       font-weight: 600;

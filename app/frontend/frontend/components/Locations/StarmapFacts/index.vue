@@ -44,37 +44,37 @@ const visibility = computed(() => {
 
 <!-- The rows of a metrics card, which the page draws around them. -->
 <template>
-  <div class="metrics-card__rows location-starmap">
+  <dl class="metrics-card__rows location-starmap">
     <div class="metrics-card__row">
-      <span class="metrics-card__row__label">
+      <dt class="metrics-card__row__label">
         {{ t("labels.location.starmapVisibility") }}
-      </span>
-      <span class="metrics-card__row__value" data-test="starmap-visibility">
+      </dt>
+      <dd class="metrics-card__row__value" data-test="starmap-visibility">
         {{ visibility }}
-      </span>
+      </dd>
     </div>
 
     <div class="metrics-card__row">
-      <span class="metrics-card__row__label">
+      <dt class="metrics-card__row__label">
         {{ t("labels.location.quantumTravel") }}
-      </span>
-      <span class="metrics-card__row__value">
+      </dt>
+      <dd class="metrics-card__row__value">
         {{
           location.quantumTravelDestination
             ? t("labels.location.quantumTravelYes")
             : t("labels.location.quantumTravelNo")
         }}
-      </span>
+      </dd>
     </div>
 
     <div
       v-if="location.mapParent"
       class="metrics-card__row metrics-card__row--stack"
     >
-      <span class="metrics-card__row__label">
+      <dt class="metrics-card__row__label">
         {{ t("labels.location.mapParent") }}
-      </span>
-      <span class="metrics-card__row__value" data-test="starmap-map-parent">
+      </dt>
+      <dd class="metrics-card__row__value" data-test="starmap-map-parent">
         <router-link
           :to="{ name: 'location', params: { slug: location.mapParent.slug } }"
         >
@@ -88,9 +88,9 @@ const visibility = computed(() => {
             })
           }}
         </span>
-      </span>
+      </dd>
     </div>
-  </div>
+  </dl>
 </template>
 
 <style lang="scss" scoped>

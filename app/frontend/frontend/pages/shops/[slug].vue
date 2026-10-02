@@ -207,12 +207,12 @@ watch(
 
           <aside class="location-page__aside">
             <MetricsCard :title="t('labels.shopPage.facts')" variant="slim">
-              <div class="metrics-card__rows" data-test="shop-facts">
-                <div class="metrics-card__row">
-                  <span class="metrics-card__row__label">
+              <dl class="metrics-card__rows" data-test="shop-facts">
+                <div class="metrics-card__row metrics-card__row--wrap">
+                  <dt class="metrics-card__row__label">
                     {{ t("labels.shopPage.place") }}
-                  </span>
-                  <span class="metrics-card__row__value">
+                  </dt>
+                  <dd class="metrics-card__row__value">
                     <router-link
                       :to="{
                         name: 'location',
@@ -221,14 +221,17 @@ watch(
                     >
                       {{ shop.location.name }}
                     </router-link>
-                  </span>
+                  </dd>
                 </div>
 
-                <div v-if="shop.system" class="metrics-card__row">
-                  <span class="metrics-card__row__label">
+                <div
+                  v-if="shop.system"
+                  class="metrics-card__row metrics-card__row--wrap"
+                >
+                  <dt class="metrics-card__row__label">
                     {{ t("labels.shopPage.system") }}
-                  </span>
-                  <span class="metrics-card__row__value">
+                  </dt>
+                  <dd class="metrics-card__row__value">
                     <router-link
                       :to="{
                         name: 'location',
@@ -237,9 +240,9 @@ watch(
                     >
                       {{ shop.system.name }}
                     </router-link>
-                  </span>
+                  </dd>
                 </div>
-              </div>
+              </dl>
 
               <p class="shop-facts__source">
                 {{ t("labels.shopPage.source") }}
