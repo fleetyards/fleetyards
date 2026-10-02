@@ -48,37 +48,44 @@ const fields = Object.fromEntries(
 const mutation = useUpdateFleetSquadronRole();
 
 // One request per renamed rank: the four are separate rows, and a name left
-// alone is not written again.
+// alone is not written again. Settled rather than all-or-nothing, because the
+// renames that went through are saved whatever happens to the rest.
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   const renamed = props.ranks.filter((rank) => values[rank.key] !== rank.name);
 
-  try {
-    await Promise.all(
-      renamed.map((rank) =>
-        mutation.mutateAsync({
-          fleetSlug: props.fleetSlug,
-          id: rank.id,
-          data: { name: values[rank.key] },
-        }),
-      ),
-    );
-    await queryClient.invalidateQueries({
-      queryKey: getFleetSquadronRolesQueryKey(props.fleetSlug),
+  const results = await Promise.allSettled(
+    renamed.map((rank) =>
+      mutation.mutateAsync({
+        fleetSlug: props.fleetSlug,
+        id: rank.id,
+        data: { name: values[rank.key] },
+      }),
+    ),
+  );
+
+  await queryClient.invalidateQueries({
+    queryKey: getFleetSquadronRolesQueryKey(props.fleetSlug),
+  });
+
+  const failure = results.find(
+    (result): result is PromiseRejectedResult => result.status === "rejected",
+  );
+
+  if (failure) {
+    const { message } = validationErrorFrom(failure.reason);
+    displayAlert({
+      text: message || t("messages.fleet.squadrons.ranks.update.failure"),
     });
+  } else {
     resetForm({ values });
     displaySuccess({
       text: t("messages.fleet.squadrons.ranks.update.success"),
     });
-  } catch (error) {
-    const { message } = validationErrorFrom(error);
-    displayAlert({
-      text: message || t("messages.fleet.squadrons.ranks.update.failure"),
-    });
-  } finally {
-    submitting.value = false;
   }
+
+  submitting.value = false;
 });
 </script>
 

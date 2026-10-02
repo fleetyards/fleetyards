@@ -66,7 +66,8 @@ const canManageRanks = computed(
 
 const viewerRole = computed(() => props.squadron.viewerRole);
 
-const { data: ranks } = useFleetSquadronRoles(fleetSlug);
+const { data: ranks, isSuccess: ranksLoaded } =
+  useFleetSquadronRoles(fleetSlug);
 
 const { isFilterSelected, getQuery } = useFilters<FleetSquadronMemberQuery>({
   updateCallback: async () => {
@@ -122,7 +123,9 @@ const rankOptionsForMember = (member: FleetMember): FleetSquadronRole[] =>
     isSelf: isSelf(member),
   });
 
+// Not before the ranks are in: the modal takes its rank options when it opens.
 const canEdit = (member: FleetMember) =>
+  ranksLoaded.value &&
   !!entryFor(member) &&
   (outranksMember(member) || rankOptionsForMember(member).length > 1);
 

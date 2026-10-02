@@ -51,10 +51,12 @@ const rankSelectOptions = computed(() =>
   props.rankOptions.map((rank) => ({ label: rank.name, value: rank.id })),
 );
 
+const initialCreatedAt = props.membershipCreatedAt?.slice(0, 10);
+
 const { defineField, handleSubmit, setErrors } =
   useForm<FleetSquadronMemberUpdateInput>({
     initialValues: {
-      createdAt: props.membershipCreatedAt?.slice(0, 10),
+      createdAt: initialCreatedAt,
       fleetSquadronRoleId: props.roleId,
     },
   });
@@ -65,11 +67,17 @@ const [fleetSquadronRoleId, fleetSquadronRoleIdProps] = defineField(
 );
 const mutation = useUpdateFleetSquadronMember();
 
-// Only what the editor may change: the update is refused as a whole when it
-// carries a field the editor has no right to.
+// Only what the editor changed and may change: the update is refused as a
+// whole when it carries a field the editor has no right to, and the date is a
+// day while the stored join is a moment -- resending it unchanged would drop
+// the time of day.
 const payload = (values: FleetSquadronMemberUpdateInput) => {
   const data: FleetSquadronMemberUpdateInput = {};
-  if (props.dateEditable && values.createdAt) {
+  if (
+    props.dateEditable &&
+    values.createdAt &&
+    values.createdAt !== initialCreatedAt
+  ) {
     data.createdAt = values.createdAt;
   }
   if (rankEditable.value && values.fleetSquadronRoleId !== props.roleId) {

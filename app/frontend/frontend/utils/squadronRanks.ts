@@ -2,13 +2,13 @@ import type { FleetSquadronRole } from "@/services/fyApi";
 
 type Rank = Pick<FleetSquadronRole, "position">;
 
-export type SquadronRankViewer = {
+export interface SquadronRankViewer {
   // A fleet role that manages every squadron's members.
   fleetWide: boolean;
   // The viewer's own rank in this squadron, if they hold one.
   viewerRole?: Rank;
   canManageRanks: boolean;
-};
+}
 
 /*
  * The server's rule, mirrored so a roster row only offers what the update

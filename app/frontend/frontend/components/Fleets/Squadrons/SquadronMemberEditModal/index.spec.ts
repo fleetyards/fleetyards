@@ -56,13 +56,15 @@ describe("SquadronMemberEditModal", () => {
     );
   });
 
-  it("sends only the join date when the rank is not the editor's", async () => {
+  // The join is stored to the second and the picker edits a day, so an
+  // unchanged date is not sent back.
+  it("leaves an unchanged join date out", async () => {
     const subject = await mount({ rankOptions: [] });
 
     await submit(subject);
 
     expect(updateMember).toHaveBeenCalledWith(
-      expect.objectContaining({ data: { createdAt: "2024-05-14" } }),
+      expect.objectContaining({ data: {} }),
     );
   });
 
