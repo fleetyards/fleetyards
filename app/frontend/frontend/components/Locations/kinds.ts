@@ -5,7 +5,7 @@ export const LOCATION_KIND_ICONS: Record<LocationKindEnum, string> = {
   [LocationKindEnum.SYSTEM]: "fa-duotone fa-solar-system",
   [LocationKindEnum.STAR]: "fa-duotone fa-sun",
   [LocationKindEnum.PLANET]: "fa-duotone fa-planet-ringed",
-  [LocationKindEnum.MOON]: "fa-duotone fa-moon-waning-crescent",
+  [LocationKindEnum.MOON]: "fa-duotone fa-moon",
   [LocationKindEnum.CITY]: "fa-duotone fa-city",
   [LocationKindEnum.STATION]: "fa-duotone fa-satellite",
   [LocationKindEnum.OUTPOST]: "fa-duotone fa-house-flag",
