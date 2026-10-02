@@ -7,5 +7,7 @@ resources :locations, only: %i[index show], param: :slug do
     get :tree
     # What sits directly inside, by kind, namesakes folded together.
     get :contents
+    # The shops UEX lists at the place, with what each sells.
+    get :shops
   end
 end

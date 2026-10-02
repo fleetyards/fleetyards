@@ -11228,6 +11228,33 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/shops":
+    get:
+      summary: Location shops
+      tags:
+      - Locations
+      operationId: locationShops
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationShops"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/locations/{slug}/tree":
     get:
       summary: Location system tree
@@ -28745,6 +28772,79 @@ components:
       - kind
       - items
       title: LocationResourceGroup
+    LocationShop:
+      type: object
+      properties:
+        name:
+          type: string
+        itemsCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationShopItem"
+      additionalProperties: false
+      required:
+      - name
+      - itemsCount
+      - items
+      title: LocationShop
+    LocationShopItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type:
+          - string
+          - 'null'
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        prices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationShopItemPrice"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - itemType
+      - prices
+      title: LocationShopItem
+    LocationShopItemPrice:
+      type: object
+      properties:
+        priceType:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        price:
+          type: number
+        timeRange:
+          anyOf:
+          - "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - priceType
+      - price
+      - timeRange
+      title: LocationShopItemPrice
+    LocationShops:
+      type: object
+      properties:
+        shops:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationShop"
+      additionalProperties: false
+      required:
+      - shops
+      title: LocationShops
     LocationSortingEnum:
       type: string
       enum:

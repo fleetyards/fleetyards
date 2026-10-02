@@ -3,7 +3,7 @@
 module Api
   module V1
     class LocationsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show tree contents]
+      skip_verify_authorized only: %i[index show tree contents shops]
 
       after_action -> { pagination_header(:locations) }, only: [:index]
 
@@ -40,6 +40,10 @@ module Api
 
       def contents
         @groups = ::Locations::Contents.new(find_location).call
+      end
+
+      def shops
+        @shops = ::Locations::Shops.new(find_location).call
       end
 
       # What a resource name stands for in the commodity catalogue, matched on
