@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import WikiLink from "@/shared/components/WikiLink/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -205,6 +206,7 @@ watch(
         <Chip v-if="component.retired" :state="ChipStatesEnum.EXCLUDED">
           {{ t("labels.component.retired") }}
         </Chip>
+        <WikiLink :title="component.name" />
       </div>
     </div>
 

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import WikiLink from "@/shared/components/WikiLink/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -131,6 +132,7 @@ watch(
             <Chip v-if="equipment.retired" :state="ChipStatesEnum.EXCLUDED">
               {{ t("labels.equipment.retired") }}
             </Chip>
+            <WikiLink :title="equipment.name" />
           </div>
         </div>
 
