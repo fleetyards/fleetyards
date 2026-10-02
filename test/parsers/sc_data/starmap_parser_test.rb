@@ -269,6 +269,25 @@ module ScData
         assert location("Base_01")[:shown_on_starmap]
       end
 
+      test "#locations keeps a description the export gives over the override's" do
+        place("StantonSolarSystem", "Stanton System", type: "SolarSystem", parent: nil)
+        place("StantonStar", "Stanton", type: "Star", parent: nil, description: "A K-type star.")
+
+        @overrides = {"StantonStar" => {"description" => "A class-G main sequence star."}}
+
+        assert_equal "A K-type star.", location("StantonStar")[:description]
+      end
+
+      test "#all leaves no places behind when the export has none" do
+        export = "#{@base_folder}/parsed/test/locations"
+        FileUtils.mkdir_p(export)
+        File.write("#{export}/stale.json", "{}")
+
+        parser.all
+
+        assert_not File.exist?("#{export}/stale.json")
+      end
+
       test "#locations carries how the in-game map shows a place" do
         stanton
         place("Nyx_Levski", "Levski", type: "Manmade", parent: "Stanton1", permanent: true)

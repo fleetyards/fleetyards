@@ -98,8 +98,14 @@ module ScData
         @overrides ||= self.class.overrides
       end
 
+      # An export without a starmap leaves no places behind, rather than the
+      # last parse's: the parsed-tree floor then sees the catalogue missing.
       def all
-        save_items(locations, folder: "locations", key: :sc_key)
+        parsed = locations
+
+        return clear_once("#{export_path}/locations") if parsed.blank?
+
+        save_items(parsed, folder: "locations", key: :sc_key)
       end
 
       def locations
@@ -543,7 +549,7 @@ module ScData
             key: item[:key],
             ref:,
             name: override["name"] || place_name(values["name"]),
-            description: override["description"] || description_text(values["description"]),
+            description: description_text(values["description"]).presence || override["description"],
             resources: description_resources(values["description"]),
             type: type[:name],
             icon: values["navIcon"],
