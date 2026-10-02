@@ -595,7 +595,17 @@
           "joinedAt": "Date d’adhésion à l’escadron",
           "searchMembers": "Rechercher des membres",
           "availableMembers": "membres disponibles",
-          "selectedMembers": "%{count} sélectionnés"
+          "selectedMembers": "%{count} sélectionnés",
+          "rank": "Grade",
+          "ranksHint": "Les noms utilisés par chaque escadron de cette flotte. Un grade renommé garde sa place et ses droits.",
+          "rankName": "Nom",
+          "defaultRank": "Par défaut",
+          "defaultRankToggle": "Les nouveaux membres commencent à ce grade",
+          "rankRights": {
+            "singleHolder": "Un par escadron",
+            "managesMembers": "Ajoute et retire les membres de grade inférieur",
+            "managesRanks": "Fixe les grades inférieurs au sien"
+          }
         },
         "roles": {
           "permanent": "Permanent",

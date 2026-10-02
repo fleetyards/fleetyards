@@ -193,6 +193,8 @@ class FleetMembership < ApplicationRecord
     update_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:update"],
     destroy_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:delete"],
     manage_squadron_members: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:members:manage"],
+    manage_squadrons: ["fleet:manage", "fleet:squadrons:manage"],
+    enable_squadrons: ["fleet:manage", "fleet:update"],
     read_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:read"],
     create_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:create"],
     destroy_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:delete"],

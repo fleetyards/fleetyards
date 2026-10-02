@@ -437,6 +437,14 @@ zh-CN:
               not_a_member: "必须是该舰队已接受的成员"
             fleet_squadron:
               exclusive_conflict: "与 %{squadron} 冲突：除非是小队，成员只能属于一个中队"
+            fleet_squadron_role:
+              not_in_fleet: "必须是本舰队的中队职级之一"
+              single_holder_taken: "已由本中队的其他成员担任——每个中队只能有一名%{role}"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "不能是领导职级——新成员不会以队长或副队长身份开始"
+              required: "是必需的——请改为将其他职级设为默认"
         fleet_role:
           attributes:
             base:

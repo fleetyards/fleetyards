@@ -98,4 +98,25 @@ class Api::V1::FleetsSquadronsShowTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:read"])
   end
+
+  test "GET /fleets/:slug/squadrons/:slug tells a fleet admin they manage the roster" do
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal({"manageMembers" => true, "manageRanks" => true}, parsed_body["capabilities"])
+      assert_nil parsed_body["viewerRole"]
+    end
+  end
+
+  test "GET /fleets/:slug/squadrons/:slug carries a plain member's squadron rank" do
+    create(:fleet_squadron_membership, fleet_squadron: @squadron,
+      fleet_membership: @fleet.fleet_memberships.find_by!(user: @member),
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key: "officer"))
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @squadron.slug} do
+      assert_equal "officer", parsed_body.dig("viewerRole", "key")
+      assert_equal({"manageMembers" => true, "manageRanks" => false}, parsed_body["capabilities"])
+    end
+  end
 end

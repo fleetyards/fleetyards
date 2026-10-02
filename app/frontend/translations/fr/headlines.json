@@ -261,6 +261,9 @@
           "formDetails": "Détails",
           "formAppearance": "Apparence",
           "formDiscord": "Discord",
+          "ranks": "Grades d'escadron",
+          "editMember": "Modifier le membre de l'escadron",
+          "editRank": "Modifier le grade d'escadron",
           "teams": "Équipes",
           "addMembers": "Ajouter des membres",
           "members": "Membres"

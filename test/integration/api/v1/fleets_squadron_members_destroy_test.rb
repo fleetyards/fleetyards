@@ -29,7 +29,7 @@ class Api::V1::FleetsSquadronMembersDestroyTest < ActionDispatch::IntegrationTes
         schema ::Shared::V1::Schemas::StandardError
       end
 
-      response(403, "forbidden - a plain member does not take people out of a squadron") do
+      response(403, "forbidden - neither the fleet role nor the squadron rank outranks this member") do
         schema ::Shared::V1::Schemas::StandardError
       end
 
@@ -92,5 +92,27 @@ class Api::V1::FleetsSquadronMembersDestroyTest < ActionDispatch::IntegrationTes
     assert_api_response :delete, 204,
       path_params: path_params,
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"])
+  end
+
+  # A plain fleet member holding `key` in @squadron.
+  def squadron_ranked(key)
+    user = create(:user)
+    membership = create(:fleet_membership, :accepted, fleet: @fleet, user:)
+    create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: membership,
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key:))
+    user
+  end
+
+  test "DELETE squadron member is allowed for a squadron Officer" do
+    sign_in squadron_ranked("officer")
+
+    assert_api_response :delete, 204, path_params: path_params
+  end
+
+  test "DELETE squadron member refuses a squadron Officer removing the Leader" do
+    leader = squadron_ranked("leader")
+    sign_in squadron_ranked("officer")
+
+    assert_api_response :delete, 403, path_params: path_params(leader.username)
   end
 end

@@ -7243,6 +7243,119 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadron-roles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Squadron Role List
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronRoles
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronRolesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - the role reads no squadrons
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadron-roles/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Squadron role id
+      required: true
+    put:
+      summary: Rename Fleet Squadron Role
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronRole
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronRoleUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronRole"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - renaming a rank needs fleet:squadrons:manage
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/squadrons":
     parameters:
     - name: fleetSlug
@@ -7500,7 +7613,8 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '403':
-          description: forbidden - a plain member does not take people out of a squadron
+          description: forbidden - neither the fleet role nor the squadron rank outranks
+            this member
           content:
             application/json:
               schema:
@@ -7535,6 +7649,12 @@ paths:
       responses:
         '204':
           description: successful
+        '400':
+          description: bad request - the squadron already has a Leader
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -7542,7 +7662,8 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '403':
-          description: forbidden - a plain member cannot update squadron membership
+          description: forbidden - neither the fleet role nor the squadron rank outranks
+            this member
           content:
             application/json:
               schema:
@@ -7553,8 +7674,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{slug}":
     parameters:
     - name: fleetSlug
@@ -24305,6 +24424,10 @@ components:
           type: boolean
         manageSquadronMembers:
           type: boolean
+        manageSquadrons:
+          type: boolean
+        enableSquadrons:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -24350,6 +24473,8 @@ components:
       - updateSquadrons
       - destroySquadrons
       - manageSquadronMembers
+      - manageSquadrons
+      - enableSquadrons
       - readInvites
       - createInvites
       - destroyInvites
@@ -24899,6 +25024,10 @@ components:
           - 'null'
         memberCount:
           type: integer
+        viewerRole:
+          "$ref": "#/components/schemas/FleetSquadronRole"
+        capabilities:
+          "$ref": "#/components/schemas/FleetSquadronCapabilities"
         icon:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -24917,6 +25046,18 @@ components:
       - createdAt
       - updatedAt
       title: FleetSquadron
+    FleetSquadronCapabilities:
+      type: object
+      properties:
+        manageMembers:
+          type: boolean
+        manageRanks:
+          type: boolean
+      additionalProperties: false
+      required:
+      - manageMembers
+      - manageRanks
+      title: FleetSquadronCapabilities
     FleetSquadronCreateInput:
       type: object
       properties:
@@ -25063,8 +25204,9 @@ components:
         createdAt:
           type: string
           format: date
-      required:
-      - createdAt
+        fleetSquadronRoleId:
+          type: string
+          format: uuid
       additionalProperties: false
       title: FleetSquadronMemberUpdateInput
     FleetSquadronMoveInput:
@@ -25114,6 +25256,8 @@ components:
           - string
           - 'null'
           format: date-time
+        role:
+          "$ref": "#/components/schemas/FleetSquadronRole"
         discordChannelId:
           type:
           - string
@@ -25127,6 +25271,69 @@ components:
       - slug
       - team
       title: FleetSquadronRef
+    FleetSquadronRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          "$ref": "#/components/schemas/FleetSquadronRoleKeyEnum"
+        name:
+          type: string
+        position:
+          type: integer
+        permanent:
+          type: boolean
+        defaultRank:
+          type: boolean
+        singleHolder:
+          type: boolean
+        managesMembers:
+          type: boolean
+        managesRanks:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - key
+      - name
+      - position
+      - permanent
+      - defaultRank
+      - singleHolder
+      - managesMembers
+      - managesRanks
+      title: FleetSquadronRole
+    FleetSquadronRoleKeyEnum:
+      type: string
+      enum:
+      - leader
+      - co_leader
+      - officer
+      - member
+      x-enumNames:
+      - LEADER
+      - CO_LEADER
+      - OFFICER
+      - MEMBER
+      title: FleetSquadronRoleKeyEnum
+    FleetSquadronRoleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        defaultRank:
+          type: boolean
+          enum:
+          - true
+      additionalProperties: false
+      title: FleetSquadronRoleUpdateInput
+    FleetSquadronRolesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetSquadronRole"
+      title: FleetSquadronRolesList
     FleetSquadronSortEnum:
       type: string
       enum:

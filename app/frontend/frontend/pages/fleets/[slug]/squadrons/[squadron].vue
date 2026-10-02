@@ -51,15 +51,20 @@ const canUpdate = computed(
 const canDestroy = computed(
   () => props.membership?.capabilities?.destroySquadrons ?? false,
 );
-const canManageMembers = computed(
-  () => props.membership?.capabilities?.manageSquadronMembers ?? false,
-);
-
 const {
   data: squadron,
   isLoading,
   refetch: refetchSquadron,
 } = useFleetSquadron(fleetSlug, squadronSlug);
+
+// The squadron's own answer, which counts a squadron rank as well as the
+// fleet role.
+const canManageMembers = computed(
+  () =>
+    squadron.value?.capabilities?.manageMembers ??
+    props.membership?.capabilities?.manageSquadronMembers ??
+    false,
+);
 
 const tabLinks = computed<TabNavLink[]>(() => [
   {

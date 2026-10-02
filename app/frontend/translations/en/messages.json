@@ -367,6 +367,12 @@
           "sort": {
             "failure": "The order could not be saved."
           },
+          "ranks": {
+            "update": {
+              "success": "Squadron ranks saved.",
+              "failure": "Squadron ranks could not be saved."
+            }
+          },
           "members": {
             "add": {
               "success": "%{count} members added.",

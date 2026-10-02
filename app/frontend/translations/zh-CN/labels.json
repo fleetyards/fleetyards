@@ -595,7 +595,17 @@
           "joinedAt": "加入中队时间",
           "searchMembers": "搜索成员",
           "availableMembers": "可添加的成员",
-          "selectedMembers": "已选择 %{count} 位"
+          "selectedMembers": "已选择 %{count} 位",
+          "rank": "职级",
+          "ranksHint": "本舰队所有中队使用的名称。重命名职级不会改变其位置和权限。",
+          "rankName": "名称",
+          "defaultRank": "默认",
+          "defaultRankToggle": "新成员以此职级开始",
+          "rankRights": {
+            "singleHolder": "每个中队一名",
+            "managesMembers": "可添加和移除职级低于自己的成员",
+            "managesRanks": "可设置低于自己的职级"
+          }
         },
         "roles": {
           "permanent": "永久",

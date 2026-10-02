@@ -29,7 +29,13 @@ const verifiedOrgLabel = useVerifiedOrgLabel();
 const orgBadgeLabel = computed(() => verifiedOrgLabel(props.member));
 
 const squadronNames = computed(() =>
-  (props.member.squadrons ?? []).map((squadron) => squadron.name).join(", "),
+  (props.member.squadrons ?? [])
+    .map((squadron) =>
+      squadron.role
+        ? `${squadron.name} · ${squadron.role.name}`
+        : squadron.name,
+    )
+    .join(", "),
 );
 </script>
 

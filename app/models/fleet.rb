@@ -87,6 +87,9 @@ class Fleet < ApplicationRecord
   # the filter segments and the roster badges all read this association, and a
   # custom order that only the list page honoured would not be one.
   has_many :fleet_squadrons, -> { order(rank: :asc) }, dependent: :destroy
+  # After the squadrons: their memberships hold the ranks, and the foreign key
+  # refuses a rank that is still held.
+  has_many :fleet_squadron_roles, -> { order(position: :asc) }, dependent: :destroy
 
   # The database cascades these, so `dependent:` would only be a second, slower
   # way of doing the same thing -- and a fleet must never fail to delete
@@ -230,6 +233,7 @@ class Fleet < ApplicationRecord
   before_validation :set_normalized_fields
   before_save :update_slugs
   after_create :setup_default_roles!
+  after_create :setup_default_squadron_roles!
   after_create :setup_admin_user
 
   def self.accepted
@@ -343,6 +347,10 @@ class Fleet < ApplicationRecord
 
   def setup_default_roles!
     FleetRole.setup_default_roles!(self)
+  end
+
+  def setup_default_squadron_roles!
+    FleetSquadronRole.setup_defaults!(self)
   end
 
   def default_member_role
