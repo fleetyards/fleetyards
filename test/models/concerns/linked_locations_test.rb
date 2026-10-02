@@ -20,6 +20,24 @@ class LinkedLocationsTest < ActiveSupport::TestCase
     assert_equal ["Lorville, Teasa Spaceport", @lorville.id], [@inventory.location, @inventory.location_id]
   end
 
+  test "linking another place renames text that only named the old one" do
+    levski = create(:location, name: "Levski", kind: "city")
+    @inventory.update!(location_id: @lorville.id)
+
+    @inventory.update!(location_id: levski.id)
+
+    assert_equal "Levski", @inventory.location
+  end
+
+  test "linking another place keeps text of the reader's own" do
+    levski = create(:location, name: "Levski", kind: "city")
+    @inventory.update!(location_id: @lorville.id, location: "Locker by the elevators")
+
+    @inventory.update!(location_id: levski.id)
+
+    assert_equal "Locker by the elevators", @inventory.location
+  end
+
   test "retyping the text away from the linked name drops the link" do
     @inventory.update!(location_id: @lorville.id)
     @inventory.update!(location: "Somewhere on Hurston")

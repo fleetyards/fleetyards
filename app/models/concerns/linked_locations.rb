@@ -5,7 +5,8 @@
 # place the starmap does not carry. The link sits beside it.
 #
 # The two are kept in step. Linking a place with no text of its own fills the
-# text with the place's name, and changing the text away from the linked name
+# text with the place's name, and so does linking another place where the text
+# was only the old one's name. Changing the text away from the linked name
 # drops the link -- "Lorville" retyped as "Lorville, near the elevators" no
 # longer is Lorville.
 module LinkedLocations
@@ -25,9 +26,15 @@ module LinkedLocations
     return if link.nil?
 
     if will_save_change_to_attribute?(foreign_key) && !will_save_change_to_attribute?(text)
-      self[text] = link.name if self[text].blank?
+      self[text] = link.name if self[text].blank? || self[text] == previously_linked_name(foreign_key)
     elsif will_save_change_to_attribute?(text) && !will_save_change_to_attribute?(foreign_key) && self[text] != link.name
       self[foreign_key] = nil
     end
+  end
+
+  private def previously_linked_name(foreign_key)
+    previous_id = attribute_in_database(foreign_key)
+
+    Location.where(id: previous_id).pick(:name) if previous_id
   end
 end
