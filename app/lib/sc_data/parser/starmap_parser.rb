@@ -516,8 +516,10 @@ module ScData
         end
       end
 
+      # Trimmed of any whitespace, not only ASCII: Magda's name in 4.10.1 ends
+      # in a non-breaking space, which `strip` leaves alone.
       private def place_name(key)
-        name = localize_name(key)
+        name = localize_name(key)&.gsub(/\A[[:space:]]+|[[:space:]]+\z/, "")
 
         name.presence unless FILLER_NAMES.include?(name)
       end

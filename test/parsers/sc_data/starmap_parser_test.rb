@@ -41,6 +41,13 @@ module ScData
         assert_nil location("StantonSolarSystem")[:system_key]
       end
 
+      test "#locations trims a name of the non-breaking space the export ends it with" do
+        stanton
+        place("Stanton1c", "Magda\u00a0", type: "Moon", parent: "Stanton1")
+
+        assert_equal "Magda", location("Stanton1c")[:name]
+      end
+
       test "#locations names a place's kind from its map icon before its type" do
         stanton
         place("Nyx_Levski", "Levski", type: "Manmade", parent: "Stanton1", icon: "LandingZone")
