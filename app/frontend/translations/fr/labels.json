@@ -21,6 +21,7 @@
         "source": "Prix et stock issus d’UEX."
       },
       "location": {
+        "missionsSample": "Les comptes portent sur les %{shown} premières sur %{total}.",
         "systemUnavailable": "Impossible de charger ce système.",
         "systemsUnavailable": "Impossible de charger les systèmes.",
         "resourceKinds": {

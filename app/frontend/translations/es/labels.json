@@ -21,6 +21,7 @@
         "source": "Precios y existencias de UEX."
       },
       "location": {
+        "missionsSample": "Los recuentos cubren los primeros %{shown} de %{total}.",
         "systemUnavailable": "No se pudo cargar este sistema.",
         "systemsUnavailable": "No se pudieron cargar los sistemas.",
         "resourceKinds": {

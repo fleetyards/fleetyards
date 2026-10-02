@@ -70,4 +70,23 @@ describe("LocationMissions", () => {
     expect(wrapper.text()).toContain("126");
     expect(wrapper.find(".location-missions__all").exists()).toBe(true);
   });
+
+  it("marks a mission players cannot get yet, and says the counts are a sample", async () => {
+    const unreleased = {
+      ...mission("d", "Hauling Test", "Covalex"),
+      released: false,
+    } as GameMission;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { missions: [unreleased], total: 126, locationId: "levski" },
+      plugins: [await router()],
+    });
+
+    expect(
+      wrapper.find('[data-test="location-mission-unreleased"]').exists(),
+    ).toBe(true);
+    expect(wrapper.get(".location-missions__sample").text()).toBe(
+      "Counts cover the first 1 of 126.",
+    );
+  });
 });

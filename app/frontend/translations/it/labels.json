@@ -21,6 +21,7 @@
         "source": "Prezzi e disponibilità da UEX."
       },
       "location": {
+        "missionsSample": "I conteggi coprono le prime %{shown} di %{total}.",
         "systemUnavailable": "Impossibile caricare questo sistema.",
         "systemsUnavailable": "Impossibile caricare i sistemi.",
         "resourceKinds": {

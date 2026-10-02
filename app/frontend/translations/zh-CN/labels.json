@@ -21,6 +21,7 @@
         "source": "价格与库存来自 UEX。"
       },
       "location": {
+        "missionsSample": "计数仅涵盖 %{total} 个中的前 %{shown} 个。",
         "systemUnavailable": "无法加载此星系。",
         "systemsUnavailable": "无法加载星系。",
         "resourceKinds": {

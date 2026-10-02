@@ -118,15 +118,33 @@ const standing = (mission: GameMission) => {
               <MissionText :text="mission.name" />
             </div>
             <div
-              v-if="standing(mission)"
+              v-if="standing(mission) || !mission.released"
               class="location-missions__mission-meta"
             >
-              <span>{{ standing(mission) }}</span>
+              <span
+                v-if="!mission.released"
+                class="location-missions__unreleased"
+                data-test="location-mission-unreleased"
+              >
+                {{ t("labels.gameMission.unreleased") }}
+              </span>
+              <span v-if="standing(mission)">{{ standing(mission) }}</span>
             </div>
           </router-link>
         </div>
       </div>
     </div>
+
+    <!-- The groups are counted from the page that was loaded, so a place with
+         more says so rather than passing a sample off as the totals. -->
+    <p v-if="total > missions.length" class="location-missions__sample">
+      {{
+        t("labels.location.missionsSample", {
+          shown: missions.length,
+          total,
+        })
+      }}
+    </p>
 
     <router-link
       v-if="total > missions.length"

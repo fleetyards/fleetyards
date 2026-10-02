@@ -21,6 +21,7 @@
         "source": "價格與庫存來自 UEX。"
       },
       "location": {
+        "missionsSample": "計數僅涵蓋 %{total} 個中的前 %{shown} 個。",
         "systemUnavailable": "無法載入此星系。",
         "systemsUnavailable": "無法載入星系。",
         "resourceKinds": {

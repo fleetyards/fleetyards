@@ -21,6 +21,7 @@
         "source": "Prices and stock from UEX."
       },
       "location": {
+        "missionsSample": "Counts cover the first %{shown} of %{total}.",
         "systemUnavailable": "Could not load this system.",
         "systemsUnavailable": "Could not load the systems.",
         "resourceKinds": {
