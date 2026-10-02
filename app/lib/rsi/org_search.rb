@@ -6,6 +6,9 @@ module Rsi
   #
   # The search matches names and SIDs loosely -- "TEST" finds every org with
   # "test" anywhere in it -- so only the row whose symbol is the SID answers.
+  # RSI ranks by its own relevance and serves 32 rows a page whatever is
+  # asked for, so a short SID's own org can sit pages in: the search walks a
+  # few of them before it gives up.
   class OrgSearch
     Result = Data.define(:status, :language, :recruiting, :roleplay, :commitment) do
       def self.unavailable(status)
@@ -14,6 +17,8 @@ module Rsi
     end
 
     PATH = "/api/orgs/getOrgs"
+
+    MAX_PAGES = 5
 
     def self.fetch(sid, base_url: Rails.configuration.rsi.endpoint)
       new(base_url:).fetch(sid)
@@ -24,9 +29,23 @@ module Rsi
     end
 
     def fetch(sid)
+      (1..MAX_PAGES).each do |page|
+        cells = fetch_page(sid, page)
+        return cells if cells.is_a?(Result)
+        break if cells.empty?
+
+        cell = cells.find { |candidate| candidate.at_css(".symbol")&.text&.strip == sid }
+        return parse(cell) if cell.present?
+      end
+
+      Result.unavailable(:not_found)
+    end
+
+    # The page's org cells, or a Result when RSI did not answer with any.
+    private def fetch_page(sid, page)
       response = Typhoeus.post(
         "#{@base_url}#{PATH}",
-        body: {search: sid, sort: "", page: 1, pagesize: 12}.to_json,
+        body: {search: sid, sort: "", page:, pagesize: 32}.to_json,
         headers: {"Content-Type" => "application/json"},
         timeout: 15
       )
@@ -36,20 +55,15 @@ module Rsi
       return Result.unavailable(:blocked) if response.code == 403
       return Result.unavailable(:failed) unless response.code == 200
 
-      parse(response.body, sid)
+      payload = JSON.parse(response.body)
+      return Result.unavailable(:failed) unless payload["success"] == 1
+
+      Nokogiri::HTML.fragment(payload.dig("data", "html").to_s).css(".org-cell").to_a
     rescue JSON::ParserError
       Result.unavailable(:failed)
     end
 
-    private def parse(body, sid)
-      payload = JSON.parse(body)
-      return Result.unavailable(:failed) unless payload["success"] == 1
-
-      cell = Nokogiri::HTML.fragment(payload.dig("data", "html").to_s)
-        .css(".org-cell")
-        .find { |candidate| candidate.at_css(".symbol")&.text&.strip == sid }
-      return Result.unavailable(:not_found) if cell.blank?
-
+    private def parse(cell)
       info = cell.css(".infoitem").to_h do |item|
         [item.at_css(".label")&.text.to_s.strip.delete_suffix(":"), item.at_css(".value")&.text.to_s.strip]
       end
