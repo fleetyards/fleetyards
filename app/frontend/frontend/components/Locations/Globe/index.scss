@@ -44,29 +44,30 @@ $turn: 90s;
     );
   }
 
-  // A rocky or icy body: a few darker and lighter patches.
+  // A rocky or icy body: darker lowlands and lighter highlands, drawn from
+  // irregular outlines rather than round gradients, so they read as terrain.
+  // The outlines are masks, since the colour lives in a variable an SVG
+  // cannot read; they stay clear of the tile's edges, so the loop has no
+  // seam.
   &--rocky &__surface {
-    background-image:
-      radial-gradient(
-        ellipse 18% 22% at 18% 34%,
-        color-mix(in srgb, #{$color} 70%, #000) 0 60%,
-        transparent 100%
-      ),
-      radial-gradient(
-        ellipse 14% 12% at 42% 70%,
-        color-mix(in srgb, #{$color} 75%, #fff) 0 55%,
-        transparent 100%
-      ),
-      radial-gradient(
-        ellipse 22% 16% at 72% 40%,
-        color-mix(in srgb, #{$color} 78%, #000) 0 55%,
-        transparent 100%
-      ),
-      radial-gradient(
-        ellipse 10% 14% at 88% 78%,
-        color-mix(in srgb, #{$color} 72%, #000) 0 55%,
-        transparent 100%
-      );
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      mask-repeat: repeat-x;
+      mask-size: 50% 100%;
+    }
+
+    &::before {
+      background-color: color-mix(in srgb, #{$color} 68%, #000);
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M14 22 C22 13 35 17 37 27 C39 35 31 41 24 44 C17 48 8 43 9 34 C10 29 8 26 14 22 Z'/%3E%3Cpath d='M52 51 C59 43 74 46 77 55 C80 63 75 73 64 74 C55 75 49 70 46 63 C44 58 47 55 52 51 Z'/%3E%3Cpath d='M68 13 C75 9 86 13 87 20 C88 27 81 30 75 28 C70 27 64 23 66 18 Z'/%3E%3Cpath d='M17 69 C23 64 32 68 32 75 C32 82 25 87 18 84 C13 82 11 74 17 69 Z'/%3E%3Cpath d='M40 82 C44 79 50 81 50 85 C50 89 45 92 41 90 C38 88 37 84 40 82 Z'/%3E%3C/svg%3E");
+    }
+
+    &::after {
+      background-color: color-mix(in srgb, #{$color} 72%, #fff);
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M38 33 C44 28 53 31 54 38 C55 43 50 47 44 47 C38 47 34 41 38 33 Z'/%3E%3Cpath d='M82 57 C87 53 94 57 93 63 C92 68 86 70 82 67 C79 64 79 60 82 57 Z'/%3E%3Cpath d='M6 54 C9 50 15 52 15 57 C15 61 10 63 7 61 C4 59 4 56 6 54 Z'/%3E%3Cpath d='M58 22 C61 19 66 21 66 25 C66 29 62 31 59 29 C56 27 56 24 58 22 Z'/%3E%3C/svg%3E");
+    }
   }
 
   // A gas giant: bands of its colour, lighter and darker, with a storm that
