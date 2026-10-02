@@ -10,7 +10,7 @@ describe("LocationGlobe", () => {
       },
     });
 
-    expect(wrapper.classes()).toContain("location-globe--gas_giant");
+    expect(wrapper.classes()).toContain("location-globe--gas-giant");
     expect(wrapper.attributes("style")).toContain("--globe-color: #a0522d");
     expect(wrapper.find(".location-globe__surface").exists()).toBe(true);
     expect(wrapper.find(".location-globe__shade").exists()).toBe(true);

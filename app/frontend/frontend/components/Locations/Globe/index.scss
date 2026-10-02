@@ -72,8 +72,8 @@ $turn: 90s;
 
   // A gas giant: bands of its colour, lighter and darker, with a storm that
   // gives the turning something to show.
-  &--gas_giant &__surface,
-  &--ice_giant &__surface {
+  &--gas-giant &__surface,
+  &--ice-giant &__surface {
     background-image:
       radial-gradient(
         ellipse 9% 6% at 30% 62%,
@@ -95,7 +95,7 @@ $turn: 90s;
   }
 
   // An ice giant: the same bands, washed out.
-  &--ice_giant &__surface {
+  &--ice-giant &__surface {
     opacity: 0.6;
   }
 

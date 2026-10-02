@@ -35,7 +35,10 @@ const bodyType = computed(
 <template>
   <span
     class="location-globe"
-    :class="[`location-globe--${bodyType}`, { 'location-globe--lit': style }]"
+    :class="[
+      `location-globe--${bodyType?.replaceAll('_', '-')}`,
+      { 'location-globe--lit': style },
+    ]"
     :style="style"
     aria-hidden="true"
     data-test="location-globe"
