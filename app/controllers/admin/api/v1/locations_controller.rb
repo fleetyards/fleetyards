@@ -29,7 +29,11 @@ module Admin
         end
 
         def update
-          return render :show if @location.update(location_params)
+          if @location.update(location_params)
+            fill_color_from_image
+
+            return render :show
+          end
 
           render json: ValidationError.new("location.update", errors: @location.errors), status: :bad_request
         end
@@ -46,6 +50,16 @@ module Admin
             .find(params[:id])
 
           authorize! @location, with: ::Admin::LocationPolicy
+        end
+
+        # A planet or moon given a picture and no colour takes its colour from
+        # the picture, for the circle it is drawn with.
+        private def fill_color_from_image
+          return if location_params[:image].blank? || location_params[:color].present?
+          return unless %w[planet moon].include?(@location.kind) && @location.image.attached?
+
+          color = ::Locations::ImageColor.new(@location.image.blob).call
+          @location.update_column(:color, color) if color
         end
 
         private def location_params
