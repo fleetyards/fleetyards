@@ -2451,7 +2451,8 @@
           "image": "Image",
           "color": "Couleur",
           "appearanceHint": "La couleur remplit le cercle de la planète ou de la lune, ombrée comme une sphère éclairée. Laissée vide, elle est tirée de l’image lors de son envoi.",
-          "headerImageHint": "L’image est affichée en en-tête sur la page du lieu."
+          "headerImageHint": "L’image est affichée en en-tête sur la page du lieu.",
+          "sunHint": "La couleur teinte l’éclat de l’étoile."
         },
         "blueprints": {
           "status": {

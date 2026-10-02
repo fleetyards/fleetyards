@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
-import { globeStyle } from "@/shared/utils/LocationGlobe";
+import { globeStyle, sunStyle } from "@/shared/utils/LocationGlobe";
 import { useI18n } from "@/shared/composables/useI18n";
 import { LocationKindEnum, type LocationTreeNode } from "@/services/fyApi";
 
@@ -58,7 +58,7 @@ const litBody = computed(() =>
     >
       <span
         class="location-strip__sun"
-        :style="globeStyle(star.location)"
+        :style="sunStyle(star.location)"
         aria-hidden="true"
       />
       <span class="location-strip__name">{{ star.location.name }}</span>

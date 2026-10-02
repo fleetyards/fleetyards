@@ -1,3 +1,5 @@
+@import "@/frontend/components/Locations/sun";
+
 // A system laid out the way it sits: the star, then its bodies in orbit
 // order along one line. Equal circles, because the export states no size,
 // and the same circles on every page -- compact only lists the lit body's
@@ -39,10 +41,10 @@
   }
 
   &__sun {
+    @include location-sun;
+
     width: 64px;
     height: 64px;
-    background-color: #3a2a17;
-    border-color: rgb(240 179 90 / 0.8);
   }
 
   &__planet {

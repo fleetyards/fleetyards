@@ -2451,7 +2451,8 @@
           "image": "Bild",
           "color": "Farbe",
           "appearanceHint": "Die Farbe füllt den Kreis des Planeten oder Mondes, schattiert wie eine beleuchtete Kugel. Bleibt sie leer, wird sie beim Hochladen eines Bildes aus diesem übernommen.",
-          "headerImageHint": "Das Bild wird als Kopfbild auf der Seite des Ortes gezeigt."
+          "headerImageHint": "Das Bild wird als Kopfbild auf der Seite des Ortes gezeigt.",
+          "sunHint": "Die Farbe tönt das Leuchten des Sterns."
         },
         "blueprints": {
           "status": {

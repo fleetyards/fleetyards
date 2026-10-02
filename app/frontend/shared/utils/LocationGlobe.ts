@@ -38,3 +38,11 @@ export const globeStyle = (
     ...FILL,
   };
 };
+
+// A star is drawn by the sun mixin, which only needs its colour.
+export const sunStyle = (
+  appearance?: Appearance | null,
+): CSSProperties | undefined =>
+  appearance?.kind === "star" && appearance.color
+    ? { "--sun-color": appearance.color }
+    : undefined;

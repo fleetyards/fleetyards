@@ -2451,7 +2451,8 @@
           "image": "圖片",
           "color": "顏色",
           "appearanceHint": "顏色會填滿行星或衛星的圓圈，並渲染成受光照的球體。留空時，會在上傳圖片時從圖片中擷取。",
-          "headerImageHint": "圖片會作為該地點頁面的頁首圖片顯示。"
+          "headerImageHint": "圖片會作為該地點頁面的頁首圖片顯示。",
+          "sunHint": "顏色會為恆星的光暈著色。"
         },
         "blueprints": {
           "status": {

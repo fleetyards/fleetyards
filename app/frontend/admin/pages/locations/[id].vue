@@ -15,7 +15,11 @@ import DetailList from "@/admin/components/DetailList/index.vue";
 import { type Detail } from "@/admin/components/DetailList/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { globeStyle, isGlobeKind } from "@/shared/utils/LocationGlobe";
+import {
+  globeStyle,
+  isGlobeKind,
+  sunStyle,
+} from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 
@@ -51,6 +55,8 @@ const crumbs = computed(() => [
 const dash = "—";
 
 const isBody = computed(() => isGlobeKind(location.value?.kind));
+
+const isStar = computed(() => location.value?.kind === "star");
 
 const yesNo = (value?: boolean) =>
   value ? t("labels.admin.locations.yes") : t("labels.admin.locations.no");
@@ -155,9 +161,10 @@ const details = computed((): Detail[] => {
         data-test="location-appearance"
       >
         <span
-          v-if="isBody"
+          v-if="isBody || isStar"
           class="admin-location__globe"
-          :style="globeStyle(location)"
+          :class="{ 'admin-location__globe--star': isStar }"
+          :style="globeStyle(location) ?? sunStyle(location)"
           aria-hidden="true"
         />
         <img
@@ -167,7 +174,7 @@ const details = computed((): Detail[] => {
           class="admin-location__thumb"
         />
         <dl class="admin-location__appearance-facts">
-          <div v-if="isBody">
+          <div v-if="isBody || isStar">
             <dt>{{ t("labels.admin.locations.color") }}</dt>
             <dd>
               <span
@@ -203,6 +210,8 @@ const details = computed((): Detail[] => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/frontend/components/Locations/sun";
+
 .admin-location {
   &__head {
     display: flex;
@@ -229,6 +238,10 @@ const details = computed((): Detail[] => {
     background-color: #1d2329;
     border: 1px solid
       var(--globe-border, var(--color-edge-soft, rgb(122 130 136 / 0.55)));
+
+    &--star {
+      @include location-sun;
+    }
   }
 
   &__appearance-facts {

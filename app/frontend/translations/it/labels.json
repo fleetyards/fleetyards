@@ -2451,7 +2451,8 @@
           "image": "Immagine",
           "color": "Colore",
           "appearanceHint": "Il colore riempie il cerchio del pianeta o della luna, ombreggiato come una sfera illuminata. Se lasciato vuoto, viene preso dall’immagine al caricamento.",
-          "headerImageHint": "L’immagine viene mostrata come intestazione nella pagina del luogo."
+          "headerImageHint": "L’immagine viene mostrata come intestazione nella pagina del luogo.",
+          "sunHint": "Il colore tinge il bagliore della stella."
         },
         "blueprints": {
           "status": {

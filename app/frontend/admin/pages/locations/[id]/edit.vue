@@ -24,7 +24,11 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { globeStyle, isGlobeKind } from "@/shared/utils/LocationGlobe";
+import {
+  globeStyle,
+  isGlobeKind,
+  sunStyle,
+} from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -80,16 +84,21 @@ watch(
 // place only has a picture, shown as a header on its page.
 const isBody = computed(() => isGlobeKind(location.value?.kind));
 
+// A star takes a colour too, for its glow.
+const isStar = computed(() => location.value?.kind === "star");
+
 const [color, colorProps] = defineField("color");
 const [image, imageProps] = defineField("image");
 
 // The colour as it is typed, so the preview shows what the strip will draw.
-const preview = computed(() =>
-  globeStyle({
+const preview = computed(() => {
+  const appearance = {
     kind: location.value?.kind,
     color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "") ? values.color : null,
-  }),
-);
+  };
+
+  return globeStyle(appearance) ?? sunStyle(appearance);
+});
 
 const submitting = ref(false);
 
@@ -153,6 +162,9 @@ const handleCancel = async () => {
           <template v-if="isBody">
             {{ t("labels.admin.locations.appearanceHint") }}
           </template>
+          <template v-else-if="isStar">
+            {{ t("labels.admin.locations.sunHint") }}
+          </template>
         </p>
 
         <div class="row">
@@ -167,7 +179,7 @@ const handleCancel = async () => {
               clearable
             />
             <FormInput
-              v-if="isBody"
+              v-if="isBody || isStar"
               v-model="color"
               v-bind="colorProps"
               translation-key="admin.locations.color"
@@ -178,8 +190,9 @@ const handleCancel = async () => {
           </div>
           <div class="col-12 col-md-6">
             <span
-              v-if="isBody"
+              v-if="isBody || isStar"
               class="admin-location-edit__globe"
+              :class="{ 'admin-location-edit__globe--star': isStar }"
               :style="preview"
               data-test="location-globe-preview"
               aria-hidden="true"
@@ -206,6 +219,8 @@ const handleCancel = async () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/frontend/components/Locations/sun";
+
 .admin-location-edit {
   &__title {
     margin: 0 0 4px;
@@ -234,6 +249,10 @@ const handleCancel = async () => {
     background-color: #1d2329;
     border: 1px solid
       var(--globe-border, var(--color-edge-soft, rgb(122 130 136 / 0.55)));
+
+    &--star {
+      @include location-sun;
+    }
   }
 }
 </style>

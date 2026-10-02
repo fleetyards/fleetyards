@@ -1,4 +1,5 @@
 @import "@/stylesheets/variables.scss";
+@import "@/frontend/components/Locations/sun";
 
 // The masthead, panels and badges a mission page uses, at the same values.
 .location-page {
@@ -49,8 +50,7 @@
       var(--globe-border, var(--color-edge-soft, rgb(122 130 136 / 0.55)));
 
     &--star {
-      background-color: #3a2a17;
-      border-color: rgb(240 179 90 / 0.8);
+      @include location-sun;
     }
   }
 

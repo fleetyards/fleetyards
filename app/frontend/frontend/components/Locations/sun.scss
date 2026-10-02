@@ -1,0 +1,65 @@
+// A star: a white-hot core running out into its colour, and a corona behind it
+// that slowly breathes. The colour comes in as `--sun-color`, set from the
+// star's own colour; without one it burns a warm yellow.
+//
+// The corona and the core are both pseudo-elements, so the corona can sit
+// behind the core inside the star's own stacking context, and the animation
+// only touches opacity and scale.
+@mixin location-sun {
+  $sun: var(--sun-color, #f6c065);
+
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  background: none;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &::before {
+    z-index: -1;
+    inset: -38%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #{$sun} 55%, transparent) 28%,
+      color-mix(in srgb, #{$sun} 18%, transparent) 50%,
+      transparent 70%
+    );
+    animation: location-sun-corona 4.5s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    inset: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      #fff 0%,
+      color-mix(in srgb, #{$sun} 35%, #fff) 26%,
+      #{$sun} 62%,
+      color-mix(in srgb, #{$sun} 70%, #000) 100%
+    );
+    box-shadow: 0 0 8px 1px color-mix(in srgb, #{$sun} 60%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      animation: none;
+    }
+  }
+
+  @keyframes location-sun-corona {
+    from {
+      opacity: 0.55;
+      transform: scale(0.92);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+}

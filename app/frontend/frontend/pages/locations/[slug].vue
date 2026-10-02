@@ -17,7 +17,11 @@ import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { globeStyle, isGlobeKind } from "@/shared/utils/LocationGlobe";
+import {
+  globeStyle,
+  isGlobeKind,
+  sunStyle,
+} from "@/shared/utils/LocationGlobe";
 import {
   LocationKindEnum,
   type LocationTreeNode,
@@ -250,7 +254,7 @@ watch(
                   'location-page__globe--star':
                     location.kind === LocationKindEnum.STAR,
                 }"
-                :style="globeStyle(location)"
+                :style="globeStyle(location) ?? sunStyle(location)"
                 aria-hidden="true"
                 data-test="location-globe"
               />

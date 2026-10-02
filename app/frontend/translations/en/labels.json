@@ -2451,7 +2451,8 @@
           "image": "Image",
           "color": "Color",
           "appearanceHint": "The color fills the planet or moon’s circle, shaded as a lit sphere. Left empty, it is taken from the picture when one is uploaded.",
-          "headerImageHint": "The picture is shown as a header image on the place’s page."
+          "headerImageHint": "The picture is shown as a header image on the place’s page.",
+          "sunHint": "The color tints the star’s glow."
         },
         "blueprints": {
           "status": {

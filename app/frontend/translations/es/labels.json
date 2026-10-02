@@ -2451,7 +2451,8 @@
           "image": "Imagen",
           "color": "Color",
           "appearanceHint": "El color rellena el círculo del planeta o luna, sombreado como una esfera iluminada. Si se deja vacío, se toma de la imagen al subirla.",
-          "headerImageHint": "La imagen se muestra como imagen de cabecera en la página del lugar."
+          "headerImageHint": "La imagen se muestra como imagen de cabecera en la página del lugar.",
+          "sunHint": "El color tiñe el brillo de la estrella."
         },
         "blueprints": {
           "status": {
