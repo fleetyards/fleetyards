@@ -6,6 +6,7 @@ module Uex
   class ShopLocationMatcherTest < ActiveSupport::TestCase
     setup do
       ItemPrice.delete_all
+      Shop.delete_all
       Location.delete_all
 
       @stanton = place("Stanton System", kind: "system")
@@ -25,6 +26,13 @@ module Uex
       assert_equal ["Casaba Outlet", @everus.id], match("Casaba Outlet - Everus Harbor")
     end
 
+    test "#match reads a shortened name as the station rather than a room in it" do
+      seraphim = place("Seraphim Station", parent: @hurston)
+      place("Seraphim Station Clinic", parent: seraphim, kind: "clinic")
+
+      assert_equal seraphim.id, match("Armor - Seraphim").last
+    end
+
     test "#match puts a shop at a Lagrange point in the rest stop there" do
       assert_equal ["Pharmacy", @green_glade.id], match("Pharmacy - HUR-L1")
     end
@@ -38,12 +46,13 @@ module Uex
       assert_equal [nil, nil], match("Pharmacy - Orison General Hospital")
     end
 
-    test ".relink links the prices at a shop to its place" do
+    test ".relink makes the shop the first time UEX names it and links its prices" do
       price = create(:item_price, item: create(:equipment), location: "Casaba Outlet - Everus Harbor", price_type: "sell", time_range: nil)
 
       assert_equal 1, ::Uex::ShopLocationMatcher.relink
-      assert_equal [@everus.id, "Casaba Outlet"], price.reload.values_at(:location_id, :shop_name)
+      assert_equal ["Casaba Outlet", @everus.id], [price.reload.shop.name, price.shop.location_id]
       assert_equal 0, ::Uex::ShopLocationMatcher.relink
+      assert_equal 1, Shop.count
     end
 
     private def match(value)

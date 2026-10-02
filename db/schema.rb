@@ -1580,10 +1580,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.uuid "terminal_id"
     t.integer "time_range"
     t.datetime "updated_at", null: false
-    t.uuid "location_id"
-    t.string "shop_name"
+    t.uuid "shop_id"
     t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
-    t.index ["location_id"], name: "index_item_prices_on_location_id"
+    t.index ["shop_id"], name: "index_item_prices_on_shop_id"
     t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
   end
 
@@ -2317,6 +2316,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
     t.index ["model_id"], name: "index_sc_data_unlisted_models_on_model_id"
   end
 
+  create_table "shops", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.uuid "location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id", "name"], name: "index_shops_on_location_id_and_name", unique: true
+    t.index ["location_id"], name: "index_shops_on_location_id"
+    t.index ["slug"], name: "index_shops_on_slug", unique: true
+  end
+
   create_table "star_citizen_updates", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "news_sub_type"
@@ -2766,7 +2776,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "inventory_transfers", "users", column: "initiated_by_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
-  add_foreign_key "item_prices", "locations", on_delete: :nullify
+  add_foreign_key "item_prices", "shops", on_delete: :nullify
   add_foreign_key "item_prices", "terminals", on_delete: :nullify
   add_foreign_key "location_builds", "locations", on_delete: :cascade
   add_foreign_key "locations", "locations", column: "map_parent_id", on_delete: :nullify
@@ -2812,6 +2822,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_150000) do
   add_foreign_key "push_subscriptions", "users"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
+  add_foreign_key "shops", "locations", on_delete: :cascade
   add_foreign_key "supporter_contributions", "fleets", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
   add_foreign_key "task_forces", "vehicles", on_delete: :cascade

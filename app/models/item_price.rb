@@ -9,32 +9,31 @@
 #  price             :decimal(15, 2)
 #  price_type        :integer
 #  scu               :integer
-#  shop_name         :string
 #  source_updated_at :datetime
 #  time_range        :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  item_id           :uuid             not null
-#  location_id       :uuid
+#  shop_id           :uuid
 #  terminal_id       :uuid
 #
 # Indexes
 #
 #  index_item_prices_on_item         (item_type,item_id)
-#  index_item_prices_on_location_id  (location_id)
+#  index_item_prices_on_shop_id      (shop_id)
 #  index_item_prices_on_terminal_id  (terminal_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
+#  fk_rails_...  (shop_id => shops.id) ON DELETE => nullify
 #  fk_rails_...  (terminal_id => terminals.id) ON DELETE => nullify
 #
 class ItemPrice < ApplicationRecord
   belongs_to :item, polymorphic: true
   belongs_to :terminal, optional: true
-  # The place the shop in `location` is at, and the shop's own name, matched
-  # from that string by Uex::ShopLocationMatcher.
-  belongs_to :shop_location, class_name: "Location", foreign_key: :location_id, optional: true, inverse_of: :item_prices
+  # The shop `location` names, matched from that string by
+  # Uex::ShopLocationMatcher.
+  belongs_to :shop, optional: true
 
   enum :price_type,
     {buy: 0, sell: 1, rental: 2},

@@ -11,18 +11,22 @@ module Uex
   # no separator.
   class ShopLocationMatcher
     SEPARATOR = /\s+-\s+/
+    ROOM_KINDS = %w[outpost clinic district].freeze
 
-    # Every price at a shop, linked to the shop's place. Run after a price sync
-    # and after a load of the places, which may have arrived after it.
+    # Every price at a shop, linked to that shop, which is made the first time
+    # UEX names it. Run after a price sync and after a load of the places,
+    # which may have arrived after it.
     def self.relink(prices = ItemPrice.where(terminal_id: nil))
       matcher = new
+      shops = {}
 
       prices.distinct.pluck(:location).sum do |location|
         shop_name, location_id = matcher.match(location)
+        shop_id = if location_id
+          shops[[location_id, shop_name]] ||= Shop.find_or_create_by!(location_id:, name: shop_name).id
+        end
 
-        prices.where(location:)
-          .where("location_id IS DISTINCT FROM ? OR shop_name IS DISTINCT FROM ?", location_id, shop_name)
-          .update_all(location_id:, shop_name:)
+        prices.where(location:).where("shop_id IS DISTINCT FROM ?", shop_id).update_all(shop_id:)
       end
     end
 
@@ -43,8 +47,9 @@ module Uex
       candidates = places.select { |place| place[:name].start_with?(name) } if candidates.empty? && name.length >= 4
       candidates = candidates.select { |place| place[:system]&.start_with?(system) } if system && candidates.size > 1
 
-      # A shop is at a station or a city before an outpost of the same name.
-      settled = candidates.reject { |place| place[:kind] == "outpost" }
+      # A shop is at a station or a city before an outpost, or a room in one,
+      # of the same name: "Seraphim" is Seraphim Station, not its clinic.
+      settled = candidates.reject { |place| ROOM_KINDS.include?(place[:kind]) }
       candidates = settled if settled.any?
 
       place = candidates.uniq { |candidate| candidate[:id] }.one? ? candidates.first : nil

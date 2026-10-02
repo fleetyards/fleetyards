@@ -9,24 +9,23 @@
 #  price             :decimal(15, 2)
 #  price_type        :integer
 #  scu               :integer
-#  shop_name         :string
 #  source_updated_at :datetime
 #  time_range        :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  item_id           :uuid             not null
-#  location_id       :uuid
+#  shop_id           :uuid
 #  terminal_id       :uuid
 #
 # Indexes
 #
 #  index_item_prices_on_item         (item_type,item_id)
-#  index_item_prices_on_location_id  (location_id)
+#  index_item_prices_on_shop_id      (shop_id)
 #  index_item_prices_on_terminal_id  (terminal_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
+#  fk_rails_...  (shop_id => shops.id) ON DELETE => nullify
 #  fk_rails_...  (terminal_id => terminals.id) ON DELETE => nullify
 #
 FactoryBot.define do
