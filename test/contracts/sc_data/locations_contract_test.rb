@@ -47,6 +47,8 @@ module ScData
         green_glade = Location.find_by!(sc_key: "RR_HUR_L1")
         assert_equal ["HUR L1", "Hurston"], [green_glade.parent.name, green_glade.parent.parent.name]
         assert_equal "Stanton", green_glade.map_parent.name
+        assert_equal "station", green_glade.parent.kind
+        assert green_glade.parent.shown_on_starmap
 
         dasi = Location.find_by!(sc_key: "TheCollectorAsteroid_Stanton1")
         assert_equal ["Hurston", "Stanton"], [dasi.parent.name, dasi.map_parent.name]

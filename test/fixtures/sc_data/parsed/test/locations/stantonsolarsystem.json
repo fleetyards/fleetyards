@@ -10,7 +10,7 @@
   "parent_key": null,
   "map_parent_key": null,
   "system_key": null,
-  "shown_on_starmap": false,
+  "shown_on_starmap": true,
   "shown_with_parent_only": false,
   "always_shown": false,
   "quantum_travel_destination": false,

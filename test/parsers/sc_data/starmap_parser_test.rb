@@ -116,6 +116,18 @@ module ScData
         assert_equal "StantonStar", location("RR_HUR_L1")[:map_parent_key]
       end
 
+      # The map hides the point and draws the rest stop at it.
+      test "#locations lists a Lagrange point as a station, on the map where its rest stop is" do
+        stanton
+        place("Stanton1_L1", "HUR L1", type: "Planet", parent: "StantonStar", hidden: true)
+        place("RR_HUR_L1", "HUR-L1 Green Glade Station", type: "Manmade", parent: "StantonStar")
+        place("Stanton1_L2", "HUR L2", type: "Planet", parent: "StantonStar", hidden: true)
+
+        assert_equal "station", location("Stanton1_L1")[:kind]
+        assert location("Stanton1_L1")[:shown_on_starmap]
+        refute location("Stanton1_L2")[:shown_on_starmap]
+      end
+
       test "#locations puts an untagged place under the star at the body or base its key names" do
         stanton
         place("TheCollectorAsteroid_Stanton1", "Wikelo Emporium Dasi Station", type: "Manmade", parent: "StantonStar")

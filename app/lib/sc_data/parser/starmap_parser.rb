@@ -153,6 +153,7 @@ module ScData
         drop_unplaced(places)
         merge_overrides(places)
         fold_into_namesakes(places)
+        show_what_holds_shown_places(places)
         resolve_map_parents(places)
 
         places
@@ -283,6 +284,7 @@ module ScData
           next unless match && places[match[:planet]]&.dig(:kind) == "planet"
 
           place[:parent] = match[:planet]
+          place[:kind] = "station"
           {key: place[:key], planet: match[:planet], number: match[:number], prefix: place[:name].to_s.split.first}
         end
 
@@ -314,6 +316,19 @@ module ScData
           body ||= places[place[:key][/\A(.+\d)[a-z]\z/, 1]]&.then { |base| base if base[:parent] == star[:key] }
 
           place[:parent] = body[:key] if body
+        end
+      end
+
+      # The map hides a Lagrange point and draws the rest stop at it, so the
+      # point is on the map wherever something inside it is.
+      private def show_what_holds_shown_places(places)
+        places.values.select { |place| place[:shown_on_starmap] }.each do |place|
+          seen = Set.new
+
+          while (parent = places[place[:parent]]) && seen.add?(parent[:key]) && !parent[:shown_on_starmap]
+            parent[:shown_on_starmap] = true
+            place = parent
+          end
         end
       end
 
