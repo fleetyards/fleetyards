@@ -27,6 +27,8 @@
         "systemStrip": "%{system}, dalla stella verso l'esterno",
         "allSystems": "Tutti i sistemi",
         "allPlaces": "Tutti i luoghi",
+        "unstable": "Instabile",
+        "unstableHint": "Una stella a brillamento: la sua emissione esplode senza preavviso.",
         "systems": "Sistemi stellari",
         "name": "Nome",
         "kind": "Tipo",

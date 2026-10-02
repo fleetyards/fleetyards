@@ -27,6 +27,8 @@
         "systemStrip": "%{system}, de son étoile vers l'extérieur",
         "allSystems": "Tous les systèmes",
         "allPlaces": "Tous les lieux",
+        "unstable": "Instable",
+        "unstableHint": "Une étoile à éruptions : son rayonnement s’emballe sans prévenir.",
         "systems": "Systèmes stellaires",
         "name": "Nom",
         "kind": "Type",

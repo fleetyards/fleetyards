@@ -27,6 +27,8 @@
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
         "allPlaces": "Alle Orte",
+        "unstable": "Instabil",
+        "unstableHint": "Ein Flare-Stern: Seine Strahlung schießt ohne Vorwarnung in die Höhe.",
         "systems": "Sternsysteme",
         "name": "Name",
         "kind": "Art",

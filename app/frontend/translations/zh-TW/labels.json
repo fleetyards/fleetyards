@@ -27,6 +27,8 @@
         "systemStrip": "%{system}，從恆星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地點",
+        "unstable": "不穩定",
+        "unstableHint": "閃焰星：其輻射會毫無預警地驟增。",
         "systems": "星系",
         "name": "名稱",
         "kind": "類型",

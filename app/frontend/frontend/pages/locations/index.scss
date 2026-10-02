@@ -52,6 +52,10 @@
     &--star {
       @include location-sun;
     }
+
+    &--unstable {
+      @include location-sun-unstable;
+    }
   }
 
   &__badges {
@@ -74,6 +78,14 @@
 
       .location-page__badge-value {
         color: var(--color-danger, #dc3545);
+      }
+    }
+
+    &--warning {
+      border-color: rgb(240 173 78 / 0.55);
+
+      .location-page__badge-value {
+        color: var(--color-warning, #f0ad4e);
       }
     }
   }

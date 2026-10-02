@@ -27,6 +27,8 @@
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
         "allPlaces": "All places",
+        "unstable": "Unstable",
+        "unstableHint": "A flare star: its output surges without warning.",
         "systems": "Star systems",
         "name": "Name",
         "kind": "Kind",

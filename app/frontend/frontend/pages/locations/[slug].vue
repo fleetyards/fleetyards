@@ -108,7 +108,15 @@ const contentGroups = computed(() =>
 );
 
 // What a system page counts: every place in it, its planets, their moons.
-const systemBadges = computed(() => {
+type SystemBadge = {
+  key: string;
+  label: string;
+  value: string | number;
+  title?: string;
+  warning?: boolean;
+};
+
+const systemBadges = computed((): SystemBadge[] => {
   const planets = bodies.value.filter(
     (body) => body.location.kind === LocationKindEnum.PLANET,
   );
@@ -118,7 +126,20 @@ const systemBadges = computed(() => {
     ),
   );
 
+  const unstable: SystemBadge[] = star.value?.location.unstable
+    ? [
+        {
+          key: "unstable",
+          label: t("labels.location.kinds.star"),
+          value: t("labels.location.unstable"),
+          title: t("labels.location.unstableHint"),
+          warning: true,
+        },
+      ]
+    : [];
+
   return [
+    ...unstable,
     {
       key: "places",
       label: t("labels.location.places"),
@@ -253,6 +274,7 @@ watch(
                 :class="{
                   'location-page__globe--star':
                     location.kind === LocationKindEnum.STAR,
+                  'location-page__globe--unstable': location.unstable,
                 }"
                 :style="globeStyle(location) ?? sunStyle(location)"
                 aria-hidden="true"
@@ -276,6 +298,8 @@ watch(
                   v-for="badge in systemBadges"
                   :key="badge.key"
                   class="location-page__badge"
+                  :class="{ 'location-page__badge--warning': badge.warning }"
+                  :title="badge.title"
                 >
                   <span class="location-page__badge-label">
                     {{ badge.label }}

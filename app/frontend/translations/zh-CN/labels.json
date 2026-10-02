@@ -27,6 +27,8 @@
         "systemStrip": "%{system}，从恒星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地点",
+        "unstable": "不稳定",
+        "unstableHint": "耀星：其辐射会毫无预警地骤增。",
         "systems": "星系",
         "name": "名称",
         "kind": "类型",

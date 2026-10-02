@@ -27,6 +27,8 @@
         "systemStrip": "%{system}, desde su estrella hacia fuera",
         "allSystems": "Todos los sistemas",
         "allPlaces": "Todos los lugares",
+        "unstable": "Inestable",
+        "unstableHint": "Una estrella fulgurante: su emisión se dispara sin aviso.",
         "systems": "Sistemas estelares",
         "name": "Nombre",
         "kind": "Tipo",

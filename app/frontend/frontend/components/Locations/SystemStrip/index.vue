@@ -58,10 +58,19 @@ const litBody = computed(() =>
     >
       <span
         class="location-strip__sun"
+        :class="{ 'location-strip__sun--unstable': star.location.unstable }"
         :style="sunStyle(star.location)"
         aria-hidden="true"
       />
       <span class="location-strip__name">{{ star.location.name }}</span>
+      <span
+        v-if="star.location.unstable"
+        class="location-strip__unstable"
+        :title="t('labels.location.unstableHint')"
+        data-test="star-unstable"
+      >
+        {{ t("labels.location.unstable") }}
+      </span>
     </router-link>
 
     <ol class="location-strip__orbit">
