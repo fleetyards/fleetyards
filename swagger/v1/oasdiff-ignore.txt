@@ -1508,3 +1508,5 @@ GET /catalogue/search added the new `FleetEvent` enum value to the `items/items/
 GET /catalogue/search added the new `User` enum value to the `items/items/type` response property for the response status `200`
 PUT /fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/members/{username} removed the required property `details` from the response with the `400` status
 PUT /fleets/{fleetSlug}/squadrons/{fleetSquadronSlug}/members/{username} removed the required property `error` from the response with the `400` status
+GET /catalogue/lookup added the new `Location` enum value to the `items/items/type` response property for the response status `200`
+GET /catalogue/search added the new `Location` enum value to the `items/items/type` response property for the response status `200`
