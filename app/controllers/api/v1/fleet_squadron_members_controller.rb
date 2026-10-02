@@ -46,7 +46,7 @@ module Api
           .includes(
             :user,
             :fleet_role,
-            fleet_squadron_memberships: {fleet_squadron: {icon_attachment: :blob}}
+            fleet_squadron_memberships: [:fleet_squadron_role, {fleet_squadron: {icon_attachment: :blob}}]
           )
           .joins(:user)
 
@@ -54,11 +54,12 @@ module Api
       end
 
       def create
-        authorize! with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+        row = @fleet_squadron.fleet_squadron_memberships.new
+
+        authorize! row, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
 
         @member = find_member!
-
-        row = @fleet_squadron.fleet_squadron_memberships.new(fleet_membership: @member)
+        row.fleet_membership = @member
 
         if row.save
           render :show, status: :created
@@ -67,12 +68,17 @@ module Api
         end
       end
 
+      # Asked twice: once whether the caller manages this roster at all, before
+      # the username is looked up, so an outsider learns nothing about who is
+      # in it; then whether they outrank this particular member.
       def destroy
-        authorize! with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+        authorize! with: FleetSquadronMembershipPolicy, to: :create?, context: {fleet: @fleet, fleet_squadron: @fleet_squadron}
 
         @member = find_member!
 
         row = @fleet_squadron.fleet_squadron_memberships.find_by!(fleet_membership: @member)
+
+        authorize! row, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
 
         return if row.destroy
 
@@ -80,12 +86,15 @@ module Api
       end
 
       def update
-        authorize! with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+        authorize! with: FleetSquadronMembershipPolicy, to: :create?, context: {fleet: @fleet, fleet_squadron: @fleet_squadron}
 
         @member = find_member!
         row = @fleet_squadron.fleet_squadron_memberships.find_by!(fleet_membership: @member)
+        row.assign_attributes(squadron_membership_params)
 
-        if row.update(squadron_membership_params)
+        authorize! row, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}
+
+        if row.save
           head :no_content
         else
           render json: ValidationError.new("fleet_squadron_members.update", errors: row.errors), status: :bad_request
@@ -129,7 +138,7 @@ module Api
       end
 
       private def squadron_membership_params
-        params.transform_keys(&:underscore).permit(:created_at)
+        params.transform_keys(&:underscore).permit(:created_at, :fleet_squadron_role_id)
       end
     end
   end

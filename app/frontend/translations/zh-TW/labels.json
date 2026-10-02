@@ -595,7 +595,17 @@
           "joinedAt": "加入中隊時間",
           "searchMembers": "搜尋成員",
           "availableMembers": "可新增的成員",
-          "selectedMembers": "已選擇 %{count} 位"
+          "selectedMembers": "已選擇 %{count} 位",
+          "rank": "職級",
+          "ranksHint": "本艦隊所有中隊使用的名稱。重新命名職級不會改變其位置和權限。",
+          "rankName": "名稱",
+          "defaultRank": "預設",
+          "defaultRankToggle": "新成員以此職級開始",
+          "rankRights": {
+            "singleHolder": "每個中隊一名",
+            "managesMembers": "可新增和移除職級低於自己的成員",
+            "managesRanks": "可設定低於自己的職級"
+          }
         },
         "roles": {
           "permanent": "永久",

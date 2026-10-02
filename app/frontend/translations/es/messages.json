@@ -357,6 +357,12 @@
           "sort": {
             "failure": "No se pudo guardar el orden."
           },
+          "ranks": {
+            "update": {
+              "success": "Rangos de escuadrón guardados.",
+              "failure": "No se pudieron guardar los rangos de escuadrón."
+            }
+          },
           "members": {
             "add": {
               "success": "%{count} miembros añadidos.",

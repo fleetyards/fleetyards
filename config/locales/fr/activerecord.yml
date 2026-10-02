@@ -439,6 +439,14 @@ fr:
               not_a_member: "doit être un membre accepté de cette flotte"
             fleet_squadron:
               exclusive_conflict: "entre en conflit avec %{squadron} : un membre n'appartient qu'à un seul escadron, sauf s'il s'agit d'une équipe"
+            fleet_squadron_role:
+              not_in_fleet: "doit être l'un des grades d'escadron de cette flotte"
+              single_holder_taken: "est déjà attribué à un autre membre de cet escadron : il n'y a qu'un %{role} par escadron"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "ne peut pas être un grade de commandement : un nouveau membre ne commence jamais comme Chef ou Co-chef"
+              required: "est nécessaire : définissez plutôt un autre grade par défaut"
         fleet_role:
           attributes:
             base:

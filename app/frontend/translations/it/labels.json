@@ -595,7 +595,17 @@
           "joinedAt": "Data di ingresso nello squadrone",
           "searchMembers": "Cerca membri",
           "availableMembers": "membri disponibili",
-          "selectedMembers": "%{count} selezionati"
+          "selectedMembers": "%{count} selezionati",
+          "rank": "Grado",
+          "ranksHint": "I nomi usati da ogni squadrone di questa flotta. Un grado rinominato mantiene il suo posto e i suoi permessi.",
+          "rankName": "Nome",
+          "defaultRank": "Predefinito",
+          "defaultRankToggle": "I nuovi membri iniziano con questo grado",
+          "rankRights": {
+            "singleHolder": "Uno per squadrone",
+            "managesMembers": "Aggiunge e rimuove i membri di grado inferiore",
+            "managesRanks": "Stabilisce i gradi inferiori al proprio"
+          }
         },
         "roles": {
           "permanent": "Permanente",

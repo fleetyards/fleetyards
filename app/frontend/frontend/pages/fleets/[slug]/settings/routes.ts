@@ -45,17 +45,15 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "fleets.settings.squadrons",
       needsAuthentication: true,
+      // Not gated on the fleet setting: this is where it is switched on.
       access: [
-        "fleet:squadrons:create",
-        "fleet:squadrons:update",
-        "fleet:squadrons:delete",
+        "fleet:update",
         "fleet:squadrons:members:manage",
         "fleet:squadrons:manage",
         "fleet:manage",
       ],
       feature: FeatureFlagName.FLEET_SQUADRONS,
       featureScope: "fleet",
-      fleetSetting: "squadronsEnabled",
       customTitle: true,
     },
   },

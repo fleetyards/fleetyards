@@ -357,6 +357,12 @@
           "sort": {
             "failure": "Non è stato possibile salvare l'ordine."
           },
+          "ranks": {
+            "update": {
+              "success": "Gradi di squadrone salvati.",
+              "failure": "Non è stato possibile salvare i gradi di squadrone."
+            }
+          },
           "members": {
             "add": {
               "success": "%{count} membri aggiunti.",

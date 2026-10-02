@@ -262,6 +262,9 @@
           "formDetails": "详情",
           "formAppearance": "外观",
           "formDiscord": "Discord",
+          "ranks": "中队职级",
+          "editMember": "编辑中队成员",
+          "editRank": "编辑中队职级",
           "teams": "小队",
           "addMembers": "添加成员",
           "members": "成员"

@@ -262,6 +262,9 @@
           "formDetails": "Details",
           "formAppearance": "Erscheinungsbild",
           "formDiscord": "Discord",
+          "ranks": "Staffelränge",
+          "editMember": "Staffelmitglied bearbeiten",
+          "editRank": "Staffelrang bearbeiten",
           "teams": "Teams",
           "addMembers": "Mitglieder hinzufügen",
           "members": "Mitglieder"

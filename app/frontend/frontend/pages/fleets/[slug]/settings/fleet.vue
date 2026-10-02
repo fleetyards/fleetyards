@@ -75,7 +75,6 @@ const initialValues = ref<FleetUpdateInput>({
   alliesFleet: props.fleet.alliesFleet,
   alliesFleetStats: props.fleet.alliesFleetStats,
   alliesFleetMembers: props.fleet.alliesFleetMembers,
-  squadronsEnabled: props.fleet.squadronsEnabled,
   // A fleet that never chose follows publicFleet, so that is what it shows.
   listed: props.fleet.listed ?? props.fleet.publicFleet,
   alignment: props.fleet.alignment,
@@ -106,8 +105,6 @@ const [alliesFleetStats, alliesFleetStatsProps] =
   defineField("alliesFleetStats");
 const [alliesFleetMembers, alliesFleetMembersProps] =
   defineField("alliesFleetMembers");
-const [squadronsEnabled, squadronsEnabledProps] =
-  defineField("squadronsEnabled");
 const [logo, logoProps] = defineField("logo");
 const [listed, listedProps] = defineField("listed");
 const [alignment, alignmentProps] = defineField("alignment");
@@ -118,11 +115,6 @@ const alliesDisabled = (isPublic: unknown) =>
   narrowerAudienceDisabled(isPublic, submitting.value);
 
 const { isFleetFeatureEnabled } = useFeatures();
-
-// Until squadrons are rolled out to the fleet there is nothing to switch on.
-const squadronsAvailable = computed(() =>
-  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_SQUADRONS),
-);
 
 const { activityLabel, commitmentLabel, languageLabel, alignmentOptions } =
   useFleetProfileLabels();
@@ -382,20 +374,6 @@ const onDestroy = async () => {
               <div class="metrics-card__row__value">{{ item.value }}</div>
             </div>
           </div>
-        </div>
-      </div>
-    </template>
-    <template v-if="squadronsAvailable">
-      <hr />
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <FormToggle
-            v-model="squadronsEnabled"
-            name="squadronsEnabled"
-            translation-key="fleet.squadronsEnabled"
-            v-bind="squadronsEnabledProps"
-            :disabled="submitting"
-          />
         </div>
       </div>
     </template>
