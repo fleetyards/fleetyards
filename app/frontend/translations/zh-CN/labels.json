@@ -1,6 +1,15 @@
 {
   "zh-CN": {
     "labels": {
+      "shopPage": {
+        "kind": "商店",
+        "items": "商品",
+        "facts": "关键信息",
+        "place": "地点",
+        "system": "星系",
+        "carries": "在售",
+        "source": "价格与库存来自 UEX。"
+      },
       "location": {
         "resourceKinds": {
           "ship_mineables": "飞船采矿",
@@ -2531,6 +2540,8 @@
           "color": "颜色",
           "appearanceHint": "颜色会填满行星或卫星的圆圈，并渲染成受光照的球体。留空时，会在上传图片时从图片中提取。",
           "headerImageHint": "图片会作为该地点页面的头图显示。",
+          "shops": "商店",
+          "shopImageHint": "图片会作为商店页面的头图显示。",
           "sunHint": "颜色会为恒星的光晕着色。"
         },
         "blueprints": {

@@ -1,6 +1,15 @@
 {
   "es": {
     "labels": {
+      "shopPage": {
+        "kind": "Tienda",
+        "items": "Artículos",
+        "facts": "Datos clave",
+        "place": "Lugar",
+        "system": "Sistema",
+        "carries": "Surtido",
+        "source": "Precios y existencias de UEX."
+      },
       "location": {
         "resourceKinds": {
           "ship_mineables": "Minables con nave",
@@ -2531,6 +2540,8 @@
           "color": "Color",
           "appearanceHint": "El color rellena el círculo del planeta o luna, sombreado como una esfera iluminada. Si se deja vacío, se toma de la imagen al subirla.",
           "headerImageHint": "La imagen se muestra como imagen de cabecera en la página del lugar.",
+          "shops": "Tiendas",
+          "shopImageHint": "La imagen se muestra como imagen de cabecera en la página de la tienda.",
           "sunHint": "El color tiñe el brillo de la estrella."
         },
         "blueprints": {

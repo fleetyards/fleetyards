@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import {
-  ItemPriceItemTypeEnum,
-  ItemPriceTypeEnum,
-  type LocationShop,
-} from "@/services/fyApi";
+import { ItemPriceItemTypeEnum, type LocationShop } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const router = async () => {
@@ -14,8 +10,8 @@ const router = async () => {
     routes: [
       { path: "/", name: "home", component: { template: "<div />" } },
       {
-        path: "/equipment/:slug",
-        name: "equipment-item",
+        path: "/shops/:slug",
+        name: "shop",
         component: { template: "<div />" },
       },
     ],
@@ -29,36 +25,27 @@ const router = async () => {
 
 const shops: LocationShop[] = [
   {
+    id: "casaba",
     name: "Casaba Outlet",
-    itemsCount: 1,
-    items: [
-      {
-        id: "jacket",
-        name: "Adiva Jacket",
-        slug: "adiva-jacket",
-        itemType: ItemPriceItemTypeEnum.EQUIPMENT,
-        prices: [
-          { priceType: ItemPriceTypeEnum.SELL, price: 210, timeRange: null },
-        ],
-      },
-    ],
+    slug: "casaba-outlet-everus-harbor",
+    itemsCount: 78,
+    counts: [{ itemType: ItemPriceItemTypeEnum.EQUIPMENT, count: 78 }],
   },
 ];
 
 describe("LocationShops", () => {
-  it("lists a shop closed, and opens it into what it sells", async () => {
+  it("lists each shop as a tile that opens its page", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { shops },
       plugins: [await router()],
     });
 
+    const tile = wrapper.find("a.location-shops__tile");
+
+    expect(tile.attributes("href")).toContain(
+      "/shops/casaba-outlet-everus-harbor",
+    );
     expect(wrapper.find(".location-shops__name").text()).toBe("Casaba Outlet");
-    expect(wrapper.find(".location-shops__items").exists()).toBe(false);
-
-    await wrapper.find(".location-shops__head").trigger("click");
-
-    const link = wrapper.find("a.location-shops__item-name");
-    expect(link.text()).toBe("Adiva Jacket");
-    expect(link.attributes("href")).toContain("/equipment/adiva-jacket");
+    expect(wrapper.find(".location-shops__carries").text()).toContain("78");
   });
 });

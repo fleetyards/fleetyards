@@ -109,6 +109,15 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/locations.vue"),
     children: locationsRoutes,
   },
+  // A shop UEX lists at a place, with everything it sells.
+  {
+    path: "/shops/:slug/",
+    name: "shop",
+    component: () => import("@/frontend/pages/shops/[slug].vue"),
+    meta: {
+      customTitle: true,
+    },
+  },
   // The paths the pages shipped under before the section existed. Both are
   // live -- the detail page has long been reachable and every hardpoint
   // on every ship links to it -- so they redirect rather than 404.

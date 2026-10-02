@@ -1,5 +1,5 @@
-// A place's shops, in the shape of its contents groups: a heading like
-// "Station · 9", then one tile per shop that opens into what it sells.
+// A place's shops, in the shape of its contents groups: the same heading and
+// tiles, so a shop reads as one more thing inside the place.
 .location-shops {
   display: flex;
   flex-direction: column;
@@ -24,109 +24,60 @@
     }
   }
 
-  &__shop {
-    background-color: var(--color-control, rgb(39 43 48 / 0.9));
-    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-    border-radius: 8px;
-    overflow: hidden;
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  &__head {
+  &__tile {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 100%;
+    height: 100%;
     min-height: 44px;
     padding: 8px 12px;
-    background: none;
-    border: 0;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: 8px;
     color: var(--color-text, #c8c8c8);
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
-    transition: color 150ms ease;
+    transition:
+      border-color 150ms ease,
+      color 150ms ease;
 
     &:hover,
     &:focus-visible {
+      border-color: var(--color-primary, #428bca);
       color: #fff;
     }
   }
 
-  &__name {
-    flex: 1;
+  &__thumb {
+    flex-shrink: 0;
+    width: 48px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
-    font-weight: 600;
   }
 
-  &__count {
-    font-size: 12px;
-    color: var(--color-text-dim, #959595);
-    white-space: nowrap;
-  }
-
-  &__chevron {
-    color: var(--color-muted, #7a8288);
-    transition: transform 150ms ease;
-
-    &--open {
-      transform: rotate(180deg);
-    }
-  }
-
-  &__items {
-    margin: 0;
-    padding: 4px 0;
-    list-style: none;
-    border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
-  }
-
-  &__item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 2px 12px;
-    padding: 6px 12px;
-
-    &:nth-child(even) {
-      background-color: rgb(0 0 0 / 0.14);
-    }
-  }
-
-  &__item-name {
+  &__name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--color-text, #c8c8c8);
+    font-weight: 600;
   }
 
-  a.location-shops__item-name:hover,
-  a.location-shops__item-name:focus-visible {
-    color: #fff;
-  }
-
-  &__item-type {
+  &__carries {
     font-size: 12px;
     color: var(--color-text-dim, #959595);
-    text-align: right;
-  }
-
-  &__prices {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px 14px;
-    grid-column: 1 / -1;
-    font-size: 13px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  &__price-label {
-    margin-right: 6px;
-    font-size: 12px;
-    color: var(--color-text-dim, #959595);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    &__chevron {
-      transition: none;
-    }
   }
 }

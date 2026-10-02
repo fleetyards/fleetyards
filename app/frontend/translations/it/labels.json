@@ -1,6 +1,15 @@
 {
   "it": {
     "labels": {
+      "shopPage": {
+        "kind": "Negozio",
+        "items": "Articoli",
+        "facts": "Dati chiave",
+        "place": "Luogo",
+        "system": "Sistema",
+        "carries": "Assortimento",
+        "source": "Prezzi e disponibilità da UEX."
+      },
       "location": {
         "resourceKinds": {
           "ship_mineables": "Estraibili con nave",
@@ -2531,6 +2540,8 @@
           "color": "Colore",
           "appearanceHint": "Il colore riempie il cerchio del pianeta o della luna, ombreggiato come una sfera illuminata. Se lasciato vuoto, viene preso dall’immagine al caricamento.",
           "headerImageHint": "L’immagine viene mostrata come intestazione nella pagina del luogo.",
+          "shops": "Negozi",
+          "shopImageHint": "L’immagine viene mostrata come intestazione nella pagina del negozio.",
           "sunHint": "Il colore tinge il bagliore della stella."
         },
         "blueprints": {

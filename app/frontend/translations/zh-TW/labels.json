@@ -1,6 +1,15 @@
 {
   "zh-TW": {
     "labels": {
+      "shopPage": {
+        "kind": "商店",
+        "items": "商品",
+        "facts": "關鍵資訊",
+        "place": "地點",
+        "system": "星系",
+        "carries": "在售",
+        "source": "價格與庫存來自 UEX。"
+      },
       "location": {
         "resourceKinds": {
           "ship_mineables": "飛船採礦",
@@ -2531,6 +2540,8 @@
           "color": "顏色",
           "appearanceHint": "顏色會填滿行星或衛星的圓圈，並渲染成受光照的球體。留空時，會在上傳圖片時從圖片中擷取。",
           "headerImageHint": "圖片會作為該地點頁面的頁首圖片顯示。",
+          "shops": "商店",
+          "shopImageHint": "圖片會作為商店頁面的頁首圖片顯示。",
           "sunHint": "顏色會為恆星的光暈著色。"
         },
         "blueprints": {

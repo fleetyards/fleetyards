@@ -1,6 +1,15 @@
 {
   "en": {
     "labels": {
+      "shopPage": {
+        "kind": "Shop",
+        "items": "Items",
+        "facts": "Key facts",
+        "place": "Place",
+        "system": "System",
+        "carries": "Carries",
+        "source": "Prices and stock from UEX."
+      },
       "location": {
         "resourceKinds": {
           "ship_mineables": "Ship mineables",
@@ -2531,6 +2540,8 @@
           "color": "Color",
           "appearanceHint": "The color fills the planet or moon’s circle, shaded as a lit sphere. Left empty, it is taken from the picture when one is uploaded.",
           "headerImageHint": "The picture is shown as a header image on the place’s page.",
+          "shops": "Shops",
+          "shopImageHint": "The picture is shown as the header image on the shop’s page.",
           "sunHint": "The color tints the star’s glow."
         },
         "blueprints": {
