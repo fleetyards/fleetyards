@@ -516,6 +516,7 @@
         "tags": "标签",
         "physical": "物理属性",
         "damageTaken": "承受伤害",
+        "durability": "耐久性",
         "selfRepair": "自我修复",
         "distortion": "扭曲",
         "splineJump": "轨道跃迁"

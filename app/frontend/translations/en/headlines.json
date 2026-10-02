@@ -518,6 +518,7 @@
         "tags": "Tags",
         "physical": "Physical",
         "damageTaken": "Damage taken",
+        "durability": "Durability",
         "selfRepair": "Self-repair",
         "distortion": "Distortion",
         "splineJump": "Orbit Jump"

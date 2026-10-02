@@ -158,14 +158,11 @@ const openAvailability = () => {
 
 // The card sits in the 340px rail, where two tiles side by side leave a
 // six-figure price about 150px to render in and the tile clips it. Stacked
-// instead -- and the tiles need their flex reset with the axis, or the 140px
-// basis they carry for width becomes 140px of height each.
+// instead, and by grid rather than a column flexbox: the tile's inline-size
+// containment has flex size it as if it had no width, so every word wraps and
+// the tile comes out half again as tall as its three lines.
 .metrics-card__hero {
-  flex-direction: column;
-
-  .metrics-card__tile {
-    flex: none;
-  }
+  display: grid;
 }
 
 .metrics-card__hint {

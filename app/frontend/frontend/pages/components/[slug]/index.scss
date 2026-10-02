@@ -124,6 +124,19 @@
 }
 
 .component-page {
+  &__main {
+    min-width: 0;
+  }
+
+  // The item's smaller cards pair up under the wide ones instead of each
+  // stretching across the column with two rows in it.
+  &__extras {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    column-gap: 22px;
+    align-items: start;
+  }
+
   // The narrow column's own stack. Without it the cards are grid children and
   // the third wraps back under the wide one instead of following the second.
   &__rail {

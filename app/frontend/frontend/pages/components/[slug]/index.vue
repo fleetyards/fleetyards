@@ -221,12 +221,22 @@ watch(
     </p>
 
     <div class="component-page__columns">
-      <ComponentStatsCard
-        v-if="
-          itemStats.length || !(durabilityGroups.length || modeGroups.length)
-        "
-        :component="component"
-      />
+      <div class="component-page__main">
+        <ComponentStatsCard
+          v-if="
+            itemStats.length || !(durabilityGroups.length || modeGroups.length)
+          "
+          :component="component"
+        />
+
+        <DurabilityMetrics :durability="component.durability" />
+
+        <div class="component-page__extras">
+          <StatGroups :groups="modeGroups" test-prefix="mode" />
+
+          <ComponentThermalMetrics :component="component" />
+        </div>
+      </div>
 
       <div class="component-page__rail">
         <MetricsCard
@@ -246,12 +256,6 @@ watch(
             </div>
           </div>
         </MetricsCard>
-
-        <StatGroups :groups="modeGroups" test-prefix="mode" />
-
-        <DurabilityMetrics :durability="component.durability" />
-
-        <ComponentThermalMetrics :component="component" />
 
         <!-- Above the recipe card, because when nothing sells a component the
              answer it gives is "made from the recipe below". -->

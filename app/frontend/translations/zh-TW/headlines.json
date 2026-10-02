@@ -516,6 +516,7 @@
         "tags": "標籤",
         "physical": "物理屬性",
         "damageTaken": "承受傷害",
+        "durability": "耐久性",
         "selfRepair": "自我修復",
         "distortion": "扭曲",
         "splineJump": "軌道躍遷"
