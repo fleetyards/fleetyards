@@ -68,6 +68,18 @@ export const GLYPHS: Record<LocationKindEnum, Glyph> = {
     primary:
       '<rect x="32" y="408" width="448" height="40" rx="12"/><rect x="170" y="336" width="76" height="80" rx="14"/><rect x="404" y="108" width="28" height="308" rx="10"/><path d="M432 108 L496 140 L432 172 Z"/>',
   },
+  // A clinic: a cross on a rounded panel.
+  [LocationKindEnum.CLINIC]: {
+    secondary: '<rect x="40" y="40" width="432" height="432" rx="72"/>',
+    primary:
+      '<rect x="216" y="104" width="80" height="304" rx="16"/><rect x="104" y="216" width="304" height="80" rx="16"/>',
+  },
+  // A district: a few buildings on the platform they stand on.
+  [LocationKindEnum.DISTRICT]: {
+    secondary: '<path d="M40 340 L472 340 L404 452 L108 452 Z"/>',
+    primary:
+      '<rect x="96" y="200" width="88" height="128" rx="10"/><rect x="212" y="104" width="88" height="224" rx="10"/><rect x="328" y="168" width="88" height="160" rx="10"/><rect x="40" y="320" width="432" height="36" rx="12"/>',
+  },
   [LocationKindEnum.ASTEROID]: {
     defs: mask(
       "craters",

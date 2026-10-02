@@ -76,6 +76,8 @@
           "city": "Ciudad",
           "station": "Estación",
           "outpost": "Puesto avanzado",
+          "clinic": "Clínica",
+          "district": "Distrito",
           "asteroid": "Asteroide",
           "anomaly": "Anomalía",
           "jump_point": "Punto de salto",

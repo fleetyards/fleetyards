@@ -166,6 +166,7 @@ module ScData
         drop_unplaced(places)
         merge_overrides(places)
         fold_into_namesakes(places)
+        name_rooms(places)
         show_what_holds_shown_places(places)
         resolve_map_parents(places)
 
@@ -465,6 +466,20 @@ module ScData
         return override if BODY_TYPE_VALUES.include?(override)
 
         BODY_TYPES.find { |_type, pattern| pattern.match?(place[:description].to_s) }&.first
+      end
+
+      # The game types a room inside a station or city as an `Outpost`, the same
+      # as a base on a moon: the Everus Harbor clinic, Orison's platforms. Inside
+      # one it is a clinic where the name says so, and a district otherwise.
+      CLINIC_NAME = /\b(clinic|hospital|medical)\b|\brx\b/i
+      SETTLED_KINDS = %w[station city].freeze
+
+      private def name_rooms(places)
+        places.each_value do |place|
+          next unless place[:kind] == "outpost" && SETTLED_KINDS.include?(places[place[:parent]]&.dig(:kind))
+
+          place[:kind] = CLINIC_NAME.match?(place[:name].to_s) ? "clinic" : "district"
+        end
       end
 
       private def kind_of(record)

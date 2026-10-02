@@ -55,7 +55,7 @@ class Location < ApplicationRecord
   paginates_per 60
 
   KINDS = %w[
-    system star planet moon city station outpost asteroid
+    system star planet moon city station outpost clinic district asteroid
     anomaly jump_point point_of_interest nav_point other
   ].freeze
 

@@ -29554,6 +29554,8 @@ components:
       - city
       - station
       - outpost
+      - clinic
+      - district
       - asteroid
       - anomaly
       - jump_point
@@ -29568,6 +29570,8 @@ components:
       - CITY
       - STATION
       - OUTPOST
+      - CLINIC
+      - DISTRICT
       - ASTEROID
       - ANOMALY
       - JUMP_POINT

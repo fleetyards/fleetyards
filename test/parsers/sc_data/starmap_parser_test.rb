@@ -63,6 +63,19 @@ module ScData
         assert_nil location("Stanton2_Belt")[:body_type]
       end
 
+      test "#locations calls an outpost inside a station or city a clinic or a district" do
+        stanton
+        place("RR_HUR_LEO", "Everus Harbor", type: "Manmade", parent: "Stanton1", icon: "Station")
+        place("RR_HUR_LEO_Clinic", "Everus Harbor Clinic", type: "Outpost", parent: "RR_HUR_LEO")
+        place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
+        place("Lorville_Platform", "Teasa Spaceport", type: "Outpost", parent: "Stanton1_Lorville")
+        place("Stanton1_Outpost", "HDMS-Edmond", type: "Outpost", parent: "Stanton1")
+
+        assert_equal "clinic", location("RR_HUR_LEO_Clinic")[:kind]
+        assert_equal "district", location("Lorville_Platform")[:kind]
+        assert_equal "outpost", location("Stanton1_Outpost")[:kind]
+      end
+
       test "#locations names a place's kind from its map icon before its type" do
         stanton
         place("Nyx_Levski", "Levski", type: "Manmade", parent: "Stanton1", icon: "LandingZone")

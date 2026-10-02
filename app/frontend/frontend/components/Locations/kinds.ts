@@ -10,6 +10,8 @@ export const LOCATION_KIND_ORDER: LocationKindEnum[] = [
   LocationKindEnum.CITY,
   LocationKindEnum.STATION,
   LocationKindEnum.OUTPOST,
+  LocationKindEnum.CLINIC,
+  LocationKindEnum.DISTRICT,
   LocationKindEnum.JUMP_POINT,
   LocationKindEnum.POINT_OF_INTEREST,
   LocationKindEnum.ASTEROID,

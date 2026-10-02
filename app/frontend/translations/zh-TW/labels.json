@@ -76,6 +76,8 @@
           "city": "城市",
           "station": "太空站",
           "outpost": "前哨站",
+          "clinic": "診所",
+          "district": "街區",
           "asteroid": "小行星",
           "anomaly": "異常點",
           "jump_point": "跳躍點",
