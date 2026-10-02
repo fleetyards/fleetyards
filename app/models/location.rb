@@ -66,6 +66,7 @@ class Location < ApplicationRecord
   has_many :children, class_name: "Location", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
 
   has_many :terminals, dependent: :nullify
+  has_many :item_prices, dependent: :nullify, inverse_of: :shop_location
   has_many :game_mission_locations, dependent: :destroy
   has_many :game_missions, -> { distinct }, through: :game_mission_locations
 

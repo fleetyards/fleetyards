@@ -18,6 +18,7 @@ module ScData
         # The UEX sync matches a terminal to a place as it writes it, which
         # finds nothing for a place that arrived after the sync.
         stats[Terminal.name][:updated] += ::Uex::TerminalLocationMatcher.relink
+        ::Uex::ShopLocationMatcher.relink
       end
 
       def one(item)
