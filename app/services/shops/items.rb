@@ -15,7 +15,17 @@ module Shops
       end
 
       def rental_price
-        prices.select(&:rental?).filter_map(&:price).min
+        cheapest_rental&.price
+      end
+
+      # A rental is quoted for a period: 9,000 for a day is not 9,000 for a
+      # week.
+      def rental_time_range
+        cheapest_rental&.time_range
+      end
+
+      def cheapest_rental
+        prices.select { |price| price.rental? && price.price }.min_by(&:price)
       end
 
       def sell_price
@@ -47,8 +57,14 @@ module Shops
       rows = rows.select { |row| @category_in.include?(row.category_id) } if @category_in
       rows = rows.reject { |row| @category_not_in.include?(row.category_id) } if @category_not_in
 
-      preload_manufacturers(rows)
       sorted(rows)
+    end
+
+    # For the page being shown, not every match.
+    def self.preload_manufacturers(rows)
+      rows.map(&:item).select { |item| item.class.reflect_on_association(:manufacturer) }.group_by(&:class).each_value do |items|
+        ActiveRecord::Associations::Preloader.new(records: items, associations: :manufacturer).call
+      end
     end
 
     private def sorted(rows)
@@ -63,12 +79,6 @@ module Shops
       else
         rows = rows.sort_by(&by_name)
         (direction == "desc") ? rows.reverse : rows
-      end
-    end
-
-    private def preload_manufacturers(rows)
-      rows.map(&:item).select { |item| item.class.reflect_on_association(:manufacturer) }.group_by(&:class).each_value do |items|
-        ActiveRecord::Associations::Preloader.new(records: items, associations: :manufacturer).call
       end
     end
   end

@@ -17229,6 +17229,18 @@ components:
           type: string
       additionalProperties: false
       title: ManufacturerInput
+    ManufacturerLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: ManufacturerLink
     ManufacturerOption:
       type: object
       properties:

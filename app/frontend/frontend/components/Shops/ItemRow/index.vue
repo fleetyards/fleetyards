@@ -33,26 +33,39 @@ const category = computed(
 const price = (value: number) =>
   `${toNumber(value, "integer")} ${t("number.units.uec")}`;
 
+// A rental is quoted for a period, which goes beside its price.
+const rentalPeriod = computed(() =>
+  props.item.rentalTimeRange
+    ? ` / ${t(`labels.availability.timeRange.${props.item.rentalTimeRange}`)}`
+    : "",
+);
+
 const badges = computed<RowListItemBadge[]>(() =>
   [
     {
       key: "buy",
       label: t("labels.availability.buy"),
       value: props.item.buyPrice,
+      suffix: "",
     },
     {
       key: "rent",
       label: t("labels.availability.rent"),
       value: props.item.rentalPrice,
+      suffix: rentalPeriod.value,
     },
     {
       key: "sell",
       label: t("labels.availability.sell"),
       value: props.item.sellPrice,
+      suffix: "",
     },
   ]
     .filter((badge) => badge.value !== null && badge.value !== undefined)
-    .map((badge) => ({ ...badge, value: price(badge.value as number) })),
+    .map(({ suffix, ...badge }) => ({
+      ...badge,
+      value: `${price(badge.value as number)}${suffix}`,
+    })),
 );
 </script>
 

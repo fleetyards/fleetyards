@@ -33,6 +33,7 @@ const item: ShopItem = {
   manufacturer: { name: "Drake Interplanetary", slug: "drake" },
   buyPrice: null,
   rentalPrice: 9000,
+  rentalTimeRange: "1-day",
   sellPrice: null,
 };
 
@@ -54,5 +55,6 @@ describe("ShopItemRow", () => {
 
     expect(badges).toHaveLength(1);
     expect(badges[0].text()).toContain("9");
+    expect(badges[0].text()).toContain("1 day");
   });
 });

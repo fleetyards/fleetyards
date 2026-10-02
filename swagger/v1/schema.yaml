@@ -30037,6 +30037,18 @@ components:
       - createdAt
       - updatedAt
       title: Manufacturer
+    ManufacturerLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: ManufacturerLink
     ManufacturerOption:
       type: object
       properties:
@@ -34861,16 +34873,7 @@ components:
           - 'null'
         manufacturer:
           anyOf:
-          - type: object
-            properties:
-              name:
-                type: string
-              slug:
-                type: string
-            additionalProperties: false
-            required:
-            - name
-            - slug
+          - "$ref": "#/components/schemas/ManufacturerLink"
           - type: 'null'
         buyPrice:
           type:
@@ -34880,6 +34883,8 @@ components:
           type:
           - number
           - 'null'
+        rentalTimeRange:
+          "$ref": "#/components/schemas/NullableItemPriceTimeRangeEnum"
         sellPrice:
           type:
           - number
@@ -34895,6 +34900,7 @@ components:
       - manufacturer
       - buyPrice
       - rentalPrice
+      - rentalTimeRange
       - sellPrice
       title: ShopItem
     ShopItemQuery:

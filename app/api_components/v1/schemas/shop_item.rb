@@ -17,24 +17,16 @@ module V1
           # The shop category it is counted under, as `ShopCategory#id` names it.
           categoryId: {type: :string},
           categoryLabel: {type: [:string, :null]},
-          manufacturer: {
-            anyOf: [
-              {
-                type: :object,
-                properties: {name: {type: :string}, slug: {type: :string}},
-                additionalProperties: false,
-                required: %w[name slug]
-              },
-              {type: :null}
-            ]
-          },
+          manufacturer: {anyOf: [::Shared::V1::Schemas::ManufacturerLink, {type: :null}]},
           # What a reader pays, rents it for, and is paid for it here.
           buyPrice: {type: [:number, :null]},
           rentalPrice: {type: [:number, :null]},
+          # The period the rental price is for, beside it.
+          rentalTimeRange: ::Shared::V1::Schemas::Enums::NullableItemPriceTimeRangeEnum,
           sellPrice: {type: [:number, :null]}
         },
         additionalProperties: false,
-        required: %w[id itemType name slug categoryId categoryLabel manufacturer buyPrice rentalPrice sellPrice]
+        required: %w[id itemType name slug categoryId categoryLabel manufacturer buyPrice rentalPrice rentalTimeRange sellPrice]
       })
     end
   end

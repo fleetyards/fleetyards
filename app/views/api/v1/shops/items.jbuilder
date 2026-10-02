@@ -22,6 +22,7 @@ json.items @items do |row|
 
   json.buy_price row.buy_price&.to_f
   json.rental_price row.rental_price&.to_f
+  json.rental_time_range row.rental_time_range
   json.sell_price row.sell_price&.to_f
 end
 
