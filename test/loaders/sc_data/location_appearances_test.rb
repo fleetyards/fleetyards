@@ -37,6 +37,27 @@ module ScData
         assert_equal "admin.png", @levski.reload.image.filename.to_s
       end
 
+      test "#apply leaves a seeded colour and picture an admin cleared cleared" do
+        seeds = {"Nyx_Levski" => {"color" => "#4d5a63", "image" => "test/fixtures/files/test.png"}}
+        appearances(seeds:).apply
+
+        @levski.reload.update!(color: nil)
+        @levski.image.purge
+
+        assert_equal 0, appearances(seeds:).apply
+        assert_nil @levski.reload.color
+        assert_not @levski.image.attached?
+      end
+
+      test "#apply seeds again once the seed itself changes" do
+        appearances(seeds: {"Stanton1" => {"color" => "#9c846e"}}).apply
+        @hurston.reload.update!(color: nil)
+
+        appearances(seeds: {"Stanton1" => {"color" => "#a0522d"}}).apply
+
+        assert_equal "#a0522d", @hurston.reload.color
+      end
+
       test "the seed file names only places by their record key, with valid colours" do
         seeds = ::ScData::Loader::LocationAppearances.seeds
 

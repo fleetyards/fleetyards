@@ -6,6 +6,10 @@ module ScData
     # a colour or a header picture, only where the place has none yet. The
     # places only exist once a load made them, so the seed rides on the load
     # rather than on a deploy, and an admin's change always wins.
+    #
+    # Each field is seeded once per seed value, remembered in
+    # `appearance_seed`: a picture an admin removed stays removed until the
+    # seed file names a different one.
     class LocationAppearances
       PATH = "config/sc_data/location_appearances.yml"
 
@@ -27,22 +31,32 @@ module ScData
           location = locations[sc_key]
           next 0 if location.nil?
 
-          changed = seed_color(location, seed["color"])
-          (seed_image(location, seed["image"]) || changed) ? 1 : 0
+          seeded = location.appearance_seed.to_h.dup
+          changed = seed_color(location, seed["color"], seeded)
+          changed = seed_image(location, seed["image"], seeded) || changed
+
+          location.update_column(:appearance_seed, seeded) if seeded != location.appearance_seed
+          changed ? 1 : 0
         end
       end
 
-      private def seed_color(location, color)
-        return false if color.blank? || location.color.present?
+      private def seed_color(location, color, seeded)
+        return false if color.blank? || seeded["color"] == color
+
+        seeded["color"] = color
+        return false if location.color.present?
 
         location.update_column(:color, color)
       end
 
-      private def seed_image(location, path)
-        return false if path.blank? || location.image.attached?
+      private def seed_image(location, path, seeded)
+        return false if path.blank? || seeded["image"] == path
 
         file = Rails.root.join(path)
         return false unless file.file?
+
+        seeded["image"] = path
+        return false if location.image.attached?
 
         location.image.attach(io: StringIO.new(file.binread), filename: file.basename.to_s, content_type: Marcel::MimeType.for(file))
         true

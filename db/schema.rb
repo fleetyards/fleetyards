@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_02_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_02_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1645,6 +1645,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_160000) do
     t.jsonb "resources", default: [], null: false
     t.string "color"
     t.string "body_type"
+    t.jsonb "appearance_seed", default: {}, null: false
     t.index ["map_parent_id"], name: "index_locations_on_map_parent_id"
     t.index ["mission_template_refs"], name: "index_locations_on_mission_template_refs", using: :gin
     t.index ["name"], name: "index_locations_on_name"

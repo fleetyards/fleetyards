@@ -4,6 +4,7 @@
 #
 #  id                         :uuid             not null, primary key
 #  always_shown               :boolean          default(FALSE), not null
+#  appearance_seed            :jsonb            not null
 #  body_type                  :string
 #  color                      :string
 #  description                :text
