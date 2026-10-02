@@ -1,5 +1,7 @@
 // A system laid out the way it sits: the star, then its bodies in orbit
-// order along one line. Equal circles, because the export states no size.
+// order along one line. Equal circles, because the export states no size,
+// and the same circles on every page -- compact only lists the lit body's
+// moons under it.
 .location-strip {
   position: relative;
   display: flex;
@@ -40,26 +42,11 @@
     height: 64px;
     background-color: #3a2a17;
     border-color: rgb(240 179 90 / 0.8);
-
-    .location-strip--compact & {
-      width: 40px;
-      height: 40px;
-    }
   }
 
   &__planet {
     width: 44px;
     height: 44px;
-
-    .location-strip--compact & {
-      width: 22px;
-      height: 22px;
-    }
-
-    .location-strip--compact .location-strip__body--lit & {
-      width: 28px;
-      height: 28px;
-    }
   }
 
   &__name {
@@ -85,10 +72,6 @@
       right: 0;
       top: 22px;
       border-top: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.45));
-
-      .location-strip--compact & {
-        top: 12px;
-      }
     }
   }
 
