@@ -66,10 +66,11 @@ const cities = (body: LocationTreeNode) =>
           <span class="location-columns__caption">
             {{ t("labels.location.moons", { count: moons(body).length }) }}
           </span>
-          <router-link
+          <!-- A row rather than one link: a city on the moon is a page of its
+               own, and a link inside a link opens the outer one. -->
+          <div
             v-for="moon in moons(body)"
             :key="moon.location.id"
-            :to="{ name: 'location', params: { slug: moon.location.slug } }"
             class="location-columns__moon"
           >
             <LocationGlobe
@@ -85,20 +86,30 @@ const cities = (body: LocationTreeNode) =>
               <LocationKindIcon :kind="moon.location.kind" />
             </span>
             <span class="location-columns__moon-body">
-              <span class="location-columns__moon-name">
+              <router-link
+                :to="{
+                  name: 'location',
+                  params: { slug: moon.location.slug },
+                }"
+                class="location-columns__moon-name"
+              >
                 {{ moon.location.name }}
-              </span>
+              </router-link>
               <KindCounts :counts="moon.counts" />
-              <span
+              <router-link
                 v-for="city in cities(moon)"
                 :key="city.location.id"
+                :to="{
+                  name: 'location',
+                  params: { slug: city.location.slug },
+                }"
                 class="location-columns__moon-city"
               >
                 <LocationKindIcon :kind="LocationKindEnum.CITY" />
                 {{ city.location.name }}
-              </span>
+              </router-link>
             </span>
-          </router-link>
+          </div>
         </div>
 
         <div v-if="body.counts.length" class="location-columns__group">
