@@ -17,7 +17,7 @@ import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import ShopFilterForm from "@/frontend/components/Shops/FilterForm/index.vue";
-import ShopCategoryFilters from "@/frontend/components/Shops/CategoryFilters/index.vue";
+import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import ShopItemRow from "@/frontend/components/Shops/ItemRow/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
@@ -73,6 +73,15 @@ const sortFields = computed<BaseTableCol<ShopItem>[]>(() => [
   { name: "name", label: t("labels.shopPage.sortName"), sortable: true },
   { name: "price", label: t("labels.shopPage.sortPrice"), sortable: true },
 ]);
+
+const categoryCounts = computed(() =>
+  (shop.value?.categories ?? []).map((category) => ({
+    name: category.id,
+    label:
+      category.label ?? t(`labels.location.shopItemTypes.${category.itemType}`),
+    count: category.count,
+  })),
+);
 
 const headerImage = computed(() => {
   const image = shop.value?.image;
@@ -136,6 +145,18 @@ watch(
 
         <div class="location-page__layout">
           <div class="location-page__main">
+            <!-- The hangar's category row: a click narrows to a category, a
+                 second leaves it out, a third clears it. -->
+            <ModelClassLabels
+              class="shop-categories"
+              :count-data="categoryCounts"
+              :label="t('labels.shopPage.categories')"
+              hide-label
+              filter-key="categoryIn"
+              exclude-filter-key="categoryNotIn"
+              data-test="shop-categories"
+            />
+
             <FilteredList
               name="shop-items"
               :records="items?.items ?? []"
@@ -159,10 +180,6 @@ watch(
               </template>
 
               <template #sort>
-                <ShopCategoryFilters
-                  :categories="shop.categories"
-                  :total="shop.itemsCount"
-                />
                 <ListToolbar :columns="sortFields" default-sort="name asc" />
               </template>
 
@@ -238,6 +255,10 @@ watch(
 <style lang="scss" scoped>
 @import "@/frontend/pages/locations/index";
 @import "@/shared/components/metricsCard";
+
+.shop-categories {
+  margin-bottom: 12px;
+}
 
 .shop-facts {
   &__source {
