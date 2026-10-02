@@ -437,6 +437,9 @@ de:
               not_a_member: "muss ein bestätigtes Mitglied dieser Flotte sein"
             fleet_squadron:
               exclusive_conflict: "steht im Widerspruch zu %{squadron} – Mitglieder gehören nur einer Staffel an, sofern sie kein Team ist"
+            fleet_squadron_role:
+              not_in_fleet: "muss einer der Staffelränge dieser Flotte sein"
+              single_holder_taken: "ist in dieser Staffel bereits vergeben – es gibt nur einen %{role} pro Staffel"
         fleet_role:
           attributes:
             base:

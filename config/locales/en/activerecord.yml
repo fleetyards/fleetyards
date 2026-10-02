@@ -468,6 +468,9 @@ en:
               not_a_member: "must be an accepted member of this fleet"
             fleet_squadron:
               exclusive_conflict: "conflicts with %{squadron} — a member belongs to one squadron unless it is a team"
+            fleet_squadron_role:
+              not_in_fleet: "must be one of this fleet's squadron ranks"
+              single_holder_taken: "is already held by another member of this squadron — there is one %{role} per squadron"
         fleet_role:
           attributes:
             base:
