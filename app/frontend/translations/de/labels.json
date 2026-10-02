@@ -1,6 +1,113 @@
 {
   "de": {
     "labels": {
+      "locationInput": {
+        "linked": "Verknüpft mit"
+      },
+      "galactapedia": "Galactapedia",
+      "shopPage": {
+        "all": "Alle",
+        "search": "In diesem Shop suchen",
+        "categories": "Kategorien",
+        "sortName": "Name",
+        "sortPrice": "Preis",
+        "emptyName": "Artikel",
+        "kind": "Laden",
+        "items": "Artikel",
+        "facts": "Eckdaten",
+        "place": "Ort",
+        "system": "System",
+        "carries": "Verkauft",
+        "source": "Preise und Sortiment von UEX."
+      },
+      "location": {
+        "missionsSample": "Die Zahlen beziehen sich auf die ersten %{shown} von %{total}.",
+        "systemUnavailable": "Dieses System konnte nicht geladen werden.",
+        "systemsUnavailable": "Die Systeme konnten nicht geladen werden.",
+        "resourceKinds": {
+          "ship_mineables": "Schiffsabbau",
+          "hand_mineables": "Handabbau",
+          "ground_vehicle_mineables": "Bodenfahrzeug-Abbau",
+          "harvestables": "Erntegut",
+          "creatures": "Kreaturen"
+        },
+        "resources": "Ressourcen",
+        "moonsBadge": "Monde",
+        "planets": "Planeten",
+        "places": "Orte",
+        "showFewer": "Weniger anzeigen",
+        "showAll": "Alle %{count} anzeigen",
+        "elsewhere": "Sonst um %{star}",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "Lagrange-Punkte",
+        "inOrbit": "Im Orbit",
+        "moons": {
+          "one": "%{count} Mond",
+          "other": "%{count} Monde"
+        },
+        "gateways": "Sprungtore",
+        "systemStrip": "%{system}, vom Stern nach außen",
+        "allSystems": "Alle Systeme",
+        "allPlaces": "Alle Orte",
+        "shops": "Läden",
+        "shopItems": {
+          "one": "%{count} Artikel",
+          "other": "%{count} Artikel"
+        },
+        "shopItemTypes": {
+          "Model": "Schiff",
+          "ModelModule": "Modul",
+          "ModelPaint": "Lackierung",
+          "Component": "Komponente",
+          "Equipment": "Ausrüstung",
+          "Commodity": "Ware"
+        },
+        "bodyTypes": {
+          "gas_giant": "Gasriese",
+          "ice_giant": "Eisriese",
+          "asteroid": "Asteroid",
+          "city": "Stadtplanet"
+        },
+        "unstable": "Instabil",
+        "unstableHint": "Ein Flare-Stern: Seine Strahlung schießt ohne Vorwarnung in die Höhe.",
+        "systems": "Sternsysteme",
+        "name": "Name",
+        "kind": "Art",
+        "retired": "Nicht in diesem Build",
+        "starmap": "Sternenkarte",
+        "starmapVisibility": "Karte im Spiel",
+        "starmapHidden": "Auf der Karte verborgen",
+        "starmapAlways": "Immer auf der Karte sichtbar",
+        "starmapWithParent": "Sichtbar, sobald %{parent} ausgewählt ist",
+        "starmapShown": "Auf der Karte sichtbar",
+        "quantumTravel": "Quantenreise",
+        "quantumTravelYes": "Ja",
+        "quantumTravelNo": "Nein",
+        "mapParent": "Eingezeichnet unter",
+        "mapParentNote": "Die Karte im Spiel zeigt den Ort unter %{mapParent}, obwohl er in %{parent} liegt.",
+        "missions": "Missionen",
+        "allMissions": "Alle Missionen, die hier stattfinden können",
+        "terminals": "Handelsterminals",
+        "alwaysShown": "Immer auf der Karte",
+        "hiddenOnStarmap": "Auf der Karte verborgen",
+        "kinds": {
+          "system": "Sternsystem",
+          "star": "Stern",
+          "planet": "Planet",
+          "moon": "Mond",
+          "city": "Stadt",
+          "station": "Station",
+          "outpost": "Außenposten",
+          "clinic": "Klinik",
+          "district": "Bezirk",
+          "asteroid": "Asteroid",
+          "anomaly": "Anomalie",
+          "jump_point": "Sprungpunkt",
+          "point_of_interest": "Ort von Interesse",
+          "nav_point": "Navigationspunkt",
+          "other": "Sonstiges"
+        }
+      },
       "sortOptions": "Sortieroptionen",
       "loading": "Lädt…",
       "loadingNamed": "%{name} wird geladen…",
@@ -230,6 +337,7 @@
           "Model": "Schiff",
           "Blueprint": "Bauplan",
           "GameMission": "Mission",
+          "Location": "Ort",
           "FleetContract": "Auftrag",
           "FleetEvent": "Event",
           "User": "Benutzer"
@@ -241,6 +349,7 @@
           "Model": "Schiff öffnen",
           "Blueprint": "Bauplan öffnen",
           "GameMission": "Mission öffnen",
+          "Location": "Ort öffnen",
           "FleetContract": "Auftrag öffnen",
           "FleetEvent": "Event öffnen",
           "User": "Hangar öffnen"
@@ -428,6 +537,7 @@
       "yourFlagship": "Ihr Flaggschiff",
       "flagship": "Flaggschiff",
       "fleet": {
+        "headquarters": "Hauptquartier",
         "index": "Flotte",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flotte",
@@ -1871,7 +1981,7 @@
           }
         },
         "location": "Standort",
-        "currentSystem": "Aktuelles Sternensystem",
+        "currentSystem": "Aktueller Ort im Spiel",
         "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Unbestätigte E-Mail",
@@ -1992,6 +2102,15 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "Orte durchsuchen",
+          "system": "System",
+          "parent": "Innerhalb von",
+          "kind": "Art",
+          "starmap": "Karte im Spiel",
+          "shownOnStarmap": "Auf der Karte sichtbar",
+          "hiddenOnStarmap": "Auf der Karte verborgen"
+        },
         "components": {
           "name": "Name",
           "itemType": "Gegenstandstyp",
@@ -2417,6 +2536,30 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Übergeordnet",
+          "system": "System",
+          "scKey": "Spiel-Schlüssel",
+          "scRefs": "Spiel-Referenzen",
+          "slug": "Slug",
+          "gameType": "Spieltyp",
+          "build": "Build",
+          "children": "Orte darin",
+          "missions": "Verknüpfte Missionen",
+          "missionTemplates": "Missionsvorlagen",
+          "shownWithParentOnly": "Nur mit übergeordnetem Ort sichtbar",
+          "yes": "Ja",
+          "no": "Nein",
+          "unavailable": "nicht verfügbar",
+          "appearance": "Darstellung",
+          "image": "Bild",
+          "color": "Farbe",
+          "appearanceHint": "Die Farbe füllt den Kreis des Planeten oder Mondes, schattiert wie eine beleuchtete Kugel. Bleibt sie leer, wird sie beim Hochladen eines Bildes aus diesem übernommen.",
+          "headerImageHint": "Das Bild wird als Kopfbild auf der Seite des Ortes gezeigt.",
+          "shops": "Läden",
+          "shopImageHint": "Das Bild wird als Kopfbild auf der Seite des Ladens gezeigt.",
+          "sunHint": "Die Farbe tönt das Leuchten des Sterns."
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Quelle bekannt",
@@ -2569,6 +2712,7 @@
             "system": "System"
           },
           "privileges": {
+            "locations": "Orte",
             "blueprints": "Baupläne",
             "models": "Modelle",
             "model_modules": "Modell-Module",
@@ -3530,6 +3674,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "im Briefing genannt",
+        "locations": "Wo sie stattfindet",
         "locationKinds": {
           "surface": "Auf Planet oder Mond",
           "space": "Im Weltraum",

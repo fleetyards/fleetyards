@@ -67,6 +67,15 @@ class Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions filters by a place it can take place at" do
+    levski = create(:location, name: "Levski", kind: "city")
+    create(:game_mission_location, game_mission: @hit, location: levski)
+
+    assert_api_response :get, 200, params: {q: {"atLocation" => levski.id}} do
+      assert_equal [@hit.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /missions filters by the org that offers the work" do
     assert_api_response :get, 200, params: {q: {"fromOrg" => "Headhunters"}} do
       assert_equal [@hit.id], parsed_body["items"].pluck("id")

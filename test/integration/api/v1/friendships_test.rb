@@ -95,6 +95,28 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET says where a friend is in the game, and nothing until accepted" do
+    lorville = create(:location, name: "Lorville", kind: "city")
+    friend = create(:user)
+    friend.update!(current_location_id: lorville.id)
+    stranger = create(:user)
+    stranger.update!(current_location_id: lorville.id)
+    create(:friendship, :accepted, requester: @user, addressee: friend)
+    create(:friendship, requester: stranger, addressee: @user)
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/friends" do
+      user = parsed_body["items"].sole["user"]
+
+      assert_equal "Lorville", user["currentSystem"]
+      assert_equal "lorville", user.dig("currentLocation", "slug")
+    end
+
+    assert_api_response :get, 200, api_path: "/friends", params: {state: "pending", direction: "incoming"} do
+      assert_not parsed_body["items"].sole["user"].key?("currentLocation")
+    end
+  end
+
   # The transfer picker asks for the friends it could address. A friendship is
   # one row per unordered pair, so the filter has to read whichever column the
   # *other* party is in -- the reader being able to receive says nothing about

@@ -17,6 +17,9 @@ module V1
             timezone: {type: :string},
             location: {type: [:string, :null]},
             meetupLocation: {type: [:string, :null]},
+            # Our places the texts name, where they are ones.
+            locationId: {type: [:string, :null], format: :uuid},
+            meetupLocationId: {type: [:string, :null], format: :uuid},
             visibility: ::V1::Schemas::Enums::FleetEventVisibilityEnum,
             fleetSquadronIds: {type: :array, items: {type: :string, format: :uuid}},
             category: ::V1::Schemas::Enums::MissionCategoryEnum,

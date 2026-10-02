@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -67,6 +68,8 @@ const initialValues = ref<FleetUpdateInput>({
   discord: props.fleet.discord,
   ts: props.fleet.ts,
   homepage: props.fleet.homepage,
+  headquarters: props.fleet.headquarters ?? "",
+  headquartersLocationId: props.fleet.headquartersLocation?.id ?? null,
   twitch: props.fleet.twitch,
   youtube: props.fleet.youtube,
   guilded: props.fleet.guilded,
@@ -94,6 +97,8 @@ const [description, descriptionProps] = defineField("description");
 const [discord, discordProps] = defineField("discord");
 const [ts, tsProps] = defineField("ts");
 const [homepage, homepageProps] = defineField("homepage");
+const [headquarters] = defineField("headquarters");
+const [headquartersLocationId] = defineField("headquartersLocationId");
 const [twitch, twitchProps] = defineField("twitch");
 const [youtube, youtubeProps] = defineField("youtube");
 const [guilded, guildedProps] = defineField("guilded");
@@ -378,6 +383,17 @@ const onDestroy = async () => {
       </div>
     </template>
     <hr />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <LocationInput
+          v-model="headquarters"
+          v-model:location-id="headquartersLocationId"
+          :linked="fleet.headquartersLocation"
+          name="headquarters"
+          translation-key="fleet.headquarters"
+        />
+      </div>
+    </div>
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="homepage" name="homepage" v-bind="homepageProps" />

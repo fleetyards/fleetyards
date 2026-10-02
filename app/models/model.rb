@@ -139,6 +139,7 @@ class Model < ApplicationRecord
   include DerivedCargoHolds
   include ActiveStorageVariants
   include AttachmentRansackers
+  include SoldAtShop
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -434,7 +435,7 @@ class Model < ApplicationRecord
       # Without them a ship list is two extra queries per row rather than two
       # for the page -- and the ships and hangar endpoints are the slow ones.
       :build, :last_build,
-      :item_prices, :loaners, :cargo_holds_db,
+      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db,
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
     ] + attachment_preloads
@@ -757,7 +758,7 @@ class Model < ApplicationRecord
   }
 
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted"]
+    ["dimensions_drifted", "sold_at_shop"]
   end
 
   # A ship offers a berth either because one is built into it or because a
@@ -940,15 +941,15 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    item_prices.select(&:sell?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:sell?).sort_by(&:price).uniq(&:location))
   end
 
   def bought_at
-    item_prices.select(&:buy?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:buy?).sort_by(&:price).uniq(&:location))
   end
 
   def rental_at
-    item_prices.select(&:rental?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:rental?).sort_by(&:price).uniq(&:location))
   end
 
   # The ships this one can be carried by. Twenty-odd models hold every dock that

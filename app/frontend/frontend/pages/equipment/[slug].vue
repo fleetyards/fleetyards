@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ExternalLinks from "@/shared/components/ExternalLinks/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -133,6 +134,8 @@ watch(
             </Chip>
           </div>
         </div>
+
+        <ExternalLinks :title="equipment.name" />
 
         <p v-if="equipment.description" class="equipment-page__description">
           {{ equipment.description }}

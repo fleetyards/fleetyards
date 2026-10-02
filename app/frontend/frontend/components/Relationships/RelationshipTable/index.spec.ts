@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { usePresence } from "@/shared/composables/usePresence";
 import type { RelationshipRow } from "@/frontend/components/Relationships/types";
@@ -50,6 +51,40 @@ describe("RelationshipTable", () => {
     });
 
     expect(wrapper.find(".presence-dot").exists()).toBe(true);
+  });
+
+  it("says where a friend is in the game, linked to the place", async () => {
+    const router = createRouter({
+      history: createWebHashHistory(),
+      routes: [
+        { path: "/", name: "home", component: { template: "<div />" } },
+        {
+          path: "/locations/:slug",
+          name: "location",
+          component: { template: "<div />" },
+        },
+      ],
+    });
+    await router.push({ name: "home" });
+    await router.isReady();
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        rows: [
+          {
+            ...friendRow,
+            currentSystem: "Lorville",
+            currentLocation: { slug: "lorville", name: "Lorville" },
+          },
+        ],
+        kind: "user",
+      },
+      plugins: [router],
+    });
+
+    expect(
+      wrapper.get(".relationship-party__location a").attributes("href"),
+    ).toContain("/locations/lorville");
   });
 
   it("draws no dot on the alliances view, which shares this table", async () => {

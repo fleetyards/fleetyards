@@ -151,6 +151,7 @@
         "productionNote": "生产备注"
       },
       "fleet": {
+        "headquarters": "你们的舰队驻扎在哪里？",
         "fid": "舰队 ID",
         "rsiSid": "RSI SID",
         "ts": "Teamspeak 服务器",
@@ -172,7 +173,7 @@
       "user": {
         "rsiHandle": "RSI 用户名",
         "location": "e.g. Berlin, Germany",
-        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+        "currentSystem": "例如 Lorville、Port Tressler、Pyro"
       },
       "oauthApplication": {
         "name": "我的应用",

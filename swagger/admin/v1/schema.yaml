@@ -4540,6 +4540,137 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/locations":
+    get:
+      summary: Locations list
+      tags:
+      - Locations
+      operationId: locations
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/LocationQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Locations"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Location id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Location Detail
+      tags:
+      - Locations
+      operationId: location
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Location"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Location
+      tags:
+      - Locations
+      operationId: updateLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LocationInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Location"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/manufacturers":
     post:
       summary: Create Manufacturer
@@ -7842,6 +7973,89 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/shops/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Shop id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Shop Detail
+      tags:
+      - Shops
+      operationId: shop
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Shop
+      tags:
+      - Shops
+      operationId: updateShop
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShopInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/stats/most-viewed-pages":
     get:
       summary: Stats most viewed Pages
@@ -10555,6 +10769,7 @@ components:
       - commodities
       - item_prices
       - missions
+      - locations
       - manufacturers
       - vehicles
       - images
@@ -10589,6 +10804,7 @@ components:
       - COMMODITIES
       - ITEM_PRICES
       - MISSIONS
+      - LOCATIONS
       - MANUFACTURERS
       - VEHICLES
       - IMAGES
@@ -14713,6 +14929,14 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         publicFleet:
           type: boolean
         publicFleetStats:
@@ -14783,6 +15007,15 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         twitch:
           type: string
         youtube:
@@ -15429,6 +15662,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionBlueprint"
+        locations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionLocation"
         generatorKey:
           type:
           - string
@@ -15519,6 +15756,18 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLocation:
+      type: object
+      properties:
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        source:
+          "$ref": "#/components/schemas/GameMissionLocationSourceEnum"
+      additionalProperties: false
+      required:
+      - location
+      - source
+      title: GameMissionLocation
     GameMissionLocationKindEnum:
       type: string
       enum:
@@ -15532,6 +15781,15 @@ components:
       - MIXED
       - UNKNOWN
       title: GameMissionLocationKindEnum
+    GameMissionLocationSourceEnum:
+      type: string
+      enum:
+      - template
+      - text
+      x-enumNames:
+      - TEMPLATE
+      - TEXT
+      title: GameMissionLocationSourceEnum
     GameMissionOrg:
       type: object
       properties:
@@ -16482,6 +16740,10 @@ components:
         locationUrl:
           type: string
           format: uri
+        shop:
+          anyOf:
+          - "$ref": "#/components/schemas/ShopLink"
+          - type: 'null'
         scu:
           type:
           - integer
@@ -16619,6 +16881,293 @@ components:
       - 'TRUE'
       - ONLY
       title: LoanerFilterEnum
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        scKey:
+          type: string
+        scRefs:
+          type: array
+          items:
+            type: string
+        gameType:
+          type:
+          - string
+          - 'null'
+        version:
+          type:
+          - string
+          - 'null'
+        retired:
+          type: boolean
+        shownOnStarmap:
+          type: boolean
+        shownWithParentOnly:
+          type: boolean
+        alwaysShown:
+          type: boolean
+        quantumTravelDestination:
+          type: boolean
+        parent:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        color:
+          type:
+          - string
+          - 'null'
+        drawnColor:
+          type:
+          - string
+          - 'null'
+        unstable:
+          type: boolean
+        bodyType:
+          "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        mapParent:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        system:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        childrenCount:
+          type: integer
+        gameMissionsCount:
+          type: integer
+        missionTemplateRefs:
+          type: array
+          items:
+            type: string
+        terminals:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationTerminal"
+        shops:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationShop"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - scKey
+      - scRefs
+      - version
+      - retired
+      - shownOnStarmap
+      - shownWithParentOnly
+      - alwaysShown
+      - quantumTravelDestination
+      - parent
+      - createdAt
+      - updatedAt
+      title: Location
+    LocationInput:
+      type: object
+      properties:
+        image:
+          type:
+          - string
+          - 'null'
+        color:
+          type:
+          - string
+          - 'null'
+          pattern: "^#[0-9a-fA-F]{6}$"
+      additionalProperties: false
+      title: LocationInput
+    LocationKindEnum:
+      type: string
+      enum:
+      - system
+      - star
+      - planet
+      - moon
+      - city
+      - station
+      - outpost
+      - clinic
+      - district
+      - asteroid
+      - anomaly
+      - jump_point
+      - point_of_interest
+      - nav_point
+      - other
+      x-enumNames:
+      - SYSTEM
+      - STAR
+      - PLANET
+      - MOON
+      - CITY
+      - STATION
+      - OUTPOST
+      - CLINIC
+      - DISTRICT
+      - ASTEROID
+      - ANOMALY
+      - JUMP_POINT
+      - POINT_OF_INTEREST
+      - NAV_POINT
+      - OTHER
+      title: LocationKindEnum
+    LocationLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        parentName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - parentName
+      title: LocationLink
+    LocationQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        scKeyCont:
+          type: string
+        slugCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        kindEq:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        kindIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationKindEnum"
+        parentIdEq:
+          type: string
+          format: uuid
+        systemIdEq:
+          type: string
+          format: uuid
+        shownOnStarmapEq:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          "$ref": "#/components/schemas/LocationSortEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationSortEnum"
+      additionalProperties: false
+      example: {}
+      title: LocationQuery
+    LocationShop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        hasImage:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - hasImage
+      title: LocationShop
+    LocationSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - kind asc
+      - kind desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - KIND_ASC
+      - KIND_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: LocationSortEnum
+    LocationTerminal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        available:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - available
+      title: LocationTerminal
+    Locations:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Location"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Locations
     Manufacturer:
       type: object
       properties:
@@ -16684,6 +17233,18 @@ components:
           type: string
       additionalProperties: false
       title: ManufacturerInput
+    ManufacturerLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: ManufacturerLink
     ManufacturerOption:
       type: object
       properties:
@@ -19283,6 +19844,40 @@ components:
       - UNKNOWN
       - 'NULL'
       title: NullableGameMissionLocationKindEnum
+    NullableItemPriceTimeRangeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      -
+      x-enumNames:
+      - 1_DAY
+      - 3_DAYS
+      - 7_DAYS
+      - 30_DAYS
+      - 'NULL'
+      title: NullableItemPriceTimeRangeEnum
+    NullableLocationBodyTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - gas_giant
+      - ice_giant
+      - asteroid
+      - city
+      -
+      x-enumNames:
+      - GAS_GIANT
+      - ICE_GIANT
+      - ASTEROID
+      - CITY
+      - 'NULL'
+      title: NullableLocationBodyTypeEnum
     NullableSupporterContributionSourceEnum:
       type:
       - string
@@ -19747,6 +20342,62 @@ components:
           type: string
       additionalProperties: false
       title: SessionInput
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        itemsCount:
+          type: integer
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - itemsCount
+      - location
+      - createdAt
+      - updatedAt
+      title: Shop
+    ShopInput:
+      type: object
+      properties:
+        image:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: ShopInput
+    ShopLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - location
+      title: ShopLink
     StandardError:
       type: object
       properties:

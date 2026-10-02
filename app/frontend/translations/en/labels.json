@@ -1,6 +1,113 @@
 {
   "en": {
     "labels": {
+      "locationInput": {
+        "linked": "Linked to"
+      },
+      "galactapedia": "Galactapedia",
+      "shopPage": {
+        "all": "All",
+        "search": "Search this shop",
+        "categories": "Categories",
+        "sortName": "Name",
+        "sortPrice": "Price",
+        "emptyName": "item",
+        "kind": "Shop",
+        "items": "Items",
+        "facts": "Key facts",
+        "place": "Place",
+        "system": "System",
+        "carries": "Sells",
+        "source": "Prices and stock from UEX."
+      },
+      "location": {
+        "missionsSample": "Counts cover the first %{shown} of %{total}.",
+        "systemUnavailable": "Could not load this system.",
+        "systemsUnavailable": "Could not load the systems.",
+        "resourceKinds": {
+          "ship_mineables": "Ship mineables",
+          "hand_mineables": "Hand mineables",
+          "ground_vehicle_mineables": "Ground vehicle mineables",
+          "harvestables": "Harvestables",
+          "creatures": "Creatures"
+        },
+        "resources": "Resources",
+        "moonsBadge": "Moons",
+        "planets": "Planets",
+        "places": "Places",
+        "showFewer": "Show fewer",
+        "showAll": "Show all %{count}",
+        "elsewhere": "Elsewhere around %{star}",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "Lagrange points",
+        "inOrbit": "In orbit",
+        "moons": {
+          "one": "%{count} moon",
+          "other": "%{count} moons"
+        },
+        "gateways": "Jump gateways",
+        "systemStrip": "%{system}, from its star outward",
+        "allSystems": "All Systems",
+        "allPlaces": "All places",
+        "shops": "Shops",
+        "shopItems": {
+          "one": "%{count} item",
+          "other": "%{count} items"
+        },
+        "shopItemTypes": {
+          "Model": "Ship",
+          "ModelModule": "Module",
+          "ModelPaint": "Paint",
+          "Component": "Component",
+          "Equipment": "Equipment",
+          "Commodity": "Commodity"
+        },
+        "bodyTypes": {
+          "gas_giant": "Gas giant",
+          "ice_giant": "Ice giant",
+          "asteroid": "Asteroid",
+          "city": "City planet"
+        },
+        "unstable": "Unstable",
+        "unstableHint": "A flare star: its output surges without warning.",
+        "systems": "Star systems",
+        "name": "Name",
+        "kind": "Kind",
+        "retired": "Not in this build",
+        "starmap": "Star map",
+        "starmapVisibility": "In-game map",
+        "starmapHidden": "Hidden on the map",
+        "starmapAlways": "Always shown on the map",
+        "starmapWithParent": "Shown once %{parent} is selected",
+        "starmapShown": "Shown on the map",
+        "quantumTravel": "Quantum travel",
+        "quantumTravelYes": "Yes",
+        "quantumTravelNo": "No",
+        "mapParent": "Drawn under",
+        "mapParentNote": "The in-game map draws it under %{mapParent}, although it sits inside %{parent}.",
+        "missions": "Missions",
+        "allMissions": "All missions that can take place here",
+        "terminals": "Trade terminals",
+        "alwaysShown": "Always on the map",
+        "hiddenOnStarmap": "Hidden on the map",
+        "kinds": {
+          "system": "Star system",
+          "star": "Star",
+          "planet": "Planet",
+          "moon": "Moon",
+          "city": "City",
+          "station": "Station",
+          "outpost": "Outpost",
+          "clinic": "Clinic",
+          "district": "District",
+          "asteroid": "Asteroid",
+          "anomaly": "Anomaly",
+          "jump_point": "Jump point",
+          "point_of_interest": "Point of interest",
+          "nav_point": "Nav point",
+          "other": "Other"
+        }
+      },
       "sortOptions": "Sort Options",
       "loading": "Loading…",
       "loadingNamed": "Loading %{name}…",
@@ -230,6 +337,7 @@
           "Model": "Ship",
           "Blueprint": "Blueprint",
           "GameMission": "Mission",
+          "Location": "Place",
           "FleetContract": "Contract",
           "FleetEvent": "Event",
           "User": "User"
@@ -241,6 +349,7 @@
           "Model": "Open ship",
           "Blueprint": "Open blueprint",
           "GameMission": "Open mission",
+          "Location": "Open place",
           "FleetContract": "Open contract",
           "FleetEvent": "Open event",
           "User": "Open hangar"
@@ -428,6 +537,7 @@
       "yourFlagship": "Your Flagship",
       "flagship": "Flagship",
       "fleet": {
+        "headquarters": "Headquarters",
         "index": "Fleet",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Fleet",
@@ -583,7 +693,7 @@
           "discordChannelHint": "Events held to this squadron are announced here and nowhere else on Discord. Without a channel, they are not announced on Discord at all.",
           "notAnnounced": "Not announced on Discord for %{names}: no Discord channel is set up.",
           "blockedBy": "Already in the %{squadron} squadron",
-          "color": "Colour",
+          "color": "Color",
           "colorSuggestions": "From the icon:",
           "memberCount": "%{count} Members",
           "members": "Members",
@@ -1871,7 +1981,7 @@
           }
         },
         "location": "Location",
-        "currentSystem": "Current Star System",
+        "currentSystem": "Current In-Game Location",
         "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Unconfirmed email",
@@ -1992,6 +2102,15 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "Search locations",
+          "system": "System",
+          "parent": "Inside",
+          "kind": "Kind",
+          "starmap": "In-game map",
+          "shownOnStarmap": "Shown on the map",
+          "hiddenOnStarmap": "Hidden on the map"
+        },
         "components": {
           "name": "Name",
           "itemType": "Item Type",
@@ -2417,6 +2536,30 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Parent",
+          "system": "System",
+          "scKey": "Game key",
+          "scRefs": "Game refs",
+          "slug": "Slug",
+          "gameType": "Game type",
+          "build": "Build",
+          "children": "Places inside",
+          "missions": "Missions linked",
+          "missionTemplates": "Mission templates",
+          "shownWithParentOnly": "Only shown with its parent",
+          "yes": "Yes",
+          "no": "No",
+          "unavailable": "unavailable",
+          "appearance": "Appearance",
+          "image": "Image",
+          "color": "Color",
+          "appearanceHint": "The color fills the planet or moon’s circle, shaded as a lit sphere. Left empty, it is taken from the picture when one is uploaded.",
+          "headerImageHint": "The picture is shown as a header image on the place’s page.",
+          "shops": "Shops",
+          "shopImageHint": "The picture is shown as the header image on the shop’s page.",
+          "sunHint": "The color tints the star’s glow."
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Source known",
@@ -2583,6 +2726,7 @@
             "system": "System"
           },
           "privileges": {
+            "locations": "Locations",
             "blueprints": "Blueprints",
             "models": "Models",
             "model_modules": "Model Modules",
@@ -3544,6 +3688,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "named in the briefing",
+        "locations": "Where it takes place",
         "locationKinds": {
           "surface": "On a planet or moon",
           "space": "In space",

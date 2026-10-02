@@ -43,6 +43,7 @@ module Uex
         rows.each do |row|
           terminal = existing[row["id"]] || Terminal.new(uex_id: row["id"])
           terminal.assign_attributes(attributes(row))
+          terminal.location_id = location_matcher.match(terminal)
           terminals[row["id"]] = terminal
           next unless terminal.changed?
 
@@ -61,6 +62,10 @@ module Uex
       live_ids.merge(omitted.pluck(:id)) if short_feed
 
       Result.new(created:, updated:, retired:, terminals:, live_ids:, short_feed:)
+    end
+
+    private def location_matcher
+      @location_matcher ||= Uex::TerminalLocationMatcher.new
     end
 
     private def short_feed?(listed_ids)

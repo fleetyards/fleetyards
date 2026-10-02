@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
+import { routes as locationsRoutes } from "@/frontend/pages/locations/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/settings/routes";
 import { routes as shipsRoutes } from "@/frontend/pages/ships/routes";
 import {
@@ -101,6 +102,22 @@ export const routes: RouteRecordRaw[] = [
     redirect: { name: catalogueEntryRoute },
   },
   ...catalogueTenantRoutes,
+  // A place is somewhere you go rather than something you buy or fit, so it
+  // sits beside the catalogue rather than inside it.
+  {
+    path: "/locations/",
+    component: () => import("@/frontend/pages/locations.vue"),
+    children: locationsRoutes,
+  },
+  // A shop UEX lists at a place, with everything it sells.
+  {
+    path: "/shops/:slug/",
+    name: "shop",
+    component: () => import("@/frontend/pages/shops/[slug].vue"),
+    meta: {
+      customTitle: true,
+    },
+  },
   // The paths the pages shipped under before the section existed. Both are
   // live -- the detail page has long been reachable and every hardpoint
   // on every ship links to it -- so they redirect rather than 404.

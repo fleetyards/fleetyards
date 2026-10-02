@@ -39,6 +39,31 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /equipment narrows to what one shop sells" do
+    shop = Shop.create!(name: "Live Fire Weapons", location: create(:location, name: "Everus Harbor", kind: "station"))
+    create(:item_price, item: @rifle, location: "Live Fire Weapons - Everus Harbor", price_type: "sell", time_range: nil, shop:)
+    create(:item_price, item: @scope, location: "Live Fire Weapons - Area 18", price_type: "sell", time_range: nil)
+
+    assert_api_response :get, 200, params: {q: {soldAtShop: shop.slug}} do
+      assert_equal ["P4-AR Rifle"], parsed_body["items"].pluck("name")
+    end
+  end
+
+  test "GET /equipment links a price to the shop and place it is at" do
+    shop = Shop.create!(name: "Live Fire Weapons", location: create(:location, name: "Everus Harbor", kind: "station"))
+    create(:item_price, item: @rifle, location: "Live Fire Weapons - Everus Harbor", price_type: "sell", time_range: nil, shop:)
+    create(:item_price, item: @rifle, location: "Live Fire Weapons - Area 18", price_type: "sell", time_range: nil, price: 9_999)
+
+    assert_api_response :get, 200 do
+      sold_at = parsed_body["items"].find { |item| item["name"] == "P4-AR Rifle" }.dig("availability", "soldAt")
+
+      linked = sold_at.find { |price| price["location"].end_with?("Everus Harbor") }
+      assert_equal shop.slug, linked.dig("shop", "slug")
+      assert_equal "Everus Harbor", linked.dig("shop", "location", "name")
+      assert_nil sold_at.find { |price| price["location"].end_with?("Area 18") }["shop"]
+    end
+  end
+
   # Skins and NPC loadouts carry their own record but are not something a
   # player holds, so they stay out of the list a picker reads.
   test "GET /equipment leaves out hidden variants" do

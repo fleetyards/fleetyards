@@ -48,7 +48,7 @@ class FleetEventPolicy < FleetBasePolicy
     params.permit(
       :title, :description, :briefing,
       :starts_at, :ends_at, :timezone,
-      :location, :meetup_location,
+      :location, :meetup_location, :location_id, :meetup_location_id,
       :visibility, :category, :scenario,
       :max_attendees, :auto_lock_enabled, :auto_lock_minutes_before,
       :cover_image, :cover_image_preset, :signup_approval,

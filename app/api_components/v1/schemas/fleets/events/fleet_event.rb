@@ -23,6 +23,8 @@ module V1
               timezone: {type: :string},
               location: {type: :string},
               meetupLocation: {type: :string},
+              linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
+              linkedMeetupLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
               visibility: ::V1::Schemas::Enums::FleetEventVisibilityEnum,
               fleetSquadrons: {
                 type: :array,

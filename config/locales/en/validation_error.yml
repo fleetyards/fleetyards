@@ -189,6 +189,10 @@ en:
       create: Equipment could not be created.
       update: Equipment could not be updated.
       destroy: Equipment could not be destroyed.
+    shop:
+      update: Shop could not be updated.
+    location:
+      update: Location could not be updated.
     commodity:
       create: Commodity could not be created.
       update: Commodity could not be updated.

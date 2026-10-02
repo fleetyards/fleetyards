@@ -1,0 +1,148 @@
+// A star: a white-hot core running out into its colour, and a corona behind it
+// that slowly breathes. The colour comes in as `--sun-color`, set from the
+// star's own colour; without one it burns a warm yellow.
+//
+// The corona and the core are both pseudo-elements, so the corona can sit
+// behind the core inside the star's own stacking context, and the animation
+// only touches opacity and scale.
+@mixin location-sun {
+  $sun: var(--sun-color, #f6c065);
+
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  background: none;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &::before {
+    z-index: -1;
+    inset: -38%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #{$sun} 55%, transparent) 28%,
+      color-mix(in srgb, #{$sun} 18%, transparent) 50%,
+      transparent 70%
+    );
+    animation: location-sun-corona 4.5s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    inset: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      #fff 0%,
+      color-mix(in srgb, #{$sun} 35%, #fff) 26%,
+      #{$sun} 62%,
+      color-mix(in srgb, #{$sun} 70%, #000) 100%
+    );
+    box-shadow: 0 0 8px 1px color-mix(in srgb, #{$sun} 60%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      animation: none;
+    }
+  }
+
+  @keyframes location-sun-corona {
+    from {
+      opacity: 0.55;
+      transform: scale(0.92);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+}
+
+// A flare star: the corona carries a few uneven lobes that swell and turn a
+// little, and the core flickers faintly. Kept small: it should read as
+// restless next to a steady star, not as an alarm.
+@mixin location-sun-unstable {
+  $sun: var(--sun-color, #f6c065);
+
+  &::before {
+    inset: -42%;
+    background:
+      conic-gradient(
+        from 0deg,
+        color-mix(in srgb, #{$sun} 38%, transparent) 0 5%,
+        transparent 10% 18%,
+        color-mix(in srgb, #{$sun} 30%, transparent) 22% 25%,
+        transparent 30% 46%,
+        color-mix(in srgb, #{$sun} 40%, transparent) 50% 56%,
+        transparent 61% 70%,
+        color-mix(in srgb, #{$sun} 28%, transparent) 73% 76%,
+        transparent 80% 100%
+      ),
+      radial-gradient(
+        circle,
+        color-mix(in srgb, #{$sun} 50%, transparent) 28%,
+        transparent 54%
+      );
+    mask: radial-gradient(circle, #000 34%, transparent 70%);
+    animation: location-sun-flare 7s ease-in-out infinite;
+  }
+
+  &::after {
+    animation: location-sun-flicker 3.5s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    &::after {
+      animation: none;
+    }
+  }
+
+  @keyframes location-sun-flare {
+    0%,
+    100% {
+      opacity: 0.75;
+      transform: scale(0.97) rotate(0deg);
+    }
+
+    35% {
+      opacity: 0.95;
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    55% {
+      opacity: 0.8;
+      transform: scale(0.99) rotate(3deg);
+    }
+
+    75% {
+      opacity: 1;
+      transform: scale(1.07) rotate(-3deg);
+    }
+  }
+
+  @keyframes location-sun-flicker {
+    0%,
+    100% {
+      filter: brightness(1);
+    }
+
+    45% {
+      filter: brightness(1.06);
+    }
+
+    50% {
+      filter: brightness(0.97);
+    }
+
+    80% {
+      filter: brightness(1.08);
+    }
+  }
+}

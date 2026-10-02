@@ -18,7 +18,10 @@ module V1
           # Both only once the friendship is accepted, so neither is required:
           # the same shape carries a request nobody has answered yet.
           lastActiveAt: {type: [:string, :null], format: "date-time"},
-          online: {type: :boolean}
+          online: {type: :boolean},
+          # Where they are in the game, also only once accepted.
+          currentSystem: {type: [:string, :null]},
+          currentLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]}
         },
         additionalProperties: false,
         required: %w[id username]

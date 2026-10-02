@@ -15,6 +15,7 @@ module V1
             name: {type: :string},
             slug: {type: :string},
             location: {type: [:string, :null]},
+            linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             holder: ::V1::Schemas::Enums::FleetContractDestinationHolderEnum
           },
           additionalProperties: false,

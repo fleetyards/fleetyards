@@ -7,6 +7,8 @@
 # picture the ship used to have.
 model = hangar_inventory.vehicle&.model
 
-json.cache! ["v1", hangar_inventory, model, *model&.image_attachments].compact do
+# The linked place too: its name and slug are in the fragment, and renaming it
+# does not touch the inventory.
+json.cache! ["v3", hangar_inventory, model, *model&.image_attachments, hangar_inventory.linked_location&.link_cache_key].compact do
   json.partial!("api/v1/shared/inventory", inventory: hangar_inventory)
 end

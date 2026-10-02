@@ -119,7 +119,7 @@ module Api
 
         @components_query_params ||= params.permit(q: [
           :s, :sorts, :name_cont, :description_cont, :manufacturer_name_cont,
-          :current_version, :hidden_eq, *metric_predicates,
+          :current_version, :hidden_eq, :sold_at_shop, *metric_predicates,
           sorts: [], id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [],
           component_class_in: [], category_in: [], component_sub_type_in: []
         ]).fetch(:q, {})

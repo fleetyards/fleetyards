@@ -17,16 +17,19 @@ require "test_helper"
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  fleet_id     :uuid             not null
+#  location_id  :uuid
 #
 # Indexes
 #
 #  index_fleet_inventories_on_fleet_id_and_lower_name  (fleet_id, lower((name)::text)) UNIQUE
 #  index_fleet_inventories_on_fleet_id_and_managed_by  (fleet_id,managed_by)
 #  index_fleet_inventories_on_fleet_id_and_slug        (fleet_id,slug) UNIQUE
+#  index_fleet_inventories_on_location_id              (location_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (fleet_id => fleets.id)
+#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (managed_by => users.id)
 #
 class FleetInventoryTest < ActiveSupport::TestCase

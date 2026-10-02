@@ -26,14 +26,25 @@
 #  star_system          :string
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  location_id          :uuid
 #  uex_id               :integer          not null
 #
 # Indexes
 #
+#  index_terminals_on_location_id  (location_id)
 #  index_terminals_on_star_system  (star_system)
 #  index_terminals_on_uex_id       (uex_id) UNIQUE
 #
+# Foreign Keys
+#
+#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
+#
 class Terminal < ApplicationRecord
+  # The place the terminal is at, matched by name during the UEX sync. Empty
+  # for a terminal at a place the starmap does not carry -- Port Olisar, gone
+  # from the game, or a terminal UEX names no place for.
+  belongs_to :location, optional: true
+
   has_many :item_prices, dependent: :nullify
   has_many :origin_trade_routes, class_name: "TradeRoute", foreign_key: :origin_terminal_id, dependent: :delete_all, inverse_of: :origin_terminal
   has_many :destination_trade_routes, class_name: "TradeRoute", foreign_key: :destination_terminal_id, dependent: :delete_all, inverse_of: :destination_terminal

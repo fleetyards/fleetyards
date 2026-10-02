@@ -6,6 +6,7 @@ import { routes as componentsRoutes } from "@/admin/pages/components/routes";
 import { routes as equipmentRoutes } from "@/admin/pages/equipment/routes";
 import { routes as commoditiesRoutes } from "@/admin/pages/commodities/routes";
 import { routes as missionsRoutes } from "@/admin/pages/missions/routes";
+import { routes as locationsRoutes } from "@/admin/pages/locations/routes";
 import { routes as fleetsRoutes } from "@/admin/pages/fleets/routes";
 import { routes as vehiclesRoutes } from "@/admin/pages/vehicles/routes";
 import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
@@ -129,6 +130,19 @@ export const routes: RouteRecordRaw[] = [
       // The glyph the public catalogue nav gives missions.
       icon: "fa-duotone fa-scroll",
       access: ["missions"],
+    },
+  },
+  {
+    path: "/locations/",
+    component: () => import("@/admin/pages/locations.vue"),
+    children: locationsRoutes,
+    redirect: { name: locationsRoutes[0].name },
+    meta: {
+      title: "admin.locations.index",
+      needsAuthentication: true,
+      // The glyph the public nav gives locations.
+      icon: "fa-duotone fa-planet-ringed",
+      access: ["locations"],
     },
   },
   {

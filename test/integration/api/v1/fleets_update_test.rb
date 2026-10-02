@@ -58,6 +58,18 @@ class Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /fleets/:slug sets the headquarters, linked to one of our places" do
+    levski = create(:location, name: "Levski", kind: "city")
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {slug: @fleet.slug},
+      body: {headquartersLocationId: levski.id} do
+      assert_equal "Levski", parsed_body["headquarters"]
+      assert_equal levski.slug, parsed_body.dig("headquartersLocation", "slug")
+    end
+  end
+
   test "PUT /fleets/:slug switches squadrons on" do
     sign_in @admin
 

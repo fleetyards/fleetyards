@@ -58,6 +58,11 @@ class GameMission < ApplicationRecord
   # What each build of the game says about this mission.
   has_many :builds, class_name: "GameMissionBuild", dependent: :destroy
 
+  # Where the mission can take place: the specific places its location
+  # templates stand for, and the places its text names.
+  has_many :game_mission_locations, dependent: :destroy
+  has_many :locations, -> { distinct }, through: :game_mission_locations
+
   # The build we are being served from, which is the configured one unless its
   # load has not run yet. Resolved through `served_source` for the reason
   # `Blueprint#build` documents: `current` on its own has to keep meaning

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue";
@@ -113,6 +114,12 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     sortable: true,
   },
   {
+    name: "currentLocation",
+    label: t("labels.user.currentSystem"),
+    width: "15%",
+    mobile: false,
+  },
+  {
     name: "lastActiveAt",
     label: t("labels.user.lastActiveAt"),
     width: "15%",
@@ -181,6 +188,14 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       <span v-if="joinedAt(record)" v-tooltip="l(joinedAt(record) as string)">
         {{ l(joinedAt(record) as string, "datetime.formats.short") }}
       </span>
+    </template>
+
+    <template #col-currentLocation="{ record }">
+      <LocationName
+        :text="record.currentSystem"
+        :linked="record.currentLocation"
+        :data-test="`member-location-${record.username}`"
+      />
     </template>
 
     <template #col-lastActiveAt="{ record }">

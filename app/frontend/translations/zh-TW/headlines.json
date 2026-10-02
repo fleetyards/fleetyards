@@ -1,7 +1,14 @@
 {
   "zh-TW": {
     "headlines": {
+      "locations": {
+        "index": "地點",
+        "places": "所有地點"
+      },
       "admin": {
+        "locations": {
+          "index": "地點"
+        },
         "blueprints": {
           "index": "藍圖",
           "materials": "材料",

@@ -12,6 +12,8 @@ module V1
             # Matches the name or the slug, as it did while `name` was aliased
             # to both. `nameOrSlugCont` says so in its name.
             nameCont: {type: :string, deprecated: true},
+            # What one shop sells or rents, by the shop's slug.
+            soldAtShop: {type: :string},
             nameOrSlugCont: {type: :string},
             currentVersion: {type: :boolean, default: true},
             idIn: {type: :array, items: {type: :string, format: :uuid}},

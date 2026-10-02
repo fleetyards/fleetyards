@@ -275,6 +275,7 @@ module ScData
       create(:equipment, version: VERSION)
       create(:blueprint, version: VERSION)
       create(:game_mission, version: VERSION)
+      create(:location, version: VERSION)
     end
 
     private def stub_remote_checksum(checksum, environment: ENVIRONMENT)

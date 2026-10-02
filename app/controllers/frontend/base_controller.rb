@@ -99,6 +99,31 @@ module Frontend
       render_frontend
     end
 
+    def location
+      @location = Location.find_by(slug: params[:slug].to_s.downcase)
+
+      if @location.present?
+        # The parent tells apart the places that share a name, and the card
+        # is where that matters most -- a link to "Outpost 54" says nothing.
+        @title = [@location.name, @location.parent&.name].compact_blank.join(" - ")
+        @description = @location.description
+        @og_type = "article"
+      end
+
+      render_frontend
+    end
+
+    def shop
+      @shop = Shop.includes(:location).find_by(slug: params[:slug].to_s.downcase)
+
+      if @shop.present?
+        @title = [@shop.name, @shop.location.name].join(" - ")
+        @og_type = "article"
+      end
+
+      render_frontend
+    end
+
     def model_images
       @model = model_record.first
       return if redirect_to_canonical_slug(@model)

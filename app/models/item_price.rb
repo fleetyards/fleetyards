@@ -14,20 +14,35 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  item_id           :uuid             not null
+#  shop_id           :uuid
 #  terminal_id       :uuid
 #
 # Indexes
 #
 #  index_item_prices_on_item         (item_type,item_id)
+#  index_item_prices_on_shop_id      (shop_id)
 #  index_item_prices_on_terminal_id  (terminal_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (shop_id => shops.id) ON DELETE => nullify
 #  fk_rails_...  (terminal_id => terminals.id) ON DELETE => nullify
 #
 class ItemPrice < ApplicationRecord
   belongs_to :item, polymorphic: true
   belongs_to :terminal, optional: true
+  # The shop `location` names, matched from that string by
+  # Uex::ShopLocationMatcher.
+  belongs_to :shop, optional: true
+
+  # What a price's shop link reads: the shop, its place, and the parent that
+  # tells two places of one name apart.
+  SHOP_LINK = {shop: {location: :parent}}.freeze
+
+  def self.with_shop_links(prices)
+    ActiveRecord::Associations::Preloader.new(records: prices, associations: SHOP_LINK).call
+    prices
+  end
 
   enum :price_type,
     {buy: 0, sell: 1, rental: 2},

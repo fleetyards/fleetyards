@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import Avatar from "@/shared/components/Avatar/index.vue";
@@ -90,8 +91,19 @@ const canEnd = (row: RelationshipRow) => row.state === "accepted";
           "
           :online="rowOnline(record as RelationshipRow)"
         />
-        <span class="relationship-party__label">
-          {{ (record as RelationshipRow).label }}
+        <span class="relationship-party__body">
+          <span class="relationship-party__label">
+            {{ (record as RelationshipRow).label }}
+          </span>
+          <LocationName
+            v-if="
+              (record as RelationshipRow).currentSystem ||
+              (record as RelationshipRow).currentLocation
+            "
+            class="relationship-party__location"
+            :text="(record as RelationshipRow).currentSystem"
+            :linked="(record as RelationshipRow).currentLocation"
+          />
         </span>
       </span>
     </template>
@@ -162,9 +174,20 @@ const canEnd = (row: RelationshipRow) => row.state === "accepted";
   min-width: 0;
 }
 
+.relationship-party__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .relationship-party__label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.relationship-party__location {
+  font-size: 12px;
+  color: var(--color-text-dim, #959595);
 }
 </style>

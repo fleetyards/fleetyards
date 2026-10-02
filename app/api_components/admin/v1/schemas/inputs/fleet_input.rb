@@ -18,6 +18,8 @@ module Admin
               discord: {type: :string},
               guilded: {type: :string},
               homepage: {type: :string},
+              headquarters: {type: [:string, :null]},
+              headquartersLocationId: {type: [:string, :null], format: :uuid},
               twitch: {type: :string},
               youtube: {type: :string},
               ts: {type: :string},

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -480,7 +481,10 @@ const crumbs = computed<Crumb[]>(() => [
             </div>
             <div class="contract-route__place">{{ contract.source.name }}</div>
             <div v-if="contract.source.location" class="contract-route__where">
-              {{ contract.source.location }}
+              <LocationName
+                :text="contract.source.location"
+                :linked="contract.source.linkedLocation"
+              />
             </div>
           </div>
 
@@ -501,7 +505,10 @@ const crumbs = computed<Crumb[]>(() => [
               v-if="contract.destination?.location"
               class="contract-route__where"
             >
-              {{ contract.destination?.location }}
+              <LocationName
+                :text="contract.destination?.location"
+                :linked="contract.destination?.linkedLocation"
+              />
             </div>
           </div>
         </div>

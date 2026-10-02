@@ -43,6 +43,10 @@ module V1
             latitude: {type: :number, format: :double},
             longitude: {type: :number, format: :double},
             currentSystemCode: {type: :string},
+            # The in-game whereabouts the code is read from, linked where it
+            # is one of our places.
+            currentSystem: {type: [:string, :null]},
+            currentLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             online: {type: :boolean},
             isDestroyAllowed: {type: :boolean},
             capabilities: ::V1::Schemas::Fleets::FleetMembershipCapabilities,

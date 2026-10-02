@@ -76,7 +76,7 @@ class FleetInventoryPolicy < FleetBasePolicy
   end
 
   params_filter do |params|
-    params.permit(:name, :description, :managed_by, :visibility, :location, :image, :image_preset,
+    params.permit(:name, :description, :managed_by, :visibility, :location, :location_id, :image, :image_preset,
       fleet_squadron_ids: [])
   end
 end

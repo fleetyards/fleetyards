@@ -1,6 +1,113 @@
 {
   "zh-CN": {
     "labels": {
+      "locationInput": {
+        "linked": "已关联到"
+      },
+      "galactapedia": "Galactapedia",
+      "shopPage": {
+        "all": "全部",
+        "search": "在此商店中搜索",
+        "categories": "类别",
+        "sortName": "名称",
+        "sortPrice": "价格",
+        "emptyName": "物品",
+        "kind": "商店",
+        "items": "商品",
+        "facts": "关键信息",
+        "place": "地点",
+        "system": "星系",
+        "carries": "出售",
+        "source": "价格与库存来自 UEX。"
+      },
+      "location": {
+        "missionsSample": "计数仅涵盖 %{total} 个中的前 %{shown} 个。",
+        "systemUnavailable": "无法加载此星系。",
+        "systemsUnavailable": "无法加载星系。",
+        "resourceKinds": {
+          "ship_mineables": "飞船采矿",
+          "hand_mineables": "手持采矿",
+          "ground_vehicle_mineables": "地面载具采矿",
+          "harvestables": "可采集物",
+          "creatures": "生物"
+        },
+        "resources": "资源",
+        "moonsBadge": "卫星",
+        "planets": "行星",
+        "places": "地点",
+        "showFewer": "收起",
+        "showAll": "显示全部 %{count} 个",
+        "elsewhere": "%{star} 周围的其他地方",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "拉格朗日点",
+        "inOrbit": "轨道上",
+        "moons": {
+          "one": "%{count} 颗卫星",
+          "other": "%{count} 颗卫星"
+        },
+        "gateways": "跳跃门",
+        "systemStrip": "%{system}，从恒星向外",
+        "allSystems": "所有星系",
+        "allPlaces": "所有地点",
+        "shops": "商店",
+        "shopItems": {
+          "one": "%{count} 件商品",
+          "other": "%{count} 件商品"
+        },
+        "shopItemTypes": {
+          "Model": "舰船",
+          "ModelModule": "模块",
+          "ModelPaint": "涂装",
+          "Component": "组件",
+          "Equipment": "装备",
+          "Commodity": "商品"
+        },
+        "bodyTypes": {
+          "gas_giant": "气态巨行星",
+          "ice_giant": "冰巨星",
+          "asteroid": "小行星",
+          "city": "城市星球"
+        },
+        "unstable": "不稳定",
+        "unstableHint": "耀星：其辐射会毫无预警地骤增。",
+        "systems": "星系",
+        "name": "名称",
+        "kind": "类型",
+        "retired": "不在此版本中",
+        "starmap": "星图",
+        "starmapVisibility": "游戏内地图",
+        "starmapHidden": "在地图上隐藏",
+        "starmapAlways": "始终显示在地图上",
+        "starmapWithParent": "选中 %{parent} 后显示",
+        "starmapShown": "显示在地图上",
+        "quantumTravel": "量子旅行",
+        "quantumTravelYes": "是",
+        "quantumTravelNo": "否",
+        "mapParent": "地图上位于",
+        "mapParentNote": "游戏内地图将其显示在 %{mapParent} 下，但它实际位于 %{parent} 内。",
+        "missions": "任务",
+        "allMissions": "所有可在此进行的任务",
+        "terminals": "交易终端",
+        "alwaysShown": "始终在地图上",
+        "hiddenOnStarmap": "在地图上隐藏",
+        "kinds": {
+          "system": "星系",
+          "star": "恒星",
+          "planet": "行星",
+          "moon": "卫星",
+          "city": "城市",
+          "station": "空间站",
+          "outpost": "前哨站",
+          "clinic": "诊所",
+          "district": "街区",
+          "asteroid": "小行星",
+          "anomaly": "异常点",
+          "jump_point": "跳跃点",
+          "point_of_interest": "兴趣点",
+          "nav_point": "导航点",
+          "other": "其他"
+        }
+      },
       "sortOptions": "排序选项",
       "loading": "加载中…",
       "loadingNamed": "正在加载 %{name}…",
@@ -230,6 +337,7 @@
           "Model": "舰船",
           "Blueprint": "蓝图",
           "GameMission": "任务",
+          "Location": "地点",
           "FleetContract": "合约",
           "FleetEvent": "活动",
           "User": "用户"
@@ -241,6 +349,7 @@
           "Model": "打开舰船",
           "Blueprint": "打开蓝图",
           "GameMission": "打开任务",
+          "Location": "打开地点",
           "FleetContract": "打开合约",
           "FleetEvent": "打开活动",
           "User": "打开机库"
@@ -428,6 +537,7 @@
       "yourFlagship": "您的旗舰",
       "flagship": "旗舰",
       "fleet": {
+        "headquarters": "总部",
         "index": "舰队",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "舰队",
@@ -1871,7 +1981,7 @@
           }
         },
         "location": "位置",
-        "currentSystem": "当前星系",
+        "currentSystem": "当前游戏内位置",
         "tester": "测试者?",
         "avatar": "头像",
         "unconfirmedEmail": "未确认的邮件",
@@ -1992,6 +2102,15 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "搜索地点",
+          "system": "星系",
+          "parent": "位于",
+          "kind": "类型",
+          "starmap": "游戏内地图",
+          "shownOnStarmap": "显示在地图上",
+          "hiddenOnStarmap": "在地图上隐藏"
+        },
         "components": {
           "name": "名称",
           "itemType": "物品类型",
@@ -2417,6 +2536,30 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "上级",
+          "system": "星系",
+          "scKey": "游戏键",
+          "scRefs": "游戏引用",
+          "slug": "Slug",
+          "gameType": "游戏类型",
+          "build": "版本",
+          "children": "内部地点",
+          "missions": "关联任务",
+          "missionTemplates": "任务模板",
+          "shownWithParentOnly": "仅随上级显示",
+          "yes": "是",
+          "no": "否",
+          "unavailable": "不可用",
+          "appearance": "外观",
+          "image": "图片",
+          "color": "颜色",
+          "appearanceHint": "颜色会填满行星或卫星的圆圈，并渲染成受光照的球体。留空时，会在上传图片时从图片中提取。",
+          "headerImageHint": "图片会作为该地点页面的头图显示。",
+          "shops": "商店",
+          "shopImageHint": "图片会作为商店页面的头图显示。",
+          "sunHint": "颜色会为恒星的光晕着色。"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "来源已知",
@@ -2569,6 +2712,7 @@
             "system": "系统"
           },
           "privileges": {
+            "locations": "地点",
             "blueprints": "蓝图",
             "models": "型号",
             "model_modules": "型号模块",
@@ -3530,6 +3674,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "简报中提及",
+        "locations": "任务地点",
         "locationKinds": {
           "surface": "在行星或卫星上",
           "space": "在太空中",

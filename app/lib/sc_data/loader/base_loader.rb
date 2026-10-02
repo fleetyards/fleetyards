@@ -15,7 +15,8 @@ module ScData
       # Order matters -- items resolve their manufacturer, models resolve the
       # components a loadout names, modules hang off models, and a blueprint
       # resolves against all three of the catalogues a recipe can make or
-      # consume, so it runs last.
+      # consume. Missions link to the places they take place at, so locations
+      # load before them.
       def self.all
         [
           ::ScData::Loader::ManufacturersLoader,
@@ -25,6 +26,7 @@ module ScData
           ::ScData::Loader::CommoditiesLoader,
           ::ScData::Loader::EquipmentLoader,
           ::ScData::Loader::BlueprintsLoader,
+          ::ScData::Loader::LocationsLoader,
           ::ScData::Loader::GameMissionsLoader
         ].to_h do |loader_class|
           loader = loader_class.new
@@ -112,6 +114,14 @@ module ScData
       # a caller can point a loader at another environment's tree.
       def source
         ::ScData::Source.new(version: sc_version, environment: sc_environment)
+      end
+
+      # Whether this load writes the environment readers get by default. Links
+      # that sit on shared rows -- a terminal's place, a shop's, a mission's --
+      # are that environment's to write: a ptu load rewriting them would hand
+      # live readers ptu places.
+      def default_environment?
+        sc_environment.to_s == ::ScData::Source.default.environment.to_s
       end
 
       # The build equivalent of `retire_absent`. A record the export dropped

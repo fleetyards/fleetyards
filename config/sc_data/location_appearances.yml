@@ -1,0 +1,109 @@
+# How a place is drawn until an admin says otherwise, keyed by the record's
+# key. The locations loader applies an entry only where nothing is set yet: a
+# colour where the place has none, a picture where it has none. Changing a
+# value here never overwrites one an admin set.
+#
+# `color:` is a planet's or moon's sphere, or a star's glow. Most were taken
+# from the 2022 pictures of the bodies (Locations::ImageColor); the rest are
+# read from the game's descriptions. A body with a type (gas or ice giant,
+# asteroid, city planet) has a fallback of its own, so needs no entry.
+#
+# `image:` is the header picture on the place's page: a file in the repo,
+# under `db/seeds/locations`, attached on the first load that finds the place
+# without one. Kept here rather than linked, since the RSI media links the
+# pictures came from do not last.
+---
+# Stanton
+Stanton1:
+  color: "#9c846e"
+Stanton1a:
+  color: "#ef9b20"
+Stanton1b:
+  color: "#bc9829"
+Stanton1c:
+  color: "#64a2b0"
+Stanton1d:
+  color: "#8e8275"
+Stanton2:
+  color: "#776973"
+  image: db/seeds/locations/crusader.webp
+Stanton2a:
+  color: "#59717d"
+Stanton2b:
+  color: "#866f65"
+Stanton2c:
+  color: "#4c708a"
+Stanton3:
+  color: "#756961"
+Stanton3a:
+  color: "#586b8d"
+Stanton3b:
+  color: "#5b6a7b"
+Stanton4:
+  color: "#7f8086"
+Stanton4a:
+  color: "#798496"
+Stanton4b:
+  color: "#686d6e"
+Stanton4c:
+  color: "#656976"
+Stanton1_Lorville:
+  image: db/seeds/locations/lorville.webp
+
+# Ellis: "the vast oceanic world".
+Ellis3:
+  color: "#3f8fa8"
+
+# Pyro
+Pyro1:
+  color: "#406896"
+Pyro2:
+  color: "#9b7397"
+Pyro3:
+  color: "#726464"
+Pyro4:
+  color: "#5c7a7a"
+Pyro5:
+  color: "#6c795d"
+# Pyro V's moons, from their descriptions: Ignis's dried riverbeds, Vatra's
+# dark nitrogen-methane haze, Adir's crater-ridden rock, Fairo's brackish
+# seas, Fuego's yellow-black iron sulphide, Vuur's carbon-rich soil. Terminus
+# takes its colour from its picture.
+Pyro5a:
+  color: "#b0704a"
+Pyro5b:
+  color: "#6a6f86"
+Pyro5c:
+  color: "#8a7f74"
+Pyro5d:
+  color: "#5f8f8a"
+Pyro5e:
+  color: "#9a8a3a"
+Pyro5f:
+  color: "#6f8f6a"
+Pyro6:
+  color: "#88644e"
+  image: db/seeds/locations/terminus.webp
+
+# Nyx. Nyx I keeps a colour read from its description, terraformed against the
+# odds: its picture is a low-orbit view whose average is a flat grey. Nyx II's
+# colour is taken from its concept art, clouds of acid and carbon dioxide, and
+# Nyx III's, the ice giant, from its picture rather than the fallback.
+Nyx1:
+  color: "#7f8f7a"
+  image: db/seeds/locations/nyx-i.webp
+Nyx2:
+  color: "#9b893b"
+  image: db/seeds/locations/nyx-ii.webp
+Nyx3:
+  color: "#4a768c"
+  image: db/seeds/locations/nyx-iii.webp
+# Delamar in the nebula, from the Galactapedia. A picture only: its average
+# is the nebula's blue, so the circle keeps the asteroid colour.
+Delamar:
+  image: db/seeds/locations/delamar.webp
+# The Glaciem Ring.
+NyxSolarSystem:
+  image: db/seeds/locations/nyx-system.webp
+Nyx_Levski:
+  image: db/seeds/locations/levski.webp

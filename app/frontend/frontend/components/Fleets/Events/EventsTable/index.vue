@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import { markdownToPlainText } from "@/shared/utils/Markdown";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
@@ -162,7 +163,12 @@ const openEvent = (event: FleetEvent) => {
 
     <template #col-location="{ record }">
       <span class="events-table__location">
-        {{ (record as FleetEvent).location || "—" }}
+        <LocationName
+          v-if="(record as FleetEvent).location"
+          :text="(record as FleetEvent).location"
+          :linked="(record as FleetEvent).linkedLocation"
+        />
+        <template v-else>—</template>
       </span>
     </template>
 

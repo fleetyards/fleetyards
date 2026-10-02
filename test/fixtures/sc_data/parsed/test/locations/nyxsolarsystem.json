@@ -1,0 +1,18 @@
+{
+  "sc_key": "NyxSolarSystem",
+  "sc_refs": [
+    "17092f34-d9c8-4d50-89f6-a92940b9cd52"
+  ],
+  "name": "Nyx System",
+  "description": "Discovered in 2582, the Nyx System was left unclaimed by the UEE after deciding its three planets were not terraforming candidates and any attempts to mine the dense Glaciem Ring were deemed too dangerous. In 2618, a group of political activists and refugees, fleeing the Messer regime, moved into a vacated mining facility located in Delamar, a moon-sized asteroid deep within the system's asteroid belt.\\n",
+  "kind": "system",
+  "game_type": "SolarSystem",
+  "parent_key": null,
+  "map_parent_key": null,
+  "system_key": null,
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": []
+}

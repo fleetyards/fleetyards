@@ -26,7 +26,7 @@ module GameMissionFiltersConcern
 
     @q = scope.with_facts(current_version)
       .includes(build: :rewards, last_build: :rewards)
-      .ransack(missions_query_params.except(:released, :rewarding, :rewarding_in, :from_org))
+      .ransack(missions_query_params.except(:released, :rewarding, :rewarding_in, :from_org, :at_location))
 
     build_filters(@q.result)
   end
@@ -49,6 +49,7 @@ module GameMissionFiltersConcern
 
     scope = scope.from_org(org_filter, source, current_only:) if org_filter.present?
     scope = scope.rewarding(reward_filter, source, current_only:) if reward_filter.present?
+    scope = scope.where(id: GameMissionLocation.where(location_id: location_filter).select(:game_mission_id)) if location_filter.present?
 
     return scope if released_filter.nil?
 
@@ -71,6 +72,11 @@ module GameMissionFiltersConcern
     ].compact.uniq
   end
 
+  # A location's page lists the missions that can take place at it.
+  private def location_filter
+    missions_query_params[:at_location]
+  end
+
   private def released_filter
     missions_query_params[:released]
   end
@@ -89,7 +95,7 @@ module GameMissionFiltersConcern
       # The ones the controller applies itself. Permitted like any other: they
       # are read from here rather than off `params` directly, so an unpermitted
       # one would silently stop filtering.
-      :released, :rewarding, :from_org,
+      :released, :rewarding, :from_org, :at_location,
       sorts: [], id_in: [], name_in: [], kind_in: [], alignment_in: [],
       org_name_in: [], min_standing_in: [], rewarding_in: [], location_kind_in: []
     ]).fetch(:q, {})

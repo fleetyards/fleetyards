@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -595,14 +596,22 @@ const crumbs = computed<Crumb[]>(() => [
               <div class="metrics-card__row__label">
                 {{ t("labels.fleets.events.location") }}
               </div>
-              <div class="metrics-card__row__value">{{ event.location }}</div>
+              <div class="metrics-card__row__value">
+                <LocationName
+                  :text="event.location"
+                  :linked="event.linkedLocation"
+                />
+              </div>
             </div>
             <div v-if="event.meetupLocation" class="metrics-card__row">
               <div class="metrics-card__row__label">
                 {{ t("labels.fleets.events.meetupLocation") }}
               </div>
               <div class="metrics-card__row__value">
-                {{ event.meetupLocation }}
+                <LocationName
+                  :text="event.meetupLocation"
+                  :linked="event.linkedMeetupLocation"
+                />
               </div>
             </div>
             <div v-if="event.category" class="metrics-card__row">

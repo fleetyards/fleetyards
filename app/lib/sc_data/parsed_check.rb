@@ -65,6 +65,7 @@ module ScData
       # reads as a contract the build dropped.
       "game_missions" => Catalogue.new(key: %w[sc_key sc_ref], floor: 2000, icons: false),
       "items" => Catalogue.new(key: "key", floor: 6200, icons: true),
+      "locations" => Catalogue.new(key: "sc_key", floor: 1480, icons: false),
       "manufacturers" => Catalogue.new(key: "code", floor: 90, icons: true),
       "models" => Catalogue.new(key: "key", floor: 880, icons: false)
     }.freeze

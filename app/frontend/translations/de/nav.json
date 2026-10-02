@@ -1,6 +1,7 @@
 {
   "de": {
     "nav": {
+      "locations": "Orte",
       "home": "Startseite",
       "back": "Zurück",
       "navigation": "Navigation",
@@ -178,6 +179,9 @@
         "themes": "Themes"
       },
       "admin": {
+        "locations": {
+          "index": "Orte"
+        },
         "blueprints": {
           "index": "Baupläne"
         },

@@ -11328,6 +11328,144 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/locations":
+    get:
+      summary: Locations list
+      tags:
+      - Locations
+      operationId: locations
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/LocationQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Locations"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}":
+    get:
+      summary: Location detail
+      tags:
+      - Locations
+      operationId: location
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Location"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/contents":
+    get:
+      summary: Location contents
+      tags:
+      - Locations
+      operationId: locationContents
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationContents"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/shops":
+    get:
+      summary: Location shops
+      tags:
+      - Locations
+      operationId: locationShops
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationShops"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/tree":
+    get:
+      summary: Location system tree
+      tags:
+      - Locations
+      operationId: locationTree
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationTreeNode"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -15751,6 +15889,74 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/shops/{slug}":
+    get:
+      summary: Shop Detail
+      tags:
+      - Shops
+      operationId: shop
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/shops/{slug}/items":
+    get:
+      summary: Shop Items
+      tags:
+      - Shops
+      operationId: shopItems
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ShopItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ShopItems"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -18715,6 +18921,7 @@ components:
       - Model
       - Blueprint
       - GameMission
+      - Location
       - FleetContract
       - FleetEvent
       - User
@@ -18725,6 +18932,7 @@ components:
       - MODEL
       - BLUEPRINT
       - GAME_MISSION
+      - LOCATION
       - FLEET_CONTRACT
       - FLEET_EVENT
       - USER
@@ -19994,6 +20202,8 @@ components:
       properties:
         nameCont:
           type: string
+        soldAtShop:
+          type: string
         descriptionCont:
           type: string
         manufacturerNameCont:
@@ -21164,6 +21374,8 @@ components:
         nameCont:
           type: string
           deprecated: true
+        soldAtShop:
+          type: string
         nameOrSlugCont:
           type: string
         currentVersion:
@@ -21518,6 +21730,14 @@ components:
           type: string
         homepage:
           type: string
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         name:
           type: string
         slug:
@@ -22056,6 +22276,10 @@ components:
           type:
           - string
           - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         holder:
           "$ref": "#/components/schemas/FleetContractDestinationHolderEnum"
       additionalProperties: false
@@ -22225,6 +22449,10 @@ components:
           type:
           - string
           - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         holder:
           "$ref": "#/components/schemas/FleetContractDestinationHolderEnum"
       additionalProperties: false
@@ -22866,6 +23094,14 @@ components:
           type: string
         meetupLocation:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        linkedMeetupLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         fleetSquadrons:
@@ -23059,6 +23295,16 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        meetupLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         fleetSquadronIds:
@@ -23212,6 +23458,14 @@ components:
           type: string
         meetupLocation:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        linkedMeetupLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         scenario:
           type: string
         coverImagePreset:
@@ -23247,6 +23501,16 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        meetupLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         scenario:
           type:
           - string
@@ -23790,6 +24054,16 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        meetupLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         visibility:
           "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         fleetSquadronIds:
@@ -24052,6 +24326,10 @@ components:
             "$ref": "#/components/schemas/FleetSquadronRef"
         location:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         entriesCount:
           type: integer
         totalScu:
@@ -24113,6 +24391,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -24379,6 +24662,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -24908,6 +25196,14 @@ components:
           format: double
         currentSystemCode:
           type: string
+        currentSystem:
+          type:
+          - string
+          - 'null'
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         online:
           type: boolean
         isDestroyAllowed:
@@ -26155,6 +26451,15 @@ components:
           type:
           - string
           - 'null'
+        headquarters:
+          type:
+          - string
+          - 'null'
+        headquartersLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         rsiSid:
           type:
           - string
@@ -26652,6 +26957,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionBlueprint"
+        locations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionLocation"
         generatorKey:
           type:
           - string
@@ -26731,6 +27040,18 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLocation:
+      type: object
+      properties:
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        source:
+          "$ref": "#/components/schemas/GameMissionLocationSourceEnum"
+      additionalProperties: false
+      required:
+      - location
+      - source
+      title: GameMissionLocation
     GameMissionLocationKindEnum:
       type: string
       enum:
@@ -26744,6 +27065,15 @@ components:
       - MIXED
       - UNKNOWN
       title: GameMissionLocationKindEnum
+    GameMissionLocationSourceEnum:
+      type: string
+      enum:
+      - template
+      - text
+      x-enumNames:
+      - TEMPLATE
+      - TEXT
+      title: GameMissionLocationSourceEnum
     GameMissionOrg:
       type: object
       properties:
@@ -26825,6 +27155,9 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionLocationKindEnum"
+        atLocation:
+          type: string
+          format: uuid
         released:
           type: boolean
         currentVersion:
@@ -27138,6 +27471,10 @@ components:
           type: string
         location:
           type: string
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         entriesCount:
           type: integer
         totalScu:
@@ -27190,6 +27527,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -27416,6 +27758,11 @@ components:
           type:
           - string
           - 'null'
+        locationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           type:
           - string
@@ -28315,6 +28662,10 @@ components:
           type:
           - string
           - 'null'
+        linkedLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         entriesCount:
           type: integer
         totalScu:
@@ -29138,6 +29489,10 @@ components:
         locationUrl:
           type: string
           format: uri
+        shop:
+          anyOf:
+          - "$ref": "#/components/schemas/ShopLink"
+          - type: 'null'
         scu:
           type:
           - integer
@@ -29214,6 +29569,454 @@ components:
       - 'TRUE'
       - ONLY
       title: LoanerFilterEnum
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        scKey:
+          type: string
+        gameType:
+          type:
+          - string
+          - 'null'
+        retired:
+          type: boolean
+        shownOnStarmap:
+          type: boolean
+        shownWithParentOnly:
+          type: boolean
+        alwaysShown:
+          type: boolean
+        quantumTravelDestination:
+          type: boolean
+        parent:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        color:
+          type:
+          - string
+          - 'null'
+        unstable:
+          type: boolean
+        bodyType:
+          "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        resources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationResourceGroup"
+        ancestors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        mapParent:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        childrenCount:
+          type: integer
+        placesCount:
+          type: integer
+        terminals:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationTerminal"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - scKey
+      - retired
+      - shownOnStarmap
+      - shownWithParentOnly
+      - alwaysShown
+      - quantumTravelDestination
+      - parent
+      - createdAt
+      - updatedAt
+      title: Location
+    LocationContents:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationContentsGroup"
+      additionalProperties: false
+      required:
+      - groups
+      title: LocationContents
+    LocationContentsEntry:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        count:
+          type: integer
+        shownOnStarmap:
+          type: boolean
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - count
+      - shownOnStarmap
+      - location
+      title: LocationContentsEntry
+    LocationContentsGroup:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        count:
+          type: integer
+        entries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationContentsEntry"
+      additionalProperties: false
+      required:
+      - kind
+      - count
+      - entries
+      title: LocationContentsGroup
+    LocationKindCount:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - kind
+      - count
+      title: LocationKindCount
+    LocationKindEnum:
+      type: string
+      enum:
+      - system
+      - star
+      - planet
+      - moon
+      - city
+      - station
+      - outpost
+      - clinic
+      - district
+      - asteroid
+      - anomaly
+      - jump_point
+      - point_of_interest
+      - nav_point
+      - other
+      x-enumNames:
+      - SYSTEM
+      - STAR
+      - PLANET
+      - MOON
+      - CITY
+      - STATION
+      - OUTPOST
+      - CLINIC
+      - DISTRICT
+      - ASTEROID
+      - ANOMALY
+      - JUMP_POINT
+      - POINT_OF_INTEREST
+      - NAV_POINT
+      - OTHER
+      title: LocationKindEnum
+    LocationLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        parentName:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - parentName
+      title: LocationLink
+    LocationQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        nameStart:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        kindEq:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        kindIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationKindEnum"
+        parentIdEq:
+          type: string
+          format: uuid
+        systemIdEq:
+          type: string
+          format: uuid
+        shownOnStarmapEq:
+          type: boolean
+        quantumTravelDestinationEq:
+          type: boolean
+        currentVersion:
+          type: boolean
+        s:
+          "$ref": "#/components/schemas/LocationSortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: LocationQuery
+    LocationResource:
+      type: object
+      properties:
+        name:
+          type: string
+        note:
+          type:
+          - string
+          - 'null'
+        commodity:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationResourceCommodity"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - name
+      - note
+      - commodity
+      title: LocationResource
+    LocationResourceCommodity:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: LocationResourceCommodity
+    LocationResourceGroup:
+      type: object
+      properties:
+        kind:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationResource"
+      additionalProperties: false
+      required:
+      - kind
+      - items
+      title: LocationResourceGroup
+    LocationShop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        itemsCount:
+          type: integer
+        categories:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopCategory"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - itemsCount
+      - categories
+      title: LocationShop
+    LocationShops:
+      type: object
+      properties:
+        shops:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationShop"
+      additionalProperties: false
+      required:
+      - shops
+      title: LocationShops
+    LocationSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - kind asc
+      - kind desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - KIND_ASC
+      - KIND_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: LocationSortingEnum
+    LocationTerminal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: LocationTerminal
+    LocationTreeBody:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        parentName:
+          type:
+          - string
+          - 'null'
+        shownOnStarmap:
+          type: boolean
+        color:
+          type:
+          - string
+          - 'null'
+        unstable:
+          type: boolean
+        bodyType:
+          "$ref": "#/components/schemas/NullableLocationBodyTypeEnum"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - parentName
+      - shownOnStarmap
+      - color
+      title: LocationTreeBody
+    LocationTreeNode:
+      type: object
+      properties:
+        location:
+          "$ref": "#/components/schemas/LocationTreeBody"
+        counts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationKindCount"
+        lagrangePoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        gateways:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        children:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationTreeNode"
+      additionalProperties: false
+      required:
+      - location
+      - counts
+      - lagrangePoints
+      - gateways
+      - children
+      title: LocationTreeNode
+    Locations:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Location"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Locations
     Manufacturer:
       type: object
       properties:
@@ -29244,6 +30047,18 @@ components:
       - createdAt
       - updatedAt
       title: Manufacturer
+    ManufacturerLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: ManufacturerLink
     ManufacturerOption:
       type: object
       properties:
@@ -31186,6 +32001,8 @@ components:
             type: string
         nameCont:
           type: string
+        soldAtShop:
+          type: string
         nameEq:
           type: string
         slugEq:
@@ -32457,6 +33274,40 @@ components:
       - EQUIPMENT
       - 'NULL'
       title: NullableInventoryItemTypeEnum
+    NullableItemPriceTimeRangeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      -
+      x-enumNames:
+      - 1_DAY
+      - 3_DAYS
+      - 7_DAYS
+      - 30_DAYS
+      - 'NULL'
+      title: NullableItemPriceTimeRangeEnum
+    NullableLocationBodyTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - gas_giant
+      - ice_giant
+      - asteroid
+      - city
+      -
+      x-enumNames:
+      - GAS_GIANT
+      - ICE_GIANT
+      - ASTEROID
+      - CITY
+      - 'NULL'
+      title: NullableLocationBodyTypeEnum
     NullableRsiHandleVerifiedViaEnum:
       type:
       - string
@@ -33436,6 +34287,14 @@ components:
           format: date-time
         online:
           type: boolean
+        currentSystem:
+          type:
+          - string
+          - 'null'
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
       additionalProperties: false
       required:
       - id
@@ -33940,6 +34799,188 @@ components:
         minCargo:
           type: number
       title: ShipSlotFilters
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        ancestors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        system:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        itemsCount:
+          type: integer
+        categories:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopCategory"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - location
+      - ancestors
+      - system
+      - itemsCount
+      - categories
+      - createdAt
+      - updatedAt
+      title: Shop
+    ShopCategory:
+      type: object
+      properties:
+        id:
+          type: string
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        key:
+          type:
+          - string
+          - 'null'
+        label:
+          type:
+          - string
+          - 'null'
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - itemType
+      - key
+      - label
+      - count
+      title: ShopCategory
+    ShopItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        name:
+          type: string
+        slug:
+          type: string
+        categoryId:
+          type: string
+        categoryLabel:
+          type:
+          - string
+          - 'null'
+        manufacturer:
+          anyOf:
+          - "$ref": "#/components/schemas/ManufacturerLink"
+          - type: 'null'
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        rentalPrice:
+          type:
+          - number
+          - 'null'
+        rentalTimeRange:
+          "$ref": "#/components/schemas/NullableItemPriceTimeRangeEnum"
+        sellPrice:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - itemType
+      - name
+      - slug
+      - categoryId
+      - categoryLabel
+      - manufacturer
+      - buyPrice
+      - rentalPrice
+      - rentalTimeRange
+      - sellPrice
+      title: ShopItem
+    ShopItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        categoryIn:
+          type: array
+          items:
+            type: string
+        categoryNotIn:
+          type: array
+          items:
+            type: string
+        s:
+          "$ref": "#/components/schemas/ShopItemSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: ShopItemQuery
+    ShopItemSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - price asc
+      - price desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - PRICE_ASC
+      - PRICE_DESC
+      title: ShopItemSortingEnum
+    ShopItems:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopItem"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ShopItems
+    ShopLink:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - location
+      title: ShopLink
     SortInput:
       type: object
       properties:
@@ -34619,6 +35660,10 @@ components:
           type: string
         location:
           type: string
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         currentSystem:
           type: string
         currentSystemCode:
@@ -34998,6 +36043,11 @@ components:
           type:
           - string
           - 'null'
+        currentLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         currentSystem:
           type:
           - string

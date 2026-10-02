@@ -94,6 +94,13 @@ const isShipRoute = computed(() => {
   );
 });
 
+// A shop is at a place, so its page belongs to the places too.
+const LOCATION_ROUTES = ["locations", "locations-places", "location", "shop"];
+
+const isLocationRoute = computed(() =>
+  LOCATION_ROUTES.includes(String(route.name ?? "")),
+);
+
 const isHangarRoute = computed(() => {
   if (!route.name) {
     return false;
@@ -187,6 +194,12 @@ const settingsActive = computed(() => {
              out by hand and read none of it, so `nav: "main"` on the route left
              the catalogue reachable only by typing the address. -->
         <CatalogueNav />
+        <NavItem
+          :to="{ name: 'locations' }"
+          :label="t('nav.locations')"
+          :active="isLocationRoute"
+          icon="fa-duotone fa-planet-ringed"
+        />
         <NavItem
           :to="{ name: 'compare' }"
           :label="t('nav.compare.ships')"

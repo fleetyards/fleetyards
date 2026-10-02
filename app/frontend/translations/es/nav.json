@@ -1,6 +1,7 @@
 {
   "es": {
     "nav": {
+      "locations": "Ubicaciones",
       "home": "Inicio",
       "back": "Atrás",
       "navigation": "Navegación",
@@ -178,6 +179,9 @@
         "themes": "Temas"
       },
       "admin": {
+        "locations": {
+          "index": "Ubicaciones"
+        },
         "blueprints": {
           "index": "Planos"
         },

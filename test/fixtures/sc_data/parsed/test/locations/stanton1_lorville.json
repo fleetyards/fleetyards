@@ -1,0 +1,36 @@
+{
+  "sc_key": "Stanton1_Lorville",
+  "sc_refs": [
+    "f1759f46-e3c0-4dc1-94bc-c94488b58913"
+  ],
+  "name": "Lorville",
+  "description": "The capital of Hurston and the corporate headquarters for the eponymous weapons manufacturer, Lorville is a company town with a population predominately comprised of Hurston Dynamics employees and the security forces that supervise their labors.",
+  "kind": "city",
+  "game_type": "LandingZone",
+  "parent_key": "Stanton1",
+  "map_parent_key": null,
+  "system_key": "StantonSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": true,
+  "always_shown": false,
+  "quantum_travel_destination": true,
+  "mission_template_refs": [
+    "0177a69d-e585-4360-9e58-f123558873cb",
+    "0a3dd7b8-bef4-424b-9127-0bf225c7cd1f",
+    "0bc149fa-53d2-41e9-898e-0e560982f9fd",
+    "0d7d41b8-b911-49de-b7a1-1b4eca33c309",
+    "21157374-3b74-489d-80ee-efcd2f96970a",
+    "28ef1576-8c64-4d69-a655-4257d96852e6",
+    "419d8f3d-b316-4868-b717-39f1a480cb92",
+    "58781458-ddf0-4d14-8b29-efacff59e990",
+    "5fbd3a6c-bff4-4c8f-bc46-0b95bca00e88",
+    "6ace8623-3967-4f92-91b5-9a667edddb85",
+    "83608536-09de-4e1d-9592-ec5718ea6b69",
+    "86962821-0138-445a-ac1c-908a12d3d334",
+    "8f8b909b-e1c0-49ec-928d-d50ddf7c6961",
+    "949beecb-1fdb-4718-9e81-f7622cce87ae",
+    "a585269e-b3d8-42f7-a218-d7ab713fee26",
+    "c59bf6ab-0cc6-40f1-8c7f-cb3dbde15d6c",
+    "fbc392bc-caec-4297-9fe0-488491ada207"
+  ]
+}

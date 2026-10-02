@@ -77,6 +77,7 @@
 #  youtube                        :string
 #  created_at                     :datetime
 #  updated_at                     :datetime
+#  current_location_id            :uuid
 #  supported_fleet_id             :uuid
 #
 # Indexes
@@ -84,6 +85,7 @@
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
 #  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
+#  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
 #  index_users_on_last_active_at         (last_active_at)
@@ -99,6 +101,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (current_location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 require "test_helper"
@@ -823,5 +826,64 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
   test "a chosen hangar default order falls back on the rank for ties" do
     assert_equal ["model_price desc", "rank asc"], build(:user, hangar_default_sort: "modelPrice desc").hangar_sorting_params
     assert_equal ["rank desc"], build(:user, hangar_default_sort: "rank desc").hangar_sorting_params
+  end
+end
+
+class UserCurrentLocationTest < ActiveSupport::TestCase
+  test "a linked place sets the star system it lies in" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    lorville = create(:location, name: "Lorville", kind: "city", system: stanton)
+    user = create(:user)
+
+    user.update!(current_location_id: lorville.id)
+
+    assert_equal "Lorville", user.current_system
+    assert_equal "STANTON", user.current_system_code
+  end
+
+  test "a linked system is its own star system" do
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    user = create(:user)
+
+    user.update!(current_location_id: nyx.id, current_system: "Nyx System")
+
+    assert_equal "NYX", user.current_system_code
+  end
+
+  test "a load that moves a linked place moves the member's system with it" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    outpost = create(:location, name: "Outpost 54", kind: "outpost", system: stanton)
+    user = create(:user)
+    user.update!(current_location_id: outpost.id)
+
+    outpost.update!(system: nyx)
+
+    assert_equal 1, User.refresh_linked_system_codes
+    assert_equal "NYX", user.reload.current_system_code
+  end
+
+  test "a member who typed a system we carry is linked to it, text kept" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    typed = create(:user)
+    typed.update!(current_system: "stanton ")
+    elsewhere = create(:user)
+    elsewhere.update!(current_system: "Castra")
+    specific = create(:user)
+    specific.update!(current_system: "Stanton - Lorville")
+
+    assert_equal 1, User.link_typed_systems
+    assert_nil specific.reload.current_location_id
+    assert_equal [stanton.id, "stanton "], typed.reload.values_at(:current_location_id, :current_system)
+    assert_nil elsewhere.reload.current_location_id
+  end
+
+  test "text without a link still matches a system by name" do
+    user = create(:user)
+
+    user.update!(current_system: "Pyro")
+
+    assert_nil user.current_location_id
+    assert_equal "PYRO", user.current_system_code
   end
 end

@@ -38,6 +38,7 @@
         "Model": "Vaisseau",
         "Blueprint": "Plan",
         "GameMission": "Mission",
+        "Location": "Lieu",
         "FleetContract": "Contrat",
         "FleetEvent": "Événement",
         "User": "Utilisateur"

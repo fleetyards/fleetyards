@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { RouterLinkStub, mount } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import type { ItemPrice } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -9,6 +9,12 @@ vi.mock("@/shared/composables/useI18n", () => ({
       options?.count === undefined ? key : `${key}:${options.count}`,
     toNumber: (value: unknown) => String(value),
   }),
+}));
+
+const emit = vi.fn();
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit }),
 }));
 
 const itemPrice = (attributes: Partial<ItemPrice>) =>
@@ -26,7 +32,12 @@ const mountWith = (props: {
 }) =>
   mount(Component, {
     props,
-    global: { stubs: { Modal: { template: "<div><slot /></div>" } } },
+    global: {
+      stubs: {
+        Modal: { template: "<div><slot /></div>" },
+        RouterLink: RouterLinkStub,
+      },
+    },
   });
 
 const texts = (
@@ -169,6 +180,39 @@ describe("AvailabilityModal", () => {
 
     expect(wrapper.find("a.availability__shop").exists()).toBe(false);
     expect(wrapper.get(".availability__shop").text()).toBe("Astro Armada");
+  });
+
+  it("links a matched shop and its place to our pages, and closes on the way", async () => {
+    const wrapper = mountWith({
+      soldAt: [
+        itemPrice({
+          locationUrl: "https://example.test/shop",
+          shop: {
+            name: "Astro Armada",
+            slug: "astro-armada-area-18",
+            location: {
+              id: "loc-1",
+              name: "Area 18",
+              slug: "area-18",
+              kind: "city",
+              parentName: "ArcCorp",
+            },
+          },
+        }),
+      ],
+    });
+
+    const links = wrapper.findAllComponents(RouterLinkStub);
+
+    expect(links.map((link) => link.props("to"))).toEqual([
+      { name: "shop", params: { slug: "astro-armada-area-18" } },
+      { name: "location", params: { slug: "area-18" } },
+    ]);
+    expect(wrapper.find("a.availability__shop[href]").exists()).toBe(false);
+
+    await links[0].trigger("click");
+
+    expect(emit).toHaveBeenCalledWith("close-modal");
   });
 
   it("splits the terminal name into shop and place", () => {

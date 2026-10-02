@@ -65,7 +65,7 @@ class FleetPolicy < FleetBasePolicy
         :fid, :name, :description, :logo, :background_image, :public_fleet, :public_fleet_stats,
         :allies_fleet, :allies_fleet_stats, :allies_fleet_members, :squadrons_enabled,
         :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
-        :twitch, :guilded, :alignment,
+        :twitch, :guilded, :alignment, :headquarters, :headquarters_location_id,
         :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover
       ]
     end

@@ -1,0 +1,18 @@
+{
+  "sc_key": "Delamar",
+  "sc_refs": [
+    "0c39de63-bb45-496e-8029-0ed91580c84a"
+  ],
+  "name": "Delamar",
+  "description": "A moon-sized asteroid hidden deep within a thick cluster. Anti-UEE activists, political radicals and criminals now occupy Levski, a deserted mining facility built inside this asteroid.",
+  "kind": "moon",
+  "game_type": "Moon",
+  "parent_key": "NyxStar",
+  "map_parent_key": null,
+  "system_key": "NyxSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": true,
+  "mission_template_refs": []
+}

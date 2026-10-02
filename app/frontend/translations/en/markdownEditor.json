@@ -38,6 +38,7 @@
         "Model": "Ship",
         "Blueprint": "Blueprint",
         "GameMission": "Mission",
+        "Location": "Place",
         "FleetContract": "Contract",
         "FleetEvent": "Event",
         "User": "User"

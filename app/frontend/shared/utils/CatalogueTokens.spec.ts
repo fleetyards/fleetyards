@@ -10,6 +10,7 @@ describe("catalogueTokenName", () => {
     expect(catalogueTokenName("commodity:Mercury")).toBe("Mercury");
     expect(catalogueTokenName("Mk2: Deluxe")).toBe("Mk2: Deluxe");
     expect(catalogueTokenName("user:mortik")).toBe("mortik");
+    expect(catalogueTokenName("location:Lorville")).toBe("Lorville");
   });
 
   it("shows a contract's or an event's title without its fleet", () => {
@@ -37,5 +38,6 @@ describe("catalogueTokenIcon", () => {
     );
     expect(catalogueTokenIcon("event")).toBe(catalogueTokenIcon("FleetEvent"));
     expect(catalogueTokenIcon("user")).toBe(catalogueTokenIcon("User"));
+    expect(catalogueTokenIcon("location")).toBe(catalogueTokenIcon("Location"));
   });
 });

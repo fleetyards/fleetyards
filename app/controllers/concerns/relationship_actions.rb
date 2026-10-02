@@ -32,7 +32,7 @@ module RelationshipActions
 
     scope = relation_class.involving(acting_party)
       .in_state_for(requested_state, acting_party)
-      .includes(:requester, :addressee)
+      .includes(*relationship_includes)
 
     scope = scope.sent_by(acting_party) if requested_direction == "outgoing"
     scope = scope.received_by(acting_party) if requested_direction == "incoming"
@@ -45,6 +45,10 @@ module RelationshipActions
   # Friendships have one -- the transfer picker asks for the friends it could
   # actually address -- and alliances do not.
   private def narrow_relationships(scope) = scope
+
+  # What the list reads off the two parties. A mount point whose parties carry
+  # more -- a friend's in-game whereabouts -- preloads that too.
+  private def relationship_includes = [:requester, :addressee]
 
   def show
   end

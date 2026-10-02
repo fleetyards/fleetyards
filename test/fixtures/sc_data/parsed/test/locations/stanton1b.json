@@ -1,0 +1,18 @@
+{
+  "sc_key": "Stanton1b",
+  "sc_refs": [
+    "f8f07f5b-1c0e-47c9-aa50-46963065bf18"
+  ],
+  "name": "Aberdeen",
+  "description": "This moon was named after scientist Aberdeen Hurston who was credited with designing the company's first antimatter warhead. \\n\\nPotential Ship Mineables:\\nAluminum\\nTitanium\\nOuratite\\nQuantainium\\n\\n\\nPotential Hand Mineables:\\nAphorite\\nDolivine\\nHadanite\\nJanalite (Caves only)\\n\\nPotential Harvestables:\\nRanta Dung (Caves)\\nAmioshi Plague (Caves)\\nBluemoon Fungus (Caves)",
+  "kind": "moon",
+  "game_type": "Moon",
+  "parent_key": "Stanton1",
+  "map_parent_key": null,
+  "system_key": "StantonSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": true,
+  "mission_template_refs": []
+}

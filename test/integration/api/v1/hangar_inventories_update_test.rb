@@ -83,6 +83,22 @@ class Api::V1::HangarInventoriesUpdateTest < ActionDispatch::IntegrationTest
     assert_nil @inventory.reload.image_preset
   end
 
+  test "PUT /hangar/inventories/:slug clears a linked place, text and link" do
+    lorville = create(:location, name: "Lorville", kind: "city")
+    @inventory.update!(location: "Lorville", location_id: lorville.id)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {slug: @inventory.slug},
+      body: {location: nil, locationId: nil} do
+      assert_nil parsed_body["location"]
+      assert_nil parsed_body["linkedLocation"]
+    end
+
+    assert_nil @inventory.reload.location
+    assert_nil @inventory.location_id
+  end
+
   test "PUT /hangar/inventories/:slug returns 404 for another user's inventory" do
     sign_in @other_user
 

@@ -1,6 +1,7 @@
 {
   "zh-CN": {
     "nav": {
+      "locations": "地点",
       "home": "主页",
       "back": "返回",
       "navigation": "导航",
@@ -178,6 +179,9 @@
         "themes": "主题"
       },
       "admin": {
+        "locations": {
+          "index": "地点"
+        },
         "blueprints": {
           "index": "蓝图"
         },

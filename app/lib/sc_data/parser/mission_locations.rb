@@ -62,14 +62,19 @@ module ScData
       # `{location_kind:, needs_landing:}` for one contract under its handler.
       # `needs_landing` is only true when a pilot has to set down: a surface or
       # mixed location, and work that is not ship combat alone.
+      #
+      # `location_template_refs` are the location templates the slots can pick,
+      # which is how a contract is tied to a place: the starmap parser says
+      # which templates stand for which place.
       def classify(contract, handler)
         properties = merged_properties(contract, handler)
-        kinds = properties.values.filter_map { |value| slot_kind(value) }.flatten.uniq
-        kind = contract_kind(kinds)
+        slots = properties.values.filter_map { |value| slot_match(value) }
+        kind = contract_kind(slots.flat_map { |slot| slot[:kinds] }.uniq)
 
         {
           location_kind: kind,
-          needs_landing: %w[surface mixed].include?(kind) && !ship_combat_only?(properties)
+          needs_landing: %w[surface mixed].include?(kind) && !ship_combat_only?(properties),
+          location_template_refs: slots.flat_map { |slot| slot[:refs] }.uniq.sort
         }
       end
 
@@ -116,7 +121,7 @@ module ScData
 
       # `nil` for a slot that is not a location. A `Locations` slot (a set of
       # them) is classified the same way.
-      private def slot_kind(value)
+      private def slot_match(value)
         return unless value.is_a?(Hash)
 
         search = value["MissionPropertyValue_Location"] || value["MissionPropertyValue_Locations"]
@@ -124,10 +129,17 @@ module ScData
 
         conditions = Array.wrap(search.is_a?(Hash) ? search.dig("matchConditions", "DataSetMatchCondition_TagSearch") : nil)
           .select { |condition| condition.is_a?(Hash) }
-        return ["unknown"] if conditions.empty?
+        return {kinds: ["unknown"], refs: []} if conditions.empty?
 
-        kinds = locations.filter_map { |location| matched_kind(location, conditions) }.uniq
+        matches = locations.filter_map do |location|
+          kind = matched_kind(location, conditions)
+          [location[:ref], kind] if kind
+        end
 
+        {kinds: slot_kinds(matches.map(&:last).uniq, conditions), refs: matches.filter_map(&:first)}
+      end
+
+      private def slot_kinds(kinds, conditions)
         # A pool with classified and unclassified locations: the classified
         # ones don't vouch for the rest.
         if kinds.include?("unknown") && kinds.size > 1
@@ -234,6 +246,7 @@ module ScData
           general = refs(data.dig("generalTags", "tags"))
 
           {
+            ref: value_or_nil(item[:values]["__ref"]),
             general: with_ancestors(general),
             produces: with_ancestors(refs(data.dig("producesTags", "tags"))),
             consumes: with_ancestors(refs(data.dig("consumesTags", "tags"))),

@@ -1,7 +1,14 @@
 {
   "it": {
     "headlines": {
+      "locations": {
+        "index": "Luoghi",
+        "places": "Tutti i luoghi"
+      },
       "admin": {
+        "locations": {
+          "index": "Luoghi"
+        },
         "blueprints": {
           "index": "Progetti",
           "materials": "Materiali",

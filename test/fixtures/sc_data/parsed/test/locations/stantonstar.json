@@ -1,0 +1,18 @@
+{
+  "sc_key": "StantonStar",
+  "sc_refs": [
+    "34ff378f-faee-47bb-b5fe-f505e665c5ca"
+  ],
+  "name": "Stanton",
+  "description": "A class-G main sequence star.",
+  "kind": "star",
+  "game_type": "Star",
+  "parent_key": "StantonSolarSystem",
+  "map_parent_key": null,
+  "system_key": "StantonSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": []
+}

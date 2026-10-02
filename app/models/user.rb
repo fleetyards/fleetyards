@@ -77,6 +77,7 @@
 #  youtube                        :string
 #  created_at                     :datetime
 #  updated_at                     :datetime
+#  current_location_id            :uuid
 #  supported_fleet_id             :uuid
 #
 # Indexes
@@ -84,6 +85,7 @@
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
 #  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
+#  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
 #  index_users_on_last_active_at         (last_active_at)
@@ -99,6 +101,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (current_location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 class User < ApplicationRecord
@@ -140,12 +143,15 @@ class User < ApplicationRecord
   include UrlFieldConcern
   include ActiveStorageVariants
   include InventoryTransferParty
+  include LinkedLocations
+
+  links_location :current_system, foreign_key: :current_location_id, as: :current_location
   include Rails.application.routes.url_helpers
 
   geocoded_by :location
   after_validation :geocode, if: :will_save_change_to_location?
   before_validation :clear_coordinates, if: -> { will_save_change_to_location? && location.blank? }
-  before_validation :match_current_system, if: :will_save_change_to_current_system?
+  before_validation :match_current_system, if: -> { will_save_change_to_current_system? || will_save_change_to_current_location_id? }
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
@@ -1032,22 +1038,54 @@ class User < ApplicationRecord
     fleet_memberships.reload if memberships_to_delete.any? || fleets_to_destroy.any?
   end
 
-  private def match_current_system
-    if current_system.blank?
-      self.current_system_code = nil
-      return
+  # Members whose text names a system we carry and nothing more -- "Stanton",
+  # "nyx", "Pyro System" -- linked to it, their own text kept. "Stanton -
+  # Lorville" says more than the system, so it stays theirs to pick.
+  def self.link_typed_systems
+    systems = Location.listed.current_version.where(kind: "system").pluck(:id, :name).each_with_object({}) do |(id, name), names|
+      [name, name.to_s.delete_suffix(" System")].each { |variant| names[variant.to_s.strip.downcase] = id }
     end
+    return 0 if systems.empty?
 
-    input = current_system.strip.downcase
+    where(current_location_id: nil).where.not(current_system: [nil, ""]).find_each.sum do |user|
+      location_id = systems[user.current_system.strip.downcase]
+      next 0 unless location_id
 
-    match = STAR_SYSTEMS.find do |code, name|
+      user.update_columns(current_location_id: location_id, updated_at: Time.current)
+      1
+    end
+  end
+
+  # Every member linked to a place, set to the system that place is in now: a
+  # load can move a place to another system without touching its users.
+  def self.refresh_linked_system_codes
+    where.not(current_location_id: nil).includes(current_location: :system).find_each.sum do |user|
+      code = user.derived_current_system_code
+      next 0 if code == user.current_system_code
+
+      user.update_columns(current_system_code: code, updated_at: Time.current)
+      1
+    end
+  end
+
+  def derived_current_system_code
+    return if current_system.blank?
+
+    # A linked place answers for itself: Lorville is in Stanton, whatever the
+    # text says.
+    linked_system = (current_location&.kind == "system") ? current_location : current_location&.system
+    input = (linked_system&.name&.delete_suffix(" System") || current_system).strip.downcase
+
+    STAR_SYSTEMS.find do |code, name|
       input == code.downcase ||
         input == name.downcase ||
         name.downcase.include?(input) ||
         input.include?(name.downcase)
-    end
+    end&.first
+  end
 
-    self.current_system_code = match&.first
+  private def match_current_system
+    self.current_system_code = derived_current_system_code
   end
 
   private def clear_coordinates

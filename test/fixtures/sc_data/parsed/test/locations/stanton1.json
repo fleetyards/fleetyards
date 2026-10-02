@@ -1,0 +1,18 @@
+{
+  "sc_key": "Stanton1",
+  "sc_refs": [
+    "551af60b-7727-4936-acc7-763d25d7a1de"
+  ],
+  "name": "Hurston",
+  "description": "A wealth of ore and other resources are mined on Hurston to manufacture the company’s line of munitions and weapons. Heavy industry has resulted in severe pollution across the planet.\\n\\nPotential Ship Mineables:\\nAluminum\\nTin\\nOuratite\\nQuantainium\\n\\nPotential Hand Mineables:\\nAphorite\\nDolivine\\nHadanite\\nJanalite (Caves only)\\n\\nPotential Harvestables:\\nPitambu\\nGolden Medmon\\nDegnous Root\\nCompBoard\\nProta\\nRevenant Pod\\nRanta Dung (Caves)\\nAmioshi Plague (Caves)\\nBluemoon Fungus (Caves)\\n\\nPotential Creatures:\\nKopion \\nMarok\\nQuasigrazer\\nJuvenile Valakkar",
+  "kind": "planet",
+  "game_type": "Planet",
+  "parent_key": "StantonStar",
+  "map_parent_key": null,
+  "system_key": "StantonSolarSystem",
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": true,
+  "mission_template_refs": []
+}

@@ -1,6 +1,7 @@
 {
   "fr": {
     "nav": {
+      "locations": "Lieux",
       "home": "Accueil",
       "back": "Retour",
       "navigation": "Navigation",
@@ -178,6 +179,9 @@
         "themes": "Thèmes"
       },
       "admin": {
+        "locations": {
+          "index": "Lieux"
+        },
         "blueprints": {
           "index": "Plans"
         },

@@ -1,6 +1,10 @@
 {
   "zh-CN": {
     "title": {
+      "locations": {
+        "index": "地点",
+        "places": "所有地点"
+      },
       "default": "FleetYards.net",
       "defaultShort": "FleetYards",
       "defaultAdmin": "FleetYards.net Command",
@@ -202,6 +206,10 @@
         "notificationCenter": "通知中心 - 视觉测试"
       },
       "admin": {
+        "locations": {
+          "index": "地点",
+          "show": "%{location}"
+        },
         "blueprints": {
           "index": "蓝图",
           "show": "%{blueprint}"

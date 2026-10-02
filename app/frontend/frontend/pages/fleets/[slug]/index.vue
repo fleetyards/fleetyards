@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import SquadronEmblem from "@/frontend/components/Fleets/Squadrons/SquadronEmblem/index.vue";
@@ -105,6 +106,18 @@ const showFidNotice = computed(
         />
         <span class="title"> {{ fleet.name }} ({{ fleet.fid }}) </span>
       </h1>
+      <p
+        v-if="fleet.headquarters"
+        class="fleet-headquarters"
+        data-test="fleet-headquarters"
+      >
+        <i class="fa-duotone fa-house-flag" aria-hidden="true" />
+        <span class="sr-only">{{ t("labels.fleet.headquarters") }}</span>
+        <LocationName
+          :text="fleet.headquarters"
+          :linked="fleet.headquartersLocation"
+        />
+      </p>
       <FidNotice v-if="showFidNotice" :fleet="fleet" dismissible>
         <template #actions>
           <router-link
@@ -265,6 +278,15 @@ const showFidNotice = computed(
 </template>
 
 <style lang="scss" scoped>
+.fleet-headquarters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 12px;
+  font-size: 14px;
+  color: var(--color-text-dim, #959595);
+}
+
 .squadrons {
   display: flex;
   flex-wrap: wrap;

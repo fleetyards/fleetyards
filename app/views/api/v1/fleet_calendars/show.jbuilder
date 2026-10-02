@@ -26,6 +26,10 @@ json.items do
       json.description state.description.presence || event.description
       json.location state.location.presence || event.location
       json.meetup_location state.meetup_location.presence || event.meetup_location
+      json.partial! "api/v1/locations/linked", key: :linked_location,
+        location: state.location.present? ? state.linked_location : event.linked_location
+      json.partial! "api/v1/locations/linked", key: :linked_meetup_location,
+        location: state.meetup_location.present? ? state.linked_meetup_location : event.linked_meetup_location
       json.scenario state.scenario.presence || event.scenario
       json.cover_image_preset state.cover_image_preset.presence || event.cover_image_preset
       json.status state.status.presence || event.status

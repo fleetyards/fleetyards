@@ -1,6 +1,113 @@
 {
   "it": {
     "labels": {
+      "locationInput": {
+        "linked": "Collegato a"
+      },
+      "galactapedia": "Galactapedia",
+      "shopPage": {
+        "all": "Tutto",
+        "search": "Cerca in questo negozio",
+        "categories": "Categorie",
+        "sortName": "Nome",
+        "sortPrice": "Prezzo",
+        "emptyName": "articolo",
+        "kind": "Negozio",
+        "items": "Articoli",
+        "facts": "Dati chiave",
+        "place": "Luogo",
+        "system": "Sistema",
+        "carries": "Vende",
+        "source": "Prezzi e disponibilità da UEX."
+      },
+      "location": {
+        "missionsSample": "I conteggi coprono le prime %{shown} di %{total}.",
+        "systemUnavailable": "Impossibile caricare questo sistema.",
+        "systemsUnavailable": "Impossibile caricare i sistemi.",
+        "resourceKinds": {
+          "ship_mineables": "Estraibili con nave",
+          "hand_mineables": "Estraibili a mano",
+          "ground_vehicle_mineables": "Estraibili con veicolo terrestre",
+          "harvestables": "Raccoglibili",
+          "creatures": "Creature"
+        },
+        "resources": "Risorse",
+        "moonsBadge": "Lune",
+        "planets": "Pianeti",
+        "places": "Luoghi",
+        "showFewer": "Mostra meno",
+        "showAll": "Mostra tutti i %{count}",
+        "elsewhere": "Altrove intorno a %{star}",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "Punti di Lagrange",
+        "inOrbit": "In orbita",
+        "moons": {
+          "one": "%{count} luna",
+          "other": "%{count} lune"
+        },
+        "gateways": "Portali di salto",
+        "systemStrip": "%{system}, dalla stella verso l'esterno",
+        "allSystems": "Tutti i sistemi",
+        "allPlaces": "Tutti i luoghi",
+        "shops": "Negozi",
+        "shopItems": {
+          "one": "%{count} articolo",
+          "other": "%{count} articoli"
+        },
+        "shopItemTypes": {
+          "Model": "Nave",
+          "ModelModule": "Modulo",
+          "ModelPaint": "Verniciatura",
+          "Component": "Componente",
+          "Equipment": "Equipaggiamento",
+          "Commodity": "Merce"
+        },
+        "bodyTypes": {
+          "gas_giant": "Gigante gassoso",
+          "ice_giant": "Gigante ghiacciato",
+          "asteroid": "Asteroide",
+          "city": "Pianeta città"
+        },
+        "unstable": "Instabile",
+        "unstableHint": "Una stella a brillamento: la sua emissione esplode senza preavviso.",
+        "systems": "Sistemi stellari",
+        "name": "Nome",
+        "kind": "Tipo",
+        "retired": "Non presente in questa build",
+        "starmap": "Mappa stellare",
+        "starmapVisibility": "Mappa di gioco",
+        "starmapHidden": "Nascosto sulla mappa",
+        "starmapAlways": "Sempre visibile sulla mappa",
+        "starmapWithParent": "Visibile quando %{parent} è selezionato",
+        "starmapShown": "Visibile sulla mappa",
+        "quantumTravel": "Viaggio quantico",
+        "quantumTravelYes": "Sì",
+        "quantumTravelNo": "No",
+        "mapParent": "Disegnato sotto",
+        "mapParentNote": "La mappa di gioco lo disegna sotto %{mapParent}, anche se si trova dentro %{parent}.",
+        "missions": "Missioni",
+        "allMissions": "Tutte le missioni che possono svolgersi qui",
+        "terminals": "Terminali commerciali",
+        "alwaysShown": "Sempre sulla mappa",
+        "hiddenOnStarmap": "Nascosto sulla mappa",
+        "kinds": {
+          "system": "Sistema stellare",
+          "star": "Stella",
+          "planet": "Pianeta",
+          "moon": "Luna",
+          "city": "Città",
+          "station": "Stazione",
+          "outpost": "Avamposto",
+          "clinic": "Clinica",
+          "district": "Distretto",
+          "asteroid": "Asteroide",
+          "anomaly": "Anomalia",
+          "jump_point": "Punto di salto",
+          "point_of_interest": "Punto di interesse",
+          "nav_point": "Punto di navigazione",
+          "other": "Altro"
+        }
+      },
       "sortOptions": "Opzioni di ordinamento",
       "loading": "Caricamento…",
       "loadingNamed": "Caricamento di %{name}…",
@@ -230,6 +337,7 @@
           "Model": "Nave",
           "Blueprint": "Progetto",
           "GameMission": "Missione",
+          "Location": "Luogo",
           "FleetContract": "Contratto",
           "FleetEvent": "Evento",
           "User": "Utente"
@@ -241,6 +349,7 @@
           "Model": "Apri nave",
           "Blueprint": "Apri progetto",
           "GameMission": "Apri missione",
+          "Location": "Apri luogo",
           "FleetContract": "Apri contratto",
           "FleetEvent": "Apri evento",
           "User": "Apri hangar"
@@ -428,6 +537,7 @@
       "yourFlagship": "La tua Ammiraglia",
       "flagship": "Ammiraglia",
       "fleet": {
+        "headquarters": "Quartier generale",
         "index": "Flotta",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flotta",
@@ -1871,7 +1981,7 @@
           }
         },
         "location": "Posizione",
-        "currentSystem": "Sistema stellare attuale",
+        "currentSystem": "Posizione attuale nel gioco",
         "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Email non confermata",
@@ -1992,6 +2102,15 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "Cerca luoghi",
+          "system": "Sistema",
+          "parent": "All’interno di",
+          "kind": "Tipo",
+          "starmap": "Mappa di gioco",
+          "shownOnStarmap": "Visibile sulla mappa",
+          "hiddenOnStarmap": "Nascosto sulla mappa"
+        },
         "components": {
           "name": "Nome",
           "itemType": "Tipo di oggetto",
@@ -2417,6 +2536,30 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "Superiore",
+          "system": "Sistema",
+          "scKey": "Chiave del gioco",
+          "scRefs": "Riferimenti del gioco",
+          "slug": "Slug",
+          "gameType": "Tipo del gioco",
+          "build": "Build",
+          "children": "Luoghi all'interno",
+          "missions": "Missioni collegate",
+          "missionTemplates": "Modelli di missione",
+          "shownWithParentOnly": "Visibile solo con il superiore",
+          "yes": "Sì",
+          "no": "No",
+          "unavailable": "non disponibile",
+          "appearance": "Aspetto",
+          "image": "Immagine",
+          "color": "Colore",
+          "appearanceHint": "Il colore riempie il cerchio del pianeta o della luna, ombreggiato come una sfera illuminata. Se lasciato vuoto, viene preso dall’immagine al caricamento.",
+          "headerImageHint": "L’immagine viene mostrata come intestazione nella pagina del luogo.",
+          "shops": "Negozi",
+          "shopImageHint": "L’immagine viene mostrata come intestazione nella pagina del negozio.",
+          "sunHint": "Il colore tinge il bagliore della stella."
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "Fonte nota",
@@ -2569,6 +2712,7 @@
             "system": "Sistema"
           },
           "privileges": {
+            "locations": "Luoghi",
             "blueprints": "Progetti",
             "models": "Modelli",
             "model_modules": "Moduli dei modelli",
@@ -3530,6 +3674,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "citato nel briefing",
+        "locations": "Dove si svolge",
         "locationKinds": {
           "surface": "Su un pianeta o una luna",
           "space": "Nello spazio",

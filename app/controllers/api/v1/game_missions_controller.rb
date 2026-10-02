@@ -26,6 +26,12 @@ module Api
         # holds up to 48 recipes, and folding that into the row would fan the
         # mission out once per recipe.
         @blueprints = @mission.blueprints.order(:name)
+
+        @locations = @mission.game_mission_locations
+          .where(location_id: Location.current_version.select(:id))
+          .includes(location: [:parent, :build, :last_build])
+          .sort_by { |link| [link.location.name.to_s, link.source] }
+          .uniq(&:location_id)
       end
 
       def index

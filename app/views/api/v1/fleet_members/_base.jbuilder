@@ -53,5 +53,7 @@ json.discord_profile_url member.user.discord_profile_url
 json.latitude member.user.latitude&.to_f
 json.longitude member.user.longitude&.to_f
 json.current_system_code member.user.current_system_code
+json.current_system member.user.current_system.presence
+json.partial! "api/v1/locations/linked", key: :current_location, location: member.user.current_location
 
 json.partial! "api/shared/dates", record: member

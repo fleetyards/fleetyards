@@ -245,6 +245,10 @@ de:
     video:
       create: Video konnte nicht erstellt werden.
       update: Video konnte nicht aktualisiert werden.
+    shop:
+      update: Laden konnte nicht aktualisiert werden.
+    location:
+      update: Ort konnte nicht aktualisiert werden.
     commodity:
       create: Ware konnte nicht erstellt werden.
       destroy: Ware konnte nicht gelöscht werden.

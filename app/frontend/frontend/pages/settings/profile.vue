@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -48,6 +49,7 @@ const initialValues = ref<UserUpdateInput>({
   rsiHandle: sessionStore.currentUser?.rsiHandle,
   location: sessionStore.currentUser?.location,
   currentSystem: sessionStore.currentUser?.currentSystem,
+  currentLocationId: sessionStore.currentUser?.currentLocation?.id ?? null,
   homepage: sessionStore.currentUser?.homepage,
   discord: sessionStore.currentUser?.discord,
   youtube: sessionStore.currentUser?.youtube,
@@ -65,7 +67,8 @@ const { defineField, handleSubmit } = useForm({
 const [avatar, avatarProps] = defineField("avatar");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
 const [location, locationProps] = defineField("location");
-const [currentSystem, currentSystemProps] = defineField("currentSystem");
+const [currentSystem] = defineField("currentSystem");
+const [currentLocationId] = defineField("currentLocationId");
 const [homepage, homepageProps] = defineField("homepage");
 const [discord, discordProps] = defineField("discord");
 const [youtube, youtubeProps] = defineField("youtube");
@@ -140,6 +143,8 @@ const setupForm = () => {
   rsiHandle.value = sessionStore.currentUser?.rsiHandle;
   location.value = sessionStore.currentUser?.location;
   currentSystem.value = sessionStore.currentUser?.currentSystem;
+  currentLocationId.value =
+    sessionStore.currentUser?.currentLocation?.id ?? null;
   homepage.value = sessionStore.currentUser?.homepage;
   discord.value = sessionStore.currentUser?.discord;
   youtube.value = sessionStore.currentUser?.youtube;
@@ -306,10 +311,11 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormInput
+        <LocationInput
           v-model="currentSystem"
+          v-model:location-id="currentLocationId"
+          :linked="sessionStore.currentUser?.currentLocation"
           name="currentSystem"
-          v-bind="currentSystemProps"
           icon="fa-duotone fa-planet-ringed"
           translation-key="user.currentSystem"
         />

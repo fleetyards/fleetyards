@@ -55,6 +55,10 @@ module V1
             locationKindEq: ::Shared::V1::Schemas::Enums::GameMissionLocationKindEnum,
             locationKindIn: {type: :array, items: ::Shared::V1::Schemas::Enums::GameMissionLocationKindEnum},
 
+            # The place it can take place at, by location id. Applied by the
+            # controller against the mission's links.
+            atLocation: {type: :string, format: :uuid},
+
             # Whether the build is offering it at all. Read by the controller
             # rather than applied through ransack, which skips a scope whose
             # value is false and would answer "what is not released" with the

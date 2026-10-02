@@ -1,6 +1,113 @@
 {
   "zh-TW": {
     "labels": {
+      "locationInput": {
+        "linked": "已連結到"
+      },
+      "galactapedia": "Galactapedia",
+      "shopPage": {
+        "all": "全部",
+        "search": "在此商店中搜尋",
+        "categories": "類別",
+        "sortName": "名稱",
+        "sortPrice": "價格",
+        "emptyName": "物品",
+        "kind": "商店",
+        "items": "商品",
+        "facts": "關鍵資訊",
+        "place": "地點",
+        "system": "星系",
+        "carries": "出售",
+        "source": "價格與庫存來自 UEX。"
+      },
+      "location": {
+        "missionsSample": "計數僅涵蓋 %{total} 個中的前 %{shown} 個。",
+        "systemUnavailable": "無法載入此星系。",
+        "systemsUnavailable": "無法載入星系。",
+        "resourceKinds": {
+          "ship_mineables": "飛船採礦",
+          "hand_mineables": "手持採礦",
+          "ground_vehicle_mineables": "地面載具採礦",
+          "harvestables": "可採集物",
+          "creatures": "生物"
+        },
+        "resources": "資源",
+        "moonsBadge": "衛星",
+        "planets": "行星",
+        "places": "地點",
+        "showFewer": "收合",
+        "showAll": "顯示全部 %{count} 個",
+        "elsewhere": "%{star} 周圍的其他地方",
+        "namesakes": "×%{count}",
+        "lagrangePoints": "拉格朗日點",
+        "inOrbit": "軌道上",
+        "moons": {
+          "one": "%{count} 顆衛星",
+          "other": "%{count} 顆衛星"
+        },
+        "gateways": "跳躍門",
+        "systemStrip": "%{system}，從恆星向外",
+        "allSystems": "所有星系",
+        "allPlaces": "所有地點",
+        "shops": "商店",
+        "shopItems": {
+          "one": "%{count} 件商品",
+          "other": "%{count} 件商品"
+        },
+        "shopItemTypes": {
+          "Model": "艦船",
+          "ModelModule": "模組",
+          "ModelPaint": "塗裝",
+          "Component": "組件",
+          "Equipment": "裝備",
+          "Commodity": "商品"
+        },
+        "bodyTypes": {
+          "gas_giant": "氣態巨行星",
+          "ice_giant": "冰巨星",
+          "asteroid": "小行星",
+          "city": "城市星球"
+        },
+        "unstable": "不穩定",
+        "unstableHint": "閃焰星：其輻射會毫無預警地驟增。",
+        "systems": "星系",
+        "name": "名稱",
+        "kind": "類型",
+        "retired": "不在此版本中",
+        "starmap": "星圖",
+        "starmapVisibility": "遊戲內地圖",
+        "starmapHidden": "在地圖上隱藏",
+        "starmapAlways": "始終顯示在地圖上",
+        "starmapWithParent": "選取 %{parent} 後顯示",
+        "starmapShown": "顯示在地圖上",
+        "quantumTravel": "量子旅行",
+        "quantumTravelYes": "是",
+        "quantumTravelNo": "否",
+        "mapParent": "地圖上位於",
+        "mapParentNote": "遊戲內地圖將其顯示在 %{mapParent} 下，但它實際位於 %{parent} 內。",
+        "missions": "任務",
+        "allMissions": "所有可在此進行的任務",
+        "terminals": "交易終端",
+        "alwaysShown": "始終在地圖上",
+        "hiddenOnStarmap": "在地圖上隱藏",
+        "kinds": {
+          "system": "星系",
+          "star": "恆星",
+          "planet": "行星",
+          "moon": "衛星",
+          "city": "城市",
+          "station": "太空站",
+          "outpost": "前哨站",
+          "clinic": "診所",
+          "district": "街區",
+          "asteroid": "小行星",
+          "anomaly": "異常點",
+          "jump_point": "跳躍點",
+          "point_of_interest": "興趣點",
+          "nav_point": "導航點",
+          "other": "其他"
+        }
+      },
       "sortOptions": "排序選項",
       "loading": "載入中…",
       "loadingNamed": "正在載入 %{name}…",
@@ -230,6 +337,7 @@
           "Model": "艦船",
           "Blueprint": "藍圖",
           "GameMission": "任務",
+          "Location": "地點",
           "FleetContract": "合約",
           "FleetEvent": "活動",
           "User": "使用者"
@@ -241,6 +349,7 @@
           "Model": "開啟艦船",
           "Blueprint": "開啟藍圖",
           "GameMission": "開啟任務",
+          "Location": "開啟地點",
           "FleetContract": "開啟合約",
           "FleetEvent": "開啟活動",
           "User": "開啟機庫"
@@ -428,6 +537,7 @@
       "yourFlagship": "您的旗艦",
       "flagship": "旗艦",
       "fleet": {
+        "headquarters": "總部",
         "index": "艦隊",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "艦隊",
@@ -1871,7 +1981,7 @@
           }
         },
         "location": "位置",
-        "currentSystem": "目前星系",
+        "currentSystem": "目前遊戲內位置",
         "tester": "測試者?",
         "avatar": "頭像",
         "unconfirmedEmail": "未確認的郵件",
@@ -1992,6 +2102,15 @@
         }
       },
       "filters": {
+        "locations": {
+          "name": "搜尋地點",
+          "system": "星系",
+          "parent": "位於",
+          "kind": "類型",
+          "starmap": "遊戲內地圖",
+          "shownOnStarmap": "顯示在地圖上",
+          "hiddenOnStarmap": "在地圖上隱藏"
+        },
         "components": {
           "name": "名稱",
           "itemType": "物品類型",
@@ -2417,6 +2536,30 @@
         }
       },
       "admin": {
+        "locations": {
+          "parent": "上級",
+          "system": "星系",
+          "scKey": "遊戲鍵",
+          "scRefs": "遊戲參照",
+          "slug": "Slug",
+          "gameType": "遊戲類型",
+          "build": "版本",
+          "children": "內部地點",
+          "missions": "關聯任務",
+          "missionTemplates": "任務範本",
+          "shownWithParentOnly": "僅隨上級顯示",
+          "yes": "是",
+          "no": "否",
+          "unavailable": "無法使用",
+          "appearance": "外觀",
+          "image": "圖片",
+          "color": "顏色",
+          "appearanceHint": "顏色會填滿行星或衛星的圓圈，並渲染成受光照的球體。留空時，會在上傳圖片時從圖片中擷取。",
+          "headerImageHint": "圖片會作為該地點頁面的頁首圖片顯示。",
+          "shops": "商店",
+          "shopImageHint": "圖片會作為商店頁面的頁首圖片顯示。",
+          "sunHint": "顏色會為恆星的光暈著色。"
+        },
         "blueprints": {
           "status": {
             "sourceKnown": "來源已知",
@@ -2569,6 +2712,7 @@
             "system": "系統"
           },
           "privileges": {
+            "locations": "地點",
             "blueprints": "藍圖",
             "models": "型號",
             "model_modules": "型號模組",
@@ -3530,6 +3674,8 @@
         }
       },
       "gameMission": {
+        "locationNamedInText": "簡報中提及",
+        "locations": "任務地點",
         "locationKinds": {
           "surface": "在行星或衛星上",
           "space": "在太空中",

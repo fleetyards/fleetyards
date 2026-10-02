@@ -170,7 +170,11 @@ const hasBody = computed(
     </div>
 
     <div class="stats-card__head">
-      <span v-if="kind" class="stats-card__icon">
+      <!-- A card can draw its own: a planet as its globe, a star as its sun. -->
+      <span v-if="$slots.icon" class="stats-card__icon stats-card__icon--drawn">
+        <slot name="icon" />
+      </span>
+      <span v-else-if="kind" class="stats-card__icon">
         <i :class="catalogueTokenIcon(kind)" aria-hidden="true" />
       </span>
       <div class="stats-card__heading">

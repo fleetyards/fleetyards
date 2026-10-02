@@ -1,6 +1,7 @@
 {
   "zh-TW": {
     "nav": {
+      "locations": "地點",
       "home": "首頁",
       "back": "返回",
       "navigation": "導航",
@@ -178,6 +179,9 @@
         "themes": "主題"
       },
       "admin": {
+        "locations": {
+          "index": "地點"
+        },
         "blueprints": {
           "index": "藍圖"
         },

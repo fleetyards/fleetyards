@@ -103,6 +103,14 @@ module Catalogue
       assert_equal ["ship:Carrack", "Carrack Engine"], @resolver.search("carrack").map(&:token)
     end
 
+    test "resolves a place by its prefix, and only where one place carries the name" do
+      lorville = create(:location, name: "Lorville", kind: "city")
+      2.times { create(:location, name: "Outpost 54", kind: "outpost") }
+
+      assert_equal({"location:Lorville" => ["Location", lorville.slug]}, resolved("location:Lorville", "location:Outpost 54", "Lorville"))
+      assert_equal ["location:Lorville"], @resolver.search("lorv").map(&:token)
+    end
+
     test "search offers a unique name that a much repeated one would crowd out" do
       create_list(:equipment, TokenResolver::SEARCH_LIMIT + 5, name: "Internal Tank")
       create(:equipment, name: "Internal Tank Mk II")

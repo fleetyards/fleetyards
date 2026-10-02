@@ -34,7 +34,7 @@ module Api
         # already leaves out what that build does not describe. Adding the scope
         # beside it scanned `commodity_builds` a second time for the same answer.
         @q = Commodity.with_facts(current_version)
-          .includes(:item_prices, :refines_into)
+          .includes({item_prices: ItemPrice::SHOP_LINK}, :refines_into)
           .ransack(commodities_query_params)
 
         @commodities = @q.result
@@ -50,7 +50,7 @@ module Api
         # `item_prices` for the two price figures and the terminals, which
         # `ItemPriceConcern` reads off the loaded association rather than
         # querying per call.
-        @commodity = Commodity.includes(:item_prices, :refines_into)
+        @commodity = Commodity.includes({item_prices: ItemPrice::SHOP_LINK}, :refines_into)
           .find_by!(slug: params[:slug].to_s.downcase)
 
         # Only the forms the build we are on still describes: a dropped ore

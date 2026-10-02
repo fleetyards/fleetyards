@@ -65,6 +65,8 @@ module Uex
         counts.removed = ItemPrice.where(id: deletable.map(&:id)).destroy_all.size
       end
 
+      ::Uex::ShopLocationMatcher.relink(ItemPrice.where(item_type: self.class::ITEM_TYPE, terminal_id: nil))
+
       counts
     end
 

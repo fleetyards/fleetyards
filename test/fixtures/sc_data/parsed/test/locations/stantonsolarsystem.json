@@ -1,0 +1,18 @@
+{
+  "sc_key": "StantonSolarSystem",
+  "sc_refs": [
+    "c9c137cf-c520-47ee-9e6d-5d653dfbe201"
+  ],
+  "name": "Stanton System",
+  "description": "While the UEE still controls the rights to the system overall, the four planets that reside here were sold by the government to four separate megacorporations making them the first privately-owned planets in the Empire.",
+  "kind": "system",
+  "game_type": "SolarSystem",
+  "parent_key": null,
+  "map_parent_key": null,
+  "system_key": null,
+  "shown_on_starmap": true,
+  "shown_with_parent_only": false,
+  "always_shown": false,
+  "quantum_travel_destination": false,
+  "mission_template_refs": []
+}

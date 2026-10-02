@@ -237,6 +237,10 @@ fr:
     video:
       create: Impossible de créer la vidéo.
       update: Impossible de mettre à jour la vidéo.
+    shop:
+      update: Impossible de mettre à jour la boutique.
+    location:
+      update: Impossible de mettre à jour le lieu.
     commodity:
       create: Impossible de créer la marchandise.
       destroy: Impossible de supprimer la marchandise.

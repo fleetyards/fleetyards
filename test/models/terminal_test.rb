@@ -28,12 +28,18 @@ require "test_helper"
 #  star_system          :string
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  location_id          :uuid
 #  uex_id               :integer          not null
 #
 # Indexes
 #
+#  index_terminals_on_location_id  (location_id)
 #  index_terminals_on_star_system  (star_system)
 #  index_terminals_on_uex_id       (uex_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (location_id => locations.id) ON DELETE => nullify
 #
 class TerminalTest < ActiveSupport::TestCase
   test "a station is not on a surface, even over a planet" do

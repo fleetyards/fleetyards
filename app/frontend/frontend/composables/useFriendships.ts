@@ -42,6 +42,8 @@ export const useFriendships = (
       userId: friendship.user.id,
       online: friendship.user.online,
       lastActiveAt: friendship.user.lastActiveAt,
+      currentSystem: friendship.user.currentSystem,
+      currentLocation: friendship.user.currentLocation,
       state: friendship.state,
       direction: friendship.direction,
       createdAt: friendship.createdAt,

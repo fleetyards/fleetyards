@@ -9,6 +9,9 @@ module ScData
       include ScDataFixtureTree
 
       setup do
+        GameMissionLocation.delete_all
+        LocationBuild.delete_all
+        Location.delete_all
         GameMissionReward.delete_all
         GameMissionBuild.delete_all
         GameMission.delete_all
@@ -212,6 +215,67 @@ module ScData
 
         assert_nil dropped.version
         assert_empty dropped.builds.current(fixture_source)
+      end
+
+      # The Firesale resupply's slots can only pick templates that stand for
+      # PYR2 L4, and its description names Pyro -- the star, not "Pyro
+      # System", which the longer name would have been.
+      test "#all links a mission to the places its templates stand for and its text names" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        loader.all
+
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        links = firesale.game_mission_locations.includes(:location).map { |link| [link.source, link.location.name] }
+
+        assert_equal [["template", "PYR2 L4"], ["text", "Pyro"]], links.sort
+      end
+
+      # Hurston is a planet and a company. Followed by a capitalised word it is
+      # the company.
+      test "#all reads a place name inside a company name as the company" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+
+        links = loader.send(:text_locations, {"title" => "Hurston Dynamics needs a courier", "description" => "Head to Lorville on Hurston."})
+
+        assert_equal ["Hurston", "Lorville"], Location.where(id: links).pluck(:name).sort
+        assert_empty loader.send(:text_locations, {"title" => "Hurston Dynamics needs a courier"})
+      end
+
+      test "#all links nothing when no place is loaded" do
+        loader.all
+
+        assert_equal 0, GameMissionLocation.count
+      end
+
+      test "#all rewrites a mission's places on a reload of the default environment" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        loader.all
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        stale = firesale.game_mission_locations.first
+        stale.update_columns(location_id: create(:location, name: "Port Olisar").id)
+
+        default_loader.all
+
+        assert_not GameMissionLocation.exists?(stale.id)
+        assert_equal ["PYR2 L4", "Pyro"], firesale.reload.locations.pluck(:name).sort
+      end
+
+      # The links are shared by every environment: a ptu load must not hand
+      # live readers its places.
+      test "#all leaves the links of a mission another environment linked" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        loader.all
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        olisar = create(:location, name: "Port Olisar")
+        firesale.game_mission_locations.update_all(location_id: olisar.id)
+
+        loader.all
+
+        assert_equal ["Port Olisar"], firesale.reload.locations.pluck(:name).uniq
+      end
+
+      private def default_loader
+        loader.tap { |instance| instance.define_singleton_method(:default_environment?) { true } }
       end
 
       # What a build whose files failed to sync looks like from the loader's

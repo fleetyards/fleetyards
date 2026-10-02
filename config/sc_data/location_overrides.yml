@@ -1,0 +1,80 @@
+# Corrections for starmap records the game export ships wrong, keyed by the
+# record's key -- the part of `StarMapObject.<key>` after the dot, with dashes
+# read as underscores, which is how the XML is parsed: `RR_NYX-CASTRA_JP1_CLINIC`
+# is `RR_NYX_CASTRA_JP1_CLINIC` here.
+#
+# `name:` replaces the resolved name. `description:` fills a description the
+# export leaves empty. `body_type:` says what kind of world a planet or moon is
+# where its description does not name it. `skip: true` drops the record and
+# everything under it. `merge:` folds the listed records into this one: they
+# are copies of one place under one parent, and the location keeps this key.
+#
+# Only for names that are plainly wrong. A record the export names nothing at
+# all stays skipped -- there is nothing here to say what it is called.
+#
+# Delete an entry once CIG fixes the record upstream.
+---
+# The default clinic name, never changed when the clinic was copied to the
+# other gateways. Their gateway tells them apart.
+RR_NYX_CASTRA_JP1_CLINIC:
+  name: Clinic
+RR_NYX_PYRO_JP1_CLINIC:
+  name: Clinic
+RR_STAN_MAGNUS_JP1_CLINIC:
+  name: Clinic
+
+# A hidden copy at the Stanton-Pyro jump point. INS Jericho is
+# `S4_L1_SecurityDockStation`, at MIC L1.
+JumpPoint_Stanton_Pyro_SecurityDock:
+  skip: true
+
+Stanton4_UGF_NewUGF_1:
+  merge:
+    - Stanton4_UGF_NewUGF_2
+    - Stanton4_UGF_NewUGF_3
+    - Stanton4_UGF_NewUGF_4
+    - Stanton4_UGF_NewUGF_5
+    - Stanton4_UGF_NewUGF_6
+    - Stanton4_UGF_NewUGF_7
+    - Stanton4_UGF_NewUGF_8
+    - Stanton4_UGF_NewUGF_9
+    - Stanton4_UGF_NewUGF_10
+    - Stanton4_UGF_NewUGF_11
+    - Stanton4_UGF_NewUGF_12
+
+AsteroidCluster_MiningBase_Stanton3_Medium_03:
+  merge:
+    - AsteroidCluster_MiningBase_Stanton3_Medium_04
+
+PrivateMiningPoint_Stanton1_L4_001:
+  merge:
+    - PrivateMiningPoint_Stanton1_L4_008
+
+Pyro1_L4_03_Enterance:
+  merge:
+    - Pyro1_L4_04_Enterance
+
+Pyro2_Outpost_col_m_hmstd_otlw_001:
+  merge:
+    - Pyro2_Outpost_col_xs_dpt_otlw_001
+
+# A generic base under the star, named for no place and referenced by nothing;
+# every real one is keyed and tagged after its planet.
+AsteroidCluster_MiningBase_Stanton:
+  skip: true
+
+# The export ships the Nyx star with an empty description, so nothing names
+# its class; the star is F-type in the published lore. The class is what the
+# star is coloured by.
+NyxStar:
+  description: An F-type main sequence star.
+
+# Pyro V is a gas giant; its description only mentions "a striking
+# atmosphere swirled with shades of green and yellow".
+Pyro5:
+  body_type: gas_giant
+
+# Buildings cover most of ArcCorp, which the description says without naming
+# it a city planet.
+Stanton3:
+  body_type: city

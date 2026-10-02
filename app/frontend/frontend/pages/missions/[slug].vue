@@ -198,6 +198,35 @@ watch(
              missions that drop it -- is text today and stays text until
              `blueprint_sources` points at a mission instead of carrying its
              own copy of the name. -->
+        <!-- The specific places its location templates stand for, and the
+             places its text names. Most templates only resolve to a whole
+             planet or moon, which is not a place to link to. -->
+        <section v-if="mission.locations?.length" class="mission-page__panel">
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.locations") }}
+          </h2>
+
+          <ul class="mission-page__places">
+            <li
+              v-for="link in mission.locations"
+              :key="`${link.source}-${link.location.id}`"
+              class="mission-page__place"
+            >
+              <router-link
+                :to="{ name: 'location', params: { slug: link.location.slug } }"
+              >
+                {{ link.location.name }}
+              </router-link>
+              <span v-if="link.location.parentName">
+                {{ link.location.parentName }}
+              </span>
+              <span v-if="link.source === 'text'">
+                {{ t("labels.gameMission.locationNamedInText") }}
+              </span>
+            </li>
+          </ul>
+        </section>
+
         <section v-if="mission.blueprints?.length" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.blueprints") }}

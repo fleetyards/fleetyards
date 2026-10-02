@@ -100,6 +100,10 @@ v1_admin_api_routes = lambda do
     get :org_filters, on: :collection
   end
 
+  # Read only, like missions: a load replaces every fact.
+  resources :locations, only: %i[index show update]
+  resources :shops, only: %i[show update]
+
   # Read only, for the reason blueprints are: every fact is replaced by the
   # next load, so there is nothing here a human could own.
   resources :missions, only: %i[index show], controller: "game_missions" do

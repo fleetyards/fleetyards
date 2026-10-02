@@ -78,6 +78,11 @@ module Shared
             # carrying its own copy of the name.
             blueprints: {type: :array, items: ::Shared::V1::Schemas::GameMissionBlueprint},
 
+            # Where it can take place: the specific places its location
+            # templates stand for, and the places its text names. Not the
+            # planet- or moon-wide pools most templates resolve to.
+            locations: {type: :array, items: ::Shared::V1::Schemas::GameMissionLocation},
+
             # Where in the export it came from. `debugName` is a developer's
             # note and not for reading -- carried because it is what makes a row
             # findable in the game files again.

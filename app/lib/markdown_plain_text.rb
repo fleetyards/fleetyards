@@ -12,7 +12,7 @@ module MarkdownPlainText
   # A catalogue item named inline, `[*Name*]` or `[*type:Name*]`, reads as its
   # name, and a contract or an event, `[*contract:FID/Title*]`, as its title.
   # The same grammar as the frontend's: no `*`, `]` or line break inside.
-  CATALOGUE_TOKEN = %r{\[\*(?:(?:component|equipment|commodity|ship|blueprint|mission|user):|(?:contract|event):(?:[^*\]\n/]*/)?)?([^*\]\n]+?)\*\]}i
+  CATALOGUE_TOKEN = %r{\[\*(?:(?:component|equipment|commodity|ship|blueprint|mission|location|user):|(?:contract|event):(?:[^*\]\n/]*/)?)?([^*\]\n]+?)\*\]}i
 
   # An image's size, `![a](src){width=50%}`, is layout -- not words. The
   # renderer's shapes: a description may hold one level of brackets or an

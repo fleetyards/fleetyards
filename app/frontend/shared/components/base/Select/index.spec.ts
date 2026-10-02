@@ -217,6 +217,34 @@ describe("BaseSelect", () => {
       ).toBe(true);
     });
 
+    it("stops narrowing by the fetched selection once the reader searches", async () => {
+      const queryFn = vi
+        .fn()
+        .mockResolvedValue([{ value: "zeus", label: "Zeus" }]);
+      const wrapper = await mount({
+        options: undefined,
+        queryFn,
+        modelValue: "zeus",
+        searchable: true,
+      });
+
+      queryFn.mockClear();
+      vi.useFakeTimers();
+
+      await wrapper.find("input").setValue("cat");
+      await wrapper.find("input").trigger("input");
+      await vi.advanceTimersByTimeAsync(500);
+
+      const searches = queryFn.mock.calls.filter(
+        ([params]) => params.search === "cat",
+      );
+
+      expect(searches.length).toBeGreaterThan(0);
+      expect(searches.every(([params]) => params.missing === undefined)).toBe(
+        true,
+      );
+    });
+
     it("runs its caps the way a loading button does while it queries", async () => {
       const queryFn = vi.fn().mockReturnValue(new Promise(() => {}));
       const wrapper = await mount({ options: undefined, queryFn });

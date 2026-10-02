@@ -50,6 +50,10 @@ const routes = [
   "settings",
   "ships",
   "compare",
+  "locations",
+  "locations-places",
+  "location",
+  "shop",
   "images",
   "stats",
   "login",
@@ -79,7 +83,23 @@ const hangarItem = async (routeName: string) => {
     .find((item) => item.props("icon") === "fa-duotone fa-warehouse")!;
 };
 
+const locationsItem = async (routeName: string) => {
+  const wrapper = await mountNavigation(routeName);
+
+  return wrapper
+    .findAllComponents({ name: "NavItem" })
+    .find((item) => item.props("icon") === "fa-duotone fa-planet-ringed")!;
+};
+
 describe("Navigation", () => {
+  it("marks the places on every place and shop page", async () => {
+    for (const name of ["locations", "locations-places", "location", "shop"]) {
+      expect((await locationsItem(name)).props("active")).toBe(true);
+    }
+
+    expect((await locationsItem("ships")).props("active")).toBe(false);
+  });
+
   it("marks the hangar while a hangar page is open", async () => {
     expect((await hangarItem("hangar")).props("active")).toBe(true);
     expect((await hangarItem("hangar-wishlist")).props("active")).toBe(true);

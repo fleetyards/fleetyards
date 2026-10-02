@@ -13,6 +13,8 @@ json.ends_at fleet_event.ends_at
 json.timezone fleet_event.timezone
 json.location fleet_event.location
 json.meetup_location fleet_event.meetup_location
+json.partial! "api/v1/locations/linked", key: :linked_location, location: fleet_event.linked_location
+json.partial! "api/v1/locations/linked", key: :linked_meetup_location, location: fleet_event.linked_meetup_location
 json.visibility fleet_event.visibility
 json.category fleet_event.category
 json.scenario fleet_event.scenario

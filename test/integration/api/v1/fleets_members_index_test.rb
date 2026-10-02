@@ -67,6 +67,19 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members says where a member is in the game" do
+    lorville = create(:location, name: "Lorville", kind: "city")
+    @member.update!(current_location_id: lorville.id)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      member = parsed_body["items"].find { |item| item["username"] == @member.username }
+
+      assert_equal "Lorville", member["currentSystem"]
+      assert_equal "lorville", member.dig("currentLocation", "slug")
+    end
+  end
+
   test "GET /fleets/:slug/members shows a verified handle in a fleet that is not verified" do
     verify_handle(@member)
     @fleet.fleet_memberships.find_by(user: @member).update!(verified: true)

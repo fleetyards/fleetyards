@@ -15,6 +15,9 @@ module V1
             briefing: {type: [:string, :null]},
             location: {type: [:string, :null]},
             meetupLocation: {type: [:string, :null]},
+            # Our places the texts name, where they are ones.
+            locationId: {type: [:string, :null], format: :uuid},
+            meetupLocationId: {type: [:string, :null], format: :uuid},
             scenario: {type: [:string, :null]},
             coverImagePreset: {type: [:string, :null]}
           },

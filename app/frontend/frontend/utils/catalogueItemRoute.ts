@@ -7,6 +7,7 @@ const DETAIL_ROUTES: Record<string, string> = {
   Model: "ship",
   Blueprint: "blueprint",
   GameMission: "mission",
+  Location: "location",
 };
 
 type CatalogueRef = {

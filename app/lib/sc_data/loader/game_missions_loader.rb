@@ -31,6 +31,7 @@ module ScData
           build = apply_build(mission, update_params.except(:sc_ref, :sc_key, :version))
 
           persist_rewards(build, mission_data["rewards"])
+          persist_locations(mission, mission_data)
         end
 
         mission
@@ -96,6 +97,82 @@ module ScData
         kinds << ::GameMissionBuild::BLUEPRINT_REWARD_KIND if Array.wrap(pools).any?
 
         kinds.uniq.sort
+      end
+
+      # A name only links where one place carries it: "QV Breaker Station" is
+      # 61 of them. "Green" is Ellis III and a colour, and the colour is what
+      # mission text means by it.
+      TEXT_MATCH_EXCLUDED = %w[Green].freeze
+
+      # Rewritten wholesale, like the rewards: nothing points at a link, and a
+      # mission whose pool moved must lose the places it no longer reaches.
+      # Runs inside the transaction `one` opens.
+      #
+      # The links are shared by every environment, so only a load of the
+      # default one replaces them; another links a mission only while it has
+      # none, which is a mission that environment alone carries.
+      private def persist_locations(mission, mission_data)
+        return if !default_environment? && mission.game_mission_locations.exists?
+
+        links = template_locations(mission_data["location_template_refs"]).map { |id| [id, "template"] } +
+          text_locations(mission_data).map { |id| [id, "text"] }
+
+        mission.game_mission_locations.delete_all unless mission.previously_new_record?
+
+        return if links.empty?
+
+        now = Time.zone.now
+
+        GameMissionLocation.insert_all!(links.uniq.map { |location_id, link_source|
+          {id: SecureRandom.uuid, game_mission_id: mission.id, location_id:, source: link_source, created_at: now, updated_at: now}
+        })
+
+        stats[GameMissionLocation.name][:created] += links.uniq.size
+
+        mission.association(:game_mission_locations).reset
+      end
+
+      private def template_locations(refs)
+        refs = Array.wrap(refs)
+        return [] if refs.empty?
+
+        current_locations.where("mission_template_refs && ARRAY[?]::text[]", refs).pluck(:id)
+      end
+
+      private def text_locations(mission_data)
+        text = [mission_data["title"], mission_data["description"]].compact.join("\n")
+          .gsub(::GameMission::PLACEHOLDER, " ")
+          .gsub(::GameMission::EMPHASIS_TAG, "")
+
+        return [] if text.blank? || location_name_pattern.nil?
+
+        text.scan(location_name_pattern).flatten.uniq.filter_map { |name| location_names[name] }
+      end
+
+      private def current_locations
+        Location.where(id: LocationBuild.current(source).select(:location_id))
+      end
+
+      # Each name held by exactly one place in this build, to its id.
+      private def location_names
+        @location_names ||= current_locations.pluck(:name, :id)
+          .group_by(&:first)
+          .select { |name, rows| rows.one? && name.present? && TEXT_MATCH_EXCLUDED.exclude?(name) }
+          .transform_values { |rows| rows.first.last }
+      end
+
+      # Longest name first, so "Stanton System" is read as the system rather
+      # than as the star inside it. A name followed by a capitalised word is
+      # part of a longer proper noun -- "Crusader Security", "Hurston
+      # Dynamics", "Stanton Branch" -- and names the company, not the place.
+      private def location_name_pattern
+        return @location_name_pattern if defined?(@location_name_pattern)
+
+        names = location_names.keys.sort_by { |name| -name.length }
+
+        @location_name_pattern = if names.any?
+          /(?<![\p{L}\d])(#{names.map { |name| Regexp.escape(name) }.join("|")})(?![\p{L}\d])(?! \p{Lu})/
+        end
       end
 
       # Written against the build and rewritten wholesale on every run rather

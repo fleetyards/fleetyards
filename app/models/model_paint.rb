@@ -112,11 +112,11 @@ class ModelPaint < ApplicationRecord
   end
 
   def sold_at
-    item_prices.select(&:sell?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:sell?).sort_by(&:price).uniq(&:location))
   end
 
   def bought_at
-    item_prices.select(&:buy?).sort_by(&:price).uniq(&:location)
+    ItemPrice.with_shop_links(item_prices.select(&:buy?).sort_by(&:price).uniq(&:location))
   end
 
   def name_with_model

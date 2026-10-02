@@ -151,6 +151,7 @@
         "productionNote": "Nota de producción"
       },
       "fleet": {
+        "headquarters": "¿Dónde tiene su base la flota?",
         "fid": "ID de flota",
         "rsiSid": "RSI SID",
         "ts": "Servidor Teamspeak",
@@ -172,7 +173,7 @@
       "user": {
         "rsiHandle": "Handle de RSI",
         "location": "e.g. Berlin, Germany",
-        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+        "currentSystem": "p. ej. Lorville, Port Tressler, Pyro"
       },
       "oauthApplication": {
         "name": "Mi aplicación",
