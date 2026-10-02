@@ -9,9 +9,9 @@ module V1
         schema({
           type: :object,
           properties: {
-            createdAt: {type: :string, format: :date}
+            createdAt: {type: :string, format: :date},
+            fleetSquadronRoleId: {type: :string, format: :uuid}
           },
-          required: %w[createdAt],
           additionalProperties: false
         })
       end

@@ -641,11 +641,6 @@
           "pending": "待处理的邀请与请求",
           "accepted": "成员",
           "role": "角色",
-          "roles": {
-            "admin": "管理员",
-            "officer": "军官",
-            "member": "成员"
-          },
           "contact": "Contact",
           "spectrumDm": "Message on Spectrum",
           "discordContact": "Discord",
@@ -678,10 +673,22 @@
           "joinedAt": "加入中队时间",
           "searchMembers": "搜索成员",
           "availableMembers": "可添加的成员",
-          "selectedMembers": "已选择 %{count} 位"
+          "selectedMembers": "已选择 %{count} 位",
+          "rank": "职级",
+          "ranksHint": "本舰队所有中队使用的名称。重命名职级不会改变其位置和权限。",
+          "rankName": "名称",
+          "defaultRank": "默认",
+          "defaultRankToggle": "新成员以此职级开始",
+          "rankRights": {
+            "singleHolder": "每个中队一名",
+            "managesMembers": "可添加和移除职级低于自己的成员",
+            "managesRanks": "可设置低于自己的职级"
+          }
         },
         "roles": {
           "permanent": "永久",
+          "default": "默认",
+          "defaultToggle": "新成员获得此角色",
           "privilegeGroups": {
             "fleet": "舰队",
             "memberships": "成员",
@@ -831,6 +838,44 @@
         "alliesStats": "盟友可见统计",
         "alliesMembers": "盟友可见成员列表",
         "squadronsEnabled": "使用中队",
+        "listed": "在舰队目录中显示",
+        "listedInfo": "已验证、公开且至少有两名成员的舰队会出现在舰队目录中。私有舰队永远不会被列出。",
+        "alignment": "阵营",
+        "alignments": {
+          "lawful": "守法",
+          "neutral": "中立",
+          "outlaw": "非法"
+        },
+        "activities": {
+          "bounty_hunting": "赏金狩猎",
+          "engineering": "工程",
+          "exploration": "探索",
+          "freelancing": "自由职业",
+          "infiltration": "渗透",
+          "medical": "医疗",
+          "piracy": "海盗",
+          "resources": "资源",
+          "scouting": "侦察",
+          "security": "安保",
+          "smuggling": "走私",
+          "social": "社交",
+          "trading": "贸易",
+          "transport": "运输"
+        },
+        "commitments": {
+          "casual": "休闲",
+          "regular": "常规",
+          "hardcore": "硬核"
+        },
+        "rsiProfile": {
+          "info": "每天从你的组织的 RSI 页面同步一次。请在 RSI 上修改这些信息。",
+          "primaryActivity": "主要活动",
+          "secondaryActivity": "次要活动",
+          "language": "语言",
+          "commitment": "投入程度",
+          "recruiting": "招募中",
+          "roleplay": "角色扮演"
+        },
         "contractCovers": {
           "transport": "运送封面图",
           "procurement": "采购封面图",
@@ -2252,6 +2297,17 @@
           "releasedFilter": "正式版",
           "released": "在正式版中",
           "unreleased": "未在正式版"
+        },
+        "fleetDirectory": {
+          "search": "名称、FID 或 SID",
+          "memberCountGteq": "最少成员数",
+          "activity": "活动",
+          "language": "语言",
+          "alignment": "阵营",
+          "commitment": "投入程度",
+          "timezone": "时区",
+          "recruiting": "仅招募中",
+          "roleplay": "仅角色扮演"
         }
       },
       "station": {
@@ -3641,6 +3697,16 @@
         "noRewards": "游戏文件未为此任务写明奖励。",
         "unreleased": "未在正式版",
         "retired": "已移除"
+      },
+      "fleetDirectory": {
+        "name": "舰队",
+        "memberCount": "成员",
+        "createdAt": "最新",
+        "language": "语言",
+        "recruiting": "招募中",
+        "notRecruiting": "未招募",
+        "roleplay": "角色扮演",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

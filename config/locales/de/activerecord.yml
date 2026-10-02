@@ -427,6 +427,8 @@ de:
           not_an_rsi_sid: "muss die SID von der RSI-Seite deiner Organisation sein, zum Beispiel TEST"
           locked_while_verified: "ist verifiziert und kann nicht geändert werden; bitte den Support, die Verifizierung zuerst aufzuheben"
           reserved: "wird von der Flotte beansprucht, die für diese RSI-Organisation verifiziert ist, und kann nicht vergeben werden"
+          route_name: "ist der Name einer Seite auf Fleetyards und kann keine Flotten-ID sein"
+          same_as_primary: "muss sich von der Hauptaktivität unterscheiden"
         fleet_squadron:
           attributes:
             team:
@@ -437,10 +439,22 @@ de:
               not_a_member: "muss ein bestätigtes Mitglied dieser Flotte sein"
             fleet_squadron:
               exclusive_conflict: "steht im Widerspruch zu %{squadron} – Mitglieder gehören nur einer Staffel an, sofern sie kein Team ist"
+            fleet_squadron_role:
+              not_in_fleet: "muss einer der Staffelränge dieser Flotte sein"
+              single_holder_taken: "ist in dieser Staffel bereits vergeben – es gibt nur einen %{role} pro Staffel"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "kann kein Führungsrang sein – neue Mitglieder beginnen nie als Leiter oder Co-Leiter"
+              required: "wird benötigt – mache stattdessen einen anderen Rang zum Standard"
         fleet_role:
           attributes:
             base:
               cannot_destroy_with_members: Eine Rolle, die noch Mitgliedern zugewiesen ist, kann nicht gelöscht werden
+              cannot_destroy_default: "Die Rolle für neue Mitglieder kann nicht gelöscht werden – mache zuerst eine andere Rolle zum Standard"
+            new_member_default:
+              permanent: "kann nicht die Admin-Rolle sein – neue Mitglieder dürfen nie die volle Kontrolle über die Flotte erhalten"
+              required: "wird benötigt – mache stattdessen eine andere Rolle zum Standard"
             resource_access:
               changed: Zugriffsrechte können nicht geändert werden
         fleet_membership:

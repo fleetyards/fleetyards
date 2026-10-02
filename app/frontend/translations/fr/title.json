@@ -130,7 +130,8 @@
           "edit": "Modifier le contrat",
           "show": "Contrat",
           "payouts": "%{fleet} Paiements du contrat"
-        }
+        },
+        "directory": "Annuaire des flottes"
       },
       "roadmap": {
         "index": "Feuille de route",

@@ -86,6 +86,10 @@ it:
       create: Impossibile aggiungere il membro allo squadrone.
       destroy: Impossibile rimuovere il membro dallo squadrone.
       update: Impossibile aggiornare l'appartenenza allo squadrone.
+    fleet_squadron_roles:
+      update: "Non è stato possibile rinominare il grado di squadrone."
+    fleet_roles:
+      update: "Non è stato possibile rinominare il ruolo."
     fleet_squadrons:
       create: Impossibile creare lo squadrone.
       update: Impossibile aggiornare lo squadrone.

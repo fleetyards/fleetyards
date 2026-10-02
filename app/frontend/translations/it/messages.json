@@ -340,6 +340,12 @@
             "failure": "Impossibile salvare il soprannome."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Ruolo salvato.",
+            "failure": "Non è stato possibile salvare il ruolo."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Squadrone creato.",
@@ -356,6 +362,12 @@
           },
           "sort": {
             "failure": "Non è stato possibile salvare l'ordine."
+          },
+          "ranks": {
+            "update": {
+              "success": "Gradi di squadrone salvati.",
+              "failure": "Non è stato possibile salvare i gradi di squadrone."
+            }
           },
           "members": {
             "add": {

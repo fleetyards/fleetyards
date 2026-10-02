@@ -31,6 +31,7 @@
 # Indexes
 #
 #  index_fleet_memberships_on_discarded_at          (discarded_at)
+#  index_fleet_memberships_on_fleet_id_accepted     (fleet_id) WHERE (((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))
 #  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE WHERE (discarded_at IS NULL)
 #

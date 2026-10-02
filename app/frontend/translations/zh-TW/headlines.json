@@ -252,6 +252,7 @@
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {
+        "directory": "艦隊目錄",
         "owners": "Owners",
         "add": "Create a new Fleet",
         "invites": "艦隊邀請",
@@ -268,6 +269,9 @@
           "formDetails": "詳細資訊",
           "formAppearance": "外觀",
           "formDiscord": "Discord",
+          "ranks": "中隊職級",
+          "editMember": "編輯中隊成員",
+          "editRank": "編輯中隊職級",
           "teams": "小隊",
           "addMembers": "新增成員",
           "members": "成員"
@@ -340,6 +344,7 @@
           "reassignSlotFor": "為 %{username} 重新分配席位"
         },
         "memberNickname": "成員暱稱",
+        "editRole": "編輯角色",
         "contracts": {
           "index": "合約",
           "create": "建立合約",

@@ -127,3 +127,6 @@ tour_payouts:
 
 holo_ar:
   description: "View in AR — place a ship's to-scale holo in your room from the ship page"
+
+fleet_directory:
+  description: "Fleet directory — a public list of verified fleets, searchable by name, SID, activity and language"

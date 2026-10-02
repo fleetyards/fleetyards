@@ -252,6 +252,7 @@
       "filterModels": "Filtra Le Navi",
       "filterVehicles": "Filtra Hangar",
       "fleets": {
+        "directory": "Directory delle flotte",
         "owners": "Proprietari",
         "add": "Crea una nuova flotta",
         "invites": "Inviti Alla Flotta",
@@ -268,6 +269,9 @@
           "formDetails": "Dettagli",
           "formAppearance": "Aspetto",
           "formDiscord": "Discord",
+          "ranks": "Gradi di squadrone",
+          "editMember": "Modifica membro dello squadrone",
+          "editRank": "Modifica grado di squadrone",
           "teams": "Squadre",
           "addMembers": "Aggiungi membri",
           "members": "Membri"
@@ -340,6 +344,7 @@
           "reassignSlotFor": "Riassegna slot a %{username}"
         },
         "memberNickname": "Soprannome del membro",
+        "editRole": "Modifica ruolo",
         "contracts": {
           "index": "Contratti",
           "create": "Crea contratto",

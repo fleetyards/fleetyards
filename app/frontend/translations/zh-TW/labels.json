@@ -641,11 +641,6 @@
           "pending": "待處理的邀請與請求",
           "accepted": "成員",
           "role": "角色",
-          "roles": {
-            "admin": "管理員",
-            "officer": "軍官",
-            "member": "成員"
-          },
           "contact": "Contact",
           "spectrumDm": "Message on Spectrum",
           "discordContact": "Discord",
@@ -678,10 +673,22 @@
           "joinedAt": "加入中隊時間",
           "searchMembers": "搜尋成員",
           "availableMembers": "可新增的成員",
-          "selectedMembers": "已選擇 %{count} 位"
+          "selectedMembers": "已選擇 %{count} 位",
+          "rank": "職級",
+          "ranksHint": "本艦隊所有中隊使用的名稱。重新命名職級不會改變其位置和權限。",
+          "rankName": "名稱",
+          "defaultRank": "預設",
+          "defaultRankToggle": "新成員以此職級開始",
+          "rankRights": {
+            "singleHolder": "每個中隊一名",
+            "managesMembers": "可新增和移除職級低於自己的成員",
+            "managesRanks": "可設定低於自己的職級"
+          }
         },
         "roles": {
           "permanent": "永久",
+          "default": "預設",
+          "defaultToggle": "新成員獲得此角色",
           "privilegeGroups": {
             "fleet": "艦隊",
             "memberships": "成員",
@@ -831,6 +838,44 @@
         "alliesStats": "盟友可見統計",
         "alliesMembers": "盟友可見成員列表",
         "squadronsEnabled": "使用中隊",
+        "listed": "在艦隊目錄中顯示",
+        "listedInfo": "已驗證、公開且至少有兩名成員的艦隊會出現在艦隊目錄中。私人艦隊永遠不會被列出。",
+        "alignment": "陣營",
+        "alignments": {
+          "lawful": "守法",
+          "neutral": "中立",
+          "outlaw": "非法"
+        },
+        "activities": {
+          "bounty_hunting": "賞金獵人",
+          "engineering": "工程",
+          "exploration": "探索",
+          "freelancing": "自由職業",
+          "infiltration": "滲透",
+          "medical": "醫療",
+          "piracy": "海盜",
+          "resources": "資源",
+          "scouting": "偵察",
+          "security": "保安",
+          "smuggling": "走私",
+          "social": "社交",
+          "trading": "貿易",
+          "transport": "運輸"
+        },
+        "commitments": {
+          "casual": "休閒",
+          "regular": "一般",
+          "hardcore": "硬核"
+        },
+        "rsiProfile": {
+          "info": "每天從你的組織的 RSI 頁面同步一次。請在 RSI 上修改這些資訊。",
+          "primaryActivity": "主要活動",
+          "secondaryActivity": "次要活動",
+          "language": "語言",
+          "commitment": "投入程度",
+          "recruiting": "招募中",
+          "roleplay": "角色扮演"
+        },
         "contractCovers": {
           "transport": "運送封面圖",
           "procurement": "採購封面圖",
@@ -2252,6 +2297,17 @@
           "releasedFilter": "正式版",
           "released": "在正式版中",
           "unreleased": "未在正式版"
+        },
+        "fleetDirectory": {
+          "search": "名稱、FID 或 SID",
+          "memberCountGteq": "最少成員數",
+          "activity": "活動",
+          "language": "語言",
+          "alignment": "陣營",
+          "commitment": "投入程度",
+          "timezone": "時區",
+          "recruiting": "僅招募中",
+          "roleplay": "僅角色扮演"
         }
       },
       "station": {
@@ -3641,6 +3697,16 @@
         "noRewards": "遊戲檔案未為此任務寫明獎勵。",
         "unreleased": "未在正式版",
         "retired": "已移除"
+      },
+      "fleetDirectory": {
+        "name": "艦隊",
+        "memberCount": "成員",
+        "createdAt": "最新",
+        "language": "語言",
+        "recruiting": "招募中",
+        "notRecruiting": "未招募",
+        "roleplay": "角色扮演",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

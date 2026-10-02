@@ -340,6 +340,12 @@
             "failure": "Le surnom n'a pas pu être enregistré."
           }
         },
+        "roles": {
+          "update": {
+            "success": "Rôle enregistré.",
+            "failure": "Le rôle n'a pas pu être enregistré."
+          }
+        },
         "squadrons": {
           "create": {
             "success": "Escadron créé.",
@@ -356,6 +362,12 @@
           },
           "sort": {
             "failure": "L'ordre n'a pas pu être enregistré."
+          },
+          "ranks": {
+            "update": {
+              "success": "Grades d'escadron enregistrés.",
+              "failure": "Les grades d'escadron n'ont pas pu être enregistrés."
+            }
           },
           "members": {
             "add": {

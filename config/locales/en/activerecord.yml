@@ -458,6 +458,8 @@ en:
           not_an_rsi_sid: "must be the SID from your organisation's RSI page, such as TEST"
           locked_while_verified: "is verified and cannot be changed; ask support to revoke the verification first"
           reserved: "is claimed by the fleet verified for that RSI organisation and cannot be taken"
+          route_name: "is the name of a page on Fleetyards and cannot be a fleet ID"
+          same_as_primary: "must differ from the primary activity"
         fleet_squadron:
           attributes:
             team:
@@ -468,10 +470,22 @@ en:
               not_a_member: "must be an accepted member of this fleet"
             fleet_squadron:
               exclusive_conflict: "conflicts with %{squadron} — a member belongs to one squadron unless it is a team"
+            fleet_squadron_role:
+              not_in_fleet: "must be one of this fleet's squadron ranks"
+              single_holder_taken: "is already held by another member of this squadron — there is one %{role} per squadron"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "cannot be a leadership rank — a new member never starts as Leader or Co-Leader"
+              required: "is needed — make another rank the default instead"
         fleet_role:
           attributes:
             base:
               cannot_destroy_with_members: Cannot delete a role that is still assigned to members
+              cannot_destroy_default: "Cannot delete the role new members get — make another role the default first"
+            new_member_default:
+              permanent: "cannot be the Admin role — a new member must never get full control of the fleet"
+              required: "is needed — make another role the default instead"
             resource_access:
               changed: Access privileges can not be changed
         fleet_membership:

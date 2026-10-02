@@ -641,11 +641,6 @@
           "pending": "Invitations et demandes en attente",
           "accepted": "Membres",
           "role": "Rôle",
-          "roles": {
-            "admin": "Admin",
-            "officer": "Officier",
-            "member": "Membre"
-          },
           "contact": "Contact",
           "spectrumDm": "Message on Spectrum",
           "discordContact": "Discord",
@@ -678,10 +673,22 @@
           "joinedAt": "Date d’adhésion à l’escadron",
           "searchMembers": "Rechercher des membres",
           "availableMembers": "membres disponibles",
-          "selectedMembers": "%{count} sélectionnés"
+          "selectedMembers": "%{count} sélectionnés",
+          "rank": "Grade",
+          "ranksHint": "Les noms utilisés par chaque escadron de cette flotte. Un grade renommé garde sa place et ses droits.",
+          "rankName": "Nom",
+          "defaultRank": "Par défaut",
+          "defaultRankToggle": "Les nouveaux membres commencent à ce grade",
+          "rankRights": {
+            "singleHolder": "Un par escadron",
+            "managesMembers": "Ajoute et retire les membres de grade inférieur",
+            "managesRanks": "Fixe les grades inférieurs au sien"
+          }
         },
         "roles": {
           "permanent": "Permanent",
+          "default": "Par défaut",
+          "defaultToggle": "Les nouveaux membres reçoivent ce rôle",
           "privilegeGroups": {
             "fleet": "Flotte",
             "memberships": "Membres",
@@ -831,6 +838,44 @@
         "alliesStats": "Statistiques visibles par les alliés",
         "alliesMembers": "Liste des membres visible par les alliés",
         "squadronsEnabled": "Utiliser les escadrons",
+        "listed": "Afficher dans l’annuaire des flottes",
+        "listedInfo": "Une flotte vérifiée et publique comptant au moins deux membres figure dans l’annuaire des flottes. Une flotte privée n’y figure jamais.",
+        "alignment": "Alignement",
+        "alignments": {
+          "lawful": "Légal",
+          "neutral": "Neutre",
+          "outlaw": "Hors-la-loi"
+        },
+        "activities": {
+          "bounty_hunting": "Chasse de primes",
+          "engineering": "Ingénierie",
+          "exploration": "Exploration",
+          "freelancing": "Freelance",
+          "infiltration": "Infiltration",
+          "medical": "Médical",
+          "piracy": "Piraterie",
+          "resources": "Ressources",
+          "scouting": "Reconnaissance",
+          "security": "Sécurité",
+          "smuggling": "Contrebande",
+          "social": "Social",
+          "trading": "Commerce",
+          "transport": "Transport"
+        },
+        "commitments": {
+          "casual": "Occasionnel",
+          "regular": "Régulier",
+          "hardcore": "Hardcore"
+        },
+        "rsiProfile": {
+          "info": "Synchronisé une fois par jour depuis la page RSI de ton organisation. Modifie ces informations sur RSI.",
+          "primaryActivity": "Activité principale",
+          "secondaryActivity": "Activité secondaire",
+          "language": "Langue",
+          "commitment": "Engagement",
+          "recruiting": "Recrute",
+          "roleplay": "Jeu de rôle"
+        },
         "contractCovers": {
           "transport": "Visuel transport",
           "procurement": "Visuel approvisionnement",
@@ -2252,6 +2297,17 @@
           "releasedFilter": "Dans la version",
           "released": "Dans la version",
           "unreleased": "Hors version"
+        },
+        "fleetDirectory": {
+          "search": "Nom, FID ou SID",
+          "memberCountGteq": "Membres minimum",
+          "activity": "Activité",
+          "language": "Langue",
+          "alignment": "Alignement",
+          "commitment": "Engagement",
+          "timezone": "Fuseau horaire",
+          "recruiting": "Qui recrutent",
+          "roleplay": "Jeu de rôle uniquement"
         }
       },
       "station": {
@@ -3641,6 +3697,16 @@
         "noRewards": "Les fichiers n'indiquent aucune récompense pour celle-ci.",
         "unreleased": "Hors version",
         "retired": "Retirée"
+      },
+      "fleetDirectory": {
+        "name": "Flottes",
+        "memberCount": "Membres",
+        "createdAt": "Plus récentes",
+        "language": "Langue",
+        "recruiting": "Recrute",
+        "notRecruiting": "Ne recrute pas",
+        "roleplay": "Jeu de rôle",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

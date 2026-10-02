@@ -31,6 +31,7 @@
 # Indexes
 #
 #  index_fleet_memberships_on_discarded_at          (discarded_at)
+#  index_fleet_memberships_on_fleet_id_accepted     (fleet_id) WHERE (((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))
 #  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
 #  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE WHERE (discarded_at IS NULL)
 #
@@ -92,7 +93,7 @@ class FleetMembership < ApplicationRecord
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
-      "blueprints_filter", "squadron_slug", "squadron_membership_created_at",
+      "blueprints_filter", "role", "squadron_slug", "squadron_membership_created_at",
       "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
@@ -126,7 +127,9 @@ class FleetMembership < ApplicationRecord
   ransack_alias :rsi_handle, :user_rsi_handle
   ransack_alias :last_active_at, :user_last_active_at
   ransack_alias :name, :user_username
-  ransack_alias :role, :fleet_role_name
+  # The slug, not the name: a fleet renames its roles, and a saved filter or a
+  # shared link must keep meaning the same role.
+  ransack_alias :role, :fleet_role_slug
   ransack_alias :squadron_slug, :fleet_squadrons_slug
   ransack_alias :squadron_membership_created_at, :fleet_squadron_memberships_created_at
   ransack_alias :state, :aasm_state
@@ -193,6 +196,8 @@ class FleetMembership < ApplicationRecord
     update_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:update"],
     destroy_squadrons: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:delete"],
     manage_squadron_members: ["fleet:manage", "fleet:squadrons:manage", "fleet:squadrons:members:manage"],
+    manage_squadrons: ["fleet:manage", "fleet:squadrons:manage"],
+    enable_squadrons: ["fleet:manage", "fleet:update"],
     read_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:read"],
     create_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:create"],
     destroy_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:delete"],
@@ -207,6 +212,7 @@ class FleetMembership < ApplicationRecord
     read_vehicles: ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"],
     read_blueprints: ["fleet:manage", "fleet:blueprints:read"],
     read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],
+    update_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:update"],
     manage_fleet: ["fleet:manage"],
     update_fleet: ["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"],
     destroy_fleet: ["fleet:manage", "fleet:delete"]

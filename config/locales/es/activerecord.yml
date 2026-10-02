@@ -427,6 +427,8 @@ es:
           not_an_rsi_sid: "debe ser el SID de la página de RSI de tu organización, por ejemplo TEST"
           locked_while_verified: "está verificado y no se puede cambiar; pide al soporte que revoque primero la verificación"
           reserved: "está reclamado por la flota verificada para esa organización de RSI y no se puede usar"
+          route_name: "es el nombre de una página de Fleetyards y no puede ser un ID de flota"
+          same_as_primary: "debe ser distinta de la actividad principal"
         fleet_squadron:
           attributes:
             team:
@@ -437,10 +439,22 @@ es:
               not_a_member: "debe ser un miembro aceptado de esta flota"
             fleet_squadron:
               exclusive_conflict: "entra en conflicto con %{squadron}: un miembro pertenece a un solo escuadrón salvo que sea un equipo"
+            fleet_squadron_role:
+              not_in_fleet: "debe ser uno de los rangos de escuadrón de esta flota"
+              single_holder_taken: "ya lo tiene otro miembro de este escuadrón: hay un solo %{role} por escuadrón"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "no puede ser un rango de mando: un miembro nuevo nunca empieza como Líder o Colíder"
+              required: "es necesario: haz predeterminado otro rango en su lugar"
         fleet_role:
           attributes:
             base:
               cannot_destroy_with_members: No se puede eliminar un rol que todavía está asignado a miembros
+              cannot_destroy_default: "No se puede eliminar el rol que reciben los miembros nuevos: primero haz predeterminado otro rol"
+            new_member_default:
+              permanent: "no puede ser el rol de Admin: un miembro nuevo nunca debe recibir el control total de la flota"
+              required: "es necesario: haz predeterminado otro rol en su lugar"
             resource_access:
               changed: Los privilegios de acceso no se pueden cambiar
         fleet_membership:

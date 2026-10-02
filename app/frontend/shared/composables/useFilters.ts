@@ -91,13 +91,20 @@ export const useFilters = <T>({
     ),
   );
 
-  const hasOnlyPageQuery = computed(() => {
-    return Object.keys(route.query).length === 1 && route.query.page;
-  });
+  // Compared loosely: the URL hands a single value back as a string and a
+  // form keeps it as a one-item list, and the two are the same filter.
+  const comparable = (query: Record<string, unknown>) =>
+    JSON.stringify(
+      Object.keys(query)
+        .sort()
+        .map((key) => [key, [query[key]].flat().map(String)]),
+    );
 
-  const shouldResetPage = (query: ReturnType<typeof getQuery>) => {
-    return hasOnlyPageQuery.value && Object.keys(query).length > 1;
-  };
+  // A narrower result rarely has the page the reader was on, so a changed
+  // filter starts again from the first. An unchanged one -- the form writing
+  // back what it read from the URL -- leaves the page alone.
+  const shouldResetPage = (query: ReturnType<typeof getQuery>) =>
+    comparable(query) !== comparable(getQuery());
 
   const debouncedFilter = (filter: T) => {
     const query = getQuery(filter);

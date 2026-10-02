@@ -86,6 +86,10 @@ fr:
       create: Le membre n'a pas pu être ajouté à l'escadron.
       destroy: Le membre n'a pas pu être retiré de l'escadron.
       update: L'adhésion à l'escadron n'a pas pu être mise à jour.
+    fleet_squadron_roles:
+      update: "Le grade d'escadron n'a pas pu être renommé."
+    fleet_roles:
+      update: "Le rôle n'a pas pu être renommé."
     fleet_squadrons:
       create: L'escadron n'a pas pu être créé.
       update: L'escadron n'a pas pu être mis à jour.

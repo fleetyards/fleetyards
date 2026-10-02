@@ -3,10 +3,12 @@
 # Table name: fleets
 #
 #  id                          :uuid             not null, primary key
+#  alignment                   :string
 #  allies_fleet                :boolean          default(FALSE), not null
 #  allies_fleet_members        :boolean          default(FALSE), not null
 #  allies_fleet_stats          :boolean          default(FALSE), not null
 #  calendar_feed_token         :string
+#  commitment                  :string
 #  created_by                  :uuid
 #  default_timezone            :string           default("UTC"), not null
 #  description                 :text
@@ -16,16 +18,24 @@
 #  guilded                     :string
 #  homepage                    :string
 #  inventory_transfer_policy   :integer          default("everyone"), not null
+#  language                    :string
+#  listed                      :boolean
 #  name                        :string
 #  normalized_fid              :string
+#  primary_activity            :string
 #  public_fleet                :boolean          default(FALSE)
 #  public_fleet_stats          :boolean          default(FALSE)
+#  recruiting                  :boolean
+#  roleplay                    :boolean
 #  rsi_sid                     :string
+#  rsi_sync_attempted_at       :datetime
+#  rsi_synced_at               :datetime
 #  rsi_verification_checked_at :datetime
 #  rsi_verification_status     :string
 #  rsi_verification_token      :string
 #  rsi_verified_at             :datetime
 #  rsi_verified_sid            :string
+#  secondary_activity          :string
 #  sid                         :string
 #  slug                        :string
 #  squadrons_enabled           :boolean          default(FALSE), not null

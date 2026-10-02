@@ -11,11 +11,13 @@ module V1
           properties: {
             rank: {type: :string},
             permanent: {type: :boolean},
+            # The role new members get; exactly one per fleet.
+            defaultRole: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[rank createdAt updatedAt]
+          required: %w[rank defaultRole createdAt updatedAt]
         })
       end
     end

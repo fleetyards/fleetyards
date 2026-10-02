@@ -35,6 +35,8 @@ module Api
 
       def show
         authorize! @fleet_squadron
+
+        set_viewer_rights
       end
 
       def create
@@ -43,6 +45,7 @@ module Api
         authorize! @fleet_squadron
 
         if @fleet_squadron.save
+          set_viewer_rights
           render :show, status: :created
         else
           render json: ValidationError.new("fleet_squadrons.create", errors: @fleet_squadron.errors), status: :bad_request
@@ -53,6 +56,7 @@ module Api
         authorize! @fleet_squadron
 
         if @fleet_squadron.update(fleet_squadron_params)
+          set_viewer_rights
           render :show
         else
           render json: ValidationError.new("fleet_squadrons.update", errors: @fleet_squadron.errors), status: :bad_request
@@ -82,6 +86,24 @@ module Api
         @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
 
         authorize! @fleet, to: :show?
+      end
+
+      # What the reader may do to this squadron's roster. A squadron rank grants
+      # rights of its own, so the fleet-wide capabilities on the membership
+      # cannot answer it.
+      private def set_viewer_rights
+        policy = policy_for(
+          record: FleetSquadronMembership.new(fleet_squadron: @fleet_squadron),
+          with: FleetSquadronMembershipPolicy,
+          context: {fleet: @fleet}
+        )
+
+        @squadron_capabilities = {
+          manage_members: policy.apply(:create?),
+          manage_ranks: policy.apply(:manage_ranks?)
+        }
+
+        @viewer_squadron_role = policy.actor_rank
       end
 
       private def fleet_squadron_params

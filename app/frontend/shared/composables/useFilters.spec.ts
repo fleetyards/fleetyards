@@ -62,6 +62,24 @@ describe("useFilters navigation", () => {
     });
   });
 
+  it("starts a changed filter from the first page", async () => {
+    query.value = { nameCont: "ti", page: "3" };
+
+    useFilters().filter({ nameCont: "tit" } as never);
+    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+
+    expect(replace.mock.calls[0][0].query.page).toBeUndefined();
+  });
+
+  it("keeps the page when the form writes back what the URL held", async () => {
+    query.value = { activityIn: "piracy", page: "2" };
+
+    useFilters().filter({ activityIn: ["piracy"] } as never);
+    await vi.waitFor(() => expect(replace).toHaveBeenCalled());
+
+    expect(replace.mock.calls[0][0].query.page).toBe("2");
+  });
+
   it("keeps it when the filters are cleared", () => {
     query.value = { view: "invites", direction: "outgoing", nameCont: "ti" };
 

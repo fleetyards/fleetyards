@@ -42,7 +42,8 @@
         }
       },
       "fleets": {
-        "leaveInfo": "You can not leave the Fleet."
+        "leaveInfo": "You can not leave the Fleet.",
+        "directory": "Verified fleets that chose to be found. Every fleet here has proved it runs its RSI organisation."
       },
       "admin": {
         "destroyedFleets": {

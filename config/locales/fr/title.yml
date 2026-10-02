@@ -26,6 +26,7 @@ fr:
       fleet_settings_roles: Rôles de %{fleet}
       fleet_stats: Statistiques de %{fleet}
       fleets: Flottes
+      fleets_directory: "Annuaire des flottes"
       fleets_add: Créer une nouvelle flotte
       fleets_invites: Invitations de flotte
       fleets_preview: Aperçu de la flotte

@@ -7123,6 +7123,71 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/roles/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Fleet role id
+      required: true
+    put:
+      summary: Rename Fleet Role
+      tags:
+      - FleetRoles
+      operationId: updateFleetRole
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetRoleUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetRoleExtended"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - renaming a role needs fleet:roles:update
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/rsi-verification":
     parameters:
     - name: fleetSlug
@@ -7239,6 +7304,119 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/squadron-roles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Squadron Role List
+      tags:
+      - FleetSquadrons
+      operationId: fleetSquadronRoles
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronRolesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - the role reads no squadrons
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/squadron-roles/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Squadron role id
+      required: true
+    put:
+      summary: Rename Fleet Squadron Role
+      tags:
+      - FleetSquadrons
+      operationId: updateFleetSquadronRole
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetSquadronRoleUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetSquadronRole"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - renaming a rank needs fleet:squadrons:manage
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -7500,7 +7678,8 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '403':
-          description: forbidden - a plain member does not take people out of a squadron
+          description: forbidden - neither the fleet role nor the squadron rank outranks
+            this member
           content:
             application/json:
               schema:
@@ -7535,6 +7714,12 @@ paths:
       responses:
         '204':
           description: successful
+        '400':
+          description: bad request - the squadron already has a Leader
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -7542,7 +7727,8 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '403':
-          description: forbidden - a plain member cannot update squadron membership
+          description: forbidden - neither the fleet role nor the squadron rank outranks
+            this member
           content:
             application/json:
               schema:
@@ -7553,8 +7739,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/squadrons/{slug}":
     parameters:
     - name: fleetSlug
@@ -14484,6 +14668,42 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/fleets":
+    get:
+      summary: Fleet directory
+      tags:
+      - Fleets
+      operationId: fleetDirectory
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetDirectoryQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetDirectory"
+        '403':
+          description: the directory is not rolled out
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/squadrons":
     parameters:
     - name: fleetSlug
@@ -21313,6 +21533,7 @@ components:
       enum:
       - fleet_allies
       - fleet_contracts
+      - fleet_directory
       - fleet_logistics
       - fleet_mission_builder
       - fleet_squadrons
@@ -21338,6 +21559,7 @@ components:
       x-enumNames:
       - FLEET_ALLIES
       - FLEET_CONTRACTS
+      - FLEET_DIRECTORY
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_SQUADRONS
@@ -21454,6 +21676,35 @@ components:
           type: boolean
         defaultTimezone:
           type: string
+        listed:
+          type:
+          - boolean
+          - 'null'
+        listedInDirectory:
+          type: boolean
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        primaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        secondaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        commitment:
+          "$ref": "#/components/schemas/NullableFleetCommitmentEnum"
+        language:
+          "$ref": "#/components/schemas/NullableFleetLanguageEnum"
+        roleplay:
+          type:
+          - boolean
+          - 'null'
+        recruiting:
+          type:
+          - boolean
+          - 'null'
+        rsiSyncedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
         calendarFeedToken:
           type: string
         logo:
@@ -21488,11 +21739,56 @@ components:
       - alliesFleetStats
       - alliesFleetMembers
       - squadronsEnabled
+      - listedInDirectory
       - features
       - subscribed
       - createdAt
       - updatedAt
       title: Fleet
+    FleetActivityEnum:
+      type: string
+      enum:
+      - bounty_hunting
+      - engineering
+      - exploration
+      - freelancing
+      - infiltration
+      - medical
+      - piracy
+      - resources
+      - scouting
+      - security
+      - smuggling
+      - social
+      - trading
+      - transport
+      x-enumNames:
+      - BOUNTY_HUNTING
+      - ENGINEERING
+      - EXPLORATION
+      - FREELANCING
+      - INFILTRATION
+      - MEDICAL
+      - PIRACY
+      - RESOURCES
+      - SCOUTING
+      - SECURITY
+      - SMUGGLING
+      - SOCIAL
+      - TRADING
+      - TRANSPORT
+      title: FleetActivityEnum
+    FleetAlignmentEnum:
+      type: string
+      enum:
+      - lawful
+      - neutral
+      - outlaw
+      x-enumNames:
+      - LAWFUL
+      - NEUTRAL
+      - OUTLAW
+      title: FleetAlignmentEnum
     FleetAlliance:
       type: object
       properties:
@@ -21612,6 +21908,17 @@ components:
       required:
       - items
       title: FleetCalendar
+    FleetCommitmentEnum:
+      type: string
+      enum:
+      - casual
+      - regular
+      - hardcore
+      x-enumNames:
+      - CASUAL
+      - REGULAR
+      - HARDCORE
+      title: FleetCommitmentEnum
     FleetContract:
       type: object
       properties:
@@ -22476,6 +22783,135 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetDirectory:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDirectoryEntry"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetDirectory
+    FleetDirectoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        rsiSid:
+          type: string
+        memberCount:
+          type: integer
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
+        primaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        secondaryActivity:
+          "$ref": "#/components/schemas/NullableFleetActivityEnum"
+        commitment:
+          "$ref": "#/components/schemas/NullableFleetCommitmentEnum"
+        language:
+          "$ref": "#/components/schemas/NullableFleetLanguageEnum"
+        roleplay:
+          type:
+          - boolean
+          - 'null'
+        recruiting:
+          type:
+          - boolean
+          - 'null'
+        defaultTimezone:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - slug
+      - name
+      - rsiSid
+      - memberCount
+      - defaultTimezone
+      - createdAt
+      - updatedAt
+      title: FleetDirectoryEntry
+    FleetDirectoryQuery:
+      type: object
+      properties:
+        search:
+          type: string
+        memberCountGteq:
+          type: integer
+        memberCountLteq:
+          type: integer
+        alignmentIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetAlignmentEnum"
+        activityIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetActivityEnum"
+        languageIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetLanguageEnum"
+        commitmentIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetCommitmentEnum"
+        roleplayEq:
+          type: boolean
+        recruitingEq:
+          type: boolean
+        defaultTimezoneIn:
+          type: array
+          items:
+            type: string
+        s:
+          "$ref": "#/components/schemas/FleetDirectorySortingEnum"
+        sorts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetDirectorySortingEnum"
+      additionalProperties: false
+      example: {}
+      title: FleetDirectoryQuery
+    FleetDirectorySortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - memberCount asc
+      - memberCount desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - MEMBER_COUNT_ASC
+      - MEMBER_COUNT_DESC
+      title: FleetDirectorySortingEnum
     FleetDiscordChannel:
       type: object
       properties:
@@ -24164,6 +24600,379 @@ components:
       items:
         "$ref": "#/components/schemas/FleetMember"
       title: FleetInvitesList
+    FleetLanguageEnum:
+      type: string
+      enum:
+      - ab
+      - aa
+      - af
+      - ak
+      - sq
+      - am
+      - ar
+      - an
+      - hy
+      - as
+      - av
+      - ae
+      - ay
+      - az
+      - bm
+      - ba
+      - eu
+      - be
+      - bn
+      - bh
+      - bi
+      - nb
+      - bs
+      - br
+      - bg
+      - my
+      - ca
+      - km
+      - ch
+      - ce
+      - ny
+      - zh
+      - cu
+      - cv
+      - kw
+      - co
+      - cr
+      - hr
+      - cs
+      - da
+      - nl
+      - dz
+      - en
+      - eo
+      - et
+      - ee
+      - fo
+      - fj
+      - fi
+      - fr
+      - ff
+      - gd
+      - gl
+      - lg
+      - ka
+      - de
+      - el
+      - gn
+      - gu
+      - ht
+      - ha
+      - he
+      - hz
+      - hi
+      - ho
+      - hu
+      - is
+      - io
+      - ig
+      - id
+      - ia
+      - ie
+      - iu
+      - ik
+      - ga
+      - it
+      - ja
+      - jv
+      - kl
+      - kn
+      - kr
+      - ks
+      - kk
+      - ki
+      - rw
+      - ky
+      - kv
+      - kg
+      - ko
+      - kj
+      - ku
+      - lo
+      - la
+      - lv
+      - li
+      - ln
+      - lt
+      - lu
+      - lb
+      - mk
+      - mg
+      - ms
+      - ml
+      - dv
+      - mt
+      - gv
+      - mi
+      - mr
+      - mh
+      - mn
+      - na
+      - nv
+      - nd
+      - nr
+      - ng
+      - ne
+      - se
+      - 'no'
+      - nn
+      - oc
+      - oj
+      - or
+      - om
+      - os
+      - pi
+      - pa
+      - fa
+      - pl
+      - pt
+      - ps
+      - qu
+      - ro
+      - rm
+      - rn
+      - ru
+      - sm
+      - sg
+      - sa
+      - sc
+      - sr
+      - sn
+      - ii
+      - sd
+      - si
+      - sk
+      - sl
+      - so
+      - st
+      - es
+      - su
+      - sw
+      - ss
+      - sv
+      - tl
+      - ty
+      - tg
+      - ta
+      - tt
+      - te
+      - th
+      - bo
+      - ti
+      - to
+      - ts
+      - tn
+      - tr
+      - tk
+      - tw
+      - ug
+      - uk
+      - ur
+      - uz
+      - ve
+      - vi
+      - vo
+      - wa
+      - cy
+      - fy
+      - wo
+      - xh
+      - yi
+      - yo
+      - za
+      - zu
+      x-enumNames:
+      - AB
+      - AA
+      - AF
+      - AK
+      - SQ
+      - AM
+      - AR
+      - AN
+      - HY
+      - AS
+      - AV
+      - AE
+      - AY
+      - AZ
+      - BM
+      - BA
+      - EU
+      - BE
+      - BN
+      - BH
+      - BI
+      - NB
+      - BS
+      - BR
+      - BG
+      - MY
+      - CA
+      - KM
+      - CH
+      - CE
+      - NY
+      - ZH
+      - CU
+      - CV
+      - KW
+      - CO
+      - CR
+      - HR
+      - CS
+      - DA
+      - NL
+      - DZ
+      - EN
+      - EO
+      - ET
+      - EE
+      - FO
+      - FJ
+      - FI
+      - FR
+      - FF
+      - GD
+      - GL
+      - LG
+      - KA
+      - DE
+      - EL
+      - GN
+      - GU
+      - HT
+      - HA
+      - HE
+      - HZ
+      - HI
+      - HO
+      - HU
+      - IS
+      - IO
+      - IG
+      - ID
+      - IA
+      - IE
+      - IU
+      - IK
+      - GA
+      - IT
+      - JA
+      - JV
+      - KL
+      - KN
+      - KR
+      - KS
+      - KK
+      - KI
+      - RW
+      - KY
+      - KV
+      - KG
+      - KO
+      - KJ
+      - KU
+      - LO
+      - LA
+      - LV
+      - LI
+      - LN
+      - LT
+      - LU
+      - LB
+      - MK
+      - MG
+      - MS
+      - ML
+      - DV
+      - MT
+      - GV
+      - MI
+      - MR
+      - MH
+      - MN
+      - NA
+      - NV
+      - ND
+      - NR
+      - NG
+      - NE
+      - SE
+      - 'NO'
+      - NN
+      - OC
+      - OJ
+      - OR
+      - OM
+      - OS
+      - PI
+      - PA
+      - FA
+      - PL
+      - PT
+      - PS
+      - QU
+      - RO
+      - RM
+      - RN
+      - RU
+      - SM
+      - SG
+      - SA
+      - SC
+      - SR
+      - SN
+      - II
+      - SD
+      - SI
+      - SK
+      - SL
+      - SO
+      - ST
+      - ES
+      - SU
+      - SW
+      - SS
+      - SV
+      - TL
+      - TY
+      - TG
+      - TA
+      - TT
+      - TE
+      - TH
+      - BO
+      - TI
+      - TO
+      - TS
+      - TN
+      - TR
+      - TK
+      - TW
+      - UG
+      - UK
+      - UR
+      - UZ
+      - VE
+      - VI
+      - VO
+      - WA
+      - CY
+      - FY
+      - WO
+      - XH
+      - YI
+      - YO
+      - ZA
+      - ZU
+      title: FleetLanguageEnum
     FleetMember:
       type: object
       properties:
@@ -24443,6 +25252,10 @@ components:
           type: boolean
         manageSquadronMembers:
           type: boolean
+        manageSquadrons:
+          type: boolean
+        enableSquadrons:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -24471,6 +25284,8 @@ components:
           type: boolean
         readRoles:
           type: boolean
+        updateRoles:
+          type: boolean
         manageFleet:
           type: boolean
         updateFleet:
@@ -24488,6 +25303,8 @@ components:
       - updateSquadrons
       - destroySquadrons
       - manageSquadronMembers
+      - manageSquadrons
+      - enableSquadrons
       - readInvites
       - createInvites
       - destroyInvites
@@ -24502,6 +25319,7 @@ components:
       - readVehicles
       - readBlueprints
       - readRoles
+      - updateRoles
       - manageFleet
       - updateFleet
       - destroyFleet
@@ -24826,6 +25644,8 @@ components:
           type: string
         permanent:
           type: boolean
+        defaultRole:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -24838,6 +25658,7 @@ components:
       - name
       - slug
       - rank
+      - defaultRole
       - createdAt
       - updatedAt
       title: FleetRoleExtended
@@ -24970,6 +25791,15 @@ components:
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
       title: FleetRoleResourceAccessEnum
+    FleetRoleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      additionalProperties: false
+      title: FleetRoleUpdateInput
     FleetRsiVerification:
       type: object
       properties:
@@ -25037,6 +25867,10 @@ components:
           - 'null'
         memberCount:
           type: integer
+        viewerRole:
+          "$ref": "#/components/schemas/FleetSquadronRole"
+        capabilities:
+          "$ref": "#/components/schemas/FleetSquadronCapabilities"
         icon:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -25055,6 +25889,18 @@ components:
       - createdAt
       - updatedAt
       title: FleetSquadron
+    FleetSquadronCapabilities:
+      type: object
+      properties:
+        manageMembers:
+          type: boolean
+        manageRanks:
+          type: boolean
+      additionalProperties: false
+      required:
+      - manageMembers
+      - manageRanks
+      title: FleetSquadronCapabilities
     FleetSquadronCreateInput:
       type: object
       properties:
@@ -25201,8 +26047,9 @@ components:
         createdAt:
           type: string
           format: date
-      required:
-      - createdAt
+        fleetSquadronRoleId:
+          type: string
+          format: uuid
       additionalProperties: false
       title: FleetSquadronMemberUpdateInput
     FleetSquadronMoveInput:
@@ -25252,6 +26099,8 @@ components:
           - string
           - 'null'
           format: date-time
+        role:
+          "$ref": "#/components/schemas/FleetSquadronRole"
         discordChannelId:
           type:
           - string
@@ -25265,6 +26114,69 @@ components:
       - slug
       - team
       title: FleetSquadronRef
+    FleetSquadronRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          "$ref": "#/components/schemas/FleetSquadronRoleKeyEnum"
+        name:
+          type: string
+        position:
+          type: integer
+        permanent:
+          type: boolean
+        defaultRank:
+          type: boolean
+        singleHolder:
+          type: boolean
+        managesMembers:
+          type: boolean
+        managesRanks:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - key
+      - name
+      - position
+      - permanent
+      - defaultRank
+      - singleHolder
+      - managesMembers
+      - managesRanks
+      title: FleetSquadronRole
+    FleetSquadronRoleKeyEnum:
+      type: string
+      enum:
+      - leader
+      - co_leader
+      - officer
+      - member
+      x-enumNames:
+      - LEADER
+      - CO_LEADER
+      - OFFICER
+      - MEMBER
+      title: FleetSquadronRoleKeyEnum
+    FleetSquadronRoleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        defaultRank:
+          type: boolean
+          enum:
+          - true
+      additionalProperties: false
+      title: FleetSquadronRoleUpdateInput
+    FleetSquadronRolesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetSquadronRole"
+      title: FleetSquadronRolesList
     FleetSquadronSortEnum:
       type: string
       enum:
@@ -25373,6 +26285,10 @@ components:
           type: boolean
         squadronsEnabled:
           type: boolean
+        listed:
+          type: boolean
+        alignment:
+          "$ref": "#/components/schemas/NullableFleetAlignmentEnum"
         homepage:
           type:
           - string
@@ -31658,6 +32574,73 @@ components:
       - name
       - slug
       title: NullableCommodityRef
+    NullableFleetActivityEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - bounty_hunting
+      - engineering
+      - exploration
+      - freelancing
+      - infiltration
+      - medical
+      - piracy
+      - resources
+      - scouting
+      - security
+      - smuggling
+      - social
+      - trading
+      - transport
+      -
+      x-enumNames:
+      - BOUNTY_HUNTING
+      - ENGINEERING
+      - EXPLORATION
+      - FREELANCING
+      - INFILTRATION
+      - MEDICAL
+      - PIRACY
+      - RESOURCES
+      - SCOUTING
+      - SECURITY
+      - SMUGGLING
+      - SOCIAL
+      - TRADING
+      - TRANSPORT
+      - 'NULL'
+      title: NullableFleetActivityEnum
+    NullableFleetAlignmentEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - lawful
+      - neutral
+      - outlaw
+      -
+      x-enumNames:
+      - LAWFUL
+      - NEUTRAL
+      - OUTLAW
+      - 'NULL'
+      title: NullableFleetAlignmentEnum
+    NullableFleetCommitmentEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - casual
+      - regular
+      - hardcore
+      -
+      x-enumNames:
+      - CASUAL
+      - REGULAR
+      - HARDCORE
+      - 'NULL'
+      title: NullableFleetCommitmentEnum
     NullableFleetEventRecurrenceIntervalEnum:
       type:
       - string
@@ -31705,6 +32688,383 @@ components:
       - ADMIN
       - 'NULL'
       title: NullableFleetFidClaimCancelReasonEnum
+    NullableFleetLanguageEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - ab
+      - aa
+      - af
+      - ak
+      - sq
+      - am
+      - ar
+      - an
+      - hy
+      - as
+      - av
+      - ae
+      - ay
+      - az
+      - bm
+      - ba
+      - eu
+      - be
+      - bn
+      - bh
+      - bi
+      - nb
+      - bs
+      - br
+      - bg
+      - my
+      - ca
+      - km
+      - ch
+      - ce
+      - ny
+      - zh
+      - cu
+      - cv
+      - kw
+      - co
+      - cr
+      - hr
+      - cs
+      - da
+      - nl
+      - dz
+      - en
+      - eo
+      - et
+      - ee
+      - fo
+      - fj
+      - fi
+      - fr
+      - ff
+      - gd
+      - gl
+      - lg
+      - ka
+      - de
+      - el
+      - gn
+      - gu
+      - ht
+      - ha
+      - he
+      - hz
+      - hi
+      - ho
+      - hu
+      - is
+      - io
+      - ig
+      - id
+      - ia
+      - ie
+      - iu
+      - ik
+      - ga
+      - it
+      - ja
+      - jv
+      - kl
+      - kn
+      - kr
+      - ks
+      - kk
+      - ki
+      - rw
+      - ky
+      - kv
+      - kg
+      - ko
+      - kj
+      - ku
+      - lo
+      - la
+      - lv
+      - li
+      - ln
+      - lt
+      - lu
+      - lb
+      - mk
+      - mg
+      - ms
+      - ml
+      - dv
+      - mt
+      - gv
+      - mi
+      - mr
+      - mh
+      - mn
+      - na
+      - nv
+      - nd
+      - nr
+      - ng
+      - ne
+      - se
+      - 'no'
+      - nn
+      - oc
+      - oj
+      - or
+      - om
+      - os
+      - pi
+      - pa
+      - fa
+      - pl
+      - pt
+      - ps
+      - qu
+      - ro
+      - rm
+      - rn
+      - ru
+      - sm
+      - sg
+      - sa
+      - sc
+      - sr
+      - sn
+      - ii
+      - sd
+      - si
+      - sk
+      - sl
+      - so
+      - st
+      - es
+      - su
+      - sw
+      - ss
+      - sv
+      - tl
+      - ty
+      - tg
+      - ta
+      - tt
+      - te
+      - th
+      - bo
+      - ti
+      - to
+      - ts
+      - tn
+      - tr
+      - tk
+      - tw
+      - ug
+      - uk
+      - ur
+      - uz
+      - ve
+      - vi
+      - vo
+      - wa
+      - cy
+      - fy
+      - wo
+      - xh
+      - yi
+      - yo
+      - za
+      - zu
+      -
+      x-enumNames:
+      - AB
+      - AA
+      - AF
+      - AK
+      - SQ
+      - AM
+      - AR
+      - AN
+      - HY
+      - AS
+      - AV
+      - AE
+      - AY
+      - AZ
+      - BM
+      - BA
+      - EU
+      - BE
+      - BN
+      - BH
+      - BI
+      - NB
+      - BS
+      - BR
+      - BG
+      - MY
+      - CA
+      - KM
+      - CH
+      - CE
+      - NY
+      - ZH
+      - CU
+      - CV
+      - KW
+      - CO
+      - CR
+      - HR
+      - CS
+      - DA
+      - NL
+      - DZ
+      - EN
+      - EO
+      - ET
+      - EE
+      - FO
+      - FJ
+      - FI
+      - FR
+      - FF
+      - GD
+      - GL
+      - LG
+      - KA
+      - DE
+      - EL
+      - GN
+      - GU
+      - HT
+      - HA
+      - HE
+      - HZ
+      - HI
+      - HO
+      - HU
+      - IS
+      - IO
+      - IG
+      - ID
+      - IA
+      - IE
+      - IU
+      - IK
+      - GA
+      - IT
+      - JA
+      - JV
+      - KL
+      - KN
+      - KR
+      - KS
+      - KK
+      - KI
+      - RW
+      - KY
+      - KV
+      - KG
+      - KO
+      - KJ
+      - KU
+      - LO
+      - LA
+      - LV
+      - LI
+      - LN
+      - LT
+      - LU
+      - LB
+      - MK
+      - MG
+      - MS
+      - ML
+      - DV
+      - MT
+      - GV
+      - MI
+      - MR
+      - MH
+      - MN
+      - NA
+      - NV
+      - ND
+      - NR
+      - NG
+      - NE
+      - SE
+      - 'NO'
+      - NN
+      - OC
+      - OJ
+      - OR
+      - OM
+      - OS
+      - PI
+      - PA
+      - FA
+      - PL
+      - PT
+      - PS
+      - QU
+      - RO
+      - RM
+      - RN
+      - RU
+      - SM
+      - SG
+      - SA
+      - SC
+      - SR
+      - SN
+      - II
+      - SD
+      - SI
+      - SK
+      - SL
+      - SO
+      - ST
+      - ES
+      - SU
+      - SW
+      - SS
+      - SV
+      - TL
+      - TY
+      - TG
+      - TA
+      - TT
+      - TE
+      - TH
+      - BO
+      - TI
+      - TO
+      - TS
+      - TN
+      - TR
+      - TK
+      - TW
+      - UG
+      - UK
+      - UR
+      - UZ
+      - VE
+      - VI
+      - VO
+      - WA
+      - CY
+      - FY
+      - WO
+      - XH
+      - YI
+      - YO
+      - ZA
+      - ZU
+      - 'NULL'
+      title: NullableFleetLanguageEnum
     NullableFleetRsiVerificationStatusEnum:
       type:
       - string

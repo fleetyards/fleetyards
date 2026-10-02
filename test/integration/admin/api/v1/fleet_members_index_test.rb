@@ -58,6 +58,32 @@ class Admin::Api::V1::FleetMembersIndexTest < ActionDispatch::IntegrationTest
     assert_equal 2, response.parsed_body["items"].length
   end
 
+  # By the role name the admin list shows, renamed or not.
+  test "GET /fleets/:fleet_id/members filters by the role name" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin], members: create_list(:user, 2))
+    fleet.fleet_roles.find_by!(slug: "admin").update!(name: "Commander")
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {fleet_id: fleet.id}, params: {q: {"roleCont" => "Command"}}
+
+    assert_equal [admin.username], response.parsed_body["items"].map { |item| item["username"] }
+  end
+
+  test "GET /fleets/:fleet_id/members shows a renamed role on a cached list" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    sign_in @user
+
+    with_fragment_caching do
+      get "/admin/api/v1/fleets/#{fleet.id}/members"
+      fleet.fleet_roles.find_by!(slug: "admin").update!(name: "Commander")
+      get "/admin/api/v1/fleets/#{fleet.id}/members"
+    end
+
+    assert_equal ["Commander"], response.parsed_body["items"].map { |item| item["role"] }
+  end
+
   test "GET /fleets/:fleet_id/members returns 404 for missing fleet" do
     sign_in @user
 

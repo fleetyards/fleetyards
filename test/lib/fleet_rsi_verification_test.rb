@@ -32,6 +32,30 @@ class FleetRsiVerificationTest < ActiveSupport::TestCase
     assert_equal "TEST", @fleet.public_rsi_sid
   end
 
+  test "a fleet that verifies has its RSI org synced straight away" do
+    stub_org_page(manifesto: @fleet.rsi_verification_token)
+
+    assert_difference -> { FleetRsiSyncJob.jobs.size }, 1 do
+      verify
+    end
+    assert_equal [@fleet.id], FleetRsiSyncJob.jobs.last["args"]
+  end
+
+  test "a check that does not verify syncs nothing" do
+    stub_org_page
+
+    assert_no_difference -> { FleetRsiSyncJob.jobs.size } do
+      verify
+    end
+  end
+
+  test "a page RSI refuses to serve fails the check" do
+    stub_org_page(status: 403)
+
+    assert_equal :failed, verify
+    assert @fleet.reload.rsi_verification_failed?
+  end
+
   test "a page without the token leaves the fleet unverified" do
     stub_org_page
 

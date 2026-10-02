@@ -5,25 +5,19 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import Grid from "@/shared/components/base/Grid/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
-import Empty from "@/shared/components/Empty/index.vue";
-import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
-import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
+import SquadronRanks from "@/frontend/components/Fleets/Squadrons/SquadronRanks/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import {
   type Fleet,
   type FleetMember,
-  type FleetSquadron,
-  useFleetSquadrons,
-  useDestroyFleetSquadron,
+  useFleetSquadronRoles,
+  useUpdateFleet,
 } from "@/services/fyApi";
 
 type Props = {
@@ -35,195 +29,93 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
-
-const router = useRouter();
-const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-const canCreate = computed(
-  () => props.membership?.capabilities?.createSquadrons ?? false,
+const canEnable = computed(
+  () => props.membership?.capabilities?.enableSquadrons ?? false,
 );
 
-const canUpdate = computed(
-  () => props.membership?.capabilities?.updateSquadrons ?? false,
+const canReadRanks = computed(
+  () => props.membership?.capabilities?.readSquadrons ?? false,
 );
 
-const canDestroy = computed(
-  () => props.membership?.capabilities?.destroySquadrons ?? false,
+const canRename = computed(
+  () => props.membership?.capabilities?.manageSquadrons ?? false,
 );
 
-const canManageMembers = computed(
-  () => props.membership?.capabilities?.manageSquadronMembers ?? false,
-);
+const squadronsEnabled = computed(() => props.fleet.squadronsEnabled);
 
-const {
-  data: squadrons,
-  isLoading,
-  refetch,
-} = useFleetSquadrons(fleetSlug, { perPage: "all" });
+const switching = ref(false);
 
-const allSquadrons = computed<FleetSquadron[]>(
-  () => squadrons.value?.items ?? [],
-);
+// FormToggle keeps its own checked state, so a failed save remounts it from
+// the setting the fleet still has.
+const toggleKey = ref(0);
+const updateMutation = useUpdateFleet();
 
-// Two rows, the same split the squadrons page draws: a member belongs to one
-// squadron and can be on any number of teams.
-const squadronList = computed(() =>
-  allSquadrons.value.filter((squadron) => !squadron.team),
-);
+// Saved on the switch itself: it is one setting, and a save button for it
+// would be a second click that means nothing.
+const onToggle = async (value: boolean) => {
+  switching.value = true;
 
-const teamList = computed(() =>
-  allSquadrons.value.filter((squadron) => squadron.team),
-);
-
-const editRoute = (squadron: FleetSquadron) => ({
-  name: "fleet-squadron-edit",
-  params: { slug: props.fleet.slug, squadron: squadron.slug },
-});
-
-const openSquadronForm = (squadron: FleetSquadron) => {
-  void router.push(editRoute(squadron));
+  await updateMutation
+    .mutateAsync({
+      slug: props.fleet.slug,
+      data: { squadronsEnabled: value },
+    })
+    .then(() => {
+      displaySuccess({ text: t("messages.fleet.update.success") });
+      comlink.emit("fleet-update");
+    })
+    .catch(() => {
+      toggleKey.value += 1;
+      displayAlert({ text: t("messages.fleet.update.failure") });
+    })
+    .finally(() => {
+      switching.value = false;
+    });
 };
 
-const openMemberPicker = (squadron: FleetSquadron) => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Squadrons/SquadronMemberPicker/index.vue"),
-    props: { fleet: props.fleet, squadron },
-  });
-};
+// The ranks endpoint answers only while squadrons are switched on, and only
+// to a role that reads squadrons -- `fleet:update` alone reaches this page
+// for the switch.
+const ranksVisible = computed(
+  () => squadronsEnabled.value && canReadRanks.value,
+);
 
-const destroyMutation = useDestroyFleetSquadron();
-
-const onDestroy = (squadron: FleetSquadron) => {
-  displayConfirm({
-    text: t("messages.fleet.squadrons.destroy.confirm", {
-      name: squadron.name,
-    }),
-    confirmText: t("actions.delete"),
-    tone: AppConfirmTonesEnum.DANGER,
-    onConfirm: async () => {
-      await destroyMutation
-        .mutateAsync({ fleetSlug: props.fleet.slug, slug: squadron.slug })
-        .then(() => {
-          displaySuccess({
-            text: t("messages.fleet.squadrons.destroy.success"),
-          });
-          void refetch();
-        })
-        .catch(() => {
-          displayAlert({
-            text: t("messages.fleet.squadrons.destroy.failure"),
-          });
-        });
-    },
-  });
-};
-
-const squadronCreatedComlink = ref();
-const squadronUpdatedComlink = ref();
-const squadronMembersComlink = ref();
-
-onMounted(() => {
-  squadronCreatedComlink.value = comlink.on(
-    "fleet-squadron-created",
-    () => void refetch(),
-  );
-  squadronUpdatedComlink.value = comlink.on(
-    "fleet-squadron-updated",
-    () => void refetch(),
-  );
-  squadronMembersComlink.value = comlink.on(
-    "fleet-squadron-members-updated",
-    () => void refetch(),
-  );
-});
-
-onUnmounted(() => {
-  squadronCreatedComlink.value();
-  squadronUpdatedComlink.value();
-  squadronMembersComlink.value();
+const { data: ranks, isLoading } = useFleetSquadronRoles(fleetSlug, {
+  query: { enabled: ranksVisible },
 });
 </script>
 
 <template>
-  <Teleport to="#header-right">
-    <Btn
-      v-if="canCreate"
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      data-test="settings-create-squadron"
-      :to="{ name: 'fleet-squadron-new', params: { slug: fleet.slug } }"
-    >
-      <i class="fa-light fa-plus" />
-      {{ t("actions.fleet.squadrons.create") }}
-    </Btn>
-  </Teleport>
-
-  <Loader :loading="isLoading" />
-
-  <Grid v-if="squadronList.length" :records="squadronList" primary-key="id">
-    <template #default="{ record }">
-      <SquadronPanel
-        :squadron="record"
-        :to="{
-          name: 'fleet-squadron',
-          params: { slug: fleet.slug, squadron: record.slug },
-        }"
-        :editable="canUpdate"
-        :destroyable="canDestroy"
-        :members-manageable="canManageMembers"
-        @edit="openSquadronForm(record)"
-        @destroy="onDestroy(record)"
-        @add-members="openMemberPicker(record)"
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <FormToggle
+        :key="toggleKey"
+        :model-value="squadronsEnabled"
+        name="squadronsEnabled"
+        translation-key="fleet.squadronsEnabled"
+        :disabled="!canEnable || switching"
+        data-test="settings-squadrons-enabled"
+        @update:model-value="onToggle"
       />
-    </template>
-  </Grid>
+    </div>
+  </div>
 
-  <template v-if="teamList.length">
+  <template v-if="ranksVisible">
     <Heading :level="HeadingLevelEnum.H2" mt>
-      {{ t("headlines.fleets.squadrons.teams") }}
+      {{ t("headlines.fleets.squadrons.ranks") }}
     </Heading>
 
-    <Grid :records="teamList" primary-key="id">
-      <template #default="{ record }">
-        <SquadronPanel
-          :squadron="record"
-          :to="{
-            name: 'fleet-squadron',
-            params: { slug: fleet.slug, squadron: record.slug },
-          }"
-          :editable="canUpdate"
-          :destroyable="canDestroy"
-          :members-manageable="canManageMembers"
-          @edit="openSquadronForm(record)"
-          @destroy="onDestroy(record)"
-          @add-members="openMemberPicker(record)"
-        />
-      </template>
-    </Grid>
+    <Loader :loading="isLoading" />
+
+    <SquadronRanks
+      v-if="ranks?.length"
+      :fleet-slug="fleet.slug"
+      :ranks="ranks"
+      :editable="canRename"
+    />
   </template>
-
-  <Empty
-    v-if="!isLoading && !allSquadrons.length"
-    :variant="EmptyVariantsEnum.BOX"
-    hide-actions
-    data-test="settings-squadrons-empty"
-  >
-    <template #headline>
-      {{ t("empty.fleets.squadrons.headline") }}
-    </template>
-
-    <template #info>
-      <p>{{ t("empty.fleets.squadrons.info") }}</p>
-      <Btn
-        v-if="canCreate"
-        :to="{ name: 'fleet-squadron-new', params: { slug: fleet.slug } }"
-      >
-        <i class="fa-light fa-plus" />
-        <span>{{ t("actions.fleet.squadrons.create") }}</span>
-      </Btn>
-    </template>
-  </Empty>
 </template>

@@ -45,6 +45,22 @@ class Api::V1::FleetsMembersSquadronsTest < ActionDispatch::IntegrationTest
     assert_equal "combat-wing", badges.first["slug"]
   end
 
+  test "a badge carries the rank the member holds in that squadron" do
+    @pilot_membership.fleet_squadron_memberships.first.update!(
+      fleet_squadron_role: @fleet.fleet_squadron_roles.find_by!(key: "co_leader")
+    )
+    @fleet.fleet_squadron_roles.find_by!(key: "co_leader").update!(name: "Wingman")
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/members"
+
+    assert_response :success
+    role = member_named(@pilot.username)["squadrons"].first["role"]
+
+    assert_equal "co_leader", role["key"]
+    assert_equal "Wingman", role["name"]
+  end
+
   test "a member in no squadron carries an empty list" do
     sign_in @admin
 

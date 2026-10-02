@@ -427,6 +427,8 @@ fr:
           not_an_rsi_sid: "doit être le SID de la page RSI de ton organisation, par exemple TEST"
           locked_while_verified: "est vérifié et ne peut pas être modifié ; demande d’abord au support de révoquer la vérification"
           reserved: "est réclamé par la flotte vérifiée pour cette organisation RSI et ne peut pas être pris"
+          route_name: "est le nom d’une page de Fleetyards et ne peut pas être un ID de flotte"
+          same_as_primary: "doit être différente de l’activité principale"
         fleet_squadron:
           attributes:
             team:
@@ -437,10 +439,22 @@ fr:
               not_a_member: "doit être un membre accepté de cette flotte"
             fleet_squadron:
               exclusive_conflict: "entre en conflit avec %{squadron} : un membre n'appartient qu'à un seul escadron, sauf s'il s'agit d'une équipe"
+            fleet_squadron_role:
+              not_in_fleet: "doit être l'un des grades d'escadron de cette flotte"
+              single_holder_taken: "est déjà attribué à un autre membre de cet escadron : il n'y a qu'un %{role} par escadron"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "ne peut pas être un grade de commandement : un nouveau membre ne commence jamais comme Chef ou Co-chef"
+              required: "est nécessaire : définissez plutôt un autre grade par défaut"
         fleet_role:
           attributes:
             base:
               cannot_destroy_with_members: Impossible de supprimer un rôle encore attribué à des membres
+              cannot_destroy_default: "Impossible de supprimer le rôle attribué aux nouveaux membres : définissez d'abord un autre rôle par défaut"
+            new_member_default:
+              permanent: "ne peut pas être le rôle Admin : un nouveau membre ne doit jamais obtenir le contrôle total de la flotte"
+              required: "est nécessaire : définissez plutôt un autre rôle par défaut"
             resource_access:
               changed: Les privilèges d'accès ne peuvent pas être modifiés
         fleet_membership:

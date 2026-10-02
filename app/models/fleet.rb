@@ -5,10 +5,12 @@
 # Table name: fleets
 #
 #  id                          :uuid             not null, primary key
+#  alignment                   :string
 #  allies_fleet                :boolean          default(FALSE), not null
 #  allies_fleet_members        :boolean          default(FALSE), not null
 #  allies_fleet_stats          :boolean          default(FALSE), not null
 #  calendar_feed_token         :string
+#  commitment                  :string
 #  created_by                  :uuid
 #  default_timezone            :string           default("UTC"), not null
 #  description                 :text
@@ -18,16 +20,24 @@
 #  guilded                     :string
 #  homepage                    :string
 #  inventory_transfer_policy   :integer          default("everyone"), not null
+#  language                    :string
+#  listed                      :boolean
 #  name                        :string
 #  normalized_fid              :string
+#  primary_activity            :string
 #  public_fleet                :boolean          default(FALSE)
 #  public_fleet_stats          :boolean          default(FALSE)
+#  recruiting                  :boolean
+#  roleplay                    :boolean
 #  rsi_sid                     :string
+#  rsi_sync_attempted_at       :datetime
+#  rsi_synced_at               :datetime
 #  rsi_verification_checked_at :datetime
 #  rsi_verification_status     :string
 #  rsi_verification_token      :string
 #  rsi_verified_at             :datetime
 #  rsi_verified_sid            :string
+#  secondary_activity          :string
 #  sid                         :string
 #  slug                        :string
 #  squadrons_enabled           :boolean          default(FALSE), not null
@@ -87,6 +97,9 @@ class Fleet < ApplicationRecord
   # the filter segments and the roster badges all read this association, and a
   # custom order that only the list page honoured would not be one.
   has_many :fleet_squadrons, -> { order(rank: :asc) }, dependent: :destroy
+  # After the squadrons: their memberships hold the ranks, and the foreign key
+  # refuses a rank that is still held.
+  has_many :fleet_squadron_roles, -> { order(position: :asc) }, dependent: :destroy
 
   # The database cascades these, so `dependent:` would only be a second, slower
   # way of doing the same thing -- and a fleet must never fail to delete
@@ -182,14 +195,70 @@ class Fleet < ApplicationRecord
   # escaped, so the characters it may hold are not what keeps it safe.
   validates :description, length: {maximum: 10_000}
 
+  ALIGNMENTS = BlueprintSource::ALIGNMENTS
+  ACTIVITIES = Rsi::OrgAttributes::ACTIVITIES.keys.freeze
+  COMMITMENTS = Rsi::OrgAttributes::COMMITMENTS.keys.freeze
+
+  validates :alignment, inclusion: {in: ALIGNMENTS}, allow_nil: true
+  validates :primary_activity, :secondary_activity, inclusion: {in: ACTIVITIES}, allow_nil: true
+  validates :commitment, inclusion: {in: COMMITMENTS}, allow_nil: true
+  validates :language, inclusion: {in: Rsi::Languages::CODES}, allow_nil: true
+  validate :secondary_activity_differs, if: -> { secondary_activity.present? }
+
+  # The routes under /fleets/ that are not a fleet: a fleet given one of these
+  # FIDs would be shadowed by the page of the same name.
+  RESERVED_SLUGS = %w[add preview invites directory].freeze
+
+  validate :fid_not_a_route_name, if: :fid_changed?
+
+  DIRECTORY_MEMBER_FLOOR = 2
+
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
+  DIRECTORY_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + ["memberCount asc", "memberCount desc"]
+
+  def self.accepted_member_count_sql
+    <<~SQL.squish
+      (SELECT COUNT(*) FROM fleet_memberships
+        WHERE fleet_memberships.fleet_id = fleets.id
+          AND fleet_memberships.aasm_state = 'accepted'
+          AND fleet_memberships.discarded_at IS NULL)
+    SQL
+  end
+
+  ransacker :member_count, type: :integer do
+    Arel.sql(accepted_member_count_sql)
+  end
+
+  # A verified SID is a query rather than a flag: a revoke and a takeover write
+  # their columns past the callbacks, and a fleet that loses its verification,
+  # goes private or drops below the floor has to leave without anyone touching
+  # its `listed` choice. `listed` is nil until a manager picks, and nil follows
+  # `public_fleet`, which this already requires.
+  scope :rsi_verified, -> { where.not(rsi_verified_at: nil).where("fleets.rsi_verified_sid = fleets.rsi_sid") }
+
+  scope :directory, -> {
+    kept
+      .rsi_verified
+      .where(public_fleet: true)
+      .where(listed: [nil, true])
+      .where(id: FleetMembership.kept.accepted
+        .group(:fleet_id)
+        .having("COUNT(*) >= ?", DIRECTORY_MEMBER_FLOOR)
+        .select(:fleet_id))
+  }
+
+  def self.with_member_count
+    select(arel_table[Arel.star], Arel.sql("#{accepted_member_count_sql} AS member_count"))
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "created_at", "created_by", "description", "fid", "id", "id_value",
-      "name", "normalized_fid", "public_fleet", "public_fleet_stats",
-      "slug", "updated_at"
+      "alignment", "commitment", "created_at", "created_by", "default_timezone",
+      "description", "fid", "id", "id_value", "language", "member_count",
+      "name", "normalized_fid", "primary_activity", "public_fleet",
+      "public_fleet_stats", "recruiting", "roleplay", "rsi_verified_sid",
+      "secondary_activity", "slug", "updated_at"
     ]
   end
 
@@ -230,6 +299,7 @@ class Fleet < ApplicationRecord
   before_validation :set_normalized_fields
   before_save :update_slugs
   after_create :setup_default_roles!
+  after_create :setup_default_squadron_roles!
   after_create :setup_admin_user
 
   def self.accepted
@@ -266,6 +336,19 @@ class Fleet < ApplicationRecord
 
   def rsi_verified?
     rsi_verified_at.present? && rsi_sid.present? && rsi_verified_sid == rsi_sid
+  end
+
+  # `with_member_count` answers from the row, which is what keeps a directory
+  # page from counting each fleet's roster with a query of its own.
+  def member_count
+    return self[:member_count] if has_attribute?(:member_count)
+
+    fleet_memberships.kept.accepted.count
+  end
+
+  def listed_in_directory?
+    kept? && public_fleet? && rsi_verified? && listed != false &&
+      member_count >= DIRECTORY_MEMBER_FLOOR
   end
 
   # The public API names the org only once the fleet has shown it runs it:
@@ -345,11 +428,22 @@ class Fleet < ApplicationRecord
     FleetRole.setup_default_roles!(self)
   end
 
+  def setup_default_squadron_roles!
+    FleetSquadronRole.setup_defaults!(self)
+  end
+
+  # The role a new member gets. A fleet created while the flag was migrated in
+  # may have none marked, and gets what new members always got before it.
   def default_member_role
-    fleet_roles.ranked.last || begin
-      setup_default_roles!
-      fleet_roles.reload.ranked.last
-    end
+    marked = fleet_roles.find_by(new_member_default: true)
+    return marked if marked
+
+    # Never the permanent Admin role, whatever sorts last.
+    fallback = fleet_roles.ranked.where(permanent: [false, nil]).last
+    return fallback if fallback
+
+    setup_default_roles!
+    fleet_roles.reload.find_by(new_member_default: true)
   end
 
   def setup_admin_user
@@ -507,6 +601,14 @@ class Fleet < ApplicationRecord
     self.rsi_verified_sid = nil
     self.rsi_verification_status = nil
     self.rsi_verification_checked_at = nil
+  end
+
+  private def fid_not_a_route_name
+    errors.add(:fid, :route_name) if RESERVED_SLUGS.include?(self.class.slug_for(fid.to_s))
+  end
+
+  private def secondary_activity_differs
+    errors.add(:secondary_activity, :same_as_primary) if secondary_activity == primary_activity
   end
 
   private def update_slugs

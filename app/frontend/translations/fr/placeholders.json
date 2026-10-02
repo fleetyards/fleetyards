@@ -288,6 +288,10 @@
           "material": "Fer, Titane, Aphorite...",
           "craftableType": "Composant, Équipement...",
           "source": "Connue, inconnue..."
+        },
+        "fleetDirectory": {
+          "search": "Nom, FID ou SID...",
+          "memberCountGteq": "Membres minimum"
         }
       },
       "commodity": {

@@ -39,7 +39,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     resources :fleet_squadron_members, path: "members", param: :username, only: %i[index create update destroy]
   end
 
-  resources :fleet_roles, path: "roles", only: %i[index]
+  resources :fleet_squadron_roles, path: "squadron-roles", only: %i[index update]
+
+  resources :fleet_roles, path: "roles", only: %i[index update]
 
   # Addressed by the other fleet's slug, the same way a friendship is addressed
   # by the other user's username.
@@ -195,7 +197,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 end
 
 namespace :public do
-  resources :fleets, param: :slug, only: %i[show] do
+  resources :fleets, param: :slug, only: %i[index show] do
     resources :fleet_vehicles, path: "vehicles", only: %i[index] do
       get :embed, on: :collection
     end

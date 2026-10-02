@@ -29,6 +29,18 @@ module V1
             alliesFleetMembers: {type: :boolean},
             squadronsEnabled: {type: :boolean},
             defaultTimezone: {type: :string},
+            # Absent until a manager picks, and then it follows publicFleet.
+            listed: {type: [:boolean, :null]},
+            listedInDirectory: {type: :boolean},
+            alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
+            # Synced from the fleet's RSI org once it is verified, never edited here.
+            primaryActivity: ::V1::Schemas::Enums::NullableFleetActivityEnum,
+            secondaryActivity: ::V1::Schemas::Enums::NullableFleetActivityEnum,
+            commitment: ::V1::Schemas::Enums::NullableFleetCommitmentEnum,
+            language: ::V1::Schemas::Enums::NullableFleetLanguageEnum,
+            roleplay: {type: [:boolean, :null]},
+            recruiting: {type: [:boolean, :null]},
+            rsiSyncedAt: {type: [:string, :null], format: "date-time"},
             calendarFeedToken: {type: :string},
             logo: ::Shared::V1::Schemas::MediaFile,
             backgroundImage: ::Shared::V1::Schemas::MediaFile,
@@ -43,7 +55,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled features subscribed createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled listedInDirectory features subscribed createdAt updatedAt]
         })
       end
     end

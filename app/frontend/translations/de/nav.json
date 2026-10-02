@@ -106,7 +106,8 @@
         "contracts": {
           "index": "Aufträge",
           "payouts": "Auszahlung"
-        }
+        },
+        "directory": "Verzeichnis"
       },
       "rsiProfile": "RSI-Profil",
       "rsiHangar": "RSI-Hangar",

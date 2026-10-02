@@ -252,6 +252,7 @@
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {
+        "directory": "Flottenverzeichnis",
         "owners": "Owners",
         "add": "Create a new Fleet",
         "invites": "Flotteneinladungen",
@@ -268,6 +269,9 @@
           "formDetails": "Details",
           "formAppearance": "Erscheinungsbild",
           "formDiscord": "Discord",
+          "ranks": "Staffelränge",
+          "editMember": "Staffelmitglied bearbeiten",
+          "editRank": "Staffelrang bearbeiten",
           "teams": "Teams",
           "addMembers": "Mitglieder hinzufügen",
           "members": "Mitglieder"
@@ -340,6 +344,7 @@
           "reassignSlotFor": "Slot für %{username} neu zuweisen"
         },
         "memberNickname": "Spitzname des Mitglieds",
+        "editRole": "Rolle bearbeiten",
         "contracts": {
           "index": "Aufträge",
           "create": "Auftrag erstellen",

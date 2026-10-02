@@ -70,6 +70,35 @@ class Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
     assert @fleet.reload.squadrons_enabled?
   end
 
+  test "PUT /fleets/:slug lets a manager take the fleet out of the directory" do
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {slug: @fleet.slug},
+      body: {listed: false, alignment: "lawful"} do
+      assert_equal false, parsed_body["listed"]
+      assert_equal "lawful", parsed_body["alignment"]
+    end
+
+    assert_equal false, @fleet.reload.listed
+  end
+
+  test "PUT /fleets/:slug leaves the directory choice to managers" do
+    editor = create(:user)
+    role = @fleet.fleet_roles.create!(name: "Editor", rank: 90, resource_access: ["fleet:update"])
+    create(:fleet_membership, fleet: @fleet, user: editor, fleet_role: role, aasm_state: :accepted)
+    sign_in editor
+
+    assert_api_response :put, 200,
+      path_params: {slug: @fleet.slug},
+      body: {listed: false, alignment: "outlaw"} do
+      assert_nil parsed_body["listed"]
+      assert_equal "outlaw", parsed_body["alignment"]
+    end
+
+    assert_nil @fleet.reload.listed
+  end
+
   test "PUT /fleets/:slug returns 404 for unknown slug" do
     sign_in @admin
 

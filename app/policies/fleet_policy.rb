@@ -65,9 +65,15 @@ class FleetPolicy < FleetBasePolicy
         :fid, :name, :description, :logo, :background_image, :public_fleet, :public_fleet_stats,
         :allies_fleet, :allies_fleet_stats, :allies_fleet_members, :squadrons_enabled,
         :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
-        :twitch, :guilded,
+        :twitch, :guilded, :alignment,
         :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover
       ]
+    end
+
+    # Whether strangers find the fleet is the managers' call alone, like who
+    # may manage it.
+    if accepted_fleet_membership&.has_access?(["fleet:manage"])
+      allowed_params << [:listed]
     end
 
     if accepted_fleet_membership&.has_access?(["fleet:update:description"])

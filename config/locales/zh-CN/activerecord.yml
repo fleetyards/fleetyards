@@ -427,6 +427,8 @@ zh-CN:
           not_an_rsi_sid: "必须是你的组织在 RSI 页面上的 SID，例如 TEST"
           locked_while_verified: "已验证，无法更改；请先联系支持团队撤销验证"
           reserved: "已被通过该 RSI 组织验证的舰队申领，无法使用"
+          route_name: "是 Fleetyards 上某个页面的名称，不能用作舰队 ID"
+          same_as_primary: "必须与主要活动不同"
         fleet_squadron:
           attributes:
             team:
@@ -437,10 +439,22 @@ zh-CN:
               not_a_member: "必须是该舰队已接受的成员"
             fleet_squadron:
               exclusive_conflict: "与 %{squadron} 冲突：除非是小队，成员只能属于一个中队"
+            fleet_squadron_role:
+              not_in_fleet: "必须是本舰队的中队职级之一"
+              single_holder_taken: "已由本中队的其他成员担任——每个中队只能有一名%{role}"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "不能是领导职级——新成员不会以队长或副队长身份开始"
+              required: "是必需的——请改为将其他职级设为默认"
         fleet_role:
           attributes:
             base:
               cannot_destroy_with_members: 无法删除仍分配给成员的角色
+              cannot_destroy_default: "无法删除新成员获得的角色——请先将其他角色设为默认"
+            new_member_default:
+              permanent: "不能是管理员角色——新成员绝不能获得舰队的完全控制权"
+              required: "是必需的——请改为将其他角色设为默认"
             resource_access:
               changed: 访问权限无法更改
         fleet_membership:

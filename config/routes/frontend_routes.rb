@@ -99,6 +99,7 @@ namespace :frontend, **frontend_options do
   get "compare", to: "base#compare_models"
 
   get "fleets/invites", to: "base#index", as: :fleets_invites
+  get "fleets/directory", to: "base#index", as: :fleets_directory
   get "fleets/invites/:token", to: "fleets#invite", as: :fleet_invite
   get "fleets/:slug", to: "fleets#show", as: :fleet
   get "fleets/:slug/ships", to: "fleets#show"

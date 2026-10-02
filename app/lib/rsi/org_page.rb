@@ -6,7 +6,11 @@ module Rsi
   # the charter -- is rendered into this one page, which is what makes it a
   # place to prove who runs the org.
   class OrgPage
-    Result = Data.define(:status, :symbol, :text)
+    Result = Data.define(:status, :symbol, :text, :primary_activity, :secondary_activity, :commitment) do
+      def self.unavailable(status)
+        new(status:, symbol: nil, text: nil, primary_activity: nil, secondary_activity: nil, commitment: nil)
+      end
+    end
 
     # One log entry for every org page rather than one per SID: a block is the
     # site refusing us, not something about a particular org.
@@ -33,9 +37,11 @@ module Rsi
       when 200
         parse(response.body)
       when 404
-        Result.new(status: :not_found, symbol: nil, text: nil)
+        Result.unavailable(:not_found)
+      when 403
+        Result.unavailable(:blocked)
       else
-        Result.new(status: :failed, symbol: nil, text: nil)
+        Result.unavailable(:failed)
       end
     end
 
@@ -45,8 +51,16 @@ module Rsi
       Result.new(
         status: :ok,
         symbol: document.at_css("h1 .symbol")&.text&.strip,
-        text: document.at_css("body")&.text.to_s
+        text: document.at_css("body")&.text.to_s,
+        primary_activity: activity(document, "primary"),
+        secondary_activity: activity(document, "secondary"),
+        commitment: OrgAttributes.commitment_for(document.at_css(".heading .tags .commitment")&.text)
       )
+    end
+
+    # The focus is drawn as an icon, so its name is only in the image's alt text.
+    private def activity(document, rank)
+      OrgAttributes.activity_for(document.at_css(".heading .focus .#{rank} img")&.[]("alt"))
     end
 
     private def log_block(response)
