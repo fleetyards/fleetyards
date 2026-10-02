@@ -1038,6 +1038,19 @@ class User < ApplicationRecord
     fleet_memberships.reload if memberships_to_delete.any? || fleets_to_destroy.any?
   end
 
+  # Members who typed a system we carry -- "Stanton", "nyx" -- linked to it,
+  # their own text kept. A place inside the system is theirs to pick.
+  def self.link_typed_systems
+    systems = Location.listed.current_version.where(kind: "system").pluck(:id, :name)
+      .to_h { |id, name| [name.to_s.delete_suffix(" System").upcase, id] }
+    return 0 if systems.empty?
+
+    where(current_location_id: nil).where(current_system_code: systems.keys).find_each.sum do |user|
+      user.update_columns(current_location_id: systems.fetch(user.current_system_code), updated_at: Time.current)
+      1
+    end
+  end
+
   # Every member linked to a place, set to the system that place is in now: a
   # load can move a place to another system without touching its users.
   def self.refresh_linked_system_codes

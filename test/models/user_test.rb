@@ -863,6 +863,18 @@ class UserCurrentLocationTest < ActiveSupport::TestCase
     assert_equal "NYX", user.reload.current_system_code
   end
 
+  test "a member who typed a system we carry is linked to it, text kept" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    typed = create(:user)
+    typed.update!(current_system: "stanton ")
+    elsewhere = create(:user)
+    elsewhere.update!(current_system: "Castra")
+
+    assert_equal 1, User.link_typed_systems
+    assert_equal [stanton.id, "stanton "], typed.reload.values_at(:current_location_id, :current_system)
+    assert_nil elsewhere.reload.current_location_id
+  end
+
   test "text without a link still matches a system by name" do
     user = create(:user)
 

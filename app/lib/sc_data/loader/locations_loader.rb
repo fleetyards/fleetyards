@@ -23,7 +23,11 @@ module ScData
         end
 
         ::ScData::Loader::LocationAppearances.new.apply
-        ::User.refresh_linked_system_codes
+
+        if default_environment?
+          ::User.link_typed_systems
+          ::User.refresh_linked_system_codes
+        end
       end
 
       def one(item)
