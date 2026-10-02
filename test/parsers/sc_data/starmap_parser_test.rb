@@ -70,8 +70,10 @@ module ScData
         place("Stanton1_Lorville", "Lorville", type: "LandingZone", parent: "Stanton1")
         place("Lorville_Platform", "Teasa Spaceport", type: "Outpost", parent: "Stanton1_Lorville")
         place("Stanton1_Outpost", "HDMS-Edmond", type: "Outpost", parent: "Stanton1")
+        place("Hospital_Stanton1_Lorville", "Maria Pure of Heart", type: "Outpost", parent: "Stanton1_Lorville")
 
         assert_equal "clinic", location("RR_HUR_LEO_Clinic")[:kind]
+        assert_equal "clinic", location("Hospital_Stanton1_Lorville")[:kind]
         assert_equal "district", location("Lorville_Platform")[:kind]
         assert_equal "outpost", location("Stanton1_Outpost")[:kind]
       end

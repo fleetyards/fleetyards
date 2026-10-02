@@ -470,15 +470,19 @@ module ScData
 
       # The game types a room inside a station or city as an `Outpost`, the same
       # as a base on a moon: the Everus Harbor clinic, Orison's platforms. Inside
-      # one it is a clinic where the name says so, and a district otherwise.
+      # one it is a clinic where the name or key says so -- the four city
+      # hospitals are keyed `Hospital_...`, and "Maria Pure of Heart" names no
+      # clinic -- and a district otherwise.
       CLINIC_NAME = /\b(clinic|hospital|medical)\b|\brx\b/i
+      CLINIC_KEY = /\A(hospital|clinic)_|_clinic\z/i
       SETTLED_KINDS = %w[station city].freeze
 
       private def name_rooms(places)
         places.each_value do |place|
           next unless place[:kind] == "outpost" && SETTLED_KINDS.include?(places[place[:parent]]&.dig(:kind))
 
-          place[:kind] = CLINIC_NAME.match?(place[:name].to_s) ? "clinic" : "district"
+          clinic = CLINIC_NAME.match?(place[:name].to_s) || CLINIC_KEY.match?(place[:key])
+          place[:kind] = clinic ? "clinic" : "district"
         end
       end
 
