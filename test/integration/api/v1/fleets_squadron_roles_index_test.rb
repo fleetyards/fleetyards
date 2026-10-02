@@ -51,6 +51,9 @@ class Api::V1::FleetsSquadronRolesIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal %w[leader co_leader officer member], parsed_body.map { |rank| rank["key"] }
       assert_equal "Squadron Leader", parsed_body.first["name"]
+      assert_equal [true, true, false, false], parsed_body.map { |rank| rank["singleHolder"] }
+      assert_equal [true, true, true, false], parsed_body.map { |rank| rank["managesMembers"] }
+      assert_equal [true, true, false, false], parsed_body.map { |rank| rank["managesRanks"] }
     end
   end
 

@@ -15,10 +15,14 @@ module V1
               id: {type: :string, format: :uuid},
               key: ::V1::Schemas::Enums::FleetSquadronRoleKeyEnum,
               name: {type: :string},
-              position: {type: :integer}
+              position: {type: :integer},
+              # What the slot may do, so no client keeps its own copy of it.
+              singleHolder: {type: :boolean},
+              managesMembers: {type: :boolean},
+              managesRanks: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[id key name position]
+            required: %w[id key name position singleHolder managesMembers managesRanks]
           })
         end
       end
