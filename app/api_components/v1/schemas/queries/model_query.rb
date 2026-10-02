@@ -22,6 +22,8 @@ module V1
             lengthLteq: {type: :number},
             manufacturerIn: {type: :array, items: {type: :string}},
             nameCont: {type: :string},
+            # What one shop sells or rents, by the shop's slug.
+            soldAtShop: {type: :string},
             nameEq: {type: :string},
             slugEq: {type: :string},
             nameIn: {type: :array, items: {type: :string}},

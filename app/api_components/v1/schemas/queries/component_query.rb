@@ -10,6 +10,8 @@ module V1
           type: :object,
           properties: {
             nameCont: {type: :string},
+            # What one shop sells or rents, by the shop's slug.
+            soldAtShop: {type: :string},
             descriptionCont: {type: :string},
             manufacturerNameCont: {type: :string},
             idIn: {type: :array, items: {type: :string, format: :uuid}},

@@ -72,6 +72,7 @@ class Equipment < ApplicationRecord
     }
   include AttachmentRansackers
   include ItemPriceConcern
+  include SoldAtShop
   include KeyedSlug
   include ScDataVersioned
 
@@ -320,6 +321,10 @@ class Equipment < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     ["manufacturer"]
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+    ["sold_at_shop"]
   end
 
   # Joined rather than a plain where, because `hidden` now answers off the build.

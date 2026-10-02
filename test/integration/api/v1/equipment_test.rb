@@ -41,6 +41,16 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
 
   # Skins and NPC loadouts carry their own record but are not something a
   # player holds, so they stay out of the list a picker reads.
+  test "GET /equipment narrows to what one shop sells" do
+    shop = Shop.create!(name: "Live Fire Weapons", location: create(:location, name: "Everus Harbor", kind: "station"))
+    create(:item_price, item: @rifle, location: "Live Fire Weapons - Everus Harbor", price_type: "sell", time_range: nil, shop:)
+    create(:item_price, item: @scope, location: "Live Fire Weapons - Area 18", price_type: "sell", time_range: nil)
+
+    assert_api_response :get, 200, params: {q: {soldAtShop: shop.slug}} do
+      assert_equal ["P4-AR Rifle"], parsed_body["items"].pluck("name")
+    end
+  end
+
   test "GET /equipment leaves out hidden variants" do
     create(:equipment, :hidden, name: "P4-AR Rifle AI")
 

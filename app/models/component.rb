@@ -45,6 +45,7 @@ class Component < ApplicationRecord
   include ActiveStorageVariants
   include AttachmentRansackers
   include ItemPriceConcern
+  include SoldAtShop
   include KeyedSlug
   include ScDataVersioned
 
@@ -492,7 +493,7 @@ class Component < ApplicationRecord
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    ["current_version"]
+    ["current_version", "sold_at_shop"]
   end
 
   def self.item_types

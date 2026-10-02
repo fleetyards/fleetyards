@@ -20159,6 +20159,8 @@ components:
       properties:
         nameCont:
           type: string
+        soldAtShop:
+          type: string
         descriptionCont:
           type: string
         manufacturerNameCont:
@@ -21329,6 +21331,8 @@ components:
         nameCont:
           type: string
           deprecated: true
+        soldAtShop:
+          type: string
         nameOrSlugCont:
           type: string
         currentVersion:
@@ -31841,6 +31845,8 @@ components:
           items:
             type: string
         nameCont:
+          type: string
+        soldAtShop:
           type: string
         nameEq:
           type: string

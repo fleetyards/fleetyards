@@ -65,7 +65,7 @@ module Api
 
       private def permitted_query_params
         params.permit(q: [
-          :s, :sorts, :name_cont, :name_or_slug_cont, :current_version, *RANGE_PREDICATES,
+          :s, :sorts, :name_cont, :name_or_slug_cont, :current_version, :sold_at_shop, *RANGE_PREDICATES,
           sorts: [], id_in: [], name_in: [], slug_in: [], equipment_type_in: [], item_type_in: [],
           sub_type_in: [], weapon_class_in: [], slot_in: [], size_in: [], grade_in: [],
           manufacturer_slug_in: []

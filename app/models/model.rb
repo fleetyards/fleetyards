@@ -139,6 +139,7 @@ class Model < ApplicationRecord
   include DerivedCargoHolds
   include ActiveStorageVariants
   include AttachmentRansackers
+  include SoldAtShop
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -757,7 +758,7 @@ class Model < ApplicationRecord
   }
 
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted"]
+    ["dimensions_drifted", "sold_at_shop"]
   end
 
   # A ship offers a berth either because one is built into it or because a
