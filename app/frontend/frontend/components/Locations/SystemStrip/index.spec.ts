@@ -122,4 +122,18 @@ describe("LocationSystemStrip", () => {
     expect(gateway.classes()).toContain("location-strip__gateway--lit");
     expect(gateway.attributes("aria-current")).toBeUndefined();
   });
+
+  it("labels an unstable star, in the compact strip too", async () => {
+    const pyro = node("pyro-system", "Pyro System", LocationKindEnum.SYSTEM, [
+      node("pyro", "Pyro", LocationKindEnum.STAR),
+    ]);
+    pyro.children[0].location.unstable = true;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { tree: pyro, compact: true },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.get("[data-test='star-unstable']").text()).toBe("Unstable");
+  });
 });
