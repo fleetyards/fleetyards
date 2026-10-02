@@ -57,8 +57,10 @@ None.
 
 - **2026-10-02** No role editing exists anywhere, the admin pages included: the three roles are only ever seeded. The member `role` filter matches the role name case-insensitively, and `MemberActions` keys promote/demote on the slugs `admin` and `member`.
 
+- **2026-10-02** `default_role` is a name Active Record reserves (connection roles), so the column is `new_member_default`, and the API still says `defaultRole`. The members `role` filter never applied: `role` was missing from the ransack allowlist, and FleetRole allowed no attributes. A disabled FormToggle still registers with the vee form, so the modal sends its payload explicitly.
+
 ## Progress
 
-- [ ] Phase 1 — Data model
-- [ ] Phase 2 — API
-- [ ] Phase 3 — Frontend
+- [x] Phase 1 — Data model
+- [x] Phase 2 — API
+- [x] Phase 3 — Frontend
