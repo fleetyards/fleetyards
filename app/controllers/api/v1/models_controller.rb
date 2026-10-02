@@ -113,21 +113,21 @@ module Api
       end
 
       def latest
-        @models = Model.visible.includes(:manufacturer, :item_prices, model_loaners: :loaner_model)
+        @models = Model.visible.includes(:manufacturer, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model)
           .active
           .order(last_updated_at: :desc, name: :asc)
           .limit(9)
       end
 
       def embed
-        @models = Model.visible.active.includes(:manufacturer, :item_prices, model_loaners: :loaner_model)
+        @models = Model.visible.active.includes(:manufacturer, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model)
           .where(slug: params[:models]).or(Model.where(legacy_slug: params[:models]))
           .order(name: :asc).all
       end
 
       def updated
         if updated_range.present?
-          scope = Model.visible.active.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).where(updated_at: updated_range)
+          scope = Model.visible.active.includes(:manufacturer, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).where(updated_at: updated_range)
           @models = scope.order(updated_at: :desc, name: :asc)
         else
           render json: [], status: :not_modified
@@ -189,7 +189,7 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
-        scope = model.variants.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
+        scope = model.variants.includes(:manufacturer, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).visible.active
         if pledge_price_range.present?
           model_query_params["sorts"] = "pledge_price asc"
           scope = scope.where(pledge_price: pledge_price_range)
@@ -215,7 +215,7 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
-        scope = model.loaners.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
+        scope = model.loaners.includes(:manufacturer, {item_prices: ItemPrice::SHOP_LINK}, model_loaners: :loaner_model).visible.active
 
         if pledge_price_range.present?
           model_query_params["sorts"] = "pledge_price asc"

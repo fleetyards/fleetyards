@@ -435,7 +435,7 @@ class Model < ApplicationRecord
       # Without them a ship list is two extra queries per row rather than two
       # for the page -- and the ships and hangar endpoints are the slow ones.
       :build, :last_build,
-      :item_prices, :loaners, :cargo_holds_db,
+      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db,
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
     ] + attachment_preloads

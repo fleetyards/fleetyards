@@ -40,11 +40,24 @@ module ItemPriceConcern
   end
 
   def sold_at
-    item_prices.sell.preload(ItemPrice::SHOP_LINK).order(price: :asc).uniq { |item_price| price_location_key(item_price) }
+    priced(:sell).uniq { |item_price| price_location_key(item_price) }
   end
 
   def bought_at
-    item_prices.buy.preload(ItemPrice::SHOP_LINK).order(price: :asc).uniq { |item_price| price_location_key(item_price) }
+    priced(:buy).uniq { |item_price| price_location_key(item_price) }
+  end
+
+  # Cheapest first, off the loaded prices where a list preloaded them -- shop
+  # links and all -- and in one query otherwise. A price nobody quoted sorts
+  # last, as Postgres sorts a NULL.
+  private def priced(price_type)
+    rows = if item_prices.loaded?
+      item_prices.select { |item_price| item_price.price_type == price_type.to_s }
+    else
+      item_prices.public_send(price_type).to_a
+    end
+
+    ItemPrice.with_shop_links(rows.sort_by { |item_price| item_price.price || Float::INFINITY })
   end
 
   # Two commodity terminals can share a name; the terminal tells them apart.
