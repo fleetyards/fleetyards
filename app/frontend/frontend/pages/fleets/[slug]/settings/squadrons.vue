@@ -14,6 +14,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import SquadronPanel from "@/frontend/components/Fleets/Squadrons/SquadronPanel/index.vue";
+import SquadronRanksForm from "@/frontend/components/Fleets/Squadrons/SquadronRanksForm/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -23,6 +24,7 @@ import {
   type FleetMember,
   type FleetSquadron,
   useFleetSquadrons,
+  useFleetSquadronRoles,
   useDestroyFleetSquadron,
 } from "@/services/fyApi";
 
@@ -57,11 +59,19 @@ const canManageMembers = computed(
   () => props.membership?.capabilities?.manageSquadronMembers ?? false,
 );
 
+const canManageSquadrons = computed(
+  () => props.membership?.capabilities?.manageSquadrons ?? false,
+);
+
 const {
   data: squadrons,
   isLoading,
   refetch,
 } = useFleetSquadrons(fleetSlug, { perPage: "all" });
+
+const { data: ranks } = useFleetSquadronRoles(fleetSlug, {
+  query: { enabled: canManageSquadrons },
+});
 
 const allSquadrons = computed<FleetSquadron[]>(
   () => squadrons.value?.items ?? [],
@@ -226,4 +236,12 @@ onUnmounted(() => {
       </Btn>
     </template>
   </Empty>
+
+  <template v-if="canManageSquadrons && ranks?.length">
+    <Heading :level="HeadingLevelEnum.H2" mt>
+      {{ t("headlines.fleets.squadrons.ranks") }}
+    </Heading>
+
+    <SquadronRanksForm :fleet-slug="fleet.slug" :ranks="ranks" />
+  </template>
 </template>
