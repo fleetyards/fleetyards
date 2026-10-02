@@ -24424,6 +24424,8 @@ components:
           type: boolean
         manageSquadronMembers:
           type: boolean
+        manageSquadrons:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -24469,6 +24471,7 @@ components:
       - updateSquadrons
       - destroySquadrons
       - manageSquadronMembers
+      - manageSquadrons
       - readInvites
       - createInvites
       - destroyInvites

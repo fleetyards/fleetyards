@@ -45,6 +45,12 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
     refute capabilities[:read_members]
   end
 
+  test "renaming squadron ranks needs the squadrons manage privilege" do
+    assert membership_with(["fleet:squadrons:manage"]).capabilities[:manage_squadrons]
+    refute membership_with(["fleet:squadrons:members:manage"]).capabilities[:manage_squadrons]
+    assert_equal FleetSquadron::MANAGE_PRIVILEGES, FleetMembership::CAPABILITY_PRIVILEGES[:manage_squadrons]
+  end
+
   test "capability keys mirror CAPABILITY_PRIVILEGES" do
     assert_equal FleetMembership::CAPABILITY_PRIVILEGES.keys.sort,
       membership_with([]).capabilities.keys.sort
