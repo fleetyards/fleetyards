@@ -253,15 +253,14 @@ class Location < ApplicationRecord
     base = self.class.slug_for(own_name)
     return self.slug = nil if base.blank?
 
-    candidates = [
-      (base unless name_shared?(own_name)),
-      self.class.slug_for([own_name, parent&.[](:name)].compact.join(" ")),
-      "#{base}-#{self.class.slug_for(sc_key.tr("_", "-"))}"
-    ].compact.uniq
+    with_parent = self.class.slug_for([own_name, parent&.[](:name)].compact.join(" "))
+    with_key = "#{base}-#{self.class.slug_for(sc_key.tr("_", "-"))}"
+    candidates = [(base unless name_shared?(own_name)), with_parent, with_key].compact.uniq
     # A place keeps the URL it has while its name does: a namesake arriving
     # in a later build -- or in a ptu tree, which shares these rows -- takes
-    # the longer slug instead of renaming the incumbent.
-    return if persisted? && slug.present? && (slug == base || slug.start_with?("#{base}-"))
+    # the longer slug instead of renaming the incumbent. Only a slug this name
+    # could have produced counts: "lorville-central" is not one of Lorville's.
+    return if persisted? && [base, with_parent, with_key].include?(slug)
 
     self.slug = candidates.find { |candidate| !self.class.where(slug: candidate).where.not(id:).exists? } || candidates.last
   end

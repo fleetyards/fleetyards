@@ -73,6 +73,16 @@ module ScData
         assert_equal "lorville-aberdeen", newcomer.slug
       end
 
+      test "#all gives a place a new slug when its name no longer reads like the old one" do
+        loader.all
+        lorville = Location.find_by!(sc_key: "Stanton1_Lorville")
+        lorville.update_columns(slug: "lorville-central")
+
+        lorville.update!(name: "Lorville")
+
+        assert_equal "lorville", lorville.slug
+      end
+
       test "#all is idempotent" do
         loader.all
         slugs = Location.order(:sc_key).pluck(:sc_key, :slug, :parent_id, :map_parent_id)
