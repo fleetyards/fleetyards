@@ -27,6 +27,12 @@
         "systemStrip": "%{system}，从恒星向外",
         "allSystems": "所有星系",
         "allPlaces": "所有地点",
+        "bodyTypes": {
+          "gas_giant": "气态巨行星",
+          "ice_giant": "冰巨星",
+          "asteroid": "小行星",
+          "city": "城市星球"
+        },
         "unstable": "不稳定",
         "unstableHint": "耀星：其辐射会毫无预警地骤增。",
         "systems": "星系",

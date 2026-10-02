@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -42,10 +43,9 @@ const cities = (body: LocationTreeNode) =>
         :to="{ name: 'location', params: { slug: body.location.slug } }"
         class="location-columns__head"
       >
-        <span
+        <LocationGlobe
           class="location-columns__planet"
-          :style="globeStyle(body.location)"
-          aria-hidden="true"
+          :location="body.location"
         />
         <span class="location-columns__title">{{ body.location.name }}</span>
       </router-link>
@@ -70,11 +70,10 @@ const cities = (body: LocationTreeNode) =>
           :to="{ name: 'location', params: { slug: moon.location.slug } }"
           class="location-columns__moon"
         >
-          <span
+          <LocationGlobe
             v-if="globeStyle(moon.location)"
             class="location-columns__moon-dot"
-            :style="globeStyle(moon.location)"
-            aria-hidden="true"
+            :location="moon.location"
           />
           <span
             v-else

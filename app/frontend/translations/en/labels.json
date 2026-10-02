@@ -27,6 +27,12 @@
         "systemStrip": "%{system}, from its star outward",
         "allSystems": "All Systems",
         "allPlaces": "All places",
+        "bodyTypes": {
+          "gas_giant": "Gas giant",
+          "ice_giant": "Ice giant",
+          "asteroid": "Asteroid",
+          "city": "City planet"
+        },
         "unstable": "Unstable",
         "unstableHint": "A flare star: its output surges without warning.",
         "systems": "Star systems",

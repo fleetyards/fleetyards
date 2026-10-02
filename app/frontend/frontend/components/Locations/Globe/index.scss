@@ -1,0 +1,175 @@
+// One turn of the surface. Slow enough to read as a planet turning rather
+// than as something spinning.
+$turn: 90s;
+
+.location-globe {
+  $color: var(--globe-color);
+
+  display: block;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  // Doubled, to win over the plain fill the caller's class gives an unlit
+  // body.
+  &.location-globe--lit {
+    background-color: $color;
+  }
+
+  &__surface,
+  &__shade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  // Two tiles side by side, sliding left by one.
+  &__surface {
+    right: auto;
+    width: 200%;
+    background-repeat: repeat-x;
+    background-size: 50% 100%;
+    animation: location-globe-turn $turn linear infinite;
+  }
+
+  // The light, fixed: a highlight top left, the night side bottom right.
+  &__shade {
+    z-index: 1;
+    background: radial-gradient(
+      circle at 32% 28%,
+      rgb(255 255 255 / 0.5) 0%,
+      rgb(255 255 255 / 0) 34%,
+      rgb(0 0 0 / 0.28) 62%,
+      rgb(0 0 0 / 0.72) 100%
+    );
+  }
+
+  // A rocky or icy body: a few darker and lighter patches.
+  &--rocky &__surface {
+    background-image:
+      radial-gradient(
+        ellipse 18% 22% at 18% 34%,
+        color-mix(in srgb, #{$color} 70%, #000) 0 60%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 14% 12% at 42% 70%,
+        color-mix(in srgb, #{$color} 75%, #fff) 0 55%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 22% 16% at 72% 40%,
+        color-mix(in srgb, #{$color} 78%, #000) 0 55%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 10% 14% at 88% 78%,
+        color-mix(in srgb, #{$color} 72%, #000) 0 55%,
+        transparent 100%
+      );
+  }
+
+  // A gas giant: bands of its colour, lighter and darker, with a storm that
+  // gives the turning something to show.
+  &--gas_giant &__surface,
+  &--ice_giant &__surface {
+    background-image:
+      radial-gradient(
+        ellipse 9% 6% at 30% 62%,
+        color-mix(in srgb, #{$color} 55%, #fff) 0 50%,
+        transparent 100%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, #{$color} 80%, #fff) 0 12%,
+        #{$color} 12% 22%,
+        color-mix(in srgb, #{$color} 78%, #000) 22% 30%,
+        color-mix(in srgb, #{$color} 85%, #fff) 30% 41%,
+        #{$color} 41% 52%,
+        color-mix(in srgb, #{$color} 72%, #000) 52% 58%,
+        color-mix(in srgb, #{$color} 88%, #fff) 58% 71%,
+        #{$color} 71% 82%,
+        color-mix(in srgb, #{$color} 80%, #000) 82% 100%
+      );
+  }
+
+  // An ice giant: the same bands, washed out.
+  &--ice_giant &__surface {
+    opacity: 0.6;
+  }
+
+  // A hollowed asteroid, still drawn round: pocked with craters.
+  &--asteroid &__surface {
+    background-image:
+      radial-gradient(
+        circle at 22% 30%,
+        color-mix(in srgb, #{$color} 55%, #000) 0 7%,
+        color-mix(in srgb, #{$color} 85%, #fff) 8% 10%,
+        transparent 11%
+      ),
+      radial-gradient(
+        circle at 58% 66%,
+        color-mix(in srgb, #{$color} 55%, #000) 0 9%,
+        color-mix(in srgb, #{$color} 85%, #fff) 10% 12%,
+        transparent 13%
+      ),
+      radial-gradient(
+        circle at 80% 26%,
+        color-mix(in srgb, #{$color} 60%, #000) 0 5%,
+        transparent 6%
+      ),
+      radial-gradient(
+        circle at 38% 82%,
+        color-mix(in srgb, #{$color} 60%, #000) 0 4%,
+        transparent 5%
+      );
+  }
+
+  // A planet covered by one city: a lattice of districts on the day side and
+  // the lights of it on the night side.
+  &--city &__surface {
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        color-mix(in srgb, #{$color} 80%, #000) 0 1px,
+        transparent 1px 6px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        color-mix(in srgb, #{$color} 80%, #000) 0 1px,
+        transparent 1px 6px
+      );
+  }
+
+  // Fixed with the light, so the night side always carries them.
+  &__lights {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-image: radial-gradient(
+      circle,
+      rgb(255 214 140 / 0.9) 0 0.5px,
+      transparent 1.2px
+    );
+    background-size: 5px 5px;
+    background-repeat: repeat;
+    mask: radial-gradient(circle at 32% 28%, transparent 45%, #000 80%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__surface {
+      animation: none;
+    }
+  }
+}
+
+@keyframes location-globe-turn {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

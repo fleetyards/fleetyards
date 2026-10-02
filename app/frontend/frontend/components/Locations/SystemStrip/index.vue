@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import { globeStyle, sunStyle } from "@/shared/utils/LocationGlobe";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -77,10 +78,9 @@ const litBody = computed(() =>
           class="location-strip__body-link"
           :aria-current="path.at(-1) === body.location.id ? 'page' : undefined"
         >
-          <span
+          <LocationGlobe
             class="location-strip__planet"
-            :style="globeStyle(body.location)"
-            aria-hidden="true"
+            :location="body.location"
           />
           <span class="location-strip__name">{{ body.location.name }}</span>
         </router-link>
@@ -95,11 +95,10 @@ const litBody = computed(() =>
               class="location-strip__moon"
               :class="{ 'location-strip__moon--lit': isLit(moon.location.id) }"
             >
-              <span
+              <LocationGlobe
                 v-if="globeStyle(moon.location)"
                 class="location-strip__moon-globe"
-                :style="globeStyle(moon.location)"
-                aria-hidden="true"
+                :location="moon.location"
               />
               <LocationKindIcon v-else :kind="moon.location.kind" />
               {{ moon.location.name }}

@@ -27,6 +27,12 @@
         "systemStrip": "%{system}, dalla stella verso l'esterno",
         "allSystems": "Tutti i sistemi",
         "allPlaces": "Tutti i luoghi",
+        "bodyTypes": {
+          "gas_giant": "Gigante gassoso",
+          "ice_giant": "Gigante ghiacciato",
+          "asteroid": "Asteroide",
+          "city": "Pianeta città"
+        },
         "unstable": "Instabile",
         "unstableHint": "Una stella a brillamento: la sua emissione esplode senza preavviso.",
         "systems": "Sistemi stellari",

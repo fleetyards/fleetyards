@@ -1,10 +1,11 @@
 import { globeStyle } from "@/shared/utils/LocationGlobe";
 
 describe("globeStyle", () => {
-  it("shades the colour like a lit sphere", () => {
-    expect(
-      globeStyle({ kind: "moon", color: "#a0522d" })?.backgroundImage,
-    ).toMatch(/^radial-gradient\(circle at 32% 28%.*#a0522d/);
+  it("hands the colour to the globe", () => {
+    expect(globeStyle({ kind: "moon", color: "#a0522d" })).toEqual({
+      "--globe-color": "#a0522d",
+      "--globe-border": "transparent",
+    });
   });
 
   it("leaves the circle to its stylesheet without a colour", () => {

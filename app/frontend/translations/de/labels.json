@@ -27,6 +27,12 @@
         "systemStrip": "%{system}, vom Stern nach außen",
         "allSystems": "Alle Systeme",
         "allPlaces": "Alle Orte",
+        "bodyTypes": {
+          "gas_giant": "Gasriese",
+          "ice_giant": "Eisriese",
+          "asteroid": "Asteroid",
+          "city": "Stadtplanet"
+        },
         "unstable": "Instabil",
         "unstableHint": "Ein Flare-Stern: Seine Strahlung schießt ohne Vorwarnung in die Höhe.",
         "systems": "Sternsysteme",

@@ -27,6 +27,12 @@
         "systemStrip": "%{system}, de son étoile vers l'extérieur",
         "allSystems": "Tous les systèmes",
         "allPlaces": "Tous les lieux",
+        "bodyTypes": {
+          "gas_giant": "Géante gazeuse",
+          "ice_giant": "Géante de glace",
+          "asteroid": "Astéroïde",
+          "city": "Planète-ville"
+        },
         "unstable": "Instable",
         "unstableHint": "Une étoile à éruptions : son rayonnement s’emballe sans prévenir.",
         "systems": "Systèmes stellaires",

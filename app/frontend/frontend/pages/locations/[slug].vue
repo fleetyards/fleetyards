@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import type { Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -17,11 +18,7 @@ import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import {
-  globeStyle,
-  isGlobeKind,
-  sunStyle,
-} from "@/shared/utils/LocationGlobe";
+import { isGlobeKind, sunStyle } from "@/shared/utils/LocationGlobe";
 import {
   LocationKindEnum,
   type LocationTreeNode,
@@ -268,17 +265,18 @@ watch(
 
           <div class="location-page__masthead">
             <div class="location-page__title">
-              <span
-                v-if="showGlobe"
+              <LocationGlobe
+                v-if="showGlobe && isGlobeKind(location.kind)"
                 class="location-page__globe"
-                :class="{
-                  'location-page__globe--star':
-                    location.kind === LocationKindEnum.STAR,
-                  'location-page__globe--unstable': location.unstable,
-                }"
-                :style="globeStyle(location) ?? sunStyle(location)"
+                :location="location"
+              />
+              <span
+                v-else-if="showGlobe"
+                class="location-page__globe location-page__globe--star"
+                :class="{ 'location-page__globe--unstable': location.unstable }"
+                :style="sunStyle(location)"
                 aria-hidden="true"
-                data-test="location-globe"
+                data-test="location-sun"
               />
               <Heading hero>{{ location.name }}</Heading>
             </div>
@@ -315,7 +313,11 @@ watch(
                   {{ t("labels.location.kind") }}
                 </span>
                 <span class="location-page__badge-value">
-                  {{ t(`labels.location.kinds.${location.kind}`) }}
+                  {{
+                    location.bodyType
+                      ? t(`labels.location.bodyTypes.${location.bodyType}`)
+                      : t(`labels.location.kinds.${location.kind}`)
+                  }}
                 </span>
               </span>
             </div>

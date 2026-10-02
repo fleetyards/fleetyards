@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import { useLocation } from "@/services/fyAdminApi";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -15,11 +16,7 @@ import DetailList from "@/admin/components/DetailList/index.vue";
 import { type Detail } from "@/admin/components/DetailList/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import {
-  globeStyle,
-  isGlobeKind,
-  sunStyle,
-} from "@/shared/utils/LocationGlobe";
+import { isGlobeKind, sunStyle } from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 
@@ -160,11 +157,15 @@ const details = computed((): Detail[] => {
         class="admin-location__appearance"
         data-test="location-appearance"
       >
-        <span
-          v-if="isBody || isStar"
+        <LocationGlobe
+          v-if="isBody && location"
           class="admin-location__globe"
-          :class="{ 'admin-location__globe--star': isStar }"
-          :style="globeStyle(location) ?? sunStyle(location)"
+          :location="location"
+        />
+        <span
+          v-else-if="isStar"
+          class="admin-location__globe admin-location__globe--star"
+          :style="sunStyle(location)"
           aria-hidden="true"
         />
         <img

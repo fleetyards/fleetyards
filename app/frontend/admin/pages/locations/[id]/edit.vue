@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
@@ -24,11 +25,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import {
-  globeStyle,
-  isGlobeKind,
-  sunStyle,
-} from "@/shared/utils/LocationGlobe";
+import { isGlobeKind, sunStyle } from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -91,14 +88,11 @@ const [color, colorProps] = defineField("color");
 const [image, imageProps] = defineField("image");
 
 // The colour as it is typed, so the preview shows what the strip will draw.
-const preview = computed(() => {
-  const appearance = {
-    kind: location.value?.kind,
-    color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "") ? values.color : null,
-  };
-
-  return globeStyle(appearance) ?? sunStyle(appearance);
-});
+const preview = computed(() => ({
+  kind: location.value?.kind,
+  bodyType: location.value?.bodyType,
+  color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "") ? values.color : null,
+}));
 
 const submitting = ref(false);
 
@@ -189,11 +183,16 @@ const handleCancel = async () => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <span
-              v-if="isBody || isStar"
+            <LocationGlobe
+              v-if="isBody"
               class="admin-location-edit__globe"
-              :class="{ 'admin-location-edit__globe--star': isStar }"
-              :style="preview"
+              :location="preview"
+              data-test="location-globe-preview"
+            />
+            <span
+              v-else-if="isStar"
+              class="admin-location-edit__globe admin-location-edit__globe--star"
+              :style="sunStyle(preview)"
               data-test="location-globe-preview"
               aria-hidden="true"
             />
