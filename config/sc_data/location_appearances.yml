@@ -98,6 +98,10 @@ Nyx2:
 Nyx3:
   color: "#4a768c"
   image: db/seeds/locations/nyx-iii.webp
+# Delamar in the nebula, from the Galactapedia. A picture only: its average
+# is the nebula's blue, so the circle keeps the asteroid colour.
+Delamar:
+  image: db/seeds/locations/delamar.webp
 # The Glaciem Ring.
 NyxSolarSystem:
   image: db/seeds/locations/nyx-system.webp
