@@ -115,17 +115,18 @@ const target = (entry: LocationContentsEntry) =>
   &__title {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     margin: 0;
     padding: 0 2px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
 
-    i {
+    .location-kind-icon {
+      font-size: 20px;
       color: var(--color-muted, #7a8288);
     }
   }

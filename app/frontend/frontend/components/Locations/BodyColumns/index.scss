@@ -47,7 +47,7 @@
     font-size: 13px;
     color: var(--color-text, #c8c8c8);
 
-    i {
+    .location-kind-icon {
       color: var(--color-muted, #7a8288);
     }
   }
@@ -97,7 +97,7 @@
     background-color: transparent;
     border-color: transparent;
     color: var(--color-muted, #7a8288);
-    font-size: 16px;
+    font-size: 22px;
   }
 
   &__moon-body {

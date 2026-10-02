@@ -95,9 +95,9 @@
   &__moons {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin: 8px 0 0;
-    padding: 0 0 0 8px;
+    gap: 8px;
+    margin: 10px 0 0;
+    padding: 0 0 0 10px;
     list-style: none;
     border-left: 1px solid rgb(66 139 202 / 0.6);
   }
@@ -105,12 +105,13 @@
   &__moon {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 12px;
+    gap: 8px;
+    font-size: 14px;
     color: var(--color-text-dim, #959595);
     white-space: nowrap;
 
-    i {
+    .location-kind-icon {
+      font-size: 18px;
       color: var(--color-muted, #7a8288);
     }
 
@@ -123,8 +124,8 @@
   &__moon-globe {
     display: block;
     flex-shrink: 0;
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     border: 1px solid
       var(--globe-border, var(--color-edge-soft, rgb(122 130 136 / 0.55)));
@@ -155,7 +156,7 @@
     color: var(--color-text, #c8c8c8);
     white-space: nowrap;
 
-    i {
+    .location-kind-icon {
       color: var(--color-muted, #7a8288);
     }
   }

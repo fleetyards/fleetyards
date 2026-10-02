@@ -55,11 +55,12 @@ const sorted = computed(() =>
   &__item {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    font-size: 12px;
+    gap: 6px;
+    font-size: 13px;
     color: var(--color-text-dim, #959595);
 
-    i {
+    .location-kind-icon {
+      font-size: 17px;
       color: var(--color-muted, #7a8288);
     }
   }
