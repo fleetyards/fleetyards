@@ -68,19 +68,24 @@ module Fleets
         .where("object ->> ? = ?", foreign_key, value.to_s)
     end
 
-    # Returns a map of the old fleet_role_id => restored FleetRole, keyed by name
-    # so memberships can be re-linked. setup_default_roles! (run on fleet save)
-    # already recreated the standard roles, so custom roles are merged in.
+    # Returns a map of the old fleet_role_id => restored FleetRole so
+    # memberships can be re-linked. setup_default_roles! (run on fleet save)
+    # already recreated the standard roles under their seeded names, so a role
+    # is matched by its slug, which a rename leaves alone, and takes back its
+    # name and default from the latest snapshot -- a fleet restored and purged
+    # again keeps the older purge's versions under the same fleet id.
     def restore_roles(fleet)
       map = {}
+      restored_by_slug = {}
 
-      child_destroy_versions("FleetRole", "fleet_id", fleet.id).find_each do |version|
+      versions = child_destroy_versions("FleetRole", "fleet_id", fleet.id).order(created_at: :desc, id: :desc)
+
+      versions.each do |version|
         role = version.reify
-        restored = fleet.fleet_roles.find_or_create_by!(name: role.name) do |new_role|
-          new_role.resource_access = role.resource_access
-          new_role.permanent = role.permanent
-        end
-        map[version.item_id] = restored
+        slug = role.slug.presence || role.name.to_s.parameterize
+
+        restored_by_slug[slug] ||= restore_role(fleet, role, slug)
+        map[version.item_id] = restored_by_slug[slug]
       end
 
       map
@@ -105,6 +110,15 @@ module Fleets
         restored.update!(name: rank.name)
         restored.make_default! if rank.default_rank
       end
+    end
+
+    def restore_role(fleet, role, slug)
+      restored = fleet.fleet_roles.find_by(slug:) ||
+        fleet.fleet_roles.create!(name: role.name, resource_access: role.resource_access, permanent: role.permanent)
+
+      restored.update!(name: role.name) if restored.name != role.name
+      restored.make_default! if role.try(:new_member_default)
+      restored
     end
 
     # Role assignment is best effort: FleetRole nullifies its memberships when

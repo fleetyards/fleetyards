@@ -71,7 +71,8 @@ class FleetTest < ActiveSupport::TestCase
 
   test "#default_member_role creates roles if none exist" do
     fleet = create(:fleet)
-    fleet.fleet_roles.destroy_all
+    # Past the callbacks: the default role refuses to be destroyed.
+    fleet.fleet_roles.delete_all
     assert_equal 0, fleet.fleet_roles.reload.count
 
     role = fleet.default_member_role

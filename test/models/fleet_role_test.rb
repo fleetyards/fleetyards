@@ -4,20 +4,22 @@
 #
 # Table name: fleet_roles
 #
-#  id              :uuid             not null, primary key
-#  name            :string
-#  permanent       :boolean
-#  rank            :text
-#  resource_access :text
-#  slug            :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  discord_role_id :string
-#  fleet_id        :uuid             not null
+#  id                 :uuid             not null, primary key
+#  name               :string
+#  new_member_default :boolean          default(FALSE), not null
+#  permanent          :boolean
+#  rank               :text
+#  resource_access    :text
+#  slug               :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  discord_role_id    :string
+#  fleet_id           :uuid             not null
 #
 # Indexes
 #
-#  index_fleet_roles_on_fleet_id_and_rank  (fleet_id,rank) UNIQUE
+#  index_fleet_roles_on_fleet_id_and_rank      (fleet_id,rank) UNIQUE
+#  index_fleet_roles_on_one_default_per_fleet  (fleet_id) UNIQUE WHERE new_member_default
 #
 # Foreign Keys
 #
@@ -43,6 +45,8 @@ class FleetRoleTest < ActiveSupport::TestCase
   end
 
   test "#destroy is refused while members are still assigned to the role" do
+    @officer_role.make_default!
+
     refute @member_role.destroy
 
     assert_includes @member_role.errors[:base],
@@ -52,6 +56,8 @@ class FleetRoleTest < ActiveSupport::TestCase
   end
 
   test "#destroy! raises while members are still assigned to the role" do
+    @officer_role.make_default!
+
     assert_raises ActiveRecord::RecordNotDestroyed do
       @member_role.destroy!
     end
@@ -63,6 +69,7 @@ class FleetRoleTest < ActiveSupport::TestCase
   end
 
   test "#destroy succeeds when only discarded memberships are assigned to the role" do
+    @officer_role.make_default!
     membership = @fleet.fleet_memberships.find_by(user: @member_user)
     membership.discard
 
@@ -76,5 +83,48 @@ class FleetRoleTest < ActiveSupport::TestCase
     refute Fleet.exists?(@fleet.id)
     assert_empty FleetRole.where(fleet_id: @fleet.id)
     assert_empty FleetMembership.where(fleet_id: @fleet.id)
+  end
+
+  test "seeds Member as the one default role" do
+    assert_equal [@member_role], @fleet.fleet_roles.where(new_member_default: true).to_a
+    assert_equal @member_role, @fleet.default_member_role
+  end
+
+  test "#destroy is refused for the default role" do
+    @fleet.fleet_memberships.find_by(user: @member_user).discard
+
+    refute @member_role.destroy
+    assert_includes @member_role.errors[:base],
+      I18n.t("activerecord.errors.models.fleet_role.attributes.base.cannot_destroy_default")
+  end
+
+  test "the default moves and is never simply cleared" do
+    refute @member_role.update(new_member_default: false)
+    assert_includes @member_role.errors.details[:new_member_default], {error: :required}
+
+    @officer_role.make_default!
+
+    assert_equal [@officer_role], @fleet.fleet_roles.where(new_member_default: true).to_a
+    assert_equal @officer_role, @fleet.reload.default_member_role
+  end
+
+  test "the Admin role cannot be the default" do
+    admin_role = @fleet.fleet_roles.ranked.first
+
+    assert_raises(ActiveRecord::RecordInvalid) { admin_role.make_default! }
+    assert_equal [@member_role], @fleet.fleet_roles.where(new_member_default: true).to_a
+  end
+
+  # Promote and demote key on the slug, so a rename must not move it.
+  test "a rename keeps the slug" do
+    @member_role.update!(name: "Recruit")
+
+    assert_equal "member", @member_role.reload.slug
+  end
+
+  test "a fleet with no default marked still hands out its lowest role" do
+    FleetRole.where(fleet: @fleet).update_all(new_member_default: false)
+
+    assert_equal @member_role, @fleet.reload.default_member_role
   end
 end

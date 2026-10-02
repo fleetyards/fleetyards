@@ -451,6 +451,10 @@ de:
           attributes:
             base:
               cannot_destroy_with_members: Eine Rolle, die noch Mitgliedern zugewiesen ist, kann nicht gelöscht werden
+              cannot_destroy_default: "Die Rolle für neue Mitglieder kann nicht gelöscht werden – mache zuerst eine andere Rolle zum Standard"
+            new_member_default:
+              permanent: "kann nicht die Admin-Rolle sein – neue Mitglieder dürfen nie die volle Kontrolle über die Flotte erhalten"
+              required: "wird benötigt – mache stattdessen eine andere Rolle zum Standard"
             resource_access:
               changed: Zugriffsrechte können nicht geändert werden
         fleet_membership:

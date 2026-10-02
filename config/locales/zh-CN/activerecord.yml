@@ -451,6 +451,10 @@ zh-CN:
           attributes:
             base:
               cannot_destroy_with_members: 无法删除仍分配给成员的角色
+              cannot_destroy_default: "无法删除新成员获得的角色——请先将其他角色设为默认"
+            new_member_default:
+              permanent: "不能是管理员角色——新成员绝不能获得舰队的完全控制权"
+              required: "是必需的——请改为将其他角色设为默认"
             resource_access:
               changed: 访问权限无法更改
         fleet_membership:

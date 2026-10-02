@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_02_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_02_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1030,7 +1030,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_130000) do
     t.text "resource_access"
     t.string "slug"
     t.datetime "updated_at", null: false
+    t.boolean "new_member_default", default: false, null: false
     t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
+    t.index ["fleet_id"], name: "index_fleet_roles_on_one_default_per_fleet", unique: true, where: "new_member_default"
   end
 
   create_table "fleet_squadron_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

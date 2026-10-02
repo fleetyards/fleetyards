@@ -482,6 +482,10 @@ en:
           attributes:
             base:
               cannot_destroy_with_members: Cannot delete a role that is still assigned to members
+              cannot_destroy_default: "Cannot delete the role new members get — make another role the default first"
+            new_member_default:
+              permanent: "cannot be the Admin role — a new member must never get full control of the fleet"
+              required: "is needed — make another role the default instead"
             resource_access:
               changed: Access privileges can not be changed
         fleet_membership:

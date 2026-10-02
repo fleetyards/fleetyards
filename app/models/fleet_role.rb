@@ -2,20 +2,22 @@
 #
 # Table name: fleet_roles
 #
-#  id              :uuid             not null, primary key
-#  name            :string
-#  permanent       :boolean
-#  rank            :text
-#  resource_access :text
-#  slug            :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  discord_role_id :string
-#  fleet_id        :uuid             not null
+#  id                 :uuid             not null, primary key
+#  name               :string
+#  new_member_default :boolean          default(FALSE), not null
+#  permanent          :boolean
+#  rank               :text
+#  resource_access    :text
+#  slug               :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  discord_role_id    :string
+#  fleet_id           :uuid             not null
 #
 # Indexes
 #
-#  index_fleet_roles_on_fleet_id_and_rank  (fleet_id,rank) UNIQUE
+#  index_fleet_roles_on_fleet_id_and_rank      (fleet_id,rank) UNIQUE
+#  index_fleet_roles_on_one_default_per_fleet  (fleet_id) UNIQUE WHERE new_member_default
 #
 # Foreign Keys
 #
@@ -79,8 +81,14 @@ class FleetRole < ApplicationRecord
   validates :name, uniqueness: {case_sensitive: false, scope: :fleet}, presence: true
   validate :resource_access_changed
   validates :resource_access, inclusion: {in: all_available_privileges}
+  validate :permanent_role_is_never_the_default
+  validate :default_is_handed_over_not_dropped
 
-  before_save :update_slugs
+  attr_accessor :handing_over_default
+
+  # Set once: promote/demote and the members filter key on the slug, so a
+  # renamed role keeps the one it was created with.
+  before_create :update_slugs
   before_create :setup_rank
   before_destroy :check_if_can_be_destroyed, prepend: true
 
@@ -164,6 +172,25 @@ class FleetRole < ApplicationRecord
     ) do |role|
       role.resource_access = preset_privileges[:member]
       role.rank = 20
+      role.new_member_default = fleet.fleet_roles.where(new_member_default: true).none?
+    end
+  end
+
+  # There is always exactly one default, so it moves rather than being set and
+  # cleared. The fleet lock serialises two moves, and the rows are read again
+  # under it -- the default may have moved while this one waited.
+  def make_default!
+    transaction do
+      Fleet.where(id: fleet_id).lock.take
+      reload
+      next if new_member_default?
+
+      fleet.fleet_roles.where(new_member_default: true).where.not(id:).find_each do |previous|
+        previous.handing_over_default = true
+        previous.update!(new_member_default: false)
+      end
+
+      update!(new_member_default: true)
     end
   end
 
@@ -183,10 +210,31 @@ class FleetRole < ApplicationRecord
   # the :nullify callback is registered first and would clear the rows we check.
   private def check_if_can_be_destroyed
     return if destroyed_by_association
+
+    # Read from the row: the default may have moved since this record loaded.
+    if FleetRole.where(id:, new_member_default: true).exists?
+      errors.add(:base, I18n.t("activerecord.errors.models.fleet_role.attributes.base.cannot_destroy_default"))
+      throw(:abort)
+    end
+
     return unless fleet_memberships.kept.exists?
 
     errors.add(:base, I18n.t("activerecord.errors.models.fleet_role.attributes.base.cannot_destroy_with_members"))
     throw(:abort)
+  end
+
+  # A new member must never be handed the whole fleet.
+  private def permanent_role_is_never_the_default
+    return unless new_member_default? && permanent?
+
+    errors.add(:new_member_default, :permanent)
+  end
+
+  private def default_is_handed_over_not_dropped
+    return unless persisted? && will_save_change_to_new_member_default?(from: true, to: false)
+    return if handing_over_default
+
+    errors.add(:new_member_default, :required)
   end
 
   private def resource_access_changed

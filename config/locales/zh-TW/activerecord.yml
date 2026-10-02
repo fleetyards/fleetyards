@@ -451,6 +451,10 @@ zh-TW:
           attributes:
             base:
               cannot_destroy_with_members: 無法刪除仍指派給成員的角色
+              cannot_destroy_default: "無法刪除新成員獲得的角色——請先將其他角色設為預設"
+            new_member_default:
+              permanent: "不能是管理員角色——新成員絕不能獲得艦隊的完全控制權"
+              required: "是必需的——請改為將其他角色設為預設"
             resource_access:
               changed: 存取權限無法變更
         fleet_membership:
