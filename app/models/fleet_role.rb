@@ -64,9 +64,10 @@ class FleetRole < ApplicationRecord
     "notifications" => FleetNotificationSetting::AVAILABLE_PRIVILEGES
   }.freeze
 
-  # The members filter's `role` reaches this through FleetMembership.
+  # Reached through FleetMembership: the fleet's `role` filter by slug, the
+  # admin list's by name.
   def self.ransackable_attributes(_auth_object = nil)
-    %w[slug]
+    %w[slug name]
   end
 
   def self.privilege_groups
