@@ -139,6 +139,33 @@ describe("fleet settings: directory", () => {
     expect(mutateAsync.mock.calls[0][0].data).not.toHaveProperty("listed");
   });
 
+  it("follows publicFleet while nobody has chosen, and still sends nothing", async () => {
+    const subject = await mount(verifiedFleet({ publicFleet: false }));
+    const publicToggle = subject
+      .findAllComponents(FormToggle)
+      .find((toggle) => toggle.props("name") === "publicFleet")!;
+
+    publicToggle.vm.$emit("update:modelValue", true);
+    await flushPromises();
+
+    expect(listedToggle(subject)?.props("modelValue")).toBe(true);
+
+    await save(subject);
+
+    expect(mutateAsync.mock.calls[0][0].data).not.toHaveProperty("listed");
+    expect(mutateAsync.mock.calls[0][0].data.publicFleet).toBe(true);
+  });
+
+  it("sends the toggle once a manager has touched it", async () => {
+    const subject = await mount(verifiedFleet());
+
+    listedToggle(subject)!.vm.$emit("update:modelValue", false);
+    await flushPromises();
+    await save(subject);
+
+    expect(mutateAsync.mock.calls[0][0].data.listed).toBe(false);
+  });
+
   it("sends the choice once a manager has made it", async () => {
     const subject = await mount(verifiedFleet({ listed: false }));
 

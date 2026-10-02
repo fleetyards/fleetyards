@@ -162,20 +162,29 @@ function yesNo(value?: boolean | null) {
   return t(value ? "labels.true" : "labels.false");
 }
 
-// Sent only once a manager touches it: saving the form must not turn a choice
-// nobody made into an explicit one, which would stop it following publicFleet.
+// A fleet that never chose follows publicFleet, so until a manager touches the
+// toggle it shows exactly that -- live, as publicFleet is switched -- and the
+// save leaves it out. Sending what it showed would turn a choice nobody made
+// into an explicit one, which would stop it following publicFleet.
+const listedChosen = ref(
+  props.fleet.listed !== null && props.fleet.listed !== undefined,
+);
+
+const chooseListed = (value: boolean) => {
+  listedChosen.value = true;
+  listed.value = value;
+};
+
+watch(publicFleet, (isPublic) => {
+  if (!listedChosen.value) listed.value = !!isPublic;
+});
+
 const payloadFrom = (values: FleetUpdateInput): FleetUpdateInput => {
-  if (props.fleet.listed !== null && props.fleet.listed !== undefined) {
-    return values;
-  }
+  if (listedChosen.value) return values;
 
-  if (values.listed === initialValues.value.listed) {
-    const { listed: _listed, ...rest } = values;
+  const { listed: _listed, ...rest } = values;
 
-    return rest;
-  }
-
-  return values;
+  return rest;
 };
 
 const onSubmit = handleSubmit(async (values) => {
@@ -336,12 +345,13 @@ const onDestroy = async () => {
       <div class="row" data-test="fleet-directory-settings">
         <div v-if="canManage" class="col-12 col-md-6">
           <FormToggle
-            v-model="listed"
+            :model-value="listed"
             name="listed"
             translation-key="fleet.listed"
             :info="t('labels.fleet.listedInfo')"
             v-bind="listedProps"
             :disabled="submitting || !publicFleet"
+            @update:model-value="chooseListed"
           />
         </div>
         <div class="col-12 col-md-6">
