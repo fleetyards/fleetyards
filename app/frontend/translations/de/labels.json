@@ -2,12 +2,21 @@
   "de": {
     "labels": {
       "location": {
+        "resourceKinds": {
+          "ship_mineables": "Schiffsabbau",
+          "hand_mineables": "Handabbau",
+          "ground_vehicle_mineables": "Bodenfahrzeug-Abbau",
+          "harvestables": "Erntegut",
+          "creatures": "Kreaturen"
+        },
+        "resources": "Ressourcen",
+        "moonsBadge": "Monde",
+        "planets": "Planeten",
         "places": "Orte",
         "within": "in",
         "showFewer": "Weniger anzeigen",
         "showAll": "Alle %{count} anzeigen",
         "elsewhere": "Sonst um %{star}",
-        "inside": "Darin",
         "namesakes": "×%{count}",
         "lagrangePoints": "Lagrange-Punkte",
         "inOrbit": "Im Orbit",

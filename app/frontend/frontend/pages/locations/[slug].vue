@@ -9,7 +9,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import BodyColumns from "@/frontend/components/Locations/BodyColumns/index.vue";
 import ContentsList from "@/frontend/components/Locations/Contents/index.vue";
-import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
+import LocationResources from "@/frontend/components/Locations/Resources/index.vue";
 import StarmapFacts from "@/frontend/components/Locations/StarmapFacts/index.vue";
 import SystemStrip from "@/frontend/components/Locations/SystemStrip/index.vue";
 import LocationMissions from "@/frontend/components/Locations/Missions/index.vue";
@@ -106,6 +106,68 @@ const contentGroups = computed(() =>
   ),
 );
 
+// What a system page counts: every place in it, its planets, their moons.
+const systemBadges = computed(() => {
+  const planets = bodies.value.filter(
+    (body) => body.location.kind === LocationKindEnum.PLANET,
+  );
+  const moons = bodies.value.flatMap((body) =>
+    body.children.filter(
+      (child) => child.location.kind === LocationKindEnum.MOON,
+    ),
+  );
+
+  return [
+    {
+      key: "places",
+      label: t("labels.location.places"),
+      value: location.value?.placesCount ?? 0,
+    },
+    {
+      key: "planets",
+      label: t("labels.location.planets"),
+      value: planets.length,
+    },
+    {
+      key: "moons",
+      label: t("labels.location.moonsBadge"),
+      value: moons.length,
+    },
+  ];
+});
+
+// What sits around the star but on no planet: Wikelo's emporiums, a stray
+// asteroid. The planets and gateways are on the strip and in the columns.
+const { data: starContents } = useLocationContents(
+  computed(() => star.value?.location.slug ?? ""),
+  { query: { enabled: computed(() => isSystemView.value && !!star.value) } },
+);
+
+const elsewhereGroups = computed(() => {
+  const shown = new Set([
+    ...(star.value?.gateways ?? []).map((gateway) => gateway.id),
+  ]);
+
+  return (starContents.value?.groups ?? [])
+    .filter(
+      (group) =>
+        group.kind !== LocationKindEnum.PLANET &&
+        group.kind !== LocationKindEnum.MOON,
+    )
+    .map((group) => {
+      const entries = group.entries.filter(
+        (entry) => !shown.has(entry.location.id),
+      );
+
+      return {
+        ...group,
+        entries,
+        count: entries.reduce((sum, entry) => sum + entry.count, 0),
+      };
+    })
+    .filter((group) => group.entries.length);
+});
+
 const path = computed(() => [
   ...(location.value?.ancestors ?? []).map((ancestor) => ancestor.id),
   ...(locationId.value ? [locationId.value] : []),
@@ -155,14 +217,6 @@ watch(
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <div v-if="location" class="location-page">
-        <SystemStrip
-          v-if="tree"
-          :tree="tree"
-          :path="path"
-          :map-parent="location.mapParent"
-          :compact="!isSystemView"
-        />
-
         <div class="location-page__masthead">
           <div class="location-page__title">
             <p v-if="unseenAncestors.length" class="location-page__within">
@@ -193,7 +247,22 @@ watch(
               </span>
             </span>
 
-            <span class="location-page__badge">
+            <template v-if="isSystemView">
+              <span
+                v-for="badge in systemBadges"
+                :key="badge.key"
+                class="location-page__badge"
+              >
+                <span class="location-page__badge-label">
+                  {{ badge.label }}
+                </span>
+                <span class="location-page__badge-value">
+                  {{ badge.value }}
+                </span>
+              </span>
+            </template>
+
+            <span v-else class="location-page__badge">
               <span class="location-page__badge-label">
                 {{ t("labels.location.kind") }}
               </span>
@@ -201,17 +270,16 @@ watch(
                 {{ t(`labels.location.kinds.${location.kind}`) }}
               </span>
             </span>
-
-            <span v-if="location.childrenCount" class="location-page__badge">
-              <span class="location-page__badge-label">
-                {{ t("labels.location.inside") }}
-              </span>
-              <span class="location-page__badge-value">
-                {{ location.childrenCount }}
-              </span>
-            </span>
           </div>
         </div>
+
+        <SystemStrip
+          v-if="tree"
+          :tree="tree"
+          :path="path"
+          :map-parent="location.mapParent"
+          :compact="!isSystemView"
+        />
 
         <template v-if="isSystemView">
           <section v-if="description" class="location-page__panel">
@@ -220,11 +288,16 @@ watch(
 
           <BodyColumns :bodies="bodies" />
 
-          <section v-if="star?.counts.length" class="location-page__panel">
+          <section v-if="elsewhereGroups.length" class="location-page__panel">
             <h2 class="location-page__panel-title">
-              {{ t("labels.location.elsewhere", { star: star.location.name }) }}
+              {{
+                t("labels.location.elsewhere", { star: star?.location.name })
+              }}
             </h2>
-            <KindCounts :counts="star.counts" />
+            <ContentsList
+              :groups="elsewhereGroups"
+              :parent-id="star?.location.id ?? location.id"
+            />
           </section>
         </template>
 
@@ -247,6 +320,11 @@ watch(
             <section v-if="description" class="location-page__panel">
               <p class="location-page__description">{{ description }}</p>
             </section>
+
+            <LocationResources
+              v-if="location.resources?.length"
+              :groups="location.resources"
+            />
 
             <section class="location-page__panel">
               <h2 class="location-page__panel-title">

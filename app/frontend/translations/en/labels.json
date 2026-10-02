@@ -2,12 +2,21 @@
   "en": {
     "labels": {
       "location": {
+        "resourceKinds": {
+          "ship_mineables": "Ship mineables",
+          "hand_mineables": "Hand mineables",
+          "ground_vehicle_mineables": "Ground vehicle mineables",
+          "harvestables": "Harvestables",
+          "creatures": "Creatures"
+        },
+        "resources": "Resources",
+        "moonsBadge": "Moons",
+        "planets": "Planets",
         "places": "Places",
         "within": "in",
         "showFewer": "Show fewer",
         "showAll": "Show all %{count}",
         "elsewhere": "Elsewhere around %{star}",
-        "inside": "Inside",
         "namesakes": "×%{count}",
         "lagrangePoints": "Lagrange points",
         "inOrbit": "In orbit",

@@ -2,12 +2,21 @@
   "zh-TW": {
     "labels": {
       "location": {
+        "resourceKinds": {
+          "ship_mineables": "飛船採礦",
+          "hand_mineables": "手持採礦",
+          "ground_vehicle_mineables": "地面載具採礦",
+          "harvestables": "可採集物",
+          "creatures": "生物"
+        },
+        "resources": "資源",
+        "moonsBadge": "衛星",
+        "planets": "行星",
         "places": "地點",
         "within": "位於",
         "showFewer": "收合",
         "showAll": "顯示全部 %{count} 個",
         "elsewhere": "%{star} 周圍的其他地方",
-        "inside": "內部",
         "namesakes": "×%{count}",
         "lagrangePoints": "拉格朗日點",
         "inOrbit": "軌道上",

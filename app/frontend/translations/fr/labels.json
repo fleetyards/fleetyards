@@ -2,12 +2,21 @@
   "fr": {
     "labels": {
       "location": {
+        "resourceKinds": {
+          "ship_mineables": "Minerais au vaisseau",
+          "hand_mineables": "Minerais à la main",
+          "ground_vehicle_mineables": "Minerais au véhicule terrestre",
+          "harvestables": "Récoltables",
+          "creatures": "Créatures"
+        },
+        "resources": "Ressources",
+        "moonsBadge": "Lunes",
+        "planets": "Planètes",
         "places": "Lieux",
         "within": "dans",
         "showFewer": "Afficher moins",
         "showAll": "Afficher les %{count}",
         "elsewhere": "Ailleurs autour de %{star}",
-        "inside": "À l'intérieur",
         "namesakes": "×%{count}",
         "lagrangePoints": "Points de Lagrange",
         "inOrbit": "En orbite",
