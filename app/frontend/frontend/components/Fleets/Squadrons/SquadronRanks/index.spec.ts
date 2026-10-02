@@ -10,6 +10,8 @@ const ranks = [
     key: "leader",
     name: "Wing Commander",
     position: 0,
+    permanent: true,
+    defaultRank: false,
     singleHolder: true,
     managesMembers: true,
     managesRanks: true,
@@ -19,6 +21,8 @@ const ranks = [
     key: "member",
     name: "Member",
     position: 3,
+    permanent: false,
+    defaultRank: true,
     singleHolder: false,
     managesMembers: false,
     managesRanks: false,
@@ -63,5 +67,19 @@ describe("SquadronRanks", () => {
     expect(
       editable.find('[data-test="squadron-rank-edit-leader"]').exists(),
     ).toBe(true);
+  });
+
+  it("marks the default rank and the permanent ones", async () => {
+    const subject = await mount(false);
+
+    expect(
+      subject.find('[data-test="squadron-rank-default-member"]').exists(),
+    ).toBe(true);
+    expect(
+      subject.find('[data-test="squadron-rank-default-leader"]').exists(),
+    ).toBe(false);
+    expect(subject.find('[data-test="squadron-rank-leader"]').text()).toContain(
+      "Permanent",
+    );
   });
 });

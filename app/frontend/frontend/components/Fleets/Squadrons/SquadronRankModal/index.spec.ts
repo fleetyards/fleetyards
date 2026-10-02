@@ -67,4 +67,51 @@ describe("SquadronRankModal", () => {
       data: { name: "Wing Commander" },
     });
   });
+
+  it("moves the default to the rank when the toggle is switched on", async () => {
+    updateRank.mockResolvedValue({});
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleetSlug: "maru",
+        rank: {
+          id: "officer-id",
+          key: "officer",
+          name: "Squadron Officer",
+          permanent: false,
+          defaultRank: false,
+        } as FleetSquadronRole,
+      },
+    });
+
+    await wrapper
+      .find('[data-test="squadron-rank-default"] input')
+      .setValue(true);
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(updateRank).toHaveBeenCalledWith({
+      fleetSlug: "maru",
+      id: "officer-id",
+      data: { name: "Squadron Officer", defaultRank: true },
+    });
+  });
+
+  it("offers no default toggle on a leadership rank", async () => {
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleetSlug: "maru",
+        rank: {
+          id: "leader-id",
+          key: "leader",
+          name: "Squadron Leader",
+          permanent: true,
+          defaultRank: false,
+        } as FleetSquadronRole,
+      },
+    });
+
+    expect(wrapper.find('[data-test="squadron-rank-default"]').exists()).toBe(
+      false,
+    );
+  });
 });

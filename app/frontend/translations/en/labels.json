@@ -599,6 +599,8 @@
           "rank": "Rank",
           "ranksHint": "The names every squadron in this fleet uses. Renaming a rank keeps its place and what it may do.",
           "rankName": "Name",
+          "defaultRank": "Default",
+          "defaultRankToggle": "New members start on this rank",
           "rankRights": {
             "singleHolder": "One per squadron",
             "managesMembers": "Adds and removes the members ranked below",

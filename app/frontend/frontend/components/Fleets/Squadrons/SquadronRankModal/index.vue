@@ -9,6 +9,7 @@ import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -37,10 +38,27 @@ const submitting = ref(false);
 
 const { defineField, handleSubmit, setErrors } =
   useForm<FleetSquadronRoleUpdateInput>({
-    initialValues: { name: props.rank.name },
+    initialValues: {
+      name: props.rank.name,
+      defaultRank: props.rank.defaultRank || undefined,
+    },
   });
 
 const [name, nameProps] = defineField("name");
+const [defaultRank, defaultRankProps] = defineField("defaultRank");
+
+// The default only ever moves to a rank, never off one: new members always
+// need a rank to start on, and the leadership ranks hold one person each.
+const defaultRankEditable = computed(
+  () => !props.rank.permanent && !props.rank.defaultRank,
+);
+
+const payload = (values: FleetSquadronRoleUpdateInput) => ({
+  name: values.name,
+  ...(defaultRankEditable.value && values.defaultRank
+    ? { defaultRank: true as const }
+    : {}),
+});
 const mutation = useUpdateFleetSquadronRole();
 
 const onSubmit = handleSubmit(async (values) => {
@@ -50,7 +68,7 @@ const onSubmit = handleSubmit(async (values) => {
     await mutation.mutateAsync({
       fleetSlug: props.fleetSlug,
       id: props.rank.id,
-      data: values,
+      data: payload(values),
     });
     await queryClient.invalidateQueries({
       queryKey: getFleetSquadronRolesQueryKey(props.fleetSlug),
@@ -82,6 +100,15 @@ const onSubmit = handleSubmit(async (values) => {
         rules="required"
         autofocus
         data-test="squadron-rank-name"
+      />
+      <FormToggle
+        v-if="!rank.permanent"
+        v-model="defaultRank"
+        v-bind="defaultRankProps"
+        name="defaultRank"
+        :label="t('labels.fleet.squadrons.defaultRankToggle')"
+        :disabled="!defaultRankEditable"
+        data-test="squadron-rank-default"
       />
     </form>
     <template #footer>

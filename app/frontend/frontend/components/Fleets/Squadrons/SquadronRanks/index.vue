@@ -51,6 +51,16 @@ const openRenameModal = (rank: FleetSquadronRole) => {
     >
       <PanelHeading :level="HeadingLevelEnum.H3">
         {{ rank.name }}
+        <span v-if="rank.permanent" class="squadron-rank-badge text-muted">
+          ({{ t("labels.fleet.roles.permanent") }})
+        </span>
+        <span
+          v-if="rank.defaultRank"
+          class="squadron-rank-badge text-muted"
+          :data-test="`squadron-rank-default-${rank.key}`"
+        >
+          ({{ t("labels.fleet.squadrons.defaultRank") }})
+        </span>
         <template v-if="editable" #actions>
           <Btn
             v-tooltip="t('actions.edit')"
@@ -89,6 +99,11 @@ const openRenameModal = (rank: FleetSquadronRole) => {
 <style lang="scss" scoped>
 .squadron-ranks__hint {
   color: var(--color-text-dim);
+}
+
+.squadron-rank-badge {
+  font-size: 0.75em;
+  font-weight: normal;
 }
 
 // The roles page's layout: one panel per rank, stacked.

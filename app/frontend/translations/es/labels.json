@@ -599,6 +599,8 @@
           "rank": "Rango",
           "ranksHint": "Los nombres que usa cada escuadrón de esta flota. Un rango renombrado conserva su lugar y sus permisos.",
           "rankName": "Nombre",
+          "defaultRank": "Predeterminado",
+          "defaultRankToggle": "Los miembros nuevos empiezan con este rango",
           "rankRights": {
             "singleHolder": "Uno por escuadrón",
             "managesMembers": "Añade y quita a los miembros de rango inferior",

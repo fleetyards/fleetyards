@@ -599,6 +599,8 @@
           "rank": "Rang",
           "ranksHint": "Die Namen, die jede Staffel dieser Flotte verwendet. Ein umbenannter Rang behält seinen Platz und seine Rechte.",
           "rankName": "Name",
+          "defaultRank": "Standard",
+          "defaultRankToggle": "Neue Mitglieder beginnen mit diesem Rang",
           "rankRights": {
             "singleHolder": "Einer pro Staffel",
             "managesMembers": "Fügt Mitglieder mit niedrigerem Rang hinzu und entfernt sie",
