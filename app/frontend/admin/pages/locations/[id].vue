@@ -15,6 +15,7 @@ import DetailList from "@/admin/components/DetailList/index.vue";
 import { type Detail } from "@/admin/components/DetailList/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { globeStyle } from "@/shared/utils/LocationGlobe";
 
 const { t } = useI18n();
 
@@ -133,7 +134,7 @@ const details = computed((): Detail[] => {
       <BreadCrumbs :crumbs="crumbs" :current-id="locationId" />
 
       <div class="admin-location__head">
-        <Heading hero class="mb-4">
+        <Heading hero>
           {{ location?.name || location?.scKey }}
         </Heading>
 
@@ -147,6 +148,45 @@ const details = computed((): Detail[] => {
         </Btn>
       </div>
 
+      <section
+        class="admin-location__appearance"
+        data-test="location-appearance"
+      >
+        <span
+          class="admin-location__globe"
+          :style="globeStyle(location)"
+          aria-hidden="true"
+        />
+        <dl class="admin-location__appearance-facts">
+          <div>
+            <dt>{{ t("labels.admin.locations.color") }}</dt>
+            <dd>
+              <span
+                v-if="location?.color"
+                class="admin-location__swatch"
+                :style="{ backgroundColor: location.color }"
+                aria-hidden="true"
+              />
+              {{ location?.color || dash }}
+            </dd>
+          </div>
+          <div>
+            <dt>{{ t("labels.admin.locations.image") }}</dt>
+            <dd>
+              <a
+                v-if="location?.image"
+                :href="location.image.url"
+                target="_blank"
+                rel="noopener"
+              >
+                {{ location.image.name }}
+              </a>
+              <template v-else>{{ dash }}</template>
+            </dd>
+          </div>
+        </dl>
+      </section>
+
       <!-- A wrong place is a parser or override fix; only its look is edited. -->
       <DetailList :details="details" data-test="location-details" />
     </template>
@@ -154,11 +194,58 @@ const details = computed((): Detail[] => {
 </template>
 
 <style lang="scss" scoped>
-.admin-location__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
+.admin-location {
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__appearance {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  &__globe {
+    display: block;
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #1d2329;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
+  }
+
+  &__appearance-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+
+    dt {
+      font-size: 12px;
+      color: var(--color-text-dim, #959595);
+    }
+
+    dd {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+  }
+
+  &__swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.55));
+  }
 }
 </style>
