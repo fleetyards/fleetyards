@@ -31,7 +31,7 @@ describe("LocationGlobe", () => {
       props: { location: { kind: "moon", color: null } },
     });
 
-    expect(wrapper.classes()).toContain("location-globe--rocky");
+    expect(wrapper.classes()).toContain("location-globe--cratered");
     expect(wrapper.find(".location-globe__surface").exists()).toBe(false);
   });
 });

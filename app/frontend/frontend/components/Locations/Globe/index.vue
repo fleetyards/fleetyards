@@ -19,7 +19,13 @@ const props = defineProps<Props>();
 
 const style = computed(() => globeStyle(props.location));
 
-const bodyType = computed(() => props.location.bodyType ?? "rocky");
+// An ordinary moon is cratered like an asteroid; an ordinary planet has
+// continents.
+const bodyType = computed(
+  () =>
+    props.location.bodyType ??
+    (props.location.kind === "moon" ? "cratered" : "rocky"),
+);
 </script>
 
 <!-- A body as a lit sphere in its colour. Its surface turns slowly under a
