@@ -1,12 +1,16 @@
 <script lang="ts">
 export default {
-  name: "SquadronRanksForm",
+  name: "SquadronRanks",
 };
 </script>
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -22,9 +26,14 @@ import { useQueryClient } from "@tanstack/vue-query";
 type Props = {
   fleetSlug: string;
   ranks: FleetSquadronRole[];
+  editable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  editable: false,
+});
+
+const RIGHTS = ["singleHolder", "managesMembers", "managesRanks"] as const;
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -91,23 +100,50 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <form id="squadron-ranks-form" @submit.prevent="onSubmit">
-    <p class="squadron-ranks-form__hint">
+    <p class="squadron-ranks__hint">
       {{ t("labels.fleet.squadrons.ranksHint") }}
     </p>
-    <div class="row">
-      <div v-for="rank in ranks" :key="rank.id" class="col-12 col-md-6">
-        <FormInput
-          v-model="fields[rank.key][0].value"
-          v-bind="fields[rank.key][1].value"
-          :name="rank.key"
-          :label="rank.name"
-          :info="t(`labels.fleet.squadrons.rankSlots.${rank.key}`)"
-          rules="required"
-          :data-test="`squadron-rank-name-${rank.key}`"
-        />
-      </div>
+    <div class="squadron-ranks">
+      <Panel
+        v-for="rank in ranks"
+        :key="rank.id"
+        :data-test="`squadron-rank-${rank.key}`"
+      >
+        <PanelHeading :level="HeadingLevelEnum.H3">
+          {{ rank.name }}
+        </PanelHeading>
+        <PanelBody>
+          <ul class="squadron-rank-rights">
+            <li
+              v-for="right in RIGHTS"
+              :key="right"
+              class="squadron-rank-right"
+              :class="{ active: rank[right] }"
+            >
+              <i
+                :class="
+                  rank[right]
+                    ? 'fa-solid fa-check text-success'
+                    : 'fa-solid fa-times text-muted'
+                "
+              />
+              {{ t(`labels.fleet.squadrons.rankRights.${right}`) }}
+            </li>
+          </ul>
+          <FormInput
+            v-if="editable"
+            v-model="fields[rank.key][0].value"
+            v-bind="fields[rank.key][1].value"
+            :name="rank.key"
+            :label="t('labels.fleet.squadrons.rankName')"
+            rules="required"
+            :data-test="`squadron-rank-name-${rank.key}`"
+          />
+        </PanelBody>
+      </Panel>
     </div>
     <FormActions
+      v-if="editable"
       :submitting="submitting"
       form-id="squadron-ranks-form"
       :dirty="meta.dirty"
@@ -117,7 +153,36 @@ const onSubmit = handleSubmit(async (values) => {
 </template>
 
 <style lang="scss" scoped>
-.squadron-ranks-form__hint {
+.squadron-ranks__hint {
   color: var(--color-text-dim);
+}
+
+.squadron-ranks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.squadron-rank-rights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.squadron-rank-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  opacity: 0.5;
+
+  &.active {
+    opacity: 1;
+  }
+
+  i {
+    width: 16px;
+    text-align: center;
+  }
 }
 </style>

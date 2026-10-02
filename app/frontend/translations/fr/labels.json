@@ -597,13 +597,12 @@
           "availableMembers": "membres disponibles",
           "selectedMembers": "%{count} sélectionnés",
           "rank": "Grade",
-          "ranks": "Grades d'escadron",
           "ranksHint": "Les noms utilisés par chaque escadron de cette flotte. Un grade renommé garde sa place et ses droits.",
-          "rankSlots": {
-            "leader": "Un par escadron. Ajoute et retire des membres, et fixe leurs grades.",
-            "co_leader": "Un par escadron. Ajoute et retire des membres, et fixe les grades inférieurs au sien.",
-            "officer": "Nombre illimité. Ajoute et retire les membres de grade inférieur.",
-            "member": "Chaque nouveau membre commence ici."
+          "rankName": "Nom",
+          "rankRights": {
+            "singleHolder": "Un par escadron",
+            "managesMembers": "Ajoute et retire les membres de grade inférieur",
+            "managesRanks": "Fixe les grades inférieurs au sien"
           }
         },
         "roles": {

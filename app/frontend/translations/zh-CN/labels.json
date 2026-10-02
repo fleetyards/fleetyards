@@ -597,13 +597,12 @@
           "availableMembers": "可添加的成员",
           "selectedMembers": "已选择 %{count} 位",
           "rank": "职级",
-          "ranks": "中队职级",
           "ranksHint": "本舰队所有中队使用的名称。重命名职级不会改变其位置和权限。",
-          "rankSlots": {
-            "leader": "每个中队一名。可添加和移除成员，并设置他们的职级。",
-            "co_leader": "每个中队一名。可添加和移除成员，并设置低于自己的职级。",
-            "officer": "人数不限。可添加和移除职级低于自己的成员。",
-            "member": "所有新成员从这里开始。"
+          "rankName": "名称",
+          "rankRights": {
+            "singleHolder": "每个中队一名",
+            "managesMembers": "可添加和移除职级低于自己的成员",
+            "managesRanks": "可设置低于自己的职级"
           }
         },
         "roles": {
