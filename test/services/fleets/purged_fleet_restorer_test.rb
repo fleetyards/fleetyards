@@ -45,6 +45,7 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
   test "brings back what the fleet called its squadron ranks" do
     fleet = create(:fleet, name: "Rank Fleet", fid: "RANKFLEET")
     fleet.fleet_squadron_roles.find_by!(key: "leader").update!(name: "Wing Commander")
+    fleet.fleet_squadron_roles.find_by!(key: "officer").make_default!
     fleet_id = fleet.id
 
     Fleet.find(fleet_id).destroy!
@@ -53,6 +54,7 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
 
     assert_equal "Wing Commander", restored.fleet_squadron_roles.find_by!(key: "leader").name
     assert_equal "Member", restored.fleet_squadron_roles.find_by!(key: "member").name
+    assert_equal %w[officer], restored.fleet_squadron_roles.where(default_rank: true).pluck(:key)
   end
 
   test "preserves discarded memberships instead of reactivating ex-members" do

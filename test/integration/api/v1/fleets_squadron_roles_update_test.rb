@@ -94,4 +94,24 @@ class Api::V1::FleetsSquadronRolesUpdateTest < ActionDispatch::IntegrationTest
   test "PUT squadron role returns 401 when not signed in" do
     assert_api_response :put, 401, path_params: path_params, body: {name: "Wing Commander"}
   end
+
+  test "PUT squadron role makes the rank the default for new members" do
+    officer = @fleet.fleet_squadron_roles.find_by!(key: "officer")
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: path_params(officer.id), body: {defaultRank: true} do
+      assert parsed_body["defaultRank"]
+    end
+
+    assert_equal %w[officer], @fleet.fleet_squadron_roles.where(default_rank: true).pluck(:key)
+  end
+
+  test "PUT squadron role refuses to make a leadership rank the default" do
+    sign_in @admin
+
+    assert_api_response :put, 400, path_params: path_params, body: {defaultRank: true, name: "Wing Commander"}
+
+    assert_equal "Squadron Leader", @leader.reload.name
+    assert_equal %w[member], @fleet.fleet_squadron_roles.where(default_rank: true).pluck(:key)
+  end
 end

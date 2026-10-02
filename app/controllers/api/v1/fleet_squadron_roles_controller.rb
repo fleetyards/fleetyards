@@ -28,11 +28,27 @@ module Api
 
         @fleet_squadron_role = @fleet.fleet_squadron_roles.find(params[:id])
 
-        if @fleet_squadron_role.update(fleet_squadron_role_params)
+        saved = FleetSquadronRole.transaction do
+          @fleet_squadron_role.update(fleet_squadron_role_params) &&
+            (!make_default? || make_default!)
+        end
+
+        if saved
           render :show
         else
           render json: ValidationError.new("fleet_squadron_roles.update", errors: @fleet_squadron_role.errors), status: :bad_request
         end
+      end
+
+      private def make_default?
+        ActiveModel::Type::Boolean.new.cast(params[:defaultRank] || params[:default_rank])
+      end
+
+      private def make_default!
+        @fleet_squadron_role.make_default!
+        true
+      rescue ActiveRecord::RecordInvalid
+        raise ActiveRecord::Rollback
       end
 
       private def set_fleet

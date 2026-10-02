@@ -4,17 +4,19 @@
 #
 # Table name: fleet_squadron_roles
 #
-#  id         :uuid             not null, primary key
-#  key        :string           not null
-#  name       :string           not null
-#  position   :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  fleet_id   :uuid             not null
+#  id           :uuid             not null, primary key
+#  default_rank :boolean          default(FALSE), not null
+#  key          :string           not null
+#  name         :string           not null
+#  position     :integer          not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  fleet_id     :uuid             not null
 #
 # Indexes
 #
-#  index_fleet_squadron_roles_on_fleet_id_and_key  (fleet_id,key) UNIQUE
+#  index_fleet_squadron_roles_on_fleet_id_and_key       (fleet_id,key) UNIQUE
+#  index_fleet_squadron_roles_on_one_default_per_fleet  (fleet_id) UNIQUE WHERE default_rank
 #
 # Foreign Keys
 #
@@ -46,31 +48,62 @@ class FleetSquadronRole < ApplicationRecord
 
   RANKS_MANAGER_KEYS = %w[leader co_leader].freeze
 
-  DEFAULT_KEY = "member"
+  # The leadership a squadron cannot do without. A new member never starts
+  # there -- each holds one person -- so neither can be the default.
+  PERMANENT_KEYS = %w[leader co_leader].freeze
+
+  SEEDED_DEFAULT_KEY = "member"
 
   validates :key, inclusion: {in: KEYS}, uniqueness: {scope: :fleet_id}
 
   validates :name, presence: true, length: {maximum: 255}
 
+  validate :permanent_rank_is_never_the_default
+  validate :default_is_handed_over_not_dropped
+
   attr_readonly :key, :position
+
+  attr_accessor :handing_over_default
 
   def self.setup_defaults!(fleet)
     KEYS.each_with_index do |key, position|
       fleet.fleet_squadron_roles.find_or_create_by!(key:) do |role|
         role.name = DEFAULT_NAMES.fetch(key)
         role.position = position
+        role.default_rank = key == SEEDED_DEFAULT_KEY
       end
     end
   end
 
-  # A fleet created before the ranks existed -- or by a release still running
-  # while they were migrated in -- has none. Seeding on the miss keeps such a
-  # fleet from refusing every new squadron member.
+  # The rank a new squadron member starts on. A fleet created before the
+  # ranks existed -- or by a release still running while they were migrated
+  # in -- has none, and seeding on the miss keeps such a fleet from refusing
+  # every new squadron member.
   def self.default_for(fleet)
-    fleet.fleet_squadron_roles.find_by(key: DEFAULT_KEY) || begin
+    fleet.fleet_squadron_roles.find_by(default_rank: true) || begin
       setup_defaults!(fleet)
-      fleet.fleet_squadron_roles.find_by!(key: DEFAULT_KEY)
+      fleet.fleet_squadron_roles.find_by!(default_rank: true)
     end
+  end
+
+  # There is always exactly one default, so it moves rather than being set and
+  # cleared: the old one gives it up in the same transaction, before the
+  # partial unique index sees two.
+  def make_default!
+    return if default_rank?
+
+    transaction do
+      fleet.fleet_squadron_roles.lock.where(default_rank: true).where.not(id:).find_each do |previous|
+        previous.handing_over_default = true
+        previous.update!(default_rank: false)
+      end
+
+      update!(default_rank: true)
+    end
+  end
+
+  def permanent?
+    PERMANENT_KEYS.include?(key)
   end
 
   def single_holder?
@@ -87,5 +120,18 @@ class FleetSquadronRole < ApplicationRecord
 
   def leader?
     key == "leader"
+  end
+
+  private def permanent_rank_is_never_the_default
+    return unless default_rank? && permanent?
+
+    errors.add(:default_rank, :permanent)
+  end
+
+  private def default_is_handed_over_not_dropped
+    return unless persisted? && will_save_change_to_default_rank?(from: true, to: false)
+    return if handing_over_default
+
+    errors.add(:default_rank, :required)
   end
 end

@@ -440,6 +440,11 @@ zh-TW:
             fleet_squadron_role:
               not_in_fleet: "必須是本艦隊的中隊職級之一"
               single_holder_taken: "已由本中隊的其他成員擔任——每個中隊只能有一名%{role}"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "不能是領導職級——新成員不會以隊長或副隊長身分開始"
+              required: "是必需的——請改為將其他職級設為預設"
         fleet_role:
           attributes:
             base:

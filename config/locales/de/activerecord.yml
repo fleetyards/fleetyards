@@ -440,6 +440,11 @@ de:
             fleet_squadron_role:
               not_in_fleet: "muss einer der Staffelränge dieser Flotte sein"
               single_holder_taken: "ist in dieser Staffel bereits vergeben – es gibt nur einen %{role} pro Staffel"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "kann kein Führungsrang sein – neue Mitglieder beginnen nie als Leiter oder Co-Leiter"
+              required: "wird benötigt – mache stattdessen einen anderen Rang zum Standard"
         fleet_role:
           attributes:
             base:

@@ -16,18 +16,21 @@ class CreateFleetSquadronRoles < ActiveRecord::Migration[8.1]
       t.string :key, null: false
       t.string :name, null: false
       t.integer :position, null: false
+      t.boolean :default_rank, null: false, default: false
       t.timestamps
     end
 
     add_index :fleet_squadron_roles, [:fleet_id, :key], unique: true
+    add_index :fleet_squadron_roles, :fleet_id, unique: true, where: "default_rank",
+      name: "index_fleet_squadron_roles_on_one_default_per_fleet"
 
     add_reference :fleet_squadron_memberships, :fleet_squadron_role, type: :uuid, foreign_key: true
 
     values = DEFAULTS.map { |key, name, position| "(#{quote(key)}, #{quote(name)}, #{position})" }.join(", ")
 
     execute <<~SQL.squish
-      INSERT INTO fleet_squadron_roles (fleet_id, key, name, position, created_at, updated_at)
-      SELECT fleets.id, defaults.key, defaults.name, defaults.position, NOW(), NOW()
+      INSERT INTO fleet_squadron_roles (fleet_id, key, name, position, default_rank, created_at, updated_at)
+      SELECT fleets.id, defaults.key, defaults.name, defaults.position, defaults.key = 'member', NOW(), NOW()
       FROM fleets CROSS JOIN (VALUES #{values}) AS defaults (key, name, position)
     SQL
 

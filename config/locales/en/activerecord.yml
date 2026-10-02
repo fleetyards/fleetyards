@@ -471,6 +471,11 @@ en:
             fleet_squadron_role:
               not_in_fleet: "must be one of this fleet's squadron ranks"
               single_holder_taken: "is already held by another member of this squadron — there is one %{role} per squadron"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "cannot be a leadership rank — a new member never starts as Leader or Co-Leader"
+              required: "is needed — make another rank the default instead"
         fleet_role:
           attributes:
             base:

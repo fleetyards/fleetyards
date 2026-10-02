@@ -440,6 +440,11 @@ es:
             fleet_squadron_role:
               not_in_fleet: "debe ser uno de los rangos de escuadrón de esta flota"
               single_holder_taken: "ya lo tiene otro miembro de este escuadrón: hay un solo %{role} por escuadrón"
+        fleet_squadron_role:
+          attributes:
+            default_rank:
+              permanent: "no puede ser un rango de mando: un miembro nuevo nunca empieza como Líder o Colíder"
+              required: "es necesario: haz predeterminado otro rango en su lugar"
         fleet_role:
           attributes:
             base:

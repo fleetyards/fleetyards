@@ -1059,9 +1059,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_120000) do
     t.string "key", null: false
     t.string "name", null: false
     t.integer "position", null: false
+    t.boolean "default_rank", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fleet_id", "key"], name: "index_fleet_squadron_roles_on_fleet_id_and_key", unique: true
+    t.index ["fleet_id"], name: "index_fleet_squadron_roles_on_one_default_per_fleet", unique: true, where: "default_rank"
   end
 
   create_table "fleet_squadrons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

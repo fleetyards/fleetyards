@@ -44,7 +44,7 @@ module Fleets
         fleet.save!(validate: false)
 
         role_map = restore_roles(fleet)
-        restore_squadron_role_names(fleet)
+        restore_squadron_ranks(fleet)
         restore_memberships(fleet, role_map)
         inventory_map = restore_inventories(fleet)
         restore_inventory_items(inventory_map)
@@ -87,11 +87,15 @@ module Fleets
     end
 
     # The four squadron ranks are reseeded on fleet save; what the fleet called
-    # them is the part worth bringing back.
-    def restore_squadron_role_names(fleet)
+    # them, and which one new members start on, is the part worth bringing back.
+    def restore_squadron_ranks(fleet)
       child_destroy_versions("FleetSquadronRole", "fleet_id", fleet.id).find_each do |version|
         rank = version.reify
-        fleet.fleet_squadron_roles.find_by(key: rank.key)&.update!(name: rank.name)
+        restored = fleet.fleet_squadron_roles.find_by(key: rank.key)
+        next if restored.nil?
+
+        restored.update!(name: rank.name)
+        restored.make_default! if rank.default_rank
       end
     end
 

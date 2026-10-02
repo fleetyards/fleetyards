@@ -9,9 +9,11 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string}
+            name: {type: :string},
+            # Only ever true: the default moves to this rank. It cannot be
+            # cleared, because new members always need one to start on.
+            defaultRank: {type: :boolean, enum: [true]}
           },
-          required: %w[name],
           additionalProperties: false
         })
       end

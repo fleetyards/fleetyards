@@ -118,4 +118,12 @@ class FleetSquadronMembershipTest < ActiveSupport::TestCase
     assert_equal "member", row.fleet_squadron_role.key
     assert_equal 4, @fleet.fleet_squadron_roles.count
   end
+
+  test "starts a new member on whichever rank is the fleet's default" do
+    @fleet.fleet_squadron_roles.find_by!(key: "officer").make_default!
+
+    row = create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    assert_equal "officer", row.fleet_squadron_role.key
+  end
 end
