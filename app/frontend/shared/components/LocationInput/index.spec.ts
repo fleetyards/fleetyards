@@ -104,4 +104,33 @@ describe("LocationInput", () => {
 
     vi.useRealTimers();
   });
+
+  it("puts a place whose name starts with the text first", async () => {
+    vi.useFakeTimers();
+
+    vi.mocked(locations).mockImplementationOnce(
+      async () =>
+        ({
+          items: [
+            { id: "hub", name: "Lazarus Transport Hub", slug: "hub" },
+            { id: "tressler", name: "Port Tressler", slug: "tressler" },
+          ],
+        }) as never,
+    );
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "location", modelValue: "", locationId: null },
+      plugins: [await router()],
+    });
+
+    await wrapper.find("input").setValue("Port");
+    await vi.advanceTimersByTimeAsync(300);
+    await flushPromises();
+
+    expect(wrapper.find(".location-input__suggestion").text()).toContain(
+      "Port Tressler",
+    );
+
+    vi.useRealTimers();
+  });
 });

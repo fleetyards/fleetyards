@@ -72,14 +72,24 @@ const search = useDebounceFn(async (text: string) => {
     return;
   }
 
+  const query = text.trim();
+
+  // A wider page than is shown, so a name that starts with the text can be
+  // put first: "Port" means Port Tressler before a Transport Hub.
   const result = await fetchLocations({
-    perPage: "8",
-    q: { nameCont: text.trim() },
+    perPage: "30",
+    q: { nameCont: query },
   }).catch(() => undefined);
 
   if (request !== latestSearch) return;
 
-  suggestions.value = result?.items ?? [];
+  const lowered = query.toLowerCase();
+  const startsWith = (location: Location) =>
+    (location.name ?? "").toLowerCase().startsWith(lowered) ? 0 : 1;
+
+  suggestions.value = [...(result?.items ?? [])]
+    .sort((a, b) => startsWith(a) - startsWith(b))
+    .slice(0, 8);
   active.value = -1;
 }, 250);
 
@@ -219,7 +229,8 @@ const linkedLabel = computed(() =>
     margin: 0;
     padding: 4px 0;
     list-style: none;
-    background-color: var(--color-control, rgb(39 43 48 / 0.98));
+    // Solid, as a popover is: the fields behind it must not show through.
+    background-color: var(--color-gray-darker, #272b30);
     border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
     border-radius: 8px;
     box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
