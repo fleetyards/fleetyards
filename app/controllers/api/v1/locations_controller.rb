@@ -3,7 +3,7 @@
 module Api
   module V1
     class LocationsController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show]
+      skip_verify_authorized only: %i[index show tree contents]
 
       after_action -> { pagination_header(:locations) }, only: [:index]
 
@@ -30,6 +30,18 @@ module Api
 
         @ancestors = @location.ancestors.reverse
         @children_count = Location.current_version.where(parent_id: @location.id).count
+      end
+
+      def tree
+        @tree = ::Locations::Tree.new(find_location).call
+      end
+
+      def contents
+        @groups = ::Locations::Contents.new(find_location).call
+      end
+
+      private def find_location
+        Location.current_version.find_by!(slug: params[:slug].to_s.downcase)
       end
 
       private def current_version

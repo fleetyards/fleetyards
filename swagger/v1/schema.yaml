@@ -11201,6 +11201,60 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/contents":
+    get:
+      summary: Location contents
+      tags:
+      - Locations
+      operationId: locationContents
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationContents"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/locations/{slug}/tree":
+    get:
+      summary: Location system tree
+      tags:
+      - Locations
+      operationId: locationTree
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LocationTreeNode"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -28456,6 +28510,66 @@ components:
       - createdAt
       - updatedAt
       title: Location
+    LocationContents:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationContentsGroup"
+      additionalProperties: false
+      required:
+      - groups
+      title: LocationContents
+    LocationContentsEntry:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        count:
+          type: integer
+        shownOnStarmap:
+          type: boolean
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - name
+      - count
+      - shownOnStarmap
+      - location
+      title: LocationContentsEntry
+    LocationContentsGroup:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        count:
+          type: integer
+        entries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationContentsEntry"
+      additionalProperties: false
+      required:
+      - kind
+      - count
+      - entries
+      title: LocationContentsGroup
+    LocationKindCount:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - kind
+      - count
+      title: LocationKindCount
     LocationKindEnum:
       type: string
       enum:
@@ -28583,6 +28697,63 @@ components:
       - id
       - name
       title: LocationTerminal
+    LocationTreeBody:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        parentName:
+          type:
+          - string
+          - 'null'
+        shownOnStarmap:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - kind
+      - parentName
+      - shownOnStarmap
+      title: LocationTreeBody
+    LocationTreeNode:
+      type: object
+      properties:
+        location:
+          "$ref": "#/components/schemas/LocationTreeBody"
+        counts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationKindCount"
+        lagrangePoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        gateways:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        children:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationTreeNode"
+      additionalProperties: false
+      required:
+      - location
+      - counts
+      - lagrangePoints
+      - gateways
+      - children
+      title: LocationTreeNode
     Locations:
       type: object
       properties:
