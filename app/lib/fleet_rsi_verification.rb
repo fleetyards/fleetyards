@@ -44,10 +44,17 @@ class FleetRsiVerification
       status_for(Rsi::OrgPage.fetch(sid), sid:, token:)
     end
 
-    apply(status, sid:, token:)
+    applied = apply(status, sid:, token:)
+
+    # Straight away, so a fleet that has just verified need not wait for the
+    # daily sync to show up in the directory with its activities.
+    FleetRsiSyncJob.perform_async(fleet.id) if applied == :verified
+
+    applied
   end
 
   private def status_for(page, sid:, token:)
+    return :failed if page.status == :blocked
     return page.status unless page.status == :ok
     return :symbol_mismatch unless page.symbol == sid
     return :token_missing unless page.text.include?(token)

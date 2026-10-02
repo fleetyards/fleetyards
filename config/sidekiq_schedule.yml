@@ -148,3 +148,8 @@ rsi_organizations_refresh_job:
   class: 'RsiOrganizationsRefreshJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? %>
+fleet_rsi_refresh_job:
+  cron: '45 * * * *' # Hourly at :45, each run a 24th of the verified fleets
+  class: 'FleetRsiRefreshJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>

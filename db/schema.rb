@@ -1120,6 +1120,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_120000) do
     t.boolean "recruiting"
     t.boolean "roleplay"
     t.string "rsi_sid"
+    t.datetime "rsi_sync_attempted_at"
     t.datetime "rsi_synced_at"
     t.datetime "rsi_verification_checked_at"
     t.string "rsi_verification_status"

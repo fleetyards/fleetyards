@@ -11,6 +11,7 @@ class AddDirectoryFieldsToFleets < ActiveRecord::Migration[8.1]
     add_column :fleets, :roleplay, :boolean
     add_column :fleets, :recruiting, :boolean
     add_column :fleets, :rsi_synced_at, :datetime
+    add_column :fleets, :rsi_sync_attempted_at, :datetime
 
     add_index :fleet_memberships, :fleet_id,
       name: "index_fleet_memberships_on_fleet_id_accepted",

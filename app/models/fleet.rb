@@ -30,6 +30,7 @@
 #  recruiting                  :boolean
 #  roleplay                    :boolean
 #  rsi_sid                     :string
+#  rsi_sync_attempted_at       :datetime
 #  rsi_synced_at               :datetime
 #  rsi_verification_checked_at :datetime
 #  rsi_verification_status     :string
@@ -231,11 +232,12 @@ class Fleet < ApplicationRecord
   # goes private or drops below the floor has to leave without anyone touching
   # its `listed` choice. `listed` is nil until a manager picks, and nil follows
   # `public_fleet`, which this already requires.
+  scope :rsi_verified, -> { where.not(rsi_verified_at: nil).where("fleets.rsi_verified_sid = fleets.rsi_sid") }
+
   scope :directory, -> {
     kept
+      .rsi_verified
       .where(public_fleet: true)
-      .where.not(rsi_verified_at: nil)
-      .where("fleets.rsi_verified_sid = fleets.rsi_sid")
       .where(listed: [nil, true])
       .where(id: FleetMembership.kept.accepted
         .group(:fleet_id)

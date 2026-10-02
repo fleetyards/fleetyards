@@ -28,6 +28,7 @@
 #  recruiting                  :boolean
 #  roleplay                    :boolean
 #  rsi_sid                     :string
+#  rsi_sync_attempted_at       :datetime
 #  rsi_synced_at               :datetime
 #  rsi_verification_checked_at :datetime
 #  rsi_verification_status     :string
