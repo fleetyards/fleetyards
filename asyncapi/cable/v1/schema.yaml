@@ -2275,6 +2275,8 @@ components:
           type: boolean
         manageSquadrons:
           type: boolean
+        enableSquadrons:
+          type: boolean
         readInvites:
           type: boolean
         createInvites:
@@ -2321,6 +2323,7 @@ components:
       - destroySquadrons
       - manageSquadronMembers
       - manageSquadrons
+      - enableSquadrons
       - readInvites
       - createInvites
       - destroyInvites
@@ -2573,12 +2576,21 @@ components:
           type: string
         position:
           type: integer
+        singleHolder:
+          type: boolean
+        managesMembers:
+          type: boolean
+        managesRanks:
+          type: boolean
       additionalProperties: false
       required:
       - id
       - key
       - name
       - position
+      - singleHolder
+      - managesMembers
+      - managesRanks
     FleetSquadronRoleKeyEnum:
       type: string
       enum:
