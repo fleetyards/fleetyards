@@ -87,12 +87,42 @@ const isStar = computed(() => location.value?.kind === "star");
 const [color, colorProps] = defineField("color");
 const [image, imageProps] = defineField("image");
 
-// The colour as it is typed, so the preview shows what the strip will draw.
+// The colour as it is typed, so the preview shows what the strip will draw --
+// and with none typed, what the page draws anyway: a star's class colour.
 const preview = computed(() => ({
   kind: location.value?.kind,
   bodyType: location.value?.bodyType,
-  color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "") ? values.color : null,
+  color: /^#[0-9a-fA-F]{6}$/.test(values.color ?? "")
+    ? values.color
+    : (location.value?.drawnColor ?? null),
 }));
+
+// The picture just uploaded, shown before it is saved: the saved one is what
+// `location.image` still holds.
+const pendingImageUrl = ref<string>();
+
+const releasePendingImage = () => {
+  if (pendingImageUrl.value) URL.revokeObjectURL(pendingImageUrl.value);
+  pendingImageUrl.value = undefined;
+};
+
+const onImageUploaded = (file: File) => {
+  releasePendingImage();
+  pendingImageUrl.value = URL.createObjectURL(file);
+};
+
+watch(image, (value) => {
+  if (value === null || value === undefined) releasePendingImage();
+});
+
+onBeforeUnmount(releasePendingImage);
+
+const headerPreview = computed(() => {
+  if (pendingImageUrl.value) return pendingImageUrl.value;
+  if (image.value === null || !location.value?.image) return undefined;
+
+  return location.value.image.largeUrl ?? location.value.image.url;
+});
 
 const submitting = ref(false);
 
@@ -171,6 +201,7 @@ const handleCancel = async () => {
               name="image"
               :allowed-types="AllowedFileTypes.IMAGE"
               clearable
+              @uploaded="onImageUploaded"
             />
             <FormInput
               v-if="isBody || isStar"
@@ -197,8 +228,8 @@ const handleCancel = async () => {
               aria-hidden="true"
             />
             <img
-              v-if="location.image && image !== null"
-              :src="location.image.largeUrl ?? location.image.url"
+              v-if="headerPreview"
+              :src="headerPreview"
               alt=""
               class="admin-location-edit__header"
               data-test="location-header-preview"
