@@ -29,7 +29,7 @@ module V1
             alliesFleetMembers: {type: :boolean},
             squadronsEnabled: {type: :boolean},
             defaultTimezone: {type: :string},
-            # Null until a manager picks; null follows publicFleet.
+            # Absent until a manager picks, and then it follows publicFleet.
             listed: {type: [:boolean, :null]},
             listedInDirectory: {type: :boolean},
             alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
@@ -55,7 +55,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled listed listedInDirectory alignment primaryActivity secondaryActivity commitment language roleplay recruiting rsiSyncedAt features subscribed createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled listedInDirectory features subscribed createdAt updatedAt]
         })
       end
     end

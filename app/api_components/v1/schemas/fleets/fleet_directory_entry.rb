@@ -30,7 +30,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid slug name rsiSid memberCount alignment primaryActivity secondaryActivity commitment language roleplay recruiting defaultTimezone createdAt updatedAt]
+          required: %w[id fid slug name rsiSid memberCount defaultTimezone createdAt updatedAt]
         })
       end
     end
