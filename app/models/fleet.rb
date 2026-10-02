@@ -435,10 +435,15 @@ class Fleet < ApplicationRecord
   # The role a new member gets. A fleet created while the flag was migrated in
   # may have none marked, and gets what new members always got before it.
   def default_member_role
-    fleet_roles.find_by(new_member_default: true) || fleet_roles.ranked.last || begin
-      setup_default_roles!
-      fleet_roles.reload.find_by(new_member_default: true)
-    end
+    marked = fleet_roles.find_by(new_member_default: true)
+    return marked if marked
+
+    # Never the permanent Admin role, whatever sorts last.
+    fallback = fleet_roles.ranked.where(permanent: [false, nil]).last
+    return fallback if fallback
+
+    setup_default_roles!
+    fleet_roles.reload.find_by(new_member_default: true)
   end
 
   def setup_admin_user

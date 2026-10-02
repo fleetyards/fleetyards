@@ -171,6 +171,19 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/members shows a renamed role on a cached roster" do
+    sign_in @admin
+
+    with_fragment_caching do
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+      @fleet.fleet_roles.find_by!(slug: "member").update!(name: "Recruit")
+      get "/api/v1/fleets/#{@fleet.slug}/members"
+    end
+
+    roles = JSON.parse(response.body)["items"].to_h { |item| [item["username"], item.dig("fleetRole", "name")] }
+    assert_equal "Recruit", roles.fetch(@member.username)
+  end
+
   test "GET /fleets/:slug/members searches by nickname" do
     @fleet.fleet_memberships.find_by(user: @member).update!(nickname: "Wingman Zed")
     sign_in @admin

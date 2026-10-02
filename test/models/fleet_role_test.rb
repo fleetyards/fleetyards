@@ -127,4 +127,11 @@ class FleetRoleTest < ActiveSupport::TestCase
 
     assert_equal @member_role, @fleet.reload.default_member_role
   end
+
+  test "the fallback never hands a new member the Admin role" do
+    FleetRole.where(fleet: @fleet).update_all(new_member_default: false)
+    FleetRole.where(fleet: @fleet).where.not(permanent: true).update_all(rank: nil)
+
+    assert_not @fleet.reload.default_member_role&.permanent?
+  end
 end
