@@ -52,7 +52,7 @@ module Catalogue
       when "ship" then ::Model.visible.active
       when "blueprint" then ::Blueprint.with_facts(true)
       when "mission" then ::GameMission.with_facts(true).named
-      when "location" then ::Location.with_facts(true)
+      when "location" then ::Location.listed.with_facts(true)
       end
     end
 

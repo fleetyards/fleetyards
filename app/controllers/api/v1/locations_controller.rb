@@ -11,7 +11,7 @@ module Api
         normalize_sort_params(locations_query_params)
         locations_query_params["sorts"] = sorting_params(Location, locations_query_params["sorts"])
 
-        @q = Location.current_version(current_version)
+        @q = Location.listed.current_version(current_version)
           .with_facts(current_version)
           .includes({parent: [:parent, :build, :last_build]}, :build, :last_build)
           .ransack(locations_query_params)
@@ -24,7 +24,7 @@ module Api
       # The children are not here: the Nyx star has 464 of them. The list
       # answers them, filtered on `parentIdEq`.
       def show
-        @location = Location.current_version(current_version)
+        @location = Location.listed.current_version(current_version)
           .includes({map_parent: [:parent, :build, :last_build]}, {parent: [:parent, :build, :last_build]}, :terminals, :build, :last_build)
           .find_by!(slug: params[:slug].to_s.downcase)
 
@@ -56,7 +56,7 @@ module Api
       end
 
       private def find_location
-        Location.current_version.find_by!(slug: params[:slug].to_s.downcase)
+        Location.listed.current_version.find_by!(slug: params[:slug].to_s.downcase)
       end
 
       private def current_version

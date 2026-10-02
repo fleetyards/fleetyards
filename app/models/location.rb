@@ -79,6 +79,18 @@ class Location < ApplicationRecord
     -> { for_source.order(created_at: :desc) },
     class_name: "LocationBuild", inverse_of: :location
 
+  # Systems kept off the public pages for now, with everything in them. Ellis
+  # is one planet in the export and nothing to visit yet.
+  HIDDEN_SYSTEMS = %w[EllisSolarSystem].freeze
+
+  scope :listed, -> {
+    where(
+      "locations.sc_key NOT IN (:hidden) AND (locations.system_id IS NULL OR " \
+      "locations.system_id NOT IN (SELECT id FROM locations WHERE sc_key IN (:hidden)))",
+      hidden: HIDDEN_SYSTEMS
+    )
+  }
+
   scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
     if ActiveModel::Type::Boolean.new.cast(flag)
       where(id: LocationBuild.current(served_source(source)).select(:location_id))

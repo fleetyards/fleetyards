@@ -58,4 +58,17 @@ class Api::V1::LocationsTest < ActionDispatch::IntegrationTest
       assert_nil parsed_body["items"].first["parent"]
     end
   end
+
+  test "GET /locations leaves out a hidden system and what is in it" do
+    ellis = create(:location, name: "Ellis System", kind: "system", sc_key: "EllisSolarSystem")
+    create(:location, name: "Green", kind: "planet", parent: @star, system: ellis)
+
+    assert_api_response :get, 200 do
+      names = parsed_body["items"].pluck("name")
+
+      assert_not_includes names, "Ellis System"
+      assert_not_includes names, "Green"
+      assert_includes names, "Hurston"
+    end
+  end
 end
