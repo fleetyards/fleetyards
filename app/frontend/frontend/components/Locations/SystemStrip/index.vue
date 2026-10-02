@@ -108,7 +108,7 @@ const litBody = computed(() =>
       </li>
     </ol>
 
-    <div v-if="!compact && gateways.length" class="location-strip__gateways">
+    <div v-if="gateways.length" class="location-strip__gateways">
       <span class="location-strip__caption">
         {{ t("labels.location.gateways") }}
       </span>

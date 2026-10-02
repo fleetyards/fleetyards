@@ -88,7 +88,7 @@ describe("LocationSystemStrip", () => {
     expect(wrapper.text()).toContain("Pyro Gateway");
   });
 
-  it("lights the path and lists the lit body's moons and cities when compact", async () => {
+  it("lights the path, lists the lit body's moons and cities and keeps the jump points when compact", async () => {
     const wrapper = await mount({
       compact: true,
       path: ["nyx-system", "nyx", "delamar", "levski"],
@@ -98,6 +98,6 @@ describe("LocationSystemStrip", () => {
       "Delamar",
     );
     expect(wrapper.find(".location-strip__moon--lit").text()).toBe("Levski");
-    expect(wrapper.text()).not.toContain("Pyro Gateway");
+    expect(wrapper.text()).toContain("Pyro Gateway");
   });
 });
