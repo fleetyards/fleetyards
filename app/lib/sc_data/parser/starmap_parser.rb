@@ -332,10 +332,20 @@ module ScData
           next unless star&.dig(:kind) == "star"
 
           body = places[place[:key][/_([A-Za-z]+\d+[a-z]?)\z/, 1]]
-          body = nil unless body && body[:parent] == star[:key] && %w[planet moon].include?(body[:kind])
+          body = nil unless body && orbits?(places, body, star)
           body ||= places[place[:key][/\A(.+\d)[a-z]\z/, 1]]&.then { |base| base if base[:parent] == star[:key] }
 
           place[:parent] = body[:key] if body
+        end
+      end
+
+      # A planet of this star, or a moon of one of its planets: by then moons
+      # already sit under their planet, so a moon is never the star's child.
+      private def orbits?(places, body, star)
+        case body[:kind]
+        when "planet" then body[:parent] == star[:key]
+        when "moon" then places[body[:parent]]&.dig(:parent) == star[:key]
+        else false
         end
       end
 

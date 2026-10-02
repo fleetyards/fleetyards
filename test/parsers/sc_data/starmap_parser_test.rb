@@ -176,6 +176,14 @@ module ScData
         assert_equal "Dungeon_Executive_001", location("Dungeon_Executive_001a")[:parent_key]
       end
 
+      test "#locations puts a place keyed after a moon under that moon" do
+        stanton
+        place("Stanton1b", "Aberdeen", type: "Moon", parent: "Stanton1")
+        place("Mine_Stanton1b", "Klescher Rehabilitation Facility", type: "Manmade", parent: "StantonStar")
+
+        assert_equal "Stanton1b", location("Mine_Stanton1b")[:parent_key]
+      end
+
       test "#locations matches a rest stop coded by its planet's initial and number" do
         place("PyroSolarSystem", "Pyro System", type: "SolarSystem", parent: nil)
         place("PyroStar", "Pyro", type: "Star", parent: nil)
