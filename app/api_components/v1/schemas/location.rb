@@ -32,6 +32,7 @@ module V1
           # Detail responses only.
           description: {type: [:string, :null]},
           color: {type: [:string, :null]},
+          unstable: {type: :boolean},
           image: ::Shared::V1::Schemas::MediaFile,
           resources: {type: :array, items: ::V1::Schemas::LocationResourceGroup},
           ancestors: {type: :array, items: ::Shared::V1::Schemas::LocationLink},

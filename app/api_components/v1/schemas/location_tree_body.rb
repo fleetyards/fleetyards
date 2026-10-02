@@ -15,6 +15,8 @@ module V1
           parentName: {type: [:string, :null]},
           shownOnStarmap: {type: :boolean},
           color: {type: [:string, :null]},
+          # A star the game describes as a flare star, as it does Pyro's.
+          unstable: {type: :boolean},
           image: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false,

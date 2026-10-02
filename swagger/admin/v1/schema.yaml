@@ -16827,6 +16827,8 @@ components:
           type:
           - string
           - 'null'
+        unstable:
+          type: boolean
         image:
           "$ref": "#/components/schemas/MediaFile"
         mapParent:

@@ -67,6 +67,20 @@ class Api::V1::LocationsTreeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /locations/{slug}/tree marks a flare star as unstable" do
+    flare = "A K-type main sequence flare star."
+    @star.update!(description: flare)
+    @star.builds.update_all(description: flare)
+
+    assert_api_response :get, 200, params: {slug: @system.slug} do
+      star = parsed_body["children"].find { |node| node.dig("location", "kind") == "star" }
+      planet = star["children"].first
+
+      assert star.dig("location", "unstable")
+      refute planet.dig("location", "unstable")
+    end
+  end
+
   test "GET /locations/{slug}/tree answers 404 for an unknown place" do
     assert_api_response :get, 404, params: {slug: "port-olisar"}
   end

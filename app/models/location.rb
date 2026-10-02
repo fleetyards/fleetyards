@@ -198,6 +198,12 @@ class Location < ApplicationRecord
   # Off the row's own column rather than `name`: that reads through to the
   # build, which a load writes after the row, so a rename would reach the slug
   # one load late.
+  # The game names Pyro's star a "K-type main sequence flare star", and that is
+  # all it says about one being unstable.
+  def flare_star?
+    kind == "star" && description.to_s.match?(/\bflare star\b/i)
+  end
+
   private def update_slugs
     own_name = self[:name]
     base = self.class.slug_for(own_name)
