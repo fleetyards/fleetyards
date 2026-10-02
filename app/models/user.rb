@@ -1038,15 +1038,20 @@ class User < ApplicationRecord
     fleet_memberships.reload if memberships_to_delete.any? || fleets_to_destroy.any?
   end
 
-  # Members who typed a system we carry -- "Stanton", "nyx" -- linked to it,
-  # their own text kept. A place inside the system is theirs to pick.
+  # Members whose text names a system we carry and nothing more -- "Stanton",
+  # "nyx", "Pyro System" -- linked to it, their own text kept. "Stanton -
+  # Lorville" says more than the system, so it stays theirs to pick.
   def self.link_typed_systems
-    systems = Location.listed.current_version.where(kind: "system").pluck(:id, :name)
-      .to_h { |id, name| [name.to_s.delete_suffix(" System").upcase, id] }
+    systems = Location.listed.current_version.where(kind: "system").pluck(:id, :name).each_with_object({}) do |(id, name), names|
+      [name, name.to_s.delete_suffix(" System")].each { |variant| names[variant.to_s.strip.downcase] = id }
+    end
     return 0 if systems.empty?
 
-    where(current_location_id: nil).where(current_system_code: systems.keys).find_each.sum do |user|
-      user.update_columns(current_location_id: systems.fetch(user.current_system_code), updated_at: Time.current)
+    where(current_location_id: nil).where.not(current_system: [nil, ""]).find_each.sum do |user|
+      location_id = systems[user.current_system.strip.downcase]
+      next 0 unless location_id
+
+      user.update_columns(current_location_id: location_id, updated_at: Time.current)
       1
     end
   end

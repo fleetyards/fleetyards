@@ -869,8 +869,11 @@ class UserCurrentLocationTest < ActiveSupport::TestCase
     typed.update!(current_system: "stanton ")
     elsewhere = create(:user)
     elsewhere.update!(current_system: "Castra")
+    specific = create(:user)
+    specific.update!(current_system: "Stanton - Lorville")
 
     assert_equal 1, User.link_typed_systems
+    assert_nil specific.reload.current_location_id
     assert_equal [stanton.id, "stanton "], typed.reload.values_at(:current_location_id, :current_system)
     assert_nil elsewhere.reload.current_location_id
   end
