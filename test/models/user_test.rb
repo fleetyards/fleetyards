@@ -850,6 +850,19 @@ class UserCurrentLocationTest < ActiveSupport::TestCase
     assert_equal "NYX", user.current_system_code
   end
 
+  test "a load that moves a linked place moves the member's system with it" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    outpost = create(:location, name: "Outpost 54", kind: "outpost", system: stanton)
+    user = create(:user)
+    user.update!(current_location_id: outpost.id)
+
+    outpost.update!(system: nyx)
+
+    assert_equal 1, User.refresh_linked_system_codes
+    assert_equal "NYX", user.reload.current_system_code
+  end
+
   test "text without a link still matches a system by name" do
     user = create(:user)
 

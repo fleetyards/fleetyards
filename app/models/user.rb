@@ -1038,25 +1038,36 @@ class User < ApplicationRecord
     fleet_memberships.reload if memberships_to_delete.any? || fleets_to_destroy.any?
   end
 
-  private def match_current_system
-    if current_system.blank?
-      self.current_system_code = nil
-      return
+  # Every member linked to a place, set to the system that place is in now: a
+  # load can move a place to another system without touching its users.
+  def self.refresh_linked_system_codes
+    where.not(current_location_id: nil).includes(current_location: :system).find_each.sum do |user|
+      code = user.derived_current_system_code
+      next 0 if code == user.current_system_code
+
+      user.update_columns(current_system_code: code, updated_at: Time.current)
+      1
     end
+  end
+
+  def derived_current_system_code
+    return if current_system.blank?
 
     # A linked place answers for itself: Lorville is in Stanton, whatever the
     # text says.
     linked_system = (current_location&.kind == "system") ? current_location : current_location&.system
     input = (linked_system&.name&.delete_suffix(" System") || current_system).strip.downcase
 
-    match = STAR_SYSTEMS.find do |code, name|
+    STAR_SYSTEMS.find do |code, name|
       input == code.downcase ||
         input == name.downcase ||
         name.downcase.include?(input) ||
         input.include?(name.downcase)
-    end
+    end&.first
+  end
 
-    self.current_system_code = match&.first
+  private def match_current_system
+    self.current_system_code = derived_current_system_code
   end
 
   private def clear_coordinates

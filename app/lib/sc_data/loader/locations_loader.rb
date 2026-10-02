@@ -21,6 +21,7 @@ module ScData
         ::Uex::ShopLocationMatcher.relink
 
         ::ScData::Loader::LocationAppearances.new.apply
+        ::User.refresh_linked_system_codes
       end
 
       def one(item)
