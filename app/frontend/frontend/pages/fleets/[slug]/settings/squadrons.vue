@@ -37,6 +37,10 @@ const canEnable = computed(
   () => props.membership?.capabilities?.enableSquadrons ?? false,
 );
 
+const canReadRanks = computed(
+  () => props.membership?.capabilities?.readSquadrons ?? false,
+);
+
 const canRename = computed(
   () => props.membership?.capabilities?.manageSquadrons ?? false,
 );
@@ -44,6 +48,10 @@ const canRename = computed(
 const squadronsEnabled = computed(() => props.fleet.squadronsEnabled);
 
 const switching = ref(false);
+
+// FormToggle keeps its own checked state, so a failed save remounts it from
+// the setting the fleet still has.
+const toggleKey = ref(0);
 const updateMutation = useUpdateFleet();
 
 // Saved on the switch itself: it is one setting, and a save button for it
@@ -61,6 +69,7 @@ const onToggle = async (value: boolean) => {
       comlink.emit("fleet-update");
     })
     .catch(() => {
+      toggleKey.value += 1;
       displayAlert({ text: t("messages.fleet.update.failure") });
     })
     .finally(() => {
@@ -68,9 +77,15 @@ const onToggle = async (value: boolean) => {
     });
 };
 
-// The ranks endpoint answers only while squadrons are switched on.
+// The ranks endpoint answers only while squadrons are switched on, and only
+// to a role that reads squadrons -- `fleet:update` alone reaches this page
+// for the switch.
+const ranksVisible = computed(
+  () => squadronsEnabled.value && canReadRanks.value,
+);
+
 const { data: ranks, isLoading } = useFleetSquadronRoles(fleetSlug, {
-  query: { enabled: squadronsEnabled },
+  query: { enabled: ranksVisible },
 });
 </script>
 
@@ -78,6 +93,7 @@ const { data: ranks, isLoading } = useFleetSquadronRoles(fleetSlug, {
   <div class="row">
     <div class="col-12 col-md-6">
       <FormToggle
+        :key="toggleKey"
         :model-value="squadronsEnabled"
         name="squadronsEnabled"
         translation-key="fleet.squadronsEnabled"
@@ -88,7 +104,7 @@ const { data: ranks, isLoading } = useFleetSquadronRoles(fleetSlug, {
     </div>
   </div>
 
-  <template v-if="squadronsEnabled">
+  <template v-if="ranksVisible">
     <Heading :level="HeadingLevelEnum.H2" mt>
       {{ t("headlines.fleets.squadrons.ranks") }}
     </Heading>

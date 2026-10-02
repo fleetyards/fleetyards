@@ -76,9 +76,32 @@ describe("FleetSettingsSquadronsPage", () => {
   });
 
   it("disables the switch for a reader who may not change the fleet", async () => {
-    const subject = await mount(true, { manageSquadrons: true });
+    const subject = await mount(true, {
+      manageSquadrons: true,
+      readSquadrons: true,
+    });
 
     expect(toggleInput(subject).attributes("disabled")).toBeDefined();
     expect(rolesQueryEnabled.value).toBe(true);
+  });
+
+  // `fleet:update` reaches the page for the switch, but the ranks endpoint
+  // answers only a role that reads squadrons.
+  it("asks for no ranks on behalf of a reader who cannot see them", async () => {
+    await mount(true, { enableSquadrons: true });
+
+    expect(rolesQueryEnabled.value).toBe(false);
+  });
+
+  it("puts the switch back when the save fails", async () => {
+    updateFleet.mockRejectedValue(new Error("nope"));
+    const subject = await mount(false, { enableSquadrons: true });
+
+    await toggleInput(subject).setValue(true);
+    await flushPromises();
+
+    expect((toggleInput(subject).element as HTMLInputElement).checked).toBe(
+      false,
+    );
   });
 });
