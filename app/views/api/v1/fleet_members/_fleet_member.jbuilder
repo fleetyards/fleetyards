@@ -30,6 +30,9 @@ if squadrons_readable_in?(member.fleet_id)
       json.color squadron.color
       json.team squadron.team
       json.membership_created_at squadron_membership.created_at.utc.iso8601
+      json.role do
+        json.partial! "api/v1/fleet_squadron_roles/base", fleet_squadron_role: squadron_membership.fleet_squadron_role
+      end
 
       # The roster draws the mark rather than the name, and at that size the mark
       # is the square one.

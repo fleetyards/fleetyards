@@ -19,6 +19,12 @@ module V1
               team: {type: :boolean},
               discordChannelId: {type: [:string, :null]},
               memberCount: {type: :integer},
+              # Only on a single squadron: the reader's own rank in it (absent
+              # when they hold none), and what the reader may do to its roster
+              # -- a squadron rank grants rights a fleet-wide capability
+              # cannot describe.
+              viewerRole: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRole,
+              capabilities: ::V1::Schemas::Fleets::Squadrons::FleetSquadronCapabilities,
               icon: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
