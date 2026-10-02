@@ -8,12 +8,22 @@ module Shops
   # A ship, paint or commodity has no finer kind, so it carries none and the
   # page names it by its kind.
   class Categories
-    Category = Struct.new(:item_type, :key, :label, :count)
+    Category = Struct.new(:item_type, :key, :label, :count) do
+      # What a filter names the category by: "Equipment.clothing", or the item
+      # type alone where there is no finer kind.
+      def id
+        Categories.id_of(item_type, key)
+      end
+    end
 
     def self.for(items)
       items.group_by { |item| [item.class.name, key_of(item)] }
         .map { |(item_type, key), group| Category.new(item_type, key, label_of(group.first, key), group.size) }
         .sort_by { |category| [-category.count, category.label.to_s] }
+    end
+
+    def self.id_of(item_type, key)
+      key ? "#{item_type}.#{key}" : item_type
     end
 
     def self.key_of(item)

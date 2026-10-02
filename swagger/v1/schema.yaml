@@ -15916,6 +15916,47 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/shops/{slug}/items":
+    get:
+      summary: Shop Items
+      tags:
+      - Shops
+      operationId: shopItems
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ShopItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ShopItems"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -34761,6 +34802,8 @@ components:
     ShopCategory:
       type: object
       properties:
+        id:
+          type: string
         itemType:
           "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
         key:
@@ -34775,11 +34818,109 @@ components:
           type: integer
       additionalProperties: false
       required:
+      - id
       - itemType
       - key
       - label
       - count
       title: ShopCategory
+    ShopItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        name:
+          type: string
+        slug:
+          type: string
+        categoryId:
+          type: string
+        categoryLabel:
+          type:
+          - string
+          - 'null'
+        manufacturer:
+          anyOf:
+          - type: object
+            properties:
+              name:
+                type: string
+              slug:
+                type: string
+            additionalProperties: false
+            required:
+            - name
+            - slug
+          - type: 'null'
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        rentalPrice:
+          type:
+          - number
+          - 'null'
+        sellPrice:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - itemType
+      - name
+      - slug
+      - categoryId
+      - categoryLabel
+      - manufacturer
+      - buyPrice
+      - rentalPrice
+      - sellPrice
+      title: ShopItem
+    ShopItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        categoryIn:
+          type: array
+          items:
+            type: string
+        s:
+          "$ref": "#/components/schemas/ShopItemSortingEnum"
+      additionalProperties: false
+      example: {}
+      title: ShopItemQuery
+    ShopItemSortingEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - price asc
+      - price desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - PRICE_ASC
+      - PRICE_DESC
+      title: ShopItemSortingEnum
+    ShopItems:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopItem"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ShopItems
     ShopLink:
       type: object
       properties:
