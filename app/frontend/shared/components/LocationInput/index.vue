@@ -23,6 +23,7 @@ type Props = {
   label?: string;
   noLabel?: boolean;
   placeholder?: string;
+  icon?: string;
   disabled?: boolean;
 };
 
@@ -34,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   label: undefined,
   noLabel: false,
   placeholder: undefined,
+  icon: undefined,
   disabled: false,
 });
 
@@ -144,6 +146,7 @@ const linkedLabel = computed(() =>
       :label="label"
       :no-label="noLabel"
       :placeholder="placeholder"
+      :icon="icon"
       :disabled="disabled"
       autocomplete="off"
       clearable

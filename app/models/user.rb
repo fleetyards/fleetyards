@@ -77,6 +77,7 @@
 #  youtube                        :string
 #  created_at                     :datetime
 #  updated_at                     :datetime
+#  current_location_id            :uuid
 #  supported_fleet_id             :uuid
 #
 # Indexes
@@ -86,6 +87,7 @@
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
+#  index_users_on_current_location_id    (current_location_id)
 #  index_users_on_last_active_at         (last_active_at)
 #  index_users_on_lower_email            (lower((email)::text))
 #  index_users_on_lower_username         (lower((username)::text))
@@ -99,6 +101,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (current_location_id => locations.id) ON DELETE => nullify
 #  fk_rails_...  (supported_fleet_id => fleets.id) ON DELETE => nullify
 #
 class User < ApplicationRecord
@@ -140,12 +143,15 @@ class User < ApplicationRecord
   include UrlFieldConcern
   include ActiveStorageVariants
   include InventoryTransferParty
+  include LinkedLocations
+
+  links_location :current_system, foreign_key: :current_location_id, as: :current_location
   include Rails.application.routes.url_helpers
 
   geocoded_by :location
   after_validation :geocode, if: :will_save_change_to_location?
   before_validation :clear_coordinates, if: -> { will_save_change_to_location? && location.blank? }
-  before_validation :match_current_system, if: :will_save_change_to_current_system?
+  before_validation :match_current_system, if: -> { will_save_change_to_current_system? || will_save_change_to_current_location_id? }
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
@@ -1038,7 +1044,10 @@ class User < ApplicationRecord
       return
     end
 
-    input = current_system.strip.downcase
+    # A linked place answers for itself: Lorville is in Stanton, whatever the
+    # text says.
+    linked_system = (current_location&.kind == "system") ? current_location : current_location&.system
+    input = (linked_system&.name&.delete_suffix(" System") || current_system).strip.downcase
 
     match = STAR_SYSTEMS.find do |code, name|
       input == code.downcase ||

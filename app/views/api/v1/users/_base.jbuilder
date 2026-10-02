@@ -23,6 +23,7 @@ json.guilded user.guilded if user.guilded.present?
 json.homepage user.homepage if user.homepage.present?
 json.location user.location if user.location.present?
 json.current_system user.current_system if user.current_system.present?
+json.partial! "api/v1/locations/linked", key: :current_location, location: user.current_location
 json.current_system_code user.current_system_code if user.current_system_code.present?
 
 json.sale_notify user.sale_notify

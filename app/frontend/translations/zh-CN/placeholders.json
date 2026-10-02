@@ -173,7 +173,7 @@
       "user": {
         "rsiHandle": "RSI 用户名",
         "location": "e.g. Berlin, Germany",
-        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+        "currentSystem": "例如 Lorville、Port Tressler、Pyro"
       },
       "oauthApplication": {
         "name": "我的应用",

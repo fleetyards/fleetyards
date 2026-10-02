@@ -35455,6 +35455,10 @@ components:
           type: string
         location:
           type: string
+        currentLocation:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
         currentSystem:
           type: string
         currentSystemCode:
@@ -35834,6 +35838,11 @@ components:
           type:
           - string
           - 'null'
+        currentLocationId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         currentSystem:
           type:
           - string

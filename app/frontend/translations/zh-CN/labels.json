@@ -1972,7 +1972,7 @@
           }
         },
         "location": "位置",
-        "currentSystem": "当前星系",
+        "currentSystem": "当前游戏内位置",
         "tester": "测试者?",
         "avatar": "头像",
         "unconfirmedEmail": "未确认的邮件",

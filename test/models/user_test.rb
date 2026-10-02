@@ -825,3 +825,34 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     assert_equal ["rank desc"], build(:user, hangar_default_sort: "rank desc").hangar_sorting_params
   end
 end
+
+class UserCurrentLocationTest < ActiveSupport::TestCase
+  test "a linked place sets the star system it lies in" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    lorville = create(:location, name: "Lorville", kind: "city", system: stanton)
+    user = create(:user)
+
+    user.update!(current_location_id: lorville.id)
+
+    assert_equal "Lorville", user.current_system
+    assert_equal "STANTON", user.current_system_code
+  end
+
+  test "a linked system is its own star system" do
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    user = create(:user)
+
+    user.update!(current_location_id: nyx.id, current_system: "Nyx System")
+
+    assert_equal "NYX", user.current_system_code
+  end
+
+  test "text without a link still matches a system by name" do
+    user = create(:user)
+
+    user.update!(current_system: "Pyro")
+
+    assert_nil user.current_location_id
+    assert_equal "PYRO", user.current_system_code
+  end
+end

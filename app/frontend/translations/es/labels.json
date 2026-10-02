@@ -1972,7 +1972,7 @@
           }
         },
         "location": "Ubicación",
-        "currentSystem": "Sistema estelar actual",
+        "currentSystem": "Ubicación actual en el juego",
         "tester": "¿Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Correo electrónico no confirmado",
