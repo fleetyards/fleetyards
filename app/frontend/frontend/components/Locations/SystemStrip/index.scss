@@ -113,6 +113,8 @@
     // Matched to the 18px circle a moon with a colour gets: the moon glyph's
     // disc is 400 of its 512 units.
     .location-kind-icon {
+      flex-shrink: 0;
+      margin: -2.5px;
       font-size: 23px;
       color: var(--color-muted, #7a8288);
     }
