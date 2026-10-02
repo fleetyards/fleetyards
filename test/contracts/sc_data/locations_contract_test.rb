@@ -42,6 +42,11 @@ module ScData
         assert_equal "Orison", admin_center.parent.name
 
         assert_equal "Ellis System", Location.find_by!(sc_key: "Ellis3").parent.name
+
+        # A rest stop at its Lagrange point, the point on its planet.
+        green_glade = Location.find_by!(sc_key: "RR_HUR_L1")
+        assert_equal ["HUR L1", "Hurston"], [green_glade.parent.name, green_glade.parent.parent.name]
+        assert_equal "Stanton", green_glade.map_parent.name
       end
     end
   end

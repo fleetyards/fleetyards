@@ -102,6 +102,29 @@ module ScData
         assert_nil location("Stanton1_Outpost")[:map_parent_key]
       end
 
+      # Drawn under the star, and tagged with nothing that names the planet.
+      test "#locations puts a Lagrange point under its planet and its rest stop under the point" do
+        stanton
+        tag("HUR_L1", parent: nil)
+        place("Stanton1_L1", "HUR L1", type: "Planet", parent: "StantonStar", tag: "HUR_L1")
+        place("RR_HUR_L1", "HUR-L1 Green Glade Station", type: "Manmade", parent: "StantonStar")
+        place("RR_HUR_L1_CLINIC", "HUR-L1 Green Glade Clinic", type: "Outpost", parent: "RR_HUR_L1")
+
+        assert_equal ["Stanton System", "Stanton", "Hurston", "HUR L1", "HUR-L1 Green Glade Station", "HUR-L1 Green Glade Clinic"], chain("RR_HUR_L1_CLINIC")
+        assert_equal "StantonStar", location("RR_HUR_L1")[:map_parent_key]
+      end
+
+      test "#locations matches a rest stop coded by its planet's initial and number" do
+        place("PyroSolarSystem", "Pyro System", type: "SolarSystem", parent: nil)
+        place("PyroStar", "Pyro", type: "Star", parent: nil)
+        place("Pyro2", "Monox", type: "Planet", parent: "PyroStar")
+        place("Pyro2_L4", "PYR2 L4", type: "Planet", parent: "PyroStar")
+        place("RR_P2_L4", "Checkmate", type: "Manmade", parent: "PyroStar")
+
+        assert_equal "Pyro2_L4", location("RR_P2_L4")[:parent_key]
+        assert_equal "Pyro2", location("Pyro2_L4")[:parent_key]
+      end
+
       test "#locations places a record keyed after another system in that system" do
         stanton
         translate("Ellis" => "Ellis System", "Ellis_Desc" => "Home of the Murray Cup.")

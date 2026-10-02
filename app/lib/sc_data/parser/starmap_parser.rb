@@ -130,6 +130,7 @@ module ScData
         end
 
         place_stars(places)
+        place_lagrange(places)
         place_foreign_systems(places)
         drop_unplaced(places)
         merge_overrides(places)
@@ -251,6 +252,35 @@ module ScData
 
       # The planets hang off the star and the system record has no children,
       # so the star goes inside the system of the same name.
+      # The game draws Lagrange points and the rest stops at them under the
+      # star, and the tags do not say better: Stanton's points are tagged
+      # `ARC_L1 < ARC < LagrangePoints`, and no record is called ARC. The keys
+      # do. A point is keyed after its planet -- `Stanton3_L1` is ArcCorp's L1
+      # -- and a rest stop after the point, `RR_<code>_L<n>`, with the code the
+      # point's own name prefix (HUR, for "HUR L1") or the planet key's initial
+      # and number (P2, for `Pyro2`). The star stays the map parent.
+      private def place_lagrange(places)
+        points = places.values.filter_map do |place|
+          match = place[:key].match(/\A(?<planet>[A-Za-z]+\d+)_L(?<number>\d)\z/)
+          next unless match && places[match[:planet]]&.dig(:kind) == "planet"
+
+          place[:parent] = match[:planet]
+          {key: place[:key], planet: match[:planet], number: match[:number], prefix: place[:name].to_s.split.first}
+        end
+
+        places.each_value do |place|
+          match = place[:key].match(/\ARR_(?<code>[A-Za-z0-9]+)_L(?<number>\d)\z/)
+          next unless match
+
+          point = points.find do |candidate|
+            candidate[:number] == match[:number] &&
+              [candidate[:prefix], "#{candidate[:planet][0]}#{candidate[:planet][/\d+\z/]}"].include?(match[:code])
+          end
+
+          place[:parent] = point[:key] if point
+        end
+      end
+
       private def place_stars(places)
         places.each_value do |place|
           next unless place[:kind] == "star" && place[:parent].nil?
