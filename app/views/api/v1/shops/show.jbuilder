@@ -27,13 +27,18 @@ else
 end
 
 json.items_count @items.size
-json.counts(@items.group_by { |entry| entry.item.class.name }.map { |type, entries| {item_type: type, count: entries.size} }.sort_by { |entry| -entry[:count] })
+json.categories ::Shops::Categories.for(@items.map(&:item)) do |category|
+  json.partial! "api/v1/shops/category", category:
+end
 
 json.items @items do |entry|
   json.id entry.item.id
   json.name entry.item.name
   json.slug entry.item.slug
   json.item_type entry.item.class.name
+  category = ::Shops::Categories.key_of(entry.item)
+  json.category category
+  json.category_label ::Shops::Categories.label_of(entry.item, category)
 
   json.prices entry.prices do |price|
     json.price_type price.price_type

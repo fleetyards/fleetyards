@@ -13,11 +13,11 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           itemsCount: {type: :integer},
-          counts: {type: :array, items: ::V1::Schemas::ShopItemCount},
+          categories: {type: :array, items: ::V1::Schemas::ShopCategory},
           image: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false,
-        required: %w[id name slug itemsCount counts]
+        required: %w[id name slug itemsCount categories]
       })
     end
   end

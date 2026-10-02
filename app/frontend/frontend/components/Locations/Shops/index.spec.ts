@@ -29,7 +29,14 @@ const shops: LocationShop[] = [
     name: "Casaba Outlet",
     slug: "casaba-outlet-everus-harbor",
     itemsCount: 78,
-    counts: [{ itemType: ItemPriceItemTypeEnum.EQUIPMENT, count: 78 }],
+    categories: [
+      {
+        itemType: ItemPriceItemTypeEnum.EQUIPMENT,
+        key: "clothing",
+        label: "Clothing",
+        count: 78,
+      },
+    ],
   },
 ];
 
@@ -46,6 +53,6 @@ describe("LocationShops", () => {
       "/shops/casaba-outlet-everus-harbor",
     );
     expect(wrapper.find(".location-shops__name").text()).toBe("Casaba Outlet");
-    expect(wrapper.find(".location-shops__carries").text()).toContain("78");
+    expect(wrapper.find(".location-shops__carries").text()).toBe("Clothing 78");
   });
 });

@@ -17,17 +17,26 @@ const props = defineProps<Props>();
 
 const { t, toUEC } = useI18n();
 
-// One group per kind of thing, the largest first: a counter that rents ships
-// and sells a few paints reads as a ship rental.
+// One group per kind of thing, the largest first: clothing, then undersuits;
+// coolers, then power plants. A ship has no finer kind than being a ship.
 const groups = computed(() => {
-  const byType = new Map<string, ShopItem[]>();
+  const byKind = new Map<string, { label: string; items: ShopItem[] }>();
 
   props.items.forEach((item) => {
-    byType.set(item.itemType, [...(byType.get(item.itemType) ?? []), item]);
+    const key = `${item.itemType}:${item.category ?? ""}`;
+    const group = byKind.get(key) ?? {
+      label:
+        item.categoryLabel ??
+        t(`labels.location.shopItemTypes.${item.itemType}`),
+      items: [],
+    };
+
+    group.items.push(item);
+    byKind.set(key, group);
   });
 
-  return [...byType.entries()]
-    .map(([itemType, items]) => ({ itemType, items }))
+  return [...byKind.entries()]
+    .map(([key, group]) => ({ key, ...group }))
     .sort((a, b) => b.items.length - a.items.length);
 });
 
@@ -65,12 +74,11 @@ const priceLabel = (price: ShopItemPrice) => {
   <div class="shop-listing">
     <section
       v-for="group in groups"
-      :key="group.itemType"
+      :key="group.key"
       class="shop-listing__group"
     >
       <h2 class="shop-listing__title">
-        {{ t(`labels.location.shopItemTypes.${group.itemType}`) }} ·
-        {{ group.items.length }}
+        {{ group.label }} · {{ group.items.length }}
       </h2>
 
       <ul class="shop-listing__items">

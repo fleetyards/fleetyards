@@ -12,10 +12,13 @@ module V1
           name: {type: [:string, :null]},
           slug: {type: [:string, :null]},
           itemType: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum,
+          # Finer than the kind, where it has one: "clothing", "cooler".
+          category: {type: [:string, :null]},
+          categoryLabel: {type: [:string, :null]},
           prices: {type: :array, items: ::V1::Schemas::ShopItemPrice}
         },
         additionalProperties: false,
-        required: %w[id name slug itemType prices]
+        required: %w[id name slug itemType category categoryLabel prices]
       })
     end
   end

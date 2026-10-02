@@ -5,7 +5,9 @@ json.shops @shops do |summary|
   json.name summary.shop.name
   json.slug summary.shop.slug
   json.items_count summary.items_count
-  json.counts summary.counts
+  json.categories summary.categories do |category|
+    json.partial! "api/v1/shops/category", category:
+  end
 
   if summary.shop.image.attached?
     json.image do

@@ -29731,10 +29731,10 @@ components:
           type: string
         itemsCount:
           type: integer
-        counts:
+        categories:
           type: array
           items:
-            "$ref": "#/components/schemas/ShopItemCount"
+            "$ref": "#/components/schemas/ShopCategory"
         image:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -29743,7 +29743,7 @@ components:
       - name
       - slug
       - itemsCount
-      - counts
+      - categories
       title: LocationShop
     LocationShops:
       type: object
@@ -34620,10 +34620,10 @@ components:
           - type: 'null'
         itemsCount:
           type: integer
-        counts:
+        categories:
           type: array
           items:
-            "$ref": "#/components/schemas/ShopItemCount"
+            "$ref": "#/components/schemas/ShopCategory"
         items:
           type: array
           items:
@@ -34643,11 +34643,33 @@ components:
       - ancestors
       - system
       - itemsCount
-      - counts
+      - categories
       - items
       - createdAt
       - updatedAt
       title: Shop
+    ShopCategory:
+      type: object
+      properties:
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        key:
+          type:
+          - string
+          - 'null'
+        label:
+          type:
+          - string
+          - 'null'
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - itemType
+      - key
+      - label
+      - count
+      title: ShopCategory
     ShopItem:
       type: object
       properties:
@@ -34664,6 +34686,14 @@ components:
           - 'null'
         itemType:
           "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        category:
+          type:
+          - string
+          - 'null'
+        categoryLabel:
+          type:
+          - string
+          - 'null'
         prices:
           type: array
           items:
@@ -34674,20 +34704,10 @@ components:
       - name
       - slug
       - itemType
+      - category
+      - categoryLabel
       - prices
       title: ShopItem
-    ShopItemCount:
-      type: object
-      properties:
-        itemType:
-          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
-        count:
-          type: integer
-      additionalProperties: false
-      required:
-      - itemType
-      - count
-      title: ShopItemCount
     ShopItemPrice:
       type: object
       properties:

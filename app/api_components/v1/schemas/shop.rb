@@ -19,13 +19,13 @@ module V1
           ancestors: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
           system: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
           itemsCount: {type: :integer},
-          counts: {type: :array, items: ::V1::Schemas::ShopItemCount},
+          categories: {type: :array, items: ::V1::Schemas::ShopCategory},
           items: {type: :array, items: ::V1::Schemas::ShopItem},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[id name slug location ancestors system itemsCount counts items createdAt updatedAt]
+        required: %w[id name slug location ancestors system itemsCount categories items createdAt updatedAt]
       })
     end
   end

@@ -16,12 +16,13 @@ defineProps<Props>();
 
 const { t } = useI18n();
 
-// What a shop carries, largest kind first: "Equipment 78 · Ship 4".
+// What a shop sells, largest first: "Clothing 78", "Coolers 12 · Power
+// Plants 9". A ship has no finer kind than being a ship.
 const carries = (shop: LocationShop) =>
-  shop.counts
+  shop.categories
     .map(
-      (entry) =>
-        `${t(`labels.location.shopItemTypes.${entry.itemType}`)} ${entry.count}`,
+      (category) =>
+        `${category.label ?? t(`labels.location.shopItemTypes.${category.itemType}`)} ${category.count}`,
     )
     .join(" · ");
 </script>

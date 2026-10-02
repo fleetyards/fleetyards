@@ -36,29 +36,49 @@ const item = (
   id: string,
   name: string,
   itemType: ItemPriceItemTypeEnum,
+  category: string | null = null,
 ): ShopItem => ({
   id,
   name,
   slug: id,
   itemType,
+  category,
+  categoryLabel: category && category[0].toUpperCase() + category.slice(1),
   prices: [{ priceType: ItemPriceTypeEnum.SELL, price: 210, timeRange: null }],
 });
 
 describe("ShopListing", () => {
-  it("groups what a shop sells by kind, the largest first, each linked", async () => {
+  it("groups what a shop sells by category, the largest first, each linked", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: {
         items: [
           item("aurora", "Aurora MR", ItemPriceItemTypeEnum.MODEL),
-          item("adiva", "Adiva Jacket", ItemPriceItemTypeEnum.EQUIPMENT),
-          item("arden", "Arden-SL Helmet", ItemPriceItemTypeEnum.EQUIPMENT),
+          item(
+            "adiva",
+            "Adiva Jacket",
+            ItemPriceItemTypeEnum.EQUIPMENT,
+            "clothing",
+          ),
+          item(
+            "ati",
+            "Ati Jacket",
+            ItemPriceItemTypeEnum.EQUIPMENT,
+            "clothing",
+          ),
+          item(
+            "arden",
+            "Arden-SL Helmet",
+            ItemPriceItemTypeEnum.EQUIPMENT,
+            "armor",
+          ),
         ],
       },
       plugins: [await router()],
     });
 
     const groups = wrapper.findAll(".shop-listing__group");
-    expect(groups).toHaveLength(2);
+    expect(groups).toHaveLength(3);
+    expect(groups[0].find(".shop-listing__title").text()).toBe("Clothing · 2");
     expect(groups[0].findAll('[data-test="shop-item"]')).toHaveLength(2);
     expect(wrapper.find("a.shop-listing__name").attributes("href")).toContain(
       "/equipment/adiva",

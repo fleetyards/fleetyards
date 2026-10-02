@@ -32,7 +32,7 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
     @everus = create(:location, name: "Everus Harbor", kind: "station", parent: @hurston, system: @system)
     @casaba = Shop.create!(name: "Casaba Outlet", location: @everus)
 
-    jacket = create(:equipment, name: "Adiva Jacket")
+    jacket = create(:equipment, name: "Adiva Jacket", equipment_type: "clothing")
     create(:item_price, item: jacket, location: "Casaba Outlet - Everus Harbor", price: 210, price_type: "sell", time_range: nil, shop: @casaba)
   end
 
@@ -43,6 +43,7 @@ class Api::V1::ShopsTest < ActionDispatch::IntegrationTest
       assert_equal ["Stanton System", "Hurston", "Everus Harbor"], parsed_body["ancestors"].pluck("name")
       assert_equal [["Adiva Jacket", "Equipment"]], parsed_body["items"].map { |item| item.values_at("name", "itemType") }
       assert_equal 210.0, parsed_body.dig("items", 0, "prices", 0, "price")
+      assert_equal [["clothing", "Clothing", 1]], parsed_body["categories"].map { |category| category.values_at("key", "label", "count") }
     end
   end
 

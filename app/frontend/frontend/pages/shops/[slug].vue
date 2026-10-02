@@ -135,9 +135,15 @@ watch(
                 <div class="shop-facts__fact">
                   <dt>{{ t("labels.shopPage.carries") }}</dt>
                   <dd class="shop-facts__counts">
-                    <span v-for="entry in shop.counts" :key="entry.itemType">
-                      {{ t(`labels.location.shopItemTypes.${entry.itemType}`) }}
-                      <strong>{{ entry.count }}</strong>
+                    <span
+                      v-for="category in shop.categories"
+                      :key="`${category.itemType}:${category.key}`"
+                    >
+                      {{
+                        category.label ??
+                        t(`labels.location.shopItemTypes.${category.itemType}`)
+                      }}
+                      <strong>{{ category.count }}</strong>
                     </span>
                   </dd>
                 </div>

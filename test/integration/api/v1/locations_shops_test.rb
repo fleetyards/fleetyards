@@ -42,7 +42,7 @@ class Api::V1::LocationsShopsTest < ActionDispatch::IntegrationTest
       shop = parsed_body["shops"].sole
 
       assert_equal ["Casaba Outlet", "casaba-outlet-everus-harbor", 2], shop.values_at("name", "slug", "itemsCount")
-      assert_equal [{"itemType" => "Equipment", "count" => 2}], shop["counts"]
+      assert_equal [[2, "Equipment"]], shop["categories"].map { |category| category.values_at("count", "itemType") }
     end
   end
 
