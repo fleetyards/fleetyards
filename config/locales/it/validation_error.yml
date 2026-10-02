@@ -237,6 +237,8 @@ it:
     video:
       create: Impossibile creare il video.
       update: Impossibile aggiornare il video.
+    shop:
+      update: Impossibile aggiornare il negozio.
     location:
       update: Impossibile aggiornare il luogo.
     commodity:

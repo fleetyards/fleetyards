@@ -236,6 +236,8 @@ zh-TW:
     video:
       create: 無法建立影片。
       update: 無法更新影片。
+    shop:
+      update: 無法更新商店。
     location:
       update: 無法更新地點。
     commodity:

@@ -7973,6 +7973,89 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/shops/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Shop id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Shop Detail
+      tags:
+      - Shops
+      operationId: shop
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Shop
+      tags:
+      - Shops
+      operationId: updateShop
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ShopInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/stats/most-viewed-pages":
     get:
       summary: Stats most viewed Pages
@@ -16855,6 +16938,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/LocationTerminal"
+        shops:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationShop"
         createdAt:
           type: string
           format: date-time
@@ -17008,6 +17095,22 @@ components:
       additionalProperties: false
       example: {}
       title: LocationQuery
+    LocationShop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        hasImage:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - hasImage
+      title: LocationShop
     LocationSortEnum:
       type: string
       enum:
@@ -20183,6 +20286,47 @@ components:
           type: string
       additionalProperties: false
       title: SessionInput
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        itemsCount:
+          type: integer
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - itemsCount
+      - location
+      - createdAt
+      - updatedAt
+      title: Shop
+    ShopInput:
+      type: object
+      properties:
+        image:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: ShopInput
     StandardError:
       type: object
       properties:

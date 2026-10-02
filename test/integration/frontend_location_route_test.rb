@@ -14,6 +14,12 @@ class FrontendLocationRouteTest < ActionDispatch::IntegrationTest
     assert_equal "outpost-54-aberdeen", recognized[:slug]
   end
 
+  test "GET shops/:slug reaches the action that sets the meta tags" do
+    recognized = Rails.application.routes.recognize_path("/shops/casaba-outlet-everus-harbor")
+
+    assert_equal ["frontend/base", "shop", "casaba-outlet-everus-harbor"], recognized.values_at(:controller, :action, :slug)
+  end
+
   test "GET locations without a slug is not the detail action" do
     recognized = Rails.application.routes.recognize_path("/locations")
 

@@ -26,6 +26,12 @@ json.children_count @location.children.count
 json.game_missions_count @location.game_missions.count
 json.mission_template_refs @location.mission_template_refs
 
+json.shops @location.shops.with_attached_image.order(:name) do |shop|
+  json.id shop.id
+  json.name shop.name
+  json.has_image shop.image.attached?
+end
+
 json.terminals @location.terminals.sort_by(&:name) do |terminal|
   json.id terminal.id
   json.name terminal.name

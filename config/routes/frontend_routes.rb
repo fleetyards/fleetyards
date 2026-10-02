@@ -42,6 +42,7 @@ namespace :frontend, **frontend_options do
   # The same, for a place. Top level rather than under the catalogue: a place
   # is somewhere you go, not something you buy or fit.
   get "locations/:slug", to: "base#location", as: :location
+  get "shops/:slug", to: "base#shop", as: :shop
 
   # Where the trade routes page lived until the Vue 3 migration dropped it.
   # External link lists still point here.

@@ -30,23 +30,19 @@ class Api::V1::LocationsShopsTest < ActionDispatch::IntegrationTest
     @jacket = create(:equipment, name: "Adiva Jacket")
     @helmet = create(:equipment, name: "Arden-SL Helmet")
 
-    # Linked after the fact: FactoryBot reads a `location_id` override as the
-    # `location` string's and drops that.
+    @casaba = Shop.create!(name: "Casaba Outlet", location: @everus)
     [@jacket, @helmet].each do |item|
-      create(:item_price, item:, location: "Casaba Outlet - Everus Harbor", price_type: "sell", time_range: nil)
-        .update_columns(location_id: @everus.id, shop_name: "Casaba Outlet")
+      create(:item_price, item:, location: "Casaba Outlet - Everus Harbor", price_type: "sell", time_range: nil, shop: @casaba)
     end
     create(:item_price, item: @jacket, location: "Casaba Outlet - Area 18", price_type: "sell", time_range: nil)
   end
 
-  test "GET /locations/{slug}/shops lists each shop at the place with what it sells" do
+  test "GET /locations/{slug}/shops lists each shop at the place with how much it carries" do
     assert_api_response :get, 200, params: {slug: @everus.slug} do
       shop = parsed_body["shops"].sole
 
-      assert_equal ["Casaba Outlet", 2], shop.values_at("name", "itemsCount")
-      assert_equal ["Adiva Jacket", "Arden-SL Helmet"], shop["items"].pluck("name")
-      assert_equal %w[Equipment], shop["items"].pluck("itemType").uniq
-      assert_equal "sell", shop.dig("items", 0, "prices", 0, "priceType")
+      assert_equal ["Casaba Outlet", "casaba-outlet-everus-harbor", 2], shop.values_at("name", "slug", "itemsCount")
+      assert_equal [{"itemType" => "Equipment", "count" => 2}], shop["counts"]
     end
   end
 

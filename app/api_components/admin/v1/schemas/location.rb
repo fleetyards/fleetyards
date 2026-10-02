@@ -39,6 +39,7 @@ module Admin
             gameMissionsCount: {type: :integer},
             missionTemplateRefs: {type: :array, items: {type: :string}},
             terminals: {type: :array, items: ::Admin::V1::Schemas::LocationTerminal},
+            shops: {type: :array, items: ::Admin::V1::Schemas::LocationShop},
 
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

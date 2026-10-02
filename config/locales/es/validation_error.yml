@@ -240,6 +240,8 @@ es:
     video:
       create: No se pudo crear el vídeo.
       update: No se pudo actualizar el vídeo.
+    shop:
+      update: No se pudo actualizar la tienda.
     location:
       update: No se pudo actualizar el lugar.
     commodity:

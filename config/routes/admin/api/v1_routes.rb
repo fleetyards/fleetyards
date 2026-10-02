@@ -102,6 +102,7 @@ v1_admin_api_routes = lambda do
 
   # Read only, like missions: a load replaces every fact.
   resources :locations, only: %i[index show update]
+  resources :shops, only: %i[show update]
 
   # Read only, for the reason blueprints are: every fact is replaced by the
   # next load, so there is nothing here a human could own.

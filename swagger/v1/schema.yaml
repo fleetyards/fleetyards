@@ -15889,6 +15889,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/shops/{slug}":
+    get:
+      summary: Shop Detail
+      tags:
+      - Shops
+      operationId: shop
+      parameters:
+      - name: slug
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Shop"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -29695,65 +29722,29 @@ components:
     LocationShop:
       type: object
       properties:
-        name:
-          type: string
-        itemsCount:
-          type: integer
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/LocationShopItem"
-      additionalProperties: false
-      required:
-      - name
-      - itemsCount
-      - items
-      title: LocationShop
-    LocationShopItem:
-      type: object
-      properties:
         id:
           type: string
           format: uuid
         name:
-          type:
-          - string
-          - 'null'
+          type: string
         slug:
-          type:
-          - string
-          - 'null'
-        itemType:
-          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
-        prices:
+          type: string
+        itemsCount:
+          type: integer
+        counts:
           type: array
           items:
-            "$ref": "#/components/schemas/LocationShopItemPrice"
+            "$ref": "#/components/schemas/ShopItemCount"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - id
       - name
       - slug
-      - itemType
-      - prices
-      title: LocationShopItem
-    LocationShopItemPrice:
-      type: object
-      properties:
-        priceType:
-          "$ref": "#/components/schemas/ItemPriceTypeEnum"
-        price:
-          type: number
-        timeRange:
-          anyOf:
-          - "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
-          - type: 'null'
-      additionalProperties: false
-      required:
-      - priceType
-      - price
-      - timeRange
-      title: LocationShopItemPrice
+      - itemsCount
+      - counts
+      title: LocationShop
     LocationShops:
       type: object
       properties:
@@ -34605,6 +34596,115 @@ components:
         minCargo:
           type: number
       title: ShipSlotFilters
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        location:
+          "$ref": "#/components/schemas/LocationLink"
+        ancestors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+        system:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        itemsCount:
+          type: integer
+        counts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopItemCount"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopItem"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - location
+      - ancestors
+      - system
+      - itemsCount
+      - counts
+      - items
+      - createdAt
+      - updatedAt
+      title: Shop
+    ShopItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type:
+          - string
+          - 'null'
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        prices:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShopItemPrice"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - itemType
+      - prices
+      title: ShopItem
+    ShopItemCount:
+      type: object
+      properties:
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - itemType
+      - count
+      title: ShopItemCount
+    ShopItemPrice:
+      type: object
+      properties:
+        priceType:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        price:
+          type: number
+        timeRange:
+          anyOf:
+          - "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - priceType
+      - price
+      - timeRange
+      title: ShopItemPrice
     SortInput:
       type: object
       properties:
