@@ -60,6 +60,8 @@ watch(
   },
 );
 
+const SUGGESTIONS = 8;
+
 // Only the latest search may answer: an older request finishing last would
 // offer places for text the field no longer holds.
 let latestSearch = 0;
@@ -74,22 +76,26 @@ const search = useDebounceFn(async (text: string) => {
 
   const query = text.trim();
 
-  // A wider page than is shown, so a name that starts with the text can be
-  // put first: "Port" means Port Tressler before a Transport Hub.
-  const result = await fetchLocations({
-    perPage: "30",
-    q: { nameCont: query },
-  }).catch(() => undefined);
+  // The names that start with the text first, then the ones that only contain
+  // it: "Port" means Port Tressler before a Transport Hub.
+  const [starting, containing] = await Promise.all([
+    fetchLocations({
+      perPage: String(SUGGESTIONS),
+      q: { nameStart: query },
+    }).catch(() => undefined),
+    fetchLocations({
+      perPage: String(SUGGESTIONS),
+      q: { nameCont: query },
+    }).catch(() => undefined),
+  ]);
 
   if (request !== latestSearch) return;
 
-  const lowered = query.toLowerCase();
-  const startsWith = (location: Location) =>
-    (location.name ?? "").toLowerCase().startsWith(lowered) ? 0 : 1;
+  const seen = new Set<string>();
 
-  suggestions.value = [...(result?.items ?? [])]
-    .sort((a, b) => startsWith(a) - startsWith(b))
-    .slice(0, 8);
+  suggestions.value = [...(starting?.items ?? []), ...(containing?.items ?? [])]
+    .filter((location) => !seen.has(location.id) && seen.add(location.id))
+    .slice(0, SUGGESTIONS);
   active.value = -1;
 }, 250);
 

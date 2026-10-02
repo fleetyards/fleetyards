@@ -73,16 +73,23 @@ describe("LocationInput", () => {
     const place = (name: string) => ({
       items: [{ id: name, name, slug: name.toLowerCase(), parent: null }],
     });
-    let answerSlow: (value: unknown) => void = () => {};
+    const slow: ((value: unknown) => void)[] = [];
+    const answerSlow = (value: unknown) =>
+      slow.forEach((resolve) => resolve(value));
 
-    vi.mocked(locations)
-      .mockImplementationOnce(
-        () =>
-          new Promise((resolve) => {
-            answerSlow = resolve;
-          }) as never,
-      )
-      .mockImplementationOnce(async () => place("Levski") as never);
+    vi.mocked(locations).mockImplementation(((params?: {
+      q?: { nameCont?: string; nameStart?: string };
+    }) => {
+      const text = params?.q?.nameCont ?? params?.q?.nameStart;
+
+      if (text === "Lor") {
+        return new Promise((resolve) => {
+          slow.push(resolve);
+        });
+      }
+
+      return Promise.resolve(place("Levski"));
+    }) as never);
 
     const wrapper = await mountWithDefaults(Component, {
       props: { name: "location", modelValue: "", locationId: null },
@@ -108,14 +115,20 @@ describe("LocationInput", () => {
   it("puts a place whose name starts with the text first", async () => {
     vi.useFakeTimers();
 
-    vi.mocked(locations).mockImplementationOnce(
-      async () =>
-        ({
-          items: [
-            { id: "hub", name: "Lazarus Transport Hub", slug: "hub" },
-            { id: "tressler", name: "Port Tressler", slug: "tressler" },
-          ],
-        }) as never,
+    vi.mocked(locations).mockImplementation(
+      async (params) =>
+        (params?.q?.nameStart
+          ? {
+              items: [
+                { id: "tressler", name: "Port Tressler", slug: "tressler" },
+              ],
+            }
+          : {
+              items: [
+                { id: "hub", name: "Lazarus Transport Hub", slug: "hub" },
+                { id: "tressler", name: "Port Tressler", slug: "tressler" },
+              ],
+            }) as never,
     );
 
     const wrapper = await mountWithDefaults(Component, {
@@ -127,9 +140,9 @@ describe("LocationInput", () => {
     await vi.advanceTimersByTimeAsync(300);
     await flushPromises();
 
-    expect(wrapper.find(".location-input__suggestion").text()).toContain(
-      "Port Tressler",
-    );
+    expect(
+      wrapper.findAll(".location-input__suggestion").map((node) => node.text()),
+    ).toEqual(["Port Tressler", "Lazarus Transport Hub"]);
 
     vi.useRealTimers();
   });
