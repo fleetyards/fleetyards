@@ -31,6 +31,7 @@ module Admin
             description: {type: [:string, :null]},
             color: {type: [:string, :null]},
             unstable: {type: :boolean},
+            bodyType: {anyOf: [::Shared::V1::Schemas::Enums::LocationBodyTypeEnum, {type: :null}]},
             image: ::Shared::V1::Schemas::MediaFile,
             mapParent: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             system: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

@@ -16829,6 +16829,10 @@ components:
           - 'null'
         unstable:
           type: boolean
+        bodyType:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationBodyTypeEnum"
+          - type: 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         mapParent:
@@ -16874,6 +16878,19 @@ components:
       - createdAt
       - updatedAt
       title: Location
+    LocationBodyTypeEnum:
+      type: string
+      enum:
+      - gas_giant
+      - ice_giant
+      - asteroid
+      - city
+      x-enumNames:
+      - GAS_GIANT
+      - ICE_GIANT
+      - ASTEROID
+      - CITY
+      title: LocationBodyTypeEnum
     LocationInput:
       type: object
       properties:

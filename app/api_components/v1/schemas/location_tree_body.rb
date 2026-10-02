@@ -17,6 +17,7 @@ module V1
           color: {type: [:string, :null]},
           # A star the game describes as a flare star, as it does Pyro's.
           unstable: {type: :boolean},
+          bodyType: {anyOf: [::Shared::V1::Schemas::Enums::LocationBodyTypeEnum, {type: :null}]},
           image: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false,

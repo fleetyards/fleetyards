@@ -48,6 +48,7 @@ module ScData
           description: item["description"],
           resources: Array.wrap(item["resources"]),
           kind: item["kind"],
+          body_type: item["body_type"],
           game_type: item["game_type"],
           shown_on_starmap: item["shown_on_starmap"] || false,
           shown_with_parent_only: item["shown_with_parent_only"] || false,

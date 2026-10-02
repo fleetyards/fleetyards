@@ -4,7 +4,8 @@
 # is `RR_NYX_CASTRA_JP1_CLINIC` here.
 #
 # `name:` replaces the resolved name. `description:` fills a description the
-# export leaves empty. `skip: true` drops the record and
+# export leaves empty. `body_type:` says what kind of world a planet or moon is
+# where its description does not name it. `skip: true` drops the record and
 # everything under it. `merge:` folds the listed records into this one: they
 # are copies of one place under one parent, and the location keeps this key.
 #
@@ -67,3 +68,13 @@ AsteroidCluster_MiningBase_Stanton:
 # star is coloured by.
 NyxStar:
   description: An F-type main sequence star.
+
+# Pyro V is a gas giant; its description only mentions "a striking
+# atmosphere swirled with shades of green and yellow".
+Pyro5:
+  body_type: gas_giant
+
+# Buildings cover most of ArcCorp, which the description says without naming
+# it a city planet.
+Stanton3:
+  body_type: city

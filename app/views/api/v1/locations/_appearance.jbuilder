@@ -5,6 +5,7 @@
 # class gives it.
 json.color local_assigns.fetch(:curated, false) ? location.color : location.drawn_color
 json.unstable location.flare_star?
+json.body_type location.body_type
 
 if location.image.attached?
   json.image do

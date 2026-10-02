@@ -9,6 +9,7 @@
 #
 #  id                         :uuid             not null, primary key
 #  always_shown               :boolean          default(FALSE), not null
+#  body_type                  :string
 #  description                :text
 #  environment                :string           not null
 #  game_type                  :string
@@ -38,7 +39,7 @@ class LocationBuild < ApplicationRecord
   belongs_to :location
 
   FACTS = %i[
-    name description resources kind game_type
+    name description resources kind body_type game_type
     shown_on_starmap shown_with_parent_only always_shown quantum_travel_destination
   ].freeze
 

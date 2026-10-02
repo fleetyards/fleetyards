@@ -48,6 +48,21 @@ module ScData
         assert_equal "Magda", location("Stanton1c")[:name]
       end
 
+      test "#locations reads what kind of world a body is from its description or the overrides" do
+        stanton
+        place("Stanton2", "Crusader", type: "Planet", parent: "StantonStar", description: "A low mass gas giant.")
+        place("Nyx_Delamar", "Delamar", type: "Moon", parent: "Stanton2", description: "A moon-sized asteroid.")
+        place("Stanton3", "ArcCorp", type: "Planet", parent: "StantonStar", description: "Buildings cover the planet.")
+        place("Stanton2_Belt", "Asteroid Belt", type: "Outpost", parent: "Stanton2", description: "An asteroid field.")
+        @overrides = {"Stanton3" => {"body_type" => "city"}}
+
+        assert_equal "gas_giant", location("Stanton2")[:body_type]
+        assert_equal "asteroid", location("Nyx_Delamar")[:body_type]
+        assert_equal "city", location("Stanton3")[:body_type]
+        assert_nil location("Stanton1")[:body_type]
+        assert_nil location("Stanton2_Belt")[:body_type]
+      end
+
       test "#locations names a place's kind from its map icon before its type" do
         stanton
         place("Nyx_Levski", "Levski", type: "Manmade", parent: "Stanton1", icon: "LandingZone")

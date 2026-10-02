@@ -33,6 +33,18 @@ module ScData
       RESOURCE_HEADING = /\APotential (?<kind>[A-Za-z ]+):?\z/
       RESOURCE_NOTE = /\s*\((?<note>[^)]*)\)\s*\z/
 
+      # What kind of world a planet or moon is, as its description says it:
+      # Crusader is "a low mass gas giant", Nyx III "an ice giant", Delamar "a
+      # moon-sized asteroid". A world the text only describes -- Pyro V's
+      # swirled atmosphere, ArcCorp's buildings -- is set in the overrides.
+      BODY_TYPES = {
+        "gas_giant" => /\bgas giant\b/i,
+        "ice_giant" => /\bice giant\b/i,
+        "asteroid" => /\basteroid\b/i
+      }.freeze
+
+      BODY_TYPE_VALUES = (BODY_TYPES.keys + %w[city]).freeze
+
       # Records that describe how a place is built rather than a place: the
       # template an outpost is cloned from, a barge spawned at Prospect Point,
       # the distress beacon a mission drops at MIC L1.
@@ -111,6 +123,7 @@ module ScData
           description: place[:description],
           resources: place[:resources] || [],
           kind: place[:kind],
+          body_type: body_type_of(place),
           game_type: record&.dig(:type),
           parent_key: place[:parent],
           map_parent_key: (place[:map_parent] if place[:map_parent] != place[:parent]),
@@ -443,6 +456,15 @@ module ScData
         root = root_of(key, places)
 
         root if places[root]&.dig(:kind) == "system"
+      end
+
+      private def body_type_of(place)
+        return unless %w[planet moon].include?(place[:kind])
+
+        override = overrides[place[:key]].to_h["body_type"]
+        return override if BODY_TYPE_VALUES.include?(override)
+
+        BODY_TYPES.find { |_type, pattern| pattern.match?(place[:description].to_s) }&.first
       end
 
       private def kind_of(record)
