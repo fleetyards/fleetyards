@@ -14,6 +14,7 @@ export type StatsCardKind =
   | "Model"
   | "Blueprint"
   | "GameMission"
+  | "Location"
   | "FleetContract"
   | "FleetEvent"
   | "User";

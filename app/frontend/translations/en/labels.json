@@ -328,6 +328,7 @@
           "Model": "Ship",
           "Blueprint": "Blueprint",
           "GameMission": "Mission",
+          "Location": "Place",
           "FleetContract": "Contract",
           "FleetEvent": "Event",
           "User": "User"
@@ -339,6 +340,7 @@
           "Model": "Open ship",
           "Blueprint": "Open blueprint",
           "GameMission": "Open mission",
+          "Location": "Open place",
           "FleetContract": "Open contract",
           "FleetEvent": "Open event",
           "User": "Open hangar"

@@ -328,6 +328,7 @@
           "Model": "Vaisseau",
           "Blueprint": "Plan",
           "GameMission": "Mission",
+          "Location": "Lieu",
           "FleetContract": "Contrat",
           "FleetEvent": "Événement",
           "User": "Utilisateur"
@@ -339,6 +340,7 @@
           "Model": "Ouvrir le vaisseau",
           "Blueprint": "Ouvrir le plan",
           "GameMission": "Ouvrir la mission",
+          "Location": "Ouvrir le lieu",
           "FleetContract": "Ouvrir le contrat",
           "FleetEvent": "Ouvrir l’événement",
           "User": "Ouvrir le hangar"

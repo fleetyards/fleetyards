@@ -328,6 +328,7 @@
           "Model": "Nave",
           "Blueprint": "Progetto",
           "GameMission": "Missione",
+          "Location": "Luogo",
           "FleetContract": "Contratto",
           "FleetEvent": "Evento",
           "User": "Utente"
@@ -339,6 +340,7 @@
           "Model": "Apri nave",
           "Blueprint": "Apri progetto",
           "GameMission": "Apri missione",
+          "Location": "Apri luogo",
           "FleetContract": "Apri contratto",
           "FleetEvent": "Apri evento",
           "User": "Apri hangar"

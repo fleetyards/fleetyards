@@ -328,6 +328,7 @@
           "Model": "艦船",
           "Blueprint": "藍圖",
           "GameMission": "任務",
+          "Location": "地點",
           "FleetContract": "合約",
           "FleetEvent": "活動",
           "User": "使用者"
@@ -339,6 +340,7 @@
           "Model": "開啟艦船",
           "Blueprint": "開啟藍圖",
           "GameMission": "開啟任務",
+          "Location": "開啟地點",
           "FleetContract": "開啟合約",
           "FleetEvent": "開啟活動",
           "User": "開啟機庫"

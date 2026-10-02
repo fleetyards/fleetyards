@@ -328,6 +328,7 @@
           "Model": "Schiff",
           "Blueprint": "Bauplan",
           "GameMission": "Mission",
+          "Location": "Ort",
           "FleetContract": "Auftrag",
           "FleetEvent": "Event",
           "User": "Benutzer"
@@ -339,6 +340,7 @@
           "Model": "Schiff öffnen",
           "Blueprint": "Bauplan öffnen",
           "GameMission": "Mission öffnen",
+          "Location": "Ort öffnen",
           "FleetContract": "Auftrag öffnen",
           "FleetEvent": "Event öffnen",
           "User": "Hangar öffnen"

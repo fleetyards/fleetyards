@@ -38,6 +38,7 @@
         "Model": "舰船",
         "Blueprint": "蓝图",
         "GameMission": "任务",
+        "Location": "地点",
         "FleetContract": "合约",
         "FleetEvent": "活动",
         "User": "用户"
