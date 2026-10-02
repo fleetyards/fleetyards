@@ -51,55 +51,6 @@ const crumbs = computed<Crumb[]>(() => [
 ]);
 </script>
 
-<script lang="ts" setup>
-import Heading from "@/shared/components/base/Heading/index.vue";
-import FilteredList from "@/shared/components/FilteredList/index.vue";
-import Paginator from "@/shared/components/Paginator/index.vue";
-import LocationsList from "@/frontend/components/Locations/List/index.vue";
-import FilterForm from "@/frontend/components/Locations/FilterForm/index.vue";
-import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
-import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
-import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import type { Crumb } from "@/shared/components/BreadCrumbs/types";
-import { useLocationSortFields } from "@/frontend/composables/useLocationSortFields";
-import { useLocationFilters } from "@/frontend/composables/useLocationFilters";
-import { useI18n } from "@/shared/composables/useI18n";
-import { usePagination } from "@/shared/composables/usePagination";
-import { useLocations, getLocationsQueryKey } from "@/services/fyApi";
-
-const { t } = useI18n();
-
-const locationsQueryParams = computed(() => ({
-  page: page.value,
-  perPage: perPage.value,
-  q: getQuery(),
-}));
-
-const locationsQueryKey = computed(() =>
-  getLocationsQueryKey(locationsQueryParams),
-);
-
-const { perPage, page, updatePerPage } = usePagination(locationsQueryKey);
-
-const { isFilterSelected, getQuery } = useLocationFilters(async () => {
-  await refetch();
-});
-
-const {
-  data: locations,
-  refetch,
-  ...asyncStatus
-} = useLocations(locationsQueryParams);
-
-const sortFields = useLocationSortFields();
-
-// Every system, laid out as its bodies, above the list. Hidden while a
-// filter narrows the list: the reader is searching then, not browsing.
-const { data: systems } = useLocations({
-  q: { kindEq: LocationKindEnum.SYSTEM },
-});
-</script>
-
 <template>
   <Heading hidden>{{ t("headlines.locations.places") }}</Heading>
 
