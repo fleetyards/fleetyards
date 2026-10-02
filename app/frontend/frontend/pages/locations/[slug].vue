@@ -68,7 +68,8 @@ const { data: contents } = useLocationContents(slug, {
   },
 });
 
-const MISSIONS_PER_PAGE = 20;
+// A handful on the page; the mission list, filtered to here, has the rest.
+const MISSIONS_PER_PAGE = 5;
 
 const { data: missions } = useGameMissions(
   computed(() => ({
@@ -166,11 +167,11 @@ watch(
           </div>
         </div>
 
-        <section v-if="description" class="location-page__panel">
-          <p class="location-page__description">{{ description }}</p>
-        </section>
-
         <template v-if="isSystemView">
+          <section v-if="description" class="location-page__panel">
+            <p class="location-page__description">{{ description }}</p>
+          </section>
+
           <BodyColumns :bodies="bodies" />
 
           <section v-if="star?.counts.length" class="location-page__panel">
@@ -181,52 +182,64 @@ watch(
           </section>
         </template>
 
-        <template v-else>
-          <ContentsList
-            v-if="contents?.groups.length"
-            :groups="contents.groups"
-            :parent-id="location.id"
-          />
+        <div v-else class="location-page__layout">
+          <div class="location-page__main">
+            <ContentsList
+              v-if="contents?.groups.length"
+              :groups="contents.groups"
+              :parent-id="location.id"
+            />
 
-          <section class="location-page__panel">
-            <h2 class="location-page__panel-title">
-              {{ t("labels.location.starmap") }}
-            </h2>
-
-            <StarmapFacts :location="location" />
-          </section>
-
-          <section v-if="missions?.items?.length" class="location-page__panel">
-            <h2 class="location-page__panel-title">
-              {{ t("labels.location.missions") }}
-            </h2>
-
-            <MissionsList :missions="missions.items" />
-
-            <router-link
-              v-if="moreMissions"
-              class="location-page__more"
-              :to="{ name: 'missions', query: { atLocation: location.id } }"
+            <section
+              v-if="missions?.items?.length"
+              class="location-page__panel"
             >
-              {{ t("labels.location.allMissions") }}
-            </router-link>
-          </section>
+              <h2 class="location-page__panel-title">
+                {{ t("labels.location.missions") }} ·
+                {{ missions.meta.pagination?.totalCount }}
+              </h2>
 
-          <section
-            v-if="location.terminals?.length"
-            class="location-page__panel"
-          >
-            <h2 class="location-page__panel-title">
-              {{ t("labels.location.terminals") }}
-            </h2>
+              <MissionsList :missions="missions.items" />
 
-            <ul class="location-page__terminals">
-              <li v-for="terminal in location.terminals" :key="terminal.id">
-                {{ terminal.name }}
-              </li>
-            </ul>
-          </section>
-        </template>
+              <router-link
+                v-if="moreMissions"
+                class="location-page__more"
+                :to="{ name: 'missions', query: { atLocation: location.id } }"
+              >
+                {{ t("labels.location.allMissions") }}
+              </router-link>
+            </section>
+          </div>
+
+          <aside class="location-page__aside">
+            <section v-if="description" class="location-page__panel">
+              <p class="location-page__description">{{ description }}</p>
+            </section>
+
+            <section class="location-page__panel">
+              <h2 class="location-page__panel-title">
+                {{ t("labels.location.starmap") }}
+              </h2>
+
+              <StarmapFacts :location="location" />
+            </section>
+
+            <section
+              v-if="location.terminals?.length"
+              class="location-page__panel"
+            >
+              <h2 class="location-page__panel-title">
+                {{ t("labels.location.terminals") }}
+              </h2>
+
+              <ul class="location-page__terminals">
+                <li v-for="terminal in location.terminals" :key="terminal.id">
+                  {{ terminal.name }}
+                </li>
+              </ul>
+            </section>
+          </aside>
+        </div>
       </div>
     </template>
   </AsyncData>

@@ -2,6 +2,8 @@
   "fr": {
     "labels": {
       "location": {
+        "showFewer": "Afficher moins",
+        "showAll": "Afficher les %{count}",
         "elsewhere": "Ailleurs autour de %{star}",
         "inside": "À l'intérieur",
         "namesakes": "×%{count}",

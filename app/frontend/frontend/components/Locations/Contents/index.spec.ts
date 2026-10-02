@@ -74,4 +74,37 @@ describe("LocationContentsList", () => {
     expect(links).toContain("#/locations/mercy-hospital");
     expect(wrapper.text()).toContain("Hidden on the map");
   });
+
+  // Hurston holds 65 outposts directly; the page opens on a dozen of them.
+  it("opens a long group on its first dozen and shows the rest on request", async () => {
+    const many: LocationContentsGroup[] = [
+      {
+        kind: LocationKindEnum.OUTPOST,
+        count: 15,
+        entries: Array.from({ length: 15 }, (_, index) => ({
+          name: `Outpost ${index + 1}`,
+          count: 1,
+          shownOnStarmap: true,
+          location: {
+            id: `outpost-${index}`,
+            name: `Outpost ${index + 1}`,
+            slug: `outpost-${index}`,
+            kind: LocationKindEnum.OUTPOST,
+            parentName: "Hurston",
+          },
+        })),
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { groups: many, parentId: "hurston" },
+      plugins: [await router()],
+    });
+
+    expect(wrapper.findAll(".location-contents__tile")).toHaveLength(12);
+
+    await wrapper.find(".location-contents__more").trigger("click");
+
+    expect(wrapper.findAll(".location-contents__tile")).toHaveLength(15);
+  });
 });

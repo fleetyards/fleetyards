@@ -2,6 +2,8 @@
   "zh-TW": {
     "labels": {
       "location": {
+        "showFewer": "收合",
+        "showAll": "顯示全部 %{count} 個",
         "elsewhere": "%{star} 周圍的其他地方",
         "inside": "內部",
         "namesakes": "×%{count}",

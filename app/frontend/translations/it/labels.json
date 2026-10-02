@@ -2,6 +2,8 @@
   "it": {
     "labels": {
       "location": {
+        "showFewer": "Mostra meno",
+        "showAll": "Mostra tutti i %{count}",
         "elsewhere": "Altrove intorno a %{star}",
         "inside": "All'interno",
         "namesakes": "×%{count}",
