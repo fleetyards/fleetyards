@@ -92,20 +92,18 @@ module Api
       # rights of its own, so the fleet-wide capabilities on the membership
       # cannot answer it.
       private def set_viewer_rights
-        probe = FleetSquadronMembership.new(fleet_squadron: @fleet_squadron)
+        policy = policy_for(
+          record: FleetSquadronMembership.new(fleet_squadron: @fleet_squadron),
+          with: FleetSquadronMembershipPolicy,
+          context: {fleet: @fleet}
+        )
 
         @squadron_capabilities = {
-          manage_members: allowed_to?(:create?, probe, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet}),
-          manage_ranks: allowed_to?(:manage_ranks?, probe, with: FleetSquadronMembershipPolicy, context: {fleet: @fleet})
+          manage_members: policy.apply(:create?),
+          manage_ranks: policy.apply(:manage_ranks?)
         }
 
-        @viewer_squadron_role = FleetSquadronRole
-          .joins(fleet_squadron_memberships: :fleet_membership)
-          .merge(FleetMembership.kept.accepted)
-          .find_by(
-            fleet_squadron_memberships: {fleet_squadron_id: @fleet_squadron.id},
-            fleet_memberships: {user_id: current_resource_owner&.id}
-          )
+        @viewer_squadron_role = policy.actor_rank
       end
 
       private def fleet_squadron_params

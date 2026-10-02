@@ -106,4 +106,25 @@ class FleetSquadronMembershipPolicyTest < ActiveSupport::TestCase
     assert allowed?(@officer, :destroy?, @leader_row)
     assert allowed?(@officer, :update?, promote(@member_row, "leader"))
   end
+
+  test "an update that changes nothing still needs to outrank the member" do
+    refute allowed?(@member, :update?, FleetSquadronMembership.find(@squadron_officer_row.id))
+    refute allowed?(@squadron_officer, :update?, FleetSquadronMembership.find(@leader_row.id))
+    assert allowed?(@squadron_officer, :update?, FleetSquadronMembership.find(@member_row.id))
+  end
+
+  test "a rank from another fleet is refused before its position is compared" do
+    foreign = create(:fleet).fleet_squadron_roles.find_by!(key: "member")
+    row = FleetSquadronMembership.find(@member_row.id).tap { |reloaded| reloaded.fleet_squadron_role = foreign }
+
+    refute allowed?(@leader, :update?, row)
+  end
+
+  test "a rank grants nothing to a role that cannot read the roster" do
+    hidden = create(:fleet_role, fleet: @fleet, name: "No Squadrons", resource_access: ["fleet:memberships:read"])
+    @leader_row.fleet_membership.update!(fleet_role: hidden)
+
+    refute allowed?(@leader, :create?, probe)
+    refute allowed?(@leader, :destroy?, @member_row)
+  end
 end

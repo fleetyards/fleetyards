@@ -43,16 +43,26 @@ class FleetSquadronMembershipPolicy < FleetBasePolicy
   # attributes before it asks.
   def update?
     return true if fleet_wide?
-    return false if record.fleet_squadron_role_id_changed? && !rank_change_allowed?
-    return true if (record.changed - ["fleet_squadron_role_id"]).empty?
+
+    if record.fleet_squadron_role_id_changed?
+      return false unless rank_change_allowed?
+      return true if (record.changed - ["fleet_squadron_role_id"]).empty?
+    end
 
     destroy?
+  end
+
+  # The caller's own rank in the squadron, the one every rule above reads.
+  # Public so the squadron payload reports the same row the rules enforce.
+  def actor_rank
+    actor_row&.fleet_squadron_role
   end
 
   private def rank_change_allowed?
     old_rank = FleetSquadronRole.find_by(id: record.fleet_squadron_role_id_was)
     new_rank = record.fleet_squadron_role
     return false if old_rank.blank? || new_rank.blank?
+    return false unless new_rank.fleet_id == record.fleet_squadron&.fleet_id
 
     # Stepping down is always one's own to do.
     return new_rank.position > old_rank.position if record.id == actor_row&.id
@@ -70,16 +80,15 @@ class FleetSquadronMembershipPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(FleetSquadron::MEMBERS_MANAGE_PRIVILEGES) || false
   end
 
-  private def actor_rank
-    actor_row&.fleet_squadron_role
-  end
-
+  # A rank counts only for somebody who can read the roster it is in. A fleet
+  # that hides squadrons from a role hides them from its rank holders too, and
+  # the squadron lookup answers them with a 404 before any rule here runs.
   private def actor_row
     return @actor_row if defined?(@actor_row)
 
     squadron_id = record.try(:fleet_squadron_id) || fleet_squadron&.id
 
-    @actor_row = if squadron_id.present? && accepted_fleet_membership.present?
+    @actor_row = if squadron_id.present? && index?
       FleetSquadronMembership
         .includes(:fleet_squadron_role)
         .find_by(fleet_squadron_id: squadron_id, fleet_membership_id: accepted_fleet_membership.id)
