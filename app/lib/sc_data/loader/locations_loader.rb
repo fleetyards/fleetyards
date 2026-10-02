@@ -19,6 +19,8 @@ module ScData
         # finds nothing for a place that arrived after the sync.
         stats[Terminal.name][:updated] += ::Uex::TerminalLocationMatcher.relink
         ::Uex::ShopLocationMatcher.relink
+
+        ::ScData::Loader::LocationAppearances.new.apply
       end
 
       def one(item)
