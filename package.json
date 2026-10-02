@@ -21,7 +21,7 @@
     "lint:ts": "bin/generate-clients && pnpm run vue-tsc && pnpm run tsc",
     "format": "prettier app/frontend --check",
     "format:fix": "prettier app/frontend --write",
-    "vue-tsc": "vue-tsc --noEmit --pretty",
+    "vue-tsc": "NODE_OPTIONS=--max-old-space-size=8192 vue-tsc --noEmit --pretty",
     "tsc": "tsc --noEmit --pretty",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "bin/generate-clients",
