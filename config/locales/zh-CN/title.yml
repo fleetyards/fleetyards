@@ -26,6 +26,7 @@ zh-CN:
       fleet_settings_roles: "%{fleet} 角色"
       fleet_stats: "%{fleet} 统计"
       fleets: 舰队
+      fleets_directory: "舰队目录"
       fleets_add: 创建新舰队
       fleets_invites: 舰队邀请
       fleets_preview: 舰队预览

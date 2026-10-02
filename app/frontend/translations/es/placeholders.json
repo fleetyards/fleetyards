@@ -288,6 +288,10 @@
           "material": "Hierro, Titanio, Aforita...",
           "craftableType": "Componente, Equipo...",
           "source": "Conocida, desconocida..."
+        },
+        "fleetDirectory": {
+          "search": "Nombre, FID o SID...",
+          "memberCountGteq": "Mínimo de miembros"
         }
       },
       "commodity": {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_02_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_02_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -995,6 +995,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_120000) do
     t.uuid "user_id"
     t.boolean "verified", default: false, null: false
     t.index ["discarded_at"], name: "index_fleet_memberships_on_discarded_at"
+    t.index ["fleet_id"], name: "index_fleet_memberships_on_fleet_id_accepted", where: "(((aasm_state)::text = 'accepted'::text) AND (discarded_at IS NULL))"
     t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true, where: "(discarded_at IS NULL)"
   end
@@ -1107,10 +1108,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_120000) do
   end
 
   create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "alignment"
     t.boolean "allies_fleet", default: false, null: false
     t.boolean "allies_fleet_members", default: false, null: false
     t.boolean "allies_fleet_stats", default: false, null: false
     t.string "calendar_feed_token"
+    t.string "commitment"
     t.datetime "created_at", precision: nil, null: false
     t.uuid "created_by"
     t.string "default_timezone", default: "UTC", null: false
@@ -1121,16 +1124,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_02_120000) do
     t.string "guilded"
     t.string "homepage"
     t.integer "inventory_transfer_policy", default: 0, null: false
+    t.string "language"
+    t.boolean "listed"
     t.string "name"
     t.string "normalized_fid"
+    t.string "primary_activity"
     t.boolean "public_fleet", default: false
     t.boolean "public_fleet_stats", default: false
+    t.boolean "recruiting"
+    t.boolean "roleplay"
     t.string "rsi_sid"
+    t.datetime "rsi_sync_attempted_at"
+    t.datetime "rsi_synced_at"
     t.datetime "rsi_verification_checked_at"
     t.string "rsi_verification_status"
     t.string "rsi_verification_token"
     t.datetime "rsi_verified_at"
     t.string "rsi_verified_sid"
+    t.string "secondary_activity"
     t.string "sid"
     t.string "slug"
     t.boolean "squadrons_enabled", default: false, null: false

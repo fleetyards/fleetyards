@@ -20,6 +20,16 @@ json.allies_fleet_stats fleet.allies_fleet_stats
 json.allies_fleet_members fleet.allies_fleet_members
 json.squadrons_enabled fleet.squadrons_enabled
 json.default_timezone fleet.default_timezone
+json.listed fleet.listed
+json.listed_in_directory fleet.listed_in_directory?
+json.alignment fleet.alignment
+json.primary_activity fleet.primary_activity
+json.secondary_activity fleet.secondary_activity
+json.commitment fleet.commitment
+json.language fleet.language
+json.roleplay fleet.roleplay
+json.recruiting fleet.recruiting
+json.rsi_synced_at fleet.rsi_synced_at&.utc&.iso8601
 json.logo do
   json.partial! "api/v1/shared/file", record: fleet, attr: :logo
 end

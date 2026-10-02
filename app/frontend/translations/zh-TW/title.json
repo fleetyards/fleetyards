@@ -126,7 +126,8 @@
           "edit": "編輯合約",
           "show": "合約",
           "payouts": "%{fleet} 合約分帳"
-        }
+        },
+        "directory": "艦隊目錄"
       },
       "roadmap": {
         "index": "路線圖",

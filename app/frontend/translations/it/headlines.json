@@ -245,6 +245,7 @@
       "filterModels": "Filtra Le Navi",
       "filterVehicles": "Filtra Hangar",
       "fleets": {
+        "directory": "Directory delle flotte",
         "owners": "Proprietari",
         "add": "Crea una nuova flotta",
         "invites": "Inviti Alla Flotta",

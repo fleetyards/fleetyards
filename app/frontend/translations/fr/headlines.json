@@ -245,6 +245,7 @@
       "filterModels": "Filtrer les vaisseaux",
       "filterVehicles": "Filtrer Hangar",
       "fleets": {
+        "directory": "Annuaire des flottes",
         "owners": "Propriétaires",
         "add": "Créer une nouvelle Flotte",
         "invites": "Invitations à la flotte",

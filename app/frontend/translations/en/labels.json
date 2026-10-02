@@ -758,6 +758,44 @@
         "alliesStats": "Stats visible to allies",
         "alliesMembers": "Member list visible to allies",
         "squadronsEnabled": "Use squadrons",
+        "listed": "Show in the fleet directory",
+        "listedInfo": "A verified, public fleet with at least two members can be found in the fleet directory. A private fleet is never listed.",
+        "alignment": "Alignment",
+        "alignments": {
+          "lawful": "Lawful",
+          "neutral": "Neutral",
+          "outlaw": "Outlaw"
+        },
+        "activities": {
+          "bounty_hunting": "Bounty Hunting",
+          "engineering": "Engineering",
+          "exploration": "Exploration",
+          "freelancing": "Freelancing",
+          "infiltration": "Infiltration",
+          "medical": "Medical",
+          "piracy": "Piracy",
+          "resources": "Resources",
+          "scouting": "Scouting",
+          "security": "Security",
+          "smuggling": "Smuggling",
+          "social": "Social",
+          "trading": "Trading",
+          "transport": "Transport"
+        },
+        "commitments": {
+          "casual": "Casual",
+          "regular": "Regular",
+          "hardcore": "Hardcore"
+        },
+        "rsiProfile": {
+          "info": "Synced from your organisation's RSI page once a day. Change these on RSI.",
+          "primaryActivity": "Primary activity",
+          "secondaryActivity": "Secondary activity",
+          "language": "Language",
+          "commitment": "Commitment",
+          "recruiting": "Recruiting",
+          "roleplay": "Role play"
+        },
         "contractCovers": {
           "transport": "Transport cover",
           "procurement": "Procurement cover",
@@ -2170,6 +2208,17 @@
           "releasedFilter": "In release",
           "released": "In release",
           "unreleased": "Not in release"
+        },
+        "fleetDirectory": {
+          "search": "Name, FID or SID",
+          "memberCountGteq": "Minimum members",
+          "activity": "Activity",
+          "language": "Language",
+          "alignment": "Alignment",
+          "commitment": "Commitment",
+          "timezone": "Timezone",
+          "recruiting": "Recruiting only",
+          "roleplay": "Role play only"
         }
       },
       "station": {
@@ -3548,6 +3597,16 @@
         "noRewards": "The files state no reward for this one.",
         "unreleased": "Not in release",
         "retired": "Retired"
+      },
+      "fleetDirectory": {
+        "name": "Fleets",
+        "memberCount": "Members",
+        "createdAt": "Newest",
+        "language": "Language",
+        "recruiting": "Recruiting",
+        "notRecruiting": "Not recruiting",
+        "roleplay": "Role play",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

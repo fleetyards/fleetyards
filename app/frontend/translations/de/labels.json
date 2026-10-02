@@ -758,6 +758,44 @@
         "alliesStats": "Statistiken für Verbündete sichtbar",
         "alliesMembers": "Mitgliederliste für Verbündete sichtbar",
         "squadronsEnabled": "Staffeln verwenden",
+        "listed": "Im Flottenverzeichnis anzeigen",
+        "listedInfo": "Eine verifizierte, öffentliche Flotte mit mindestens zwei Mitgliedern ist im Flottenverzeichnis zu finden. Eine private Flotte wird nie gelistet.",
+        "alignment": "Ausrichtung",
+        "alignments": {
+          "lawful": "Legal",
+          "neutral": "Neutral",
+          "outlaw": "Gesetzlos"
+        },
+        "activities": {
+          "bounty_hunting": "Kopfgeldjagd",
+          "engineering": "Technik",
+          "exploration": "Erkundung",
+          "freelancing": "Freiberuflich",
+          "infiltration": "Infiltration",
+          "medical": "Medizin",
+          "piracy": "Piraterie",
+          "resources": "Rohstoffe",
+          "scouting": "Aufklärung",
+          "security": "Sicherheit",
+          "smuggling": "Schmuggel",
+          "social": "Soziales",
+          "trading": "Handel",
+          "transport": "Transport"
+        },
+        "commitments": {
+          "casual": "Gelegentlich",
+          "regular": "Regelmäßig",
+          "hardcore": "Hardcore"
+        },
+        "rsiProfile": {
+          "info": "Einmal täglich von der RSI-Seite deiner Organisation übernommen. Ändere diese Angaben auf RSI.",
+          "primaryActivity": "Hauptaktivität",
+          "secondaryActivity": "Nebenaktivität",
+          "language": "Sprache",
+          "commitment": "Engagement",
+          "recruiting": "Rekrutiert",
+          "roleplay": "Rollenspiel"
+        },
         "contractCovers": {
           "transport": "Transport-Titelbild",
           "procurement": "Beschaffungs-Titelbild",
@@ -2170,6 +2208,17 @@
           "releasedFilter": "Im Release",
           "released": "Im Release",
           "unreleased": "Nicht im Release"
+        },
+        "fleetDirectory": {
+          "search": "Name, FID oder SID",
+          "memberCountGteq": "Mindestens Mitglieder",
+          "activity": "Aktivität",
+          "language": "Sprache",
+          "alignment": "Ausrichtung",
+          "commitment": "Engagement",
+          "timezone": "Zeitzone",
+          "recruiting": "Nur rekrutierende",
+          "roleplay": "Nur Rollenspiel"
         }
       },
       "station": {
@@ -3534,6 +3583,16 @@
         "noRewards": "Die Dateien nennen für diesen Auftrag keine Belohnung.",
         "unreleased": "Nicht im Release",
         "retired": "Entfernt"
+      },
+      "fleetDirectory": {
+        "name": "Flotten",
+        "memberCount": "Mitglieder",
+        "createdAt": "Neueste",
+        "language": "Sprache",
+        "recruiting": "Rekrutiert",
+        "notRecruiting": "Rekrutiert nicht",
+        "roleplay": "Rollenspiel",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

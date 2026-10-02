@@ -758,6 +758,44 @@
         "alliesStats": "Statistiques visibles par les alliés",
         "alliesMembers": "Liste des membres visible par les alliés",
         "squadronsEnabled": "Utiliser les escadrons",
+        "listed": "Afficher dans l’annuaire des flottes",
+        "listedInfo": "Une flotte vérifiée et publique comptant au moins deux membres figure dans l’annuaire des flottes. Une flotte privée n’y figure jamais.",
+        "alignment": "Alignement",
+        "alignments": {
+          "lawful": "Légal",
+          "neutral": "Neutre",
+          "outlaw": "Hors-la-loi"
+        },
+        "activities": {
+          "bounty_hunting": "Chasse de primes",
+          "engineering": "Ingénierie",
+          "exploration": "Exploration",
+          "freelancing": "Freelance",
+          "infiltration": "Infiltration",
+          "medical": "Médical",
+          "piracy": "Piraterie",
+          "resources": "Ressources",
+          "scouting": "Reconnaissance",
+          "security": "Sécurité",
+          "smuggling": "Contrebande",
+          "social": "Social",
+          "trading": "Commerce",
+          "transport": "Transport"
+        },
+        "commitments": {
+          "casual": "Occasionnel",
+          "regular": "Régulier",
+          "hardcore": "Hardcore"
+        },
+        "rsiProfile": {
+          "info": "Synchronisé une fois par jour depuis la page RSI de ton organisation. Modifie ces informations sur RSI.",
+          "primaryActivity": "Activité principale",
+          "secondaryActivity": "Activité secondaire",
+          "language": "Langue",
+          "commitment": "Engagement",
+          "recruiting": "Recrute",
+          "roleplay": "Jeu de rôle"
+        },
         "contractCovers": {
           "transport": "Visuel transport",
           "procurement": "Visuel approvisionnement",
@@ -2170,6 +2208,17 @@
           "releasedFilter": "Dans la version",
           "released": "Dans la version",
           "unreleased": "Hors version"
+        },
+        "fleetDirectory": {
+          "search": "Nom, FID ou SID",
+          "memberCountGteq": "Membres minimum",
+          "activity": "Activité",
+          "language": "Langue",
+          "alignment": "Alignement",
+          "commitment": "Engagement",
+          "timezone": "Fuseau horaire",
+          "recruiting": "Qui recrutent",
+          "roleplay": "Jeu de rôle uniquement"
         }
       },
       "station": {
@@ -3534,6 +3583,16 @@
         "noRewards": "Les fichiers n'indiquent aucune récompense pour celle-ci.",
         "unreleased": "Hors version",
         "retired": "Retirée"
+      },
+      "fleetDirectory": {
+        "name": "Flottes",
+        "memberCount": "Membres",
+        "createdAt": "Plus récentes",
+        "language": "Langue",
+        "recruiting": "Recrute",
+        "notRecruiting": "Ne recrute pas",
+        "roleplay": "Jeu de rôle",
+        "rsiSid": "SID %{sid}"
       }
     }
   }

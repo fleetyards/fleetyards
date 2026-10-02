@@ -126,7 +126,8 @@
           "edit": "Edit Contract",
           "show": "Contract",
           "payouts": "%{fleet} Contract Payouts"
-        }
+        },
+        "directory": "Fleet Directory"
       },
       "roadmap": {
         "index": "Roadmap",

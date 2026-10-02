@@ -105,7 +105,8 @@
         "contracts": {
           "index": "合約",
           "payouts": "分帳"
-        }
+        },
+        "directory": "目錄"
       },
       "rsiProfile": "RSI 檔案",
       "rsiHangar": "RSI 機庫",

@@ -132,10 +132,8 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/fleets/",
-    name: "fleets",
     component: () => import("@/frontend/pages/fleets.vue"),
     children: fleetsRoutes,
-    redirect: { name: fleetsRoutes[0].name },
     meta: {
       nav: "main",
     },

@@ -14,8 +14,10 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
+  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetUpdateInput,
@@ -26,6 +28,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
 
 type Props = {
   fleet: Fleet;
@@ -71,6 +75,9 @@ const initialValues = ref<FleetUpdateInput>({
   alliesFleet: props.fleet.alliesFleet,
   alliesFleetStats: props.fleet.alliesFleetStats,
   alliesFleetMembers: props.fleet.alliesFleetMembers,
+  // A fleet that never chose follows publicFleet, so that is what it shows.
+  listed: props.fleet.listed ?? props.fleet.publicFleet,
+  alignment: props.fleet.alignment,
 });
 
 const validationSchema = {
@@ -99,11 +106,78 @@ const [alliesFleetStats, alliesFleetStatsProps] =
 const [alliesFleetMembers, alliesFleetMembersProps] =
   defineField("alliesFleetMembers");
 const [logo, logoProps] = defineField("logo");
+const [listed, listedProps] = defineField("listed");
+const [alignment, alignmentProps] = defineField("alignment");
 
 // See `narrowerAudienceDisabled`. The roster has no public form at all, which
 // is why the third toggle is never passed one.
 const alliesDisabled = (isPublic: unknown) =>
   narrowerAudienceDisabled(isPublic, submitting.value);
+
+const { isFleetFeatureEnabled } = useFeatures();
+
+const { activityLabel, commitmentLabel, languageLabel, alignmentOptions } =
+  useFleetProfileLabels();
+
+// Only a verified fleet can be listed, and the directory has to be rolled out
+// for the choice to mean anything.
+const directoryAvailable = computed(
+  () =>
+    props.fleet.rsiVerified &&
+    isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_DIRECTORY),
+);
+
+const canManage = computed(
+  () => props.membership.capabilities?.manageFleet ?? false,
+);
+
+const rsiProfile = computed(() =>
+  [
+    {
+      key: "primaryActivity",
+      value: activityLabel(props.fleet.primaryActivity),
+    },
+    {
+      key: "secondaryActivity",
+      value: activityLabel(props.fleet.secondaryActivity),
+    },
+    { key: "language", value: languageLabel(props.fleet.language) },
+    { key: "commitment", value: commitmentLabel(props.fleet.commitment) },
+    { key: "recruiting", value: yesNo(props.fleet.recruiting) },
+    { key: "roleplay", value: yesNo(props.fleet.roleplay) },
+  ].map((item) => ({ ...item, value: item.value ?? "-" })),
+);
+
+function yesNo(value?: boolean | null) {
+  if (value === null || value === undefined) return undefined;
+
+  return t(value ? "labels.true" : "labels.false");
+}
+
+// A fleet that never chose follows publicFleet, so until a manager touches the
+// toggle it shows exactly that -- live, as publicFleet is switched -- and the
+// save leaves it out. Sending what it showed would turn a choice nobody made
+// into an explicit one, which would stop it following publicFleet.
+const listedChosen = ref(
+  props.fleet.listed !== null && props.fleet.listed !== undefined,
+);
+
+const chooseListed = (value: boolean) => {
+  listedChosen.value = true;
+  listed.value = value;
+};
+
+watch(publicFleet, (isPublic) => {
+  if (!listedChosen.value) listed.value = !!isPublic;
+});
+
+const payloadFrom = (values: FleetUpdateInput): FleetUpdateInput => {
+  if (listedChosen.value) return values;
+
+  const { listed: _listed, ...rest } = values;
+
+  return rest;
+};
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -111,7 +185,7 @@ const onSubmit = handleSubmit(async (values) => {
   await updateMutation
     .mutateAsync({
       slug: route.params.slug as string,
-      data: values,
+      data: payloadFrom(values),
     })
     .then(() => {
       displaySuccess({
@@ -258,6 +332,51 @@ const onDestroy = async () => {
         />
       </div>
     </div>
+    <template v-if="directoryAvailable">
+      <hr />
+      <div class="row" data-test="fleet-directory-settings">
+        <div v-if="canManage" class="col-12 col-md-6">
+          <FormToggle
+            :model-value="listed"
+            name="listed"
+            translation-key="fleet.listed"
+            :info="t('labels.fleet.listedInfo')"
+            v-bind="listedProps"
+            :disabled="submitting || !publicFleet"
+            @update:model-value="chooseListed"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <BaseSelect
+            v-model="alignment"
+            v-bind="alignmentProps"
+            :options="alignmentOptions"
+            :label="t('labels.fleet.alignment')"
+            name="alignment"
+            :searchable="false"
+            unsorted
+            nullable
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <p class="text-muted">{{ t("labels.fleet.rsiProfile.info") }}</p>
+          <div class="metrics-card__rows" data-test="fleet-rsi-profile">
+            <div
+              v-for="item in rsiProfile"
+              :key="item.key"
+              class="metrics-card__row"
+            >
+              <div class="metrics-card__row__label">
+                {{ t(`labels.fleet.rsiProfile.${item.key}`) }}
+              </div>
+              <div class="metrics-card__row__value">{{ item.value }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
     <hr />
     <div class="row">
       <div class="col-12 col-md-6">
@@ -339,3 +458,7 @@ const onDestroy = async () => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/shared/components/metricsCard";
+</style>

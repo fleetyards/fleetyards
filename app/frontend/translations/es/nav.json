@@ -105,7 +105,8 @@
         "contracts": {
           "index": "Contratos",
           "payouts": "Pagos"
-        }
+        },
+        "directory": "Directorio"
       },
       "rsiProfile": "Perfil RSI",
       "rsiHangar": "Hangar RSI",

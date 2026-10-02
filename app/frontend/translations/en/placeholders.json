@@ -288,6 +288,10 @@
           "material": "Iron, Titanium, Aphorite...",
           "craftableType": "Component, Equipment...",
           "source": "Known, unknown..."
+        },
+        "fleetDirectory": {
+          "search": "Name, FID or SID...",
+          "memberCountGteq": "Minimum members"
         }
       },
       "commodity": {

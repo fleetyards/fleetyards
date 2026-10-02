@@ -42,7 +42,8 @@
         }
       },
       "fleets": {
-        "leaveInfo": "You can not leave a Fleet as an Admin."
+        "leaveInfo": "You can not leave a Fleet as an Admin.",
+        "directory": "選擇被找到的已驗證艦隊。這裡的每支艦隊都已證明它管理著自己的 RSI 組織。"
       },
       "admin": {
         "destroyedFleets": {

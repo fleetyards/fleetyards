@@ -5,10 +5,9 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
-import { queryClient } from "@/frontend/plugins/QueryClient";
+import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
 import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
 import { getFleetQueryOptions, type FeatureFlagName } from "@/services/fyApi";
-import type { QueryFunction, UseQueryOptions } from "@tanstack/vue-query";
 
 const beforeEach = (to: RouteLocation) => {
   const fleetStore = useFleetStore();
@@ -29,20 +28,6 @@ const beforeEach = (to: RouteLocation) => {
     return;
   }
 };
-
-// The generated options are typed for `useQuery`, where `queryFn` carries
-// vue-query's widened stand-in for `skipToken` — a bare `symbol` the query
-// client's own options reject. Only the key and the fetcher decide what
-// `ensureQueryData` returns; the rest of the options still apply at runtime.
-const ensureQueryData = <TData, TError>(
-  options: UseQueryOptions<TData, TError, TData>,
-): Promise<TData> =>
-  queryClient.ensureQueryData(
-    options as unknown as {
-      queryKey: readonly unknown[];
-      queryFn: QueryFunction<TData>;
-    },
-  );
 
 // A route behind a flag that is off does not exist for this user: hiding it
 // from the nav is not enough, a typed-in URL has to land on the 404 rather than

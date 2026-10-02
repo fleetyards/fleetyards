@@ -288,6 +288,10 @@
           "material": "铁、钛、Aphorite…",
           "craftableType": "部件、装备…",
           "source": "已知、未知…"
+        },
+        "fleetDirectory": {
+          "search": "名称、FID 或 SID...",
+          "memberCountGteq": "最少成员数"
         }
       },
       "commodity": {

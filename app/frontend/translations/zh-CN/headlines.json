@@ -245,6 +245,7 @@
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {
+        "directory": "舰队目录",
         "owners": "Owners",
         "add": "Create a new Fleet",
         "invites": "舰队邀请",

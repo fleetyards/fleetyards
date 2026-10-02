@@ -126,7 +126,8 @@
           "edit": "编辑合约",
           "show": "合约",
           "payouts": "%{fleet} 合同分账"
-        }
+        },
+        "directory": "舰队目录"
       },
       "roadmap": {
         "index": "路线图",
