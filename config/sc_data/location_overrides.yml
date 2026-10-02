@@ -55,3 +55,8 @@ Pyro1_L4_03_Enterance:
 Pyro2_Outpost_col_m_hmstd_otlw_001:
   merge:
     - Pyro2_Outpost_col_xs_dpt_otlw_001
+
+# A generic base under the star, named for no place and referenced by nothing;
+# every real one is keyed and tagged after its planet.
+AsteroidCluster_MiningBase_Stanton:
+  skip: true

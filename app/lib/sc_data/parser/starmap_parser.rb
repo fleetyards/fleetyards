@@ -34,8 +34,12 @@ module ScData
       RESOURCE_NOTE = /\s*\((?<note>[^)]*)\)\s*\z/
 
       # Records that describe how a place is built rather than a place: the
-      # template an outpost is cloned from, a barge spawned at Prospect Point.
-      NON_PLACE_KEYS = [/_template\z/i, /\Adynamicspawned/i].freeze
+      # template an outpost is cloned from, a barge spawned at Prospect Point,
+      # the distress beacon a mission drops at MIC L1.
+      NON_PLACE_KEYS = [/_template\z/i, /\Adynamicspawned/i, /\Amission_/i].freeze
+
+      # A record the export names as unfinished: "WIP Refinery_0001".
+      WIP_NAME = /\AWIP\b/
 
       KINDS = {
         "SolarSystem" => "system",
@@ -186,7 +190,7 @@ module ScData
         return false if NON_PLACE_KEYS.any? { |pattern| pattern.match?(record[:key]) }
         return false if sandbox_original?(record)
 
-        record[:name].present?
+        record[:name].present? && !record[:name].match?(WIP_NAME)
       end
 
       # A hidden `..._Sandbox` base the export also ships a numbered copy of,

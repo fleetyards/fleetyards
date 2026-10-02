@@ -53,9 +53,11 @@ module ScData
         stanton
         place("RR_P6_L1", nil, type: "Manmade", parent: "StantonStar")
         place("ASD_TEMPLATE", "<= UNINITIALIZED =>", type: "Outpost", parent: "Stanton1")
+        place("Refinery_0001", "WIP Refinery_0001", type: "Manmade", parent: "StantonStar")
 
         assert_nil location("RR_P6_L1")
         assert_nil location("ASD_TEMPLATE")
+        assert_nil location("Refinery_0001")
       end
 
       test "#locations drops a named place under an unnamed one" do
@@ -157,8 +159,10 @@ module ScData
       test "#locations leaves out records that hang under no system" do
         stanton
         place("MISSION_QT_Beacon", "Quantum Beacon", type: "Manmade", parent: nil)
+        place("MISSION_QT_Distress", "Distress Beacon", type: "Manmade", parent: "Stanton1")
 
         assert_nil location("MISSION_QT_Beacon")
+        assert_nil location("MISSION_QT_Distress")
       end
 
       test "#locations leaves out templates and spawned props" do
