@@ -1,7 +1,7 @@
 // One column per body, in orbit order: what a reader would look for on it.
 .location-columns {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
   align-items: start;
 
