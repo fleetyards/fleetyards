@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
 import KindCounts from "@/frontend/components/Locations/KindCounts/index.vue";
@@ -34,94 +35,96 @@ const cities = (body: LocationTreeNode) =>
 
 <template>
   <div class="location-columns">
-    <section
+    <Panel
       v-for="body in bodies"
       :key="body.location.id"
-      class="location-columns__body"
+      :outer-spacing="false"
     >
-      <router-link
-        :to="{ name: 'location', params: { slug: body.location.slug } }"
-        class="location-columns__head"
-      >
-        <LocationGlobe
-          class="location-columns__planet"
-          :location="body.location"
-        />
-        <span class="location-columns__title">{{ body.location.name }}</span>
-      </router-link>
-
-      <router-link
-        v-for="city in cities(body)"
-        :key="city.location.id"
-        :to="{ name: 'location', params: { slug: city.location.slug } }"
-        class="location-columns__city"
-      >
-        <LocationKindIcon :kind="LocationKindEnum.CITY" />
-        {{ city.location.name }}
-      </router-link>
-
-      <div v-if="moons(body).length" class="location-columns__group">
-        <span class="location-columns__caption">
-          {{ t("labels.location.moons", { count: moons(body).length }) }}
-        </span>
+      <section class="location-columns__body">
         <router-link
-          v-for="moon in moons(body)"
-          :key="moon.location.id"
-          :to="{ name: 'location', params: { slug: moon.location.slug } }"
-          class="location-columns__moon"
+          :to="{ name: 'location', params: { slug: body.location.slug } }"
+          class="location-columns__head"
         >
           <LocationGlobe
-            v-if="globeStyle(moon.location)"
-            class="location-columns__moon-dot"
-            :location="moon.location"
+            class="location-columns__planet"
+            :location="body.location"
           />
-          <span
-            v-else
-            class="location-columns__moon-dot location-columns__moon-dot--icon"
-            aria-hidden="true"
-          >
-            <LocationKindIcon :kind="moon.location.kind" />
-          </span>
-          <span class="location-columns__moon-body">
-            <span class="location-columns__moon-name">
-              {{ moon.location.name }}
-            </span>
-            <KindCounts :counts="moon.counts" />
-            <span
-              v-for="city in cities(moon)"
-              :key="city.location.id"
-              class="location-columns__moon-city"
-            >
-              <LocationKindIcon :kind="LocationKindEnum.CITY" />
-              {{ city.location.name }}
-            </span>
-          </span>
+          <span class="location-columns__title">{{ body.location.name }}</span>
         </router-link>
-      </div>
 
-      <div v-if="body.counts.length" class="location-columns__group">
-        <span class="location-columns__caption">
-          {{ countsLabel ?? t("labels.location.inOrbit") }}
-        </span>
-        <KindCounts :counts="body.counts" />
-      </div>
+        <router-link
+          v-for="city in cities(body)"
+          :key="city.location.id"
+          :to="{ name: 'location', params: { slug: city.location.slug } }"
+          class="location-columns__city"
+        >
+          <LocationKindIcon :kind="LocationKindEnum.CITY" />
+          {{ city.location.name }}
+        </router-link>
 
-      <div v-if="body.lagrangePoints.length" class="location-columns__group">
-        <span class="location-columns__caption">
-          {{ t("labels.location.lagrangePoints") }}
-        </span>
-        <div class="location-columns__chips">
+        <div v-if="moons(body).length" class="location-columns__group">
+          <span class="location-columns__caption">
+            {{ t("labels.location.moons", { count: moons(body).length }) }}
+          </span>
           <router-link
-            v-for="point in body.lagrangePoints"
-            :key="point.id"
-            :to="{ name: 'location', params: { slug: point.slug } }"
-            class="location-columns__chip"
+            v-for="moon in moons(body)"
+            :key="moon.location.id"
+            :to="{ name: 'location', params: { slug: moon.location.slug } }"
+            class="location-columns__moon"
           >
-            {{ point.name }}
+            <LocationGlobe
+              v-if="globeStyle(moon.location)"
+              class="location-columns__moon-dot"
+              :location="moon.location"
+            />
+            <span
+              v-else
+              class="location-columns__moon-dot location-columns__moon-dot--icon"
+              aria-hidden="true"
+            >
+              <LocationKindIcon :kind="moon.location.kind" />
+            </span>
+            <span class="location-columns__moon-body">
+              <span class="location-columns__moon-name">
+                {{ moon.location.name }}
+              </span>
+              <KindCounts :counts="moon.counts" />
+              <span
+                v-for="city in cities(moon)"
+                :key="city.location.id"
+                class="location-columns__moon-city"
+              >
+                <LocationKindIcon :kind="LocationKindEnum.CITY" />
+                {{ city.location.name }}
+              </span>
+            </span>
           </router-link>
         </div>
-      </div>
-    </section>
+
+        <div v-if="body.counts.length" class="location-columns__group">
+          <span class="location-columns__caption">
+            {{ countsLabel ?? t("labels.location.inOrbit") }}
+          </span>
+          <KindCounts :counts="body.counts" />
+        </div>
+
+        <div v-if="body.lagrangePoints.length" class="location-columns__group">
+          <span class="location-columns__caption">
+            {{ t("labels.location.lagrangePoints") }}
+          </span>
+          <div class="location-columns__chips">
+            <router-link
+              v-for="point in body.lagrangePoints"
+              :key="point.id"
+              :to="{ name: 'location', params: { slug: point.slug } }"
+              class="location-columns__chip"
+            >
+              {{ point.name }}
+            </router-link>
+          </div>
+        </div>
+      </section>
+    </Panel>
   </div>
 </template>
 
