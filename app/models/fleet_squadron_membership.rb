@@ -84,7 +84,7 @@ class FleetSquadronMembership < ApplicationRecord
   private def assign_default_role
     return if fleet_squadron_role.present? || fleet_squadron.blank?
 
-    self.fleet_squadron_role = fleet_squadron.fleet.fleet_squadron_roles.find_by(key: FleetSquadronRole::DEFAULT_KEY)
+    self.fleet_squadron_role = FleetSquadronRole.default_for(fleet_squadron.fleet)
   end
 
   private def role_belongs_to_same_fleet
@@ -96,7 +96,9 @@ class FleetSquadronMembership < ApplicationRecord
 
   # One Leader and one Co-Leader per squadron. Nothing in the row itself says
   # which slot a role is, so a unique index cannot hold the rule; the squadron
-  # lock serialises two promotions into the same slot instead.
+  # lock serialises two promotions into the same slot instead. Only the current
+  # roster counts: leaving the fleet discards the membership but keeps this
+  # row, and a Leader who left must not hold the slot nobody can see.
   private def single_holder_role_is_free
     return if fleet_squadron.blank? || fleet_squadron_role.blank?
     return unless fleet_squadron_role.single_holder?
@@ -104,6 +106,8 @@ class FleetSquadronMembership < ApplicationRecord
     FleetSquadron.where(id: fleet_squadron_id).lock.take
 
     held = FleetSquadronMembership
+      .joins(:fleet_membership)
+      .merge(FleetMembership.kept.accepted)
       .where(fleet_squadron_id:, fleet_squadron_role_id:)
       .where.not(id:)
       .exists?

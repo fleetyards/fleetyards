@@ -63,6 +63,16 @@ class FleetSquadronRole < ApplicationRecord
     end
   end
 
+  # A fleet created before the ranks existed -- or by a release still running
+  # while they were migrated in -- has none. Seeding on the miss keeps such a
+  # fleet from refusing every new squadron member.
+  def self.default_for(fleet)
+    fleet.fleet_squadron_roles.find_by(key: DEFAULT_KEY) || begin
+      setup_defaults!(fleet)
+      fleet.fleet_squadron_roles.find_by!(key: DEFAULT_KEY)
+    end
+  end
+
   def single_holder?
     SINGLE_HOLDER_KEYS.include?(key)
   end

@@ -19,6 +19,7 @@ module Api
       def index
         authorize! with: FleetSquadronRolePolicy, context: {fleet: @fleet}
 
+        FleetSquadronRole.default_for(@fleet)
         @fleet_squadron_roles = @fleet.fleet_squadron_roles
       end
 

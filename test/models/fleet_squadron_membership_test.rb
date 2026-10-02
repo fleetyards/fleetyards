@@ -101,4 +101,21 @@ class FleetSquadronMembershipTest < ActiveSupport::TestCase
 
     assert row.update(created_at: 1.year.ago)
   end
+
+  test "a Leader who left the fleet no longer holds the slot" do
+    leader = @fleet.fleet_squadron_roles.find_by!(key: "leader")
+    departed = create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_squadron_role: leader)
+    departed.fleet_membership.discard!
+
+    assert_predicate build(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_squadron_role: leader), :valid?
+  end
+
+  test "seeds the ranks of a fleet that has none" do
+    @fleet.fleet_squadron_roles.delete_all
+
+    row = create(:fleet_squadron_membership, fleet_squadron: @squadron, fleet_membership: @membership)
+
+    assert_equal "member", row.fleet_squadron_role.key
+    assert_equal 4, @fleet.fleet_squadron_roles.count
+  end
 end
