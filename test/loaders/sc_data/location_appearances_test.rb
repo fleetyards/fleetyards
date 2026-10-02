@@ -40,6 +40,10 @@ module ScData
       test "the seed file names only places by their record key, with valid colours" do
         seeds = ::ScData::Loader::LocationAppearances.seeds
 
+        # YAML keeps the last of two entries for one key without a word.
+        keys = Rails.root.join(::ScData::Loader::LocationAppearances::PATH).readlines.grep(/\A\S+:\s*\z/)
+        assert_equal keys.uniq, keys
+
         assert_operator seeds.size, :>=, 30
         seeds.each_value do |seed|
           assert_match(/\A#\h{6}\z/, seed["color"]) if seed["color"]

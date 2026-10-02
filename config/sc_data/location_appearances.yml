@@ -64,10 +64,10 @@ Pyro4:
   color: "#5c7a7a"
 Pyro5:
   color: "#6c795d"
-# Pyro V's moons and Terminus, from their descriptions: Ignis's dried
-# riverbeds, Vatra's dark nitrogen-methane haze, Adir's crater-ridden rock,
-# Fairo's brackish seas, Fuego's yellow-black iron sulphide, Vuur's carbon-rich
-# soil, Terminus's frigid methane.
+# Pyro V's moons, from their descriptions: Ignis's dried riverbeds, Vatra's
+# dark nitrogen-methane haze, Adir's crater-ridden rock, Fairo's brackish
+# seas, Fuego's yellow-black iron sulphide, Vuur's carbon-rich soil. Terminus
+# takes its colour from its picture.
 Pyro5a:
   color: "#b0704a"
 Pyro5b:
@@ -81,7 +81,8 @@ Pyro5e:
 Pyro5f:
   color: "#6f8f6a"
 Pyro6:
-  color: "#8fb3b8"
+  color: "#88644e"
+  image: db/seeds/locations/terminus.webp
 
 # Nyx. Nyx I keeps a colour read from its description, terraformed against the
 # odds: its picture is a low-orbit view whose average is a flat grey. Nyx II's
@@ -96,7 +97,5 @@ Nyx2:
 Nyx3:
   color: "#4a768c"
   image: db/seeds/locations/nyx-iii.webp
-Nyx2:
-  color: "#d8c58a"
 Nyx_Levski:
   image: db/seeds/locations/levski.webp
