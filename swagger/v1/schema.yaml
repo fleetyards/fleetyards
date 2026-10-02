@@ -7123,6 +7123,71 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/roles/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Fleet role id
+      required: true
+    put:
+      summary: Rename Fleet Role
+      tags:
+      - FleetRoles
+      operationId: updateFleetRole
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetRoleUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetRoleExtended"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - renaming a role needs fleet:roles:update
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/rsi-verification":
     parameters:
     - name: fleetSlug
@@ -25081,6 +25146,8 @@ components:
           type: boolean
         readRoles:
           type: boolean
+        updateRoles:
+          type: boolean
         manageFleet:
           type: boolean
         updateFleet:
@@ -25114,6 +25181,7 @@ components:
       - readVehicles
       - readBlueprints
       - readRoles
+      - updateRoles
       - manageFleet
       - updateFleet
       - destroyFleet
@@ -25438,6 +25506,8 @@ components:
           type: string
         permanent:
           type: boolean
+        defaultRole:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -25450,6 +25520,7 @@ components:
       - name
       - slug
       - rank
+      - defaultRole
       - createdAt
       - updatedAt
       title: FleetRoleExtended
@@ -25582,6 +25653,15 @@ components:
       - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
       title: FleetRoleResourceAccessEnum
+    FleetRoleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      additionalProperties: false
+      title: FleetRoleUpdateInput
     FleetRsiVerification:
       type: object
       properties:

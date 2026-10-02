@@ -2335,6 +2335,8 @@ components:
           type: boolean
         readRoles:
           type: boolean
+        updateRoles:
+          type: boolean
         manageFleet:
           type: boolean
         updateFleet:
@@ -2368,6 +2370,7 @@ components:
       - readVehicles
       - readBlueprints
       - readRoles
+      - updateRoles
       - manageFleet
       - updateFleet
       - destroyFleet
