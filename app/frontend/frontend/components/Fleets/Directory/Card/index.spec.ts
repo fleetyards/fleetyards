@@ -67,6 +67,7 @@ describe("Fleets/Directory/Card", () => {
 
     expect(hrefs).toContain("#/fleets/directory?activityIn=piracy");
     expect(hrefs).toContain("#/fleets/directory?activityIn=smuggling");
+    expect(hrefs).toContain("#/fleets/directory?languageIn=de");
   });
 
   it("names the SID, the language and whether the fleet recruits", async () => {

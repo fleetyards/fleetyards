@@ -53,6 +53,9 @@ const rows = computed(() =>
       key: "language",
       label: t("labels.fleetDirectory.language"),
       value: languageLabel(props.fleet.language),
+      to: props.fleet.language
+        ? filterLink("languageIn", props.fleet.language)
+        : undefined,
     },
     {
       key: "commitment",
@@ -150,7 +153,12 @@ const rows = computed(() =>
       <div v-if="rows.length" class="metrics-card__rows">
         <div v-for="row in rows" :key="row.key" class="metrics-card__row">
           <div class="metrics-card__row__label">{{ row.label }}</div>
-          <div class="metrics-card__row__value">{{ row.value }}</div>
+          <div class="metrics-card__row__value">
+            <router-link v-if="row.to" :to="row.to">{{
+              row.value
+            }}</router-link>
+            <template v-else>{{ row.value }}</template>
+          </div>
         </div>
       </div>
     </PanelBody>
