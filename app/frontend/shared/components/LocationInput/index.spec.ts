@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { locations } from "@/services/fyApi";
 import Component from "./index.vue";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -62,6 +63,44 @@ describe("LocationInput", () => {
     await wrapper.find("input").setValue("Lorville, Teasa");
 
     expect(wrapper.emitted("update:locationId")?.at(-1)).toEqual([null]);
+
+    vi.useRealTimers();
+  });
+
+  it("ignores an older search that answers after a newer one", async () => {
+    vi.useFakeTimers();
+
+    const place = (name: string) => ({
+      items: [{ id: name, name, slug: name.toLowerCase(), parent: null }],
+    });
+    let answerSlow: (value: unknown) => void = () => {};
+
+    vi.mocked(locations)
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            answerSlow = resolve;
+          }) as never,
+      )
+      .mockImplementationOnce(async () => place("Levski") as never);
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "location", modelValue: "", locationId: null },
+      plugins: [await router()],
+    });
+
+    await wrapper.find("input").setValue("Lor");
+    await vi.advanceTimersByTimeAsync(300);
+    await wrapper.find("input").setValue("Lev");
+    await vi.advanceTimersByTimeAsync(300);
+    await flushPromises();
+
+    answerSlow(place("Lorville"));
+    await flushPromises();
+
+    expect(wrapper.find(".location-input__suggestion").text()).toContain(
+      "Levski",
+    );
 
     vi.useRealTimers();
   });

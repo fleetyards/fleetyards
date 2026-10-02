@@ -60,7 +60,13 @@ watch(
   },
 );
 
+// Only the latest search may answer: an older request finishing last would
+// offer places for text the field no longer holds.
+let latestSearch = 0;
+
 const search = useDebounceFn(async (text: string) => {
+  const request = ++latestSearch;
+
   if (text.trim().length < 2) {
     suggestions.value = [];
     return;
@@ -70,6 +76,8 @@ const search = useDebounceFn(async (text: string) => {
     perPage: "8",
     q: { nameCont: text.trim() },
   }).catch(() => undefined);
+
+  if (request !== latestSearch) return;
 
   suggestions.value = result?.items ?? [];
   active.value = -1;
