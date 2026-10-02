@@ -142,6 +142,17 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/fleets pages through fleets that share a count and a name" do
+    twins = Array.new(2) { |index| listed_fleet("TWIN#{index}", name: "Twin Fleet", members: 2) }
+
+    seen = (1..4).flat_map do |page|
+      assert_api_response :get, 200, params: {perPage: 1, page:, q: {"search" => "twin"}}
+      parsed_body["items"].map { |item| item["id"] }
+    end
+
+    assert_equal twins.map(&:id).sort, seen.sort
+  end
+
   test "GET /public/fleets paginates" do
     assert_api_response :get, 200, params: {perPage: 1} do
       assert_equal ["Night Pirates"], names
